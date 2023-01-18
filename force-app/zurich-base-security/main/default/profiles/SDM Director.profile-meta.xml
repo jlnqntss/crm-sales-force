@@ -2093,6 +2093,17 @@
         <layout>KPI__c-KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Objective__c-Frequency of notifications</layout>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+        <recordType>Objective__c.Objectives</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>PlanComercial__c-Plan Comercial Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -2525,6 +2536,10 @@
     <tabVisibilities>
         <tab>et4ae5__SendDefinition__c</tab>
         <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Mobile_Home_SDM</tab>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Account</tab>

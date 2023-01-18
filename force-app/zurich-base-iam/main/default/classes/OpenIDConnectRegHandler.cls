@@ -111,7 +111,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         // GET Title
         String title                  = getTitleFromRoles(mapAuthData.get(PERMISSION_TYPE_TITLE));
         // GET Manager
-        Id ManagerId                  = getManagerIdFromNickname(data);
+        Id managerId                  = getManagerIdFromNickname(data);
         // NEW USER
         u                             = new User();
         u.firstName                   = data.firstName;
@@ -208,7 +208,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         // GET Title
         String title                  = getTitleFromRoles(mapAuthData.get(PERMISSION_TYPE_TITLE));
         // GET Manager
-        Id ManagerId                  = getManagerIdFromNickname(data);
+        Id managerId                  = getManagerIdFromNickname(data);
         // UPDATE USER
         User u = [
             SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title, ManagerId
@@ -323,10 +323,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                 ORDER BY Order__c
             ];
             // if is a test, mock the result
-            if( Test.isRunningTest() ) {
-                if( testListAuthMappings != null ) {
-                    authConfig.addAll(testListAuthMappings);
-                }
+            if( Test.isRunningTest() && testListAuthMappings != null) {
+                authConfig.addAll(testListAuthMappings);
             }
             // Convert all the data into a map
             if( !authConfig.isEmpty() ) {

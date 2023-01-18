@@ -99,8 +99,6 @@ class FileController {
 }
 
 class ChangelogGenerator {
-  constructor() {}
-
   generate(commits) {
     return new Promise((resolve, reject) => {
       fs.readFile(
@@ -111,9 +109,8 @@ class ChangelogGenerator {
           } else {
             const changelog = Mustache.render(data.toString(), {
               commits: {
-                unreleased: ChangelogGenerator.generateMustacheDataStructure(
-                  commits
-                )
+                unreleased:
+                  ChangelogGenerator.generateMustacheDataStructure(commits)
               }
             });
             resolve(changelog);

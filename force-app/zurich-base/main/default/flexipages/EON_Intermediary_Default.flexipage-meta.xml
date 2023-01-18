@@ -355,6 +355,24 @@
                 <identifier>force_relatedListSingleContainer3</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>accountType</name>
+                    <value>Intermediary</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>salesforceObject</name>
+                    <value>Special_Condition__c</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Acuerdos activos</value>
+                </componentInstanceProperties>
+                <componentName>warningAndAgreementViewer</componentName>
+                <identifier>c_warningAndAgreementViewer2</identifier>
+            </componentInstance>
+        </itemInstances>
         <name>Facet-ddeacd44-a0ac-422f-878f-f0260a141fd3</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -463,6 +481,24 @@
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
                 <identifier>force_relatedListSingleContainer2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>accountType</name>
+                    <value>Intermediary</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>salesforceObject</name>
+                    <value>CustomerWarning__c</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Avisos activos</value>
+                </componentInstanceProperties>
+                <componentName>warningAndAgreementViewer</componentName>
+                <identifier>c_warningAndAgreementViewer</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>

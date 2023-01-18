@@ -195,6 +195,20 @@
         </criteriaItems>
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Write_Z_ES_USP</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Write_Z_ES_USP</label>
+        <sharedTo>
+            <group>Write_Z_ES_USP</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Contacto Partner</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
     <sharingGuestRules>
         <fullName>Site_Access</fullName>
         <accessLevel>Read</accessLevel>

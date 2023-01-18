@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Objetivos</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Objetivos</value>
+    </caseValues>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Frequency of notifications</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Objetivos Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <recordTypes>
+        <description>Tipo de registro en el que se almacena la información relativa a los días restantes para notificar la finalización del plan mensual.</description>
+        <label>Frecuencia de notificaciones</label>
+        <name>FrequencyNotifications</name>
+    </recordTypes>
+    <recordTypes>
+        <description>Tipo de registro para los objetivos de los planes mensuales.</description>
+        <label>Objetivos</label>
+        <name>Objectives</name>
+    </recordTypes>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Pesos_Suma_100</name>
+    </validationRules>
+</CustomObjectTranslation>

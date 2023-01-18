@@ -37,6 +37,34 @@ public with sharing class ObjectivesViewController {
     }
 
     /**
+    * @description Método que obtiene la frecuencia de notificaciones.
+    * @author amiranda
+    * @date 29-12-2022 
+    * @return Objective__c Frecuencia de notificaciones
+    **/
+    @AuraEnabled
+    public static Objective__c getFrequencyNotification()
+    {
+        Objective__c frequencyNotification;
+
+        try
+        {
+            List<Objective__c> frequencyNotifications = ObjectivesSelector.selectFrequencyNotification();
+            
+            if(!frequencyNotifications.isEmpty()) 
+            {
+                frequencyNotification = frequencyNotifications.get(0);
+            }
+        } 
+        catch (Exception e) 
+        {
+            throw new AuraHandledException(e.getMessage());
+        }
+
+        return frequencyNotification;
+    }
+
+    /**
      * Obtiene un listado de años para el selector según los valores de la picklist Year__c del objeto Objetivos     
      * @return Listado de años
      * @author dmunoz

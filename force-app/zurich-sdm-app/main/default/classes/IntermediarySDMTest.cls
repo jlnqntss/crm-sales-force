@@ -93,6 +93,78 @@ private class IntermediarySDMTest
         System.assertEquals(10, result.size(), 'Deberia haber 10 mediadores con el ParentId de la agrupacion rellenado');
     }
 
+    @isTest
+    static void testAssignIntermediaryAgrupation_set_status_activated()
+    {
+        ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        List<Account> agrupations = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = :rtAgrupationId LIMIT 1];
+        System.assertEquals(1, agrupations.size(), 'Deberia haber 1 Agrupación de Mediadores.');
+
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        List<Account> mediadores = [SELECT Id, Status__c FROM Account WHERE RecordTypeId = :rtIntermediaryId AND NationalId__c = :agrupations.get(0).NationalId__c];
+        System.assert(!mediadores.isEmpty(), 'Deberian existir Mediadores.');
+
+        for (Account mediador : mediadores)
+        {
+            // Estado activo
+            mediador.Status__c = '001';
+        }
+
+        update mediadores;
+
+        Test.startTest();
+        // Se activa la agrupación
+        IntermediarySDM sdm = new IntermediarySDM();
+        sdm.assignIntermediaryAgrupation(mediadores);
+        Test.stopTest();
+
+        agrupations = [SELECT Id, StatusIntermediary__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND Id = : agrupations.get(0).Id];
+        System.assertEquals('Active', agrupations.get(0).StatusIntermediary__c, 'El estado de la Agrupación debería ser \'Active\'');
+    }
+
+    @isTest
+    static void testAssignIntermeidaryAgrupation_set_status_inactive()
+    {
+        ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        List<Account> agrupations = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = :rtAgrupationId LIMIT 1];
+        System.assertEquals(1, agrupations.size(), 'Deberia haber 1 Agrupación de Mediadores.');
+
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        List<Account> mediadores = [SELECT Id, Status__c FROM Account WHERE RecordTypeId = :rtIntermediaryId AND NationalId__c = :agrupations.get(0).NationalId__c];
+        System.assert(!mediadores.isEmpty(), 'Deberian existir Mediadores.');
+
+        for (Account mediador : mediadores)
+        {
+            // Estado activo
+            mediador.Status__c = '001';
+        }
+
+        update mediadores;
+
+        // Se activa la agrupación
+        IntermediarySDM sdm = new IntermediarySDM();
+        sdm.assignIntermediaryAgrupation(mediadores);
+
+        agrupations = [SELECT Id, StatusIntermediary__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND Id = : agrupations.get(0).Id];
+        System.assertEquals('Active', agrupations.get(0).StatusIntermediary__c, 'El estado de la Agrupación debería ser \'Active\'');
+
+        for (Account mediador : mediadores)
+        {
+            // Estado inactivo
+            mediador.Status__c = '003';
+        }
+
+        update mediadores;
+
+        Test.startTest();
+        // Se desactiva la agrupación
+        sdm.assignIntermediaryAgrupation(mediadores);
+        Test.stopTest();
+
+        agrupations = [SELECT Id, StatusIntermediary__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND Id = : agrupations.get(0).Id];
+        System.assertEquals('Inactive', agrupations.get(0).StatusIntermediary__c, 'El estado de la Agrupación debería ser \'Inactive\'');        
+    }
+
     /**
      * Test del metodo que calcula el Equipo de Cuenta (ATM) de la agrupacion de mediadores
      *

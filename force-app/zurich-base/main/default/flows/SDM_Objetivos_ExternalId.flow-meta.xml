@@ -41,13 +41,41 @@
                 <elementReference>$Record.Zone__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>RecordTypeDeveloperName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.RecordType.DeveloperName</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_External_Id</targetReference>
         </connector>
     </assignments>
+    <constants>
+        <description>DeveloperName del RT del Objeto Objective__c para la Frecuencia de Notificaciones.</description>
+        <name>FrequencyNotificationsRTDeveloperName</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>FrequencyNotifications</stringValue>
+        </value>
+    </constants>
     <description>Añadir zona al valor calculado</description>
+    <environments>Default</environments>
     <formulas>
-        <name>ExternalId_Value</name>
+        <description>Se establece el valor del campo ExternalId en función del tipo de registro del objeto Objective__c.</description>
+        <name>ExternalIdValue</name>
+        <dataType>String</dataType>
+        <expression>IF
+(
+    {!RecordTypeDeveloperName} = {!FrequencyNotificationsRTDeveloperName},
+    {!$Record.RecordType.DeveloperName},
+    {!ObjectiveRTExternalIdValue}
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Valor del campo ExternalId para el tipo de registro &quot;Objective&quot; del objeto Objective__c.</description>
+        <name>ObjectiveRTExternalIdValue</name>
         <dataType>String</dataType>
         <expression>{!Year_Value}&amp; &quot;-&quot; &amp;{!Indicator_Value}&amp; &quot;-&quot; &amp;{!Segment_Value}&amp; &quot;-&quot; &amp;{!Product_Value}&amp; &quot;-&quot; &amp;{!Zone_Value}</expression>
     </formulas>
@@ -81,7 +109,7 @@
         <inputAssignments>
             <field>ExternalId__c</field>
             <value>
-                <elementReference>ExternalId_Value</elementReference>
+                <elementReference>ExternalIdValue</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -116,6 +144,13 @@
         <value>
             <elementReference>$Record.Product__c</elementReference>
         </value>
+    </variables>
+    <variables>
+        <name>RecordTypeDeveloperName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>Segment_Value</name>

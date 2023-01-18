@@ -126,7 +126,6 @@ public with sharing class GenesysInteractionsService
         //20210804: Estadísticas/Informes
         if(interactionLog.caller != null)
         {
-            // interactionTask.IdentifiedByNIF__c = interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false ? false : true;
             interactionTask.IdentifiedByNIF__c = !(interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false);
             interactionTask.IdentifiedByANI__c = interactionLog.caller.identifiedByANI == null || interactionLog.caller.identifiedByANI == false ? false : true;
             interactionTask.NoIdentified__c = interactionLog.caller.noIdentified == null || interactionLog.caller.noIdentified == false ? false : true;

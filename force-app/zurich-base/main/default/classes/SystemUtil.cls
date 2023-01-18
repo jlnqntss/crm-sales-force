@@ -800,18 +800,15 @@ public with sharing class SystemUtil
 
             // nts (nbizkarra) - 17/11/2020 - get subscribed contacts by email
             // Subscribers from lead
-            if( mapSubscribers != null )
+            if( mapSubscribers != null && con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c )
             {
-                if( con.CustomerNum__c == null && con.Birthdate == null && con.IsSubscriber__c )
+                if( mapSubscribers.containsKey(con.Email) )
                 {
-                    if( mapSubscribers.containsKey(con.Email) )
-                    {
-                        mapSubscribers.get(con.Email).add(con);
-                    }
-                    else
-                    {
-                        mapSubscribers.put(con.Email, new List<Contact> {con});
-                    }
+                    mapSubscribers.get(con.Email).add(con);
+                }
+                else
+                {
+                    mapSubscribers.put(con.Email, new List<Contact> {con});
                 }
             }
         }

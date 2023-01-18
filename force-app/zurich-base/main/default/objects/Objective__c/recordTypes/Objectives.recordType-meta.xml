@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Objectives</fullName>
+    <active>true</active>
+    <description>Record type for monthly plan objectives.</description>
+    <label>Objectives</label>
+    <picklistValues>
+        <picklist>Indicator__c</picklist>
+        <values>
+            <fullName>PN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Portfolio</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Product__c</picklist>
+        <values>
+            <fullName>Accidentes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Autos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hogar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inmuebles</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patrimoniales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resp%2E Civil</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Todos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vida riesgo colectivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vida riesgo individual</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Segment__c</picklist>
+        <values>
+            <fullName>Grandes empresas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PYMEs</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Particulares</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Todos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vida riesgo</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Year__c</picklist>
+        <values>
+            <fullName>2022</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2023</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2024</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Zone__c</picklist>
+        <values>
+            <fullName>11 BARCELONA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12 CATALUNYA ANDORRA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21 LEVANTE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22 BALEARES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>23 CENTRO ARAGÓN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>31 MADRID</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>41 SUR ORIENTAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>42 CANARIAS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>43 SUR OCCIDENTAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>51 NORTE ORIENTAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>52 NORTE OCCIDENTAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>61 CENTRALIZADOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Todos</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>
