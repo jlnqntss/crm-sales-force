@@ -3639,6 +3639,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <custom>false</custom>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>USPManageAgreementsWarnings</name>
+    </customPermissions>
     <customSettingAccesses>
         <enabled>true</enabled>
         <name>purecloud__CallCenterCustomSettings__c</name>

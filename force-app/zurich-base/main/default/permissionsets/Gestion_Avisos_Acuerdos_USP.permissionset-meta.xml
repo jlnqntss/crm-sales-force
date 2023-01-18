@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>USPManageAgreementsWarnings</name>
+    </customPermissions>
     <description>Permiso para permitir a ciertos usuarios gestionar avisos (CustomerWarning__c) y acuerdos (Special_Condition__c). Solo para USP. Estos avisos y acuerdos se ven en el componente  WarningAndAgreementViewer</description>
     <fieldPermissions>
         <editable>true</editable>
