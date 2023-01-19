@@ -1,4 +1,4 @@
-public with sharing class GenesysSurveysService {
+public without sharing class GenesysSurveysService {
 
     public static Integer version { get; set; }
 
