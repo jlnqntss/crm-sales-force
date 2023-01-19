@@ -1,4 +1,4 @@
-public with sharing class ContentVersionUtil
+public without sharing class ContentVersionUtil
 {
     public static Map<String, Case> hashToCaseMap;
     public static List<ContentDocumentLink> contentDocumentLinksToCreate;

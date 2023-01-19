@@ -11,7 +11,7 @@
  * @update 26/oct/2020 - nts (agonzalezisasi) - Add Customer Multi-Partner logic
  * 
  **/
-global with sharing class ExternalRequestUtil {
+global without sharing class ExternalRequestUtil {
   // Declare variables
 
   // nts (agonzalezisasi) - 26/oct/2020 - Include Multi-Partner
