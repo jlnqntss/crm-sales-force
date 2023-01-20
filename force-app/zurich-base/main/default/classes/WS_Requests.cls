@@ -6,7 +6,7 @@
  * @date 07/05/2020
  */
 @RestResource(urlMapping = '/request/*')
-global with sharing class WS_Requests
+global without sharing class WS_Requests
 {
     /**
      * Metodo Post que recibe la información del sistema externo e inserta un objeto ExternalRequest__c
