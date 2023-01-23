@@ -445,6 +445,24 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>accountType</name>
+                    <value>Customer</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>salesforceObject</name>
+                    <value>CustomerWarning__c</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Avisos Activos</value>
+                </componentInstanceProperties>
+                <componentName>warningAndAgreementViewer</componentName>
+                <identifier>c_warningAndAgreementViewer</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>actionNames</name>
                     <valueList>
                         <valueListItems>
