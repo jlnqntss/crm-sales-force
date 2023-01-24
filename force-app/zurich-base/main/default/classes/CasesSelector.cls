@@ -220,6 +220,7 @@ public with sharing class CasesSelector extends RecordsSelector
             })
             
             .addConditionEq(Case.RecordTypeId, rtUSPId)
+            .addConditionEq(Case.Type,'Venta')
             .addConditionNotEq(Case.Status,'Combinado')
             .addConditionString(CASES_LAST_DATE + days);
 

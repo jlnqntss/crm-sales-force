@@ -84,22 +84,18 @@ global class Batch_RatioConversionIntermediary implements Database.Batchable<sOb
 
             for(Case currentCase:allCases)
             {   
-                if(mapAllIntermediaryCases.get(currentCase.AccountId)==null)
+                if(mapAllIntermediaryCases.get(currentCase.AccountId)==null && mapWonIntermediaryCases.get(currentCase.Id)==null)
                 {
                     mapAllIntermediaryCases.put(currentCase.AccountId,0);
+                    mapWonIntermediaryCases.put(currentCase.AccountId,0);
+
                 }
                 
                 mapAllIntermediaryCases.put(currentCase.AccountId,(mapAllIntermediaryCases.get(currentCase.AccountId)+1));
                         
                 if(currentCase.QuotationStage__c=='Won')
-                {
-                    if(mapWonIntermediaryCases.get(currentCase.AccountId)==null)
-                    {                               
-                        mapWonIntermediaryCases.put(currentCase.AccountId,0);
-                    }
-                            
+                {       
                     mapWonIntermediaryCases.put(currentCase.AccountId,(mapWonIntermediaryCases.get(currentCase.AccountId)+1));
-
                 }
             }
 
@@ -119,16 +115,3 @@ global class Batch_RatioConversionIntermediary implements Database.Batchable<sOb
         {}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

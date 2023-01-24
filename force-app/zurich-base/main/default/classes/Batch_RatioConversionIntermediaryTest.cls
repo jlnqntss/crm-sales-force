@@ -23,6 +23,7 @@ public with sharing class Batch_RatioConversionIntermediaryTest
         for(case c:cases)
         {
             c.RecordTypeId=caseRecordTypeId;
+            c.Type='Venta';
         }
 
         //Casos de la primera cuenta
