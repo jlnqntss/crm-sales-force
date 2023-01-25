@@ -20,12 +20,7 @@ global class Batch_RatioConversionIntermediary implements Database.Batchable<sOb
     private String daysToQuery='365';
 
     private List<Case> allCases= new List<Case>();
-    private List<Account> allIntermediary= new List<Account>();
-
-    Map <Id, Decimal> mapAllIntermediaryCases= new Map <Id,Decimal>();
-    Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
-
-    Integer ratio;
+   
 
     /**
     * Constructor por defecto
@@ -82,32 +77,14 @@ global class Batch_RatioConversionIntermediary implements Database.Batchable<sOb
             // Se convierte el Scope en casos
             List<Case> allCases = (List<Case>) scope;
 
-            for(Case currentCase:allCases)
-            {   
-                if(mapAllIntermediaryCases.get(currentCase.AccountId)==null && mapWonIntermediaryCases.get(currentCase.Id)==null)
+                List<Account> accountUpdate= CaseUtil.generateAccountRatio(allCases);
+                if(accountUpdate != null && !accountUpdate.isEmpty())
                 {
-                    mapAllIntermediaryCases.put(currentCase.AccountId,0);
-                    mapWonIntermediaryCases.put(currentCase.AccountId,0);
-
-                }
-                
-                mapAllIntermediaryCases.put(currentCase.AccountId,(mapAllIntermediaryCases.get(currentCase.AccountId)+1));
-                        
-                if(currentCase.QuotationStage__c=='Won')
-                {       
-                    mapWonIntermediaryCases.put(currentCase.AccountId,(mapWonIntermediaryCases.get(currentCase.AccountId)+1));
-                }
-            }
-
-                allIntermediary= [SELECT USPConversionRatio__c FROM Account WHERE Id=:mapAllIntermediaryCases.keySet()];
-
-                for(Account acc: allIntermediary)
-                {
-                    acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id));     
+                    // Se actualizan los registros 
+                    update accountUpdate;
                 }
 
-
-                    update allIntermediary;
+                    
         }
     }
 
