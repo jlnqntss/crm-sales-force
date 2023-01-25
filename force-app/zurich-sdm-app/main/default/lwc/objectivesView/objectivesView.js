@@ -493,7 +493,10 @@ export default class ObjectivesView extends LightningElement {
 
   handleSaveNotificationsFrequency() {
     const fields = {};
+    // Se guarda el valor previo por si la actualización/creación falla
+    const lightningInputPrevValue = this.frequencyNotification.DaysLeft__c.toString();
     const lightningInput = this.template.querySelector("lightning-input");
+    this.frequencyNotification.DaysLeft__c = lightningInput.value;
 
     fields[OBJECTIVE_DAYSLEFT_FIELD.fieldApiName] = lightningInput.value;
     fields[OBJECTIVE_RECORDTYPEID_FIELD.fieldApiName] =
@@ -520,14 +523,16 @@ export default class ObjectivesView extends LightningElement {
             this.labels.SDM_Objetivos_ToastSuccessMessageFreqNotifications
           );
         })
-        .catch(() =>
+        .catch(() => {
           this.showError(
             this.labels.SDM_Objetivos_ToastErrorTitle,
             this.labels.SDM_Objetivos_ToastErrorMessageFreqNotifications
-          )
-        );
+          );
+
+          this.frequencyNotification.DaysLeft__c = lightningInputPrevValue;
+        })
     } else if (
-      parseInt(lightningInput.value, 10) !==
+      lightningInputPrevValue !==
       this.frequencyNotification.DaysLeft__c
     ) {
       // Existe el registro, por lo tanto se actualiza
@@ -543,12 +548,14 @@ export default class ObjectivesView extends LightningElement {
             this.labels.SDM_Objetivos_ToastSuccessMessageFreqNotifications
           );
         })
-        .catch(() =>
+        .catch(() => {
           this.showError(
             this.labels.SDM_Objetivos_ToastErrorTitle,
             this.labels.SDM_Objetivos_ToastErrorMessageFreqNotifications
           )
-        );
+
+          this.frequencyNotification.DaysLeft__c = lightningInputPrevValue;
+        })
     } else {
       // Si el valor no ha cambiado se muestra un mensaje informativo
       this.showInfo(
