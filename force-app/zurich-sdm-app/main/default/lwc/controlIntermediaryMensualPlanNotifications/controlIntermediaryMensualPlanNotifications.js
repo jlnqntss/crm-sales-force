@@ -178,7 +178,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       this.options = [];
       // recorrer options
       for (const opt of this.resetOptions) {
-        if (opt.label.includes(this.queryTerm)) {
+        if (opt.label.toLowerCase().includes(this.queryTerm.toLowerCase())) {
           this.options = [...this.options, opt];
           // aqui no actualizamos la variable values como en el resto de casuisticas cuando cambian los elementos de izq a derecha o viceversa
           // porque con el filtro se ocultan los valores y si existen va a ser siempre mayor que el numero de opciones por lo que se calcula correctamente
