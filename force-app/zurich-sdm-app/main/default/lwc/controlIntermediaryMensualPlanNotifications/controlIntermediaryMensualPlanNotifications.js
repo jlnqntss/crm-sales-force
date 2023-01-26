@@ -325,8 +325,11 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       }
     }
 
-    // si el numero de elementos en la lista values es 0 inactivamos el boton desactivar todos
-    if (numValues === 0) {
+    if (numOptions === 0) {
+      this.disableInactiveAll = true;
+      this.disableActiveAll = true;
+    } else if (numValues === 0) {
+      // si el numero de elementos en la lista values es 0 inactivamos el boton desactivar todos
       this.disableInactiveAll = true;
     } else if (numOptions === numValues) {
       // si el numero de elementos en la lista values es igual al numero de opciones inactivamos el boton activar todos
