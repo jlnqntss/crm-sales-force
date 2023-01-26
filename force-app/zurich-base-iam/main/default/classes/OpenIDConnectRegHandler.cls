@@ -138,7 +138,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             u.UserRoleId              = roleId;
         if( userPermissions != null )
         { 
-            ActivateUserPermission(userPermissions,u);
+            activateUserPermission(userPermissions,u);
         }
         if( callcenterId != null )
             u.CallCenterId            = callcenterId;
@@ -252,7 +252,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                 u.UserRoleId                 = roleId;
             if( userPermissions != null )
                 { 
-                    ActivateUserPermission(userPermissions,u);
+                    activateUserPermission(userPermissions,u);
                 }
             if( u.CallCenterId != callcenterId )
                 u.CallCenterId               = callcenterId;
@@ -802,7 +802,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
      * @date 18/01/2023
      * @author lrodriguez
      */
-    private void ActivateUserPermission(List<String> UserPer,User usuario)
+    private void activateUserPermission(List<String> userPer,User usuario)
     {
         
             for(String userPermission: UserPer)
