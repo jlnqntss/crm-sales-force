@@ -1193,32 +1193,11 @@ public with sharing class SystemUtil
             Integer baseCount = 0;
             for(Integer curr : hexString.getChars())
             {
-                Integer val = 0;
+                List<String> returningControllers = getControllers(curr, baseCount, controllingValues);
 
-                if(curr >= 65)
+                for(String controller : returningControllers)
                 {
-                    val = curr - 65 + 10;
-                }
-                else
-                {
-                    val = curr - 48;
-                }
-
-                if((val & 8) == 8)
-                {
-                    controllingInfo.get(controllingValues[baseCount + 0].getLabel()).add(currDependentValue.getLabel());
-                }
-                if((val & 4) == 4)
-                {
-                    controllingInfo.get(controllingValues[baseCount + 1].getLabel()).add(currDependentValue.getLabel());                    
-                }
-                if((val & 2) == 2)
-                {
-                    controllingInfo.get(controllingValues[baseCount + 2].getLabel()).add(currDependentValue.getLabel());                    
-                }
-                if((val & 1) == 1)
-                {
-                    controllingInfo.get(controllingValues[baseCount + 3].getLabel()).add(currDependentValue.getLabel());                    
+                    controllingInfo.get(controller).add(currDependentValue.getLabel());
                 }
 
                 baseCount += 4;
@@ -1226,6 +1205,47 @@ public with sharing class SystemUtil
         } 
 
         return controllingInfo;
+    }
+
+
+    /**
+     * Método privado que devuelve una lista con los valores de la picklist controladora que habilitan el valor dependiente que estamos analizando
+     **
+     * @author arcortazar
+     * @date 26/01/2023
+     **/
+    private static List<String> getControllers(Integer currentHex, Integer basecount, List<Schema.PicklistEntry> controllingValues)
+    {
+        Integer val = 0;
+        List<String> listaControladores = new List<String>();
+
+        if(currentHex >= 65)
+        {
+            val = currentHex - 65 + 10;
+        }
+        else
+        {
+            val = currentHex - 48;
+        }
+
+        if((val & 8) == 8)
+        {
+            listaControladores.add(controllingValues[baseCount + 0].getLabel());
+        }
+        if((val & 4) == 4)
+        {
+            listaControladores.add(controllingValues[baseCount + 1].getLabel());                
+        }
+        if((val & 2) == 2)
+        {
+            listaControladores.add(controllingValues[baseCount + 2].getLabel());                  
+        }
+        if((val & 1) == 1)
+        {
+            listaControladores.add(controllingValues[baseCount + 3].getLabel());             
+        }
+
+        return listaControladores;
     }
 
     public class MyPickListInfo
