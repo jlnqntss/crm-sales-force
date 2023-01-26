@@ -9,7 +9,7 @@
  * @date 23/02/2021
  *
  */
-public without sharing class UploadCaseDocumentationController
+public with sharing class UploadCaseDocumentationController
 {
     //#Region public classes
 
