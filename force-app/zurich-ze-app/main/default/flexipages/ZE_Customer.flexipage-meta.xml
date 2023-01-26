@@ -264,6 +264,27 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>decorate</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;p&gt;&lt;strong style=&quot;font-family: tahoma; font-size: 20px; color: rgb(255, 13, 13);&quot;&gt;&lt;em&gt;Texto Legal GDPR&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(255, 2, 2); font-size: 16px; font-family: sans-serif;&quot;&gt;Antes de nada informarte que Zurich Insurance plc, Sucursal en España procederá a grabar esta llamada por motivos de calidad en base a interés legítimo y también para dejar prueba de la solicitud realizada en base a ejecución contractual. Para más información sobre protección de datos y cómo ejercer tus derechos, consulta la web &lt;/span&gt;&lt;a href=&quot;http://www.zurich.es/rgpd&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(255, 2, 2); font-size: 16px; font-family: sans-serif;&quot;&gt;&lt;u&gt;www.zurich.es/rgpd&lt;/u&gt;&lt;/a&gt;&lt;span style=&quot;color: rgb(255, 2, 2); font-size: 16px; font-family: sans-serif;&quot;&gt;.”&amp;nbsp;&lt;/span&gt;&lt;/p&gt;</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:richText</componentName>
+                <identifier>flexipage_richText</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$User.Profile.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>ZE User</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>columns</name>
                     <value>[{"label":"Number","fieldName":"url","type":"url","typeAttributes":{"label":{"fieldName":"Name"},"tooltip":{"fieldName":"url","target":"_self"}}},{"label":"Prefered Contact Datetime","fieldName":"PreferredContactDatetime__c","type":"date","typeAttributes":{"day":"numeric","month":"numeric","year":"numeric","hour":"2-digit","minute":"2-digit"}},{"label":"Status","fieldName":"Preferred_Status__c","type":"text"},{"label":"Cancel","type":"button-icon","initialWidth":40,"typeAttributes":{"iconName":"utility:clear","name":"cancelConReq","title":"Cancel Call Me Back","variant":"container"}}]</value>
                 </componentInstanceProperties>
