@@ -3,7 +3,7 @@
  * @author rlopez
  * @date 26/01/2021
  */
-public without sharing class ContentDocumentLinkUtil
+public with sharing class ContentDocumentLinkUtil
 {
     public static List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = null;
 
