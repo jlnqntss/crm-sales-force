@@ -2269,4 +2269,21 @@ Related fields: [{3}]</value>
         <shortDescription>SDM_Acta_WarningToastTitle</shortDescription>
         <value>Warning</value>
     </labels>
+    <labels>
+        <fullName>SDM_Acta_CreatePDFTitleModal</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_CreatePDFTitleModal</shortDescription>
+        <value>Generate PDF Acta</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_NoActaWarningToastMessage</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_NoActaWarningToastMessage</shortDescription>
+        <value>The PDF cannot be created, the record is missing in the event.
+Create the record and try again.</value>
+    </labels>
 </CustomLabels>
