@@ -800,13 +800,16 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
      */
     private void activateUserPermission(Map<string, Boolean> userPermissionsMap, User usuario)
     {
-            for(String userPermission: userPermissionsMap.keySet())
-           {
-            usuario.put(userPermission, userPermissionsMap.get(userPermission));
-           }
+        for(String userPermission : userPermissionsMap.keySet())
+        {
+            if(userPermissionsMap.get(userPermission) != null && userPermissionsMap.get(userPermission) == true)
+            {
+                usuario.put(userPermission, true);
+            }
+            else
+            {
+                usuario.put(userPermission, false);
+            }
         }
-    
-
-    
-
+    }
 }
