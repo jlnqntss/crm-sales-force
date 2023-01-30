@@ -18,4 +18,8 @@
         <field>Role_Name__c</field>
         <value xsi:type="xsd:string">Supervisor_USP</value>
     </values>
+    <values>
+        <field>User_Permision_Value__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
 </CustomMetadata>
