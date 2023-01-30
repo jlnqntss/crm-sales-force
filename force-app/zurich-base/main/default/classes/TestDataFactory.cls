@@ -3374,7 +3374,7 @@ public class TestDataFactory
      * @date 23/12/2022
      * @return {Event} 
      */
-    public static void generateEvent() {
+    public static Event generateEvent() {
         Event e = new Event();
         e.subject = 'EventTest';
         e.EventType__c = 'Call';
@@ -3382,5 +3382,31 @@ public class TestDataFactory
         e.DurationInMinutes = 60;
         e.ActivityDateTime = DateTime.now();
         insert e;
+
+        return e;
+    }
+
+    /**
+     * Genera un acta y lo asocia a un evento
+     *
+     * @author nts (dmunoz)
+     * @date 23/12/2022
+     * @return {Event} 
+     */
+    public static Acta__c generateActa(Event event) {
+
+        Acta__c acta = new Acta__c();
+        acta.Attendees__c = 'Attendee';
+        acta.MeetingObjective__c = event.Subject;
+        acta.Location__c = 'Sala 1';
+
+        insert acta;
+
+        Event e = new Event();
+        e.Id = event.Id;
+        e.Acta__c = acta.Id;
+        update e;
+
+        return acta;
     }
 }

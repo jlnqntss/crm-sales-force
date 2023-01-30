@@ -2230,6 +2230,63 @@ Related fields: [{3}]</value>
         <value>Success</value>
     </labels>
     <labels>
+        <fullName>SDM_Acta_DownloadButton</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_DownloadButton</shortDescription>
+        <value>Download</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_PreviewButton</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_PreviewButton</shortDescription>
+        <value>Preview</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_ErrorToastTitle</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_ErrorToastTitle</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_NoActaErrorToastMessage</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_NoActaErrorToastMessage</shortDescription>
+        <value>Event record not found</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_WarningToastTitle</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_WarningToastTitle</shortDescription>
+        <value>Warning</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_CreatePDFTitleModal</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_CreatePDFTitleModal</shortDescription>
+        <value>Generate PDF Acta</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_NoActaWarningToastMessage</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_NoActaWarningToastMessage</shortDescription>
+        <value>The PDF cannot be created, the record is missing in the event.
+Create the record and try again.</value>
+    </labels>
+    <labels>
         <fullName>ZeGDPR</fullName>
         <language>en_US</language>
         <protected>false</protected>

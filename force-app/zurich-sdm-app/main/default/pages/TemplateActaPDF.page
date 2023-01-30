@@ -1,0 +1,159 @@
+<apex:page
+  standardController="Event"
+  extensions="TemplateActaPDFController"
+  renderAs="pdf"
+>
+  <head>
+    <apex:stylesheet value="{!$Resource.TemplateActaPDF}" />
+  </head>
+  <body>
+    <div>
+      <apex:image
+        id="logo"
+        styleClass="logo"
+        value="{!$Resource.TemplateActaPDF_Logo}"
+        width="194"
+        height="50"
+        alt="Zurich Logo"
+      />
+    </div>
+    <div class="content">
+      <div class="title">
+        <apex:outputText style="font-size: 30px" value="ACTA REUNION" />
+      </div>
+      <div class="event-box">
+        <!--Cuadro con información de evento y acta-->
+        <div>
+          <!--Fecha-->
+          <apex:outputText value="Fecha: " />
+          <apex:outputText
+            styleClass="text-black"
+            value="{!startDate} {!endDate}"
+          />
+        </div>
+        <div class="event-box-elem">
+          <!--Organizado por -->
+          <apex:outputText value="Organizado por: " />
+          <apex:outputText
+            styleClass="text-black"
+            value="{!Event.CreatedBy.Name}"
+          />
+        </div>
+        <div class="event-box-elem">
+          <!--Relacionado con el mediador-->
+          <apex:outputText value="Relacionado con el mediador: " />
+          <apex:outputText
+            styleClass="text-black"
+            value="{!Event.RelatedToIntermediary__c}"
+          />
+        </div>
+        <div class="event-box-elem">
+          <!--Tipo de reunión-->
+          <apex:outputText value="Tipo de reunión: " />
+          <apex:outputText styleClass="text-black" value="{!EventType}" />
+        </div>
+        <div class="event-box-elem">
+          <!--Ubicación-->
+          <apex:outputText value="Ubicación: " />
+          <apex:outputText styleClass="text-black" value="{!Event.Location}" />
+        </div>
+        <div class="event-box-elem">
+          <!--Asistentes-->
+          <div class="assistant-box">
+            <div class="assistant-elem">
+              <apex:outputText value="Asistentes: " />
+            </div>
+            <div class="assistant-elem">
+              <apex:outputText
+                style="white-space: pre"
+                styleClass="text-black"
+                value="{!Event.Acta__r.Attendees__c}"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <!-- Objetivos de la reunión -->
+        <div class="section-title">
+          <apex:outputText
+            style="font-size: 25px"
+            value="Objetivos de la reunión"
+          />
+        </div>
+        <div class="section-text">
+          <apex:outputText value="{!Event.Acta__r.MeetingObjective__c}" />
+        </div>
+      </div>
+      <div>
+        <!-- Acciones tratadas en la reunión -->
+        <div class="section-title">
+          <apex:outputText
+            style="font-size: 25px"
+            value="Acciones tratadas en la reunión"
+          />
+        </div>
+        <div class="actions">
+          <apex:repeat
+            value="{!accionesTratadas}"
+            var="accionTratada"
+            id="theRepeat"
+          >
+            <div>
+              <div class="actions-elem">
+                <!-- Acción -->
+                <apex:outputText value="Acción: " />
+                <apex:outputText
+                  styleClass="text-black"
+                  value="{!accionTratada.Actions__c}"
+                />
+              </div>
+              <div class="actions-elem">
+                <!-- Fecha límite -->
+                <apex:outputText value="Fecha límite: " />
+                <apex:outputText
+                  styleClass="text-black"
+                  value="{0,date,dd/MM/yyyy}"
+                >
+                  <apex:param value="{!accionTratada.DueDate__c}" />
+                </apex:outputText>
+              </div>
+              <div class="actions-elem">
+                <!-- Responsable -->
+                <apex:outputText value="Responsable: " />
+                <apex:outputText
+                  styleClass="text-black"
+                  value="{!accionTratada.PersonInCharge__c}"
+                />
+              </div>
+              <div class="actions-elem">
+                <!-- Observaciones -->
+                <apex:outputText value="Observaciones: " />
+                <apex:outputText
+                  styleClass="text-black"
+                  style="white-space: pre-wrap"
+                  value="{!accionTratada.Observations__c}"
+                />
+              </div>
+            </div>
+          </apex:repeat>
+        </div>
+      </div>
+      <div>
+        <!-- Otra información de interés  -->
+        <div class="section-title">
+          <apex:outputText
+            style="font-size: 25px"
+            value="Otra información de interés"
+          />
+        </div>
+        <div class="section-text">
+          <apex:outputText
+            style="white-space: pre-wrap"
+            value="{!Event.Acta__r.OtherInformation__c}"
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</apex:page>
