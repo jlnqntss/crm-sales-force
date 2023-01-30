@@ -52,7 +52,7 @@ public with sharing class TemplateActaPDFController {
             result = startDate.format();
         } else {
             Datetime startDate = eventFields.ActivityDateTime;
-            result = startDate.format('dd/MM/yyyy HH:mm', 'Europe/Madrid');
+            result = startDate.format('dd/M/yyyy HH:mm', 'Europe/Madrid');
         }
         
         return result;
@@ -66,7 +66,7 @@ public with sharing class TemplateActaPDFController {
             result = endDate.format();
         } else {
             Datetime endDate = eventFields.EndDateTime;
-            result = endDate.format('dd/MM/yyyy HH:mm', 'Europe/Madrid');
+            result = endDate.format('dd/M/yyyy HH:mm', 'Europe/Madrid');
         }
         
         return result;

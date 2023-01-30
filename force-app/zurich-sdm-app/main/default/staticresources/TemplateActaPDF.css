@@ -9,7 +9,7 @@
 .content {
   margin-top: 10%;
   margin-bottom: 15%;
-  font-family: Arial Unicode MS;
+  font-family: Arial Unicode MS, Helvetica;
 }
 
 .title {
@@ -47,7 +47,8 @@
 
 .section-text {
   margin-top: 2%;
-  white-space: pre-line;
+  text-align: justify;
+  text-justify: auto;
 }
 
 .actions {
@@ -57,7 +58,8 @@
 
 .actions-elem {
   margin-top: 1%;
-  white-space: pre-line;
+  text-align: justify;
+  text-justify: auto;
 }
 
 .text-black {

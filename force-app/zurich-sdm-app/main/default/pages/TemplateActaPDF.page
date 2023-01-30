@@ -25,7 +25,7 @@
         <!--Cuadro con información de evento y acta-->
         <div>
           <!--Fecha-->
-          <apex:outputText value="Fecha2: " />
+          <apex:outputText value="Fecha: " />
           <apex:outputText
             styleClass="text-black"
             value="{!startDate} {!endDate}"
@@ -131,6 +131,7 @@
                 <apex:outputText value="Observaciones: " />
                 <apex:outputText
                   styleClass="text-black"
+                  style="white-space: pre-wrap"
                   value="{!accionTratada.Observations__c}"
                 />
               </div>
@@ -147,7 +148,10 @@
           />
         </div>
         <div class="section-text">
-          <apex:outputText value="{!Event.Acta__r.OtherInformation__c}" />
+          <apex:outputText
+            style="white-space: pre-wrap"
+            value="{!Event.Acta__r.OtherInformation__c}"
+          />
         </div>
       </div>
     </div>
