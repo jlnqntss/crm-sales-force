@@ -1,0 +1,65 @@
+@page {
+  size: A4;
+}
+
+.logo {
+  float: right;
+}
+
+.content {
+  margin-top: 10%;
+  margin-bottom: 15%;
+  font-family: Arial Unicode MS;
+}
+
+.title {
+  text-align: center;
+  color: #003399;
+  font-size: 2rem;
+}
+
+.event-box {
+  margin-top: 3%;
+  background-color: #f2f2f2;
+  color: #003399;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  padding-left: 3%;
+}
+
+.event-box-elem {
+  margin-top: 1%;
+}
+
+.assistant-box {
+  text-align: left;
+}
+.assistant-elem {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.section-title {
+  margin-top: 5%;
+  color: #003399;
+  font-size: 1.5rem;
+}
+
+.section-text {
+  margin-top: 2%;
+  white-space: pre-line;
+}
+
+.actions {
+  margin-top: 2%;
+  color: #003399;
+}
+
+.actions-elem {
+  margin-top: 1%;
+  white-space: pre-line;
+}
+
+.text-black {
+  color: black;
+}
