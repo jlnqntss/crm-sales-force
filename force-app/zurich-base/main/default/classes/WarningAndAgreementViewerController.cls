@@ -252,6 +252,8 @@ public with sharing class WarningAndAgreementViewerController
         public String fieldName {get;set;}
         @AuraEnabled
         public String type {get;set;}
+        @AuraEnabled
+        public Boolean wrapText {get;set;}
 
         /**
          * Contructor de la clase Field
@@ -263,6 +265,7 @@ public with sharing class WarningAndAgreementViewerController
             this.label     = label;
             this.fieldName = fieldName;
             this.type = String.valueOf(type).toLowerCase();
+            this.wrapText = true;
         }
 
         /**
@@ -275,6 +278,7 @@ public with sharing class WarningAndAgreementViewerController
             this.label     = label;
             this.fieldName = fieldName;
             this.type = type;
+            this.wrapText = true;
         }
     }
     //#endregion
