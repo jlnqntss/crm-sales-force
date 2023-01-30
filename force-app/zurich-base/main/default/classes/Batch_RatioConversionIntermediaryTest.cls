@@ -27,21 +27,25 @@ public with sharing class Batch_RatioConversionIntermediaryTest
         }
 
         //Casos de la primera cuenta
-        cases[0].Status='Closed';
-        cases[0].QuotationStage__c='Won';
-        cases[1].Status='Asigned';
-        cases[2].Status='Asigned';
-        cases[3].Status='Asigned';
+        cases[0].Status='Assigned';
+        cases[0].QuotationStage__c='Quoted';
+        cases[1].Status='Assigned';
+        cases[2].Status='Assigned';
+        cases[3].Status='Assigned';
 
         //Casos de la segunda cuenta
-        cases[4].Status='Closed';
-        cases[4].QuotationStage__c='Won';
+        cases[4].Status='Assigned';
+        cases[4].QuotationStage__c='Quoted';
         cases[5].Status='Combinado';
         cases[6].Status='Combinado';
-        cases[7].Status='Asigned';
-
+        cases[7].Status='Assigned';
         update cases;
-
+        cases[0].QuotationStage__c='Work in Progress';
+        cases[4].QuotationStage__c='Work in Progress';
+        update cases;
+        cases[0].QuotationStage__c='Won';
+        cases[4].QuotationStage__c='Won';
+        update cases;
     }
 
 
@@ -50,8 +54,10 @@ public with sharing class Batch_RatioConversionIntermediaryTest
     static void Batch_RatioConversionIntermediaryTest_OK()
     {
         Batch_RatioConversionIntermediary batch= new Batch_RatioConversionIntermediary();
-
-
+        List<Case> cases = [SELECT Id, Status, QuotationStage__c FROM Case];
+        cases[0].QuotationStage__c='Won';
+        cases[4].QuotationStage__c='Won';
+        update cases;
         Test.startTest();
         Id batchId = Database.executeBatch(batch);
         Test.stopTest();
