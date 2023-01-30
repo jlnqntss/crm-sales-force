@@ -25,9 +25,30 @@ public with sharing class GenesysCloudRouteMessageAction
     {
         try
         {
+            //Construir mapa con las colas de Genesys <-> Nombre
+            Map<String,String> mapGenesysQueueNameId = new Map<String,String>();
+            List<purecloud__PureCloud_Queue__c> genesysQueues = new List<purecloud__PureCloud_Queue__c>();
+            genesysQueues = [SELECT Id, Name, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c];
+            for(purecloud__PureCloud_Queue__c gQueue: genesysQueues)
+            {
+                mapGenesysQueueNameId.put(gQueue.Name,gQueue.purecloud__PureCloud_Queue_ID__c);
+            }
             List<MessageResult> responses = new List<MessageResult>();
             for (MessageRequest request : requests)
             {
+
+                //Si viene relleno queueId pero no existe
+                if(request.queueId != null && !mapGenesysQueueNameId.containsKey(request.queueId))
+                { //Lanzar excepción para que el Flow registre un error
+                    throw new GenesysCloudRouteMessageActionException('The genesys queue '+ request.queueId +' does not exists.');
+                }
+                //Si viene relleno queueId y sí existe:
+                else if(request.queueId != null && mapGenesysQueueNameId.containsKey(request.queueId))
+                {
+                    //Sustituir el nombre de la cola por su ID
+                    String queueId = mapGenesysQueueNameId.get(request.queueId);
+                    request.queueId = queueId;
+                }
                 MessageResult response = new MessageResult();
                 response.interactionId = GenesysCloud.RoutingService.route(request).interactionId;
                 responses.add(response);
@@ -59,13 +80,19 @@ public with sharing class GenesysCloudRouteMessageAction
         public String fromName;
         @InvocableVariable(label = 'From Address' description='Correo electrónico del remitente.')
         public String fromAddress;
-        @InvocableVariable(required=true label = 'Queue Id' description='Id de la cola de GenesysCloud.')
+        @InvocableVariable(label = 'Queue Id' description='Id de la cola de GenesysCloud.')
         public String queueId;
         @InvocableVariable(label = 'Screen Pop Record Id' description='Identificador de Salesforce del registro con el que realizar un ScreenPop.')
         public String screenPopRecordId;
         @InvocableVariable(label = 'Owner Id' description='Identificador de Salesforce de usuario en Genesys (Correo electrónico SF).')
         public String ownerId;
-        // Se define el proveedor para la petición a Genesys Cloud.
+        @InvocableVariable(label = 'Attribute Queue Id' description='Id. de la cola como atributo')
+        public String queueIdAttribute;
+        @InvocableVariable(label = 'SLA' description='SLA restante de la interacción')
+        public Integer caseSla;
+        @InvocableVariable(label = 'Flow Id' description='Id del flow de Genesys')
+        public String flowId;
+        // Se define el proveedor para la petición a Genesys Cloud
         private String provider
         {
             get
