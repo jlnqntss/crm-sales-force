@@ -392,4 +392,55 @@ private class CaseUtilTest
             System.assertNotEquals(null, currentCase.OfferId__c, 'Deberia haber oferta');
         }
     }
+
+    @IsTest
+    public static void test_checkTypification_OK()
+    {
+
+        Map<String, List<String>> mapaT1 = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
+        Map<String, List<String>> mapaT2 = SystemUtil.getDependantPicklistValues('Case', 'Subtype__c', 'TypeN3__c');
+
+        List<String> listaT1 = new List<String>(mapaT1.keySet());
+        String tipo = listaT1.get(0);
+        String subtipo = mapaT1.get(tipo).get(0);
+        String tipoN3 = mapaT2.get(subtipo).get(0);
+
+        List<Account> listaAccounts = [SELECT id FROM Account];
+        List<Case> listaCasos = TestDataFactory.generateCasesForEachAccount(listaAccounts, 1);
+
+        listaCasos[0].Type = tipo;
+        listaCasos[0].Subtype__c = subtipo;
+        listaCasos[0].TypeN3__c = tipoN3;
+
+        Boolean resultado;
+        test.startTest();
+        resultado = CaseUtil.checkTypification(listaCasos[0]);
+        test.stopTest();
+
+        System.assertEquals(true, resultado);
+    }
+
+    @IsTest
+    public static void test_checkTypification_KO()
+    {
+        Map<String, List<String>> mapaT1 = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
+
+        List<String> listaT1 = new List<String>(mapaT1.keySet());
+        String tipo = listaT1.get(0);
+        String subtipo = mapaT1.get(tipo).get(0);
+
+        List<Account> listaAccounts = [SELECT id FROM Account];
+        List<Case> listaCasos = TestDataFactory.generateCasesForEachAccount(listaAccounts, 1);
+        
+        listaCasos[0].Type = tipo;
+        listaCasos[0].Subtype__c = subtipo;
+        listaCasos[0].TypeN3__c = 'Inventamos';
+
+        Boolean resultado;
+        test.startTest();
+        resultado = CaseUtil.checkTypification(listaCasos[0]);
+        test.stopTest();
+
+        System.assertEquals(false, resultado);
+    }
 }

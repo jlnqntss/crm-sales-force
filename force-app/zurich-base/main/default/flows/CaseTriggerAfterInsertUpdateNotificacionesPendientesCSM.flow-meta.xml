@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>MandarEmailAction</name>
-        <label>Mandar Email</label>
-        <locationX>842</locationX>
-        <locationY>1007</locationY>
-        <actionName>Case.Caso_pendiente</actionName>
+        <name>Mandar_email_cierre_caso</name>
+        <label>Mandar email cierre caso</label>
+        <locationX>50</locationX>
+        <locationY>1247</locationY>
+        <actionName>Case.Cierre_de_caso_automatico_CSM</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
-            <targetReference>CreateErrorLogCaseEmailSend</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>Generar_Error_Log_Envio_Email</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -19,15 +20,14 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <name>SendEmailCloseCase</name>
-        <label>Mandar email cierre caso</label>
-        <locationX>50</locationX>
-        <locationY>1247</locationY>
-        <actionName>Case.Cierre_de_caso_automatico</actionName>
+        <name>MandarEmail</name>
+        <label>Mandar email</label>
+        <locationX>842</locationX>
+        <locationY>1007</locationY>
+        <actionName>Case.Caso_pendiente_CSM</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>CreateErrorLogCaseEmailSend</targetReference>
+            <targetReference>Generar_Error_Log_Envio_Email</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -61,7 +61,7 @@
         <locationX>446</locationX>
         <locationY>887</locationY>
         <defaultConnector>
-            <targetReference>MandarEmailAction</targetReference>
+            <targetReference>MandarEmail</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -194,7 +194,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>CreateErrorLogCaseEmailSend</name>
+        <name>Generar_Error_Log_Envio_Email</name>
         <label>Generar Error Log Envio Email</label>
         <locationX>1106</locationX>
         <locationY>1127</locationY>
@@ -252,7 +252,7 @@
         <locationX>50</locationX>
         <locationY>1127</locationY>
         <connector>
-            <targetReference>SendEmailCloseCase</targetReference>
+            <targetReference>Mandar_email_cierre_caso</targetReference>
         </connector>
         <faultConnector>
             <targetReference>CreateErrorLogCaseCloseAction</targetReference>

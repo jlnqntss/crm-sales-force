@@ -13,4 +13,5 @@
         <name>RelatedListFields</name>
     </fieldSets>
     <gender>Feminine</gender>
+    <nameFieldLabel>Nombre del Aviso</nameFieldLabel>
 </CustomObjectTranslation>

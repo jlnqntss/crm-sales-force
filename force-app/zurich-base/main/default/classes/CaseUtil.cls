@@ -611,6 +611,30 @@ public with sharing class CaseUtil
         return casoHijo;
     }
 
+    /**
+     * Método que comprueba si la tipificación de un caso se encuentra entre las disponibles en el sistem
+     * @author arcortazar
+     * @date 18/11/2022
+     * @param {Case caso} caso que se va a copiar
+     * @param {Boolean setTypification} indica si la tipificación sigue existiendo en el sistema (true) o no (false)
+     * @return Case 
+     */
+    public static Boolean checkTypification(Case caso)
+    {
+        Map<String, List<String>> mapaT1 = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
+        Map<String, List<String>> mapaT2 = SystemUtil.getDependantPicklistValues('Case', 'Subtype__c', 'TypeN3__c');
+
+        if (mapaT1.containsKey(caso.Type) && mapaT1.get(caso.Type).contains(caso.Subtype__c) &&
+            mapaT2.containsKey(caso.Subtype__c) && mapaT2.get(caso.Subtype__c).contains(caso.TypeN3__c))
+        {
+            return true;
+        }
+        else {
+            return false;        
+        }
+        
+    }
+
      /**
      * Método utilizado por RelateCasesToNewOffersBatch para relacionar casos con ofertas
      * @author lrodriguez6@seidor.es

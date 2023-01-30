@@ -264,6 +264,27 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>decorate</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 13, 13); font-size: 20px; font-family: tahoma;&quot;&gt;&lt;em&gt;Texto Legal GDPR&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 18px; font-family: sans-serif; color: rgb(255, 8, 8);&quot;&gt;{!$Label.ZeGDPR}&lt;/span&gt;&lt;/p&gt;</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:richText</componentName>
+                <identifier>flexipage_richText2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$User.Profile.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>ZE User</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>columns</name>
                     <value>[{"label":"Number","fieldName":"url","type":"url","typeAttributes":{"label":{"fieldName":"Name"},"tooltip":{"fieldName":"url","target":"_self"}}},{"label":"Prefered Contact Datetime","fieldName":"PreferredContactDatetime__c","type":"date","typeAttributes":{"day":"numeric","month":"numeric","year":"numeric","hour":"2-digit","minute":"2-digit"}},{"label":"Status","fieldName":"Preferred_Status__c","type":"text"},{"label":"Cancel","type":"button-icon","initialWidth":40,"typeAttributes":{"iconName":"utility:clear","name":"cancelConReq","title":"Cancel Call Me Back","variant":"container"}}]</value>
                 </componentInstanceProperties>
