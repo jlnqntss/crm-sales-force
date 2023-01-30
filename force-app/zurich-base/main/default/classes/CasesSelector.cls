@@ -11,6 +11,8 @@ public with sharing class CasesSelector extends RecordsSelector
 
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
 
+    public static final String CASES_LAST_DATE = 'Case.CreatedDate = LAST_N_DAYS:';
+
     // Recupera el Id del RecordType de casos USP
     public ID rtUSPId {
         get {
@@ -162,7 +164,7 @@ public with sharing class CasesSelector extends RecordsSelector
             .addConditionEq(Case.RecordTypeId, rtUSPId)
             .addConditionNotNull(Case.RobotDocumentId__c)
             .addConditionNull(Case.MediatedCustomer__c)
-            .addConditionString('Case.CreatedDate = LAST_N_DAYS:' + days);
+            .addConditionString(CASES_LAST_DATE + days);
 
             return this.baseQuery.toQueryString();
         }
@@ -191,7 +193,7 @@ public with sharing class CasesSelector extends RecordsSelector
             .addConditionEq(Case.RecordTypeId, rtUSPId)
             .addConditionNotNull(Case.CreatedOffer__c)
             .addConditionNull(Case.OfferId__c)
-            .addConditionString('Case.CreatedDate = LAST_N_DAYS:' + days);
+            .addConditionString(CASES_LAST_DATE + days);
 
             return this.baseQuery.toQueryString();
         }
@@ -201,4 +203,32 @@ public with sharing class CasesSelector extends RecordsSelector
         }
     }
 
+    /**
+     * Método utilizado por el batch Batch_RatioConversionIntermediary para definir el scope
+     * @author lrodriguez6@seidor.es
+     * @date 19/01/2023
+     * @return String query que se va a lanzar en el batch
+     */
+    public String getQueryStringCasesIntermediaryRatio(String days)
+    {
+        if(days != null && !String.isBlank(days) )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.AccountId,
+                Case.QuotationStage__c
+                
+            })
+            
+            .addConditionEq(Case.RecordTypeId, rtUSPId)
+            .addConditionEq(Case.Type,'Venta')
+            .addConditionNotEq(Case.Status,'Combinado')
+            .addConditionString(CASES_LAST_DATE + days);
+
+            return this.baseQuery.toQueryString();
+        }
+        else
+        {
+            return '';
+        }
+    }
 }
