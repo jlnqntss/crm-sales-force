@@ -1730,6 +1730,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.ConsultorPyme__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Contact_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2266,6 +2271,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Profitability__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.RN__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <decisions>
+        <name>IsRnOrConsultorDecision</name>
+        <label>Is RN or Consultor?</label>
+        <locationX>578</locationX>
+        <locationY>335</locationY>
+        <defaultConnectorLabel>None</defaultConnectorLabel>
+        <rules>
+            <name>RnOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.TeamMemberRole</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Responsable de Negocio</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetRNAction</targetReference>
+            </connector>
+            <label>RN</label>
+        </rules>
+        <rules>
+            <name>ConsultorPymeOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.TeamMemberRole</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Consultor PYME</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetConsultorPymeAction</targetReference>
+            </connector>
+            <label>Consultor PYME</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Account Team Member Trigger - After Insert - Set RN and Consultor Pyme {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Account Team Member Trigger - After Insert - Set RN and Consultor Pyme</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>CreateErrorLogAction</name>
+        <label>Create Error Log</label>
+        <locationX>842</locationX>
+        <locationY>575</locationY>
+        <inputAssignments>
+            <field>Level__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Account Team Member Trigger - After Insert - Set RN and Consultor Pyme</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Stack_Trace__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordUpdates>
+        <name>SetConsultorPymeAction</name>
+        <label>Set Consultor PYME</label>
+        <locationX>578</locationX>
+        <locationY>455</locationY>
+        <faultConnector>
+            <targetReference>CreateErrorLogAction</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ConsultorPyme__c</field>
+            <value>
+                <stringValue>{!$Record.User.FirstName}  {!$Record.User.LastName}</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>SetRNAction</name>
+        <label>Set RN</label>
+        <locationX>50</locationX>
+        <locationY>455</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CreateErrorLogAction</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>RN__c</field>
+            <value>
+                <stringValue>{!$Record.User.FirstName}  {!$Record.User.LastName}</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <start>
+        <locationX>452</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>IsRnOrConsultorDecision</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>TeamMemberRole</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Consultor PYME</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>TeamMemberRole</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Responsable de Negocio</stringValue>
+            </value>
+        </filters>
+        <object>AccountTeamMember</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
