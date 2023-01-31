@@ -40,4 +40,33 @@ public with sharing class ProductsSelector extends BaseSelector
             return new List<Product2>();
         }
     }
+
+
+    /**
+     * Busca pólizas a partir de InfoPolicyNumber__c (Número de Póliza en transaccional INFO)
+     * No se tiene en cuenta activa o no ya que se busca por un número de póliza específico
+     *
+     * @author xsobera
+     * @date 20/01/2021
+     * @param String policyNumber Número de póliza a buscar
+     * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
+     */
+    public List<Product2> selectByID(String productId)
+    {
+        if(String.isNotBlank(productId))
+        {
+            String query = String.format(
+                'SELECT {0} FROM Product2 ' +
+                'WHERE Id = : productId',
+                new List<String> {
+                String.join(new List<String> (this.fieldsToQuery), ',')
+            }
+                );
+            return (List<Product2>) Database.query(query);
+        }
+        else
+        {
+            return new List<Product2>();
+        }
+    }
 }
