@@ -40,4 +40,32 @@ public with sharing class ProductsSelector extends BaseSelector
             return new List<Product2>();
         }
     }
+
+
+    /**
+     * Busca Poductos a partir de su ID
+     *
+     * @author arcortazar
+     * @date 31/01/2023
+     * @param String productID identificador del producto a buscar
+     * @return List<Product2> Listado de productos sobre los que se ha realizado match
+     */
+    public List<Product2> selectByID(String productId)
+    {
+        if(String.isNotBlank(productId))
+        {
+            String query = String.format(
+                'SELECT {0} FROM Product2 ' +
+                'WHERE Id = : productId',
+                new List<String> {
+                String.join(new List<String> (this.fieldsToQuery), ',')
+            }
+                );
+            return (List<Product2>) Database.query(query);
+        }
+        else
+        {
+            return new List<Product2>();
+        }
+    }
 }
