@@ -113,7 +113,7 @@
         <inputAssignments>
             <field>CloseResult__c</field>
             <value>
-                <stringValue>Declinada - Medidas protección</stringValue>
+                <stringValue>No Realizado USP</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
