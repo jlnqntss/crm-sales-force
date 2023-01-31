@@ -1,4 +1,4 @@
-public without sharing class EmailToOpportunityService
+public with sharing class EmailToOpportunityService
 {
     private final static String CHANNEL_EMAIL = 'Email';
     /**

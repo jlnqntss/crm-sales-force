@@ -178,7 +178,7 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       this.options = [];
       // recorrer options
       for (const opt of this.resetOptions) {
-        if (opt.label.includes(this.queryTerm)) {
+        if (opt.label.toLowerCase().includes(this.queryTerm.toLowerCase())) {
           this.options = [...this.options, opt];
           // aqui no actualizamos la variable values como en el resto de casuisticas cuando cambian los elementos de izq a derecha o viceversa
           // porque con el filtro se ocultan los valores y si existen va a ser siempre mayor que el numero de opciones por lo que se calcula correctamente
@@ -325,8 +325,11 @@ export default class ControlIntermediaryMensualPlanNotifications extends Lightni
       }
     }
 
-    // si el numero de elementos en la lista values es 0 inactivamos el boton desactivar todos
-    if (numValues === 0) {
+    if (numOptions === 0) {
+      this.disableInactiveAll = true;
+      this.disableActiveAll = true;
+    } else if (numValues === 0) {
+      // si el numero de elementos en la lista values es 0 inactivamos el boton desactivar todos
       this.disableInactiveAll = true;
     } else if (numOptions === numValues) {
       // si el numero de elementos en la lista values es igual al numero de opciones inactivamos el boton activar todos

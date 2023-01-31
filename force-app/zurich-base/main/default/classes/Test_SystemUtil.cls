@@ -607,4 +607,16 @@ public class Test_SystemUtil
             );
         Test.stopTest();
     }
+
+    @IsTest
+    static void test_getDependantPicklistValues()
+    {
+
+        Map<String, List<String>> resultados = new Map<String, List<String>>();
+        test.startTest();
+        resultados = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
+        test.stopTest();
+
+        System.assertNotEquals(0, resultados.keySet().size());
+    }
 }

@@ -230,6 +230,27 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>decorate</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 13, 13); font-size: 20px; font-family: tahoma;&quot;&gt;&lt;em&gt;Texto Legal GDPR&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 18px; font-family: sans-serif; color: rgb(255, 8, 8);&quot;&gt;{!$Label.ZeGDPR}&lt;/span&gt;&lt;/p&gt;</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:richText</componentName>
+                <identifier>flexipage_richText2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$User.Profile.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>ZE User</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>columns</name>
                     <value>[{&quot;label&quot;:&quot;Number&quot;,&quot;fieldName&quot;:&quot;url&quot;,&quot;type&quot;:&quot;url&quot;,&quot;typeAttributes&quot;:{&quot;label&quot;:{&quot;fieldName&quot;:&quot;Name&quot;},&quot;tooltip&quot;:{&quot;fieldName&quot;:&quot;url&quot;,&quot;target&quot;:&quot;_self&quot;}}},{&quot;label&quot;:&quot;Prefered Contact Datetime&quot;,&quot;fieldName&quot;:&quot;PreferredContactDatetime__c&quot;,&quot;type&quot;:&quot;date&quot;,&quot;typeAttributes&quot;:{&quot;day&quot;:&quot;numeric&quot;,&quot;month&quot;:&quot;numeric&quot;,&quot;year&quot;:&quot;numeric&quot;,&quot;hour&quot;:&quot;2-digit&quot;,&quot;minute&quot;:&quot;2-digit&quot;}},{&quot;label&quot;:&quot;Status&quot;,&quot;fieldName&quot;:&quot;Preferred_Status__c&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;label&quot;:&quot;Cancel&quot;,&quot;type&quot;:&quot;button-icon&quot;,&quot;initialWidth&quot;:40,&quot;typeAttributes&quot;:{&quot;iconName&quot;:&quot;utility:clear&quot;,&quot;name&quot;:&quot;cancelConReq&quot;,&quot;title&quot;:&quot;Cancel Call Me Back&quot;,&quot;variant&quot;:&quot;container&quot;}}]</value>
                 </componentInstanceProperties>

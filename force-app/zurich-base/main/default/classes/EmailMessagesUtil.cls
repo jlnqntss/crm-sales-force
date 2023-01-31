@@ -98,8 +98,11 @@ public with sharing class EmailMessagesUtil
             if(padre?.IsClosed && (padre?.RecordTypeId == ocsRecordTypeId || padre?.RecordTypeId == uspRecordTypeId ))
             {
                 EmailMessage email = emailList.get(posicion);
+                // Comprobamos si ha de heredarse la tipificación del caso padre
+                Boolean tipificacionCorrecta = CaseUtil.checkTypification(padre);
                 Boolean heredamosTipificacion = (padre?.RecordTypeId == ocsRecordTypeId && padre?.CallCenter__c == 'CC Service'); // Corregimos para que solo herede la tipificación en los casos que corresponde
-                Case casoHijo = CaseUtil.createCaseFromParent(padre, email, heredamosTipificacion); 
+                
+                Case casoHijo = CaseUtil.createCaseFromParent(padre, email, (tipificacionCorrecta && heredamosTipificacion)); 
                 casoHijo.OwnerId = integratorUserId; // Asignamos Integrator como el Owner del caso
                 mapaCasosHijos.put(posicion, casoHijo);
             }

@@ -5,7 +5,7 @@
  * @last modified on  : 27-09-2021
  * @last modified by  : jjuaristi
 **/
-public without sharing class FileUploadImprovedHelper{
+public with sharing class FileUploadImprovedHelper{
     
     @AuraEnabled(cacheable = true)
     public static String getKey(){

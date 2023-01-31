@@ -2,11 +2,12 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>Cuenta Relacionada</value>
+        <value>Relación Cuenta Aviso</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Cuentas Relacionadas</value>
+        <value>Relaciones Cuenta Aviso</value>
     </caseValues>
     <gender>Feminine</gender>
+    <nameFieldLabel>Nombre Relación</nameFieldLabel>
 </CustomObjectTranslation>

@@ -136,7 +136,8 @@
         <connector>
             <targetReference>CaseUSPSelfServiceQuotationDecision</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6)</filterLogic>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6) AND 7</filterLogic>
         <filters>
             <field>Subtype__c</field>
             <operator>EqualTo</operator>
@@ -148,7 +149,7 @@
             <field>ProductGroupDescription__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>CYBER</stringValue>
+                <stringValue>CIBER</stringValue>
             </value>
         </filters>
         <filters>
@@ -177,6 +178,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>RESP. CIVIL</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cerrado</stringValue>
             </value>
         </filters>
         <object>Case</object>

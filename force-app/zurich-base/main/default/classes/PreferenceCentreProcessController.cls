@@ -1,4 +1,4 @@
-public without sharing class PreferenceCentreProcessController
+public with sharing class PreferenceCentreProcessController
 {
     /**
      * @Description: Metodo que actualiza el contacto

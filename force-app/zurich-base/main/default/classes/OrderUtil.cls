@@ -2,7 +2,7 @@
  * @author nbizkarra
  * @date 08/04/2020
  **/
-global without sharing class OrderUtil
+global with sharing class OrderUtil
 {
     /**
      * Método que inserta o actualiza  una quote y sus objetos relacionados.

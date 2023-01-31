@@ -11,6 +11,8 @@
  */
 global class IntermediarySDMBatch implements Database.Batchable<sObject>, Database.Stateful, Schedulable
 {
+    // #region Attributes
+
     private static final String CLASS_NAME = 'IntermediarySDMBatch';
     private String query;
     private IntermediarySDM sdm;
@@ -24,6 +26,10 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
     private Boolean testUnknownError;
     @testvisible
     private Boolean testUnknownErrorFinish;
+
+    //#endregion
+
+    //#region Constructors
 
     /**
      * Constructor
@@ -43,8 +49,33 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
 
         query = p_query;
     }
+    
+    //#endregion
 
-    //------------------------------------------------------------------------- batchable methods
+    //#region Private methods
+
+    /**
+    * @description Método que se encarga de setear variables de instancia para la configuración de test
+    * @author amiranda
+    * @date 30-01-2023 
+    **/
+    private void setTestSettings()
+    {
+        // Configuracion de test para el calculo de los equipos de cuenta (Account Team Member)
+        if( this.testSettingsATM != null && !this.testSettingsATM.isEmpty() ) {
+            sdm.SettingsATM.clear();
+            sdm.SettingsATM.addAll(this.testSettingsATM);
+        }
+        // Configuracion de test para el calculo de las relaciones de contacto (Account Contact Relation)
+        if( this.testSettingsACR != null && !this.testSettingsACR.isEmpty() ) {
+            sdm.SettingsACR.clear();
+            sdm.SettingsACR.addAll(this.testSettingsACR);
+        }
+    }
+
+    //#endregion
+
+    //#region Batchable methods
 
     /**
      * Start. Execute the query locator for the batch
@@ -59,21 +90,14 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
                 'ParentId',
                 'Status__c',
                 'StatusIntermediary__c',
-                'MainMobilePhone__c'
+                'MainMobilePhone__c',
+                'InactiveOrNonExistentUsers__c'
             };
             
             if( Test.isRunningTest() ) {
-                // Configuracion de test para el calculo de los equipos de cuenta (Account Team Member)
-                if( this.testSettingsATM != null && !this.testSettingsATM.isEmpty() ) {
-                    sdm.SettingsATM.clear();
-                    sdm.SettingsATM.addAll(this.testSettingsATM);
-                }
-                // Configuracion de test para el calculo de las relaciones de contacto (Account Contact Relation)
-                if( this.testSettingsACR != null && !this.testSettingsACR.isEmpty() ) {
-                    sdm.SettingsACR.clear();
-                    sdm.SettingsACR.addAll(this.testSettingsACR);
-                }
+                this.setTestSettings();
             }
+
             // Para el calculo de los equipos de cuenta (Account Team Member)
             intermediaryFields.addAll(sdm.SettingsATMFields);
             if( String.isNotBlank(sdm.rnFieldNoATM) ) intermediaryFields.add(sdm.rnFieldNoATM);
@@ -155,8 +179,9 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
         }
     }
 
+    //#endregion
     
-    //------------------------------------------------------------------------- schedulable methods
+    //#region Schedulable methods
 
     public static String createStandardSchedule(String jobName, String timeExpression, String query)
     {
@@ -175,6 +200,8 @@ global class IntermediarySDMBatch implements Database.Batchable<sObject>, Databa
     {
         Database.executeBatch(new IntermediarySDMBatch(query), 200);
     }
+
+    //#endregion
 
     private class IntermediarySDMBatchException extends Exception {}
 }

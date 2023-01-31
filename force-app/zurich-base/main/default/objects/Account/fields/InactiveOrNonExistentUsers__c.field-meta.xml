@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>InactiveOrNonExistentUsers__c</fullName>
+    <description>Campo que muestra los roles no representados debido a que el correo electrónico del campo del mediador no pertenece a ningún usuario del sistema, o pertenece a un usuario que su estado es inactivo.</description>
+    <externalId>false</externalId>
+    <label>Inactive or non existent users</label>
+    <length>5000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

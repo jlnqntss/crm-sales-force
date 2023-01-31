@@ -611,6 +611,30 @@ public with sharing class CaseUtil
         return casoHijo;
     }
 
+    /**
+     * Método que comprueba si la tipificación de un caso se encuentra entre las disponibles en el sistem
+     * @author arcortazar
+     * @date 18/11/2022
+     * @param {Case caso} caso que se va a copiar
+     * @param {Boolean setTypification} indica si la tipificación sigue existiendo en el sistema (true) o no (false)
+     * @return Case 
+     */
+    public static Boolean checkTypification(Case caso)
+    {
+        Map<String, List<String>> mapaT1 = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
+        Map<String, List<String>> mapaT2 = SystemUtil.getDependantPicklistValues('Case', 'Subtype__c', 'TypeN3__c');
+
+        if (mapaT1.containsKey(caso.Type) && mapaT1.get(caso.Type).contains(caso.Subtype__c) &&
+            mapaT2.containsKey(caso.Subtype__c) && mapaT2.get(caso.Subtype__c).contains(caso.TypeN3__c))
+        {
+            return true;
+        }
+        else {
+            return false;        
+        }
+        
+    }
+
      /**
      * Método utilizado por RelateCasesToNewOffersBatch para relacionar casos con ofertas
      * @author lrodriguez6@seidor.es
@@ -675,5 +699,50 @@ public with sharing class CaseUtil
             }
         }
         return createOffers;
+    }
+    /**
+     * Método que devuelve una lista de cuentas para el calculo de conversion ratio 
+     * @author lrodriguez6@seidor.es
+     * @date 25/01/2023
+     * @param Lista de casos
+     * @return Lista de cuentas
+     */
+
+    public static List<Account> generateAccountRatio(List<Case> cases)
+    {
+        Map <Id, Decimal> mapAllIntermediaryCases= new Map <Id,Decimal>();
+        Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
+        
+        List<Account> allIntermediary= new List<Account>();
+
+
+        for(Case currentCase:cases)
+            {   
+                if(mapAllIntermediaryCases.get(currentCase.AccountId)==null && mapWonIntermediaryCases.get(currentCase.Id)==null)
+                {
+                    mapAllIntermediaryCases.put(currentCase.AccountId,0);
+                    mapWonIntermediaryCases.put(currentCase.AccountId,0);
+
+                }
+                
+                mapAllIntermediaryCases.put(currentCase.AccountId,(mapAllIntermediaryCases.get(currentCase.AccountId)+1));
+                        
+                if(currentCase.QuotationStage__c=='Won')
+                {       
+                    mapWonIntermediaryCases.put(currentCase.AccountId,(mapWonIntermediaryCases.get(currentCase.AccountId)+1));
+                }
+            }
+
+
+                for(Id idCuenta: mapAllIntermediaryCases.keySet())
+                {
+                    Account acc=new Account();
+                    acc.Id=idCuenta;
+                    acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id)); 
+                    allIntermediary.add(acc);    
+                }
+
+    return allIntermediary;
+
     }
 }

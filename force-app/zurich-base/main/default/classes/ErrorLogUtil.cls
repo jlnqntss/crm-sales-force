@@ -5,7 +5,7 @@
  * @date 01/04/2020
  * @testClass Test_ErrorLogUtil
  */
-public without sharing class ErrorLogUtil
+public with sharing class ErrorLogUtil
 {
     public static final String ERROR_LEVEL_CRITICAL = 'Critical';
     public static final String ERROR_LEVEL_ERROR = 'Error';

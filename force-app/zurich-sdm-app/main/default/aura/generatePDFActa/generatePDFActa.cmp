@@ -1,0 +1,29 @@
+<aura:component
+  controller="GeneratePDFActaController"
+  implements="force:lightningQuickActionWithoutHeader, force:hasRecordId"
+  access="global"
+>
+  <lightning:workspaceAPI aura:id="workspace" />
+
+  <div class="modal-header slds-modal__header slds-size_1-of-1">
+    <h4 class="title slds-text-heading--medium">
+      <lightning:formattedText
+        value="{!$Label.c.SDM_Acta_CreatePDFTitleModal}"
+      />
+    </h4>
+  </div>
+  <div class="slds-align_absolute-center" style="height: 5rem">
+    <lightning:button
+      variant="brand"
+      label="{!$Label.c.SDM_Acta_PreviewButton}"
+      title="Preview"
+      onclick="{! c.previewButton }"
+    />
+    <lightning:button
+      variant="brand"
+      label="{!$Label.c.SDM_Acta_DownloadButton}"
+      title="Download"
+      onclick="{! c.downloadButton }"
+    />
+  </div>
+</aura:component>

@@ -29,6 +29,7 @@ public with sharing class IntermediarySDM {
     public static final String INTERMEDIARY_FIELD_NAME = 'Name';
     public static final String INTERMEDIARY_FIELD_STATUS = 'Status__c';
     public static final String INTERMEDIARY_FIELD_STATUS_INTERMEDIARY = 'StatusIntermediary__c';
+    public static final String INTERMEDIARY_FIELD_INACTIVE_NONEXISTENT_USERS = 'InactiveOrNonExistentUsers__c';
 
     // CONFIGURACION
     public SettingsSDM settings;
@@ -671,10 +672,14 @@ public with sharing class IntermediarySDM {
 
             // Comprobamos si el primer Mediador tiene el campo Status
             Map<String, Object> fieldsToValue = intermediariesToProcess[0].getPopulatedFieldsAsMap();
-            if( !fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS_INTERMEDIARY) || !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID) ) {
+            if( !fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS_INTERMEDIARY) || 
+                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID) ||
+                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_INACTIVE_NONEXISTENT_USERS)) 
+            {
                 Set<String> fields = this.SettingsATMFields;
                 fields.add(INTERMEDIARY_FIELD_STATUS_INTERMEDIARY);
                 fields.add(INTERMEDIARY_FIELD_NATIONALID);
+                fields.add(INTERMEDIARY_FIELD_INACTIVE_NONEXISTENT_USERS);
                 if( this.rnFieldNoATM != null ) fields.add(this.rnFieldNoATM);
                 intermediariesToProcess = new AccountsSelector().findWithFields(intermediaries, fields);
             }
@@ -682,6 +687,7 @@ public with sharing class IntermediarySDM {
             // Para las operaciones de DML
             List<AccountTeamMember> atmsToUpsert = new List<AccountTeamMember>();
             List<AccountTeamMember> atmsToDelete = new List<AccountTeamMember>();
+            List<Account> intermediariesToUpdate = new List<Account>();
 
             // Recuperamos todos los usuarios, crea mapa de usuarios por Email
             this.findAllUsers();
@@ -691,6 +697,10 @@ public with sharing class IntermediarySDM {
             String settingsrnName = this.rnNameNoATM;
             // Por cada mediador...
             for( Account i: intermediariesToProcess ) {
+
+                // Se guarda en una variable temporal el valor actual
+                String usersInfoPrevValue = i.InactiveOrNonExistentUsers__c;
+
                 String rnName = null;
                 if( this.rnFieldNoATM != null ) rnName = (String)i.get(rnFieldNoATM);
 
@@ -715,7 +725,13 @@ public with sharing class IntermediarySDM {
                         // Añadimos el CIF para que se recalculen los ATMs del padre (agrupacion)
                         this.addNationalId(i.NationalId__c);
                     }
+
+                    // Si el intermediario está inactivo eliminamos la información del campo
+                    i.InactiveOrNonExistentUsers__c = null;
+
                 } else if( i.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE ) { //-------------------------------------------- Si el mediador es Activo
+                    List<String> usersInfo = new List<String>();
+
                     // Por cada rol-campo mediador
                     for( SDMAccountTeamRole__mdt s: this.SettingsATM ) {
                         if( String.isNotBlank(s.IntermediaryField__c) && s.Status__c == ATM_ROL_STATUS_ACTIVE ) {
@@ -733,11 +749,29 @@ public with sharing class IntermediarySDM {
 
                             // Si el valor del campo es vacio o con el valor VACANT o el usuario no existe
                             // o el usuario no existe, y si tiene ATMs, se ponen los ATMs para borrar
-                            if( String.isBlank(fieldValue) 
-                                || fieldValue.equalsIgnoreCase(INTERMEDIARY_VACANT)
-                                || u == null
-                                || !u.isActive
-                            ) {
+                            if (String.isBlank(fieldValue) || 
+                                fieldValue.equalsIgnoreCase(INTERMEDIARY_VACANT) ||
+                                u == null || 
+                                !u.isActive) 
+                            {
+                                // Si el email no está vacío y no tiene el valor VACANT
+                                if (String.isNotBlank(fieldValue) && !fieldValue.equalsIgnoreCase(INTERMEDIARY_VACANT))
+                                {
+                                    // Formato del campo 'InactiveOrInexistentUsers__c'
+                                    String userInfo = roleLabel + ' - ' + fieldValue;
+
+                                    if (u == null) // Si el usuario no existe
+                                    {
+                                        userInfo += ' - no existe';
+                                    }
+                                    else // Si el usuario está inactivo
+                                    {
+                                        userInfo += ' - inactivo';
+                                    }
+
+                                    usersInfo.add(userInfo);
+                                } 
+                                
                                 if( mapAtmByUserId != null && !mapAtmByUserId.values().isEmpty() ) {
                                     atmsToDelete.addAll(mapAtmByUserId.values());
                                     
@@ -779,7 +813,20 @@ public with sharing class IntermediarySDM {
                             }
                         }
                     }
+
+                    i.InactiveOrNonExistentUsers__c = String.join(usersInfo, '\n');
                 }
+
+                // Si el valor del campo 'InactiveOrNonExistentUsers__c' se ha modificado se añade el mediador a modificar
+                if (usersInfoPrevValue != i.InactiveOrNonExistentUsers__c)
+                {
+                    intermediariesToUpdate.add(i);
+                }
+            }
+
+            if (!intermediariesToUpdate.isEmpty())
+            {
+                update intermediariesToUpdate;
             }
 
             // El orden es importante para que funcionen los casos en los que se cambia el rol de un usuario en un

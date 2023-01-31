@@ -1,4 +1,4 @@
-public without sharing class BusinessInsuranceRaterService
+public with sharing class BusinessInsuranceRaterService
 {
     public static List<Business_Quotes_Field__mdt> stepMetadataList = new List<Business_Quotes_Field__mdt>();
     public static Map<String, Scope_Setting__mdt> scopeSettings = new Map<String, Scope_Setting__mdt>();

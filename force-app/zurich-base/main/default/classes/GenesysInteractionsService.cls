@@ -5,7 +5,7 @@
  * @last modified on  : 20-10-2021
  * @last modified by  : jjuaristi
 **/
-public without sharing class GenesysInteractionsService
+public with sharing class GenesysInteractionsService
 {
     public static Integer version { get; set; }
 
