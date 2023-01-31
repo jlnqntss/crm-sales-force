@@ -19,7 +19,8 @@
     </div>
     <div class="content">
       <div class="title">
-        <apex:outputText style="font-size: 30px" value="ACTA REUNION" />
+        <apex:outputText style="font-size: 30px" value="ACTA REUNIÓN" />
+        <hr class="separation-line" />
       </div>
       <div class="event-box">
         <!--Cuadro con información de evento y acta-->
@@ -80,6 +81,7 @@
             style="font-size: 25px"
             value="Objetivos de la reunión"
           />
+          <hr class="separation-line" />
         </div>
         <div class="section-text">
           <apex:outputText value="{!Event.Acta__r.MeetingObjective__c}" />
@@ -92,6 +94,7 @@
             style="font-size: 25px"
             value="Acciones tratadas en la reunión"
           />
+          <hr class="separation-line" />
         </div>
         <div class="actions">
           <apex:repeat
@@ -136,6 +139,7 @@
                 />
               </div>
             </div>
+            <br />
           </apex:repeat>
         </div>
       </div>
@@ -146,6 +150,7 @@
             style="font-size: 25px"
             value="Otra información de interés"
           />
+          <hr class="separation-line" />
         </div>
         <div class="section-text">
           <apex:outputText

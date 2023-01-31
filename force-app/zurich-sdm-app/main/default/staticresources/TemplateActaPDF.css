@@ -18,6 +18,10 @@
   font-size: 2rem;
 }
 
+.separation-line {
+  border: 1px solid;
+}
+
 .event-box {
   margin-top: 3%;
   background-color: #f2f2f2;
