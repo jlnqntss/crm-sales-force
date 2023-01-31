@@ -136,6 +136,7 @@
                 />
               </div>
             </div>
+            <br />
           </apex:repeat>
         </div>
       </div>
