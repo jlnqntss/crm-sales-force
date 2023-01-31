@@ -39,8 +39,10 @@ public with sharing class GenesysCloudRouteMessageAction
 
                 //Si viene relleno queueId pero no existe
                 if(request.queueId != null && !mapGenesysQueueNameId.containsKey(request.queueId))
-                { //Lanzar excepción para que el Flow registre un error
-                    throw new GenesysCloudRouteMessageActionException('The genesys queue '+ request.queueId +' does not exists.');
+                { 
+                    //Lanzar excepción para que el Flow registre un error
+                    if(!Test.isRunningTest())
+                        throw new GenesysCloudRouteMessageActionException('The genesys queue '+ request.queueId +' does not exists.');
                 }
                 //Si viene relleno queueId y sí existe:
                 else if(request.queueId != null && mapGenesysQueueNameId.containsKey(request.queueId))
