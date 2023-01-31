@@ -93,6 +93,12 @@ private class IntermediarySDMTest
         System.assertEquals(10, result.size(), 'Deberia haber 10 mediadores con el ParentId de la agrupacion rellenado');
     }
 
+    /**
+    * @description Método que comprueba que el estado de la Agrupación de Mediadores es 'Active'
+    * cuando alguno de sus Mediadores tienen el estado como 'Active'.
+    * @author amiranda 
+    * @date 30-01-2023 
+    **/
     @isTest
     static void testAssignIntermediaryAgrupation_set_status_activated()
     {
@@ -122,6 +128,12 @@ private class IntermediarySDMTest
         System.assertEquals('Active', agrupations.get(0).StatusIntermediary__c, 'El estado de la Agrupación debería ser \'Active\'');
     }
 
+    /**
+    * @description Método que comprueba que el estado de la Agrupación de Mediadores es 'Inactive'
+    * cuando todos sus Mediadores tienen el estado como 'Inactive'.
+    * @author amiranda
+    * @date 30-01-2023 
+    **/
     @isTest
     static void testAssignIntermeidaryAgrupation_set_status_inactive()
     {
@@ -281,7 +293,8 @@ private class IntermediarySDMTest
 
     /**
      * @description Método que comprueba que cuando el nuevo RN es un usuario inactivo,
-     * no se crea un nuevo ATM para este usuario y se elimina el ATM que había en su rol
+     * no se crea un nuevo ATM para este usuario y se elimina el ATM que había en su rol.
+     * Además se informa el campo 'InactiveOrInexistentUsers__c' con la información sobre el usuario inactivo.
      * @author amiranda
      * @date 22-12-2022
      **/
@@ -356,6 +369,13 @@ private class IntermediarySDMTest
         sdm.assignIntermediaryAccountTeam(intermediaries);
         Test.stopTest();
 
+        // Se comprueba si se han almacenado los datos del usuario inactivo en el campo correspondiente
+        List<Account> intermediariesUpdated = [SELECT Id, InactiveOrNonExistentUsers__c FROM Account WHERE RecordTypeId = :rtIntermediaryId AND Id IN :intermediaries];
+        for (Account intermediaryUpdated : intermediariesUpdated)
+        {
+            Assert.isTrue(intermediaryUpdated.InactiveOrNonExistentUsers__c.contains(users.get(1).Email + ' - inactivo'));
+        }
+
         atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
         Assert.isTrue(atms.isEmpty(), 'No deberían existir ATMs.');
 
@@ -373,6 +393,8 @@ private class IntermediarySDMTest
     @isTest
     static void testAssignAgrupationAccountTeam_NonExistentUser()
     {
+        String nonExistentUserEmail = 'nonexistentuser@invalid.com';
+
         // Se recupera el Id del RecordType de cuentas de tipo Mediador
         Id rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
 
@@ -419,7 +441,7 @@ private class IntermediarySDMTest
         // Se modifica el email del RN, asignándole el de un usuario que no existe.
         for (Account intermediary : intermediaries)
         {
-            intermediary.put(AccountsSelector.SDM_RN_EMAIL_FIELD, 'nonexistentuser@invalid.com');
+            intermediary.put(AccountsSelector.SDM_RN_EMAIL_FIELD, nonExistentUserEmail);
         }
 
         update intermediaries;
@@ -432,6 +454,13 @@ private class IntermediarySDMTest
         Test.startTest();
         sdm.assignIntermediaryAccountTeam(intermediaries);
         Test.stopTest();
+
+        // Se comprueba si se han almacenado los datos del usuario que no existe en el campo correspondiente
+        List<Account> intermediariesUpdated = [SELECT Id, InactiveOrNonExistentUsers__c FROM Account WHERE RecordTypeId = :rtIntermediaryId AND Id IN :intermediaries];
+        for (Account intermediaryUpdated : intermediariesUpdated)
+        {
+            Assert.isTrue(intermediaryUpdated.InactiveOrNonExistentUsers__c.contains(nonExistentUserEmail + ' - no existe'));
+        }
 
         atms = [SELECT Id FROM AccountTeamMember WHERE AccountId IN :intermediaries];
         Assert.isTrue(atms.isEmpty(), 'No deberían existir ATMs.');
@@ -732,7 +761,10 @@ private class IntermediarySDMTest
         sdm.testSettingsACR = TestDataFactorySDM.getSDMSettingsACR(
             SettingsSDM.ACR_ROL_MAINEMAIL, AccountsSelector.SDM_MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT
         );
-        Set<String> fields = sdm.SettingsACRFields; // para cobertura
+
+         // Para cobertura de test
+        Set<String> fields = sdm.SettingsACRFields;
+        Assert.isFalse(fields.isEmpty());
         
         // Recuperamos los ACRs creados en el setup
         List<AccountContactRelation> acrs = [SELECT Id, Roles FROM AccountContactRelation];
@@ -876,9 +908,7 @@ private class IntermediarySDMTest
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
             SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
         );
-        // sdm.testSettingsATM.addAll(TestDataFactorySDM.getSDMSettingsATM(
-        //     SettingsSDM.ATM_ROL_BUSINESS, AccountsSelector.SDM_RN_EMAIL_FIELD
-        // ));
+        
         sdm.testSettingsATM[0].Status__c = IntermediarySDM.ATM_ROL_STATUS_INACTIVE;
         
         Test.startTest();        

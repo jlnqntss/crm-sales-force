@@ -1885,6 +1885,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.InactiveOrNonExistentUsers__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.INFOBusinessCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
