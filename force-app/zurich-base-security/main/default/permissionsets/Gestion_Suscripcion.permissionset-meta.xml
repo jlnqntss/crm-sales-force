@@ -23,6 +23,16 @@
     <description>Gestión de suscripciones</description>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.ConsultorPyme__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.RN__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.SharepointPartners__c</field>
         <readable>true</readable>
     </fieldPermissions>
