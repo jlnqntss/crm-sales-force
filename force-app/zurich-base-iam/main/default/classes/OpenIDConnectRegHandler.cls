@@ -39,8 +39,6 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     @testvisible
     private static final string PERMISSION_TYPE_TITLE = 'Title';
     @testvisible
-    private static final string FIELD_USER_PERMISSION_CHECK = 'User_Permision_Value__c';
-    @testvisible
     private static final string AUTH_DATA_MAP_NAME = 'roles';
     @testvisible
     private static final string AUTH_DATA_ATTRIBUTE_MANAGER = 'manager';
@@ -188,7 +186,6 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
      */
     global void updateUser(Id userId, Id portalId, Auth.UserData data)
     {
-    
         Boolean modified             = false;
         // GET ROLS: Obtener los roles del json
         List<String> roleNameList    = getExternalRoleNames(data);
@@ -201,7 +198,6 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
         mapAuthData.put(PERMISSION_TYPE_PERMISSION_SET_GROUP, null);
         mapAuthData.put(PERMISSION_TYPE_CALL_CENTER, null);
         mapAuthData.put(PERMISSION_TYPE_ROLE, null);
-        mapAuthData.put(PERMISSION_TYPE_USER_PERMISSION, null);
         mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
         mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
         mapAuthData.put(PERMISSION_TYPE_TITLE, null);
@@ -349,7 +345,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                             mapResult.get(authConfig[i].Permission_Type__c).add(authConfig[i].Permission__c);
                         }
                     }
-                    else if (authConfig[i].Permission_Type__c == PERMISSION_TYPE_USER_PERMISSION){
+                    else if (authConfig[i].Permission_Type__c == PERMISSION_TYPE_USER_PERMISSION)
+                    {
                         userPermissionMap.put(authConfig[i].Permission__c, authConfig[i].User_Permision_Value__c);
                     }
                 }
