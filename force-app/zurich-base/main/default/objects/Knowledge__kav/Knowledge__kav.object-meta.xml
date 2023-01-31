@@ -18,7 +18,7 @@
             <template>Toc</template>
         </articleTypeTemplates>
     </articleTypeChannelDisplay>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Cabecera_USP</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
@@ -26,6 +26,7 @@
     <label>Knowledge</label>
     <pluralLabel>Knowledge</pluralLabel>
     <searchLayouts>
+        <customTabListAdditionalFields>TITLE</customTabListAdditionalFields>
         <searchResultsAdditionalFields>TITLE</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>ARTICLE_NUMBER</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>URL_NAME</searchResultsAdditionalFields>
