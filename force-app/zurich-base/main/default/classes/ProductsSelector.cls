@@ -43,13 +43,12 @@ public with sharing class ProductsSelector extends BaseSelector
 
 
     /**
-     * Busca pólizas a partir de InfoPolicyNumber__c (Número de Póliza en transaccional INFO)
-     * No se tiene en cuenta activa o no ya que se busca por un número de póliza específico
+     * Busca Poductos a partir de su ID
      *
-     * @author xsobera
-     * @date 20/01/2021
-     * @param String policyNumber Número de póliza a buscar
-     * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
+     * @author arcortazar
+     * @date 31/01/2023
+     * @param String productID identificador del producto a buscar
+     * @return List<Product2> Listado de productos sobre los que se ha realizado match
      */
     public List<Product2> selectByID(String productId)
     {
