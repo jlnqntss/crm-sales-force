@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
-        <field>Account.TerritorialDirection__c</field>
-    </columns>
-    <columns>
-        <field>Account.BusinessManagerName__c</field>
-    </columns>
-    <columns>
-        <field>Account.Channel__c</field>
-    </columns>
-    <columns>
-        <field>PARENT.NAME</field>
+        <field>Account.NationalId__c</field>
     </columns>
     <columns>
         <field>ACCOUNT.NAME</field>
-    </columns>
-    <columns>
-        <field>Account.INFOIntermediaryCode__c</field>
-    </columns>
-    <columns>
-        <field>Account.NationalId__c</field>
     </columns>
     <columns>
         <field>Account.SDMAssociation__c</field>
@@ -58,6 +43,42 @@
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Account.Incomes2020__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.ManagedBonus__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.PYMEManagedBonus__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.IndividualManagedBonus__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.LifeMangedBonus__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.ZurichMarketBonus__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.BusinessSpecialist__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.PYMESpecialist__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.BuildingSpecialist__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.LifeSpecialist__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
