@@ -18,8 +18,8 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ProductGroupDescription__c</field>
-                <uiBehavior>Readonly</uiBehavior>
+                <field>ProductGroup__c</field>
+                <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
