@@ -2,10 +2,26 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <assignments>
+        <name>ProductGroupAssignment</name>
+        <label>Assign Product Group</label>
+        <locationX>347</locationX>
+        <locationY>3575</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ProductGroup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.HegeoProductGroupCode__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Update_Mediated_Customer_With_Offer_Account_Found</name>
         <label>Update Mediated Customer With Offer Account Found</label>
         <locationX>479</locationX>
-        <locationY>3575</locationY>
+        <locationY>3911</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -18,7 +34,7 @@
         <name>Update_Mediated_Customer_With_Policy_Holder_Found</name>
         <label>Update Mediated Customer With Policy Holder Found</label>
         <locationX>215</locationX>
-        <locationY>3575</locationY>
+        <locationY>3911</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -88,7 +104,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+            <targetReference>IsProductGroupVoidDecision</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -161,7 +177,7 @@
         <locationX>325</locationX>
         <locationY>3023</locationY>
         <defaultConnector>
-            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+            <targetReference>IsProductGroupVoidDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -243,7 +259,7 @@
         <locationX>479</locationX>
         <locationY>2783</locationY>
         <defaultConnector>
-            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+            <targetReference>IsProductGroupVoidDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -417,10 +433,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>IsProductGroupVoidDecision</name>
+        <label>Is Product Group Void?</label>
+        <locationX>479</locationX>
+        <locationY>3455</locationY>
+        <defaultConnector>
+            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Filled</defaultConnectorLabel>
+        <rules>
+            <name>VoidOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ProductGroup__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ProductGroupAssignment</targetReference>
+            </connector>
+            <label>Void</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Policy_Holder_or_Offer_Account_Found</name>
         <label>Policy Holder or Offer Account Found?</label>
         <locationX>479</locationX>
-        <locationY>3455</locationY>
+        <locationY>3791</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes_Policy_Holder</name>
