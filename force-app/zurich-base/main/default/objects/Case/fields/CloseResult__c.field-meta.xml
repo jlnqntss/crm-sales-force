@@ -179,11 +179,6 @@
                 <label>No Realizado USP</label>
             </value>
             <value>
-                <fullName>Realizado - Gestión Competencias</fullName>
-                <default>false</default>
-                <label>Realizado - Gestión Competencias</label>
-            </value>
-            <value>
                 <fullName>Redireccionado BOA</fullName>
                 <default>false</default>
                 <label>Redireccionado BOA</label>
@@ -238,8 +233,44 @@
                 <default>false</default>
                 <label>Falta Respuesta Mediador</label>
             </value>
+            <value>
+                <fullName>Ajuste de precio</fullName>
+                <default>false</default>
+                <label>Ajuste de precio</label>
+            </value>
+            <value>
+                <fullName>Modificación Garantías</fullName>
+                <default>false</default>
+                <label>Modificación Garantías</label>
+            </value>
+            <value>
+                <fullName>Modificación Capitales</fullName>
+                <default>false</default>
+                <label>Modificación Capitales</label>
+            </value>
+            <value>
+                <fullName>Emisión Póliza</fullName>
+                <default>false</default>
+                <label>Emisión Póliza</label>
+            </value>
+            <value>
+                <fullName>Modificación Clausulado</fullName>
+                <default>false</default>
+                <label>Modificación Clausulado</label>
+            </value>
+            <value>
+                <fullName>Suplemento no económico</fullName>
+                <default>false</default>
+                <label>Suplemento no económico</label>
+            </value>
+            <value>
+                <fullName>Protecciones del riesgo</fullName>
+                <default>false</default>
+                <label>Protecciones del riesgo</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
@@ -247,22 +278,20 @@
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
             <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
-            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
-            <controllingFieldValue>Transferencia</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -270,6 +299,7 @@
             <valueName>Realizado</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
@@ -277,25 +307,23 @@
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
             <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
-            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
-            <controllingFieldValue>Transferencia</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -304,6 +332,7 @@
             <valueName>No Realizado</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
@@ -311,22 +340,20 @@
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
             <controllingFieldValue>Apoyo Captación</controllingFieldValue>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
-            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Devolución de recibo liquidado mediador</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
-            <controllingFieldValue>Transferencia</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -343,9 +370,9 @@
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
-            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -358,19 +385,18 @@
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
-            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
@@ -387,9 +413,9 @@
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
-            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -407,9 +433,9 @@
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
-            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
@@ -419,73 +445,31 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Ganada</valueName>
+            <valueName>Ajuste de precio</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Perdida - Garantías</valueName>
+            <valueName>Modificación Garantías</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Perdida - Tiempo respuesta</valueName>
+            <valueName>Modificación Capitales</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Declinada - Actividad</valueName>
+            <valueName>Emisión Póliza</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Declinada - Precio</valueName>
+            <valueName>Modificación Clausulado</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Declinada - Medidas protección</valueName>
+            <valueName>Suplemento no económico</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Caducada</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <controllingFieldValue>Gestión competencias (Captación)</controllingFieldValue>
-            <valueName>Perdida - Precio</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Emisión</controllingFieldValue>
-            <valueName>Realizado - Gestión Competencias</valueName>
+            <valueName>Protecciones del riesgo</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>

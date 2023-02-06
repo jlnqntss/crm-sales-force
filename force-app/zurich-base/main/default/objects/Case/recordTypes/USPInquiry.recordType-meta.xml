@@ -428,6 +428,10 @@
     <picklistValues>
         <picklist>CloseResult__c</picklist>
         <values>
+            <fullName>Ajuste de precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Anulación - Desaparición riesgo</fullName>
             <default>false</default>
         </values>
@@ -468,11 +472,27 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Emisión Póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Falta Respuesta Mediador</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Ganada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Modificación Capitales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Modificación Clausulado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Modificación Garantías</fullName>
             <default>false</default>
         </values>
         <values>
@@ -512,7 +532,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Realizado - Gestión Competencias</fullName>
+            <fullName>Protecciones del riesgo</fullName>
             <default>false</default>
         </values>
         <values>
@@ -537,6 +557,10 @@
         </values>
         <values>
             <fullName>Retención por Alto valor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suplemento no económico</fullName>
             <default>false</default>
         </values>
     </picklistValues>
