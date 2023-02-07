@@ -16,12 +16,7 @@ global class Batch_RatioConversionIntermediary implements Database.Batchable<sOb
     //Variables
 
     public String query;
-
-    private String daysToQuery='365';
-
-    private List<Case> allCases= new List<Case>();
    
-
     /**
     * Constructor por defecto
     * @author lrodriguez6@seidor.es
@@ -51,7 +46,7 @@ global class Batch_RatioConversionIntermediary implements Database.Batchable<sOb
         {
             if (query == null || query == '')
             {
-                query = new CasesSelector().getQueryStringCasesIntermediaryRatio(daysToQuery);
+                query = new AccountsSelector().getQueryStringAccountIntermediaryRatio();
             }
             
             return Database.getQueryLocator(query);
@@ -74,10 +69,11 @@ global class Batch_RatioConversionIntermediary implements Database.Batchable<sOb
     {
         if ( scope != null)
         {
-            // Se convierte el Scope en casos
-            List<Case> allCases = (List<Case>) scope;
+            //Se convierte el Scope en Cuentas
+            List<Account> allAccountsIntermediary= (List<Account>) scope;
 
-                List<Account> accountUpdate= CaseUtil.generateAccountRatio(allCases);
+            List<Account> accountUpdate= CaseUtil.generateAccountRatio(allAccountsIntermediary);
+            
                 if(accountUpdate != null && !accountUpdate.isEmpty())
                 {
                     // Se actualizan los registros 

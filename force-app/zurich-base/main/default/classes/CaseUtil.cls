@@ -700,20 +700,35 @@ public with sharing class CaseUtil
         }
         return createOffers;
     }
+    
     /**
      * Método que devuelve una lista de cuentas para el calculo de conversion ratio 
      * @author lrodriguez6@seidor.es
-     * @date 25/01/2023
-     * @param Lista de casos
+     * @date 07/02/2023
+     * @param Lista de cuentas
      * @return Lista de cuentas
      */
-
-    public static List<Account> generateAccountRatio(List<Case> cases)
+    
+    public static List<Account> generateAccountRatio(List<Account> accountsIntermediary)
     {
+        List<Case> cases= new List<Case>();
+
+        String statusCombinado='Combinado';
+        String typeVenta= 'Venta';
+        String rT_USP_CASES= 'USPInquiry';
+
+        Id rtCasesUSPId= Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rT_USP_CASES)?.getRecordTypeId();
+    
+        
+        
+        cases=[
+            SELECT AccountId,QuotationStage__c FROM Case WHERE AccountId=:accountsIntermediary AND Status!=:statusCombinado AND Type=:typeVenta  AND LastModifiedDate=LAST_N_DAYS:365 AND RecordTypeId=:rtCasesUSPId
+        ];
+
         Map <Id, Decimal> mapAllIntermediaryCases= new Map <Id,Decimal>();
         Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
         
-        List<Account> allIntermediary= new List<Account>();
+        List<Account> allIntermediaryToUpdate= new List<Account>();
 
 
         for(Case currentCase:cases)
@@ -739,10 +754,11 @@ public with sharing class CaseUtil
                     Account acc=new Account();
                     acc.Id=idCuenta;
                     acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id)); 
-                    allIntermediary.add(acc);    
+                    allIntermediaryToUpdate.add(acc);    
                 }
 
-    return allIntermediary;
+    return allIntermediaryToUpdate;
 
     }
+
 }

@@ -13,12 +13,16 @@ public with sharing class Batch_RatioConversionIntermediaryTest
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary',2);
         insert accounts;
 
+        accounts[0].Status__c='001';
+        accounts[1].Status__c='002';
+        
+        update accounts;
+
         //Se crean casos 
         Id caseRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 4);
         insert cases;
 
-        CasesSelector casesSel = new CasesSelector();
 
         for(case c:cases)
         {
@@ -51,7 +55,7 @@ public with sharing class Batch_RatioConversionIntermediaryTest
 
 
     @IsTest
-    static void Batch_RatioConversionIntermediaryTest_OK()
+    static void batch_RatioConversionIntermediaryTest_OK()
     {
         Batch_RatioConversionIntermediary batch= new Batch_RatioConversionIntermediary();
         List<Case> cases = [SELECT Id, Status, QuotationStage__c FROM Case];
@@ -59,7 +63,7 @@ public with sharing class Batch_RatioConversionIntermediaryTest
         cases[4].QuotationStage__c='Won';
         update cases;
         Test.startTest();
-        Id batchId = Database.executeBatch(batch);
+        Database.executeBatch(batch);
         Test.stopTest();
 
         List<Account> allAccountsUpdate= [SELECT USPConversionRatio__c FROM Account];
