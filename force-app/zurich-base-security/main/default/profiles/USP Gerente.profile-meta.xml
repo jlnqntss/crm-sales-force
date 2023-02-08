@@ -15650,10 +15650,10 @@
         <layout>KPI__c-KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Knowledge__kav-Knowledge Layout</layout>
+        <layout>Knowledge__kav-Knowledge USP</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Knowledge__kav-Knowledge Layout</layout>
+        <layout>Knowledge__kav-Knowledge USP</layout>
         <recordType>Knowledge__kav.Knowledge</recordType>
     </layoutAssignments>
     <layoutAssignments>
