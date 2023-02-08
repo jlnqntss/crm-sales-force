@@ -208,6 +208,7 @@ export default class WarningAndAgreementViewer extends LightningElement {
       recordType: this.accountType
     });
     this.hideTable = false;
+    this.hideShowAll = false;
     refreshApex(this.connectedCallback());
   }
 

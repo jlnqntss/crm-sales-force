@@ -68,6 +68,15 @@ public with sharing class ClientIdentificationService
             {
                 resultado.policyInfoInsuredObject = obtainedAssets[0].INFOInsuredObjectCode__c;
             }
+
+            List<Product2> obtainedProduct = new ProductsSelector(
+                    new Set<String> {'Id', 'Name', 'CommercialCode__c', 'TechnicalCode__c'}
+                    ).selectByID(polizaEncontrada[0].ProductId__c);
+            if(!obtainedProduct.isEmpty())
+            {
+                resultado.technicalCode = obtainedProduct[0].TechnicalCode__c;
+            }
+
         } 
 
         return resultado;
@@ -179,6 +188,9 @@ public with sharing class ClientIdentificationService
         public Date policyStartDate;
         public String policyVersion;
         public String policyInfoInsuredObject;
+
+        // arcortazar - 31/01/2023 - [OCS-5874]
+        public String technicalCode;
 
         public override String toString()
         {

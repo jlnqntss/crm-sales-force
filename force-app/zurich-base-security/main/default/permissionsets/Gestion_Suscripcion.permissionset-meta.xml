@@ -18,9 +18,23 @@
     </classAccesses>
     <customPermissions>
         <enabled>true</enabled>
+        <name>USPTriggerAccountValidationRules</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
         <name>USPTriggerCaseValidationRules</name>
     </customPermissions>
     <description>Gestión de suscripciones</description>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.ConsultorPyme__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.RN__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.SharepointPartners__c</field>
@@ -443,6 +457,15 @@
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Gestión Suscripción</label>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Account</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>false</allowDelete>

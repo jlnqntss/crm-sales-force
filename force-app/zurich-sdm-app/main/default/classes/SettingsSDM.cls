@@ -97,7 +97,7 @@ public with sharing class SettingsSDM
     {
         List<SDMAccountTeamRole__mdt> result = [
             SELECT Role__c, IntermediaryField__c, Status__c 
-            FROM SDMAccountTeamRole__mdt
+            FROM SDMAccountTeamRole__mdt ORDER BY IntermediaryField__c
         ];
 
         // Solo para los test cambiamos los datos de configuracion

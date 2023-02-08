@@ -5521,6 +5521,35 @@
         <name>SDM_Acta_CheckOwner</name>
     </customLabels>
     <customLabels>
+        <label>Descargar</label>
+        <name>SDM_Acta_DownloadButton</name>
+    </customLabels>
+	<customLabels>
+        <label>Previsualizar</label>
+        <name>SDM_Acta_PreviewButton</name>
+    </customLabels>
+	<customLabels>
+        <label>Atención</label>
+        <name>SDM_Acta_WarningToastTitle</name>
+    </customLabels>
+	<customLabels>
+        <label>Error</label>
+        <name>SDM_Acta_ErrorToastTitle</name>
+    </customLabels>
+	<customLabels>
+        <label>No se ha encontrado registro de evento</label>
+        <name>SDM_Acta_NoActaErrorToastMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Generar PDF Acta</label>
+        <name>SDM_Acta_CreatePDFTitleModal</name>
+    </customLabels>
+	<customLabels>
+        <label>No se puede generar el PDF, no se ha creado el acta en el evento.
+Cree el acta y vuelva a intentarlo.</label>
+        <name>SDM_Acta_NoActaWarningToastMessage</name>
+    </customLabels>
+    <customLabels>
         <label>Activo</label>
         <name>SDM_Objetivos_Active</name>
     </customLabels>

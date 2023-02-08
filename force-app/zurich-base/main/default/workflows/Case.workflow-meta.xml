@@ -85,6 +85,18 @@
         <template>OneCustomerService/General_1614253232658</template>
     </alerts>
     <alerts>
+        <fullName>Caso_pendiente_CSM</fullName>
+        <description>Caso pendiente CSM</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Caso_pendiente_CSM_1674558409726</template>
+    </alerts>
+    <alerts>
         <fullName>Cierre_de_caso</fullName>
         <description>Cierre de caso</description>
         <protected>false</protected>
@@ -107,6 +119,18 @@
         <senderAddress>no.responder@zurich.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>OneCustomerService/Caso_cerrado_sin_finalizar_1615309685093</template>
+    </alerts>
+    <alerts>
+        <fullName>Cierre_de_caso_automatico_CSM</fullName>
+        <description>Cierre de caso automático CSM</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Caso_cerrado_sin_finalizar_CSM_1674643956298</template>
     </alerts>
     <alerts>
         <fullName>Notificacion_Apertura_USP</fullName>

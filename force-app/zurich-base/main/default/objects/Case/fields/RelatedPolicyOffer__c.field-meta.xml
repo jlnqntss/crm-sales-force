@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RelatedPolicyOffer__c</fullName>
+    <description>Campo fórmula que muestra el número de póliza u oferta en los Email Templates</description>
+    <externalId>false</externalId>
+    <formula>IF( NOT(ISBLANK(PolicyId__c)) ,&quot;Poliza: &quot; +  PolicyId__r.Name , IF( NOT(ISBLANK( OfferId__c )) ,&quot;Oferta: &quot; +  OfferId__r.Name  , &quot;&quot;))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>RelatedPolicyOffer</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

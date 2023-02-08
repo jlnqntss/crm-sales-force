@@ -162,6 +162,15 @@ private class OpenIDConnectRegHandlerTest
                                                   Order__c= 1
                                                   ) );
 
+            // Permiso Usuario
+            handler.testListAuthMappings.add( new AuthMapping__mdt(
+                Label= 'TestUserPermission',
+                DeveloperName= 'TestUserPermission',
+                Role_Name__c= IAM_ROLE_A,
+                Permission__c= 'UserPermissionsKnowledgeUser',
+                Permission_Type__c = OpenIDConnectRegHandler.PERMISSION_TYPE_USER_PERMISSION,
+                Order__c= 1
+                ) );
             // Department
             handler.testListAuthMappings.add( new AuthMapping__mdt(
                                                 Label= 'TestDeptA',

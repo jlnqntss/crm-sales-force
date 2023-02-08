@@ -518,8 +518,8 @@
                         <rightValue>PartnerOCS</rightValue>
                     </criteria>
                     <criteria>
-                        <leftValue>{!Record.RobotNif__c}</leftValue>
-                        <operator>EQUAL</operator>
+                        <leftValue>{!Record.MediatedCustomer__r.Name}</leftValue>
+                        <operator>NE</operator>
                     </criteria>
                 </visibilityRule>
             </componentInstance>

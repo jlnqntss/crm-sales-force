@@ -2,6 +2,7 @@
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
     <hasActivationRequired>false</hasActivationRequired>
     <label>USP_Suscriptor</label>
+    <permissionSets>Consulta_Conocimiento</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Gestion_Suscripcion</permissionSets>
     <permissionSets>Informes_solo_lectura</permissionSets>
