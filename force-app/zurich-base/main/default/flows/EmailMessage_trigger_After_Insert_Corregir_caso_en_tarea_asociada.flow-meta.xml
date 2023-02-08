@@ -4,11 +4,8 @@
     <decisions>
         <name>Coinciden_los_casos</name>
         <label>¿Coinciden los casos?</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>455</locationY>
-        <defaultConnector>
-            <targetReference>La_tarea_est_cerrada</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>No</name>
@@ -18,6 +15,13 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <elementReference>$Record.ParentId</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getRelatedTask.WhatId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>500</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -30,7 +34,7 @@
         <name>La_tarea_est_cerrada</name>
         <label>¿La tarea está cerrada?</label>
         <locationX>182</locationX>
-        <locationY>791</locationY>
+        <locationY>695</locationY>
         <defaultConnectorLabel>Cerrada</defaultConnectorLabel>
         <rules>
             <name>Abierta</name>
@@ -74,7 +78,7 @@
     <recordLookups>
         <name>getRelatedTask</name>
         <label>Obtenemos la tarea relacionada</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -96,7 +100,7 @@
         <name>Cerramos_la_tarea</name>
         <label>Cerramos la tarea</label>
         <locationX>50</locationX>
-        <locationY>911</locationY>
+        <locationY>815</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -116,7 +120,7 @@
     <recordUpdates>
         <name>Corregimos_el_caso</name>
         <label>Corregimos el caso</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>575</locationY>
         <connector>
             <targetReference>La_tarea_est_cerrada</targetReference>
@@ -138,7 +142,7 @@
         <object>Task</object>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getRelatedTask</targetReference>
