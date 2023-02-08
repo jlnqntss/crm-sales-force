@@ -182,49 +182,5 @@ public with sharing class PoliciesSelector extends RecordsSelector
             return new List<Policy__c>();
         }
     }
-
-    /**
-     * Busca pólizas a partir de un teléfono
-     *
-     * @author Olalla Iglesias
-     * @date 27/10/2022
-     * @param String phoneNumber número de telf
-     * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
-     */
-    public List<Policy__c> selectByPhoneNumber(String phoneNumber) {   
-
-        if(phoneNumber != null)
-        {
-
-            // subquery
-            Query contactPQuery = new Query(ContactPointPhone.getSObjectType());
-            contactPQuery.selectFields(new List<Schema.SObjectField> {
-                ContactPointPhone.ParentId
-            });
-            // Num telf
-            contactPQuery.switchToDisjunction();
-            contactPQuery.addConditionEq(ContactPointPhone.TelephoneNumber, phoneNumber);
-            contactPQuery.addConditionEq(ContactPointPhone.TelephoneNumber, '+34'+phoneNumber);
-            contactPQuery.addConditionEq(ContactPointPhone.TelephoneNumber, '34'+phoneNumber);
-
-            // Recuperamos los campos del mediador
-            this.baseQuery.selectField('IntermediaryId__r.MainEmail__c');
-            this.baseQuery.selectField('IntermediaryId__r.Name');
-            this.baseQuery.selectField('IntermediaryId__r.Phone');
-            this.baseQuery.selectField('IntermediaryId__r.INFOIntermediaryCode__c');
-            //this.baseQuery.addSubquery('Policies');
-
-            // Póliza valida
-            this.baseQuery.addConditionEq(Policy__c.PolicyStatus__c, 'P');
-            // Añadimos la subquery
-            this.baseQuery.addConditionIn(Policy__c.PolicyHolder__c , contactPQuery);
-
-            return (List<Policy__c>) this.baseQuery.run();
-        }
-        else
-        {
-            return new List<Policy__c>();
-        }
-    }
     
 }
