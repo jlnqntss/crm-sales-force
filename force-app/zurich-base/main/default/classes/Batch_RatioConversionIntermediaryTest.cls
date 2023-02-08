@@ -55,7 +55,7 @@ public with sharing class Batch_RatioConversionIntermediaryTest
 
 
     @IsTest
-    static void batch_RatioConversionIntermediaryTest_OK()
+    static void test_RatioConversionIntermediaryTest_OK()
     {
         Batch_RatioConversionIntermediary batch= new Batch_RatioConversionIntermediary();
         List<Case> cases = [SELECT Id, Status, QuotationStage__c FROM Case];

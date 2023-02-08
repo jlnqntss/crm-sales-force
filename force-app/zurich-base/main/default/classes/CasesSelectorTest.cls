@@ -9,6 +9,7 @@ private class CasesSelectorTest
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         insert cases;
+
     }
 
     @isTest
@@ -85,13 +86,12 @@ private class CasesSelectorTest
     @isTest
     static void test_getQueryStringCasesToRelateToNewAccounts_matchedRecord()
     {
-        CasesSelector casesSel = new CasesSelector();
         List<Case> casos = [SELECT Id, RobotDocumentId__c FROM Case];
         casos[0].RobotDocumentId__c = '2341341';
         casos[1].RobotDocumentId__c = '2341341';
 
         // Solo el primer caso tendrá recordType USP, de esta manera comprobamos que solo aplica a USP
-        casos[0].RecordTypeId = casesSel.rtUSPId;
+        casos[0].RecordTypeId = CaseUtil.rtUSPId;
         update casos;
 
         // Test
@@ -112,13 +112,12 @@ private class CasesSelectorTest
     @isTest
     static void test_getQueryStringCasesToRelateToNewOffers_matchedRecord()
     {
-        CasesSelector casesSel = new CasesSelector();
         List<Case> casos = [SELECT Id, CreatedOffer__c FROM Case];
         casos[0].CreatedOffer__c = '11111';
         casos[1].CreatedOffer__c = '11112';
 
         // Solo el primer caso tendrá recordType USP, de esta manera comprobamos que solo aplica a USP
-        casos[0].RecordTypeId = casesSel.rtUSPId;
+        casos[0].RecordTypeId = CaseUtil.rtUSPId;
       
         update casos;
 
@@ -131,4 +130,36 @@ private class CasesSelectorTest
 
         System.assertEquals(1, matchedRecords.size(), 'no devuelve el número de registros correcto');
     }
+
+    /**
+     * Test del método que devuelve la query de Cases para Batch_RatioConversionIntermediary
+     * @author lrodriguez6@seidor.es
+     * @date 08/12/2022
+     */
+    @isTest
+    static void test_getQueryCasesConversionRatio_matchedRecord()
+    {
+        List<Case> casos = [SELECT Id, CreatedOffer__c FROM Case];
+        List<Account> cuentasRatio= [SELECT Id FROM Account];
+
+        for (case cas: casos)
+        {
+            cas.Subject='test';
+            cas.SourceArea__c='Mediator';
+            cas.Type='Venta';
+            cas.RecordTypeId=CaseUtil.rtUSPId;
+            cas.Status='Cerrado';
+        }
+
+        update casos;
+
+        // Test
+        Test.startTest();
+        List<Case> matchedRecords = new CasesSelector().getQueryCasesConversionRatio(cuentasRatio,'Combinado','Venta','01268000000oQ2NAAU','365','Cerrado');
+        Test.stopTest();
+
+        System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');
+
+    }
+
 }

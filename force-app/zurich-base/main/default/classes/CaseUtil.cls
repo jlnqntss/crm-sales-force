@@ -6,6 +6,21 @@
 
 public with sharing class CaseUtil
 {
+    //Constantes
+    public static final String statusCombinado='Combinado';
+    public static final String typeVenta= 'Venta';
+    public static final String rT_USP_CASES= 'USPInquiry';
+    public static final String queryDays ='365';
+    public static final String estadoCerrado= 'Cerrado';
+    public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+
+     // Recupera el Id del RecordType de casos USP
+     public static final ID rtUSPId {
+        get {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
+        }
+    }
+
     /**
      * Método que inserta o actualiza un siniestro
      * @author nbizkarra
@@ -712,19 +727,12 @@ public with sharing class CaseUtil
     public static List<Account> generateAccountRatio(List<Account> accountsIntermediary)
     {
         List<Case> cases= new List<Case>();
-
-        String statusCombinado='Combinado';
-        String typeVenta= 'Venta';
-        String rT_USP_CASES= 'USPInquiry';
+        
 
         Id rtCasesUSPId= Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rT_USP_CASES)?.getRecordTypeId();
     
-        
-        
-        cases=[
-            SELECT AccountId,QuotationStage__c FROM Case WHERE AccountId=:accountsIntermediary AND Status!=:statusCombinado AND Type=:typeVenta  AND LastModifiedDate=LAST_N_DAYS:365 AND RecordTypeId=:rtCasesUSPId
-        ];
-
+        cases= new CasesSelector().getQueryCasesConversionRatio(accountsIntermediary,statusCombinado,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
+       
         Map <Id, Decimal> mapAllIntermediaryCases= new Map <Id,Decimal>();
         Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
         
