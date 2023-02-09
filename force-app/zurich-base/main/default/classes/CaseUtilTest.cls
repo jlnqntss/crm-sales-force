@@ -374,7 +374,7 @@ private class CaseUtilTest
 
         insert oferta;
         // Se establece recordType y oferta creada para que se relacionen
-        List<Case> cases = [SELECT Id,OfferId__c,CreatedOffer__c FROM case];
+        List<Case> cases = [SELECT Id,OfferId__c,CreatedOffer__c,RobotDocumentId__c FROM case];
 
         for(Case currentCase : cases)
         {
