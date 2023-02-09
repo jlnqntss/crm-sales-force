@@ -13,11 +13,10 @@ public with sharing class RelateCasesToNewAccountsBatchTest {
         insert accounts;
         String cif = accounts[0].NationalId__c;
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
-        CasesSelector casesSel = new CasesSelector();
         // Se crean casos con el cif de la primera cuenta, para que se relacionen
         for(Case currentCase : cases)
         {
-            currentCase.RecordTypeId = casesSel.rtUSPId;
+            currentCase.RecordTypeId = CaseUtil.rtUSPId;
             currentCase.RobotDocumentId__c = cif;
         }
         insert cases;
