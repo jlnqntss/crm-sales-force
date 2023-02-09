@@ -155,7 +155,7 @@ private class CasesSelectorTest
 
         // Test
         Test.startTest();
-        List<Case> matchedRecords = new CasesSelector().getQueryCasesConversionRatio(cuentasRatio,'Combinado','Venta','01268000000oQ2NAAU','365','Cerrado');
+        List<Case> matchedRecords = new CasesSelector().getQueryCasesConversionRatio(cuentasRatio,'Combinado','Venta',CaseUtil.rtUSPId,'365','Cerrado');
         Test.stopTest();
 
         System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');
