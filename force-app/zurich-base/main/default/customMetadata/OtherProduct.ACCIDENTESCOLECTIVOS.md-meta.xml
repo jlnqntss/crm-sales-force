@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>ACCIDENTES COLECTIVOS</label>
+    <protected>false</protected>
+    <values>
+        <field>ProductCode__c</field>
+        <value xsi:type="xsd:string">00215</value>
+    </values>
+    <values>
+        <field>SharepointLink__c</field>
+        <value xsi:type="xsd:string">https://zurichinsurance.sharepoint.com/sites/USCN/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FUSCN%2FShared%20Documents%2FPRODUCTOS%2FACCIDENTES&amp;viewid=28cebbc9%2Daf1a%2D4ad6%2Da335%2Dbc434698c75e</value>
+    </values>
+</CustomMetadata>
