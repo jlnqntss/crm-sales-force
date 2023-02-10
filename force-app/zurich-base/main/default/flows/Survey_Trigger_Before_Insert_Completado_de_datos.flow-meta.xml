@@ -65,32 +65,19 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>AssignedAgentAssignment</targetReference>
+            <targetReference>IsGestorAssigned</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>AssignInteractionAgent0Assignment</name>
-        <label>Asignar gestor interaccion</label>
-        <locationX>534</locationX>
-        <locationY>4175</locationY>
-        <assignmentItems>
-            <assignToReference>$Record.CDUSUARI__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.CaseId__r.Owner:User.Email</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>AssignInteractionAgentAssignment</name>
-        <label>Asignar gestor interaccion</label>
-        <locationX>270</locationX>
+        <name>AssignFromCase</name>
+        <label>Asignar gestor desde caso</label>
+        <locationX>248</locationX>
         <locationY>4295</locationY>
         <assignmentItems>
             <assignToReference>$Record.CDUSUARI__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>GetAgentEmailAction.Email</elementReference>
+                <elementReference>$Record.CaseId__r.Owner:User.Email</elementReference>
             </value>
         </assignmentItems>
     </assignments>
@@ -137,7 +124,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>AssignedAgentAssignment</targetReference>
+            <targetReference>IsGestorAssigned</targetReference>
         </connector>
     </assignments>
     <collectionProcessors>
@@ -165,56 +152,12 @@
         </sortOptions>
     </collectionProcessors>
     <decisions>
-        <name>AssignedAgentAssignment</name>
-        <label>¿Es Gestor asignado?</label>
-        <locationX>534</locationX>
-        <locationY>4055</locationY>
-        <defaultConnectorLabel>Sin gestor</defaultConnectorLabel>
-        <rules>
-            <name>InInteractionOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>CDUSUARI</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.CDUSUARI__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>GetAgentEmailAction</targetReference>
-            </connector>
-            <label>En interacción</label>
-        </rules>
-        <rules>
-            <name>En_caso</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.CaseId__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AssignInteractionAgent0Assignment</targetReference>
-            </connector>
-            <label>En caso</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>AssociatedAccountDecision</name>
         <label>¿Es Cuenta asociada?</label>
         <locationX>182</locationX>
         <locationY>3383</locationY>
         <defaultConnector>
-            <targetReference>AssignedAgentAssignment</targetReference>
+            <targetReference>IsGestorAssigned</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No asociada</defaultConnectorLabel>
         <rules>
@@ -263,10 +206,6 @@
         <label>¿Es Cuenta de Survey asociada?</label>
         <locationX>886</locationX>
         <locationY>3383</locationY>
-        <defaultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>AssignedAgentAssignment</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>No asociada</defaultConnectorLabel>
         <rules>
             <name>AssociatedSurveyAccountOutcome</name>
@@ -282,6 +221,28 @@
                 <targetReference>GetGeneralScopeSurveyAction</targetReference>
             </connector>
             <label>Asociada</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsCaseAvailable</name>
+        <label>¿Tenemos caso?</label>
+        <locationX>380</locationX>
+        <locationY>4175</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CaseAvailable</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CaseId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AssignFromCase</targetReference>
+            </connector>
+            <label>Caso disponible</label>
         </rules>
     </decisions>
     <decisions>
@@ -339,6 +300,28 @@
                 <targetReference>GetClientDataAction</targetReference>
             </connector>
             <label>No</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsGestorAssigned</name>
+        <label>¿Está el gestor asignado?</label>
+        <locationX>534</locationX>
+        <locationY>4055</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_est_asignado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CDUSUARI__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IsCaseAvailable</targetReference>
+            </connector>
+            <label>No está asignado</label>
         </rules>
     </decisions>
     <decisions>
@@ -448,6 +431,7 @@
             <label>Motor Express</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <formulas>
         <name>codigoProvincia</name>
         <dataType>String</dataType>
@@ -493,27 +477,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordLookups>
-        <name>GetAgentEmailAction</name>
-        <label>Obtener email gestor</label>
-        <locationX>270</locationX>
-        <locationY>4175</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>AssignInteractionAgentAssignment</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>CDUSUARI</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordLookups>
         <name>GetBusinessCustomerRecordType</name>
         <label>Obtener Business Customer Record Type</label>
