@@ -9,12 +9,7 @@ private class CaseUtilTest
         List<Account> createdAccounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
         insert createdAccounts;
 
-        //Crear cuentas intermediarios
-        List<Account> createdAccountsIntermediary = TestDataFactory.generateAccounts('001', 'Intermediary', 2); //Importante que solo se cree 1 porque sino habrá varios con mismo email
-        insert createdAccountsIntermediary;
-        //Crear casos relacionados con los intermediarios
-        List<Case> cases = TestDataFactory.generateCasesForEachAccount(createdAccountsIntermediary, 4);
-        insert cases;
+        
 
         List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(createdAccounts, 1);
         insert contactPointEmails;
@@ -455,7 +450,13 @@ private class CaseUtilTest
     */
     @IsTest
     public static void test_generateAccountRatio_OK()
-    {
+    {   //Crear cuentas intermediarios
+        List<Account> createdAccountsIntermediary = TestDataFactory.generateAccounts('001', 'Intermediary', 2); //Importante que solo se cree 1 porque sino habrá varios con mismo email
+        insert createdAccountsIntermediary;
+        //Crear casos relacionados con los intermediarios
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(createdAccountsIntermediary, 4);
+        insert cases;
+        
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
 
         List<Account> allIntermediary= [SELECT Id FROM Account WHERE RecordTypeId=:intermediaryRecordTypeId];
