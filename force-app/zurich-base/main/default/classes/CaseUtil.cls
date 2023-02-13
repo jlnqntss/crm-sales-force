@@ -761,7 +761,7 @@ public with sharing class CaseUtil
                 {
                     Account acc=new Account();
                     acc.Id=idCuenta;
-                    acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id)); 
+                    acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id))*100; 
                     allIntermediaryToUpdate.add(acc);    
                 }
 

@@ -82,10 +82,10 @@ public with sharing class Batch_RatioConversionIntermediaryTest
         List<Account> allAccountsUpdate= [SELECT USPConversionRatio__c FROM Account];
        
         //Primera cuenta 1 caso won de 4 // Ratio debe ser 0.25
-        System.assertEquals(0.5,allAccountsUpdate[0].USPConversionRatio__c);
+        System.assertEquals(50,allAccountsUpdate[0].USPConversionRatio__c);
         
         //Segunda cuenta 1 caso ganado 2 combinados 1 asignado // Ratio debe ser 0.5
-        System.assertEquals(1,allAccountsUpdate[1].USPConversionRatio__c);
+        System.assertEquals(100,allAccountsUpdate[1].USPConversionRatio__c);
 
     }
 }

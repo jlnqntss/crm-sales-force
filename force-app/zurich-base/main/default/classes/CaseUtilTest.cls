@@ -478,7 +478,7 @@ private class CaseUtilTest
 
         test.startTest();
         List<Account> accountUpdateRatio=CaseUtil.generateAccountRatio(allIntermediary);
-        System.assertEquals(0.25,accountUpdateRatio[0].USPConversionRatio__c);
+        System.assertEquals(25,accountUpdateRatio[0].USPConversionRatio__c);
         System.assertEquals(0,accountUpdateRatio[1].USPConversionRatio__c);
         test.stopTest();
 
