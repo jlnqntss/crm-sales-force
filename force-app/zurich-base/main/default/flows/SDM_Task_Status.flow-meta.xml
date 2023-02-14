@@ -7,6 +7,7 @@
         <locationY>636</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -45,6 +46,7 @@
         <locationY>636</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -83,6 +85,7 @@
         <locationY>756</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -121,6 +124,7 @@
         <locationY>756</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -401,7 +405,8 @@
             <label>Acción comercial</label>
         </rules>
     </decisions>
-    <description>Cambio automático de estado de tareas de SDM (Recordatorio, Comunicación, Acción Comercial)</description>
+    <description>No se tienen en cuenta las tareas asociadas a planes mensuales para cerrarlas de forma automática</description>
+    <environments>Default</environments>
     <formulas>
         <name>DueDate5dAgo</name>
         <dataType>Date</dataType>
@@ -551,7 +556,7 @@
         <connector>
             <targetReference>DueDateToday</targetReference>
         </connector>
-        <filterLogic>1 AND 2 AND (3 OR 4 OR 5 OR 6)</filterLogic>
+        <filterLogic>1 AND 2 AND ((3 OR 4 OR 6) OR (5 AND 7))</filterLogic>
         <filters>
             <field>Status</field>
             <operator>NotEqualTo</operator>
@@ -592,6 +597,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Offer_Policy_Follow_up</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsRelatedToComercialPlan__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <object>Task</object>
