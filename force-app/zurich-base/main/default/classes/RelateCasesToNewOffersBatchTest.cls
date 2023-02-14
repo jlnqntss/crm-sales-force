@@ -13,7 +13,6 @@ public with sharing class RelateCasesToNewOffersBatchTest {
         insert accounts;
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
-        CasesSelector casesSel = new CasesSelector();
 
         //Se crea oferta para relacionar
         Opportunity offer = new Opportunity();
@@ -27,7 +26,7 @@ public with sharing class RelateCasesToNewOffersBatchTest {
         // Se crean casos con la misma oferta creada que la oferta, para que se relacionen
         for(Case currentCase : cases)
         {
-            currentCase.RecordTypeId = casesSel.rtUSPId;
+            currentCase.RecordTypeId = CaseUtil.rtUSPId;
             currentCase.CreatedOffer__c = offer.InfoQuoteNumber__c;
         }
         insert cases;

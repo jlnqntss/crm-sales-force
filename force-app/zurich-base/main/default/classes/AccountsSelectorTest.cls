@@ -646,4 +646,29 @@ private with sharing class AccountsSelectorTest
 
         System.assertEquals(1, accountsfound.size(), 'Deberia encontrar 1 cliente');
     }
+
+       /**
+     * Test del método que recupera las cuentas intermediario activas(status 001 o 002)
+     * @author lrodriguez6@seidor.es
+     * @date 09/02/2023
+     */
+    @IsTest
+    static void test_findAccountsIntermediaryRatio()
+    {
+        AccountsSelector accSel = new AccountsSelector();
+        
+        List<Account> accountsIntermediary = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtAccountIntermediaryId ];
+        accountsIntermediary[0].Status__c='001';
+        accountsIntermediary[1].Status__c='002';
+
+        update accountsIntermediary;
+
+        Test.startTest();
+        String query = new AccountsSelector().getQueryStringAccountIntermediaryRatio();
+        List<Account> matchedAccountRecords = (List<Account>) Database.query(query);
+        Test.stopTest();
+
+        System.assertEquals(2, matchedAccountRecords.size(), 'Deberia encontrar 2 cuentas');
+    }
+
 }

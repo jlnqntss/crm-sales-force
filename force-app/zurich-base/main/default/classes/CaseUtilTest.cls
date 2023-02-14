@@ -9,6 +9,8 @@ private class CaseUtilTest
         List<Account> createdAccounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
         insert createdAccounts;
 
+        
+
         List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(createdAccounts, 1);
         insert contactPointEmails;
 
@@ -327,10 +329,9 @@ private class CaseUtilTest
 
         // Se establece recordType y CIF para que se relacionen
         List<Case> cases = [SELECT Id, MediatedCustomer__c, RobotDocumentId__c FROM case];
-        CasesSelector caseSel = new CasesSelector(); 
         for(Case currentCase : cases)
         {
-            currentCase.RecordTypeId = caseSel.rtUSPId;
+            currentCase.RecordTypeId = CaseUtil.rtUSPId;
             currentCase.RobotDocumentId__c = customer.NationalId__c;
         }
 
@@ -349,7 +350,7 @@ private class CaseUtilTest
         }
     }
 
-     /*
+    /*
     * Test del método que relaciona los casos que no tienen oferta con su oferta cuando esta se ha creado posteriormente
     * @author lrodriguez6@seidor.es
     * @date 14/11/2022
@@ -360,7 +361,6 @@ private class CaseUtilTest
         Account cuenta = [SELECT Id, NationalId__c FROM Account LIMIT 1];
         //oferta
         Opportunity oferta= new Opportunity();
-        OpportunitiesSelector OppSel = new OpportunitiesSelector(); 
         oferta.InfoQuoteNumber__c='11111';
         oferta.Name='Test';
         oferta.AccountId=cuenta.Id;
@@ -369,12 +369,11 @@ private class CaseUtilTest
 
         insert oferta;
         // Se establece recordType y oferta creada para que se relacionen
-        List<Case> cases = [SELECT Id,OfferId__c,CreatedOffer__c FROM case];
-        CasesSelector caseSel = new CasesSelector(); 
+        List<Case> cases = [SELECT Id,OfferId__c,CreatedOffer__c,RobotDocumentId__c FROM case];
 
         for(Case currentCase : cases)
         {
-            currentCase.RecordTypeId = caseSel.rtUSPId;
+            currentCase.RecordTypeId = CaseUtil.rtUSPId;
             currentCase.CreatedOffer__c = oferta.InfoQuoteNumber__c;
         }
 
@@ -443,4 +442,46 @@ private class CaseUtilTest
 
         System.assertEquals(false, resultado);
     }
+
+    /*
+    * Test del método que calcula el ratio de conversión en las cuentas con recordType Intermediary
+    * @author lrodriguez6@seidor.es
+    * @date 09/02/2023
+    */
+    @IsTest
+    public static void test_generateAccountRatio_OK()
+    {   //Crear cuentas intermediarios
+        List<Account> createdAccountsIntermediary = TestDataFactory.generateAccounts('001', 'Intermediary', 2); //Importante que solo se cree 1 porque sino habrá varios con mismo email
+        insert createdAccountsIntermediary;
+        //Crear casos relacionados con los intermediarios
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(createdAccountsIntermediary, 4);
+        insert cases;
+        
+        Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+
+        List<Account> allIntermediary= [SELECT Id FROM Account WHERE RecordTypeId=:intermediaryRecordTypeId];
+        List<Case> allCases= [SELECT Id,AccountId,Status FROM Case WHERE AccountId=:allIntermediary];
+
+        for (case c:allCases)
+        {
+            c.Type='Venta';
+            c.RecordTypeId=CaseUtil.rtUSPId;
+            c.Status='Cerrado';
+            c.QuotationStage__c='Work In Progress';
+        }
+        update allCases;
+
+        allCases[0].QuotationStage__c='Won';
+        allCases[1].QuotationStage__c='Lost';
+        
+        update allCases;
+
+        test.startTest();
+        List<Account> accountUpdateRatio=CaseUtil.generateAccountRatio(allIntermediary);
+        System.assertEquals(25,accountUpdateRatio[0].USPConversionRatio__c);
+        System.assertEquals(0,accountUpdateRatio[1].USPConversionRatio__c);
+        test.stopTest();
+
+    }
+
 }
