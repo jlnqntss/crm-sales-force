@@ -555,4 +555,30 @@ public class TestDataFactorySDM
 
         return plans;
     }
+
+    /**
+     * Metodo que genera Seguimientos asociados a cuentas de intermediario
+     */
+    public static List<FollowUp__c> generateFollowUps (Integer num, Set<Id> accountIds, String type, String rol)
+    {
+        List<FollowUp__c> seguimientos = new List<FollowUp__c> ();
+        for (Id idIntermediary : accountIds)
+        {
+            for (Integer i=0;i<num;i++)
+            {
+                FollowUp__c seguimiento = new FollowUp__c 
+                (
+                    Type__c = type,
+                    Detail__c = 'Participa: Si',
+                    Account__c = idIntermediary,
+                    Notify__c = rol    
+                );
+                
+                seguimientos.add(seguimiento);
+            }
+            
+        }
+
+        return seguimientos;
+    }
 }

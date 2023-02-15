@@ -9,10 +9,33 @@ private with sharing class AccountTeamMemberSelectorTest
 {
     public static final String DT_EMAIL = 'sdm.rn@zurich.invalid';
     public static final Integer NUM_INTERMEDIARIES = 5;
+    public static final String ATM_ROL_RN = 'Responsable de Negocio';
+    public static final String ATM_ROL_CV = 'Consultor Vida';
+    public static final String ATM_ROL_CP = 'Consultor PYME';
+    public static final String ATM_ROL_CE = 'Consultor Empresas';
+    public static final String ATM_ROL_CVC = 'Consultor Vida Colectivo';
+    public static final String TYPE_CAMPAIGN = 'Campaña';
+
 
     @TestSetup
     public static void createScenario()
     {
+        List<Profile> profileRN = [SELECT Id FROM Profile WHERE Name = 'SDM RN'];
+        List<User> usersRN = TestDataFactory.generateUsersByProfile(profileRN[0].Id, 5);
+       
+        for( Integer i=0; i<usersRN.size(); i++ ) 
+        {
+            usersRN[i].FirstName = 'testAccountTeam';
+            usersRN[i].Email = String.format(TestDataFactorySDM.BUSINESS_EMAIL, new List<String>{String.valueOf(i)});
+            if (i<2)
+            {
+                usersRN[i].NotifyDate__c = date.today();
+                usersRN[i].NotifyType__c = TYPE_CAMPAIGN;    
+            }
+        }
+
+        insert usersRN;
+        
         List<Account> intermediaryAccounts = TestDataFactory.generateAccounts(
             '001', AccountsSelector.RT_NAME_INTERMEDIARY, NUM_INTERMEDIARIES
         );
@@ -143,4 +166,44 @@ private with sharing class AccountTeamMemberSelectorTest
         // Comprobamos el resultado
         System.assertEquals(4, atms.size(), 'Se esperan 4 resultados');
     }
+
+    /**
+     * Test del método que obtiene los miembros del equipo de cuentas que estén asociados a una lista de cuentas , para unos roles especificos 
+     * y cuyos usuarios no hayan sido notificados o si han sido notificados no hayan sido notificados para un tipo de seguimiento en concreto
+     */
+    @isTest
+    static void findUsersByRoleAndAccountIdFields()
+    {
+        List<Account> intermediaryAccount = TestDataFactory.generateAccounts(
+            '001', AccountsSelector.RT_NAME_INTERMEDIARY, 1
+        );
+        insert intermediaryAccount;
+        
+        List<User> usersList = [Select id,NotifyDate__c,NotifyType__c from User where FirstName like '%testAccountTeam%'];
+        List<AccountTeamMember> atms = new List<AccountTeamMember>();
+        List<String> roles = new List<String> {ATM_ROL_RN,ATM_ROL_CV,ATM_ROL_CP,ATM_ROL_CE,ATM_ROL_CVC};
+        for (Integer i =0;i<roles.size();i++)
+        {
+            atms.add(new AccountTeamMember(
+                AccountId= intermediaryAccount[0].Id,
+                UserId= usersList[i].id,
+                TeamMemberRole= roles[i]
+            ));
+        }
+        insert atms;
+
+        Test.startTest();
+        List<AccountTeamMember> atmQueryAllCheckFalse = (new AccountTeamMemberSelector()).findUsersByRoleAndAccountIdFields(new Set<String>{'Todos'}, new Set<Id>{intermediaryAccount[0].Id}, TYPE_CAMPAIGN);
+        List<AccountTeamMember> atmQueryCVC = (new AccountTeamMemberSelector()).findUsersByRoleAndAccountIdFields(new Set<String>{ATM_ROL_CVC}, new Set<Id>{intermediaryAccount[0].Id}, TYPE_CAMPAIGN);
+        List<AccountTeamMember> atmQueryAll = (new AccountTeamMemberSelector()).findUsersByRoleAndAccountIdFields(new Set<String>{'Todos'}, new Set<Id>{intermediaryAccount[0].Id}, 'Formación');
+        List<AccountTeamMember> atmQueryRN = (new AccountTeamMemberSelector()).findUsersByRoleAndAccountIdFields(new Set<String>{ATM_ROL_RN}, new Set<Id>{intermediaryAccount[0].Id}, TYPE_CAMPAIGN);
+        List<AccountTeamMember> atmQuerySomeRoles = (new AccountTeamMemberSelector()).findUsersByRoleAndAccountIdFields(new Set<String>{ATM_ROL_CP,ATM_ROL_CE,ATM_ROL_CVC}, new Set<Id>{intermediaryAccount[0].Id}, TYPE_CAMPAIGN);
+        Test.stopTest();
+        System.assertEquals(3, atmQueryAllCheckFalse.size(), 'Se esperan 3 resultados');
+        System.assertEquals(1, atmQueryCVC.size(), 'Se espera 1 resultado');
+        System.assertEquals(5, atmQueryAll.size(), 'Se esperan 5 resultados');
+        System.assertEquals(0, atmQueryRN.size(), 'No se espera ningun resultado');
+        System.assertEquals(3, atmQuerySomeRoles.size(), 'Se esperan 3 resultados');
+    }
+
 }

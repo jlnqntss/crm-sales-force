@@ -188,4 +188,54 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         }        
         return result;
     }
+
+    /**
+     * Recupera los AccountTeamMember que estén asociados a una lista de cuentas , para unos roles especificos 
+     * y cuyos usuarios no hayan sido notificados o si han sido notificados no hayan sido notificados para un tipo de seguimiento en concreto.
+     * 
+     * @author aberuete
+     * @date 13/02/2023
+     * 
+     * @param {Set<String> roles} Lista de roles de los miembros del equipo de cuentas que debe devolver 
+     * @param {Set<Id> accountIds} Lista de ids de cuentas a los que debe estar asciado el miembro del equipo de cuentas
+     * @param {String type} Tipo de seguimiento para el que el usuario no debe haber sido notificado
+     * @return {List<AccountTeamMember>} lista de ATMs
+     */
+    public List<AccountTeamMember> findUsersByRoleAndAccountIdFields (Set<String> roles, Set<Id> accountIds,String type) 
+    {
+        List<Schema.SobjectField> fieldList = new List<Schema.SobjectField>
+                                            {
+                                                AccountTeamMember.fields.UserId,
+                                                AccountTeamMember.fields.Id
+                                            };
+        Query userQuery = new Query(User.getSObjectType());
+        userQuery.selectFields(new List<Schema.SObjectField> {
+                                User.Id
+                                });
+        
+        userQuery.addCondition(
+            Query.doOr(
+                Query.conditionEq(User.Notified__c, false),
+                Query.doAnd(
+                    Query.ConditionEq(User.Notified__c, true),
+                    Query.conditionExcludes(User.NotifyType__c, type)
+                )
+            )
+        );
+
+        if (roles != null && !roles.isEmpty() && !roles.contains('Todos') && accountIds != null && !accountIds.isEmpty() )
+        {
+           this.baseQuery.selectFields(fieldList)
+           .addConditionIn(AccountTeamMember.fields.AccountId,accountIds)
+           .addConditionIn(AccountTeamMember.fields.TeamMemberRole,roles)
+           .addConditionIn(AccountTeamMember.fields.UserId,userQuery);
+        }
+        else if (roles != null && !roles.isEmpty() && roles.contains('Todos') && accountIds != null && !accountIds.isEmpty()) 
+        {
+            this.baseQuery.selectFields(fieldList)
+           .addConditionIn(AccountTeamMember.fields.AccountId,accountIds)
+           .addConditionIn(AccountTeamMember.fields.UserId,userQuery);
+        }
+        return (List<AccountTeamMember>)this.baseQuery.run();
+    }
 }
