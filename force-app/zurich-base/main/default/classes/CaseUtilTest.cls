@@ -393,6 +393,12 @@ private class CaseUtilTest
         }
     }
 
+
+    /*
+    * Test del método que comprueba la tipificación de un caso sin tener en cuenta el recordType. Resultado OK (Encuentra la tipificacion)
+    * @author arcortazar
+    * @date 18/11/2022
+    */
     @IsTest
     public static void test_checkTypification_OK()
     {
@@ -420,6 +426,11 @@ private class CaseUtilTest
         System.assertEquals(true, resultado);
     }
 
+    /*
+    * Test del método que comprueba la tipificación de un caso sin tener en cuenta el recordType. Resultado KO (No encuentra la tipificacion)
+    * @author arcortazar
+    * @date 18/11/2022
+    */
     @IsTest
     public static void test_checkTypification_KO()
     {
@@ -443,4 +454,41 @@ private class CaseUtilTest
 
         System.assertEquals(false, resultado);
     }
+
+    /*
+    * Test del método que comprueba la tipificación de un caso teniendo en cuenta el recordType. Resultado OK (No encuentra la tipificacion)
+    * @author arcortazar
+    * @date 15/02/2023
+    */
+    @IsTest
+    public static void test_checkTypificationByRecordType_OK()
+    {
+        String recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        
+        Boolean resultado;
+        test.startTest();
+        resultado = CaseUtil.checkTypificationByRecordType('A', 'A1', 'A11', recordTypeOCS);
+        test.stopTest();
+
+        System.assertEquals(true, resultado);
+    }
+
+    /*
+    * Test del método que comprueba la tipificación de un caso teniendo en cuenta el recordType. Resultado KO (No encuentra la tipificacion)
+    * @author arcortazar
+    * @date 15/02/2023
+    */
+    @IsTest
+    public static void test_checkTypificationByRecordType_KO()
+    {
+        String recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        
+        Boolean resultado;
+        test.startTest();
+        resultado = CaseUtil.checkTypificationByRecordType('A', 'A1', 'A12', recordTypeOCS);
+        test.stopTest();
+
+        System.assertEquals(false, resultado);
+    }
+
 }
