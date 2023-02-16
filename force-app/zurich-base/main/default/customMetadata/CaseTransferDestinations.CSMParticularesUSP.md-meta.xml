@@ -7,6 +7,10 @@
         <value xsi:type="xsd:string">USP</value>
     </values>
     <values>
+        <field>DestinationQueue__c</field>
+        <value xsi:type="xsd:string">Email_USP_Generico</value>
+    </values>
+    <values>
         <field>DestinationRecordType__c</field>
         <value xsi:type="xsd:string">USPInquiry</value>
     </values>

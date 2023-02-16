@@ -1155,7 +1155,7 @@ public with sharing class SystemUtil
 
     //#region DependentPicklist Utils
     /**
-     * Método que devuelve los valores activos de una picklist dependiente
+     * Método que devuelve los valores activos de una picklist dependiente, ordenados por su controlador
      **
 
      * @param String nombre de objeto que contiene la picklist
@@ -1255,4 +1255,127 @@ public with sharing class SystemUtil
     // # endregion
     
     public class SystemUtilException extends Exception {}
+
+    /**
+     * Método que devuelve los valores que controlan una picklist dependiente, segun su recordType.
+     * Es decir, si le solicitamos el campo N3 que depente del N2 obtendremos un mapa con la siguiente estructura:
+     *  {N3_1=(N2_1, N2_2), N3_2=(N2_3), N3_3=(N2_1, N2_2, N2_4),....}
+     */
+    public static Map<String, List<String>> getControllerPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId )
+    {   
+        String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
+        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId+ '/' + fieldName;
+        
+        HttpRequest httpRequest = new HttpRequest();  
+        httpRequest.setEndpoint(endpoint);  
+        httpRequest.setMethod('GET');    
+       
+        String sesionId = UserInfo.getSessionId();
+        httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
+        
+        List<String> listControllers;
+        Map<String, List<String>> mapControllers = new Map<String, List<String>>(); // el retorno
+        
+        try {  
+            Http http = new Http();   
+            HttpResponse httpResponse = http.send(httpRequest);  
+            if (httpResponse.getStatusCode() == 200 ) {  
+                String jsonString = httpResponse.getBody();
+                Map<String, Object> resultado = (Map<String, Object>)JSON.deserializeUntyped(jsonString);
+                
+                // Lista de valores controladores
+                Map<String, Object> mapControllersValues = (Map<String, Object>)resultado.get('controllerValues');
+                listControllers = new List<String>(mapControllersValues.keyset());
+                
+                // Lista de objetos 
+                List<Object> listValues = (List<Object>)resultado.get('values');
+                
+                for(Object val: listValues)
+                {
+                    Map<String, Object> valTemp = (Map<String, Object>)val;
+                    String key = (String)valTemp.get('label');
+                    List<Object> lstPosiciones = (List<Object>)valTemp.get('validFor');
+                    List<String> lstControladores = new List<String>();
+                    for (Object pos : lstPosiciones)
+                    {
+                        Integer i = (Integer)pos;
+                        lstControladores.add(listControllers.get(i));
+                    }
+                    mapControllers.put(key, lstControladores);
+                }
+            } 
+            else 
+            {  
+                throw new CalloutException( httpResponse.getBody() );  
+            }   
+        } catch( System.Exception e) {  
+            throw e;  
+        }  
+                
+        return mapControllers;
+    }
+
+    /**
+     * Método que devuelve los valores que controlan una picklist dependiente, segun su recordType.
+     * Es decir, si le solicitamos el campo N3 que depente del N2 obtendremos un mapa con la siguiente estructura:
+     *  {N2_1=(N3_1, N3_2), N2_2=(N3_1, N3_3, N3_4), N2_3=(N3_5), .....}
+     */
+    public static Map<String, List<String>> getDependantPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId)
+    {   
+        String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
+        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId+ '/' + fieldName;
+        
+        List<String> listControllers;
+        Map<String, List<String>> mapDependant = new Map<String, List<String>>(); // el retorno
+
+        HttpRequest httpRequest = new HttpRequest();  
+        httpRequest.setEndpoint(endpoint);  
+        httpRequest.setMethod('GET');    
+       
+        String sesionId = UserInfo.getSessionId();
+        httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
+        
+        try {  
+            Http http = new Http();   
+            HttpResponse httpResponse = http.send(httpRequest); 
+            if (httpResponse.getStatusCode() == 200 ) {  
+                String jsonString = httpResponse.getBody();
+                Map<String, Object> resultado = (Map<String, Object>)JSON.deserializeUntyped(jsonString);
+                
+                // Lista de valores controladores
+                Map<String, Object> mapControllersValues = (Map<String, Object>)resultado.get('controllerValues');
+                listControllers = new List<String>(mapControllersValues.keyset());
+                
+                // Lista de objetos 
+                List<Object> listValues = (List<Object>)resultado.get('values');
+                
+                for(Object val: listValues)
+                {
+                    Map<String, Object> valTemp = (Map<String, Object>)val;
+                    String label = (String)valTemp.get('label');
+                    List<Object> lstPosiciones = (List<Object>)valTemp.get('validFor');
+                    for (Object pos : lstPosiciones)
+                    {
+                        Integer i = (Integer)pos;
+                        String key = listControllers.get(i);
+                        
+                        if(!mapDependant.keySet().contains(key))
+                        {
+                            mapDependant.put(key, new List<String>());
+                        }
+
+                        mapDependant.get(key).add(label);
+                    }
+                }
+            } 
+            else 
+            {  
+                throw new CalloutException( httpResponse.getBody() );  
+            }   
+        } catch( System.Exception e) {  
+            throw e;  
+        }  
+
+        return mapDependant;
+    }
 }
