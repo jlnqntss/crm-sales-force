@@ -488,7 +488,9 @@ private class CaseUtilTest
         test.stopTest();
 
         System.assertEquals(false, resultado);
+    }
 
+    /*
     * Test del método que calcula el ratio de conversión en las cuentas con recordType Intermediary
     * @author lrodriguez6@seidor.es
     * @date 09/02/2023
