@@ -52,7 +52,7 @@
             <assignToReference>Obtener_Cliente_Mediado.CNAE__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.RobotCompanyActivityCnaeCode__c</elementReference>
+                <elementReference>AxesorCNAECode</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -73,28 +73,14 @@
             <assignToReference>Obtener_Cliente_Mediado.BillingLongitude</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.RobotCompanyLongitude__c</elementReference>
+                <elementReference>AxesorLongitude</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>Obtener_Cliente_Mediado.BillingLatitude</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.RobotCompanyLatitude__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Obtener_Cliente_Mediado.ActivityIndex__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.RobotCompanyActivityIndex__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Obtener_Cliente_Mediado.FinancialScoring__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.RobotCompanyRiskScore__c</elementReference>
+                <elementReference>AxesorLatitude</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -126,7 +112,7 @@
     <decisions>
         <name>Tipo_de_caso</name>
         <label>Tipo de caso</label>
-        <locationX>534</locationX>
+        <locationX>578</locationX>
         <locationY>335</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -155,6 +141,29 @@ NOT(ISNULL({!$Record.RobotCompanyRoadType__c})),
 NOT(ISNULL({!$Record.RobotCompanyRoadName__c}))),
 IF(NOT(ISNULL({!$Record.RobotCompanyAdditionalInformation__c})),
 {!$Record.RobotCompanyRoadType__c}+&apos; &apos;+{!$Record.RobotCompanyRoadName__c}+&apos; &apos;+{!$Record.RobotCompanyRoadNumber__c}+&apos; &apos;+{!$Record.RobotCompanyAdditionalInformation__c}, {!$Record.RobotCompanyRoadType__c}+&apos; &apos;+{!$Record.RobotCompanyRoadName__c}+&apos; &apos;+{!$Record.RobotCompanyRoadNumber__c}),&apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>AxesorCNAECode</name>
+        <dataType>String</dataType>
+        <expression>IF(
+AND(
+LEN({!$Record.RobotCompanyActivityCnaeCode__c}) &lt; 5,
+!BEGINS({!$Record.RobotCompanyActivityCnaeCode__c}, &apos;0&apos;)),
+LPAD({!$Record.RobotCompanyActivityCnaeCode__c}, 5, &apos;0&apos;),
+{!$Record.RobotCompanyActivityCnaeCode__c})</expression>
+    </formulas>
+    <formulas>
+        <description>Convertimos tipo texto a numero</description>
+        <name>AxesorLatitude</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(SUBSTITUTE({!$Record.RobotCompanyLatitude__c}, &quot;,&quot;, &quot;.&quot;))</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>AxesorLongitude</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(SUBSTITUTE({!$Record.RobotCompanyLongitude__c}, &quot;,&quot;, &quot;.&quot;))</expression>
+        <scale>2</scale>
     </formulas>
     <interviewLabel>Case Trigger - After Insert/Update - Comprobar remitente {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - Campos de Axesor en Cliente Mediado</label>
@@ -247,7 +256,7 @@ IF(NOT(ISNULL({!$Record.RobotCompanyAdditionalInformation__c})),
         <inputReference>Obtener_Cliente_Mediado</inputReference>
     </recordUpdates>
     <start>
-        <locationX>408</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Tipo_de_caso</targetReference>

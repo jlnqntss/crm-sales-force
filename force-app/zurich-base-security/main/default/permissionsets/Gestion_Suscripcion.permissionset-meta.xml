@@ -157,6 +157,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.ProductGroup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.QuotationStage__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -357,6 +362,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Special_Condition__c.ContactPerson__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Special_Condition__c.Contact__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -378,6 +388,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Special_Condition__c.IsActive__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Special_Condition__c.LongDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

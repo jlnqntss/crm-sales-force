@@ -6,6 +6,21 @@
 
 public with sharing class CaseUtil
 {
+    //Constantes
+    public static final String statusCombinado='Combinado';
+    public static final String typeVenta= 'Venta';
+    public static final String rT_USP_CASES= 'USPInquiry';
+    public static final String queryDays ='365';
+    public static final String estadoCerrado= 'Cerrado';
+    public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+
+     // Recupera el Id del RecordType de casos USP
+     public static final ID rtUSPId {
+        get {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
+        }
+    }
+
     /**
      * Método que inserta o actualiza un siniestro
      * @author nbizkarra
@@ -743,20 +758,28 @@ public with sharing class CaseUtil
         }
         return createOffers;
     }
+    
     /**
      * Método que devuelve una lista de cuentas para el calculo de conversion ratio 
      * @author lrodriguez6@seidor.es
-     * @date 25/01/2023
-     * @param Lista de casos
+     * @date 07/02/2023
+     * @param Lista de cuentas
      * @return Lista de cuentas
      */
-
-    public static List<Account> generateAccountRatio(List<Case> cases)
+    
+    public static List<Account> generateAccountRatio(List<Account> accountsIntermediary)
     {
+        List<Case> cases= new List<Case>();
+        
+
+        Id rtCasesUSPId= Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rT_USP_CASES)?.getRecordTypeId();
+    
+        cases= new CasesSelector().getQueryCasesConversionRatio(accountsIntermediary,statusCombinado,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
+       
         Map <Id, Decimal> mapAllIntermediaryCases= new Map <Id,Decimal>();
         Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
         
-        List<Account> allIntermediary= new List<Account>();
+        List<Account> allIntermediaryToUpdate= new List<Account>();
 
 
         for(Case currentCase:cases)
@@ -781,11 +804,12 @@ public with sharing class CaseUtil
                 {
                     Account acc=new Account();
                     acc.Id=idCuenta;
-                    acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id)); 
-                    allIntermediary.add(acc);    
+                    acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id))*100; 
+                    allIntermediaryToUpdate.add(acc);    
                 }
 
-    return allIntermediary;
+    return allIntermediaryToUpdate;
 
     }
+
 }

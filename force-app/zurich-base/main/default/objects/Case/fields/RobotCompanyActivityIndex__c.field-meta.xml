@@ -3,12 +3,11 @@
     <fullName>RobotCompanyActivityIndex__c</fullName>
     <externalId>false</externalId>
     <label>Robot Company Activity Index</label>
-    <precision>18</precision>
+    <length>50</length>
     <required>false</required>
-    <scale>2</scale>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
-    <type>Number</type>
+    <type>Text</type>
     <unique>false</unique>
 </CustomField>
