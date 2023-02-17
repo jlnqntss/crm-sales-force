@@ -5,5 +5,6 @@
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Gestion_Suscripcion</permissionSets>
     <permissionSets>Informes_solo_lectura</permissionSets>
+    <permissionSets>USP_User</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

@@ -103,10 +103,16 @@
                 <componentName>desktopDashboards:embeddedDashboard</componentName>
                 <identifier>desktopDashboards_embeddedDashboard3</identifier>
                 <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
                     <criteria>
                         <leftValue>{!$User.Title}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>Consultor</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!$User.Title}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Director Pyme</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
