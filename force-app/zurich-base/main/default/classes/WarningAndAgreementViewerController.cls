@@ -254,6 +254,8 @@ public with sharing class WarningAndAgreementViewerController
         public String type {get;set;}
         @AuraEnabled
         public Boolean wrapText {get;set;}
+        @AuraEnabled
+        public Integer initialWidth {get;set;}
 
         /**
          * Contructor de la clase Field
@@ -266,6 +268,18 @@ public with sharing class WarningAndAgreementViewerController
             this.fieldName = fieldName;
             this.type = String.valueOf(type).toLowerCase();
             this.wrapText = true;
+            if(fieldName == 'LongDescription__c')
+            {
+                this.initialWidth = 100;
+            }
+            else if(fieldName == 'Status__c')
+            {
+                this.initialWidth = 15;
+            }
+            else if (fieldName == 'SharepointLinks__c')
+            {
+                this.wrapText = false;
+            }
         }
 
         /**
@@ -279,6 +293,18 @@ public with sharing class WarningAndAgreementViewerController
             this.fieldName = fieldName;
             this.type = type;
             this.wrapText = true;
+            if(fieldName == 'LongDescription__c')
+            {
+                this.initialWidth = 400;
+            } 
+            else if(fieldName == 'Status__c')
+            {
+                this.initialWidth = 15;
+            }
+            else if (fieldName == 'SharepointLinks__c')
+            {
+                this.wrapText = false;
+            }
         }
     }
     //#endregion
