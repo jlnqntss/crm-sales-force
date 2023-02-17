@@ -2139,6 +2139,26 @@
     <layoutAssignments>
         <layout>Global-SDM</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-OCS Contact</layout>
+        <recordType>Contact.ContactPartner</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Activity</layout>
+        <recordType>Task.Activity_USP</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Interaction</layout>
+        <recordType>Task.Interaction</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Case Default EON</layout>
+        <recordType>Case.USPInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Case Default OCS</layout>
+        <recordType>Case.OCSInquiry</recordType>
+    </layoutAssignments>
     <loginIpRanges>
         <endAddress>255.255.255.255</endAddress>
         <startAddress>0.0.0.0</startAddress>
