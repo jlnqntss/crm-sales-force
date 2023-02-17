@@ -428,10 +428,6 @@
     <picklistValues>
         <picklist>CloseResult__c</picklist>
         <values>
-            <fullName>Ajuste de precio</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Anulación - Desaparición riesgo</fullName>
             <default>false</default>
         </values>
@@ -456,6 +452,34 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Aprobada - Ajuste de precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Emisión Póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Modificación Capitales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Modificación Clausulado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Modificación Garantías</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Protecciones del riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Suplemento no económico</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Caducada</fullName>
             <default>false</default>
         </values>
@@ -472,7 +496,31 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Emisión Póliza</fullName>
+            <fullName>Denegada - Ajuste de precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Emisión Póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Modificación Capitales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Modificación Clausulado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Modificación Garantías</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Protecciones del riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Suplemento no económico</fullName>
             <default>false</default>
         </values>
         <values>
@@ -481,18 +529,6 @@
         </values>
         <values>
             <fullName>Ganada</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Modificación Capitales</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Modificación Clausulado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Modificación Garantías</fullName>
             <default>false</default>
         </values>
         <values>
@@ -532,10 +568,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Protecciones del riesgo</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Realizado - Impacto en prima</fullName>
             <default>false</default>
         </values>
@@ -557,10 +589,6 @@
         </values>
         <values>
             <fullName>Retención por Alto valor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Suplemento no económico</fullName>
             <default>false</default>
         </values>
     </picklistValues>

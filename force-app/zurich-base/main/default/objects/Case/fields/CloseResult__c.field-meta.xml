@@ -234,39 +234,74 @@
                 <label>Falta Respuesta Mediador</label>
             </value>
             <value>
-                <fullName>Ajuste de precio</fullName>
+                <fullName>Aprobada - Ajuste de precio</fullName>
                 <default>false</default>
-                <label>Ajuste de precio</label>
+                <label>Aprobada - Ajuste de precio</label>
             </value>
             <value>
-                <fullName>Modificación Garantías</fullName>
+                <fullName>Aprobada - Modificación Garantías</fullName>
                 <default>false</default>
-                <label>Modificación Garantías</label>
+                <label>Aprobada - Modificación Garantías</label>
             </value>
             <value>
-                <fullName>Modificación Capitales</fullName>
+                <fullName>Aprobada - Modificación Capitales</fullName>
                 <default>false</default>
-                <label>Modificación Capitales</label>
+                <label>Aprobada - Modificación Capitales</label>
             </value>
             <value>
-                <fullName>Emisión Póliza</fullName>
+                <fullName>Aprobada - Emisión Póliza</fullName>
                 <default>false</default>
-                <label>Emisión Póliza</label>
+                <label>Aprobada - Emisión Póliza</label>
             </value>
             <value>
-                <fullName>Modificación Clausulado</fullName>
+                <fullName>Aprobada - Modificación Clausulado</fullName>
                 <default>false</default>
-                <label>Modificación Clausulado</label>
+                <label>Aprobada - Modificación Clausulado</label>
             </value>
             <value>
-                <fullName>Suplemento no económico</fullName>
+                <fullName>Aprobada - Suplemento no económico</fullName>
                 <default>false</default>
-                <label>Suplemento no económico</label>
+                <label>Aprobada - Suplemento no económico</label>
             </value>
             <value>
-                <fullName>Protecciones del riesgo</fullName>
+                <fullName>Aprobada - Protecciones del riesgo</fullName>
                 <default>false</default>
-                <label>Protecciones del riesgo</label>
+                <label>Aprobada - Protecciones del riesgo</label>
+            </value>
+            <value>
+                <fullName>Denegada - Ajuste de precio</fullName>
+                <default>false</default>
+                <label>Denegada - Ajuste de precio</label>
+            </value>
+            <value>
+                <fullName>Denegada - Modificación Garantías</fullName>
+                <default>false</default>
+                <label>Denegada - Modificación Garantías</label>
+            </value>
+            <value>
+                <fullName>Denegada - Modificación Capitales</fullName>
+                <default>false</default>
+                <label>Denegada - Modificación Capitales</label>
+            </value>
+            <value>
+                <fullName>Denegada - Emisión Póliza</fullName>
+                <default>false</default>
+                <label>Denegada - Emisión Póliza</label>
+            </value>
+            <value>
+                <fullName>Denegada - Modificación Clausulado</fullName>
+                <default>false</default>
+                <label>Denegada - Modificación Clausulado</label>
+            </value>
+            <value>
+                <fullName>Denegada - Suplemento no económico</fullName>
+                <default>false</default>
+                <label>Denegada - Suplemento no económico</label>
+            </value>
+            <value>
+                <fullName>Denegada - Protecciones del riesgo</fullName>
+                <default>false</default>
+                <label>Denegada - Protecciones del riesgo</label>
             </value>
         </valueSetDefinition>
         <valueSettings>
@@ -445,31 +480,59 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>Ajuste de precio</valueName>
+            <valueName>Aprobada - Ajuste de precio</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>Modificación Garantías</valueName>
+            <valueName>Aprobada - Modificación Garantías</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>Modificación Capitales</valueName>
+            <valueName>Aprobada - Modificación Capitales</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>Emisión Póliza</valueName>
+            <valueName>Aprobada - Emisión Póliza</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>Modificación Clausulado</valueName>
+            <valueName>Aprobada - Modificación Clausulado</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>Suplemento no económico</valueName>
+            <valueName>Aprobada - Suplemento no económico</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
-            <valueName>Protecciones del riesgo</valueName>
+            <valueName>Aprobada - Protecciones del riesgo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Denegada - Ajuste de precio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Denegada - Modificación Garantías</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Denegada - Modificación Capitales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Denegada - Emisión Póliza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Denegada - Modificación Clausulado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Denegada - Suplemento no económico</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Denegada - Protecciones del riesgo</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
