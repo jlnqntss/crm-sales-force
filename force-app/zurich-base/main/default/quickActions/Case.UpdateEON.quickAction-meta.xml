@@ -80,8 +80,8 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>ProductGroup__c</field>
-                <uiBehavior>Edit</uiBehavior>
+                <field>ProductGroupDescription__c</field>
+                <uiBehavior>Readonly</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
     </quickActionLayout>
