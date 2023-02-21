@@ -25,34 +25,11 @@ public with sharing class GenesysCloudRouteMessageAction
     {
         try
         {
-            //Construir mapa con las colas de Genesys <-> Nombre
-            Map<String,String> mapGenesysQueueNameId = new Map<String,String>();
-            List<purecloud__PureCloud_Queue__c> genesysQueues = new List<purecloud__PureCloud_Queue__c>();
-            genesysQueues = [SELECT Id, Name, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c];
-            for(purecloud__PureCloud_Queue__c gQueue: genesysQueues)
-            {
-                mapGenesysQueueNameId.put(gQueue.Name,gQueue.purecloud__PureCloud_Queue_ID__c);
-            }
             List<MessageResult> responses = new List<MessageResult>();
             for (MessageRequest request : requests)
             {
-
-                //Si viene relleno queueId pero no existe
-                if(request.queueId != null && !mapGenesysQueueNameId.containsKey(request.queueId))
-                { 
-                    //Lanzar excepción para que el Flow registre un error
-                    if(!Test.isRunningTest())
-                        throw new GenesysCloudRouteMessageActionException('The genesys queue '+ request.queueId +' does not exists.');
-                }
-                //Si viene relleno queueId y sí existe:
-                else if(request.queueId != null && mapGenesysQueueNameId.containsKey(request.queueId))
-                {
-                    //Sustituir el nombre de la cola por su ID
-                    String queueId = mapGenesysQueueNameId.get(request.queueId);
-                    request.queueId = queueId;
-                }
                 MessageResult response = new MessageResult();
-                response.interactionId = GenesysCloud.RoutingService.route(request).interactionId;
+                response.interactionId = GenesysCloud.RoutingService.route(request.toEmail()).interactionId;
                 responses.add(response);
             }
 
@@ -72,60 +49,51 @@ public with sharing class GenesysCloudRouteMessageAction
      */
     public class MessageRequest extends GenesysCloud.RoutingWork
     {
-        @InvocableVariable(required=true label = 'Subject' description='Asunto del mensaje.')
+        @InvocableVariable(label = 'Subject' description='Asunto del correo')
         public String subject;
-        @InvocableVariable(label = 'To Name' description='Nombre del detinatario a mostrar.')
+        @InvocableVariable(label = 'To Name' description='Nombre a mostrar como destino')
         public String toName;
-        @InvocableVariable(label = 'To Address' description='Correo electrónico de destino.')
+        @InvocableVariable(label = 'To Address' description='Correo electrónico destino')
         public String toAddress;
-        @InvocableVariable(label = 'From Name' description='Nombre del remitente a mostrar.')
+        @InvocableVariable(label = 'From Name' description='Nombre a mostrar')
         public String fromName;
-        @InvocableVariable(label = 'From Address' description='Correo electrónico del remitente.')
+        @InvocableVariable(label = 'From Address' description='Correo electrónico remitente')
         public String fromAddress;
-        @InvocableVariable(label = 'Queue Id' description='Id de la cola de GenesysCloud.')
+        @InvocableVariable(label = 'Queue Id' description='Id de la cola de Genesys')
         public String queueId;
-        @InvocableVariable(label = 'Screen Pop Record Id' description='Identificador de Salesforce del registro con el que realizar un ScreenPop.')
-        public String screenPopRecordId;
-        @InvocableVariable(label = 'Owner Id' description='Identificador de Salesforce de usuario en Genesys (Correo electrónico SF).')
-        public String ownerId;
-        @InvocableVariable(label = 'Attribute Queue Id' description='Id. de la cola como atributo')
-        public String queueIdAttribute;
-        @InvocableVariable(label = 'SLA' description='SLA restante de la interacción')
-        public Integer caseSla;
         @InvocableVariable(label = 'Flow Id' description='Id del flow de Genesys')
         public String flowId;
-        // Se define el proveedor para la petición a Genesys Cloud
-        private String provider
+        @InvocableVariable(label = 'Screen Pop Id' description='Id. de registro con el que realizar un ScreenPop. Se pasará a Genesys como el SF_URLPop')
+        public String screenPopRecordId;
+        @InvocableVariable(label = 'Owner Id' description='Id. de usuario en Genesys (Correo electrónico SF). Se pasará a Genesys como SF_OwnerId')
+        public String[] ownerId;
+        @InvocableVariable(label = 'Attribute Queue Id' description='Id. de la cola como atributo')
+        public String queueIdAttribute;
+        @InvocableVariable(label = 'Specialization Type' description='Tipo de especialización del caso')
+        public String industrySpecializationType;
+        @InvocableVariable(label = 'SLA' description='SLA restante de la interacción')
+        public Integer caseSla;
+
+        /**
+         * @return Devuelve un correo en el formato GenesysCloud.Email utilizando los datos dados por el email
+         */
+        public GenesysCloud.Email toEmail()
         {
-            get
-            {
-                return 'Salesforce Email';
-            }
-        }
-        // Se define el endpoint donde se enrutará el mensaje.
-        private String endpoint
-        {
-            get
-            {
-                return this.getEndpoint();
-            }
-        }
-        // Se asignan atributos a la llamada de Genesys Cloud que permitirán el popup del registro.
-        private Map<String, String> attributes
-        {
-            get
-            {
-                return new Map<String, String>
-                {
-                    'SF_URLPop' => this.screenPopRecordId,
-                    'SF_OwnerId'=> this.ownerId
-                };
-            }
-        }
-        // Se sobrescribe el endpoint del API de Genesys Cloud a consumir, este mensaje se tratará como una email.
-        private String getEndpoint()
-        {
-            return 'emails';
+            GenesysCloud.Email email = new GenesysCloud.Email();
+
+            email.subject = this.subject;
+            email.toName = this.toName;
+            email.toAddress = this.toAddress;
+            email.fromName = this.fromName;
+            email.fromAddress = this.fromAddress;
+            email.queueId = this.queueId;
+            email.flowId = this.flowId;
+            email.screenPopRecordId = '' + this.screenPopRecordId;
+            email.attributes.put('SF_OwnerId', '' + this.ownerId);
+            email.attributes.put('Genesys_QueueId', '' + this.queueIdAttribute);
+            email.attributes.put('SF_Sla', '' + this.caseSla);
+
+            return email;
         }
     }
 

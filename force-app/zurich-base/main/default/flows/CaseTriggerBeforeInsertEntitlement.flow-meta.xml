@@ -174,12 +174,19 @@
         <defaultConnectorLabel>No Email</defaultConnectorLabel>
         <rules>
             <name>EmailOriginOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Origin</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NoteINFO</stringValue>
                 </rightValue>
             </conditions>
             <connector>

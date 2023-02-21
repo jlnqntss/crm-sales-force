@@ -19,6 +19,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>flowId</name>
+            <value>
+                <elementReference>GetGenesysQueueAction.GenesysFlowId__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>fromAddress</name>
             <value>
                 <elementReference>$Record.SuppliedEmail</elementReference>
@@ -31,9 +37,9 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>queueId</name>
+            <name>ownerId</name>
             <value>
-                <elementReference>GetGenesysCloudQueueAction.genesysQueueName</elementReference>
+                <elementReference>GestorPreferenteSearchFromEmailSubflow.GestorPreferenteAsignado</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -46,6 +52,12 @@
             <name>caseSla</name>
             <value>
                 <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>industrySpecializationType</name>
+            <value>
+                <elementReference>SpecializationType</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -82,6 +94,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>CSMIndividualsManager</name>
         <dataType>String</dataType>
         <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.CsmIndividualsManager__c})</expression>
+    </formulas>
+    <formulas>
+        <description>Fórmula que comprobará si el campo SpecializationType está informado</description>
+        <name>SpecializationType</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!$Record.AccountId}), &apos;&apos;, TEXT({!$Record.Account.SpecializationType__c}))</expression>
     </formulas>
     <interviewLabel>Case Trigger - After Insert - Enrutador de Notas INFO {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert - Enrutador de Notas INFO</label>
