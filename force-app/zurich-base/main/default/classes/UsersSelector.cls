@@ -1,8 +1,8 @@
 /**
- * @description       : 
+ * @description       : Clase selectora del sobject User
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 02-13-2023
+ * @last modified on  : 02-20-2023
  * @last modified by  : aberuete
 **/
 public with sharing class UsersSelector extends RecordsSelector 
@@ -12,6 +12,15 @@ public with sharing class UsersSelector extends RecordsSelector
         super(User.getSObjectType());
     }
 
+     /**
+     * Recupera los Usuarios cuya id coincidan con un conjunto dado
+     * 
+     * @author aberuete
+     * @date 20/02/2023
+     * 
+     * @param {Set<Id> userIds} Set de ids de usuarios 
+     * @return {List<User>} lista de Usuarios
+     */
     public List<User> findById (Set<Id> userIds)
     {
         this.baseQuery.selectFields

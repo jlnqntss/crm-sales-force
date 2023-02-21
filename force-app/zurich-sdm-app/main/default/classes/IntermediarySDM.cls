@@ -506,7 +506,9 @@ public with sharing class IntermediarySDM {
                                 Account newAgrupation =  new Account(
                                     NationalID__c= i.NationalID__c,
                                     Name= i.Name,
-                                    RecordTypeId= this.rtAgrupationId
+                                    RecordTypeId= this.rtAgrupationId,
+                                    AGRNationalId__c = 'AGR-'+i.NationalID__c
+
                                 );
 
                                 // Si el intermediario está activo se informa el campo Status__c de la agrupación

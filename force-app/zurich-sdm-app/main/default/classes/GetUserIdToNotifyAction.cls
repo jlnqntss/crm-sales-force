@@ -3,11 +3,13 @@
  *                      a los que hay que notificar cuando se realiza una carga de seguimientos
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 02-14-2023
+ * @last modified on  : 02-20-2023
  * @last modified by  : aberuete
 **/
 public with sharing class GetUserIdToNotifyAction 
 {
+    @testvisible
+    private static final String ERROR_TYPE = 'No puede cargar más de un tipo de seguimiento en una misma carga';
     /*
      * Método que devuelve una lista de los id de usuario que hay que notificar. 
      * Además actualiza los usuarios que se vayan a notificar, indicando la fecha de notificación 
@@ -27,9 +29,8 @@ public with sharing class GetUserIdToNotifyAction
         List<List<Id>> listToReturn = new List<List<Id>>();
         Set<String> rolToNotify = new Set<String>();
         Set<Id> accountId = new Set <Id>();
-        String typeOfFollowUp = null;
-        //Set<String> types = new Set<String>();
-        for (FollowUp__c followUp : listFollowUps )
+        Set<String> typesCheck = new Set<String>();
+        for (FollowUp__c followUp : listFollowUps)
         {
             List<Id> listOfIds = new List<Id>();
             listToReturn.add(listOfIds);
@@ -39,31 +40,31 @@ public with sharing class GetUserIdToNotifyAction
                 rolToNotify.add(rol);
             }
             accountId.add(followUp.Account__c);
-            //types.add(followUp.Type__c);
-            if (typeOfFollowUp == null)
+            typesCheck.add(followUp.Type__c);
+        }
+
+        if (typesCheck.size() == 1)
+        {
+            String typeOfFollowUp = new List<String>(typesCheck)[0];
+            List<AccountTeamMember> atmsList = (new AccountTeamMemberSelector()).findUsersByRoleAndAccountIdFields(rolToNotify, accountId, typeOfFollowUp);
+            Set<Id> idsFromUser = new Set<Id>();
+            for (AccountTeamMember atm : atmsList)
             {
-                typeOfFollowUp = followUp.Type__c;
+                idsFromUser.add(atm.UserId);
             }
+            
+            // Actualizamos los usuarios
+            if (!idsFromUser.isEmpty())
+            {
+                updateUsersToNotify (idsFromUser,typeOfFollowUp);
+                listToReturn[0] = new List<Id>(idsFromUser);
+            }
+            
         }
-
-        List<AccountTeamMember> atmsList = (new AccountTeamMemberSelector()).findUsersByRoleAndAccountIdFields(rolToNotify, accountId, typeOfFollowUp);
-        System.debug ('query atms'+ atmsList);
-        Set<Id> idsFromUser = new Set<Id>();
-        for (AccountTeamMember atm : atmsList)
+        else 
         {
-            idsFromUser.add(atm.UserId);
+            throw new GetUserIdToNotifyActionException(ERROR_TYPE);
         }
-        System.debug ('ids from user 42 '+idsFromUser );
-        
-        //String type = new List<String>(types)[0];
-
-        // Actualizamos los usuarios
-        if (!idsFromUser.isEmpty())
-        {
-            updateUsersToNotify (idsFromUser,typeOfFollowUp);
-            listToReturn[0] = new List<Id>(idsFromUser);
-        }
-
         return listToReturn;
     }
 
@@ -76,7 +77,8 @@ public with sharing class GetUserIdToNotifyAction
      * @param String typeOfFollowUp tipo de seguimiento que se carga 
      */
     @future
-    public static void updateUsersToNotify (Set<Id> idsFromUser, String typeOfFollowUp )
+    @testVisible
+    private static void updateUsersToNotify (Set<Id> idsFromUser, String typeOfFollowUp )
     {
         List<User> userslistToUpdate = new List<User>();
 
@@ -91,22 +93,12 @@ public with sharing class GetUserIdToNotifyAction
             {
                 userToUpdate.NotifyType__c = userToUpdate.NotifyType__c + ';'+ typeOfFollowUp;
             }
-            System.debug('user to update'+ userToUpdate);
+
             userslistToUpdate.add(userToUpdate);
         }
 
         update userslistToUpdate;  
     }
 
-     /*
-    * Esta clase es usada para introducir un parametro en el método invocable
-    * @author  aberuete
-    * @date 14/02/2023
-    */
-    public class FlowInputs
-    {
-        // Lista de registros 
-        @InvocableVariable 
-        public List<FollowUp__c> listofFollowUps;
-    }
+    private class GetUserIdToNotifyActionException extends Exception {}
 }
