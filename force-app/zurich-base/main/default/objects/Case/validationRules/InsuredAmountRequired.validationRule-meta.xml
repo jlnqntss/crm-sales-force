@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>InsuredAmountRequired</fullName>
+    <active>true</active>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
+ISPICKVAL(Type,&quot;Venta&quot;) &amp;&amp; ISBLANK(TEXT(InsuredAmount__c))&amp;&amp; $Permission.USPTriggerCaseValidationRules &amp;&amp; NOT(ISNEW()) &amp;&amp;  NOT(ISCHANGED(Type))</errorConditionFormula>
+    <errorDisplayField>InsuredAmount__c</errorDisplayField>
+    <errorMessage>[VR Caso] Es obligatorio informar la Suma Asegurada antes de cerrar los casos de tipo Venta</errorMessage>
+</ValidationRule>
