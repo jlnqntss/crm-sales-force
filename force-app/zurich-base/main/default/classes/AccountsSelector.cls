@@ -28,6 +28,10 @@ public with sharing class AccountsSelector extends RecordsSelector
     public static final String RT_NAME_INTERMEDIARY = 'Intermediary';
     public static final String RT_NAME_CUSTOMER = 'Customer';
     public static final String RT_NAME_BUSINESSCUSTOMER = 'BusinessCustomer';
+    public static final String RT_NAME_ACCOUNT_INTERMEDIARY= 'Intermediary';
+
+    public static final String INTERMEDIARY_ACTIVE_1='001';
+    public static final String INTERMEDIARY_ACTIVE_2='002';
 
     // Recupera el Id del RecordType de cuentas de Agrupacion de Mediadores
     public ID rtAgrupationId {
@@ -51,6 +55,13 @@ public with sharing class AccountsSelector extends RecordsSelector
     public ID rtBusinessCustomerId {
         get {
             return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_BUSINESSCUSTOMER)?.getRecordTypeId();
+        }
+    }
+
+     //Recupera el Id del RecordType de cuentas Intermediario
+     public ID rtAccountIntermediaryId {
+        get {
+            return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_ACCOUNT_INTERMEDIARY)?.getRecordTypeId();
         }
     }
 
@@ -603,4 +614,37 @@ public with sharing class AccountsSelector extends RecordsSelector
             return new List<Account>();
         }
     }
+
+
+    /**
+     * Método utilizado por el batch Batch_RatioConversionIntermediary para definir el scope
+     * @author lrodriguez6@seidor.es
+     * @date 06/02/2023
+     * @return String query que se va a lanzar en el batch
+     */
+
+    public String getQueryStringAccountIntermediaryRatio()
+    {
+        
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Account.Id
+                
+            })
+            
+        .addConditionEq(Account.RecordTypeId, rtAccountIntermediaryId);
+
+        // Añadimos la condición de que el RT sea Customer o BusinessCustomer
+        Query.Condition condition = Query.doOr
+        (
+            Query.conditionEq(Account.Status__c,INTERMEDIARY_ACTIVE_1),
+            Query.conditionEq(Account.Status__c,INTERMEDIARY_ACTIVE_2)
+        );
+
+        this.baseQuery.addCondition(condition);
+
+        return this.baseQuery.toQueryString();
+        
+       
+    }
+
 }

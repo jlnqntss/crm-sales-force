@@ -44,7 +44,7 @@
     </values>
     <values>
         <field>RoutingAddresses__c</field>
-        <value xsi:type="xsd:string">esz.robot.tipificador@zurich.com,soporte-ocs+esz.robot.tipificador.usp@nts-solutions.com</value>
+        <value xsi:type="xsd:string">esz.robot.tipificador@zurich.com,soporte-ocs+esz.robot.tipificador.usp@nts-solutions.com,esz.robot.tipificador.usp@zurich.com</value>
     </values>
     <values>
         <field>Separator__c</field>

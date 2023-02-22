@@ -622,7 +622,7 @@
             <label>MensualPlan</label>
         </rules>
     </decisions>
-    <description>SDM: añadir nuevo mensaje de notificación week left hacia los RN para los planes mensuales de los mediadores que no hayan cumplido el objetivo</description>
+    <description>SDM: setear el valor isRelatedToComercialPlan en la llamada al subflow Create Task con valor true</description>
     <environments>Default</environments>
     <formulas>
         <description>Selecciona el mensaje a utilizar en la notificación &apos;Days Left&apos; en función de si el plan mensual está relacionado con un intermediario o no.</description>
@@ -982,6 +982,12 @@ IF
             <name>Date</name>
             <value>
                 <elementReference>TaskDateMensualPlan</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>IsRelatedToComercialPlan</name>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>

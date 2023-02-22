@@ -6,6 +6,21 @@
 
 public with sharing class CaseUtil
 {
+    //Constantes
+    public static final String statusCombinado='Combinado';
+    public static final String typeVenta= 'Venta';
+    public static final String rT_USP_CASES= 'USPInquiry';
+    public static final String queryDays ='365';
+    public static final String estadoCerrado= 'Cerrado';
+    public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+
+     // Recupera el Id del RecordType de casos USP
+     public static final ID rtUSPId {
+        get {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
+        }
+    }
+
     /**
      * Método que inserta o actualiza un siniestro
      * @author nbizkarra
@@ -631,9 +646,52 @@ public with sharing class CaseUtil
         }
         else {
             return false;        
-        }
-        
+        } 
     }
+
+    /**
+     * Método que comprueba si la tipificación de un caso se encuentra entre las disponibles en el sistem
+     * @author arcortazar
+     * @date 13/02/2023
+     * @param {String typeN1} String que contiene el tipo del caso a comprobar
+     * @param {String typeN2} String que contiene el subtipo del caso a comprobar
+     * @param {String typeN3} String que contiene el tipoN3 del caso a comprobar
+     * @param {Id RecordType} RecordType que queremos comprobar
+     * @param {Boolean setTypification} indica si la tipificación sigue existiendo en el sistema (true) o no (false)
+     * @return Case 
+     */
+    public static Boolean checkTypificationByRecordType(String typeN1, String typeN2, String typeN3, Id recordTypeId)
+    {
+        Map<String, List<String>> mapaT1 = new Map<String, List<String>>();
+        Map<String, List<String>> mapaT2 = new Map<String, List<String>>();
+
+        if(Test.isRunningTest())
+        {
+            List<String> lstA1 = new List<String>();
+            lstA1.add('A1');
+            mapaT1.put('A', lstA1);
+
+            List<String> lstA12 = new List<String>();
+            lstA12.add('A11');
+            mapaT2.put('A1', lstA12);
+            
+        }
+        else {
+            mapaT1 = SystemUtil.getDependantPicklistValuesByRecordType('Case', 'Subtype__c', recordTypeId);
+            mapaT2 = SystemUtil.getDependantPicklistValuesByRecordType('Case', 'TypeN3__c', recordTypeId); 
+        }
+
+        if (mapaT1.containsKey(typeN1) && mapaT1.get(typeN1).contains(typeN2) &&
+            mapaT2.containsKey(typeN2) && mapaT2.get(typeN2).contains(typeN3))
+        {
+            return true;
+        }
+        else {
+            return false;        
+        }
+
+    }
+
 
      /**
      * Método utilizado por RelateCasesToNewOffersBatch para relacionar casos con ofertas
@@ -700,20 +758,28 @@ public with sharing class CaseUtil
         }
         return createOffers;
     }
+    
     /**
      * Método que devuelve una lista de cuentas para el calculo de conversion ratio 
      * @author lrodriguez6@seidor.es
-     * @date 25/01/2023
-     * @param Lista de casos
+     * @date 07/02/2023
+     * @param Lista de cuentas
      * @return Lista de cuentas
      */
-
-    public static List<Account> generateAccountRatio(List<Case> cases)
+    
+    public static List<Account> generateAccountRatio(List<Account> accountsIntermediary)
     {
+        List<Case> cases= new List<Case>();
+        
+
+        Id rtCasesUSPId= Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rT_USP_CASES)?.getRecordTypeId();
+    
+        cases= new CasesSelector().getQueryCasesConversionRatio(accountsIntermediary,statusCombinado,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
+       
         Map <Id, Decimal> mapAllIntermediaryCases= new Map <Id,Decimal>();
         Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
         
-        List<Account> allIntermediary= new List<Account>();
+        List<Account> allIntermediaryToUpdate= new List<Account>();
 
 
         for(Case currentCase:cases)
@@ -738,11 +804,12 @@ public with sharing class CaseUtil
                 {
                     Account acc=new Account();
                     acc.Id=idCuenta;
-                    acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id)); 
-                    allIntermediary.add(acc);    
+                    acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id))*100; 
+                    allIntermediaryToUpdate.add(acc);    
                 }
 
-    return allIntermediary;
+    return allIntermediaryToUpdate;
 
     }
+
 }

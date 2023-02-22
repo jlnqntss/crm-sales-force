@@ -146,35 +146,35 @@
             </value>
         </filters>
         <filters>
-            <field>ProductGroup__c</field>
+            <field>ProductGroupDescription__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>CIBER</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroup__c</field>
+            <field>ProductGroupDescription__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>COMERCIOS</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroup__c</field>
+            <field>ProductGroupDescription__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>PATRIMONIALES</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroup__c</field>
+            <field>ProductGroupDescription__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>ACCIDENTES</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroup__c</field>
+            <field>ProductGroupDescription__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>RESP. CIVIL</stringValue>
