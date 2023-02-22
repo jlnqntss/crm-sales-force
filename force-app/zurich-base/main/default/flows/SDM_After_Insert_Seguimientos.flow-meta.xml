@@ -36,7 +36,7 @@
         <inputParameters>
             <name>body</name>
             <value>
-                <stringValue>Seguimientos de tipo {!$Record.Type__c} </stringValue>
+                <stringValue>Seguimientos de tipo {!$Record.Type__c}  actualizados a {!Today}, ver detalles en la cuenta del código del mediador</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -52,16 +52,16 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>targetId</name>
+            <name>targetPageRef</name>
             <value>
-                <elementReference>$Record.Id</elementReference>
+                <stringValue>{&quot;type&quot;: &quot;standard__objectPage&quot;,&quot;attributes&quot;: {&quot;objectApiName&quot;: &quot;FollowUp__c&quot;,&quot;actionName&quot;: &quot;list&quot;},&quot;state&quot;:{&quot;filterName&quot;:&quot;All&quot;}}</stringValue>
             </value>
         </inputParameters>
     </actionCalls>
     <apiVersion>56.0</apiVersion>
     <assignments>
         <name>Add_userId</name>
-        <label>Add userId</label>
+        <label>Add User Id</label>
         <locationX>270</locationX>
         <locationY>648</locationY>
         <assignmentItems>
@@ -77,7 +77,7 @@
     </assignments>
     <decisions>
         <name>Is_not_null</name>
-        <label>Is not null</label>
+        <label>Is Not Null</label>
         <locationX>402</locationX>
         <locationY>528</locationY>
         <defaultConnector>
@@ -101,8 +101,8 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Recipietns_not_null</name>
-        <label>Recipietns not null</label>
+        <name>Recipients_not_null</name>
+        <label>Recipients Not Null</label>
         <locationX>182</locationX>
         <locationY>1080</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
@@ -128,11 +128,11 @@
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
-    <interviewLabel>SDM Generar Alertas v4 {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>SDM Generar Alertas v4</label>
+    <interviewLabel>SDM After Insert Seguimientos {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SDM After Insert Seguimientos</label>
     <loops>
         <name>Loop_Through</name>
-        <label>Loop Through Users To notify</label>
+        <label>Loop Through Users To Notify</label>
         <locationX>182</locationX>
         <locationY>408</locationY>
         <collectionReference>Get_Users_Id_To_Notify</collectionReference>
@@ -192,7 +192,7 @@
         <locationY>960</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Recipietns_not_null</targetReference>
+            <targetReference>Recipients_not_null</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
