@@ -61,19 +61,19 @@ public class INFOHandler implements ISystem
         ACCOUNT, // 1
         PARTNER, // 2
         INTERMEDIARY, // 3
-        CONTACT_POINT, // 4
-        PRODUCT, // 5
-        QUOTE, // 6
-        QUOTE_OPTION, // 7
-        POLICY, // 8
-        INSURED_OBJECT, // 9
-        CLAIM, // 10
-        QUOTE_RELATIONSHIP, // 11
-        POLICY_RELATIONSHIP, // 12
-        CLAIM_RELATIONSHIP, // 13
-        NOTE, // 14
-        SPECIAL_CONDITION, // 15
-        INTERMEDIARY_KPI // 16
+        INTERMEDIARY_KPI, // 4
+        CONTACT_POINT, // 5
+        PRODUCT, // 6
+        QUOTE, // 7
+        QUOTE_OPTION, // 8
+        POLICY, // 9
+        INSURED_OBJECT, // 10
+        CLAIM, // 11
+        QUOTE_RELATIONSHIP, // 12
+        POLICY_RELATIONSHIP, // 13
+        CLAIM_RELATIONSHIP, // 14
+        NOTE, // 15
+        SPECIAL_CONDITION // 16
     };
 
     public static final String SOBJECT_ACCOUNT = 'Account';
@@ -97,6 +97,7 @@ public class INFOHandler implements ISystem
     {
         SOBJECT_ACCOUNT,
         SOBJECT_CONTACT,
+        SOBJECT_KPI,
         SOBJECT_CONTACT_POINT_ADDRESS,
         SOBJECT_CONTACT_POINT_PHONE,
         SOBJECT_CONTACT_POINT_EMAIL,
@@ -108,8 +109,7 @@ public class INFOHandler implements ISystem
         SOBJECT_CLAIM,
         SOBJECT_RELATIONSHIP,
         SOBJECT_CASE,
-        SOBJECT_SPECIAL_CONDITION,
-        SOBJECT_KPI
+        SOBJECT_SPECIAL_CONDITION
     };
 
     private static final String NOTE_CASE_ORIGIN = 'NoteINFO';
