@@ -1,12 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Check_typification</name>
+        <label>Check typification</label>
+        <locationX>930</locationX>
+        <locationY>1670</locationY>
+        <actionName>CaseCheckTypificationAction</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Is_typification_available</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>RecordTypeId</name>
+            <value>
+                <elementReference>GetRecordTypeAction.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>TypeN2</name>
+            <value>
+                <elementReference>GetCaseAction.Subtype__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>TypeN1</name>
+            <value>
+                <elementReference>GetCaseAction.Type</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>TypeN3</name>
+            <value>
+                <elementReference>GetCaseAction.TypeN3__c</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>PostCommentAction</name>
         <label>Post Comment</label>
-        <locationX>534</locationX>
-        <locationY>1670</locationY>
+        <locationX>798</locationX>
+        <locationY>2366</locationY>
         <actionName>chatterPost</actionName>
         <actionType>chatterPost</actionType>
+        <connector>
+            <targetReference>SuccessScreen</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>text</name>
@@ -24,10 +64,40 @@
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>Clean_Typifications</name>
+        <label>Clean typifications</label>
+        <locationX>1018</locationX>
+        <locationY>1910</locationY>
+        <assignmentItems>
+            <assignToReference>GetCaseAction.Type</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetCaseAction.Subtype__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetCaseAction.TypeN3__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UpdateCaseAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>ModifyCaseAssignment</name>
         <label>Modify Case</label>
-        <locationX>666</locationX>
-        <locationY>1310</locationY>
+        <locationX>930</locationX>
+        <locationY>1550</locationY>
         <assignmentItems>
             <assignToReference>GetCaseAction.RecordTypeId</assignToReference>
             <operator>Assign</operator>
@@ -46,18 +116,32 @@
             <assignToReference>GetCaseAction.Status</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Transferido</stringValue>
+                <stringValue>Asignado</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetCaseAction.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetDestinationQueueAction.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetCaseAction.HasBeenTransfered__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateCaseAction</targetReference>
+            <targetReference>Check_typification</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>SetDestinationAssignment</name>
         <label>Set Destination</label>
-        <locationX>754</locationX>
-        <locationY>878</locationY>
+        <locationX>1018</locationX>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>chosenDestination</assignToReference>
             <operator>Assign</operator>
@@ -72,8 +156,8 @@
     <decisions>
         <name>ChosenDestinationDecision</name>
         <label>Chosen Destination</label>
-        <locationX>886</locationX>
-        <locationY>758</locationY>
+        <locationX>1150</locationX>
+        <locationY>878</locationY>
         <defaultConnector>
             <targetReference>SearchDestinationIteration</targetReference>
         </defaultConnector>
@@ -97,8 +181,11 @@
     <decisions>
         <name>CommentWrittenDecision</name>
         <label>Comment Written</label>
-        <locationX>666</locationX>
-        <locationY>1550</locationY>
+        <locationX>930</locationX>
+        <locationY>2246</locationY>
+        <defaultConnector>
+            <targetReference>SuccessScreen</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>YesComment</name>
@@ -117,22 +204,79 @@
         </rules>
     </decisions>
     <decisions>
-        <name>IsCaseClosedDecision</name>
-        <label>Is Case Closed</label>
-        <locationX>358</locationX>
-        <locationY>278</locationY>
+        <name>Is_typification_available</name>
+        <label>¿Is typification available?</label>
+        <locationX>930</locationX>
+        <locationY>1790</locationY>
+        <defaultConnector>
+            <targetReference>Clean_Typifications</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Is not available</defaultConnectorLabel>
+        <rules>
+            <name>Is_available</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Check_typification.isValid</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateCaseAction</targetReference>
+            </connector>
+            <label>Is available</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsCallCenterTransferible</name>
+        <label>¿CallCenter es transferible?</label>
+        <locationX>622</locationX>
+        <locationY>398</locationY>
         <defaultConnector>
             <targetReference>GetAvailableMetadatasAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_es_transferible</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetCaseAction.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CC Service</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Call_Center_no_transferable_Screen</targetReference>
+            </connector>
+            <label>No es transferible</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsCaseClosedDecision</name>
+        <label>Is Case Closed Or Not Assigned</label>
+        <locationX>336</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>IsCallCenterTransferible</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>yesClosed</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>GetCaseAction.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCaseAction.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Nuevo</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -155,8 +299,8 @@
     <loops>
         <name>SearchDestinationIteration</name>
         <label>Search Destination</label>
-        <locationX>666</locationX>
-        <locationY>638</locationY>
+        <locationX>930</locationX>
+        <locationY>758</locationY>
         <collectionReference>GetAvailableMetadatasAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -188,8 +332,8 @@
     <recordLookups>
         <name>GetAvailableMetadatasAction</name>
         <label>Get Available Metadatas</label>
-        <locationX>666</locationX>
-        <locationY>398</locationY>
+        <locationX>930</locationX>
+        <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>caseTransferScreen</targetReference>
@@ -209,7 +353,7 @@
     <recordLookups>
         <name>GetCaseAction</name>
         <label>Get Case</label>
-        <locationX>358</locationX>
+        <locationX>336</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -228,13 +372,34 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>GetRecordTypeAction</name>
-        <label>Get Record Type</label>
-        <locationX>666</locationX>
-        <locationY>1190</locationY>
+        <name>GetDestinationQueueAction</name>
+        <label>Get Destination Queue</label>
+        <locationX>930</locationX>
+        <locationY>1430</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ModifyCaseAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>chosenDestination.DestinationQueue__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Group</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetRecordTypeAction</name>
+        <label>Get Record Type</label>
+        <locationX>930</locationX>
+        <locationY>1310</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetDestinationQueueAction</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -251,19 +416,39 @@
     <recordUpdates>
         <name>UpdateCaseAction</name>
         <label>Update Case</label>
-        <locationX>666</locationX>
-        <locationY>1430</locationY>
+        <locationX>930</locationX>
+        <locationY>2126</locationY>
         <connector>
             <targetReference>CommentWrittenDecision</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>FailureScreen</targetReference>
+        </faultConnector>
         <inputReference>GetCaseAction</inputReference>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
+        <name>Call_Center_no_transferable_Screen</name>
+        <label>Call Center no transferable Screen</label>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Copy_1_of_NoTransferableText</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Los casos no pueden ser transferidos desde este Call Center.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Finalizar</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>caseTransferScreen</name>
         <label>Transferir Caso</label>
-        <locationX>666</locationX>
-        <locationY>518</locationY>
+        <locationX>930</locationX>
+        <locationY>638</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -331,6 +516,23 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>FailureScreen</name>
+        <label>Failure screen</label>
+        <locationX>1282</locationX>
+        <locationY>2246</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>FailureText</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(244, 30, 30); font-size: 18px;&quot;&gt;Ha habido un problema con la transferencia del caso.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Finalizar</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>NoTransferableScreen</name>
         <label>No transferable Screen</label>
         <locationX>50</locationX>
@@ -340,14 +542,32 @@
         <allowPause>false</allowPause>
         <fields>
             <name>NoTransferableText</name>
-            <fieldText>&lt;p&gt;El caso se encuentra en estado Cerrado, por lo que no es posible su transferencia.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;El caso se encuentra en un estado que impide su transferencia.&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Finalizar</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>SuccessScreen</name>
+        <label>Success screen</label>
+        <locationX>930</locationX>
+        <locationY>2582</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>SuccessText</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(31, 150, 55); font-size: 18px;&quot;&gt;Caso transferido con éxito.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Finalizar</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>232</locationX>
+        <locationX>210</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetCaseAction</targetReference>

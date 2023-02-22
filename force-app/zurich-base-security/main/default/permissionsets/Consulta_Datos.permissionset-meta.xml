@@ -465,6 +465,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.SMEConsultant__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.SMEsSegment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1116,6 +1121,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.GoogleAddress__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.HasBeenTransfered__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -152,6 +152,10 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentInstanceProperties>
+                    <name>showLegacyActivityComposer</name>
+                    <value>false</value>
+                </componentInstanceProperties>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
                 <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>
@@ -289,7 +293,7 @@
                             <value>Case.Generar_Seguimiento</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Case.Transferir</value>
+                            <value>CustomButton.Case.Transferir</value>
                         </valueListItems>
                         <valueListItems>
                             <value>Case.Diferido</value>
@@ -472,7 +476,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>updateQuickActionName</name>
-                    <value>Account.UpdateIntermediary</value>
+                    <value>Account.UpdateIntermediaryEON</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord3</identifier>
