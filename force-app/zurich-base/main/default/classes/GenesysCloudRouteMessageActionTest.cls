@@ -36,7 +36,7 @@ public with sharing class GenesysCloudRouteMessageActionTest
         request.fromAddress = 'Sender@Sender.com';
         request.queueId = '233dc463-b254-4936-b840-dd04a5e979dd';
         request.screenPopRecordId = '5005t000000ol02AAA';
-        request.ownerId = '5005t000000ol02AAA';
+        request.ownerId = new List<String>{'5005t000000ol02AAA'};
         requests.add(request);
         List<GenesysCloudRouteMessageAction.MessageResult> responses = GenesysCloudRouteMessageAction.execute(requests);
         Test.stopTest();
