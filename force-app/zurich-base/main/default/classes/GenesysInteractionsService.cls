@@ -622,6 +622,8 @@ public with sharing class GenesysInteractionsService
             results.phone = String.isBlank(intermediary.MainMobilePhone__c)? intermediary.Phone : intermediary.MainMobilePhone__c;
             results.email = intermediary.MainEmail__c;
             results.nationalId = intermediary.NationalId__c;
+            results.intermediaryChannel = intermediary.Channel__c;
+            results.intermediarySegment = intermediary.Segment__c;
 
             results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c));
         }
@@ -1123,6 +1125,10 @@ public with sharing class GenesysInteractionsService
         public Boolean noIdentified;
         public Boolean multiIdentifiedByNIF;
         public Boolean multiIdentifiedByANI;
+
+        // 2023-03-01 (arcortazar)
+        public String intermediaryChannel;
+        public String intermediarySegment;
 
         public override String toString()
         {
