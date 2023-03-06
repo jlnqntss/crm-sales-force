@@ -174,12 +174,19 @@
         <defaultConnectorLabel>No Email</defaultConnectorLabel>
         <rules>
             <name>EmailOriginOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Origin</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NoteINFO</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -589,6 +596,13 @@
                 <stringValue>CC Service</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Entitlement</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -602,7 +616,7 @@
         <connector>
             <targetReference>Encontrado_Entitlement_CSM</targetReference>
         </connector>
-        <filterLogic>1 AND 2 AND 3 AND (4 OR 5)</filterLogic>
+        <filterLogic>1 AND 2 AND 3 AND (4 OR 5) AND 6</filterLogic>
         <filters>
             <field>CaseTypeN2__c</field>
             <operator>EqualTo</operator>
@@ -636,6 +650,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>CSM Particulares</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -773,7 +794,7 @@
         <connector>
             <targetReference>GotEntitlementResultsDecision</targetReference>
         </connector>
-        <filterLogic>1 AND 2 AND 3 AND 4 AND (5 OR 6) AND 7</filterLogic>
+        <filterLogic>1 AND 2 AND 3 AND 4 AND (5 OR 6) AND 7 AND 8</filterLogic>
         <filters>
             <field>CaseTypeN2__c</field>
             <operator>EqualTo</operator>
@@ -821,6 +842,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
             </value>
         </filters>
         <object>Entitlement</object>
@@ -874,6 +902,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Partner</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
             </value>
         </filters>
         <object>Entitlement</object>
