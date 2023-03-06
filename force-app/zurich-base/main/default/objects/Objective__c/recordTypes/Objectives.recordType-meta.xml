@@ -18,6 +18,10 @@
             <fullName>Portfolio</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Ratio_Retention</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Product__c</picklist>

@@ -266,14 +266,13 @@ private class PlanComercialSelectorTest
      */
     @isTest
     static void findAssignedToEmailFromPC_Null() {
-        List<PlanComercial__c> planesComerciales = new List<PlanComercial__c>([SELECT ID FROM PlanComercial__c LIMIT 1]);
 
         PlanComercialSelector planSel = new PlanComercialSelector();
         Test.startTest();
         Map<Id, PlanComercial__c> result = planSel.findAssignedToDataFromPC(null);
         Test.stopTest();
 
-        System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
+        System.assertEquals(true, result.isEmpty(), 'No debe haber resultados en findAssignedToEmailFromPC_Null');
     }
 
 
@@ -293,7 +292,7 @@ private class PlanComercialSelectorTest
         List<PlanComercial__c> result = planSel.findMensualPlanToDeleteByMaxDate(d);
         Test.stopTest();
 
-        System.assertEquals(true, result.isEmpty(), 'No debe haber resultados');
+        System.assertEquals(true, result.isEmpty(), 'No debe haber resultados en findMensualPlanToDeleteByMaxDate');
     }
 
     /**

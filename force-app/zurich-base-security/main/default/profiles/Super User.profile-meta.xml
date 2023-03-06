@@ -7704,6 +7704,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PlanComercial__c.IsOwnedByHomeOffice__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PlanComercial__c.Intermediary_Description__c</field>
         <readable>true</readable>
     </fieldPermissions>

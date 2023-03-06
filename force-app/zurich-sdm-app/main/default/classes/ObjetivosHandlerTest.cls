@@ -4,123 +4,89 @@ public with sharing class ObjetivosHandlerTest {
     public static final Integer ACTUAL_YEAR = Date.today().year() + 1;
 
     @TestSetup
-    static void makeData() {        
-        
-        TestDataFactorySDM.anualPlanSetupData(ACTUAL_YEAR, AccountsSelector.SDM_DT_EMAIL_FIELD);       
+    static void makeData(){
+        List<Objective__c> objList = new List<Objective__c>();
+        Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, 'PN', 'Particulares', 'Autos', '11 BARCELONA', 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        Objective__c objRetention = TestDataFactory.generateObjective(ACTUAL_YEAR, 'Ratio_Retention', 'Particulares', 'Autos', '11 BARCELONA', 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+
+        objList.add(obj);
+        objList.add(objRetention);
+        insert objList;
+
+        TestDataFactorySDM.anualPlanSetupData(ACTUAL_YEAR, AccountsSelector.SDM_DT_EMAIL_FIELD);
     }
 
+    /**
+     * actualizar pesos objetivo pn
+     *
+     * @author nts (dmunoz)
+     * @date 28/02/2023
+     */
     @isTest
-    static void testOK_insertObjetivo() {
+    static void updatePesosObjetivoPNTest_OK() {
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
-                                                        WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
-                                                        AND ParentPlan__c != NULL 
-                                                        AND Intermediary__c = NULL
-                                                        LIMIT 1]);
+        // obtener objetivo 
+        List<Objective__c> objList = new List<Objective__c>([SELECT Id, January__c FROM Objective__c WHERE Indicator__c = 'PN' LIMIT 1]);
 
-        if (!planesToJob.isEmpty()) {
-            PlanComercial__c pc = planesToJob.get(0);
-            System.debug('pc original KPI  ' + pc.TargetKPINumber__c);
-            Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        if (!objList.isEmpty()) {
+            Date endDate = Date.newInstance(ACTUAL_YEAR, 1, 31);
+
+            List<PlanComercial__c> planMensualListBefore = new List<PlanComercial__c>([SELECT Id, TargetKPINumber__c FROM PlanComercial__c
+                                                                                WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()                                                                                
+                                                                                AND Indicator__c = 'PN'
+                                                                                AND EndDate__c =: endDate
+                                                                                LIMIT 1]);
+
+            Objective__c obj = objList.get(0);
+            obj.January__c = 70.0;
+            obj.February__c = 0.0;
+            obj.December__c = 30.0;
 
             Test.startTest();
-            insert obj;
-
+            update obj;
             Test.stopTest();
 
-            List<PlanComercial__c> planesMensuales = new List<PlanComercial__c>([SELECT ID, Name, startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c
-                                                                                FROM PlanComercial__c 
-                                                                                WHERE ParentPlan__c =: pc.Id 
-                                                                                AND RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()]);
-            System.debug('num mensuales testOK_insertObjetivo ' + planesMensuales.size());
-            
-            System.assertEquals(0, planesMensuales.size(), 'No hay planes mensuales insertados');
-        }        
-    }
-
-
-    @isTest
-    static void testOK_updateObjetivo() {
-
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
-                                                        WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
-                                                        AND ParentPlan__c != NULL 
-                                                        AND Intermediary__c = NULL
-                                                        LIMIT 1]);
-
-        if (!planesToJob.isEmpty()) {
-            PlanComercial__c pc = planesToJob.get(0);
-            System.debug('pc original KPI  ' + pc.TargetKPINumber__c);
-            Objective__c objetivo = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-            insert objetivo;
-
-            List<Objective__c> objectivesList = new List<Objective__c>([SELECT Id, Product__c, Indicator__c, Segment__c, January__c, February__c, March__c, April__c, 
-                                                                            May__c, June__c, July__c, August__c, September__c, October__c, November__c, December__c, Total__c, Year__c, Active__c, ExternalId__c
-                                                                            FROM Objective__c LIMIT 1]);
-
-
-            for (Objective__c obj: objectivesList) {
-                obj.January__c = 100;
-                obj.February__c = 0;
+            if (!planMensualListBefore.isEmpty()) {
+                PlanComercial__c planBeforeUpdate = planMensualListBefore.get(0);
+                PlanComercial__c planAfterUpdate = [SELECT Id, TargetKPINumber__c FROM PlanComercial__c WHERE Id =:planBeforeUpdate.Id];
+    
+                System.assertEquals(true, planBeforeUpdate.TargetKPINumber__c != planAfterUpdate.TargetKPINumber__c);
             }
 
-            Test.startTest();
-            update objectivesList;   
-            Test.stopTest();
-
-            List<PlanComercial__c> planesMensuales = new List<PlanComercial__c>([SELECT ID, Name, startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c
-                                                                                FROM PlanComercial__c 
-                                                                                WHERE ParentPlan__c =: pc.Id 
-                                                                                AND RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()
-                                                                                AND CALENDAR_YEAR(StartDate__c) =: ACTUAL_YEAR]);
-            System.debug('num mensuales testOK_updateObjetivo ' + planesMensuales.size());
-
-            if (!planesMensuales.isEmpty()) {
-                PlanComercial__c pcMensual = planesMensuales.get(0);
-                System.assertEquals(pc.TargetKPINumber__c, pcMensual.TargetKPINumber__c, 'Debe tener el mismo kpi que el anual');
-            } 
-        }       
-    }
-
-    // test delete PC (RN)
-    @isTest
-    static void testOK_DeleteObjetivo() {
-
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
-                                                                        WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
-                                                                        AND ParentPlan__c != NULL 
-                                                                        AND Intermediary__c = NULL
-                                                                        LIMIT 1]);
-
-        if (!planesToJob.isEmpty()) {
-            PlanComercial__c pc = planesToJob.get(0);
-
-            Objective__c objective = TestDataFactory.generateObjective(ACTUAL_YEAR, pc.Indicator__c, pc.Segment__c, pc.Product__c, pc.Zone__c, 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-            insert objective;
-
-            List<Objective__c> objectivesList = new List<Objective__c>([SELECT Id, Product__c, Indicator__c, Segment__c, January__c, February__c, March__c, April__c, 
-                                                                            May__c, June__c, July__c, August__c, September__c, October__c, November__c, December__c, Total__c, Year__c, Active__c, ExternalId__c
-                                                                            FROM Objective__c LIMIT 1]);
-
-            for (Objective__c obj: objectivesList) {
-                obj.January__c = 100;
-                obj.February__c = 0;
-                //mapObjetivosPesos.put(obj.ExternalId__c, obj);
-            }
-
-            Test.startTest();
-		    //System.enqueueJob(new GestionarPlanesMensualesQueueableJob(mapObjetivos, 'Update'));  
-            delete objectivesList;   
-            Test.stopTest();
-
-            List<PlanComercial__c> planesMensuales = new List<PlanComercial__c>([SELECT ID, Name, startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c
-                                                                                FROM PlanComercial__c 
-                                                                                WHERE ParentPlan__c =: pc.Id 
-                                                                                AND RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()
-                                                                                AND CALENDAR_YEAR(StartDate__c) =: ACTUAL_YEAR]);
-            System.debug('num mensuales testOK_DeleteObjetivo ' + planesMensuales.size());
-            System.assertEquals(0, planesMensuales.size(), 'no debe existir ningun plan mensual');               
         }
     }
-    
+
+
+    /**
+     * eliminar objetivo retencion
+     *
+     * @author nts (dmunoz)
+     * @date 28/02/2023
+     */
+    @isTest
+    static void testDeleteObjetivoRetencion_OK() {
+        List<Objective__c> objToDelete = new List<Objective__c>([SELECT Id FROM Objective__c WHERE Indicator__c = 'Ratio_Retention' LIMIT 1]);
+        List<PlanComercial__c> planesIniciales = new List<PlanComercial__c>([SELECT Id
+                                                                            FROM PlanComercial__c 
+                                                                            WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
+                                                                            AND ParentPlan__c != NULL 
+                                                                            AND Indicator__c = 'Ratio_Retention'
+                                                                            AND Intermediary__c = NULL]);
+        
+
+        if (!objToDelete.isEmpty()) {
+
+            Test.startTest();
+            delete objToDelete;
+            Test.stopTest();
+
+            List<PlanComercial__c> planesAfterDelete = new List<PlanComercial__c>([SELECT Id
+                                                                            FROM PlanComercial__c 
+                                                                            WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
+                                                                            AND ParentPlan__c != NULL 
+                                                                            AND Intermediary__c = NULL]);
+
+            System.assertEquals(true, planesIniciales.size() != planesAfterDelete.size());
+        }
+    }
 }

@@ -494,7 +494,8 @@ export default class ObjectivesView extends LightningElement {
   handleSaveNotificationsFrequency() {
     const fields = {};
     // Se guarda el valor previo por si la actualización/creación falla
-    const lightningInputPrevValue = this.frequencyNotification.DaysLeft__c.toString();
+    const lightningInputPrevValue =
+      this.frequencyNotification.DaysLeft__c.toString();
     const lightningInput = this.template.querySelector("lightning-input");
     this.frequencyNotification.DaysLeft__c = lightningInput.value;
 
@@ -530,10 +531,9 @@ export default class ObjectivesView extends LightningElement {
           );
 
           this.frequencyNotification.DaysLeft__c = lightningInputPrevValue;
-        })
+        });
     } else if (
-      lightningInputPrevValue !==
-      this.frequencyNotification.DaysLeft__c
+      lightningInputPrevValue !== this.frequencyNotification.DaysLeft__c
     ) {
       // Existe el registro, por lo tanto se actualiza
       fields[OBJECTIVE_ID_FIELD.fieldApiName] = this.frequencyNotification.Id;
@@ -552,10 +552,10 @@ export default class ObjectivesView extends LightningElement {
           this.showError(
             this.labels.SDM_Objetivos_ToastErrorTitle,
             this.labels.SDM_Objetivos_ToastErrorMessageFreqNotifications
-          )
+          );
 
           this.frequencyNotification.DaysLeft__c = lightningInputPrevValue;
-        })
+        });
     } else {
       // Si el valor no ha cambiado se muestra un mensaje informativo
       this.showInfo(
@@ -604,6 +604,7 @@ export default class ObjectivesView extends LightningElement {
         console.log("row " + JSON.stringify(copyRow));
         array = [...array, copyRow];
         this.recordSelected = this.setMonthPercentValues(array)[0];
+        this.setIndicatorApiName(); // dado que ahora traemos el label del campo indicador, para clonar
         this.cloneFormModal = true;
         this.newFormModal = false;
         this.editFormModal = false;
@@ -612,6 +613,30 @@ export default class ObjectivesView extends LightningElement {
 
         break;
       default:
+    }
+  }
+
+  // no es la solución que me gustaría pero de momento queda así, al clonar un registro debido a que ahora traemos label en el campo indicador por ser este distinto al api name, este valor no está permitido al insertar de forma generica
+  setIndicatorApiName() {
+    let indicator = this.recordSelected.Indicator__c;
+    switch (indicator) {
+      // valores en español
+      case "Producción nueva":
+        this.recordSelected.Indicator__c = "PN";
+        break;
+      case "Cartera":
+        this.recordSelected.Indicator__c = "Portfolio";
+        break;
+      case "% Ratio de retención":
+        this.recordSelected.Indicator__c = "Ratio_Retention";
+        break;
+      case "% Retention Ratio":
+        this.recordSelected.Indicator__c = "Ratio_Retention";
+        break;
+      default:
+        console.log(
+          "No hay indicador identificado en el conversor de api name"
+        );
     }
   }
 
@@ -640,9 +665,6 @@ export default class ObjectivesView extends LightningElement {
         }
       }
     }
-    console.log(
-      "result setMonthPercentValues " + JSON.stringify(draftValuesInput)
-    );
 
     return draftValuesInput;
   }

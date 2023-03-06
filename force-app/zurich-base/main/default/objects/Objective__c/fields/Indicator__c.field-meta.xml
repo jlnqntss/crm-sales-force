@@ -26,6 +26,11 @@
                 <default>false</default>
                 <label>APES</label>
             </value>
+            <value>
+                <fullName>Ratio_Retention</fullName>
+                <default>false</default>
+                <label>% Retention Ratio</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

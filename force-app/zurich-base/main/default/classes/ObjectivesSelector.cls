@@ -26,8 +26,8 @@ public with sharing class ObjectivesSelector {
 
     //#endregion
 
-    private static String getFieldListString() {
-        return ' Id, Year__c, Indicator__c, Segment__c, Product__c, Zone__c, January__c, February__c, March__c, April__c, May__c, June__c, July__c, August__c, September__c, October__c, November__c, December__c, Active__c, ExternalId__c ';
+    private static String getFieldListString() {        
+        return ' Id, Year__c, ToLabel(Indicator__c), Segment__c, Product__c, Zone__c, January__c, February__c, March__c, April__c, May__c, June__c, July__c, August__c, September__c, October__c, November__c, December__c, Active__c, ExternalId__c ';
     }
     
     private static String getSObjectName() {
@@ -99,7 +99,6 @@ public with sharing class ObjectivesSelector {
             'SELECT {0} FROM {1} WHERE ExternalId__c in :externalIdList AND Active__c = true AND RecordTypeId = :rtObjectives',
             new List<String> {getFieldListString(), getSObjectName()}
             );
-        System.debug('query ' + query);
 
         return (List<Objective__c>) Database.query(query);
     }
