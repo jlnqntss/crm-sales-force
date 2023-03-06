@@ -27,6 +27,10 @@
                 <behavior>Edit</behavior>
                 <field>SlaProcessId</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CaseTypeN1__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
