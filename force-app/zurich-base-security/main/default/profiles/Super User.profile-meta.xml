@@ -926,14 +926,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>GetUserIdToNotifyAction</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>GetUserIdToNotifyActionTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>INFOHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
