@@ -350,7 +350,9 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.MainMobilePhone__c,
                 Account.Phone,
                 Account.MainEmail__c,
-                Account.NationalId__c
+                Account.NationalId__c,
+                Account.Channel__c, 
+                Account.Segment__c
             }
         );
 
@@ -391,7 +393,9 @@ public with sharing class AccountsSelector extends RecordsSelector
                     Account.MainMobilePhone__c,
                     Account.Phone,
                     Account.MainEmail__c,
-                    Account.NationalId__c
+                    Account.NationalId__c, 
+                    Account.Channel__c, 
+                    Account.Segment__c
                 }
             );
 
