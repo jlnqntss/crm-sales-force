@@ -232,6 +232,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>KPI__c.RetentionRatio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KPI__c.AccidentRate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>KPI__c.RenewedPortfolio__c</field>
         <readable>true</readable>
     </fieldPermissions>
