@@ -669,10 +669,13 @@ public with sharing class GenesysInteractionsService
 
         for(Case openCase : casesSelector.findOpenByAccount(new List<String>{intermediary.intermediaryId}))
         {
-            bestAgents.add
-            (
-                new Agent(openCase.Owner.Email, true, false, false)
-            );
+            if (openCase.Owner.Email != null)
+            {
+                bestAgents.add
+                (
+                    new Agent(openCase.Owner.Email, true, false, false)
+                );
+            }
         }
 
         // 2 - Comprobar si uno de los gestores con casos abiertos es el preferente del mediador para individuals
