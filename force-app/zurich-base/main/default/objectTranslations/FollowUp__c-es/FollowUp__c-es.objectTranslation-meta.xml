@@ -8,7 +8,7 @@
         <plural>true</plural>
         <value>Seguimientos</value>
     </caseValues>
-    <gender>Feminine</gender>
+    <gender>Masculine</gender>
     <layouts>
         <layout>Follow Up Layout</layout>
         <sections>
@@ -16,5 +16,5 @@
             <section>Custom Links</section>
         </sections>
     </layouts>
-    <nameFieldLabel>Nombre Seguimiento</nameFieldLabel>
+    <nameFieldLabel>Número Seguimiento</nameFieldLabel>
 </CustomObjectTranslation>

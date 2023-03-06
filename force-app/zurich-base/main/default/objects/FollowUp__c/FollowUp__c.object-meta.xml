@@ -159,20 +159,24 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
-    <gender>Feminine</gender>
+    <gender>Masculine</gender>
     <label>Seguimiento</label>
     <nameField>
-        <displayFormat>Seguimiento-{000000}</displayFormat>
-        <label>Follow Up Name</label>
+        <displayFormat>{000000}</displayFormat>
+        <label>Follow Up Number</label>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Seguimientos</pluralLabel>
     <searchLayouts>
         <searchResultsAdditionalFields>Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>IntermediaryCode__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CIF__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Name__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Detail__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Type__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Notify__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>StartDate__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>EndDate__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
