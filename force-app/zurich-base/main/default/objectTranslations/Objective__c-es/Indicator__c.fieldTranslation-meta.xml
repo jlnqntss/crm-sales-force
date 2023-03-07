@@ -7,6 +7,10 @@
         <translation>% Ratio de retención</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>% Sin Total</masterLabel>
+        <translation>% Siniestralidad total</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>APES</masterLabel>
         <translation></translation>
     </picklistValues>

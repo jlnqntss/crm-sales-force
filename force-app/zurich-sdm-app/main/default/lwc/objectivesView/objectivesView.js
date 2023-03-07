@@ -630,8 +630,15 @@ export default class ObjectivesView extends LightningElement {
       case "% Ratio de retención":
         this.recordSelected.Indicator__c = "Ratio_Retention";
         break;
+      case "% Siniestralidad total":
+        this.recordSelected.Indicator__c = "Ratio_Claim";
+        break;
+      // valores en inglés
       case "% Retention Ratio":
         this.recordSelected.Indicator__c = "Ratio_Retention";
+        break;
+      case "% Sin Total":
+        this.recordSelected.Indicator__c = "Ratio_Claim";
         break;
       default:
         console.log(

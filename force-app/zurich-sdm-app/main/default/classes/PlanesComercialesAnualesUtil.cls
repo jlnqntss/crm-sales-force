@@ -20,13 +20,15 @@ public with sharing class PlanesComercialesAnualesUtil {
         // recupero los ids de los usuarios piloto     
         List<User> validUserIdsList = getIdsValidUser(validEmailList);
 
-        Map<String, Objective__c> retentionObjectives = objectivesMap.get('RetentionObjectives');
+        Map<String, Objective__c> retentionObjectives = objectivesMap.get('RetentionObjectives'); // retencion
+        Map<String, Objective__c> accidentObjectives = objectivesMap.get('AccidentObjectives'); // siniestralidad        
 
-        List<PlanComercial__c> retentionPlansList = generateAnualRetentionPlans(retentionObjectives, validUserIdsList);
+        List<PlanComercial__c> retentionPlansList = generateAnualPlans(retentionObjectives, validUserIdsList); // generar planes anuales retencion
+        List<PlanComercial__c> accidentPlansList = generateAnualPlans(accidentObjectives, validUserIdsList); // generar planes anuales siniestralidad
 
-        // añado todos los elementos a la lista resultado, dejo preparado para siniestralidad
+        // añado todos los elementos a la lista resultado para que se inserten a la vez
         result.addAll(retentionPlansList);
-
+        result.addAll(accidentPlansList);
 
         return result;
     }
@@ -39,17 +41,13 @@ public with sharing class PlanesComercialesAnualesUtil {
      * @author dmunoz
      * @date 24/02/2023
      */
-    public static List<PlanComercial__c> generateAnualPlansFromObjectives(Map<String, Objective__c> objetivosToUpdateActiveAnual, List<String> validEmailList) {
+    public static List<PlanComercial__c> generateAnualPlansFromUpdateObjectives(Map<String, Objective__c> objetivosToUpdateActiveAnual, List<String> validEmailList) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
 
         // recupero los ids de los usuarios piloto
         List<User> validUserIdsList = getIdsValidUser(validEmailList);  
 
-        List<PlanComercial__c> retentionPlansList = generateAnualRetentionPlans(objetivosToUpdateActiveAnual, validUserIdsList);
-
-        // añado todos los elementos a la lista resultado, dejo preparado para siniestralidad
-        result.addAll(retentionPlansList);
-
+        result = generateAnualPlans(objetivosToUpdateActiveAnual, validUserIdsList);
 
         return result;
     }
@@ -58,18 +56,22 @@ public with sharing class PlanesComercialesAnualesUtil {
     /********************************************************* Metodos auxiliares generateAnualPlansFromObjectives **********************************************************************************/
 
     /**
-     * Metodo para generar los planes anuales de retencion
-     * @param retentionObjectives: mapa de objetivos filtrados
+     * Metodo para generar los planes anuales de retencion y/o de siniestralidad
+     * @param objectivesMap: mapa de objetivos filtrados
      * @param validUserIdsList: lista de ids usuario
      * @author dmunoz
      * @date 23/02/2023
      */
-    private static List<PlanComercial__c> generateAnualRetentionPlans(Map<String, Objective__c> retentionObjectives, List<User> validUserIdsList) {
+    private static List<PlanComercial__c> generateAnualPlans(Map<String, Objective__c> objectivesMap, List<User> validUserIdsList) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();        
 
-        for (Objective__c obj: retentionObjectives.values()) {
+        for (Objective__c obj: objectivesMap.values()) {
             for (User user: validUserIdsList) {
-                result.add(calculateRetentionPlan(obj, user));
+                if ('Ratio_Retention'.equals(obj.Indicator__c)) {
+                    result.add(calculateRetentionPlan(obj, user));
+                } else if ('Ratio_Claim'.equals(obj.Indicator__c)) {
+                    result.add(calculateAccidentPlan(obj, user));
+                }
             }
         }
 
@@ -86,8 +88,39 @@ public with sharing class PlanesComercialesAnualesUtil {
      */
     private static PlanComercial__c calculateRetentionPlan(Objective__c obj, User user) {
 
-        PlanComercial__c plan = new PlanComercial__c();
+        PlanComercial__c plan = calculateAnualPlan(obj, user);
         plan.Name = 'Retención Anual Zurich ' + obj.Segment__c + ' ' + obj.Zone__c;
+
+        return plan;
+    }
+
+
+    /**
+     * Metodo para generar los planes anuales de retencion
+     * @param obj: objetivo
+     * @param user: usuario piloto
+     * @author dmunoz
+     * @date 23/02/2023
+     */
+    private static PlanComercial__c calculateAccidentPlan(Objective__c obj, User user) {
+
+        PlanComercial__c plan = calculateAnualPlan(obj, user);
+        plan.Name = 'Siniestralidad Anual Zurich ' + obj.Segment__c + ' ' + obj.Zone__c;
+
+        return plan;
+    }
+
+
+    /**
+     * Metodo para generar los datos comunes de los planes anuales de retencion y siniestralidad
+     * @param obj: objetivo
+     * @param user: usuario piloto
+     * @author dmunoz
+     * @date 23/02/2023
+     */
+    private static PlanComercial__c calculateAnualPlan(Objective__c obj, User user) {
+
+        PlanComercial__c plan = new PlanComercial__c();        
         plan.OwnerId = UserInfo.getUserId(); // será un home office
         plan.AssignedTo__c = user.Id;
         plan.RecordTypeId = Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId();
@@ -104,6 +137,7 @@ public with sharing class PlanesComercialesAnualesUtil {
         plan.Description__c = plan.Name;
 
         return plan;
+
     }
 
     /******************************************************* Métodos auxiliares *****************************************************************************************/

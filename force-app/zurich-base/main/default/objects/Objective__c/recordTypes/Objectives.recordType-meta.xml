@@ -19,6 +19,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Ratio_Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Ratio_Retention</fullName>
             <default>false</default>
         </values>

@@ -62,7 +62,7 @@ public with sharing class SDMValidatePlansAsyncBatchUtil {
 
 
     /**
-     * Comprueba que el rt del objetivo es el adecuado para no tratar el registro específico para el numero de dias a notificar
+     * Comprueba que el indicador del objetivo es Ratio Retencion
      * @param obj: objetivo a consultar
      * @author dmunoz
      * @date 23/02/2023
@@ -71,6 +71,23 @@ public with sharing class SDMValidatePlansAsyncBatchUtil {
         Boolean result = false;
 
         if ('Ratio_Retention'.equals(obj.Indicator__c)) {
+            result = true;
+        }   
+
+        return result;
+    }
+
+
+    /**
+     * Comprueba que el indicador del objetivo es Siniestralidad
+     * @param obj: objetivo a consultar
+     * @author dmunoz
+     * @date 23/02/2023
+     */
+    public static Boolean isAccidentObjective(Objective__c obj) {
+        Boolean result = false;
+
+        if ('Ratio_Claim'.equals(obj.Indicator__c)) {
             result = true;
         }   
 

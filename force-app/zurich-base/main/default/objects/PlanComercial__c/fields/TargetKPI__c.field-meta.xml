@@ -13,7 +13,7 @@
  &quot;Ratio_PoliciesPNIncreas&quot;,   TargetKPIPercent__c,
  &quot;Ratio_PoliciesInForceIncrease&quot;,   TargetKPIPercent__c,
  &quot;Ratio_PortIncrease&quot;,   TargetKPIPercent__c,
- &quot;Ratio_Claim&quot;,   TargetKPIPercent__c,
+ &quot;Ratio_Claim&quot;,   TargetKPIPercent__c * 100,
  &quot;Ratio_Retention&quot;,   TargetKPIPercent__c * 100,
  &quot;Totaldiscount&quot;,   TargetKPIPercent__c,
  &quot;APES&quot;, TargetKPICurrency__c,

@@ -102,11 +102,13 @@ public with sharing class SDMInsertPlansAsyncBatch implements Database.Batchable
         
         // en primer lugar generaremos los planes anuales de retención y siniestralidad si procede
         List<PlanComercial__c> generatedAnualPlansList = PlanesComercialesAnualesUtil.generateAnualPlansFromObjectives(objectivesMap, validEmailList);
+        system.debug('planes anuales generados ' + generatedAnualPlansList);
         // insertamos los planes anuales generado de siniestralidad y retención si procede
         List<PlanComercial__c> anualPlansInserted = insertAnualPlans(generatedAnualPlansList);
 
         // generar los planes mensuales de para los planes generados como para los planes anuales ya existentes en la bd para los usuarios del piloto
         List<PlanComercial__c> planesMensualesToInsertList = generateMensualPlansFromObjectives(objectivesMap, anualPlansInserted);
+        system.debug('planes mensuales generados ' + planesMensualesToInsertList.size());
         // insertamos los planes mensuales generados
         insertMensualPlans(planesMensualesToInsertList);
         
@@ -154,11 +156,14 @@ public with sharing class SDMInsertPlansAsyncBatch implements Database.Batchable
 
         Map<String, Objective__c> otherObjectives = new Map<String, Objective__c>(); // guardamos los objetivos activos de indicador PN, Cartera y APES
         Map<String, Objective__c> retentionObjectives = new Map<String, Objective__c>(); // guardamos los objetivos activos de indicador Ratio Retencion
+        Map<String, Objective__c> accidentObjectives = new Map<String, Objective__c>(); // guardamos los objetivos activos de indicador Siniestralidad
 
         for (Objective__c obj: (List<Objective__c>) scope) {
             if (SDMValidatePlansAsyncBatchUtil.isObjectiveActive(obj) && SDMValidatePlansAsyncBatchUtil.isRTObjective(obj)) { // solo generamos planes de objetivos que se inserten activos
                 if (SDMValidatePlansAsyncBatchUtil.isRetentionObjective(obj)) {
                     retentionObjectives.put(obj.ExternalId__c, obj);
+                } else if (SDMValidatePlansAsyncBatchUtil.isAccidentObjective(obj)) { // siniestralidad
+                    accidentObjectives.put(obj.ExternalId__c, obj);
                 } else if (SDMValidatePlansAsyncBatchUtil.isOtherIndicator(obj)) {
                     otherObjectives.put(obj.ExternalId__c, obj);
                 }
@@ -166,6 +171,7 @@ public with sharing class SDMInsertPlansAsyncBatch implements Database.Batchable
         }
 
         result.put('RetentionObjectives', retentionObjectives);
+        result.put('AccidentObjectives', accidentObjectives);
         result.put('OtherObjectives', otherObjectives);
 
         return result;
@@ -190,7 +196,8 @@ public with sharing class SDMInsertPlansAsyncBatch implements Database.Batchable
 
     /**
      * Metodo que contiene lo necesario para generar los planes mensuales de los planes compatibles con los objetivos recibidos por el trigger
-     * @param generatedAnualPlansList: lista de planes anuales de retencion y siniestralidad calculados para insertar
+     * @param objectivesMap: mapa con los distintos tipos de objetivos recibidos del trigger clasificados
+     * @param anualPlansInserted: lista de planes anuales de retencion y siniestralidad calculados para insertar
      * @author dmunoz
      * @date 23/02/2023
      */
@@ -199,7 +206,7 @@ public with sharing class SDMInsertPlansAsyncBatch implements Database.Batchable
 
         Map<String, Objective__c> otherObjectives = objectivesMap.get('OtherObjectives');
 
-        Map<String, Objective__c> allObjectivesMap = getAllObjectives(objectivesMap);
+        Map<String, Objective__c> allObjectivesMap = getAllObjectives(objectivesMap); // cambio la estructura del mapa de objetivos de entrada a externalid, obj
 
         // obtener primero los planes anuales Cartera, PN y APES
         List<PlanComercial__c> otherAnualPlanList = PlanesComercialesMensualesUtil.getPlanesComercialesAnualesMensualesByObjetivos(otherObjectives, 'Anual');
@@ -243,7 +250,13 @@ public with sharing class SDMInsertPlansAsyncBatch implements Database.Batchable
     }
     
 
-
+    /**
+     * Unificar en una misma lista planes anuales de retencion, siniestralidad, pn, cartera y apes
+     * @param otherAnualPlanList: planes cartera, pn y apes
+     * @param anualPlansInserted: planes siniestralidad, retencion
+     * @author dmunoz
+     * @date 27/02/2023
+     */
     private List<PlanComercial__c> getAllAnualPlans(List<PlanComercial__c> otherAnualPlanList, List<PlanComercial__c> anualPlansInserted) {
         List<PlanComercial__c> result = new List<PlanComercial__c>();
 
@@ -254,14 +267,22 @@ public with sharing class SDMInsertPlansAsyncBatch implements Database.Batchable
     }
 
 
+    /**
+     * Convertir el mapa de mapa de objetivos en mapa de external id, objetiivo
+     * @param objectivesMap: planes del trigger
+     * @author dmunoz
+     * @date 27/02/2023
+     */
     private Map<String, Objective__c> getAllObjectives(Map<String, Map<String, Objective__c>> objectivesMap) {
         Map<String, Objective__c> result = new Map<String, Objective__c>();
 
         Map<String, Objective__c> otherObjectives = objectivesMap.get('OtherObjectives');
         Map<String, Objective__c> retentionObjectives = objectivesMap.get('RetentionObjectives');
+        Map<String, Objective__c> accidentObjectives = objectivesMap.get('AccidentObjectives');
 
         result.putAll(otherObjectives);
         result.putAll(retentionObjectives);
+        result.putAll(accidentObjectives);
 
         return result;
     }

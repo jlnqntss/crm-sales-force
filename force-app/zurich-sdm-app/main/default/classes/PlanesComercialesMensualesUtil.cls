@@ -132,6 +132,8 @@ public with sharing class PlanesComercialesMensualesUtil {
 
         if ('Ratio_Retention'.equals(pc.Indicator__c)) {
             result = calculateRetentionPlanData(pc, obj, i);
+        } else if ('Ratio_Claim'.equals(pc.Indicator__c)) {
+            result = calculateAccidentPlanData(pc, obj, i);
         } else {
             result = calculateOtherPlanData(pc, obj, i, mapParentOwner);
         }
@@ -150,11 +152,45 @@ public with sharing class PlanesComercialesMensualesUtil {
      * @date 21/07/2022
      */
     private static PlanComercial__c calculateRetentionPlanData(PlanComercial__c pc, Objective__c obj, Integer i) {        
-        PlanComercial__c result = pc.clone(false, false, false, false);
-        
-        Map<String, String> calculoPCMap = calculateRetentionPlanMensualFields(pc, obj, i);
+        Map<String, String> calculoPCMap = calculateAccidentRetentionPlanMensualFields(pc, obj, i);
+        PlanComercial__c result = getMensualPlanFromAccidentRetention(pc, obj, i, calculoPCMap);
 
         result.Name = ('Retención Mensual Zurich ' + obj.Segment__c + ' ' + obj.Zone__c + ' ' + calculoPCMap.get('MonthName')).left(75) + ' ' + pc.EndDate__c.year(); // recorto el tamaño a 75 y añado 5 caracteres al final con el año haciendo un total de 80
+        
+        return result;
+    }
+
+
+    /**
+     * Generar plan mensual Ratio Retencion para el mes i a partir de un plan anual
+     * @param pc: Plan Anual
+     * @param obj: Objetivo
+     * @param i: nº del mes a generar
+     * @return Plan Mensual i para el plan anual de entrada
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static PlanComercial__c calculateAccidentPlanData(PlanComercial__c pc, Objective__c obj, Integer i) {        
+        Map<String, String> calculoPCMap = calculateAccidentRetentionPlanMensualFields(pc, obj, i);
+        PlanComercial__c result = getMensualPlanFromAccidentRetention(pc, obj, i, calculoPCMap);
+        
+        result.Name = ('Siniestralidad Mensual Zurich ' + obj.Segment__c + ' ' + obj.Zone__c + ' ' + calculoPCMap.get('MonthName')).left(75) + ' ' + pc.EndDate__c.year(); // recorto el tamaño a 75 y añado 5 caracteres al final con el año haciendo un total de 80        
+
+        return result;
+    }
+
+     /**
+     * Generar plan mensual Ratio Retencion/Siniestralidad para el mes i a partir de un plan anual. Contiene los calculos comunes para estos registros
+     * @param pc: Plan Anual
+     * @param obj: Objetivo
+     * @param i: nº del mes a generar
+     * @return Plan Mensual i para el plan anual de entrada
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static PlanComercial__c getMensualPlanFromAccidentRetention(PlanComercial__c pc, Objective__c obj, Integer i, Map<String, String> calculoPCMap) {        
+        PlanComercial__c result = pc.clone(false, false, false, false);       
+        
         result.TargetKPIPercent__c = Decimal.valueOf(calculoPCMap.get('KPI'));
         result.RecordTypeId = Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId();
         result.StartDate__c = Date.newInstance(pc.EndDate__c.year(), i, 1); // no son acumulativos, por lo que start date es el 1 del mes a calcular
@@ -178,8 +214,7 @@ public with sharing class PlanesComercialesMensualesUtil {
         PlanComercial__c result = pc.clone(false, false, false, false);
         
         Map<String, String> calculoPCMap = calculatePlanMensualFields(pc, obj, i);
-
-        result.Name = (pc.Name + ' ' + calculoPCMap.get('MonthName')).left(75) + ' ' + pc.EndDate__c.year(); // recorto el tamaño a 75 y añado 5 caracteres al final con el año haciendo un total de 80
+        
         result.put(calculoPCMap.get('KPIField'), decimal.valueOf(calculoPCMap.get('KPI'))); // seteo uno de los 3 campos kpi segun el que esté informado en el plan mensual
         result.RecordTypeId = Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId();
         result.EndDate__c = Date.newInstance(pc.EndDate__c.year(), i, Integer.valueOf(calculoPCMap.get('NumberOfDays')));
@@ -189,29 +224,7 @@ public with sharing class PlanesComercialesMensualesUtil {
         result.Actual_KPI__c = String.isEmpty(calculoPCMap.get('ActualKPI')) ? null : Decimal.valueOf(calculoPCMap.get('ActualKPI'));
 
         return result;
-    }    
-
-
-    
-
-
-    /**
-     * Calculo el valor de sent notifications para los planes hijos, añado el valor 02,03 para no enviar notificaciones en planes de meses anteriores al actual
-     * @param pc: plan comercial anual
-     * @param monthToCalculate: mes a generar
-     * @return Map con los calculos
-     * @author dmunoz
-     * @date 21/07/2022
-     */
-    private static String calculateNotificationsSent(Integer monthToCalculate, Integer actualMonth) {
-        String result = '';
-
-        if (monthToCalculate < actualMonth) {
-            result = '01;02;03';
-        }
-        
-        return result;
-    }
+    }   
 
 
     /******************************************************* Métodos actualizar planes mensuales *****************************************************************************************/
@@ -281,7 +294,7 @@ public with sharing class PlanesComercialesMensualesUtil {
             // recupero los email de los usuarios piloto
             List<String> validEmailList = getValidEmailsFromMetadata();
             // calcular los planes anuales de retencion y siniestralidad
-            pcAnualToInsert = PlanesComercialesAnualesUtil.generateAnualPlansFromObjectives(objetivosToUpdateActiveAnual, validEmailList);
+            pcAnualToInsert = PlanesComercialesAnualesUtil.generateAnualPlansFromUpdateObjectives(objetivosToUpdateActiveAnual, validEmailList);
 
         } if (!objetivosToUpdateInactiveAnual.isEmpty()) { // objetivos Retencion y Siniestralidad desactivados
             // obtener planes anuales
@@ -319,8 +332,8 @@ public with sharing class PlanesComercialesMensualesUtil {
             obj = objetivosMap.get(externalIdPCM);
 
             if (obj != null) {
-                if ('Ratio_Retention'.equals(pcm.Indicator__c)) {
-                    calculoPCMap = calculateRetentionPlanMensualFields(pcm, obj, pcm.EndDate__c.month());
+                if ('Ratio_Retention'.equals(pcm.Indicator__c) || 'Ratio_Claim'.equals(pcm.Indicator__c)) {
+                    calculoPCMap = calculateAccidentRetentionPlanMensualFields(pcm, obj, pcm.EndDate__c.month());
                     pcm.TargetKPIPercent__c = Decimal.valueOf(calculoPCMap.get('KPI'));
                 } else {
                     calculoPCMap = calculatePlanMensualFields(pcm.ParentPlan__r, obj, pcm.EndDate__c.month());
@@ -337,13 +350,13 @@ public with sharing class PlanesComercialesMensualesUtil {
     /****************************************************** Metodos auxiliares ******************************************************************************/
 
     /**
-     * Calculo de valores de plan mensual según el mes
+     * Calculo de valores de plan mensual siniestralidad/retencion según el mes
      * @param pc: plan comercial
      * @return Map con los calculos
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static Map<String, String> calculateRetentionPlanMensualFields(PlanComercial__c pc, Objective__c obj, Integer i) {
+    private static Map<String, String> calculateAccidentRetentionPlanMensualFields(PlanComercial__c pc, Objective__c obj, Integer i) {
         Map<String, String> result = new Map<String, String>();
 
         String monthName;
@@ -500,6 +513,24 @@ public with sharing class PlanesComercialesMensualesUtil {
         result.put('KPIField', kpiField);
         result.put('ActualKPI', actualKPI);
 
+        return result;
+    }
+
+    /**
+     * Calculo el valor de sent notifications para los planes hijos, añado el valor 02,03 para no enviar notificaciones en planes de meses anteriores al actual
+     * @param pc: plan comercial anual
+     * @param monthToCalculate: mes a generar
+     * @return Map con los calculos
+     * @author dmunoz
+     * @date 21/07/2022
+     */
+    private static String calculateNotificationsSent(Integer monthToCalculate, Integer actualMonth) {
+        String result = '';
+
+        if (monthToCalculate < actualMonth) {
+            result = '01;02;03';
+        }
+        
         return result;
     }
 

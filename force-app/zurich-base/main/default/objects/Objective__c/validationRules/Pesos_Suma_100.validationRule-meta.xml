@@ -6,7 +6,8 @@
     <errorConditionFormula>AND(
 				RecordType.DeveloperName = &apos;Objectives&apos;,
 				Total__c &lt;&gt; 1,
-				NOT (ISPICKVAL( Indicator__c , &apos;Ratio_Retention&apos;))
+				NOT (ISPICKVAL( Indicator__c , &apos;Ratio_Retention&apos;)),
+				NOT (ISPICKVAL( Indicator__c , &apos;Ratio_Claim&apos;))
 )</errorConditionFormula>
     <errorMessage>La suma de los pesos debe ser 100%</errorMessage>
 </ValidationRule>

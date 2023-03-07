@@ -237,20 +237,20 @@ public with sharing class SDMUpdatePlansAsyncBatch implements Database.Batchable
 
         // compruebo si se ha modificado pesos y/o active
         Map<String, Objective__c> objetivosToUpdatePesos = new Map<String, Objective__c>(); // map externalId, Objetivo
-        Map<String, Objective__c> objetivosToUpdateMensual = new Map<String, Objective__c>(); // map externalId, Objetivo
+        Map<String, Objective__c> objetivosToUpdateActiveMensual = new Map<String, Objective__c>(); // map externalId, Objetivo
         Map<String, Objective__c> objetivosToUpdateInactiveMensual = new Map<String, Objective__c>(); // map externalId, Objetivo
-        Map<String, Objective__c> objetivosToUpdateAnual = new Map<String, Objective__c>(); // map externalId, Objetivo
+        Map<String, Objective__c> objetivosToUpdateActiveAnual = new Map<String, Objective__c>(); // map externalId, Objetivo
         Map<String, Objective__c> objetivosToUpdateInactiveAnual = new Map<String, Objective__c>(); // map externalId, Objetivo
 
         for (Objective__c obj: (List<Objective__c>) scope) {
             if (SDMValidatePlansAsyncBatchUtil.checkActive(obj, oldMap) && SDMValidatePlansAsyncBatchUtil.isRTObjective(obj)) { // valido primero el flag de activo, si se activa generaremos nuevos planes
-                if (SDMValidatePlansAsyncBatchUtil.isRetentionObjective(obj)) {
-                    objetivosToUpdateAnual.put(obj.ExternalId__c, obj);
+                if (SDMValidatePlansAsyncBatchUtil.isRetentionObjective(obj) || SDMValidatePlansAsyncBatchUtil.isAccidentObjective(obj)) {
+                    objetivosToUpdateActiveAnual.put(obj.ExternalId__c, obj);
                 } else {
-                    objetivosToUpdateMensual.put(obj.ExternalId__c, obj);
+                    objetivosToUpdateActiveMensual.put(obj.ExternalId__c, obj);
                 }
             } else if (SDMValidatePlansAsyncBatchUtil.checkInactive(obj, oldMap)) { // si uno de los cambios del objetivo es inactivar, borraremos los planes mensuales
-                if (SDMValidatePlansAsyncBatchUtil.isRetentionObjective(obj)) {
+                if (SDMValidatePlansAsyncBatchUtil.isRetentionObjective(obj) || SDMValidatePlansAsyncBatchUtil.isAccidentObjective(obj)) {
                     objetivosToUpdateInactiveAnual.put(obj.ExternalId__c, obj);
                 } else {
                     objetivosToUpdateInactiveMensual.put(obj.ExternalId__c, obj);
@@ -261,9 +261,9 @@ public with sharing class SDMUpdatePlansAsyncBatch implements Database.Batchable
         }
       
         result.put('ObjetivosToUpdatePesos', objetivosToUpdatePesos);
-        result.put('ObjetivosToUpdateActiveMensual', objetivosToUpdateMensual);
+        result.put('ObjetivosToUpdateActiveMensual', objetivosToUpdateActiveMensual);
         result.put('ObjetivosToUpdateInactiveMensual', objetivosToUpdateInactiveMensual);
-        result.put('ObjetivosToUpdateActiveAnual', objetivosToUpdateAnual);
+        result.put('ObjetivosToUpdateActiveAnual', objetivosToUpdateActiveAnual);
         result.put('ObjetivosToUpdateInactiveAnual', objetivosToUpdateInactiveAnual);
 
         return result;      

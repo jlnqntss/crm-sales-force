@@ -87,6 +87,26 @@ public with sharing class SDMValidatePlansAsyncBatchUtilTest {
         System.assertEquals(true, result, 'El Objetivo debe tener indicador ratio retencion');
     }
 
+    /**
+     * Test objetivo es Siniestralidad
+     *
+     * @author nts (dmunoz)
+     * @date 28/02/2023
+     */
+    @isTest
+    static void isAccidentObjectiveTest() {
+
+        // generar objetivo en memoria activo
+        Objective__c obj = new Objective__c();
+        obj.Indicator__c = 'Ratio_Claim';
+
+        Test.startTest();
+        Boolean result = SDMValidatePlansAsyncBatchUtil.isAccidentObjective(obj);
+        Test.stopTest();
+
+        System.assertEquals(true, result, 'El Objetivo debe tener indicador siniestralidad');
+    }
+
 
     /**
      * Test objetivo no es Ratio Retencion
