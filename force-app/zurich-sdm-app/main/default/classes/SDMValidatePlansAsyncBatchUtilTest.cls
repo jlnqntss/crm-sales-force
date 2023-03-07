@@ -185,9 +185,6 @@ public with sharing class SDMValidatePlansAsyncBatchUtilTest {
             obj.Id = listaObjetivo.get(0).Id;
             obj.Active__c = false;
 
-            System.debug(obj.Active__c);
-            System.debug(oldMap.values().get(0));
-
             Test.startTest();
             Boolean result = SDMValidatePlansAsyncBatchUtil.checkInactive(obj, oldMap);
             Test.stopTest();
