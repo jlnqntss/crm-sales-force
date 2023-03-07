@@ -34,6 +34,22 @@
     </businessHours>
     <businessHours>
         <active>true</active>
+        <default>false</default>
+        <fridayEndTime>15:00:00.000Z</fridayEndTime>
+        <fridayStartTime>08:00:00.000Z</fridayStartTime>
+        <mondayEndTime>16:30:00.000Z</mondayEndTime>
+        <mondayStartTime>08:00:00.000Z</mondayStartTime>
+        <name>Centro Excelencia Default</name>
+        <thursdayEndTime>16:30:00.000Z</thursdayEndTime>
+        <thursdayStartTime>08:00:00.000Z</thursdayStartTime>
+        <timeZoneId>Europe/Madrid</timeZoneId>
+        <tuesdayEndTime>16:30:00.000Z</tuesdayEndTime>
+        <tuesdayStartTime>08:00:00.000Z</tuesdayStartTime>
+        <wednesdayEndTime>16:30:00.000Z</wednesdayEndTime>
+        <wednesdayStartTime>08:00:00.000Z</wednesdayStartTime>
+    </businessHours>
+    <businessHours>
+        <active>true</active>
         <default>true</default>
         <fridayEndTime>00:00:00.000Z</fridayEndTime>
         <fridayStartTime>00:00:00.000Z</fridayStartTime>
@@ -72,6 +88,7 @@
     </businessHours>
     <holidays>
         <businessHours>CCS Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
         <name>01/05 - Jornada Intensiva Víspera Reyes CCS</name>
@@ -95,12 +112,22 @@
     <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <description>Mes/Día - Festividad</description>
         <isRecurring>true</isRecurring>
         <name>01/06 - Reyes</name>
         <recurrenceDayOfMonth>6</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
         <recurrenceStartDate>2022-01-06</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>03/20 - Festividad Correspondiente a San José</name>
+        <recurrenceDayOfMonth>20</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>March</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-03-20</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
@@ -137,8 +164,18 @@
         <startTime>14:30:00.000Z</startTime>
     </holidays>
     <holidays>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>04/06 - Jueves Santo</name>
+        <recurrenceDayOfMonth>6</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-04-06</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>04/07 - Viernes Santo</name>
         <recurrenceDayOfMonth>7</recurrenceDayOfMonth>
@@ -178,6 +215,7 @@
     <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>05/01 - Primero de mayo</name>
         <recurrenceDayOfMonth>1</recurrenceDayOfMonth>
@@ -186,7 +224,42 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>05/02 - Día Comunidad de Madrid</name>
+        <recurrenceDayOfMonth>2</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>May</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-05-02</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>05/15 - Fiesta San Isidro</name>
+        <recurrenceDayOfMonth>15</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>May</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-05-15</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>06/16 - Jornada Intensiva Verano CE</name>
+        <recurrenceDayOfWeek>Monday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Tuesday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Wednesday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Thursday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Friday</recurrenceDayOfWeek>
+        <recurrenceEndDate>2023-09-15</recurrenceEndDate>
+        <recurrenceInterval>1</recurrenceInterval>
+        <recurrenceStartDate>2023-06-16</recurrenceStartDate>
+        <recurrenceType>RecursWeekly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>CSM Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
         <name>06/16 - Jornada Intensiva Verano CSM</name>
         <recurrenceDayOfWeek>Monday</recurrenceDayOfWeek>
@@ -198,6 +271,7 @@
         <recurrenceInterval>1</recurrenceInterval>
         <recurrenceStartDate>2023-06-16</recurrenceStartDate>
         <recurrenceType>RecursWeekly</recurrenceType>
+        <startTime>14:30:00.000Z</startTime>
     </holidays>
     <holidays>
         <businessHours>CCS Default</businessHours>
@@ -219,6 +293,7 @@
     <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>08/15 - Asunción de la Virgen</name>
         <recurrenceDayOfMonth>15</recurrenceDayOfMonth>
@@ -237,6 +312,7 @@
     <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>10/12 - Día de la Hispanidad</name>
         <recurrenceDayOfMonth>12</recurrenceDayOfMonth>
@@ -247,6 +323,7 @@
     <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>11/01 - Todos los Santos</name>
         <recurrenceDayOfMonth>1</recurrenceDayOfMonth>
@@ -255,14 +332,35 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>11/09 - Fiesta La Almudena</name>
+        <recurrenceDayOfMonth>9</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>November</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-11-09</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>12/06 - Día de la Constitución</name>
         <recurrenceDayOfMonth>6</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
         <recurrenceStartDate>2022-12-06</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>12/07 - Jornada Intensiva Puente Constitucion CE</name>
+        <recurrenceDayOfMonth>7</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-12-07</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
         <businessHours>CSM Default</businessHours>
@@ -278,6 +376,7 @@
     <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>12/08 - Día de la Inmaculada Concepción</name>
         <recurrenceDayOfMonth>8</recurrenceDayOfMonth>
@@ -288,6 +387,7 @@
     <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>12/25 - Navidad</name>
         <recurrenceDayOfMonth>25</recurrenceDayOfMonth>
