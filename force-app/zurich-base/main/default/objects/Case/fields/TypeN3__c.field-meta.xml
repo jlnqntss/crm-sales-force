@@ -21,6 +21,11 @@
                 <label>Activation failure</label>
             </value>
             <value>
+                <fullName>Alegaciones SDC</fullName>
+                <default>false</default>
+                <label>Alegaciones SDC</label>
+            </value>
+            <value>
                 <fullName>Annulment</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -35,6 +40,11 @@
                 <fullName>Anulación</fullName>
                 <default>false</default>
                 <label>Anulación</label>
+            </value>
+            <value>
+                <fullName>Atención deficiente tramitador</fullName>
+                <default>false</default>
+                <label>Atención deficiente tramitador</label>
             </value>
             <value>
                 <fullName>Bank data</fullName>
@@ -239,6 +249,21 @@
                 <label>Digital signature</label>
             </value>
             <value>
+                <fullName>Disconformidad con peritación</fullName>
+                <default>false</default>
+                <label>Disconformidad con peritación</label>
+            </value>
+            <value>
+                <fullName>Disconformidad con rehuse</fullName>
+                <default>false</default>
+                <label>Disconformidad con rehuse</label>
+            </value>
+            <value>
+                <fullName>Disconformidad con resolución</fullName>
+                <default>false</default>
+                <label>Disconformidad con resolución</label>
+            </value>
+            <value>
                 <fullName>Documentación</fullName>
                 <default>false</default>
                 <label>Documentación</label>
@@ -284,6 +309,11 @@
                 <fullName>Fallo registro NO identificado</fullName>
                 <default>false</default>
                 <label>Fallo registro NO identificado</label>
+            </value>
+            <value>
+                <fullName>Falta de información</fullName>
+                <default>false</default>
+                <label>Falta de información</label>
             </value>
             <value>
                 <fullName>Fechas</fullName>
@@ -530,6 +560,11 @@
                 <label>Policy supplement</label>
             </value>
             <value>
+                <fullName>Procesos y herramientas</fullName>
+                <default>false</default>
+                <label>Procesos y herramientas</label>
+            </value>
+            <value>
                 <fullName>Proteo client</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -621,6 +656,11 @@
                 <label>Renovación póliza</label>
             </value>
             <value>
+                <fullName>Replica</fullName>
+                <default>false</default>
+                <label>Replica</label>
+            </value>
+            <value>
                 <fullName>Resend receipt</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -630,6 +670,21 @@
                 <fullName>Retención</fullName>
                 <default>false</default>
                 <label>Retención</label>
+            </value>
+            <value>
+                <fullName>Retraso Indemnización</fullName>
+                <default>false</default>
+                <label>Retraso Indemnización</label>
+            </value>
+            <value>
+                <fullName>Retraso Peritación</fullName>
+                <default>false</default>
+                <label>Retraso Peritación</label>
+            </value>
+            <value>
+                <fullName>Retraso Tramitación</fullName>
+                <default>false</default>
+                <label>Retraso Tramitación</label>
             </value>
             <value>
                 <fullName>Return</fullName>
@@ -768,8 +823,53 @@
             <valueName>Queja</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Atención deficiente tramitador</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Disconformidad con peritación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Disconformidad con rehuse</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Disconformidad con resolución</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Falta de información</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Procesos y herramientas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Retraso Indemnización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Retraso Peritación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Retraso Tramitación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Alegaciones SDC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <valueName>Reclamación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Replica</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
