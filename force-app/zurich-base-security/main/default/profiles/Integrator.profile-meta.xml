@@ -7414,6 +7414,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Entitlement.CaseTypeN1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Entitlement.CaseTypeN2__c</field>
         <readable>true</readable>
     </fieldPermissions>

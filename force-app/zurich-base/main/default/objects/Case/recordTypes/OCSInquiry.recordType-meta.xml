@@ -20,6 +20,10 @@
             <fullName>CSM Particulares</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Centro Excelencia</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>CauseOfLoss__c</picklist>
@@ -484,7 +488,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Realizado - Cambio criterio centro</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Realizado - Con extorno</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Confirmación criterio centro</fullName>
             <default>false</default>
         </values>
         <values>
@@ -987,6 +999,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Incidencias-Consultas Siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Información</fullName>
             <default>false</default>
         </values>
@@ -1004,6 +1020,10 @@
         </values>
         <values>
             <fullName>Reclamación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reclamación Siniestros</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1081,11 +1101,19 @@
     <picklistValues>
         <picklist>TypeN3__c</picklist>
         <values>
+            <fullName>Alegaciones SDC</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Anotación Embargo</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Anulación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Atención deficiente tramitador</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1165,6 +1193,18 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Disconformidad con peritación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disconformidad con rehuse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disconformidad con resolución</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Documentación</fullName>
             <default>false</default>
         </values>
@@ -1190,6 +1230,10 @@
         </values>
         <values>
             <fullName>Fallo registro identificado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Falta de información</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1265,6 +1309,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Procesos y herramientas</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Queja</fullName>
             <default>false</default>
         </values>
@@ -1305,7 +1353,23 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Replica</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Retención</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso Indemnización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso Peritación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso Tramitación</fullName>
             <default>false</default>
         </values>
         <values>

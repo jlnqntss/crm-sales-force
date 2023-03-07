@@ -333,6 +333,11 @@
                 <label>Incidencias (Mediador)</label>
             </value>
             <value>
+                <fullName>Incidencias-Consultas Siniestros</fullName>
+                <default>false</default>
+                <label>Incidencias-Consultas Siniestros</label>
+            </value>
+            <value>
                 <fullName>Incidencias Mi Zurich</fullName>
                 <default>false</default>
                 <label>Incidencias Mi Zurich</label>
@@ -486,6 +491,11 @@
                 <fullName>Reclamación</fullName>
                 <default>false</default>
                 <label>Reclamación</label>
+            </value>
+            <value>
+                <fullName>Reclamación Siniestros</fullName>
+                <default>false</default>
+                <label>Reclamación Siniestros</label>
             </value>
             <value>
                 <fullName>Recobro indirecto</fullName>
@@ -693,6 +703,11 @@
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Incidencias-Consultas Siniestros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Información</valueName>
         </valueSettings>
         <valueSettings>
@@ -704,6 +719,11 @@
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Reclamación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Reclamación Siniestros</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>

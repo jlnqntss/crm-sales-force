@@ -303,8 +303,20 @@
                 <default>false</default>
                 <label>Denegada - Protecciones del riesgo</label>
             </value>
+            <value>
+                <fullName>Realizado - Cambio criterio centro</fullName>
+                <default>false</default>
+                <label>Realizado - Cambio criterio centro</label>
+            </value>
+            <value>
+                <fullName>Realizado - Confirmación criterio centro</fullName>
+                <default>false</default>
+                <label>Realizado - Confirmación criterio centro</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
@@ -334,6 +346,22 @@
             <valueName>Realizado</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
+            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
+            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
+            <valueName>Derivado - Otras Áreas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Realizado - Cambio criterio centro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Realizado - Confirmación criterio centro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
@@ -367,6 +395,7 @@
             <valueName>No Realizado</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
@@ -649,12 +678,6 @@
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
             <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <valueName>Derivado - Norma 57/AJ</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Recobro indirecto</controllingFieldValue>
-            <controllingFieldValue>Recobro proactivo</controllingFieldValue>
-            <controllingFieldValue>Recobro reactivo</controllingFieldValue>
-            <valueName>Derivado - Otras Áreas</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

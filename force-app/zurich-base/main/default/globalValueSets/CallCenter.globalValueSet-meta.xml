@@ -30,6 +30,11 @@
         <default>false</default>
         <label>USP</label>
     </customValue>
+    <customValue>
+        <fullName>Centro Excelencia</fullName>
+        <default>false</default>
+        <label>Centro Excelencia</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
