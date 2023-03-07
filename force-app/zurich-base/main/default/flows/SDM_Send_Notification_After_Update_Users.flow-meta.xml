@@ -17,7 +17,7 @@
         <inputParameters>
             <name>body</name>
             <value>
-                <stringValue>Seguimientos de tipo {!$Record.TypeToNotify__c} actualizados a {!today}, ver detalles en la cuenta del código del mediador </stringValue>
+                <stringValue>Seguimientos de tipo {!$Record.TypeToNotify__c} actualizados a {!todayText}, ver detalles en la cuenta del código del mediador </stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -102,9 +102,9 @@
     </decisions>
     <environments>Default</environments>
     <formulas>
-        <name>today</name>
-        <dataType>Date</dataType>
-        <expression>TODAY()</expression>
+        <name>todayText</name>
+        <dataType>String</dataType>
+        <expression>LPAD(TEXT(DAY(TODAY())),2,&quot;0&quot;)&amp;&quot;-&quot;&amp;LPAD(TEXT(MONTH(TODAY())),2,&quot;0&quot;)&amp;&quot;-&quot;&amp;TEXT(YEAR(TODAY()))</expression>
     </formulas>
     <interviewLabel>SDM Send Notification After Update Users {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SDM Send Notification After Update Users</label>
