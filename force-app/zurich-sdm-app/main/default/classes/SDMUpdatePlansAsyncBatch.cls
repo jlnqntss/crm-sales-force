@@ -244,13 +244,13 @@ public with sharing class SDMUpdatePlansAsyncBatch implements Database.Batchable
 
         for (Objective__c obj: (List<Objective__c>) scope) {
             if (SDMValidatePlansAsyncBatchUtil.checkActive(obj, oldMap) && SDMValidatePlansAsyncBatchUtil.isRTObjective(obj)) { // valido primero el flag de activo, si se activa generaremos nuevos planes
-                if (SDMValidatePlansAsyncBatchUtil.isRetentionObjective(obj) || SDMValidatePlansAsyncBatchUtil.isAccidentObjective(obj)) {
+                if (SDMValidatePlansAsyncBatchUtil.isAccidentOrRetentionObjective(obj)) {
                     objetivosToUpdateActiveAnual.put(obj.ExternalId__c, obj);
                 } else {
                     objetivosToUpdateActiveMensual.put(obj.ExternalId__c, obj);
                 }
             } else if (SDMValidatePlansAsyncBatchUtil.checkInactive(obj, oldMap)) { // si uno de los cambios del objetivo es inactivar, borraremos los planes mensuales
-                if (SDMValidatePlansAsyncBatchUtil.isRetentionObjective(obj) || SDMValidatePlansAsyncBatchUtil.isAccidentObjective(obj)) {
+                if (SDMValidatePlansAsyncBatchUtil.isAccidentOrRetentionObjective(obj)) {
                     objetivosToUpdateInactiveAnual.put(obj.ExternalId__c, obj);
                 } else {
                     objetivosToUpdateInactiveMensual.put(obj.ExternalId__c, obj);

@@ -221,7 +221,7 @@ public with sharing class SDMDeletePlansAsyncBatch implements Database.Batchable
 
         for (Objective__c obj: (List<Objective__c>) scope) {
             if (SDMValidatePlansAsyncBatchUtil.isObjectiveActive(obj) && SDMValidatePlansAsyncBatchUtil.isRTObjective(obj)) {
-                if (SDMValidatePlansAsyncBatchUtil.isRetentionObjective(obj) || SDMValidatePlansAsyncBatchUtil.isAccidentObjective(obj)) { // si el objetivo es de tipo retención, siniestralidad
+                if (SDMValidatePlansAsyncBatchUtil.isAccidentOrRetentionObjective(obj)) { // si el objetivo es de tipo retención, siniestralidad
                     anualObjectives.put(obj.externalId__c, obj);
                 } else { // si es de indicador PN, Cartera o APES
                     mensualObjectives.put(obj.externalId__c, obj);

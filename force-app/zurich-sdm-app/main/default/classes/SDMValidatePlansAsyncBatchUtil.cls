@@ -96,6 +96,23 @@ public with sharing class SDMValidatePlansAsyncBatchUtil {
 
 
     /**
+     * Comprueba que el indicador del objetivo es Siniestralidad
+     * @param obj: objetivo a consultar
+     * @author dmunoz
+     * @date 23/02/2023
+     */
+    public static Boolean isAccidentOrRetentionObjective(Objective__c obj) {
+        Boolean result = false;
+
+        if (isAccidentObjective(obj) || isRetentionObjective(obj)) {
+            result = true;
+        }   
+
+        return result;
+    }
+
+
+    /**
      * Comprueba que el rt del objetivo es el adecuado para no tratar el registro específico para el numero de dias a notificar
      * @param obj: objetivo a consultar
      * @author dmunoz

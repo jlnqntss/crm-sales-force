@@ -153,7 +153,7 @@ public with sharing class PlanesComercialesMensualesUtil {
      */
     private static PlanComercial__c calculateRetentionPlanData(PlanComercial__c pc, Objective__c obj, Integer i) {        
         Map<String, String> calculoPCMap = calculateAccidentRetentionPlanMensualFields(pc, obj, i);
-        PlanComercial__c result = getMensualPlanFromAccidentRetention(pc, obj, i, calculoPCMap);
+        PlanComercial__c result = getMensualPlanFromAccidentRetention(pc, i, calculoPCMap);
 
         result.Name = ('Retención Mensual Zurich ' + obj.Segment__c + ' ' + obj.Zone__c + ' ' + calculoPCMap.get('MonthName')).left(75) + ' ' + pc.EndDate__c.year(); // recorto el tamaño a 75 y añado 5 caracteres al final con el año haciendo un total de 80
         
@@ -172,7 +172,7 @@ public with sharing class PlanesComercialesMensualesUtil {
      */
     private static PlanComercial__c calculateAccidentPlanData(PlanComercial__c pc, Objective__c obj, Integer i) {        
         Map<String, String> calculoPCMap = calculateAccidentRetentionPlanMensualFields(pc, obj, i);
-        PlanComercial__c result = getMensualPlanFromAccidentRetention(pc, obj, i, calculoPCMap);
+        PlanComercial__c result = getMensualPlanFromAccidentRetention(pc, i, calculoPCMap);
         
         result.Name = ('Siniestralidad Mensual Zurich ' + obj.Segment__c + ' ' + obj.Zone__c + ' ' + calculoPCMap.get('MonthName')).left(75) + ' ' + pc.EndDate__c.year(); // recorto el tamaño a 75 y añado 5 caracteres al final con el año haciendo un total de 80        
 
@@ -188,7 +188,7 @@ public with sharing class PlanesComercialesMensualesUtil {
      * @author dmunoz
      * @date 21/07/2022
      */
-    private static PlanComercial__c getMensualPlanFromAccidentRetention(PlanComercial__c pc, Objective__c obj, Integer i, Map<String, String> calculoPCMap) {        
+    private static PlanComercial__c getMensualPlanFromAccidentRetention(PlanComercial__c pc, Integer i, Map<String, String> calculoPCMap) {        
         PlanComercial__c result = pc.clone(false, false, false, false);       
         
         result.TargetKPIPercent__c = Decimal.valueOf(calculoPCMap.get('KPI'));
