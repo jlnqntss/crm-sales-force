@@ -326,7 +326,7 @@
                 <fieldItem>Record.TargetKPIPercent__c</fieldItem>
                 <identifier>RecordTargetKPIPercent__cField</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 OR 2 OR 3 OR 4 OR 5 OR (6 AND (8 OR 9)) OR 7</booleanFilter>
+                    <booleanFilter>1 OR 2 OR 3 OR 4 OR (5 AND (8 OR 9)) OR (6 AND (8 OR 9)) OR 7</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
