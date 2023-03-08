@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 03-05-2023
+ * @last modified on  : 03-08-2023
  * @last modified by  : aberuete
 **/
 public with sharing class FollowUpHandler implements ITrigger 
@@ -107,17 +107,20 @@ public with sharing class FollowUpHandler implements ITrigger
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap) 
     {
-        List<AsyncApexJob> numberOfBatchProcessFollowUps = new AsyncApexJobsSelector().selectByClassName(new Set<String> {'Batch_ProcessFollowUps'});
-        List<FollowUp__c> listFollowUps = (List<FollowUp__c>)newMap.values();
-        Set<String> typeOfFollowUp = new Set<String>() ;
-        
-        for (FollowUp__c followUp : listFollowUps)
+        if (Trigger.isAfter && Trigger.isInsert)
         {
-            typeOfFollowUp.add(followUp.Type__c);
-        }
-        if (typeOfFollowUp.size() == 1  && numberOfBatchProcessFollowUps.isEmpty() )
-        {
-            database.executeBatch(new Batch_ProcessFollowUps (new List<String>(typeOfFollowUp)[0]) , 200);
+            List<AsyncApexJob> numberOfBatchProcessFollowUps = new AsyncApexJobsSelector().selectByClassName(new Set<String> {'Batch_ProcessFollowUps'});
+            List<FollowUp__c> listFollowUps = (List<FollowUp__c>)newMap.values();
+            Set<String> typeOfFollowUp = new Set<String>() ;
+            
+            for (FollowUp__c followUp : listFollowUps)
+            {
+                typeOfFollowUp.add(followUp.Type__c);
+            }
+            if (typeOfFollowUp.size() == 1  && numberOfBatchProcessFollowUps.isEmpty() )
+            {
+                database.executeBatch(new Batch_ProcessFollowUps (new List<String>(typeOfFollowUp)[0]) , 200);
+            }
         }
     }
 

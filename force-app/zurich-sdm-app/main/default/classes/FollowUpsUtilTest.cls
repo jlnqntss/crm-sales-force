@@ -2,7 +2,7 @@
  * @description       : Clase de test para la clase Util FollowUpsUtil
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 03-06-2023
+ * @last modified on  : 03-08-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -130,13 +130,11 @@ private with sharing class FollowUpsUtilTest
         List<Account> listAccount = [Select id from Account where recordtype.developerName = 'intermediary'];
         List<AccountTeamMember> atmRNBefore = [Select UserId, User.Notified__c,User.NotifyType__c from AccountTeamMember where TeamMemberRole =: ATM_ROL_RN ];
         List<AccountTeamMember> atmsCVBefore = [Select UserId, User.Notified__c,User.NotifyType__c from AccountTeamMember where TeamMemberRole =: ATM_ROL_CV ];
-        Set<Id> userIdFromATM = new Set<Id>{atmRNBefore[0].UserId,atmsCVBefore[0].UserId};
         Set<Id> idsIntermediaries = new Map<Id,Account>(listAccount).keySet();
         List<FollowUp__c> seguimientos = TestDataFactorySDM.generateFollowUps(1,idsIntermediaries,TYPE_FORMACION,ATM_ROL_RN+';'+ATM_ROL_CV);
 
         Test.startTest();
         insert seguimientos;
-        FollowUpsUtil.updateUsersToNotify (userIdFromATM, TYPE_FORMACION);
         Test.stopTest();
 
         List<AccountTeamMember> atmRNAfter = [Select UserId, User.Notified__c,User.NotifyType__c from AccountTeamMember where TeamMemberRole =: ATM_ROL_RN ];

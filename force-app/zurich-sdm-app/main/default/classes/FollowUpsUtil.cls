@@ -2,12 +2,13 @@
  * @description       : Clase Util para el objeto FollowUp__c
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 03-06-2023
+ * @last modified on  : 03-08-2023
  * @last modified by  : aberuete
 **/
 
 global with sharing class FollowUpsUtil 
 {
+    private static final string ERROR_UPDATING_USERS = 'Error actualizando usuarios por un fallo en el flow';
 
     /**
      * Método que actualiza los seguimientos para indicar que han sido procesados. 
@@ -120,29 +121,44 @@ global with sharing class FollowUpsUtil
             userToUpdate.TypeToNotify__c = typeOfFollowUp;
             userslistToUpdate.add(userToUpdate);
         }
-
-        List<String> msgErrores = new List<String>();
         try
         {
-            Database.SaveResult [] srList = Database.update(userslistToUpdate, false);
-            for (Database.SaveResult sr: srList )
+            if (!userslistToUpdate.isEmpty())
             {
-                if(!sr.isSuccess())
-                {
-                    for (Database.Error err :sr.getErrors())
-                    {
-                        msgErrores.add(err.getStatusCode() + ': ' + err.getMessage());
-                    }
-                }
-            }   
-            if (!msgErrores.isEmpty())
-            {
-                ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando usuarios', FollowUpsUtil.class.getName(),(String.join(msgErrores,'\n')));
-            } 
+                runFlow(userslistToUpdate); 
+            }
         }
         catch (Exception e)
         {
-            ErrorLogUtil.commitError(e, FollowUpsUtil.class.getName());
-        } 
+            ErrorLogUtil.commitError(e, FollowUpsUtil.class.getName(), 'updateUsersToNotify');
+            throw new FollowUpsUtilException(ERROR_UPDATING_USERS);
+        }
     }
+
+    /**
+     * Método llama al flow para que actualice los usuarios como system without sharing.
+     * 
+     * @author aberuete
+     * @date 08/03/2023
+     * 
+     * @param {List<User> userslistToUpdate} Lista de usuarios a actualizar 
+     */
+    private static void runFlow(List<User> userslistToUpdate) 
+    {
+        Map<String, Object> inputs = new Map<String, Object>();
+        inputs.put('UserstoUpdate', userslistToUpdate);
+         
+        Flow.Interview.SDM_Update_Users_To_Be_Notified myFlow = new Flow.Interview.SDM_Update_Users_To_Be_Notified(inputs);
+        myFlow.start();
+        String flowFaultMessage = (String) myFlow.getVariableValue('FaultMessage');
+
+        // si hay error lanzo excepcion con el mensaje recibido del flujo
+        if (String.isNotEmpty(flowFaultMessage)) 
+        {            
+            throw new FollowUpsUtilException(flowFaultMessage);
+        }
+        
+    }
+
+    private class FollowUpsUtilException extends Exception {}
 }
