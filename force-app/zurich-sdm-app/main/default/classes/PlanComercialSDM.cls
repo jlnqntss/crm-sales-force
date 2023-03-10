@@ -173,33 +173,105 @@ public with sharing class PlanComercialSDM {
 
             // Por cada KPI sumamos los valores del primer campo siempre y del segundo campo si existe
             for( KPI__c kpi: kpis ) {
-                // Primer campo siempre
-                Decimal firstFieldValue = (Decimal)kpi.get(settingsIndicator.FirstField__c);
-                firstField += (firstFieldValue == null ? 0:firstFieldValue );
-
-                // Segundo campo si existe
-                if( settingsIndicator.SecondField__c != null ) {
-                    Decimal secondFieldValue = (Decimal)kpi.get(settingsIndicator.SecondField__c);
-                    secondField += (secondFieldValue == null ? 0:secondFieldValue );
-                }
-                // Tercer campo si existe
-                if( settingsIndicator.ThirdField__c != null ) {
-                    Decimal thirdFieldValue = (Decimal)kpi.get(settingsIndicator.ThirdField__c);
-                    thirdField += (thirdFieldValue == null ? 0 : thirdFieldValue );
-                }
+                // Primer campo siempre                
+                firstField += getFirstFieldValue(settingsIndicator, kpi);
+                secondField += getSecondFieldValue(settingsIndicator, kpi);
+                thirdField += getThridFieldValue(settingsIndicator, kpi);                
             }
 
-            // Ahora dependiendo del tipo de calculo, hacemos una cosa u otra con los sumatorios
-            if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_SUM) ) {
-                result = firstField;
-            } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_RATIO) && secondField != 0 ) {
-               result = (firstField / secondField);
-            } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_GROWTH) && secondField != 0) {
-                result = (firstField / secondField) - 1;
-            } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_COMPLEX_RATIO) && thirdField != 0) {
-                Decimal operationResult = (((firstField - secondField) / thirdField) * 100).setScale(2);
-                result = operationResult;
-            }
+            result = getOperationResult(settingsIndicator, firstField, secondField, thirdField);
+            
+        }
+
+        return result;
+    }
+
+
+     /**
+     * Para reducir la complejidad ciclomatica del metodo doCalculation saco fuera la logica para obtener el valor del primer campo
+     * 
+     * @author nts (dmunoz)
+     * @date 10/03/2023
+     * 
+     * @param settingsIndicator registro metadata
+     * @param kpi kpi
+     * @return valor obtenido del kpi para el primer campo seleccionado
+     */
+    private Decimal getFirstFieldValue(SDMCommercialPlan__mdt settingsIndicator, KPI__c kpi) {
+        Decimal result = 0;
+        // Primer campo siempre
+        Decimal firstFieldValue = (Decimal) kpi.get(settingsIndicator.FirstField__c);
+        result = firstFieldValue == null ? 0 : firstFieldValue;
+
+        return result;
+    }
+
+     /**
+     * Para reducir la complejidad ciclomatica del metodo doCalculation saco fuera la logica para obtener el valor del segundo campo
+     * 
+     * @author nts (dmunoz)
+     * @date 10/03/2023
+     * 
+     * @param settingsIndicator registro metadata
+     * @param kpi kpi
+     * @return valor obtenido del kpi para el segundo campo seleccionado
+     */
+    private Decimal getSecondFieldValue(SDMCommercialPlan__mdt settingsIndicator, KPI__c kpi) {
+        Decimal result = 0;
+        // Segundo campo si existe
+        if( settingsIndicator.SecondField__c != null ) {
+            Decimal secondFieldValue = (Decimal) kpi.get(settingsIndicator.SecondField__c);
+            result = secondFieldValue == null ? 0:secondFieldValue;
+        }
+
+        return result;
+    }
+
+    /**
+     * Para reducir la complejidad ciclomatica del metodo doCalculation saco fuera la logica para obtener el valor del tercer campo
+     * 
+     * @author nts (dmunoz)
+     * @date 10/03/2023
+     * 
+     * @param settingsIndicator registro metadata
+     * @param kpi kpi
+     * @return valor obtenido del kpi para el tercer campo seleccionado
+     */
+    private Decimal getThridFieldValue(SDMCommercialPlan__mdt settingsIndicator, KPI__c kpi) {
+        Decimal result = 0;
+        // Tercer campo si existe
+        if( settingsIndicator.ThirdField__c != null ) {
+            Decimal thirdFieldValue = (Decimal) kpi.get(settingsIndicator.ThirdField__c);
+            result = thirdFieldValue == null ? 0 : thirdFieldValue;
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Para reducir la complejidad ciclomatica del metodo doCalculation saco fuera la logica de las operaciones
+     * 
+     * @author nts (dmunoz)
+     * @date 10/03/2023
+     * 
+     * @param {KPI__c kpi} datos del KPI
+     * @param {PlanComercial__c plan} datos del Plan
+     * @return Resultado operacion
+     */
+    private Decimal getOperationResult(SDMCommercialPlan__mdt settingsIndicator, Decimal firstField, Decimal secondField, Decimal thirdField) {
+        Decimal result = 0;
+
+        // Ahora dependiendo del tipo de calculo, hacemos una cosa u otra con los sumatorios
+        if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_SUM) ) {
+            result = firstField;
+        } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_RATIO) && secondField != 0 ) {
+           result = (firstField / secondField);
+        } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_GROWTH) && secondField != 0) {
+            result = (firstField / secondField) - 1;
+        } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_COMPLEX_RATIO) && thirdField != 0) {
+            Decimal operationResult = (((firstField - secondField) / thirdField) * 100).setScale(2);
+            result = operationResult;
         }
 
         return result;
