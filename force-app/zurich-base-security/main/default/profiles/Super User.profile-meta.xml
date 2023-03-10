@@ -6210,6 +6210,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>KPI__c.ClaimOcurridosCAYLarge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>KPI__c.ClaimOcurridosCAY__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>KPI__c.ClaimTotalIncome__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>KPI__c.CodIntermediario__c</field>
         <readable>true</readable>
     </fieldPermissions>
