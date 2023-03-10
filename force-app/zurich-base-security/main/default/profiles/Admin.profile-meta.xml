@@ -9015,16 +9015,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>KPI__c.AccidentRate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>KPI__c.RetentionRatio__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>KPI__c.APES__c</field>
         <readable>true</readable>
     </fieldPermissions>
