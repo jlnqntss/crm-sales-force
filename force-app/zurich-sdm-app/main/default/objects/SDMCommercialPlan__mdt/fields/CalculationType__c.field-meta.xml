@@ -26,6 +26,11 @@
                 <default>false</default>
                 <label>Growth</label>
             </value>
+            <value>
+                <fullName>ComplexRatio</fullName>
+                <default>false</default>
+                <label>ComplexRatio</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

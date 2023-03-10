@@ -43,16 +43,17 @@ global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Datab
     {
         if( String.isBlank(query) ) {
             Date todayValue = System.today();
+            Integer thisMonth = todayValue.month();
             
             if( Test.isRunningTest() ) todayValue = Date.newInstance(2021, 9, 10);
 
             // SDM-729 - Añadimos la ordenacion por tipo acumulado (YTD, Mensual) para que, en la medida de lo posible, 
             // los lotes sean solo de planes mensuales o anuales. Para minimizar el numero de KPIs recuperados
             return Database.getQueryLocator([
-                SELECT Id, CreatedById, AssignedTo__c, StartDate__c, EndDate__c,
+                SELECT Id, name, CreatedById, AssignedTo__c, StartDate__c, EndDate__c, IsOwnedByHomeOffice__c,
                        Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c, Zone__c, AssignedTo__r.name, Owner.name
                 FROM PlanComercial__c
-                WHERE StartDate__c <= :todayValue AND EndDate__c >= :todayValue
+                WHERE ((RecordType.DeveloperName IN ('ActionPlan', 'AnualPlan') AND StartDate__c <= :todayValue AND EndDate__c >= :todayValue AND IsOwnedByHomeOffice__c = false) OR (RecordType.developerName = 'MensualPlan' and Calendar_Month(EndDate__c) = :thisMonth))
                 ORDER BY AccumulateType__c
             ]);
         } else {

@@ -73,7 +73,7 @@ public with sharing class SettingsSDM
         Map<String, SDMCommercialPlan__mdt> mapSettingsIndicator = new Map<String, SDMCommercialPlan__mdt>();
         // Recuperamos los datos de configuracion de los indicadores
         List<SDMCommercialPlan__mdt> settings = [
-            SELECT Indicator__c, CalculationType__c, FirstField__c, SecondField__c FROM SDMCommercialPlan__mdt
+            SELECT Indicator__c, CalculationType__c, FirstField__c, SecondField__c, ThirdField__c FROM SDMCommercialPlan__mdt
         ];
 
         // Solo para los test cambiamos la configuracion
