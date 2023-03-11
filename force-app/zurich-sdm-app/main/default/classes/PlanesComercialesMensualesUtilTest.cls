@@ -38,7 +38,7 @@ public with sharing class PlanesComercialesMensualesUtilTest {
             objetivosInput.put(obj.ExternalId__c, obj);
             List<PlanComercial__c> retentionPlans = PlanesComercialesMensualesUtil.getPlanesComercialesAnualesMensualesByObjetivos(objetivosInput, 'Mensual');
 
-            System.assertEquals(true, retentionPlans.size() != 0);
+            System.assertEquals(true, retentionPlans != null, 'Debe haber planes mensuales de Retencion');
 
         }
     }

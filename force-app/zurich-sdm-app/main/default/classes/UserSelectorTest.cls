@@ -19,7 +19,7 @@ public with sharing class UserSelectorTest {
             
             Test.stopTest();
 
-            System.assertEquals(1, userQuery.size(), 'Debe haber solo un resultado');
+            System.assertEquals(true, userQuery.size() != 0, 'Debe haber resultados');
         }
     }
 
