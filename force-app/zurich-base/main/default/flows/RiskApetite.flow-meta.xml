@@ -33,14 +33,14 @@
             <assignToReference>ProductCode</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>GetCaseAction.HegeoProductGroupCode__c</elementReference>
+                <elementReference>GetCaseAction.ProductGroupDescription__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>ChosenProduct</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>GetCaseAction.HegeoProductGroupCode__c</elementReference>
+                <elementReference>GetCaseAction.ProductGroupDescription__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -86,7 +86,7 @@
             <name>YesProduct</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>GetCaseAction.HegeoProductGroupCode__c</leftValueReference>
+                <leftValueReference>GetCaseAction.ProductGroup__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -322,6 +322,7 @@
             <label>CommercialActivity</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>test {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Risk Apetite</label>
     <processMetadataValues>
