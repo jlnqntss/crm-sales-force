@@ -41,11 +41,11 @@
         <name>PostCommentAction</name>
         <label>Post Comment</label>
         <locationX>798</locationX>
-        <locationY>2366</locationY>
+        <locationY>2246</locationY>
         <actionName>chatterPost</actionName>
         <actionType>chatterPost</actionType>
         <connector>
-            <targetReference>SuccessScreen</targetReference>
+            <targetReference>UpdateCaseAction</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -90,7 +90,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateCaseAction</targetReference>
+            <targetReference>CommentWrittenDecision</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -182,9 +182,9 @@
         <name>CommentWrittenDecision</name>
         <label>Comment Written</label>
         <locationX>930</locationX>
-        <locationY>2246</locationY>
+        <locationY>2126</locationY>
         <defaultConnector>
-            <targetReference>SuccessScreen</targetReference>
+            <targetReference>UpdateCaseAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -223,7 +223,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>UpdateCaseAction</targetReference>
+                <targetReference>CommentWrittenDecision</targetReference>
             </connector>
             <label>Is available</label>
         </rules>
@@ -329,6 +329,24 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordDeletes>
+        <name>DeleteCommentAction</name>
+        <label>Delete Comment</label>
+        <locationX>1282</locationX>
+        <locationY>2582</locationY>
+        <connector>
+            <targetReference>FailureScreen</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>PostCommentAction.feedItemId</elementReference>
+            </value>
+        </filters>
+        <object>FeedItem</object>
+    </recordDeletes>
     <recordLookups>
         <name>GetAvailableMetadatasAction</name>
         <label>Get Available Metadatas</label>
@@ -417,12 +435,12 @@
         <name>UpdateCaseAction</name>
         <label>Update Case</label>
         <locationX>930</locationX>
-        <locationY>2126</locationY>
+        <locationY>2462</locationY>
         <connector>
-            <targetReference>CommentWrittenDecision</targetReference>
+            <targetReference>SuccessScreen</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>FailureScreen</targetReference>
+            <targetReference>DeleteCommentAction</targetReference>
         </faultConnector>
         <inputReference>GetCaseAction</inputReference>
     </recordUpdates>
@@ -519,7 +537,7 @@
         <name>FailureScreen</name>
         <label>Failure screen</label>
         <locationX>1282</locationX>
-        <locationY>2246</locationY>
+        <locationY>2702</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
