@@ -418,7 +418,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>SentWeekLeft</leftValueReference>
+                <leftValueReference>SentEndReached</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -622,7 +622,7 @@
             <label>MensualPlan</label>
         </rules>
     </decisions>
-    <description>SDM: nuevo mensaje para planes mensuales de Ratio Retención y Siniestralidad</description>
+    <description>SDM: corregir calculo notificacion KPI Reached para Indicador APES y no notificar varias veces kpi inferior a objetivo N dias antes de fin de mes</description>
     <environments>Default</environments>
     <formulas>
         <description>Selecciona el mensaje a utilizar en la notificación &apos;Days Left&apos; en función de si el plan mensual está relacionado con un intermediario o no.</description>
@@ -837,6 +837,7 @@ IF
   &quot;Ratio_Claim&quot;,  {!$Record.TargetKPIPercent__c} * 100,
   &quot;Ratio_Retention&quot;,  {!$Record.TargetKPIPercent__c} * 100,
   &quot;Totaldiscount&quot;,  {!$Record.TargetKPIPercent__c} * 100,
+  &quot;APES&quot;,  {!$Record.TargetKPICurrency__c},
   0
 )</expression>
         <scale>2</scale>
