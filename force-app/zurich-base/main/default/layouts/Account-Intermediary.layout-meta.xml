@@ -95,7 +95,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>TDChannel__c</field>
+                <field>TDChannelCode__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
