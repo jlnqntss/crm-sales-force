@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>buttonText</name>
+                    <value>Insertar seguimientos</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentMessage</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentTitle</name>
+                    <value>Seguimientos asociados a cuentas de intermediario</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hasRecordId</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>mappingId</name>
+                    <value>53781</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sourceRecordId</name>
+                </componentInstanceProperties>
+                <componentName>pw_si:CuratedImport</componentName>
+                <identifier>pw_si_CuratedImport</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>column1</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>buttonText</name>
+                    <value>Insertar seguimientos</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentMessage</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentTitle</name>
+                    <value>Seguimientos asociados a cuentas de agrupación de mediadores</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hasRecordId</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>mappingId</name>
+                    <value>53782</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sourceRecordId</name>
+                </componentInstanceProperties>
+                <componentName>pw_si:CuratedImport</componentName>
+                <identifier>pw_si_CuratedImport2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>column2</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Seguimientos Masivos</masterLabel>
+    <template>
+        <name>flexipage:appHomeTemplateTwoColumns</name>
+    </template>
+    <type>AppPage</type>
+</FlexiPage>
