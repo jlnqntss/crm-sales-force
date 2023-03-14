@@ -4,8 +4,8 @@
     <assignments>
         <name>asignamos_output</name>
         <label>asignamos output</label>
-        <locationX>270</locationX>
-        <locationY>974</locationY>
+        <locationX>468</locationX>
+        <locationY>1190</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueName</assignToReference>
             <operator>Assign</operator>
@@ -24,7 +24,7 @@
     <assignments>
         <name>QueuesAssignment</name>
         <label>Almacenar Colas recuperadas</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>518</locationY>
         <assignmentItems>
             <assignToReference>genesysQueuesToIterate</assignToReference>
@@ -38,10 +38,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>USPDefaultQueueAssignment</name>
+        <label>Almacenar Cola default USP recuperadas</label>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
+        <assignmentItems>
+            <assignToReference>genesysQueuesToIterate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetUSPNotasInfoDefaultQueueAction</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loopQueues</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>USPQueuesAssignment</name>
         <label>Almacenar Colas USP recuperadas</label>
         <locationX>50</locationX>
-        <locationY>518</locationY>
+        <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>genesysQueuesToIterate</assignToReference>
             <operator>Assign</operator>
@@ -79,8 +95,8 @@
     <decisions>
         <name>Check_Note_info</name>
         <label>Check Note info</label>
-        <locationX>402</locationX>
-        <locationY>854</locationY>
+        <locationX>600</locationX>
+        <locationY>1070</locationY>
         <defaultConnector>
             <targetReference>loopQueues</targetReference>
         </defaultConnector>
@@ -102,9 +118,34 @@
         </rules>
     </decisions>
     <decisions>
+        <name>IsIndustryFilledDecision</name>
+        <label>Industry Filled?</label>
+        <locationX>182</locationX>
+        <locationY>398</locationY>
+        <defaultConnector>
+            <targetReference>GetUSPNotasInfoDefaultQueueAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Empty</defaultConnectorLabel>
+        <rules>
+            <name>YesIndustryFilledOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>industryFilled</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetUSPNotasInfoQueueAction</targetReference>
+            </connector>
+            <label>Yes Industry Filled</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>IsUSPDecision</name>
         <label>Is USP?</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>GetNotasInfoQueueAction</targetReference>
@@ -121,7 +162,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetUSPNotasInfoQueueAction</targetReference>
+                <targetReference>IsIndustryFilledDecision</targetReference>
             </connector>
             <label>USP</label>
         </rules>
@@ -130,7 +171,7 @@
         <description>Se comprueba el tipo de enrutado en los valores de entrada.</description>
         <name>routeTypeDecision</name>
         <label>¿Qué se va a enrutar?</label>
-        <locationX>512</locationX>
+        <locationX>743</locationX>
         <locationY>158</locationY>
         <defaultConnectorLabel>No determinado</defaultConnectorLabel>
         <rules>
@@ -174,13 +215,18 @@ Valores de salida:
 - genesysQueueId: En caso de encontrar la cola se retornará el id de la misma en Genesys Cloud, en caso contrario el valor será vacío.
 - genesysQueueName: En caso de encontrar la cola se retornará el nombre de la misma en Genesys Cloud, en caso contrario el valor será vacío.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>industryFilled</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(LEN({!routeIndustry}) &gt; 0, true, false)</expression>
+    </formulas>
     <interviewLabel>Enrutador de colas de Genesys Cloud {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Obtener cola de enrutado de Genesys Cloud</label>
     <loops>
         <name>loopQueues</name>
         <label>Loop Genesys Queues</label>
-        <locationX>182</locationX>
-        <locationY>734</locationY>
+        <locationX>380</locationX>
+        <locationY>950</locationY>
         <collectionReference>genesysQueuesToIterate</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -210,7 +256,7 @@ Valores de salida:
         <description>Consulta la BBDD de Salesforce para recuperar la cola donde se enrutarán los Emails.</description>
         <name>GetEmailsQueueAction</name>
         <label>Obtener cola para Emails</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
@@ -237,7 +283,7 @@ Valores de salida:
         <description>Consulta la BBDD de Salesforce para recuperar la cola donde se enrutarán las Notas INFO.</description>
         <name>GetNotasInfoQueueAction</name>
         <label>Obtener cola para Notas INFO</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -258,11 +304,35 @@ Valores de salida:
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <description>Consulta la BBDD de Salesforce para recuperar la cola default.</description>
+        <name>GetUSPNotasInfoDefaultQueueAction</name>
+        <label>Obtener cola default para Notas INFO USP</label>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>USPDefaultQueueAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Email_USP_Generico</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>purecloud__PureCloud_Queue__c</object>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Consulta la BBDD de Salesforce para recuperar la cola donde se enrutarán las Notas INFO.</description>
         <name>GetUSPNotasInfoQueueAction</name>
         <label>Obtener cola para Notas INFO USP</label>
         <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>USPQueuesAssignment</targetReference>
@@ -289,7 +359,7 @@ Valores de salida:
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>386</locationX>
+        <locationX>617</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>routeTypeDecision</targetReference>
