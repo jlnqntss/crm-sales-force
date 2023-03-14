@@ -15,7 +15,7 @@
         <inputParameters>
             <name>phone</name>
             <value>
-                <elementReference>phone</elementReference>
+                <elementReference>prefixFormula</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -349,6 +349,13 @@
         <expression>NOW()</expression>
     </formulas>
     <formulas>
+        <name>prefixFormula</name>
+        <dataType>String</dataType>
+        <expression>IF(LEN( {!phone} ) = 9,  &apos;+34&apos;+ {!phone} , 
+    IF(BEGINS( {!phone} , &apos;+&apos; ), {!phone},  &apos;+&apos; +  {!phone} )
+)</expression>
+    </formulas>
+    <formulas>
         <description>Calcula la fecha de ayer</description>
         <name>Yesterday</name>
         <dataType>DateTime</dataType>
@@ -407,7 +414,7 @@
         <inputAssignments>
             <field>TelephoneNumber</field>
             <value>
-                <elementReference>phone</elementReference>
+                <elementReference>prefixFormula</elementReference>
             </value>
         </inputAssignments>
         <object>ContactPointPhone</object>
@@ -436,7 +443,7 @@
         <inputAssignments>
             <field>PrimaryPhone__c</field>
             <value>
-                <elementReference>phone</elementReference>
+                <elementReference>prefixFormula</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -531,7 +538,7 @@
             <field>PrimaryPhone__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>phone</elementReference>
+                <elementReference>prefixFormula</elementReference>
             </value>
         </filters>
         <filters>
