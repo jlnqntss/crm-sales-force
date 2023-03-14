@@ -42,6 +42,7 @@ public with sharing class PlanComercialSDM {
     private static final String SETTINGS_CALCULATION_TYPE_RATIO = 'Ratio';
     @TestVisible
     private static final String SETTINGS_CALCULATION_TYPE_GROWTH = 'Growth';
+    private static final String SETTINGS_CALCULATION_TYPE_COMPLEX_RATIO = 'ComplexRatio';
     
     SettingsSDM settings;    
 
@@ -157,39 +158,120 @@ public with sharing class PlanComercialSDM {
      * @param {String indicator} Nombre del indicador en la configuracion
      * @return {Decimal} el valor resultado del calculo. Si hay algun problema devolvera 0
      */
-    private Decimal doCalculation(List<KPI__c> kpis, String indicator)
-    {
+    private Decimal doCalculation(List<KPI__c> kpis, PlanComercial__c plan)
+    {   
         Decimal result = 0;
 
         // Recuperamos de la configuracion el tipo de calculo y los nombres de los campos de KPI
-        SDMCommercialPlan__mdt settingsIndicator = mapSettingsIndicator?.get(indicator);
+        SDMCommercialPlan__mdt settingsIndicator = getMetadataRecord(plan);
         // Si existe la configuracion para ese indicador (que deberia)...
         if( settingsIndicator != null ) {
             
             Decimal firstField = 0;
             Decimal secondField = 0;
+            Decimal thirdField = 0;
 
             // Por cada KPI sumamos los valores del primer campo siempre y del segundo campo si existe
             for( KPI__c kpi: kpis ) {
-                // Primer campo siempre
-                Decimal firstFieldValue = (Decimal)kpi.get(settingsIndicator.FirstField__c);
-                firstField += (firstFieldValue == null ? 0:firstFieldValue );
-
-                // Segundo campo si existe
-                if( settingsIndicator.SecondField__c != null ) {
-                    Decimal secondFieldValue = (Decimal)kpi.get(settingsIndicator.SecondField__c);
-                    secondField += (secondFieldValue == null ? 0:secondFieldValue );
-                }
+                // Primer campo siempre                
+                firstField += getFirstFieldValue(settingsIndicator, kpi);
+                secondField += getSecondFieldValue(settingsIndicator, kpi);
+                thirdField += getThridFieldValue(settingsIndicator, kpi);                
             }
 
-            // Ahora dependiendo del tipo de calculo, hacemos una cosa u otra con los sumatorios
-            if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_SUM) ) {
-                result = firstField;
-            } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_RATIO) ) {
-                if( secondField != 0 ) result = (firstField / secondField);
-            } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_GROWTH) && secondField != 0) {
-                result = (firstField / secondField) - 1;
-            }
+            result = getOperationResult(settingsIndicator, firstField, secondField, thirdField);
+            
+        }
+
+        return result;
+    }
+
+
+     /**
+     * Para reducir la complejidad ciclomatica del metodo doCalculation saco fuera la logica para obtener el valor del primer campo
+     * 
+     * @author nts (dmunoz)
+     * @date 10/03/2023
+     * 
+     * @param settingsIndicator registro metadata
+     * @param kpi kpi
+     * @return valor obtenido del kpi para el primer campo seleccionado
+     */
+    private Decimal getFirstFieldValue(SDMCommercialPlan__mdt settingsIndicator, KPI__c kpi) {
+        Decimal result = 0;
+        // Primer campo siempre
+        Decimal firstFieldValue = (Decimal) kpi.get(settingsIndicator.FirstField__c);
+        result = firstFieldValue == null ? 0 : firstFieldValue;
+
+        return result;
+    }
+
+     /**
+     * Para reducir la complejidad ciclomatica del metodo doCalculation saco fuera la logica para obtener el valor del segundo campo
+     * 
+     * @author nts (dmunoz)
+     * @date 10/03/2023
+     * 
+     * @param settingsIndicator registro metadata
+     * @param kpi kpi
+     * @return valor obtenido del kpi para el segundo campo seleccionado
+     */
+    private Decimal getSecondFieldValue(SDMCommercialPlan__mdt settingsIndicator, KPI__c kpi) {
+        Decimal result = 0;
+        // Segundo campo si existe
+        if( settingsIndicator.SecondField__c != null ) {
+            Decimal secondFieldValue = (Decimal) kpi.get(settingsIndicator.SecondField__c);
+            result = secondFieldValue == null ? 0:secondFieldValue;
+        }
+
+        return result;
+    }
+
+    /**
+     * Para reducir la complejidad ciclomatica del metodo doCalculation saco fuera la logica para obtener el valor del tercer campo
+     * 
+     * @author nts (dmunoz)
+     * @date 10/03/2023
+     * 
+     * @param settingsIndicator registro metadata
+     * @param kpi kpi
+     * @return valor obtenido del kpi para el tercer campo seleccionado
+     */
+    private Decimal getThridFieldValue(SDMCommercialPlan__mdt settingsIndicator, KPI__c kpi) {
+        Decimal result = 0;
+        // Tercer campo si existe
+        if( settingsIndicator.ThirdField__c != null ) {
+            Decimal thirdFieldValue = (Decimal) kpi.get(settingsIndicator.ThirdField__c);
+            result = thirdFieldValue == null ? 0 : thirdFieldValue;
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Para reducir la complejidad ciclomatica del metodo doCalculation saco fuera la logica de las operaciones
+     * 
+     * @author nts (dmunoz)
+     * @date 10/03/2023
+     * 
+     * @param {KPI__c kpi} datos del KPI
+     * @param {PlanComercial__c plan} datos del Plan
+     * @return Resultado operacion
+     */
+    private Decimal getOperationResult(SDMCommercialPlan__mdt settingsIndicator, Decimal firstField, Decimal secondField, Decimal thirdField) {
+        Decimal result = 0;
+
+        // Ahora dependiendo del tipo de calculo, hacemos una cosa u otra con los sumatorios
+        if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_SUM) ) {
+            result = firstField;
+        } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_RATIO) && secondField != 0 ) {
+           result = (firstField / secondField);
+        } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_GROWTH) && secondField != 0) {
+            result = (firstField / secondField) - 1;
+        } else if( settingsIndicator.CalculationType__c.equals(SETTINGS_CALCULATION_TYPE_COMPLEX_RATIO) && thirdField != 0) {
+            Decimal operationResult = (((firstField - secondField) / thirdField) * 100).setScale(2);
+            result = operationResult;
         }
 
         return result;
@@ -371,7 +453,7 @@ public with sharing class PlanComercialSDM {
             // Por cada Plan comercial... averiguamos el usuario, los campos y los mediadores a los que hace referencia
             for(PlanComercial__c plan: plans) {
                 // Recuperamos la configuracion del calculo del indicador que deberia existir
-                SDMCommercialPlan__mdt indicatorSetting = mapSettingsIndicator?.get(plan.Indicator__c);
+                SDMCommercialPlan__mdt indicatorSetting = getMetadataRecord(plan);
                 if( indicatorSetting == null ) { // Si no existe la configuracion => reportar error
                     String errorMessage = String.format(ERROR_SETTINGS_NO_INDICATOR, new List<String>{plan.Indicator__c});
                     ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, errorMessage, CLASS_NAME);
@@ -379,6 +461,7 @@ public with sharing class PlanComercialSDM {
                     // Incluimos los campos del indicador para recuperarlos con la consulta de kpis
                     kpiFields.add(indicatorSetting.FirstField__c);
                     if( indicatorSetting.SecondField__c != null ) kpiFields.add(indicatorSetting.SecondField__c);
+                    if( indicatorSetting.ThirdField__c != null ) kpiFields.add(indicatorSetting.ThirdField__c);
 
                     if( !containsMonths ) containsMonths = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_MONTH);
                     if( !containsYTD ) containsYTD = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_YRD);
@@ -446,7 +529,7 @@ public with sharing class PlanComercialSDM {
                         // Si hay KPIs (que deberia)...
                         if( !kpis.isEmpty() ) {
                             // Se realiza el calculo
-                            Decimal result = doCalculation(kpis, plan.Indicator__c);
+                            Decimal result = doCalculation(kpis, plan);
 
                             // Guardamos el resultado en el Plan comercial
                             plansToUpdate.add(new PlanComercial__c(
@@ -536,5 +619,24 @@ public with sharing class PlanComercialSDM {
             Set<String> stringSet = new Set<String>( (List<String>)new List<Id>( userIds ) );
             notif.send(stringSet, title, bodyContent);
         }
+    }
+
+    /**
+     * Debido a que existe ya un registro en la metadata para retencion y siniestralidad, para no solapar creamos un nuevo registro para esos indicadores añadiendo HO (Home Office) al final para identificar los planes que ha creado el home office
+     * 
+     * @param PlanComercial__c plan comercial a conseguir el registro metadata adecuado
+     */
+    private SDMCommercialPlan__mdt getMetadataRecord (PlanComercial__c plan) {
+
+        SDMCommercialPlan__mdt result;
+        String indicator;
+        if (plan.IsOwnedByHomeOffice__c) {
+            indicator = plan.Indicator__c + 'HO';
+        } else {
+            indicator = plan.Indicator__c;
+        }
+
+        result =  mapSettingsIndicator?.get(indicator);
+        return result;
     }
 }

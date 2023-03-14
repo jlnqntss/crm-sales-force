@@ -26,6 +26,16 @@
                 <default>false</default>
                 <label>APES</label>
             </value>
+            <value>
+                <fullName>Ratio_Retention</fullName>
+                <default>false</default>
+                <label>% Retention Ratio</label>
+            </value>
+            <value>
+                <fullName>Ratio_Claim</fullName>
+                <default>false</default>
+                <label>% Sin Total</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

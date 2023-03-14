@@ -146,6 +146,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
             WHERE RecordTypeId = :rtPlanAnualId
             AND Intermediary__c = null
             AND AssignedTo__c = :assignedUserId
+            AND isOwnedByHomeOffice__c = false
             AND CALENDAR_YEAR(StartDate__c) = :actualYear
             Order By CreatedDate
         ];
@@ -341,7 +342,6 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
             result = new List<String>(metadataEmailsRaw.split(','));
         }
 
-        System.debug('selector planes getMetadataEmails ' + result);
         return result;
     }
 

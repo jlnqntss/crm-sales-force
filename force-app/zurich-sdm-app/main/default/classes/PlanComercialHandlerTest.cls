@@ -1,58 +1,104 @@
 @isTest
-public with sharing class PlanComercialHandlerTest {
+public with sharing class PlanComercialHandlerTest { 
 
     public static final Integer ACTUAL_YEAR = Date.today().year() + 1;
 
     @TestSetup
     static void makeData() {        
         
+        Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, 'PN', 'Particulares', 'Autos', '11 BARCELONA', 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        insert obj;
         TestDataFactorySDM.anualPlanSetupData(ACTUAL_YEAR, AccountsSelector.SDM_DT_EMAIL_FIELD);       
     }
-    
-    @isTest
-    static void testUpdate() {
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+    /**
+     * generar actualizar planes pn y los planes mensuales asociados se deben modificar
+     *
+     * @author nts (dmunoz)
+     * @date 28/02/2023
+     */
+    @isTest
+    static void updateKPIPlanComercialPNTest_OK() {
+        List<PlanComercial__c> planesToUpdate = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, 
+                                                                Indicator__c, Segment__c, Product__c, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Actual_KPI__c, Zone__c, 
+                                                                ParentPlan__r.OwnerId, Intermediary__c
+                                                        FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
+                                                        AND Indicator__c = 'PN'
                                                         AND Intermediary__c = NULL
                                                         LIMIT 1]);
 
-        if (!planesToJob.isEmpty()) {
-            PlanComercial__c pc = planesToJob.get(0);
-            pc.TargetKPINumber__c = 1000;
+        if (!planesToUpdate.isEmpty()) {
+            PlanComercial__c plan = planesToUpdate.get(0);
 
-            // llamará al encolable por update
+            Date endDate = Date.newInstance(ACTUAL_YEAR, 1, 31);
+
+            // obtener el kpi del plan mensual antes de actualizar
+            List<PlanComercial__c> planMensualListBefore = new List<PlanComercial__c>([SELECT Id, TargetKPINumber__c FROM PlanComercial__c
+                                                                                WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()
+                                                                                AND ParentPlan__c = :plan.Id
+                                                                                AND Indicator__c = 'PN'
+                                                                                AND EndDate__c =: endDate
+                                                                                LIMIT 1]);
+
+
+            // update target kpi
+            plan.TargetKPINumber__c = 200;
+            
             Test.startTest();
-            update pc;
-
+            update plan;
             Test.stopTest();
 
-            Plancomercial__c pcPostUpdate = [SELECT Id, TargetKPINumber__c FROM Plancomercial__c WHERE Id = :pc.Id];
+            // vuelvo a consultar el mismo plan  mensual que arriba para comparar
+            if (!planMensualListBefore.isEmpty()) {
+                PlanComercial__c planBeforeUpdate = planMensualListBefore.get(0);
+                
+                PlanComercial__c planAfterUpdate = [SELECT Id, TargetKPINumber__c FROM PlanComercial__c WHERE Id =:planBeforeUpdate.Id];
 
-            System.assertEquals(1000, pcPostUpdate.TargetKPINumber__c, 'Debe tener KPI con valor 1000');
-        }
+                System.assertEquals(true, planBeforeUpdate.TargetKPINumber__c != planAfterUpdate.TargetKPINumber__c);
+            }
+        }   
     }
 
-    @isTest
-    static void testDelete() {
 
-        List<PlanComercial__c> planesToJob = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
+    /**
+     * eliminar planes mensuales pn
+     *
+     * @author nts (dmunoz)
+     * @date 28/02/2023
+     */
+    @isTest
+    static void testDeletePlanPN_OK() {
+        List<PlanComercial__c> planesIniciales = new List<PlanComercial__c>([SELECT Id
+                                                                            FROM PlanComercial__c 
+                                                                            WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
+                                                                            AND ParentPlan__c != NULL 
+                                                                            AND Indicator__c = 'PN'
+                                                                            AND Intermediary__c = NULL]);
+
+        List<PlanComercial__c> planesToDelete = new List<PlanComercial__c>([SELECT Id
+                                                        FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
                                                         AND ParentPlan__c != NULL 
+                                                        AND Indicator__c = 'PN'
                                                         AND Intermediary__c = NULL
                                                         LIMIT 1]);
 
-        if (!planesToJob.isEmpty()) {
-            PlanComercial__c pc = planesToJob.get(0);
+        if (!planesToDelete.isEmpty()) {
 
             Test.startTest();
-            delete pc;
+            delete planesToDelete;
             Test.stopTest();
 
-            List<Plancomercial__c> deletedPC = new List<PlanComercial__c>([SELECT Id, TargetKPINumber__c FROM Plancomercial__c WHERE Id = :pc.Id]);
+            List<PlanComercial__c> planesAfterDelete = new List<PlanComercial__c>([SELECT Id
+                                                                            FROM PlanComercial__c 
+                                                                            WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
+                                                                            AND ParentPlan__c != NULL 
+                                                                            AND Indicator__c = 'PN'
+                                                                            AND Intermediary__c = NULL]);
 
-            System.assertEquals(0, deletedPC.size(), 'Se debe haber eliminado el plan anual');
+            System.assertEquals(true, planesIniciales.size() != planesAfterDelete.size());
         }
     }
 }

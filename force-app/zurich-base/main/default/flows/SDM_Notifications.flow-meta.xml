@@ -418,7 +418,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>SentWeekLeft</leftValueReference>
+                <leftValueReference>SentEndReached</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -622,7 +622,7 @@
             <label>MensualPlan</label>
         </rules>
     </decisions>
-    <description>SDM: setear el valor isRelatedToComercialPlan en la llamada al subflow Create Task con valor true</description>
+    <description>SDM: corregir calculo notificacion KPI Reached para Indicador APES y no notificar varias veces kpi inferior a objetivo N dias antes de fin de mes</description>
     <environments>Default</environments>
     <formulas>
         <description>Selecciona el mensaje a utilizar en la notificación &apos;Days Left&apos; en función de si el plan mensual está relacionado con un intermediario o no.</description>
@@ -630,9 +630,14 @@
         <dataType>String</dataType>
         <expression>IF
 (
-    ISBLANK({!$Record.Intermediary__c}), 
-        {!BodyDaysLeft}, 
-        {!BodyDaysLeftIntermediary}
+        ISPICKVAL({!$Record.Indicator__c}, &apos;Ratio_Retention&apos;) || ISPICKVAL({!$Record.Indicator__c}, &apos;Ratio_Claim&apos;), 
+        {!BodyDaysLeftRetentionClaim}, 
+        IF
+        (
+         ISBLANK({!$Record.Intermediary__c}), 
+             {!BodyDaysLeft}, 
+             {!BodyDaysLeftIntermediary}
+        ) 
 )</expression>
     </formulas>
     <formulas>
@@ -661,6 +666,27 @@
         <dataType>Number</dataType>
         <expression>{!$Record.EndDate__c} - TODAY()</expression>
         <scale>0</scale>
+    </formulas>
+    <formulas>
+        <description>Traducir el valor de Indicador</description>
+        <name>IndicatorValue</name>
+        <dataType>String</dataType>
+        <expression>CASE
+(
+  {!$Record.Indicator__c},
+  &quot;PN&quot;,  &quot;Producción nueva&quot;,
+  &quot;PoliciesPN&quot;,  &quot;Pólizas producción nueva&quot;,
+  &quot;PoliciesInForce&quot;,  &quot;Pólizas en vigor&quot;,
+  &quot;Portfolio&quot;,  &quot;Cartera&quot;,
+  &quot;Ratio_PNIncrease&quot;,  &quot;% Crecimiento producción nueva vs pa&quot;,
+  &quot;Ratio_PoliciesPNIncreas&quot;, &quot;% Crecimiento pólizas producción nueva vs pa&quot;,
+  &quot;Ratio_PoliciesInForceIncrease&quot;,  &quot;% Crecimiento pólizas vigor vs pa&quot;,
+  &quot;Ratio_PortIncrease&quot;,  &quot;% Crecimiento cartera&quot;,
+  &quot;Ratio_Claim&quot;,  &quot;% Siniestralidad total&quot;,
+  &quot;Ratio_Retention&quot;,  &quot;% Ratio de retención&quot;,
+  &quot;Totaldiscount&quot;, &quot;% Descuento total&quot;,
+  TEXT({!$Record.Indicator__c})
+)</expression>
     </formulas>
     <formulas>
         <description>Si Actual KPI es nulo uso 0, si no el valor que tenga</description>
@@ -804,13 +830,14 @@ IF
   &quot;PoliciesPN&quot;,  {!$Record.TargetKPINumber__c},
   &quot;PoliciesInForce&quot;,  {!$Record.TargetKPINumber__c},
   &quot;Portfolio&quot;,  {!$Record.TargetKPICurrency__c},
-  &quot;Ratio_PNIncrease&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;Ratio_PoliciesPNIncreas&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;Ratio_PoliciesInForceIncrease&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;Ratio_PortIncrease&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;Ratio_Claim&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;Ratio_Retention&quot;,  {!$Record.TargetKPIPercent__c},
-  &quot;Totaldiscount&quot;,  {!$Record.TargetKPIPercent__c},
+  &quot;Ratio_PNIncrease&quot;,  {!$Record.TargetKPIPercent__c} * 100,
+  &quot;Ratio_PoliciesPNIncreas&quot;,  {!$Record.TargetKPIPercent__c} * 100,
+  &quot;Ratio_PoliciesInForceIncrease&quot;,  {!$Record.TargetKPIPercent__c} * 100,
+  &quot;Ratio_PortIncrease&quot;,  {!$Record.TargetKPIPercent__c} * 100,
+  &quot;Ratio_Claim&quot;,  {!$Record.TargetKPIPercent__c} * 100,
+  &quot;Ratio_Retention&quot;,  {!$Record.TargetKPIPercent__c} * 100,
+  &quot;Totaldiscount&quot;,  {!$Record.TargetKPIPercent__c} * 100,
+  &quot;APES&quot;,  {!$Record.TargetKPICurrency__c},
   0
 )</expression>
         <scale>2</scale>
@@ -1019,14 +1046,21 @@ IF
         <description>Mensaje a mostrar para las notificaciones &apos;Days Left&apos; de los planes mensuales.</description>
         <name>BodyDaysLeft</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>{!DaysLeftTextFormula} para finalizar {!Month}, necesitas {!KPIToCoverFormula} para cumplir tu objetivo acumulado mensual en el plan {!$Record.Name}
- del segmento {!$Record.Segment__c}</text>
+        <text>A cierre de {!Month}, necesitas {!KPIToCoverFormula} para cumplir tu objetivo acumulado mensual en el plan {!$Record.Name}
+ del segmento {!$Record.Segment__c}, producto {!$Record.Product__c} y zona {!$Record.Zone__c}</text>
     </textTemplates>
     <textTemplates>
         <description>Mensaje a mostrar a los RN cuando un plan mensual de los mediadores no ha cumplido el objetivo.</description>
         <name>BodyDaysLeftIntermediary</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>{!DaysLeftTextFormula} para finalizar {!Month},  el mediador {!$Record.Intermediary__r.INFOIntermediaryCode__c} {!$Record.Intermediary__r.IntermediaryDescription__c} necesita {!KPIToCoverFormula}  para cumplir su objetivo acumulado mensual en el plan {!$Record.Name} del segmento {!$Record.Segment__c}</text>
+        <text>A cierre de {!Month},  el mediador {!$Record.Intermediary__r.INFOIntermediaryCode__c} {!$Record.Intermediary__r.IntermediaryDescription__c} necesita {!KPIToCoverFormula}  para cumplir su objetivo acumulado mensual en el plan {!$Record.Name} del segmento {!$Record.Segment__c}, producto {!$Record.Product__c} y zona {!$Record.Zone__c}</text>
+    </textTemplates>
+    <textTemplates>
+        <description>Mensaje a mostrar al usuario para los planes mensuales de Ratio Retención y Siniestralidad</description>
+        <name>BodyDaysLeftRetentionClaim</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>A cierre de {!Month}, necesitas {!KPIToCoverFormula}% para cumplir tu objetivo acumulado mensual en el plan {!$Record.Name}
+ del segmento {!$Record.Segment__c}, producto {!$Record.Product__c} y zona {!$Record.Zone__c}</text>
     </textTemplates>
     <textTemplates>
         <description>Mensaje a mostrar en la notificación de KPI Changed para los planes anuales hijos</description>
@@ -1066,13 +1100,13 @@ IF
         <description>Message para la tarea a crear para los planes mensuales en WeekLeft</description>
         <name>TaskMessageMensualPlan</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>Plan de acción a corto plazo para mejorar: Seguimiento {!$Record.Indicator__c}</text>
+        <text>Plan de acción a corto plazo para mejorar: Seguimiento {!IndicatorValue}</text>
     </textTemplates>
     <textTemplates>
         <description>Subject para la tarea a crear para los planes mensuales en WeekLeft</description>
         <name>TaskSubjectMensualPlan</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>Seguimiento {!$Record.Indicator__c} para segmento {!$Record.Segment__c}</text>
+        <text>Seguimiento {!IndicatorValue} para segmento {!$Record.Segment__c}</text>
     </textTemplates>
     <textTemplates>
         <name>TitleDaysLeftNotification</name>

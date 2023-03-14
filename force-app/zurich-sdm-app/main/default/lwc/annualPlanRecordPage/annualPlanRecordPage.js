@@ -1,6 +1,10 @@
-import { LightningElement, api, track } from "lwc";
+import { LightningElement, api, track, wire } from "lwc";
 
 import FORM_FACTOR from "@salesforce/client/formFactor";
+
+import { getRecord } from "lightning/uiRecordApi";
+import ISOWNEDBYHOMEOFFICE_FIELD from "@salesforce/schema/PlanComercial__c.IsOwnedByHomeOffice__c";
+import RECORDTYPEDEVELOPERNAME_FIELD from "@salesforce/schema/PlanComercial__c.RecordType.DeveloperName";
 
 import SDM_PlanAnual_RecordPage_Cancel from "@salesforce/label/c.SDM_PlanAnual_RecordPage_Cancel";
 import SDM_PlanAnual_RecordPage_Save from "@salesforce/label/c.SDM_PlanAnual_RecordPage_Save";
@@ -29,6 +33,49 @@ export default class AnnualPlanRecordPage extends LightningElement {
   @track secA = "slds-section slds-is-open";
   @track secB = "slds-section slds-is-open";
   @track secC = "slds-section slds-is-open";
+
+  // ocultar campos en caso de que el registro sea propio de un home office, se usa para Ratio Retención y Siniestralidad
+  planComercialQuery;
+  isOwnedByHomeOffice;
+  isVisibleKPI = false;
+  isVisibleSendNotification = true;
+
+  // query para obtener el la información del campo isOwnedByHomeOffice__c
+  @wire(getRecord, {
+    recordId: "$recordId",
+    fields: [ISOWNEDBYHOMEOFFICE_FIELD, RECORDTYPEDEVELOPERNAME_FIELD]
+  })
+  getPlanData(data, error) {
+    if (error) {
+      let message = "Unknown error";
+      if (Array.isArray(error.body)) {
+        message = error.body.map((e) => e.message).join(", ");
+      } else if (typeof error.body.message === "string") {
+        message = error.body.message;
+      }
+      console.log("Error " + message);
+    } else if (data) {
+      try {
+        let jsonParse = JSON.parse(JSON.stringify(data));
+        let isOwnedByHomeOffice =
+          jsonParse.data.fields.IsOwnedByHomeOffice__c.value;
+        let rtName = jsonParse.data.fields.RecordType.displayValue;
+
+        if (isOwnedByHomeOffice && "Mensual Plan" === rtName) {
+          // si es un plan mensual y el owner es un home office muestro los campos
+          this.isVisibleKPI = true;
+          this.isVisibleSendNotification = false;
+        } else if (isOwnedByHomeOffice === false) {
+          // si no es un plan de home office muestro siempre
+          this.isVisibleKPI = true;
+        } else {
+          this.isVisibleKPI = false;
+        }
+      } catch (e) {
+        console.log(JSON.stringify(e));
+      }
+    }
+  }
 
   // Estructura que representa las diferentes secciones expand/collapse
   Sections = {

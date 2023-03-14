@@ -43,7 +43,7 @@ public class PlanComercialHandler implements ITrigger {
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap) {
-        planesMensuales = PlanComercialUtil.setPlanesMensuales(oldMap);
+        planesMensuales = PlanComercialUtil.getPlanesMensualesBeforeDelete(oldMap);
     }
 
     /**
@@ -54,7 +54,9 @@ public class PlanComercialHandler implements ITrigger {
      * has modified any values. The record is 'read only' by this point.
      */
     public void afterInsert(List<SObject> newList) {
-        PlanComercialUtil.altaJobGestionarPlanesMensuales(newList, null, 'Insert');
+        if (!System.isBatch() && !newList.isEmpty()) {
+            Database.executeBatch(new SDMInsertPlansAsyncBatch(newList, 'InsertFromPlanComercial'), 200);
+        }
     }
 
     /**
@@ -64,7 +66,9 @@ public class PlanComercialHandler implements ITrigger {
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap) {
-        PlanComercialUtil.altaJobGestionarPlanesMensuales(newList, oldMap, 'Update');
+        if (!System.isBatch() && !newList.isEmpty()) {
+            Database.executeBatch(new SDMUpdatePlansAsyncBatch(newList, oldMap, 'UpdateFromPlanComercial'), 200);
+        }
     }
 
     /**
@@ -74,7 +78,9 @@ public class PlanComercialHandler implements ITrigger {
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap) {
-        PlanComercialUtil.altaJobEliminarPlanesMensuales(planesMensuales);
+        if (!System.isBatch() && !oldMap.isEmpty()) {
+            Database.executeBatch(new SDMDeletePlansAsyncBatch(planesMensuales, 'DeleteFromPlanComercial'), 200);
+        }
     }
 
     /**
