@@ -5,7 +5,7 @@
         <name>Asignamos_el_centro_tramitador</name>
         <label>Asignamos el centro tramitador</label>
         <locationX>264</locationX>
-        <locationY>695</locationY>
+        <locationY>575</locationY>
         <assignmentItems>
             <assignToReference>Recorremos_los_casos_asociados_al_siniestros.CentroTramitador__c</assignToReference>
             <operator>Assign</operator>
@@ -21,7 +21,7 @@
         <name>Guardamos_cambios</name>
         <label>Guardamos cambios</label>
         <locationX>264</locationX>
-        <locationY>815</locationY>
+        <locationY>695</locationY>
         <assignmentItems>
             <assignToReference>CasesToUpdate</assignToReference>
             <operator>Add</operator>
@@ -33,31 +33,6 @@
             <targetReference>Recorremos_los_casos_asociados_al_siniestros</targetReference>
         </connector>
     </assignments>
-    <decisions>
-        <name>Comprobamos_valor_disponible</name>
-        <label>Comprobamos valor disponible</label>
-        <locationX>396</locationX>
-        <locationY>575</locationY>
-        <defaultConnector>
-            <targetReference>Recorremos_los_casos_asociados_al_siniestros</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No disponible</defaultConnectorLabel>
-        <rules>
-            <name>Disponible</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Recorremos_los_casos_asociados_al_siniestros.CentroTramitador__c</leftValueReference>
-                <operator>Contains</operator>
-                <rightValue>
-                    <elementReference>$Record.ClaimOwnerTeamName__c</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Asignamos_el_centro_tramitador</targetReference>
-            </connector>
-            <label>Disponible</label>
-        </rules>
-    </decisions>
     <environments>Default</environments>
     <interviewLabel>Claim Trigger - After update - Actualzamos casos relacionados {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Claim Trigger - After update - Actualzamos casos relacionados</label>
@@ -69,7 +44,7 @@
         <collectionReference>Obtenemos_casos_relacionados</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Comprobamos_valor_disponible</targetReference>
+            <targetReference>Asignamos_el_centro_tramitador</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Actualizamos</targetReference>
@@ -126,7 +101,7 @@
         <name>Actualizamos</name>
         <label>Actualizamos</label>
         <locationX>176</locationX>
-        <locationY>1127</locationY>
+        <locationY>911</locationY>
         <inputReference>CasesToUpdate</inputReference>
     </recordUpdates>
     <start>
