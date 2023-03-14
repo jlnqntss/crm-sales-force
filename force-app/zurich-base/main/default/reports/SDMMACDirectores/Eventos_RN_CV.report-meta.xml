@@ -13,6 +13,12 @@
         <field>EVENT_SUBTYPE</field>
     </columns>
     <columns>
+        <field>CDF1</field>
+    </columns>
+    <columns>
+        <field>Activity.Acta__c</field>
+    </columns>
+    <columns>
         <field>LOCATION</field>
     </columns>
     <columns>
@@ -49,17 +55,15 @@
         <field>Activity.Follow_up_type__c</field>
     </columns>
     <columns>
-        <field>Activity.Reference_number__c</field>
-    </columns>
-    <columns>
-        <field>Activity.Customer_name__c</field>
-    </columns>
-    <columns>
-        <field>Activity.Premium_amount__c</field>
-    </columns>
-    <columns>
         <field>PARENT_ACCOUNT_NAME</field>
     </columns>
+    <customDetailFormulas>
+        <calculatedFormula>IF(ISBLANK(Activity.Acta__c), &apos;No&apos;, &apos;Si&apos;)</calculatedFormula>
+        <dataType>Text</dataType>
+        <developerName>CDF1</developerName>
+        <label>¿Tiene Acta?</label>
+        <scale>2</scale>
+    </customDetailFormulas>
     <description>Actividades abiertas por tipología  y mediador</description>
     <filter>
         <criteriaItems>
@@ -85,7 +89,17 @@
         </criteriaItems>
         <language>es</language>
     </filter>
-    <format>Tabular</format>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.RelatedToIntermediary__c</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Activity.EventType__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
     <name>Eventos RN/CV</name>
     <params>
         <name>closed</name>
