@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CentroTramitador__c</fullName>
+    <externalId>false</externalId>
+    <label>Centro tramitador</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Contact Center Service</fullName>
+                <default>false</default>
+                <label>Contact Center Service</label>
+            </value>
+            <value>
+                <fullName>CC Retención</fullName>
+                <default>false</default>
+                <label>CC Retención</label>
+            </value>
+            <value>
+                <fullName>CC Comercialización</fullName>
+                <default>false</default>
+                <label>CC Comercialización</label>
+            </value>
+            <value>
+                <fullName>CSM Particulares</fullName>
+                <default>false</default>
+                <label>CSM Particulares</label>
+            </value>
+            <value>
+                <fullName>CSM Administración</fullName>
+                <default>false</default>
+                <label>CSM Administración</label>
+            </value>
+            <value>
+                <fullName>BASICOS DAÑOS EXPRESS 1</fullName>
+                <default>false</default>
+                <label>BASICOS DAÑOS EXPRESS 1</label>
+            </value>
+            <value>
+                <fullName>BASICOS LC &amp; CORP. BARCELONA</fullName>
+                <default>false</default>
+                <label>BASICOS LC &amp; CORP. BARCELONA</label>
+            </value>
+            <value>
+                <fullName>BASICOS LC &amp; CORP. MADRID</fullName>
+                <default>false</default>
+                <label>BASICOS LC &amp; CORP. MADRID</label>
+            </value>
+            <value>
+                <fullName>BASICOS RC MATERIALES 1</fullName>
+                <default>false</default>
+                <label>BASICOS RC MATERIALES 1</label>
+            </value>
+            <value>
+                <fullName>BASICOS RC MATERIALES 2</fullName>
+                <default>false</default>
+                <label>BASICOS RC MATERIALES 2</label>
+            </value>
+            <value>
+                <fullName>BASICOS RC MATERIALES 3</fullName>
+                <default>false</default>
+                <label>BASICOS RC MATERIALES 3</label>
+            </value>
+            <value>
+                <fullName>BASICOS RECLAMACIÓN DAÑOS</fullName>
+                <default>false</default>
+                <label>BASICOS RECLAMACIÓN DAÑOS</label>
+            </value>
+            <value>
+                <fullName>CS TECNICO DAÑOS</fullName>
+                <default>false</default>
+                <label>CS TECNICO DAÑOS</label>
+            </value>
+            <value>
+                <fullName>CT RECOBRO INDEMNIZABLES</fullName>
+                <default>false</default>
+                <label>CT RECOBRO INDEMNIZABLES</label>
+            </value>
+            <value>
+                <fullName>CTA MOTOR EXPRESS</fullName>
+                <default>false</default>
+                <label>CTA MOTOR EXPRESS</label>
+            </value>
+            <value>
+                <fullName>CTA AUTO CONVENIOS</fullName>
+                <default>false</default>
+                <label>CTA AUTO CONVENIOS</label>
+            </value>
+            <value>
+                <fullName>CTA DAÑOS PROPIOS</fullName>
+                <default>false</default>
+                <label>CTA DAÑOS PROPIOS</label>
+            </value>
+            <value>
+                <fullName>CTA INTERNACIONAL</fullName>
+                <default>false</default>
+                <label>CTA INTERNACIONAL</label>
+            </value>
+            <value>
+                <fullName>CTA LESIONES RECLAMACION</fullName>
+                <default>false</default>
+                <label>CTA LESIONES RECLAMACION</label>
+            </value>
+            <value>
+                <fullName>CTA RECLAMACION LESIONES</fullName>
+                <default>false</default>
+                <label>CTA RECLAMACION LESIONES</label>
+            </value>
+            <value>
+                <fullName>CTA. CONVENCIONAL AUTO</fullName>
+                <default>false</default>
+                <label>CTA. CONVENCIONAL AUTO</label>
+            </value>
+            <value>
+                <fullName>CTD BCN 1</fullName>
+                <default>false</default>
+                <label>CTD BCN 1</label>
+            </value>
+            <value>
+                <fullName>CTD BCN 2</fullName>
+                <default>false</default>
+                <label>CTD BCN 2</label>
+            </value>
+            <value>
+                <fullName>CTD BCN 3</fullName>
+                <default>false</default>
+                <label>CTD BCN 3</label>
+            </value>
+            <value>
+                <fullName>CTD BCN 4</fullName>
+                <default>false</default>
+                <label>CTD BCN 4</label>
+            </value>
+            <value>
+                <fullName>CTD LC &amp; CORP.</fullName>
+                <default>false</default>
+                <label>CTD LC &amp; CORP.</label>
+            </value>
+            <value>
+                <fullName>CTD LINEAS PERSONALES</fullName>
+                <default>false</default>
+                <label>CTD LINEAS PERSONALES</label>
+            </value>
+            <value>
+                <fullName>CTD PYMES 1</fullName>
+                <default>false</default>
+                <label>CTD PYMES 1</label>
+            </value>
+            <value>
+                <fullName>CTD PYMES 2</fullName>
+                <default>false</default>
+                <label>CTD PYMES 2</label>
+            </value>
+            <value>
+                <fullName>Zurich Asistencia Auto</fullName>
+                <default>false</default>
+                <label>Zurich Asistencia Auto</label>
+            </value>
+            <value>
+                <fullName>Básicos Líneas Personales</fullName>
+                <default>false</default>
+                <label>Básicos Líneas Personales</label>
+            </value>
+            <value>
+                <fullName>ZURICH ASISTENCIA SH BASICOS</fullName>
+                <default>false</default>
+                <label>ZURICH ASISTENCIA SH BASICOS</label>
+            </value>
+            <value>
+                <fullName>ZURICH LUNAS (NO DISPONIBLE)</fullName>
+                <default>false</default>
+                <label>ZURICH LUNAS (NO DISPONIBLE)</label>
+            </value>
+            <value>
+                <fullName>CTA JURIDICO</fullName>
+                <default>false</default>
+                <label>CTA JURIDICO</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

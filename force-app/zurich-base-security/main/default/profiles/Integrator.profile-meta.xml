@@ -5559,6 +5559,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.CentroTramitador__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.ClaimId__c</field>
         <readable>true</readable>
     </fieldPermissions>

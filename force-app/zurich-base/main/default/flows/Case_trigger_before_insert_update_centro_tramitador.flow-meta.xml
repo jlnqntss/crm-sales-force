@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <description>Comprobamos que el valor que queremos insertar está disponible en la picklist</description>
+        <name>Comprobamos_valor</name>
+        <label>Comprobamos valor</label>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Disponible</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CentroTramitador__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>$Record.ClaimId__r.ClaimOwnerTeamName__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignamos_centro_tramitador</targetReference>
+            </connector>
+            <label>Disponible</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>isOCSdecision</name>
+        <label>¿Es OCS?</label>
+        <locationX>336</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Es_OCS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCS Inquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Comprobamos_valor</targetReference>
+            </connector>
+            <label>Es OCS</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Case trigger {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Trigger - Before Insert/Update - Centro tramitador</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Asignamos_centro_tramitador</name>
+        <label>Asignamos centro tramitador</label>
+        <locationX>50</locationX>
+        <locationY>551</locationY>
+        <inputAssignments>
+            <field>CentroTramitador__c</field>
+            <value>
+                <elementReference>$Record.ClaimId__r.ClaimOwnerTeamName__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>210</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>isOCSdecision</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ClaimId__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Case</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
