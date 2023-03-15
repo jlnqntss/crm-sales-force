@@ -43,6 +43,8 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
     @testvisible
     private static final string AUTH_DATA_ATTRIBUTE_MANAGER = 'manager';
     @testvisible
+    private static final string GROUP_MEMBER_QUEUE = 'Queue';
+    @testvisible
     private static final string CLASS_NAME = 'OpenIDConnectRegHandler';
     private static final string ERROR_PARSE_ROLES = 'Error al parsear el usuario. Para más ayuda, póngase en contacto con su administrador.';
     private static final string ERROR_NO_PROFILE = 'No PROFILE found in the configuration for the given list of rols: ';
@@ -516,7 +518,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
             if( String.isNotBlank(userId) ) {
                 // Get the existing Groups for the user
                 List<GroupMember> actualGroupMemberList = [
-                    SELECT Id, GroupId FROM GroupMember WHERE GroupId != null AND userOrGroupId = :userId
+                    SELECT Id, GroupId, Group.type FROM GroupMember WHERE GroupId != null AND userOrGroupId = :userId
                 ];
                 // for the groups that are not in the new list
                 List<GroupMember> deleteGroups = new List<GroupMember>();
@@ -526,8 +528,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                 // - if old in the new list -> remove from new list
                 for(Integer i=0,j=actualGroupMemberList.size();i<j;i++) {
                     Id oldId = actualGroupMemberList[i].GroupId;
+                    String Grouptype = actualGroupMemberList[i].Group.Type;
                     if( !newGroupList.contains(oldId) ) {
-                        deleteGroups.add(actualGroupMemberList[i]);
+                        if( Grouptype != GROUP_MEMBER_QUEUE) deleteGroups.add(actualGroupMemberList[i]);
                     } else {
                         newGroupList.remove(newGroupList.indexOf(oldId));
                     }
