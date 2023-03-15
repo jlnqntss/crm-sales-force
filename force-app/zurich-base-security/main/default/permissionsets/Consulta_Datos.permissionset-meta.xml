@@ -2830,6 +2830,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.IsUspProduct__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.isUpdatedFromINFO__c</field>
         <readable>true</readable>
     </fieldPermissions>
