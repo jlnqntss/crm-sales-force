@@ -111,6 +111,12 @@
         <locationX>50</locationX>
         <locationY>575</locationY>
         <inputAssignments>
+            <field>Autogestion__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>CloseResult__c</field>
             <value>
                 <stringValue>No Realizado USP</stringValue>
@@ -149,35 +155,35 @@
             <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>CIBER</stringValue>
+                <stringValue>17</stringValue>
             </value>
         </filters>
         <filters>
             <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>COMERCIOS</stringValue>
+                <stringValue>4</stringValue>
             </value>
         </filters>
         <filters>
             <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>PATRIMONIALES</stringValue>
+                <stringValue>8</stringValue>
             </value>
         </filters>
         <filters>
             <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>ACCIDENTES</stringValue>
+                <stringValue>5</stringValue>
             </value>
         </filters>
         <filters>
             <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>RESP. CIVIL</stringValue>
+                <stringValue>9</stringValue>
             </value>
         </filters>
         <filters>
