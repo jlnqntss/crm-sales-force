@@ -125,6 +125,9 @@
         <field>Account.InterestConc__c</field>
     </columns>
     <columns>
+        <field>Account.Category__c</field>
+    </columns>
+    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Account.PreferentialZRC__c</field>
     </columns>
