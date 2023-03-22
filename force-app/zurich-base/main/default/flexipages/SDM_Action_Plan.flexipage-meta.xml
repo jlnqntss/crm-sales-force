@@ -449,6 +449,29 @@
                 </visibilityRule>
             </fieldInstance>
         </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.PAActualKPI__c</fieldItem>
+                <identifier>RecordPAActualKPI_cField</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IsOwnedByHomeOffice__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.RecordType.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>MensualPlan</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </fieldInstance>
+        </itemInstances>
         <name>Facet-a4928c05-0cf1-4cee-a11f-8c6ffc6c1e2e</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -615,6 +638,9 @@
                         </valueListItems>
                         <valueListItems>
                             <value>Actual_KPI__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>PAActualKPI__c</value>
                         </valueListItems>
                         <valueListItems>
                             <value>Indicator__c</value>

@@ -14928,6 +14928,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>PlanComercial__c.PAActualKPI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>PlanComercial__c.SentNotifications__c</field>
         <readable>true</readable>
     </fieldPermissions>

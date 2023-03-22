@@ -5550,6 +5550,14 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>SDM_Acta_NoActaWarningToastMessage</name>
     </customLabels>
     <customLabels>
+        <label>Detalle</label>
+        <name>SDM_Home_RN_Dashboard_detail</name>
+    </customLabels>
+    <customLabels>
+        <label>Vista general</label>
+        <name>SDM_Home_RN_Dashboard_general_view</name>
+    </customLabels>
+    <customLabels>
         <label>Activo</label>
         <name>SDM_Objetivos_Active</name>
     </customLabels>
