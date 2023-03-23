@@ -17778,6 +17778,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Seguimientos_Masivos</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Special_Condition__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>

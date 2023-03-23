@@ -17058,6 +17058,10 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Seguimientos_Masivos</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>pw_si__SimpleImportVF</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
