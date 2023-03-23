@@ -94,6 +94,10 @@ export default class GenerateComercialPlan extends NavigationMixin(
   thereArePlans = false;
   deletedPlans = 0;
 
+  // atributos paginacion
+  @track pageNumber = 0; // pagina en la que se encuentra el usuario, por defecto 0, si hay resultados se cambia a 1
+  @track pageSize = 1; // numero de elementos por paginas a visualizar, valor por defecto se toma de metadata
+
   Indicator = {
     type_percent: "type_percent",
     type_number: "type_number",
@@ -274,13 +278,20 @@ export default class GenerateComercialPlan extends NavigationMixin(
           // Si es columna existente => marcar para borrar cabecera y filas
           this.deletedPlans++;
           this.tabledata.headers.Cells[pos].isDeleted = true;
+          this.tabledata.headers.Cells[pos].isPlanVisible = false; // al borrar un elemento lo marcamos como no visible
           this.tabledata.rows.forEach((row) => {
             row.Cells[pos].isDeleted = true;
+            row.Cells[pos].isPlanVisible = false; // al borrar un elemento lo marcamos como no visible
           });
           this.tabledata.footers.Cells[pos].isDeleted = true;
+          this.tabledata.footers.Cells[pos].isPlanVisible = false; // al borrar un elemento lo marcamos como no visible
         }
         // Restamos en uno los planes activos
         this.numActivePlans--;
+
+        // recalculamos distintos elementos de paginación
+        this.recalculatePaginationInDelete(pos);
+
         // Y comprobamos si queda alguno activo
         if (this.numActivePlans === 0) this.thereArePlans = false;
       }
@@ -728,6 +739,10 @@ export default class GenerateComercialPlan extends NavigationMixin(
         // Por defecto no hay nuevos planes
         this.newKey = 0;
 
+        // paginacion, actualizamos variable de paginación
+        this.pageSize = this.tabledata.numVisiblePlans;
+        this.pageNumber = 1;
+
         this.error = undefined;
       })
       .catch((error) => {
@@ -799,5 +814,160 @@ export default class GenerateComercialPlan extends NavigationMixin(
   // Propiedad: indica si el formulario se esta ejecutando en una pantalla pequeña
   get isPhone() {
     return FORM_FACTOR === "Small";
+  }
+
+  /******************* Métodos Paginación  *******************************/
+  // getter de pagina actual para usar en html
+  get currentPageNumber() {
+    return this.pageNumber;
+  }
+
+  // gestionar el comportamiento del botón página anterior, no se comprueba el numero de la pagina porque los botones se desactivan en el minimo y máximo
+  handlePrevious() {
+    this.pageNumber = this.pageNumber - 1;
+    this.handleHeaderPagination();
+    this.handleRowsPagination();
+    this.handleFootersPagination();
+  }
+
+  // gestionar el comportamiento del botón página siguiente, no se comprueba el numero de la pagina porque los botones se desactivan en el minimo y máximo
+  handleNext() {
+    this.pageNumber = this.pageNumber + 1;
+    this.handleHeaderPagination();
+    this.handleRowsPagination();
+    this.handleFootersPagination();
+  }
+
+  // getter total de páginas a usar en el html
+  get totalPages() {
+    return Math.ceil(this.numActivePlans / this.pageSize);
+  }
+
+  // habilita o deshabilita el botón página anterior
+  get isPreviousDisabled() {
+    return this.pageNumber <= 1;
+  }
+
+  // habilita o deshabilita el botón página siguiente
+  get isNextDisabled() {
+    return this.pageNumber >= this.totalPages;
+  }
+
+  /**************** Metodos auxiliares paginacion ***************/
+  /* controla la visibilidad del header de los planes al cambiar de página ya sea anterior o posterior. 
+  Si el elemento está en el rango de visibilidad definido por el numero de elementos por páginase se muestra*/
+  handleHeaderPagination() {
+    let contador = 0;
+    let positionMin = this.pageSize * (this.pageNumber - 1);
+    let positionMax = this.pageSize * this.pageNumber;
+
+    for (let header of this.tabledata.headers.Cells) {
+      if (contador < positionMin) {
+        header.isPlanVisible = false;
+      } else if (
+        contador >= positionMin &&
+        contador < positionMax &&
+        !header.isDeleted
+      ) {
+        // si el contador esta entre las posiciones permitidas es visible
+        header.isPlanVisible = true;
+      } else {
+        header.isPlanVisible = false;
+      }
+      if (!header.isDeleted) {
+        contador++;
+      }
+    }
+  }
+
+  /* controla la visibilidad de las filas de los planes al cambiar de página ya sea anterior o posterior. 
+  Si el elemento está en el rango de visibilidad definido por el numero de elementos por páginase se muestra*/
+  handleRowsPagination() {
+    let contador = 0;
+    let positionMin = this.pageSize * (this.pageNumber - 1);
+    let positionMax = this.pageSize * this.pageNumber;
+
+    for (let row of this.tabledata.rows) {
+      for (let cell of row.Cells) {
+        if (contador < positionMin) {
+          cell.isPlanVisible = false;
+        } else if (
+          contador >= positionMin &&
+          contador < positionMax &&
+          !cell.isDeleted
+        ) {
+          cell.isPlanVisible = true;
+        } else {
+          cell.isPlanVisible = false;
+        }
+        if (!cell.isDeleted) {
+          contador++;
+        }
+      }
+      contador = 0; // reseteo el contador para la siguiente fila
+    }
+  }
+
+  /* controla la visibilidad del footer de los planes al cambiar de página ya sea anterior o posterior. 
+  Si el elemento está en el rango de visibilidad definido por el numero de elementos por páginase se muestra*/
+  handleFootersPagination() {
+    let contador = 0;
+    let positionMin = this.pageSize * (this.pageNumber - 1);
+    let positionMax = this.pageSize * this.pageNumber;
+
+    for (let footer of this.tabledata.footers.Cells) {
+      if (contador < positionMin) {
+        footer.isPlanVisible = false;
+      } else if (
+        contador >= positionMin &&
+        contador < positionMax &&
+        !footer.isDeleted
+      ) {
+        footer.isPlanVisible = true;
+      } else {
+        footer.isPlanVisible = false;
+      }
+      if (!footer.isDeleted) {
+        contador++;
+      }
+    }
+  }
+
+  /* considerando que el tamaño de header, rows y footer 
+  es el mismo siempre en caso de borrar un plan ponemos a true el primer elemento no visible que haya en tabledata.c/annualPlanRecordPage
+  pos: posición del elemento eliminado para mostrar si existe alguno el que está a la derecha
+  */
+  recalculatePaginationInDelete(pos) {
+    let found = false;
+    let position = 0;
+    let element;
+    // buscamos si hay algún elemento a la derecha
+    while (!found && position < this.tabledata.headers.Cells.length) {
+      element = this.tabledata.headers.Cells[position];
+      if (!element.isDeleted && !element.isPlanVisible && position > pos) {
+        // si el elemento no es visible ni se ha eliminado obtengo su posicion y hago visible dicho plan que esté a la derecha del que se haya eliminado
+        found = true;
+      } else {
+        position++;
+      }
+    }
+
+    // Si lo hemos encontrado...
+    if (found) {
+      // cabecera
+      this.tabledata.headers.Cells[position].isPlanVisible = true;
+      // filas
+      this.tabledata.rows.forEach((row) => {
+        row.Cells[position].isPlanVisible = true;
+      });
+      // footer
+      this.tabledata.footers.Cells[position].isPlanVisible = true;
+    }
+
+    /* si de la ultima pagina se borra todo hay que recalcular la visibilidad de los planes para mostrar los de la pagina anterior.
+     Si tenemos 2/2 en el paginador y borramos todo lo que haya en la última página quedaría el paginador con valores 2/1 por eso queda así la condición e invocamos el método handlePrevious*/
+    if (this.pageNumber > this.totalPages) {
+      this.handlePrevious();
+    }
   }
 }
