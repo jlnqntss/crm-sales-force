@@ -246,6 +246,11 @@ export default class GenerateComercialPlan extends NavigationMixin(
       this.numActivePlans++;
       // Actualizamos que hay planes
       this.thereArePlans = true;
+
+      // si borramos todos los planes y le damos a nuevo hay que actualizar la información del paginador
+      if (this.pageNumber === 0 && this.totalPages !== 0) {
+        this.pageNumber = 1;
+      }
     } catch (error) {
       console.error(error);
     }
