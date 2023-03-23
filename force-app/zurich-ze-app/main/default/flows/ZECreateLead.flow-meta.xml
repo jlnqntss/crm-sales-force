@@ -190,6 +190,7 @@
         <object>Scope_Setting__mdt</object>
         <valueField>BusinessCode__c</valueField>
     </dynamicChoiceSets>
+    <environments>Default</environments>
     <formulas>
         <description>Fórmula que calcula el valor por defecto del ámbito en caso de recibir un Business Code valido por parametro, en caso de no encontrar ningún ámbito marcará Zurich Empresas por defecto</description>
         <name>DefaultScopeChoiceLabel</name>
@@ -290,6 +291,16 @@
             </validationRule>
         </fields>
         <fields>
+            <name>Business_Code</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>inputBusinessCode</elementReference>
+            </defaultValue>
+            <fieldText>Código de negocio</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
             <name>CommercialActivity</name>
             <choiceReferences>CommercialActivityPicklist</choiceReferences>
             <choiceReferences>EmptyCommercialActivity</choiceReferences>
@@ -377,6 +388,14 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Valor del Business Code recibido para añadir al formulario</description>
+        <name>inputBusinessCode</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
