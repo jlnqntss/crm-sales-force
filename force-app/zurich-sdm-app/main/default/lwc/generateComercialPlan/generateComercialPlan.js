@@ -964,8 +964,8 @@ export default class GenerateComercialPlan extends NavigationMixin(
       this.tabledata.footers.Cells[position].isPlanVisible = true;
     }
 
-    /* si de la ultima pagina se borra todo hay que recalcular la visibilidad de los planes para mostrar los de la pagina anterior.
-     Si tenemos 2/2 en el paginador y borramos todo lo que haya en la última página quedaría el paginador con valores 2/1 por eso queda así la condición e invocamos el método handlePrevious*/
+    /* si de la ultima pagina se borran todos hay que recalcular la visibilidad de los planes para mostrar los de la pagina anterior.
+     Si tenemos 2/2 en el paginador y borramos todos lo que haya en la última página quedaría el paginador con valores 2/1 por eso queda así la condición e invocamos el método handlePrevious*/
     if (this.pageNumber > this.totalPages) {
       this.handlePrevious();
     }
