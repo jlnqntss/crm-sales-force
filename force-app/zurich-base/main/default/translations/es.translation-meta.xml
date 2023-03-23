@@ -5830,6 +5830,10 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>SDM_PlanAnual_NewPlan</name>
     </customLabels>
     <customLabels>
+        <label>Página Siguiente</label>
+        <name>SDM_PlanAnual_NextPage</name>
+    </customLabels>
+    <customLabels>
         <label>No hay planes anuales definidos.</label>
         <name>SDM_PlanAnual_NoPlan</name>
     </customLabels>
@@ -5848,6 +5852,10 @@ Cree el acta y vuelva a intentarlo.</label>
     <customLabels>
         <label>Planes a eliminar al guardar</label>
         <name>SDM_PlanAnual_PlansToDelete</name>
+    </customLabels>
+    <customLabels>
+        <label>Página Anterior</label>
+        <name>SDM_PlanAnual_PreviousPage</name>
     </customLabels>
     <customLabels>
         <label>Selecciona el producto</label>

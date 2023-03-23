@@ -34,6 +34,8 @@ import SDM_PlanAnual_ValidationMessage from "@salesforce/label/c.SDM_PlanAnual_V
 import SDM_PlanAnual_ButtonRefresh from "@salesforce/label/c.SDM_PlanAnual_ButtonRefresh";
 import SDM_PlanAnual_Legend from "@salesforce/label/c.SDM_PlanAnual_Legend";
 import SDM_PlanAnual_WarningCero from "@salesforce/label/c.SDM_PlanAnual_WarningCero";
+import SDM_PlanAnual_PreviousPage from "@salesforce/label/c.SDM_PlanAnual_PreviousPage";
+import SDM_PlanAnual_NextPage from "@salesforce/label/c.SDM_PlanAnual_NextPage";
 
 import saveData from "@salesforce/apex/generateComercialPlanController.saveData";
 import getRecords from "@salesforce/apex/generateComercialPlanController.getRecords";
@@ -77,7 +79,9 @@ export default class GenerateComercialPlan extends NavigationMixin(
     SDM_PlanAnual_ValidationMessage,
     SDM_PlanAnual_ButtonRefresh,
     SDM_PlanAnual_Legend,
-    SDM_PlanAnual_WarningCero
+    SDM_PlanAnual_WarningCero,
+    SDM_PlanAnual_PreviousPage,
+    SDM_PlanAnual_NextPage
   };
 
   @track isEdited = false;
