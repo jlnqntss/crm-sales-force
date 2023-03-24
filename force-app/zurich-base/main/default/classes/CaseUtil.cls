@@ -812,4 +812,83 @@ public with sharing class CaseUtil
 
     }
 
+
+    /**
+     * Método utilizado por Batch_CompleteCases para relacionar los casos con las Polizas u Ofertas
+     * @author arcortazar
+     * @date 23/03/2023
+     * @param [List<Case> [casesToRelate] casos que ha recuperado el batch
+     * @return List<Case> casos a actualizar
+     */
+    public static List<Case> relateCasesToPolicyOffers (List<Case> casesToRelate)
+    {
+        // Lista para almacenar solo los registros que hay que actualizar
+        List<Case> casesToUpdate = new List<Case>();
+
+        // Mapas con la información
+
+        // La lógica solo se recorre si la lista no es nula, para evitar excepciones
+        if(casesToRelate != null && !casesToRelate.isEmpty())
+        {
+
+            Set<String> lstOffers = new Set<String>();
+            Set<String> lstPolicies = new Set<String>();
+
+            for(Case c : casesToRelate)
+            {
+                if(!String.isBlank(c.HegeoOfferId__c)) lstOffers.add(c.HegeoOfferId__c);
+                if(!String.isBlank(c.HegeoPolicyId__c)) lstPolicies.add(c.HegeoPolicyId__c);
+                if(!String.isBlank(c.HegeoPrePolicyId__c)) lstPolicies.add(c.HegeoPrePolicyId__c);
+            }
+
+            // Obtenemos las Polizas y Ofertas relacionadas con los casos
+            List<Opportunity> retrievedOffers = new OpportunitiesSelector().findByName(lstOffers);
+            List<Policy__c> retrievedPolicies = new PoliciesSelector().selectByNumber(lstPolicies);
+
+            Map<String, Opportunity> mapRetrievedOffers= new Map<String, Opportunity>();
+            for (Opportunity o : retrievedOffers)
+            {
+                mapRetrievedOffers.put(o.Name, o);
+            }
+            System.debug('+++ mapRetrievedOffers: ' + mapRetrievedOffers);
+
+            Map<String, Policy__c> mapRetrievedPolicies= new Map<String, Policy__c>();
+            for (Policy__c p : retrievedPolicies)
+            {
+                mapRetrievedPolicies.put(p.InfoPolicyNumber__c, p);
+            }
+            System.debug('+++ mapRetrievedPolicies: ' + mapRetrievedPolicies);
+
+            for(Case c : casesToRelate)
+            {
+                System.debug('++++ Case: ' + c);
+                if(!String.isBlank(c.HegeoPolicyId__c))
+                {
+                    if(mapRetrievedPolicies.get(c.HegeoPolicyId__c) != null)
+                    {
+                        c.PolicyId__c = mapRetrievedPolicies.get(c.HegeoPolicyId__c).Id;
+                    }
+                }
+                else if(!String.isBlank(c.HegeoPrePolicyId__c))
+                {
+                    if(mapRetrievedPolicies.get(c.HegeoPrePolicyId__c) != null)
+                    {
+                        c.PolicyId__c = mapRetrievedPolicies.get(c.HegeoPrePolicyId__c).Id;
+                    }
+                }
+                
+                if(!String.isBlank(c.HegeoOfferId__c)) 
+                {
+                    if(mapRetrievedOffers.get(c.HegeoOfferId__c) != null)
+                    {
+                        c.OfferId__c = mapRetrievedOffers.get(c.HegeoOfferId__c).Id;
+                    }
+                }
+
+                casesToUpdate.add(c);
+            }
+        }
+        return casesToUpdate;
+    }
+
 }

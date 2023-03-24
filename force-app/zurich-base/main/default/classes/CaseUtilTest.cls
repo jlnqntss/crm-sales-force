@@ -9,8 +9,6 @@ private class CaseUtilTest
         List<Account> createdAccounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
         insert createdAccounts;
 
-        
-
         List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(createdAccounts, 1);
         insert contactPointEmails;
 
@@ -530,5 +528,42 @@ private class CaseUtilTest
         test.stopTest();
 
     }
+
+     /*
+    * Test del método que actualiza los casos con la póliza/oferta indicada en el campo de Hegeo
+    * @author arcortazar
+    * @date 23/03/2023
+    */
+    @IsTest
+    public static void test_relateCasesToPolicyOffers_OK()
+    {   //Crear cuentas intermediarios
+        List<Account> createdAccounts = [SELECT Id FROM Account LIMIT 1];
+        //Crear casos relacionados con los intermediarios
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(createdAccounts, 2);
+        insert cases;
+        
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(createdAccounts, 1);
+        insert policies;
+
+        List<Opportunity> offers = TestDataFactory.generateOpportunitiesForEachAccount(createdAccounts, 'General', 'New', System.today().addDays(10), 1);
+        insert offers;
+
+        List<Case> allCases= [SELECT Id, PolicyId__c, OfferId__c, HegeoOfferId__c, HegeoPolicyId__c, HegeoPrePolicyId__c FROM Case];
+        List<Policy__c> allPolicies= [SELECT Id,InfoPolicyNumber__c FROM Policy__c];
+        List<Opportunity> allOffers= [SELECT Id,Name FROM Opportunity];
+
+        allCases[0].HegeoOfferId__c = allOffers[0].Name;
+        allCases[1].HegeoPolicyId__c = allPolicies[0].InfoPolicyNumber__c;
+        update allCases;
+
+        test.startTest();
+        List<Case> updatedCases=CaseUtil.relateCasesToPolicyOffers(allCases);
+        test.stopTest();
+
+        System.assertEquals(allOffers[0].Id,updatedCases[0].OfferId__c);
+        System.assertEquals(allPolicies[0].Id,updatedCases[1].PolicyId__c);
+
+    }
+
 
 }
