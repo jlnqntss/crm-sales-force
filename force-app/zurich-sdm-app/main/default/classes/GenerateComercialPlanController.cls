@@ -91,6 +91,7 @@ public with sharing class GenerateComercialPlanController
         Boolean isEdited;
         Boolean canCreate;
         Boolean canSave;
+        Integer numVisiblePlans; // recoge el valor de la metadata NumVisiblePlans en AdminSetupParameter__mdt
 
         // Fila de cabecera de la tabla
         @testvisible
@@ -125,6 +126,7 @@ public with sharing class GenerateComercialPlanController
         public Tabletype() {
             canCreate = false;
             canSave = false;
+            numVisiblePlans = 4; // por defecto mostraremos 4
             headers = new Rowtype('');
             rows = new List<Rowtype>();
             headersNew = new Rowtype('');
@@ -319,6 +321,9 @@ public with sharing class GenerateComercialPlanController
 
         Map<String, String> mapExtraProperties;
 
+        // paginacion
+        Boolean isPlanVisible;
+
         //---------------------------------- Constructores 
         // Para valores por defecto
         public Celltype()
@@ -342,7 +347,7 @@ public with sharing class GenerateComercialPlanController
             this.stringValueDefault = '';
             this.decimalValueDefault = 0;
             this.dateValueDefault = Date.today();
-
+            this.isPlanVisible = false;
             this.HtmlClass = '';
         }
 
@@ -353,6 +358,7 @@ public with sharing class GenerateComercialPlanController
             this.Name = name;
             this.isEditable = isEditable;
             this.Category = category;
+            this.isPlanVisible = false;
         }
 
         // Para celdas con valor de tipo string
@@ -363,6 +369,7 @@ public with sharing class GenerateComercialPlanController
             this.stringValue = value;
             this.stringValueOld = value;
             this.isString = true;
+            this.isPlanVisible = false;
         }
 
         // Para celdas con valor de tipo decimal
@@ -374,6 +381,7 @@ public with sharing class GenerateComercialPlanController
             this.decimalValueOld = value;
             this.isNumber = !isCurrency;
             this.isCurrency = isCurrency;
+            this.isPlanVisible = false;
         }
 
         // Para celdas con valor de tipo combobox
@@ -385,6 +393,7 @@ public with sharing class GenerateComercialPlanController
             this.stringValue = value;
             this.stringValueOld = value;
             this.combo = combo;
+            this.isPlanVisible = false;
         }   
 
         //---------------------------------- Metodos publicos
@@ -654,7 +663,7 @@ public with sharing class GenerateComercialPlanController
      * @param {PlanComercial__c plan} el plan
      * @return {Decimal} el valor
      */
-    private static Decimal addCellsPerPlan(List<Rowtype> rows, Plandata plan, PlanComercialSelector.eIndicator indicatorType, Boolean isDirector, Map<String, String> mapZone)
+    private static Decimal addCellsPerPlan(List<Rowtype> rows, Plandata plan, PlanComercialSelector.eIndicator indicatorType, Boolean isDirector, Map<String, String> mapZone, Boolean isPlanVisible)
     {
         // Planes => Fila 5 en adelante
         Celltype cell;        
@@ -701,6 +710,8 @@ public with sharing class GenerateComercialPlanController
             // compruebo para el plan actual si no es director si el intermediario i tiene la misma zona que el plan
             cell.isLocked = isLockedIntermediary;
             cell.isNewEditable = !isLockedIntermediary; // lo informo con el valor contrario para que el js no desbloquee la celda ver linea 223 js
+            // paginacion
+            cell.isPlanVisible = isPlanVisible;
             // Si tiene id
             if( sub.Id != null ) {
                 cell.setSecondaryValueEmpty();
@@ -736,7 +747,7 @@ public with sharing class GenerateComercialPlanController
      * @param {String roleType} tipo de rol del usuario
      * @param {Boolean isEmpty} si es un plan vacio (true) o no (false)
      */
-    private static void planToTable(Tabletype tabledata, Plandata plan, String roleType, Boolean isEmpty, Map<String, String> mapZone) 
+    private static void planToTable(Tabletype tabledata, Plandata plan, String roleType, Boolean isEmpty, Map<String, String> mapZone, Boolean isPlanVisible) 
     {
         // Indica si el usuario es director o no en funcion del rol
         Boolean isDirector = Directors.contains(roleType);
@@ -758,7 +769,7 @@ public with sharing class GenerateComercialPlanController
         // Se calcula el tipo de indicador del plan para los campos de importe
         PlanComercialSelector.eIndicator indicatorType = PlanComercialSelector.getIndicatorType(plan.Indicator);
 
-        Decimal sumValue = addCellsPerPlan(rows, plan, indicatorType, isDirector, mapZone);        
+        Decimal sumValue = addCellsPerPlan(rows, plan, indicatorType, isDirector, mapZone, isPlanVisible);        
 
         // Titulo => Header (category, html name, value, isEditable, isCurrency)
         cell = new Celltype( 'titulo', 'titulo' + SEPARATOR + plan.Id, plan.Title, true);
@@ -768,6 +779,7 @@ public with sharing class GenerateComercialPlanController
         cell.addExtraProperty(CELL_PROPERTY_IS_MY_PLAN, String.valueOf(plan.isMyPlan));
         if (!isNewPlan) cell.lock();
         if( plan.ActualKpi != null ) cell.isNewEditable = false;
+        cell.isPlanVisible = isPlanVisible;
         headers.Cells.add(cell);
 
         // Sumatorio => footer (category, html name, value, isEditable, isCurrency)
@@ -777,7 +789,8 @@ public with sharing class GenerateComercialPlanController
         cell.isNew = isNewPlan;
         cell.isPercent = (indicatorType == PlanComercialSelector.eIndicator.type_percent);
         cell.isCurrency = (indicatorType == PlanComercialSelector.eIndicator.type_currency);
-        cell.isNumber = (indicatorType == PlanComercialSelector.eIndicator.type_number);        
+        cell.isNumber = (indicatorType == PlanComercialSelector.eIndicator.type_number);  
+        cell.isPlanVisible = isPlanVisible;      
         footers.Cells.add(cell);
 
         Integer rowNum = 0;
@@ -788,7 +801,8 @@ public with sharing class GenerateComercialPlanController
         cell.id = plan.Id;
         cell.key = cell.id + SEPARATOR + 'segmento';
         cell.isNew = isNewPlan;
-        cell.lock();      
+        cell.lock();
+        cell.isPlanVisible = isPlanVisible;
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -807,6 +821,7 @@ public with sharing class GenerateComercialPlanController
         cell.isNew = isNewPlan;
         cell.lock();
         cell.stringValueDefault = NEW_DEFAULT_PRODUCT;
+        cell.isPlanVisible = isPlanVisible;
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -817,6 +832,7 @@ public with sharing class GenerateComercialPlanController
         cell.key = cell.Category + SEPARATOR + cell.id;
         cell.isNew = isNewPlan;
         cell.lock();
+        cell.isPlanVisible = isPlanVisible;
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -827,6 +843,7 @@ public with sharing class GenerateComercialPlanController
         cell.key = cell.Category + SEPARATOR + cell.id;
         cell.isNew = isNewPlan;
         cell.lock();
+        cell.isPlanVisible = isPlanVisible;
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -837,6 +854,7 @@ public with sharing class GenerateComercialPlanController
         cell.isNew = isNewPlan;
         cell.lock();
         cell.isNewEditable = false;
+        cell.isPlanVisible = isPlanVisible;
         rows.get(rowNum).Cells.add(cell);
         rowNum++;
 
@@ -850,6 +868,7 @@ public with sharing class GenerateComercialPlanController
         cell.isNumber = (indicatorType == PlanComercialSelector.eIndicator.type_number);
         cell = lockCellIsNotMyPlan(cell, plan);
         cell = isCellNewEditable(cell, plan);
+        cell.isPlanVisible = isPlanVisible;
         if( plan.Id != null ) {
             cell.setSecondaryValueEmpty();
             if( plan.ActualKpi != null ) {
@@ -1788,6 +1807,27 @@ public with sharing class GenerateComercialPlanController
         return combo;
     }
 
+    /**
+     * Obtener de la metadata el numero de planes a mostrar por página en la vista
+     * 
+     * @author nts (dmunoz)
+     * @date 26/10/2022
+     * 
+     * @return {Integer} valor metadata
+     */
+    private static Integer getNumVisiblePlans() {
+        AdminSetupParameter__mdt adminSetupParameterMDT = AdminSetupParameter__mdt.getInstance('NumVisiblePlans');
+        Integer result = 4; // valor por defecto
+
+        String metadataValue = adminSetupParameterMDT.Value__c;
+
+        if (String.isNotEmpty(metadataValue)) {
+            result = Integer.valueOf(metadataValue);
+        }
+        
+        return result;
+    }
+
     // ---------------------------------- AURA ENABLED ------------------------
 
     /**
@@ -1813,6 +1853,7 @@ public with sharing class GenerateComercialPlanController
             String userEmail = UserInfo.getUserEmail();
             Id userId = UserInfo.getUserId();
             Id rolId = UserInfo.getUserRoleId();
+            Integer numVisiblePlans = getNumVisiblePlans(); // obtener el numero de planes a mostrar por página
 
             // 2. Obtenemos los datos del rol
             String roleName = getUserRolDevName(rolId);
@@ -1852,6 +1893,9 @@ public with sharing class GenerateComercialPlanController
             // Si es director puede crear planes, sino no.
             tabledata.canCreate = isDirector || isRN;
             tabledata.canSave = isDirector || isRN;
+
+            // añadir el valor de la metadata al json resultado
+            tableData.numVisiblePlans = numVisiblePlans;
 
             // 6.1 Añadimos los etiquetas de las filas
             // Etiquetas fijas de las filas
@@ -1897,11 +1941,16 @@ public with sharing class GenerateComercialPlanController
                 NEW_DEFAULT_SEGMENT, NEW_DEFAULT_PRODUCT, NEW_DEFAULT_INDICATOR, NEW_DEFAULT_ZONE, 
                 actualYear, 0, null, userId, userId
             );
-            planToTable(tabledata, newPlandata, roleName, true, mapZone);
+            planToTable(tabledata, newPlandata, roleName, true, mapZone, true); // por defecto los planes del botón nuevo serán siempre visibles
         
+            // informo el valor isPlanVisible a true solo para los N primeros planes del usuario
+            Boolean visiblePlan;
+            Integer cont = 1; // empiezo con valor uno para contar los planes como una persona
             // 6.4 Añadimos los planes comerciales existentes
             for(Plandata planData: plansData) {
-                planToTable(tabledata, planData, roleName, false, mapZone);
+                visiblePlan = isVisiblePlan(numVisiblePlans, cont);
+                planToTable(tabledata, planData, roleName, false, mapZone, visiblePlan);
+                cont++;
             }
 
             // 7. Devolvemos el resultado en formato string
@@ -1911,6 +1960,26 @@ public with sharing class GenerateComercialPlanController
             ErrorLogUtil.commitError(ex, CLASS_NAME);
             throw new AuraHandledException(ex.getMessage());
         }
+    }
+
+
+    /**
+     * Comprueba si el plan a añadir al json resultado se debe mostrar por defecto para cuando cargue la vista
+     * 
+     * @author nts (agonzalezisasi)
+     * @date 20/09/2021
+     * 
+     * @param numVisiblePlans numero de planes a mostrar (metadata)
+     * @param contador contador del bucle for each
+     */
+    private static Boolean isVisiblePlan(Integer numVisiblePlans, Integer contador) {
+        Boolean result = false;
+
+        if (contador <= numVisiblePlans) {
+            result = true;
+        }
+
+        return result;
     }
 
      /**
