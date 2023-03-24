@@ -733,13 +733,6 @@
             </value>
         </filters>
         <filters>
-            <field>AccountSegment__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Account.SegmentDescription__c</elementReference>
-            </value>
-        </filters>
-        <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
             <value>
