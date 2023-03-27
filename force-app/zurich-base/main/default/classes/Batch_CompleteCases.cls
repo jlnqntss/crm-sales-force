@@ -16,27 +16,23 @@ global class Batch_CompleteCases implements Database.Batchable<sObject>, Databas
 
     global Database.QueryLocator start(Database.BatchableContext bc)
     {
-        System.debug('++++ START');
         if (query == null || query == '')
         {
             List<String> originsToKeep = originsToQueryCases.Value__c.split(',');
             List<String> recordTypesToKeep = recordTypesToQueryCases.Value__c.split(',');
             query = new CasesSelector().getQueryStringCasesWithoutPolicyOffer(daysToQueryCases.Value__c, originsToKeep, recordTypesToKeep);
 
-            System.debug('++++ query: ' + query);
         }
         return Database.getQueryLocator(query);
     }
 
     global void execute(SchedulableContext sc)
     {
-        System.debug('++++ EXECUTE 1');
         database.executeBatch(new Batch_CompleteCases(), 10);
     }
 
     global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
-        System.debug('++++ EXECUTE 2');
         if ( scope != null && !scope.isEmpty() )
         {
             // Se convierte el Scope en casos
@@ -46,7 +42,6 @@ global class Batch_CompleteCases implements Database.Batchable<sObject>, Databas
                 // Método que comprueba si hay que actualizar alguno de los casos obtenidos en la query
                 List<Case> casesToUpdate = CaseUtil.relateCasesToPolicyOffers(casesToRelate);
 
-                System.debug('++++ casesToUpdate: ' + casesToUpdate);
                 // Si hay algún caso a actualizar
                 if(casesToUpdate != null && !casesToUpdate.isEmpty())
                 {

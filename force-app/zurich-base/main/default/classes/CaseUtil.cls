@@ -825,70 +825,79 @@ public with sharing class CaseUtil
         // Lista para almacenar solo los registros que hay que actualizar
         List<Case> casesToUpdate = new List<Case>();
 
-        // Mapas con la información
-
         // La lógica solo se recorre si la lista no es nula, para evitar excepciones
         if(casesToRelate != null && !casesToRelate.isEmpty())
         {
-
-            Set<String> lstOffers = new Set<String>();
-            Set<String> lstPolicies = new Set<String>();
-
-            for(Case c : casesToRelate)
-            {
-                if(!String.isBlank(c.HegeoOfferId__c)) lstOffers.add(c.HegeoOfferId__c);
-                if(!String.isBlank(c.HegeoPolicyId__c)) lstPolicies.add(c.HegeoPolicyId__c);
-                if(!String.isBlank(c.HegeoPrePolicyId__c)) lstPolicies.add(c.HegeoPrePolicyId__c);
-            }
-
-            // Obtenemos las Polizas y Ofertas relacionadas con los casos
-            List<Opportunity> retrievedOffers = new OpportunitiesSelector().findByName(lstOffers);
-            List<Policy__c> retrievedPolicies = new PoliciesSelector().selectByNumber(lstPolicies);
-
+            // Mapas para almacenar la información relacionada
             Map<String, Opportunity> mapRetrievedOffers= new Map<String, Opportunity>();
-            for (Opportunity o : retrievedOffers)
-            {
-                mapRetrievedOffers.put(o.Name, o);
-            }
-            System.debug('+++ mapRetrievedOffers: ' + mapRetrievedOffers);
-
             Map<String, Policy__c> mapRetrievedPolicies= new Map<String, Policy__c>();
-            for (Policy__c p : retrievedPolicies)
-            {
-                mapRetrievedPolicies.put(p.InfoPolicyNumber__c, p);
-            }
-            System.debug('+++ mapRetrievedPolicies: ' + mapRetrievedPolicies);
 
-            for(Case c : casesToRelate)
-            {
-                System.debug('++++ Case: ' + c);
-                if(!String.isBlank(c.HegeoPolicyId__c))
-                {
-                    if(mapRetrievedPolicies.get(c.HegeoPolicyId__c) != null)
-                    {
-                        c.PolicyId__c = mapRetrievedPolicies.get(c.HegeoPolicyId__c).Id;
-                    }
-                }
-                else if(!String.isBlank(c.HegeoPrePolicyId__c))
-                {
-                    if(mapRetrievedPolicies.get(c.HegeoPrePolicyId__c) != null)
-                    {
-                        c.PolicyId__c = mapRetrievedPolicies.get(c.HegeoPrePolicyId__c).Id;
-                    }
-                }
-                
-                if(!String.isBlank(c.HegeoOfferId__c)) 
-                {
-                    if(mapRetrievedOffers.get(c.HegeoOfferId__c) != null)
-                    {
-                        c.OfferId__c = mapRetrievedOffers.get(c.HegeoOfferId__c).Id;
-                    }
-                }
-
-                casesToUpdate.add(c);
-            }
+            getRelatedPoliciesOffers(casesToRelate, mapRetrievedOffers, mapRetrievedPolicies);            
+            casesToUpdate = comprobarCasos(casesToRelate, mapRetrievedOffers, mapRetrievedPolicies); 
         }
         return casesToUpdate;
+    }
+
+    /**
+     * Método privado que obtiene las pólizas y ofertas relacionadas con los casos
+     * @author: arcortazar
+     * @date: 27/03/2023
+     */
+    private static void getRelatedPoliciesOffers(List<Case> listaCasos, Map<String, Opportunity> mapRetrievedOffers, Map<String, Policy__c> mapRetrievedPolicies)
+    {
+        Set<String> lstOffers = new Set<String>();
+        Set<String> lstPolicies = new Set<String>();
+
+        for(Case c : listaCasos)
+        {
+            if(!String.isBlank(c.HegeoOfferId__c)) lstOffers.add(c.HegeoOfferId__c);
+            if(!String.isBlank(c.HegeoPolicyId__c)) lstPolicies.add(c.HegeoPolicyId__c);
+            if(!String.isBlank(c.HegeoPrePolicyId__c)) lstPolicies.add(c.HegeoPrePolicyId__c);
+        }
+
+        // Obtenemos las Polizas y Ofertas relacionadas con los casos
+        List<Opportunity> retrievedOffers = new OpportunitiesSelector().findByName(lstOffers);
+        List<Policy__c> retrievedPolicies = new PoliciesSelector().selectByNumber(lstPolicies);
+
+        for (Opportunity o : retrievedOffers)
+        {
+            mapRetrievedOffers.put(o.Name, o);
+        }
+
+        for (Policy__c p : retrievedPolicies)
+        {
+            mapRetrievedPolicies.put(p.InfoPolicyNumber__c, p);
+        }
+    }
+
+    /**
+     * Método privado que comprueba los casos y actualiza la información
+     * @author: arcortazar
+     * @date: 27/03/2023
+     */
+    private static List<Case> comprobarCasos(List<Case> listaCasos, Map<String, Opportunity> mapRetrievedOffers, Map<String, Policy__c> mapRetrievedPolicies)
+    {
+        List<Case> casesToUpdate = new List<Case>();
+        for(Case c : listaCasos)
+        {
+            if(!String.isBlank(c.HegeoPolicyId__c) && mapRetrievedPolicies.get(c.HegeoPolicyId__c) != null)
+            {
+                c.PolicyId__c = mapRetrievedPolicies.get(c.HegeoPolicyId__c).Id;
+            }
+            else if(!String.isBlank(c.HegeoPrePolicyId__c) && mapRetrievedPolicies.get(c.HegeoPrePolicyId__c) != null)
+            {
+                c.PolicyId__c = mapRetrievedPolicies.get(c.HegeoPrePolicyId__c).Id;
+            }
+            
+            if(!String.isBlank(c.HegeoOfferId__c) && mapRetrievedOffers.get(c.HegeoOfferId__c) != null) 
+            {
+                c.OfferId__c = mapRetrievedOffers.get(c.HegeoOfferId__c).Id;
+            }
+
+            casesToUpdate.add(c);
+        }
+        return casesToUpdate;
+
     }
 
 }
