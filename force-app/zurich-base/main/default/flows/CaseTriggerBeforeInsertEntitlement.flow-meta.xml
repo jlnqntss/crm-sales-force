@@ -963,7 +963,7 @@
             <field>AccountSegment__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Account.Segment__c</elementReference>
+                <elementReference>$Record.Account.SegmentDescription__c</elementReference>
             </value>
         </filters>
         <filters>
