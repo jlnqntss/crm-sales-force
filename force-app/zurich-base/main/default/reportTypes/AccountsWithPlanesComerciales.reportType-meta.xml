@@ -817,11 +817,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>ConectivityWsProvider__c</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>Conectivity__c</field>
             <table>Account</table>
         </columns>
@@ -843,16 +838,6 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>GrowthPotential__c</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>RevenuesPerEmployees__c</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>IntermediaryStatus__c</field>
             <table>Account</table>
         </columns>
         <columns>
@@ -1087,11 +1072,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>RevenuesPerEmployee__c</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>SalesResult__c</field>
             <table>Account</table>
         </columns>
@@ -1233,11 +1213,6 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>LinkedExclusive__c</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>BrokerageGrouping__c</field>
             <table>Account</table>
         </columns>
         <columns>

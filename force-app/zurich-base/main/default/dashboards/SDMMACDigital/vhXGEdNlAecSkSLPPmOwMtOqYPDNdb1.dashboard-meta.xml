@@ -55,7 +55,7 @@
             <operator>equals</operator>
             <values>Brokers</values>
         </dashboardFilterOptions>
-        <name>Channel</name>
+        <name>Agente/Corredor</name>
     </dashboardFilters>
     <dashboardGridLayout>
         <dashboardGridComponents>
@@ -927,7 +927,7 @@
     <dashboardType>LoggedInUser</dashboardType>
     <description>Panel de inicio de detalle del RN para SDM (Fase Piloto)</description>
     <isGridLayout>true</isGridLayout>
-    <runningUser>aritz.miranda@seidor.com</runningUser>
+    <runningUser>adminklinc@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
     <title>Inicio RN Detalle Fase Piloto</title>
     <titleColor>#000000</titleColor>

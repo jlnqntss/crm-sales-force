@@ -719,95 +719,13 @@
             <rowIndex>40</rowIndex>
             <rowSpan>9</rowSpan>
         </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>6</colSpan>
-            <columnIndex>0</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <chartSummary>
-                    <aggregate>Average</aggregate>
-                    <axisBinding>y</axisBinding>
-                    <column>PlanComercial__c.Actual_KPI__c</column>
-                </chartSummary>
-                <chartSummary>
-                    <aggregate>Average</aggregate>
-                    <axisBinding>y2</axisBinding>
-                    <column>PlanComercial__c.TargetKPI__c</column>
-                </chartSummary>
-                <componentType>ColumnLine</componentType>
-                <decimalPrecision>2</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingColumn>PlanComercial__c.Segment__c</groupingColumn>
-                <groupingSortProperties>
-                    <groupingSorts>
-                        <groupingLevel>g1</groupingLevel>
-                        <sortOrder>d</sortOrder>
-                    </groupingSorts>
-                </groupingSortProperties>
-                <header>Retención</header>
-                <legendPosition>Right</legendPosition>
-                <report>SDMMACRNConsultores/Retencion1</report>
-                <showPercentage>false</showPercentage>
-                <showValues>true</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <useReportChart>false</useReportChart>
-            </dashboardComponent>
-            <rowIndex>49</rowIndex>
-            <rowSpan>9</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>6</colSpan>
-            <columnIndex>6</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartAxisRange>Auto</chartAxisRange>
-                <chartSummary>
-                    <aggregate>Average</aggregate>
-                    <axisBinding>y</axisBinding>
-                    <column>PlanComercial__c.Actual_KPI__c</column>
-                </chartSummary>
-                <chartSummary>
-                    <aggregate>Average</aggregate>
-                    <axisBinding>y2</axisBinding>
-                    <column>PlanComercial__c.TargetKPI__c</column>
-                </chartSummary>
-                <componentType>ColumnLine</componentType>
-                <decimalPrecision>2</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <drillEnabled>false</drillEnabled>
-                <drillToDetailEnabled>false</drillToDetailEnabled>
-                <enableHover>false</enableHover>
-                <expandOthers>false</expandOthers>
-                <groupingColumn>PlanComercial__c.Segment__c</groupingColumn>
-                <groupingSortProperties>
-                    <groupingSorts>
-                        <groupingLevel>g1</groupingLevel>
-                        <sortOrder>d</sortOrder>
-                    </groupingSorts>
-                </groupingSortProperties>
-                <header>Siniestralidad</header>
-                <legendPosition>Right</legendPosition>
-                <report>SDMMACRNConsultores/Siniestralidad</report>
-                <showPercentage>false</showPercentage>
-                <showValues>true</showValues>
-                <sortBy>RowLabelAscending</sortBy>
-                <useReportChart>false</useReportChart>
-            </dashboardComponent>
-            <rowIndex>49</rowIndex>
-            <rowSpan>9</rowSpan>
-        </dashboardGridComponents>
         <numberOfColumns>12</numberOfColumns>
         <rowHeight>36</rowHeight>
     </dashboardGridLayout>
     <dashboardType>LoggedInUser</dashboardType>
     <description>Panel de inicio del RN para SDM (Fase Piloto)</description>
     <isGridLayout>true</isGridLayout>
-    <runningUser>aritz.miranda@seidor.com</runningUser>
+    <runningUser>adminklinc@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
     <title>Inicio RN Fase Piloto</title>
     <titleColor>#000000</titleColor>
