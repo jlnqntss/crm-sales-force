@@ -223,6 +223,7 @@ public with sharing class PlanesComercialesMensualesUtil {
         result.OwnerId = calculatePlanOwner(pc, mapParentOwner);
         result.SentNotifications__c = calculoPCMap.get('NotificationSent');
         result.Actual_KPI__c = String.isEmpty(calculoPCMap.get('ActualKPI')) ? null : Decimal.valueOf(calculoPCMap.get('ActualKPI'));
+        result.PAActualKPI__c = String.isEmpty(calculoPCMap.get('PAActualKPI')) ? null : Decimal.valueOf(calculoPCMap.get('PAActualKPI'));
 
         return result;
     }   
@@ -446,6 +447,8 @@ public with sharing class PlanesComercialesMensualesUtil {
      * @return Map con los calculos
      * @author dmunoz
      * @date 21/07/2022
+     * @change amiranda 17/03/2023 Se añade el campo 'PAActualKPI__c' para calcular 
+     * su valor para los planes mensuales que corresponda.
      */
     private static Map<String, String> calculatePlanMensualFields(PlanComercial__c pc, Objective__c obj, Integer i) {
         Map<String, String> result = new Map<String, String>();
@@ -455,7 +458,8 @@ public with sharing class PlanesComercialesMensualesUtil {
         Decimal kpi;
         Integer numberOfDays = Date.daysInMonth(pc.EndDate__c.year(), i);
         String kpiField = getKPIFieldName(pc);
-        String actualKPI = calculateActualKPI(pc, i, actualMonth);
+        String actualKPI = calculateKPI(pc, i, actualMonth, 'Actual_KPI__c');
+        String actualKPIPA = calculateKPI(pc, i, actualMonth, 'PAActualKPI__c');
         String notificationSent = calculateNotificationsSent(i, actualMonth);
 
         
@@ -513,6 +517,7 @@ public with sharing class PlanesComercialesMensualesUtil {
         result.put('NotificationSent', notificationSent);
         result.put('KPIField', kpiField);
         result.put('ActualKPI', actualKPI);
+        result.put('PAActualKPI', actualKPIPA);
 
         return result;
     }
@@ -592,17 +597,19 @@ public with sharing class PlanesComercialesMensualesUtil {
 
 
     /**
-     * En caso de que al generar los planes mensuales el anual tenga informado el actual kpi, solo informaremos ese campo para los planes del mes actual en adelante
+     * En caso de que al generar los planes mensuales el anual tenga informado el actual kpi, solo informaremos ese campo para los planes del mes actual.
      * @param pc: plan comercial anual
      * @param monthToCalculate: mes a generar
      * @return Map con los calculos
      * @author dmunoz
      * @date 21/07/2022
+     * @change amirandq 17/03/2023 Se añade un nuevo parámetro al método, que será el campo sobre kpi a copiar en el plan mensual. 
+     * Además solamente se copiará el kpi al plan mensual del mes en curso.
      */
-    private static String calculateActualKPI(PlanComercial__c pc, Integer monthToCalculate, Integer actualMonth) {
-        String result = String.valueOf(pc.Actual_KPI__c);        
+    private static String calculateKPI(PlanComercial__c pc, Integer monthToCalculate, Integer actualMonth, String fieldName) {
+        String result = String.valueOf(pc.get(fieldName));
 
-        if (monthToCalculate < actualMonth) {
+        if (monthToCalculate != actualMonth) {
             result = null;
         }
         

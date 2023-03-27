@@ -43,11 +43,11 @@ private class PlanComercialSDMTest
         // Configuracion de los indicadores de los planes comerciales
         sdm.testSettingsIndicator = new List<SDMCommercialPlan__mdt>();
         sdm.testSettingsIndicator.add(TestDataFactorySDM.generateSDMSettingsPlan(
-            'PN', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_SUM, 'PN__c', null));
+            'PN', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_SUM, 'PN__c', null, true, 'PA_PN__C'));
         sdm.testSettingsIndicator.add(TestDataFactorySDM.generateSDMSettingsPlan(
-            'Ratio_Claim', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_RATIO, 'TotalLoad__c', 'Income__c'));
+            'Ratio_Claim', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_RATIO, 'TotalLoad__c', 'Income__c', false, null));
         sdm.testSettingsIndicator.add(TestDataFactorySDM.generateSDMSettingsPlan(
-            'Ratio_PoliciesPNIncreas', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_GROWTH, 'PoliciesPN__c', 'PA_PoliciesPN__c'));
+            'Ratio_PoliciesPNIncreas', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_GROWTH, 'PoliciesPN__c', 'PA_PoliciesPN__c', false, null));
         
         // Calculo del KPI para los planes
         sdm.calculateRealKPI(plans);
@@ -56,7 +56,7 @@ private class PlanComercialSDMTest
 
         // Comprobacion del resultado -----------------------------------------
         List<PlanComercial__c> checkPlans = [
-            SELECT Id, Name, Actual_KPI__c FROM PlanComercial__c
+            SELECT Id, Name, Actual_KPI__c, PAActualKPI__c FROM PlanComercial__c
             WHERE Actual_KPI__c != null
         ];
         System.assertEquals(4, checkPlans.size(), 'Deberia haber 4 planes');
@@ -67,10 +67,21 @@ private class PlanComercialSDMTest
             'Plan 3' => 0.75,
             'Plan 4' => 13
         };
+
+        // Relacionamos el nombre del plan con el resultado del cálculo que debería dar para el periodo anterior
+        Map<String, Decimal> mapPlanResultPA = new Map<String, Decimal>{'Plan 1' => 8, 'Plan 4' => 10};
+
         // Comprobamos el resultado del calculo de cada plan
         for(PlanComercial__c plan: checkPlans) {
             Decimal planResult = mapPlanResult.get(plan.Name);
             System.assertEquals(planResult, plan.Actual_KPI__c, 'El calculo deberia ser ' + planResult + ' para el plan ' + plan.Name);
+
+            // Si es un plan (Plan 1 y Plan 4) sobre los que se ha calculado el KPI del periodo anterior
+            if (mapPlanResultPA.containsKey(plan.Name))
+            {
+                Decimal planResultPA = mapPlanResultPA.get(plan.Name);
+                Assert.areEqual(planResultPA, plan.PAActualKPI__c, 'El cálculo del KPI del periodo anterior debería ser ' + planResultPA + ' para el plan ' + plan.Name);
+            }
         }
     }
         

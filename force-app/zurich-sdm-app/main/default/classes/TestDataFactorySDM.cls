@@ -73,7 +73,7 @@ public class TestDataFactorySDM
     /**
      * Metodo que genera un objeto de tipo configuracion del indicador del plan comercial
      */
-    public static SDMCommercialPlan__mdt generateSDMSettingsPlan(String indicator, String calcType, string firstField, string secondField)
+    public static SDMCommercialPlan__mdt generateSDMSettingsPlan(String indicator, String calcType, string firstField, string secondField, Boolean calculatedPreviousPeriod, String previousPeriodField)
     {
         return new SDMCommercialPlan__mdt(
                 Label= 'testPlanSum',
@@ -81,7 +81,9 @@ public class TestDataFactorySDM
                 Indicator__c= indicator,
                 CalculationType__c= calcType,
                 FirstField__c= firstField,
-                SecondField__c= secondField
+                SecondField__c= secondField,
+                CalculatedPreviousPeriod__c = calculatedPreviousPeriod,
+                PreviousPeriodField__c = previousPeriodField
         );
     }
 
@@ -230,8 +232,10 @@ public class TestDataFactorySDM
         System.assertEquals(6, kpis.size(), 'Se deberian haber generado 6 KPIs');
         // Primer mediador => suma [10=10] El segundo KPI no se considera en el filtrado
         kpis[0].PN__c = 10;
+        kpis[0].PA_PN__c = 8;
         kpis[0].ProductGroup__c = 'AUTOS';
         kpis[1].PN__c = 15;
+        kpis[1].PA_PN__c = 17;
         kpis[1].ProductGroup__c = 'HOGAR';
         // Segundo mediador => ratio [20/50=0,4]
         kpis[2].TotalLoad__c = 12;
@@ -256,6 +260,7 @@ public class TestDataFactorySDM
         // Añadimos un kpi Anual. No deberia contar para los mensuales
         kpis = TestDataFactorySDM.generateKPIs(new List<Account>{intermediaries[0]}, 2);
         kpis[0].PN__c = 13;
+        kpis[0].PA_PN__c = 10;
         kpis[0].Temporalidad__c = KPIsSelector.TEMPORALIDAD_YTD;
         kpis[0].CalcMonth__c = '8'; // aunque no mes de ejecucion (9), si deberia contar por ser ultimo mes disponible
         kpis[1].PN__c = 5;
