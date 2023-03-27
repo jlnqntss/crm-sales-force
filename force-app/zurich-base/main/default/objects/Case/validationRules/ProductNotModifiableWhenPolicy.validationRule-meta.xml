@@ -6,7 +6,9 @@
     <errorConditionFormula>ISCHANGED( ProductGroup__c ) &amp;&amp; 
 (
  NOT(ISBLANK( OfferId__c )) || NOT(ISBLANK( PolicyId__c ))
-)</errorConditionFormula>
+)
+&amp;&amp; NOT (ISCHANGED( PolicyId__c ))
+&amp;&amp; NOT (ISCHANGED( OfferId__c ))</errorConditionFormula>
     <errorDisplayField>ProductGroup__c</errorDisplayField>
     <errorMessage>[VR Caso] No se puede modificar el ramo si la póliza o la oferta está informada</errorMessage>
 </ValidationRule>
