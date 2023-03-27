@@ -3175,6 +3175,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Product2.HegeoGroupCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Product2.INFO_Product_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
