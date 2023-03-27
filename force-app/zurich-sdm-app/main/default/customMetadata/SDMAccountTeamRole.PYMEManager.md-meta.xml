@@ -7,6 +7,10 @@
         <value xsi:type="xsd:string">PYMEManagerEmail__c</value>
     </values>
     <values>
+        <field>IntermediaryNameField__c</field>
+        <value xsi:type="xsd:string">PYMEManagerName__c</value>
+    </values>
+    <values>
         <field>Role__c</field>
         <value xsi:type="xsd:string">PYMEManager</value>
     </values>
