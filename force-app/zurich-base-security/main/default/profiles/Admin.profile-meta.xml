@@ -3849,6 +3849,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Category__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.CNAE__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9375,6 +9380,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>KPI__c.InfoKpiCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Knowledge__kav.Body__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17785,6 +17795,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Scope__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Seguimientos_Masivos</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

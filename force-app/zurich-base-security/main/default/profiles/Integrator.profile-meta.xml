@@ -3783,6 +3783,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Category__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.FinancialScoring__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -17071,6 +17076,10 @@
     <tabVisibilities>
         <tab>Tareas_Masivas</tab>
         <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Seguimientos_Masivos</tab>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>pw_si__SimpleImportVF</tab>

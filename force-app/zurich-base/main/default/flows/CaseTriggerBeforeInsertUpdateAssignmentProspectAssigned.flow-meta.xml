@@ -20,8 +20,8 @@
     <assignments>
         <name>statusAssignedAssignment</name>
         <label>Status Assigned</label>
-        <locationX>50</locationX>
-        <locationY>887</locationY>
+        <locationX>182</locationX>
+        <locationY>1103</locationY>
         <assignmentItems>
             <assignToReference>$Record.Status</assignToReference>
             <operator>Assign</operator>
@@ -33,7 +33,7 @@
     <decisions>
         <name>caseUspDecision</name>
         <label>Case Usp</label>
-        <locationX>380</locationX>
+        <locationX>402</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>No USP</defaultConnectorLabel>
         <rules>
@@ -91,7 +91,7 @@
         <locationY>767</locationY>
         <defaultConnectorLabel>Not User</defaultConnectorLabel>
         <rules>
-            <name>userOutcome</name>
+            <name>userCreatedOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.OwnerId</leftValueReference>
@@ -117,7 +117,43 @@
             <connector>
                 <targetReference>statusAssignedAssignment</targetReference>
             </connector>
-            <label>User</label>
+            <label>Created By User</label>
+        </rules>
+        <rules>
+            <name>UpdatedToUserOutcome</name>
+            <conditionLogic>(1 OR 3) AND 2 AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>005</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Owner:User.LastName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>statusAssignedAssignment</targetReference>
+            </connector>
+            <label>Updated To User</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -143,7 +179,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>254</locationX>
+        <locationX>276</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>caseUspDecision</targetReference>

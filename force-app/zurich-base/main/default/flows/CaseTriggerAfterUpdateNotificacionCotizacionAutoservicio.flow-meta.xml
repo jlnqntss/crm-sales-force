@@ -30,7 +30,7 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>YesOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND NOT (3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -43,6 +43,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.SuppliedEmail</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>@zurich.com</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -146,38 +153,38 @@
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>CIBER</stringValue>
+                <stringValue>17</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>COMERCIOS</stringValue>
+                <stringValue>4</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>PATRIMONIALES</stringValue>
+                <stringValue>8</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>ACCIDENTES</stringValue>
+                <stringValue>5</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>RESP. CIVIL</stringValue>
+                <stringValue>9</stringValue>
             </value>
         </filters>
         <filters>

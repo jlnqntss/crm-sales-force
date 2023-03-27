@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Enrutar_a_Flow_Genesys</name>
         <label>Enrutar a Flow Genesys</label>
-        <locationX>1898</locationX>
+        <locationX>2162</locationX>
         <locationY>888</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
@@ -77,7 +77,7 @@
         <name>FlowGenesysRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>1370</locationX>
-        <locationY>1008</locationY>
+        <locationY>1128</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -154,7 +154,7 @@
     <actionCalls>
         <name>QueueGenesysRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
-        <locationX>2426</locationX>
+        <locationX>2690</locationX>
         <locationY>768</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
@@ -289,10 +289,46 @@
         </connector>
     </assignments>
     <decisions>
+        <name>CaseClosedDecision</name>
+        <label>Is Case Closed</label>
+        <locationX>1634</locationX>
+        <locationY>888</locationY>
+        <defaultConnectorLabel>Closed</defaultConnectorLabel>
+        <rules>
+            <name>NotClosedOutcome</name>
+            <conditionLogic>(1 AND 2) OR 3</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Parent.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Calculamos_prioridad</targetReference>
+            </connector>
+            <label>Not Closed</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Comprobamos si el email que llega tiene ya un caso asociado porque en caso contrario, fallaría el cálculo de la prioridad</description>
         <name>hasParentCase</name>
         <label>¿Tenemos caso asociado?</label>
-        <locationX>1634</locationX>
+        <locationX>1898</locationX>
         <locationY>768</locationY>
         <defaultConnector>
             <targetReference>Enrutar_a_Flow_Genesys</targetReference>
@@ -309,7 +345,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Calculamos_prioridad</targetReference>
+                <targetReference>CaseClosedDecision</targetReference>
             </connector>
             <label>Tenemos caso asociado</label>
         </rules>
@@ -339,7 +375,7 @@
     <decisions>
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
-        <locationX>2030</locationX>
+        <locationX>2294</locationX>
         <locationY>648</locationY>
         <defaultConnector>
             <targetReference>QueueGenesysRoutingInvocableAction</targetReference>
@@ -550,7 +586,7 @@
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
         <locationX>1634</locationX>
-        <locationY>1128</locationY>
+        <locationY>1248</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -684,7 +720,7 @@
     <recordLookups>
         <name>GetGenesysQueueAsyncAction</name>
         <label>Obtener cola Genesys Async</label>
-        <locationX>2030</locationX>
+        <locationX>2294</locationX>
         <locationY>288</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -744,7 +780,7 @@
         <inputReference>CasoRelacionado</inputReference>
     </recordUpdates>
     <start>
-        <locationX>1244</locationX>
+        <locationX>1376</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetGenesysQueueAction</targetReference>
@@ -794,7 +830,7 @@
         <name>Calculamos_prioridad</name>
         <label>Calculamos prioridad</label>
         <locationX>1370</locationX>
-        <locationY>888</locationY>
+        <locationY>1008</locationY>
         <connector>
             <targetReference>FlowGenesysRoutingInvocableAction</targetReference>
         </connector>
@@ -816,7 +852,7 @@
     <subflows>
         <name>GenerateScreenPopURLSubflow</name>
         <label>Generate Screen Pop URL</label>
-        <locationX>2030</locationX>
+        <locationX>2294</locationX>
         <locationY>528</locationY>
         <connector>
             <targetReference>IsFlowOrQueueDecision</targetReference>
@@ -845,7 +881,7 @@
     <subflows>
         <name>GetGenesysQueueAndParentIdFromEmailSubflow</name>
         <label>Comprobar Cola Genesys y ParentID del Email</label>
-        <locationX>2030</locationX>
+        <locationX>2294</locationX>
         <locationY>408</locationY>
         <connector>
             <targetReference>GenerateScreenPopURLSubflow</targetReference>

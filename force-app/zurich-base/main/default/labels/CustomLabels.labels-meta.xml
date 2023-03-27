@@ -2309,4 +2309,20 @@ Create the record and try again.</value>
         <shortDescription>SDM Home RN Dashboard general view</shortDescription>
         <value>General view</value>
     </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_NextPage</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_NextPage</shortDescription>
+        <value>Next Page</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_PreviousPage</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_PreviousPage</shortDescription>
+        <value>Previous Page</value>
+    </labels>
 </CustomLabels>
