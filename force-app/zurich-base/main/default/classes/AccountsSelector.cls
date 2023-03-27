@@ -602,7 +602,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.Blocked__c
             })
             .addConditionIn(Account.NationalId__c, cifs)
-            .addConditionNotEq(Account.Blocked__c, true);
+            .addConditionNotEq(Account.Blocked__c, true)
+            .addConditionString('CreatedDate = LAST_N_DAYS:' + daysToRetrieve);
 
             // Añadimos la condición de que el RT sea Customer o BusinessCustomer
             Query.Condition condition = Query.doOr
