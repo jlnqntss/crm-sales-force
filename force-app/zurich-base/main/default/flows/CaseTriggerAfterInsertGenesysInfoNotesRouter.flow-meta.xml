@@ -4,8 +4,8 @@
         <description>Se procede con el envío de la Nota INFO a Genesys Cloud.</description>
         <name>genesysCloudRouteMessageAction</name>
         <label>Enrutar mensaje a Genesys Cloud</label>
-        <locationX>308</locationX>
-        <locationY>768</locationY>
+        <locationX>506</locationX>
+        <locationY>888</locationY>
         <actionName>GenesysCloudRouteMessageAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -80,6 +80,35 @@
             <stringValue>Interaction</stringValue>
         </value>
     </constants>
+    <decisions>
+        <name>IsUSPAndClosedDecision</name>
+        <label>Is USP and Closed?</label>
+        <locationX>374</locationX>
+        <locationY>288</locationY>
+        <defaultConnector>
+            <targetReference>GetGenesysCloudQueueAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YesClosedOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Yes Closed</label>
+        </rules>
+    </decisions>
     <description>Este flujo es ejecutado tras ser insertado un caso cuyo origen sea Nota INFO (API: NoteINFO)
 Se consulta en un sub-flujo la cola a la que debe ser enrutado.
 Se utiliza una acción de Apex para enviar el mensaje a Genesy sCloud.
@@ -126,8 +155,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se registra el error en Salesforce con el detalle del mismo.</description>
         <name>CreateErrorLogAction</name>
         <label>Registrar error</label>
-        <locationX>836</locationX>
-        <locationY>1008</locationY>
+        <locationX>1034</locationX>
+        <locationY>1128</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -177,8 +206,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
         <name>CreateTaskAction</name>
         <label>Registrar tarea</label>
-        <locationX>308</locationX>
-        <locationY>1008</locationY>
+        <locationX>506</locationX>
+        <locationY>1128</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -231,8 +260,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Get Genesys Queue</label>
-        <locationX>308</locationX>
-        <locationY>408</locationY>
+        <locationX>506</locationX>
+        <locationY>528</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GestorPreferenteSearchFromEmailSubflow</targetReference>
@@ -253,8 +282,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera el identificador del tipo de registro Task: Interaction para registrar la siguiente tarea.</description>
         <name>GetInteractionRecordTypeIdAction</name>
         <label>Obetener tipo de registro Task: Interaction</label>
-        <locationX>308</locationX>
-        <locationY>888</locationY>
+        <locationX>506</locationX>
+        <locationY>1008</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CreateTaskAction</targetReference>
@@ -289,7 +318,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <recordTriggerType>Create</recordTriggerType>
         <scheduledPaths>
             <connector>
-                <targetReference>GetGenesysCloudQueueAction</targetReference>
+                <targetReference>IsUSPAndClosedDecision</targetReference>
             </connector>
             <pathType>AsyncAfterCommit</pathType>
         </scheduledPaths>
@@ -299,8 +328,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <subflows>
         <name>GestorPreferenteSearchFromEmailSubflow</name>
         <label>Buscar Gestor Preferente</label>
-        <locationX>308</locationX>
-        <locationY>528</locationY>
+        <locationX>506</locationX>
+        <locationY>648</locationY>
         <connector>
             <targetReference>PriorityCalculationSubflow</targetReference>
         </connector>
@@ -359,8 +388,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados.</description>
         <name>GetGenesysCloudQueueAction</name>
         <label>Obtener cola de Genesys Cloud</label>
-        <locationX>308</locationX>
-        <locationY>288</locationY>
+        <locationX>506</locationX>
+        <locationY>408</locationY>
         <connector>
             <targetReference>GetGenesysQueueAction</targetReference>
         </connector>
@@ -388,8 +417,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <subflows>
         <name>PriorityCalculationSubflow</name>
         <label>Calcular Prioridad</label>
-        <locationX>308</locationX>
-        <locationY>648</locationY>
+        <locationX>506</locationX>
+        <locationY>768</locationY>
         <connector>
             <targetReference>genesysCloudRouteMessageAction</targetReference>
         </connector>
