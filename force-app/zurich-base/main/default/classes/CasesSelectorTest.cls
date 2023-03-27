@@ -162,4 +162,59 @@ private class CasesSelectorTest
 
     }
 
+
+    /**
+     * Test del método que devuelve el queryString para RelateCasesToNewOffersBatch. En este test la query ha de volver completada
+     * @author arcortazar
+     * @date 23/03/2022
+     */
+    @isTest
+    static void test_getQueryStringCasesWithoutPolicyOffer_queryOK()
+    {
+        List<String> origenes = new List<String>();
+        origenes.add('Email');
+
+        List<String> recordTypes = new List<String>();
+        recordTypes.add('OCSInquiry');
+
+        Test.startTest();
+        String query = new CasesSelector().getQueryStringCasesWithoutPolicyOffer('7', origenes, recordTypes);
+        Test.stopTest();
+
+        System.assertNotEquals('', query, 'La query no ha de volver vacía');
+    }
+
+    /**
+     * Test del método que devuelve el queryString para RelateCasesToNewOffersBatch. En este test la query ha de volver vacía
+     * @author arcortazar
+     * @date 23/03/2022
+     */
+    @isTest
+    static void test_getQueryStringCasesWithoutPolicyOffer_queryKO()
+    {
+        Test.startTest();
+        String query = new CasesSelector().getQueryStringCasesWithoutPolicyOffer('', new List<String>(), new List<String>());
+        Test.stopTest();
+
+        System.assertEquals('', query, 'La query ha de volver vacía');
+    }
+
+    /**
+     * Test del método que devuelve el queryString para RelateCasesToNewOffersBatch. Lanzamos la query para comprobar que está bien construida
+     * @author arcortazar
+     * @date 23/03/2022
+     */
+    @isTest
+    static void test_getQueryStringCasesWithoutPolicyOffer_obtainedResults()
+    {
+        List<String> origenes = new List<String>();
+        List<String> recordTypes = new List<String>();
+
+        Test.startTest();
+        String query = new CasesSelector().getQueryStringCasesWithoutPolicyOffer('7', origenes, recordTypes);
+        List<Case> matchedRecords = (List<Case>) Database.query(query);
+        Test.stopTest();
+
+        System.assertNotEquals(0, matchedRecords.size(), 'Ha de devolver casos');
+    }
 }

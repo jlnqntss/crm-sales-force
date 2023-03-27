@@ -158,6 +158,35 @@ private with sharing class PoliciesSelectorTest
     }
 
     @IsTest
+    static void test_selectByHolder_selectByNumber_list_ok()
+    {
+        List<Policy__c> listaPolizas = [SELECT InfoPolicyNumber__c FROM Policy__c];
+        Set<String> setNumeros = new Set<String>();
+        for(Policy__c p : listaPolizas)
+        {
+            setNumeros.add(p.InfoPolicyNumber__c);
+        }
+
+        test.startTest();
+        List<Policy__c> policiesByNumber = new PoliciesSelector().selectByNumber(setNumeros);
+        test.stopTest();
+
+        System.assertEquals(listaPolizas.size(), policiesByNumber.size(), 'Han de tener la misma longitud');
+    }
+
+    @IsTest
+    static void test_selectByHolder_selectByNumber_list_ko()
+    {
+        Set<String> setVacio = new Set<String>();
+
+        test.startTest();
+        List<Policy__c> policiesByNumber = new PoliciesSelector().selectByNumber(setVacio);
+        test.stopTest();
+
+        System.assertEquals(0, policiesByNumber.size(), 'Han de devolver una lista vacía');
+    }
+
+    @IsTest
     static void test_selectByHolder_setScope()
     {
         Schema.RecordTypeInfo accountRecordTypeInfo = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer');
