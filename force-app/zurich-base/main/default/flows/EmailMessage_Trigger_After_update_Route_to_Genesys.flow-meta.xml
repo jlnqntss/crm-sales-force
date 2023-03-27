@@ -367,8 +367,8 @@
         </rules>
     </decisions>
     <decisions>
-        <name>IsZEDecision</name>
-        <label>¿Es ZE?</label>
+        <name>IsZEOrClosedUSPDecision</name>
+        <label>¿Es ZE o Caso USP Cerrado?</label>
         <locationX>1634</locationX>
         <locationY>408</locationY>
         <defaultConnector>
@@ -376,8 +376,8 @@
         </defaultConnector>
         <defaultConnectorLabel>No ZE</defaultConnectorLabel>
         <rules>
-            <name>ZEOutcome</name>
-            <conditionLogic>or</conditionLogic>
+            <name>ZEOrClosedUSPOutcome</name>
+            <conditionLogic>1 OR 2 OR (3 AND 4)</conditionLogic>
             <conditions>
                 <leftValueReference>GetGenesysQueueAsyncAction.Scope__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -392,7 +392,21 @@
                     <stringValue>ZEO</stringValue>
                 </rightValue>
             </conditions>
-            <label>ZE</label>
+            <conditions>
+                <leftValueReference>$Record.Parent.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <label>ZE Or Closed</label>
         </rules>
     </decisions>
     <description>Flujo encargado de enrutar a genesys los emails entrantes recibidos. En el caso de After Update, aplica únicamente a los emails provenientes de CART OPS (robot tipificador)</description>
@@ -608,7 +622,7 @@
         <locationY>288</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>IsZEDecision</targetReference>
+            <targetReference>IsZEOrClosedUSPDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
