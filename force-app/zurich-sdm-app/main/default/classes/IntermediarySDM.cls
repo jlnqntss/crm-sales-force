@@ -248,7 +248,7 @@ public with sharing class IntermediarySDM {
         // Mapa de usuarios por su Email
         if( mapUsersByEmail == null ) {
             mapUsersByEmail = new Map<String, User>();
-            for(User u: [SELECT Id, Email, isActive FROM User]) {
+            for(User u: [SELECT Id, Email, isActive, Name FROM User]) {
                 mapUsersByEmail.put(u.Email, u);
             }
         }
