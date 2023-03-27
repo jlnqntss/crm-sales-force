@@ -59,6 +59,7 @@ public with sharing class BusinessInsuranceCallbackService
             callMeBack.PreferredPhone = requestCallMeBack.phone;
             callMeBack.WebName__c = requestCallMeBack.name;
             callMeBack.WebIdentifier__c = requestCallMeBack.webIdentifier; // arcortazar - fiz-ZE-1234, asignamos el campo que viene desde la request al objeto CallMeBack
+            callMeBack.BusinessCode__c = requestCallMeBack.businessCode; // amunoz - feat-ZE-1761, asignamos el businessCode que viene desde la request al objeto CallMeBack
             if( !genesysQueue.isEmpty() )
             {   //Cola de Genesys OPCIONAL, si no se rellena, no entrará al ProcessBuilder que rellena el id de interacción
                 callMeBack.GenesysCloudQueueId__c = genesysQueue[0].Id;
@@ -89,6 +90,7 @@ public with sharing class BusinessInsuranceCallbackService
         public Datetime bestTimeFrom {get; set;}
         public Datetime bestTimeUntil {get; set;}
         public String webIdentifier {get; set;}
+        public String businessCode {get; set;}
     }
 
     /**

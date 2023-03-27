@@ -7439,6 +7439,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ContactRequest.BusinessCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ContactRequest.GenesysCloudQueueId__c</field>
         <readable>true</readable>
     </fieldPermissions>
