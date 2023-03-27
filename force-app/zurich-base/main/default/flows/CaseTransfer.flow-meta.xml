@@ -4,7 +4,7 @@
         <name>Check_typification</name>
         <label>Check typification</label>
         <locationX>666</locationX>
-        <locationY>1550</locationY>
+        <locationY>2222</locationY>
         <actionName>CaseCheckTypificationAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -41,7 +41,7 @@
         <name>PostCommentAction</name>
         <label>Post Comment</label>
         <locationX>534</locationX>
-        <locationY>2246</locationY>
+        <locationY>2918</locationY>
         <actionName>chatterPost</actionName>
         <actionType>chatterPost</actionType>
         <connector>
@@ -67,7 +67,7 @@
         <name>Clean_Typifications</name>
         <label>Clean typifications</label>
         <locationX>754</locationX>
-        <locationY>1790</locationY>
+        <locationY>2462</locationY>
         <assignmentItems>
             <assignToReference>GetCaseAction.Type</assignToReference>
             <operator>Assign</operator>
@@ -97,7 +97,7 @@
         <name>ModifyCaseAssignment</name>
         <label>Modify Case</label>
         <locationX>666</locationX>
-        <locationY>1430</locationY>
+        <locationY>2102</locationY>
         <assignmentItems>
             <assignToReference>GetCaseAction.RecordTypeId</assignToReference>
             <operator>Assign</operator>
@@ -141,7 +141,7 @@
         <name>SetDestinationAssignment</name>
         <label>Set Destination</label>
         <locationX>754</locationX>
-        <locationY>878</locationY>
+        <locationY>1550</locationY>
         <assignmentItems>
             <assignToReference>chosenDestination</assignToReference>
             <operator>Assign</operator>
@@ -153,23 +153,112 @@
             <targetReference>SearchDestinationIteration</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>SetoptionsCallCenterAssignment</name>
+        <label>Set Options for CallCenter</label>
+        <locationX>468</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>AvailableOptions</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetAvailableMetadatasActionCallCenter</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>SearchDestinationIteration</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>SetOptionsOwnerAssignment</name>
+        <label>Set Options for Owner</label>
+        <locationX>732</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>AvailableOptions</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetAvailableMetadatasQueueOwner</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>SearchDestinationIteration</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>CallCenter_Available</name>
+        <label>CallCenter Available</label>
+        <locationX>666</locationX>
+        <locationY>518</locationY>
+        <defaultConnector>
+            <targetReference>GetAvailableMetadatasQueueOwner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetAvailableMetadatasActionCallCenter</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>caseTransferScreenCC</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Case_Owner_Available</name>
+        <label>Case Owner Available</label>
+        <locationX>864</locationX>
+        <locationY>758</locationY>
+        <defaultConnector>
+            <targetReference>CaseTransferScreenUnavailable</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>YescaseOwner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetAvailableMetadatasQueueOwner</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CaseTransferScreenOwner</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>ChosenDestinationDecision</name>
         <label>Chosen Destination</label>
         <locationX>886</locationX>
-        <locationY>758</locationY>
+        <locationY>1430</locationY>
         <defaultConnector>
             <targetReference>SearchDestinationIteration</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>yesChosen</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>SearchDestinationIteration.Id</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>DestinationCallCenter</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SearchDestinationIteration.Id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>DestinationCallCenterByOner</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -182,7 +271,7 @@
         <name>CommentWrittenDecision</name>
         <label>Comment Written</label>
         <locationX>666</locationX>
-        <locationY>2126</locationY>
+        <locationY>2798</locationY>
         <defaultConnector>
             <targetReference>SuccessScreen</targetReference>
         </defaultConnector>
@@ -207,7 +296,7 @@
         <name>Is_typification_available</name>
         <label>¿Is typification available?</label>
         <locationX>666</locationX>
-        <locationY>1670</locationY>
+        <locationY>2342</locationY>
         <defaultConnector>
             <targetReference>Clean_Typifications</targetReference>
         </defaultConnector>
@@ -234,7 +323,7 @@
         <locationX>358</locationX>
         <locationY>278</locationY>
         <defaultConnector>
-            <targetReference>GetAvailableMetadatasAction</targetReference>
+            <targetReference>GetAvailableMetadatasActionCallCenter</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -261,22 +350,35 @@
         </rules>
     </decisions>
     <dynamicChoiceSets>
-        <name>optionList</name>
-        <collectionReference>GetAvailableMetadatasAction</collectionReference>
+        <name>optionListByCC</name>
+        <collectionReference>GetAvailableMetadatasActionCallCenter</collectionReference>
+        <dataType>String</dataType>
+        <displayField>DestinationCallCenter__c</displayField>
+        <object>CaseTransferDestinations__mdt</object>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>OptionListByOnwner</name>
+        <collectionReference>GetAvailableMetadatasQueueOwner</collectionReference>
         <dataType>String</dataType>
         <displayField>DestinationCallCenter__c</displayField>
         <object>CaseTransferDestinations__mdt</object>
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <environments>Default</environments>
+    <formulas>
+        <name>CaseOwnerName</name>
+        <dataType>String</dataType>
+        <expression>{!GetCaseAction.Owner:Group.Name}</expression>
+    </formulas>
     <interviewLabel>Case Transfer {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Transfer</label>
     <loops>
         <name>SearchDestinationIteration</name>
         <label>Search Destination</label>
         <locationX>666</locationX>
-        <locationY>638</locationY>
-        <collectionReference>GetAvailableMetadatasAction</collectionReference>
+        <locationY>1310</locationY>
+        <collectionReference>AvailableOptions</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>ChosenDestinationDecision</targetReference>
@@ -305,20 +407,41 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
-        <name>GetAvailableMetadatasAction</name>
-        <label>Get Available Metadatas</label>
+        <name>GetAvailableMetadatasActionCallCenter</name>
+        <label>Get Available Metadatas CallCenter</label>
         <locationX>666</locationX>
         <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>caseTransferScreen</targetReference>
+            <targetReference>CallCenter_Available</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>or</filterLogic>
         <filters>
             <field>SourceCallCenter__c</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>GetCaseAction.CallCenter__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>CaseTransferDestinations__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetAvailableMetadatasQueueOwner</name>
+        <label>Get Available Metadatas Queue Owner</label>
+        <locationX>864</locationX>
+        <locationY>638</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Case_Owner_Available</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>SourceQueue__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseOwnerName</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -350,7 +473,7 @@
         <name>GetDestinationQueueAction</name>
         <label>Get Destination Queue</label>
         <locationX>666</locationX>
-        <locationY>1310</locationY>
+        <locationY>1982</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ModifyCaseAssignment</targetReference>
@@ -371,7 +494,7 @@
         <name>GetRecordTypeAction</name>
         <label>Get Record Type</label>
         <locationX>666</locationX>
-        <locationY>1190</locationY>
+        <locationY>1862</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetDestinationQueueAction</targetReference>
@@ -392,7 +515,7 @@
         <name>UpdateCaseAction</name>
         <label>Update Case</label>
         <locationX>666</locationX>
-        <locationY>2006</locationY>
+        <locationY>2678</locationY>
         <connector>
             <targetReference>CommentWrittenDecision</targetReference>
         </connector>
@@ -403,21 +526,21 @@
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
-        <name>caseTransferScreen</name>
-        <label>Transferir Caso</label>
-        <locationX>666</locationX>
-        <locationY>518</locationY>
+        <name>caseTransferScreenCC</name>
+        <label>Transferir Caso CallCenter</label>
+        <locationX>468</locationX>
+        <locationY>638</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>SearchDestinationIteration</targetReference>
+            <targetReference>SetoptionsCallCenterAssignment</targetReference>
         </connector>
         <fields>
-            <name>caseTransferScreen_Section1</name>
+            <name>caseTransferScreenCC_Section1</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>caseTransferScreen_Section1_Column1</name>
+                <name>caseTransferScreenCC_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>CallCenterLabel</name>
@@ -438,11 +561,11 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>caseTransferScreen_Section1_Column2</name>
+                <name>caseTransferScreenCC_Section1_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>DestinationCallCenter</name>
-                    <choiceReferences>optionList</choiceReferences>
+                    <choiceReferences>optionListByCC</choiceReferences>
                     <dataType>String</dataType>
                     <fieldText>Equipo de destino:</fieldText>
                     <fieldType>DropdownBox</fieldType>
@@ -474,10 +597,98 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>CaseTransferScreenOwner</name>
+        <label>Transferir Caso Owner</label>
+        <locationX>732</locationX>
+        <locationY>878</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>SetOptionsOwnerAssignment</targetReference>
+        </connector>
+        <fields>
+            <name>CaseTransferScreenOwner_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>CaseTransferScreenOwner_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>OwnerLabel</name>
+                    <fieldText>&lt;p&gt;Propietario de origen:&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>Copy_1_of_currentCallCenterText</name>
+                    <fieldText>&lt;p&gt;{!CaseOwnerName}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>CaseTransferScreenOwner_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>DestinationCallCenterByOner</name>
+                    <choiceReferences>OptionListByOnwner</choiceReferences>
+                    <dataType>String</dataType>
+                    <fieldText>Equipo de destino:</fieldText>
+                    <fieldType>DropdownBox</fieldType>
+                    <isRequired>true</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>Copy_1_of_CommentsInput</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>Caso transferido por {!$User.FirstName} {!$User.LastName} desde el propietario {!CaseOwnerName}</stringValue>
+            </defaultValue>
+            <fieldText>Comentarios</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Transferir</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>CaseTransferScreenUnavailable</name>
+        <label>Case Transfer Unavailable</label>
+        <locationX>996</locationX>
+        <locationY>878</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Copy_1_of_FailureText</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px; color: rgb(244, 30, 30);&quot;&gt;No se cumplen las condiciones de call center o propietario del caso para realizar la transferencia.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Finalizar</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>FailureScreen</name>
         <label>Failure screen</label>
-        <locationX>1018</locationX>
-        <locationY>2126</locationY>
+        <locationX>1260</locationX>
+        <locationY>2798</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -511,7 +722,7 @@
         <name>SuccessScreen</name>
         <label>Success screen</label>
         <locationX>666</locationX>
-        <locationY>2462</locationY>
+        <locationY>3134</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -532,6 +743,14 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>AvailableOptions</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>CaseTransferDestinations__mdt</objectType>
+    </variables>
     <variables>
         <name>chosenDestination</name>
         <dataType>SObject</dataType>
