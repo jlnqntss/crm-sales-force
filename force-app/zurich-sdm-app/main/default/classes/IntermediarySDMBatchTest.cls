@@ -35,7 +35,7 @@ private class IntermediarySDMBatchTest
         IntermediarySDMBatch batch = new IntermediarySDMBatch();
         // Preparamos la configuracion para el campo que nos interesa
         batch.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD,AccountsSelector.SDM_DT_NAME_FIELD
         );
         batch.testSettingsACR = TestDataFactorySDM.getSDMSettingsACR(
             SettingsSDM.ACR_ROL_MAINEMAIL, AccountsSelector.SDM_MAINEMAIL_FIELD, TestDataFactorySDM.MAINEMAIL_TEXT

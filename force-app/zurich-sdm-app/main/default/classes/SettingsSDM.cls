@@ -96,7 +96,7 @@ public with sharing class SettingsSDM
     public List<SDMAccountTeamRole__mdt> getAccountRolesWithIntermediaryFields(List<SDMAccountTeamRole__mdt> testSettingsATM)
     {
         List<SDMAccountTeamRole__mdt> result = [
-            SELECT Role__c, IntermediaryField__c, Status__c 
+            SELECT Role__c, IntermediaryField__c, Status__c , IntermediaryNameField__c
             FROM SDMAccountTeamRole__mdt ORDER BY IntermediaryField__c
         ];
 
