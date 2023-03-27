@@ -943,18 +943,18 @@ export default class GenerateComercialPlan extends NavigationMixin(
   }
 
   /* considerando que el tamaño de header, rows y footer 
-  es el mismo siempre en caso de borrar un plan ponemos a true el primer elemento no visible que haya en tabledata.c/annualPlanRecordPage
-  pos: posición del elemento eliminado para mostrar si existe alguno el que está a la derecha
+  es el mismo siempre en caso de borrar un plan ponemos a true el primer elemento no visible y no eliminado siguiente al eliminado que haya en tabledata
   */
   recalculatePaginationInDelete(pos) {
     let found = false;
-    let position = 0;
+    let position = pos;
     let element;
-    // buscamos si hay algún elemento a la derecha
+
+    // buscamos si hay algún elemento no visible que pueda mostrarse
     while (!found && position < this.tabledata.headers.Cells.length) {
       element = this.tabledata.headers.Cells[position];
-      if (!element.isDeleted && !element.isPlanVisible && position > pos) {
-        // si el elemento no es visible ni se ha eliminado obtengo su posicion y hago visible dicho plan que esté a la derecha del que se haya eliminado
+      if (!element.isDeleted && !element.isPlanVisible) {
+        // si el elemento no es visible ni se ha eliminado obtengo su posicion y hago visible dicho plan
         found = true;
       } else {
         position++;
