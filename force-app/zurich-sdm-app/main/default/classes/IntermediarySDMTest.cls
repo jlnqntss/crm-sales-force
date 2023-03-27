@@ -923,4 +923,247 @@ private class IntermediarySDMTest
         System.assertNotEquals(null, sdm.listUserIdsToNotify, 'Deberia haber usuarios a notificar');
         System.assertEquals(2, sdm.listUserIdsToNotify.size(), 'Deberia haber 2 usuarios a notificar');
     }
+
+    /**
+     * Test que informa de los campos si alguno falta
+     *
+     * @author aberuete
+     * @date 13/03/2023
+     */
+    @isTest
+    static void test_ifAnyIntermediaryFieldIsMissingPopulateAgain()
+    {
+        List<Account> intermediaries = [Select id, NationalId__c, ParentId, Name, Status__c, StatusIntermediary__c from Account where RecordType.DeveloperName = 'Intermediary' limit 1 ];
+        Map<String, Object> fieldsToValue = intermediaries[0].getPopulatedFieldsAsMap();
+        intermediaries[0].Status__c = null;
+        String statusBefore = intermediaries[0].Status__c;
+
+        Test.startTest();       
+        List<Account> intermediariesAfter = IntermediarySDM.ifAnyIntermediaryFieldIsMissingPopulateAgain(intermediaries,fieldsToValue );
+        Test.stopTest();
+
+        String statusAfter = intermediariesAfter[0].Status__c;
+        System.assertEquals(null, statusBefore, 'El estado debería ser nulo');
+        System.assertNotEquals(null, statusAfter, 'El estado no debería ser nulo');
+    }
+
+    /**
+     * Test que comprueba si la cuenta de agrupación no existe la crea correctamente 
+     *
+     * @author aberuete
+     * @date 27/03/2023
+     */
+    @isTest
+    static void test_ifParentNotExistCreateOrUpdate()
+    {
+        List<Account> intermediary= [Select id, NationalId__c, ParentId, Name, Status__c, StatusIntermediary__c from Account where RecordType.DeveloperName = 'Intermediary' and ParentId = null limit 1 ];
+        IntermediarySDM sdm =  new IntermediarySDM();
+        sdm.mapAgrupationPosByCIF = new Map<String,Integer>() ;
+        sdm.mapAgrupationByPos = new Map<Integer, Account> ();
+        sdm.positionAgruptation = 0 ;
+
+        Test.startTest();       
+        Integer agrpPos = sdm.ifParentNotExistCreateOrUpdate(intermediary[0]);
+        Test.stopTest();
+
+        List<String> mapKey = new List<String>(sdm.mapAgrupationPosByCIF.keySet());
+
+        System.assertEquals(intermediary[0].NationalId__c, mapKey[0], 'La clave del mapa debería ser el CIF de la cuenta de intermediario' );
+        System.assertEquals(agrpPos, sdm.mapAgrupationPosByCIF.values()[0], 'El valor del mapa debería ser la posición de la agrupación' );
+        System.assertNotEquals(null, sdm.mapAgrupationByPos, 'El mapa de cuenta de agrupación por posición no debería estar vacío ' );
+        System.assertEquals('AGR-'+intermediary[0].NationalId__c, sdm.mapAgrupationByPos.values().AGRNationalId__c, 'El campo agr national id está mal informado');
+        System.assertEquals(0, agrpPos, 'La posición de la agrupación debería ser 0');
+
+    }
+
+     /**
+     * Test que comprueba si el intermediario no tiene bien asociada la cuenta de agrupación , la actualiza correctamente 
+     *
+     * @author aberuete
+     * @date 27/03/2023
+     */
+    @isTest
+    static void test_ifIntermediaryNotHaveCifRightUpdate()
+    {
+        IntermediarySDM sdm =  new IntermediarySDM();
+        sdm.mapAgrupationByCIF = new Map<String,Account>() ;
+        sdm.mapIntermediaryByPos = new Map<Integer, List<Account>> ();
+        sdm.listIntermediariesToUpdate = new List<Account>();
+        List<Account> intermediary= [Select id, NationalId__c, ParentId, Name, Status__c, StatusIntermediary__c from Account where RecordType.DeveloperName = 'Intermediary' and ParentId = null limit 1 ];
+        List<Account> agrupationAccount = [Select id,NationalId__c from Account where RecordType.DeveloperName = 'AgrupacionMediador' and NationalId__c =: intermediary[0].NationalId__c];
+        
+        Test.startTest();       
+        sdm.ifAgrupationNotExistOrIntermediaryNotHaveCifRightCreateOrUpdate(agrupationAccount[0],intermediary[0]);
+        Test.stopTest();
+        List<String> listAgrupationByCifs = new List<String>(sdm.listAgrupationCIFs);
+
+        System.assertEquals(intermediary[0].Id, sdm.listIntermediariesToUpdate[0].Id, 'El intermediario debería estar en la lista de intermediarios a actualizar');
+        System.assertEquals(agrupationAccount[0].Id,sdm.listIntermediariesToUpdate[0].ParentId, 'El parentId del intermediario debería ser el id de la cuenta de agrupación');
+        System.assertEquals(intermediary[0].NationalId__c, listAgrupationByCifs[0], 'El CIF debería estar en la lista ');
+    }
+
+     /**
+     * Test que comprueba si la cuenta de agrupación no existe la crea correctamente 
+     *
+     * @author aberuete
+     * @date 27/03/2023
+     */
+    @isTest
+    static void test_ifAgrupationNotExistCreate()
+    {
+        IntermediarySDM sdm =  new IntermediarySDM();
+        sdm.mapAgrupationByCIF = new Map<String,Account>() ;
+        sdm.mapIntermediaryByPos = new Map<Integer, List<Account>> ();
+        sdm.listIntermediariesToUpdate = new List<Account>();
+        sdm.mapAgrupationPosByCIF = new Map <String,Integer>();
+        sdm.mapAgrupationByPos = new Map <Integer,Account>();
+        sdm.positionAgruptation = 0;
+        List<Account> intermediary= [Select id, NationalId__c, ParentId, Name, Status__c, StatusIntermediary__c from Account where RecordType.DeveloperName = 'Intermediary' limit 1 ];
+        List<Account> agrupationAccount = [Select id,NationalId__c from Account where RecordType.DeveloperName = 'AgrupacionMediador' and NationalId__c =: intermediary[0].NationalId__c];
+        agrupationAccount[0].Id = null;
+
+        Test.startTest();       
+        sdm.ifAgrupationNotExistOrIntermediaryNotHaveCifRightCreateOrUpdate(agrupationAccount[0],intermediary[0]);
+        Test.stopTest();
+        
+        List<String> listAgrupationByCifs = new List<String>(sdm.listAgrupationCIFs);
+
+        System.assertEquals(intermediary[0].Id, sdm.listIntermediariesToUpdate[0].Id, 'El intermediario debería estar en la lista de intermediarios a actualizar');
+        System.assertEquals(intermediary[0].Id, sdm.mapIntermediaryByPos.values()[0][0].Id, 'El intermediario debería estar en el mapa de intermediarios por posición agrupación ');
+        System.assertEquals(intermediary[0].NationalId__c, listAgrupationByCifs[0], 'El CIF debería estar en la lista ');
+    }
+
+     /**
+     * Test que comprueba si la cuenta de intermediario está activa, actualiza correctamente el estado de la cuenta de agrupación a activa  
+     *
+     * @author aberuete
+     * @date 27/03/2023
+     */
+    @isTest
+    static void test_ifAgrupationStatusBlanckAndIntermediaryStatusActive()
+    {
+        IntermediarySDM sdm =  new IntermediarySDM();
+        sdm.agrupationToUpdateById = new Map <Id,Account>();
+        sdm.agrupationToCheckById = new Map <Id,Account> ();
+        List<Account> intermediary= [Select id, NationalId__c, ParentId, Name, Status__c, StatusIntermediary__c from Account where RecordType.DeveloperName = 'Intermediary' and StatusIntermediary__c = 'Active' limit 1 ];
+        List<Account> agrupationAccount = [Select id,NationalId__c,Status__c,StatusIntermediary__c from Account where RecordType.DeveloperName = 'AgrupacionMediador' and NationalId__c =: intermediary[0].NationalId__c];
+        sdm.agrupationToCheckById.put (agrupationAccount[0].Id,agrupationAccount[0]);
+
+        Test.startTest();       
+        sdm.ifAgrupationExistCheckStatus (agrupationAccount[0], intermediary[0]);
+        Test.stopTest();
+
+        List<Id> listOfIdsToUpdate = new List<Id>(sdm.agrupationToUpdateById.keySet());
+
+        System.assertEquals(true, sdm.agrupationToCheckById.isEmpty(), 'El mapa de agrupaciones para chequear debería ser nulo');
+        System.assertEquals(agrupationAccount[0].Id, listOfIdsToUpdate[0], 'La agrupación debería estar en el mapa para actualizarse');
+        System.assertEquals (intermediary[0].Status__c,sdm.agrupationToUpdateById.values()[0].Status__c, 'La agrupación debería actualizarse con el estado del intermediario' );
+    }
+
+     /**
+     * Test que comprueba si la cuenta de intermediario está inactiva, actualiza correctamente el estado de la cuenta de agrupación a inactiva. 
+     *
+     * @author aberuete
+     * @date 27/03/2023
+     */
+    @isTest
+    static void test_ifIntermediaryStatusInactiveAndAgrupationStatusActive()
+    {
+        IntermediarySDM sdm =  new IntermediarySDM();
+        sdm.agrupationToUpdateById = new Map <Id,Account>();
+        sdm.agrupationToCheckById = new Map <Id,Account> ();
+        List<Account> intermediary= [Select id, NationalId__c, ParentId, Name, Status__c, StatusIntermediary__c from Account where RecordType.DeveloperName = 'Intermediary' and StatusIntermediary__c = 'Active' limit 1 ];
+        intermediary[0].Status__c = '003';
+        update intermediary[0];
+        List<Account> agrupationAccount = [Select id,NationalId__c,Status__c,StatusIntermediary__c from Account where RecordType.DeveloperName = 'AgrupacionMediador' and NationalId__c =: intermediary[0].NationalId__c];
+        agrupationAccount[0].Status__c = '001';
+        update agrupationAccount[0];
+
+        intermediary= [Select id, NationalId__c, ParentId, Name, Status__c, StatusIntermediary__c from Account where Account.Id =: intermediary[0].Id ];
+        agrupationAccount = [Select id,NationalId__c,Status__c,StatusIntermediary__c from Account where Account.Id =: agrupationAccount[0].Id ];
+
+        Test.startTest();       
+        sdm.ifAgrupationExistCheckStatus (agrupationAccount[0], intermediary[0]);
+        Test.stopTest();
+        
+        List<Id> listOfIdsToCheck = new List<Id>(sdm.agrupationToCheckById.keySet());
+
+        System.assertEquals(agrupationAccount[0].Id, listOfIdsToCheck[0], 'En el mapa de agrupaciones para chequear debería estar la cuenta de agrupación');
+        System.assertEquals(true, sdm.agrupationToUpdateById.isEmpty(), 'El mapa de agrupaciones para actualizarse debería ser nulo');
+    }
+
+    /**
+     * Test que comprueba si la cuenta de intermediario está inactiva, añade correctamente la cuenta de agrupación al mapa de cuentas a actualizar. 
+     *
+     * @author aberuete
+     * @date 27/03/2023
+     */
+    @isTest
+    static void test_CheckAgrupationsToInactiveStatus()
+    {
+        IntermediarySDM sdm =  new IntermediarySDM();
+        sdm.agrupationToUpdateById = new Map <Id,Account>();
+        sdm.agrupationToCheckById = new Map <Id,Account> ();
+        List<Account> intermediary = [Select id, NationalId__c, ParentId, Name, Status__c, StatusIntermediary__c from Account where RecordType.DeveloperName = 'Intermediary' and StatusIntermediary__c = 'Active' and NationalId__c =:TestDataFactorySDM.AGRUPATION_CIF  limit 1 ];
+        List<Account> agrupationAccount = [Select id,NationalId__c,Status__c,StatusIntermediary__c from Account where RecordType.DeveloperName = 'AgrupacionMediador' and NationalId__c =: intermediary[0].NationalId__c];
+        
+        intermediary[0].ParentId = agrupationAccount[0].Id;
+        intermediary[0].Status__c = '003';
+        update intermediary;
+
+        sdm.agrupationToCheckById.put(agrupationAccount[0].Id, agrupationAccount[0]);
+
+        Test.startTest();       
+        sdm.checkAgrupationsToInactiveStatus ();
+        Test.stopTest();
+
+        List<Id> listOfIdsToUpdate = new List<Id>(sdm.agrupationToUpdateById.keySet());
+
+        System.assertEquals(false, sdm.agrupationToUpdateById.isEmpty(), 'El mapa de agrupaciones para actualizarse no debería ser nulo');
+        System.assertEquals (agrupationAccount[0].Id, listOfIdsToUpdate[0], 'En el mapa para actualizar las cuentas debería estar la cuenta de agrupación' );
+    }
+
+    /**
+     * Test que comprueba si se insertan o actualizan correctamente las cuentas de agrupación. 
+     * Además comprueba que si un intermediario no tiene informado correctamente su parentId, se actualiza. 
+     *
+     * @author aberuete
+     * @date 27/03/2023
+     */
+    @isTest
+    static void test_ifAgrupationListToUpdateNotEmptyCreateOrUpdateAgrupations()
+    {
+        IntermediarySDM sdm =  new IntermediarySDM();
+        sdm.agrupationToUpdateById = new Map <Id,Account>();
+        sdm.mapAgrupationByPos = new Map <Integer,Account>();
+        sdm.mapIntermediaryByPos = new Map <Integer, List<Account>>();
+        sdm.mapAgrupationByCIF = new Map<String, Account>();
+        Integer agrpPos = 0;
+        sdm.rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        
+        List<Account> agrupationAccount = [Select id,NationalId__c,Status__c,StatusIntermediary__c from Account where RecordType.DeveloperName = 'AgrupacionMediador' and StatusIntermediary__c = 'Inactive' limit 1];
+        agrupationAccount[0].Status__c = '001';
+        sdm.agrupationToUpdateById.put (agrupationAccount[0].Id,agrupationAccount[0]);
+
+        List<Account> intermediary = [Select id, NationalId__c, ParentId, Name, Status__c, StatusIntermediary__c from Account where RecordType.DeveloperName = 'Intermediary' and StatusIntermediary__c = 'Active' limit 1 ];
+        intermediary[0].NationalId__c = 'pruebaNationalId';
+
+        Account newAgrupation =  new Account(
+                                    NationalID__c= 'pruebaNationalId',
+                                    Name= 'prueba account agrupation',
+                                    RecordTypeId= sdm.rtAgrupationId
+                                    );
+        sdm.mapAgrupationByPos.put(agrpPos, newAgrupation);
+        sdm.mapIntermediaryByPos.put (agrpPos, intermediary);
+
+        Test.startTest();       
+        sdm.ifAgrupationListToUpdateNotEmptyCreateOrUpdateAgrupation ();
+        Test.stopTest();
+        List<Account> agruptationToCheck = [Select StatusIntermediary__c from Account where id =: agrupationAccount[0].Id ];
+        List<Account> agrupationCreated = [Select id from Account where NationalId__c = 'pruebaNationalId' and RecordType.DeveloperName = 'AgrupacionMediador' ];
+
+        System.assertEquals ('Active',agruptationToCheck[0].StatusIntermediary__c, 'La agrupación se debería haber actualizado' );
+        System.assertEquals (false, agrupationCreated.isEmpty(), 'Debería de haber creado la cuenta de agrupación' );
+        System.assertEquals (agrupationCreated[0].Id, sdm.mapIntermediaryByPos.values()[0][0].ParentId,'El parent id del intermediario debería ser la nueva cuenta de agrupación' );
+    }
 }
