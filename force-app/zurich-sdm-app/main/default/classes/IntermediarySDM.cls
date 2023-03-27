@@ -140,6 +140,21 @@ public with sharing class IntermediarySDM {
     public Map<String, Account> mapAgrupationByCIF;
     // Mapa de intermediarios por Id de sus Agrupaciones
     public Map<Id, List<Account>> intermediariesByParentId;
+    //Mapa de la posicion de la agrupación y la cuenta de tipo agrupación
+    public Map<Integer, Account> mapAgrupationByPos;
+    // Mapa del CIF de la cuenta de agrupación y la posición de la agrupación
+    public  Map<String, Integer> mapAgrupationPosByCIF ;
+    // Mapa posición de la agrupación y lista de mediadores para esa agrupación
+    public  Map<Integer, List<Account>> mapIntermediaryByPos;
+    // Lista de mediadores a actualizar
+    public List<Account> listIntermediariesToUpdate;
+    //Mapa de id de agrupación y cuenta de agrupación
+    public Map<Id, Account> agrupationToUpdateById ;
+    // Mapa de id de agrupación y cuenta de agrupación
+    public Map<Id, Account> agrupationToCheckById ;
+    
+    //Posición a añadir la agrupación en el mapa
+    public Integer positionAgruptation;
 
     // USUARIOS
     // Mapa de usuarios por Email de usuario
@@ -156,6 +171,7 @@ public with sharing class IntermediarySDM {
     private Map<String, Contact> mapContactsByEmail;
 
     // ACCOUNT id de tipo de registro de agrupacion de mediadores
+    @TestVisible
     private Id rtAgrupationId;
     
     // Lista de CIFs de agrupaciones que se han creado o modificado el ATM de sus hijos. Nos dira que CIF de agrupacion
@@ -440,225 +456,73 @@ public with sharing class IntermediarySDM {
         this.listUserIdsToNotify.addAll(userIds);
     }
 
+    
+
     /**
      * Metodo que, para los Mediadores dados por parametro, calcula su correspondiente cuenta de Agrupacion de Mediador
      * y setea el estado de la Agrupación en base al estado de los Mediadores.
      *
      * @param {List<Account> intermedires} lista de Mediadores
+     * change : aberuete 27/03/2023
+     * Refactorizar la clase
      */
     public void assignIntermediaryAgrupation(List<Account> intermediaries)
     {
         // Si hay mediadores...
-        if( intermediaries != null && !intermediaries.isEmpty() ) {
-            List<Account> intermediariesToProcess = intermediaries;
-
+        if( intermediaries != null && !intermediaries.isEmpty() ) 
+        {
+            Map<String, Object> fieldsToValue = intermediaries[0].getPopulatedFieldsAsMap();
             // Comprobamos en el PRIMER Mediador si tienen el campo CIF y su Agrupacion Actual, 
             // sino lo tiene se vuelven a recuperar
-            Map<String, Object> fieldsToValue = intermediariesToProcess[0].getPopulatedFieldsAsMap();
-            if( !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID) || 
-                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_PARENTID) || 
-                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_NAME) ||
-                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS) || 
-                !fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS_INTERMEDIARY))
-            {
-                Set<String> fields = new Set<String>{INTERMEDIARY_FIELD_NATIONALID, 
-                                                     INTERMEDIARY_FIELD_PARENTID, 
-                                                     INTERMEDIARY_FIELD_NAME, 
-                                                     INTERMEDIARY_FIELD_STATUS, 
-                                                     INTERMEDIARY_FIELD_STATUS_INTERMEDIARY};
-                intermediariesToProcess = new AccountsSelector().findWithFields(intermediaries, fields);
-            }
+            List<Account> intermediariesToProcess = ifAnyIntermediaryFieldIsMissingPopulateAgain (intermediaries, fieldsToValue);
 
             // Si hay Mediadores para obtener su Agrupacion...
-            if( !intermediariesToProcess.isEmpty() ) {
+            if( !intermediariesToProcess.isEmpty() ) 
+            {
                 // Recuperamos todos las cuentas de Agrupacion de Mediadores y creamos un mapa por CIF
                 // (si la lista se vuelve muy grande se podria reducir el numero devuelto mirando primero los CIF de
                 //  los mediadores a buscar)
                 this.findAgrupatedIntermediaries(intermediariesToProcess);
                 
-                Map<Integer, Account> mapAgrupationByPos = new Map<Integer, Account>();
-                Map<Integer, List<Account>> mapIntermediaryByPos = new Map<Integer, List<Account>>();
-                Map<String, Integer> mapAgrupationPosByCIF = new Map<String, Integer>();
-                Integer pos = 0;
-                List<Account> intermediariesToUpdate = new List<Account>();
-                Map<Id, Account> agrupationToUpdateById = new Map<Id, Account>();
-                Map<Id, Account> agrupationToCheckById = new Map<Id, Account>();
+                mapAgrupationByPos = new Map<Integer, Account>();
+                mapIntermediaryByPos = new Map<Integer, List<Account>>();
+                mapAgrupationPosByCIF = new Map<String, Integer>();
+                positionAgruptation  = 0;
+                listIntermediariesToUpdate  = new List<Account>();
+                agrupationToUpdateById = new Map<Id, Account>();
+                agrupationToCheckById = new Map<Id, Account>();
 
                 // Por cada mediador...
-                for(Account i: intermediariesToProcess ) {
-                    // Si tienen campo CIF de agrupacion
-                    if( String.isNotBlank(i.NationalId__c) ) {
-                        // Recuperamos el Id de Agrupacion que corresponderia a ese CIF
-                        Account agrupation = this.mapAgrupationByCIF?.get(i.NationalId__c);
-                        if( agrupation?.Id == null ) { //--------------------------------------------------- NO existe la agrupacion
-                            // Intentamos recuperar la posicion de la agrupacion si ya existe
-                            Integer agrpPos = mapAgrupationPosByCIF.get(i.NationalId__c);
-
-                            // Si es la primera vez y no existe se crea
-                            if( agrpPos == null ) {
-                                agrpPos = pos;
-                                pos++;
-
-                                // Si no se ha recuperado ya, recuperamos el id de tipo de registro de agrupacion
-                                if( this.rtAgrupationId == null ) this.rtAgrupationId = new AccountsSelector().rtAgrupationId;
-
-                                // Creamos a partir de los campos del mediador
-                                Account newAgrupation =  new Account(
-                                    NationalID__c= i.NationalID__c,
-                                    Name= i.Name,
-                                    RecordTypeId= this.rtAgrupationId,
-                                    AGRNationalId__c = 'AGR-'+i.NationalID__c
-
-                                );
-
-                                // Si el intermediario está activo se informa el campo Status__c de la agrupación
-                                if (i.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE)
-                                {
-                                    newAgrupation.Status__c = i.Status__c;
-                                }
-
-                                mapAgrupationByPos.put(agrpPos, newAgrupation);
-
-                                // Lo guardamos por si lo necesitan otros mediadores con el mismo CIF
-                                mapAgrupationPosByCIF.put(i.NationalID__c, agrpPos);
-                            } else { // Si la agrupación ya se ha creado (todavía no se ha insertado)
-                                Account agrupationByPos = mapAgrupationByPos?.get(agrpPos);
-
-                                // Si no se ha informado el campo 'Status__c' y el intermediario está activo
-                                if (agrupationByPos != null &&
-                                    String.isBlank(agrupationByPos.Status__c) && 
-                                    i.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE)
-                                {
-                                    agrupationByPos.Status__c = i.Status__c;
-                                }
-                            }
-
-                            // Creamos la referencia al mediador
-                            Account intermediary = new Account(
-                                Id= i.Id
-                            );
-                            // Lo metemos en la lista de mediadores de la agrupacion en la posicion que corresponda
-                            List<Account> listIntermediaries = mapIntermediaryByPos.get(agrpPos);
-                            if( listIntermediaries == null ) {
-                                listIntermediaries = new List<Account>();
-                                mapIntermediaryByPos.put(agrpPos, listIntermediaries);
-                            }
-                            listIntermediaries.add(intermediary);
-
-                            // Lo metemos tambien en la lista de mediadores a modificar
-                            intermediariesToUpdate.add(intermediary);
-
-                            // Añadimos el CIF a la lista de cifs de agrupacion para que se recalcule el ATM si es
-                            // necesario
-                            this.addNationalId(i.NationalID__c);
-                        } else if( i.ParentId == null || i.ParentId != agrupation?.Id ) { //---------------- SI existe
-                            // Si existe la agrupacion y el Mediador no tiene agrupacion o es diferente a la actual, actualizamos
-                            // Poner para modificar
-                            intermediariesToUpdate.add(new Account(
-                                Id= i.Id,
-                                ParentId= agrupation.Id
-                            ));
-
-                            // Añadimos el CIF a la lista de cifs de agrupacion para que se recalcule el ATM si es
-                            // necesario
-                            this.addNationalId(i.NationalID__c);
-                        }
-
-                        // Si existe la agrupación en el sistema
-                        if (String.isNotBlank(agrupation?.Id)) 
-                        { 
-                            // Si el intermediario se activa y no estaba activado previamente
-                            if (String.isBlank(agrupation.Status__c) && i.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE)
-                            {
-                                // Se activa la agrupación y se añade al mapa para actualizar
-                                agrupation.Status__c = i.Status__c;
-                                agrupationToUpdateById.put(agrupation.Id, agrupation);
-
-                                // Si estuviese en el mapa de agrupaciones a desactivar, se elimina
-                                agrupationToCheckById.remove(agrupation.Id);
-                            }
-                            else if (!agrupationToUpdateById.containsKey(agrupation.Id) &&
-                                     !agrupationToCheckById.containsKey(agrupation.Id) &&
-                                     String.isNotBlank(agrupation.Status__c) &&
-                                     i.StatusIntermediary__c == INTERMEDIARY_STATUS_INACTIVE )
-                            {
-                                // Se marca la agrupación para checkear si hay que desactivarla
-                                agrupationToCheckById.put(agrupation.Id, agrupation);
-                            }
-                        }
-                    }
-                }
-
-                // Si hay agrupaciones para checkear
-                if (!agrupationToCheckById.isEmpty())
+                for(Account intermediary: intermediariesToProcess ) 
                 {
-                    this.findIntermediariesByParentId(agrupationToCheckById.keySet());
-                    
-                    // Por cada agrupación se comprueba si alguno de sus mediadores está activo.
-                    for (Id agrupationId : agrupationToCheckById.keySet())
+                    // Si tienen campo CIF de agrupacion
+                    if( String.isNotBlank(intermediary.NationalId__c) ) 
                     {
-                        List<Account> intermediariesToCheck = this.intermediariesByParentId.get(agrupationId);
+                        // Recuperamos el Id de Agrupacion que corresponderia a ese CIF
+                        Account agrupation = this.mapAgrupationByCIF?.get(intermediary.NationalId__c);
 
-                        Boolean someIntermediaryIsActive = false;
-                        Integer intermediariesToCheckPos = 0;
+                        // Creamos la agrupación si no existe o la actualizamos si ha sido creada pero no insertada
+                        ifAgrupationNotExistOrIntermediaryNotHaveCifRightCreateOrUpdate (agrupation, intermediary);
 
-                        while (intermediariesToCheck != null && 
-                                !intermediariesToCheck.isEmpty() &&
-                                !someIntermediaryIsActive &&
-                                intermediariesToCheckPos < intermediariesToCheck.size())
-                        {
-                            someIntermediaryIsActive = (intermediariesToCheck.get(intermediariesToCheckPos).StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE);
-                            intermediariesToCheckPos++;
-                        }
-
-                        // Si no hay ningún intermediario activo, se desactiva la agrupación
-                        if (!someIntermediaryIsActive)
-                        {
-                            Account agrupationToCheck = agrupationToCheckById.get(agrupationId);
-                            agrupationToCheck.Status__c = '';
-
-                            agrupationToUpdateById.put(agrupationToCheck.Id, agrupationToCheck);
-                        }
+                        // Comprobamos si es necesario activar el estado de la cuenta de agrupación , si el estado del mediador esta activo
+                        agrupation = ifAgrupationExistCheckStatus (agrupation, intermediary);
                     }
                 }
+
+                //Comprobar si hay agrupaciones que hay que desactivar el estado
+                checkAgrupationsToInactiveStatus ();
 
                 // Si hay agrupaciones a crear o a actualizar
-                if( !mapAgrupationByPos.isEmpty() ||  !agrupationToUpdateById.isEmpty()) {
-
-                    List<Account> agrupationToUpsert = new List<Account>();
-                    agrupationToUpsert.addAll(mapAgrupationByPos.values());
-                    agrupationToUpsert.addAll(agrupationToUpdateById.values());
-                    upsert agrupationToUpsert;
-
-                    // Para cada agrupacion nueva...
-                    for(Integer key: mapAgrupationByPos.keySet()) {
-                        // Recuperamos el id recien generado
-                        Account agrp = mapAgrupationByPos.get(key);
-
-                        // Y para cada mediador asociado a la agrupacion...
-                        for(Account a: mapIntermediaryByPos.get(key)) {
-                            // Asignamos el id de la agrupacion al campo de referencia
-                            a.ParentId = agrp.Id;
-                        }
-
-                        // Se añaden las nuevas agrupaciones al mapa de agrupaciones por si mediadores de la misma
-                        // agrupacion se procesan en diferente batch...
-                        this.mapAgrupationByCIF.put(agrp.NationalID__c, agrp);
-
-                        // Añadimos el CIF a la lista de cifs de agrupacion para que se recalcule el ATM si es
-                        // necesario
-                        this.addNationalId(agrp.NationalID__c);
-                    }
-                }
+                ifAgrupationListToUpdateNotEmptyCreateOrUpdateAgrupation();
 
                 // Si hay mediadores a modificar
-                if( !intermediariesToUpdate.isEmpty() ) {
-                    update intermediariesToUpdate;
+                if( !listIntermediariesToUpdate.isEmpty() ) 
+                {
+                    update listIntermediariesToUpdate;
                 }
             }
         }
     }
-
 
     /**
      * Metodo que, para los Mediadores dados por parametro, calcula los Equipos de Cuenta que les corresponde segun
@@ -1347,4 +1211,262 @@ public with sharing class IntermediarySDM {
             this.deleteATMs(atmsToDelete);
         }
     }
+
+     /**
+    * @description Método que comprueba que en el primer mediador no faltan campos por informar, en caso contrario informarlos
+    * @author aberuete 
+    * @date 27-03-2023 
+    * @param List<Account> intermediaries: Lista de cuentas de intermediario
+    * @param Map<String, Object> fieldsToValue : Mapa de valores y cuenta 
+    **/
+    @TestVisible
+    private static List<Account> ifAnyIntermediaryFieldIsMissingPopulateAgain (List<Account> intermediaries, Map<String, Object> fieldsToValue)
+    {
+        List<Account> intermediariesToProcess = intermediaries;
+
+        Boolean containNationalId = fieldsToValue.containsKey(INTERMEDIARY_FIELD_NATIONALID);
+        Boolean containParentId = fieldsToValue.containsKey(INTERMEDIARY_FIELD_PARENTID);
+        Boolean containName = fieldsToValue.containsKey(INTERMEDIARY_FIELD_NAME);
+        Boolean containStatus = fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS);
+        Boolean containStatusIntermediary = fieldsToValue.containsKey(INTERMEDIARY_FIELD_STATUS_INTERMEDIARY);
+
+        if( !containNationalId || !containParentId || !containName || !containStatus || !containStatusIntermediary)
+        {
+            Set<String> fields = new Set<String>
+            {
+                INTERMEDIARY_FIELD_NATIONALID, 
+                INTERMEDIARY_FIELD_PARENTID, 
+                INTERMEDIARY_FIELD_NAME, 
+                INTERMEDIARY_FIELD_STATUS, 
+                INTERMEDIARY_FIELD_STATUS_INTERMEDIARY
+            };
+
+            intermediariesToProcess = new AccountsSelector().findWithFields(intermediaries, fields);
+        }
+        
+        return intermediariesToProcess;
+    }
+
+    /**
+    * @description Método que añade la cuenta de agrupación al mapa para crear cuentas si la cuenta de agrupación no existe.
+    * En caso de que se haya creado pero todavía no se ha insertado, se comprueba si el mediador está activo para actualizar 
+    * el estado de la cuenta de agrupación a activo.
+    * @author aberuete 
+    * @date 27-03-2023 
+    * @param Account intermediary : Cuenta de intermediario  
+    **/
+    @TestVisible
+    private  Integer ifParentNotExistCreateOrUpdate (Account intermediary)
+    {
+        // Intentamos recuperar la posicion de la agrupacion si ya existe
+        Integer agrpPos = this.mapAgrupationPosByCIF.get(intermediary.NationalId__c);
+        // Si es la primera vez y no existe se crea
+        if( agrpPos == null ) 
+        {
+            agrpPos = this.positionAgruptation;
+            this.positionAgruptation++;
+
+            // Si no se ha recuperado ya, recuperamos el id de tipo de registro de agrupacion
+            if( this.rtAgrupationId == null ) this.rtAgrupationId = new AccountsSelector().rtAgrupationId;
+
+            // Creamos a partir de los campos del mediador
+            Account newAgrupation =  new Account(
+                NationalID__c= intermediary.NationalID__c,
+                Name= intermediary.Name,
+                RecordTypeId= this.rtAgrupationId,
+                AGRNationalId__c = 'AGR-'+intermediary.NationalID__c
+            );
+
+            // Si el intermediario está activo se informa el campo Status__c de la agrupación
+            if (intermediary.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE)
+            {
+                newAgrupation.Status__c = intermediary.Status__c;
+            }
+
+            this.mapAgrupationByPos.put(agrpPos, newAgrupation);
+
+            // Lo guardamos por si lo necesitan otros mediadores con el mismo CIF
+            this.mapAgrupationPosByCIF.put(intermediary.NationalID__c, agrpPos);
+        } 
+        // Si la agrupación ya se ha creado (todavía no se ha insertado)
+        else 
+        { 
+            Account agrupationByPos = this.mapAgrupationByPos?.get(agrpPos);
+
+            // Si no se ha informado el campo 'Status__c' y el intermediario está activo
+            if (agrupationByPos != null &&
+                String.isBlank(agrupationByPos.Status__c) && 
+                intermediary.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE)
+            {
+                agrupationByPos.Status__c = intermediary.Status__c;
+            }
+        } 
+
+        return agrpPos;
+    }
+
+     /**
+    * @description Método que añade la cuenta de agrupación al mapa para crear cuentas si la cuenta de agrupación no existe. 
+    * En el caso contario, si el intermediario no tiene la cuenta de agrupación correcta, actualiza el parentId al correcto y añade al intermediario a la lista para actualizar. 
+    * @author abereute 
+    * @date 27-03-2023 
+    * @param Account agrupation : Cuenta de tipo agrupación mediador
+    * @param Account intermediary: Cuenta de tipo intermediario
+    **/
+    @TestVisible
+    private void ifAgrupationNotExistOrIntermediaryNotHaveCifRightCreateOrUpdate (Account agrupation, Account intermediary)
+    {
+        if( agrupation?.Id == null )
+        {
+            // Si no se ha creado todavía se crea, si se ha creado pero no insertado se actualiza su estado
+            Integer agrpPos = ifParentNotExistCreateOrUpdate (intermediary);
+            // Creamos la referencia al mediador
+            Account intermediaryRefer = new Account(
+                Id= intermediary.Id
+            );
+            // Lo metemos en la lista de mediadores de la agrupacion en la posicion que corresponda
+            List<Account> listIntermediaries = mapIntermediaryByPos.get(agrpPos);
+            if( listIntermediaries == null ) 
+            {
+                listIntermediaries = new List<Account>();
+                mapIntermediaryByPos.put(agrpPos, listIntermediaries);
+            }
+            listIntermediaries.add(intermediaryRefer);
+
+            // Lo metemos tambien en la lista de mediadores a modificar
+            listIntermediariesToUpdate.add(intermediaryRefer);
+        }
+        // SI existe
+        else if( intermediary.ParentId == null || intermediary.ParentId != agrupation?.Id ) 
+        { 
+            // Si existe la agrupacion y el Mediador no tiene agrupacion o es diferente a la actual, actualizamos
+            // Poner para modificar
+            listIntermediariesToUpdate.add(new Account(
+                Id= intermediary.Id,
+                ParentId= agrupation.Id
+            ));
+        }
+        // Añadimos el CIF a la lista de cifs de agrupacion para que se recalcule el ATM si es
+        // necesario
+        this.addNationalId(intermediary.NationalID__c);
+    }
+
+    /**
+    * @description Método que actualiza el estado de la cuenta de agrupación si el intermediario está activo 
+    * en caso contrario, se añade al mapa de cuentas a comprobar 
+    * @author aberuete 
+    * @date 27-03-2023 
+    * @param Account agrupation : Cuenta de agrupación de mediador
+    * @param Account intermediary: Cuenta de intermediario
+    **/
+    @TestVisible
+    private Account ifAgrupationExistCheckStatus (Account agrupation, Account intermediary)
+    {
+        // Si existe la agrupación en el sistema
+        if (String.isNotBlank(agrupation?.Id)) 
+        { 
+            // Si el intermediario se activa y no estaba activado previamente
+            if (String.isBlank(agrupation.Status__c) && intermediary.StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE)
+            {
+                // Se activa la agrupación y se añade al mapa para actualizar
+                agrupation.Status__c = intermediary.Status__c;
+                agrupationToUpdateById.put(agrupation.Id, agrupation);
+
+                // Si estuviese en el mapa de agrupaciones a desactivar, se elimina
+                agrupationToCheckById.remove(agrupation.Id);
+            }
+            else if (!agrupationToUpdateById.containsKey(agrupation.Id) &&
+                     !agrupationToCheckById.containsKey(agrupation.Id) &&
+                     String.isNotBlank(agrupation.Status__c) &&
+                     intermediary.StatusIntermediary__c == INTERMEDIARY_STATUS_INACTIVE )
+            {
+                // Se marca la agrupación para checkear si hay que desactivarla
+                agrupationToCheckById.put(agrupation.Id, agrupation);
+            }
+        } 
+        return agrupation;
+    }
+
+    /**
+    * @description Método que comprueba si algún mediador de una agrupación está activo, 
+    * en caso de que todos estén inactivos se actualiza el estado de la cuenta de agrupación para que esté inactiva.
+    * @author aberuete 
+    * @date 27-03-2023  
+    **/
+    @TestVisible
+    private void checkAgrupationsToInactiveStatus ()
+    {
+        if (!agrupationToCheckById.isEmpty())
+        {
+            this.findIntermediariesByParentId(agrupationToCheckById.keySet());
+            
+            // Por cada agrupación se comprueba si alguno de sus mediadores está activo.
+            for (Id agrupationId : agrupationToCheckById.keySet())
+            {
+                List<Account> intermediariesToCheck = this.intermediariesByParentId.get(agrupationId);
+
+                Boolean someIntermediaryIsActive = false;
+                Integer intermediariesToCheckPos = 0;
+
+                while (intermediariesToCheck != null && 
+                        !intermediariesToCheck.isEmpty() &&
+                        !someIntermediaryIsActive &&
+                        intermediariesToCheckPos < intermediariesToCheck.size())
+                {
+                    someIntermediaryIsActive = (intermediariesToCheck.get(intermediariesToCheckPos).StatusIntermediary__c == INTERMEDIARY_STATUS_ACTIVE);
+                    intermediariesToCheckPos++;
+                }
+
+                // Si no hay ningún intermediario activo, se desactiva la agrupación
+                if (!someIntermediaryIsActive)
+                {
+                    Account agrupationToCheck = agrupationToCheckById.get(agrupationId);
+                    agrupationToCheck.Status__c = '';
+
+                    agrupationToUpdateById.put(agrupationToCheck.Id, agrupationToCheck);
+                }
+            }
+        }
+    }
+
+    /**
+    * @description Método que inserta o actualiza las cuentas de agrupación. 
+    * En caso de que haya creado nuevas cuentas revisa si tiene que actualizar el parentId de alguno de los mediadores
+    * @author aberuete 
+    * @date 27-03-2023 
+    **/
+    @TestVisible
+    private void ifAgrupationListToUpdateNotEmptyCreateOrUpdateAgrupation () 
+    {
+        // Si hay agrupaciones a crear o a actualizar
+        if( !mapAgrupationByPos.isEmpty() ||  !agrupationToUpdateById.isEmpty()) 
+        {
+            List<Account> agrupationToUpsert = new List<Account>();
+            agrupationToUpsert.addAll(mapAgrupationByPos.values());
+            agrupationToUpsert.addAll(agrupationToUpdateById.values());
+            upsert agrupationToUpsert;
+
+            // Para cada agrupacion nueva...
+            for(Integer key: mapAgrupationByPos.keySet()) 
+            {
+                // Recuperamos el id recien generado
+                Account agrp = mapAgrupationByPos.get(key);
+                // Y para cada mediador asociado a la agrupacion...
+                for(Account a: mapIntermediaryByPos.get(key)) 
+                {
+                    // Asignamos el id de la agrupacion al campo de referencia
+                    a.ParentId = agrp.Id;
+                }
+
+                // Se añaden las nuevas agrupaciones al mapa de agrupaciones por si mediadores de la misma
+                // agrupacion se procesan en diferente batch...
+                this.mapAgrupationByCIF.put(agrp.NationalID__c, agrp);
+
+                // Añadimos el CIF a la lista de cifs de agrupacion para que se recalcule el ATM si es
+                // necesario
+                this.addNationalId(agrp.NationalID__c);
+            }
+        }
+    }
+
 }
