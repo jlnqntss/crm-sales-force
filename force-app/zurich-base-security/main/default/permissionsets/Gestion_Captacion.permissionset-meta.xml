@@ -733,6 +733,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ContactRequest.BusinessCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>ContactRequest.PreferredContactDatetime__c</field>
         <readable>true</readable>
     </fieldPermissions>

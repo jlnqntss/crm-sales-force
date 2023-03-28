@@ -322,6 +322,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Response__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Subtype__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -438,6 +443,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.InboundOutbound__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

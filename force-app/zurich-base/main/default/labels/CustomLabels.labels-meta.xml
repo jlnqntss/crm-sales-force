@@ -2294,6 +2294,22 @@ Create the record and try again.</value>
         <value>Antes de nada informarte que Zurich Insurance plc, Sucursal en España procederá a grabar esta llamada por motivos de calidad en base a interés legítimo y también para dejar prueba de la solicitud realizada en base a ejecución contractual. Para más información sobre protección de datos y cómo ejercer tus derechos, consulta la web www.zurich.es/rgpd</value>
     </labels>
     <labels>
+        <fullName>SDM_Home_RN_Dashboard_detail</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM Home RN Dashboard detail</shortDescription>
+        <value>Detail</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Home_RN_Dashboard_general_view</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM Home RN Dashboard general view</shortDescription>
+        <value>General view</value>
+    </labels>
+    <labels>
         <fullName>SDM_PlanAnual_NextPage</fullName>
         <categories>SDM,PlanAnual</categories>
         <language>en_US</language>

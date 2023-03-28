@@ -231,5 +231,54 @@ public with sharing class CasesSelector extends RecordsSelector
             return new List<Case>() ;
         }
     }
+
+    /**
+     * Método utilizado por el batch Batch_CompleteCases para obtener los casos de la última semana sin vinculación a Poliza u Oferta
+     * @author arcortazar
+     * @date 23/03/2022
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
+    public String getQueryStringCasesWithoutPolicyOffer(String days, List<String> origins, List<String> recordTypes)
+    {
+        if(days != null && !String.isBlank(days) )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.Id,
+                Case.PolicyId__c,
+                Case.OfferId__c,
+                Case.HegeoOfferId__c,
+                Case.HegeoPolicyId__c,
+                Case.HegeoPrePolicyId__c
+            })
+            .addConditionNull(Case.PolicyId__c)
+            .addConditionNull(Case.OfferId__c)
+            .addConditionString(CASES_LAST_DATE + days);
+
+            if(origins != null && !origins.isEmpty())
+            {
+                this.baseQuery.addConditionIn(Case.Origin, origins);
+            }
+
+            if(recordTypes != null && !recordTypes.isEmpty())
+            {
+                List<String> idsRecordType = new List<String>();
+                for(String rt : recordTypes)
+                {
+                    String recordTypeID = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rt).getRecordTypeId();
+                    idsRecordType.add(recordTypeID);
+                }
+                this.baseQuery.addConditionIn(Case.RecordTypeId, idsRecordType);
+            }
+
+            System.debug('++++: ' + this.baseQuery.toQueryString());
+
+            return this.baseQuery.toQueryString();
+        }
+        else
+        {
+            return '';
+        }
+    }
     
 }

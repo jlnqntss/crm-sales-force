@@ -210,4 +210,30 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             return new List<Opportunity>();
         }
     }
+
+
+    /**
+     * Busca Ofertas a partir del Id del cliente, del ambito.
+     * 
+     * @author nts (arcortazar)
+     * @date 01/02/2022
+     * @param {Id id} id de la oportunidad
+     * @return {List<Opportunity} ofertas encontradas
+     */
+    public List<Opportunity> findByName(Set<String> setNames)
+    {   
+        if(setNames != null && !setNames.isEmpty())
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Opportunity.Id,
+                Opportunity.Name
+            })
+            .addCondition(Query.conditionIn(Opportunity.Name, setNames));
+            return (List<Opportunity>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<Opportunity>();
+        }
+    }
 }

@@ -991,7 +991,7 @@ private without sharing class GenesysInteractionsServiceTest
         // Test
         Test.startTest();
 
-        List<GenesysInteractionsService.Agent> bestAgents = GenesysInteractionsService.findBestAgents(intermediary);
+        List<GenesysInteractionsService.Agent> bestAgents = GenesysInteractionsService.findBestAgents(intermediary, true);
 
         Test.stopTest();
 

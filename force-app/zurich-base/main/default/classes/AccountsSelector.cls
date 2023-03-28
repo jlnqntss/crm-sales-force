@@ -598,9 +598,12 @@ public with sharing class AccountsSelector extends RecordsSelector
         {
             this.baseQuery.selectFields(new Set<Schema.SObjectField>{
                 Account.Id,
-                Account.NationalId__c
+                Account.NationalId__c,
+                Account.Blocked__c
             })
-            .addConditionIn(Account.NationalId__c, cifs);
+            .addConditionIn(Account.NationalId__c, cifs)
+            .addConditionNotEq(Account.Blocked__c, true)
+            .addConditionString('CreatedDate = LAST_N_DAYS:' + daysToRetrieve);
 
             // Añadimos la condición de que el RT sea Customer o BusinessCustomer
             Query.Condition condition = Query.doOr

@@ -532,6 +532,10 @@ public with sharing class BusinessInsuranceRaterService
      * @param {Request} Los datos del formulario
      * @param {List<Opportunity>} Lista de las ofertas
      * @param {Scope_Setting__mdt} Datos de configuracion para el proceso
+     * *
+     * @modification amunoz
+     * @date 23/03/2023
+     * @comment Se añade en la comprobación de cuando existe la oferta, la asignación del BusinessCode de la oferta al Contact Request
      */
     private static void createCallMeBack(Request formData, List<Opportunity> offersToCreate, Scope_Setting__mdt currentScopeSettings)
     {
@@ -575,6 +579,8 @@ public with sharing class BusinessInsuranceRaterService
         if( !offersToCreate.isEmpty() )
         {
             contactRequestToCreate.WhatId = offersToCreate.get(0).Id;
+            //Se añade el BusinessCode en el cmb
+            contactRequestToCreate.BusinessCode__c = offersToCreate.get(0).BusinessCode__c;
         }
 
         insert contactRequestToCreate;

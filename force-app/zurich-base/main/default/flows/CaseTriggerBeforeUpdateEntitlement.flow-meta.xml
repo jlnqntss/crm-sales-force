@@ -153,6 +153,13 @@
                 <elementReference>FoundUspEntitlement</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.BusinessHoursId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FoundUspBusinessHours</elementReference>
+            </value>
+        </assignmentItems>
     </assignments>
     <decisions>
         <name>CCS_o_CSM_o_CE</name>
@@ -904,6 +911,10 @@
         </filters>
         <object>Entitlement</object>
         <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -933,6 +944,10 @@
             </value>
         </filters>
         <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
         <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
@@ -964,6 +979,10 @@
         </filters>
         <object>Entitlement</object>
         <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -994,6 +1013,10 @@
             </value>
         </filters>
         <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
         <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
@@ -1067,6 +1090,10 @@
         </filters>
         <object>Entitlement</object>
         <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -1127,6 +1154,10 @@
         </filters>
         <object>Entitlement</object>
         <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -1145,6 +1176,13 @@
     </start>
     <status>Active</status>
     <triggerOrder>100</triggerOrder>
+    <variables>
+        <name>FoundUspBusinessHours</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>FoundUspEntitlement</name>
         <dataType>String</dataType>

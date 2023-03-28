@@ -3,6 +3,10 @@
     <label>PN</label>
     <protected>false</protected>
     <values>
+        <field>CalculatedPreviousPeriod__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
         <field>CalculationType__c</field>
         <value xsi:type="xsd:string">Sum</value>
     </values>
@@ -15,7 +19,15 @@
         <value xsi:type="xsd:string">PN</value>
     </values>
     <values>
+        <field>PreviousPeriodField__c</field>
+        <value xsi:type="xsd:string">PA_PN__c</value>
+    </values>
+    <values>
         <field>SecondField__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>ThirdField__c</field>
         <value xsi:nil="true"/>
     </values>
 </CustomMetadata>
