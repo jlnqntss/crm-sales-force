@@ -361,7 +361,7 @@ public with sharing class GenesysInteractionsService
             // Construimos un intermediario falso (es el id del partner) para pasar al método el ID del partner y que el agente sea el owner de un caso abierto
             Intermediary fakePartner = new Intermediary();
             fakePartner.intermediaryId = partner.Id;
-            results.bestAgents = findBestAgents(fakePartner);
+            results.bestAgents = findBestAgents(fakePartner, false);
         }
 
         //20210804: Estadísticas/Informes
@@ -625,7 +625,7 @@ public with sharing class GenesysInteractionsService
             results.intermediaryChannel = intermediary.Channel__c;
             results.intermediarySegment = intermediary.Segment__c;
 
-            results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c));
+            results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c), true);
         }
 
         //20210804: Estadísticas/Informes
@@ -651,7 +651,7 @@ public with sharing class GenesysInteractionsService
      * @author adelgado
      * @date 24/11/2020
      */
-    public static List<Agent> findBestAgents(Intermediary intermediary)
+    public static List<Agent> findBestAgents(Intermediary intermediary, Boolean isIntermediary)
     {
         Set<Agent> bestAgents = new Set<Agent>();
 
@@ -669,14 +669,17 @@ public with sharing class GenesysInteractionsService
             }
         );
 
-        for(Case openCase : casesSelector.findOpenByAccount(new List<String>{intermediary.intermediaryId}))
+        if(!isIntermediary)
         {
-            if (openCase.Owner.Email != null)
+            for(Case openCase : casesSelector.findOpenByAccount(new List<String>{intermediary.intermediaryId}))
             {
-                bestAgents.add
-                (
-                    new Agent(openCase.Owner.Email, true, false, false)
-                );
+                if (openCase.Owner.Email != null)
+                {
+                    bestAgents.add
+                    (
+                        new Agent(openCase.Owner.Email, true, false, false)
+                    );
+                }
             }
         }
 

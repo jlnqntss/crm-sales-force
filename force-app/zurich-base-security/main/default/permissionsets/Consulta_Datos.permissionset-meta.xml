@@ -553,6 +553,11 @@
         <field>Account.TDChannel__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.TOPAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.TOPIntermediary__c</field>
@@ -2041,6 +2046,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>ContactPointPhone.UsageType</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactRequest.BusinessCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -136,11 +136,11 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
     {
         List<PlanComercial__c> parentPlans = [
             SELECT id, Name, Product__c, Segment__c, Indicator__c,
-                   TargetKPICurrency__c, TargetKPINumber__c, TargetKPIPercent__c, Actual_KPI__c,
+                   TargetKPICurrency__c, TargetKPINumber__c, TargetKPIPercent__c, Actual_KPI__c, PAActualKPI__c,
                    AssignedTo__c, OwnerId, Zone__c,
                    (SELECT Id, 
                            AssignedTo__c, AssignedTo__r.Name, Intermediary__c, Intermediary__r.Name,
-                           TargetKPICurrency__c, TargetKPINumber__c, TargetKPIPercent__c, Actual_KPI__c, Zone__c
+                           TargetKPICurrency__c, TargetKPINumber__c, TargetKPIPercent__c, Actual_KPI__c, PAActualKPI__c, Zone__c
                    FROM ParentPlans__r)
             FROM PlanComercial__c
             WHERE RecordTypeId = :rtPlanAnualId
@@ -171,7 +171,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         if( plans != null && !plans.isEmpty() ) {
             childPlans = [
                 SELECT Id, Name, Product__c, Segment__c, Indicator__c, 
-                ParentPlan__r.Name, ParentPlan__r.Product__c, ParentPlan__r.Segment__c, ParentPlan__r.Indicator__c, 
+                ParentPlan__r.Name, ParentPlan__r.Product__c, ParentPlan__r.Segment__c, ParentPlan__r.Indicator__c, ParentPlan__r.PAActualKPI__c,
                 TargetKPICurrency__c, TargetKPINumber__c, TargetKPIPercent__c
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanAnualId
@@ -230,7 +230,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         if( plans != null && !plans.isEmpty() ) {
             childPlans = [
                 SELECT Id, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, Indicator__c, Segment__c, Product__c, EndDate__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c,
-                            ParentPlan__r.TargetKPIPercent__c, ParentPlan__r.TargetKPICurrency__c, ParentPlan__r.Actual_KPI__c, Zone__c
+                            ParentPlan__r.TargetKPIPercent__c, ParentPlan__r.TargetKPICurrency__c, ParentPlan__r.Actual_KPI__c, ParentPlan__r.PAActualKPI__c, Zone__c
                 FROM PlanComercial__c
                 WHERE ParentPlan__c IN :plans
                 AND RecordTypeId = :rtPlanMensualId
@@ -257,7 +257,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
 
         if( indicatorSet != null && !indicatorSet.isEmpty() && segmentSet != null && !segmentSet.isEmpty() && productSet != null && !productSet.isEmpty() && year != null) {
             result = [
-                SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
+                SELECT Id, AccumulateType__c, Actual_KPI__c, PAActualKPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
                 Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
                 Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, OwnerId, Zone__c, ParentPlan__r.OwnerId
                 FROM PlanComercial__c
@@ -290,11 +290,10 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         if( indicatorSet != null && !indicatorSet.isEmpty() && segmentSet != null && !segmentSet.isEmpty() && productSet != null && !productSet.isEmpty() && zoneSet != null &&
          !zoneSet.isEmpty() && year != null && !year.isEmpty()) {
             result = [
-                SELECT Id, AccumulateType__c, Actual_KPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
+                SELECT Id, AccumulateType__c, Actual_KPI__c, PAActualKPI__c, AssignedTo__c, Completed__c, Contact__c, Description__c, EndDate__c, FollowUp__c, Indicator__c, Intermediary__c,
                 Month__c, Notified__c, ParentPlan__c, Priority__c, Product__c, RecordTypeId, Segment__c, SendNotifications__c, SentNotifications__c, StartDate__c, 
                 Name, TargetKPIPercent__c, TargetKPINumber__c, TargetKPICurrency__c, ParentPlan__r.TargetKPINumber__c, ParentPlan__r.TargetKPIPercent__c, ParentPlan__r.TargetKPICurrency__c, 
-                ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c, ParentPlan__r.Actual_KPI__c, ParentPlan__r.Zone__c, Zone__c
-
+                ParentPlan__r.EndDate__c, ParentPlan__r.SentNotifications__c, ParentPlan__r.Actual_KPI__c, ParentPlan__r.PAActualKPI__c, ParentPlan__r.Zone__c, Zone__c
                 FROM PlanComercial__c
                 WHERE RecordTypeId = :rtPlanMensualId
                 AND Indicator__c IN :indicatorSet

@@ -138,6 +138,9 @@
                             <value>Actual_KPI__c</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>PAActualKPI__c</value>
+                        </valueListItems>
+                        <valueListItems>
                             <value>Indicator__c</value>
                         </valueListItems>
                         <valueListItems>

@@ -186,6 +186,45 @@ public with sharing class PlanComercialSDM {
         return result;
     }
 
+    /**
+    * @description Método que calcula el valor del campo PAActualKPI para el plan que se pasa por parámetro.
+    * Este campo solo se informe en los planes cuyo indicador es PN, Cartera o APES.
+    * @author amiranda
+    * @date 16-03-2023 
+    * @param List<KPI__c> kpis lista de KPIs a tener en cuenta en el cálculo
+    * @param PLanComercial__c plan comercial sobre el que se realiza el cálculo
+    * @return Decimal resultado del cálculo. Devuelve null si la suma del campo 
+    * PAActualKPI de los diferentes KPIs es 0.
+    **/
+    private Decimal doCalculationPA(List<KPI__c> kpis, PLanComercial__c plan)
+    {
+        Decimal result;
+
+        // Recuperamos de la configuracion el tipo de cálculo y los nombres de los campos de KPI
+        SDMCommercialPlan__mdt settingsIndicator = getMetadataRecord(plan);
+
+        // Si existe la configuracion para ese indicador y está marcado que debe calcularse el valor del KPI para el periodo anterior
+        if( settingsIndicator != null && settingsIndicator.CalculatedPreviousPeriod__c) 
+        {
+            Decimal previousPeriodField = 0;
+            
+            // Por cada KPI se suma el valor del campo PreviousPeriodField
+            for (KPI__c kpi: kpis) 
+            {
+                Decimal previousPeriodFieldValue = (Decimal) kpi.get(settingsIndicator.PreviousPeriodField__c);
+                previousPeriodField += previousPeriodFieldValue == null ? 0 : previousPeriodFieldValue;
+            }
+
+            // Si la suma es superior a 0, se devuelve el resultado de la suma
+            if (previousPeriodField > 0)
+            {
+                result = previousPeriodField;
+            } 
+        }
+
+        return result;
+    }
+
 
      /**
      * Para reducir la complejidad ciclomatica del metodo doCalculation saco fuera la logica para obtener el valor del primer campo
@@ -466,6 +505,8 @@ public with sharing class PlanComercialSDM {
                     if( !containsMonths ) containsMonths = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_MONTH);
                     if( !containsYTD ) containsYTD = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_YRD);
 
+                    if (indicatorSetting.CalculatedPreviousPeriod__c) kpiFields.add(indicatorSetting.PreviousPeriodField__c);
+
                     // Recuperamos el usuario del plan y lo incluimos en la lista de usuarios implicados
                     Id userId = getUserIdFromPlan(plan);
                     if( userId != null ) userIds.add(userId);
@@ -528,14 +569,24 @@ public with sharing class PlanComercialSDM {
                         
                         // Si hay KPIs (que deberia)...
                         if( !kpis.isEmpty() ) {
-                            // Se realiza el calculo
+                            // Se realiza el calculo para el KPI Actual
                             Decimal result = doCalculation(kpis, plan);
 
                             // Guardamos el resultado en el Plan comercial
-                            plansToUpdate.add(new PlanComercial__c(
-                                Id= plan.Id,
-                                Actual_KPI__c= result
-                            ));
+                            PlanComercial__c planToUpdate = new PlanComercial__c(
+                                Id = plan.Id,
+                                Actual_KPI__c = result
+                            );
+
+                            // Se realiza el cálculo para el KPI Actual del perioodo anterior
+                            Decimal resultPA = doCalculationPA(kpis, plan);
+
+                            if (resultPA != null)
+                            {
+                                planToUpdate.PAActualKPI__c = resultPA;
+                            }
+
+                            plansToUpdate.add(planToUpdate);
                         }
                     }
                 }

@@ -160,6 +160,37 @@ public with sharing class PoliciesSelector extends RecordsSelector
     }
 
     /**
+     * Busca pólizas a partir de InfoPolicyNumber__c (Número de Póliza en transaccional INFO)
+     * No se tiene en cuenta activa o no ya que se busca por un número de póliza específico
+     *
+     * @author xsobera
+     * @date 20/01/2021
+     * @param String policyNumber Número de póliza a buscar
+     * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
+     */
+    public List<Policy__c> selectByNumber(Set<String> lstPolicyNumber)
+    {
+        if(lstPolicyNumber != null && !lstPolicyNumber.isEmpty())
+        {
+
+            List<String> lstLeftPad = new List<String>();
+            for(String s : lstPolicyNumber)
+            {
+                lstLeftPad.add(s.leftPad(14, '0'));
+            }
+
+            this.baseQuery.selectReadableFields();
+            this.baseQuery.addConditionIn(Policy__c.InfoPolicyNumber__c, lstLeftPad);
+
+            return (List<Policy__c>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<Policy__c>();
+        }
+    }
+
+    /**
      * Busca pólizas a partir de un listado de NationalIds y números de póliza
      *
      * @author jpereztirado

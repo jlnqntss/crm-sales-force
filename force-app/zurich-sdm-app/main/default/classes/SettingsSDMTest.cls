@@ -41,7 +41,7 @@ private class SettingsSDMTest
         SettingsSDM settings = new SettingsSDM();
         List<SDMCommercialPlan__mdt> testSettingsIndicator = new List<SDMCommercialPlan__mdt>();
         testSettingsIndicator.add(TestDataFactorySDM.generateSDMSettingsPlan(
-            'PN', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_SUM, 'PN__c', null));
+            'PN', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_SUM, 'PN__c', null, false, null));
         Map<String, SDMCommercialPlan__mdt> result = settings.getSettingsIndicator(testSettingsIndicator);
         Test.stopTest();
 
