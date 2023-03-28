@@ -111,12 +111,6 @@
         <locationX>50</locationX>
         <locationY>575</locationY>
         <inputAssignments>
-            <field>Autogestion__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>CloseResult__c</field>
             <value>
                 <stringValue>No Realizado USP</stringValue>
