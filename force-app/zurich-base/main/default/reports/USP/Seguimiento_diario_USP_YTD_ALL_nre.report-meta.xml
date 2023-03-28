@@ -235,13 +235,6 @@
             <operator>equals</operator>
             <value>2- PYMES</value>
         </criteriaItems>
-        <criteriaItems>
-            <column>ACCOUNT_ID</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>0017Y00001q4dzX</value>
-        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
