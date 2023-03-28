@@ -2,10 +2,26 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <assignments>
+        <name>ProductGroupAssignment</name>
+        <label>Assign Product Group</label>
+        <locationX>413</locationX>
+        <locationY>3575</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ProductGroup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.HegeoProductGroupCode__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Update_Mediated_Customer_With_Offer_Account_Found</name>
         <label>Update Mediated Customer With Offer Account Found</label>
         <locationX>314</locationX>
-        <locationY>3575</locationY>
+        <locationY>3911</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -18,7 +34,7 @@
         <name>Update_Mediated_Customer_With_Policy_Holder_Found</name>
         <label>Update Mediated Customer With Policy Holder Found</label>
         <locationX>50</locationX>
-        <locationY>3575</locationY>
+        <locationY>3911</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -88,7 +104,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+            <targetReference>IsProductGroupVoidDecision</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -111,7 +127,7 @@
         <name>UpdateMediatedCustomerWithAccountWithNIFFoundAssignment</name>
         <label>Update Mediated Customer With Account With NIF Found</label>
         <locationX>578</locationX>
-        <locationY>3935</locationY>
+        <locationY>4271</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -132,6 +148,13 @@
                 <elementReference>SearchRelatedOfferWithOfferId.Id</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.ProductGroup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SearchRelatedOfferWithOfferId.ProductId__r.HegeoGroupCode__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Offer_Account_Id_Variable_With_HegeoOfferId</targetReference>
         </connector>
@@ -146,6 +169,13 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>SearchRelatedOfferWithPrePolicyId.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.ProductGroup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SearchRelatedOfferWithPrePolicyId.ProductId__r.HegeoGroupCode__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -164,6 +194,13 @@
                 <elementReference>SearchRelatedPolicy.Id</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.ProductGroup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SearchRelatedPolicy.ProductId__r.HegeoGroupCode__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Policy_Holder_Id_Variable_With_Policy_Found</targetReference>
         </connector>
@@ -174,7 +211,7 @@
         <locationX>391</locationX>
         <locationY>3023</locationY>
         <defaultConnector>
-            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+            <targetReference>IsProductGroupVoidDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -197,7 +234,7 @@
         <name>AccountWithNIFFoundDecision</name>
         <label>Account With NIF found?</label>
         <locationX>710</locationX>
-        <locationY>3815</locationY>
+        <locationY>4151</locationY>
         <defaultConnectorLabel>Not Found</defaultConnectorLabel>
         <rules>
             <name>AccountNIFFoundOutcome</name>
@@ -278,7 +315,7 @@
         <locationX>545</locationX>
         <locationY>2783</locationY>
         <defaultConnector>
-            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+            <targetReference>IsProductGroupVoidDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -452,10 +489,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>IsProductGroupVoidDecision</name>
+        <label>Is Product Group Void?</label>
+        <locationX>545</locationX>
+        <locationY>3455</locationY>
+        <defaultConnector>
+            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Filled</defaultConnectorLabel>
+        <rules>
+            <name>VoidOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ProductGroup__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ProductGroupAssignment</targetReference>
+            </connector>
+            <label>Void</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>IsRobotNIFNullDecision</name>
         <label>Robot NIF Null?</label>
         <locationX>1040</locationX>
-        <locationY>3575</locationY>
+        <locationY>3911</locationY>
         <defaultConnectorLabel>NIF Null</defaultConnectorLabel>
         <rules>
             <name>NotNIFNullOutcome</name>
@@ -491,7 +553,7 @@
         <name>Policy_Holder_or_Offer_Account_Found</name>
         <label>Policy Holder or Offer Account Found?</label>
         <locationX>545</locationX>
-        <locationY>3455</locationY>
+        <locationY>3791</locationY>
         <defaultConnector>
             <targetReference>IsRobotNIFNullDecision</targetReference>
         </defaultConnector>
@@ -579,7 +641,7 @@
         <name>CreateErrorLogAccountCIFAction</name>
         <label>Create Error Log Account CIF</label>
         <locationX>1106</locationX>
-        <locationY>3815</locationY>
+        <locationY>4151</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
@@ -611,7 +673,7 @@
         <name>getAccountNIFAction</name>
         <label>Get Account With NIF</label>
         <locationX>710</locationX>
-        <locationY>3695</locationY>
+        <locationY>4031</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AccountWithNIFFoundDecision</targetReference>
@@ -694,8 +756,6 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Opportunity</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>AccountId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -718,8 +778,6 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Opportunity</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>AccountId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -741,8 +799,6 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Policy__c</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>PolicyHolder__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>

@@ -3,9 +3,7 @@
     <fullName>ProductGroupDescription__c</fullName>
     <description>OCS EON. Descripción del ramo asociado al caso</description>
     <externalId>false</externalId>
-    <formula>BLANKVALUE(
-PolicyId__r.ProductId__r.GroupDescription__c, 
-CASE( HegeoProductGroupCode__c,
+    <formula>CASE( ProductGroup__c,
 &apos;1&apos;, &apos;HOGAR&apos;,
 &apos;2&apos;, &apos;AUTOS&apos;,
 &apos;3&apos;, &apos;INMUEBLES&apos;,
@@ -22,7 +20,7 @@ CASE( HegeoProductGroupCode__c,
 &apos;15&apos;, &apos;RCDO&apos;,
 &apos;16&apos;, &apos;RCPRO&apos;,
 &apos;17&apos;, &apos;CIBER&apos;,
-&apos;&apos;))</formula>
+&apos;&apos;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Product Group Description</label>
     <required>false</required>
