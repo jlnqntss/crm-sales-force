@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-03-2023
+ * @last modified by  : aberuete
+**/
 public class DeleteRecordsEventUtil
 {
     /** LIMITADO a un evento por transacción
@@ -22,55 +29,15 @@ public class DeleteRecordsEventUtil
         DeleteRecordsEvent__e eventToProcess = events[0];
 
         //Relanzar los eventos que se quedan sin procesar
-        if(events.size()>1)
-        {
-            //Los registros son read-only en trigger after, hay que recrearlos para lanzarlos
-            List<DeleteRecordsEvent__e> clonedEvents = new List<DeleteRecordsEvent__e>();
-            clonedEvents = events.clone();
-            clonedEvents.remove(0); //quitar el que ya se va a procesar (no se puede quitar de la lista original porque es read-only)
-            List<DeleteRecordsEvent__e> relaunchEvents = new List<DeleteRecordsEvent__e>();
-            //evitar DML statment cannot operate on trigger.new or trigger.old
-            for(DeleteRecordsEvent__e oldEvent: clonedEvents)
-            {
-                DeleteRecordsEvent__e newEvent = new DeleteRecordsEvent__e();
-                newEvent.LaunchedCount__c = oldEvent.LaunchedCount__c;
-                newEvent.ObjectName__c = oldEvent.ObjectName__c;
-                newEvent.Criteria__c = oldEvent.Criteria__c;
-                relaunchEvents.add(newEvent);
-            }
-            try{
-                EventBus.publish(relaunchEvents);
-            }
-            catch(Exception e){
-                ErrorLogUtil.commitError(e, 'DeleteRecordsEventUtil', 'handleEvents - republish events');
-            }
-        }
+        ifNumEventsGreaterThanOneRelaunchEvents (events);
 
         //2º Comprobar que aún no se ha llegado a LaunchedCount__c = 10 para no entrar en bucle
         //si es así, no se hace nada y se deja pasar el evento para la siguiente vez que se re-schedule el flow
         if(eventToProcess.LaunchedCount__c < 10)
         {
             //Preparar la query a realizar
-            String objectName = eventToProcess.ObjectName__c;
-            String whereClause = '';
-            String limitClause = 'LIMIT 0';
-
-            //WHERE
-            if(String.isNotBlank(eventToProcess.Criteria__c))
-            {
-                whereClause = 'WHERE ' + eventToProcess.Criteria__c;
-            }
-
-            //LIMIT
-            Integer remainingRows = Limits.getLimitDmlRows() - Limits.getDmlRows() - numEvents - 1;
-            if(remainingRows > 0)
-            {
-                limitClause = 'LIMIT '+String.valueOf(remainingRows);
-            }
-
-            //QUERY
-            String query = String.format('SELECT Id FROM {0} {1} {2}', new List<String>{objectName, whereClause, limitClause});
-
+            String query = getQueryToDeleteRecords (eventToProcess, numEvents);
+            
             List<SObject> recordsToDelete = new List<SObject>();
             recordsToDelete = Database.query(query);
 
@@ -106,5 +73,68 @@ public class DeleteRecordsEventUtil
                 }
             }
         }
+    }
+
+    /**
+     * Método para relanzar los eventos que quedan sin procesar
+     * @author aberuete
+     * @date 03/04/2023 
+     **/
+    @TestVisible
+    private static void ifNumEventsGreaterThanOneRelaunchEvents (List<DeleteRecordsEvent__e> events)
+    {
+        if(events.size()>1)
+        {
+            //Los registros son read-only en trigger after, hay que recrearlos para lanzarlos
+            List<DeleteRecordsEvent__e> clonedEvents = new List<DeleteRecordsEvent__e>();
+            clonedEvents = events.clone();
+            clonedEvents.remove(0); //quitar el que ya se va a procesar (no se puede quitar de la lista original porque es read-only)
+            List<DeleteRecordsEvent__e> relaunchEvents = new List<DeleteRecordsEvent__e>();
+            //evitar DML statment cannot operate on trigger.new or trigger.old
+            for(DeleteRecordsEvent__e oldEvent: clonedEvents)
+            {
+                DeleteRecordsEvent__e newEvent = new DeleteRecordsEvent__e();
+                newEvent.LaunchedCount__c = oldEvent.LaunchedCount__c;
+                newEvent.ObjectName__c = oldEvent.ObjectName__c;
+                newEvent.Criteria__c = oldEvent.Criteria__c;
+                relaunchEvents.add(newEvent);
+            }
+            try{
+                EventBus.publish(relaunchEvents);
+            }
+            catch(Exception e){
+                ErrorLogUtil.commitError(e, 'DeleteRecordsEventUtil', 'handleEvents - republish events');
+            }
+        }
+    }
+
+    /**
+     * Método para obtener la query para borrar los registros
+     * @author aberuete
+     * @date 03/04/2023 
+     **/
+    @TestVisible
+    private static String getQueryToDeleteRecords (DeleteRecordsEvent__e eventToProcess, Integer numEvents)
+    {
+        //Preparar la query a realizar
+        String objectName = eventToProcess.ObjectName__c;
+        String whereClause = '';
+        String limitClause = 'LIMIT 0';
+
+        //WHERE
+        if(String.isNotBlank(eventToProcess.Criteria__c))
+        {
+            whereClause = 'WHERE ' + eventToProcess.Criteria__c;
+        }
+
+        //LIMIT
+        Integer remainingRows = Limits.getLimitDmlRows() - Limits.getDmlRows() - numEvents - 1;
+        if(remainingRows > 0)
+        {
+            limitClause = 'LIMIT '+String.valueOf(remainingRows);
+        }
+
+        //QUERY
+        return String.format('SELECT Id FROM {0} {1} {2}', new List<String>{objectName, whereClause, limitClause});
     }
 }
