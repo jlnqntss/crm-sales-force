@@ -92,6 +92,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>KPI__c.ClaimOcurridosCAYLarge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KPI__c.ClaimOcurridosCAY__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KPI__c.ClaimTotalIncome__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>KPI__c.PA_Commission__c</field>
         <readable>true</readable>
     </fieldPermissions>
