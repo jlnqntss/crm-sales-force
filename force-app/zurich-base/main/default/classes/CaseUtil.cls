@@ -852,7 +852,7 @@ public with sharing class CaseUtil
         {
             if(!String.isBlank(c.HegeoOfferId__c)) lstOffers.add(c.HegeoOfferId__c);
             if(!String.isBlank(c.HegeoPolicyId__c)) lstPolicies.add(c.HegeoPolicyId__c);
-            if(!String.isBlank(c.HegeoPrePolicyId__c)) lstPolicies.add(c.HegeoPrePolicyId__c);
+            if(!String.isBlank(c.HegeoPrePolicyId__c)) lstOffers.add(c.HegeoPrePolicyId__c);
         }
 
         // Obtenemos las Polizas y Ofertas relacionadas con los casos
@@ -880,18 +880,20 @@ public with sharing class CaseUtil
         List<Case> casesToUpdate = new List<Case>();
         for(Case c : listaCasos)
         {
+            // Comprobamos si hemos de informar la póliza
             if(!String.isBlank(c.HegeoPolicyId__c) && mapRetrievedPolicies.get(c.HegeoPolicyId__c) != null)
             {
                 c.PolicyId__c = mapRetrievedPolicies.get(c.HegeoPolicyId__c).Id;
             }
-            else if(!String.isBlank(c.HegeoPrePolicyId__c) && mapRetrievedPolicies.get(c.HegeoPrePolicyId__c) != null)
-            {
-                c.PolicyId__c = mapRetrievedPolicies.get(c.HegeoPrePolicyId__c).Id;
-            }
             
+            // Comprobamos si hemos de informar la oferta (siendo la información que viene en el campo HegeoOfferId__c prioritario)
             if(!String.isBlank(c.HegeoOfferId__c) && mapRetrievedOffers.get(c.HegeoOfferId__c) != null) 
             {
                 c.OfferId__c = mapRetrievedOffers.get(c.HegeoOfferId__c).Id;
+            } 
+            else if(!String.isBlank(c.HegeoPrePolicyId__c) && mapRetrievedOffers.get(c.HegeoPrePolicyId__c) != null)
+            {
+                c.OfferId__c = mapRetrievedOffers.get(c.HegeoPrePolicyId__c).Id;
             }
 
             casesToUpdate.add(c);
