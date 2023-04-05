@@ -17,6 +17,7 @@ private class IntermediarySDMTest
     public static String user99String='username99@invalid.com';
     public static String diezMediadoresString='Deberian existir 10 mediadores';
     public static String usuariosNotificarString='Deberia haber usuarios a notificar';
+    static final String RN_ROL = 'Responsable de Negocio';
 
 
     /**
@@ -935,4 +936,172 @@ private class IntermediarySDMTest
         System.assertNotEquals(null, sdm.listUserIdsToNotify, usuariosNotificarString);
         System.assertEquals(2, sdm.listUserIdsToNotify.size(), 'Deberia haber 2 usuarios a notificar');
     }
+
+    /**
+     * Test que comprueba que se generan correctamente los mapas de los miembros de cuentas
+     *
+     * @author aberuete
+     * @date 05/04/2023
+     */
+    @isTest
+    static void testGenerateMapByATM()
+    {
+        IntermediarySDM sdm = new IntermediarySDM();
+        sdm.mapExistingAgrupationUsers = new Map <String, Set<Id>> ();
+        sdm.mapExistingATMsByNationalIdAndUserId = new Map<String, Map<Id, Id>> ();
+        sdm.mapExistingIntermediaryUsers = new Map<String, Set<Id>> ();
+        sdm.mapExistingInterATMsByNationalIdAndUserId = new Map<String, Map<Id, AccountTeamMember>> ();
+        
+
+        ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        Account accountAgrupation = [Select id,NationalId__c  from Account where RecordTypeId = :rtAgrupationId and NationalId__c!= null limit 1];
+        
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        Account intermediaries = [SELECT Id,NationalId__c  FROM Account WHERE RecordTypeId = :rtIntermediaryId limit 1];
+
+        List<User> userToATM = [Select id from User where isActive = true and profile.name = 'SDM RN' limit 2];
+        
+        //Crear atm para cuenta de agrupación 
+        AccountTeamMember atmAgruptation = new AccountTeamMember(
+            AccountId= accountAgrupation.Id,
+            UserId= userToATM[0].Id,
+            TeamMemberRole= RN_ROL,
+            AccountAccessLevel= 'Edit',
+            ContactAccessLevel= 'Read'
+        );
+        insert atmAgruptation;
+
+        //Crear atm para cuenta de intermediario 
+        AccountTeamMember atmIntermediary = new AccountTeamMember(
+            AccountId= intermediaries.Id,
+            UserId= userToATM[1].Id,
+            TeamMemberRole= RN_ROL,
+            AccountAccessLevel= 'Edit',
+            ContactAccessLevel= 'Read'
+        );
+        insert atmIntermediary;
+
+        AccountTeamMember getAtmAgrupation = [Select id,UserId, Account.NationalId__c, Account.RecordType.DeveloperName from AccountTeamMember where  Account.RecordTypeId =: rtAgrupationId limit 1];
+        AccountTeamMember getAtmIntermediary = [Select id,UserId, Account.NationalId__c, Account.RecordType.DeveloperName from AccountTeamMember where  Account.RecordTypeId =: rtIntermediaryId limit 1];
+        
+        Test.startTest();
+        sdm.generateMapByATM (getAtmAgrupation);
+        sdm.generateMapByATM (getAtmIntermediary);
+        Test.stopTest();
+
+        List<String> nationalIds = new List<String>(sdm.mapExistingAgrupationUsers.keySet());
+        List<Id> userIds = new List<Id>(sdm.mapExistingAgrupationUsers.values()[0]);
+        List<String> nationalIds2map = new List<String>(sdm.mapExistingATMsByNationalIdAndUserId.keySet());
+        List<Id> userIds2map = new List<Id>(sdm.mapExistingATMsByNationalIdAndUserId.values().get(0).keySet());
+
+        List<String> nationalIds2 = new List<String>(sdm.mapExistingIntermediaryUsers.keySet());
+        List<Id> userIds2 = new List<Id>(sdm.mapExistingIntermediaryUsers.values()[0]);
+        List<String> nationalIds3map = new List<String>(sdm.mapExistingInterATMsByNationalIdAndUserId.keySet());
+        List<Id> userIds3map = new List<Id>(sdm.mapExistingInterATMsByNationalIdAndUserId.values().get(0).keySet());
+
+
+        System.assertEquals(accountAgrupation.NationalId__c, nationalIds[0],'El mapa mapExistingAgrupationUsers debería tener el nationalid de la cuenta de agrupación');
+        System.assertEquals(userToATM[0].Id, userIds[0],'El mapa mapExistingAgrupationUsers debería tener el id de usuario ');
+        System.assertEquals(accountAgrupation.NationalId__c, nationalIds2map[0],'El mapa debería mapExistingATMsByNationalIdAndUserId tener el nationalid de la cuenta de agrupación');
+        System.assertEquals(userToATM[0].Id, userIds2map[0],'El mapa mapExistingATMsByNationalIdAndUserId debería tener el id de usuario');
+        
+        System.assertEquals(intermediaries.NationalId__c, nationalIds2[0],'El mapa mapExistingIntermediaryUsers debería tener el nationalid de la cuenta de agrupación');
+        System.assertEquals(userToATM[1].Id, userIds2[0],'El mapa mapExistingIntermediaryUsers debería tener el id de usuario ');
+        System.assertEquals(intermediaries.NationalId__c, nationalIds3map[0],'El mapa debería mapExistingInterATMsByNationalIdAndUserId tener el nationalid de la cuenta de agrupación');
+        System.assertEquals(userToATM[1].Id, userIds3map[0],'El mapa mapExistingInterATMsByNationalIdAndUserId debería tener el id de usuario');
+        
+    }
+
+     /**
+     * Test que comprueba que se crean correctamente los miembros del equipo de cuentas de las cuentas de agrupación
+     *
+     * @author aberuete
+     * @date 05/04/2023
+     */
+    @isTest
+    static void testforUserIfAtmAGRNotExistAndExistAtmIntermediaryCreate()
+    {
+        IntermediarySDM sdm = new IntermediarySDM();
+        sdm.mapExistingAgrupationUsers = new Map <String, Set<Id>> ();
+        sdm.mapExistingIntermediaryUsers = new Map<String, Set<Id>> ();
+        sdm.mapExistingInterATMsByNationalIdAndUserId = new Map<String, Map<Id, AccountTeamMember>> ();
+        sdm.atmsToCreate = new List<AccountTeamMember>();
+
+        List<User> userToATM = [Select id from User where isActive = true and profile.name = 'SDM RN' limit 1];
+        ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
+        Account intermediaries = [SELECT Id,NationalId__c,ParentId  FROM Account WHERE RecordTypeId = :rtIntermediaryId and NationalId__c != null limit 1];
+        
+        ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        Account accountAgrupation = [Select id,NationalId__c  from Account where RecordTypeId = :rtAgrupationId and NationalId__c != null limit 1];
+        accountAgrupation.NationalId__c = intermediaries.NationalId__c;
+        update accountAgrupation;
+
+        intermediaries.ParentId = accountAgrupation.Id;
+        update intermediaries; 
+
+        AccountTeamMember atmIntermediary = new AccountTeamMember(
+            AccountId= intermediaries.Id,
+            UserId= userToATM[0].Id,
+            TeamMemberRole= RN_ROL,
+            AccountAccessLevel= 'Edit',
+            ContactAccessLevel= 'Read'
+        );
+        insert atmIntermediary;
+        
+        AccountTeamMember getAtmIntermediary = [Select id,UserId, Account.NationalId__c,Account.ParentId,TeamMemberRole, Account.RecordType.DeveloperName from AccountTeamMember where  AccountId =:intermediaries.Id limit 1];
+
+        Set<Id> usersIds = new Set<Id>{userToATM[0].Id};
+        sdm.mapExistingIntermediaryUsers.put(intermediaries.NationalId__c, usersIds);
+        Map<Id, AccountTeamMember> mapATMsByUserId = new Map<Id, AccountTeamMember>();
+        mapATMsByUserId.put(userToATM[0].Id, getAtmIntermediary);
+        sdm.mapExistingInterATMsByNationalIdAndUserId.put(intermediaries.NationalId__c, mapATMsByUserId);
+
+        Test.startTest();
+        sdm.forUserIfAtmAGRNotExistAndExistAtmIntermediaryCreate();
+        Test.stopTest();
+
+        System.assertEquals(accountAgrupation.Id, sdm.atmsToCreate[0].AccountId,'Se debería de haber creado un atm para la cuenta padre');
+    }
+
+     /**
+     * Test que comprueba que se borran correctamente los miembros de los equipos de las cuentas de agrupación
+     *
+     * @author aberuete
+     * @date 05/04/2023
+     */
+    @isTest
+    static void testifUsersLeftInAtmAgrRemoveATM()
+    {
+        IntermediarySDM sdm = new IntermediarySDM();
+        sdm.mapExistingAgrupationUsers = new Map <String, Set<Id>> ();
+        sdm.mapExistingATMsByNationalIdAndUserId = new Map<String, Map<Id, Id>> ();
+        sdm.atmsToDeleteInAgr = new List<AccountTeamMember>();
+
+        List<User> userToATM = [Select id from User where isActive = true and profile.name = 'SDM RN' limit 1];
+        Set<Id> usersIds = new Set<Id>{userToATM[0].Id};
+
+        ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
+        Account accountAgrupation = [Select id,NationalId__c  from Account where RecordTypeId = :rtAgrupationId and NationalId__c != null limit 1];
+
+        AccountTeamMember atmAgruptation = new AccountTeamMember(
+            AccountId= accountAgrupation.Id,
+            UserId= userToATM[0].Id,
+            TeamMemberRole= RN_ROL,
+            AccountAccessLevel= 'Edit',
+            ContactAccessLevel= 'Read'
+        );
+        insert atmAgruptation;
+
+        sdm.mapExistingAgrupationUsers.put(accountAgrupation.NationalId__c, usersIds);
+        Map<Id, Id> mapATMsByUserId =new Map<Id, Id>();
+        mapATMsByUserId.put(userToATM[0].Id, atmAgruptation.Id); 
+        sdm.mapExistingATMsByNationalIdAndUserId.put(accountAgrupation.NationalId__c, mapATMsByUserId);
+
+        Test.startTest();
+        sdm.ifUsersLeftInAtmAgrRemoveATM();
+        Test.stopTest();
+
+        System.assertEquals(atmAgruptation.id, sdm.atmsToDeleteInAgr[0].id, 'En el mapa de atms a borrar debería estar el atm de la cuenta de agrupación');
+    }
+
 }
