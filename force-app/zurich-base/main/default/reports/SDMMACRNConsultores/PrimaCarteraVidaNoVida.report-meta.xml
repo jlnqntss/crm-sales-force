@@ -7,11 +7,11 @@
     0
 )</calculatedFormula>
         <datatype>percent</datatype>
-        <description>% de cumplimiento</description>
+        <description>% de cumplimiento vs. Objetivo</description>
         <developerName>FORMULA1</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% de cumplimiento</masterLabel>
+        <masterLabel>% de cumplimiento vs. Objetivo</masterLabel>
         <scale>2</scale>
     </aggregates>
     <aggregates>
@@ -21,11 +21,11 @@
   PlanComercial__c.Actual_KPI__c:SUM / 100
 )</calculatedFormula>
         <datatype>percent</datatype>
-        <description>% de crecimiento</description>
+        <description>% de crecimiento vs. PA</description>
         <developerName>FORMULA2</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% de crecimiento</masterLabel>
+        <masterLabel>% de crecimiento vs. PA</masterLabel>
         <scale>2</scale>
     </aggregates>
     <buckets>

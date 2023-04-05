@@ -7,11 +7,11 @@
     0
 )</calculatedFormula>
         <datatype>percent</datatype>
-        <description>% de cumplimiento</description>
+        <description>% de cumplimiento vs. Objetivo</description>
         <developerName>FORMULA1</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% de cumplimiento</masterLabel>
+        <masterLabel>% de cumplimiento vs. Objetivo</masterLabel>
         <scale>2</scale>
     </aggregates>
     <chart>
