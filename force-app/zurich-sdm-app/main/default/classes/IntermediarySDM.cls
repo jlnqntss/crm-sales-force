@@ -134,6 +134,16 @@ public with sharing class IntermediarySDM {
     // ACCOUNT TEAM MEMBER
     // Mapa de ATM por Id de mediador asociado y Rol de ATM, y Id de usuario
     public Map<ID, Map<String, Map<ID, AccountTeamMember>>> mapATMsByAccountRolUser;
+    //Mapa de UserIds de las agrupaciones por CIF
+    public Map<String, Set<Id>> mapExistingAgrupationUsers;
+    //Mapa de id de ATM de las agrupaciones por CIF y por UserId
+    public Map<String, Map<Id, Id>> mapExistingATMsByNationalIdAndUserId;
+    // Mapa de UserIds de los mediadores por CIF
+    public Map<String, Set<Id>> mapExistingIntermediaryUsers;
+    // Mapa de los id de ATM de los mediadores por CIF y por UserId
+    public Map<String, Map<Id, AccountTeamMember>> mapExistingInterATMsByNationalIdAndUserId;
+    public List<AccountTeamMember> atmsToCreate;
+    public List<AccountTeamMember> atmsToDeleteInAgr;
 
     // AGRUPACION MEDIADORES
     // Mapa de agrupaciones por CIF de agrupacion
@@ -886,140 +896,59 @@ public with sharing class IntermediarySDM {
      * a la agrupacion por los hijos que tiene
      * 
      * @param {List<String> agrupationNationalIDs} lista de CIFs de agrupaciones
+     * @change aberuete - 05/04/2023 - Refactorización del método
      */
     public void assignAgrupationAccountTeam(Set<String> agrupationNationalIDs)
     {
         // Si hay CIFs
-        if( agrupationNationalIDs != null && !agrupationNationalIDs.isEmpty() ) {
+        if( agrupationNationalIDs != null && !agrupationNationalIDs.isEmpty() ) 
+        {
             // 1. Recuperamos los ATMs que hay para los CIFs dados, tanto los de las agrupaciones como los 
             // de los mediadores
             List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findByNationalIDs(agrupationNationalIDs);
 
             // Si hay ATMs
-            if( atms != null && !atms.isEmpty() ) {
+            if( atms != null && !atms.isEmpty() ) 
+            {
                 // A partir de esta lista, miraremos que usuarios ya tienen permisos en las agrupaciones y cuales no
                 // pero que si los tienen los mediadores hijos hay que crearselos
 
                 // Guardara los UserIds de las agrupaciones por CIF
-                Map<String, Set<Id>> mapExistingAgrupationUsers = new Map<String, Set<Id>>(); 
+                mapExistingAgrupationUsers = new Map<String, Set<Id>>(); 
                 // Guardara los id de ATM de las agrupaciones por CIF y por UserId
-                Map<String, Map<Id, Id>> mapExistingATMsByNationalIdAndUserId = new Map<String, Map<Id, Id>>();
+                mapExistingATMsByNationalIdAndUserId = new Map<String, Map<Id, Id>>();
 
                 // Guardara los UserIds de los mediadores por CIF
-                Map<String, Set<Id>> mapExistingIntermediaryUsers = new Map<String, Set<Id>>(); 
+                mapExistingIntermediaryUsers = new Map<String, Set<Id>>(); 
                 // Guardara los id de ATM de los mediadores por CIF y por UserId
-                Map<String, Map<Id, AccountTeamMember>> mapExistingInterATMsByNationalIdAndUserId = new Map<String, Map<Id, AccountTeamMember>>();
+                mapExistingInterATMsByNationalIdAndUserId = new Map<String, Map<Id, AccountTeamMember>>();
 
 
                 // Lista de ATMs a crear
-                List<AccountTeamMember> atmsToCreate = new List<AccountTeamMember>();
+                atmsToCreate = new List<AccountTeamMember>();
                 // Lista de ATMs existentes de las agrupaciones a borrar
-                List<AccountTeamMember> atmsToDelete = new List<AccountTeamMember>();
+                atmsToDeleteInAgr = new List<AccountTeamMember>();
 
                 // 2. Primero miramos los usuarios (a traves del atm) existentes tanto para las agrupaciones 
                 // como para los mediadores
 
                 // Por cada Account Team Member (atm)...
-                for(AccountTeamMember atm: atms) {
-                    String nationalId = atm.Account.NationalId__c;
-                    Id userId = atm.UserId;
-
-                    if( atm.Account.RecordType.DeveloperName == AccountsSelector.RT_NAME_AGRUPATION ) {
-                        // Es ATM de Agrupacion
-
-                        // Incluimos el usuario para ese CIF en el mapa de usuarios existentes
-                        Set<Id> userIds = mapExistingAgrupationUsers.get(nationalId);
-                        if( userIds == null ) {
-                            userIds = new Set<Id>();
-                            mapExistingAgrupationUsers.put(nationalId, userIds);
-                        }
-                        userIds.add(userId);
-
-                        // Nos guardamos tambien el id del atm por si luego hay que borrarlo
-                        Map<Id, Id> mapATMsByUserId = mapExistingATMsByNationalIdAndUserId.get(nationalId);
-                        if( mapATMsByUserId == null ) {
-                            mapATMsByUserId = new Map<Id, Id>();
-                            mapExistingATMsByNationalIdAndUserId.put(nationalId, mapATMsByUserId);
-                        }
-                        mapATMsByUserId.put(userId, atm.Id);                    
-                    } else { 
-                        // Es ATM de Mediador hijo
-
-                        // Incluimos el usuario para ese CIF en el mapa de usuarios existentes
-                        Set<Id> userIds = mapExistingIntermediaryUsers.get(nationalId);
-                        if( userIds == null ) {
-                            userIds = new Set<Id>();
-                            mapExistingIntermediaryUsers.put(nationalId, userIds);
-                        }
-                        userIds.add(userId);
-
-                        // Nos guardamos tambien el id del atm por si luego hay que borrarlo
-                        Map<Id, AccountTeamMember> mapATMsByUserId = mapExistingInterATMsByNationalIdAndUserId.get(nationalId);
-                        if( mapATMsByUserId == null ) {
-                            mapATMsByUserId = new Map<Id, AccountTeamMember>();
-                            mapExistingInterATMsByNationalIdAndUserId.put(nationalId, mapATMsByUserId);
-                        }
-                        mapATMsByUserId.put(userId, atm);
-                    }
+                for(AccountTeamMember atm: atms) 
+                {
+                    generateMapByATM (atm);
                 }
-
 
                 // 3. Despues comparamos la lista de Usuarios de los mediadores con los ya existentes de las
                 // agrupaciones para saber cuales son nuevos y cuales ya existen
-                
-                // Por cada CIF de mediador...
-                for(String key: mapExistingIntermediaryUsers.keySet()) {
-                    Set<id> userIds = mapExistingAgrupationUsers.get(key);
 
-                    // Por cada UserId del mediador...
-                    for(Id userId: mapExistingIntermediaryUsers.get(key)) {
-                        if(userIds == null || !userIds.contains(userId) ) {
-                            AccountTeamMember intermediaryAtm = mapExistingInterATMsByNationalIdAndUserId.get(key)?.get(userId);
-
-                            if( intermediaryAtm != null && intermediaryAtm.Account?.ParentId != null ) {
-                                // Es nuevo
-                                AccountTeamMember newAtm = new AccountTeamMember(
-                                    AccountId= intermediaryAtm.Account.ParentId,
-                                    UserId= userId,
-                                    TeamMemberRole= intermediaryAtm.TeamMemberRole,
-                                    AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL_EDIT,
-                                    ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
-                                );
-                                atmsToCreate.add(newAtm);
-                                
-                                // Añadimos el usuario para notificarlo al final del batch, aunque probablemente
-                                // ya este incluido por los cambios en los equipos de cuenta de los mediadores
-                                this.addUserToNotify(userId);
-                            }
-                        } else {
-                            // Ya existe, se quita para dejar en la agrupacion los que no existen ya en los 
-                            // mediadores y por tanto habra que borrar
-                            userIds.remove(userId);
-                        }
-                    }
-                }
+                forUserIfAtmAGRNotExistAndExistAtmIntermediaryCreate();
 
                 // 4. Despues miramos los usuarios que quedan de las agrupaciones y que deberian ser los que ya no
                 // existen en los mediadores y por tanto hay que borrar
 
-                // Por cada CIF de agrupacion...
-                for(String key: mapExistingAgrupationUsers.keySet()) {
+                ifUsersLeftInAtmAgrRemoveATM ();
 
-                    // Por cada UserId de agrupacion...
-                    for(Id userId: mapExistingAgrupationUsers.get(key)) {
-                        // Buscamos el Id de ATM
-                        Id atmId = mapExistingATMsByNationalIdAndUserId.get(key)?.get(userId);
-                        // Y si lo hay lo ponemos a borrar
-                        if( atmId != null ) {
-                            atmsToDelete.add(new AccountTeamMember(Id= atmId));
-                            // Añadimos el usuario para notificarlo al final del batch, aunque probablemente
-                            // ya este incluido por los cambios en los equipos de cuenta de los mediadores
-                            this.addUserToNotify(userId);
-                        }
-                    }
-                }
-
-                this.deleteATMs(atmsToDelete);
+                this.deleteATMs(atmsToDeleteInAgr);
                 this.upsertATMs(atmsToCreate);
             }
         }
@@ -1575,7 +1504,133 @@ public with sharing class IntermediarySDM {
              this.addUserToNotify(u.Id);
          }
       }
- 
- 
 
+    /**
+    * @description Método que rellena los diferentes mapas de account team members de agrupación e intermediario
+    * @author aberuete 
+    * @date 05-04-2023 
+    * @param AccountTeamMember atm : miembro de equipo de cuentas
+    **/
+      @testvisible
+      private void generateMapByATM (AccountTeamMember atm)
+      {
+        String nationalId = atm.Account.NationalId__c;
+        Id userId = atm.UserId;
+        if( atm.Account.RecordType.DeveloperName == AccountsSelector.RT_NAME_AGRUPATION ) 
+        {
+            // Es ATM de Agrupacion
+            // Incluimos el usuario para ese CIF en el mapa de usuarios existentes
+            Set<Id> userIds = this.mapExistingAgrupationUsers.get(nationalId);
+            if( userIds == null ) 
+            {
+                userIds = new Set<Id>();
+                this.mapExistingAgrupationUsers.put(nationalId, userIds);
+            }
+            userIds.add(userId);
+
+            // Nos guardamos tambien el id del atm por si luego hay que borrarlo
+            Map<Id, Id> mapATMsByUserId = this.mapExistingATMsByNationalIdAndUserId.get(nationalId);
+            if( mapATMsByUserId == null ) 
+            {
+                mapATMsByUserId = new Map<Id, Id>();
+                this.mapExistingATMsByNationalIdAndUserId.put(nationalId, mapATMsByUserId);
+            }
+            mapATMsByUserId.put(userId, atm.Id);                    
+            } 
+        else 
+        { 
+            // Es ATM de Mediador hijo
+            // Incluimos el usuario para ese CIF en el mapa de usuarios existentes
+            Set<Id> userIds = this.mapExistingIntermediaryUsers.get(nationalId);
+            if( userIds == null ) 
+            {
+                userIds = new Set<Id>();
+                this.mapExistingIntermediaryUsers.put(nationalId, userIds);
+            }
+            userIds.add(userId);
+
+            // Nos guardamos tambien el id del atm por si luego hay que borrarlo
+            Map<Id, AccountTeamMember> mapATMsByUserId = this.mapExistingInterATMsByNationalIdAndUserId.get(nationalId);
+            if( mapATMsByUserId == null ) 
+            {
+                mapATMsByUserId = new Map<Id, AccountTeamMember>();
+                this.mapExistingInterATMsByNationalIdAndUserId.put(nationalId, mapATMsByUserId);
+            }
+            mapATMsByUserId.put(userId, atm);
+        }
+      }
+
+    /**
+    * @description Método que se encarga de crear los miembros de los equipos de cuentas que falten para las cuentas de agrupación
+    * @author aberuete 
+    * @date 05-04-2023 
+    **/
+      @testvisible
+      private void forUserIfAtmAGRNotExistAndExistAtmIntermediaryCreate()
+      {
+        // Por cada CIF de agrupacion...
+        for(String key: this.mapExistingIntermediaryUsers.keySet()) 
+        {
+            Set<id> userIds = mapExistingAgrupationUsers.get(key);
+
+            // Por cada UserId del mediador...
+            for(Id userId: this.mapExistingIntermediaryUsers.get(key)) 
+            {
+                if(userIds == null || !userIds.contains(userId) ) 
+                {
+                    AccountTeamMember intermediaryAtm = this.mapExistingInterATMsByNationalIdAndUserId.get(key)?.get(userId);
+
+                    if( intermediaryAtm != null && intermediaryAtm.Account?.ParentId != null ) 
+                    {
+                        // Es nuevo
+                        AccountTeamMember newAtm = new AccountTeamMember(
+                            AccountId= intermediaryAtm.Account.ParentId,
+                            UserId= userId,
+                            TeamMemberRole= intermediaryAtm.TeamMemberRole,
+                            AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL_EDIT,
+                            ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
+                        );
+                        this.atmsToCreate.add(newAtm);
+                        // Añadimos el usuario para notificarlo al final del batch, aunque probablemente
+                        // ya este incluido por los cambios en los equipos de cuenta de los mediadores
+                        this.addUserToNotify(userId);
+                    }
+                    } 
+                    else 
+                    {
+                        // Ya existe, se quita para dejar en la agrupacion los que no existen ya en los 
+                        // mediadores y por tanto habra que borrar
+                        userIds.remove(userId);
+                    }
+                }
+            }
+      }
+
+      /**
+    * @description Método que se encarga de borrar los miembros de los equipos de cuentas de las cuentas de agrupación
+    * @author aberuete 
+    * @date 05-04-2023 
+    **/
+      @testvisible
+      private void ifUsersLeftInAtmAgrRemoveATM ()
+      {
+        // Por cada CIF de agrupacion...
+        for(String key: this.mapExistingAgrupationUsers.keySet()) 
+        {
+            // Por cada UserId de agrupacion...
+            for(Id userId: this.mapExistingAgrupationUsers.get(key)) 
+            {
+                // Buscamos el Id de ATM
+                Id atmId = this.mapExistingATMsByNationalIdAndUserId.get(key)?.get(userId);
+                // Y si lo hay lo ponemos a borrar
+                if( atmId != null ) 
+                {
+                    this.atmsToDeleteInAgr.add(new AccountTeamMember(Id= atmId));
+                    // Añadimos el usuario para notificarlo al final del batch, aunque probablemente
+                    // ya este incluido por los cambios en los equipos de cuenta de los mediadores
+                    this.addUserToNotify(userId);
+                }
+            }
+        }
+      }
 }
