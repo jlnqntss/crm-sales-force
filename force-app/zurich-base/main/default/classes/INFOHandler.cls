@@ -56,25 +56,7 @@ public class INFOHandler implements ISystem
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
 
     // Orden de DML sobre entidades
-    private static List<String> entityOrder = new List<String>
-    {
-        ACCOUNT, // 1
-        PARTNER, // 2
-        INTERMEDIARY, // 3
-        INTERMEDIARY_KPI, // 4
-        CONTACT_POINT, // 5
-        PRODUCT, // 6
-        QUOTE, // 7
-        QUOTE_OPTION, // 8
-        POLICY, // 9
-        INSURED_OBJECT, // 10
-        CLAIM, // 11
-        QUOTE_RELATIONSHIP, // 12
-        POLICY_RELATIONSHIP, // 13
-        CLAIM_RELATIONSHIP, // 14
-        NOTE, // 15
-        SPECIAL_CONDITION // 16
-    };
+    private static Map<Decimal, String> mapEntityOrder = new Map<Decimal, String>();
 
     public static final String SOBJECT_ACCOUNT = 'Account';
     public static final String SOBJECT_CONTACT = 'Contact';
@@ -153,6 +135,9 @@ public class INFOHandler implements ISystem
         (
             new List<Schema.SObjectField> {ExternalJobQueueBatch__mdt.Retries__c}
         ).selectByOrigin(new Set<String> {Transformer.ORIGIN_NAME_INFO}).get(0).Retries__c;
+
+        // 5 - Cargar mapa con orden de prioridades
+        fillEntityOrderMap();
     }
 
     /**
@@ -603,7 +588,7 @@ public class INFOHandler implements ISystem
         ExternalRequest__c extReq;
 
         // 1 - Realizar las operaciones DML sobre los registros generados y actualizar external request con resultado
-        for ( String entity : entityOrder )
+        for ( String entity : mapEntityOrder.values() )
         {
             if ( recordsToPersist.containsKey(entity) )
             {
@@ -790,5 +775,31 @@ public class INFOHandler implements ISystem
         
 
         return result;
+    }
+
+    public static void fillEntityOrderMap()
+    {
+        if(mapEntityOrder != null || !mapEntityOrder.isEmpty())
+        {
+            List<EntityOrderMapping__mdt> orderValues = EntityOrderMapping__mdt.getAll().values();
+            for(EntityOrderMapping__mdt entity : orderValues)
+            {
+                mapEntityOrder.put(entity.Priority__c, entity.Entity__c);
+            }
+        }
+    }
+
+    public static void setERIndex(List<ExternalRequest__c> erList)
+    {
+        for(ExternalRequest__c currentER : erList)
+        {
+            for(Decimal index : mapEntityOrder.keySet())
+            {
+                if (mapEntityOrder.get(index) == currentER.Entity__c)
+                {
+                    currentER.Index__c = index;
+                }
+            }
+        }
     }
 }

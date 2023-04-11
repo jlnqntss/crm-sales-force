@@ -51,7 +51,7 @@ public class ExternalJobQueueBatchController
      * @author adelgado
      * @date 19/11/2020
      */
-    public static List<String> getChunkQueries(String origin)
+    public static List<String> getChunkQueries(String origin, Integer index)
     {
         List<String> queries = new List<String>();
 
@@ -59,11 +59,11 @@ public class ExternalJobQueueBatchController
         {
             Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(origin).getRecordTypeId();
 
-            List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC');
+            List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', index);
 
             if( !firstPendingExtReq.isEmpty() )
             {
-                List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC');
+                List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', index);
 
                 String firstId = firstPendingExtReq.get(0).Id;
                 String lastId = lastPendingExtReq.get(0).Id;

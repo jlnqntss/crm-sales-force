@@ -16,7 +16,7 @@ public with sharing class ExternalRequestsSelector
         {
             if(externalRequestFieldsToQuery == null)
             {
-                externalRequestFieldsToQuery = new Set<String> {'Id', 'Name'};
+                externalRequestFieldsToQuery = new Set<String> {'Id', 'Name', 'Index__c'};
             }
 
             return externalRequestFieldsToQuery;
@@ -209,10 +209,11 @@ public with sharing class ExternalRequestsSelector
      *
      * @author adelgado
      * @param  recordTypeId RecordType a recuperar
+     * @param  index Índice de la entidad a procesar
      * @param  orderType ASC o DESC. Si es nulo será ASC
      * @return Listado de external request recuperadas. Si no se recibe ningún recordtype se devuelve una lista vacía
      */
-    public ExternalRequest__c[] selectMinMaxPendingByRecordType(Id recordTypeId, String orderType)
+    public ExternalRequest__c[] selectMinMaxPendingByRecordType(Id recordTypeId, String orderType, Integer index)
     {
         if( recordTypeId == null)
         {
@@ -222,7 +223,7 @@ public with sharing class ExternalRequestsSelector
         return Database.query( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
-            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false ORDER BY Id ' + orderType,
+            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false AND Index__c = :index ORDER BY CreatedDate ' + orderType,
             limitCondition
         }) );
     }
