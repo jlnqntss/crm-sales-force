@@ -4,6 +4,7 @@
     <label>USP_Suscriptor</label>
     <permissionSets>Consulta_Conocimiento</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
+    <permissionSets>Consulta_de_KPI</permissionSets>
     <permissionSets>Gestion_Suscripcion</permissionSets>
     <permissionSets>Informes_solo_lectura</permissionSets>
     <status>Updated</status>

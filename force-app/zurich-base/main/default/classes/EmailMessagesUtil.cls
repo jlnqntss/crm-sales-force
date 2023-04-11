@@ -104,6 +104,7 @@ public with sharing class EmailMessagesUtil
                 
                 Case casoHijo = CaseUtil.createCaseFromParent(padre, email, (tipificacionCorrecta && heredamosTipificacion)); 
                 casoHijo.OwnerId = integratorUserId; // Asignamos Integrator como el Owner del caso
+                casoHijo.SuppliedEmail = email.FromAddress; // Asignamos el from del email que general el caso hijo como SuppliedEmail
                 mapaCasosHijos.put(posicion, casoHijo);
             }
         }

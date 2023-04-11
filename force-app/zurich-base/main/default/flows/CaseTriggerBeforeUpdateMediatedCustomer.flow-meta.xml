@@ -47,7 +47,7 @@
         <name>customerOfferAssignment</name>
         <label>Customer Offer Assignment</label>
         <locationX>314</locationX>
-        <locationY>551</locationY>
+        <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -55,17 +55,31 @@
                 <elementReference>$Record.OfferId__r.Account.Id</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.ProductGroup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetOfferProductAction.HegeoGroupCode__c</elementReference>
+            </value>
+        </assignmentItems>
     </assignments>
     <assignments>
         <name>customerPolicyAssignment</name>
         <label>Customer policy Assignment</label>
         <locationX>50</locationX>
-        <locationY>551</locationY>
+        <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>$Record.PolicyId__r.PolicyHolder__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.ProductGroup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetPolicyProductAction.HegeoGroupCode__c</elementReference>
             </value>
         </assignmentItems>
     </assignments>
@@ -176,7 +190,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>customerPolicyAssignment</targetReference>
+                <targetReference>GetPolicyProductAction</targetReference>
             </connector>
             <label>Policy Not Null</label>
         </rules>
@@ -191,7 +205,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>customerOfferAssignment</targetReference>
+                <targetReference>GetOfferProductAction</targetReference>
             </connector>
             <label>Offer Not Null</label>
         </rules>
@@ -272,16 +286,72 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>GetOfferProductAction</name>
+        <label>Get Offer Product</label>
+        <locationX>314</locationX>
+        <locationY>551</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>customerOfferAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OfferId__r.ProductId__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Product2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetPolicyProductAction</name>
+        <label>Get Policy Product</label>
+        <locationX>50</locationX>
+        <locationY>551</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>customerPolicyAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.PolicyId__r.ProductId__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Product2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
         <locationX>1112</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>or</filterLogic>
         <filters>
             <field>MediatedCustomer__c</field>
             <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PolicyId__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OfferId__c</field>
+            <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
             </value>

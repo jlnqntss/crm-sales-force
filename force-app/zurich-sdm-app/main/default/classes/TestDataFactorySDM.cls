@@ -34,7 +34,7 @@ public class TestDataFactorySDM
      * @author nts (agonzalezisasi)
      * @date 02/07/2021
      */
-    public static List<SDMAccountTeamRole__mdt> getSDMSettingsATM(string role, string field)
+    public static List<SDMAccountTeamRole__mdt> getSDMSettingsATM(string role, string field,String fieldName)
     {
         List<SDMAccountTeamRole__mdt> settings = new List<SDMAccountTeamRole__mdt>();
         settings.add(new SDMAccountTeamRole__mdt(
@@ -42,6 +42,7 @@ public class TestDataFactorySDM
             DeveloperName= 'testATM',
             Role__c= role,
             IntermediaryField__c= field,
+            IntermediaryNameField__c=fieldName,
             Status__c= 'Active'
         ));
         return settings;
@@ -200,7 +201,7 @@ public class TestDataFactorySDM
         IntermediarySDM sdm = new IntermediarySDM();
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD,AccountsSelector.SDM_DT_NAME_FIELD
         );
         // asignacion de la agrupacion
         sdm.assignIntermediaryAgrupation(intermediaries);

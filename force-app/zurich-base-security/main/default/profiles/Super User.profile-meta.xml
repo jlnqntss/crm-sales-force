@@ -1863,6 +1863,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+    <editable>false</editable>
+    <field>Account.EnterpriseManagerName__c</field>
+    <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Expert__c</field>
         <readable>true</readable>
@@ -2103,6 +2108,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.LifeManagerName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.LifeSegment__c</field>
         <readable>true</readable>
@@ -2145,6 +2155,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.ManagerEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.ManagerName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2250,6 +2265,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.PYMEManagerEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.PYMEManagerName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2545,6 +2565,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.TerritoryManagerEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.TerritoryManagerName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8174,6 +8199,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.GroupName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.HegeoGroupCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

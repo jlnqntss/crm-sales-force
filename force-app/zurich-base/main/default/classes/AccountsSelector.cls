@@ -5,6 +5,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     // SDM: Campos del mediador donde se guardan los emails de los usuarios que cumplen una funcion dentro del mediador
     public static final String SDM_RN_EMAIL_FIELD = 'BusinessManagerEmail__c';      // Responsable de negocio
     public static final String SDM_DT_EMAIL_FIELD = 'TerritoryManagerEmail__c';     // Director Territorial
+    public static final String SDM_DT_NAME_FIELD = 'TerritoryManagerName__c';
     public static final String SDM_DZ_EMAIL_FIELD = 'ManagerEmail__c';              // Director Zona
     public static final String SDM_DV_EMAIL_FIELD = 'LifeManagerEmail__c';          // Director Vida
     public static final String SDM_CV_EMAIL_FIELD = 'LifeConsultantEmail__c';       // Consultor Vida

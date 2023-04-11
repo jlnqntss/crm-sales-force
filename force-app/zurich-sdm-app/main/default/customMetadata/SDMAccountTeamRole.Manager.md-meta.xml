@@ -11,6 +11,10 @@
         <value xsi:type="xsd:string">ManagerEmail__c</value>
     </values>
     <values>
+        <field>IntermediaryNameField__c</field>
+        <value xsi:type="xsd:string">ManagerName__c</value>
+    </values>
+    <values>
         <field>Status__c</field>
         <value xsi:type="xsd:string">Active</value>
     </values>
