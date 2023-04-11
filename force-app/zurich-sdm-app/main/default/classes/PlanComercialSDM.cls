@@ -53,10 +53,13 @@ public with sharing class PlanComercialSDM {
 
 
     // Mapa de todos los mediadores de cada usuario implicado en los planes en cuestion
+    @testvisible
     private Map<Id, Set<Id>> mapIntermediariesByUserId;
     // Mapa de todos los mediadores de cada agrupacion de cada usuario implicado en los planes en cuestion
+    @testvisible
     private Map<Id, Map<Id, Set<Id>>> mapIntermediariesByUserIdAndAgrupationId;
     // Lista de todos los mediadores implicados en los planes en cuestion
+    @testvisible
     private Set<Id> allIntermediaries;
 
     // Mapa de lista de KPIs de cada Mediador implicado en los planes en cuestion
@@ -383,53 +386,29 @@ public with sharing class PlanComercialSDM {
      * 
      * @author nts (agonzalezisasi)
      * @date 26/08/2021
+     * @change aberuete - 11/04/2023 Refactorizar método
      * 
      * @param {Set<Id> userIds} listado de ids de usuario
      */
     public void findIntermediariesByUserIds(Set<Id> userIds)
     {
         // Si hay usuarios
-        if( userIds != null && !userIds.isEmpty() ) {
+        if( userIds != null && !userIds.isEmpty() ) 
+        {
             // Se recuperan los ATMs que hay para dichos usuarios. Se incluyen los campos del mediador y de la agrupacion
             // a la que pertenece
             List<AccountTeamMember> atms = (new AccountTeamMemberSelector()).findIntermediariesByUsers(userIds);
 
             // Si se han encontrado ATMs
-            if( atms != null && !atms.isEmpty() ) {
+            if( atms != null && !atms.isEmpty() ) 
+            {
                 allIntermediaries = new Set<Id>();
                 // Crear un mapa de todos los mediadores de cada usuario
                 mapIntermediariesByUserId = new Map<Id, Set<Id>>();
                 // Crear un mapa de todos los mediadores de cada agrupacion para cada usuario
                 mapIntermediariesByUserIdAndAgrupationId = new Map<Id, Map<Id, Set<Id>>>();
-
-                // Por cada ATM ... rellenaremos los mapas y la lista
-                for(AccountTeamMember atm: atms) {
-                    // Creacion del mapa de lista de mediadores por id de usuario
-                    Set<Id> listIntermediaries = mapIntermediariesByUserId.get(atm.UserId);
-                    if( listIntermediaries == null ) {
-                        listIntermediaries = new Set<Id>();
-                        mapIntermediariesByUserId.put(atm.UserId, listIntermediaries);
-                    }
-                    listIntermediaries.add(atm.AccountId);
-
-                    // Creacion del mapa de lista de mediadores por id de agrupacion y estos a su vez por id de usuario
-                    if( atm.Account.ParentId != null ) {    
-                        Map<Id, Set<Id>> mapIntermediariesByAgrupationId = mapIntermediariesByUserIdAndAgrupationId.get(atm.UserId);
-                        if( mapIntermediariesByAgrupationId == null ) {
-                            mapIntermediariesByAgrupationId = new Map<Id, Set<Id>>();
-                            mapIntermediariesByUserIdAndAgrupationId.put(atm.UserId, mapIntermediariesByAgrupationId);
-                        }
-                        Set<Id> listIntermediaries2 = mapIntermediariesByAgrupationId.get(atm.Account.ParentId);
-                        if( listIntermediaries2 == null ) {
-                            listIntermediaries2 = new Set<Id>();
-                            mapIntermediariesByAgrupationId.put(atm.Account.ParentId, listIntermediaries2);
-                        }
-                        listIntermediaries2.add(atm.AccountId);
-                    }
-
-                    // Añadimos el mediador a la lista de todos los mediadores
-                    allIntermediaries.add(atm.AccountId);
-                }
+                // Rellenar ambos mapas
+                generateMapIntermediariesToCalculateKpi (atms);
             }
         }
     }
@@ -689,5 +668,47 @@ public with sharing class PlanComercialSDM {
 
         result =  mapSettingsIndicator?.get(indicator);
         return result;
+    }
+
+     /**
+    * @description Método que rellena los mapas de intermediarios por usuario e intermediario por usuario y cuenta de agrupación 
+    * @author aberuete 
+    * @date 11-04-2023 
+    * @param List<AccountTeamMember> atms : lista de miembros de equipos de cuentas
+    **/
+    @testvisible
+    private void generateMapIntermediariesToCalculateKpi (List<AccountTeamMember> atms)
+    {
+        for(AccountTeamMember atm: atms) 
+        {
+            // Creacion del mapa de lista de mediadores por id de usuario
+            Set<Id> listIntermediaries = mapIntermediariesByUserId.get(atm.UserId);
+            if( listIntermediaries == null ) 
+            {
+                listIntermediaries = new Set<Id>();
+                mapIntermediariesByUserId.put(atm.UserId, listIntermediaries);
+            }
+            listIntermediaries.add(atm.AccountId);
+
+            // Creacion del mapa de lista de mediadores por id de agrupacion y estos a su vez por id de usuario
+            if( atm.Account.ParentId != null ) 
+            {    
+                Map<Id, Set<Id>> mapIntermediariesByAgrupationId = mapIntermediariesByUserIdAndAgrupationId.get(atm.UserId);
+                if( mapIntermediariesByAgrupationId == null ) 
+                {
+                    mapIntermediariesByAgrupationId = new Map<Id, Set<Id>>();
+                    mapIntermediariesByUserIdAndAgrupationId.put(atm.UserId, mapIntermediariesByAgrupationId);
+                }
+                Set<Id> listIntermediaries2 = mapIntermediariesByAgrupationId.get(atm.Account.ParentId);
+                if( listIntermediaries2 == null ) 
+                {
+                    listIntermediaries2 = new Set<Id>();
+                    mapIntermediariesByAgrupationId.put(atm.Account.ParentId, listIntermediaries2);
+                }
+                listIntermediaries2.add(atm.AccountId);
+            }
+            // Añadimos el mediador a la lista de todos los mediadores
+            allIntermediaries.add(atm.AccountId);
+        }   
     }
 }
