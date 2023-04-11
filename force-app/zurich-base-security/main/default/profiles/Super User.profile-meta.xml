@@ -6144,6 +6144,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ExternalRequest__c.Index__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ExternalRequest__c.Json__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10361,6 +10366,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Entitlement-Entitlement Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>EntityOrderMapping__mdt-Entity Order Mapping Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ErrorManagementSetting__mdt-Formato ErrorManagementSetting</layout>
