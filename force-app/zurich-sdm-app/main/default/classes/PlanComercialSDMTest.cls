@@ -7,6 +7,7 @@
 @isTest
 private class PlanComercialSDMTest
 {
+    static final String PLAN_NAME = 'Plan 1';
     /**
      * Metodo comun para todas los metodos de test. Inicializa los datos de prueba
      *
@@ -62,14 +63,14 @@ private class PlanComercialSDMTest
         System.assertEquals(4, checkPlans.size(), 'Deberia haber 4 planes');
         // Relacionamos el nombre del plan con el resultado del calculo que deberia dar
         Map<String, Decimal> mapPlanResult = new Map<String, Decimal> {
-            'Plan 1' => 10,
+            PLAN_NAME => 10,
             'Plan 2' => 0.4,
             'Plan 3' => 0.75,
             'Plan 4' => 13
         };
 
         // Relacionamos el nombre del plan con el resultado del cálculo que debería dar para el periodo anterior
-        Map<String, Decimal> mapPlanResultPA = new Map<String, Decimal>{'Plan 1' => 8, 'Plan 4' => 10};
+        Map<String, Decimal> mapPlanResultPA = new Map<String, Decimal>{PLAN_NAME => 8, 'Plan 4' => 10};
 
         // Comprobamos el resultado del calculo de cada plan
         for(PlanComercial__c plan: checkPlans) {
@@ -145,7 +146,7 @@ private class PlanComercialSDMTest
             new List<Account>{intermediary}, 1
         );
         for(PlanComercial__c plan: intermediaryPlans) {
-            plan.Name = 'Plan 1';
+            plan.Name = PLAN_NAME;
             plan.StartDate__c = Date.newInstance(2021, 1, 1);
             plan.EndDate__c = Date.newInstance(2021, 12, 31);
             plan.AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;    
@@ -187,6 +188,65 @@ private class PlanComercialSDMTest
             AND Intermediary__c != null
         ];
         // Ahora deberia haber 1 plan anual
+        System.assertEquals(0, existingPlans.size(), 'Deberia haber 0 planes anuales con mediador');
+    }
+
+    /**
+     * Test del metodo que elimina planes anuales de usuarios que ya no tienen visibilidad sobre un mediador
+     *
+     * @author aberuete
+     * @date 11/04/2023
+     */
+    @isTest
+    static void testIfIntermediaryAndUserDeletedEliminatePlans()
+    {
+        // Recuperamos un ATM
+        AccountTeamMember atm = [
+            SELECT Id, UserId, AccountId 
+            FROM AccountTeamMember 
+            WHERE User.Profile.Name = :TestDataFactorySDM.RN_PROFILE
+            LIMIT 1
+        ];
+         // Obtenemos el id de usuario 1
+         User rnUser = new User(Id=atm.UserId);
+         // Y el id de mediador 1 para crear 1 plan
+         Account intermediary = new Account(Id= atm.AccountId);
+
+         // Creamos el plan comercial anual
+        Id rtAnnualPlanId = (new PlanComercialSelector()).rtPlanAnualId;
+        List<PlanComercial__c> intermediaryPlans = TestDataFactorySDM.generatePlans(
+            new List<Account>{intermediary}, 1
+        );
+
+        intermediaryPlans[0].Name = PLAN_NAME;
+        intermediaryPlans[0].StartDate__c = Date.newInstance(2021, 1, 1);
+        intermediaryPlans[0].EndDate__c = Date.newInstance(2021, 12, 31);
+        intermediaryPlans[0].AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;    
+        intermediaryPlans[0].TargetKPINumber__c = 1;
+        intermediaryPlans[0].AssignedTo__c = rnUser.Id;
+        intermediaryPlans[0].RecordTypeId = rtAnnualPlanId;
+        
+        // lo insertamos
+        System.runAs(rnUser) 
+        {
+            insert intermediaryPlans;
+        }
+
+        Set<String> deletedRelations = new Set<String>();
+        deletedRelations.add(atm.AccountId + '#' + atm.UserId);
+
+        Test.startTest();
+        PlanComercialSDM sdm = new PlanComercialSDM();
+        sdm.ifIntermediaryAndUserDeletedEliminatePlans(intermediaryPlans, deletedRelations);
+        Test.stopTest();
+
+        List<PlanComercial__c> existingPlans = [
+            SELECT Id 
+            FROM PlanComercial__c 
+            WHERE RecordtypeId = :rtAnnualPlanId
+            AND Intermediary__c != null
+        ];
+
         System.assertEquals(0, existingPlans.size(), 'Deberia haber 0 planes anuales con mediador');
     }
 }
