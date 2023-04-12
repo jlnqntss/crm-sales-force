@@ -237,4 +237,5 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>130</triggerOrder>
 </Flow>
