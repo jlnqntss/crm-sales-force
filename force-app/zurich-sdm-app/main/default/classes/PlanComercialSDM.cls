@@ -583,18 +583,21 @@ public with sharing class PlanComercialSDM {
      *  
      * @author nts (agonzalezisasi)
      * @date 11/10/2021
+     * @change aberuete 11/04/2023 - Refactorizar método
      * 
      * @param {List<AccountTeamMember> deletedAtms} lista de ATMs eliminados
      */
     public void removeAnnualPlans(List<AccountTeamMember> deletedAtms)
     {
-        if( deletedAtms != null && !deletedAtms.isEmpty() ) {
+        if( deletedAtms != null && !deletedAtms.isEmpty() ) 
+        {
             // 1. Recuperamos la lista de mediadores y usuarios de los ATMs eliminados
             Set<Id> intermediaries = new Set<Id>();
             Set<Id> users = new Set<Id>();
             // formando tambien una lista de la pareja mediador-usuario
             Set<String> deletedRelations = new Set<String>();
-            for(AccountTeamMember atm: deletedAtms) {
+            for(AccountTeamMember atm: deletedAtms) 
+            {
                 intermediaries.add(atm.AccountId);
                 users.add(atm.UserId);
                 deletedRelations.add(atm.AccountId + '#' + atm.UserId);
@@ -604,28 +607,8 @@ public with sharing class PlanComercialSDM {
             List<PlanComercial__c> annualPlans = (new PlanComercialSelector()).findAnnualPlansByIntermediariesAndUsers(
                 intermediaries, users
             );
-            if( annualPlans != null && !annualPlans.isEmpty() ) {
-                List<PlanComercial__c> plansToDelete = new List<PlanComercial__c>();
-                Set<Id> userIdsToNotify = new Set<Id>();
-
-                // Comprobamos para cada plan...
-                for(PlanComercial__c plan: annualPlans) {
-                    // si cumple que tenga la pareja de mediadores y usuarios eliminados
-                    String planRelation = plan.Intermediary__c + '#' + plan.AssignedTo__c;
-                    if( deletedRelations.contains(planRelation) ) {
-                        plansToDelete.add(plan);
-                        userIdsToNotify.add(plan.AssignedTo__c);
-                    }
-                }
-
-                if( !plansToDelete.isEmpty() ) {
-                    delete plansToDelete;
-
-                    if( !userIdsToNotify.isEmpty() ) {
-                        sendNotificationRemovedPlans(userIdsToNotify);
-                    }
-                }
-            }
+            // Eliminar los planes y mandar notificación a los usuarios
+            ifIntermediaryAndUserDeletedEliminatePlans (annualPlans, deletedRelations);
         }
     }
 
@@ -671,6 +654,41 @@ public with sharing class PlanComercialSDM {
     }
 
      /**
+    * @description Método que se encarga de eliminar los planes anuales y notificar al usuario del plan si no existe relación entre el mediador y el usuario
+    * @author aberuete 
+    * @date 11-04-2023 
+    **/
+    @testvisible
+    private void ifIntermediaryAndUserDeletedEliminatePlans (List<PlanComercial__c> annualPlans, Set<String> deletedRelations)
+    {
+        if( annualPlans != null && !annualPlans.isEmpty() ) 
+        {
+            List<PlanComercial__c> plansToDelete = new List<PlanComercial__c>();
+            Set<Id> userIdsToNotify = new Set<Id>();
+
+            // Comprobamos para cada plan...
+            for(PlanComercial__c plan: annualPlans) 
+            {
+                // si cumple que tenga la pareja de mediadores y usuarios eliminados
+                String planRelation = plan.Intermediary__c + '#' + plan.AssignedTo__c;
+                if( deletedRelations.contains(planRelation) ) 
+                {
+                    plansToDelete.add(plan);
+                    userIdsToNotify.add(plan.AssignedTo__c);
+                }
+            }
+
+            if( !plansToDelete.isEmpty() ) 
+            {
+                delete plansToDelete;
+
+                if( !userIdsToNotify.isEmpty() ) 
+                {
+                    sendNotificationRemovedPlans(userIdsToNotify);
+                }
+            }
+        }
+    }
     * @description Método que rellena los mapas de intermediarios por usuario e intermediario por usuario y cuenta de agrupación 
     * @author aberuete 
     * @date 11-04-2023 
