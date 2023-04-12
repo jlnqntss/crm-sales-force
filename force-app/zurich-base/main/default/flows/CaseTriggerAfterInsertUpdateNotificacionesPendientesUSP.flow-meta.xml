@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>MandarEmailAction</name>
-        <label>Mandar Email</label>
+        <name>MandarEmailUSP</name>
+        <label>Mandar Email USP</label>
         <locationX>1238</locationX>
         <locationY>1343</locationY>
-        <actionName>Case.Caso_pendiente</actionName>
+        <actionName>Case.Caso_pendiente_USP</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -185,7 +185,7 @@
         <locationX>1106</locationX>
         <locationY>1223</locationY>
         <defaultConnector>
-            <targetReference>MandarEmailAction</targetReference>
+            <targetReference>MandarEmailUSP</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No Excluido</defaultConnectorLabel>
         <rules>
