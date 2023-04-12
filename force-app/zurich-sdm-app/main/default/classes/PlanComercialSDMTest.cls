@@ -249,4 +249,42 @@ private class PlanComercialSDMTest
 
         System.assertEquals(0, existingPlans.size(), 'Deberia haber 0 planes anuales con mediador');
     }
+
+    /**
+     * Test que comprueba que se generan correctamente los mapas de intermediarios para calcular posteriormente los kpis
+     *
+     * @author aberuete
+     * @date 11/04/2023
+     */
+    static void testGenerateMapIntermediariesToCalculateKpi()
+    {
+        PlanComercialSDM sdm = new PlanComercialSDM();
+        sdm.mapIntermediariesByUserId = new Map<Id, Set<Id>>();
+        sdm.mapIntermediariesByUserIdAndAgrupationId = new Map<Id, Map<Id, Set<Id>>>();
+        sdm.allIntermediaries = new Set<Id>();
+
+        List<AccountTeamMember> atms = [
+            SELECT Id, UserId, AccountId,Account.ParentId 
+            FROM AccountTeamMember 
+            WHERE User.Profile.Name = :TestDataFactorySDM.RN_PROFILE and Account.ParentId != null
+            LIMIT 1
+        ];
+
+        Test.startTest();
+        sdm.generateMapIntermediariesToCalculateKpi (atms);
+        Test.stopTest();
+
+        List<Id> userIds = new List<Id> (sdm.mapIntermediariesByUserId.keySet());
+        userIds.add(new List<Id>(sdm.mapIntermediariesByUserIdAndAgrupationId.keySet())[0]);
+        List<Id> accountsIds = new List<Id> (sdm.mapIntermediariesByUserId.values()[0]);
+        accountsIds.add(new List<Id>((sdm.mapIntermediariesByUserIdAndAgrupationId.values()[0]).keySet())[0]);
+        accountsIds.add(new List<Id>((sdm.mapIntermediariesByUserIdAndAgrupationId.values()[0]).values()[0])[0]);
+
+        System.assertEquals(atms[0].UserId, userIds[0], 'El id de usuario del atm debería estar en el mapa de intermediarios por usuario');
+        System.assertEquals(atms[0].AccountId, accountsIds[0], 'El id de la cuenta del atm debería estar en el mapa');
+        System.assertEquals(atms[0].UserId, userIds[1], 'El id de usuario del atm debería estar en el mapa de intermediario por usuario por agrupación');
+        System.assertEquals(atms[0].Account.ParentId, accountsIds[1], 'El id de la cuenta de agrupación del atm debería estar en el mapa');
+        System.assertEquals(atms[0].AccountId, accountsIds[2], 'El id de la cuenta del atm debería estar en el mapa de intermediario por usuario por agrupación');
+        System.assertEquals(true, sdm.allIntermediaries.contains(atms[0].AccountId), 'El id de la cuenta del atm debería estar en el mapa de todos los intermediarios');
+    }
 }

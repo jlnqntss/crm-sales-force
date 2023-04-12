@@ -76,6 +76,10 @@
                 <behavior>Required</behavior>
                 <field>Status</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ClosingObservation__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
