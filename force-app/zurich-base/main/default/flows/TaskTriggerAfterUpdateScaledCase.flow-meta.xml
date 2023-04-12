@@ -178,7 +178,7 @@
         <connector>
             <targetReference>CustomNotification</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR (3 AND 4 AND (5 OR 6 OR 7 OR 8)))</filterLogic>
+        <filterLogic>1 AND (2 OR (3 AND 4 AND (5 OR 6 OR 7 OR 8 OR 9)))</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -233,6 +233,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Champion</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PendingBy__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Technical Direction</stringValue>
             </value>
         </filters>
         <inputAssignments>
