@@ -10,7 +10,7 @@ private class ExternalJobQueueBatchControllerTest
     @isTest
     static void test_checkExternalJobQueueBatch()
     {
-        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 10);
+        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'ACCOUNT', 10);
         insert externalRequestList;
 
         Test.startTest();
@@ -31,16 +31,16 @@ private class ExternalJobQueueBatchControllerTest
     @isTest
     static void test_getChunkQueries_moreThanOne()
     {
-        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 10);
+        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'ACCOUNT', 10);
         insert externalRequestList;
 
         Test.startTest();
-        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO');
+        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO', 1);
         Test.stopTest();
 
         Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFO').getRecordTypeId();
-        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC');
-        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC');
+        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', 1);
+        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', 1);
 
         System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
         // Check query text
@@ -68,16 +68,16 @@ private class ExternalJobQueueBatchControllerTest
     @isTest
     static void test_getChunkQueries_onlyOneRecord()
     {
-        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 1);
+        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'ACCOUNT', 1);
         insert externalRequestList;
 
         Test.startTest();
-        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO');
+        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO', 1);
         Test.stopTest();
 
         Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFO').getRecordTypeId();
-        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC');
-        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC');
+        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', 1);
+        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', 1);
 
         System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
         // Check query text

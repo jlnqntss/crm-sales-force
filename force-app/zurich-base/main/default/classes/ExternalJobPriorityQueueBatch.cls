@@ -37,6 +37,7 @@ global class ExternalJobPriorityQueueBatch implements Database.Batchable<sObject
             query = 'SELECT Id FROM ExternalRequest__c ';
             query += ' WHERE RecordTypeId = \'' + exReqRecordTypeId + '\' AND Processed__c = false';
             query += ' AND Entity__c IN ' + INFOHandler.PriorityEntitiesToString;
+            query += 'LIMIT 100';
         }
 
         return Database.getQueryLocator(query);

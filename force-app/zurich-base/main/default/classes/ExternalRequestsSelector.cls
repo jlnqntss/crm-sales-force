@@ -298,5 +298,28 @@ public with sharing class ExternalRequestsSelector
         }
     }
 
+    public Decimal getPriorityToProcess()
+    {
+        try 
+        {
+            ExternalRequest__c er = Database.query(String.format(DEFAULT_STRING_FORMAT, new List<String>
+            {
+                baseQuery,
+                'WHERE Processed__c = false AND RecordType.DeveloperName = \'INFO\' GROUP BY Index__c ORDER BY Index__c ASC',
+                limitCondition
+            }));
+            if (er == null)
+            {
+                return 0;
+            }
+            return er.Index__c;
+        }
+        catch (Exception ex) 
+        { 
+            ErrorLogUtil.commitError(ex, 'ExternalRequestSelector');
+            return null;
+        }
+    }
+
     // #endregion
 }

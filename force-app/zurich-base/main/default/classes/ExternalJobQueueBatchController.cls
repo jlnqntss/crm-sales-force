@@ -20,7 +20,11 @@ public class ExternalJobQueueBatchController
 
             if( queuedJobs.isEmpty() && executingJobs.isEmpty() )
             {
-                System.enqueueJob( new ExternalJobQueueJob(Transformer.ORIGIN_NAME_INFO) );
+                Decimal entityIndex = new ExternalRequestsSelector().setLimit(1).getPriorityToProcess();
+                if(entityIndex != 0)
+                {
+                    System.enqueueJob( new ExternalJobQueueJob(Transformer.ORIGIN_NAME_INFO) );
+                }
             }
         }
         catch (Exception e)
