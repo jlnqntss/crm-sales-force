@@ -228,8 +228,8 @@ private class PlanComercialSDMTest
         Boolean containsYTD = true;
         List<Account> intermediaryList = [Select id from Account where recordtype.developerName = 'Intermediary' ];
         Set<Id> intermediaries = new Map <Id,Account>(intermediaryList).keySet();
-        List<KPI__c> kpisToVerify = [Select id from KPI__c where CalcYear__c = '2021' and CalcMonth__c = '9'];
-        
+        List<KPI__c> kpisToVerify = [Select id from KPI__c where CalcYear__c = '2021' and CalcMonth__c =: sdm.lastMonthOfYear];
+
         for (KPI__c kpi :kpisToVerify)
         {
             kpi.Temporalidad__c = 'YTD';
@@ -242,6 +242,6 @@ private class PlanComercialSDMTest
 
         Set<Id> kpisIdsToVerify = new Map<Id,Kpi__c> (kpisToVerify).keySet();
         Set<Id> kpisIds = new Map<Id,Kpi__c> (kpis).keySet();
-        System.assertEquals(true, kpisIds.equals(kpisIdsToVerify), 'Los dos conjutnos de ids de kpis deben ser iguales');
+        System.assertEquals(true, kpisIds.equals(kpisIdsToVerify), 'Los dos conjuntos de ids de kpis deben ser iguales');
     }
 }

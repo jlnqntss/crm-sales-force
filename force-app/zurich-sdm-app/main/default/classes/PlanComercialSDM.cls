@@ -66,6 +66,7 @@ public with sharing class PlanComercialSDM {
 
     private String thisYear;
     private String thisMonth;
+    @testvisible
     private String lastMonthOfYear;
 
     // Constructor
@@ -83,7 +84,6 @@ public with sharing class PlanComercialSDM {
         
         // Se obtiene el ultimo mes disponible para la recuperacion de los KPIs (anuales)
         this.lastMonthOfYear = (new KPIsSelector()).findThisYearsLastMonth();
-        if( Test.isRunningTest() ) this.lastMonthOfYear = '9';
     }
 
     /**
