@@ -287,4 +287,58 @@ private class PlanComercialSDMTest
         System.assertEquals(atms[0].AccountId, accountsIds[2], 'El id de la cuenta del atm debería estar en el mapa de intermediario por usuario por agrupación');
         System.assertEquals(true, sdm.allIntermediaries.contains(atms[0].AccountId), 'El id de la cuenta del atm debería estar en el mapa de todos los intermediarios');
     }
+    /**
+    * Test que comprueba si se crea correctamente el mapa de kpis por intermediario
+    *
+    * @author aberuete
+    * @date 11/04/2023
+    */
+    @isTest
+    static void testIfKpisNotEmptyGenerateMapKpiIntermediary()
+    {
+        PlanComercialSDM sdm = new PlanComercialSDM();
+        List<KPI__c> kpis = [Select id,Intermediary__c from Kpi__c where Intermediary__c != null limit 2];
+
+        Test.startTest();
+        sdm.ifKpisNotEmptyGenerateMapKpiIntermediary (kpis);
+        Test.stopTest();
+        
+        List<Id> intermediariyIds = new List<Id>(sdm.mapKPIsByIntermediary.keySet());
+
+        System.assertEquals(kpis[0].Intermediary__c, intermediariyIds[0], 'El intermediario debería estar en el mapa');
+        System.assertEquals(kpis[0], sdm.mapKPIsByIntermediary.values()[0][0], 'El primer kpi debería de estar en el mapa');
+    }
+
+    /**
+     * Test que comprueba si se obtiene correctamente los kpis anuales del último mes
+     *
+     * @author aberuete
+     * @date 11/04/2023
+     */
+    @isTest
+    static void testGetKpisAnualOfTheLastMonth()
+    {
+        PlanComercialSDM sdm = new PlanComercialSDM();
+        Set<String> fields = new Set<String>();
+        fields.addAll(PlanComercialSDM.KPI_FILTER_FIELDS);
+        List<KPI__c> kpis = new List<KPI__c>();
+        Boolean containsYTD = true;
+        List<Account> intermediaryList = [Select id from Account where recordtype.developerName = 'Intermediary' ];
+        Set<Id> intermediaries = new Map <Id,Account>(intermediaryList).keySet();
+        List<KPI__c> kpisToVerify = [Select id from KPI__c where CalcYear__c = '2021' and CalcMonth__c =: sdm.lastMonthOfYear];
+
+        for (KPI__c kpi :kpisToVerify)
+        {
+            kpi.Temporalidad__c = 'YTD';
+        }
+        update kpisToVerify;
+        
+        Test.startTest();
+        kpis = sdm.getKpisAnualOfTheLastMonth (intermediaries, fields, containsYTD, kpis);
+        Test.stopTest();
+
+        Set<Id> kpisIdsToVerify = new Map<Id,Kpi__c> (kpisToVerify).keySet();
+        Set<Id> kpisIds = new Map<Id,Kpi__c> (kpis).keySet();
+        System.assertEquals(true, kpisIds.equals(kpisIdsToVerify), 'Los dos conjuntos de ids de kpis deben ser iguales');
+    }
 }
