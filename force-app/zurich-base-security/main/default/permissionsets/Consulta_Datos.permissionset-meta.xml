@@ -1010,6 +1010,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.Assigned_Center__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>CampaignMember.purecloud__Synced_to_PureCloud__c</field>
         <readable>true</readable>
     </fieldPermissions>
