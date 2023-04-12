@@ -21,6 +21,7 @@ public with sharing class PlanComercialSDM {
     private static final String NOTIF_LIST_VIEW_API_NAME = 'Planes_anuales';
 
     // Lista de nombres de los campos de filtrado de los KPI__c
+    @testvisible
     private static final List<String> KPI_FILTER_FIELDS = new List<String> {
         'CalcYear__c', 'CalcMonth__c', 'Intermediary__c', 'EstructuraUnificada__c', 'EstructuraDetalle__c', 'Temporalidad__c', 'Intermediary__r.Zone__c'
     };
@@ -63,10 +64,12 @@ public with sharing class PlanComercialSDM {
     private Set<Id> allIntermediaries;
 
     // Mapa de lista de KPIs de cada Mediador implicado en los planes en cuestion
+    @testvisible
     private Map<Id, List<KPI__c>> mapKPIsByIntermediary;
 
     private String thisYear;
     private String thisMonth;
+    @testvisible
     private String lastMonthOfYear;
 
     // Constructor
