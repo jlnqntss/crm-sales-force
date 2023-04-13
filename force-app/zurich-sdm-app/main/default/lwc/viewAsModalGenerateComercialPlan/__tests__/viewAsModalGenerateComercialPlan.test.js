@@ -19,7 +19,6 @@ describe("c-view-as-modal-generate-comercial-plan", () => {
     document.body.appendChild(element);
 
     // Assert
-    // const div = element.shadowRoot.querySelector('div');
     expect(1).toBe(1);
   });
 });
