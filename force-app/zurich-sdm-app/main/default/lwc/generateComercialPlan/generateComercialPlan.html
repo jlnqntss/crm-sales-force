@@ -64,7 +64,7 @@
       ></lightning-button
     ></template>
     <div class="slds-p-around_none slds-m-horizontal_none">
-      <lightning-layout vertical-align="center">
+      <lightning-layout vertical-align="end">
         <!-- Combo de años -->
         <lightning-layout-item padding="horizontal-medium">
           <lightning-combobox
@@ -76,6 +76,32 @@
             onchange={handleChangeYear}
           ></lightning-combobox>
         </lightning-layout-item>
+        <template if:true={showViewAsButton}>
+          <lightning-layout-item>
+            <lightning-button
+              label={labels.SDM_PlanAnual_ViewAsButton}
+              variant="brand"
+              onclick={handleModalOpen}
+            >
+            </lightning-button>
+          </lightning-layout-item>
+          <template if:true={viewAsUserName}>
+            <lightning-layout-item>
+              <div
+                class="slds-text-body_regular slds-p-bottom_x-small slds-p-left_x-small"
+              >
+                {labels.SDM_PlanAnual_ShowPlansFrom}
+              </div>
+            </lightning-layout-item>
+          </template>
+          <lightning-layout-item>
+            <div
+              class="slds-text-title_bold slds-p-bottom_x-small slds-p-left_x-small"
+            >
+              {viewAsUserName}
+            </div>
+          </lightning-layout-item>
+        </template>
         <!-- Leyenda de iconos -->
         <template if:false={isPhone}>
           <lightning-layout-item
@@ -153,7 +179,7 @@
             </lightning-layout>
           </lightning-layout-item>
         </template>
-        <lightning-layout-item class="slds-p-right_small">
+        <lightning-layout-item class="slds-p-right_small slds-p-bottom_x-small">
           <div class="slds-grid slds-gutters">
             <div class="slds-col">
               <lightning-button
@@ -277,17 +303,19 @@
                           </template>
                           <!-- EDICION -->
                           <template if:true={isEdited}>
-                            <lightning-button-icon
-                              icon-name="utility:delete"
-                              variant="border-filled"
-                              alternative-text={labels.SDM_PlanAnual_ButtonDelete}
-                              class="slds-m-left_xx-small"
-                              title={labels.SDM_PlanAnual_ButtonDelete}
-                              data-id={cell.id}
-                              onclick={handleRemove}
-                              name={cell.Name}
-                            >
-                            </lightning-button-icon>
+                            <template if:false={showViewAsButton}>
+                              <lightning-button-icon
+                                icon-name="utility:delete"
+                                variant="border-filled"
+                                alternative-text={labels.SDM_PlanAnual_ButtonDelete}
+                                class="slds-m-left_xx-small"
+                                title={labels.SDM_PlanAnual_ButtonDelete}
+                                data-id={cell.id}
+                                onclick={handleRemove}
+                                name={cell.Name}
+                              >
+                              </lightning-button-icon>
+                            </template>
                             <!-- Boton deshacer modificacion -->
                             <template if:true={cell.isModified}>
                               <lightning-button-icon
