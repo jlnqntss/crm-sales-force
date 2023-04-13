@@ -128,7 +128,7 @@
     <assignments>
         <name>Mediated_Costumer_from_Offer_Assignment</name>
         <label>Mediated Costumer from Offer Assignment</label>
-        <locationX>2866</locationX>
+        <locationX>2954</locationX>
         <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
@@ -141,7 +141,7 @@
     <assignments>
         <name>Mediated_Costumer_from_Policy_Assignment</name>
         <label>Mediated Costumer from Policy Assignment</label>
-        <locationX>2602</locationX>
+        <locationX>2690</locationX>
         <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
@@ -244,7 +244,7 @@
     <decisions>
         <name>Copy_1_of_Offer_policy_null</name>
         <label>Policy/Offer Not Null</label>
-        <locationX>1722</locationX>
+        <locationX>1766</locationX>
         <locationY>551</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
@@ -295,7 +295,7 @@
     <decisions>
         <name>Has_policy_or_offer</name>
         <label>Has policy or offer?</label>
-        <locationX>2866</locationX>
+        <locationX>2954</locationX>
         <locationY>671</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -346,7 +346,7 @@
     <decisions>
         <name>hasIntermediaryAccount</name>
         <label>Has intermediary account?</label>
-        <locationX>3130</locationX>
+        <locationX>3218</locationX>
         <locationY>551</locationY>
         <defaultConnectorLabel>Customer account</defaultConnectorLabel>
         <rules>
@@ -370,7 +370,7 @@
                 <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Partner</stringValue>
+                    <stringValue>PartnerOCS</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -383,7 +383,7 @@
         <description>Si el caso corresponde a una inserción de tareas masivas, procesaremos la información.</description>
         <name>Is_Massive_Task</name>
         <label>Is Massive Task?</label>
-        <locationX>2690</locationX>
+        <locationX>2756</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default outcome</defaultConnectorLabel>
         <rules>
@@ -463,7 +463,7 @@
 El flujo en un principio era para la USP before update, y se ha modificado para que también se use en OCS before insert.</description>
         <name>RecordTypeDecision</name>
         <label>Record Type Decision</label>
-        <locationX>2118</locationX>
+        <locationX>2162</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -573,7 +573,7 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>1992</locationX>
+        <locationX>2036</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
