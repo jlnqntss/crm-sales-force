@@ -35,7 +35,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
             manageInteractionEvents(interactionTask, deserializedEventData);
 
-            changeOwnerFromQueueToUser(interactionTask); // Se hace update del registro relacionado a la llamada
+            changeOwnerFromQueueToUser(interactionTask, deserializedEventData); // Se hace update del registro relacionado a la llamada
 
             upsert interactionTask;
 
@@ -288,8 +288,9 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * @last modified by  : jgallaga
      */
     @TestVisible
-    private static void changeOwnerFromQueueToUser(Task interactionTask)
+    private static void changeOwnerFromQueueToUser(Task interactionTask, Map<String, Object> eventData)
     {
+        String eventName = (String) eventData.get('eventName');
         if(interactionTask == null || String.isBlank(interactionTask.WhatId))
         {
             return;
@@ -303,11 +304,12 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 Set<String> idsCasos = new Set<String>();
                 idsCasos.add(interactionTask.WhatId);
 
-                List<Case> cases = new CasesSelector().findById(idsCasos);
+                List<Case> cases = new CasesSelector().findAllDataById(idsCasos);
 
                 //Si el propietario es una COLA
                 // arcortazar - nts: fix-OCS-2682: Hacemos que asignme el usuario si es Owner es una cola o el usuario Integrator
-                if(cases[0]?.OwnerId.getSobjectType() == Group.sObjectType || cases[0]?.Owner.Profile.Name == Label.IntegratorUser) //(cases[0].Owner.Type == 'Queue')
+                // jonsanjuan - fix-OCS-6445: evitamos el cambio de Owner cuando se transfiere un caso a una cola
+                if((eventName == 'interactionChanged' || cases[0]?.HasBeenTransfered__c == false) && (cases[0]?.OwnerId.getSobjectType() == Group.sObjectType || cases[0]?.Owner.Profile.Name == Label.IntegratorUser)) //(cases[0].Owner.Type == 'Queue')
                 {
                     //Cambiar el propietario al usuario actual
                     cases[0].OwnerId = UserInfo.getUserId();
