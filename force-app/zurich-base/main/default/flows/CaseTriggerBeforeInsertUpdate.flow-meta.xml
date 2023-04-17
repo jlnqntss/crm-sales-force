@@ -30,6 +30,13 @@
                 <stringValue>Cerrado</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.PendingBy__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>ClosedBySystem</targetReference>
         </connector>
