@@ -151,6 +151,7 @@ public with sharing class CaseUtil
      * y setea la traduccion del tipo y subtipo del caso dependiendo del pais
      * @author nbizkarra
      * @date 1/09/2020
+     * change aberuete - 18/04/2023 - Refactoizar método
      **/
     public static void assignContactToCase(List<Case> newList)
     {
@@ -159,12 +160,8 @@ public with sharing class CaseUtil
             // nts (agonzalezisasi) - 11/ene/2020 - fix Multipartner
             // Get the configuration
             AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
-            // Get the Country that is not EMEA (Spain)
-            String iba_emea_non_country = adminSetup.IBA_EMEA_Non_Country__c;
-            // Get the EMEA prefix
-            String iba_emea = adminSetup.IBA_EMEA_Prefix__c;
-            // Get the Multi-Partner prefixes if any
             Map<String, String> mapMultiPartner = new Map<String, String>();
+
             for( String pair: adminSetup.Multi_Partners__c.split(';') )
             {
                 List<String> values = pair.split(':');
@@ -173,107 +170,23 @@ public with sharing class CaseUtil
                     mapMultiPartner.put( values.get(0), values.get(1) );
                 }
             }
-
+            
             for (Case caso : newList)
             {   // Solo para casos de web, email to case no tiene rellenos los campos entidad legal y país hasta el afterinsert ( relleno por Workflows)
                 // se podría filtrar por tipo de registro si se añade el campo al formulario
                 if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Web') )
                 {
                     //Si se ha informado el número de póliza, buscar la póliza y asignar el cliente correspondiente
-                    if (caso.PolicyNum__c != null)
-                    {
-                        // nts (agonzalezisasi) - 11/ene/2020 - fix Multipartner
-                        if( caso.Partner__c != null )   // Is a multipartner
-                        {
-                            if( mapMultiPartner.containsKey(caso.Partner__c) )
-                            {
-                                String partnerName = mapMultiPartner.get(caso.Partner__c);
-                                caso.PolicyNum__c = partnerName + '-' + caso.PolicyNum__c;
-                            }
-                        }
-                        else     // Is not multipartner
-                        {   // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-                            if (caso.sourceCountry__c != iba_emea_non_country)   // Is not Spain => EMEA (france, germany)
-                            {
-                                caso.PolicyNum__c = iba_emea + '-' + caso.PolicyNum__c;
-                            }
-                        }
+                    caso = updatePolicyToCaseifCaseDoesNotHavePolicy (adminSetup, caso,mapMultiPartner);
 
-                        List<Order> policies = new List<Order>();
-                        policies = [
-                            SELECT ID, ContactId__c, LegalEntity__c
-                            FROM Order
-                            WHERE (RecordType.DeveloperName = :Label.PolicyGI OR RecordType.DeveloperName = :Label.PolicyLife)
-                            AND PolicyNum__c = :caso.PolicyNum__c
-                        ];
-
-                        if (policies != null && policies.size() > 0)
-                        {
-                            caso.ContactId = policies[0].ContactId__c;
-                            caso.Policy__c = policies[0].Id;
-                            caso.LegalEntity__c = policies[0].LegalEntity__c;
-                            caso.CustomerFoundBy__c = 'Policy Number';
-                        }
-                    }
                     // nts (nbizkarra) - 25/Ene/2021 - Buscar por email, entidad legal, pais cuando Poliza nula o no encontrada
-                    if ( String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
-                         && caso.Policy__c == null)
-                    {
-                        //Si no se ha informado el número de poliza asignar cliente por mail y entidad legal (Solo si hay 1 cliente con ese mail)
-                        List<Contact> contactoSF = [
-                            SELECT id FROM Contact
-                            WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
-                                                                                   AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
-                                                                                                                                                  AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
-                                                                                                                                                                                                                                  OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
-                        ];
-
-                        if (contactoSF != null && contactoSF.size() == 1)
-                        {
-                            caso.ContactId = contactoSF.get(0).id;
-                            caso.CustomerFoundBy__c = 'Email';
-                        }
-                    }
-
+                    caso = updateContactToCaseByEmail(caso);
+                    
                     // nts (nbizkarra) - 25/Ene/2021 - Buscar cliente por teléfono si no se ha encontrado por póliza o email (solo si encuentra 1)
-                    if ( String.isNotBlank(caso.SuppliedPhone) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
-                         && caso.Policy__c == null && caso.ContactId == null)
-                    {
-                        List<Contact> contactoSF = [
-                            SELECT id FROM Contact
-                            WHERE MobilePhone = :caso.SuppliedPhone AND LegalEntity__c = :caso.LegalEntity__c
-                                                                                         AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
-                                                                                                                                                        AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
-                                                                                                                                                                                                                                        OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
-                        ];
-
-                        if (contactoSF != null && contactoSF.size() == 1)
-                        {
-                            caso.ContactId = contactoSF.get(0).id;
-                            caso.CustomerFoundBy__c = 'Phone';
-                        }
-                    }
+                    caso = updateContactToCaseByPhone(caso);
 
                     //Si el caso es de la web de francia, asignar traducción del tipo y subtipo para la respuesta automática
-                    if ( caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c) &&(mapCountryTranslationField.containsKey(caso.SourceCountry__c)) )
-                    {
-                        String fieldName = mapCountryTranslationField.get(caso.SourceCountry__c);
-                        String queryType = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Type + '\'';
-                        String querySubtype = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Subtype__c + '\'';
-
-                        List<Label_Translations__mdt> typeTranslaton = Database.query(queryType);
-                        List<Label_Translations__mdt> subTypeTranslation = Database.query(querySubtype);
-
-                        if ( typeTranslaton != null && !typeTranslaton.isEmpty() )
-                        {
-                            caso.Type_translation__c = (String) typeTranslaton[0].get(fieldName);
-                        }
-
-                        if ( subTypeTranslation != null && !subTypeTranslation.isEmpty() )
-                        {
-                            caso.Subtype_translation__c = (String) subTypeTranslation[0].get(fieldName);
-                        }
-                    }
+                    caso = ifCaseFromWebFranceUpdateTranslationToCase (caso);
                 }
             }
         }
@@ -284,6 +197,7 @@ public with sharing class CaseUtil
      * Ejecutado en afterInsert porque hasta entonces no se dispone de la entidad legal, pais y partner
      * @author nbizkarra
      * @date 26/01/2021
+     * change aberuete - 18/04/2023 - Refactorizar método
      **/
     public static void assignContactToCaseEmail(List<Case> newList)
     {
@@ -293,37 +207,7 @@ public with sharing class CaseUtil
         {
             for (Case caso : newList)
             {
-                if ( !checkRecursive.SetOfIDs.contains(caso.ID) )
-                {
-                    checkRecursive.SetOfIDs.add(caso.ID);
-                    
-
-
-                    
-
-                    if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Email') && String.isBlank(caso.CustomerFoundBy__c) &&
-                         String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
-                         && caso.RecordTypeId ==  Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Enquiry').getRecordTypeId() )
-                    {
-                        List<Contact> contactoSF = [
-                            SELECT id FROM Contact
-                            WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
-                                                                                   AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
-                                                                                                                                                  AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
-                                                                                                                                                                                                                                  OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
-                        ];
-                        //Asignar contacto solo si encuentra 1
-                        if (contactoSF != null && contactoSF.size() == 1)
-                        {
-                            Case caseToUpdate = new Case();
-                            caseToUpdate.id = caso.id;
-                            caseToUpdate.ContactId = contactoSF.get(0).id;
-                            caseToUpdate.CustomerFoundBy__c = 'Email';
-                            updateCases.add(caseToUpdate);
-                        }
-                    }
-
-                }
+                updateCases = getCasesToUpdateContactFromEmailToCase (updateCases, caso);
             }
 
             if ( updateCases != null && !updateCases.isEmpty() )
@@ -381,29 +265,14 @@ public with sharing class CaseUtil
      * "You can’t change the completion date on a milestone that’s already exited an entitlement process.: Completion Date"
      * Por eso tiene que ser modificado en el before
      * @date 25/01/2021
+     * change aberuete - 18/04/2023 - Refactorizar método
      **/
     public static void markMilestonesCompletedWhenClose(List<Case> newList, Map<Id,Case> oldMap)
     {
-        List<Case> updatedCases = new List<Case>();
         List<CaseMilestone> caseMilestoneList = new List<CaseMilestone>();
         List<CaseMilestone> caseMilestoneListToUpdate = new List<CaseMilestone>();
-        Case oldCase = new Case();
-        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
 
-        //Almacenar los casos que cumplen las condiciones
-        for(Case caso : newList)
-        {
-            //Esta comparación se hace para que no afecte a KLINC
-            if(caso.RecordTypeId == rtOCSInquiryId)
-            {
-                oldCase =  oldMap.get(caso.Id);
-                //Solo se hace algo si se cerró el caso
-                if(oldCase.Status != caso.Status && (caso.Status == 'Cerrado' || caso.Status == 'Merged' || caso.Status == 'Combinado') && caso.SlaExitDate == null)
-                {
-                    updatedCases.add(caso);
-                }
-            }
-        }
+        List<Case> updatedCases = getCasesToMarkMilestonesCompletedWhenClose (newList, oldMap);
 
         //Si hay casos a los que hay que completarles el Milestone:
         if( !updatedCases.isEmpty() )
@@ -902,4 +771,224 @@ public with sharing class CaseUtil
 
     }
 
+     /**
+     * Método que actualiza el contacto asociado al caso si proviene de email to case y encuentra un unico contacto que cumpla las condiciones. 
+     * @author: aberuete
+     * @date: 18/04/2023
+     * @param List<Case> updateCases : lista de casos a actualizar
+     * @param Case caso
+     */
+    @testvisible
+    private static List<Case> getCasesToUpdateContactFromEmailToCase (List<Case> updateCases, Case caso)
+    {
+        if ( !checkRecursive.SetOfIDs.contains(caso.ID) )
+        {
+            checkRecursive.SetOfIDs.add(caso.ID);
+            
+            if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Email') && String.isBlank(caso.CustomerFoundBy__c) &&
+                String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
+                && caso.RecordTypeId ==  Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Enquiry').getRecordTypeId() )
+            {
+                List<Contact> contactoSF = [
+                    SELECT id FROM Contact
+                    WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
+                    AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                    AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
+                    OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
+                    ];
+                //Asignar contacto solo si encuentra 1
+                if (contactoSF != null && contactoSF.size() == 1)
+                {
+                    Case caseToUpdate = new Case();
+                    caseToUpdate.id = caso.id;
+                    caseToUpdate.ContactId = contactoSF.get(0).id;
+                    caseToUpdate.CustomerFoundBy__c = 'Email';
+                    updateCases.add(caseToUpdate);
+                }
+            }
+
+        } 
+        return updateCases;
+    }
+
+     /**
+     * Método que obtiene los casos para que sea marcado el campo CaseMilestone a completado
+     * @author: aberuete
+     * @date: 18/04/2023
+     * @param List<Case> newList : lista de casos a actualizar
+     * @param Map<Id,Case> oldMap : Mapa que contiene la referencia al nuevo caso y el caso sin modificar
+     */
+    @testvisible
+    private static List<Case> getCasesToMarkMilestonesCompletedWhenClose (List<Case> newList, Map<Id,Case> oldMap)
+    {
+        List<Case> updatedCases = new List<Case>();
+        Case oldCase = new Case();
+        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+
+        //Almacenar los casos que cumplen las condiciones
+        for(Case caso : newList)
+        {
+            //Esta comparación se hace para que no afecte a KLINC
+            if(caso.RecordTypeId == rtOCSInquiryId)
+            {
+                oldCase = oldMap.get(caso.Id);
+                //Solo se hace algo si se cerró el caso
+                if(oldCase.Status != caso.Status && (caso.Status == 'Cerrado' || caso.Status == 'Merged' || caso.Status == 'Combinado') && caso.SlaExitDate == null)
+                {
+                    updatedCases.add(caso);
+                }
+            }
+        }  
+
+        return updatedCases;
+    }
+
+    /**
+     * Método que en caso de que exista una póliza con el número del caso y el caso no tenga asociada la póliza, asocia la póliza al caso, 
+     * así como el contacto asociado a la póliza.
+     * @author: aberuete
+     * @date: 18/04/2023
+     * @param AdminSetup__mdt adminSetup : Metadata AdminSetup__mdt 
+     * @param Case caso
+     * @param Map<String, String> mapMultiPartner : Mapa que contiene el campo Multi_Partners__c del metadata AdminSetup__mdt  
+     */
+    @testvisible
+    private static Case updatePolicyToCaseifCaseDoesNotHavePolicy (AdminSetup__mdt adminSetup, Case caso, Map<String, String> mapMultiPartner)
+    {
+        // Get the Country that is not EMEA (Spain)
+        String iba_emea_non_country = adminSetup.IBA_EMEA_Non_Country__c;
+        // Get the EMEA prefix
+        String iba_emea = adminSetup.IBA_EMEA_Prefix__c;
+
+        if (caso.PolicyNum__c != null)
+        {
+            // nts (agonzalezisasi) - 11/ene/2020 - fix Multipartner
+            if( caso.Partner__c != null )   // Is a multipartner
+            {
+                if( mapMultiPartner.containsKey(caso.Partner__c) )
+                {
+                    String partnerName = mapMultiPartner.get(caso.Partner__c);
+                    caso.PolicyNum__c = partnerName + '-' + caso.PolicyNum__c;
+                }
+            }
+            else     // Is not multipartner
+            {   // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
+                if (caso.sourceCountry__c != iba_emea_non_country)   // Is not Spain => EMEA (france, germany)
+                {
+                    caso.PolicyNum__c = iba_emea + '-' + caso.PolicyNum__c;
+                }
+            }
+
+            List<Order> policies = new List<Order>();
+            policies = [
+                SELECT ID, ContactId__c, LegalEntity__c
+                FROM Order
+                WHERE (RecordType.DeveloperName = :Label.PolicyGI OR RecordType.DeveloperName = :Label.PolicyLife)
+                AND PolicyNum__c = :caso.PolicyNum__c
+            ];
+
+            if (policies != null && policies.size() > 0)
+            {
+                caso.ContactId = policies[0].ContactId__c;
+                caso.Policy__c = policies[0].Id;
+                caso.LegalEntity__c = policies[0].LegalEntity__c;
+                caso.CustomerFoundBy__c = 'Policy Number';
+            }
+        }  
+
+        return caso;
+    }
+
+    /**
+     * Método que en caso de que el caso no tenga una póliza asociada, busca asociar el contacto al caso a través del email
+     * @author: aberuete
+     * @date: 18/04/2023
+     * @param Case caso
+     */
+    @testvisible
+    private static Case updateContactToCaseByEmail(Case caso)
+    {
+        if ( String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  
+            &&  String.isNotBlank(caso.SourceCountry__c) && caso.Policy__c == null)
+        {
+            //Si no se ha informado el número de poliza asignar cliente por mail y entidad legal (Solo si hay 1 cliente con ese mail)
+            List<Contact> contactoSF = [
+                SELECT id FROM Contact
+                WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
+                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
+                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
+                ];
+                
+            if (contactoSF != null && contactoSF.size() == 1)
+            {
+                caso.ContactId = contactoSF.get(0).id;
+                caso.CustomerFoundBy__c = 'Email';
+            }
+        }
+
+        return caso;
+    }
+
+    /**
+     * Método que en caso de que el caso no tenga una póliza asociada, ni un contacto intenta asociar el contacto por télefono, 
+     * si existe un unico contacto para ese número
+     * @author: aberuete
+     * @date: 18/04/2023
+     * @param Case caso
+     */
+    @testvisible
+    private static Case updateContactToCaseByPhone(Case caso)
+    {
+        if ( String.isNotBlank(caso.SuppliedPhone) && String.isNotBlank(caso.LegalEntity__c)  
+            && String.isNotBlank(caso.SourceCountry__c) && caso.Policy__c == null && caso.ContactId == null)
+        {
+            List<Contact> contactoSF = [
+                SELECT id FROM Contact
+                WHERE MobilePhone = :caso.SuppliedPhone AND LegalEntity__c = :caso.LegalEntity__c
+                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
+                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
+            ];
+            
+            if (contactoSF != null && contactoSF.size() == 1)
+            {
+                caso.ContactId = contactoSF.get(0).id;
+                caso.CustomerFoundBy__c = 'Phone';
+            }
+        }
+        return caso;
+    }
+
+    /**
+     * Método que en caso de que el caso provenga de la web de francia actualiza la traducción para los campos tipo y subtipo si la tiene
+     * @author: aberuete
+     * @date: 18/04/2023
+     * @param Case caso
+     */
+    @testvisible
+    private static Case ifCaseFromWebFranceUpdateTranslationToCase (Case caso)
+    {
+        if ( caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c) &&(mapCountryTranslationField.containsKey(caso.SourceCountry__c)) )
+        {
+            String fieldName = mapCountryTranslationField.get(caso.SourceCountry__c);
+            String queryType = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Type + '\'';
+            String querySubtype = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Subtype__c + '\'';
+
+            List<Label_Translations__mdt> typeTranslaton = Database.query(queryType);
+            List<Label_Translations__mdt> subTypeTranslation = Database.query(querySubtype);
+            
+            if ( typeTranslaton != null && !typeTranslaton.isEmpty() )
+            {
+                caso.Type_translation__c = (String) typeTranslaton[0].get(fieldName);
+            }
+
+            if ( subTypeTranslation != null && !subTypeTranslation.isEmpty() )
+            {
+                caso.Subtype_translation__c = (String) subTypeTranslation[0].get(fieldName);
+            }
+        }  
+
+        return caso;
+    }
 }
