@@ -743,7 +743,7 @@
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Centro_Excelencia</elementReference>
+                <stringValue>Centro Excelencia</stringValue>
             </value>
         </filters>
         <filters>
