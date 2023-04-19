@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-19-2023
+ * @last modified by  : aberuete
+**/
 public without sharing class ContentVersionUtil
 {
     public static Map<String, Case> hashToCaseMap;
@@ -13,6 +20,7 @@ public without sharing class ContentVersionUtil
      *
      * @author rlopez
      * @date 09/03/2021
+     * change aberuete - 19/04/2023 - Refactorizar método
      */
     public static void getRelatedCasesByHash(List<ContentVersion> newList, Map<Id, ContentVersion> oldMap)
     {
@@ -34,19 +42,7 @@ public without sharing class ContentVersionUtil
                     hashToContentVersion.put(version.Guest_Record_fileupload__c, version);
                 }
             }
-
-            if( !hashToContentVersion.isEmpty() )
-            {
-                //Recuperamos los casos relacionados con ese hash para crear el ContentDocumentLink y relacionar el documento con el caso
-                List<Case> relatedCases = [SELECT Id, Status, DocumentationHashId__c FROM Case WHERE DocumentationHashId__c IN: hashToContentVersion.keySet()];
-                if( !relatedCases.isEmpty() )
-                {
-                    for(Case related: relatedCases)
-                    {
-                        hashToCaseMap.put(related.DocumentationHashId__c, related);
-                    }
-                }
-            }
+            ifHashToContentVersionNotEmptyFillHashToCaseMap (hashToContentVersion);
         }
     }
 
@@ -139,5 +135,28 @@ public without sharing class ContentVersionUtil
         {
             ErrorLogUtil.commitError(ex, 'ContentVersionUtil', 'insertRelatedRecords');
         }
+    }
+
+    /**
+     * Método que se encarga de rellenar el mapa de casos por DocumentationHashId__c
+     *
+     * @author aberuete
+     * @date 19/04/2023
+     */
+    @testvisible
+    private static void ifHashToContentVersionNotEmptyFillHashToCaseMap (Map<String, ContentVersion> hashToContentVersion)
+    {
+        if( !hashToContentVersion.isEmpty() )
+        {
+            //Recuperamos los casos relacionados con ese hash para crear el ContentDocumentLink y relacionar el documento con el caso
+            List<Case> relatedCases = [SELECT Id, Status, DocumentationHashId__c FROM Case WHERE DocumentationHashId__c IN: hashToContentVersion.keySet()];
+            if( !relatedCases.isEmpty() )
+            {
+                for(Case related: relatedCases)
+                {
+                    hashToCaseMap.put(related.DocumentationHashId__c, related);
+                }
+            }
+        }  
     }
 }
