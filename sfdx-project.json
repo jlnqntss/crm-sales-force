@@ -27,6 +27,10 @@
     {
       "path": "force-app/zurich-base-security",
       "default": false
+    },
+    {
+      "path": "force-app/zurich-ventas-app",
+      "default": false
     }
   ],
   "plugins": {

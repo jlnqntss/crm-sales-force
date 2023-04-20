@@ -42,6 +42,11 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>Ventas</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>lightningbuddy__Lightning_Buddy</application>
         <default>false</default>
         <visible>true</visible>
