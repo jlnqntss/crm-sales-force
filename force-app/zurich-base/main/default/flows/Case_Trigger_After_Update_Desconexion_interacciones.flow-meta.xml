@@ -249,7 +249,7 @@
         </rules>
         <rules>
             <name>OcsOutcome</name>
-            <conditionLogic>1 AND (2 OR 3 OR 4)</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -269,13 +269,6 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Pendiente</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Combinado</stringValue>
                 </rightValue>
             </conditions>
             <connector>
