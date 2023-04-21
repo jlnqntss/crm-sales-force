@@ -421,8 +421,57 @@
         <field>Asset.YearOfconstruction__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Scope__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Case-Ventas Case Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Ventas Case Layout</layout>
+        <recordType>Case.USPInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Ventas Consulta</layout>
+        <recordType>Case.Enquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Ventas OCS Inquiry</layout>
+        <recordType>Case.OCSInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Ventas Siniestros</layout>
+        <recordType>Case.Claim</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Ventas Agent Mediator</layout>
+        <recordType>Contact.AgentMediator</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Ventas Cliente Lead Vida No Vida</layout>
+        <recordType>Contact.CustomerGI</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Ventas Cliente Lead Vida No Vida</layout>
+        <recordType>Contact.CustomerLife</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Ventas Cliente Lead Vida No Vida</layout>
+        <recordType>Contact.LeadGI</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Ventas Cliente Lead Vida No Vida</layout>
+        <recordType>Contact.LeadLife</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Ventas Contact</layout>
+        <recordType>Contact.Contact</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Ventas Contact</layout>
+        <recordType>Contact.ContactPartner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Ventas Contact Layout</layout>
@@ -477,6 +526,97 @@
         <default>false</default>
         <recordType>Asset.Person</recordType>
         <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.Claim</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.Enquiry</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Case.OCSInquiry</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.USPInquiry</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.AgentMediator</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Contact.Contact</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.ContactPartner</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.CustomerGI</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.CustomerLife</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.LeadGI</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.LeadLife</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <personAccountDefault>true</personAccountDefault>
+        <recordType>PersonAccount.Customer</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>PersonAccount.Lead</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>PersonAccount.PersonAccount</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Relationship__c.Claim</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Relationship__c.Household</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Relationship__c.Offer</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Relationship__c.Policy</recordType>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <tabVisibilities>
         <tab>standard-Asset</tab>
