@@ -20,6 +20,11 @@
         <default>false</default>
         <label>Zurich Empresas Brokers</label>
     </customValue>
+    <customValue>
+        <fullName>Ventas</fullName>
+        <default>false</default>
+        <label>Zurich Ventas</label>
+    </customValue>
     <masterLabel>Scope</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
