@@ -668,6 +668,7 @@ public class INFOHandler implements ISystem
      * @return void
      *
      * @change 31/05/2021 - nts (agonzalezisasi) - Al marcar la external request como procesada se cambia tambien el record type
+     * @change 20/04/2023 - nts (amiranda) - Se indica la fecha de procesamiento cuando la ER se haya procesado ('KO' inclusive)
      */
     private static void setExternalRequest(ExternalRequest__c externalRequest, Boolean processed, String processResult, String error, Boolean sumRetry)
     {
@@ -688,14 +689,12 @@ public class INFOHandler implements ISystem
             {
                 externalRequest.Processed__c = processed;
             }
+
             if( externalRequest.Processed__c ) {
                 Id recordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFOProcessed').getRecordTypeId();
                 externalRequest.RecordTypeId = recordTypeId;
-            }
 
-            // 3 - Si se marca la external request como procesada se indica la fecha de procesamiento
-            if(processed)
-            {
+                // Si se marca la external request como procesada se indica la fecha de procesamiento
                 externalRequest.processedDate__c = Datetime.now();
             }
 

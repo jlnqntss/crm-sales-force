@@ -223,7 +223,7 @@ public with sharing class ExternalRequestsSelector
         return Database.query( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
-            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false AND Index__c = :index ORDER BY CreatedDate ' + orderType,
+            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false AND Index__c = :index ORDER BY Id ' + orderType,
             limitCondition
         }) );
     }
@@ -298,27 +298,31 @@ public with sharing class ExternalRequestsSelector
         }
     }
 
-    public Decimal getPriorityToProcess()
+    public Integer getPriorityToProcess()
     {
+        Integer priorityToProcess;
+        
         try 
         {
-            ExternalRequest__c er = Database.query(String.format(DEFAULT_STRING_FORMAT, new List<String>
+            List<ExternalRequest__c> er = Database.query(String.format(DEFAULT_STRING_FORMAT, new List<String>
             {
                 baseQuery,
-                'WHERE Processed__c = false AND RecordType.DeveloperName = \'INFO\' GROUP BY Index__c ORDER BY Index__c ASC',
+                'WHERE Processed__c = false AND RecordType.DeveloperName = \'INFO\' ORDER BY Index__c ASC',
                 limitCondition
             }));
-            if (er == null)
+
+            // Si se encuentran ER sin procesar, se recoge el índice más prioritario por procesar
+            if (!er.isEmpty())
             {
-                return 0;
+                priorityToProcess = Integer.valueOf((Decimal) er.get(0).Index__c);
             }
-            return er.Index__c;
         }
         catch (Exception ex) 
         { 
             ErrorLogUtil.commitError(ex, 'ExternalRequestSelector');
-            return null;
         }
+
+        return priorityToProcess;
     }
 
     // #endregion

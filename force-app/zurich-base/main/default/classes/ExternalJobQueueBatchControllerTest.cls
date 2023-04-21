@@ -10,7 +10,7 @@ private class ExternalJobQueueBatchControllerTest
     @isTest
     static void test_checkExternalJobQueueBatch()
     {
-        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'ACCOUNT', 10);
+        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 10);
         insert externalRequestList;
 
         Test.startTest();
@@ -31,7 +31,7 @@ private class ExternalJobQueueBatchControllerTest
     @isTest
     static void test_getChunkQueries_moreThanOne()
     {
-        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'ACCOUNT', 10);
+        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 10);
         insert externalRequestList;
 
         Test.startTest();
@@ -68,7 +68,7 @@ private class ExternalJobQueueBatchControllerTest
     @isTest
     static void test_getChunkQueries_onlyOneRecord()
     {
-        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'ACCOUNT', 1);
+        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 1);
         insert externalRequestList;
 
         Test.startTest();
@@ -119,5 +119,36 @@ private class ExternalJobQueueBatchControllerTest
 
         System.assertEquals(1, executingBatch.size(), 'No se ha encolado el trabajo de cola prioritaria');
 
+    }
+
+    /**
+    * @description Método de test que valida el correcto funcionamiento del método 
+    * que elimina los ceros iniciales de un String
+    * @author amiranda | 18-04-2023 
+    **/
+    @isTest
+    static void test_dropLeadingZeros()
+    {
+        Map<String, String> expectedValuesByPassedValue = new Map<String, String>{
+            '123456' => '123456',
+            '00000123456' => '123456',
+            '12345600000' => '12345600000',
+            '12034056' => '12034056',
+            '  00123456' => '123456',
+            '00123456  ' => '123456',
+            '  00123456  ' => '123456',
+            'abcdefg' => null,
+            'abcd123456' => null,
+            '  ' => null,
+            '' => null
+        };
+
+        for (String passedValue : expectedValuesByPassedValue.keySet())
+        {
+            String expectedValue = expectedValuesByPassedValue.get(passedValue);
+            Assert.areEqual(expectedValue, 
+                            ExternalJobQueueBatchController.dropLeadingZeros(passedValue),
+                            'El valor pasado por parámetro (' + passedValue + ') no coincide con el valor esperado (' + expectedValue + ')');
+        }
     }
 }

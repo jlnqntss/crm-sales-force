@@ -7,7 +7,7 @@ public class ExternalJobQueueJob implements Queueable
     {
         this.origin = origin;
         // Si no llega índice se empieza desde el principio
-        this.index = 0;
+        this.index = 1;
     }
 
     /**
