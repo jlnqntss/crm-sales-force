@@ -45,6 +45,17 @@
         </dashboardFilterOptions>
         <name>Vertical</name>
     </dashboardFilters>
+    <dashboardFilters>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Partner</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Mediator</values>
+        </dashboardFilterOptions>
+        <name>Source Area</name>
+    </dashboardFilters>
     <dashboardGridLayout>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -62,6 +73,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -105,6 +119,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -153,6 +170,9 @@
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -197,6 +217,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -246,6 +269,9 @@
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>0</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -283,6 +309,9 @@
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
+                </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
                     <flexTableColumn>
@@ -305,6 +334,12 @@
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>CASE_NUMBER</reportColumn>
+                        <showSubTotal>false</showSubTotal>
+                        <showTotal>false</showTotal>
+                        <type>detail</type>
+                    </flexTableColumn>
+                    <flexTableColumn>
+                        <reportColumn>ACCOUNT.NAME</reportColumn>
                         <showSubTotal>false</showSubTotal>
                         <showTotal>false</showTotal>
                         <type>detail</type>
@@ -344,6 +379,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -386,6 +424,9 @@
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
@@ -415,6 +456,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -446,6 +490,9 @@
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
@@ -476,6 +523,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
