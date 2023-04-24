@@ -2325,4 +2325,52 @@ Create the record and try again.</value>
         <shortDescription>SDM_PlanAnual_PreviousPage</shortDescription>
         <value>Previous Page</value>
     </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsButton</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsButton</shortDescription>
+        <value>View As User</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ShowPlansFrom</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ShowPlansFrom</shortDescription>
+        <value>Showing Plans of:</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsModalLabel</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsModalLabel</shortDescription>
+        <value>View As User</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsModalChangeUser</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsModalChangeUser</shortDescription>
+        <value>Change to:</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsModalFilterUsers</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsModalFilterUsers</shortDescription>
+        <value>Filter users</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsModalSubmit</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsModalSubmit</shortDescription>
+        <value>Submit</value>
+    </labels>
 </CustomLabels>

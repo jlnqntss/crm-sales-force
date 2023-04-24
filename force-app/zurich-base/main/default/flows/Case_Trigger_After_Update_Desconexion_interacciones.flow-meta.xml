@@ -249,7 +249,7 @@
         </rules>
         <rules>
             <name>OcsOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -264,6 +264,13 @@
                     <stringValue>Cerrado</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendiente</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>IsNoteINFODecision</targetReference>
             </connector>
@@ -272,6 +279,7 @@
     </decisions>
     <description>Flujo encargado de, cuando se cierra un caso, desconectar todas aquellas interacciones que estén pendientes de ser distribuidas por Genesys. 
 Se establece un orden de ejecución tardío al ser una llamada a un sistema externo.</description>
+    <environments>Default</environments>
     <interviewLabel>Case Trigger - After Update - Desconexión interacciones {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Desconexión interacciones</label>
     <processMetadataValues>

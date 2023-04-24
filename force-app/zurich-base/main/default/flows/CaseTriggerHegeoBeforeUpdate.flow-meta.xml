@@ -4,7 +4,7 @@
     <assignments>
         <name>ProductGroupAssignment</name>
         <label>Assign Product Group</label>
-        <locationX>413</locationX>
+        <locationX>957</locationX>
         <locationY>3575</locationY>
         <assignmentItems>
             <assignToReference>$Record.ProductGroup__c</assignToReference>
@@ -14,14 +14,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+            <targetReference>Should_assign_mediated_customer</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Update_Mediated_Customer_With_Offer_Account_Found</name>
         <label>Update Mediated Customer With Offer Account Found</label>
         <locationX>314</locationX>
-        <locationY>3911</locationY>
+        <locationY>4031</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -34,7 +34,7 @@
         <name>Update_Mediated_Customer_With_Policy_Holder_Found</name>
         <label>Update Mediated Customer With Policy Holder Found</label>
         <locationX>50</locationX>
-        <locationY>3911</locationY>
+        <locationY>4031</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -46,7 +46,7 @@
     <assignments>
         <name>Update_Offer_Account_Id_Variable_With_HegeoOfferId</name>
         <label>Update Offer Account Id Variable With HegeoOfferId</label>
-        <locationX>556</locationX>
+        <locationX>1100</locationX>
         <locationY>911</locationY>
         <assignmentItems>
             <assignToReference>OfferAccountId</assignToReference>
@@ -62,7 +62,7 @@
     <assignments>
         <name>Update_Offer_Account_Id_Variable_With_HegeoPrePolicyId</name>
         <label>Update Offer Account Id Variable With HegeoPrePolicyId</label>
-        <locationX>116</locationX>
+        <locationX>660</locationX>
         <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>OfferAccountId</assignToReference>
@@ -78,7 +78,7 @@
     <assignments>
         <name>Update_Policy_Holder_Id_Variable_With_Policy_Found</name>
         <label>Update Policy Holder Id Variable With Policy Found</label>
-        <locationX>259</locationX>
+        <locationX>803</locationX>
         <locationY>1799</locationY>
         <assignmentItems>
             <assignToReference>PolicyHolderId</assignToReference>
@@ -94,7 +94,7 @@
     <assignments>
         <name>UpdateAccountLookupWithAccountFound</name>
         <label>Update Account Lookup With Account Found</label>
-        <locationX>259</locationX>
+        <locationX>803</locationX>
         <locationY>3143</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
@@ -110,7 +110,7 @@
     <assignments>
         <name>UpdateClaimLookupWithClaimFound</name>
         <label>Update Claim Lookup With Claim Found</label>
-        <locationX>259</locationX>
+        <locationX>803</locationX>
         <locationY>2471</locationY>
         <assignmentItems>
             <assignToReference>$Record.ClaimId__c</assignToReference>
@@ -127,7 +127,7 @@
         <name>UpdateMediatedCustomerWithAccountWithNIFFoundAssignment</name>
         <label>Update Mediated Customer With Account With NIF Found</label>
         <locationX>578</locationX>
-        <locationY>4271</locationY>
+        <locationY>4391</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -139,7 +139,7 @@
     <assignments>
         <name>UpdateOfferLookupWithHegeoOfferId</name>
         <label>Update Offer Lookup With HegeoOfferId</label>
-        <locationX>556</locationX>
+        <locationX>1100</locationX>
         <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.OfferId__c</assignToReference>
@@ -162,7 +162,7 @@
     <assignments>
         <name>UpdateOfferLookupWithHegeoPrePolicyId</name>
         <label>Update Offer Lookup With HegeoPrePolicyId</label>
-        <locationX>116</locationX>
+        <locationX>660</locationX>
         <locationY>671</locationY>
         <assignmentItems>
             <assignToReference>$Record.OfferId__c</assignToReference>
@@ -185,7 +185,7 @@
     <assignments>
         <name>UpdatePolicyLookupWithPolicyFound</name>
         <label>Update Policy Lookup With Policy Found</label>
-        <locationX>259</locationX>
+        <locationX>803</locationX>
         <locationY>1679</locationY>
         <assignmentItems>
             <assignToReference>$Record.PolicyId__c</assignToReference>
@@ -208,7 +208,7 @@
     <decisions>
         <name>AccountFound</name>
         <label>Account Found?</label>
-        <locationX>391</locationX>
+        <locationX>935</locationX>
         <locationY>3023</locationY>
         <defaultConnector>
             <targetReference>IsProductGroupVoidDecision</targetReference>
@@ -234,7 +234,7 @@
         <name>AccountWithNIFFoundDecision</name>
         <label>Account With NIF found?</label>
         <locationX>710</locationX>
-        <locationY>4151</locationY>
+        <locationY>4271</locationY>
         <defaultConnectorLabel>Not Found</defaultConnectorLabel>
         <rules>
             <name>AccountNIFFoundOutcome</name>
@@ -255,7 +255,7 @@
     <decisions>
         <name>ClaimFound</name>
         <label>Claim Found?</label>
-        <locationX>391</locationX>
+        <locationX>935</locationX>
         <locationY>2351</locationY>
         <defaultConnector>
             <targetReference>HegeoIntermediaryIdHasChanged</targetReference>
@@ -280,7 +280,7 @@
     <decisions>
         <name>HegeoClaimIdHasChanged</name>
         <label>Hegeo ClaimId Has Changed?</label>
-        <locationX>545</locationX>
+        <locationX>1089</locationX>
         <locationY>2111</locationY>
         <defaultConnector>
             <targetReference>HegeoIntermediaryIdHasChanged</targetReference>
@@ -312,7 +312,7 @@
     <decisions>
         <name>HegeoIntermediaryIdHasChanged</name>
         <label>Hegeo IntermediaryId Has Changed?</label>
-        <locationX>545</locationX>
+        <locationX>1089</locationX>
         <locationY>2783</locationY>
         <defaultConnector>
             <targetReference>IsProductGroupVoidDecision</targetReference>
@@ -344,7 +344,7 @@
     <decisions>
         <name>HegeoOfferIdHasChanged</name>
         <label>Hegeo Offer Id Has Changed?</label>
-        <locationX>842</locationX>
+        <locationX>1386</locationX>
         <locationY>431</locationY>
         <defaultConnector>
             <targetReference>HegeoPolicyIdHasChanged</targetReference>
@@ -376,7 +376,7 @@
     <decisions>
         <name>HegeoOfferIdOfferFound</name>
         <label>HegeoOfferId Offer Found?</label>
-        <locationX>688</locationX>
+        <locationX>1232</locationX>
         <locationY>671</locationY>
         <defaultConnector>
             <targetReference>HegeoPolicyIdHasChanged</targetReference>
@@ -401,7 +401,7 @@
     <decisions>
         <name>HegeoPolicyIdHasChanged</name>
         <label>HegeoPolicyId Has Changed?</label>
-        <locationX>545</locationX>
+        <locationX>1089</locationX>
         <locationY>1319</locationY>
         <defaultConnector>
             <targetReference>HegeoClaimIdHasChanged</targetReference>
@@ -434,7 +434,7 @@
         <description>Comprueba si el campo ha cambiado</description>
         <name>HegeoPrePolicyIdHasChanged</name>
         <label>Hegeo PrePolicyId has changed?</label>
-        <locationX>545</locationX>
+        <locationX>1089</locationX>
         <locationY>311</locationY>
         <defaultConnector>
             <targetReference>HegeoOfferIdHasChanged</targetReference>
@@ -466,7 +466,7 @@
     <decisions>
         <name>HegeoPrePolicyOfferFound</name>
         <label>HegeoPrePolicy Offer Found?</label>
-        <locationX>248</locationX>
+        <locationX>792</locationX>
         <locationY>551</locationY>
         <defaultConnector>
             <targetReference>HegeoPolicyIdHasChanged</targetReference>
@@ -491,10 +491,10 @@
     <decisions>
         <name>IsProductGroupVoidDecision</name>
         <label>Is Product Group Void?</label>
-        <locationX>545</locationX>
+        <locationX>1089</locationX>
         <locationY>3455</locationY>
         <defaultConnector>
-            <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
+            <targetReference>Should_assign_mediated_customer</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Filled</defaultConnectorLabel>
         <rules>
@@ -517,7 +517,7 @@
         <name>IsRobotNIFNullDecision</name>
         <label>Robot NIF Null?</label>
         <locationX>1040</locationX>
-        <locationY>3911</locationY>
+        <locationY>4031</locationY>
         <defaultConnectorLabel>NIF Null</defaultConnectorLabel>
         <rules>
             <name>NotNIFNullOutcome</name>
@@ -553,7 +553,7 @@
         <name>Policy_Holder_or_Offer_Account_Found</name>
         <label>Policy Holder or Offer Account Found?</label>
         <locationX>545</locationX>
-        <locationY>3791</locationY>
+        <locationY>3911</locationY>
         <defaultConnector>
             <targetReference>IsRobotNIFNullDecision</targetReference>
         </defaultConnector>
@@ -592,7 +592,7 @@
     <decisions>
         <name>PolicyFound</name>
         <label>Policy Found?</label>
-        <locationX>391</locationX>
+        <locationX>935</locationX>
         <locationY>1559</locationY>
         <defaultConnector>
             <targetReference>HegeoClaimIdHasChanged</targetReference>
@@ -610,6 +610,42 @@
             </conditions>
             <connector>
                 <targetReference>UpdatePolicyLookupWithPolicyFound</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Should_assign_mediated_customer</name>
+        <label>Should assign mediated customer?</label>
+        <locationX>1089</locationX>
+        <locationY>3791</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>PartnerOCS</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Policy_Holder_or_Offer_Account_Found</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -641,7 +677,7 @@
         <name>CreateErrorLogAccountCIFAction</name>
         <label>Create Error Log Account CIF</label>
         <locationX>1106</locationX>
-        <locationY>4151</locationY>
+        <locationY>4271</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
@@ -673,7 +709,7 @@
         <name>getAccountNIFAction</name>
         <label>Get Account With NIF</label>
         <locationX>710</locationX>
-        <locationY>4031</locationY>
+        <locationY>4151</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AccountWithNIFFoundDecision</targetReference>
@@ -696,7 +732,7 @@
     <recordLookups>
         <name>SearchRelatedClaim</name>
         <label>Search Related Claim</label>
-        <locationX>391</locationX>
+        <locationX>935</locationX>
         <locationY>2231</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -718,7 +754,7 @@
     <recordLookups>
         <name>SearchRelatedIntermediary</name>
         <label>Search Related Intermediary</label>
-        <locationX>391</locationX>
+        <locationX>935</locationX>
         <locationY>2903</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -740,7 +776,7 @@
     <recordLookups>
         <name>SearchRelatedOfferWithOfferId</name>
         <label>Search Related Offer With OfferId</label>
-        <locationX>688</locationX>
+        <locationX>1232</locationX>
         <locationY>551</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -762,7 +798,7 @@
         <description>Buscamos una oferta que tenga InfoQuoteNumber__c igual al campo HegeoPrePolicyId__c</description>
         <name>SearchRelatedOfferWithPrePolicyId</name>
         <label>Search Related Offer With PrePolicyId</label>
-        <locationX>248</locationX>
+        <locationX>792</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -783,7 +819,7 @@
     <recordLookups>
         <name>SearchRelatedPolicy</name>
         <label>Search Related Policy</label>
-        <locationX>391</locationX>
+        <locationX>935</locationX>
         <locationY>1439</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -802,7 +838,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>419</locationX>
+        <locationX>963</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>HegeoPrePolicyIdHasChanged</targetReference>

@@ -58,10 +58,7 @@ private class Test_Batch_DeleteLeads
 
         String query = 'SELECT Id FROM Error_Log__c WHERE LastModifiedDate < LAST_N_DAYS:7';
         Test.startTest();
-        Id BatchInstanceId = database.executeBatch(
-            new Batch_DeleteLeads(query),
-            200
-            );
+        database.executeBatch(new Batch_DeleteLeads(query),200);
         Test.stopTest();
 
         numContact = [SELECT COUNT() FROM Contact];
@@ -90,9 +87,8 @@ private class Test_Batch_DeleteLeads
         'Nationality__c, YearExpiryDate__c from Contact ';
 
         Test.startTest();
-        Batch_DeleteLeads b = new Batch_DeleteLeads(); // for coverage
-        b = new Batch_DeleteLeads(query);
-        Id BatchInstanceId = database.executeBatch( b, 200 );
+        Batch_DeleteLeads b = new Batch_DeleteLeads(query); 
+        database.executeBatch(b, 200 );
         Test.stopTest();
 
         numContact = [SELECT COUNT() FROM Contact];
@@ -101,16 +97,44 @@ private class Test_Batch_DeleteLeads
     }
 
     /**
-     * For testing Schedule
+     * Comprobar que el batch elimina correctamente los contactos creados hace más de 10 días, que se han suscrito y son clientes
+     * *
+     * @author aberuete
+     * @date 03/04/2023
      */
-    // @isTest
-    // static void testBatch_schedule() {
-    //   Batch_DeleteLeads m = new Batch_DeleteLeads();
-    //   String sch = '20 30 8 10 2 ?';
+    @isTest
+    static void test_DeleteLeadCreated11daysAgo()
+    {
+        List<Contact> leadsToDeleteBefore = [Select id,CreatedDate from Contact where recordtype.developerName =: Label.LeadGI and IsSubscriber__c = true AND CustomerNum__c !=null and HasOptedOutOfEmail = true ];
+        Datetime elevenDaysAgo = Datetime.now().addDays(-11);
+        Test.setCreatedDate(leadsToDeleteBefore[0].Id, elevenDaysAgo);
 
-    //   Test.startTest();
-    //   String jobID = system.schedule('Delete Batch Leads', sch, m);
-    //   Test.stopTest();
-    //   
-    // }
+        Test.startTest(); 
+        Batch_DeleteLeads b = new Batch_DeleteLeads();
+        database.executeBatch(b, 200 );
+        Test.stopTest(); 
+
+        List<Contact> leadsToDeleteAfter = [Select id,CreatedDate from Contact where recordtype.developerName =: Label.LeadGI and IsSubscriber__c = true AND CustomerNum__c !=null and HasOptedOutOfEmail = true ];
+
+        System.assertEquals (1,leadsToDeleteBefore.size(),'El número de contactos debe ser 1');
+        System.assertEquals (0,leadsToDeleteAfter.size(),'El contacto se debe haber borrado');
+    }
+
+    
+    /**
+     * Comprobar la programación del batch
+     * *
+     * @author aberuete
+     * @date 03/04/2023
+     */
+    @isTest
+    static void test_schedule () 
+    {
+        Test.startTest();
+        String jobID = system.schedule( 'Delete Leads Test', '20 30 8 10 2 ?', new Batch_DeleteLeads() );
+        Test.stopTest();
+    
+        System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch'); 
+    }
+
 }

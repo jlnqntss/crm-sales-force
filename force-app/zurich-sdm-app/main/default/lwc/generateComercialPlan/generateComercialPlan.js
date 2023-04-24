@@ -1,5 +1,5 @@
 import { LightningElement, track } from "lwc";
-
+import ViewAsModal from "c/viewAsModalGenerateComercialPlan";
 import FORM_FACTOR from "@salesforce/client/formFactor";
 
 import SDM_PlanAnual_KPICompare from "@salesforce/label/c.SDM_PlanAnual_KPICompare";
@@ -36,9 +36,13 @@ import SDM_PlanAnual_Legend from "@salesforce/label/c.SDM_PlanAnual_Legend";
 import SDM_PlanAnual_WarningCero from "@salesforce/label/c.SDM_PlanAnual_WarningCero";
 import SDM_PlanAnual_PreviousPage from "@salesforce/label/c.SDM_PlanAnual_PreviousPage";
 import SDM_PlanAnual_NextPage from "@salesforce/label/c.SDM_PlanAnual_NextPage";
+import SDM_PlanAnual_ViewAsButton from "@salesforce/label/c.SDM_PlanAnual_ViewAsButton";
+import SDM_PlanAnual_ShowPlansFrom from "@salesforce/label/c.SDM_PlanAnual_ShowPlansFrom";
+import SDM_PlanAnual_ViewAsModalLabel from "@salesforce/label/c.SDM_PlanAnual_ViewAsModalLabel";
 
 import saveData from "@salesforce/apex/generateComercialPlanController.saveData";
 import getRecords from "@salesforce/apex/generateComercialPlanController.getRecords";
+
 import { NavigationMixin } from "lightning/navigation";
 import { CloseActionScreenEvent } from "lightning/actions";
 
@@ -81,7 +85,10 @@ export default class GenerateComercialPlan extends NavigationMixin(
     SDM_PlanAnual_Legend,
     SDM_PlanAnual_WarningCero,
     SDM_PlanAnual_PreviousPage,
-    SDM_PlanAnual_NextPage
+    SDM_PlanAnual_NextPage,
+    SDM_PlanAnual_ViewAsButton,
+    SDM_PlanAnual_ShowPlansFrom,
+    SDM_PlanAnual_ViewAsModalLabel
   };
 
   @track isEdited = false;
@@ -101,6 +108,11 @@ export default class GenerateComercialPlan extends NavigationMixin(
   // atributos paginacion
   @track pageNumber = 0; // pagina en la que se encuentra el usuario, por defecto 0, si hay resultados se cambia a 1
   @track pageSize = 1; // numero de elementos por paginas a visualizar, valor por defecto se toma de metadata
+
+  // atributos view as
+  showViewAsButton = false;
+  viewAsUserId;
+  viewAsUserName;
 
   Indicator = {
     type_percent: "type_percent",
@@ -128,7 +140,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
   // Evento: inicializacion de la pantalla
   connectedCallback() {
-    this.getDataRecords(this.yearValue);
+    this.getDataRecords(this.yearValue, this.viewAsUserId);
   }
 
   // Evento: Gestiona el cambio en los campos de cabecera de la tabla. Nombre del plan
@@ -325,7 +337,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
           this.labels.SDM_PlanAnual_SavingSuccess,
           this.labels.SDM_PlanAnual_SavingSuccessMessage
         );
-        this.getDataRecords(this.yearValue);
+        this.getDataRecords(this.yearValue, this.viewAsUserId);
         this.error = undefined;
       })
       .catch((error) => {
@@ -368,7 +380,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
   // Evento: Gestiona el desplegable de cambio de año
   handleChangeYear(event) {
-    this.getDataRecords(event.detail.value);
+    this.getDataRecords(event.detail.value, this.viewAsUserId);
   }
 
   // Evento: Edita la tabla al hacer doble click en la cabecera o las columnas
@@ -408,7 +420,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
   // Evento: refresh
   handleRefresh() {
-    this.getDataRecords(this.yearValue);
+    this.getDataRecords(this.yearValue, this.viewAsUserId);
   }
 
   /*-------------------- RESTO DE METODOS --------------------*/
@@ -719,12 +731,12 @@ export default class GenerateComercialPlan extends NavigationMixin(
   }
 
   // Metodo: recupera los registros para un año dado
-  getDataRecords(year) {
+  getDataRecords(year, viewAsUserId) {
     // Marcamos que se estan obteniendo los datos
     this.isLoading = true;
 
     // Llamamos al controller
-    getRecords({ year: year })
+    getRecords({ year: year, viewAsUserId: viewAsUserId })
       .then((result) => {
         // Si ha se ejecuto correctamente
 
@@ -750,7 +762,12 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
         // paginacion, actualizamos variable de paginación
         this.pageSize = this.tabledata.numVisiblePlans;
-        this.pageNumber = 1;
+        if (this.numActivePlans !== 0) {
+          this.pageNumber = 1;
+        }
+
+        // mostrar el botón cambiar vista usuario
+        this.showViewAsButton = this.tabledata.showViewAsButton;
 
         this.error = undefined;
       })
@@ -977,6 +994,32 @@ export default class GenerateComercialPlan extends NavigationMixin(
      Si tenemos 2/2 en el paginador y borramos todos lo que haya en la última página quedaría el paginador con valores 2/1 por eso queda así la condición e invocamos el método handlePrevious*/
     if (this.pageNumber > this.totalPages) {
       this.handlePrevious();
+    }
+  }
+
+  /****************************************** Lógica de View As ****************************************************************************/
+
+  async handleModalOpen() {
+    await ViewAsModal.open({
+      label: this.labels.SDM_PlanAnual_ViewAsModalLabel,
+      size: "small"
+    })
+      .then((result) => {
+        // prompt modal has been closed
+        this.handleChangeView(result);
+      })
+      .catch((error) => {
+        console.log(JSON.stringify(error));
+      });
+    // if modal closed with X button, promise returns result = 'undefined'
+    // if modal closed with OK button, promise returns result = 'okay'
+  }
+
+  handleChangeView(result) {
+    if (result !== undefined) {
+      this.viewAsUserId = result.selectedUserId;
+      this.viewAsUserName = result.selectedUserName;
+      this.handleRefresh();
     }
   }
 }

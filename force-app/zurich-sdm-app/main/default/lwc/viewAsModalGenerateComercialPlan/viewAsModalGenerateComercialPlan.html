@@ -1,0 +1,28 @@
+<template>
+  <lightning-modal-header label={label}></lightning-modal-header>
+  <lightning-modal-body>
+    <lightning-input
+      label={labels.SDM_PlanAnual_ViewAsModalFilterUsers}
+      onchange={handleFilter}
+    ></lightning-input>
+    <lightning-combobox
+      label={labels.SDM_PlanAnual_ViewAsModalChangeUser}
+      value={selectedUserId}
+      options={filteredUserOptions}
+      onchange={handleChange}
+    ></lightning-combobox>
+  </lightning-modal-body>
+  <lightning-modal-footer>
+    <lightning-button
+      label={labels.SDM_PlanAnual_ViewAsModalSubmit}
+      variant="brand"
+      onclick={handleOkay}
+      disabled={disableSubmitButton}
+      class="slds-p-right_x-small"
+    ></lightning-button>
+    <lightning-button
+      label={labels.SDM_PlanAnual_ButtonCancel}
+      onclick={handleCancel}
+    ></lightning-button>
+  </lightning-modal-footer>
+</template>

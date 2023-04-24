@@ -1,10 +1,18 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-03-2023
+ * @last modified by  : aberuete
+**/
 @isTest
-private class DeleteRecordsEventUtilTest {
-
+private class DeleteRecordsEventUtilTest 
+{
+    static final String CRITERIA_QUERY =  'CanBeRemoved__c = true';
     //IMPORTANTE: Se ha probado y validado con 18k de registros pero el test tarda 2min en ejecutar
     //así que se ha reducido el volumen para que tarde menos, pero se puede cambiar aquí para probar
     private static Integer numRecordsInsert = 9; //9000
-    private static Integer numRecordsTotal = 18; //18000
+    private static Integer numRecordsTotal = 18; //18000 
 
     @TestSetup
     static void makeData()
@@ -24,7 +32,7 @@ private class DeleteRecordsEventUtilTest {
         List<DeleteRecordsEvent__e> events = new List<DeleteRecordsEvent__e>();
         for(Integer j=0; j<2; j++)
         {
-            DeleteRecordsEvent__e event = new DeleteRecordsEvent__e(ObjectName__c = 'Survey__c', Criteria__c = 'CanBeRemoved__c = true', LaunchedCount__c = 1);
+            DeleteRecordsEvent__e event = new DeleteRecordsEvent__e(ObjectName__c = 'Survey__c', Criteria__c = CRITERIA_QUERY, LaunchedCount__c = 1);
             events.add(event);
         }
 
@@ -84,4 +92,54 @@ private class DeleteRecordsEventUtilTest {
         System.assertEquals(numRecordsTotal, deletedSurveys.size(), 'No se deberían haber borrado surveys porque no cumplen la condición de la query');
     }
 
+    /**
+     * Test que comprueba que si hay más de un registro a borrar se pública el evento a borrar los registros
+     * @author aberuete
+     * @date 03/04/2023
+     */
+    @isTest
+    static void test_ifNumEventsGreaterThanOneRelaunchEvents()
+    {
+        List<DeleteRecordsEvent__e> events = new List<DeleteRecordsEvent__e>();
+        for(Integer j=0; j<2; j++)
+        {
+            DeleteRecordsEvent__e event = new DeleteRecordsEvent__e(ObjectName__c = 'Survey__c', Criteria__c = CRITERIA_QUERY, LaunchedCount__c = 1);
+            events.add(event);
+        } 
+        List<Survey__c> surveyBefore = [Select id from Survey__c where CanBeRemoved__c = true ];
+
+        Test.startTest();
+        DeleteRecordsEventUtil.ifNumEventsGreaterThanOneRelaunchEvents (events);
+        Test.stopTest();
+
+        List<Survey__c> surveyAfter = [Select id from Survey__c where CanBeRemoved__c = true ];
+
+        System.assertEquals(9, surveyBefore.size(), 'El número de encuentas ha borrar debe ser nueve');
+        System.assertEquals(0, surveyAfter.size(), 'El evento se debería haber publicado y lanzado el borrado de todas las encuestas');
+        
+    }
+
+    /**
+     * Test que comprueba que la query para obtener los registros a borrar se forma correctamente
+     * @author aberuete
+     * @date 03/04/2023
+     */
+    @isTest
+    static void test_getQueryToDeleteRecords()
+    {
+        List<DeleteRecordsEvent__e> events = new List<DeleteRecordsEvent__e>();
+        for(Integer j=0; j<2; j++)
+        {
+            DeleteRecordsEvent__e event = new DeleteRecordsEvent__e(ObjectName__c = 'Survey__c', Criteria__c = CRITERIA_QUERY, LaunchedCount__c = 1);
+            events.add(event);
+        } 
+
+        Test.startTest();
+        String query = DeleteRecordsEventUtil.getQueryToDeleteRecords(events[0],events.size());
+        Test.stopTest();
+        
+        List<Survey__c> surveys = Database.query(query);
+
+        System.assertEquals(numRecordsInsert, surveys.size(),'Debe haber obtenido nueve encuestas');
+    }
 }

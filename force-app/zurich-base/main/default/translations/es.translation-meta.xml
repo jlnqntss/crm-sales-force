@@ -5986,6 +5986,30 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>SDM_PlanAnual_Message_Fleets</name>
     </customLabels>
     <customLabels>
+        <label>Cambiar Vista Usuario</label>
+        <name>SDM_PlanAnual_ViewAsButton</name>
+    </customLabels>
+	<customLabels>
+        <label>Mostrando planes de:</label>
+        <name>SDM_PlanAnual_ShowPlansFrom</name>
+    </customLabels>
+	<customLabels>
+        <label>Cambiar Vista Usuario</label>
+        <name>SDM_PlanAnual_ViewAsModalLabel</name>
+    </customLabels>
+	<customLabels>
+        <label>Cambiar a:</label>
+        <name>SDM_PlanAnual_ViewAsModalChangeUser</name>
+    </customLabels>
+	<customLabels>
+        <label>Filtrar usuarios</label>
+        <name>SDM_PlanAnual_ViewAsModalFilterUsers</name>
+    </customLabels>
+	<customLabels>
+        <label>Cambiar</label>
+        <name>SDM_PlanAnual_ViewAsModalSubmit</name>
+    </customLabels>
+    <customLabels>
         <label>Activos</label>
         <name>SDM_ControlIntermediaryNotifiaction_Active</name>
     </customLabels>

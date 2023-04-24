@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>MandarEmailAction</name>
-        <label>Mandar Email</label>
-        <locationX>842</locationX>
-        <locationY>1007</locationY>
-        <actionName>Case.Caso_pendiente</actionName>
+        <name>MandarEmailUSP</name>
+        <label>Mandar Email USP</label>
+        <locationX>1238</locationX>
+        <locationY>1343</locationY>
+        <actionName>Case.Caso_pendiente_USP</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogCaseEmailSend</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -21,12 +22,11 @@
     <actionCalls>
         <name>SendEmailCloseCase</name>
         <label>Mandar email cierre caso</label>
-        <locationX>50</locationX>
-        <locationY>1247</locationY>
+        <locationX>182</locationX>
+        <locationY>1583</locationY>
         <actionName>Case.Cierre_de_caso_automatico</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogCaseEmailSend</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -42,7 +42,7 @@
         <description>Se le asigna una variable a true para posteriormente diferenciar si se envía email de alerta y cerrar el caso al pasar 15 días</description>
         <name>CerrarCaso15DiasAssignment</name>
         <label>Cerrar Caso 15 Dias</label>
-        <locationX>1579</locationX>
+        <locationX>1480</locationX>
         <locationY>288</locationY>
         <assignmentItems>
             <assignToReference>SeCierraCaso</assignToReference>
@@ -55,13 +55,29 @@
             <targetReference>FulfilPrerequisitesDecision</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>DominioExcluidoAssignment</name>
+        <label>Dominio Excluido</label>
+        <locationX>666</locationX>
+        <locationY>887</locationY>
+        <assignmentItems>
+            <assignToReference>DominioExcluido</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>CloseCaseDecision</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>CloseCaseDecision</name>
         <label>¿Se cierra el caso?</label>
-        <locationX>446</locationX>
-        <locationY>887</locationY>
+        <locationX>578</locationX>
+        <locationY>1103</locationY>
         <defaultConnector>
-            <targetReference>MandarEmailAction</targetReference>
+            <targetReference>SeHaExcluidoElDominioDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -81,10 +97,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>DominioExcluidoDecision</name>
+        <label>Dominio Excluido?</label>
+        <locationX>50</locationX>
+        <locationY>1463</locationY>
+        <defaultConnector>
+            <targetReference>SendEmailCloseCase</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Excluido</defaultConnectorLabel>
+        <rules>
+            <name>DominioExcluidoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>DominioExcluido</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Dominio Excluido</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>ExcludedDomainDecision</name>
         <label>¿Dominio excluido?</label>
-        <locationX>908</locationX>
+        <locationX>578</locationX>
         <locationY>767</locationY>
+        <defaultConnector>
+            <targetReference>DominioExcluidoAssignment</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>NonExcludedDomainOutcome</name>
@@ -105,7 +146,7 @@
     <decisions>
         <name>FulfilPrerequisitesDecision</name>
         <label>¿Cumple los prerrequisitos?</label>
-        <locationX>1271</locationX>
+        <locationX>1172</locationX>
         <locationY>527</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -138,6 +179,28 @@
             <label>Cumple prerrequisitos</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>SeHaExcluidoElDominioDecision</name>
+        <label>Se ha excluido el dominio?</label>
+        <locationX>1106</locationX>
+        <locationY>1223</locationY>
+        <defaultConnector>
+            <targetReference>MandarEmailUSP</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Excluido</defaultConnectorLabel>
+        <rules>
+            <name>SeHaExlcuidoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>DominioExcluido</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Se ha excluido</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Case Trigger - After Insert/Update - Notificaciones Pendientes USP {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - Notificaciones Pendientes USP</label>
@@ -163,8 +226,8 @@
     <recordCreates>
         <name>CreateErrorLogCaseCloseAction</name>
         <label>Generar Error Log Cierre de caso</label>
-        <locationX>578</locationX>
-        <locationY>1247</locationY>
+        <locationX>710</locationX>
+        <locationY>1463</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -195,8 +258,8 @@
     <recordCreates>
         <name>CreateErrorLogCaseEmailSend</name>
         <label>Generar Error Log Envio Email</label>
-        <locationX>1106</locationX>
-        <locationY>1127</locationY>
+        <locationX>446</locationX>
+        <locationY>1703</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -228,7 +291,7 @@
         <name>GetSystemUserAction</name>
         <label>Obtener System User</label>
         <locationX>50</locationX>
-        <locationY>1007</locationY>
+        <locationY>1223</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>UpdateCerrarCaso</targetReference>
@@ -249,9 +312,9 @@
         <name>UpdateCerrarCaso</name>
         <label>Actualizar Cerrar Caso</label>
         <locationX>50</locationX>
-        <locationY>1127</locationY>
+        <locationY>1343</locationY>
         <connector>
-            <targetReference>SendEmailCloseCase</targetReference>
+            <targetReference>DominioExcluidoDecision</targetReference>
         </connector>
         <faultConnector>
             <targetReference>CreateErrorLogCaseCloseAction</targetReference>
@@ -291,7 +354,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>1145</locationX>
+        <locationX>1046</locationX>
         <locationY>0</locationY>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>1 AND 2 AND 3 AND (4 OR 5) AND 6 AND 7</filterLogic>
@@ -382,7 +445,7 @@
     <subflows>
         <name>ExcluirDominioSubflowAction</name>
         <label>Excluir Dominio Subflow</label>
-        <locationX>908</locationX>
+        <locationX>578</locationX>
         <locationY>647</locationY>
         <connector>
             <targetReference>ExcludedDomainDecision</targetReference>
@@ -402,6 +465,13 @@
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
+    <variables>
+        <name>DominioExcluido</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>SeCierraCaso</name>
         <dataType>Boolean</dataType>

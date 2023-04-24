@@ -16,9 +16,6 @@
         <field>CASE_OWNER</field>
     </columns>
     <columns>
-        <field>ACCOUNT.NAME</field>
-    </columns>
-    <columns>
         <field>Case.MediatedCustomer__c</field>
     </columns>
     <columns>

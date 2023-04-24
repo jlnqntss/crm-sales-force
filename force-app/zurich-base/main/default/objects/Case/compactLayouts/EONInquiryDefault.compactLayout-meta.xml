@@ -2,6 +2,7 @@
 <CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>EONInquiryDefault</fullName>
     <fields>Subject</fields>
+    <fields>Assigned_Center__c</fields>
     <fields>CaseNumber</fields>
     <fields>Status</fields>
     <fields>Type</fields>

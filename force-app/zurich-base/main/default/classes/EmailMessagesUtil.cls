@@ -104,6 +104,7 @@ public with sharing class EmailMessagesUtil
                 
                 Case casoHijo = CaseUtil.createCaseFromParent(padre, email, (tipificacionCorrecta && heredamosTipificacion)); 
                 casoHijo.OwnerId = integratorUserId; // Asignamos Integrator como el Owner del caso
+                casoHijo.SuppliedEmail = email.FromAddress; // Asignamos el from del email que general el caso hijo como SuppliedEmail
                 mapaCasosHijos.put(posicion, casoHijo);
             }
         }
@@ -365,6 +366,7 @@ public with sharing class EmailMessagesUtil
             {
                 // List of emails to check
                 List<String> emailsToCheck = new List<String>();
+                String industryGeneric= 'Generico';
                 // Add the emails from the ToAddress field
                 if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
                 // Add the emails from the CcAddress field
@@ -386,6 +388,12 @@ public with sharing class EmailMessagesUtil
                                 {
                                     genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
                                 }
+
+                                if(em.Industry__c==null || genesysQueue==null)
+                                {
+                                    genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                                }
+
                             }
                             when else {
                                 genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());                          

@@ -4,6 +4,7 @@
  * with the external request. The batch compares the processing time stamp or the related record, if it is older than the order, the record is
  * considered to be outdated and must be deleted
  * @date 17/06/2020
+ * @change aberuete - 21/04/2023 - Refactorizar método execute
  */
 
 global class Batch_PostProcessing implements Database.Batchable<sObject>, Database.Stateful, Schedulable
@@ -43,29 +44,14 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
         SET<ID> keys = new Set<ID>();
 
         try
-        {
+        { 
             if ( scope != null && !scope.isEmpty() )
             {
                 for (Order ord : processedOrders)
                 {
                     keys.add(ord.id); //guardar ids para la query de las covers
-
-                    if ( !ord.OrderItems.isEmpty() )
-                    {
-                        for (OrderItem oi : ord.OrderItems)
-                        {
-                            itemsToDelete.add(oi);
-                        }
-                    }
-
-                    if ( !ord.Descuentos__r.isEmpty() )
-                    {
-                        for (Discount__c dis : ord.Descuentos__r)
-                        {
-                            discountsToDelete.add(dis);
-                        }
-                    }
-
+                    itemsToDelete = getItemsToDelete (ord, itemsToDelete);
+                    discountsToDelete = getDiscountsToDelete (ord, discountsToDelete);
                     ord.After_Processing_Check__c = false;
                 }
 
@@ -101,4 +87,45 @@ global class Batch_PostProcessing implements Database.Batchable<sObject>, Databa
 
     global void finish(Database.BatchableContext bc)
     {}
+
+    /**
+    * Método que obtiene una lista de order items a borrar 
+    * @author aberuete
+    * @date 21/04/2023
+    * @param Order ord : Order a procesar
+    * @param List<OrderItem> itemsToDelete : Lista de orderitems a borrar
+    **/
+    @testvisible
+    private List<OrderItem> getItemsToDelete (Order ord, List<OrderItem> itemsToDelete)
+    {
+        if ( !ord.OrderItems.isEmpty() )
+        {
+            for (OrderItem oi : ord.OrderItems)
+            {
+                itemsToDelete.add(oi);
+            }
+        } 
+        return itemsToDelete;
+    }
+
+    /**
+    * Método que obtiene una lista de descuentos a borrar 
+    * @author aberuete
+    * @date 21/04/2023
+    * @param Order ord : Order a procesar
+    * @param List<Discount__c> discountsToDelete : Lista de descuentos a borrar
+    **/
+    @testvisible
+    private List<Discount__c> getDiscountsToDelete (Order ord, List<Discount__c> discountsToDelete)
+    {
+        if ( !ord.Descuentos__r.isEmpty() )
+        {
+            for (Discount__c dis : ord.Descuentos__r)
+            {
+                discountsToDelete.add(dis);
+            }
+        }
+
+        return discountsToDelete;
+    }
 }

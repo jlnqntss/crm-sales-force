@@ -97,6 +97,18 @@
         <template>OneCustomerService/Caso_pendiente_CSM_1674558409726</template>
     </alerts>
     <alerts>
+        <fullName>Caso_pendiente_USP</fullName>
+        <description>Caso pendiente USP</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Caso_pendiente_USP_1681279561141</template>
+    </alerts>
+    <alerts>
         <fullName>Cierre_de_caso</fullName>
         <description>Cierre de caso</description>
         <protected>false</protected>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusClosedCantBeEdited</fullName>
+    <active>true</active>
+    <description>[VR Tarea] Las tareas en estado cerrado no pueden reabrirse o modificarse.</description>
+    <errorConditionFormula>AND(
+RecordType.DeveloperName =&quot;Activity_USP&quot;,
+$Permission.USPTriggerCaseValidationRules,
+OR
+( 
+AND(ISCHANGED(Status),ISPICKVAL(PRIORVALUE(Status),&quot;Cerrada&quot;)), ISCHANGED(Description),ISCHANGED( Response__c )
+) 
+
+)</errorConditionFormula>
+    <errorMessage>[VR Tarea] Las tareas en estado cerrado no pueden reabrirse o modificarse.</errorMessage>
+</ValidationRule>

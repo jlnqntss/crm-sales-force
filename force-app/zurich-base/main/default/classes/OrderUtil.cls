@@ -509,10 +509,10 @@ global with sharing class OrderUtil
      * Método que setea en el contacto el número total de pólizas activas y el número total the quotes
      * @author nbizkarra
      * @date 08/04/2020
+     * change aberuete - 19/04/2023 - Refactorizar método
      **/
     public static void summaryTotalPolicies(List<Order> newList)
     {
-        
         Set<Id> idSet = new Set<Id>();
         Set<Id> idSetQuotes = new Set<Id>();
 
@@ -528,37 +528,8 @@ global with sharing class OrderUtil
             }
 
             //Summary Polizas
-            if ( !idSet.isEmpty() )
-            {
-                String whereClause = 'PolicyNum__c!=NULL AND PolicyStatus__c=\'' + Label.PolicyStatusActive + '\'';
-                // Define the context for the RollupSummariesUtil.summarize() method
-                RollupSummariesUtil.Context cont = new RollupSummariesUtil.Context(
-                    Contact.SobjectType,
-                    Order.SobjectType,
-                    Schema.SObjectType.Order.fields.ContactId__c,
-                    whereClause
-                    );
-
-                // RollupSummaryField for the NumPolicies__c field
-                cont.add(
-                    new RollupSummariesUtil.RollupSummaryField(
-                        Schema.SObjectType.Contact.fields.NumPolicies__c,
-                        Schema.SObjectType.Order.fields.Id,
-                        RollupSummariesUtil.summaryOperation.Count
-                        )
-                    );
-
-                // Call summarize method with context and parent records
-                Sobject[] responseObject = RollupSummariesUtil.summarize(cont, idSet);
-
-                responseObject = (Contact[]) responseObject;
-
-                if ( responseObject != null && !responseObject.isEmpty() )
-                {
-                    update responseObject;
-                }
-            }
-
+            updateSummaryPolicies(idSet);
+            
             //Summary Quotes
             if ( !idSetQuotes.isEmpty() )
             {
@@ -600,13 +571,11 @@ global with sharing class OrderUtil
      * Método que actualiza en el contacto la última quote actualizada
      * @author nbizkarra
      * @date 30/06/2020
+     * change aberuete - 19/04/2023 - Refactorizar método
      **/
     public static void updateLastQuoteOnContact(List<Order> newList)
     {
-        
         Map<Id, Order> mapQuotes = new Map<Id, Order>();
-        List<Contact> contacts = new List<Contact>();
-        Map<Id, Contact> contactsToUpdate = new Map<Id, Contact>();
 
         if (newList != null)
         {
@@ -621,28 +590,160 @@ global with sharing class OrderUtil
 
             if ( !mapQuotes.isEmpty() )
             {
-                contacts = [ SELECT id, LastQuote__c FROM Contact WHERE id = :mapQuotes.keySet() ];
+                updateContacts (mapQuotes);
+            }
+        }
+    }
 
-                if (contacts != null)
+     /**
+     * Método que borra los casos asociados a las orders que hay que borrar
+     * @author aberuete
+     * @date 19/04/2023
+     * @param List<Order> quotesToDelete: lista de orders a borrar
+     **/
+    public static void deleteCasesRelatedWithOrder (List<Order> quotesToDelete)
+    {
+        List<Case> casesToDelete = new List<Case>();
+
+        for (Order quote : quotesToDelete)
+        {
+            if ( !quote.Casos__r.isEmpty() )
+            {
+                for (Case c : quote.Casos__r)
                 {
-                    for (Contact c : contacts)
-                    {
-                        Order quote = mapQuotes.get(c.id);
-
-                        if (quote != null)
-                        {
-                            c.LastQuote__c = quote.id;
-                            contactsToUpdate.put(c.Id, c);
-                        }
-                    }
+                    casesToDelete.add(c);
                 }
+            }
+            //Si la order está activada no se puede borrar, settear el valor a Sync
+            quote.Status = Label.Order_Sync;
+        }
 
-                //Update contacts
-                if ( contactsToUpdate != null && !contactsToUpdate.isEmpty() )
+        if ( !casesToDelete.isEmpty() )
+        {
+            delete casesToDelete;
+        }
+    }
+
+    /**
+     * Método que borra las covers y subcovers relacionadas con los order items de las orders a borrar
+     * @author aberuete
+     * @date 19/04/2023
+     * @param List<Order> quotesToDelete: lista de orders a borrar
+     **/
+    public static void deleteConversAndSubcoversRelatedWithOrdersItem (List<Order> quotesToDelete)
+    {
+        List<Cover__c> coversToDelete = new List<Cover__c>();
+        List<Cover__c> subCoversToDelete = new List<Cover__c>();
+
+        SET<ID> keys = new Set<ID>();
+        for (Order quoteToDelete : quotesToDelete)
+        {
+            //coger los ids de los orderItems
+            for (OrderItem orderItemRelatedWithOrder : quoteToDelete.OrderItems)
+            {
+                keys.add(orderItemRelatedWithOrder.id);
+            }
+        }
+        
+        //Coger las covers y subcovers asociadas a los orderItems
+        coversToDelete = [
+            SELECT id, (SELECT id, CoverId__c FROM Coberturas__r), CoverId__c
+            FROM Cover__c
+            WHERE PolicyProduct__c IN (SELECT id FROM OrderItem WHERE id = :keys)
+        ];
+        
+        for (Cover__c coverRelatedWithOrderItem : coversToDelete)
+        {
+            for (Cover__c subCoverRelatedWithOrderItem : coverRelatedWithOrderItem.Coberturas__r)
+            {
+                subCoversToDelete.add(subCoverRelatedWithOrderItem);
+            }
+        }
+        
+        if ( !subCoversToDelete.isEmpty() )
+        {
+            delete subCoversToDelete;
+        }
+        
+        if ( !coversToDelete.isEmpty() )
+        {
+            delete coversToDelete;
+        }
+    }
+
+    /**
+     * Método que actualiza el número de pólizas del contacto
+     * @author aberuete
+     * @date 19/04/2023
+     * @param Set<Id> idSet : conjunto de ids de contacto asociadas a la order
+     **/
+    @testvisible
+    private static void updateSummaryPolicies(Set<Id> idSet)
+    {
+        if ( !idSet.isEmpty() )
+        {
+            String whereClause = 'PolicyNum__c!=NULL AND PolicyStatus__c=\'' + Label.PolicyStatusActive + '\'';
+            // Define the context for the RollupSummariesUtil.summarize() method
+            RollupSummariesUtil.Context cont = new RollupSummariesUtil.Context(
+                Contact.SobjectType,
+                Order.SobjectType,
+                Schema.SObjectType.Order.fields.ContactId__c,
+                whereClause
+            );
+            
+            // RollupSummaryField for the NumPolicies__c field
+            cont.add(
+                new RollupSummariesUtil.RollupSummaryField(
+                Schema.SObjectType.Contact.fields.NumPolicies__c,
+                Schema.SObjectType.Order.fields.Id,
+                RollupSummariesUtil.summaryOperation.Count
+                )
+            );
+
+            // Call summarize method with context and parent records
+            Sobject[] responseObject = RollupSummariesUtil.summarize(cont, idSet);
+
+            responseObject = (Contact[]) responseObject;
+
+            if ( responseObject != null && !responseObject.isEmpty() )
+            {
+                update responseObject;
+            }
+        }  
+    }
+
+    /**
+     * Método que actualiza la última quote asociada al contacto
+     * @author aberuete
+     * @date 19/04/2023
+     * @param Map<Id, Order> mapQuotes : Mapa de ids de contacto asociados a orders y la order
+     **/
+    @testvisible
+    private static void updateContacts (Map<Id, Order> mapQuotes)
+    {
+        List<Contact> contacts = new List<Contact>();
+        Map<Id, Contact> contactsToUpdate = new Map<Id, Contact>();
+
+        contacts = [ SELECT id, LastQuote__c FROM Contact WHERE id = :mapQuotes.keySet()];
+
+        if (contacts != null)
+        {
+            for (Contact c : contacts)
+            {
+                Order quote = mapQuotes.get(c.id);
+
+                if (quote != null)
                 {
-                    update contactsToUpdate.values();
+                    c.LastQuote__c = quote.id;
+                    contactsToUpdate.put(c.Id, c);
                 }
             }
         }
+
+        //Update contacts
+        if ( contactsToUpdate != null && !contactsToUpdate.isEmpty() )
+        {
+            update contactsToUpdate.values();
+        }  
     }
 }
