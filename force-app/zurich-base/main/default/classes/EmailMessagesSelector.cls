@@ -1,5 +1,13 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-24-2023
+ * @last modified by  : aberuete
+**/
 public without sharing class EmailMessagesSelector
 {
+    static final String QUERY_SELECT = 'SELECT {0} FROM EmailMessage ';
     //Esta propiedad indica el objeto Salesforce del que vamos a extraer los campos necesarios en la query
     //Si no se indica el objeto, solo se recupera el Id del objeto Salesforce
     public String sObjectToQuery {get; set;}
@@ -83,7 +91,7 @@ public without sharing class EmailMessagesSelector
         {
             this.sObjectToQuery = 'EmailMessage';
             String query = String.format(
-                'SELECT {0} FROM EmailMessage ' +
+                QUERY_SELECT +
                 'WHERE MessageIdentifier IN : messageIdentifiers ' +
                 'ORDER BY SystemModstamp DESC',
                 new List<String> {
@@ -112,7 +120,7 @@ public without sharing class EmailMessagesSelector
         {
             this.sObjectToQuery = 'EmailMessage';
             String query = String.format(
-                'SELECT {0} FROM EmailMessage ' +
+                QUERY_SELECT +
                 'WHERE Subject IN : subjects ',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -140,7 +148,7 @@ public without sharing class EmailMessagesSelector
         {
             this.sObjectToQuery = 'EmailMessage';
             String query = String.format(
-                'SELECT {0} FROM EmailMessage ' +
+                QUERY_SELECT +
                 'WHERE RelatedToId IN : relatedToIds',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -204,13 +212,13 @@ public without sharing class EmailMessagesSelector
         }
 
         return (List<EmailMessage>) Database.query(String.format(
-                                                       'SELECT {0} FROM EmailMessage ' +
-                                                       'WHERE ActivityId IN : activityIds',
-                                                       new List<String>
-        {
-            String.join(new List<String> (this.fieldsToQuery), ',')
-        }
-                                                       ) );
+            QUERY_SELECT +
+            'WHERE ActivityId IN : activityIds',
+            new List<String>
+            {
+                String.join(new List<String> (this.fieldsToQuery), ',')
+            }
+        ) );
     }
 
     /**
@@ -227,7 +235,7 @@ public without sharing class EmailMessagesSelector
         {
             this.sObjectToQuery = 'EmailMessage';
             String query = String.format(
-                'SELECT {0} FROM EmailMessage ' +
+                QUERY_SELECT +
                 'WHERE GenesysInteractionId__c IN :interactionIds ' +
                 'ORDER BY SystemModstamp DESC',
                 new List<String> {

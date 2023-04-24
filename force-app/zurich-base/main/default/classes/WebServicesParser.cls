@@ -279,7 +279,6 @@ public with sharing class WebServicesParser
                     else
                     {
                         manageRecordGeneration(
-                            result,
                             fieldControl,
                             record,
                             element,
@@ -509,14 +508,13 @@ public with sharing class WebServicesParser
      **
      *  @author raespinosa
      *  @date 13/04/2020
-     *  @param WebParserResult result
      *  @param WebServicesControl__mdt fieldControl
      *  @param SObject record
      *  @param List<String> errorMessages
      *  @return SObject Returns a record with the new value added if it is correct, or and errorMessage if it is wrong
      *  @where N/A
      **/
-    private static SObject manageRecordGeneration(WebParserResult result, WebServicesControl__mdt fieldControl, SObject record, Object value, List<String> errorMessages)
+    private static SObject manageRecordGeneration(WebServicesControl__mdt fieldControl, SObject record, Object value, List<String> errorMessages)
     {
         Schema.DescribeFieldResult fieldDescribe;
         String textValue;

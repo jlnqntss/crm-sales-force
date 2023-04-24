@@ -1,5 +1,13 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-24-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class ContactPointEmailsSelector
 {
+    static final String QUERY_SELECT = 'SELECT {0} FROM ContactPointEmail ';
     //Esta propiedad indica el objeto Salesforce del que vamos a extraer los campos necesarios en la query
     //Si no se indica el objeto, solo se recupera el Id del objeto Salesforce
     public String sObjectToQuery {get; set;}
@@ -88,7 +96,7 @@ public with sharing class ContactPointEmailsSelector
 
             this.sObjectToQuery = 'ContactPointEmail';
             String query = String.format(
-                'SELECT {0} FROM ContactPointEmail ' +
+                QUERY_SELECT +
                 'WHERE ScopeId__c IN : scopeIds AND IsPrimary =: isPrimary AND Id NOT IN: contactPointEmailsToExclude',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -116,7 +124,7 @@ public with sharing class ContactPointEmailsSelector
         {
             this.sObjectToQuery = 'ContactPointEmail';
             String query = String.format(
-                'SELECT {0} FROM ContactPointEmail ' +
+                QUERY_SELECT +
                 'WHERE IsPrimary =: isPrimary',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -145,7 +153,7 @@ public with sharing class ContactPointEmailsSelector
         {
             this.sObjectToQuery = 'ContactPointEmail';
             String query = String.format(
-                'SELECT {0} FROM ContactPointEmail ' +
+                QUERY_SELECT +
                 'WHERE ScopeId__c IN : scopeIds AND EmailAddress =: emailAddress',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
