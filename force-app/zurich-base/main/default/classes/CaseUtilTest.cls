@@ -1,6 +1,20 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-18-2023
+ * @last modified by  : aberuete
+**/
 @isTest
 private class CaseUtilTest
 {
+    static final String MESSAGE_UN_CASO_CREADO = 'Se debe de haber creado como mínimo 1 caso!';
+    static final String MESSAGE_ENTITLEMENTS = 'Deberían existir entitlements, al menos el Default';
+    static final String MESSAGE_CASEMILESTONES = 'Los casos deberían tener casemilestones asociados';
+    static final String MESSAGE_MILESTONE_NOT_COMPLETED_YET = 'El milestone no debería estar completado aún';
+    static final String MESSAGE_CUSTOMERFOUNDBY_NOT_CORRECT = 'El valor de CustomerFoundBy__c en el caso no se actualizó correctamente';
+    static final String MESSAGE_CONTACTID_NOT_CORRECT = 'El valor de ContactId en el caso no se actualizó correctamente';
+    static final String LABEL_GENERAL_INSURANCE = 'General Insurance';
 
     @TestSetup
     public static void createScenario()
@@ -56,7 +70,7 @@ private class CaseUtilTest
 
         //Recuperar de nuevo los test insertados
         List<Case> expectedCases = [SELECT Id, AccountId, ContactId FROM Case WHERE Id IN :cases];
-        System.assertEquals(false, expectedCases.isEmpty(), 'Se deben de haber creado como mínimo 1 caso!');
+        System.assertEquals(false, expectedCases.isEmpty(), MESSAGE_UN_CASO_CREADO);
 
         //Si en el Before Insert se ha actualizado su accountId y PersonContactId
         for(Case record : expectedCases)
@@ -102,7 +116,7 @@ private class CaseUtilTest
 
         //Recuperar de nuevo los test insertados
         List<Case> expectedCases = [SELECT Id, AccountId, ContactId FROM Case WHERE Id IN :cases];
-        System.assertEquals(false, expectedCases.isEmpty(), 'Se deben de haber creado como mínimo 1 caso!');
+        System.assertEquals(false, expectedCases.isEmpty(), MESSAGE_UN_CASO_CREADO);
 
         //Si en el Before Insert se ha actualizado su accountId y PersonContactId
         for(Case record : expectedCases)
@@ -130,7 +144,7 @@ private class CaseUtilTest
 
         //Recuperar de nuevo los test insertados
         List<Case> expectedCases = [SELECT Id, AccountId, ContactId FROM Case WHERE Id IN :cases];
-        System.assertEquals(false, expectedCases.isEmpty(), 'Se deben de haber creado como mínimo 1 caso!');
+        System.assertEquals(false, expectedCases.isEmpty(), MESSAGE_UN_CASO_CREADO);
 
         //Si en el Before Insert se ha actualizado su accountId y PersonContactId
         for(Case record : expectedCases)
@@ -162,7 +176,7 @@ private class CaseUtilTest
         insert cases;
 
         List<Entitlement> ents = [SELECT Id FROM Entitlement];
-        System.assertEquals(false, ents.isEmpty(),'deberían existir entitlements, al menos el Default');
+        System.assertEquals(false, ents.isEmpty(),MESSAGE_ENTITLEMENTS);
 
         List<Case> casesEnt = [SELECT Id, EntitlementId FROM Case];
         System.assertEquals(false, casesEnt.isEmpty(),'los casos deberían haberse insertado');
@@ -170,10 +184,10 @@ private class CaseUtilTest
 
         //Comprobar que los milestones no están completados
         List<CaseMilestone> milestonesCreated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
-        System.assertEquals(false, milestonesCreated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        System.assertEquals(false, milestonesCreated.isEmpty(),MESSAGE_CASEMILESTONES);
         for(CaseMilestone cm: milestonesCreated)
         {
-            System.assertEquals(false, cm.isCompleted, 'el milestone no debería estar completado aún');
+            System.assertEquals(false, cm.isCompleted, MESSAGE_MILESTONE_NOT_COMPLETED_YET);
         }
 
         Test.startTest();
@@ -191,7 +205,7 @@ private class CaseUtilTest
         Test.stopTest();
 
         List<CaseMilestone> milestonesUpdated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
-        System.assertEquals(false, milestonesUpdated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        System.assertEquals(false, milestonesUpdated.isEmpty(),MESSAGE_CASEMILESTONES);
         for(CaseMilestone cmilestone: milestonesUpdated)
         {
             System.assertEquals(true, cmilestone.isCompleted, 'el milestone debería estar completado ya');
@@ -220,7 +234,7 @@ private class CaseUtilTest
         insert cases;
 
         List<Entitlement> ents = [SELECT Id FROM Entitlement];
-        System.assertEquals(false, ents.isEmpty(),'deberían existir entitlements, al menos el Default');
+        System.assertEquals(false, ents.isEmpty(),MESSAGE_ENTITLEMENTS);
 
         List<Case> casesEnt = [SELECT Id, EntitlementId FROM Case];
         System.assertEquals(false, casesEnt.isEmpty(),'los casos deberían haberse insertado');
@@ -228,10 +242,10 @@ private class CaseUtilTest
 
         //Comprobar que los milestones no están completados
         List<CaseMilestone> milestonesCreated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
-        System.assertEquals(false, milestonesCreated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        System.assertEquals(false, milestonesCreated.isEmpty(),MESSAGE_CASEMILESTONES);
         for(CaseMilestone cm: milestonesCreated)
         {
-            System.assertEquals(false, cm.isCompleted, 'el milestone no debería estar completado aún');
+            System.assertEquals(false, cm.isCompleted, MESSAGE_MILESTONE_NOT_COMPLETED_YET);
         }
 
         Test.startTest();
@@ -244,7 +258,7 @@ private class CaseUtilTest
         Test.stopTest();
 
         List<CaseMilestone> milestonesUpdated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
-        System.assertEquals(false, milestonesUpdated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        System.assertEquals(false, milestonesUpdated.isEmpty(),MESSAGE_CASEMILESTONES);
         for(CaseMilestone cmilestone: milestonesUpdated)
         {
             System.assertEquals(false, cmilestone.isCompleted, 'el milestone no debería estar completado porque el caso aún no se cerró');
@@ -262,7 +276,7 @@ private class CaseUtilTest
         Id rtUSPId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
 
         List<Entitlement> ents = [SELECT Id FROM Entitlement WHERE Name = 'DefaultUsp'];
-        System.assertEquals(false, ents.isEmpty(),'deberían existir entitlements, al menos el Default');
+        System.assertEquals(false, ents.isEmpty(),MESSAGE_ENTITLEMENTS);
 
         //Crear caso
         List<Case> cases = new List<Case>();
@@ -276,10 +290,10 @@ private class CaseUtilTest
 
         //Comprobar que los milestones no están completados
         List<CaseMilestone> milestonesCreated = [SELECT IsCompleted, MilestoneType.Name FROM CaseMilestone WHERE CaseId IN :cases];
-        System.assertEquals(false, milestonesCreated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        System.assertEquals(false, milestonesCreated.isEmpty(),MESSAGE_CASEMILESTONES);
         for(CaseMilestone cm: milestonesCreated)
         {
-            System.assertEquals(false, cm.isCompleted, 'el milestone no debería estar completado aún');
+            System.assertEquals(false, cm.isCompleted, MESSAGE_MILESTONE_NOT_COMPLETED_YET);
         }
 
         Test.startTest();
@@ -304,7 +318,7 @@ private class CaseUtilTest
         Test.stopTest();
 
         List<CaseMilestone> milestonesUpdated = [SELECT IsCompleted FROM CaseMilestone WHERE CaseId IN :cases];
-        System.assertEquals(false, milestonesUpdated.isEmpty(),'los casos deberían tener casemilestones asociados');
+        System.assertEquals(false, milestonesUpdated.isEmpty(),MESSAGE_CASEMILESTONES);
         for(CaseMilestone cmilestone: milestonesUpdated)
         {
             System.assertEquals(true, cmilestone.isCompleted, 'el milestone debería estar completado ya');
@@ -562,8 +576,212 @@ private class CaseUtilTest
 
         System.assertEquals(allOffers[0].Id,updatedCases[0].OfferId__c);
         System.assertEquals(allPolicies[0].Id,updatedCases[1].PolicyId__c);
-
     }
 
+    /*
+    * Test que comprueba que se actualizan correctamente los contactos asociados a los casos
+    * @author aberuete
+    * @date 18/04/2023
+    */
+    @IsTest
+    public static void test_getCasesToUpdateContactFromEmailToCase()
+    {
+        // Crear datos de prueba: Caso y Contacto relacionado
+        Case caso = new Case(Origin = 'Email', SuppliedEmail = 'test@test.com', LegalEntity__c = LABEL_GENERAL_INSURANCE, 
+                            SourceCountry__c = 'US', Partner__c = 'TestPartner', 
+                            RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Enquiry').getRecordTypeId());
+        insert caso;
+        
+        Contact contactoSF = new Contact(Email = 'test@test.com', LegalEntity__c = LABEL_GENERAL_INSURANCE, SourceCountry__c = 'US', 
+                                        Partner__c = 'TestPartner', LastName = 'Prueba contactoSF',
+                                        RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('CustomerGI').getRecordTypeId());
+        insert contactoSF;
+        
+        List<Case> updateCases = new List<Case>();
 
+        // Ejecutar el código a probar
+        Test.startTest();
+        updateCases = CaseUtil.getCasesToUpdateContactFromEmailToCase (updateCases,caso);
+        Test.stopTest();
+        
+        // Validar los resultados
+        System.assertEquals(1, updateCases.size(), 'Se esperaba que se actualizara 1 caso');
+        System.assertEquals(contactoSF.Id, updateCases[0].ContactId, 'El Id de contacto asignado al caso no es el esperado');
+        System.assertEquals('Email', updateCases[0].CustomerFoundBy__c, MESSAGE_CUSTOMERFOUNDBY_NOT_CORRECT);
+    }
+
+    /*
+    * Test que comprueba que se obtienen correctamente los casos para que sea marcado el campo CaseMilestone a completado
+    * @author aberuete
+    * @date 18/04/2023
+    */
+    @IsTest
+    public static void test_getCasesToMarkMilestonesCompletedWhenClose()
+    {
+        // Crea datos de prueba
+        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        Case oldCase = new Case(Status = 'Abierto', RecordTypeId = rtOCSInquiryId);
+        Case newCase = new Case(Status = 'Cerrado', RecordTypeId = rtOCSInquiryId);
+        insert new List<Case>{oldCase, newCase};
+
+        List<Case> caseList = [Select id,Status,RecordTypeId,SlaExitDate from Case where id =:newCase.Id];
+        
+        Test.startTest();
+        // Ejecuta la función a probar
+        List<Case> updatedCases = CaseUtil.getCasesToMarkMilestonesCompletedWhenClose(caseList, new Map<Id, Case>{newCase.Id => oldCase});
+        Test.stopTest();
+
+        // Verifica el resultado esperado
+        System.assertEquals(1, updatedCases.size(), 'El número de casos actualizados no coincide con el esperado');
+        System.assertEquals(newCase.Id, updatedCases[0].Id, 'El caso actualizado no coincide con el esperado');
+    }
+
+    /*
+    * Test que comprueba que se asocia correctamente la póliza y el contacto al caso
+    * @author aberuete
+    * @date 18/04/2023
+    */
+    @IsTest
+    public static void test_updatePolicyToCaseifCaseDoesNotHavePolicy()
+    {
+        AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
+        Id rtId = SystemUtil.getOrderRecordTypeIdByName('PolicyGI');
+
+        Contact contactOrder = [Select id from Contact limit 1];
+        Account accountOrder = [SELECT Id FROM Account LIMIT 1];
+
+        // Crear objeto Case
+        Case caso = new Case();
+        caso.PolicyNum__c = '12345';
+        caso.Partner__c = 'Partner1';
+        caso.sourceCountry__c = 'France';
+        insert caso;
+
+        // Crear registro de prueba de Order
+        Order policy = new Order();
+        policy.PolicyNum__c = 'PartnerName1-12345';
+        policy.ContactId__c = contactOrder.Id;
+        policy.LegalEntity__c = LABEL_GENERAL_INSURANCE;
+        policy.RecordTypeId = rtId;
+        policy.AccountId = accountOrder.Id;
+        policy.EffectiveDate = Date.valueOf('1994-01-01') ;
+        policy.Status = 'Sync';
+        insert policy;
+
+        // Crear mapa de prueba mapMultiPartner
+        Map<String, String> mapMultiPartner = new Map<String, String>();
+        mapMultiPartner.put('Partner1', 'PartnerName1');
+
+        // Llamar al método de prueba
+        Test.startTest();
+        caso = CaseUtil.updatePolicyToCaseifCaseDoesNotHavePolicy(adminSetup, caso, mapMultiPartner);
+        Test.stopTest();
+
+        // Verificar los resultados esperados
+        System.assertEquals('PartnerName1-12345', caso.PolicyNum__c, 'El valor de PolicyNum__c en el caso no se actualizó correctamente');
+        System.assertEquals(contactOrder.Id, caso.ContactId, MESSAGE_CONTACTID_NOT_CORRECT);
+        System.assertEquals(policy.Id, caso.Policy__c, 'El valor de Policy__c en el caso no se actualizó correctamente');
+        System.assertEquals(LABEL_GENERAL_INSURANCE, caso.LegalEntity__c,'El valor de LegalEntity__c en el caso no se actualizó correctamente');
+        System.assertEquals('Policy Number', caso.CustomerFoundBy__c,MESSAGE_CUSTOMERFOUNDBY_NOT_CORRECT);
+    }
+
+    /*
+    * Test que comprueba que se asocia correctamente el contacto al caso
+    * @author aberuete
+    * @date 18/04/2023
+    */
+    @IsTest
+    public static void test_updateContactToCaseByEmail()
+    {
+        // Crear registros de prueba necesarios
+        // Crear objeto Case
+        Case caso = new Case();
+        caso.SuppliedEmail = 'test@example.com';
+        caso.LegalEntity__c = LABEL_GENERAL_INSURANCE;
+        caso.SourceCountry__c = 'France';
+        caso.Partner__c = 'Partner1';
+        insert caso;
+
+        // Crear registro de prueba de Contact
+        Contact contactoSF = new Contact();
+        contactoSF.LastName = 'ContactSF prueba';
+        contactoSF.Email = caso.SuppliedEmail;
+        contactoSF.LegalEntity__c = caso.LegalEntity__c;
+        contactoSF.SourceCountry__c = caso.SourceCountry__c;
+        contactoSF.Partner__c = caso.Partner__c;
+        contactoSF.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('CustomerGI').getRecordTypeId();
+        insert contactoSF;
+
+        // Llamar al método de prueba
+        Test.startTest();
+        caso = CaseUtil.updateContactToCaseByEmail(caso);
+        Test.stopTest();
+
+        // Verificar los resultados esperados
+        System.assertEquals(contactoSF.Id, caso.ContactId, MESSAGE_CONTACTID_NOT_CORRECT );
+        System.assertEquals('Email', caso.CustomerFoundBy__c, MESSAGE_CUSTOMERFOUNDBY_NOT_CORRECT);
+    }
+
+    /*
+    * Test que comprueba que se asocia correctamente el contacto al caso
+    * @author aberuete
+    * @date 18/04/2023
+    */
+    @IsTest
+    public static void test_updateContactToCaseByPhone()
+    {
+        // Crear registros de prueba necesarios
+        // Crear objeto Case
+        Case caso = new Case();
+        caso.SuppliedPhone = '604324568';
+        caso.LegalEntity__c = LABEL_GENERAL_INSURANCE;
+        caso.SourceCountry__c = 'France';
+        caso.Partner__c = 'Partner1';
+        insert caso;
+
+        // Crear registro de prueba de Contact
+        Contact contactoSF = new Contact();
+        contactoSF.LastName = 'ContactSF prueba';
+        contactoSF.MobilePhone = caso.SuppliedPhone;
+        contactoSF.LegalEntity__c = caso.LegalEntity__c;
+        contactoSF.SourceCountry__c = caso.SourceCountry__c;
+        contactoSF.Partner__c = caso.Partner__c;
+        contactoSF.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('CustomerGI').getRecordTypeId();
+        insert contactoSF;
+
+        // Llamar al método de prueba
+        Test.startTest();
+        caso = CaseUtil.updateContactToCaseByPhone(caso);
+        Test.stopTest();
+
+        // Verificar los resultados esperados
+        System.assertEquals(contactoSF.Id, caso.ContactId, MESSAGE_CONTACTID_NOT_CORRECT );
+        System.assertEquals('Phone', caso.CustomerFoundBy__c, MESSAGE_CUSTOMERFOUNDBY_NOT_CORRECT);
+    }
+
+    /*
+    * Test que comprueba que se añade correctamente la traducción al campo tipo del caso si el caso proviene de la web de francia
+    * @author aberuete
+    * @date 18/04/2023
+    */
+    @IsTest
+    public static void test_ifCaseFromWebFranceUpdateTranslationToCase()
+    {
+        // Crear registros de prueba necesarios
+        // Crear objeto Case
+        Case caso = new Case();
+        caso.SourceCountry__c = 'France';
+        caso.Origin = 'Web';
+        caso.Type = 'Contratar mi seguro';
+        caso.Subtype__c = 'Close result';
+        insert caso;
+
+        // Llamar al método de prueba
+        Test.startTest();
+        caso = CaseUtil.ifCaseFromWebFranceUpdateTranslationToCase(caso);
+        Test.stopTest();
+
+        // Verificar los resultados esperados
+        System.assertEquals('Souscrire mon assurance', caso.Type_translation__c,'El valor de Type_translation__c en el caso no se actualizó correctamente' );
+    }
 }
