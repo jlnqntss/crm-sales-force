@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : jjuaristi
  * @group             : 
- * @last modified on  : 20-10-2021
- * @last modified by  : jjuaristi
+ * @last modified on  : 04-24-2023
+ * @last modified by  : aberuete
 **/
 public with sharing class GenesysInteractionsService
 {
@@ -127,10 +127,10 @@ public with sharing class GenesysInteractionsService
         if(interactionLog.caller != null)
         {
             interactionTask.IdentifiedByNIF__c = !(interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false);
-            interactionTask.IdentifiedByANI__c = interactionLog.caller.identifiedByANI == null || interactionLog.caller.identifiedByANI == false ? false : true;
-            interactionTask.NoIdentified__c = interactionLog.caller.noIdentified == null || interactionLog.caller.noIdentified == false ? false : true;
-            interactionTask.MultiIdentifiedByNIF__c = interactionLog.caller.multiIdentifiedByNIF == null || interactionLog.caller.multiIdentifiedByNIF == false ? false : true;
-            interactionTask.MultiIdentifiedByANI__c = interactionLog.caller.multiIdentifiedByANI == null || interactionLog.caller.multiIdentifiedByANI == false ? false : true;
+            interactionTask.IdentifiedByANI__c = (interactionLog.caller.identifiedByANI != null && interactionLog.caller.identifiedByANI );
+            interactionTask.NoIdentified__c = (interactionLog.caller.noIdentified != null && interactionLog.caller.noIdentified );
+            interactionTask.MultiIdentifiedByNIF__c = (interactionLog.caller.multiIdentifiedByNIF != null && interactionLog.caller.multiIdentifiedByNIF );
+            interactionTask.MultiIdentifiedByANI__c = (interactionLog.caller.multiIdentifiedByANI != null && interactionLog.caller.multiIdentifiedByANI );
         }
 
         insert interactionTask;

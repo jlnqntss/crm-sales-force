@@ -1,9 +1,17 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-24-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class GenerateScopeUtil
 {
     private static final String HANDLE_TYPE_SCOPE_ACCOUNT = 'SCOPE_ACCOUNT';
     private static final String HANDLE_TYPE_SCOPE_OTHER = 'SCOPE_OTHER';
     private static final String HANDLE_TYPE_PARTNER_POLICY = 'PARTNER_POLICY';
     private static final String CLASS_NAME = 'GenerateScopeUtil';
+    static final String ERROR_REFERENCED_FIELD_NOT_EXIST = 'The referenced Field Name doesnt exist: ';
 
     /**
      * Controlar el número de eventos a procesar (200) y marcar cual ha sido el último evento procesado
@@ -461,7 +469,7 @@ public with sharing class GenerateScopeUtil
                     // Comprobamos que el campo del objeto destino existe
                     String relatedFieldName = mapRelatedFieldNameByObjectType.get(objectType);
                     if( !Schema.getGlobalDescribe().get(objectType).getDescribe().fields.getMap().containsKey(relatedFieldName) ) {
-                        throw new GenerateScopeException('The referenced Field Name doesnt exist: ' + objectType + '.' + relatedFieldName);
+                        throw new GenerateScopeException(ERROR_REFERENCED_FIELD_NOT_EXIST + objectType + '.' + relatedFieldName);
                     }
                     
                     // Recuperamos el nombre del objeto referenciado. Ej: para Claim seria Policy__c
@@ -472,12 +480,13 @@ public with sharing class GenerateScopeUtil
                     // Recuperamos el nombre del campo del objeto referenciado. Ej: para Claim seria Scope__c de Policy__c
                     String refObjectFieldName = mapReferenceObjectFieldByObjectType.get(objectType); // Ej. Scope__c
                     if( !Schema.getGlobalDescribe().get(refObjectName).getDescribe().fields.getMap().containsKey(refObjectFieldName) ) {
-                        throw new GenerateScopeException('The referenced Field Name doesnt exist: ' + refObjectName + '.' + refObjectFieldName);
+                        throw new GenerateScopeException(ERROR_REFERENCED_FIELD_NOT_EXIST + refObjectName + '.' + refObjectFieldName);
                     }
                     
                     // Pasamos a realizar las consultas
                     // Recuperamos los ids de los eventos
-                    Set<Id> ids = mapReferenceIdsByObjectTypes.get(objectType);
+                    Set<Id> ids = new Set<Id>();
+                    ids = mapReferenceIdsByObjectTypes.get(objectType);
                     String query = 'SELECT ' + refObjectFieldName + ' FROM ' + refObjectName + ' WHERE Id IN :ids';
                     List<SObject> lista = Database.query(query);
                     // lo guardamos en un mapa de polizas por id categorizado por ObjectType
@@ -614,7 +623,7 @@ public with sharing class GenerateScopeUtil
                     // Comprobamos que el campo del objeto destino existe
                     String relatedFieldName = mapRelatedFieldNameByObjectType.get(objectType);
                     if( !Schema.getGlobalDescribe().get(objectType).getDescribe().fields.getMap().containsKey(relatedFieldName) ) {
-                        throw new GenerateScopeException('The referenced Field Name doesnt exist: ' + objectType + '.' + relatedFieldName);
+                        throw new GenerateScopeException(ERROR_REFERENCED_FIELD_NOT_EXIST + objectType + '.' + relatedFieldName);
                     }
                     
                     // Recuperamos el nombre del objeto referenciado. Ej: para Claim seria Policy__c
@@ -625,12 +634,13 @@ public with sharing class GenerateScopeUtil
                     // Recuperamos el nombre del campo del objeto referenciado. Ej: para Claim seria Scope__c de Policy__c
                     String refObjectFieldName = mapReferenceObjectFieldByObjectType.get(objectType); // Ej. Scope__c
                     if( !Schema.getGlobalDescribe().get(refObjectName).getDescribe().fields.getMap().containsKey(refObjectFieldName) ) {
-                        throw new GenerateScopeException('The referenced Field Name doesnt exist: ' + refObjectName + '.' + refObjectFieldName);
+                        throw new GenerateScopeException(ERROR_REFERENCED_FIELD_NOT_EXIST + refObjectName + '.' + refObjectFieldName);
                     }
                     
                     // Pasamos a realizar las consultas
                     // Recuperamos los ids de los eventos
-                    Set<String> ids = mapReferenceIdsByObjectTypes.get(objectType);
+                    Set<String> ids = new Set<String>();
+                    ids = mapReferenceIdsByObjectTypes.get(objectType);
                     String query = 'SELECT Id, ' + refObjectFieldName + ' FROM ' + refObjectName + ' WHERE ' + refObjectFieldName + ' IN :ids';
                     List<SObject> lista = Database.query(query);
 
