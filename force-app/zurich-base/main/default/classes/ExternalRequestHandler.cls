@@ -29,7 +29,7 @@ public class ExternalRequestHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
-        INFOHandler.fillEntityOrderMap();
+        INFOHandler.fillEntitiesByPriorityMap();
         INFOHandler.setERIndex(newList);
     }
 

@@ -56,7 +56,8 @@ public class INFOHandler implements ISystem
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
 
     // Orden de DML sobre entidades
-    private static Map<Decimal, String> mapEntityOrder = new Map<Decimal, String>();
+    private static List<Decimal> entityIndexes = new List<Decimal>();
+    private static Map<Decimal, String> entitiesByPrirority = new Map<Decimal, String>();
 
     public static final String SOBJECT_ACCOUNT = 'Account';
     public static final String SOBJECT_CONTACT = 'Contact';
@@ -137,7 +138,7 @@ public class INFOHandler implements ISystem
         ).selectByOrigin(new Set<String> {Transformer.ORIGIN_NAME_INFO}).get(0).Retries__c;
 
         // 5 - Cargar mapa con orden de prioridades
-        fillEntityOrderMap();
+        fillEntitiesByPriorityMap();
     }
 
     /**
@@ -588,8 +589,10 @@ public class INFOHandler implements ISystem
         ExternalRequest__c extReq;
 
         // 1 - Realizar las operaciones DML sobre los registros generados y actualizar external request con resultado
-        for ( String entity : mapEntityOrder.values() )
+        for ( Decimal index : entityIndexes )
         {
+            String entity = entitiesByPrirority.get(index);
+
             if ( recordsToPersist.containsKey(entity) )
             {
                 for ( String objectName : sObjectOrder )
@@ -616,7 +619,7 @@ public class INFOHandler implements ISystem
                                 }
                                 //Procesamiento incorrecto
                                 else
-                                {   
+                                {
                                     setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
                                 }
                             }
@@ -776,15 +779,20 @@ public class INFOHandler implements ISystem
         return result;
     }
 
-    public static void fillEntityOrderMap()
+    public static void fillEntitiesByPriorityMap()
     {
-        if(mapEntityOrder != null || !mapEntityOrder.isEmpty())
+        if(entitiesByPrirority != null && entitiesByPrirority.isEmpty())
         {
             List<EntityOrderMapping__mdt> orderValues = EntityOrderMapping__mdt.getAll().values();
+
             for(EntityOrderMapping__mdt entity : orderValues)
             {
-                mapEntityOrder.put(entity.Priority__c, entity.Entity__c);
+                entitiesByPrirority.put(entity.Priority__c, entity.Entity__c);
             }
+
+            // Se añáden los índices a una lista ordenada
+            entityIndexes.addAll(entitiesByPrirority.keySet());
+            entityIndexes.sort();
         }
     }
 
@@ -792,9 +800,9 @@ public class INFOHandler implements ISystem
     {
         for(ExternalRequest__c currentER : erList)
         {
-            for(Decimal index : mapEntityOrder.keySet())
+            for(Decimal index : entitiesByPrirority.keySet())
             {
-                if (mapEntityOrder.get(index) == currentER.Entity__c)
+                if (entitiesByPrirority.get(index) == currentER.Entity__c)
                 {
                     currentER.Index__c = index;
                 }
