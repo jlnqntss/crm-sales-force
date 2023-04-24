@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <description>Utiliza un Aura para ir al email o tarea</description>
+        <name>Abrir_el_Caso_Master_en_una_pesta_a</name>
+        <label>Abrir el Caso Master en una pestaña</label>
+        <locationX>314</locationX>
+        <locationY>854</locationY>
+        <actionName>c:RedirectToRecordAction</actionName>
+        <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>getRelatedCase.MasterRecordId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>PopSearchPage</name>
         <label>Abrir ficha de búsqueda</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>614</locationY>
         <actionName>c:RedirectToSearchAction</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>searchFor</name>
             <value>
@@ -19,10 +37,11 @@
         <description>Utiliza un Aura para ir al email o tarea</description>
         <name>RedirectToCase</name>
         <label>Abrir el Caso en una pestaña</label>
-        <locationX>314</locationX>
-        <locationY>614</locationY>
+        <locationX>578</locationX>
+        <locationY>854</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -35,13 +54,14 @@
         <description>Utiliza un Aura para ir al contacto</description>
         <name>RedirectToCustomer</name>
         <label>Abrir la ficha del customer</label>
-        <locationX>314</locationX>
+        <locationX>446</locationX>
         <locationY>278</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <connector>
             <targetReference>HasRecordIdDecision</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -61,6 +81,7 @@
         <connector>
             <targetReference>RedirectToRelatedRecord</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -77,6 +98,7 @@
         <locationY>734</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -96,7 +118,7 @@
         <description>Si no llega vacío el valor de EmailMessage.ParentId.AccountId, se puede abrir la ficha del cliente</description>
         <name>HasCustomerIdDecision</name>
         <label>¿Hay Customer Id?</label>
-        <locationX>446</locationX>
+        <locationX>578</locationX>
         <locationY>158</locationY>
         <defaultConnector>
             <targetReference>HasRecordIdDecision</targetReference>
@@ -121,7 +143,7 @@
     <decisions>
         <name>HasRecordIdDecision</name>
         <label>¿Hay Record Id?</label>
-        <locationX>446</locationX>
+        <locationX>578</locationX>
         <locationY>494</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -150,7 +172,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>RedirectToCase</targetReference>
+                <targetReference>getRelatedCase</targetReference>
             </connector>
             <label>¿Hay Id. de registro relacionado?</label>
         </rules>
@@ -170,10 +192,43 @@
             <label>¿Hay teléfono para buscar?</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>isCombined</name>
+        <label>¿Esta combinado?</label>
+        <locationX>446</locationX>
+        <locationY>734</locationY>
+        <defaultConnector>
+            <targetReference>RedirectToCase</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No combinado</defaultConnectorLabel>
+        <rules>
+            <name>Combinado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getRelatedCase.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Combinado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getRelatedCase.MasterRecordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Abrir_el_Caso_Master_en_una_pesta_a</targetReference>
+            </connector>
+            <label>Combinado</label>
+        </rules>
+    </decisions>
     <description>Cuando un mediador atiende un Caso enrutado por Genesys, se deberían abrir de forma automática:
 Ficha del cliente
 Ficha del mediador
 Ficha del caso</description>
+    <environments>Default</environments>
     <interviewLabel>CSM - Apertura de ficha de Genesys {!$Flow.CurrentDateTime}</interviewLabel>
     <label>CSM - Apertura de ficha de Genesys</label>
     <processMetadataValues>
@@ -195,9 +250,30 @@ Ficha del caso</description>
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordLookups>
+        <name>getRelatedCase</name>
+        <label>Obtenemos caso relacionado</label>
+        <locationX>446</locationX>
+        <locationY>614</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>isCombined</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>relatedrecordid</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>320</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>HasCustomerIdDecision</targetReference>
