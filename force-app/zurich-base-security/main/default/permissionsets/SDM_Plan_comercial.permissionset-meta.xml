@@ -4,6 +4,10 @@
         <apexClass>GenerateComercialPlanController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>ViewAsModalGeneratePlanController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <description>SDM: otorga los permisos sobre los campos de la entiedad Plan comercail</description>
     <fieldPermissions>
         <editable>false</editable>

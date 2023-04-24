@@ -39,7 +39,7 @@ public with sharing class UserSelectorTest {
     }
 
     @isTest
-    static void getSDMUserId() {
+    static void getSDMUserIdTest() {
 
         Test.startTest();
         List<User> userQuery = (new UserSelector()).getSDMUserId();        
@@ -47,5 +47,14 @@ public with sharing class UserSelectorTest {
         
         System.assertEquals(1, userQuery.size(), 'Debe encontrar uno');
         
+    }
+
+    @isTest
+    static void getUserInfoTest() {
+        Test.startTest();
+        User userQuery = (new UserSelector()).getUserInfo(UserInfo.getUserId());        
+        Test.stopTest();
+        
+        System.assertEquals(true, userQuery != null, 'Debe encontrar uno');
     }
 }
