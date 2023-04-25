@@ -32,6 +32,11 @@
                 <default>false</default>
                 <label>Zurich Empresas Brokers</label>
             </value>
+            <value>
+                <fullName>Ventas</fullName>
+                <default>false</default>
+                <label>Zurich Ventas</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
