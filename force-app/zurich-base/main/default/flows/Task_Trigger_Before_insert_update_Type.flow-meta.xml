@@ -66,7 +66,7 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>TaskSubtypeIsEmailYes</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 4) AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.TaskSubtype</leftValueReference>
                 <operator>EqualTo</operator>
@@ -86,6 +86,13 @@
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Email</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -157,6 +164,11 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>TypeValueFormula</name>
+        <dataType>String</dataType>
+        <expression>IF((ISPICKVAL({!$Record.Type}, &quot;Other&quot;)), &quot;Email&quot;, TEXT({!$Record.Type}))</expression>
+    </formulas>
     <interviewLabel>Task Trigger - Before insert/update Type {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - Before insert/update Type</label>
     <processMetadataValues>
@@ -231,7 +243,7 @@
         <inputAssignments>
             <field>Type</field>
             <value>
-                <stringValue>Email</stringValue>
+                <elementReference>TypeValueFormula</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
