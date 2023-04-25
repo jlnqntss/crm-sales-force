@@ -15,6 +15,19 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>Asignar_SLA_caso_respondido</name>
+        <label>Asignar SLA caso respondido</label>
+        <locationX>842</locationX>
+        <locationY>518</locationY>
+        <assignmentItems>
+            <assignToReference>calculatedSla</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>1440.0</numberValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>MaxSlaAssignment</name>
         <label>Asignar SLA máximo</label>
         <locationX>50</locationX>
@@ -43,7 +56,7 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Call Center?</label>
-        <locationX>644</locationX>
+        <locationX>776</locationX>
         <locationY>158</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -80,7 +93,7 @@
     <decisions>
         <name>isChildCase</name>
         <label>¿Es caso hijo?</label>
-        <locationX>710</locationX>
+        <locationX>842</locationX>
         <locationY>398</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -104,6 +117,21 @@
                 <targetReference>Asignar_SLA_Caso_Hijio</targetReference>
             </connector>
             <label>Caso hijo</label>
+        </rules>
+        <rules>
+            <name>Caso_respondido</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casoEncontrado.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Respondido</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_SLA_caso_respondido</targetReference>
+            </connector>
+            <label>Caso respondido</label>
         </rules>
     </decisions>
     <decisions>
@@ -164,7 +192,7 @@
         <description>Recuperamos el caso con el que trabajamos</description>
         <name>getCase</name>
         <label>Recuperar caso</label>
-        <locationX>710</locationX>
+        <locationX>842</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -183,6 +211,7 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>ParentId</queriedFields>
         <queriedFields>Origin</queriedFields>
+        <queriedFields>Status</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>GetCaseMilestoneAction</name>
@@ -209,7 +238,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>518</locationX>
+        <locationX>650</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CallCenterDecision</targetReference>
