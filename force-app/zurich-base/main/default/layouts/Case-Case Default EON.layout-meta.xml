@@ -81,6 +81,10 @@
                 <behavior>Edit</behavior>
                 <field>CallCenter__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ProductGroup__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
