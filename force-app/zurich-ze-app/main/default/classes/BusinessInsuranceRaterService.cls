@@ -1,16 +1,29 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-24-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class BusinessInsuranceRaterService
 {
+    static final String CRM_03 = 'CRM-03';
+    static final String CRM_04 = 'CRM-04';
+    static final String CRM_05 = 'CRM-05';
+    static final String CRM_06 = 'CRM-06';
+    static final String CRM_07 = 'CRM-07';
+    static final String CRM_08 = 'CRM-08';
     public static List<Business_Quotes_Field__mdt> stepMetadataList = new List<Business_Quotes_Field__mdt>();
     public static Map<String, Scope_Setting__mdt> scopeSettings = new Map<String, Scope_Setting__mdt>();
     public static Set<String> requiredFieldsMetadataSet = new Set<String>();
     public static Map<String, String> formattedFieldsMetadataMap = new Map<String, String>();
     public static Set<String> currentRequiredFieldsSet = new Set<String>();
 
-    public static Set<String> contactRequestSteps = new Set<String> {'CRM-01', 'CRM-02', 'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07', 'CRM-08'};
-    public static Set<String> campaignMemberSteps = new Set<String> {'CRM-01', 'CRM-02', 'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07'};
-    public static Set<String> offersSteps = new Set<String> {'CRM-03', 'CRM-04', 'CRM-05', 'CRM-06', 'CRM-07', 'CRM-08'};
-    public static Set<String> managerSteps = new Set<String> {'CRM-07', 'CRM-08'};
-    public static Set<String> legitLeadStageSteps = new Set<String> {'CRM-03'};
+    public static Set<String> contactRequestSteps = new Set<String> {'CRM-01', 'CRM-02', CRM_03, CRM_04, CRM_05, CRM_06, CRM_07, CRM_08};
+    public static Set<String> campaignMemberSteps = new Set<String> {'CRM-01', 'CRM-02', CRM_03, CRM_04, CRM_05, CRM_06, CRM_07};
+    public static Set<String> offersSteps = new Set<String> {CRM_03, CRM_04, CRM_05, CRM_06, CRM_07, CRM_08};
+    public static Set<String> managerSteps = new Set<String> {CRM_07, CRM_08};
+    public static Set<String> legitLeadStageSteps = new Set<String> {CRM_03};
 
     public static Integer version { get; set; }
 

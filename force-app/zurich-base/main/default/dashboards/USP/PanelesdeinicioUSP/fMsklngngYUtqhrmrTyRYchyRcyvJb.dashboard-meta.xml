@@ -45,6 +45,17 @@
         </dashboardFilterOptions>
         <name>Vertical</name>
     </dashboardFilters>
+    <dashboardFilters>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Partner</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Mediator</values>
+        </dashboardFilterOptions>
+        <name>Source Area</name>
+    </dashboardFilters>
     <dashboardGridLayout>
         <dashboardGridComponents>
             <colSpan>4</colSpan>
@@ -57,6 +68,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -126,6 +140,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -197,6 +214,9 @@
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
+                </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
                     <flexTableColumn>
@@ -265,6 +285,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -335,6 +358,9 @@
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
+                </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
                     <flexTableColumn>
@@ -397,6 +423,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -466,6 +495,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -555,6 +587,9 @@
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
+                </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
                     <flexTableColumn>
@@ -612,6 +647,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Case.Industry__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>Case.SourceArea__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>

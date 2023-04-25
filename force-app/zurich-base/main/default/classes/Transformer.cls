@@ -7,6 +7,7 @@
 public class Transformer
 {
     public static final String ORIGIN_NAME_INFO = 'INFO';
+    private static final String TEXT_FIELD = ' Field: ';
     private static Set<String> validOrigins = new Set<String> { ORIGIN_NAME_INFO };
 
     // Cache de validaciones y transformaciones del mapeo campos
@@ -107,7 +108,7 @@ public class Transformer
                 }
                 else
                 {
-                    throw new TransformerException('There are not any field with these name in the salesforce object. sObject: ' + this.objectName + ' Field: ' + sfFieldName );
+                    throw new TransformerException('There are not any field with these name in the salesforce object. sObject: ' + this.objectName + TEXT_FIELD + sfFieldName );
                 }
             }
 
@@ -461,13 +462,13 @@ public class Transformer
             else
             {
                 // El hijo no contienen un campo con ese nombre
-                throw new TransformerException( 'There are not any field with these name in the salesforce child object. sObject: ' + String.valueOf(record.getSObjectType()) + ' Field: ' + lookupDef.childFieldName);
+                throw new TransformerException( 'There are not any field with these name in the salesforce child object. sObject: ' + String.valueOf(record.getSObjectType()) + TEXT_FIELD + lookupDef.childFieldName);
             }
         }
         else
         {
             // El padre no contiene un campo con ese nombre
-            throw new TransformerException( 'There are not any field with these name in the salesforce parent object. sObject: ' + lookupDef.parentObjectName + ' Field: ' + lookupDef.parentExternalFieldName );
+            throw new TransformerException( 'There are not any field with these name in the salesforce parent object. sObject: ' + lookupDef.parentObjectName + TEXT_FIELD + lookupDef.parentExternalFieldName );
         }
     }
 

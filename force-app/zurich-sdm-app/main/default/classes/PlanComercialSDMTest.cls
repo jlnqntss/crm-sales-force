@@ -341,4 +341,152 @@ private class PlanComercialSDMTest
         Set<Id> kpisIds = new Map<Id,Kpi__c> (kpis).keySet();
         System.assertEquals(true, kpisIds.equals(kpisIdsToVerify), 'Los dos conjuntos de ids de kpis deben ser iguales');
     }
+
+     /**
+     * Test que comprueba si se obtienen correctamente los campos del métadato SDMCommercialPlan__mdt
+     *
+     * @author aberuete
+     * @date 17/04/2023
+     */
+    @isTest
+    static void testIfIndicatorSettingNotNUll()
+    {
+        PlanComercialSDM sdm = new PlanComercialSDM();
+        sdm.containsMonths = false;
+        sdm.containsYTD = false;
+        sdm.userIdsFromPlans = new Set<Id>();
+        Set<String> kpiFields = new Set<String>();
+        SDMCommercialPlan__mdt indicatorSetting = [Select id,FirstField__c,SecondField__c,ThirdField__c,CalculatedPreviousPeriod__c,PreviousPeriodField__c from SDMCommercialPlan__mdt where Indicator__c = 'PN' limit 1 ];
+        PlanComercial__c plan = [Select id,AccumulateType__c,AssignedTo__c from PlanComercial__c where AccumulateType__c != null and AssignedTo__c!= null  limit 1 ];
+
+        Test.startTest();
+        kpiFields = sdm.ifIndicatorSettingNotNUll (indicatorSetting, kpiFields, plan);
+        Test.stopTest();
+
+        Set<String> kpiFieldsResult = new Set<String>{'PN__c','PA_PN__c'};
+        Set<Id> userIdsResult = new Set<Id>{plan.AssignedTo__c};
+
+        System.assertEquals(true, kpiFields.equals(kpiFieldsResult), 'Los campos de kpis deberían ser iguales');
+        System.assertEquals(true, sdm.userIdsFromPlans.equals(userIdsResult), 'El id del usuario del plan debería estar en el conjunto de ids de usuarios');
+    }
+
+    /**
+     * Test que comprueba si se obtienen correctamente los intermediarios asociados a un plan comercial
+     *
+     * @author aberuete
+     * @date 17/04/2023
+     */
+    @isTest
+    static void testGetIdsIntermediariesOfPlan()
+    {
+        PlanComercialSDM sdm = new PlanComercialSDM();
+        sdm.mapIntermediariesByUserId = new Map<Id, Set<Id>>();
+        sdm.mapIntermediariesByUserIdAndAgrupationId = new Map<Id, Map<Id, Set<Id>>>();
+        Set<Id> listIntermediaries = new Set<Id>();
+
+        PlanComercial__c plan = [Select id,Intermediary__c,AssignedTo__c  from PlanComercial__c where Intermediary__c!= null and AssignedTo__c != null and Intermediary__r.RecordType.DeveloperName = 'intermediary' limit 1 ];
+        PlanComercial__c planWithoutIntermediary = [Select id,Intermediary__c,AssignedTo__c  from PlanComercial__c where Intermediary__c = null and AssignedTo__c != null  limit 1 ];
+        
+        sdm.mapIntermediariesByUserId.put(plan.AssignedTo__c, listIntermediaries);
+        listIntermediaries.add(plan.Intermediary__c);
+
+        Test.startTest();
+        Set<Id> intermediaries = sdm.getIdsIntermediariesOfPlan (plan, plan.AssignedTo__c);
+        Set<Id> intermediariesNotInPlan = sdm.getIdsIntermediariesOfPlan (planWithoutIntermediary, plan.AssignedTo__c);
+        Test.stopTest();
+
+        System.assertEquals(true, intermediaries.equals(new Set<Id>{plan.Intermediary__c}), 'El id de intermediario del plan debería estar en el conjunto de ids devuelto');
+        System.assertEquals(true, intermediariesNotInPlan.equals(sdm.mapIntermediariesByUserId.values()[0]), 'El id de intermediario del plan debería estar en el mapa de intermediario por usuario');
+    }
+
+    /**
+     * Test que comprueba si se obtienen correctamente los kpis de un plan comercial para recalcular su actual kpi
+     *
+     * @author aberuete
+     * @date 17/04/2023
+     */
+    @isTest
+    static void testGetKpisToCalculate()
+    {
+        PlanComercialSDM sdm = new PlanComercialSDM();
+        sdm.mapKPIsByIntermediary = new Map<Id, List<KPI__c>>();
+
+        KPI__c kpiFromQuery = [Select id,EstructuraUnificada__c,EstructuraDetalle__c,Temporalidad__c,Intermediary__c,CalcYear__c, CalcMonth__c from KPI__c where CalcYear__c = '2021' and CalcMonth__c = '8' limit 1];
+        PlanComercial__c plan = [Select id,Segment__c,Product__c,AccumulateType__c,Zone__c,StartDate__c,EndDate__c from PlanComercial__c where Segment__c=: kpiFromQuery.EstructuraUnificada__c and Product__c =:kpiFromQuery.EstructuraDetalle__c and AccumulateType__c=:kpiFromQuery.Temporalidad__c limit 1];
+        plan.Zone__c= 'Todos';
+        update plan;
+
+        List<KPI__c> kpisOfIntermediary = new List<KPI__c>();
+        sdm.mapKPIsByIntermediary.put(kpiFromQuery.Intermediary__c, kpisOfIntermediary);
+        kpisOfIntermediary.add(kpiFromQuery);
+
+        Test.startTest();
+        List<KPI__c> kpis = sdm.getKpisToCalculate (new Set<Id>{kpiFromQuery.Intermediary__c}, plan);
+        Test.stopTest();
+
+        System.assertEquals(kpiFromQuery, kpis[0], 'El kpi debería estar en la lista devuelta');
+    }
+
+     /**
+     * Test que comprueba si se añade correctamente el plan comercial a actualizar
+     *
+     * @author aberuete
+     * @date 17/04/2023
+     */
+    @isTest
+    static void testUpdatePlanWithRealKpi()
+    {
+        PlanComercialSDM sdm = new PlanComercialSDM();
+        List<PlanComercial__c> plansToUpdate = new List<PlanComercial__c> ();
+
+        List<KPI__c> kpiFromQuery = [Select id,EstructuraUnificada__c,EstructuraDetalle__c,Temporalidad__c,Intermediary__c,CalcYear__c, CalcMonth__c,PN__c,PA_PN__c from KPI__c where CalcYear__c = '2021' and CalcMonth__c = '8' limit 1];
+        PlanComercial__c plan = [Select id,Segment__c,Product__c,AccumulateType__c,Zone__c,StartDate__c,EndDate__c,IsOwnedByHomeOffice__c,Indicator__c from PlanComercial__c where Segment__c=: kpiFromQuery[0].EstructuraUnificada__c and Product__c =:kpiFromQuery[0].EstructuraDetalle__c and AccumulateType__c=:kpiFromQuery[0].Temporalidad__c and Indicator__c = 'PN'  limit 1];
+        plan.Zone__c= 'Todos';
+        update plan;
+
+        Test.startTest();
+        plansToUpdate = sdm.updatePlanWithRealKpi (plansToUpdate,kpiFromQuery, plan);
+        Test.stopTest();
+
+        System.assertEquals(plan.Id, plansToUpdate[0].Id, 'El plan debería estar en los planes a actualizar');
+    }
+
+     /**
+     * Test que comprueba si se actualizan correctamente los planes comerciales tras recalcular sus kpis
+     *
+     * @author aberuete
+     * @date 17/04/2023
+     */
+    @isTest
+    static void testCalculateRealKpiAndUpdatePlans()
+    {
+        PlanComercialSDM sdm = new PlanComercialSDM();
+        sdm.mapKPIsByIntermediary = new Map<Id, List<KPI__c>>();
+        sdm.mapIntermediariesByUserId = new Map<Id, Set<Id>>();
+        sdm.mapIntermediariesByUserIdAndAgrupationId = new Map<Id, Map<Id, Set<Id>>>();
+        Set<Id> listIntermediaries = new Set<Id>();
+        List<PlanComercial__c> plansToUpdate = new  List<PlanComercial__c> ();
+
+        List<KPI__c> kpiFromQuery = [Select id,EstructuraUnificada__c,EstructuraDetalle__c,Temporalidad__c,Intermediary__c,CalcYear__c, CalcMonth__c,PN__c,PA_PN__c from KPI__c where CalcYear__c = '2021' and CalcMonth__c = '8' and Intermediary__c != null  limit 1];
+        List<PlanComercial__c> planToUpdate = [Select id,AssignedTo__c,Segment__c,Product__c,AccumulateType__c,Zone__c,StartDate__c,EndDate__c,IsOwnedByHomeOffice__c,Indicator__c,Actual_KPI__c,Intermediary__c from PlanComercial__c where Segment__c=: kpiFromQuery[0].EstructuraUnificada__c and Product__c =:kpiFromQuery[0].EstructuraDetalle__c and AccumulateType__c=:kpiFromQuery[0].Temporalidad__c and Indicator__c = 'PN' and Intermediary__c =:kpiFromQuery[0].Intermediary__c and AssignedTo__c != null  limit 1];
+        planToUpdate[0].Zone__c= 'Todos';
+        update planToUpdate[0];
+        
+        List<KPI__c> kpisOfIntermediary = new List<KPI__c>();
+        sdm.mapKPIsByIntermediary.put(kpiFromQuery[0].Intermediary__c, kpisOfIntermediary);
+        kpisOfIntermediary.add(kpiFromQuery[0]);
+
+        sdm.mapIntermediariesByUserId.put(planToUpdate[0].AssignedTo__c, listIntermediaries);
+        listIntermediaries.add(planToUpdate[0].Intermediary__c);
+
+        Test.startTest();
+        sdm.calculateRealKpiAndUpdatePlans (planToUpdate, plansToUpdate);
+        Test.stopTest();
+
+        PlanComercial__c planAfterUpdate = [Select id,Actual_KPI__c from PlanComercial__c where id =: planToUpdate[0].id ];
+      
+        System.assertEquals(null, planToUpdate[0].Actual_KPI__c, 'El valor debería ser nulo');
+        System.assertNotEquals(null, planAfterUpdate.Actual_KPI__c, 'El valor no debería ser nulo tras actualizarse el plan');
+    }
+
 }

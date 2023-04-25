@@ -15,6 +15,12 @@ public class Batch_MergeLeadsWithClientsTest
     private static final string ACCOUNT_BUSINESS = 'BusinessCustomer';
     private static final Id LeadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().
                 get(Batch_MergeLeadsWithClients.LEAD_RECORDTYPE_DEVELOPERNAME).getRecordTypeId();
+    static final String MESSAGE_LEAD_ACCOUNT = 'There should be 1 lead account';
+    static final String MESSAGE_CUSTOMER_ACCOUNT = 'There should be 1 customer account';
+    static final String MESSAGE_OFFER_ACCOUNT = 'There sould be 1 offer for the lead';
+    static final String GENERAL_INSURANCE = 'General Insurance';
+    static final String QUERY_OPPORTUNITY = 'SELECT Id, AccountId, OldAccountId__c, Account.RecordType.DeveloperName FROM Opportunity WHERE OldAccountId__c = \'';
+
 
     @TestSetup
     static void makeData(){
@@ -106,13 +112,13 @@ public class Batch_MergeLeadsWithClientsTest
     {
         // Get the lead account
         List<Account> leadAccounts = [SELECT Id FROM Account WHERE RecordTypeId = :LeadRecordTypeId LIMIT 1];
-        System.assertEquals(1, leadAccounts.size(), 'There should be 1 lead account');
+        System.assertEquals(1, leadAccounts.size(),MESSAGE_LEAD_ACCOUNT);
         // Get the customer account (PersonAccount)
         List<Account> customerAccount = [SELECT Id FROM Account WHERE RecordType.DeveloperName = :ACCOUNT_CUSTOMER LIMIT 1];
-        System.assertEquals(1, customerAccount.size(), 'There should be 1 customer account');
+        System.assertEquals(1, customerAccount.size(), MESSAGE_CUSTOMER_ACCOUNT);
         // Get the Offer of the lead
         List<Opportunity> leadOffers = [SELECT Id, AccountId FROM Opportunity WHERE AccountId = :leadAccounts];
-        System.assertEquals(1, leadOffers.size(), 'There sould be 1 offer for the lead');
+        System.assertEquals(1, leadOffers.size(),MESSAGE_OFFER_ACCOUNT);
         // Change the offer from lead to PersonAccount --> fill the OldAccountId__c
         leadOffers[0].Accountid = customerAccount[0].Id;
         update leadOffers;
@@ -121,7 +127,7 @@ public class Batch_MergeLeadsWithClientsTest
         // Merge the lead and the PersonAccount
         Test.startTest();
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients(
-            'SELECT Id, AccountId, OldAccountId__c, Account.RecordType.DeveloperName FROM Opportunity WHERE OldAccountId__c = \'' + leadAccounts[0].Id + '\''
+            QUERY_OPPORTUNITY + leadAccounts[0].Id + '\''
         );
         Database.executeBatch(batch, 1);
         Test.stopTest();
@@ -147,13 +153,13 @@ public class Batch_MergeLeadsWithClientsTest
     {
         // Get the lead account
         List<Account> leadAccounts = [SELECT Id FROM Account WHERE RecordTypeId = :LeadRecordTypeId LIMIT 1];
-        System.assertEquals(1, leadAccounts.size(), 'There should be 1 lead account');
+        System.assertEquals(1, leadAccounts.size(), MESSAGE_LEAD_ACCOUNT);
         // Get the customer account (PersonAccount)
         List<Account> customerAccount = [SELECT Id FROM Account WHERE RecordType.DeveloperName = :ACCOUNT_CUSTOMER LIMIT 1];
-        System.assertEquals(1, customerAccount.size(), 'There should be 1 customer account');
+        System.assertEquals(1, customerAccount.size(), MESSAGE_CUSTOMER_ACCOUNT);
         // Get the Offer of the lead
         List<Opportunity> leadOffers = [SELECT Id, AccountId FROM Opportunity WHERE AccountId = :leadAccounts];
-        System.assertEquals(1, leadOffers.size(), 'There sould be 1 offer for the lead');
+        System.assertEquals(1, leadOffers.size(), MESSAGE_OFFER_ACCOUNT);
         // Change the offer from lead to PersonAccount --> fill the OldAccountId__c
         leadOffers[0].Accountid = customerAccount[0].Id;
         update leadOffers;
@@ -162,7 +168,7 @@ public class Batch_MergeLeadsWithClientsTest
         // Merge the lead and the PersonAccount
         Test.startTest();
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients(
-            'SELECT Id, AccountId, OldAccountId__c, Account.RecordType.DeveloperName FROM Opportunity WHERE OldAccountId__c = \'' + leadAccounts[0].Id + '\''
+            QUERY_OPPORTUNITY + leadAccounts[0].Id + '\''
         );
         // force an error when trying to merge the Name field for PersonAccounts
         batch.fieldsToMergePerson.add('Name');
@@ -180,13 +186,13 @@ public class Batch_MergeLeadsWithClientsTest
     {
         // Get the lead account
         List<Account> leadAccounts = [SELECT Id FROM Account WHERE RecordTypeId = :LeadRecordTypeId LIMIT 1];
-        System.assertEquals(1, leadAccounts.size(), 'There should be 1 lead account');
+        System.assertEquals(1, leadAccounts.size(), MESSAGE_LEAD_ACCOUNT);
         // Get the customer account (PersonAccount)
         List<Account> customerAccount = [SELECT Id FROM Account WHERE RecordType.DeveloperName = :ACCOUNT_BUSINESS LIMIT 1];
         System.assertEquals(1, customerAccount.size(), 'There should be 1 BusinessCustomer account');
         // Get the Offer of the lead
         List<Opportunity> leadOffers = [SELECT Id, AccountId FROM Opportunity WHERE AccountId = :leadAccounts];
-        System.assertEquals(1, leadOffers.size(), 'There sould be 1 offer for the lead');
+        System.assertEquals(1, leadOffers.size(), MESSAGE_OFFER_ACCOUNT);
         // Change the offer from lead to PersonAccount --> fill the OldAccountId__c
         leadOffers[0].Accountid = customerAccount[0].Id;
         update leadOffers;
@@ -195,7 +201,7 @@ public class Batch_MergeLeadsWithClientsTest
         // Merge the lead and the PersonAccount
         Test.startTest();
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients(
-            'SELECT Id, AccountId, OldAccountId__c, Account.RecordType.DeveloperName FROM Opportunity WHERE OldAccountId__c = \'' + leadAccounts[0].Id + '\''
+            QUERY_OPPORTUNITY + leadAccounts[0].Id + '\''
         );
         Database.executeBatch(batch, 1);
         Test.stopTest();
@@ -218,16 +224,17 @@ public class Batch_MergeLeadsWithClientsTest
     @isTest
     static void test_MoreThanOneScope()
     {
+        String result;
         List<Opportunity> offers = [SELECT Id, AccountId FROM Opportunity];
         System.assertEquals(2, offers.size(), 'There should be 2 offers');
         List<Account> customerAccount = [SELECT Id FROM Account WHERE RecordType.DeveloperName = :ACCOUNT_CUSTOMER LIMIT 1];
-        System.assertEquals(1, customerAccount.size(), 'There should be 1 customer account');
+        System.assertEquals(1, customerAccount.size(), MESSAGE_CUSTOMER_ACCOUNT);
 
         offers[0].AccountId = customerAccount[0].Id;
         offers[1].AccountId = customerAccount[0].Id;
         update offers;
         
-        string result = null;
+        result = null;
         Test.startTest();
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
         Database.executeBatch(batch, 2);
@@ -247,8 +254,183 @@ public class Batch_MergeLeadsWithClientsTest
         String sch = '20 30 8 10 2 ?';
 
         Test.startTest();
-        String jobID = system.schedule('Batch Merge Leads with Clients', sch, m);
+        system.schedule('Batch Merge Leads with Clients', sch, m);
+        Test.stopTest();
+    }
+
+    /**
+    * Test que comprueba que se obtienen correctamente los campos a mergear dependiendo del tipo de cuenta
+    * 
+    * @author aberuete
+    * @date 21/04/2023
+    */
+    @isTest
+    static void test_getAccountFieldsToMergeForEachType()
+    {
+        Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
+
+        Test.startTest();
+        batch.getAccountFieldsToMergeForEachType();
+        Test.stopTest();
+
+        System.assertEquals(false, batch.fieldsToMergePerson.isEmpty(), 'La lista no debe estar vacía');
+        System.assertEquals(false, batch.fieldsToMergeNotPerson.isEmpty(), 'La lista no debe estar vacía');
+    }
+
+    /**
+    * Test que comprueba que se convierte correctamente la cuenta a convertir
+    * 
+    * @author aberuete
+    * @date 21/04/2023
+    */
+    @isTest
+    static void test_ifNotPersonAccountConvertLeadAccountAndUpdateContacts()
+    {
+        Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
+
+        Boolean isPersonAccount = false; 
+        Id recordtypeIDIntermediary = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+        // Create a test lead account and a test normal account
+        Account leadAccount = new Account(Name='Test Lead Account');
+        insert leadAccount;
+        Account normalAccount = new Account(Name='Test Normal Account', LegalEntity__c= GENERAL_INSURANCE, RecordTypeId = recordtypeIDIntermediary);
+        insert normalAccount;
+        
+        // Create a test contact related to the lead account
+        Contact testContact = new Contact(FirstName='Test First Name', LastName='Test Last Name', AccountId=leadAccount.Id);
+        insert testContact;
+        
+        // Call the method to test
+        Test.startTest();
+        batch.ifNotPersonAccountConvertLeadAccountAndUpdateContacts(isPersonAccount, leadAccount, normalAccount);
         Test.stopTest();
         
+        // Check that the lead account was converted to a normal account
+        leadAccount = [SELECT Id, RecordTypeId FROM Account WHERE Id = :leadAccount.Id];
+        System.assertEquals(normalAccount.RecordTypeId, leadAccount.RecordTypeId, 'Ambas cuentas debería ser del mismo recordtype');
+    }
+
+    /**
+    * Test que comprueba que se actualizan correctamente los contactpoints
+    * 
+    * @author aberuete
+    * @date 21/04/2023
+    */
+    @isTest
+    static void test_updateContactPoints()
+    {
+        Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
+
+        Id recordtypeIDIntermediary = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+        Account leadAccount = new Account(Name='accountlead');
+        insert leadAccount;
+        Account normalAccount = new Account(Name='accountnormal', LegalEntity__c= GENERAL_INSURANCE, RecordTypeId = recordtypeIDIntermediary);
+        insert normalAccount;
+        
+        // Insertar contactPoints
+        List<ContactPointAddress> cpAddress = TestDataFactory.generateContactPointAddressesFromAccounts(new List<Account>{normalAccount}, 1);
+        insert cpAddress;
+        List<ContactPointPhone> cpPhone = TestDataFactory.generateContactPointPhonesFromAccounts(new List<Account>{normalAccount}, 1);
+        insert cpPhone;
+        List<ContactPointEmail> cpEmail = TestDataFactory.generateContactPointEmailsFromAccounts(new List<Account>{normalAccount}, 1);
+        insert cpEmail;
+
+        normalAccount = [Select id,(select id from ContactPointEmails),(select id from ContactPointPhones),(select id from ContactPointAddresses) from Account where id =: normalAccount.id];
+
+        Test.startTest();
+        batch.updateContactPoints (normalAccount, leadAccount);
+        Test.stopTest();
+
+        cpAddress = [Select id,ParentId from ContactPointAddress  where id=:cpAddress[0].id ];
+        cpPhone = [Select id,ParentId from ContactPointPhone  where id=:cpPhone[0].id ];
+        cpEmail = [Select id,ParentId from ContactPointEmail  where id=:cpEmail[0].id ];
+
+        System.assertEquals(leadAccount.id, cpAddress[0].ParentId, 'El parent id del contact point address no se ha actualizado correctamente');
+        System.assertEquals(leadAccount.id, cpPhone[0].ParentId, 'El parent id del contact point phone no se ha actualizado correctamente');
+        System.assertEquals(leadAccount.id, cpEmail[0].ParentId, 'El parent id del contact point email no se ha actualizado correctamente');
+    }
+
+    /**
+    * Test que comprueba que se actualizan correctamente los campos a mergear
+    * 
+    * @author aberuete
+    * @date 21/04/2023
+    */
+    @isTest
+    static void test_mergeAllFieldsFromAccountToLeadAccount()
+    {
+        Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
+
+        Account leadAccount = new Account(Name='accountlead',CNAE__c ='00100' );
+        insert leadAccount;
+        Account normalAccount = new Account(Name='accountnormal', LegalEntity__c= GENERAL_INSURANCE, CNAE__c= '00111');
+        insert normalAccount;
+
+        //Añadir campos para mergear la lead account
+        List<String> fieldsToMerge = new List<String>{'Name', 'LegalEntity__c'};
+
+        Test.startTest();
+        leadAccount = batch.mergeAllFieldsFromAccountToLeadAccount (fieldsToMerge, normalAccount, leadAccount );
+        Test.stopTest();
+
+        System.assertEquals(normalAccount.Name, leadAccount.Name, 'El nombre debería coincidir');
+        System.assertEquals(normalAccount.LegalEntity__c, leadAccount.LegalEntity__c,'La entidad legal debería coincidir');
+        System.assertEquals('00100', leadAccount.CNAE__c,'El código de actividad económica no debería de haber cambiado');
+    }
+
+    /**
+    * Test que comprueba que se obtiene correctamente la query
+    * 
+    * @author aberuete
+    * @date 21/04/2023
+    */
+    @isTest
+    static void test_getQueryAccountFromOfferAccount()
+    {
+        Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
+
+        List<String> fieldsToMerge = new List<String>{'Id','Name', 'LegalEntity__c'};
+        List<Opportunity> offers = [Select id,AccountId from Opportunity where AccountId != null limit 1 ];
+
+        Test.startTest();
+        String query = batch.getQueryAccountFromOfferAccount (offers, fieldsToMerge );
+        Test.stopTest();
+
+        System.assertNotEquals(null, query, 'La query devuelta no debe ser nula');
+    }
+
+     /**
+    * Test que comprueba que se mergea correctamente la cuenta
+    * 
+    * @author aberuete
+    * @date 21/04/2023
+    */
+    @isTest
+    static void test_iflistLeadAccountsNotEmptyMergeAccount()
+    {
+        Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
+
+        Id recordtypeIDIntermediary = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+        Account leadAccount = new Account(Name='accountlead',CNAE__c ='00100',RecordTypeId = recordtypeIDIntermediary );
+        insert leadAccount;
+        Account normalAccount = new Account(Name='accountnormal', LegalEntity__c= GENERAL_INSURANCE, CNAE__c= '00111', RecordTypeId = recordtypeIDIntermediary );
+        insert normalAccount;
+
+        List<Opportunity> offers = [Select id,AccountId from Opportunity where AccountId != null limit 1 ];
+        offers[0].AccountId = normalAccount.id;
+        update offers; 
+
+        //Añadir campos para mergear con la lead account
+        List<String> fieldsToMerge = new List<String>{'Name', 'LegalEntity__c','RecordTypeId'};
+
+        Test.startTest();
+        batch.iflistLeadAccountsNotEmptyMergeAccount (new List<Account>{leadAccount} , offers, fieldsToMerge, false);
+        Test.stopTest();
+
+        Account leadAccountAfter = [Select id,Name,CNAE__c,LegalEntity__c from Account where id =: leadAccount.id];
+
+        System.assertEquals(normalAccount.Name, leadAccountAfter.Name, 'El nombre se debería de haber cambiado');
+        System.assertEquals(normalAccount.LegalEntity__c, leadAccountAfter.LegalEntity__c, 'La entidad legal se debería haber actualizado');
+        System.assertEquals(leadAccount.CNAE__c, leadAccountAfter.CNAE__c, 'El campo CNAE__c no debería de haber cambiado ');
     }
 }

@@ -1,7 +1,14 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-24-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class OpportunityUtil
 {
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
-
+    static final String FIELD_OWNER_ID = 'OwnerId';
     /**
      * BULK BEFORE
      * Inicializa un mapa de perfiles a los que se les permite bypasear la regla de validación para
@@ -251,7 +258,7 @@ public with sharing class OpportunityUtil
                 if (mapUsersZEAdvisors.get(UserInfo.getUserId()) != null && oldOpty.OwnerId != integratorId)
                 {
                     //ERROR: Agregar el mensaje a nivel de campo 
-                    newOpty.addError('OwnerId', Label.OfferChangeOwnerValidationMessage);
+                    newOpty.addError(FIELD_OWNER_ID, Label.OfferChangeOwnerValidationMessage);
                 }	
             }
         }   

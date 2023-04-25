@@ -1,5 +1,13 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-24-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class ScopesSelector extends BaseSelector
 {
+    static final String QUERY_SELECT = 'SELECT {0} FROM Scope__c ';
     //#region Contructores
     public ScopesSelector()
     {}
@@ -25,7 +33,7 @@ public with sharing class ScopesSelector extends BaseSelector
         if(ids != null)
         {
             String query = String.format(
-                'SELECT {0} FROM Scope__c ' +
+                QUERY_SELECT +
                 'WHERE Id IN : ids ',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -52,7 +60,7 @@ public with sharing class ScopesSelector extends BaseSelector
         if(ids != null)
         {
             String query = String.format(
-                'SELECT {0} FROM Scope__c ' +
+                QUERY_SELECT +
                 'WHERE AccountId__c IN : ids ',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -76,17 +84,20 @@ public with sharing class ScopesSelector extends BaseSelector
      * @return          Listado de scopes sobre los que se ha realizado match
      */
     public List<Scope__c> selectByAccountIdAndScope(Set<Id> ids, RecordsSelector.Scope scope)
-    {
+    { 
+        String scopeToFilter;
+
         if(ids != null)
         {
-            String scopeToFilter = scope.name();
+            scopeToFilter = scope.name();
 
             String query = String.format(
-                'SELECT {0} FROM Scope__c ' +
+                QUERY_SELECT +
                 'WHERE AccountId__c IN : ids AND Scope__c = : scopeToFilter',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
+                new List<String> 
+                {
+                    String.join(new List<String> (this.fieldsToQuery), ',')
+                }
                 );
             return (List<Scope__c>) Database.query(query);
         }

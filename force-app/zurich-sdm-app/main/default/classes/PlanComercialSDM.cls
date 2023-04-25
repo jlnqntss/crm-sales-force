@@ -72,6 +72,14 @@ public with sharing class PlanComercialSDM {
     @testvisible
     private String lastMonthOfYear;
 
+    //Para calcular kpi real 
+    @testvisible
+    private Boolean containsMonths;
+    @testvisible
+    private Boolean containsYTD;
+    @testvisible
+    private Set<Id> userIdsFromPlans;
+
     // Constructor
     public PlanComercialSDM()
     {
@@ -96,19 +104,22 @@ public with sharing class PlanComercialSDM {
      * 
      * @author nts (agonzalezisasi)
      * @date 26/07/2021
+     * change aberuete 17/04/2023 - Refactorizar método
      * 
      * @param {List<Id> intermediaries} lista de ids de mediadores
      * @param {Set<String> fields} lista de campos del objeto KPI__c
      */ 
     private void findKPIsByIntermediaries(Set<Id> intermediaries, Set<String> fields, Boolean containsMonths, Boolean containsYTD)
     {
-        if( intermediaries != null && !intermediaries.isEmpty() && fields != null && !fields.isEmpty() ) {
+        if( intermediaries != null && !intermediaries.isEmpty() && fields != null && !fields.isEmpty() ) 
+        {
             // SDM-729 - Recuperamos los KPIs, primero los mensuales y luego los anuales
             // lo hemos separado en 2 consultas debido al gran volumen de registros de KPI, para evitar que salten 
             // los limites de registros por soql
             List<KPI__c> kpis = new List<KPI__c>();
 
-            if( containsMonths ) {
+            if( containsMonths ) 
+            {
                 // Recuperamos los KPIs MENSUALES de los mediadores 
                 List<KPI__c> kpisMonth = new KPIsSelector().findByIntermediaryIds(
                     new List<Id>(intermediaries), 
@@ -121,31 +132,9 @@ public with sharing class PlanComercialSDM {
 
             // Recuperamos los KPIs ANUALES de los mediadores. Hay una foto por cada mes pero es acumulada, por tanto
             // debemos obtener los KPIs anuales de la ultima foto=mes disponible
-            if( containsYTD && this.lastMonthOfYear != null ) {
-                List<KPI__c> kpisAnnual = new KPIsSelector().findByIntermediaryIds(
-                    new List<Id>(intermediaries), 
-                    new List<String>{KPIsSelector.TEMPORALIDAD_YTD},
-                    this.thisYear, this.lastMonthOfYear,
-                    fields
-                );
-                if( kpisAnnual != null && !kpisAnnual.isEmpty() ) kpis.addAll(kpisAnnual);
-            }
-            
-            // Si se ha encontrado algo...
-            if( !kpis.isEmpty() ) {
-                // A partir de los datos recuperamos generamos un mapa de KPIs por mediador como clave
-                mapKPIsByIntermediary = new Map<Id, List<KPI__c>>();
-                // Por cada KPI recuperado ...
-                for(KPI__c kpi: kpis) {
-                    // Lo añadimos al mapa
-                    List<KPI__c> tmp = mapKPIsByIntermediary.get(kpi.Intermediary__c);
-                    if( tmp == null ) {
-                        tmp = new List<KPI__c>();
-                        mapKPIsByIntermediary.put(kpi.Intermediary__c, tmp);
-                    }
-                    tmp.add(kpi);
-                }
-            }
+            kpis = getKpisAnualOfTheLastMonth (intermediaries, fields, containsYTD, kpis);
+            // Si hay kpis, generar mapa de intermediario por kpis
+            ifKpisNotEmptyGenerateMapKpiIntermediary (kpis);
         }
     }
 
@@ -440,12 +429,14 @@ public with sharing class PlanComercialSDM {
      * 
      * @author nts (agonzalezisasi)
      * @date 27/07/2021
+     * @change aberuete 17/04/2023 - Refactorizar método
      * 
      * @param {List<PlanComercial__c> plans} lista de planes comerciales
      */
     public void calculateRealKPI(List<PlanComercial__c> plans) 
     {
-        if( plans != null && !plans.isEmpty() ) {
+        if( plans != null && !plans.isEmpty() ) 
+        {
             // Inicializamos las variables globales para cada calculo
             allIntermediaries = null;
             mapIntermediariesByUserId = null;
@@ -453,7 +444,7 @@ public with sharing class PlanComercialSDM {
             mapKPIsByIntermediary = null;
 
             // Guardara la lista de ids de usuarios de los planes
-            Set<Id> userIds = new Set<Id>();       
+            userIdsFromPlans = new Set<Id>();       
             // Guardara la lista de indicadores a recuperar de los KPIs para el calculo
             Set<String> kpiFields = new Set<String>();
             // Guardara la lista de Planes a modificar
@@ -468,116 +459,33 @@ public with sharing class PlanComercialSDM {
 
             // Se genera un mapa de agrupaciones de mediadores para los planes actuales
             // findAgrupationsByPlan(plans);                        
-            Boolean containsMonths = false;
-            Boolean containsYTD = false;
+            containsMonths = false;
+            containsYTD = false;
             
             // Por cada Plan comercial... averiguamos el usuario, los campos y los mediadores a los que hace referencia
-            for(PlanComercial__c plan: plans) {
+            
+            for(PlanComercial__c plan: plans) 
+            {
                 // Recuperamos la configuracion del calculo del indicador que deberia existir
                 SDMCommercialPlan__mdt indicatorSetting = getMetadataRecord(plan);
-                if( indicatorSetting == null ) { // Si no existe la configuracion => reportar error
+                // Si no existe la configuracion => reportar error
+                if( indicatorSetting == null ) 
+                { 
                     String errorMessage = String.format(ERROR_SETTINGS_NO_INDICATOR, new List<String>{plan.Indicator__c});
                     ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, errorMessage, CLASS_NAME);
-                } else {
-                    // Incluimos los campos del indicador para recuperarlos con la consulta de kpis
-                    kpiFields.add(indicatorSetting.FirstField__c);
-                    if( indicatorSetting.SecondField__c != null ) kpiFields.add(indicatorSetting.SecondField__c);
-                    if( indicatorSetting.ThirdField__c != null ) kpiFields.add(indicatorSetting.ThirdField__c);
+                } 
 
-                    if( !containsMonths ) containsMonths = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_MONTH);
-                    if( !containsYTD ) containsYTD = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_YRD);
-
-                    if (indicatorSetting.CalculatedPreviousPeriod__c) kpiFields.add(indicatorSetting.PreviousPeriodField__c);
-
-                    // Recuperamos el usuario del plan y lo incluimos en la lista de usuarios implicados
-                    Id userId = getUserIdFromPlan(plan);
-                    if( userId != null ) userIds.add(userId);
-                }
+                kpiFields = ifIndicatorSettingNotNUll (indicatorSetting, kpiFields, plan);
             }
-
+            
             // Recuperamos todos los mediadores y agrupaciones relacionados con los usuarios de los planes en cuestion
-            findIntermediariesByUserIds(userIds);
+            findIntermediariesByUserIds(userIdsFromPlans);
 
             // Recuperamos todos los KPIs a partir de los mediadores
             findKPIsByIntermediaries(allIntermediaries, kpiFields, containsMonths, containsYTD);
 
             // Si se han encontrado KPIs...
-            if( mapKPIsByIntermediary != null && !mapKPIsByIntermediary.isEmpty() ) {
-                // Ahora si, por cada plan comercial, se realiza el calculo...
-                for(PlanComercial__c plan: plans) {
-
-                    // Obtenemos de nuevo el usuario relacionado con el plan
-                    Id userId = getUserIdFromPlan(plan);
-
-                    // Obtenemos la lista de mediadores implicados en el plan segun el campo mediador tenga
-                    // uno de los siguientes valores:
-                    // - nulo: todos los mediadores que ve el usuario del plan
-                    // - agrupacion: todos los mediadores de esa agrupacion que ve el usuario del plan
-                    // - mediador: el mediador directamente
-                    Set<Id> intermediaries = null;
-                    if( plan.Intermediary__c == null ) {
-                        intermediaries = mapIntermediariesByUserId?.get(userId);
-                    } else {
-                        // Miramos si el mediador del plan es de Agrupacion (puede no ser y por tanto devolver nulo)
-                        Map<Id, Set<Id>> mapIntermediaries = mapIntermediariesByUserIdAndAgrupationId?.get(userId);
-                        intermediaries = mapIntermediaries?.get(plan.Intermediary__c);
-
-                        // Si la lista es nula significa que no es una agrupacion sino un mediador directamente
-                        if( intermediaries == null 
-                            && mapIntermediariesByUserId?.get(userId) != null && mapIntermediariesByUserId.get(userId).contains(plan.Intermediary__c) ) {
-                            intermediaries = new Set<Id>{plan.Intermediary__c};
-                        }
-                    }
-
-                    // Si hay mediadores..
-                    if( intermediaries != null && !intermediaries.isEmpty() ) {
-                        // formaremos una lista de KPIs a utilizar en el calculo
-                        List<KPI__c> kpis = new List<KPI__c>();
-
-                        // Por cada mediador...
-                        for(Id i: intermediaries) {
-                            // Recuperamos la lista de KPIs que hay para ese mediador
-                            List<KPI__c> kpisByIntermediary = mapKPIsByIntermediary?.get(i);
-                            // Si existe algun KPI...
-                            if( kpisByIntermediary != null && !kpisByIntermediary.isEmpty() ) {
-                                // Por cada KPI, comprobamos que el KPI cumple con los filtros del plan
-                                for(KPI__c kpi: kpisByIntermediary) {
-                                    // Si cumple los filtros lo añadimos a la lista de kpis a tener en cuenta en el
-                                    // calculo
-                                    if( inPlan(kpi, plan) ) kpis.add(kpi);
-                                }
-                            }
-                        }
-                        
-                        // Si hay KPIs (que deberia)...
-                        if( !kpis.isEmpty() ) {
-                            // Se realiza el calculo para el KPI Actual
-                            Decimal result = doCalculation(kpis, plan);
-
-                            // Guardamos el resultado en el Plan comercial
-                            PlanComercial__c planToUpdate = new PlanComercial__c(
-                                Id = plan.Id,
-                                Actual_KPI__c = result
-                            );
-
-                            // Se realiza el cálculo para el KPI Actual del perioodo anterior
-                            Decimal resultPA = doCalculationPA(kpis, plan);
-
-                            if (resultPA != null)
-                            {
-                                planToUpdate.PAActualKPI__c = resultPA;
-                            }
-
-                            plansToUpdate.add(planToUpdate);
-                        }
-                    }
-                }
-
-                // Si hay planes a modificar se actualizan
-                if( !plansToUpdate.isEmpty() ) {
-                    update plansToUpdate;
-                }
-            }
+            calculateRealKpiAndUpdatePlans (plans, plansToUpdate);
         }
     }
     
@@ -788,5 +696,180 @@ public with sharing class PlanComercialSDM {
         }
 
         return kpis;
+    }
+
+     /**
+    * @description Método que se encarga de obtener los campos del metadato SDMCommercialPlan__mdt que correspondan dependiendo del plan comercial
+    * @author aberuete 
+    * @date 17-04-2023 
+    * @param SDMCommercialPlan__mdt indicatorSetting : metadato SDMCommercialPlan__mdt
+    * @param Set<String> kpiFields : conjunto de campos de kpi 
+    * @param PlanComercial__c plan : plan comercial
+    **/
+    @testvisible
+    private Set<String> ifIndicatorSettingNotNUll (SDMCommercialPlan__mdt indicatorSetting, Set<String> kpiFields, PlanComercial__c plan)
+    {
+        if ( indicatorSetting != null)
+        {
+            // Incluimos los campos del indicador para recuperarlos con la consulta de kpis
+            kpiFields.add(indicatorSetting.FirstField__c);
+            if( indicatorSetting.SecondField__c != null ) kpiFields.add(indicatorSetting.SecondField__c);
+            if( indicatorSetting.ThirdField__c != null ) kpiFields.add(indicatorSetting.ThirdField__c);
+
+            if( !containsMonths ) containsMonths = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_MONTH);
+            if( !containsYTD ) containsYTD = (plan.AccumulateType__c == PlanComercialSelector.ACCUMULATE_TYPE_YRD);
+
+            if (indicatorSetting.CalculatedPreviousPeriod__c) kpiFields.add(indicatorSetting.PreviousPeriodField__c);
+
+            // Recuperamos el usuario del plan y lo incluimos en la lista de usuarios implicados
+            Id userId = getUserIdFromPlan(plan);
+            if( userId != null ) userIdsFromPlans.add(userId);
+        }   
+        
+        return kpiFields;
+    }
+
+    /**
+    * @description Método que se encarga de obtener el conjunto de ids de las cuentas de intermediario asociadas al plan comercial y al usuario
+    * @author aberuete 
+    * @date 17-04-2023 
+    * @param PlanComercial__c plan : plan comercial
+    * @param Id userId : id de usuario
+    **/
+    @testvisible
+    private Set<Id> getIdsIntermediariesOfPlan (PlanComercial__c plan, Id userId)
+    {
+        Set<Id> intermediaries = null;
+
+        if( plan.Intermediary__c == null ) 
+        {
+            intermediaries = mapIntermediariesByUserId?.get(userId);
+        } 
+        else 
+        {
+            // Miramos si el mediador del plan es de Agrupacion (puede no ser y por tanto devolver nulo)
+            Map<Id, Set<Id>> mapIntermediaries = mapIntermediariesByUserIdAndAgrupationId?.get(userId);
+            intermediaries = mapIntermediaries?.get(plan.Intermediary__c);
+
+            // Si la lista es nula significa que no es una agrupacion sino un mediador directamente
+            if( intermediaries == null && mapIntermediariesByUserId?.get(userId) != null 
+            && mapIntermediariesByUserId.get(userId).contains(plan.Intermediary__c) ) 
+            {
+                intermediaries = new Set<Id>{plan.Intermediary__c};
+            }
+        }
+        return intermediaries;
+    }
+
+     /**
+    * @description Método que se encarga de obtener una lista de kpis a recalcular que están asociados con el 
+    * plan comercial y el conjunto de intermediarios
+    * @author aberuete 
+    * @date 17-04-2023 
+    * @param Set<Id> intermediaries : conjunto de ids de cuentas de intermediario
+    * @param PlanComercial__c plan : plan comercial
+    **/
+    @testvisible
+    private List<KPI__c> getKpisToCalculate (Set<Id> intermediaries, PlanComercial__c plan)
+    {
+        List<KPI__c> kpis = new List<KPI__c>();
+        // Por cada mediador...
+        for(Id idIntermediaries: intermediaries) 
+        {
+            // Recuperamos la lista de KPIs que hay para ese mediador
+            List<KPI__c> kpisByIntermediary = mapKPIsByIntermediary?.get(idIntermediaries);
+            // Si existe algun KPI...
+            if( kpisByIntermediary != null && !kpisByIntermediary.isEmpty() ) 
+            {
+                // Por cada KPI, comprobamos que el KPI cumple con los filtros del plan
+                for(KPI__c kpi: kpisByIntermediary) 
+                {
+                    // Si cumple los filtros lo añadimos a la lista de kpis a tener en cuenta en el
+                    // calculo
+                    if( inPlan(kpi, plan) ) kpis.add(kpi);
+                }
+            }
+        }
+        return kpis;     
+    }
+
+     /**
+    * @description Método que se encarga de recalcular el kpi actual para los kpis dados asociados al plan comercial
+    *  y lo añade a la lista de planes comerciales a actualizar
+    * @author aberuete 
+    * @date 17-04-2023 
+    * @param List<PlanComercial__c> plansToUpdate :  lista que contiene los planes comerciales a actualizar
+    * @param List<KPI__c> kpis : lista de kpis
+    * @param PlanComercial__c plan : plan comercial
+    **/
+    @testvisible
+    private List<PlanComercial__c> updatePlanWithRealKpi (List<PlanComercial__c> plansToUpdate,List<KPI__c> kpis, PlanComercial__c plan)
+    {
+        if( !kpis.isEmpty() ) 
+        {
+            // Se realiza el calculo para el KPI Actual
+            Decimal result = doCalculation(kpis, plan);
+
+            // Guardamos el resultado en el Plan comercial
+            PlanComercial__c planToUpdate = new PlanComercial__c(
+                Id = plan.Id,
+                Actual_KPI__c = result
+            );
+            
+            // Se realiza el cálculo para el KPI Actual del perioodo anterior
+            Decimal resultPA = doCalculationPA(kpis, plan);
+            
+            if (resultPA != null)
+            {
+                planToUpdate.PAActualKPI__c = resultPA;
+            }
+            
+            plansToUpdate.add(planToUpdate);
+        }
+        return plansToUpdate;
+    }
+
+    /**
+    * @description Método que se encarga de recalcular el kpi actual para los kpis dados asociados al plan comercial
+    *  y actualiza los planes comerciales
+    * @author aberuete 
+    * @date 17-04-2023 
+    * @param List<PlanComercial__c> plans : Lista de planes para recalcular su kpi
+    * @param List<PlanComercial__c> plansToUpdate :  lista que contiene los planes comerciales a actualizar
+    **/
+    @testvisible
+    private void calculateRealKpiAndUpdatePlans (List<PlanComercial__c> plans,  List<PlanComercial__c> plansToUpdate)
+    {
+        if( mapKPIsByIntermediary != null && !mapKPIsByIntermediary.isEmpty() ) 
+        {
+            // Ahora si, por cada plan comercial, se realiza el calculo...
+            for(PlanComercial__c plan: plans) 
+            {
+                // Obtenemos de nuevo el usuario relacionado con el plan
+                Id userId = getUserIdFromPlan(plan);
+
+                // Obtenemos la lista de mediadores implicados en el plan segun el campo mediador tenga
+                // uno de los siguientes valores:
+                // - nulo: todos los mediadores que ve el usuario del plan
+                // - agrupacion: todos los mediadores de esa agrupacion que ve el usuario del plan
+                // - mediador: el mediador directamente
+                Set<Id> intermediaries = getIdsIntermediariesOfPlan (plan, userId);
+
+                // Si hay mediadores..
+                if( intermediaries != null && !intermediaries.isEmpty() ) 
+                {
+                    // formaremos una lista de KPIs a utilizar en el calculo
+                    List<KPI__c> kpis = getKpisToCalculate (intermediaries, plan);
+                    // Si hay KPIs (que deberia)...
+                    plansToUpdate = updatePlanWithRealKpi (plansToUpdate, kpis, plan);
+                }
+            }
+
+            // Si hay planes a modificar se actualizan
+            if( !plansToUpdate.isEmpty() ) 
+            {
+                update plansToUpdate;
+            }
+        } 
     }
 }

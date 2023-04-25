@@ -36,7 +36,7 @@ private with sharing class GenerateComercialPlanControllerTest
         Integer actualYear = System.today().year();
         String tableString;
         System.runAs(dtUser) {
-            tableString = GenerateComercialPlanController.getRecords(actualYear);
+            tableString = GenerateComercialPlanController.getRecords(actualYear, null);
         }
 
         // Convertirmos el resultado en objeto Tabletype para verificar mas campos
@@ -139,7 +139,7 @@ private with sharing class GenerateComercialPlanControllerTest
         Integer actualYear = System.today().year();
         String tableString;
         System.runAs(rnUser) {
-            tableString = GenerateComercialPlanController.getRecords(actualYear);
+            tableString = GenerateComercialPlanController.getRecords(actualYear, null);
         }
 
         // Convertirmos el resultado en objeto Tabletype para verificar mas campos
@@ -217,7 +217,7 @@ private with sharing class GenerateComercialPlanControllerTest
         String exceptionMessage = null;
         try {
             GenerateComercialPlanController.testException = 'Error desconocido';
-            GenerateComercialPlanController.getRecords(2021);
+            GenerateComercialPlanController.getRecords(2021, null);
         } catch(Exception ex) {
             exceptionMessage = ex.getMessage();
         }

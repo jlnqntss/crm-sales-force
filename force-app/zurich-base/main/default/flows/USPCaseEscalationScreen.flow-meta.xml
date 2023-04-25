@@ -839,6 +839,9 @@
         </fields>
         <fields>
             <name>comments</name>
+            <defaultValue>
+                <stringValue>{!caseRecordAction.RelatedPolicyOffer__c}</stringValue>
+            </defaultValue>
             <fieldText>Comentarios</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>false</isRequired>

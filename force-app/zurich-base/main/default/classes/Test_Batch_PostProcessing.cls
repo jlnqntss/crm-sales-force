@@ -8,6 +8,7 @@
 @isTest
 private class Test_Batch_PostProcessing
 {
+    static final String PRODUCT_NAME = 'Samsung Galaxy';
     /**
      * Create test data: an order with a new timestamp and orderItem, discount and cover with old timestamp
      **
@@ -25,8 +26,8 @@ private class Test_Batch_PostProcessing
         update standardPricebook;
 
         Product2 newProduct = new Product2(
-            ProductID__c = 'Samsung Galaxy',
-            Name = 'Samsung Galaxy',
+            ProductID__c = PRODUCT_NAME,
+            Name = PRODUCT_NAME,
             Family = 'Smartphone',
             Brand__c = 'Samsung',
             IsActive = true
@@ -34,7 +35,7 @@ private class Test_Batch_PostProcessing
         insert newProduct;
         PricebookEntry pricebookEntry = new PricebookEntry(
             UnitPrice = 0,
-            ProductID__c = 'Samsung Galaxy',
+            ProductID__c = PRODUCT_NAME,
             Pricebook2Id = Test.getStandardPricebookId(),
             IsActive = true
             );
@@ -42,7 +43,7 @@ private class Test_Batch_PostProcessing
         insert pricebookEntry;
 
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
-        Account MasterRef = new Account(CustomerNum__c = '3123');
+        Account masterRef = new Account(CustomerNum__c = '3123');
         insert newMaster;
 
         Datetime newTimestamp = Datetime.newInstance(2020, 12, 1, 12, 30, 2);
@@ -106,7 +107,6 @@ private class Test_Batch_PostProcessing
      * @author nbizkarra
      * @date 18/06/2020
      */
-
     @isTest
     static void test_DeleteOutdatedData()
     {
@@ -127,7 +127,7 @@ private class Test_Batch_PostProcessing
         Test.startTest();
         Batch_PostProcessing b = new Batch_PostProcessing('select'); // for coverage
         b = new Batch_PostProcessing();
-        Id BatchInstanceId = database.executeBatch(b, 200);
+        database.executeBatch(b, 200);
         Test.stopTest();
 
         policy = [
@@ -155,8 +155,51 @@ private class Test_Batch_PostProcessing
         String sch = '20 30 8 10 2 ?';
 
         Test.startTest();
-        String jobID = system.schedule('Post Processing batch', sch, m);
+        system.schedule('Post Processing batch', sch, m);
         Test.stopTest();
-        
+    }
+
+    /**
+     * Test que comprueba si se obtienen correctamente los order items a borrar
+     **
+     * @author aberuete
+     * @date 21/04/2023
+     */
+    @isTest
+    static void testGetItemsToDelete()
+    {
+        Batch_PostProcessing batch = new Batch_PostProcessing();
+
+        List<OrderItem> itemsToDelete = new List<OrderItem>();
+        Order quote = [Select id,(Select id from OrderItems) from Order limit 1];
+        System.assertNotEquals(0, quote.OrderItems.size(), 'Debería tener alguna order item relacionada');
+
+        Test.startTest();
+        itemsToDelete = batch.getItemsToDelete (quote, itemsToDelete);
+        Test.stopTest();
+
+        System.assertEquals(1, itemsToDelete.size(), 'Debería devolver un orderitem para borrar');
+    }
+
+    /**
+     * Test que comprueba si se obtienen correctamente los descuentos a borrar
+     **
+     * @author aberuete
+     * @date 21/04/2023
+     */
+    @isTest
+    static void testGetDiscountsToDelete()
+    {
+        Batch_PostProcessing batch = new Batch_PostProcessing();
+
+        List<Discount__c> discountsToDelete = new List<Discount__c>();
+        Order quote = [Select id,(Select id from Descuentos__r) from Order limit 1];
+        System.assertNotEquals(0, quote.Descuentos__r.size(), 'Debería tener algun descuento relacionado');
+
+        Test.startTest();
+        discountsToDelete = batch.getDiscountsToDelete (quote, discountsToDelete);
+        Test.stopTest();
+
+        System.assertEquals(1, discountsToDelete.size(), 'Debería devolver un descuento para borrar');
     }
 }

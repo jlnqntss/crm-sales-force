@@ -528,9 +528,9 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                 // - if old in the new list -> remove from new list
                 for(Integer i=0,j=actualGroupMemberList.size();i<j;i++) {
                     Id oldId = actualGroupMemberList[i].GroupId;
-                    String Grouptype = actualGroupMemberList[i].Group.Type;
+                    String groupType = actualGroupMemberList[i].Group.Type;
                     if( !newGroupList.contains(oldId) ) {
-                        if( Grouptype != GROUP_MEMBER_QUEUE) deleteGroups.add(actualGroupMemberList[i]);
+                        if( groupType != GROUP_MEMBER_QUEUE) deleteGroups.add(actualGroupMemberList[i]);
                     } else {
                         newGroupList.remove(newGroupList.indexOf(oldId));
                     }
