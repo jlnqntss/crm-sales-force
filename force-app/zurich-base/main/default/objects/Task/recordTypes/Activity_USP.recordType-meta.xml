@@ -250,5 +250,9 @@
             <fullName>Other</fullName>
             <default>true</default>
         </values>
+        <values>
+            <fullName>Outbound Email</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
 </RecordType>

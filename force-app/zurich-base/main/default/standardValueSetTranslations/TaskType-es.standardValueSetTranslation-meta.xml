@@ -25,6 +25,10 @@
         <translation>Otro</translation>
     </valueTranslation>
     <valueTranslation>
+        <masterLabel>Outbound Email</masterLabel>
+        <translation>Correo eléctronico saliente</translation>
+    </valueTranslation>
+    <valueTranslation>
         <masterLabel>Scaled Case</masterLabel>
         <translation>Caso Escalado</translation>
     </valueTranslation>
