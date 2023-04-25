@@ -460,6 +460,10 @@
                     <name>label</name>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>reportFilter</name>
+                    <value>ACCOUNT_ID</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>reportName</name>
                     <value>Kpis_histricos_Mediador_USP1</value>
                 </componentInstanceProperties>
@@ -504,6 +508,10 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>reportFilter</name>
+                    <value>ACCOUNT_ID</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>reportName</name>
