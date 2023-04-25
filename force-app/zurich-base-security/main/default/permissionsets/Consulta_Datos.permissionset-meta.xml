@@ -30,6 +30,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.ActiveAgreements__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.ActivityIndex__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -516,6 +521,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Site</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.SpecialConditions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
