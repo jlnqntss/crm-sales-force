@@ -3769,6 +3769,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.ActiveAgreements__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.ActivityIndex__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4265,6 +4270,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.SMEClientPortfolio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.SpecialConditions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
