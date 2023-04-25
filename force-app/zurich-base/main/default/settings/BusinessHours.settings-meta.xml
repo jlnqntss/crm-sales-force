@@ -76,10 +76,6 @@
         <mondayEndTime>18:00:00.000Z</mondayEndTime>
         <mondayStartTime>08:30:00.000Z</mondayStartTime>
         <name>USP Default</name>
-        <saturdayEndTime>00:00:00.000Z</saturdayEndTime>
-        <saturdayStartTime>00:00:00.000Z</saturdayStartTime>
-        <sundayEndTime>00:00:00.000Z</sundayEndTime>
-        <sundayStartTime>00:00:00.000Z</sundayStartTime>
         <thursdayEndTime>18:00:00.000Z</thursdayEndTime>
         <thursdayStartTime>08:30:00.000Z</thursdayStartTime>
         <timeZoneId>Europe/Madrid</timeZoneId>
