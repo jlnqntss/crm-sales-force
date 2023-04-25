@@ -38,13 +38,13 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Ventas</application>
-        <default>true</default>
-        <visible>true</visible>
+        <default>false</default>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Zurich_Empresas</application>
-        <default>false</default>
-        <visible>false</visible>
+        <default>true</default>
+        <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>lightningbuddy__Lightning_Buddy</application>
