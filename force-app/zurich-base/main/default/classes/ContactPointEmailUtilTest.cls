@@ -7,6 +7,12 @@
 @isTest(SeeAllData=false)
 private with sharing class ContactPointEmailUtilTest
 {
+    static final String EMAIL_TEST = 'newemail@nts-solutions.com.invalid';
+    static final String MESSAGE_ONE_PRIMARY_CONTACT = 'There should be 1 primary ContactPointEmail';
+    static final String MESSAGE_ONE_SCOPE = 'There should be 1 scope';
+    static final String MESSAGE_EMAIL_SAME = 'Email should be the same';
+    static final String MESSAGE_LIST_NOT_EMPTY = 'List should NOT be empty';
+
     @TestSetup
     public static void createScenario()
     {
@@ -32,7 +38,7 @@ private with sharing class ContactPointEmailUtilTest
     @isTest
     static void test_insert_primaryContactPointEmail_ok()
     {
-        String emailToInsert = 'newemail@nts-solutions.com.invalid';
+        String emailToInsert = EMAIL_TEST;
         List<Scope__c> relatedScopes = [SELECT Id, AccountId__c, Scope__c FROM Scope__c LIMIT 1];
         System.assertEquals(1, relatedScopes.size(), 'There should be 1 account');
 
@@ -55,13 +61,13 @@ private with sharing class ContactPointEmailUtilTest
         List<ContactPointEmail> currentContactPoints = new ContactPointEmailsSelector().selectByScopeIdAndIsPrimary(
             new Set<Id> {relatedScopes.get(0).Id}, true, null
             );
-        System.assertEquals(1, currentContactPoints.size(), 'There should be 1 primary ContactPointEmail');
+        System.assertEquals(1, currentContactPoints.size(), MESSAGE_ONE_PRIMARY_CONTACT);
 
         List<Scope__c> updatedScopes = new ScopesSelector(
             new Set<String> {'Id', 'PrimaryEmail__c'}
             ).selectById(new Set<Id> {relatedScopes.get(0).Id});
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(emailToInsert, updatedScopes.get(0).PrimaryEmail__c, 'Email should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(emailToInsert, updatedScopes.get(0).PrimaryEmail__c, MESSAGE_EMAIL_SAME);
     }
 
     /**
@@ -74,11 +80,10 @@ private with sharing class ContactPointEmailUtilTest
     @isTest
     static void test_update_primaryContactPointEmail_ok()
     {
-        //List<ContactPointEmail> contactPointEmails = [SELECT Id, IsPrimary, EmailAddress, ParentId, Scope__c, ScopeId__c FROM ContactPointEmail WHERE IsPrimary = false LIMIT 1];
         List<ContactPointEmail> notPrimaryContactPointEmails = new ContactPointEmailsSelector(
             new Set<String> {'Id', 'IsPrimary', 'EmailAddress', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByIsPrimary(false);
-        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointEmail> contactPointEmails = new List<ContactPointEmail> {notPrimaryContactPointEmails.get(0)};
         contactPointEmails.get(0).IsPrimary = true;
@@ -92,14 +97,13 @@ private with sharing class ContactPointEmailUtilTest
         List<ContactPointEmail> currentContactPoints = new ContactPointEmailsSelector().selectByScopeIdAndIsPrimary(
             new Set<Id> {contactPointEmails.get(0).ScopeId__c}, true, null
             );
-        System.assertEquals(1, currentContactPoints.size(), 'There should be 1 primary ContactPointEmail');
+        System.assertEquals(1, currentContactPoints.size(), MESSAGE_ONE_PRIMARY_CONTACT);
 
-        //List<Scope__c> updatedScopes = [SELECT Id, PrimaryEmail__c FROM Scope__c WHERE Id =: contactPointEmails.get(0).ScopeId__c];
         List<Scope__c> updatedScopes = new ScopesSelector(
             new Set<String> {'Id', 'PrimaryEmail__c'}
             ).selectById(new Set<Id> {contactPointEmails.get(0).ScopeId__c});
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(contactPointEmails.get(0).EmailAddress, updatedScopes.get(0).PrimaryEmail__c, 'Email should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(contactPointEmails.get(0).EmailAddress, updatedScopes.get(0).PrimaryEmail__c, MESSAGE_EMAIL_SAME);
     }
 
     /**
@@ -113,13 +117,12 @@ private with sharing class ContactPointEmailUtilTest
     @isTest
     static void test_insert_primaryContactPointEmail_update_related_ok()
     {
-        String emailToInsert = 'newemail@nts-solutions.com.invalid';
-
-        //List<ContactPointEmail> firstContactPointEmails = [SELECT Id, IsPrimary, EmailAddress, ParentId, Scope__c, ScopeId__c FROM ContactPointEmail WHERE IsPrimary = false LIMIT 1];
+        String emailToInsert = EMAIL_TEST;
+        
         List<ContactPointEmail> notPrimaryContactPointEmails = new ContactPointEmailsSelector(
             new Set<String> {'Id', 'IsPrimary', 'EmailAddress', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByIsPrimary(false);
-        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointEmail> firstContactPointEmails = new List<ContactPointEmail> {notPrimaryContactPointEmails.get(0)};
         Id currentScopeId = firstContactPointEmails.get(0).ScopeId__c;
@@ -148,17 +151,15 @@ private with sharing class ContactPointEmailUtilTest
         List<ContactPointEmail> insertedPrimaryContactPoints = new ContactPointEmailsSelector(
             new Set<String> {'Id', 'EmailAddress'}
             ).selectByScopeIdAndIsPrimary(new Set<Id> {currentScopeId}, true, null);
-        System.assertEquals(1, insertedPrimaryContactPoints.size(), 'There should be 1 primary ContactPointEmail');
+        System.assertEquals(1, insertedPrimaryContactPoints.size(), MESSAGE_ONE_PRIMARY_CONTACT);
         System.assertEquals(insertedPrimaryContactPoints.get(0).Id, newContactPoints.get(0).Id, 'Id should be the same');
 
-        //List<Scope__c> updatedScopes = [SELECT Id, PrimaryEmail__c FROM Scope__c WHERE Id =: currentScopeId];
         List<Scope__c> updatedScopes = new ScopesSelector(
             new Set<String> {'Id', 'PrimaryEmail__c'}
             ).selectById(new Set<Id> {currentScopeId});
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(insertedPrimaryContactPoints.get(0).EmailAddress, updatedScopes.get(0).PrimaryEmail__c, 'Email should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(insertedPrimaryContactPoints.get(0).EmailAddress, updatedScopes.get(0).PrimaryEmail__c, MESSAGE_EMAIL_SAME);
 
-        //List<ContactPointEmail> updatedNotPrimaryContactPoints = [SELECT Id FROM ContactPointEmail WHERE ScopeId__c =: currentScopeId AND IsPrimary = false];
         List<ContactPointEmail> updatedNotPrimaryContactPoints = new ContactPointEmailsSelector().selectByScopeIdAndIsPrimary(
             new Set<Id> {currentScopeId}, false, null
             );
@@ -182,8 +183,6 @@ private with sharing class ContactPointEmailUtilTest
     @isTest
     static void test_update_primaryContactPointEmail_update_related_ok()
     {
-        String emailToInsert = 'newemail@nts-solutions.com.invalid';
-
         List<ContactPointEmail> notPrimaryContactPointEmails = new ContactPointEmailsSelector(
             new Set<String> {'Id', 'IsPrimary', 'EmailAddress', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByIsPrimary(false);
@@ -199,7 +198,7 @@ private with sharing class ContactPointEmailUtilTest
         notPrimaryContactPointEmails = new ContactPointEmailsSelector(
             new Set<String> {'Id', 'IsPrimary', 'EmailAddress', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByScopeIdAndIsPrimary(new Set<Id> {currentScopeId}, false, null);
-        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointEmail> secondContactPointEmails = new List<ContactPointEmail> {notPrimaryContactPointEmails.get(0)};
         secondContactPointEmails.get(0).IsPrimary = true;
@@ -212,14 +211,14 @@ private with sharing class ContactPointEmailUtilTest
         List<ContactPointEmail> updatedPrimaryContactPoints = new ContactPointEmailsSelector(
             new Set<String> {'Id', 'EmailAddress'}
             ).selectByScopeIdAndIsPrimary(new Set<Id> {currentScopeId}, true, null);
-        System.assertEquals(1, updatedPrimaryContactPoints.size(), 'There should be 1 primary ContactPointEmail');
+        System.assertEquals(1, updatedPrimaryContactPoints.size(), MESSAGE_ONE_PRIMARY_CONTACT);
         System.assertEquals(updatedPrimaryContactPoints.get(0).Id, secondContactPointEmails.get(0).Id, 'Id should be the same');
 
         List<Scope__c> updatedScopes = new ScopesSelector(
             new Set<String> {'Id', 'PrimaryEmail__c'}
             ).selectById(new Set<Id> {currentScopeId});
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(updatedPrimaryContactPoints.get(0).EmailAddress, updatedScopes.get(0).PrimaryEmail__c, 'Email should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(updatedPrimaryContactPoints.get(0).EmailAddress, updatedScopes.get(0).PrimaryEmail__c, MESSAGE_EMAIL_SAME);
 
         List<ContactPointEmail> updatedNotPrimaryContactPoints = new ContactPointEmailsSelector().selectByScopeIdAndIsPrimary(
             new Set<Id> {currentScopeId}, false, null
@@ -247,11 +246,10 @@ private with sharing class ContactPointEmailUtilTest
         List<ContactPointEmail> notPrimaryContactPointEmails = new ContactPointEmailsSelector(
             new Set<String> {'Id', 'IsPrimary', 'EmailAddress', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByIsPrimary(false);
-        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointEmail> firstContactPointEmails = new List<ContactPointEmail> {notPrimaryContactPointEmails.get(0)};
-        Id currentScopeId = firstContactPointEmails.get(0).ScopeId__c;
-
+        
         //Actualizamos un ContactPointEmail primero
         firstContactPointEmails.get(0).IsPrimary = true;
         update firstContactPointEmails;
@@ -282,7 +280,7 @@ private with sharing class ContactPointEmailUtilTest
         List<ContactPointEmail> notPrimaryContactPointEmails = new ContactPointEmailsSelector(
             new Set<String> {'Id', 'IsPrimary', 'EmailAddress', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByIsPrimary(false);
-        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointEmails.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointEmail> contactPointEmailsToDelete = new List<ContactPointEmail> {notPrimaryContactPointEmails.get(0)};
         Id currentScopeId = contactPointEmailsToDelete.get(0).ScopeId__c;
@@ -305,8 +303,8 @@ private with sharing class ContactPointEmailUtilTest
         List<Scope__c> updatedScopes = new ScopesSelector(
             new Set<String> {'Id', 'PrimaryEmail__c'}
             ).selectById(new Set<Id> {currentScopeId});
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(currentPrimaryEmail, updatedScopes.get(0).PrimaryEmail__c, 'Email should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(currentPrimaryEmail, updatedScopes.get(0).PrimaryEmail__c, MESSAGE_EMAIL_SAME);
     }
 
     /**
@@ -375,4 +373,77 @@ private with sharing class ContactPointEmailUtilTest
         }
     }
 
+    /**
+     * Test que comprueba que se rellena correctamente el mapa de contact point emails a actualizar
+     *
+     * @author aberuete
+     * @date 25/04/2023
+     */
+    @isTest
+    static void test_updateMapContactPointEmails()
+    {
+        List<ContactPointEmail> newContactPointEmail = [Select id,ScopeId__c from ContactPointEmail where ScopeId__c != null limit 2];
+        System.assertEquals(2, newContactPointEmail.size(), 'Deberían existir al menos dos contact point email con el scopeId distinto a nulo');
+        ContactPointEmailUtil.relatedContactPointEmailsMap = new Map<Id, List<ContactPointEmail> >();
+        ContactPointEmailUtil.contactPointEmailsToUpdate = new Map<Id, ContactPointEmail>();
+
+        ContactPointEmailUtil.relatedContactPointEmailsMap.put(newContactPointEmail[0].ScopeId__c, newContactPointEmail);
+
+        Test.startTest();
+        ContactPointEmailUtil.updateMapContactPointEmails(newContactPointEmail[0].ScopeId__c, newContactPointEmail[1]);
+        Test.stopTest();
+
+        System.assertEquals(new Set<Id>{newContactPointEmail[0].id}, ContactPointEmailUtil.contactPointEmailsToUpdate.keySet(), 'Debería estar en el mapa a actualizar');
+        System.assertEquals(false, ContactPointEmailUtil.contactPointEmailsToUpdate.values().IsPrimary, 'El campo se debería haber actualizado a falso');
+    }
+
+    /**
+     * Test que comprueba que se rellena correctamente el mapa de scopes a actualizar
+     *
+     * @author aberuete
+     * @date 25/04/2023
+     */
+    @isTest
+    static void test_updateMapScopesToUpdate()
+    {
+        List<ContactPointEmail> newContactPointEmail = [Select id,ScopeId__c,EmailAddress from ContactPointEmail where ScopeId__c != null and EmailAddress != null  limit 1];
+        System.assertEquals(1, newContactPointEmail.size(), 'Debería existir al menos un contact point email con el scopeId distinto a nulo');
+
+        List<Scope__c> scopeToContactPoint = [Select id from Scope__c where id =:newContactPointEmail[0].ScopeId__c limit 1];
+        System.assertEquals(1, scopeToContactPoint.size(), 'Debería existir al menos un scope');
+
+        ContactPointEmailUtil.scopesToUpdate = new Map<Id, Scope__c>();
+        ContactPointEmailUtil.relatedScopesMap = new Map<Id, Scope__c>();
+        ContactPointEmailUtil.relatedScopesMap.put(scopeToContactPoint[0].id, scopeToContactPoint[0]);
+
+        Test.startTest();
+        ContactPointEmailUtil.updateMapScopesToUpdate(newContactPointEmail[0].ScopeId__c, newContactPointEmail[0]);
+        Test.stopTest();
+
+        System.assertEquals(new Set<Id>{scopeToContactPoint[0].id}, ContactPointEmailUtil.scopesToUpdate.keySet(), 'Debería estar en el mapa a actualizar');
+        System.assertEquals(newContactPointEmail[0].EmailAddress, ContactPointEmailUtil.scopesToUpdate.values().PrimaryEmail__c, 'El campo se debería haber actualizado al email del nuevo contact point');
+    }
+
+    /**
+     * Test que comprueba que en caso de que no haya ningun contact point email relacionado que sea primario , lanza un error
+     *
+     * @author aberuete
+     * @date 25/04/2023
+     */
+    @isTest
+    static void test_ifIsPrimaryFoundFalseThrowError()
+    {
+        List<ContactPointEmail> newContactPointEmail = [Select id,ScopeId__c,isPrimary from ContactPointEmail where ScopeId__c != null and isPrimary = false limit 2];
+        System.assertEquals(2, newContactPointEmail.size(), 'Deberían existir al menos dos contact point email con el scopeId distinto a nulo');
+        ContactPointEmailUtil.relatedContactPointEmailsMap = new Map<Id, List<ContactPointEmail> >();
+        ContactPointEmailUtil.contactPointEmailsToUpdate = new Map<Id, ContactPointEmail>();
+
+        ContactPointEmailUtil.relatedContactPointEmailsMap.put(newContactPointEmail[0].ScopeId__c, newContactPointEmail);
+
+        Test.startTest();
+        ContactPointEmailUtil.ifIsPrimaryFoundFalseThrowError(newContactPointEmail[0].ScopeId__c, newContactPointEmail[1]);
+        Test.stopTest();
+
+        System.assertEquals(Label.PrimaryContactPointEmailRequired, newContactPointEmail[1].getErrors()[0].getMessage(), 'Debería tener un error asociado');
+    }
 }
