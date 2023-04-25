@@ -136,8 +136,7 @@
         </connector>
         <filterFormula>AND(
 NOT(ISPICKVAL({!$Record.SourceArea__c},&quot;Partner&quot;)),
-{!$User.Alias}=&quot;autocase&quot;,
-ISBLANK({!$Record.AccountId})
+{!$User.Alias}=&quot;autocase&quot;
 )</filterFormula>
         <object>Case</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
