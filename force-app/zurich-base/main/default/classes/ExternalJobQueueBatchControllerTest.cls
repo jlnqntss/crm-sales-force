@@ -35,12 +35,12 @@ private class ExternalJobQueueBatchControllerTest
         insert externalRequestList;
 
         Test.startTest();
-        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO');
+        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO', 1);
         Test.stopTest();
 
         Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFO').getRecordTypeId();
-        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC');
-        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC');
+        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', 1);
+        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', 1);
 
         System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
         // Check query text
@@ -72,12 +72,12 @@ private class ExternalJobQueueBatchControllerTest
         insert externalRequestList;
 
         Test.startTest();
-        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO');
+        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO', 1);
         Test.stopTest();
 
         Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFO').getRecordTypeId();
-        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC');
-        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC');
+        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', 1);
+        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', 1);
 
         System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
         // Check query text
@@ -119,5 +119,36 @@ private class ExternalJobQueueBatchControllerTest
 
         System.assertEquals(1, executingBatch.size(), 'No se ha encolado el trabajo de cola prioritaria');
 
+    }
+
+    /**
+    * @description Método de test que valida el correcto funcionamiento del método 
+    * que elimina los ceros iniciales de un String
+    * @author amiranda | 18-04-2023 
+    **/
+    @isTest
+    static void test_dropLeadingZeros()
+    {
+        Map<String, String> expectedValuesByPassedValue = new Map<String, String>{
+            '123456' => '123456',
+            '00000123456' => '123456',
+            '12345600000' => '12345600000',
+            '12034056' => '12034056',
+            '  00123456' => '123456',
+            '00123456  ' => '123456',
+            '  00123456  ' => '123456',
+            'abcdefg' => null,
+            'abcd123456' => null,
+            '  ' => null,
+            '' => null
+        };
+
+        for (String passedValue : expectedValuesByPassedValue.keySet())
+        {
+            String expectedValue = expectedValuesByPassedValue.get(passedValue);
+            Assert.areEqual(expectedValue, 
+                            ExternalJobQueueBatchController.dropLeadingZeros(passedValue),
+                            'El valor pasado por parámetro (' + passedValue + ') no coincide con el valor esperado (' + expectedValue + ')');
+        }
     }
 }

@@ -20,7 +20,13 @@ public class ExternalJobQueueBatchController
 
             if( queuedJobs.isEmpty() && executingJobs.isEmpty() )
             {
-                System.enqueueJob( new ExternalJobQueueJob(Transformer.ORIGIN_NAME_INFO) );
+                // Devuelve el menor índice entre las External Request que quedan por procesar
+                Integer entityIndex = new ExternalRequestsSelector().setLimit(1).getPriorityToProcess();
+
+                if(entityIndex != null)
+                {
+                    System.enqueueJob( new ExternalJobQueueJob(Transformer.ORIGIN_NAME_INFO, entityIndex));
+                }
             }
         }
         catch (Exception e)
@@ -50,8 +56,10 @@ public class ExternalJobQueueBatchController
      *
      * @author adelgado
      * @date 19/11/2020
+     * 
+     * @change amiranda 20/04/2023 refactor to reduce cognitive complexity
      */
-    public static List<String> getChunkQueries(String origin)
+    public static List<String> getChunkQueries(String origin, Integer index)
     {
         List<String> queries = new List<String>();
 
@@ -59,11 +67,11 @@ public class ExternalJobQueueBatchController
         {
             Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(origin).getRecordTypeId();
 
-            List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC');
+            List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', index);
 
             if( !firstPendingExtReq.isEmpty() )
             {
-                List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC');
+                List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', index);
 
                 String firstId = firstPendingExtReq.get(0).Id;
                 String lastId = lastPendingExtReq.get(0).Id;
@@ -76,17 +84,9 @@ public class ExternalJobQueueBatchController
                     Long startNum = base62decode(startIdStripped);
                     Long endNum = base62decode(endIdStripped);
 
-                    Integer chunkSize;
-
-                    if( (endNum - startNum) < 1000 )
-                    {
-                        chunksize = 100000;
-                    }
-                    else
-                    {
-                        Integer availableJobs = Integer.valueOf(SystemUtil.getAdminSetupMetadata().ExternalJobQueueBatchJobs__c);
-                        chunksize = (Integer) (endNum - startNum) / availableJobs;
-                    }
+                    Integer chunkSize = (endNum - startNum) < 1000 
+                                        ? 100000 
+                                        : (Integer) (endNum - startNum) / Integer.valueOf(SystemUtil.getAdminSetupMetadata().ExternalJobQueueBatchJobs__c);
 
                     List<Map<String, String> > chunkList = chunkIdRange(firstId, lastId, chunksize);
 
@@ -208,8 +208,8 @@ public class ExternalJobQueueBatchController
         List<Map<String, String> > idChunkList = new List<Map<String, String> >();
         for (Map<String, String> chunkMap: numberChunkList)
         {
-            Long rangeStart = Long.valueOf( drop_leading_zeros( chunkMap.get('first') ) );
-            Long rangeEnd   = Long.valueOf( drop_leading_zeros( chunkMap.get('last') ) );
+            Long rangeStart = Long.valueOf( dropLeadingZeros( chunkMap.get('first') ) );
+            Long rangeEnd   = Long.valueOf( dropLeadingZeros( chunkMap.get('last') ) );
 
             String rangeStartB62  = prefixStringWithZeros(base62encode(rangeStart), 9);
             String rangeEndB62    = prefixStringWithZeros(base62encode(rangeEnd), 9);
@@ -277,48 +277,29 @@ public class ExternalJobQueueBatchController
         return numChunkListZeroPadded;
     }
 
-
-    /*
-     * removes leading zeros from a passed string of numbers or returns NULL when not all numeric characters
-     *
-     * Source: https://www.interactiveties.com/blog/2011/apex-drop-leading-zeros.php#.VMv5Ml7F9sA
-     */
-    public static String drop_leading_zeros(String passedValue)
+    /**
+    * @description Método que elimina los ceros iniciales de un String (Refactorización del metodo drop_leading_zeros)
+    * @author amiranda | 18-04-2023 
+    * @param String passedValue 
+    * @return String 
+    **/
+    public static String dropLeadingZeros(String passedValue)
     {
-        String return_string = null; //return string for passing back
+        String result = null;
+
         if (passedValue != null)
-        { //if the passed value is not null
-            return_string = passedValue.trim(); //trim the whitespace from the start and end of the value
-            Pattern valid_characters = Pattern.compile('([0-9]+)'); //only numbers
-            Matcher check_chars = valid_characters.matcher(return_string); //compare the string to the set of valid characters
-            if ( check_chars.matches() )
-            { //if we have a somewhat valid number
-                if (return_string.startsWith('0') && return_string.length() > 1)
-                { //if the string begins with a 0 and the length is greater than 1
-                    boolean keepChecking = true; //create a boolean variable
-                    while (keepChecking)
-                    { //if boolean is true
-                        if (return_string.startsWith('0') && return_string.length() > 1)
-                        { //if the string begins with 0 and there is more than 1 character
-                            return_string = return_string.substring(1); //drop the first character
-                        }
-                        else
-                        { //either the string doesn't begin with 0 or the length is less than or equal to 1
-                            keepChecking = false; //stop the loop
-                        }
-                    }
-                }
-                if (return_string == '0')
-                { //if the resulting string is now a single '0'
-                    return_string = null; //set the string to null
-                }
-            }
-            else
-            { //otherwise the value passed was not valid
-                return_string = null; //set the string to null
+        {
+            // Se eliminan los espacios iniciales y finales y los primero ceros.
+            String parsedPassedValue = passedValue.trim().replaceFirst('^0+', '');
+
+            // Si el String pasado por parámetro es numérico
+            if (parsedPassedValue.isNumeric())
+            {
+                result = parsedPassedValue;
             }
         }
-        return return_string; //pass back a value
+
+        return result;
     }
 
 

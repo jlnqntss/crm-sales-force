@@ -7,6 +7,26 @@
 @isTest
 private class INFOHandlerTest
 {
+    private static final Integer NUM_ER_NATURAL_ACCOUNT = 5;
+    private static final Integer NUM_ER_LEGAL_ACCOUNT = 5;
+    private static final Integer NUM_ER_CONTACT_POINT_ADDRESS = 5;
+    private static final Integer NUM_ER_CONTACT_POINT_PHONE = 5;
+    private static final Integer NUM_ER_CONTACT_POINT_EMAIL = 5;
+    private static final Integer NUM_ER_PRODUCT = 5;
+    private static final Integer NUM_ER_QUOTE = 5;
+    private static final Integer NUM_ER_QUOTE_OPTION = 5;
+    private static final Integer NUM_ER_POLICY = 5;
+    private static final Integer NUM_ER_INSURED_OBJECT = 5;
+    private static final Integer NUM_ER_CLAIM = 5;
+    private static final Integer NUM_ER_POLICY_RELATIONSHIP = 5;
+    private static final Integer NUM_ER_QUOTE_RELATIONSHIP = 5;
+    private static final Integer NUM_ER_CLAIM_RELATIONSHIP = 5;
+    private static final Integer NUM_ER_PARTNER = 5;
+    private static final Integer NUM_ER_INTERMEDIARY = 5;
+    private static final Integer NUM_ER_NOTE = 5;
+    private static final Integer NUM_ER_SPECIAL_CONDITION = 5;
+    private static final Integer NUM_ER_INTERMEDIARY_KPI = 5;
+
     @TestSetup
     static void makeData()
     {
@@ -14,97 +34,97 @@ private class INFOHandlerTest
 
         //Personas físicas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NATURAL_ACCOUNT', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NATURAL_ACCOUNT', NUM_ER_NATURAL_ACCOUNT)
             );
 
         //Personas jurídicas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'LEGAL_ACCOUNT', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'LEGAL_ACCOUNT', NUM_ER_LEGAL_ACCOUNT)
             );
 
         //Vías de contacto postal
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONTACT_POINT_ADDRESS', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONTACT_POINT_ADDRESS', NUM_ER_CONTACT_POINT_ADDRESS)
             );
 
         //Vías de contacto telefónico
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONTACT_POINT_PHONE', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONTACT_POINT_PHONE', NUM_ER_CONTACT_POINT_PHONE)
             );
 
         //Vías de contacto email
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONTACT_POINT_EMAIL', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONTACT_POINT_EMAIL', NUM_ER_CONTACT_POINT_EMAIL)
             );
 
         //Productos
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'PRODUCT', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'PRODUCT', NUM_ER_PRODUCT)
             );
 
         //Ofertas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'QUOTE', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'QUOTE', NUM_ER_QUOTE)
             );
 
         //Opciones ofertas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'QUOTE_OPTION', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'QUOTE_OPTION', NUM_ER_QUOTE_OPTION)
             );
 
         //Pólizas
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'POLICY', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'POLICY', NUM_ER_POLICY)
             );
 
         //Objetos asegurados
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INSURED_OBJECT', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INSURED_OBJECT', NUM_ER_INSURED_OBJECT)
             );
 
         //Siniestros
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CLAIM', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CLAIM', NUM_ER_CLAIM)
             );
 
         //Roles póliza
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'POLICY_RELATIONSHIP', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'POLICY_RELATIONSHIP', NUM_ER_POLICY_RELATIONSHIP)
             );
 
         //Roles oferta
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'QUOTE_RELATIONSHIP', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'QUOTE_RELATIONSHIP', NUM_ER_QUOTE_RELATIONSHIP)
             );
 
         //Roles siniestro
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CLAIM_RELATIONSHIP', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CLAIM_RELATIONSHIP', NUM_ER_CLAIM_RELATIONSHIP)
             );
 
         //Partner
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'PARTNER', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'PARTNER', NUM_ER_PARTNER)
             );
 
         //Mediador
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY', NUM_ER_INTERMEDIARY)
             );
 
         //Note
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NOTE', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NOTE', NUM_ER_NOTE)
             );
 
         //Special Condition
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'SPECIAL_CONDITION', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'SPECIAL_CONDITION', NUM_ER_SPECIAL_CONDITION)
             );
 
         //SDM KPIs
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY_KPI', 10)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY_KPI', NUM_ER_INTERMEDIARY_KPI)
             );
 
         insert externalRequestList;
@@ -194,98 +214,98 @@ private class INFOHandlerTest
         Test.stopTest();
 
         System.assertEquals(
-            20,
+            NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Account').size(),
             'No se ha generado correctamente el mapa de registros de account'
             ); // 10 cuentas de personas físicas y 10 de personas jurídicas
         System.assertEquals(
-            10,
+            NUM_ER_LEGAL_ACCOUNT,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Contact').size(),
             'No se ha generado correctamente el mapa de registros de contact'
             );
         System.assertEquals(
-            10,
+            NUM_ER_CONTACT_POINT_ADDRESS,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointAddress').size(),
             'No se ha generado correctamente el mapa de registros de contactPointAddress'
             );
         System.assertEquals(
-            10,
+            NUM_ER_CONTACT_POINT_PHONE,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointPhone').size(),
             'No se ha generado correctamente el mapa de registros de contactPointPhone'
             );
         System.assertEquals(
-            10,
+            NUM_ER_CONTACT_POINT_EMAIL,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(),
             'No se ha generado correctamente el mapa de registros de contactPointEmail'
             );
         System.assertEquals(
-            10,
+            NUM_ER_PRODUCT,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(),
             'No se ha generado correctamente el mapa de registros de product'
             );
         System.assertEquals(
-            10,
+            NUM_ER_QUOTE,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(),
             'No se ha generado correctamente el mapa de registros de opportunity'
             );
         System.assertEquals(
-            10,
+            NUM_ER_QUOTE_OPTION,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(),
             'No se ha generado correctamente el mapa de registros de quote'
             );
         System.assertEquals(
-            10,
+            NUM_ER_POLICY,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(),
             'No se ha generado correctamente el mapa de registros de policy'
             );
         // FIXME:
         System.assertEquals(
-            10,
+            NUM_ER_INSURED_OBJECT,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(),
             'No se ha generado correctamente el mapa de registros de asset'
             );
         System.assertEquals(
-            10,
+            NUM_ER_CLAIM,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(),
             'No se ha generado correctamente el mapa de registros de claim'
             );
         System.assertEquals(
-            10,
+            NUM_ER_QUOTE_RELATIONSHIP,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(),
             'No se ha generado correctamente el mapa de registros de quote relationship'
             );
         System.assertEquals(
-            10,
+            NUM_ER_POLICY_RELATIONSHIP,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(),
             'No se ha generado correctamente el mapa de registros de policy relationship'
             );
         System.assertEquals(
-            10,
+            NUM_ER_CLAIM_RELATIONSHIP,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(),
             'No se ha generado correctamente el mapa de registros de claim relationship'
             );
         System.assertEquals(
-            10,
+            NUM_ER_PARTNER,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(),
             'No se ha generado correctamente el mapa de registros de account'
             );
         System.assertEquals(
-            10,
+            NUM_ER_INTERMEDIARY,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(),
             'No se ha generado correctamente el mapa de registros de account'
             );
         System.assertEquals(
-                10,
+                NUM_ER_NOTE,
                 INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(),
                 'No se ha generado correctamente el mapa de registros de Case'
                 );
         System.assertEquals(
-            10,
+            NUM_ER_SPECIAL_CONDITION,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(),
             'No se ha generado correctamente el mapa de registros de Special_Condition__c'
             );
         System.assertEquals(
-            10,
+            NUM_ER_INTERMEDIARY_KPI,
             INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(),
             'No se ha generado correctamente el mapa de registros de KPI__c'
             );
@@ -324,29 +344,29 @@ private class INFOHandlerTest
         INFOHandler.process(externalRequestList);
         Test.stopTest();
 
-        System.assertEquals(20, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account'); // 10 cuentas de personas físicas y 10 de personas jurídicas
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Contact').size(), 'No se ha generado correctamente el mapa de registros de contact');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointAddress').size(), 'No se ha generado correctamente el mapa de registros de contactPointAddress');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointPhone').size(), 'No se ha generado correctamente el mapa de registros de contactPointPhone');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(), 'No se ha generado correctamente el mapa de registros de contactPointEmail');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(), 'No se ha generado correctamente el mapa de registros de quote');
+        System.assertEquals(NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account'); // 10 cuentas de personas físicas y 10 de personas jurídicas
+        System.assertEquals(NUM_ER_LEGAL_ACCOUNT, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Contact').size(), 'No se ha generado correctamente el mapa de registros de contact');
+        System.assertEquals(NUM_ER_CONTACT_POINT_ADDRESS, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointAddress').size(), 'No se ha generado correctamente el mapa de registros de contactPointAddress');
+        System.assertEquals(NUM_ER_CONTACT_POINT_PHONE, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointPhone').size(), 'No se ha generado correctamente el mapa de registros de contactPointPhone');
+        System.assertEquals(NUM_ER_CONTACT_POINT_EMAIL, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(), 'No se ha generado correctamente el mapa de registros de contactPointEmail');
+        System.assertEquals(NUM_ER_PRODUCT, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
+        System.assertEquals(NUM_ER_QUOTE, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
+        System.assertEquals(NUM_ER_QUOTE_OPTION, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(), 'No se ha generado correctamente el mapa de registros de quote');
 
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de quote relationship');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de claim relationship');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
+        System.assertEquals(NUM_ER_INSURED_OBJECT, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
+        System.assertEquals(NUM_ER_CLAIM, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
+        System.assertEquals(NUM_ER_QUOTE_RELATIONSHIP, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de quote relationship');
+        System.assertEquals(NUM_ER_CLAIM_RELATIONSHIP, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de claim relationship');
+        System.assertEquals(NUM_ER_PARTNER, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
+        System.assertEquals(NUM_ER_INTERMEDIARY, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
 
         System.assertEquals(0, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de policy');
         System.assertEquals(0, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de policy relationship');
-        System.assertEquals(10, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
-        System.assertEquals(10, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy relationship');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(), 'No se ha generado correctamente el mapa de registros de Case');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(), 'No se ha generado correctamente el mapa de registros de Special_Condition__c');
-        System.assertEquals(10, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(), 'No se ha generado correctamente el mapa de registros de KPI__c');
+        System.assertEquals(NUM_ER_POLICY, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
+        System.assertEquals(NUM_ER_POLICY_RELATIONSHIP, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy relationship');
+        System.assertEquals(NUM_ER_NOTE, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(), 'No se ha generado correctamente el mapa de registros de Case');
+        System.assertEquals(NUM_ER_SPECIAL_CONDITION, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(), 'No se ha generado correctamente el mapa de registros de Special_Condition__c');
+        System.assertEquals(NUM_ER_INTERMEDIARY_KPI, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(), 'No se ha generado correctamente el mapa de registros de KPI__c');
     }
 
     @isTest
@@ -373,8 +393,13 @@ private class INFOHandlerTest
         INFOHandler.process(externalRequestList);
         Test.stopTest();
 
+        Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
+                                        NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
+                                        NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI;
+
         System.assertEquals(
-            190,
+            totalExternalRequests,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -404,8 +429,13 @@ private class INFOHandlerTest
         INFOHandler.process(externalRequestList);
         Test.stopTest();
 
+        Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
+                                        NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
+                                        NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI;
+                                        
         System.assertEquals(
-            190,
+            totalExternalRequests,
             INFOHandler.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
@@ -452,57 +482,57 @@ private class INFOHandlerTest
         List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
 
         System.assertEquals(
-            40,
+            (NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT) * 2,
             accountList.size(),
             'No se han insertado todos los registros de cuenta'
             );
         System.assertEquals(
-            20,
+            NUM_ER_LEGAL_ACCOUNT * 2,
             contactList.size(),
             'No se han insertado todos los registros de contacto'
             );
         System.assertEquals(
-            10,
+            NUM_ER_CONTACT_POINT_ADDRESS,
             cpaList.size(),
             'No se han insertado todos los registros de contactPointAddress'
             );
         System.assertEquals(
-            10,
+            NUM_ER_CONTACT_POINT_PHONE,
             cppList.size(),
             'No se han insertado todos los registros de contactPointPhone'
             );
         System.assertEquals(
-            10,
+            NUM_ER_CONTACT_POINT_EMAIL,
             cpeList.size(),
             'No se han insertado todos los registros de contactPointEmail'
             );
         System.assertEquals(
-            10,
+            NUM_ER_PRODUCT,
             prodList.size(),
             'No se han insertado todos los registros de producto'
             );
         System.assertEquals(
-            10,
+            NUM_ER_QUOTE,
             oppList.size(),
             'No se han insertado todos los registros de oferta'
             );
         System.assertEquals(
-            10,
+            NUM_ER_QUOTE_OPTION,
             quoteList.size(),
             'No se han insertado todos los registros de opciones de oferta'
             );
         System.assertEquals(
-            10,
+            NUM_ER_POLICY,
             policyList.size(),
             'No se han insertado todos los registros de póliza'
             );
         System.assertEquals(
-            10,
+            NUM_ER_INSURED_OBJECT,
             insObjList.size(),
             'No se han insertado todos los registros de objeto asegurado'
             );
         System.assertEquals(
-            10,
+            NUM_ER_CLAIM,
             claimList.size(),
             'No se han insertado todos los registros de siniestro'
             );
@@ -512,17 +542,17 @@ private class INFOHandlerTest
         //     'No se han insertado todos los registros de relaciones'
         //     );
         System.assertEquals(
-            10,
+            NUM_ER_NOTE,
             caseList.size(),
             'No se han insertado todos los registros de Case'
             );
         System.assertEquals(
-            10,
+            NUM_ER_SPECIAL_CONDITION,
             specialConditionList.size(),
             'No se han insertado todos los registros de Special_Condition__c'
             );
         System.assertEquals(
-            10,
+            NUM_ER_INTERMEDIARY_KPI,
             kpiList.size(),
             'No se han insertado todos los registros de KPI__c'
             );
@@ -599,17 +629,17 @@ private class INFOHandlerTest
         List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
         List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
 
-        System.assertEquals(40, accountList.size(), 'No se han insertado todos los registros de cuenta');
-        System.assertEquals(20, contactList.size(), 'No se han insertado todos los registros de contacto');
-        System.assertEquals(10, cpaList.size(), 'No se han insertado todos los registros de contactPointAddress');
-        System.assertEquals(10, cppList.size(), 'No se han insertado todos los registros de contactPointPhone');
-        System.assertEquals(10, cpeList.size(), 'No se han insertado todos los registros de contactPointEmail');
-        System.assertEquals(10, prodList.size(), 'No se han insertado todos los registros de producto');
-        System.assertEquals(10, oppList.size(), 'No se han insertado todos los registros de oferta');
-        System.assertEquals(10, quoteList.size(), 'No se han insertado todos los registros de opciones de oferta');
+        System.assertEquals((NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT) * 2, accountList.size(), 'No se han insertado todos los registros de cuenta');
+        System.assertEquals((NUM_ER_LEGAL_ACCOUNT) * 2, contactList.size(), 'No se han insertado todos los registros de contacto');
+        System.assertEquals(NUM_ER_CONTACT_POINT_ADDRESS, cpaList.size(), 'No se han insertado todos los registros de contactPointAddress');
+        System.assertEquals(NUM_ER_CONTACT_POINT_PHONE, cppList.size(), 'No se han insertado todos los registros de contactPointPhone');
+        System.assertEquals(NUM_ER_CONTACT_POINT_EMAIL, cpeList.size(), 'No se han insertado todos los registros de contactPointEmail');
+        System.assertEquals(NUM_ER_PRODUCT, prodList.size(), 'No se han insertado todos los registros de producto');
+        System.assertEquals(NUM_ER_QUOTE, oppList.size(), 'No se han insertado todos los registros de oferta');
+        System.assertEquals(NUM_ER_QUOTE_OPTION, quoteList.size(), 'No se han insertado todos los registros de opciones de oferta');
         System.assertEquals(0, policyList.size(), 'No se han borrado todos los registros de póliza');
-        System.assertEquals(10, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
-        System.assertEquals(10, claimList.size(), 'No se han insertado todos los registros de siniestro');
+        System.assertEquals(NUM_ER_INSURED_OBJECT, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
+        System.assertEquals(NUM_ER_CLAIM, claimList.size(), 'No se han insertado todos los registros de siniestro');
         // FIXME: System.assertEquals(20, relaList.size(), 'No se han borrado todos los registros de relaciones');
         System.assertEquals(0, caseList.size(), 'No se han borrado todos los registros de Case');
         System.assertEquals(0, specialConditionList.size(), 'No se han borrado todos los registros de Special_Condition__c');
@@ -657,8 +687,13 @@ private class INFOHandlerTest
             WHERE Origin__c = :INFOHandler.HANDLER_ORIGIN
         ];
 
+        Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
+                                        NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
+                                        NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI;
+
         System.assertEquals(
-            190,
+            totalExternalRequests,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
@@ -708,8 +743,13 @@ private class INFOHandlerTest
 
         List<ExternalRequestError__c> errors = [SELECT Id FROM ExternalRequestError__c];
 
+        Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
+                                        NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
+                                        NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI;
+        
         System.assertEquals(
-            190,
+            totalExternalRequests,
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );

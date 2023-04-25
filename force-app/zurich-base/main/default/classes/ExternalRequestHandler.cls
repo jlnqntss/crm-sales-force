@@ -28,7 +28,10 @@ public class ExternalRequestHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
-    {}
+    {
+        INFOHandler.fillEntitiesByPriorityMap();
+        INFOHandler.setERIndex(newList);
+    }
 
     /**
      * beforeUpdate

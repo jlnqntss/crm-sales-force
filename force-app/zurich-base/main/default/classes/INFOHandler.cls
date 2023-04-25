@@ -56,25 +56,8 @@ public class INFOHandler implements ISystem
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
 
     // Orden de DML sobre entidades
-    private static List<String> entityOrder = new List<String>
-    {
-        ACCOUNT, // 1
-        PARTNER, // 2
-        INTERMEDIARY, // 3
-        INTERMEDIARY_KPI, // 4
-        CONTACT_POINT, // 5
-        PRODUCT, // 6
-        QUOTE, // 7
-        QUOTE_OPTION, // 8
-        POLICY, // 9
-        INSURED_OBJECT, // 10
-        CLAIM, // 11
-        QUOTE_RELATIONSHIP, // 12
-        POLICY_RELATIONSHIP, // 13
-        CLAIM_RELATIONSHIP, // 14
-        NOTE, // 15
-        SPECIAL_CONDITION // 16
-    };
+    private static List<Decimal> entityIndexes = new List<Decimal>();
+    private static Map<Decimal, String> entitiesByPrirority = new Map<Decimal, String>();
 
     public static final String SOBJECT_ACCOUNT = 'Account';
     public static final String SOBJECT_CONTACT = 'Contact';
@@ -153,6 +136,9 @@ public class INFOHandler implements ISystem
         (
             new List<Schema.SObjectField> {ExternalJobQueueBatch__mdt.Retries__c}
         ).selectByOrigin(new Set<String> {Transformer.ORIGIN_NAME_INFO}).get(0).Retries__c;
+
+        // 5 - Cargar mapa con orden de prioridades
+        fillEntitiesByPriorityMap();
     }
 
     /**
@@ -603,8 +589,10 @@ public class INFOHandler implements ISystem
         ExternalRequest__c extReq;
 
         // 1 - Realizar las operaciones DML sobre los registros generados y actualizar external request con resultado
-        for ( String entity : entityOrder )
+        for ( Decimal index : entityIndexes )
         {
+            String entity = entitiesByPrirority.get(index);
+
             if ( recordsToPersist.containsKey(entity) )
             {
                 for ( String objectName : sObjectOrder )
@@ -631,7 +619,7 @@ public class INFOHandler implements ISystem
                                 }
                                 //Procesamiento incorrecto
                                 else
-                                {   
+                                {
                                     setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
                                 }
                             }
@@ -683,6 +671,7 @@ public class INFOHandler implements ISystem
      * @return void
      *
      * @change 31/05/2021 - nts (agonzalezisasi) - Al marcar la external request como procesada se cambia tambien el record type
+     * @change 20/04/2023 - nts (amiranda) - Se indica la fecha de procesamiento cuando la ER se haya procesado ('KO' inclusive)
      */
     private static void setExternalRequest(ExternalRequest__c externalRequest, Boolean processed, String processResult, String error, Boolean sumRetry)
     {
@@ -703,14 +692,12 @@ public class INFOHandler implements ISystem
             {
                 externalRequest.Processed__c = processed;
             }
+
             if( externalRequest.Processed__c ) {
                 Id recordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFOProcessed').getRecordTypeId();
                 externalRequest.RecordTypeId = recordTypeId;
-            }
 
-            // 3 - Si se marca la external request como procesada se indica la fecha de procesamiento
-            if(processed)
-            {
+                // Si se marca la external request como procesada se indica la fecha de procesamiento
                 externalRequest.processedDate__c = Datetime.now();
             }
 
@@ -790,5 +777,36 @@ public class INFOHandler implements ISystem
         
 
         return result;
+    }
+
+    public static void fillEntitiesByPriorityMap()
+    {
+        if(entitiesByPrirority != null && entitiesByPrirority.isEmpty())
+        {
+            List<EntityOrderMapping__mdt> orderValues = EntityOrderMapping__mdt.getAll().values();
+
+            for(EntityOrderMapping__mdt entity : orderValues)
+            {
+                entitiesByPrirority.put(entity.Priority__c, entity.Entity__c);
+            }
+
+            // Se añáden los índices a una lista ordenada
+            entityIndexes.addAll(entitiesByPrirority.keySet());
+            entityIndexes.sort();
+        }
+    }
+
+    public static void setERIndex(List<ExternalRequest__c> erList)
+    {
+        for(ExternalRequest__c currentER : erList)
+        {
+            for(Decimal index : entitiesByPrirority.keySet())
+            {
+                if (entitiesByPrirority.get(index) == currentER.Entity__c)
+                {
+                    currentER.Index__c = index;
+                }
+            }
+        }
     }
 }
