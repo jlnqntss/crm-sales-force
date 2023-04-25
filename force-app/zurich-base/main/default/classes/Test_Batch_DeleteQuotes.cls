@@ -7,6 +7,7 @@
 @isTest
 private class Test_Batch_DeleteQuotes
 {
+    static final string PRODUCT_NAME = 'Samsung Galaxy';
     /**
      * Create test data
      **
@@ -24,8 +25,8 @@ private class Test_Batch_DeleteQuotes
         update standardPricebook;
 
         Product2 newProduct = new Product2(
-            ProductID__c = 'Samsung Galaxy',
-            Name = 'Samsung Galaxy',
+            ProductID__c = PRODUCT_NAME,
+            Name = PRODUCT_NAME,
             Family = 'Smartphone',
             Brand__c = 'Samsung',
             IsActive = true
@@ -33,7 +34,7 @@ private class Test_Batch_DeleteQuotes
         insert newProduct;
         PricebookEntry pricebookEntry = new PricebookEntry(
             UnitPrice = 0,
-            ProductID__c = 'Samsung Galaxy',
+            ProductID__c = PRODUCT_NAME,
             Pricebook2Id = Test.getStandardPricebookId(),
             IsActive = true
             );
@@ -41,7 +42,7 @@ private class Test_Batch_DeleteQuotes
         insert pricebookEntry;
 
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
-        Account MasterRef = new Account(CustomerNum__c = '3123');
+        Account masterRef = new Account(CustomerNum__c = '3123');
         insert newMaster;
 
         Order quote = new Order(
@@ -52,7 +53,7 @@ private class Test_Batch_DeleteQuotes
             LegalEntity__c = Label.GeneralInsurance,
             RecordTypeId = SystemUtil.getOrderRecordTypeIdByName(Label.QuoteGI)
             );
-        quote.Account = MasterRef;
+        quote.Account = masterRef;
         quote.Pricebook2Id = Test.getStandardPricebookId();
         insert quote;
 
@@ -61,7 +62,7 @@ private class Test_Batch_DeleteQuotes
             ItemAge__c = 2,
             Category__c = 'Smartphone',
             Brand__c = 'Samsung',
-            itemModel__c = 'Samsung Galaxy'
+            itemModel__c = PRODUCT_NAME
             );
         item.OrderId = quote.id;
         item.Active__c = true;
@@ -121,7 +122,7 @@ private class Test_Batch_DeleteQuotes
 
         String query = 'SELECT Id FROM Error_Log__c WHERE LastModifiedDate < LAST_N_DAYS:7';
         Test.startTest();
-        Id BatchInstanceId = database.executeBatch(
+        database.executeBatch(
             new Batch_DeleteQuotes(query),
             200
             );
@@ -139,7 +140,6 @@ private class Test_Batch_DeleteQuotes
      * @author nbizkarra
      * @date 27/04/2020
      */
-
     @isTest
     static void test_EliminarQuote()
     {
@@ -155,7 +155,7 @@ private class Test_Batch_DeleteQuotes
         Test.startTest();
         Batch_DeleteQuotes b = new Batch_DeleteQuotes(); // for coverage
         b = new Batch_DeleteQuotes(query);
-        Id BatchInstanceId = database.executeBatch(b, 200);
+        database.executeBatch(b, 200);
         Test.stopTest();
 
         numQuotes = [SELECT COUNT() FROM Order];
@@ -167,16 +167,18 @@ private class Test_Batch_DeleteQuotes
     }
 
     /**
-     * For testing Schedule
+     * El test comprueba que se programa correctamente el batch
+     * *
+     * @author aberuete
+     * @date 19/04/2023
      */
-    // @isTest
-    // static void testBatch_schedule() {
-    //   Batch_DeleteQuotes m = new Batch_DeleteQuotes();
-    //   String sch = '20 30 8 10 2 ?';
+    @isTest
+    static void testBatch_schedule()
+    {
+        Test.startTest();
+        String jobID = system.schedule( 'Delete Quotes Test', '20 30 8 10 2 ?', new Batch_DeleteQuotes() );
+        Test.stopTest();
 
-    //   Test.startTest();
-    //   String jobID = system.schedule('Response External Request', sch, m);
-    //   Test.stopTest();
-    //   
-    // }
+        System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
+    }
 }

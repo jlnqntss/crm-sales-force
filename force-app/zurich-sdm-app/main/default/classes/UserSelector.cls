@@ -38,4 +38,24 @@ public with sharing class UserSelector {
 
         return result;
     }
+
+    /**
+     * Obtiene la lista de usuarios DT SDM, RN SDM y el usuario que lanza la query, se usa en el componente Generar Plan Anual
+     * @author dmunoz
+     * @date 06/04/2023
+     */
+    public List<User> getSDMUsers() {
+
+        List<User> result = new List<User>([SELECT Id, Name, UserRole.DeveloperName FROM user WHERE UserRole.DeveloperName IN ('SDM_DT', 'SDM_RN') OR Id = :UserInfo.getUserId() ORDER BY Name ASC]);
+
+        return result;
+    }
+
+    public User getUserInfo(String userId) {
+        User result;
+
+        result = [SELECT Id, UserRole.DeveloperName, Profile.Name, Email FROM User WHERE Id =: userId];
+
+        return result;
+    }
 }

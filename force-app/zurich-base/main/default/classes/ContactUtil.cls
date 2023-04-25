@@ -490,43 +490,16 @@ global with sharing class ContactUtil
      * para determinar si existe el contacto en la entidad legal contraria
      * @author nbizkarra
      * @date 01/04/2020
+     * change aberuete - 17/04/2023 - Refactorizar método
      */
     public static void summaryTotalContacts( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        
         Set<Id> idSet = new Set<Id>();
-        List<Contact> contactOldList = new List<Contact>();
-        
-        
 
         if (newList != null || oldMap != null)
         {
-            if (newList != null)
-            {
-                for (Contact cont : newList)
-                {
-                    //list of IDs of the parent record
-                    if (cont.AccountId != null)
-                    {
-                        idSet.add(cont.AccountId);
-                    }
-                }
-            }
-            if (oldMap != null)
-            {
-                contactOldList = oldMap.values();
-                
-                for (Contact cont : contactOldList)
-                {
-                    //list of IDs of the parent record
-                    if (cont.AccountId != null)
-                    {
-                        idSet.add(cont.AccountId);
-                    }
-                }
-            }
+            idSet = getAccountIdsFromContact(newList, oldMap, idSet);
 
-            
             if ( !idSet.isEmpty() )
             {
                 // Define the context for the RollupSummariesUtil.summarize() method
@@ -555,6 +528,7 @@ global with sharing class ContactUtil
                     update responseObject;
                 }
             }
+            
         }
     }
 
@@ -599,10 +573,10 @@ global with sharing class ContactUtil
      * de crédito y el contacto tiene una quote en el step 4 o 5
      * @author nbizkarra
      * @date 30/06/2020
+     * change aberuete - 17/04/2023 - Refactorizar método
      */
     public static void updateQuoteStep4and5( List<Contact> newList, Map<Id, Contact> oldMap )
     {
-        Map<ID, Order> quotesToUpdate = new Map<ID, Order>();
         Map<ID, Contact> mapContactos = new Map<ID, Contact>();
 
         Set<Id> idSet = new Set<Id>();
@@ -626,40 +600,10 @@ global with sharing class ContactUtil
             Map<ID, Order> mapQuotes = new Map<ID, Order>(
                 [SELECT id, QbLastPage__c, Step__c FROM Order WHERE id = : idSet]
                 );
-
+                
             if (mapQuotes != null && mapContactos != null)
             {
-                for ( Contact cont : mapContactos.values() )
-                {
-                    Order quote = mapQuotes.get(cont.LastQuote__c);
-                    //Si está en el step 4
-                    if ( quote?.QbLastPage__c.equalsIgnoreCase('elige tu protección') ||
-                            quote?.QbLastPage__c.equalsIgnoreCase('quote configuration') )
-                    {
-                        //Si solo cambia dirección, ha pasado al step 5
-                        if (
-                            cont.MailingStreet != oldMap.get(cont.Id).MailingStreet &&
-                            cont.CreditCard__c == oldMap.get(cont.Id).CreditCard__c
-                            )
-                        {
-                            quote.Step__c = 'Step5';
-                            quotesToUpdate.put(quote.id, quote);
-                        }
-                        else if (
-                            cont.CreditCard__c != oldMap.get(cont.Id).CreditCard__c
-                            )
-                        {
-                            quote.Step__c = 'Step6';
-                            quotesToUpdate.put(quote.id, quote);
-                        }
-                    }
-                }
-
-                //Update step in the quotes
-                if ( quotesToUpdate != null && !quotesToUpdate.isEmpty() )
-                {
-                    update quotesToUpdate.values();
-                }
+                updateQuotes (mapContactos, mapQuotes, oldMap);
             }
         }
     }
@@ -679,5 +623,88 @@ global with sharing class ContactUtil
             accountIds.add(currentContact.AccountId);
         }
         return accountIds;
+    }
+
+    /**
+     * Método que obtiene el conjunto de ids de cuentas asociadas a los contactos
+     * @author aberuete
+     * @date 17/04/2023
+     * @param List<Contact> newList : lista de contactos
+     * @param Map<Id, Contact> oldMap : mapa de ids de contacto y contactos antiguos
+     * @param Set<Id> idSet : set de id donde se añadirán los ids de las cuentas asociadas a los contactos
+     * @return Set de ids de las cuentas relacionadas
+     */
+    @testvisible
+    private static Set<Id> getAccountIdsFromContact(List<Contact> newList, Map<Id, Contact> oldMap, Set<Id> idSet)
+    {
+        List<Contact> contactOldList = new List<Contact>(); 
+
+        if (newList != null)
+        {
+            for (Contact cont : newList)
+            {
+                //list of IDs of the parent record
+                if (cont.AccountId != null)
+                {
+                    idSet.add(cont.AccountId);
+                }
+            }
+        }
+
+        if (oldMap != null)
+        {
+            contactOldList = oldMap.values();
+            
+            for (Contact cont : contactOldList)
+            {
+                //list of IDs of the parent record
+                if (cont.AccountId != null)
+                {
+                    idSet.add(cont.AccountId);
+                }
+            }
+        }
+
+        return idSet;
+    }
+
+     /**
+     * Método que actualiza el step de las quotes asociadas a los contactos
+     * @author aberuete
+     * @date 17/04/2023
+     * @param Map<ID, Contact> mapContactos : mapa de ids de contacto y contactos
+     * @param  Map<ID, Order> mapQuotes : mapa de ids de quote y quotes
+     * @param Map<ID, Contact> oldMap : mapa de ids de contacto y contactos antiguos
+     */
+    @testvisible
+    private static void updateQuotes (Map<ID, Contact> mapContactos,  Map<ID, Order> mapQuotes, Map<Id, Contact> oldMap)
+    {
+        Map<ID, Order> quotesToUpdate = new Map<ID, Order>();
+
+        for ( Contact cont : mapContactos.values() )
+        {
+            Order quote = mapQuotes.get(cont.LastQuote__c);
+            //Si está en el step 4
+            if ( quote?.QbLastPage__c.equalsIgnoreCase('elige tu protección') || quote?.QbLastPage__c.equalsIgnoreCase('quote configuration') )
+            {
+                //Si solo cambia dirección, ha pasado al step 5
+                if (cont.MailingStreet != oldMap.get(cont.Id).MailingStreet && cont.CreditCard__c == oldMap.get(cont.Id).CreditCard__c)
+                {
+                    quote.Step__c = 'Step5';
+                    quotesToUpdate.put(quote.id, quote);
+                }
+                else if (cont.CreditCard__c != oldMap.get(cont.Id).CreditCard__c)
+                {
+                    quote.Step__c = 'Step6';
+                    quotesToUpdate.put(quote.id, quote);
+                }
+            }
+        }
+                
+        //Update step in the quotes
+        if ( quotesToUpdate != null && !quotesToUpdate.isEmpty() )
+        {
+            update quotesToUpdate.values();
+        }      
     }
 }
