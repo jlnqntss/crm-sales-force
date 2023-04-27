@@ -81,7 +81,7 @@
         <label>Recuperar Contactos</label>
         <locationX>50</locationX>
         <locationY>671</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
             <field>RecordTypeId</field>
