@@ -43,6 +43,11 @@
     </fieldPermissions>	
 	<fieldPermissions>
         <editable>true</editable>
+        <field>AccionesTratadasActa__c.ActionResponsible__c</field>
+        <readable>true</readable>
+    </fieldPermissions>	
+	<fieldPermissions>
+        <editable>true</editable>
         <field>Acta__c.Attendees__c</field>
         <readable>true</readable>
     </fieldPermissions>

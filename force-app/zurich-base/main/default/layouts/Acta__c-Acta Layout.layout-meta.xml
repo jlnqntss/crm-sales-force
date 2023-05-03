@@ -87,7 +87,7 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>Actions__c</fields>
-        <fields>PersonInCharge__c</fields>
+        <fields>ActionResponsible__c</fields>
         <fields>DueDate__c</fields>
         <relatedList>AccionesTratadasActa__c.Parent__c</relatedList>
     </relatedLists>
