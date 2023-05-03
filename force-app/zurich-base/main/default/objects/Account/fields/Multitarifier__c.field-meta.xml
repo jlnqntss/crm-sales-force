@@ -12,34 +12,34 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>MPM</fullName>
+                <fullName>MPM - Tarifai</fullName>
                 <default>false</default>
-                <label>MPM</label>
+                <label>MPM - Tarifai</label>
             </value>
             <value>
-                <fullName>Merlín - Ebroker</fullName>
+                <fullName>EBROKER - Merlin</fullName>
                 <default>false</default>
-                <label>Merlín - Ebroker</label>
+                <label>EBROKER - Merlin</label>
             </value>
             <value>
-                <fullName>Soft QS</fullName>
+                <fullName>SOFTQS</fullName>
                 <default>false</default>
-                <label>Soft QS</label>
+                <label>SOFTQS</label>
             </value>
             <value>
-                <fullName>Gecose</fullName>
+                <fullName>WILLPLATINE</fullName>
                 <default>false</default>
-                <label>Gecose</label>
+                <label>WILLPLATINE</label>
             </value>
             <value>
-                <fullName>Avant2 - Codeoscopic</fullName>
+                <fullName>CODEOSCOPIC - Avant2</fullName>
                 <default>false</default>
-                <label>Avant2 - Codeoscopic</label>
+                <label>CODEOSCOPIC - Avant2</label>
             </value>
             <value>
-                <fullName>Otros</fullName>
+                <fullName>OTROS</fullName>
                 <default>false</default>
-                <label>Otros</label>
+                <label>OTROS</label>
             </value>
         </valueSetDefinition>
     </valueSet>
