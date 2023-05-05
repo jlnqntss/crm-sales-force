@@ -2164,6 +2164,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.ClienteMediado__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Event.DNISPhone__c</field>
         <readable>true</readable>
@@ -2204,6 +2209,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.MediadorCaso__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Event.MiEquipo__c</field>
         <readable>true</readable>
@@ -2236,6 +2246,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Event.Response__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.SegmentoMediadorCaso__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
