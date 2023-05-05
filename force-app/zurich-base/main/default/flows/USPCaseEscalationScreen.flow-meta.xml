@@ -516,9 +516,21 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>ClienteMediado__c</field>
+            <value>
+                <elementReference>Infomediado</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Description</field>
             <value>
                 <elementReference>comments</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MediadorCaso__c</field>
+            <value>
+                <elementReference>InfoMediador</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -531,6 +543,12 @@
             <field>Priority</field>
             <value>
                 <stringValue>Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SegmentoMediadorCaso__c</field>
+            <value>
+                <elementReference>InfoSegmento</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1103,6 +1121,36 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Infomediado</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue> {!caseRecordAction.MediatedCustomer__r.LastName}</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>InfoMediador</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>{!caseRecordAction.Account.Name} </stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>InfoSegmento</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>{!caseRecordAction.ProductGroupDescription__c} </stringValue>
+        </value>
     </variables>
     <variables>
         <name>IntExtInput</name>
