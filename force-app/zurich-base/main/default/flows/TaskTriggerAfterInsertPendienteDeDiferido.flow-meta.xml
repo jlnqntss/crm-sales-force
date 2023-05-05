@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>SendNotificacionDiferidoAction</name>
+        <label>Send Notificacion Diferido</label>
+        <locationX>842</locationX>
+        <locationY>768</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>GetNotificacionDiferidosAction.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>FormulaBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>TituloNotificacionDiferido</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>idsOwner</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <apiVersion>56.0</apiVersion>
+    <assignments>
+        <name>idsOwnerAssignment</name>
+        <label>idsOwner Assignment</label>
+        <locationX>842</locationX>
+        <locationY>528</locationY>
+        <assignmentItems>
+            <assignToReference>idsOwner</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetNotificacionDiferidosAction</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>IsUSPTaskDecision</name>
         <label>Is USP Task</label>
@@ -46,6 +101,11 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>FormulaBody</name>
+        <dataType>String</dataType>
+        <expression>&quot;Hay una nueva tarea diferida que ha alcanzado la fecha de vencimiento&quot;</expression>
+    </formulas>
     <interviewLabel>Task Trigger - After Insert - Pendiente de diferido {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After Insert - Pendiente de diferido</label>
     <processMetadataValues>
@@ -131,6 +191,27 @@
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>GetNotificacionDiferidosAction</name>
+        <label>Get Notificación Diferidos</label>
+        <locationX>842</locationX>
+        <locationY>648</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>SendNotificacionDiferidoAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>NotificacionDiferidos</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>UpdateRelatedCaseAction</name>
         <label>Update Related Case</label>
@@ -172,6 +253,9 @@
         <label>Update Related Case</label>
         <locationX>842</locationX>
         <locationY>408</locationY>
+        <connector>
+            <targetReference>idsOwnerAssignment</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>CreateErrorLogScheduledUpdateAction</targetReference>
         </faultConnector>
@@ -233,4 +317,21 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>idsOwner</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>TituloNotificacionDiferido</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Fecha de vencimiento cumplida </stringValue>
+        </value>
+    </variables>
 </Flow>
