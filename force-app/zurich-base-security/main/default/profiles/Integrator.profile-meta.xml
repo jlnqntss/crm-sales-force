@@ -5958,6 +5958,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.Requested__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.RiskAppetite__c</field>
         <readable>true</readable>
     </fieldPermissions>
