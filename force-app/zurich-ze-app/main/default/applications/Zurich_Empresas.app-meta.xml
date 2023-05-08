@@ -2,21 +2,21 @@
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>View</actionName>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
-        <content>OCS_Contact_Default</content>
+        <comment>Action override updated by Lightning App Builder during activation.</comment>
+        <content>ZE_Case_Default</content>
         <formFactor>Small</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
-        <pageOrSobjectType>Contact</pageOrSobjectType>
+        <pageOrSobjectType>Case</pageOrSobjectType>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
-        <content>OCS_Contact_Default</content>
+        <comment>Action override updated by Lightning App Builder during activation.</comment>
+        <content>ZE_Case_Default</content>
         <formFactor>Large</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
-        <pageOrSobjectType>Contact</pageOrSobjectType>
+        <pageOrSobjectType>Case</pageOrSobjectType>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
@@ -44,24 +44,6 @@
         <type>Flexipage</type>
         <pageOrSobjectType>standard-home</pageOrSobjectType>
     </actionOverrides>
-    <actionOverrides>
-        <actionName>View</actionName>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
-        <content>OCS_Case_Default</content>
-        <formFactor>Small</formFactor>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
-        <type>Flexipage</type>
-        <pageOrSobjectType>Case</pageOrSobjectType>
-    </actionOverrides>
-    <actionOverrides>
-        <actionName>View</actionName>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
-        <content>OCS_Case_Default</content>
-        <formFactor>Large</formFactor>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
-        <type>Flexipage</type>
-        <pageOrSobjectType>Case</pageOrSobjectType>
-    </actionOverrides>
     <brand>
         <headerColor>#003398</headerColor>
         <logo>logo_21</logo>
@@ -75,6 +57,24 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>Zurich Empresas</label>
     <navType>Console</navType>
+     <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>ZE_Case_Default</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Case</pageOrSobjectType>
+        <recordType>Case.USPInquiry</recordType>
+        <type>Flexipage</type>
+        <profile>ZE User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>ZE_Case_Default</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Case</pageOrSobjectType>
+        <recordType>Case.USPInquiry</recordType>
+        <type>Flexipage</type>
+        <profile>ZE User</profile>
+    </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
         <content>Policy_Record_Page_Advisor</content>
