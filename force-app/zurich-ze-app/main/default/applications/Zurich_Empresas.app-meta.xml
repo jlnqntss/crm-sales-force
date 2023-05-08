@@ -91,6 +91,24 @@
         <type>Flexipage</type>
         <profile>ZE User</profile>
     </profileActionOverrides>
+     <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>ZE_Case_Default</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Case</pageOrSobjectType>
+        <recordType>Case.OCSInquiry</recordType>
+        <type>Flexipage</type>
+        <profile>ZE User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>ZE_Case_Default</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Case</pageOrSobjectType>
+        <recordType>Case.OCSInquiry</recordType>
+        <type>Flexipage</type>
+        <profile>ZE User</profile>
+    </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
         <content>Policy_Record_Page_Advisor</content>
