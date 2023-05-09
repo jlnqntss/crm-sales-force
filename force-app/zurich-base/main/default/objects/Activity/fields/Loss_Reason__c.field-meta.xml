@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loss_Reason__c</fullName>
+    <description>Motivo de pérdida para la App Ventas, se visualiza para las llamadas</description>
+    <externalId>false</externalId>
+    <label>Loss Reason</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AUTO-Usos/tipo de riesgo</fullName>
+                <default>false</default>
+                <label>AUTO-Usos/tipo de riesgo</label>
+            </value>
+            <value>
+                <fullName>AUTO-Garantías no contratables</fullName>
+                <default>false</default>
+                <label>AUTO-Garantías no contratables</label>
+            </value>
+            <value>
+                <fullName>AUTO-Antigüedad  del riesgo</fullName>
+                <default>false</default>
+                <label>AUTO-Antigüedad  del riesgo</label>
+            </value>
+            <value>
+                <fullName>AUTO-Score</fullName>
+                <default>false</default>
+                <label>AUTO-Score</label>
+            </value>
+            <value>
+                <fullName>AUTO-Bonus/Malus fuera de normas de  contratación</fullName>
+                <default>false</default>
+                <label>AUTO-Bonus/Malus fuera de normas de  contratación</label>
+            </value>
+            <value>
+                <fullName>AUTO-Conductor</fullName>
+                <default>false</default>
+                <label>AUTO-Conductor</label>
+            </value>
+            <value>
+                <fullName>AUTO-Otros motivos</fullName>
+                <default>false</default>
+                <label>AUTO-Otros motivos</label>
+            </value>
+            <value>
+                <fullName>HOGAR-Usos/tipo de riesgo</fullName>
+                <default>false</default>
+                <label>HOGAR-Usos/tipo de riesgo</label>
+            </value>
+            <value>
+                <fullName>HOGAR-Garantías no contratables</fullName>
+                <default>false</default>
+                <label>HOGAR-Garantías no contratables</label>
+            </value>
+            <value>
+                <fullName>HOGAR-Antigüedad  del riesgo</fullName>
+                <default>false</default>
+                <label>HOGAR-Antigüedad  del riesgo</label>
+            </value>
+            <value>
+                <fullName>HOGAR-Pago Fraccionamiento</fullName>
+                <default>false</default>
+                <label>HOGAR-Pago Fraccionamiento</label>
+            </value>
+            <value>
+                <fullName>HOGAR-Joyas y objetos de valor</fullName>
+                <default>false</default>
+                <label>HOGAR-Joyas y objetos de valor</label>
+            </value>
+            <value>
+                <fullName>HOGAR-Tipo de fabricación vivienda</fullName>
+                <default>false</default>
+                <label>HOGAR-Tipo de fabricación vivienda</label>
+            </value>
+            <value>
+                <fullName>HOGAR-Despoblado</fullName>
+                <default>false</default>
+                <label>HOGAR-Despoblado</label>
+            </value>
+            <value>
+                <fullName>HOGAR-Vivienda deshabitada</fullName>
+                <default>false</default>
+                <label>HOGAR-Vivienda deshabitada</label>
+            </value>
+            <value>
+                <fullName>HOGAR-Otros motivos</fullName>
+                <default>false</default>
+                <label>HOGAR-Otros motivos</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

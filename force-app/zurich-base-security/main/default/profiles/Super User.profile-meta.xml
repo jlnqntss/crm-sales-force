@@ -5864,6 +5864,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Loss_Reason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.MeetingMinutes__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9429,6 +9434,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Klinc_CallResult__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Loss_Reason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
