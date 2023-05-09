@@ -90,6 +90,51 @@
                 <default>false</default>
                 <label>HOGAR-Otros motivos</label>
             </value>
+            <value>
+                <fullName>VIDA-Capitales</fullName>
+                <default>false</default>
+                <label>VIDA-Capitales</label>
+            </value>
+            <value>
+                <fullName>VIDA-Edad</fullName>
+                <default>false</default>
+                <label>VIDA-Edad</label>
+            </value>
+            <value>
+                <fullName>VIDA-Salud  -deporte de riesgo</fullName>
+                <default>false</default>
+                <label>VIDA-Salud  -deporte de riesgo</label>
+            </value>
+            <value>
+                <fullName>VIDA-Salud - Enfermedad</fullName>
+                <default>false</default>
+                <label>VIDA-Salud - Enfermedad</label>
+            </value>
+            <value>
+                <fullName>VIDA-Salud - viaje al extranjero +60d</fullName>
+                <default>false</default>
+                <label>VIDA-Salud - viaje al extranjero +60d</label>
+            </value>
+            <value>
+                <fullName>VIDA-Resid Fiscal</fullName>
+                <default>false</default>
+                <label>VIDA-Resid Fiscal</label>
+            </value>
+            <value>
+                <fullName>VIDA-PRP</fullName>
+                <default>false</default>
+                <label>VIDA-PRP</label>
+            </value>
+            <value>
+                <fullName>VIDA-Nacionalidad de riesgo Alto</fullName>
+                <default>false</default>
+                <label>VIDA-Nacionalidad de riesgo Alto</label>
+            </value>
+            <value>
+                <fullName>VIDA-CNO de riesgo Alto</fullName>
+                <default>false</default>
+                <label>VIDA-CNO de riesgo Alto</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

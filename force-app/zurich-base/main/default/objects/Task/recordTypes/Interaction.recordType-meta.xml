@@ -130,6 +130,109 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Loss_Reason__c</picklist>
+        <values>
+            <fullName>AUTO-Antigüedad%C2%A0 del riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AUTO-Bonus%2FMalus fuera de normas de %C2%A0contratación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AUTO-Conductor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AUTO-Garantías no contratables</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AUTO-Otros motivos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AUTO-Score</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AUTO-Usos%2Ftipo de riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOGAR-Antigüedad%C2%A0 del riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOGAR-Despoblado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOGAR-Garantías no contratables</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOGAR-Joyas y objetos de valor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOGAR-Otros motivos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOGAR-Pago Fraccionamiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOGAR-Tipo de fabricación vivienda</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOGAR-Usos%2Ftipo de riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOGAR-Vivienda deshabitada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIDA-CNO de riesgo Alto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIDA-Capitales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIDA-Edad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIDA-Nacionalidad de riesgo Alto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIDA-PRP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIDA-Resid Fiscal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIDA-Salud %C2%A0-deporte de riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIDA-Salud - Enfermedad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIDA-Salud - viaje al extranjero %2B60d</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Priority</picklist>
         <values>
             <fullName>High</fullName>
