@@ -2163,9 +2163,9 @@
         <field>Event.Channel__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Event.ClienteMediado__c</field>
+   <fieldPermissions>
+        <editable>false</editable>
+        <field>Event.CaseMediator__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2209,8 +2209,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Event.MediadorCaso__c</field>
+        <editable>false</editable>
+        <field>Event.MediatedCustomer__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2249,8 +2249,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Event.SegmentoMediadorCaso__c</field>
+        <editable>false</editable>
+        <field>Event.SegmentMediatorCase__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3503,9 +3503,9 @@
         <field>Task.Channel__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Task.ClienteMediado__c</field>
+  <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.CaseMediator__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3548,9 +3548,9 @@
         <field>Task.Intent__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Task.MediadorCaso__c</field>
+   <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.MediatedCustomer__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3593,9 +3593,9 @@
         <field>Task.Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Task.SegmentoMediadorCaso__c</field>
+     <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.SegmentMediatorCase__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
