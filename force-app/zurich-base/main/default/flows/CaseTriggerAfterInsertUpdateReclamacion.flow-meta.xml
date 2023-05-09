@@ -110,14 +110,8 @@
         <connector>
             <targetReference>GetCustomNotifcacionAction</targetReference>
         </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>
-        <filters>
-            <field>Requested__c</field>
-            <operator>IsChanged</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
         <filters>
             <field>Requested__c</field>
             <operator>EqualTo</operator>
