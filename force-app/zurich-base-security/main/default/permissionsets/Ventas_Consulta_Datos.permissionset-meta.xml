@@ -2899,6 +2899,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable> 
+        <field>Opportunity.Sales_Loss_Reason_Date_Time__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.OperationCode__c</field>
         <readable>true</readable>

@@ -52,6 +52,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Sales_Loss_Reason_Date_Time__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>PendingBy__c</field>
             </layoutItems>
             <layoutItems>
@@ -192,6 +196,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>FirstReceipt__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Discount__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
