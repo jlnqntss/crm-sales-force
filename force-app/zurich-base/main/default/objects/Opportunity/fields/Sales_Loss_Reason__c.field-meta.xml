@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_Loss_Reason__c</fullName>
+    <description>Campo Motivo de pérdida para su uso en la app Ventas, sustituye al ya existente para el resto de apps</description>
+    <externalId>false</externalId>
+    <label>Sales Loss Reason</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>StageName</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Interesado más adelante</fullName>
+                <default>false</default>
+                <label>Interesado más adelante</label>
+            </value>
+            <value>
+                <fullName>Interesado, pero prefiero que lo gestione mi agente</fullName>
+                <default>false</default>
+                <label>Interesado, pero prefiero que lo gestione mi agente</label>
+            </value>
+            <value>
+                <fullName>Mejores condiciones competencia</fullName>
+                <default>false</default>
+                <label>Mejores condiciones competencia</label>
+            </value>
+            <value>
+                <fullName>Falta/limitación de coberturas</fullName>
+                <default>false</default>
+                <label>Falta/limitación de coberturas</label>
+            </value>
+            <value>
+                <fullName>Seguro obligado con el banco</fullName>
+                <default>false</default>
+                <label>Seguro obligado con el banco</label>
+            </value>
+            <value>
+                <fullName>Ya ha contratado póliza</fullName>
+                <default>false</default>
+                <label>Ya ha contratado póliza</label>
+            </value>
+            <value>
+                <fullName>Mala experiencia</fullName>
+                <default>false</default>
+                <label>Mala experiencia</label>
+            </value>
+            <value>
+                <fullName>Necesita descuento mayor</fullName>
+                <default>false</default>
+                <label>Necesita descuento mayor</label>
+            </value>
+            <value>
+                <fullName>Incidencia actual no resuelta con alguna póliza en vigor</fullName>
+                <default>false</default>
+                <label>Incidencia actual no resuelta con alguna póliza en vigor</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Interesado más adelante</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Interesado, pero prefiero que lo gestione mi agente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Mejores condiciones competencia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Falta/limitación de coberturas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Seguro obligado con el banco</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Ya ha contratado póliza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Mala experiencia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Necesita descuento mayor</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Incidencia actual no resuelta con alguna póliza en vigor</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

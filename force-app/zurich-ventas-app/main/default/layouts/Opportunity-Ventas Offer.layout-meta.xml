@@ -48,15 +48,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Loss_Reason__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>LossSubReason__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>LossSubReasonDescription__c</field>
+                <field>Sales_Loss_Reason__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
