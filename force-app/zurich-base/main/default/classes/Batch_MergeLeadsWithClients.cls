@@ -188,7 +188,7 @@ global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>,
 
         for(String key: mfields.keySet() ) 
         {
-            if( mfields.get(key).getDescribe().isUpdateable() || mfields.get(key).getDescribe().isCreateable() ) 
+            if( (mfields.get(key).getDescribe().isUpdateable() && !mfields.get(key).getDescribe().isDefaultedOnCreate()) || mfields.get(key).getDescribe().isCreateable() )
             {
                 // Person Account
                 if( !key.equalsIgnoreCase(ACCOUNT_FIELD_NAME)) 
