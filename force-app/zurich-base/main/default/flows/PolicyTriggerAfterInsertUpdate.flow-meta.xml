@@ -521,4 +521,5 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>1500</triggerOrder>
 </Flow>

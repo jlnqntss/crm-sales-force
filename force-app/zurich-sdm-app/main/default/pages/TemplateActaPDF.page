@@ -126,7 +126,7 @@
                 <apex:outputText value="Responsable: " />
                 <apex:outputText
                   styleClass="text-black"
-                  value="{!accionTratada.PersonInCharge__c}"
+                  value="{!accionTratada.ActionResponsible__r.Name}"
                 />
               </div>
               <div class="actions-elem">

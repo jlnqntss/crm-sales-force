@@ -1,51 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>SendNotificacionDiferidoAction</name>
+        <label>Send Notificacion Diferido</label>
+        <locationX>578</locationX>
+        <locationY>648</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>GetNotificacionDiferidosAction.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>FormulaBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>TituloNotificacionDiferido</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>idsOwner</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <apiVersion>56.0</apiVersion>
-    <decisions>
-        <name>IsUSPTaskDecision</name>
-        <label>Is USP Task</label>
-        <locationX>314</locationX>
-        <locationY>288</locationY>
-        <defaultConnectorLabel>Not USP</defaultConnectorLabel>
-        <rules>
-            <name>USPOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Activity_USP</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>UpdateRelatedCaseAction</targetReference>
-            </connector>
-            <label>USP</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>IsUSPTaskScheduledDecision</name>
-        <label>Is USP Task</label>
-        <locationX>1106</locationX>
-        <locationY>288</locationY>
-        <defaultConnectorLabel>Not USP</defaultConnectorLabel>
-        <rules>
-            <name>USPScheduledOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Activity_USP</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>UpdateRelatedCaseScheduledAction</targetReference>
-            </connector>
-            <label>USP</label>
-        </rules>
-    </decisions>
+    <assignments>
+        <name>idsOwnerAssignment</name>
+        <label>idsOwner Assignment</label>
+        <locationX>578</locationX>
+        <locationY>408</locationY>
+        <assignmentItems>
+            <assignToReference>idsOwner</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetNotificacionDiferidosAction</targetReference>
+        </connector>
+    </assignments>
     <environments>Default</environments>
+    <formulas>
+        <name>FormulaBody</name>
+        <dataType>String</dataType>
+        <expression>&quot;Hay una nueva tarea diferida que ha alcanzado la fecha de vencimiento&quot;</expression>
+    </formulas>
     <interviewLabel>Task Trigger - After Insert - Pendiente de diferido {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After Insert - Pendiente de diferido</label>
     <processMetadataValues>
@@ -71,7 +87,7 @@
         <name>CaseUpdateCreate_Error_Log</name>
         <label>Create Error Log</label>
         <locationX>314</locationX>
-        <locationY>528</locationY>
+        <locationY>408</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -102,8 +118,8 @@
     <recordCreates>
         <name>CreateErrorLogScheduledUpdateAction</name>
         <label>Create Error Log</label>
-        <locationX>1106</locationX>
-        <locationY>528</locationY>
+        <locationX>842</locationX>
+        <locationY>408</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -131,11 +147,32 @@
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>GetNotificacionDiferidosAction</name>
+        <label>Get Notificación Diferidos</label>
+        <locationX>578</locationX>
+        <locationY>528</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>SendNotificacionDiferidoAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>NotificacionDiferidos</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>UpdateRelatedCaseAction</name>
         <label>Update Related Case</label>
         <locationX>50</locationX>
-        <locationY>408</locationY>
+        <locationY>288</locationY>
         <faultConnector>
             <targetReference>CaseUpdateCreate_Error_Log</targetReference>
         </faultConnector>
@@ -170,8 +207,11 @@
     <recordUpdates>
         <name>UpdateRelatedCaseScheduledAction</name>
         <label>Update Related Case</label>
-        <locationX>842</locationX>
-        <locationY>408</locationY>
+        <locationX>578</locationX>
+        <locationY>288</locationY>
+        <connector>
+            <targetReference>idsOwnerAssignment</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>CreateErrorLogScheduledUpdateAction</targetReference>
         </faultConnector>
@@ -204,10 +244,10 @@
         <object>Case</object>
     </recordUpdates>
     <start>
-        <locationX>584</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>IsUSPTaskDecision</targetReference>
+            <targetReference>UpdateRelatedCaseAction</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -217,12 +257,19 @@
                 <stringValue>Postponed</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>RecordTypeDeveloperName__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Activity_USP</stringValue>
+            </value>
+        </filters>
         <object>Task</object>
         <recordTriggerType>Create</recordTriggerType>
         <scheduledPaths>
             <name>AfterDueDateCompleted</name>
             <connector>
-                <targetReference>IsUSPTaskScheduledDecision</targetReference>
+                <targetReference>UpdateRelatedCaseScheduledAction</targetReference>
             </connector>
             <label>After Due Date Completed</label>
             <offsetNumber>1</offsetNumber>
@@ -233,4 +280,21 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>idsOwner</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>TituloNotificacionDiferido</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Fecha de vencimiento cumplida </stringValue>
+        </value>
+    </variables>
 </Flow>

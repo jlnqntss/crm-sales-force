@@ -3734,6 +3734,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>AccionesTratadasActa__c.	ActionResponsible__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Acta__c.Attendees__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3950,6 +3955,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Expert__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.EmailCommunications__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6235,6 +6245,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.RelatedPolicyOffer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Requested__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8579,6 +8594,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.ClienteMediado__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.CommercialActionType__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8604,12 +8624,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.MediadorCaso__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.OrderOfTheDay__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Ramo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.SegmentoMediadorCaso__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

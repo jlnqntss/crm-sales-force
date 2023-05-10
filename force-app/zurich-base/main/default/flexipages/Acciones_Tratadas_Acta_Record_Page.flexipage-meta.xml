@@ -72,8 +72,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.PersonInCharge__c</fieldItem>
-                <identifier>RecordPersonInCharge_cField</identifier>
+                <fieldItem>Record.ActionResponsible__c</fieldItem>
+                <identifier>RecordActionResponsible__cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-a23e9c9e-404f-47a4-8351-576ba4bbf280</name>

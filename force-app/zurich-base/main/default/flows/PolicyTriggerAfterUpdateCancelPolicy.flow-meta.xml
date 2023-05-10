@@ -46,6 +46,7 @@
             <label>Estaba en vigor</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>Póliza Trigger - After update - Anular Póliza {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Póliza Trigger - After update - Anular Póliza</label>
     <processMetadataValues>
@@ -174,4 +175,5 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>1700</triggerOrder>
 </Flow>
