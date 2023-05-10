@@ -2,7 +2,7 @@
  * @author nbizkarra
  * @date 01/04/2020
  **/
-global with sharing class ContactUtil
+global without sharing class ContactUtil
 {
     /**
      * Método que adapta el número de cliente para cada entidad legal
