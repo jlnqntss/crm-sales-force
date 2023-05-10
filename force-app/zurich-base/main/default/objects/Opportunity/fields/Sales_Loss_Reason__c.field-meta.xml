@@ -15,86 +15,86 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Interesado más adelante</fullName>
+                <fullName>Interested later on</fullName>
                 <default>false</default>
                 <label>Interesado más adelante</label>
             </value>
             <value>
-                <fullName>Interesado, pero prefiero que lo gestione mi agente</fullName>
+                <fullName>Interested, managed by my agent</fullName>
                 <default>false</default>
                 <label>Interesado, pero prefiero que lo gestione mi agente</label>
             </value>
             <value>
-                <fullName>Mejores condiciones competencia</fullName>
+                <fullName>Better competition conditions</fullName>
                 <default>false</default>
                 <label>Mejores condiciones competencia</label>
             </value>
             <value>
-                <fullName>Falta/limitación de coberturas</fullName>
+                <fullName>Lack/limitation of coverage</fullName>
                 <default>false</default>
                 <label>Falta/limitación de coberturas</label>
             </value>
             <value>
-                <fullName>Seguro obligado con el banco</fullName>
+                <fullName>Insurance required by the bank</fullName>
                 <default>false</default>
                 <label>Seguro obligado con el banco</label>
             </value>
             <value>
-                <fullName>Ya ha contratado póliza</fullName>
+                <fullName>Already take a policy</fullName>
                 <default>false</default>
                 <label>Ya ha contratado póliza</label>
             </value>
             <value>
-                <fullName>Mala experiencia</fullName>
+                <fullName>Bad experience</fullName>
                 <default>false</default>
                 <label>Mala experiencia</label>
             </value>
             <value>
-                <fullName>Necesita descuento mayor</fullName>
+                <fullName>Need higher discount</fullName>
                 <default>false</default>
                 <label>Necesita descuento mayor</label>
             </value>
             <value>
-                <fullName>Incidencia actual no resuelta con alguna póliza en vigor</fullName>
+                <fullName>Incidence unresolved with policy</fullName>
                 <default>false</default>
                 <label>Incidencia actual no resuelta con alguna póliza en vigor</label>
             </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
-            <valueName>Interesado más adelante</valueName>
+            <valueName>Interested later on</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
-            <valueName>Interesado, pero prefiero que lo gestione mi agente</valueName>
+            <valueName>Interested, managed by my agent</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
-            <valueName>Mejores condiciones competencia</valueName>
+            <valueName>Better competition conditions</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
-            <valueName>Falta/limitación de coberturas</valueName>
+            <valueName>Lack/limitation of coverage</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
-            <valueName>Seguro obligado con el banco</valueName>
+            <valueName>Insurance required by the bank</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
-            <valueName>Ya ha contratado póliza</valueName>
+            <valueName>Already take a policy</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
-            <valueName>Mala experiencia</valueName>
+            <valueName>Bad experience</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
-            <valueName>Necesita descuento mayor</valueName>
+            <valueName>Need higher discount</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
-            <valueName>Incidencia actual no resuelta con alguna póliza en vigor</valueName>
+            <valueName>Incidence unresolved with policy</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
