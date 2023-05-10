@@ -5893,6 +5893,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Event.Mi_Centro__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Event.MultiIdentifiedByANI__c</field>
         <readable>true</readable>
@@ -9479,6 +9484,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.MiEquipo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.Mi_Centro__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
