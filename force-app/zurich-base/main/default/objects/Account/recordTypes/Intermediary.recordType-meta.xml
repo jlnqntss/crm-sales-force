@@ -4170,6 +4170,29 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Multitarifier__c</picklist>
+        <values>
+            <fullName>CODEOSCOPIC - Avant2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EBROKER - Merlin</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MPM - Tarifai</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SOFTQS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WILLPLATINE</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>NationalIdType__c</picklist>
         <values>
             <fullName>C</fullName>
