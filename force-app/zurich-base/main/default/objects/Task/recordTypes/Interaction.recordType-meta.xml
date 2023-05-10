@@ -132,103 +132,103 @@
     <picklistValues>
         <picklist>Loss_Reason__c</picklist>
         <values>
-            <fullName>AUTO-Antigüedad%C2%A0 del riesgo</fullName>
+            <fullName>CARS-Age of risk</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>AUTO-Bonus%2FMalus fuera de normas de %C2%A0contratación</fullName>
+            <fullName>CARS-Bonus%2FMalus outside of contracting rules</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>AUTO-Conductor</fullName>
+            <fullName>CARS-Driver</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>AUTO-Garantías no contratables</fullName>
+            <fullName>CARS-Non-contractable guaranties</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>AUTO-Otros motivos</fullName>
+            <fullName>CARS-Other reasons</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>AUTO-Score</fullName>
+            <fullName>CARS-Score</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>AUTO-Usos%2Ftipo de riesgo</fullName>
+            <fullName>CARS-Uses%2Ftype of risk</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>HOGAR-Antigüedad%C2%A0 del riesgo</fullName>
+            <fullName>HOME-Age of risk</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>HOGAR-Despoblado</fullName>
+            <fullName>HOME-Jewellery and valuable objects</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>HOGAR-Garantías no contratables</fullName>
+            <fullName>HOME-Non-contractable guaranties</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>HOGAR-Joyas y objetos de valor</fullName>
+            <fullName>HOME-Other reasons</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>HOGAR-Otros motivos</fullName>
+            <fullName>HOME-Payment Installment</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>HOGAR-Pago Fraccionamiento</fullName>
+            <fullName>HOME-Type of housing construction</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>HOGAR-Tipo de fabricación vivienda</fullName>
+            <fullName>HOME-Uninhabited</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>HOGAR-Usos%2Ftipo de riesgo</fullName>
+            <fullName>HOME-Unoccupied housing</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>HOGAR-Vivienda deshabitada</fullName>
+            <fullName>HOME-Uses%2Ftype of risk</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>VIDA-CNO de riesgo Alto</fullName>
+            <fullName>LIFE-Age</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>VIDA-Capitales</fullName>
+            <fullName>LIFE-Capital</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>VIDA-Edad</fullName>
+            <fullName>LIFE-High risk CNO</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>VIDA-Nacionalidad de riesgo Alto</fullName>
+            <fullName>LIFE-High risk nationality</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>VIDA-PRP</fullName>
+            <fullName>LIFE-High risk sport</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>VIDA-Resid Fiscal</fullName>
+            <fullName>LIFE-Illness</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>VIDA-Salud %C2%A0-deporte de riesgo</fullName>
+            <fullName>LIFE-PRP</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>VIDA-Salud - Enfermedad</fullName>
+            <fullName>LIFE-Tax Residence</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>VIDA-Salud - viaje al extranjero %2B60d</fullName>
+            <fullName>LIFE-Travel abroad %2B 60d</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -265,7 +265,7 @@
             <fullName>Others</fullName>
             <default>false</default>
         </values>
-    </picklistValues>
+    </picklistValues>    
     <picklistValues>
         <picklist>Status</picklist>
         <values>
