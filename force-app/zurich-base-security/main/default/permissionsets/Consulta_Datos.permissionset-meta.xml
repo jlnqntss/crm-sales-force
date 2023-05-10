@@ -2240,11 +2240,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Event.SegmentMediatorCase__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Event.SoyManager__c</field>
         <readable>true</readable>
     </fieldPermissions>
