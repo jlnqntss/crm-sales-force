@@ -2163,11 +2163,6 @@
         <field>Event.Channel__c</field>
         <readable>true</readable>
     </fieldPermissions>
-   <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.CaseMediator__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Event.DNISPhone__c</field>
@@ -2206,11 +2201,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Event.Intent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.MediatedCustomer__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3503,11 +3493,6 @@
         <field>Task.Channel__c</field>
         <readable>true</readable>
     </fieldPermissions>
-  <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.CaseMediator__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.DNISPhone__c</field>
@@ -3548,11 +3533,6 @@
         <field>Task.Intent__c</field>
         <readable>true</readable>
     </fieldPermissions>
-   <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.MediatedCustomer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.MiEquipo__c</field>
@@ -3591,11 +3571,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.Response__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-     <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.SegmentMediatorCase__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
