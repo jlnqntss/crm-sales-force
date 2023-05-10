@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loss_Reason__c</fullName>
+    <description>Motivo de pérdida para la App Ventas, se visualiza para las llamadas</description>
+    <externalId>false</externalId>
+    <label>Loss Reason</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>CARS-Uses/type of risk</fullName>
+                <default>false</default>
+                <label>AUTO-Usos/tipo de riesgo</label>
+            </value>
+            <value>
+                <fullName>CARS-Non-contractable guaranties</fullName>
+                <default>false</default>
+                <label>AUTO-Garantías no contratables</label>
+            </value>
+            <value>
+                <fullName>CARS-Age of risk</fullName>
+                <default>false</default>
+                <label>AUTO-Antigüedad del riesgo</label>
+            </value>
+            <value>
+                <fullName>CARS-Score</fullName>
+                <default>false</default>
+                <label>AUTO-Score</label>
+            </value>
+            <value>
+                <fullName>CARS-Bonus/Malus outside of contracting rules</fullName>
+                <default>false</default>
+                <label>AUTO-Bonus/Malus fuera de normas de contratación</label>
+            </value>
+            <value>
+                <fullName>CARS-Driver</fullName>
+                <default>false</default>
+                <label>AUTO-Conductor</label>
+            </value>
+            <value>
+                <fullName>CARS-Other reasons</fullName>
+                <default>false</default>
+                <label>AUTO-Otros motivos</label>
+            </value>
+            <value>
+                <fullName>HOME-Uses/type of risk</fullName>
+                <default>false</default>
+                <label>HOGAR-Usos/tipo de riesgo</label>
+            </value>
+            <value>
+                <fullName>HOME-Non-contractable guaranties</fullName>
+                <default>false</default>
+                <label>HOGAR-Garantías no contratables</label>
+            </value>
+            <value>
+                <fullName>HOME-Age of risk</fullName>
+                <default>false</default>
+                <label>HOGAR-Antigüedad del riesgo</label>
+            </value>
+            <value>
+                <fullName>HOME-Payment Installment</fullName>
+                <default>false</default>
+                <label>HOGAR-Pago Fraccionamiento</label>
+            </value>
+            <value>
+                <fullName>HOME-Jewellery and valuable objects</fullName>
+                <default>false</default>
+                <label>HOGAR-Joyas y objetos de valor</label>
+            </value>
+            <value>
+                <fullName>HOME-Type of housing construction</fullName>
+                <default>false</default>
+                <label>HOGAR-Tipo de fabricación vivienda</label>
+            </value>
+            <value>
+                <fullName>HOME-Uninhabited</fullName>
+                <default>false</default>
+                <label>HOGAR-Despoblado</label>
+            </value>
+            <value>
+                <fullName>HOME-Unoccupied housing</fullName>
+                <default>false</default>
+                <label>HOGAR-Vivienda deshabitada</label>
+            </value>
+            <value>
+                <fullName>HOME-Other reasons</fullName>
+                <default>false</default>
+                <label>HOGAR-Otros motivos</label>
+            </value>
+            <value>
+                <fullName>LIFE-Capital</fullName>
+                <default>false</default>
+                <label>VIDA-Capitales</label>
+            </value>
+            <value>
+                <fullName>LIFE-Age</fullName>
+                <default>false</default>
+                <label>VIDA-Edad</label>
+            </value>
+            <value>
+                <fullName>LIFE-High risk sport</fullName>
+                <default>false</default>
+                <label>VIDA-Deporte de riesgo</label>
+            </value>
+            <value>
+                <fullName>LIFE-Illness</fullName>
+                <default>false</default>
+                <label>VIDA- Enfermedad</label>
+            </value>
+            <value>
+                <fullName>LIFE-Travel abroad + 60d</fullName>
+                <default>false</default>
+                <label>VIDA-Viaje al extranjero +60d</label>
+            </value>
+            <value>
+                <fullName>LIFE-Tax Residence</fullName>
+                <default>false</default>
+                <label>VIDA-Residencia Fiscal</label>
+            </value>
+            <value>
+                <fullName>LIFE-PRP</fullName>
+                <default>false</default>
+                <label>VIDA-PRP</label>
+            </value>
+            <value>
+                <fullName>LIFE-High risk nationality</fullName>
+                <default>false</default>
+                <label>VIDA-Nacionalidad de riesgo Alto</label>
+            </value>
+            <value>
+                <fullName>LIFE-High risk CNO</fullName>
+                <default>false</default>
+                <label>VIDA-CNO de riesgo Alto</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -130,6 +130,73 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Loss_Reason__c</picklist>
+        <values>
+            <fullName>CARS-Age of risk</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CARS-Bonus%2FMalus outside of contracting rules</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CARS-Driver</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CARS-Non-contractable guaranties</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CARS-Other reasons</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CARS-Score</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CARS-Uses%2Ftype of risk</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOME-Age of risk</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOME-Jewellery and valuable objects</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOME-Non-contractable guaranties</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOME-Other reasons</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOME-Payment Installment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOME-Type of housing construction</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOME-Uninhabited</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOME-Unoccupied housing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HOME-Uses%2Ftype of risk</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Priority</picklist>
         <values>
             <fullName>High</fullName>
@@ -162,7 +229,7 @@
             <fullName>Others</fullName>
             <default>false</default>
         </values>
-    </picklistValues>
+    </picklistValues>    
     <picklistValues>
         <picklist>Status</picklist>
         <values>

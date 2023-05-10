@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_Loss_Reason_Date_Time__c</fullName>
+    <description>Especificar fecha y hora de contacto con cliente en los casos  de Cerrada Perdida por Motivo: Interesado más adelante e Interesado, pero prefiero que lo gestione mi agente.  Uso en App Ventas</description>
+    <externalId>false</externalId>
+    <label>Sales Loss Reason Date/Time</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>
