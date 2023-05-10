@@ -516,9 +516,9 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>ClienteMediado__c</field>
+            <field>CaseMediator__c</field>
             <value>
-                <elementReference>Infomediado</elementReference>
+                <elementReference>InfoMediador</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -528,9 +528,9 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>MediadorCaso__c</field>
+            <field>MediatedCustomer__c</field>
             <value>
-                <elementReference>InfoMediador</elementReference>
+                <elementReference>Infomediado</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -546,7 +546,7 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>SegmentoMediadorCaso__c</field>
+            <field>SegmentMediatorCase__c</field>
             <value>
                 <elementReference>InfoSegmento</elementReference>
             </value>
