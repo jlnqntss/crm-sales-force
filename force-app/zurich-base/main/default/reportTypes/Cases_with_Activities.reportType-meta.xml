@@ -675,6 +675,16 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>Related_Case_Status__c</field>
+            <table>Case.Activities</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ReminderDateTime</field>
+            <table>Case.Activities</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>CustomerInterest__c</field>
             <table>Case.Activities</table>
         </columns>
@@ -685,12 +695,27 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>ClosingObservation__c</field>
+            <table>Case.Activities</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>IsReminderSet</field>
+            <table>Case.Activities</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>ActivityDate</field>
             <table>Case.Activities</table>
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>DNIS__c</field>
+            <table>Case.Activities</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>EventType__c</field>
             <table>Case.Activities</table>
         </columns>
         <columns>
@@ -934,5 +959,13 @@
             <table>Case.Activities</table>
         </columns>
         <masterLabel>Activities</masterLabel>
+    </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Mi_Centro__c</field>
+            <table>Case.Activities</table>
+        </columns>
+        <masterLabel>Actividades</masterLabel>
     </sections>
 </ReportType>
