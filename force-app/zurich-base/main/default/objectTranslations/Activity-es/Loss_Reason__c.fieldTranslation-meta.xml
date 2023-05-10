@@ -3,11 +3,11 @@
     <label>Motivo de pérdida venta</label>
     <name>Loss_Reason__c</name>
     <picklistValues>
-        <masterLabel>AUTO-Antigüedad  del riesgo</masterLabel>
+        <masterLabel>AUTO-Antigüedad del riesgo</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>AUTO-Bonus/Malus fuera de normas de  contratación</masterLabel>
+        <masterLabel>AUTO-Bonus/Malus fuera de normas de contratación</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
@@ -31,7 +31,7 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>HOGAR-Antigüedad  del riesgo</masterLabel>
+        <masterLabel>HOGAR-Antigüedad del riesgo</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
@@ -87,19 +87,19 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>VIDA-Resid Fiscal</masterLabel>
+        <masterLabel>VIDA-Residencia Fiscal</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>VIDA-Salud - Enfermedad</masterLabel>
+        <masterLabel>VIDA- Enfermedad</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>VIDA-Salud - viaje al extranjero +60d</masterLabel>
+        <masterLabel>VIDA-Viaje al extranjero +60d</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>VIDA-Salud  -deporte de riesgo</masterLabel>
+        <masterLabel>VIDA-Deporte de riesgo</masterLabel>
         <translation></translation>
     </picklistValues>
 </CustomFieldTranslation>

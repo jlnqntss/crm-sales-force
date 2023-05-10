@@ -195,42 +195,6 @@
             <fullName>HOME-Uses%2Ftype of risk</fullName>
             <default>false</default>
         </values>
-        <values>
-            <fullName>LIFE-Age</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>LIFE-Capital</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>LIFE-High risk CNO</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>LIFE-High risk nationality</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>LIFE-High risk sport</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>LIFE-Illness</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>LIFE-PRP</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>LIFE-Tax Residence</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>LIFE-Travel abroad %2B 60d</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Priority</picklist>
