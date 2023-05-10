@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ActionResponsible__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Responsable de la acción definida en el acta del evento</description>
+    <externalId>false</externalId>
+    <label>Responsable de la Acción</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>Acciones_Tratadas_Acta</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
