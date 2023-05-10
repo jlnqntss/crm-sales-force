@@ -23,7 +23,7 @@
             <value>
                 <fullName>CARS-Age of risk</fullName>
                 <default>false</default>
-                <label>AUTO-Antigüedad del riesgo</label>
+                <label>AUTO-Antigüedad del riesgo</label>
             </value>
             <value>
                 <fullName>CARS-Score</fullName>
@@ -58,7 +58,7 @@
             <value>
                 <fullName>HOME-Age of risk</fullName>
                 <default>false</default>
-                <label>HOGAR-Antigüedad del riesgo</label>
+                <label>HOGAR-Antigüedad del riesgo</label>
             </value>
             <value>
                 <fullName>HOME-Payment Installment</fullName>
