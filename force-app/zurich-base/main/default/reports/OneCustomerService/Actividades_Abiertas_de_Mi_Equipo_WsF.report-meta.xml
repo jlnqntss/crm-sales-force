@@ -33,6 +33,13 @@
             <operator>equals</operator>
             <value>1</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Case.Activities$Subtype__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Email,Others,Reminder,Review,Request for appraisal</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
