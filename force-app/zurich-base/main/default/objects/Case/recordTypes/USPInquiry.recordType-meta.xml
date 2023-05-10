@@ -12,6 +12,10 @@
             <fullName>USP</fullName>
             <default>true</default>
         </values>
+        <values>
+            <fullName>Zurich Empresas</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>CauseOfLoss__c</picklist>
@@ -901,7 +905,7 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>ProductGroup__c</picklist>
+      <picklist>ProductGroup__c</picklist>
         <values>
             <fullName>1</fullName>
             <default>false</default>

@@ -11408,6 +11408,10 @@
         <layout>Case-Case Default OCS</layout>
         <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
+    <layoutAssignments> 
+        <layout>Case-Case Default ZE</layout> 
+        <recordType>Case.USPInquiry</recordType>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
     </layoutAssignments>
