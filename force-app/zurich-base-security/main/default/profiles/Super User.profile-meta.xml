@@ -9373,12 +9373,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Task.Channel__c</field>
+        <field>Task.CaseMediator__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Task.ClienteMediado__c</field>
+        <field>Task.Channel__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9473,12 +9473,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Task.MeetingMinutes__c</field>
+        <field>Task.MediatedCustomer__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Task.MediadorCaso__c</field>
+        <field>Task.MeetingMinutes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9568,7 +9568,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Task.SegmentoMediadorCaso__c</field>
+        <field>Task.SegmentMediatorCase__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
