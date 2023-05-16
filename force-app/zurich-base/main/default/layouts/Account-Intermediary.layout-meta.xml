@@ -167,6 +167,10 @@
                 <behavior>Edit</behavior>
                 <field>SAMTechnicalIssues__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Category__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
