@@ -357,6 +357,18 @@
         <dataType>String</dataType>
         <expression>{!principioBody} + {!caseRecordAction.CaseNumber}</expression>
     </formulas>
+    <formulas>
+        <description>Fórmula que devuelve el nombre del cliente mediado. Debido a un bug identificado por parte de Salesforce es necesario utilizar diferentes campos en función de si la cuenta es de tipo &apos;person account&apos; o no.
+
+Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-accountname-field-shows-blank-for-person-account-type-records-in-lightning-and-api</description>
+        <name>MediatedCustomer</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  {!caseRecordAction.MediatedCustomer__r.IsPersonAccount},
+  {!caseRecordAction.MediatedCustomer__r.FirstName} &amp; &apos; &apos; &amp; {!caseRecordAction.MediatedCustomer__r.LastName},
+  {!caseRecordAction.MediatedCustomer__r.Name}
+)</expression>
+    </formulas>
     <interviewLabel>USP Case Escalation Screen {!$Flow.CurrentDateTime}</interviewLabel>
     <label>USP Case Escalation Screen</label>
     <loops>
@@ -530,7 +542,7 @@
         <inputAssignments>
             <field>MediatedCustomer__c</field>
             <value>
-                <elementReference>Infomediado</elementReference>
+                <elementReference>MediatedCustomer</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1123,16 +1135,6 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>Infomediado</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue> {!caseRecordAction.MediatedCustomer__r.LastName}</stringValue>
-        </value>
-    </variables>
-    <variables>
         <name>InfoMediador</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1149,7 +1151,7 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>{!caseRecordAction.ProductGroupDescription__c} </stringValue>
+            <elementReference>caseRecordAction.Account.Segment__c</elementReference>
         </value>
     </variables>
     <variables>
