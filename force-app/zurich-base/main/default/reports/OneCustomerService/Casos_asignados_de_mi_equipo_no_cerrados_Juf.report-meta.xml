@@ -42,8 +42,8 @@
             <column>STATUS</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value>Cerrado,Closed,Resuelto,Respondido,Combinado</value>
+            <operator>equals</operator>
+            <value>Asignado,Nuevo,New</value>
         </criteriaItems>
         <criteriaItems>
             <column>Case.SoyManager__c</column>
