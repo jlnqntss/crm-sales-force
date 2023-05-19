@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ReportFolder xmlns="http://soap.sforce.com/2006/04/metadata">
     <folderShares>
-        <accessLevel>Manage</accessLevel>
-        <sharedTo>o.iglesiasalcala@zurich.com</sharedTo>
-        <sharedToType>User</sharedToType>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CCService_Gerente</sharedTo>
+        <sharedToType>Group</sharedToType>
     </folderShares>
-    <name>CSM Particulares Supervisor</name>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CCService_Supervisor</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CSMAdministracion_Gerente</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CSMAdministracion_Supervisor</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CSMParticulares_Gerente</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CSMParticulares_Supervisor</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <name>CSM Particulares - Supervisor</name>
 </ReportFolder>

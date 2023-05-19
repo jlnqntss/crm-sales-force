@@ -57,7 +57,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Asignado,Nuevo</value>
+            <value>Asignado,Nuevo,New</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
