@@ -10,5 +10,5 @@
     ISCHANGED(StageName)
 )</errorConditionFormula>
     <errorDisplayField>StageName</errorDisplayField>
-    <errorMessage>No se puede modificar una oferta en etapa Cerrada Perdida</errorMessage>
+    <errorMessage>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Perdida</errorMessage>
 </ValidationRule>
