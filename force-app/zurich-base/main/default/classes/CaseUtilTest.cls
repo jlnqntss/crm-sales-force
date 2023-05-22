@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 04-18-2023
- * @last modified by  : aberuete
+ * @last modified on  : 18-05-2023
+ * @last modified by  : amiranda
 **/
 @isTest
 private class CaseUtilTest
@@ -506,41 +506,56 @@ private class CaseUtilTest
     * Test del método que calcula el ratio de conversión en las cuentas con recordType Intermediary
     * @author lrodriguez6@seidor.es
     * @date 09/02/2023
+    *
+    * @change amiranda 18/05/2023 Refactorizar método para tener en cuenta que el método
+    * 'Case.generateAccountRatio' no devuelve una lista ordenada.
     */
     @IsTest
     public static void test_generateAccountRatio_OK()
-    {   //Crear cuentas intermediarios
-        List<Account> createdAccountsIntermediary = TestDataFactory.generateAccounts('001', 'Intermediary', 2); //Importante que solo se cree 1 porque sino habrá varios con mismo email
+    {  
+        // Crear cuentas intermediarios
+        List<Account> createdAccountsIntermediary = TestDataFactory.generateAccounts('001', 'Intermediary', 2);
         insert createdAccountsIntermediary;
-        //Crear casos relacionados con los intermediarios
-        List<Case> cases = TestDataFactory.generateCasesForEachAccount(createdAccountsIntermediary, 4);
-        insert cases;
-        
-        Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+       
+        // Crear casos relacionados con los intermediarios
+        List<Case> casesRelatedToIntermediaries = TestDataFactory.generateCasesForEachAccount(createdAccountsIntermediary, 4);
+        insert casesRelatedToIntermediaries;
 
-        List<Account> allIntermediary= [SELECT Id FROM Account WHERE RecordTypeId=:intermediaryRecordTypeId];
-        List<Case> allCases= [SELECT Id,AccountId,Status FROM Case WHERE AccountId=:allIntermediary];
-
-        for (case c:allCases)
+        for (Case caseRelatedToIntermediary : casesRelatedToIntermediaries)
         {
-            c.Type='Venta';
-            c.RecordTypeId=CaseUtil.rtUSPId;
-            c.Status='Cerrado';
-            c.QuotationStage__c='Work In Progress';
+            caseRelatedToIntermediary.Type = 'Venta';
+            caseRelatedToIntermediary.RecordTypeId = CaseUtil.rtUSPId;
+            caseRelatedToIntermediary.Status = 'Cerrado';
+            caseRelatedToIntermediary.QuotationStage__c = 'Work In Progress';
         }
-        update allCases;
+        update casesRelatedToIntermediaries;
 
-        allCases[0].QuotationStage__c='Won';
-        allCases[1].QuotationStage__c='Lost';
-        
-        update allCases;
+        // Marcar un caso como ganado
+        Case wonCase = casesRelatedToIntermediaries.get(0);
+        wonCase.QuotationStage__c = 'Won';
+        update wonCase;
+
+        // Crear un mapa para almacenar los valores esperados de USPConversionRatio__c
+        Map<Id, Integer> expectedRatioByAccountId = new Map<Id, Integer>();
+        for (Account createdAccountIntermediary : createdAccountsIntermediary)
+        {
+            expectedRatioByAccountId.put(createdAccountIntermediary.Id, (createdAccountIntermediary.Id == wonCase.AccountId) ? 25 : 0);
+        }
 
         test.startTest();
-        List<Account> accountUpdateRatio=CaseUtil.generateAccountRatio(allIntermediary);
-        System.assertEquals(25,accountUpdateRatio[0].USPConversionRatio__c);
-        System.assertEquals(0,accountUpdateRatio[1].USPConversionRatio__c);
+        List<Account> accountsUpdateRatio = CaseUtil.generateAccountRatio(createdAccountsIntermediary);
         test.stopTest();
 
+        // Verificar los valores esperados
+        for (Account accountUpdateRatio : accountsUpdateRatio)
+        {
+            Decimal expectedRatio = expectedRatioByAccountId.get(accountUpdateRatio.Id);
+            Decimal actualRatio = accountUpdateRatio.USPConversionRatio__c;
+
+            Assert.areEqual(expectedRatio,
+                            actualRatio,
+                            'El ratio de conversión esperado no coincide con el valor obtenido.');
+        }
     }
 
      /*
