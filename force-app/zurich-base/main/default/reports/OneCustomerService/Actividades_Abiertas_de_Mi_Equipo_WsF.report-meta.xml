@@ -38,7 +38,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Email,Others,Reminder,Review,Request for appraisal</value>
+            <value>Others,Reminder,Review,Request for appraisal</value>
         </criteriaItems>
         <language>es</language>
     </filter>

@@ -30,5 +30,30 @@
         <sharedTo>CSMParticulares_Supervisor</sharedTo>
         <sharedToType>Group</sharedToType>
     </folderShares>
-    <name>CSM Particulares Supervisor</name>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CCService_Supervisor</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CSMAdministracion_Gerente</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CSMAdministracion_Supervisor</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CSMParticulares_Gerente</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CSMParticulares_Supervisor</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <name>CSM Particulares - Supervisor</name>
 </ReportFolder>
