@@ -313,10 +313,34 @@
                 <default>false</default>
                 <label>Realizado - Confirmación criterio centro</label>
             </value>
+            <value>
+                <fullName>Resolución SDC Estimada</fullName>
+                <default>false</default>
+                <label>Resolución SDC Estimada</label>
+            </value>
+            <value>
+                <fullName>Resolución SDC Desestimada</fullName>
+                <default>false</default>
+                <label>Resolución SDC Desestimada</label>
+            </value>
+            <value>
+                <fullName>Resolución SDC Parcialmente estimada</fullName>
+                <default>false</default>
+                <label>Resolución SDC Parcialmente estimada</label>
+            </value>
+            <value>
+                <fullName>Resolución SDC estimada centro</fullName>
+                <default>false</default>
+                <label>Resolución SDC estimada centro</label>
+            </value>
+            <value>
+                <fullName>Resolución SDC Inadmitida</fullName>
+                <default>false</default>
+                <label>Resolución SDC Inadmitida</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
-            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
@@ -362,7 +386,6 @@
             <valueName>Realizado - Confirmación criterio centro</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
@@ -397,7 +420,6 @@
             <valueName>No Realizado</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <controllingFieldValue>Transferencia</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
@@ -509,6 +531,26 @@
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>Redireccionado CI</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Resolución SDC Estimada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Resolución SDC Desestimada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Resolución SDC Parcialmente estimada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Resolución SDC estimada centro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Resolución SDC Inadmitida</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>

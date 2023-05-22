@@ -536,6 +536,26 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Resolución SDC Desestimada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC Estimada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC Inadmitida</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC Parcialmente estimada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC estimada centro</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Retenido</fullName>
             <default>false</default>
         </values>

@@ -79,7 +79,6 @@
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
-        <interval>INTERVAL_CUSTOM</interval>
-        <startDate>2022-09-09</startDate>
+        <interval>INTERVAL_LAST7</interval>
     </timeFrameFilter>
 </Report>
