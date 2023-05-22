@@ -5,12 +5,12 @@
         <name>Asignar_SLA_Caso_Hijio</name>
         <label>Asignar SLA caso hijo</label>
         <locationX>578</locationX>
-        <locationY>518</locationY>
+        <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
             <value>
-                <numberValue>1440.0</numberValue>
+                <numberValue>4320.0</numberValue>
             </value>
         </assignmentItems>
     </assignments>
@@ -18,12 +18,12 @@
         <name>Asignar_SLA_caso_respondido</name>
         <label>Asignar SLA caso respondido</label>
         <locationX>842</locationX>
-        <locationY>518</locationY>
+        <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
             <value>
-                <numberValue>1440.0</numberValue>
+                <numberValue>4320.0</numberValue>
             </value>
         </assignmentItems>
     </assignments>
@@ -31,7 +31,7 @@
         <name>MaxSlaAssignment</name>
         <label>Asignar SLA máximo</label>
         <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -44,7 +44,7 @@
         <name>SlaCalculationAssignment</name>
         <label>Cálculo de SLA</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -57,7 +57,7 @@
         <name>CallCenterDecision</name>
         <label>¿Call Center?</label>
         <locationX>776</locationX>
-        <locationY>158</locationY>
+        <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>USPOutcome</name>
@@ -94,7 +94,7 @@
         <name>isChildCase</name>
         <label>¿Es caso hijo?</label>
         <locationX>842</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Caso_hijo</name>
@@ -138,7 +138,7 @@
         <name>IsQuoteResponseDecision</name>
         <label>¿Es respuesta de venta?</label>
         <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <defaultConnector>
             <targetReference>GetCaseMilestoneAction</targetReference>
         </defaultConnector>
@@ -193,7 +193,7 @@
         <name>getCase</name>
         <label>Recuperar caso</label>
         <locationX>842</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>isChildCase</targetReference>
@@ -217,7 +217,7 @@
         <name>GetCaseMilestoneAction</name>
         <label>Recuperar Case Milestone</label>
         <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SlaCalculationAssignment</targetReference>
