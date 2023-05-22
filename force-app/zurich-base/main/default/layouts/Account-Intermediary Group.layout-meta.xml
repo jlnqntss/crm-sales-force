@@ -102,11 +102,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Income2019__c</field>
+                <field>Incomes2020__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Incomes2020__c</field>
+                <field>Income2019__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
