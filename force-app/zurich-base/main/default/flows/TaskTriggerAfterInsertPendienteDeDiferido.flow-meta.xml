@@ -223,6 +223,20 @@
                 <elementReference>$Record.WhatId</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cerrado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Respondido</stringValue>
+            </value>
+        </filters>
         <inputAssignments>
             <field>IsStopped</field>
             <value>
@@ -238,7 +252,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Asignado</stringValue>
+                <stringValue>Respondido</stringValue>
             </value>
         </inputAssignments>
         <object>Case</object>

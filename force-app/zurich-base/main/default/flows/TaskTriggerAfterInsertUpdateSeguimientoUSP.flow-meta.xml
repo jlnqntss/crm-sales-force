@@ -2,42 +2,10 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <assignments>
-        <name>Desactivar_Monitoring</name>
-        <label>Desactivar Monitoring</label>
+        <name>ControlVariableAssignment</name>
+        <label>Control Variable</label>
         <locationX>754</locationX>
-        <locationY>1487</locationY>
-        <assignmentItems>
-            <assignToReference>Get_Case.Monitoring__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Actualizar_Caso</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Monitoring_on</name>
-        <label>Monitoring on</label>
-        <locationX>50</locationX>
-        <locationY>575</locationY>
-        <assignmentItems>
-            <assignToReference>Get_Case.Monitoring__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Actualizar_Caso</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Variable_Control</name>
-        <label>Variable Control</label>
-        <locationX>754</locationX>
-        <locationY>1055</locationY>
+        <locationY>1008</locationY>
         <assignmentItems>
             <assignToReference>Control</assignToReference>
             <operator>Assign</operator>
@@ -46,86 +14,64 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Tareas_Abiertas</targetReference>
+            <targetReference>AssociatedTasksLoop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>DisableMonitoring</name>
+        <label>Disable Monitoring</label>
+        <locationX>754</locationX>
+        <locationY>1440</locationY>
+        <assignmentItems>
+            <assignToReference>GetCaseRelatedToTaskAction.Monitoring__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UpdateCaseRelatedToTaskAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>MonitoringONAssignment</name>
+        <label>Monitoring ON</label>
+        <locationX>50</locationX>
+        <locationY>528</locationY>
+        <assignmentItems>
+            <assignToReference>GetCaseRelatedToTaskAction.Monitoring__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UpdateCaseRelatedToTaskAction</targetReference>
         </connector>
     </assignments>
     <decisions>
-        <name>Control_esta_activo</name>
-        <label>Control esta activo</label>
-        <locationX>666</locationX>
-        <locationY>1367</locationY>
+        <name>CaseFoundedOrNewTaskDecision</name>
+        <label>Case Founded Or New Task?</label>
+        <locationX>380</locationX>
+        <locationY>408</locationY>
         <defaultConnector>
-            <targetReference>Desactivar_Monitoring</targetReference>
+            <targetReference>StatusChangedToCloseDecision</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Control Desactivado</defaultConnectorLabel>
+        <defaultConnectorLabel>Task Not New</defaultConnectorLabel>
         <rules>
-            <name>Control_Activado</name>
+            <name>CaseNotFound</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Control</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>GetCaseRelatedToTaskAction</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>Actualizar_Caso</targetReference>
-            </connector>
-            <label>Control Activado</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Ha_cambiado</name>
-        <label>Ha cambiado</label>
-        <locationX>842</locationX>
-        <locationY>575</locationY>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
-        <rules>
-            <name>Si</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record__Prior.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Nueva</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Asignada</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>GetTasksAction</targetReference>
-            </connector>
-            <label>Si</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Is_Task_New</name>
-        <label>Is Task New</label>
-        <locationX>314</locationX>
-        <locationY>455</locationY>
-        <defaultConnector>
-            <targetReference>Ha_cambiado</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
-        <rules>
-            <name>casoCerradoOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Case.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Cerrado</stringValue>
-                </rightValue>
-            </conditions>
-            <label>Caso Cerrado</label>
+            <label>Case Not Found</label>
         </rules>
         <rules>
-            <name>Yes</name>
+            <name>TaskNewOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record__Prior</leftValueReference>
@@ -135,58 +81,112 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Monitoring_on</targetReference>
+                <targetReference>MonitoringONAssignment</targetReference>
             </connector>
-            <label>Yes</label>
+            <label>Task New</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Tiene_Tareas_Abiertas</name>
-        <label>Tiene Tareas Abiertas</label>
-        <locationX>886</locationX>
-        <locationY>935</locationY>
+        <name>EnabledControlDecision</name>
+        <label>Enabled Control?</label>
+        <locationX>666</locationX>
+        <locationY>1320</locationY>
         <defaultConnector>
-            <targetReference>Tareas_Abiertas</targetReference>
+            <targetReference>DisableMonitoring</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Cerrada</defaultConnectorLabel>
+        <defaultConnectorLabel>Control Disabled</defaultConnectorLabel>
         <rules>
-            <name>Nueva_o_Asignada</name>
+            <name>ControlEnabledDecision</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Control</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateCaseRelatedToTaskAction</targetReference>
+            </connector>
+            <label>Control Enabled</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>OpenTaskDecision</name>
+        <label>Open Task?</label>
+        <locationX>886</locationX>
+        <locationY>888</locationY>
+        <defaultConnector>
+            <targetReference>AssociatedTasksLoop</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Closed</defaultConnectorLabel>
+        <rules>
+            <name>OpenNewAsignedOutcome</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>Tareas_Abiertas.Status</leftValueReference>
+                <leftValueReference>AssociatedTasksLoop.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Nueva</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>Tareas_Abiertas.Status</leftValueReference>
+                <leftValueReference>AssociatedTasksLoop.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Asignada</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Variable_Control</targetReference>
+                <targetReference>ControlVariableAssignment</targetReference>
             </connector>
-            <label>Nueva o Asignada</label>
+            <label>Open(New/Asigned)</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>StatusChangedToCloseDecision</name>
+        <label>Status Changed To Close?</label>
+        <locationX>974</locationX>
+        <locationY>528</locationY>
+        <defaultConnectorLabel>Not Changed</defaultConnectorLabel>
+        <rules>
+            <name>ChangedOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrada</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetTasksRelatedToSameCaseAction</targetReference>
+            </connector>
+            <label>Changed</label>
         </rules>
     </decisions>
     <environments>Default</environments>
     <interviewLabel>Task Trigger - After Insert/Update - Seguimiento USP {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After Insert/Update - Seguimiento USP</label>
     <loops>
-        <name>Tareas_Abiertas</name>
-        <label>Tareas Abiertas</label>
+        <name>AssociatedTasksLoop</name>
+        <label>Associated Tasks Loop</label>
         <locationX>666</locationX>
-        <locationY>815</locationY>
-        <collectionReference>GetTasksAction</collectionReference>
+        <locationY>768</locationY>
+        <collectionReference>GetTasksRelatedToSameCaseAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Tiene_Tareas_Abiertas</targetReference>
+            <targetReference>OpenTaskDecision</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Control_esta_activo</targetReference>
+            <targetReference>EnabledControlDecision</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -208,15 +208,146 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>CreateErrorLogGetCaseAction</name>
+        <label>Create Error Log Get Case</label>
+        <locationX>1810</locationX>
+        <locationY>408</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Task Trigger - After Insert/Update - Seguimiento USP</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Get Case Related To Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateErrorLogGetTasksRelatedToSameCase</name>
+        <label>Create Error Log Get Tasks Related To Same Case</label>
+        <locationX>1018</locationX>
+        <locationY>768</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Task Trigger - After Insert/Update - Seguimiento USP</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Get Tasks Related To Same Case</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateErrorLogScheduledUpdateAction</name>
+        <label>Create Error Log After Due Date</label>
+        <locationX>2338</locationX>
+        <locationY>408</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Task Trigger - After Insert/Update - Seguimiento USP</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Update Related Case</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateErrorLogUpdateCaseRelatedToTask</name>
+        <label>Create Error Log Update Case Related To Task</label>
+        <locationX>1546</locationX>
+        <locationY>1968</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Task Trigger - After Insert/Update - Seguimiento USP</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Update Case Related To Task</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
-        <name>Get_Case</name>
-        <label>Get Case</label>
-        <locationX>314</locationX>
-        <locationY>335</locationY>
+        <name>GetCaseRelatedToTaskAction</name>
+        <label>Get Case Related To Task</label>
+        <locationX>380</locationX>
+        <locationY>288</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Is_Task_New</targetReference>
+            <targetReference>CaseFoundedOrNewTaskDecision</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>CreateErrorLogGetCaseAction</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -225,25 +356,35 @@
                 <elementReference>$Record.WhatId</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cerrado</stringValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Case</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>GetTasksAction</name>
-        <label>Get Tasks</label>
+        <name>GetTasksRelatedToSameCaseAction</name>
+        <label>Get Tasks Related To Same Case</label>
         <locationX>666</locationX>
-        <locationY>695</locationY>
+        <locationY>648</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Tareas_Abiertas</targetReference>
+            <targetReference>AssociatedTasksLoop</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>CreateErrorLogGetTasksRelatedToSameCase</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Case.Id</elementReference>
+                <elementReference>GetCaseRelatedToTaskAction.Id</elementReference>
             </value>
         </filters>
         <filters>
@@ -258,17 +399,64 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>Actualizar_Caso</name>
-        <label>Actualizar Caso</label>
-        <locationX>314</locationX>
-        <locationY>1895</locationY>
-        <inputReference>Get_Case</inputReference>
+        <name>UpdateCaseRelatedToTaskAction</name>
+        <label>Update Case Related To Task</label>
+        <locationX>380</locationX>
+        <locationY>1848</locationY>
+        <faultConnector>
+            <targetReference>CreateErrorLogUpdateCaseRelatedToTask</targetReference>
+        </faultConnector>
+        <inputReference>GetCaseRelatedToTaskAction</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>UpdateRelatedCaseScheduledAction</name>
+        <label>Update Related Case</label>
+        <locationX>2074</locationX>
+        <locationY>288</locationY>
+        <faultConnector>
+            <targetReference>CreateErrorLogScheduledUpdateAction</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Respondido</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cerrado</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Respondido</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
     </recordUpdates>
     <start>
-        <locationX>188</locationX>
+        <locationX>1101</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Case</targetReference>
+            <targetReference>GetCaseRelatedToTaskAction</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -276,13 +464,6 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Activity_USP</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Asignada</stringValue>
             </value>
         </filters>
         <filters>
@@ -294,6 +475,17 @@
         </filters>
         <object>Task</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>AfterDueDateCompleted</name>
+            <connector>
+                <targetReference>UpdateRelatedCaseScheduledAction</targetReference>
+            </connector>
+            <label>After Due Date Completed</label>
+            <offsetNumber>1</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <recordField>ActivityDate</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
