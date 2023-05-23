@@ -1023,7 +1023,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
         List<Account> partners = [SELECT Id, PartnerSFCode__c FROM Account WHERE RecordTypeId = :partnerRecordTypeId LIMIT 2];
-        List<Account> intermediary = [SELECT Id, MainMobilePhone__c, Phone, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' OR INFOIntermediaryCode__c = '0999777888' LIMIT 2]; //mismo nº que en createScenario()
+        List<Account> intermediary = [SELECT Id, MainMobilePhone__c, Phone, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' OR INFOIntermediaryCode__c = '0999777888' ORDER BY INFOIntermediaryCode__c DESC LIMIT 2]; //mismo nº que en createScenario()
 
         List<Product2> products = new List<Product2>
         {
