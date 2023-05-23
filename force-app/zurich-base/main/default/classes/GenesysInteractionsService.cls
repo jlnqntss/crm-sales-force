@@ -404,7 +404,6 @@ public with sharing class GenesysInteractionsService
             {
                 Policy__c.Id,
                 Policy__c.Name,
-                Policy__c.Intermediary_Code__c,
                 Policy__c.PolicyType__c
             },
             new List<String>
@@ -417,7 +416,8 @@ public with sharing class GenesysInteractionsService
                 'IntermediaryId__r.Phone',
                 'IntermediaryId__r.MainEmail__c',
                 'IntermediaryId__r.Channel__c',
-                'IntermediaryId__r.Segment__c'
+                'IntermediaryId__r.Segment__c', 
+                'IntermediaryId__r.INFOIntermediaryCode__c' 
             }
         );
 
@@ -468,7 +468,8 @@ public with sharing class GenesysInteractionsService
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
                 'Policy__r.Partner__r.GrandparentBusinessName__c',
-                'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
+                'Policy__r.Name',
+                'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c', 
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
                 'Policy__r.IntermediaryId__r.MainEmail__c',
@@ -764,7 +765,6 @@ public with sharing class GenesysInteractionsService
             {
                 Policy__c.Id,
                 Policy__c.Name,
-                Policy__c.Intermediary_Code__c,
                 Policy__c.PolicyType__c
             },
             new List<String>
@@ -777,6 +777,7 @@ public with sharing class GenesysInteractionsService
                 'IntermediaryId__r.MainEmail__c',
                 'IntermediaryId__r.Channel__c',
                 'IntermediaryId__r.Segment__c',
+                'IntermediaryId__r.INFOIntermediaryCode__c',
                 'Partner__r.GrandparentBusinessName__c'
             }
         );
@@ -820,7 +821,8 @@ public with sharing class GenesysInteractionsService
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
                 'Policy__r.Partner__r.GrandparentBusinessName__c',
-                'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
+                'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c',
+                'Policy__r.Name',
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
                 'Policy__r.IntermediaryId__r.MainEmail__c',
@@ -1365,7 +1367,7 @@ public with sharing class GenesysInteractionsService
             this.type = String.isNotBlank(policy.PolicyType__c) ? policy.PolicyType__c : policy.ProductId__r.GroupDescription__c;
             this.partnerName = policy.Partner__r.GrandparentBusinessName__c;
             this.partnerSector = policy.Partner__r.PartnerSector__c;
-            this.intermediaryCode = policy.Intermediary_Code__c;
+            this.intermediaryCode = policy.IntermediaryId__r.INFOIntermediaryCode__c;
             this.intermediaryChannel = policy.IntermediaryId__r.Channel__c;
             this.intermediarySegment = policy.IntermediaryId__r.Segment__c;
             this.intermediaryEmail = policy.IntermediaryId__r.MainEmail__c;
