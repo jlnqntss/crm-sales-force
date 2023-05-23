@@ -499,6 +499,7 @@
     <tabs>Scope__c</tabs>
     <tabs>standard-Opportunity</tabs>
     <tabs>Policy__c</tabs>
+    <tabs>standard-Campaign</tabs>
     <tabs>standard-Task</tabs>
     <tabs>standard-Dashboard</tabs>
     <tabs>standard-report</tabs>
@@ -516,6 +517,9 @@
         </mappings>
         <mappings>
             <tab>standard-Account</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Campaign</tab>
         </mappings>
         <mappings>
             <tab>standard-ContactRequest</tab>

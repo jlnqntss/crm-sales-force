@@ -8,6 +8,7 @@
 public with sharing class OpportunityUtil
 {
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
+    public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
     static final String FIELD_OWNER_ID = 'OwnerId';
     /**
      * BULK BEFORE
@@ -16,9 +17,14 @@ public with sharing class OpportunityUtil
      * @date 24/02/2021
      */
     public static void initMapOfProfiles()
-    {
+    {   
+        // perfiles
         List<String> nombresPerfiles = new List<String>{'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
         listaPerfiles = ProfilesSelector.getProfilesByName(nombresPerfiles);
+
+        // usuarios
+        List<String> nombresUsuarios = new List<String>{'Automated Process'};
+        listaUsuarios = (new UsersSelector()).getUsersByName(nombresUsuarios);
     }
 
     /**
@@ -182,7 +188,7 @@ public with sharing class OpportunityUtil
         Boolean retorno = false;
         
         // Bypass por perfil
-        if(!listaPerfiles.isEmpty() && listaPerfiles.containsKey(UserInfo.getProfileId()))
+        if(!listaPerfiles.isEmpty() && (listaPerfiles.containsKey(UserInfo.getProfileId()) || listaUsuarios.containsKey(UserInfo.getUserId())))
         {
             retorno = true;
         }

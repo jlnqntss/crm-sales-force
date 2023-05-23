@@ -37,4 +37,14 @@ private with sharing class UsersSelectorTest
         // Comprobamos el resultado
         System.assertEquals(usersAfter.size(), usersBefore.size(), 'El número de usuarios antes y después debería ser el mismo');
     }
+
+    @isTest
+    static void test_getUsersByName() {
+        Test.startTest();
+        List<String> nombresList = new List<String>{'Integrator'};
+        Map<Id, User> userMap = (new UsersSelector()).getUsersByName(nombresList);
+        Test.stopTest();
+
+        System.assertEquals(1, userMap.size(), 'Debe haber 1 usuario en el mapa');
+    }
 }
