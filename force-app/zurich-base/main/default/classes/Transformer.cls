@@ -7,8 +7,9 @@
 public class Transformer
 {
     public static final String ORIGIN_NAME_INFO = 'INFO';
+    public static final String ORIGIN_NAME_MI_ZURICH = 'MI_ZURICH';
     private static final String TEXT_FIELD = ' Field: ';
-    private static Set<String> validOrigins = new Set<String> { ORIGIN_NAME_INFO };
+    private static Set<String> validOrigins = new Set<String> { ORIGIN_NAME_INFO, ORIGIN_NAME_MI_ZURICH};
 
     // Cache de validaciones y transformaciones del mapeo campos
     private static Map<String, List<String>> targetFieldsCache = new Map<String, List<String>>();

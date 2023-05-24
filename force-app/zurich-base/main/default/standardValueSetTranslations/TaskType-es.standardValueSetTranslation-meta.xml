@@ -9,6 +9,10 @@
         <translation>Correo electrónico</translation>
     </valueTranslation>
     <valueTranslation>
+        <masterLabel>Forms</masterLabel>
+        <translation>Formularios</translation>
+    </valueTranslation>
+    <valueTranslation>
         <masterLabel>Meeting</masterLabel>
         <translation>Reunión</translation>
     </valueTranslation>

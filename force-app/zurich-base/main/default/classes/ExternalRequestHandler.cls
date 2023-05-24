@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 05-24-2023
+ * @last modified by  : aberuete
+**/
 public class ExternalRequestHandler implements ITrigger
 {
     public ExternalRequestHandler()
@@ -29,8 +36,8 @@ public class ExternalRequestHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
-        INFOHandler.fillEntitiesByPriorityMap();
-        INFOHandler.setERIndex(newList);
+        ExternalRequestHandlerUtil.fillEntitiesByPriorityMap();
+        ExternalRequestHandlerUtil.setERIndex(newList);
     }
 
     /**
@@ -90,15 +97,28 @@ public class ExternalRequestHandler implements ITrigger
         // Check if there are any External Request of Origin INFO (not Priority) and if any of type priority (NOTE)
         Boolean anyPriorityEntities = false;
         Boolean anyInfoNotPriority = false;
+        
+        //Obtener el origen de las external request
+        List<ExternalJobQueueBatch__mdt> originsFromExternalRequest = ExternalJobQueueBatch__mdt.getAll().values();
+        List<String> originExternalList = new List<String>();
+        for (ExternalJobQueueBatch__mdt originExternal :originsFromExternalRequest )
+        {
+            originExternalList.add(originExternal.Origin__c);
+        }
 
         List<ExternalRequest__c> newRequest = (List<ExternalRequest__c>)newMap.values();
         Integer i = 0;
         Integer j = newRequest.size();
-        while( i<j && (!anyInfoNotPriority || !anyPriorityEntities) ) {
-            if( newRequest[i].Origin__c == Transformer.ORIGIN_NAME_INFO ) {
-                if( INFOHandler.PRIORITY_ENTITIES.contains(newRequest[i].Entity__c)) {
+        while( i<j && (!anyInfoNotPriority || !anyPriorityEntities)) 
+        {
+            if (originExternalList.contains(newRequest[i].Origin__c))
+            {
+                if( INFOHandler.PRIORITY_ENTITIES.contains(newRequest[i].Entity__c)) 
+                {
                     anyPriorityEntities = true;
-                } else {
+                } 
+                else 
+                {
                     anyInfoNotPriority = true;
                 }
             }
@@ -110,6 +130,5 @@ public class ExternalRequestHandler implements ITrigger
 
         if( anyPriorityEntities && !Test.isRunningTest() )
             ExternalJobQueueBatchController.checkExternalJobPriorityQueueBatch();
-    
     }
 }

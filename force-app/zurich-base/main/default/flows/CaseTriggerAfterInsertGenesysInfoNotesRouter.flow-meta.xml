@@ -4,7 +4,7 @@
         <description>Se procede con el envío de la Nota INFO a Genesys Cloud.</description>
         <name>genesysCloudRouteMessageAction</name>
         <label>Enrutar mensaje a Genesys Cloud</label>
-        <locationX>605</locationX>
+        <locationX>902</locationX>
         <locationY>1224</locationY>
         <actionName>GenesysCloudRouteMessageAction</actionName>
         <actionType>apex</actionType>
@@ -75,7 +75,7 @@
     <assignments>
         <name>Asignamos_variables_generico</name>
         <label>Asignamos variables generico</label>
-        <locationX>737</locationX>
+        <locationX>1034</locationX>
         <locationY>648</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueID</assignToReference>
@@ -98,7 +98,7 @@
     <assignments>
         <name>Asignamos_variables_Intermediary</name>
         <label>Asignamos variables Intermediary</label>
-        <locationX>473</locationX>
+        <locationX>770</locationX>
         <locationY>648</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueID</assignToReference>
@@ -127,10 +127,47 @@
         </value>
     </constants>
     <decisions>
+        <name>Check_Origin</name>
+        <label>Check Origin</label>
+        <locationX>902</locationX>
+        <locationY>1464</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Origin_NotaInfo</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NoteINFO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CreateTaskAction</targetReference>
+            </connector>
+            <label>Origin NotaInfo</label>
+        </rules>
+        <rules>
+            <name>Origin_Web</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Web</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CreateTaskWebMiZurichAction</targetReference>
+            </connector>
+            <label>Origin Web</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Comprobamos si la cuenta asociada al caso es de tipo intermediario, ya que en caso afirmativo habrá que enviar más información al sistema de enrutado</description>
         <name>Is_Intermediary_Account</name>
         <label>Is Intermediary Account?</label>
-        <locationX>605</locationX>
+        <locationX>902</locationX>
         <locationY>408</locationY>
         <defaultConnector>
             <targetReference>GetGenesysCloudQueueAction</targetReference>
@@ -162,7 +199,7 @@
     <decisions>
         <name>IsUSPAndClosedDecision</name>
         <label>Is USP and Closed?</label>
-        <locationX>407</locationX>
+        <locationX>506</locationX>
         <locationY>288</locationY>
         <defaultConnector>
             <targetReference>Is_Intermediary_Account</targetReference>
@@ -188,7 +225,7 @@
             <label>Yes Closed</label>
         </rules>
     </decisions>
-    <description>Este flujo es ejecutado tras ser insertado un caso cuyo origen sea Nota INFO (API: NoteINFO)
+    <description>Este flujo es ejecutado tras ser insertado un caso cuyo origen sea Nota INFO  (API: NoteINFO) o Web
 Se consulta en un sub-flujo la cola a la que debe ser enrutado.
 Se utiliza una acción de Apex para enviar el mensaje a Genesy sCloud.
 Se registra el resultado en una tarea relacionada al caso con el identificador de la interacción en Genesys Cloud.</description>
@@ -209,8 +246,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!$Record.AccountId}), &apos;&apos;, TEXT({!$Record.Account.SpecializationType__c}))</expression>
     </formulas>
-    <interviewLabel>Case Trigger - After Insert - Enrutador de Notas INFO {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger - After Insert - Enrutador de Notas INFO</label>
+    <interviewLabel>Case Trigger - After Insert - Enrutador de casos a Genesys  {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Trigger - After Insert - Enrutador de casos a Genesys</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -234,7 +271,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se registra el error en Salesforce con el detalle del mismo.</description>
         <name>CreateErrorLogAction</name>
         <label>Registrar error</label>
-        <locationX>1265</locationX>
+        <locationX>1694</locationX>
         <locationY>1464</locationY>
         <inputAssignments>
             <field>Level__c</field>
@@ -285,8 +322,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
         <name>CreateTaskAction</name>
         <label>Registrar tarea</label>
-        <locationX>605</locationX>
-        <locationY>1464</locationY>
+        <locationX>374</locationX>
+        <locationY>1584</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -336,10 +373,65 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
+        <name>CreateTaskWebMiZurichAction</name>
+        <label>Registrar tarea Web MiZurich</label>
+        <locationX>902</locationX>
+        <locationY>1584</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CreateErrorLogAction</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>CallObject</field>
+            <value>
+                <elementReference>interactionId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>GetInteractionRecordTypeIdAction.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>$Record.Subject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <stringValue>Incidences Record MiZurich</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Forms</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Get Genesys Queue</label>
-        <locationX>605</locationX>
+        <locationX>902</locationX>
         <locationY>864</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -361,11 +453,11 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera el identificador del tipo de registro Task: Interaction para registrar la siguiente tarea.</description>
         <name>GetInteractionRecordTypeIdAction</name>
         <label>Obetener tipo de registro Task: Interaction</label>
-        <locationX>605</locationX>
+        <locationX>902</locationX>
         <locationY>1344</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>CreateTaskAction</targetReference>
+            <targetReference>Check_Origin</targetReference>
         </connector>
         <faultConnector>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -385,12 +477,26 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 OR (2 AND 3)</filterLogic>
         <filters>
             <field>Origin</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>NoteINFO</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Origin</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Web</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Solicitud de ayuda al registro de MiZurich</stringValue>
             </value>
         </filters>
         <object>Case</object>
@@ -407,7 +513,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <subflows>
         <name>GestorPreferenteSearchFromEmailSubflow</name>
         <label>Buscar Gestor Preferente</label>
-        <locationX>605</locationX>
+        <locationX>902</locationX>
         <locationY>984</locationY>
         <connector>
             <targetReference>PriorityCalculationSubflow</targetReference>
@@ -467,7 +573,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados sin los datos de las DTs a las que enrutar</description>
         <name>GetGenesysCloudQueueAction</name>
         <label>Obtener cola de Genesys Cloud</label>
-        <locationX>737</locationX>
+        <locationX>1034</locationX>
         <locationY>528</locationY>
         <connector>
             <targetReference>Asignamos_variables_generico</targetReference>
@@ -497,7 +603,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados. En los casos en los que la cuenta asociada al caso sea de tipo Intermediario, se les pasará los valores contenidos en los campos &quot;Email Particulares&quot; e &quot;Email Administración&quot;</description>
         <name>Obtener_cola_de_Genesys_Cloud_desde_Intermediary</name>
         <label>Obtener cola de Genesys Cloud desde Intermediary</label>
-        <locationX>473</locationX>
+        <locationX>770</locationX>
         <locationY>528</locationY>
         <connector>
             <targetReference>Asignamos_variables_Intermediary</targetReference>
@@ -538,7 +644,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <subflows>
         <name>PriorityCalculationSubflow</name>
         <label>Calcular Prioridad</label>
-        <locationX>605</locationX>
+        <locationX>902</locationX>
         <locationY>1104</locationY>
         <connector>
             <targetReference>genesysCloudRouteMessageAction</targetReference>

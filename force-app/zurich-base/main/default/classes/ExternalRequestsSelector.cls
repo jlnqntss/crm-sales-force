@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 05-24-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class ExternalRequestsSelector
 {
     // #Region Properties
@@ -16,7 +23,7 @@ public with sharing class ExternalRequestsSelector
         {
             if(externalRequestFieldsToQuery == null)
             {
-                externalRequestFieldsToQuery = new Set<String> {'Id', 'Name', 'Index__c'};
+                externalRequestFieldsToQuery = new Set<String> {'Id', 'Name','Origin__c', 'Index__c'};
             }
 
             return externalRequestFieldsToQuery;

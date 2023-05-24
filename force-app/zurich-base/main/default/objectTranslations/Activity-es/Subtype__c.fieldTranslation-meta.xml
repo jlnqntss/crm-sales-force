@@ -47,6 +47,10 @@
         <translation>Transferencia servicio externo</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Incidences Record MiZurich</masterLabel>
+        <translation>Incidencias Registro MiZurich</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Monitoring</masterLabel>
         <translation>Seguimiento</translation>
     </picklistValues>
