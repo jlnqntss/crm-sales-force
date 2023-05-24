@@ -1,6 +1,14 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 05-11-2023
+ * @last modified by  : aberuete
+**/
 public class ExternalJobQueueBatchController
 {
     static String basedigits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    static final String RECORD_TYPE_NAME_INFO = 'INFO';
 
     /**
      * Comprobar si hay external request pendientes de procesar y ejecutar el ExternalJobQueueBatch en caso afirmativo
@@ -22,10 +30,10 @@ public class ExternalJobQueueBatchController
             {
                 // Devuelve el menor índice entre las External Request que quedan por procesar
                 Integer entityIndex = new ExternalRequestsSelector().setLimit(1).getPriorityToProcess();
-
+                
                 if(entityIndex != null)
                 {
-                    System.enqueueJob( new ExternalJobQueueJob(Transformer.ORIGIN_NAME_INFO, entityIndex));
+                    System.enqueueJob( new ExternalJobQueueJob(entityIndex));
                 }
             }
         }
@@ -58,21 +66,21 @@ public class ExternalJobQueueBatchController
      * @date 19/11/2020
      * 
      * @change amiranda 20/04/2023 refactor to reduce cognitive complexity
+     * @change aberuete 11/05/2023 Devolver Mapa <String, List<String>> en vez de List<String> ya que va a devolver lista de queries por origen.
      */
-    public static List<String> getChunkQueries(String origin, Integer index)
+    public static Map<String, List<String>> getChunkQueries(Integer index)
     {
         List<String> queries = new List<String>();
+        Map<String, List<String>> queriesByOrigin = new Map<String,List<String>>();
 
         try
         {
-            Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(origin).getRecordTypeId();
-
+            Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(RECORD_TYPE_NAME_INFO).getRecordTypeId();
             List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', index);
-
             if( !firstPendingExtReq.isEmpty() )
             {
+                queriesByOrigin.put(firstPendingExtReq[0].Origin__c, queries);
                 List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', index);
-
                 String firstId = firstPendingExtReq.get(0).Id;
                 String lastId = lastPendingExtReq.get(0).Id;
 
@@ -105,8 +113,8 @@ public class ExternalJobQueueBatchController
                         queries.add(q);
                     }
                 }
-
-                return queries;
+                
+                return queriesByOrigin;
             }
 
             return null;

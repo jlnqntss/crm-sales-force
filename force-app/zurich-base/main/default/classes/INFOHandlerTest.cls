@@ -179,12 +179,12 @@ private class INFOHandlerTest
 
         System.assertEquals(
             objects.size(),
-            INFOHandler.recordsToUpsertByEntity.size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.size(),
             'No se ha generado correctamente el mapa por entidades'
             );
         System.assertEquals(
             objects.size(),
-            INFOHandler.recordsToDeleteByEntity.size(),
+            ExternalRequestHandlerUtil.recordsToDeleteByEntity.size(),
             'No se ha generado correctamente el mapa por entidades'
             );
     }
@@ -215,98 +215,98 @@ private class INFOHandlerTest
 
         System.assertEquals(
             NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Account').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Account').size(),
             'No se ha generado correctamente el mapa de registros de account'
             ); // 10 cuentas de personas físicas y 10 de personas jurídicas
         System.assertEquals(
             NUM_ER_LEGAL_ACCOUNT,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Contact').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Contact').size(),
             'No se ha generado correctamente el mapa de registros de contact'
             );
         System.assertEquals(
             NUM_ER_CONTACT_POINT_ADDRESS,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointAddress').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointAddress').size(),
             'No se ha generado correctamente el mapa de registros de contactPointAddress'
             );
         System.assertEquals(
             NUM_ER_CONTACT_POINT_PHONE,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointPhone').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointPhone').size(),
             'No se ha generado correctamente el mapa de registros de contactPointPhone'
             );
         System.assertEquals(
             NUM_ER_CONTACT_POINT_EMAIL,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(),
             'No se ha generado correctamente el mapa de registros de contactPointEmail'
             );
         System.assertEquals(
             NUM_ER_PRODUCT,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(),
             'No se ha generado correctamente el mapa de registros de product'
             );
         System.assertEquals(
             NUM_ER_QUOTE,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(),
             'No se ha generado correctamente el mapa de registros de opportunity'
             );
         System.assertEquals(
             NUM_ER_QUOTE_OPTION,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(),
             'No se ha generado correctamente el mapa de registros de quote'
             );
         System.assertEquals(
             NUM_ER_POLICY,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(),
             'No se ha generado correctamente el mapa de registros de policy'
             );
         // FIXME:
         System.assertEquals(
             NUM_ER_INSURED_OBJECT,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(),
             'No se ha generado correctamente el mapa de registros de asset'
             );
         System.assertEquals(
             NUM_ER_CLAIM,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(),
             'No se ha generado correctamente el mapa de registros de claim'
             );
         System.assertEquals(
             NUM_ER_QUOTE_RELATIONSHIP,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(),
             'No se ha generado correctamente el mapa de registros de quote relationship'
             );
         System.assertEquals(
             NUM_ER_POLICY_RELATIONSHIP,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(),
             'No se ha generado correctamente el mapa de registros de policy relationship'
             );
         System.assertEquals(
             NUM_ER_CLAIM_RELATIONSHIP,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(),
             'No se ha generado correctamente el mapa de registros de claim relationship'
             );
         System.assertEquals(
             NUM_ER_PARTNER,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(),
             'No se ha generado correctamente el mapa de registros de account'
             );
         System.assertEquals(
             NUM_ER_INTERMEDIARY,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(),
             'No se ha generado correctamente el mapa de registros de account'
             );
         System.assertEquals(
                 NUM_ER_NOTE,
-                INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(),
+                ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(),
                 'No se ha generado correctamente el mapa de registros de Case'
                 );
         System.assertEquals(
             NUM_ER_SPECIAL_CONDITION,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(),
             'No se ha generado correctamente el mapa de registros de Special_Condition__c'
             );
         System.assertEquals(
             NUM_ER_INTERMEDIARY_KPI,
-            INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(),
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(),
             'No se ha generado correctamente el mapa de registros de KPI__c'
             );
     }
@@ -344,29 +344,29 @@ private class INFOHandlerTest
         INFOHandler.process(externalRequestList);
         Test.stopTest();
 
-        System.assertEquals(NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account'); // 10 cuentas de personas físicas y 10 de personas jurídicas
-        System.assertEquals(NUM_ER_LEGAL_ACCOUNT, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Contact').size(), 'No se ha generado correctamente el mapa de registros de contact');
-        System.assertEquals(NUM_ER_CONTACT_POINT_ADDRESS, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointAddress').size(), 'No se ha generado correctamente el mapa de registros de contactPointAddress');
-        System.assertEquals(NUM_ER_CONTACT_POINT_PHONE, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointPhone').size(), 'No se ha generado correctamente el mapa de registros de contactPointPhone');
-        System.assertEquals(NUM_ER_CONTACT_POINT_EMAIL, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(), 'No se ha generado correctamente el mapa de registros de contactPointEmail');
-        System.assertEquals(NUM_ER_PRODUCT, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
-        System.assertEquals(NUM_ER_QUOTE, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
-        System.assertEquals(NUM_ER_QUOTE_OPTION, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(), 'No se ha generado correctamente el mapa de registros de quote');
+        System.assertEquals(NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account'); // 10 cuentas de personas físicas y 10 de personas jurídicas
+        System.assertEquals(NUM_ER_LEGAL_ACCOUNT, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT).get('Contact').size(), 'No se ha generado correctamente el mapa de registros de contact');
+        System.assertEquals(NUM_ER_CONTACT_POINT_ADDRESS, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointAddress').size(), 'No se ha generado correctamente el mapa de registros de contactPointAddress');
+        System.assertEquals(NUM_ER_CONTACT_POINT_PHONE, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointPhone').size(), 'No se ha generado correctamente el mapa de registros de contactPointPhone');
+        System.assertEquals(NUM_ER_CONTACT_POINT_EMAIL, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONTACT_POINT).get('ContactPointEmail').size(), 'No se ha generado correctamente el mapa de registros de contactPointEmail');
+        System.assertEquals(NUM_ER_PRODUCT, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.PRODUCT).get('Product2').size(), 'No se ha generado correctamente el mapa de registros de product');
+        System.assertEquals(NUM_ER_QUOTE, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.QUOTE).get('Opportunity').size(), 'No se ha generado correctamente el mapa de registros de opportunity');
+        System.assertEquals(NUM_ER_QUOTE_OPTION, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.QUOTE_OPTION).get('Quote').size(), 'No se ha generado correctamente el mapa de registros de quote');
 
-        System.assertEquals(NUM_ER_INSURED_OBJECT, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
-        System.assertEquals(NUM_ER_CLAIM, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
-        System.assertEquals(NUM_ER_QUOTE_RELATIONSHIP, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de quote relationship');
-        System.assertEquals(NUM_ER_CLAIM_RELATIONSHIP, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de claim relationship');
-        System.assertEquals(NUM_ER_PARTNER, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
-        System.assertEquals(NUM_ER_INTERMEDIARY, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
+        System.assertEquals(NUM_ER_INSURED_OBJECT, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INSURED_OBJECT).get('Asset').size(), 'No se ha generado correctamente el mapa de registros de asset');
+        System.assertEquals(NUM_ER_CLAIM, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CLAIM).get('Claim__c').size(), 'No se ha generado correctamente el mapa de registros de claim');
+        System.assertEquals(NUM_ER_QUOTE_RELATIONSHIP, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.QUOTE_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de quote relationship');
+        System.assertEquals(NUM_ER_CLAIM_RELATIONSHIP, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CLAIM_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de claim relationship');
+        System.assertEquals(NUM_ER_PARTNER, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.PARTNER).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
+        System.assertEquals(NUM_ER_INTERMEDIARY, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY).get('Account').size(), 'No se ha generado correctamente el mapa de registros de account');
 
-        System.assertEquals(0, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de policy');
-        System.assertEquals(0, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de policy relationship');
-        System.assertEquals(NUM_ER_POLICY, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
-        System.assertEquals(NUM_ER_POLICY_RELATIONSHIP, INFOHandler.recordsToDeleteByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy relationship');
-        System.assertEquals(NUM_ER_NOTE, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(), 'No se ha generado correctamente el mapa de registros de Case');
-        System.assertEquals(NUM_ER_SPECIAL_CONDITION, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(), 'No se ha generado correctamente el mapa de registros de Special_Condition__c');
-        System.assertEquals(NUM_ER_INTERMEDIARY_KPI, INFOHandler.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(), 'No se ha generado correctamente el mapa de registros de KPI__c');
+        System.assertEquals(0, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de policy');
+        System.assertEquals(0, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de policy relationship');
+        System.assertEquals(NUM_ER_POLICY, ExternalRequestHandlerUtil.recordsToDeleteByEntity.get(INFOHandler.POLICY).get('Policy__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy');
+        System.assertEquals(NUM_ER_POLICY_RELATIONSHIP, ExternalRequestHandlerUtil.recordsToDeleteByEntity.get(INFOHandler.POLICY_RELATIONSHIP).get('Relationship__c').size(), 'No se ha generado correctamente el mapa de registros de borrado de policy relationship');
+        System.assertEquals(NUM_ER_NOTE, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(), 'No se ha generado correctamente el mapa de registros de Case');
+        System.assertEquals(NUM_ER_SPECIAL_CONDITION, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(), 'No se ha generado correctamente el mapa de registros de Special_Condition__c');
+        System.assertEquals(NUM_ER_INTERMEDIARY_KPI, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(), 'No se ha generado correctamente el mapa de registros de KPI__c');
     }
 
     @isTest
@@ -400,7 +400,7 @@ private class INFOHandlerTest
 
         System.assertEquals(
             totalExternalRequests,
-            INFOHandler.externalRequestResultList.size(),
+            ExternalRequestHandlerUtil.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
     }
@@ -436,7 +436,7 @@ private class INFOHandlerTest
                                         
         System.assertEquals(
             totalExternalRequests,
-            INFOHandler.externalRequestResultList.size(),
+            ExternalRequestHandlerUtil.externalRequestResultList.size(),
             'No se han marcado como erroneas todas las external request'
             );
     }
@@ -759,5 +759,45 @@ private class INFOHandlerTest
             errors.size(),
             'No se han generado los errores correctamente'
             );
+    }
+
+    @isTest
+    static void test_getFirstAndLastName()
+    {
+        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NATURAL_ACCOUNT', 1);
+        
+        Map<String, Object> recordValuesMap = (Map<String, Object>) JSON.deserializeUntyped(externalRequestList[0].Payload__c);
+
+        for ( String field : recordValuesMap.keySet() )
+        {
+            recordValuesMap.put(field.toUpperCase(), recordValuesMap.get(field));
+        }
+
+        Test.startTest();
+        List<String> nameAndLastName = INFOHandler.getFirstAndLastName (recordValuesMap);
+        Test.stopTest();
+
+        System.assertEquals(false, nameAndLastName.isEmpty(), 'Debería de haber devuelto el nombre y apellidos');
+        System.assertEquals('Name_1', nameAndLastName[0], 'El nombre no es correcto');
+        System.assertEquals('Surname_1_1'+' '+'Surname_2_1', nameAndLastName[1], 'Los apellidos no son correctos');
+    }
+
+    @isTest
+    static void test_getLegalEntity()
+    {
+        List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NATURAL_ACCOUNT', 1);
+        
+        Map<String, Object> recordValuesMap = (Map<String, Object>) JSON.deserializeUntyped(externalRequestList[0].Payload__c);
+
+        for ( String field : recordValuesMap.keySet() )
+        {
+            recordValuesMap.put(field.toUpperCase(), recordValuesMap.get(field));
+        }
+
+        Test.startTest();
+        String legalEntity = INFOHandler.getLegalEntity (recordValuesMap);
+        Test.stopTest();
+
+        System.assertEquals(false, legalEntity == null, 'La entidad legal no debería ser nula');
     }
 }

@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 05-23-2023
+ * @last modified by  : aberuete
+**/
 @isTest
 private class ExternalJobQueueBatchControllerTest
 {
@@ -35,14 +42,14 @@ private class ExternalJobQueueBatchControllerTest
         insert externalRequestList;
 
         Test.startTest();
-        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO', 1);
+        Map<String,List<String>> queriesByOrigin = ExternalJobQueueBatchController.getChunkQueries(2);
         Test.stopTest();
 
         Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFO').getRecordTypeId();
-        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', 1);
-        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', 1);
+        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', 2);
+        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', 2);
 
-        System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
+        System.assertEquals(1, queriesByOrigin.values().size(), 'No se ha generado la query correctamente');
         // Check query text
         String q = 'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Id >= \'' + ( (String) firstPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Id <= \'' + ( (String) lastPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Processed__c = false';
         String priorityEntities = '';
@@ -50,12 +57,9 @@ private class ExternalJobQueueBatchControllerTest
             priorityEntities = ' AND Entity__c NOT IN ' + INFOHandler.PriorityEntitiesToString;
         }
         q += priorityEntities;
-        System.assertEquals
-        (
-            q,
-            queries.get(0),
-            'No se ha generado la query correctamente'
-        );
+
+        System.assertEquals (q, queriesByOrigin.values()[0][0], 'No se ha generado la query correctamente');
+        System.assertEquals ('INFO', queriesByOrigin.keySet().iterator().next(), 'El origen no es correcto');
 
     }
 
@@ -72,14 +76,14 @@ private class ExternalJobQueueBatchControllerTest
         insert externalRequestList;
 
         Test.startTest();
-        List<String> queries = ExternalJobQueueBatchController.getChunkQueries('INFO', 1);
+        Map<String,List<String>> queriesByOrigin = ExternalJobQueueBatchController.getChunkQueries(2);
         Test.stopTest();
 
         Id originRcordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFO').getRecordTypeId();
-        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', 1);
-        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', 1);
+        List<ExternalRequest__c> firstPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'ASC', 2);
+        List<ExternalRequest__c> lastPendingExtReq = new ExternalRequestsSelector().setLimit(1).selectMinMaxPendingByRecordType(originRcordType, 'DESC', 2);
 
-        System.assertEquals(1, queries.size(), 'No se ha generado la query correctamente');
+        System.assertEquals(1, queriesByOrigin.values().size(), 'No se ha generado la query correctamente');
         // Check query text
         String q = 'SELECT Id FROM ExternalRequest__c WHERE RecordTypeId = \'' + originRcordType + '\' AND Id >= \'' + ( (String) firstPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Id <= \'' + ( (String) lastPendingExtReq.get(0).Id ).substring(0,15) + '\' AND Processed__c = false';
         String priorityEntities = '';
@@ -87,12 +91,9 @@ private class ExternalJobQueueBatchControllerTest
             priorityEntities = ' AND Entity__c NOT IN ' + INFOHandler.PriorityEntitiesToString;
         }
         q += priorityEntities;
-        System.assertEquals
-        (
-            q,
-            queries.get(0),
-            'No se ha generado la query correctamente'
-        );
+
+        System.assertEquals(q,queriesByOrigin.values()[0][0],'No se ha generado la query correctamente');
+        System.assertEquals ('INFO', queriesByOrigin.keySet().iterator().next(), 'El origen no es correcto');
 
     }
 

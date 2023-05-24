@@ -9,6 +9,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private final static String TASK_SUBTYPE_EMAIL      = 'Email';
     private final static String TASK_STATUS_ASSIGNED    = 'Asignada';
     private final static String TASK_STATUS_CLOSED      = 'Cerrada';
+    private final static String TASK_STATUS_TYPE_FORMS = 'Forms';
     private final static String TASK_RECORDTYPE_ID_INTERACTION = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
 
     /**
@@ -98,6 +99,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private static void eventOnInteractionChanged(Task interactionTask, Map<String, Object> eventInteractionData)
     {
         String interactionId = eventInteractionData.containsKey('id') ? (String) eventInteractionData.get('id') : null;
+        String emailSubject =  eventInteractionData.containsKey('emailSubject') ? (String) eventInteractionData.get('emailSubject') : null;
 
         List<Task> existingInteractionTasks = ActivitySelector.selectTasksByCallObjectIdentifier(interactionId);
 
@@ -131,6 +133,12 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         else if(interactionTask.type == TASK_SUBTYPE_CALL)
         {
             interactionTask.TaskSubtype = TASK_SUBTYPE_CALL;
+        }
+
+        if (emailSubject == 'Solicitud de ayuda al registro de MiZurich')
+        {
+            interactionTask.Subject = emailSubject;
+            interactionTask.type = TASK_STATUS_TYPE_FORMS;
         }
 
         interactionTask.Status      = TASK_STATUS_ASSIGNED;
@@ -284,8 +292,8 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     /**
      * Si la tarea está asociada a un caso y este caso pertenece a una cola, reasignar el caso al usuario actual.
      * @param interactionTask Task recibida
-     * @last modified on  : 10/08/2022
-     * @last modified by  : jgallaga
+     * @last modified on  : 05-24-2023
+     * @last modified by  : aberuete
      */
     @TestVisible
     private static void changeOwnerFromQueueToUser(Task interactionTask)
