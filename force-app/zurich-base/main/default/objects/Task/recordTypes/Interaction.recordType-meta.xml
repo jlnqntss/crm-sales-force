@@ -85,6 +85,21 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>EventType__c</picklist>
+        <values>
+            <fullName>Call</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Onsite visit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Teams</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Follow_up_type__c</picklist>
         <values>
             <fullName>Oferta</fullName>
@@ -229,7 +244,18 @@
             <fullName>Others</fullName>
             <default>false</default>
         </values>
-    </picklistValues>    
+    </picklistValues>
+    <picklistValues>
+        <picklist>RelatedToIntermediary__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
         <picklist>Status</picklist>
         <values>
@@ -284,6 +310,10 @@
         </values>
         <values>
             <fullName>External service transfer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidences Record MiZurich</fullName>
             <default>false</default>
         </values>
         <values>
@@ -343,6 +373,10 @@
         </values>
         <values>
             <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Forms</fullName>
             <default>false</default>
         </values>
         <values>

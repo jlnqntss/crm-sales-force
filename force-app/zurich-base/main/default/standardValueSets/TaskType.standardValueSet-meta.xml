@@ -41,4 +41,9 @@
         <default>false</default>
         <label>Outbound Email</label>
     </standardValue>
+    <standardValue>
+        <fullName>Forms</fullName>
+        <default>false</default>
+        <label>Forms</label>
+    </standardValue>
 </StandardValueSet>
