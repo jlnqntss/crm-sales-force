@@ -5,7 +5,7 @@
         <name>Account_ID_Offer_Assignment</name>
         <label>Account ID Offer Assignment</label>
         <locationX>1634</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -18,7 +18,7 @@
         <name>Account_ID_Offer_Assignment_2</name>
         <label>Account ID Offer Assignment</label>
         <locationX>1898</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -31,7 +31,7 @@
         <name>Account_ID_Policy_Assignment</name>
         <label>Account ID Policy Assignment</label>
         <locationX>842</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -44,7 +44,7 @@
         <name>Account_ID_Policy_Assignment2</name>
         <label>Account ID Policy Assignment</label>
         <locationX>1106</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -57,7 +57,7 @@
         <name>Copy_1_of_Customer_policy_Assignment</name>
         <label>Mediated Costumer Policy Assignment</label>
         <locationX>1106</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -73,7 +73,7 @@
         <name>Copy_1_of_Mediated_Costumer_Offer_Assignment</name>
         <label>Mediated Costumer Offer Assignment</label>
         <locationX>1898</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -89,7 +89,7 @@
         <name>customerOfferAssignment</name>
         <label>Customer Offer Assignment</label>
         <locationX>314</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -109,7 +109,7 @@
         <name>customerPolicyAssignment</name>
         <label>Customer policy Assignment</label>
         <locationX>50</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -129,7 +129,7 @@
         <name>Mediated_Costumer_from_Offer_Assignment</name>
         <label>Mediated Costumer from Offer Assignment</label>
         <locationX>2954</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -142,7 +142,7 @@
         <name>Mediated_Costumer_from_Policy_Assignment</name>
         <label>Mediated Costumer from Policy Assignment</label>
         <locationX>2690</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -156,7 +156,7 @@
         <name>Call_Center_offer</name>
         <label>Call Center</label>
         <locationX>1898</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>CSM_offer</name>
@@ -201,7 +201,7 @@
         <name>CCS_Or_CSM</name>
         <label>Call Center</label>
         <locationX>1106</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>CSM</name>
@@ -245,7 +245,7 @@
         <name>Copy_1_of_Offer_policy_null</name>
         <label>Policy/Offer Not Null</label>
         <locationX>1766</locationX>
-        <locationY>551</locationY>
+        <locationY>503</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>Copy_1_of_Policy_Not_Null</name>
@@ -296,7 +296,7 @@
         <name>Has_policy_or_offer</name>
         <label>Has policy or offer?</label>
         <locationX>2954</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Policy_available</name>
@@ -347,7 +347,7 @@
         <name>hasIntermediaryAccount</name>
         <label>Has intermediary account?</label>
         <locationX>3218</locationX>
-        <locationY>551</locationY>
+        <locationY>503</locationY>
         <defaultConnectorLabel>Customer account</defaultConnectorLabel>
         <rules>
             <name>Intermediary_account</name>
@@ -384,7 +384,7 @@
         <name>Is_Massive_Task</name>
         <label>Is Massive Task?</label>
         <locationX>2756</locationX>
-        <locationY>431</locationY>
+        <locationY>395</locationY>
         <defaultConnectorLabel>Default outcome</defaultConnectorLabel>
         <rules>
             <name>Case_Origin_Massive_Task</name>
@@ -425,7 +425,7 @@
         <name>offerPolicyDecision</name>
         <label>Offer policy null</label>
         <locationX>314</locationX>
-        <locationY>431</locationY>
+        <locationY>395</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>PolicyNameNotNullOutcome</name>
@@ -464,7 +464,7 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
         <name>RecordTypeDecision</name>
         <label>Record Type Decision</label>
         <locationX>2162</locationX>
-        <locationY>311</locationY>
+        <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>UspDefault</name>
@@ -534,7 +534,7 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
         <name>GetOfferProductAction</name>
         <label>Get Offer Product</label>
         <locationX>314</locationX>
-        <locationY>551</locationY>
+        <locationY>503</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>customerOfferAssignment</targetReference>
@@ -555,7 +555,7 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
         <name>GetPolicyProductAction</name>
         <label>Get Policy Product</label>
         <locationX>50</locationX>
-        <locationY>551</locationY>
+        <locationY>503</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>customerPolicyAssignment</targetReference>
@@ -596,6 +596,13 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
         <filters>
             <field>OfferId__c</field>
             <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ProductGroup__c</field>
+            <operator>IsNull</operator>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
