@@ -367,6 +367,14 @@ public with sharing class EmailMessagesUtil
                 // List of emails to check
                 List<String> emailsToCheck = new List<String>();
                 String industryGeneric= 'Generico';
+
+                // list of related cases
+                Set<String> idCaso = new Set<String>();
+        
+                // Obtenemos el caso asociado al email que esta llegando
+                if(em.Incoming && String.isNotBlank(em.ParentId)) idCaso.add(em.ParentId); 
+                List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
+
                 // Add the emails from the ToAddress field
                 if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
                 // Add the emails from the CcAddress field
@@ -389,7 +397,7 @@ public with sharing class EmailMessagesUtil
                                     genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
                                 }
 
-                                if(em.Industry__c==null || genesysQueue==null)
+                                if((em.Industry__c==null || genesysQueue==null) && !listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == uspRecordTypeId)
                                 {
                                     genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
                                 }
