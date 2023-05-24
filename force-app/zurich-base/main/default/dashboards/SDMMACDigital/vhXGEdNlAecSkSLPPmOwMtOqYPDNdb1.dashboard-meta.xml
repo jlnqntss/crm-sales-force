@@ -924,7 +924,7 @@
         <numberOfColumns>12</numberOfColumns>
         <rowHeight>36</rowHeight>
     </dashboardGridLayout>
-    <dashboardType>LoggedInUser</dashboardType>
+    <dashboardType>MyTeamUser</dashboardType>
     <description>Panel de inicio de detalle del RN para SDM (Fase Piloto)</description>
     <isGridLayout>true</isGridLayout>
     <runningUser>adminklinc@zurich-es.com</runningUser>
