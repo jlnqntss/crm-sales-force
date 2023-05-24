@@ -457,6 +457,7 @@ public with sharing class ContentDocumentLinkUtil
                                         else if (rtRecibido.equalsIgnoreCase('EON'))
                                         {
                                             caseFieldsMap.put('RecordTypeId', recordTypeUSP);
+                                            caseFieldsMap.put('CallCenter__c', 'USP');
                                         }
                                 
                                         casesToUpdate.add(
