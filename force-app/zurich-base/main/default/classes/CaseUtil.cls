@@ -470,7 +470,6 @@ public with sharing class CaseUtil
     {
         Case casoHijo = new Case(
                         Status='Asignado',
-                        CallCenter__c = padre?.CallCenter__c,
                         Origin = padre?.Origin,
                         SourceArea__c = padre?.SourceArea__c,
                         ParentId=padre?.Id,
@@ -481,6 +480,12 @@ public with sharing class CaseUtil
                         ClaimId__c = padre?.ClaimId__c,
                         MediatedCustomer__c = padre?.MediatedCustomer__c
                     );
+
+        Id rtOCSId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();         
+        if (padre.RecordTypeId == rtOCSId)
+        {
+            casoHijo.CallCenter__c = padre?.CallCenter__c;
+        }
 
         // Comprobamos si el cuerpo y el asunto del mensaje son demasiado largos.. Si es así, los acortamos.
         casoHijo.Subject = email?.Subject.length() > 255 ? email?.Subject.substring(0, 254) : email?.Subject;
