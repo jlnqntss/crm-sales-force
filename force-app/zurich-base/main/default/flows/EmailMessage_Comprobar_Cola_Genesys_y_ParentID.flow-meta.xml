@@ -4,7 +4,7 @@
     <assignments>
         <name>CaseOwnerAssignment</name>
         <label>Asignar propietario caso</label>
-        <locationX>446</locationX>
+        <locationX>908</locationX>
         <locationY>398</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -20,8 +20,8 @@
     <assignments>
         <name>CCServiceClosedCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Cerrado CCService</label>
-        <locationX>930</locationX>
-        <locationY>1430</locationY>
+        <locationX>1370</locationX>
+        <locationY>1214</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -33,7 +33,7 @@
     <assignments>
         <name>CCServiceOpenCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Abierto CCService</label>
-        <locationX>578</locationX>
+        <locationX>1106</locationX>
         <locationY>974</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -42,15 +42,12 @@
                 <elementReference>GetOpenCasesAction.Owner:User.Email</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>GetClosedCasesAction</targetReference>
-        </connector>
     </assignments>
     <assignments>
         <name>CSMAdmManagerAssignment</name>
         <label>Asignar CSM Administración Manager</label>
-        <locationX>314</locationX>
-        <locationY>734</locationY>
+        <locationX>578</locationX>
+        <locationY>854</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -63,7 +60,7 @@
         <name>CSMIndividualManagerAssignment</name>
         <label>Asignar CSM Individual Manager</label>
         <locationX>50</locationX>
-        <locationY>734</locationY>
+        <locationY>854</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -75,7 +72,7 @@
     <decisions>
         <name>Administration_manager_encontrado</name>
         <label>¿Administration manager encontrado?</label>
-        <locationX>622</locationX>
+        <locationX>710</locationX>
         <locationY>734</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -97,7 +94,7 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Qué Call Center es?</label>
-        <locationX>578</locationX>
+        <locationX>1040</locationX>
         <locationY>614</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -156,7 +153,7 @@
     <decisions>
         <name>CaseAssignedToUserDecision</name>
         <label>¿Caso asignado a usuario?</label>
-        <locationX>578</locationX>
+        <locationX>1040</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>CallCenterDecision</targetReference>
@@ -181,7 +178,7 @@
     <decisions>
         <name>CaseOrOpportunityDecision</name>
         <label>¿Caso u oportunidad?</label>
-        <locationX>1106</locationX>
+        <locationX>1733</locationX>
         <locationY>158</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -215,8 +212,8 @@
     <decisions>
         <name>ClosedCasesFoundDecision</name>
         <label>¿Casos cerrados encontrados?</label>
-        <locationX>710</locationX>
-        <locationY>1310</locationY>
+        <locationX>1502</locationX>
+        <locationY>1094</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>ClosedCasesFoundOutcome</name>
@@ -259,7 +256,7 @@
     <decisions>
         <name>OpenCasesFoundDecision</name>
         <label>¿Casos abiertos encontrados?</label>
-        <locationX>710</locationX>
+        <locationX>1304</locationX>
         <locationY>854</locationY>
         <defaultConnector>
             <targetReference>GetClosedCasesAction</targetReference>
@@ -281,6 +278,7 @@
             <label>Casos abiertos encontrados</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>EmailMessage - Comprobar Cola Genesys y ParentID {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage - Búsqueda gestor preferente</label>
     <processMetadataValues>
@@ -305,8 +303,8 @@
     <recordLookups>
         <name>GetClosedCasesAction</name>
         <label>Obtener Casos Cerrados</label>
-        <locationX>710</locationX>
-        <locationY>1190</locationY>
+        <locationX>1502</locationX>
+        <locationY>974</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ClosedCasesFoundDecision</targetReference>
@@ -335,7 +333,7 @@
     <recordLookups>
         <name>GetOpenCasesAction</name>
         <label>Obtener Casos Abiertos</label>
-        <locationX>710</locationX>
+        <locationX>1304</locationX>
         <locationY>734</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -370,7 +368,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>980</locationX>
+        <locationX>1607</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CaseOrOpportunityDecision</targetReference>

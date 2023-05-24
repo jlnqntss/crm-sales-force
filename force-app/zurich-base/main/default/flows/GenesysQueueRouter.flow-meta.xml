@@ -4,8 +4,8 @@
     <assignments>
         <name>asignamos_output</name>
         <label>asignamos output</label>
-        <locationX>600</locationX>
-        <locationY>1310</locationY>
+        <locationX>1293</locationX>
+        <locationY>1406</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueName</assignToReference>
             <operator>Assign</operator>
@@ -78,6 +78,22 @@
         </connector>
     </assignments>
     <assignments>
+        <name>QueuesAssignmentMiZurich</name>
+        <label>Almacenar Colas recuperadas para MiZurich</label>
+        <locationX>1634</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>genesysQueuesToIterate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetWebMiZurichQueueAction</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loopQueues</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>USPDefaultQueueAssignment</name>
         <label>Almacenar Cola default USP recuperadas</label>
         <locationX>314</locationX>
@@ -126,6 +142,13 @@
         </value>
     </constants>
     <constants>
+        <name>ROUTE_TYPE_WEB</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Web</stringValue>
+        </value>
+    </constants>
+    <constants>
         <name>ROUTE_VALUE_USP</name>
         <dataType>String</dataType>
         <value>
@@ -133,17 +156,17 @@
         </value>
     </constants>
     <decisions>
-        <name>Check_Note_info</name>
-        <label>Check Note info</label>
-        <locationX>732</locationX>
-        <locationY>1190</locationY>
+        <name>Check_Note_info_or_Web</name>
+        <label>Check Note info or Web</label>
+        <locationX>1425</locationX>
+        <locationY>1286</locationY>
         <defaultConnector>
             <targetReference>loopQueues</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Doesn&apos;t contain</defaultConnectorLabel>
         <rules>
-            <name>ContainsNotaINFO</name>
-            <conditionLogic>and</conditionLogic>
+            <name>ContainsNotaINFOorWeb</name>
+            <conditionLogic>(1 AND 2) OR (3 AND 4)</conditionLogic>
             <conditions>
                 <leftValueReference>loopQueues.RouteType__c</leftValueReference>
                 <operator>Contains</operator>
@@ -151,10 +174,31 @@
                     <stringValue>Nota Info</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>routeType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ROUTE_TYPE_NOTA_INFO</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>loopQueues.RouteType__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Web</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>routeType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ROUTE_TYPE_WEB</elementReference>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>asignamos_output</targetReference>
             </connector>
-            <label>Contains NotaINFO</label>
+            <label>Contains NotaINFO or Web</label>
         </rules>
     </decisions>
     <decisions>
@@ -211,7 +255,7 @@
         <description>Se comprueba el tipo de enrutado en los valores de entrada.</description>
         <name>routeTypeDecision</name>
         <label>¿Qué se va a enrutar?</label>
-        <locationX>1073</locationX>
+        <locationX>1205</locationX>
         <locationY>158</locationY>
         <defaultConnectorLabel>No determinado</defaultConnectorLabel>
         <rules>
@@ -243,6 +287,21 @@
                 <targetReference>GetEmailsQueueAction</targetReference>
             </connector>
             <label>Emails</label>
+        </rules>
+        <rules>
+            <name>WebOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>routeType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ROUTE_TYPE_WEB</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetWebMiZurichQueueAction</targetReference>
+            </connector>
+            <label>Web</label>
         </rules>
     </decisions>
     <decisions>
@@ -319,12 +378,12 @@ Valores de salida:
     <loops>
         <name>loopQueues</name>
         <label>Loop Genesys Queues</label>
-        <locationX>512</locationX>
-        <locationY>1070</locationY>
+        <locationX>1205</locationX>
+        <locationY>1166</locationY>
         <collectionReference>genesysQueuesToIterate</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Check_Note_info</targetReference>
+            <targetReference>Check_Note_info_or_Web</targetReference>
         </nextValueConnector>
     </loops>
     <processMetadataValues>
@@ -494,8 +553,32 @@ Valores de salida:
         <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <description>Consulta la BBDD de Salesforce para recuperar la cola donde se enrutarán los casos provenientes de la web MiZurich</description>
+        <name>GetWebMiZurichQueueAction</name>
+        <label>Obtener cola para Web MiZurich</label>
+        <locationX>1634</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>QueuesAssignmentMiZurich</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>routeValue</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>purecloud__PureCloud_Queue__c</object>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>947</locationX>
+        <locationX>1079</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>routeTypeDecision</targetReference>
