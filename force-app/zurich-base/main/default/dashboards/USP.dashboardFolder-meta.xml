@@ -7,6 +7,11 @@
     </folderShares>
     <folderShares>
         <accessLevel>View</accessLevel>
+        <sharedTo>FrontOffice_Reporting</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
         <sharedTo>USP_ConsultorPYME</sharedTo>
         <sharedToType>Group</sharedToType>
     </folderShares>
