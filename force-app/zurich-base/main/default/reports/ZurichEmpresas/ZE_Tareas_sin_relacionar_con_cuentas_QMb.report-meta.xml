@@ -25,10 +25,13 @@
         <field>Activity$Description</field>
     </columns>
     <columns>
-        <field>Activity$What</field>
+        <field>Activity$Subtype__c</field>
     </columns>
     <columns>
         <field>Activity$Who</field>
+    </columns>
+    <columns>
+        <field>Activity$What</field>
     </columns>
     <description>Informe para saber cuales son las actividades que no están relacionadas con ninguna cuenta en ZE</description>
     <filter>
