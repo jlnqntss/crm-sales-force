@@ -695,6 +695,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ExternalRequestHandlerUtil</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ExternalRequestHandlerUtilTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ExternalRequestUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -931,6 +939,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GroupSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GroupSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>INFOHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1001,6 +1017,14 @@
     <classAccesses>
         <apexClass>MicrobatchSelfRegControllerTest</apexClass>
         <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MiZurichHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MiZurichHandlerTest</apexClass>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>Mock_IBA_ResponseGenerator</apexClass>
@@ -5520,6 +5544,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>EmailsIBA__c.Subject__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EntityOrderMapping__mdt.Entity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EntityOrderMapping__mdt.Priority__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

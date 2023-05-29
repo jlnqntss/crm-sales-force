@@ -428,6 +428,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ExternalRequestHandlerUtil</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ExternalRequestHandlerUtilTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ExternalRequestUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -548,6 +556,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GroupSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GroupSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>INFOHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -585,6 +601,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LeadUtil</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MiZurichHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>MiZurichHandlerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -8649,6 +8673,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>EntityOrderMapping__mdt.Entity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EntityOrderMapping__mdt.Priority__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Acta__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -15132,7 +15166,15 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
+        <flow>CaseTriggerAfterInsertGenesysInfoNotesRouter</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
         <flow>Customer_Care_Case_priority</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>EmailMessage_Comprobar_Cola_Genesys_y_ParentID</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
@@ -15141,6 +15183,10 @@
     <flowAccesses>
         <enabled>true</enabled>
         <flow>GenesysPhone</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>GenesysQueueRouter</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
