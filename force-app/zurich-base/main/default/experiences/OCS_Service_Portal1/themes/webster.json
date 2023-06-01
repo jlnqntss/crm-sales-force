@@ -140,10 +140,10 @@
                   "components": [
                     {
                       "componentAttributes": {
-                        "NavigationMenuEditorRefresh": "",
+                        "NavigationMenuEditorRefresh": "OCS_Service_Portal_Menu",
                         "alignment": "left",
                         "showAppLauncher": false,
-                        "showBackLabel": false,
+                        "showBackLabel": true,
                         "showHomeLink": true
                       },
                       "componentName": "forceCommunity:multiLevelNavigationWrapper",
@@ -408,7 +408,7 @@
                   "components": [
                     {
                       "componentAttributes": {
-                        "NavigationMenuEditorRefresh": "Default_Navigation3",
+                        "NavigationMenuEditorRefresh": "OCS_Service_Portal_Menu",
                         "alignment": "left",
                         "showAppLauncher": false,
                         "showBackLabel": true,
