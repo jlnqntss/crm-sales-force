@@ -3,12 +3,8 @@
     <isVisibleByExternalUsers>false</isVisibleByExternalUsers>
     <language>en_US</language>
     <masterLabel>Zurich_Logo_Horz_White_RGB</masterLabel>
-    <originNetwork>OCS Community Portal</originNetwork>
+    <originNetwork>OCS Service Portal</originNetwork>
     <relationships>
-        <network>
-            <access>VIEWER</access>
-            <name>OCS Community Portal</name>
-        </network>
         <network>
             <access>VIEWER</access>
             <name>OCS Service Portal</name>
