@@ -1,0 +1,45 @@
+{
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "4df4e3ae-2ae5-461a-af73-816308776129",
+  "label": "Account Management",
+  "regions": [
+    {
+      "id": "bc85b371-60a1-45a3-9a71-6e1062acbdd9",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "id": "82e3f72a-f3f2-4075-872e-26d746c2062f",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "962676d5-5a1f-4fb7-8fd3-9afe1602f0a1",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "",
+            "title": "Account Management"
+          },
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "66a35540-dbe3-4e54-b21a-7969ef94b0da",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "984baa18-38e1-46d0-8989-b11f586b9c67",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "account-management"
+}
