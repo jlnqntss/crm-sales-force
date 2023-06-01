@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "Ogg";
+  src: url(../resource/ZurichFonts/Ogg-Regular/Ogg-AllStyles-v2.0-Webfonts/Ogg-Regular.woff)
+    format("woff");
+}
+:root {
+  --dxp-c-section-columns-max-width: 1440px;
+}
