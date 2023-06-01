@@ -4,8 +4,8 @@
     <assignments>
         <name>asignamos_output</name>
         <label>asignamos output</label>
-        <locationX>1293</locationX>
-        <locationY>1406</locationY>
+        <locationX>1485</locationX>
+        <locationY>1658</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueName</assignToReference>
             <operator>Assign</operator>
@@ -24,8 +24,8 @@
     <assignments>
         <name>Asignamos_output_CSM_Part</name>
         <label>Asignamos output CSM Particulares</label>
-        <locationX>842</locationX>
-        <locationY>638</locationY>
+        <locationX>1018</locationX>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueName</assignToReference>
             <operator>Assign</operator>
@@ -45,7 +45,7 @@
         <name>Asignamos_output_CSMadmin</name>
         <label>Asignamos output CSM Admin</label>
         <locationX>578</locationX>
-        <locationY>638</locationY>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueName</assignToReference>
             <operator>Assign</operator>
@@ -64,8 +64,8 @@
     <assignments>
         <name>QueuesAssignment</name>
         <label>Almacenar Colas recuperadas</label>
-        <locationX>1106</locationX>
-        <locationY>638</locationY>
+        <locationX>1084</locationX>
+        <locationY>1166</locationY>
         <assignmentItems>
             <assignToReference>genesysQueuesToIterate</assignToReference>
             <operator>Assign</operator>
@@ -80,8 +80,8 @@
     <assignments>
         <name>QueuesAssignmentMiZurich</name>
         <label>Almacenar Colas recuperadas para MiZurich</label>
-        <locationX>1634</locationX>
-        <locationY>398</locationY>
+        <locationX>1898</locationX>
+        <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>genesysQueuesToIterate</assignToReference>
             <operator>Assign</operator>
@@ -97,7 +97,7 @@
         <name>USPDefaultQueueAssignment</name>
         <label>Almacenar Cola default USP recuperadas</label>
         <locationX>314</locationX>
-        <locationY>638</locationY>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>genesysQueuesToIterate</assignToReference>
             <operator>Assign</operator>
@@ -113,7 +113,7 @@
         <name>USPQueuesAssignment</name>
         <label>Almacenar Colas USP recuperadas</label>
         <locationX>50</locationX>
-        <locationY>638</locationY>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>genesysQueuesToIterate</assignToReference>
             <operator>Assign</operator>
@@ -158,8 +158,8 @@
     <decisions>
         <name>Check_Note_info_or_Web</name>
         <label>Check Note info or Web</label>
-        <locationX>1425</locationX>
-        <locationY>1286</locationY>
+        <locationX>1617</locationX>
+        <locationY>1550</locationY>
         <defaultConnector>
             <targetReference>loopQueues</targetReference>
         </defaultConnector>
@@ -202,10 +202,102 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Cola_CSMAdmin_encontrada</name>
+        <label>¿Cola CSMAdmin encontrada?</label>
+        <locationX>710</locationX>
+        <locationY>566</locationY>
+        <defaultConnector>
+            <targetReference>GetNotasInfoQueueAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Encontrada</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getQueueCSMAdmin.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getQueueCSMAdmin.GenesysFlowId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getQueueCSMAdmin.GenesysFlowId__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getQueueCSMAdmin.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CSM Administración</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignamos_output_CSMadmin</targetReference>
+            </connector>
+            <label>Encontrada</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Cola_CSMPart_encontrada</name>
+        <label>¿Cola CSMPart encontrada?</label>
+        <locationX>1150</locationX>
+        <locationY>566</locationY>
+        <defaultConnector>
+            <targetReference>GetNotasInfoQueueAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Encontrada_CSMPart</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getQueueCSMPart.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getQueueCSMPart.GenesysFlowId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getQueueCSMPart.GenesysFlowId__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getQueueCSMPart.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CSM Particulares</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignamos_output_CSM_Part</targetReference>
+            </connector>
+            <label>Encontrada</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>IsIndustryFilledDecision</name>
         <label>Industry Filled?</label>
         <locationX>182</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <defaultConnector>
             <targetReference>GetUSPNotasInfoDefaultQueueAction</targetReference>
         </defaultConnector>
@@ -229,8 +321,8 @@
     <decisions>
         <name>IsUSPDecision</name>
         <label>Is USP?</label>
-        <locationX>512</locationX>
-        <locationY>278</locationY>
+        <locationX>633</locationX>
+        <locationY>242</locationY>
         <defaultConnector>
             <targetReference>Which_CSM_queue</targetReference>
         </defaultConnector>
@@ -255,8 +347,8 @@
         <description>Se comprueba el tipo de enrutado en los valores de entrada.</description>
         <name>routeTypeDecision</name>
         <label>¿Qué se va a enrutar?</label>
-        <locationX>1205</locationX>
-        <locationY>158</locationY>
+        <locationX>1397</locationX>
+        <locationY>134</locationY>
         <defaultConnectorLabel>No determinado</defaultConnectorLabel>
         <rules>
             <name>NotasInfoOutcome</name>
@@ -307,8 +399,8 @@
     <decisions>
         <name>Which_CSM_queue</name>
         <label>Which CSM queue?</label>
-        <locationX>842</locationX>
-        <locationY>398</locationY>
+        <locationX>1084</locationX>
+        <locationY>350</locationY>
         <defaultConnector>
             <targetReference>GetNotasInfoQueueAction</targetReference>
         </defaultConnector>
@@ -378,8 +470,8 @@ Valores de salida:
     <loops>
         <name>loopQueues</name>
         <label>Loop Genesys Queues</label>
-        <locationX>1205</locationX>
-        <locationY>1166</locationY>
+        <locationX>1397</locationX>
+        <locationY>1442</locationY>
         <collectionReference>genesysQueuesToIterate</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -409,8 +501,8 @@ Valores de salida:
         <description>Consulta la BBDD de Salesforce para recuperar la cola donde se enrutarán los Emails.</description>
         <name>GetEmailsQueueAction</name>
         <label>Obtener cola para Emails</label>
-        <locationX>1370</locationX>
-        <locationY>278</locationY>
+        <locationX>1634</locationX>
+        <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
@@ -436,8 +528,8 @@ Valores de salida:
         <description>Consulta la BBDD de Salesforce para recuperar la cola donde se enrutarán las Notas INFO.</description>
         <name>GetNotasInfoQueueAction</name>
         <label>Obtener cola para Notas INFO</label>
-        <locationX>1106</locationX>
-        <locationY>518</locationY>
+        <locationX>1084</locationX>
+        <locationY>1058</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>QueuesAssignment</targetReference>
@@ -459,11 +551,11 @@ Valores de salida:
     <recordLookups>
         <name>getQueueCSMAdmin</name>
         <label>Obtener cola para NOTAS INFO CSMAdmin</label>
-        <locationX>578</locationX>
-        <locationY>518</locationY>
+        <locationX>710</locationX>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Asignamos_output_CSMadmin</targetReference>
+            <targetReference>Cola_CSMAdmin_encontrada</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -480,11 +572,11 @@ Valores de salida:
     <recordLookups>
         <name>getQueueCSMPart</name>
         <label>Obtener cola para NOTAS INFO CSMPart</label>
-        <locationX>842</locationX>
-        <locationY>518</locationY>
+        <locationX>1150</locationX>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Asignamos_output_CSM_Part</targetReference>
+            <targetReference>Cola_CSMPart_encontrada</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -503,7 +595,7 @@ Valores de salida:
         <name>GetUSPNotasInfoDefaultQueueAction</name>
         <label>Obtener cola default para Notas INFO USP</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>USPDefaultQueueAssignment</targetReference>
@@ -527,7 +619,7 @@ Valores de salida:
         <name>GetUSPNotasInfoQueueAction</name>
         <label>Obtener cola para Notas INFO USP</label>
         <locationX>50</locationX>
-        <locationY>518</locationY>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>USPQueuesAssignment</targetReference>
@@ -557,8 +649,8 @@ Valores de salida:
         <description>Consulta la BBDD de Salesforce para recuperar la cola donde se enrutarán los casos provenientes de la web MiZurich</description>
         <name>GetWebMiZurichQueueAction</name>
         <label>Obtener cola para Web MiZurich</label>
-        <locationX>1634</locationX>
-        <locationY>278</locationY>
+        <locationX>1898</locationX>
+        <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>QueuesAssignmentMiZurich</targetReference>
@@ -578,7 +670,7 @@ Valores de salida:
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>1079</locationX>
+        <locationX>1271</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>routeTypeDecision</targetReference>
