@@ -245,7 +245,7 @@ public with sharing class CaseUtil
                     
                     //Utilizar el AccountSearchService
                     List<Account> matchedAccounts = new List<Account>();
-                    matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
+                    matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null);
 
                     //Solo se continua si se ha encontrado un único cliente; si hay más de uno no se sabría por cuál decidir
                     if(matchedAccounts.size() == 1)

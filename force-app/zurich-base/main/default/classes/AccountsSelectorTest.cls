@@ -1,3 +1,10 @@
+/**
+ * @description       : Clase de test para la clase AccountsSelector
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-02-2023
+ * @last modified by  : aberuete
+**/
 @isTest
 private with sharing class AccountsSelectorTest
 {
@@ -7,6 +14,7 @@ private with sharing class AccountsSelectorTest
     public static final String ACC_ERROR_MSG            =   'There should be Accounts';
     public static final String INTERMEDIARY_EMAIL       =   'intermediary01@invalid.com';
     public static final String INTERMEDIARY_EMAIL_FIELD =   'MainEmail__c';
+    public static final String MESSAGE_DEBERIA_HABER_CUENTAS = 'Deberia haber cuentas';
 
     @TestSetup
     public static void createScenario()
@@ -536,7 +544,7 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(1, agrupations.size(), 'Deberia haber 1 agrupacion');
 
         List<Account> accounts = [SELECT ParentId FROM Account WHERE RecordTypeId = :accSel.rtIntermediaryId LIMIT 4];
-        System.assert(!accounts.isEmpty(), 'Deberia haber cuentas');
+        System.assert(!accounts.isEmpty(), MESSAGE_DEBERIA_HABER_CUENTAS);
 
         for (Account account : accounts)
         {
@@ -582,7 +590,7 @@ private with sharing class AccountsSelectorTest
     {
         AccountsSelector accSel = new AccountsSelector();
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtIntermediaryId];
-        System.assertEquals(false, accounts.isEmpty(), 'Deberia haber cuentas');
+        System.assertEquals(false, accounts.isEmpty(), MESSAGE_DEBERIA_HABER_CUENTAS);
 
         Set<String> fields = new Set<String>{'Name'};
 
@@ -590,7 +598,7 @@ private with sharing class AccountsSelectorTest
         accounts = accSel.findWithFields(accounts, fields);
         Test.stopTest();
 
-        System.assertEquals(false, accounts.isEmpty(), 'Deberia haber cuentas');
+        System.assertEquals(false, accounts.isEmpty(), MESSAGE_DEBERIA_HABER_CUENTAS);
         System.assertEquals(true, String.isNotBlank(accounts[0].Name), 'El nombre de la cuenta no deberia estar vacio');
     }
 
@@ -647,11 +655,11 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(1, accountsfound.size(), 'Deberia encontrar 1 cliente');
     }
 
-       /**
-     * Test del método que recupera las cuentas intermediario activas(status 001 o 002)
-     * @author lrodriguez6@seidor.es
-     * @date 09/02/2023
-     */
+    /**
+    * Test del método que recupera las cuentas intermediario activas(status 001 o 002)
+    * @author lrodriguez6@seidor.es
+    * @date 09/02/2023
+    */
     @IsTest
     static void test_findAccountsIntermediaryRatio()
     {
@@ -671,4 +679,24 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(2, matchedAccountRecords.size(), 'Deberia encontrar 2 cuentas');
     }
 
+    /**
+    * Test del método que recupera las cuentas filtradas por record type name
+    * @author aberuete
+    * @date 02/06/2023
+    */
+    @IsTest
+    static void test_setRecordType()
+    {
+        List<Account> allAccountsList = [Select id from Account];
+        System.assertEquals(21, allAccountsList.size(), 'El número de cuentas totales no es correcto');
+        Map<Id,Account> mapAccountsById = new Map<Id,Account> (allAccountsList);
+
+        Test.startTest();
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setRecordType(new List<String>{'Customer'});
+        List<Account> matchedRecords = accountsSelector.selectById(mapAccountsById.keySet());
+        Test.stopTest();
+
+        System.assertEquals(10, matchedRecords.size(), 'El número de cuentas de Customer no es correcto');
+    }
 }

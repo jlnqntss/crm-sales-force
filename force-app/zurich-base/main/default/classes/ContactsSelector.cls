@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-02-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class ContactsSelector extends RecordsSelector
 {
     public RecordsSelector.Scope relatedRecordsScope;
@@ -8,6 +15,7 @@ public with sharing class ContactsSelector extends RecordsSelector
     public String ACCOUNT_RT_LEAD = ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('Lead').getRecordTypeId();
     public String ACCOUNT_RT_PARTNER_OCS = ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('PartnerOCS').getRecordTypeId();
     public String ACCOUNT_RTID_FIELD = 'Account.RecordTypeId';
+    public String ACCOUNT_RT_NAME_FIELD = 'Account.RecordType.DeveloperName';
 
     //#region Contructores
 
@@ -100,6 +108,20 @@ public with sharing class ContactsSelector extends RecordsSelector
         return this;
     }
 
+    /**
+     * Aplicar el filtro de record type name a las cuentas asociadas a los contactos
+     * @author aberuete
+     * @date 02/06/2023
+     * @param List<String> recordTypeNames : Listado de record type names de cuentas asociados a contactos a filtrar
+     */
+    public ContactsSelector setRecordType (List<String> recordTypeNames)
+    {
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty())
+        {
+            this.baseQuery.addConditionIn(ACCOUNT_RT_NAME_FIELD, recordTypeNames);
+        }
+        return this;
+    }
     /**
      * Busca contactos a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
      * maximizar resultados de búsqueda

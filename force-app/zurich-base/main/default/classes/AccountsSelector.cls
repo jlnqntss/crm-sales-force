@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-02-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class AccountsSelector extends RecordsSelector
 {
     public RecordsSelector.Scope relatedRecordsScope;
@@ -24,7 +31,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     //#endregion
 
     //#region RECORD TYPES
-    
+    public static final String RT_NAME_FIELD = 'Account.RecordType.DeveloperName';
     public static final String RT_NAME_AGRUPATION = 'AgrupacionMediador';
     public static final String RT_NAME_INTERMEDIARY = 'Intermediary';
     public static final String RT_NAME_CUSTOMER = 'Customer';
@@ -121,6 +128,21 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
+     * Aplicar el filtro de record type name a los registros obtenidos en la búsqueda
+     * @author aberuete
+     * @date 02/06/2023
+     * @param List<String> recordTypeNames : Listado de record type names a filtrar
+     */
+    public AccountsSelector setRecordType (List<String> recordTypeNames)
+    {
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty())
+        {
+            this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
+        }
+        return this;
+    }
+
+    /**
      * Busca cuentas a partir de un listado de DNIs
      *
      * @author rlopez
@@ -155,7 +177,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         {
             this.baseQuery.addConditionEq(Account.NationalIdType__c, nationalIdType);
         }
-
+        
         return (List<Account>) this.baseQuery.run();
     }
 

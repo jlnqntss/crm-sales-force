@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-02-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class BusinessInsuranceCallbackService
 {
     public static final String REQUIRED_FIELD_MISSING = 'Required field is missing';
@@ -50,7 +57,7 @@ public with sharing class BusinessInsuranceCallbackService
         List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
         genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
 
-        List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone}, RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.ALL);
+        List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone}, RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.ALL, null);
 
         try
         {
