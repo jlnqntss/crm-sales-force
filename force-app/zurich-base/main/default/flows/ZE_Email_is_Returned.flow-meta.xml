@@ -128,7 +128,7 @@
             <field>DeveloperName</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Email_is_returned</stringValue>
+                <stringValue>EmailIsReturned</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
