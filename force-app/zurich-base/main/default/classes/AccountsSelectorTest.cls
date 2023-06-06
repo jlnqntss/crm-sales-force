@@ -2,7 +2,7 @@
  * @description       : Clase de test para la clase AccountsSelector
  * @author            : 
  * @group             : 
- * @last modified on  : 06-02-2023
+ * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -698,5 +698,29 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         System.assertEquals(10, matchedRecords.size(), 'El número de cuentas de Customer no es correcto');
+    }
+
+    /**
+    * Test del método que recupera las cuentas filtradas por tipo de cuenta
+    * @author aberuete
+    * @date 06/06/2023
+    */
+    @IsTest
+    static void test_setTypeOfAccount()
+    {
+        List<Account> allAccountsList = [Select id from Account];
+        allAccountsList[0].Type = 'F';
+        allAccountsList[1].Type = 'J';
+        update allAccountsList;
+        System.assertEquals(21, allAccountsList.size(), 'El número de cuentas totales no es correcto');
+        Map<Id,Account> mapAccountsById = new Map<Id,Account> (allAccountsList);
+
+        Test.startTest();
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setTypeOfAccount(new List<String>{'F','J'});
+        List<Account> matchedRecords = accountsSelector.selectById(mapAccountsById.keySet());
+        Test.stopTest();
+
+        System.assertEquals(2, matchedRecords.size(), 'El número de cuentas de tipo F y J no es correcto');
     }
 }

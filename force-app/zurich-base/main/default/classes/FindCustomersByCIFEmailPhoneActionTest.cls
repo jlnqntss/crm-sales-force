@@ -2,7 +2,7 @@
  * @description       : Clase de test para la acción FindCustomersByCIFEmailPhoneAction
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-01-2023
+ * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -14,7 +14,9 @@ private class FindCustomersByCIFEmailPhoneActionTest
         //Customers
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         accounts[0].NationalId__c = '78432734C';
+        accounts[0].Type = 'F';
         accounts[1].NationalId__c = '78432734C';
+        accounts[1].Type = 'F';
         insert accounts;
 
         List<ContactPointEmail> contactPointEmailsToInsert = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 1);

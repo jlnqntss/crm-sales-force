@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 06-02-2023
+ * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
 **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -32,6 +32,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
     //#region RECORD TYPES
     public static final String RT_NAME_FIELD = 'Account.RecordType.DeveloperName';
+    public static final String TYPE_FIELD = 'Account.Type';
     public static final String RT_NAME_AGRUPATION = 'AgrupacionMediador';
     public static final String RT_NAME_INTERMEDIARY = 'Intermediary';
     public static final String RT_NAME_CUSTOMER = 'Customer';
@@ -138,6 +139,21 @@ public with sharing class AccountsSelector extends RecordsSelector
         if ( recordTypeNames != null && !recordTypeNames.isEmpty())
         {
             this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
+        }
+        return this;
+    }
+
+    /**
+     * Aplicar el filtro de tipo de cuenta a los registros obtenidos en la búsqueda
+     * @author aberuete
+     * @date 06/06/2023
+     * @param List<String> typeNames : Listado de tipos de cuentas a filtrar
+     */
+    public AccountsSelector setTypeOfAccount (List<String> typeNames)
+    {
+        if ( typeNames != null && !typeNames.isEmpty())
+        {
+            this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
         }
         return this;
     }

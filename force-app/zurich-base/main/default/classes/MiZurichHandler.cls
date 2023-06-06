@@ -3,7 +3,7 @@
  *                      Procesa las external request cuyo origen sea MI_ZURICH con la ayuda de la clase Transformer
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-02-2023
+ * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
 **/
 public class MiZurichHandler implements ISystem 
@@ -203,7 +203,7 @@ public class MiZurichHandler implements ISystem
         Map<Integer,Case> numAccountByCase = new Map<Integer, Case>(); 
         if (recordValuesMap.containsKey('miZurich_nif') && (String)recordValuesMap.get('miZurich_nif') != null && !String.isBlank((String)recordValuesMap.get('miZurich_nif')))
         {
-            List<Account> accountsByNationalId = AccountSearchService.findCustomersByDocumentId(new List<String>{(String)recordValuesMap.get('miZurich_nif')}, '',null,null, new List<String> {'Customer'});
+            List<Account> accountsByNationalId = AccountSearchService.findCustomersByDocumentId(new List<String>{(String)recordValuesMap.get('miZurich_nif')}, '',null,null, new List<String> {'Customer'}, new List<String>{'F','J'});
             
             if (accountsByNationalId.size() == 1)
             {
@@ -233,7 +233,7 @@ public class MiZurichHandler implements ISystem
         Map<Integer,Case> numAccountByCase = new Map<Integer, Case>(); 
         if (recordValuesMap.containsKey('miZurich_email') && (String)recordValuesMap.get('miZurich_email') != null && !String.isBlank((String)recordValuesMap.get('miZurich_email')))
         {
-            List<Account> accountsByEmail = AccountSearchService.findCustomersByEmail(new List<String>{(String)recordValuesMap.get('miZurich_email')}, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'} );
+            List<Account> accountsByEmail = AccountSearchService.findCustomersByEmail(new List<String>{(String)recordValuesMap.get('miZurich_email')}, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String>{'F','J'} );
             
             if (accountsByEmail.size() == 1)
             {
@@ -263,7 +263,7 @@ public class MiZurichHandler implements ISystem
         Map<Integer,Case> numAccountByCase = new Map<Integer, Case>(); 
         if (recordValuesMap.containsKey('miZurich_telf') && (String)recordValuesMap.get('miZurich_telf') != null && !String.isBlank((String)recordValuesMap.get('miZurich_telf')))
         {
-            List<Account> accountsByPhone = AccountSearchService.findCustomersByPhoneNumber(new List<String>{(String)recordValuesMap.get('miZurich_telf')}, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'} );
+            List<Account> accountsByPhone = AccountSearchService.findCustomersByPhoneNumber(new List<String>{(String)recordValuesMap.get('miZurich_telf')}, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String>{'F','J'} );
 
             if (accountsByPhone.size() == 1)
             {

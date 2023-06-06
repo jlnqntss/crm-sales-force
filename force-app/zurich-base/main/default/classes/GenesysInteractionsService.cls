@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : jjuaristi
  * @group             : 
- * @last modified on  : 05-31-2023
+ * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
 **/
 public with sharing class GenesysInteractionsService
@@ -524,15 +524,15 @@ public with sharing class GenesysInteractionsService
         {
             when 'phone'
             {
-                accounts = AccountSearchService.findCustomersByPhoneNumber( new List<String>{request.value}, scope, legalEntity, null );
+                accounts = AccountSearchService.findCustomersByPhoneNumber( new List<String>{request.value}, scope, legalEntity, null, null );
             }
             when 'email'
             {
-                accounts = AccountSearchService.findCustomersByEmail( new List<String>{request.value}, scope, legalEntity, null );
+                accounts = AccountSearchService.findCustomersByEmail( new List<String>{request.value}, scope, legalEntity, null, null );
             }
             when 'document'
             {
-                accounts = AccountSearchService.findCustomersByDocumentId( new List<String>{request.value}, null, scope, legalEntity, null );
+                accounts = AccountSearchService.findCustomersByDocumentId( new List<String>{request.value}, null, scope, legalEntity, null, null );
             }
             when 'policy_code'
             {

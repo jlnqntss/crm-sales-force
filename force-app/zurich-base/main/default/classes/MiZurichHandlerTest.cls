@@ -2,7 +2,7 @@
  * @description       : Clase de test para la clase MiZurichHandler 
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-02-2023
+ * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -346,6 +346,7 @@ private class MiZurichHandlerTest
 
         List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
         accountFromCase[0].NationalId__c = '73562398D';
+        accountFromCase[0].Type = 'F';
         insert accountFromCase;
 
         Map<String, Object> recordValuesMap = new Map<String, Object> 
@@ -379,6 +380,7 @@ private class MiZurichHandlerTest
         Case caseRecord = new Case ();
 
         List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        accountFromCase[0].Type = 'F';
         insert accountFromCase;
 
         List<ContactPointEmail> contactPointEmailsToInsert = TestDataFactory.generateContactPointEmailsFromAccounts(accountFromCase, 1);
@@ -427,6 +429,7 @@ private class MiZurichHandlerTest
         Case caseRecord = new Case ();
 
         List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        accountFromCase[0].Type = 'F';
         insert accountFromCase;
 
         List<ContactPointPhone> contactPointPhonesToInsert = TestDataFactory.generateContactPointPhonesFromAccounts (accountFromCase, 1);

@@ -3,7 +3,7 @@
  *                      y en el caso que no encuentre ninguno por teléfono.
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-01-2023
+ * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
 **/
 public class FindCustomersByCIFEmailPhoneAction 
@@ -26,17 +26,17 @@ public class FindCustomersByCIFEmailPhoneAction
 
             if (request.caseCIF != null && !String.isBlank(request.caseCIF))
             {
-                matchedAccounts = AccountSearchService.findCustomersByDocumentId(new List<String>{request.caseCIF},'', null, null, new List<String>{'Customer'});
+                matchedAccounts = AccountSearchService.findCustomersByDocumentId(new List<String>{request.caseCIF},'', null, null, new List<String>{'Customer'},new List<String>{'F','J'});
             }
             
             if (matchedAccounts.isEmpty() && request.caseEmail != null && !String.isBlank(request.caseEmail))
             {
-                matchedAccounts = AccountSearchService.findCustomersByEmail(new List<String>{request.caseEmail}, null, null, new List<String>{'Customer'});
+                matchedAccounts = AccountSearchService.findCustomersByEmail(new List<String>{request.caseEmail}, null, null, new List<String>{'Customer'},new List<String>{'F','J'});
             }
 
             if (matchedAccounts.isEmpty() && request.casePhone != null && !String.isBlank(request.casePhone))
             {
-                matchedAccounts = AccountSearchService.findCustomersByPhoneNumber(new List<String>{request.casePhone}, null, null, new List<String>{'Customer'});
+                matchedAccounts = AccountSearchService.findCustomersByPhoneNumber(new List<String>{request.casePhone}, null, null, new List<String>{'Customer'}, new List<String>{'F','J'});
             }
 
             //La salida para el flow se necesita en una lista de Strings:

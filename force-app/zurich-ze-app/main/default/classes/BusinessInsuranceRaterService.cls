@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 05-31-2023
+ * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
 **/
 public with sharing class BusinessInsuranceRaterService
@@ -162,19 +162,19 @@ public with sharing class BusinessInsuranceRaterService
         if( String.isNotBlank(accountInfo.nationalIdentifier) )
         {
             //Sí tenemos DNI
-            customers = AccountSearchService.findCustomersByDocumentId(new List<String> {accountInfo.nationalIdentifier}, 'N', RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null);
+            customers = AccountSearchService.findCustomersByDocumentId(new List<String> {accountInfo.nationalIdentifier}, 'N', RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null, null);
         }
 
         if( customers.isEmpty() && String.isNotBlank(formData.webEmail) )
         {
             //Buscamos por Email
-            customers = AccountSearchService.findCustomersByEmail(new List<String> {formData.webEmail}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null);
+            customers = AccountSearchService.findCustomersByEmail(new List<String> {formData.webEmail}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null, null);
         }
 
         if( customers.isEmpty() && String.isNotBlank(formData.webPhone) )
         {
             //Buscamos por Telefono
-            customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {formData.webPhone}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null);
+            customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {formData.webPhone}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null,null);
         }
 
         if( customers.isEmpty() )
@@ -1030,13 +1030,13 @@ public with sharing class BusinessInsuranceRaterService
                 if( String.isNotBlank(managerInformation.email) )
                 {
                     //Buscamos por Email
-                    managers = AccountSearchService.findCustomersByEmail(new List<String> {managerInformation.email}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null);
+                    managers = AccountSearchService.findCustomersByEmail(new List<String> {managerInformation.email}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null, null);
                 }
 
                 if( managers.isEmpty() && String.isNotBlank(managerInformation.phone) )
                 {
                     //Buscamos por Telefono
-                    managers = AccountSearchService.findCustomersByEmail(new List<String> {managerInformation.phone}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null);
+                    managers = AccountSearchService.findCustomersByEmail(new List<String> {managerInformation.phone}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null, null);
                 }
 
                 if( managers.isEmpty() )
