@@ -11,7 +11,7 @@
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
-                <elementReference>Obtener_notificaci_n.Id</elementReference>
+                <elementReference>Obtener_notificacion.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -64,7 +64,7 @@
         <defaultConnectorLabel>SI</defaultConnectorLabel>
         <rules>
             <name>No</name>
-            <conditionLogic>(1 AND (2 OR 3))</conditionLogic>
+            <conditionLogic>1 AND 2</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.IsBounced</leftValueReference>
                 <operator>EqualTo</operator>
@@ -73,21 +73,14 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.CreatedBy.ProfileId</leftValueReference>
+                <leftValueReference>$Record.CreatedBy.Profile.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>00e5I000000Hu97QAC</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.CreatedBy.ProfileId</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>00e5I000000lIITQA2</stringValue>
+                    <stringValue>ZE User</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Obtener_notificaci_n</targetReference>
+                <targetReference>Obtener_notificacion</targetReference>
             </connector>
             <label>No</label>
         </rules>
@@ -115,7 +108,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <name>Obtener_notificaci_n</name>
+        <name>Obtener_notificacion</name>
         <label>Obtener notificación</label>
         <locationX>50</locationX>
         <locationY>455</locationY>
