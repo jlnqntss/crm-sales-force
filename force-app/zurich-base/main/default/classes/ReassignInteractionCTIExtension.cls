@@ -98,12 +98,12 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * @param       Map<String,Obejct> - Mapa con la información del evento
      * @change      amiranda 06/06/2023 Cuando la interacción está relacionada con una tarea de un usuario con perfil 'Ventas User'
      *              y dicha tarea está cerrada, se debe crear una nueva tarea y no actualizar la tarea existente.
-     *
+     * @change      amiranda 06/06/2023 Refactorizar para reducir la complejidad cognitiva
      */
     private static void eventOnInteractionChanged(Task interactionTask, Map<String, Object> eventInteractionData)
     {
-        String interactionId = eventInteractionData.containsKey('id') ? (String) eventInteractionData.get('id') : null;
-        String emailSubject =  eventInteractionData.containsKey('emailSubject') ? (String) eventInteractionData.get('emailSubject') : null;
+        String interactionId = (String) eventInteractionData.get('id');
+        String emailSubject = (String) eventInteractionData.get('emailSubject');
 
         List<Task> existingInteractionTasks = ActivitySelector.selectTasksByCallObjectIdentifier(interactionId);
 
