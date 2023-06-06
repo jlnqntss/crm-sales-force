@@ -1,10 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <description>Utiliza un Aura para ir al email o tarea</description>
+        <name>Abrir_subpesta_a_con_master_record2</name>
+        <label>Abrir subpestaña con master record</label>
+        <locationX>930</locationX>
+        <locationY>758</locationY>
+        <actionName>c:RedirectToRecordAction</actionName>
+        <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>getRelatedCaseRecord.MasterRecordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>openAsSubtab</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <description>Utiliza un Aura para ir al email o tarea</description>
+        <name>Abrir_subpesta_a_con_masterrecord</name>
+        <label>Abrir subpestaña con master record</label>
+        <locationX>50</locationX>
+        <locationY>974</locationY>
+        <actionName>c:RedirectToRecordAction</actionName>
+        <actionType>component</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>getRelatedCase.MasterRecordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>openAsSubtab</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>PopSearchPage</name>
         <label>Abrir ficha de búsqueda</label>
-        <locationX>578</locationX>
-        <locationY>614</locationY>
+        <locationX>1458</locationX>
+        <locationY>542</locationY>
         <actionName>c:RedirectToSearchAction</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -20,8 +66,8 @@
         <description>Utiliza un Aura para ir al email o tarea</description>
         <name>RedirectToCase</name>
         <label>Abrir el Caso en una pestaña</label>
-        <locationX>314</locationX>
-        <locationY>614</locationY>
+        <locationX>1194</locationX>
+        <locationY>758</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -37,8 +83,8 @@
         <description>Utiliza un Aura para ir al contacto</description>
         <name>RedirectToCustomer</name>
         <label>Abrir la ficha del customer</label>
-        <locationX>314</locationX>
-        <locationY>278</locationY>
+        <locationX>941</locationX>
+        <locationY>242</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <connector>
@@ -57,12 +103,12 @@
         <description>Utiliza un Aura para ir al contacto</description>
         <name>RedirectToRecord</name>
         <label>Ir a ficha del registro encontrado</label>
-        <locationX>50</locationX>
-        <locationY>614</locationY>
+        <locationX>424</locationX>
+        <locationY>542</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>RedirectToRelatedRecord</targetReference>
+            <targetReference>Tipo_de_registro_relacionado</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -77,8 +123,8 @@
         <description>Utiliza un Aura para ir al email o tarea</description>
         <name>RedirectToRelatedRecord</name>
         <label>Abrir subpestaña con registro relacionado</label>
-        <locationX>50</locationX>
-        <locationY>734</locationY>
+        <locationX>424</locationX>
+        <locationY>1358</locationY>
         <actionName>c:RedirectToRecordAction</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -101,8 +147,8 @@
         <description>Si no llega vacío el valor de EmailMessage.ParentId.AccountId, se puede abrir la ficha del cliente</description>
         <name>HasCustomerIdDecision</name>
         <label>¿Hay Customer Id?</label>
-        <locationX>446</locationX>
-        <locationY>158</locationY>
+        <locationX>1073</locationX>
+        <locationY>134</locationY>
         <defaultConnector>
             <targetReference>HasRecordIdDecision</targetReference>
         </defaultConnector>
@@ -126,8 +172,8 @@
     <decisions>
         <name>HasRecordIdDecision</name>
         <label>¿Hay Record Id?</label>
-        <locationX>446</locationX>
-        <locationY>494</locationY>
+        <locationX>1073</locationX>
+        <locationY>434</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>HasRecordIdOutcome</name>
@@ -155,7 +201,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>RedirectToCase</targetReference>
+                <targetReference>getRelatedCaseRecord</targetReference>
             </connector>
             <label>¿Hay Id. de registro relacionado?</label>
         </rules>
@@ -173,6 +219,114 @@
                 <targetReference>PopSearchPage</targetReference>
             </connector>
             <label>¿Hay teléfono para buscar?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>isCombined</name>
+        <label>¿Está combinado?</label>
+        <locationX>182</locationX>
+        <locationY>866</locationY>
+        <defaultConnector>
+            <targetReference>RedirectToRelatedRecord</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Combinado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getRelatedCase.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Combinado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getRelatedCase.MasterRecordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Abrir_subpesta_a_con_masterrecord</targetReference>
+            </connector>
+            <label>Combinado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsCombinedCase</name>
+        <label>¿Está combinado?</label>
+        <locationX>1062</locationX>
+        <locationY>650</locationY>
+        <defaultConnector>
+            <targetReference>RedirectToCase</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Combinado_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getRelatedCaseRecord.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Combinado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>getRelatedCaseRecord.MasterRecordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Abrir_subpesta_a_con_master_record2</targetReference>
+            </connector>
+            <label>Combinado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Tipo_de_registro_relacionado</name>
+        <label>¿Tipo de registro relacionado?</label>
+        <locationX>424</locationX>
+        <locationY>650</locationY>
+        <defaultConnectorLabel>No hay</defaultConnectorLabel>
+        <rules>
+            <name>Caso_combinado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>relatedrecordid</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>relatedrecordid</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>500</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getRelatedCase</targetReference>
+            </connector>
+            <label>Caso</label>
+        </rules>
+        <rules>
+            <name>Otro</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>relatedrecordid</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RedirectToRelatedRecord</targetReference>
+            </connector>
+            <label>Otro</label>
         </rules>
     </decisions>
     <description>Cuando un mediador atiende un Caso enrutado por Genesys, se deberían abrir de forma automática:
@@ -201,9 +355,51 @@ Ficha del caso</description>
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordLookups>
+        <name>getRelatedCase</name>
+        <label>Obtenemos caso relacionado</label>
+        <locationX>182</locationX>
+        <locationY>758</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>isCombined</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>relatedrecordid</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getRelatedCaseRecord</name>
+        <label>Obtenemos caso relacionado</label>
+        <locationX>1062</locationX>
+        <locationY>542</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IsCombinedCase</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>relatedrecordid</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>320</locationX>
+        <locationX>947</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>HasCustomerIdDecision</targetReference>
