@@ -6152,6 +6152,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerFormula__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.MediatedCustomer__c</field>
         <readable>true</readable>
@@ -6234,6 +6239,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.ProductGroupDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ProductGroupFormula__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
