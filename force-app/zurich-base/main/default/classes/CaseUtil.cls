@@ -224,6 +224,7 @@ public with sharing class CaseUtil
      * Se hace uso del AccountSearchService dado que se necesita usar SOSL en los
      * ContactPointEmail ya que hacen querys no selectivas por campos no indexados
      * @date 25/01/2021
+     * @change aberuete - 07/06/2023 - Incluir que no asigne la cuenta a los casos provenientes de MiZurich
      **/
     public static void assignAccountAndContactFromSuppliedEmail(List<Case> newList)
     {
@@ -233,7 +234,7 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if( caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() && !String.isBlank(caso.SuppliedEmail))
+                if( caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich')
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
                     //Utilizar el email del SuppliedEmail
