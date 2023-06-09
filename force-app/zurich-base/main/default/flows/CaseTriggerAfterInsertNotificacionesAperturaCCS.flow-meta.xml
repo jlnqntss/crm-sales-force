@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Enviar_email_notificacion_apertura_caso_MiZurich</name>
+        <label>Enviar email notificación apertura caso MiZurich</label>
+        <locationX>578</locationX>
+        <locationY>695</locationY>
+        <actionName>Case.Apertura_caso_formulario_MiZurich</actionName>
+        <actionType>emailAlert</actionType>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CreateErrorLogCaseEmailSend</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>SendEmailAction</name>
         <label>Mandar Email</label>
         <locationX>50</locationX>
@@ -22,11 +41,40 @@
     <decisions>
         <name>ExcludedDomainDecision</name>
         <label>¿Dominio excluido?</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>575</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>NonExcludedDomainOutcome</name>
+            <conditionLogic>1 AND ( 2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>ExcluirDominioSubflowAction.CoincideVAR</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Phone</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SendEmailAction</targetReference>
+            </connector>
+            <label>Dominio no excluido y origen no web</label>
+        </rules>
+        <rules>
+            <name>Dominio_no_excluido_y_origen_web</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>ExcluirDominioSubflowAction.CoincideVAR</leftValueReference>
@@ -35,21 +83,35 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Web</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subject</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Solicitud de ayuda al registro de MiZurich</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>SendEmailAction</targetReference>
+                <targetReference>Enviar_email_notificacion_apertura_caso_MiZurich</targetReference>
             </connector>
-            <label>Dominio no excluido</label>
+            <label>Dominio no excluido y origen web</label>
         </rules>
     </decisions>
     <decisions>
         <name>FulfilPrerequisitesDecision</name>
         <label>¿Cumple los prerrequisitos?</label>
-        <locationX>578</locationX>
+        <locationX>974</locationX>
         <locationY>335</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>FulfilPrerequisitesOutcome</name>
-            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
+            <conditionLogic>(( (1 OR 2) AND 3) OR (4 AND 5)) AND 6</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -62,6 +124,27 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>BusinessCustomer</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Web</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subject</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Solicitud de ayuda al registro de MiZurich</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -133,12 +216,12 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <start>
-        <locationX>452</locationX>
+        <locationX>848</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>FulfilPrerequisitesDecision</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3) AND 4 AND 5</filterLogic>
+        <filterLogic>1 AND (2 OR 3 OR (4 AND 5)) AND 6</filterLogic>
         <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
@@ -161,10 +244,17 @@
             </value>
         </filters>
         <filters>
-            <field>AccountId</field>
-            <operator>IsNull</operator>
+            <field>Origin</field>
+            <operator>EqualTo</operator>
             <value>
-                <booleanValue>false</booleanValue>
+                <stringValue>Web</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Solicitud de ayuda al registro de MiZurich</stringValue>
             </value>
         </filters>
         <filters>
@@ -182,7 +272,7 @@
     <subflows>
         <name>ExcluirDominioSubflowAction</name>
         <label>Excluir Dominio Subflow</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>455</locationY>
         <connector>
             <targetReference>ExcludedDomainDecision</targetReference>
