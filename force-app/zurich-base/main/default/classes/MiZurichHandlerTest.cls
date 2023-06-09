@@ -2,7 +2,7 @@
  * @description       : Clase de test para la clase MiZurichHandler 
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-06-2023
+ * @last modified on  : 06-09-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -520,7 +520,7 @@ private class MiZurichHandlerTest
         Test.stopTest();
 
         String descriptionCase = 'Nombre: Andrea Ortega Carrasco' + '\n' + 'DNI: 73562398D'+'\n'+'Correo electrónico: mizruchemail@gmail.com'+
-                                 '\n'+'Teléfono: 602543627'+ '\n'+ 'DESCRIPCIÓN: Descripcion del caso' + '\n';
+                                 '\n'+'Teléfono: 602543627'+ '\n'+ 'INFORMACIÓN ADICIONAL: Descripcion del caso' + '\n';
 
         System.assertEquals(descriptionCase, descriptionFromMethod, 'La descripción del caso no es correcta');
     }
