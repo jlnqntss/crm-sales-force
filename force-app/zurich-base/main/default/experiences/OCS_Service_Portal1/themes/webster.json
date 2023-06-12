@@ -408,7 +408,7 @@
                   "components": [
                     {
                       "componentAttributes": {
-                        "NavigationMenuEditorRefresh": "Default_Navigation3",
+                        "NavigationMenuEditorRefresh": "OCS_Service_Portal_Menu",
                         "alignment": "left",
                         "showAppLauncher": false,
                         "showBackLabel": true,
