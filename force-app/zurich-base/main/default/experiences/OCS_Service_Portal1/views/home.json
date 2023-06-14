@@ -6,30 +6,6 @@
   "label": "Home",
   "regions": [
     {
-      "components": [
-        {
-          "componentAttributes": {
-            "height": "675",
-            "recordId": "01Z1w000000IFEbEAO"
-          },
-          "componentName": "forceCommunity:dashboard",
-          "id": "2a1a1a5b-0176-4b09-83a7-53b93feab397",
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
-        },
-        {
-          "componentAttributes": {
-            "height": "2250",
-            "recordId": "01Z1w000000I6V6EAK"
-          },
-          "componentName": "forceCommunity:dashboard",
-          "id": "20716155-d98d-41f3-93d0-0ac59aa69c52",
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
-        }
-      ],
       "id": "d4ad0016-a93c-469b-b469-1b6db1a00271",
       "regionName": "header",
       "type": "region"
