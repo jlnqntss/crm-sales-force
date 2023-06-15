@@ -12,7 +12,7 @@
     "components" : [ {
       "componentAttributes" : {
         "height" : "485",
-        "recordId" : "01Z5I0000000FwDUAU"
+        "recordId" : "{!recordId}"
       },
       "componentName" : "forceCommunity:dashboard",
       "id" : "7d7d7cd9-eb0b-467f-966c-dbaff302b97d",
