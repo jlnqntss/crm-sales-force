@@ -15790,8 +15790,7 @@
         <layout>et4ae5__Business_Unit__c-et4ae5__Business Unit Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>et4ae5__Campaign_Member_Configuration__c-et4ae5__Campaign Member Configuration
-            Layout</layout>
+        <layout>et4ae5__Campaign_Member_Configuration__c-et4ae5__Campaign Member Configuration Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>et4ae5__Configuration__c-et4ae5__Configuration Layout</layout>
@@ -15856,8 +15855,7 @@
         <layout>et4ae5__abTest__c-et4ae5__AB Test Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>lightningbuddy__Action_User_Preference__c-lightningbuddy__Action User Preference
-            Layout</layout>
+        <layout>lightningbuddy__Action_User_Preference__c-lightningbuddy__Action User Preference Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>lightningbuddy__Actions__c-lightningbuddy__File Actions Layout</layout>
@@ -15923,8 +15921,7 @@
         <layout>purecloud__Interaction_Attribute__c-purecloud__Interaction Attribute Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>purecloud__Omni_Channel_Status_Mapping__c-purecloud__Omni-Channel Status Mapping
-            Layout</layout>
+        <layout>purecloud__Omni_Channel_Status_Mapping__c-purecloud__Omni-Channel Status Mapping Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>purecloud__PureCloud_Analytic__c-purecloud__PureCloud Analytic Layout</layout>
@@ -15939,35 +15936,28 @@
         <layout>purecloud__PureCloud_Callable_Time_Set__c-purecloud__Callable Time Set Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>purecloud__PureCloud_Campaign_Schedule__c-purecloud__PureCloud Campaign Schedule
-            Layout</layout>
+        <layout>purecloud__PureCloud_Campaign_Schedule__c-purecloud__PureCloud Campaign Schedule Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>purecloud__PureCloud_Campaign_Setting__c-purecloud__PureCloud Campaign Setting
-            Layout</layout>
+        <layout>purecloud__PureCloud_Campaign_Setting__c-purecloud__PureCloud Campaign Setting Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>purecloud__PureCloud_Campaign_Update_Request__c-purecloud__PureCloud Campaign Update
-            Request Layout</layout>
+        <layout>purecloud__PureCloud_Campaign_Update_Request__c-purecloud__PureCloud Campaign Update Request Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>purecloud__PureCloud_Chat_Transcript__c-purecloud__PureCloud Chat Transcript Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>purecloud__PureCloud_Client_Event_Types__c-purecloud__PureCloud Client Event Type
-            Layout</layout>
+        <layout>purecloud__PureCloud_Client_Event_Types__c-purecloud__PureCloud Client Event Type Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>purecloud__PureCloud_Contact_Deletion_Request__c-purecloud__PureCloud Contact
-            Deletion Request Layout</layout>
+        <layout>purecloud__PureCloud_Contact_Deletion_Request__c-purecloud__PureCloud Contact Deletion Request Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>purecloud__PureCloud_Contact_List_Column__c-purecloud__PureCloud Contact List Column
-            Layout</layout>
+        <layout>purecloud__PureCloud_Contact_List_Column__c-purecloud__PureCloud Contact List Column Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>purecloud__PureCloud_Contact_List_Request__c-purecloud__PureCloud Contact List
-            Request Layout</layout>
+        <layout>purecloud__PureCloud_Contact_List_Request__c-purecloud__PureCloud Contact List Request Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>purecloud__PureCloud_DNC_List__c-purecloud__PureCloud DNC List Layout</layout>
@@ -15988,8 +15978,7 @@
         <layout>purecloud__PureCloud_Phone_Field__c-purecloud__PureCloud Phone Field Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>purecloud__PureCloud_Presence_Definition__c-purecloud__PureCloudPresenceDefinition
-            Layout</layout>
+        <layout>purecloud__PureCloud_Presence_Definition__c-purecloud__PureCloudPresenceDefinition Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>purecloud__PureCloud_Queue__c-purecloud__PureCloud Queue Layout</layout>
