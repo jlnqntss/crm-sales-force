@@ -3758,7 +3758,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AccionesTratadasActa__c. ActionResponsible__c</field>
+        <field>AccionesTratadasActa__c.ActionResponsible__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
