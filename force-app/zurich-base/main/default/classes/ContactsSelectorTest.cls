@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-06-2023
+ * @last modified by  : aberuete
+**/
 @isTest
 private with sharing class ContactsSelectorTest
 {
@@ -189,5 +196,53 @@ private with sharing class ContactsSelectorTest
         Test.stopTest();
 
         System.assertEquals(10, contacts.size(), 'There should be 10 contacts found');
+    }
+
+    /**
+    * Test del método que recupera los contactos asociados a cuentas filtradas por record type name
+    * @author aberuete
+    * @date 02/06/2023
+    */
+    @IsTest
+    static void test_setRecordType()
+    {
+        Contact contactNew = new Contact (LastName = 'prueba');
+        insert contactNew;
+       
+        List<Contact> allContacsList = [Select id from Contact];
+        Map<Id,Contact> mapContactsById = new Map<Id,Contact> (allContacsList);
+
+        Test.startTest();
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setRecordType(new List<String>{'Customer'});
+        contactsSelector.baseQuery.selectFields (new List<Schema.SObjectField> {Contact.Id});
+        List<Contact> matchedRecords = contactsSelector.baseQuery.byId(mapContactsById.keySet()).run();
+        Test.stopTest();
+
+        System.assertEquals(10, matchedRecords.size(), 'El número de contactos asociados a cuentas de Customer no es correcto');
+    }
+
+     /**
+    * Test del método que recupera los contactos asociados a cuentas filtradas por tipo de cuenta
+    * @author aberuete
+    * @date 06/06/2023
+    */
+    @IsTest
+    static void test_setTypeOfAccount()
+    {
+        Contact contactNew = new Contact (LastName = 'prueba');
+        insert contactNew;
+       
+        List<Contact> allContacsList = [Select id,Account.Type from Contact];
+        Map<Id,Contact> mapContactsById = new Map<Id,Contact> (allContacsList);
+
+        Test.startTest();
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setTypeOfAccount(new List<String>{'F','J'});
+        contactsSelector.baseQuery.selectFields (new List<Schema.SObjectField> {Contact.Id});
+        List<Contact> matchedRecords = contactsSelector.baseQuery.byId(mapContactsById.keySet()).run();
+        Test.stopTest();
+
+        System.assertEquals(0, matchedRecords.size(), 'El número de contactos asociados a cuentas de tipo F o J no es correcto');
     }
 }

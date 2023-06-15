@@ -4,16 +4,31 @@
     <active>true</active>
     <description>[VR Caso] No se pueden editar los casos cerrados o combinados</description>
     <errorConditionFormula>OR(
+
 RecordType.DeveloperName == &quot;OCSInquiry&quot;&amp;&amp;
+
+( NOT( OR(ISCHANGED(AccountId),ISCHANGED(PolicyId__c),ISCHANGED(MediatedCustomer__c),ISCHANGED(OfferId__c),ISCHANGED(ClaimId__c))))&amp;&amp;
+
 IsClosed &amp;&amp;
+
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
+
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
+
 $Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;
+
 &amp;&amp; NOT ISCHANGED(Status)
+
 ,
+
 RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
+
 IsClosed &amp;&amp;
-NOT ISCHANGED(Status) &amp;&amp;  $Permission.USPTriggerCaseValidationRules 
+
+( NOT( OR(ISCHANGED(AccountId),ISCHANGED(PolicyId__c),ISCHANGED(MediatedCustomer__c),ISCHANGED(OfferId__c)))) &amp;&amp;
+
+NOT ISCHANGED(Status) &amp;&amp; $Permission.USPTriggerCaseValidationRules
+
 )</errorConditionFormula>
     <errorMessage>[VR Caso] No se pueden editar los casos cerrados o combinados</errorMessage>
 </ValidationRule>

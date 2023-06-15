@@ -45,6 +45,10 @@
         <field>Account$Name</field>
     </columns>
     <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Cases$NetPremiumRating__c</field>
+    </columns>
+    <columns>
         <field>Account.Cases$MediatedCustomer__c</field>
     </columns>
     <columns>

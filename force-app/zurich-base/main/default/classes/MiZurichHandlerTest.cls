@@ -2,7 +2,7 @@
  * @description       : Clase de test para la clase MiZurichHandler 
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 05-22-2023
+ * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -14,6 +14,7 @@ private class MiZurichHandlerTest
     private static final String MESSAGE_CASE_DESCRIPTION = 'Descripcion del caso';
     private static final String EMAIL_CASE = 'mizruchemail@gmail.com';
     private static final String LASTNAME_CASE = 'Ortega Carrasco';
+    private static final String MESSAGE_CUENTA_NO_ASIGNADA = 'La cuenta no se ha asignado correctamente';
 
     @TestSetup
     static void makeData()
@@ -333,18 +334,19 @@ private class MiZurichHandlerTest
     }
 
     /**
-     * Test que comprueba que se asocia correctamente la cuenta al caso 
+     * Test que comprueba que se asocia correctamente la cuenta al caso por CIF 
      **
      * @author aberuete
      * @date 22/05/2023
      */
     @isTest
-    static void test_linkAccountAndContactToCase()
+    static void test_linkAccountAndContactToCaseByCIF()
     {
         Case caseRecord = new Case ();
 
         List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
         accountFromCase[0].NationalId__c = '73562398D';
+        accountFromCase[0].Type = 'F';
         insert accountFromCase;
 
         Map<String, Object> recordValuesMap = new Map<String, Object> 
@@ -363,7 +365,133 @@ private class MiZurichHandlerTest
         caseRecord = MiZurichHandler.linkAccountAndContactToCase(caseRecord,recordValuesMap);
         Test.stopTest();
         
-        System.assertEquals(accountFromCase[0].id, caseRecord.AccountId, 'La cuenta no se ha asignado correctamente');
+        System.assertEquals(accountFromCase[0].id, caseRecord.AccountId, MESSAGE_CUENTA_NO_ASIGNADA);
+    }
+
+    /**
+     * Test que comprueba que se asocia correctamente la cuenta al caso por email 
+     **
+     * @author aberuete
+     * @date 02/06/2023
+     */
+    @isTest
+    static void test_linkAccountAndContactToCaseByEmail()
+    {
+        Case caseRecord = new Case ();
+
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        accountFromCase[0].Type = 'F';
+        insert accountFromCase;
+
+        List<ContactPointEmail> contactPointEmailsToInsert = TestDataFactory.generateContactPointEmailsFromAccounts(accountFromCase, 1);
+        contactPointEmailsToInsert[0].EmailAddress = EMAIL_CASE;
+        insert contactPointEmailsToInsert;
+
+        // SOSL - Resultados de búsqueda
+        List<String> emailsToSearch = new List<String>();
+        Set<Id> recordIds = new Set<Id>();
+        for(ContactPointEmail contactPoint : [SELECT Id, ParentId, ContactId__c, EmailAddress FROM ContactPointEmail])
+        {
+            recordIds.add(contactPoint.ParentId);
+            recordIds.add(contactPoint.Id);
+            emailsToSearch.add(contactPoint.EmailAddress);
+        }
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
+
+        Map<String, Object> recordValuesMap = new Map<String, Object> 
+        {
+            'miZurich_inputForm2' => MESSAGE_CAN_NOT_REGISTER,
+            'miZurich_inputForm3' => MESSAGE_WRONG_DATA,
+            'miZurich_description' => MESSAGE_CASE_DESCRIPTION,
+            'miZurich_nif' => 'mal',
+            'miZurich_telf' => '602543627',
+            'miZurich_email' => EMAIL_CASE,
+            'miZurich_name' => 'Andrea',
+            'miZurich_lastName' => LASTNAME_CASE
+        };
+
+        Test.startTest();
+        caseRecord = MiZurichHandler.linkAccountAndContactToCase(caseRecord,recordValuesMap);
+        Test.stopTest();
+        
+        System.assertEquals(accountFromCase[0].id, caseRecord.AccountId, MESSAGE_CUENTA_NO_ASIGNADA);
+    }
+
+    /**
+     * Test que comprueba que se asocia correctamente la cuenta al caso por teléfono
+     **
+     * @author aberuete
+     * @date 02/06/2023
+     */
+    @isTest
+    static void test_linkAccountAndContactToCaseByPhone()
+    {
+        Case caseRecord = new Case ();
+
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        accountFromCase[0].Type = 'F';
+        insert accountFromCase;
+
+        List<ContactPointPhone> contactPointPhonesToInsert = TestDataFactory.generateContactPointPhonesFromAccounts (accountFromCase, 1);
+        contactPointPhonesToInsert[0].TelephoneNumber = '602543627';
+        insert contactPointPhonesToInsert;
+
+        // SOSL - Resultados de búsqueda
+        List<String> phonesToSearch = new List<String>();
+        Set<Id> recordIds = new Set<Id>();
+        for(ContactPointPhone contactPoint : [SELECT Id, ParentId, ContactId__c, TelephoneNumber FROM ContactPointPhone])
+        {
+            recordIds.add(contactPoint.ParentId);
+            recordIds.add(contactPoint.Id);
+            phonesToSearch.add(contactPoint.TelephoneNumber);
+        }
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
+        
+        Map<String, Object> recordValuesMap = new Map<String, Object> 
+        {
+            'miZurich_inputForm2' => MESSAGE_CAN_NOT_REGISTER,
+            'miZurich_inputForm3' => MESSAGE_WRONG_DATA,
+            'miZurich_description' => MESSAGE_CASE_DESCRIPTION,
+            'miZurich_telf' => '602543627',
+            'miZurich_name' => 'Andrea',
+            'miZurich_lastName' => LASTNAME_CASE
+        };
+
+        Test.startTest();
+        caseRecord = MiZurichHandler.linkAccountAndContactToCase(caseRecord,recordValuesMap);
+        Test.stopTest();
+        
+        System.assertEquals(accountFromCase[0].id, caseRecord.AccountId, MESSAGE_CUENTA_NO_ASIGNADA);
+    }
+
+    /**
+     * Test que comprueba que al no tener los campos para asociar a la cuenta no falla y no asocia la cuenta
+     **
+     * @author aberuete
+     * @date 02/06/2023
+     */
+    @isTest
+    static void test_NolinkAccountAndContactToCase()
+    {
+        Case caseRecord = new Case ();
+
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        insert accountFromCase;
+
+        Map<String, Object> recordValuesMap = new Map<String, Object> 
+        {
+            'miZurich_inputForm2' => MESSAGE_CAN_NOT_REGISTER,
+            'miZurich_inputForm3' => MESSAGE_WRONG_DATA,
+            'miZurich_description' => MESSAGE_CASE_DESCRIPTION,
+            'miZurich_name' => 'Andrea',
+            'miZurich_lastName' => LASTNAME_CASE
+        };
+
+        Test.startTest();
+        caseRecord = MiZurichHandler.linkAccountAndContactToCase(caseRecord,recordValuesMap);
+        Test.stopTest();
+        
+        System.assertEquals(null, caseRecord.AccountId, 'No debería tener una cuenta asociada');
     }
 
     /**

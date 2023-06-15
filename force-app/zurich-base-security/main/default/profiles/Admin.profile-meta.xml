@@ -448,6 +448,22 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FindCustomerByPhoneAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FindCustomerByPhoneActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FindCustomersByCIFEmailPhoneAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FindCustomersByCIFEmailPhoneActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>FlowSearchAccountsByEmailAction</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -6152,6 +6168,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerFormula__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.MediatedCustomer__c</field>
         <readable>true</readable>
@@ -6234,6 +6255,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.ProductGroupDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ProductGroupFormula__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
