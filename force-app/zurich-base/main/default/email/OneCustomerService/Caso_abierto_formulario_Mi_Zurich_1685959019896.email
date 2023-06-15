@@ -1,0 +1,48 @@
+<html>
+<head>
+	<title></title>
+</head>
+<body class="body" style="height: auto; min-height: auto;">
+<table align="center" bgcolor="#e7eceb" border="0" cellpadding="0" cellspacing="0" class="full" width="100%">
+	
+		<tr>
+			<td align="center">
+			<table align="center" border="0" cellpadding="0" cellspacing="0" class="table-inner" style="max-width: 700px;" width="600">
+				
+					<tr>
+						<td bgcolor="#ffffff" height="30"><img alt="Zurich_header" src="https://zurich-es--c.documentforce.com/file-asset-public/Zurich_header?oid=00D5I000000DH2H" style="max-width: 1534.9624999999999px" title="Zurich_header" /></td>
+					</tr>
+					<tr>
+						<td align="center" bgcolor="#ffffff">
+						<table align="center" border="0" cellpadding="0" cellspacing="0" class="table-inner" width="90%">
+							
+								<tr>
+									<td style="font-family: Arial, sans-serif; color:#003399; font-size:14px;">
+									<p><br />
+									Hola {{{Case.SuppliedName}}},</p>
+
+									<p>Hemos recibido tu petición y le hemos asignado el número {{{Case.CaseNumber}}} -&nbsp;{{{Case.Subject}}}. Te daremos respuesta lo antes posible.<br />
+									<br />
+									PETICIÓN:&nbsp;{{{Case.RobotTypeN2__c}}} -&nbsp;{{{Case.RobotTypeN3__c}}}<br />
+									{{{Case.Description}}}</p>
+
+									<p>Muchas gracias por tu confianza.</p>
+
+									<p><strong>Zurich Seguros</strong></p>
+									</td>
+								</tr>
+							
+						</table>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" bgcolor="#ffffff" style="border-bottom-left-radius:6px;border-bottom-right-radius:6px;">&nbsp;</td>
+					</tr>
+				
+			</table>
+			</td>
+		</tr>
+	
+</table>
+</body>
+</html>

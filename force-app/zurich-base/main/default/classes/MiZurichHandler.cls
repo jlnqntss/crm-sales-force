@@ -3,7 +3,7 @@
  *                      Procesa las external request cuyo origen sea MI_ZURICH con la ayuda de la clase Transformer
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-06-2023
+ * @last modified on  : 06-09-2023
  * @last modified by  : aberuete
 **/
 public class MiZurichHandler implements ISystem 
@@ -146,7 +146,7 @@ public class MiZurichHandler implements ISystem
         caseRecord.CallCenter__c = CALL_CENTER_CC_SERVICE;
         caseRecord.Subject = SUBJECT_HELP_REQUEST; 
         caseRecord.Description = getDescription (recordValuesMap);
-
+        
         if (!queueEmailSoporte.isEmpty())
         {
             caseRecord.OwnerId = queueEmailSoporte[0].Id;
@@ -290,37 +290,61 @@ public class MiZurichHandler implements ISystem
     {
         String descriptionForCase;
         List<String> fieldsDescription = new List<String> {'miZurich_name', 'miZurich_nif', 'miZurich_email', 'miZurich_telf', 'miZurich_description'};
-        List<String> textInDescription = new List<String> {'Nombre: ', 'DNI: ', 'Correo electrónico: ', 'Teléfono: ', 'DESCRIPCIÓN: '};
         
         for (Integer i = 0; i<fieldsDescription.size();i++ ) 
         {
-            if (i == 0)
-            {
-                descriptionForCase = textInDescription[i];
+            descriptionForCase = getTextDescriptionToCase (recordValuesMap, i, descriptionForCase, fieldsDescription);
 
-                if (recordValuesMap.containsKey(fieldsDescription[i]))
-                {
-                    descriptionForCase = descriptionForCase + recordValuesMap.get(fieldsDescription[i]) + ' '; 
-                }
-
-                if (recordValuesMap.containsKey('miZurich_lastName'))
-                {
-                    descriptionForCase = descriptionForCase + recordValuesMap.get('miZurich_lastName') ; 
-                }
-            }
-            else 
-            {
-                descriptionForCase = descriptionForCase + textInDescription[i];
-
-                if (recordValuesMap.containsKey(fieldsDescription[i]))
-                {
-                    descriptionForCase = descriptionForCase + recordValuesMap.get(fieldsDescription[i]);
-                }
-            }
             //Salto de línea
             descriptionForCase = descriptionForCase + '\n';
         }
 
+        return descriptionForCase;
+    }
+
+    /**
+     * Método que obtiene la descripción del caso
+     * @author aberuete
+     * @date 9/06/2023
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     * @param Integer i : Contador para saber que texto hay que poner
+     * @param String descriptionForCase: Campo descripción del caso
+     * List<String> fieldsDescription : Listado de los campos del json de las external request para añadir a la descripcion del caso
+     */
+    private static String getTextDescriptionToCase (Map<String, Object> recordValuesMap, Integer i, String descriptionForCase,List<String> fieldsDescription)
+    {
+        List<String> textInDescription = new List<String> {'Nombre: ', 'DNI: ', 'Correo electrónico: ', 'Teléfono: ', 'INFORMACIÓN ADICIONAL: '};
+
+        if (i == 0)
+        {
+            descriptionForCase = textInDescription[i];
+
+            if (recordValuesMap.containsKey(fieldsDescription[i]))
+            {
+                descriptionForCase = descriptionForCase + recordValuesMap.get(fieldsDescription[i]) + ' '; 
+            }
+
+            if (recordValuesMap.containsKey('miZurich_lastName'))
+            {
+                descriptionForCase = descriptionForCase + recordValuesMap.get('miZurich_lastName') ; 
+            }
+        }
+        else if (i == 4)
+        {
+            if (recordValuesMap.containsKey(fieldsDescription[i]) && !String.isBlank((String) recordValuesMap.get(fieldsDescription[i])) )
+            {
+                descriptionForCase = descriptionForCase + textInDescription[i] + recordValuesMap.get(fieldsDescription[i]);
+            }
+        }
+        else 
+        {
+            descriptionForCase = descriptionForCase + textInDescription[i];
+
+            if (recordValuesMap.containsKey(fieldsDescription[i]))
+            {
+                descriptionForCase = descriptionForCase + recordValuesMap.get(fieldsDescription[i]);
+            }
+        }
         return descriptionForCase;
     }
 }
