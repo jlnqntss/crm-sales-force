@@ -8,6 +8,7 @@
     <permissionSets>Gestion_Captacion_Avanzada</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>Ventas_Consulta_Datos</permissionSets>
+    <permissionSets>Ventas_Edicion_Competencia</permissionSets>
     <permissionSets>Ventas_Gestion_Captacion</permissionSets>
     <permissionSets>Ventas_Tareas</permissionSets>
     <status>Updated</status>

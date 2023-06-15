@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
     <hasActivationRequired>false</hasActivationRequired>
-    <label>Ventas Director</label>
-    <permissionSets>Acceso_App_Ventas</permissionSets>
+    <label>Ventas Mediador</label>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_CS</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
     <permissionSets>Ventas_Consulta_Datos</permissionSets>
-    <permissionSets>Ventas_Edicion_Competencia</permissionSets>
+    <permissionSets>Ventas_Edicion_Competencia_Agente</permissionSets>
     <permissionSets>Ventas_Gestion_Captacion</permissionSets>
     <permissionSets>Ventas_Tareas</permissionSets>
     <status>Updated</status>
