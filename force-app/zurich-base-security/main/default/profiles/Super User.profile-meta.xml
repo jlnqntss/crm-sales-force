@@ -9957,11 +9957,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Propensity__c.DuplicateFound__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Propensity__c.Lead__c</field>
         <readable>true</readable>
     </fieldPermissions>
