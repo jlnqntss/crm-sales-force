@@ -23,6 +23,7 @@
     <redirectToCustomDomain>false</redirectToCustomDomain>
     <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
     <selfRegPage>CommunitiesSelfReg</selfRegPage>
+    <serverIsDown>SNA_zrm1_sf_default_cdn_XUVWM</serverIsDown>
     <siteAdmin>adminklinc@zurich-es.com</siteAdmin>
     <siteGuestRecordDefaultOwner>adminklinc@zurich-es.com</siteGuestRecordDefaultOwner>
     <siteType>ChatterNetwork</siteType>

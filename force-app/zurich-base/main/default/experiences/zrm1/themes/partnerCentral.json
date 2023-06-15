@@ -115,6 +115,21 @@
       "regionName" : "navBar",
       "type" : "region"
     }, {
+      "components" : [ {
+        "componentAttributes" : {
+          "bannerText" : "",
+          "bannerTextWithKnowledge" : "Explore other <a href=\"javascript:void(0)\" class=\"headlineArticles\">articles</a> and <a href=\"javascript:void(0)\" class=\"headlineDiscussions\">discussions</a> on this topic.",
+          "bannerTextWithoutKnowledge" : "Explore other <a href=\"javascript:void(0)\" class=\"headlineDiscussions\">discussions</a> on this topic.",
+          "pageType" : "",
+          "showSubTopics" : true,
+          "title" : "Objeto pendiente de definir",
+          "uniqueNameOrId" : ""
+        },
+        "componentName" : "forceCommunity:headline",
+        "id" : "511020e1-f384-4ec0-b087-586278944ff3",
+        "renditionMap" : { },
+        "type" : "component"
+      } ],
       "id" : "4520174a-2453-4da3-a192-e5951085a852",
       "regionName" : "customRegion",
       "type" : "region"
