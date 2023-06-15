@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Competitor_Compact_Layout</fullName>
+    <fields>Name</fields>
+    <fields>Account__c</fields>
+    <fields>ProductBranch__c</fields>
+    <fields>OfferWon__c</fields>
+    <fields>ExpirationDate__c</fields>
+    <fields>Premium__c</fields>
+    <label>Competitor Compact Layout</label>
+</CompactLayout>
