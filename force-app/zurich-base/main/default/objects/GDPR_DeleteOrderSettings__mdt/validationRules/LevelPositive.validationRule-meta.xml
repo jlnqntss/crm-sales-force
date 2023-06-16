@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LevelPositive</fullName>
+    <active>true</active>
+    <description>El nivel del objeto debe ser un número positivo</description>
+    <errorConditionFormula>Level__c&lt;0</errorConditionFormula>
+    <errorDisplayField>Level__c</errorDisplayField>
+    <errorMessage>El nivel no puede ser un número negativo</errorMessage>
+</ValidationRule>
