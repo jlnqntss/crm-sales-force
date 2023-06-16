@@ -1,0 +1,65 @@
+{
+  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName" : "siteforce:sldsTwoCol84Layout",
+  "dataProviders" : [ ],
+  "id" : "4059e802-2c90-4e41-a070-56e591b1840f",
+  "label" : "Home",
+  "regions" : [ {
+    "id" : "cdfcf9a3-2688-41c6-8c8c-fa91c6fbc81d",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "height" : "485",
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "forceCommunity:dashboard",
+      "id" : "7d7d7cd9-eb0b-467f-966c-dbaff302b97d",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "a90fa6e7-7180-430b-a031-177028bf5c96",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "showCreateNewCalendar" : false,
+        "showOtherCalendars" : false,
+        "showSidebar" : false
+      },
+      "componentName" : "forceCommunity:calendar",
+      "id" : "cdca487c-23b3-43fe-a6e0-5368c8bb542c",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "c5e65c55-30f6-467a-9046-7b9d26439f37",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "c120b69c-01e5-49a4-84bc-5e0eda498d3d",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Home"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "ece592e9-507f-497f-92fb-e704b947d2ac",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "845639a9-ed7b-4dc6-82c3-d58e6667c1b7",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "home"
+}
