@@ -28,4 +28,5 @@
     <siteGuestRecordDefaultOwner>adminklinc@zurich-es.com</siteGuestRecordDefaultOwner>
     <siteType>ChatterNetwork</siteType>
     <subdomain>zurich-es</subdomain>
+    <urlPathPrefix>zrm</urlPathPrefix>
 </CustomSite>
