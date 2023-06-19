@@ -1,10 +1,3 @@
-/**
- * @description       : 
- * @author            : 
- * @group             : 
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
-**/
 public class FlowSearchAccountsByEmailAction {
 
     @InvocableMethod(
@@ -27,7 +20,7 @@ public class FlowSearchAccountsByEmailAction {
 
             //Utilizamos el AccountSearchService que usa SOSL para querys no selectivas
             List<Account> matchedAccounts = new List<Account>();
-            matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null,null);
+            matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
 
             //La salida para el flow se necesita en una lista de Strings:
             List<String> listIds = new List<String>();

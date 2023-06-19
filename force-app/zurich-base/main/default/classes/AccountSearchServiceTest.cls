@@ -1,19 +1,6 @@
-/**
- * @description       : 
- * @author            : 
- * @group             : 
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
-**/
 @isTest
 private class AccountSearchServiceTest
 {
-    static final string MESSAGE_LISTAS_IGUALES = 'Las dos listas deberían ser iguales';
-    static final String MESSAGE_NO_DEVOLVER_NADA = 'no debe devolver nada';
-    static final String MESSAGE_DEBERIA_HABER_CUENTAS = 'There should be Accounts';
-    static final String MESSAGE_LISTA_DEBERIA_ESTAR_VACIA = 'List shouldnt be empty';
-    static final String MESSAGE_SET_DEBE_TENER_RECORD_ID = 'Set should contains the record Id';
-
     @TestSetup
     public static void createScenario()
     {
@@ -54,15 +41,11 @@ private class AccountSearchServiceTest
 
         // Test
         Test.startTest();
-        List<Account> matchedRecords = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null, null);
-        List<Account> matchedRecordsByRecordType = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String>{'Customer'}, null);
-        List<Account> matchedRecordsByRecordTypeAndType = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String>{'Customer'}, new List<String>{'F','J'});
+        List<Account> matchedRecords = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
-        System.assertEquals(true, matchedRecords.equals(matchedRecordsByRecordType), MESSAGE_LISTAS_IGUALES);
-        System.assertEquals(0, matchedRecordsByRecordTypeAndType.size(), 'No debería devolver ninguna cuenta');
 
         // Then
         Map<Id, Account> expectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(recordIds) );
@@ -78,11 +61,11 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = AccountSearchService.findCustomersByPhoneNumber(new List<String>(), RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null, null);
+        List<Account> matchedRecords = AccountSearchService.findCustomersByPhoneNumber(new List<String>(), RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista de teléfonos
-        System.assertEquals(true, matchedRecords.isEmpty(), MESSAGE_NO_DEVOLVER_NADA);
+        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
     }
 
     @isTest
@@ -101,15 +84,11 @@ private class AccountSearchServiceTest
 
         // Test
         Test.startTest();
-        List<Account> matchedRecords = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null, null);
-        List<Account> matchedRecordsByRecordType = AccountSearchService.findCustomersByEmail(emailsToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, null);
-        List<Account> matchedRecordsByRecordTypeAndType = AccountSearchService.findCustomersByEmail(emailsToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String>{'F','J'});
+        List<Account> matchedRecords = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
-        System.assertEquals(true, matchedRecords.equals(matchedRecordsByRecordType), MESSAGE_LISTAS_IGUALES);
-        System.assertEquals(0, matchedRecordsByRecordTypeAndType.size(), 'No debería devolver ninguna cuenta');
 
         // Then
         Map<Id, Account> expectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(recordIds) );
@@ -125,11 +104,11 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = AccountSearchService.findCustomersByEmail(new List<String>(), RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null, null);
+        List<Account> matchedRecords = AccountSearchService.findCustomersByEmail(new List<String>(), RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), MESSAGE_NO_DEVOLVER_NADA);
+        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
     }
 
     @isTest
@@ -138,7 +117,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, NationalId__c, RecordTypeId FROM Account WHERE RecordTypeId =: customerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size() > 0, MESSAGE_DEBERIA_HABER_CUENTAS);
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         List<String> nationalIds = new List<String>();
         for(Account account: accountsToSearch)
@@ -149,25 +128,17 @@ private class AccountSearchServiceTest
 
         // Test
         Test.startTest();
-        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null, null);
-        Map <Id,Account> mapMatchedRecords = new Map<Id,Account>(matchedRecords);
-        List<Account> matchedRecordsByRecordType = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', null, RecordsSelector.LegalEntity.ALL, new List<String>{'Customer'}, null);
-        Map<Id,Account> mapMatchedRecordsByRecordType = new Map<Id,Account>(matchedRecordsByRecordType);
-        List<Account> matchedRecordsByRecordTypeAndType = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', null, RecordsSelector.LegalEntity.ALL, new List<String>{'Customer'}, new List<String>{'F','J'});
-        
+        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
         //La 'N' es porque se crean así las cuentas en TestDataFactory
         Test.stopTest();
-        List<Id> listIdsMatchedRecords = new List<Id>(mapMatchedRecords.keySet());
-        List<Id> listIdsMatchedRecordsByRecordType = new List<Id> (mapMatchedRecordsByRecordType.keySet());
+
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), MESSAGE_LISTA_DEBERIA_ESTAR_VACIA);
-        System.assertEquals(true, listIdsMatchedRecords.equals(listIdsMatchedRecordsByRecordType), MESSAGE_LISTAS_IGUALES);
-        System.assertEquals(0, matchedRecordsByRecordTypeAndType.size(), 'El número de cuentas devuelto debería ser 0');
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, accountIds.contains(record.Id), MESSAGE_SET_DEBE_TENER_RECORD_ID);
+            System.assertEquals(true, accountIds.contains(record.Id), 'Set should contains the record Id');
         }
     }
 
@@ -176,12 +147,12 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(new List<String>(), 'N', RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI, null, null);
+        List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(new List<String>(), 'N', RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.GI);
         //La 'N' es porque se crean así las cuentas en TestDataFactory
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), MESSAGE_NO_DEVOLVER_NADA);
+        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
     }
 
     @isTest
@@ -190,7 +161,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: customerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size() > 0, MESSAGE_DEBERIA_HABER_CUENTAS);
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
         {
@@ -210,12 +181,12 @@ private class AccountSearchServiceTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), MESSAGE_LISTA_DEBERIA_ESTAR_VACIA);
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, accountIds.contains(record.Id), MESSAGE_SET_DEBE_TENER_RECORD_ID);
+            System.assertEquals(true, accountIds.contains(record.Id), 'Set should contains the record Id');
         }
     }
 
@@ -228,7 +199,7 @@ private class AccountSearchServiceTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), MESSAGE_NO_DEVOLVER_NADA);
+        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
     }
 
     @isTest
@@ -237,7 +208,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas que tienen ofertas del TestSetUp
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, RecordTypeId FROM Account WHERE RecordTypeId =: customerRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size() > 0, MESSAGE_DEBERIA_HABER_CUENTAS);
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         for(Account account: accountsToSearch)
         {
@@ -257,12 +228,12 @@ private class AccountSearchServiceTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), MESSAGE_LISTA_DEBERIA_ESTAR_VACIA);
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, accountIds.contains(record.Id), MESSAGE_SET_DEBE_TENER_RECORD_ID);
+            System.assertEquals(true, accountIds.contains(record.Id), 'Set should contains the record Id');
         }
     }
 
@@ -275,7 +246,7 @@ private class AccountSearchServiceTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), MESSAGE_NO_DEVOLVER_NADA);
+        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
     }
 
     @isTest
@@ -284,7 +255,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, Phone, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size() > 0, MESSAGE_DEBERIA_HABER_CUENTAS);
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         List<String> phoneNumbers = new List<String>();
         for(Account account: accountsToSearch)
@@ -300,12 +271,12 @@ private class AccountSearchServiceTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), MESSAGE_LISTA_DEBERIA_ESTAR_VACIA);
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, accountIds.contains(record.Id), MESSAGE_SET_DEBE_TENER_RECORD_ID);
+            System.assertEquals(true, accountIds.contains(record.Id), 'Set should contains the record Id');
         }
     }
 
@@ -318,7 +289,7 @@ private class AccountSearchServiceTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), MESSAGE_NO_DEVOLVER_NADA);
+        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
     }
 
     @isTest
@@ -327,7 +298,7 @@ private class AccountSearchServiceTest
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, INFOIntermediaryCode__c, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
-        System.assertEquals(true, accountsToSearch.size() > 0, MESSAGE_DEBERIA_HABER_CUENTAS);
+        System.assertEquals(true, accountsToSearch.size() > 0, 'There should be Accounts');
         Set<Id> accountIds = new Set<Id>();
         List<String> codes = new List<String>();
         for(Account account: accountsToSearch)
@@ -342,12 +313,12 @@ private class AccountSearchServiceTest
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
-        System.assertEquals(false, matchedRecords.isEmpty(), MESSAGE_LISTA_DEBERIA_ESTAR_VACIA);
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List shouldnt be empty');
 
         // Then
         for(Account record : matchedRecords)
         {
-            System.assertEquals(true, accountIds.contains(record.Id), MESSAGE_SET_DEBE_TENER_RECORD_ID);
+            System.assertEquals(true, accountIds.contains(record.Id), 'Set should contains the record Id');
         }
     }
 
@@ -360,7 +331,7 @@ private class AccountSearchServiceTest
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
-        System.assertEquals(true, matchedRecords.isEmpty(), MESSAGE_NO_DEVOLVER_NADA);
+        System.assertEquals(true, matchedRecords.isEmpty(), 'no debe devolver nada');
     }
 
 }

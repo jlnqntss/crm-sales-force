@@ -4,8 +4,8 @@
     <assignments>
         <name>Establecemos_exclusi_n</name>
         <label>Establecemos exclusión</label>
-        <locationX>506</locationX>
-        <locationY>971</locationY>
+        <locationX>138</locationX>
+        <locationY>935</locationY>
         <assignmentItems>
             <assignToReference>Excluimos</assignToReference>
             <operator>Assign</operator>
@@ -20,8 +20,8 @@
     <decisions>
         <name>IsTheSame</name>
         <label>¿Coincide?</label>
-        <locationX>638</locationX>
-        <locationY>863</locationY>
+        <locationX>270</locationX>
+        <locationY>815</locationY>
         <defaultConnector>
             <targetReference>CheckReceptor</targetReference>
         </defaultConnector>
@@ -31,14 +31,14 @@
             <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ToAddress</leftValueReference>
-                <operator>Contains</operator>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>CheckReceptor.Email__c</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.CcAddress</leftValueReference>
-                <operator>Contains</operator>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>CheckReceptor.Email__c</elementReference>
                 </rightValue>
@@ -50,40 +50,10 @@
         </rules>
     </decisions>
     <decisions>
-        <description>Sólo va a llevar a cabo este proceso si el caso es de tipo OCS</description>
-        <name>isUSPorClosed</name>
-        <label>¿El caso es USP o está cerrado?</label>
-        <locationX>176</locationX>
-        <locationY>323</locationY>
-        <defaultConnector>
-            <targetReference>GetAllEmailMessage</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>USP_o_cerrado</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>USPInquiry</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Parent.IsClosed</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <label>USP o cerrado</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>La_lista_viene_vac_a</name>
         <label>La lista viene vacía</label>
-        <locationX>550</locationX>
-        <locationY>539</locationY>
+        <locationX>182</locationX>
+        <locationY>455</locationY>
         <defaultConnectorLabel>Lista no vacía</defaultConnectorLabel>
         <rules>
             <name>Lista_vacia</name>
@@ -107,8 +77,8 @@
     <loops>
         <name>CheckReceptor</name>
         <label>Comprobamos destinatario</label>
-        <locationX>418</locationX>
-        <locationY>755</locationY>
+        <locationX>50</locationX>
+        <locationY>695</locationY>
         <collectionReference>GetExcludedMailboxes</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -140,8 +110,8 @@
     <recordLookups>
         <name>GetAllEmailMessage</name>
         <label>Obtener todos los emails</label>
-        <locationX>550</locationX>
-        <locationY>431</locationY>
+        <locationX>182</locationX>
+        <locationY>335</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>La_lista_viene_vac_a</targetReference>
@@ -168,8 +138,8 @@
     <recordLookups>
         <name>GetExcludedMailboxes</name>
         <label>Obtenemos buzones excluidos</label>
-        <locationX>418</locationX>
-        <locationY>647</locationY>
+        <locationX>50</locationX>
+        <locationY>575</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CheckReceptor</targetReference>
@@ -181,7 +151,7 @@
     <recordUpdates>
         <name>Actualizamos_el_caso</name>
         <label>Actualizamos el caso</label>
-        <locationX>418</locationX>
+        <locationX>50</locationX>
         <locationY>1247</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -200,10 +170,10 @@
         <object>Case</object>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>isUSPorClosed</targetReference>
+            <targetReference>GetAllEmailMessage</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>

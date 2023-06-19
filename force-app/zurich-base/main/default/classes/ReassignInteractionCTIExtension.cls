@@ -11,7 +11,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private final static String TASK_STATUS_CLOSED      = 'Cerrada';
     private final static String TASK_STATUS_TYPE_FORMS = 'Forms';
     private final static String TASK_RECORDTYPE_ID_INTERACTION = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
-    private final static String CRM_VENTAS_PROFILE = 'Ventas User';
 
     /**
      * Identifica una tarea a través del parámetro data.interaction.id y devuelve dicha tarea modificando el usuario Asignado
@@ -96,26 +95,19 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      *              Finalmente se asigna el estado y posesion de la tarea al usuario que ha provocado el evento.
      * @param       Task - La interacción relacionada con el evento
      * @param       Map<String,Obejct> - Mapa con la información del evento
-     * @change      amiranda 06/06/2023 Cuando la interacción está relacionada con una tarea de un usuario con perfil 'Ventas User'
-     *              y dicha tarea está cerrada, se debe crear una nueva tarea y no actualizar la tarea existente.
-     * @change      amiranda 06/06/2023 Refactorizar para reducir la complejidad cognitiva
      */
     private static void eventOnInteractionChanged(Task interactionTask, Map<String, Object> eventInteractionData)
     {
-        String interactionId = (String) eventInteractionData.get('id');
-        String emailSubject = (String) eventInteractionData.get('emailSubject');
+        String interactionId = eventInteractionData.containsKey('id') ? (String) eventInteractionData.get('id') : null;
+        String emailSubject =  eventInteractionData.containsKey('emailSubject') ? (String) eventInteractionData.get('emailSubject') : null;
 
         List<Task> existingInteractionTasks = ActivitySelector.selectTasksByCallObjectIdentifier(interactionId);
 
-        if( !existingInteractionTasks.isEmpty() )
+        if(!existingInteractionTasks.isEmpty() )
         {
-
-            if ( !isCrmVentasUserAndTaskClosed(existingInteractionTasks[0]) )
-            {
-                interactionTask.Id      = existingInteractionTasks[0].Id;
-                interactionTask.WhatId  = existingInteractionTasks[0].WhatId;
-                interactionTask.WhoId   = existingInteractionTasks[0].WhoId;
-            }
+            interactionTask.Id      = existingInteractionTasks[0].Id;
+            interactionTask.WhatId  = existingInteractionTasks[0].WhatId;
+            interactionTask.WhoId   = existingInteractionTasks[0].WhoId;
         }
         else if(interactionTask.type == TASK_SUBTYPE_EMAIL)
         {
@@ -300,8 +292,8 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     /**
      * Si la tarea está asociada a un caso y este caso pertenece a una cola, reasignar el caso al usuario actual.
      * @param interactionTask Task recibida
-     * @last modified on  : 06-06-2023
-     * @last modified by  : amiranda
+     * @last modified on  : 05-24-2023
+     * @last modified by  : aberuete
      */
     @TestVisible
     private static void changeOwnerFromQueueToUser(Task interactionTask)
@@ -437,20 +429,5 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
         if (charX.compareTo('A') >= 0 && charX.compareTo('A') <= 25 && charX.compareTo('Z') >= -25 && charX.compareTo('Z') <= 0) return '1';
         return '0';
-    }
-
-    /**
-     * @description Método que comprueba si el usuario que está ejecutando la clase
-     * tiene el perfil 'Ventas User' y si la tarea pasada por parámetro está en estado 'Cerrada'
-     * @author amiranda
-     * @date 06-06-2023
-     * @param Task task Tarea a comprobar su campo 'Status'
-     * @return Boolean Valor booleano que nos indica si las condiciones descritas en la descripción
-     * del método son verdaderas o no.
-     **/
-    private static Boolean isCrmVentasUserAndTaskClosed(Task task)
-    {
-        return (new UserSelector().getUserInfo( UserInfo.getUserId() ).Profile.Name.equalsIgnoreCase(CRM_VENTAS_PROFILE)
-                && task?.Status == TASK_STATUS_CLOSED);
     }
 }

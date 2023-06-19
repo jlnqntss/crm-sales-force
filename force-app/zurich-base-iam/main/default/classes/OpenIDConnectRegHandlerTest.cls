@@ -105,9 +105,7 @@ private class OpenIDConnectRegHandlerTest
             // Get one profile except admin
             List<Profile> profiles = [
                 SELECT Id, Name FROM Profile
-                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS
-                AND UserLicense.NAME = 'Salesforce'
-                ORDER BY Name ASC
+                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS ORDER BY Name ASC
                 LIMIT 1
             ];
             System.assertEquals(1, profiles.size(), 'There should be 1 profile');
@@ -225,7 +223,7 @@ private class OpenIDConnectRegHandlerTest
             // Get one profile except admin
             List<Profile> profiles = [
                 SELECT Id, Name FROM Profile
-                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS AND UserLicense.NAME = 'Salesforce' ORDER BY Name ASC
+                WHERE Name NOT IN :OpenIDConnectRegHandler.SYS_ADMIN_TRANSLATIONS ORDER BY Name ASC
                 LIMIT 1
             ];
             System.assertEquals(1, profiles.size(), 'There should be 1 profile');

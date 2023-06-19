@@ -4,8 +4,8 @@
     <assignments>
         <name>Asignar_Email</name>
         <label>Asignar Email</label>
-        <locationX>287</locationX>
-        <locationY>1055</locationY>
+        <locationX>702</locationX>
+        <locationY>982</locationY>
         <assignmentItems>
             <assignToReference>$Record.SuppliedEmail</assignToReference>
             <operator>Assign</operator>
@@ -17,8 +17,8 @@
     <assignments>
         <name>Asignar_Name</name>
         <label>Asignar Name</label>
-        <locationX>221</locationX>
-        <locationY>599</locationY>
+        <locationX>573</locationX>
+        <locationY>492</locationY>
         <assignmentItems>
             <assignToReference>$Record.SuppliedName</assignToReference>
             <operator>Assign</operator>
@@ -33,8 +33,8 @@
     <decisions>
         <name>Email_vacio</name>
         <label>Email vacío?</label>
-        <locationX>353</locationX>
-        <locationY>815</locationY>
+        <locationX>767</locationX>
+        <locationY>704</locationY>
         <defaultConnectorLabel>No vacío</defaultConnectorLabel>
         <rules>
             <name>Vacio_0</name>
@@ -76,8 +76,8 @@
     <decisions>
         <name>Name_vacio</name>
         <label>Name vacío?</label>
-        <locationX>353</locationX>
-        <locationY>479</locationY>
+        <locationX>767</locationX>
+        <locationY>493</locationY>
         <defaultConnector>
             <targetReference>Email_vacio</targetReference>
         </defaultConnector>
@@ -122,8 +122,8 @@
     <decisions>
         <name>OCSUSPDecision</name>
         <label>Es OCS o USP?</label>
-        <locationX>584</locationX>
-        <locationY>359</locationY>
+        <locationX>768</locationX>
+        <locationY>318</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>OCSUSPOutcome</name>
@@ -151,8 +151,8 @@
     <decisions>
         <name>Tipo_de_cuenta</name>
         <label>Tipo de cuenta</label>
-        <locationX>155</locationX>
-        <locationY>935</locationY>
+        <locationX>582</locationX>
+        <locationY>759</locationY>
         <defaultConnector>
             <targetReference>Asignar_Email</targetReference>
         </defaultConnector>
@@ -205,8 +205,8 @@
     <recordLookups>
         <name>Get_Scope_Email</name>
         <label>Get Scope Email</label>
-        <locationX>23</locationX>
-        <locationY>1055</locationY>
+        <locationX>505</locationX>
+        <locationY>984</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
@@ -230,26 +230,11 @@
         </outputAssignments>
     </recordLookups>
     <start>
-        <locationX>458</locationX>
+        <locationX>650</locationX>
         <locationY>48</locationY>
         <connector>
             <targetReference>OCSUSPDecision</targetReference>
         </connector>
-        <filterLogic>NOT(1 AND 2)</filterLogic>
-        <filters>
-            <field>Origin</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Web</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Subject</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Solicitud de ayuda al registro de MiZurich</stringValue>
-            </value>
-        </filters>
         <object>Case</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>

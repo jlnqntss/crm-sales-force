@@ -1,47 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <description>Busca las cuentas primero por CIF, en caso de no encontrar ninguna por Email y por último por teléfono.</description>
-        <name>Find_Accounts_By_CIF_or_Email_or_Phone</name>
-        <label>Find Accounts By CIF or Email or Phone</label>
-        <locationX>578</locationX>
-        <locationY>398</locationY>
-        <actionName>FindCustomersByCIFEmailPhoneAction</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Count_List_Accounts_By_CIF_or_Email_or_Phone</targetReference>
-        </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>LogError</targetReference>
-        </faultConnector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>caseCIF</name>
-            <value>
-                <elementReference>Case.RobotNif__c</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>caseEmail</name>
-            <value>
-                <elementReference>Case.SuppliedEmail</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>casePhone</name>
-            <value>
-                <elementReference>Case.SuppliedPhone</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
         <description>Utiliza un Apex Action para hacer uso</description>
         <name>Search_Accounts_Apex_Action</name>
         <label>Search Accounts Apex Action</label>
-        <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationX>458</locationX>
+        <locationY>359</locationY>
         <actionName>FlowSearchAccountsByEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -50,7 +14,6 @@
         <faultConnector>
             <targetReference>LogError</targetReference>
         </faultConnector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>caseEmail</name>
             <value>
@@ -61,44 +24,14 @@
     </actionCalls>
     <apiVersion>50.0</apiVersion>
     <assignments>
-        <name>Count_List_Accounts_By_CIF_or_Email_or_Phone</name>
-        <label>Count List Accounts By CIF or Email or Phone</label>
-        <locationX>578</locationX>
-        <locationY>518</locationY>
-        <assignmentItems>
-            <assignToReference>CountList</assignToReference>
-            <operator>AssignCount</operator>
-            <value>
-                <elementReference>Find_Accounts_By_CIF_or_Email_or_Phone.AccountIds</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>accountIdsList</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Find_Accounts_By_CIF_or_Email_or_Phone.AccountIds</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Se_han_encontrado_Cuentas</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <description>La salida del Apex Action devuelve una lista de cuentas, se necesita saber cuántas tiene</description>
         <name>CountListAccounts</name>
         <label>Count List Accounts</label>
-        <locationX>50</locationX>
-        <locationY>518</locationY>
+        <locationX>502</locationX>
+        <locationY>152</locationY>
         <assignmentItems>
             <assignToReference>CountList</assignToReference>
             <operator>AssignCount</operator>
-            <value>
-                <elementReference>Search_Accounts_Apex_Action.AccountIds</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>accountIdsList</assignToReference>
-            <operator>Assign</operator>
             <value>
                 <elementReference>Search_Accounts_Apex_Action.AccountIds</elementReference>
             </value>
@@ -124,20 +57,12 @@
             <booleanValue>true</booleanValue>
         </value>
     </choices>
-    <constants>
-        <description>Para especificar el número de registros esperados a devolver por la búsqueda de cuentas por teléfono</description>
-        <name>MORE_THAN_ONE</name>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>MORE_THAN_ONE</stringValue>
-        </value>
-    </constants>
     <decisions>
         <description>Para no ejecutar el ApexAction (que tarda mucho) cada vez que se entra al registro, ya que esta optimización no la hace el selector de visibilidad de la flexipage</description>
         <name>Condicion_de_entrada</name>
         <label>Condición de entrada</label>
-        <locationX>578</locationX>
-        <locationY>278</locationY>
+        <locationX>164</locationX>
+        <locationY>367</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Cuenta_vacia_y_Supplied_Email_relleno</name>
@@ -156,53 +81,17 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>Case.Subject</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Solicitud de ayuda al registro de MiZurich</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
                 <targetReference>Search_Accounts_Apex_Action</targetReference>
             </connector>
             <label>Cuenta vacía y Supplied Email relleno</label>
         </rules>
-        <rules>
-            <name>Cuenta_vacia_origen_web_y_asunto_ayuda_MiZurich</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Case.AccountId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Case.Origin</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Web</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Case.Subject</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Solicitud de ayuda al registro de MiZurich</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Find_Accounts_By_CIF_or_Email_or_Phone</targetReference>
-            </connector>
-            <label>Cuenta vacía, origen web y asunto ayuda MiZurich</label>
-        </rules>
     </decisions>
     <decisions>
         <name>Se_actualiza_el_Caso</name>
         <label>¿Se actualiza el Caso?</label>
-        <locationX>578</locationX>
-        <locationY>1358</locationY>
+        <locationX>884</locationX>
+        <locationY>492</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>NoActualiza</name>
@@ -215,7 +104,6 @@
                 </rightValue>
             </conditions>
             <connector>
-                <isGoTo>true</isGoTo>
                 <targetReference>Elige_una_de_estas_cuentas</targetReference>
             </connector>
             <label>No Actualiza</label>
@@ -239,8 +127,8 @@
     <decisions>
         <name>Se_han_encontrado_Cuentas</name>
         <label>¿Se han encontrado Cuentas?</label>
-        <locationX>578</locationX>
-        <locationY>878</locationY>
+        <locationX>651</locationX>
+        <locationY>157</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>No</name>
@@ -274,7 +162,6 @@
         </rules>
     </decisions>
     <description>En el Layout OCS de Caso aparece este flow para seleccionar entre varios clientes cuál se quiere relacionar al caso</description>
-    <environments>Default</environments>
     <interviewLabel>Case {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Select Customer</label>
     <processMetadataValues>
@@ -286,7 +173,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -300,8 +187,8 @@
         <description>Deja un registro del error cometido en Error_Logs__c</description>
         <name>LogError</name>
         <label>Registrar error</label>
-        <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationX>444</locationX>
+        <locationY>575</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -333,8 +220,8 @@
         <description>Registro desde el que se inició el Flow: Layout OCS de Caso</description>
         <name>Case</name>
         <label>Case</label>
-        <locationX>578</locationX>
-        <locationY>158</locationY>
+        <locationX>100</locationX>
+        <locationY>187</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Condicion_de_entrada</targetReference>
@@ -355,8 +242,8 @@
         <description>consigue información acerca de la cuenta</description>
         <name>Cuenta</name>
         <label>Cuenta</label>
-        <locationX>578</locationX>
-        <locationY>1118</locationY>
+        <locationX>861</locationX>
+        <locationY>318</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>MostrarCuentaSeleccionadaMensaje</targetReference>
@@ -376,8 +263,8 @@
     <recordUpdates>
         <name>ActualizarCaso</name>
         <label>Actualizar Caso</label>
-        <locationX>578</locationX>
-        <locationY>1478</locationY>
+        <locationX>1140</locationX>
+        <locationY>547</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -404,8 +291,8 @@
     <screens>
         <name>Elige_una_de_estas_cuentas</name>
         <label>Elige una de estas cuentas</label>
-        <locationX>578</locationX>
-        <locationY>998</locationY>
+        <locationX>624</locationX>
+        <locationY>436</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -419,7 +306,7 @@
             <inputParameters>
                 <name>accountIdsList</name>
                 <value>
-                    <elementReference>accountIdsList</elementReference>
+                    <elementReference>Search_Accounts_Apex_Action.AccountIds</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -428,10 +315,9 @@
                     <elementReference>selectedAccountId</elementReference>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
-                <assignToReference>accountIdsList</assignToReference>
+                <assignToReference>Search_Accounts_Apex_Action.AccountIds</assignToReference>
                 <name>accountIdsList</name>
             </outputParameters>
             <outputParameters>
@@ -445,8 +331,8 @@
     <screens>
         <name>ErrorNoAccounts</name>
         <label>Info No Accounts</label>
-        <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationX>899</locationX>
+        <locationY>152</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -461,8 +347,8 @@
     <screens>
         <name>MostrarCuentaSeleccionadaMensaje</name>
         <label>Mostrar Cuenta Seleccionada Mensaje</label>
-        <locationX>578</locationX>
-        <locationY>1238</locationY>
+        <locationX>1049</locationX>
+        <locationY>325</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -487,20 +373,13 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>452</locationX>
-        <locationY>0</locationY>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
         <connector>
             <targetReference>Case</targetReference>
         </connector>
     </start>
     <status>Active</status>
-    <variables>
-        <name>accountIdsList</name>
-        <dataType>String</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
     <variables>
         <name>accountIdsString</name>
         <dataType>String</dataType>

@@ -6,33 +6,15 @@ public with sharing class AccountSearchService
     /**
      * Busca y encuentra clientes a través del número de teléfono, aplicando Scope de visibilidad dado.
      * @param phones : String[] - Listado de teléfonos. Los teléfonos se esperan en formato E164
-     * @param scope : AccountSearchService.Scope - Scope a aplicar.
-     * @param List<String> recordTypeNames: Listado de recordtypes de cuenta
-     * @param List<String> typeOfAccount: Listado de tipo de cuenta
+     * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @return Devuelve el listado de clientes encontrado
-     * change 06/06/2023 - aberuete- Añadir parámetro recordTypeNames para que pueda filtrarse por recordtype de la cuenta
-     *                               y paramétro typeOfAccount para que pueda filtrarse por tipo de cuenta
      */
-    public static Account[] findCustomersByPhoneNumber(String[] phones, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity, List<String> recordTypeNames, List<String> typeOfAccount)
+    public static Account[] findCustomersByPhoneNumber(String[] phones, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
         Set<Id> accountIds = new Set<Id>();
 
         ContactsSelector contactsSelector = new ContactsSelector();
-
-        if (scope != null) 
-        {
-            contactsSelector.setScope(scope);
-        }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
-        {
-            contactsSelector.setRecordType(recordTypeNames);
-        }
-
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
-        {
-            contactsSelector.setTypeOfAccount(typeOfAccount);
-        }
-
+        contactsSelector.setScope(scope);
         List<Contact> contacts = contactsSelector.findByPhoneNumber(phones);
         for(Contact contact: contacts)
         {
@@ -40,21 +22,7 @@ public with sharing class AccountSearchService
         }
 
         AccountsSelector accountsSelector = new AccountsSelector();
-
-        if (scope != null)
-        {
-            accountsSelector.setScope(scope);
-        }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
-        {
-            accountsSelector.setRecordType(recordTypeNames);
-        }
-
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
-        {
-            accountsSelector.setTypeOfAccount(typeOfAccount);
-        }
-        
+        accountsSelector.setScope(scope);
         List<Account> accounts = accountsSelector.findByPhoneNumber(phones);
         for(Account account: accounts)
         {
@@ -83,33 +51,15 @@ public with sharing class AccountSearchService
     /**
      * Busca y encuentra clientes a través del correo electrónico el Scope de visibilidad dado.
      * @param emails : String[] - Listado de emails.
-     * @param scope : AccountSearchService.Scope - Scope a aplicar.
-     * @param List<String> recordTypeNames: Listado de recordtypes de cuenta 
-     * @param List<String> typeOfAccount: Listado de tipo de cuenta
+     * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @return Devuelve el listado de clientes encontrado
-     * change 06/06/2023 - aberuete- Añadir parámetro recordTypeNames para que pueda filtrarse por recordtype de la cuenta
-     *                                y paramétro typeOfAccount para que pueda filtrarse por tipo de cuenta
      */
-    public static Account[] findCustomersByEmail(String[] emails, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity,List<String> recordTypeNames, List<String> typeOfAccount)
+    public static Account[] findCustomersByEmail(String[] emails, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
         Set<Id> accountIds = new Set<Id>();
 
         ContactsSelector contactsSelector = new ContactsSelector();
-
-        if (scope != null) 
-        {
-            contactsSelector.setScope(scope);
-        }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
-        {
-            contactsSelector.setRecordType(recordTypeNames);
-        }
-
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
-        {
-            contactsSelector.setTypeOfAccount(typeOfAccount);
-        }
-        
+        contactsSelector.setScope(scope);
         List<Contact> contacts = contactsSelector.findByEmail(emails);
         for(Contact contact: contacts)
         {
@@ -117,21 +67,7 @@ public with sharing class AccountSearchService
         }
 
         AccountsSelector accountsSelector = new AccountsSelector();
-
-        if (scope != null)
-        {
-            accountsSelector.setScope(scope);
-        }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
-        {
-            accountsSelector.setRecordType(recordTypeNames);
-        }
-
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
-        {
-            accountsSelector.setTypeOfAccount(typeOfAccount);
-        }
-        
+        accountsSelector.setScope(scope);
         List<Account> accounts = accountsSelector.findByEmail(emails);
         for(Account account: accounts)
         {
@@ -161,32 +97,14 @@ public with sharing class AccountSearchService
      * Busca y encuentra clientes a través del correo electrónico el Scope de visibilidad dado.
      * @param documentIds : String[] - Nº de documento.
      * @param documentType : String[] - Tipo de documento a buscar. Si null, no se hace distinción del documento.
-     * @param scope : AccountSearchService.Scope - Scope a aplicar. 
+     * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @param  legalEntity          Entidad legal en la que buscar
-     * @param List<String> recordTypeNames: Listado de recordtypes de cuenta 
-     * @param List<String> typeOfAccount: Listado de tipo de cuenta
      * @return Devuelve el listado de clientes encontrado
-     * change 06/06/2023 - aberuete- Añadir parámetro recordTypeNames para que pueda filtrarse por recordtype de la cuenta
-     *                                y paramétro typeOfAccount para que pueda filtrarse por tipo de cuenta
      */
-    public static Account[] findCustomersByDocumentId(String[] documentIds, String documentType, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity, List<String> recordTypeNames, List<String> typeOfAccount)
+    public static Account[] findCustomersByDocumentId(String[] documentIds, String documentType, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
     {
         AccountsSelector accountsSelector = new AccountsSelector();
-
-        if (scope != null) 
-        {
-            accountsSelector.setScope(scope);   
-        }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
-        {
-            accountsSelector.setRecordType(recordTypeNames);
-        }
-
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
-        {
-            accountsSelector.setTypeOfAccount(typeOfAccount);
-        }
-        
+        accountsSelector.setScope(scope);
         accountsSelector.setLegalEntity(legalEntity);
 
         return accountsSelector.findByNationalId(documentIds, documentType);

@@ -11,11 +11,6 @@
         <label>12 CATALUNYA ANDORRA</label>
     </customValue>
     <customValue>
-        <fullName>13 BARCELONA GRANDES BROKERS</fullName>
-        <default>false</default>
-        <label>13 BARCELONA GRANDES BROKERS</label>
-    </customValue>
-    <customValue>
         <fullName>21 LEVANTE</fullName>
         <default>false</default>
         <label>21 LEVANTE</label>

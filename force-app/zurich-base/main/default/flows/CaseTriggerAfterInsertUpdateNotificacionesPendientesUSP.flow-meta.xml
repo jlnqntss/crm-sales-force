@@ -77,7 +77,7 @@
         <locationX>578</locationX>
         <locationY>1103</locationY>
         <defaultConnector>
-            <targetReference>SeHaExcluidoElDominioYCasoVentaDecision</targetReference>
+            <targetReference>SeHaExcluidoElDominioDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -180,17 +180,17 @@
         </rules>
     </decisions>
     <decisions>
-        <name>SeHaExcluidoElDominioYCasoVentaDecision</name>
-        <label>Se ha excluido el dominio y el caso es tipo Venta?</label>
+        <name>SeHaExcluidoElDominioDecision</name>
+        <label>Se ha excluido el dominio?</label>
         <locationX>1106</locationX>
         <locationY>1223</locationY>
         <defaultConnector>
             <targetReference>MandarEmailUSP</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>No Excluido y caso Venta</defaultConnectorLabel>
+        <defaultConnectorLabel>No Excluido</defaultConnectorLabel>
         <rules>
-            <name>ExcluidoNoVentaOutcome</name>
-            <conditionLogic>or</conditionLogic>
+            <name>SeHaExlcuidoOutcome</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>DominioExcluido</leftValueReference>
                 <operator>EqualTo</operator>
@@ -198,14 +198,7 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.Type</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Venta</stringValue>
-                </rightValue>
-            </conditions>
-            <label>Excluido o No venta</label>
+            <label>Se ha excluido</label>
         </rules>
     </decisions>
     <environments>Default</environments>

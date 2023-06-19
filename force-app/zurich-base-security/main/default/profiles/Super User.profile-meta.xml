@@ -731,14 +731,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>FindCustomersByCIFEmailPhoneAction</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>FindCustomersByCIFEmailPhoneActionTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>FindObjectTypeById</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3950,11 +3942,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.MediatedCustomerFormula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Case.MediatedCustomer__c</field>
         <readable>true</readable>
@@ -4048,11 +4035,6 @@
         <editable>true</editable>
         <field>Case.Priority</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.ProductGroupDescription__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
