@@ -3419,6 +3419,9 @@
         <recordType>PersonAccount.Lead</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Policy__c-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Quote-Quote Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
