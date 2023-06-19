@@ -27,8 +27,8 @@
         "showLegacyActivityComposer" : false,
         "tab1Type" : "details",
         "tab2Type" : "related",
-        "tab3Type" : "none",
-        "tab4Type" : "timeline",
+        "tab3Type" : "timeline",
+        "tab4Type" : "none",
         "timelineTabLabel" : "Activity"
       },
       "componentName" : "forceCommunity:recordHomeTabs",
