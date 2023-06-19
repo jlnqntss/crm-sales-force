@@ -8325,6 +8325,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.IsNewProduction__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.IsUspProduct__c</field>
         <readable>true</readable>
     </fieldPermissions>
