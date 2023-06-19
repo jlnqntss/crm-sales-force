@@ -1,0 +1,94 @@
+{
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "306cc515-aaed-4c07-a9b3-c5bbb5309332",
+  "label": "Campaign List",
+  "regions": [
+    {
+      "id": "96853fec-8d88-4699-b8b4-6f24dfc30ac1",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "tabsetConfig": {
+              "UUID": "aa44f297-a492-47ad-b7c4-d5c3a0e77669",
+              "activeTab": "tab1",
+              "tabs": [
+                {
+                  "UUID": "197e8a3d-c8e4-4f83-b1e5-62b7802a6d96",
+                  "allowGuestUser": true,
+                  "locked": false,
+                  "seedComponents": [
+                    {
+                      "attributes": {
+                        "filterName": "Recent",
+                        "scope": "Campaign"
+                      },
+                      "fqn": "forceCommunity:objectHome"
+                    }
+                  ],
+                  "tabKey": "tab2",
+                  "tabName": "All Campaigns"
+                }
+              ],
+              "useOverflowMenu": false
+            }
+          },
+          "componentName": "forceCommunity:tabset",
+          "id": "aa44f297-a492-47ad-b7c4-d5c3a0e77669",
+          "regions": [
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "enableInlineEdit": true,
+                    "filterName": "Recent",
+                    "layout": "FULL",
+                    "pageSize": 25,
+                    "scope": "Campaign",
+                    "showActionBar": true,
+                    "showChartsPanel": true,
+                    "showDisplay": "showall",
+                    "showFilterPanel": true,
+                    "showImageIcon": true,
+                    "showManualRefreshButton": true,
+                    "showObjectName": true,
+                    "showPinnedList": true,
+                    "showSearchBar": true
+                  },
+                  "componentName": "forceCommunity:objectHome",
+                  "id": "50462db0-e60f-485e-86a8-82b538d0e9ef",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "197e8a3d-c8e4-4f83-b1e5-62b7802a6d96",
+              "regionLabel": "All Campaigns",
+              "regionName": "tab2",
+              "renditionMap": {},
+              "type": "region"
+            }
+          ],
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "5c3eb25b-516a-4146-888b-0ae1c3dcee22",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "9453ebed-d9ac-449b-bbbf-3f841e168193",
+      "regionName": "footer",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "list-701"
+}

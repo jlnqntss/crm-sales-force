@@ -1,0 +1,70 @@
+{
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "b09df90e-02d4-4347-b165-86b5941be431",
+  "label": "Top Articles",
+  "regions": [
+    {
+      "id": "edfc1d2c-b484-4ace-a676-10aea3457235",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "richTextValue": "             <h1 style=\"text-align: center;\">                 <b style=\"font-size: 20px; color: #1e2443;\">Top Articles</b>             </h1>             "
+          },
+          "componentName": "forceCommunity:richTextInline",
+          "id": "fa98d2b4-8b7f-43d8-87e7-6f21fc8f6313",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "numberOfArticles": 5,
+            "showTitle": true,
+            "title": "Articles",
+            "topicList": []
+          },
+          "componentName": "forceCommunity:topArticleList",
+          "id": "99f572c8-29fc-4e24-9f5a-14f07eb9ec20",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "3c4457a7-32f3-4357-8fa3-b7e80ea8d4e6",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "a55fec77-92c9-4a9d-9444-b7e7b1eba279",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "",
+            "title": "Top Articles"
+          },
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "d61cc9c1-1a05-4608-bd97-594448c267fd",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "8c1c99db-6695-4a89-a859-76e8b1eea381",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "top-articles"
+}

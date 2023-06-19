@@ -1,0 +1,150 @@
+{
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName": "siteforce:sldsTwoCol84Layout",
+  "dataProviders": [],
+  "id": "92927073-0902-496e-870b-11b2d1052afa",
+  "label": "Article Detail",
+  "regions": [
+    {
+      "id": "12dc95f0-454b-420f-9842-ea4f9b02a7aa",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "uniqueNameOrId": "{!urlName}"
+          },
+          "componentName": "forceCommunity:breadcrumbs",
+          "id": "f3fe2d04-883d-4135-92f6-73cf40c0567f",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "enableVoting": true,
+            "recordId": "{!recordId}",
+            "showTitleInArticleHeader": true,
+            "showTopicPills": true,
+            "urlName": "{!urlName}"
+          },
+          "componentName": "selfService:singleArticleView",
+          "id": "2e03d46e-996b-4abe-bfaf-cd68931f4bdd",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "context": "RECORD",
+            "recordId": "{!recordId}",
+            "width": "WIDE"
+          },
+          "componentName": "forceCommunity:feedPublisher",
+          "id": "d04805db-3fbd-4978-9da9-d2b79c05dc6e",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "canChangeSorting": false,
+            "defaultFilter": "",
+            "defaultSortOrderHomeFeed": "Relevance",
+            "defaultSortOrderTopicsFeed": "Relevance",
+            "feedDesign": "DEFAULT",
+            "hasFeedSearch": false,
+            "subjectId": "{!recordId}",
+            "type": "Record"
+          },
+          "componentName": "forceCommunity:forceCommunityFeed",
+          "id": "05a3eeb3-9247-4bb0-9bde-b3384f94e23c",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "d7f3dda9-3b65-4f6d-b28d-5808bad1989c",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "buttonAlignment": "center",
+            "buttonBgColor": "",
+            "buttonBgHoverColor": "",
+            "buttonBorderColor": "",
+            "buttonMaxWidth": 100,
+            "buttonRadius": 0,
+            "buttonTextColor": "",
+            "buttonTextHoverColor": "",
+            "recordId": "{!recordId}",
+            "showNotificationMenu": false
+          },
+          "componentName": "forceCommunity:follow",
+          "id": "537f1a85-fbb1-449c-b937-b6cb88b15f41",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "numberOfItems": 5,
+            "showViewCounts": true,
+            "title": "Related Articles"
+          },
+          "componentName": "selfService:similarArticles42",
+          "id": "f24b65e2-45e6-4689-8736-ce85d4d88847",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "numberOfArticles": 5,
+            "title": "Trending Articles",
+            "topicId": "{!topicId}"
+          },
+          "componentName": "selfService:topicTrendingArticles42",
+          "id": "3f0c602b-4b78-4091-bd28-a4fe968eb331",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "8cabf99f-3c0f-47c1-a20e-fc4f2d87bf5c",
+      "regionName": "sidebar",
+      "type": "region"
+    },
+    {
+      "id": "87f9849f-a55c-4745-a570-54e6abf5b70d",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "{!Record.Summary}",
+            "title": "{!Record._Title}"
+          },
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "d58349b6-3064-4d7a-946f-b5ee8af18629",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "23654c0c-088d-40cd-a913-3ede7fcf6bc0",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "article"
+}

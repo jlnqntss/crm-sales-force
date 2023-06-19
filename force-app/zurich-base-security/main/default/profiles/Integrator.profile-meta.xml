@@ -423,6 +423,22 @@
         <apexClass>ExternalRequestsSelectorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+     <classAccesses>
+        <apexClass>FindCustomerByPhoneAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FindCustomerByPhoneActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FindCustomersByCIFEmailPhoneAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FindCustomersByCIFEmailPhoneActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <classAccesses>
         <apexClass>FollowUpHandler</apexClass>
         <enabled>true</enabled>

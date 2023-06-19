@@ -144,6 +144,28 @@
         </rules>
     </decisions>
     <decisions>
+        <name>ScaledCaseTaskDecision</name>
+        <label>Scaled Case Task?</label>
+        <locationX>2206</locationX>
+        <locationY>288</locationY>
+        <defaultConnector>
+            <targetReference>UpdateRelatedCaseScheduledAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Scaled Case</defaultConnectorLabel>
+        <rules>
+            <name>ScaledCaseOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Scaled Case</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Scaled Case</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>StatusChangedToCloseDecision</name>
         <label>Status Changed To Close?</label>
         <locationX>974</locationX>
@@ -275,8 +297,8 @@
     <recordCreates>
         <name>CreateErrorLogScheduledUpdateAction</name>
         <label>Create Error Log After Due Date</label>
-        <locationX>2338</locationX>
-        <locationY>408</locationY>
+        <locationX>2602</locationX>
+        <locationY>528</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -411,8 +433,8 @@
     <recordUpdates>
         <name>UpdateRelatedCaseScheduledAction</name>
         <label>Update Related Case</label>
-        <locationX>2074</locationX>
-        <locationY>288</locationY>
+        <locationX>2338</locationX>
+        <locationY>408</locationY>
         <faultConnector>
             <targetReference>CreateErrorLogScheduledUpdateAction</targetReference>
         </faultConnector>
@@ -453,7 +475,7 @@
         <object>Case</object>
     </recordUpdates>
     <start>
-        <locationX>1101</locationX>
+        <locationX>1167</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetCaseRelatedToTaskAction</targetReference>
@@ -478,7 +500,7 @@
         <scheduledPaths>
             <name>AfterDueDateCompleted</name>
             <connector>
-                <targetReference>UpdateRelatedCaseScheduledAction</targetReference>
+                <targetReference>ScaledCaseTaskDecision</targetReference>
             </connector>
             <label>After Due Date Completed</label>
             <offsetNumber>1</offsetNumber>
