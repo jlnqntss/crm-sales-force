@@ -17,9 +17,12 @@ AND(Ispickval( Case.LegalEntity__c, &quot;General Insurance&quot;), Case.SourceC
 	if(and(ispickval( Case.LegalEntity__c, &quot;Life Insurance&quot;), Case.SourceCountry__c=&apos;Spain&apos;, Case.Partner__c==Null),&quot;ayudaklincvida@zurich.com&quot;,
 		if(and(ispickval( Case.LegalEntity__c, &quot;General Insurance&quot;), Case.SourceCountry__c=&apos;Spain&apos;, Case.Partner__c==Null),&quot;ayuda.klinc@zurich.com&quot;,
 			if(and(ispickval(Case.LegalEntity__c, &quot;Life Insurance&quot;),Case.SourceCountry__c=&apos;Spain&apos;,Case.Partner__c==&apos;Orange Seguros&apos;),&quot;ayuda.orangeseguros@zurich.com&quot;,
-				if(and(ispickval(Case.LegalEntity__c, &quot;General Insurance&quot;),Case.SourceCountry__c=&apos;Germany&apos;,Case.Partner__c==null),&quot;hilfe.klinc@zurich.com&quot;,&quot;&quot;)
+				if(and(ispickval(Case.LegalEntity__c, &quot;General Insurance&quot;),Case.SourceCountry__c=&apos;Germany&apos;,Case.Partner__c==null),&quot;hilfe.klinc@zurich.com&quot;,
+					if(and(ispickval(Case.CallCenter__c,&quot;USP&quot;), ispickval(Case.Subtype__c, &quot;Gestión Competencias&quot;)), &quot;empresas.csm@zurich.com&quot;,&quot;&quot;)
+				)
+			)
 		)
-	))
+	)
 	
 )</formula>
     </fieldOverrides>
