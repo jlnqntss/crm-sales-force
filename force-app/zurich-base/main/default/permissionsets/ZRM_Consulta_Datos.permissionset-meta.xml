@@ -3019,6 +3019,16 @@ Para usuarios de la comunidad zrm</description>
         <field>Opportunity.isUpdatedFromINFO__c</field>
         <readable>true</readable>
     </fieldPermissions>
+        <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.ProductBranchDetail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.ProductBranch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.AccidentRate__c</field>
