@@ -94,6 +94,14 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <platformActionList>
+        <actionListContext>Record</actionListContext>
+        <platformActionListItems>
+            <actionName>NewOpportunity</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
+    </platformActionList>
     <relatedContent>
         <relatedContentItems>
             <layoutItem>
@@ -102,6 +110,7 @@
         </relatedContentItems>
     </relatedContent>
     <relatedLists>
+        <excludeButtons>New</excludeButtons>
         <fields>OPPORTUNITY.NAME</fields>
         <fields>ACCOUNT.NAME</fields>
         <fields>OPPORTUNITY.CLOSE_DATE</fields>
@@ -116,12 +125,16 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>INFOClaimLink__c</fields>
-        <fields>DateOfOccurrence__c</fields>
-        <fields>FaultFactor__c</fields>
-        <fields>ClaimType__c</fields>
-        <fields>Policy__c</fields>
         <relatedList>Claim__c.PolicyHolder__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>ExpirationDate__c</fields>
+        <fields>ProductBranch__c</fields>
+        <fields>OfferWon__c</fields>
+        <fields>Premium__c</fields>
+        <fields>LAST_UPDATE</fields>
+        <relatedList>Competitor__c.Account__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
@@ -132,7 +145,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h1q000000HeMM</masterLabel>
+        <masterLabel>00h0C000002Yq1l</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
