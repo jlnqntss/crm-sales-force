@@ -305,7 +305,6 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Bar</componentType>
-                <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
@@ -452,7 +451,7 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
-                <componentType>Bar</componentType>
+                <componentType>Column</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -470,7 +469,6 @@
                 <legendPosition>Bottom</legendPosition>
                 <report>OneCustomerService/Casos_respondidos_de_mi_centro_RCF</report>
                 <showPercentage>false</showPercentage>
-                <showPicturesOnCharts>false</showPicturesOnCharts>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <title>MI CENTRO</title>
@@ -490,7 +488,7 @@
                     <column>RowCount</column>
                 </chartSummary>
                 <componentChartTheme>dark</componentChartTheme>
-                <componentType>Bar</componentType>
+                <componentType>Column</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -508,7 +506,6 @@
                 <legendPosition>Bottom</legendPosition>
                 <report>OneCustomerService/Casos_asignados_de_mi_centro_no_cerrados_fPW</report>
                 <showPercentage>false</showPercentage>
-                <showPicturesOnCharts>false</showPicturesOnCharts>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <title>MI CENTRO</title>
@@ -540,7 +537,7 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>d</sortOrder>
+                        <sortOrder>a</sortOrder>
                     </groupingSorts>
                     <groupingSorts>
                         <groupingLevel>g2</groupingLevel>
