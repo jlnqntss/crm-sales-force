@@ -116,6 +116,11 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>INFOClaimLink__c</fields>
+        <fields>DateOfOccurrence__c</fields>
+        <fields>FaultFactor__c</fields>
+        <fields>ClaimType__c</fields>
+        <fields>Policy__c</fields>
         <relatedList>Claim__c.PolicyHolder__c</relatedList>
     </relatedLists>
     <relatedLists>
