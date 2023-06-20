@@ -128,6 +128,15 @@
         <relatedList>Claim__c.PolicyHolder__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <fields>NAME</fields>
+        <fields>ExpirationDate__c</fields>
+        <fields>ProductBranch__c</fields>
+        <fields>OfferWon__c</fields>
+        <fields>Premium__c</fields>
+        <fields>LAST_UPDATE</fields>
+        <relatedList>Competitor__c.Account__c</relatedList>
+    </relatedLists>
+    <relatedLists>
         <relatedList>RelatedFileList</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
@@ -136,7 +145,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h1q000000HeMM</masterLabel>
+        <masterLabel>00h0C000002Yq1l</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
