@@ -3250,6 +3250,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Product2.IsNewProduction__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Product2.IsUspProduct__c</field>
         <readable>true</readable>
     </fieldPermissions>
