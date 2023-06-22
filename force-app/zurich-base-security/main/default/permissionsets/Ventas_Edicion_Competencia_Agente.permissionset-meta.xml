@@ -2,7 +2,7 @@
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Permisos de los campos exclusivos del objeto Competencia</description>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Competitor__c.Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
