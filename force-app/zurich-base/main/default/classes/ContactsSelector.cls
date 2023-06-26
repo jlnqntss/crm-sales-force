@@ -273,4 +273,45 @@ public with sharing class ContactsSelector extends RecordsSelector
         }
         return result;
     }
+
+    /**
+     * Consulta de contacto a partir de email y código de cliente del record type Intermediary (Mediador)
+     * @author dmunoz
+     * @date 16/11/2022
+     * @param String email
+     * @param String accountCode
+     * @return Lista de contactos
+     */
+    public List<Contact> findIntermediaryContactByEmailAndAccountCode(String email, String accountCode) {
+        List<Contact> result = new List<Contact>();
+        if (email != null && String.isNotEmpty(email) && accountCode != null && String.isNotEmpty(accountCode)) {
+            result = new List<Contact>([
+                SELECT Id FROM Contact WHERE Account.RecordTypeId = :ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('Intermediary').getRecordTypeId() 
+                AND Account.INFOIntermediaryCode__c = :accountCode AND Email = :email 
+                AND RecordtypeId = :rtContactId           
+            ]);
+        }
+        return result;
+    }
+
+    /**
+     * Consulta de contacto a partir de codigo de afiliación de su cuenta
+     * @author dmunoz
+     * @date 16/11/2022
+     * @param String email
+     * @param String affiliationCodeList
+     * @return Lista de contactos
+     */
+    public List<Contact> findContactByEmailAndAccountAffiliationCode(String email, List<String> affiliationCodeList) {
+        List<Contact> result = new List<Contact>();
+        if (email != null && String.isNotEmpty(email) && affiliationCodeList != null && !affiliationCodeList.isEmpty()) {
+            result = new List<Contact>([
+                SELECT Id FROM Contact WHERE 
+                Account.INFOCustomerNumber__c = :affiliationCodeList
+                AND RecordtypeId = :rtContactId 
+                AND Email = :email  
+            ]);
+        }
+        return result;
+    }
 }

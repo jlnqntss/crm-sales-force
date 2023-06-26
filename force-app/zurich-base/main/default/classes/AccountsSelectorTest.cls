@@ -671,4 +671,31 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(2, matchedAccountRecords.size(), 'Deberia encontrar 2 cuentas');
     }
 
+
+    /**
+     * Test del método que recupera cuentas de mediador por codigo de afiliación
+     * @author dmunoz
+     * @date 26/06/2023
+     */
+    @IsTest
+    static void test_findAccountByAffiliationCode()
+    {
+        AccountsSelector accSel = new AccountsSelector();
+        
+        List<Account> accountsQuery = [SELECT Id, INFOCustomerNumber__c FROM Account LIMIT 1];
+
+        if (!accountsQuery.isEmpty()) {
+            List<String> affiliationCodeList = new List<String>();
+            affiliationCodeList.add(accountsQuery.get(0).INFOCustomerNumber__c);
+
+            List<Account> result = accSel.findAccountByAffiliationCode(affiliationCodeList);
+
+            System.assertEquals(true, !result.isEmpty(), 'Debe tener resultados');
+
+        }
+
+
+
+    }
+
 }

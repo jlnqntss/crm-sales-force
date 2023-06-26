@@ -650,9 +650,22 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         this.baseQuery.addCondition(condition);
 
-        return this.baseQuery.toQueryString();
-        
-       
+        return this.baseQuery.toQueryString();       
+    }
+
+    /**
+     * Método utilizado por OpenIDConnectSalesforceCommunity para buscar la cuenta dummy a la que asociar los usuarios
+     * @author dmunoz
+     * @date 15/06/2023
+     */
+    public List<Account> findAccountByAffiliationCode(List<String> affiliationCodeList) {
+
+        List<Account> result = new List<Account>();
+
+        if (affiliationCodeList != null && !affiliationCodeList.isEmpty()) {
+            result = new List<Account>([SELECT Id FROM Account WHERE INFOCustomerNumber__c IN :affiliationCodeList]);
+        }
+        return result;
     }
 
 }
