@@ -158,7 +158,7 @@
     <label>Competitor</label>
     <nameField>
         <displayFormat>{00000000}</displayFormat>
-        <label>Name</label>
+        <label>Identifier</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
