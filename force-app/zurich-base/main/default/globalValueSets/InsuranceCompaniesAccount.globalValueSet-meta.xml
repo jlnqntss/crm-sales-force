@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>AXA</fullName>
+        <default>false</default>
+        <label>AXA</label>
+    </customValue>
+    <customValue>
+        <fullName>Allianz</fullName>
+        <default>false</default>
+        <label>Allianz</label>
+    </customValue>
+    <customValue>
+        <fullName>Reale</fullName>
+        <default>false</default>
+        <label>Reale</label>
+    </customValue>
+    <customValue>
+        <fullName>Generalli</fullName>
+        <default>false</default>
+        <label>Generalli</label>
+    </customValue>
+    <customValue>
+        <fullName>Fiatc</fullName>
+        <default>false</default>
+        <label>Fiatc</label>
+    </customValue>
+    <customValue>
+        <fullName>Segur Caixa</fullName>
+        <default>false</default>
+        <label>Segur Caixa</label>
+    </customValue>
+    <customValue>
+        <fullName>Mutua Madrileña</fullName>
+        <default>false</default>
+        <label>Mutua Madrileña</label>
+    </customValue>
+    <customValue>
+        <fullName>Mapfre</fullName>
+        <default>false</default>
+        <label>Mapfre</label>
+    </customValue>
+    <customValue>
+        <fullName>Lagun Aro</fullName>
+        <default>false</default>
+        <label>Lagun Aro</label>
+    </customValue>
+    <customValue>
+        <fullName>Mútua General</fullName>
+        <default>false</default>
+        <label>Mútua General</label>
+    </customValue>
+    <customValue>
+        <fullName>Liberty</fullName>
+        <default>false</default>
+        <label>Liberty</label>
+    </customValue>
+    <customValue>
+        <fullName>Otros</fullName>
+        <default>false</default>
+        <label>Otros</label>
+    </customValue>
+    <masterLabel>Insurance Companies Account</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
