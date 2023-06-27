@@ -191,7 +191,11 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Propensity__c.Account__c</relatedList>
+        <fields>ProductBranch__c</fields>
+        <fields>OfferWon__c</fields>
+        <fields>ExpirationDate__c</fields>
+        <fields>Premium__c</fields>
+        <relatedList>Competitor__c.Account__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
