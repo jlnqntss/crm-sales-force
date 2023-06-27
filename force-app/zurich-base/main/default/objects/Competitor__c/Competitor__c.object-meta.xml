@@ -144,7 +144,7 @@
     <compactLayoutAssignment>Competitor_Compact_Layout</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Entity in which to register relevant data of policies contracted by the Customer with competitors of Zurich.</description>
-    <enableActivities>true</enableActivities>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
