@@ -5,7 +5,7 @@
     <externalId>false</externalId>
     <label>Account</label>
     <referenceTo>Account</referenceTo>
-    <relationshipLabel>Account</relationshipLabel>
+    <relationshipLabel>Propensity</relationshipLabel>
     <relationshipName>Propensiones</relationshipName>
     <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>
