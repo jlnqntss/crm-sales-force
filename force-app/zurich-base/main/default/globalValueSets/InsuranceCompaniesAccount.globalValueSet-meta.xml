@@ -26,12 +26,12 @@
         <label>Fiatc</label>
     </customValue>
     <customValue>
-        <fullName>SegurCaixa</fullName>
+        <fullName>Segur Caixa</fullName>
         <default>false</default>
         <label>Segur Caixa</label>
     </customValue>
     <customValue>
-        <fullName>MutuaMadrileña</fullName>
+        <fullName>Mutua Madrileña</fullName>
         <default>false</default>
         <label>Mutua Madrileña</label>
     </customValue>
@@ -41,12 +41,12 @@
         <label>Mapfre</label>
     </customValue>
     <customValue>
-        <fullName>LagunAro</fullName>
+        <fullName>Lagun Aro</fullName>
         <default>false</default>
         <label>Lagun Aro</label>
     </customValue>
     <customValue>
-        <fullName>MutuaGeneral</fullName>
+        <fullName>Mútua General</fullName>
         <default>false</default>
         <label>Mútua General</label>
     </customValue>
