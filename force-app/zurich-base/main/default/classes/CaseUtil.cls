@@ -997,4 +997,28 @@ public with sharing class CaseUtil
 
         return caso;
     }
+
+    /**
+     * Método que actualiza los valores del caso proveniente del email to case de transcom antes de insertarlo
+     * @author: aberuete
+     * @date: 21/06/2023
+     * @param List<Case> newList : Lista de casos nuevos
+     */
+    public static void updateTranscomCase (List<Case> newList)
+    {
+        List<Group> queueRetencion = new GroupSelector().findByName('Email_TWW_Retencion');
+        List<Group> queueAnulacion = new GroupSelector().findByName('Email_TWW_Anulacion');
+        
+        for (Case caseNew : newList)
+        {
+            if (caseNew.OwnerId == queueRetencion[0].Id || caseNew.OwnerId == queueAnulacion[0].Id )
+            {
+                caseNew.CallCenter__c = 'TWW Retención';
+                caseNew.SourceArea__c = 'Generic end customer';
+                caseNew.Type = 'Gestión Servicios';
+                caseNew.Subtype__c = 'Anulación';
+                caseNew.TypeN3__c = 'Anulación';
+            }
+        }
+    }
 }
