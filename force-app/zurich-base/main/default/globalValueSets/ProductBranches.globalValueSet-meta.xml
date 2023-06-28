@@ -51,12 +51,12 @@
         <label>PATRIMONIALS</label>
     </customValue>
     <customValue>
-        <fullName>PROTPAGOS</fullName>
+        <fullName>PROT. PAGOS</fullName>
         <default>false</default>
         <label>PROT. PAYMENTS</label>
     </customValue>
     <customValue>
-        <fullName>RESPCIVIL</fullName>
+        <fullName>RESP. CIVIL</fullName>
         <default>false</default>
         <label>LIABILITY</label>
     </customValue>
