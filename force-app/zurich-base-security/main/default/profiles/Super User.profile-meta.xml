@@ -6115,6 +6115,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.SalesLossReasonDateTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Event.SoyManager__c</field>
         <readable>true</readable>
@@ -9756,6 +9761,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.SegmentMediatorCase__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.SalesLossReasonDateTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
