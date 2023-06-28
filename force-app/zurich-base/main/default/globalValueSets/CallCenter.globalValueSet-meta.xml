@@ -40,6 +40,11 @@
         <default>false</default>
         <label>Centro Excelencia</label>
     </customValue>
+    <customValue>
+        <fullName>TWW Retención</fullName>
+        <default>false</default>
+        <label>TWW Retención</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
