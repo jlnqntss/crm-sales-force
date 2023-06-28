@@ -502,7 +502,8 @@ private class OpenIDConnectRegHandlerTest
 
         User createdUser = [SELECT userName, Department, Signature FROM user WHERE id=:u.Id];
         System.assertEquals('TestDeptA', createdUser.Department, 'The department of the user should be TestDeptA');
-        System.assertEquals('testFirst testLast Zurich Seguros', createdUser.Signature, 'The signature is not correct');
+        String expected = 'testFirst testLast Zurich Seguros'+Label.IAMUserSignatureLegal;
+        System.assertEquals(expected, createdUser.Signature, 'The signature is not correct');
     }
 
     /**
@@ -578,7 +579,8 @@ private class OpenIDConnectRegHandlerTest
         Test.stopTest();
 
         User createdUser = [SELECT Signature FROM user WHERE id=:u.Id];
-        System.assertEquals('Klinc seguros', createdUser.Signature, 'The signature should have changed');
+        String expected = 'Klinc seguros'+Label.IAMUserSignatureLegal;
+        System.assertEquals(expected, createdUser.Signature, 'The signature should have changed');
     }  
 
     /**
