@@ -18,7 +18,7 @@
     <customValue>
         <fullName>COMERCIOS</fullName>
         <default>false</default>
-        <label>TRADE</label>
+        <label>STORES</label>
     </customValue>
     <customValue>
         <fullName>DECESOS</fullName>
