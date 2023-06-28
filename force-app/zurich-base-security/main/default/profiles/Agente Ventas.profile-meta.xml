@@ -3316,6 +3316,9 @@
         <layout>Codigo_Negocio_BancSabadell__mdt-Codigo Negocio BancSabadell Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Competitor__c-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Contact-Ventas Agent Mediator</layout>
         <recordType>Contact.AgentMediator</recordType>
     </layoutAssignments>
@@ -3409,6 +3412,10 @@
     <layoutAssignments>
         <layout>PersonAccount-Agente ZRM</layout>
         <recordType>PersonAccount.Customer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PersonAccount-Agente ZRM</layout>
+        <recordType>PersonAccount.PersonAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PersonAccount-Ventas Lead</layout>
@@ -3825,6 +3832,10 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <userLicense>Partner Community</userLicense>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EditEvent</name>
+    </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>EnableNotifications</name>
