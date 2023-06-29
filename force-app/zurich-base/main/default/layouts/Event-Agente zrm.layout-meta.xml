@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <excludeButtons>Accept</excludeButtons>
+    <excludeButtons>AddToOutlook</excludeButtons>
+    <excludeButtons>Cancel</excludeButtons>
+    <excludeButtons>ChangeRecordType</excludeButtons>
+    <excludeButtons>Clone</excludeButtons>
+    <excludeButtons>Decline</excludeButtons>
+    <excludeButtons>Delete</excludeButtons>
+    <excludeButtons>DeleteFromThisEventOnwards</excludeButtons>
+    <excludeButtons>DeleteSeries</excludeButtons>
+    <excludeButtons>Edit</excludeButtons>
+    <excludeButtons>FollowupEvent</excludeButtons>
+    <excludeButtons>FollowupTask</excludeButtons>
+    <excludeButtons>PrintableView</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
@@ -92,6 +105,9 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <platformActionList>
+        <actionListContext>Record</actionListContext>
+    </platformActionList>
     <relatedContent>
         <relatedContentItems>
             <layoutItem>
@@ -112,7 +128,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h1q000000Hg1f</masterLabel>
+        <masterLabel>00h0C000002YtIj</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
