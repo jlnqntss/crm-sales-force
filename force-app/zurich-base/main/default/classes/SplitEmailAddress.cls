@@ -19,7 +19,7 @@ public class SplitEmailAddress
         label='Split String'
         description='Returns a list of String'
     )
-    public static List<List<String>> SplitEmailAddress(List<FlowInputs> flowInputs)
+    public static List<List<String>> splitEmailAddress(List<FlowInputs> flowInputs)
     {
         List<String> listString = new List<String>();
         List<List<String>> listsToReturn = new List<List<String>>();
