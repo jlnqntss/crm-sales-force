@@ -135,6 +135,18 @@
           "renderPriority": "NEUTRAL",
           "renditionMap": {},
           "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "relatedListApiName": "AttachedContentDocuments",
+            "relatedListComponentOverride": "GRID",
+            "width": "MEDIUM"
+          },
+          "componentName": "forceCommunity:responsiveRelatedListSingle",
+          "id": "a2302e0d-eb69-4795-803c-da9c51dee226",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
         }
       ],
       "id": "c13d3d8d-1868-4db0-9d1f-7723eb2de4bd",
