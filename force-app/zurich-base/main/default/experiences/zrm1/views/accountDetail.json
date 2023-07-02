@@ -144,11 +144,11 @@
         {
           "componentAttributes": {
             "relatedListApiName": "AttachedContentDocuments",
-            "relatedListComponentOverride": "GRID",
-            "width": "MEDIUM"
+            "relatedListComponentOverride": "NONE",
+            "width": "SMALL"
           },
           "componentName": "forceCommunity:responsiveRelatedListSingle",
-          "id": "5e0ee644-ef4b-4eef-b90e-09c65cce272f",
+          "id": "1ba6819b-c32b-40db-8f65-1879d4304a11",
           "renderPriority": "NEUTRAL",
           "renditionMap": {},
           "type": "component"
