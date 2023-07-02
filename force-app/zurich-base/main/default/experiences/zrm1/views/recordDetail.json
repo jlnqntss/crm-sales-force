@@ -1,6 +1,6 @@
 {
   "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "componentName": "siteforce:sldsTwoCol84Layout",
+  "componentName": "siteforce:sldsOneColLayout",
   "dataProviders": [],
   "id": "d5cf2ba1-1253-490b-89d0-4e21abcf256f",
   "label": "Record Detail",
@@ -26,71 +26,10 @@
       "components": [
         {
           "componentAttributes": {
-            "tabsetConfig": {
-              "UUID": "7336a94e-34c0-4ee2-b4ed-411bcc84069d",
-              "activeTab": "",
-              "tabs": [
-                {
-                  "UUID": "e7900e66-bda2-4742-8315-ad3577e7a43c",
-                  "allowGuestUser": true,
-                  "locked": false,
-                  "seedComponents": [],
-                  "tabKey": "1",
-                  "tabName": "Details"
-                },
-                {
-                  "UUID": "2bae9212-c768-455b-b785-be2a83dee0b0",
-                  "allowGuestUser": true,
-                  "locked": false,
-                  "seedComponents": [],
-                  "tabKey": "2",
-                  "tabName": "Related"
-                }
-              ],
-              "useOverflowMenu": false
-            }
+            "recordId": "{!recordId}"
           },
-          "componentName": "forceCommunity:tabset",
-          "id": "7336a94e-34c0-4ee2-b4ed-411bcc84069d",
-          "regions": [
-            {
-              "components": [
-                {
-                  "componentAttributes": {
-                    "recordId": "{!recordId}"
-                  },
-                  "componentName": "forceCommunity:recordDetail",
-                  "id": "2f3ccfe5-da2f-4e6e-8802-2c0515213b2b",
-                  "renditionMap": {},
-                  "type": "component"
-                }
-              ],
-              "id": "e7900e66-bda2-4742-8315-ad3577e7a43c",
-              "regionLabel": "Details",
-              "regionName": "1",
-              "renditionMap": {},
-              "type": "region"
-            },
-            {
-              "components": [
-                {
-                  "componentAttributes": {
-                    "recordId": "{!recordId}",
-                    "width": "MEDIUM"
-                  },
-                  "componentName": "forceCommunity:relatedRecords",
-                  "id": "4065c55a-20cd-4e97-9362-a40ad72049ab",
-                  "renditionMap": {},
-                  "type": "component"
-                }
-              ],
-              "id": "2bae9212-c768-455b-b785-be2a83dee0b0",
-              "regionLabel": "Related",
-              "regionName": "2",
-              "renditionMap": {},
-              "type": "region"
-            }
-          ],
+          "componentName": "forceCommunity:recordDetail",
+          "id": "13dff091-a86c-4928-8b31-cdbb92c7b6d9",
           "renderPriority": "NEUTRAL",
           "renditionMap": {},
           "type": "component"
