@@ -3466,9 +3466,6 @@
     <layoutAssignments>
         <layout>User-User Layout</layout>
     </layoutAssignments>
-    <layoutAssignments>
-        <layout>Propensity__c-Agente zrm</layout>
-    </layoutAssignments>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
         <enabled>false</enabled>
