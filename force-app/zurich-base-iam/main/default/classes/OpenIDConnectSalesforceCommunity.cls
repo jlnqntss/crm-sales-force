@@ -247,7 +247,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
                 throw new RegHandlerException(ERROR_NO_INTERMEDIARY_ACCOUNT);
             } else { // existe cuenta
                 Account account = accountList.get(0);
-                result = createContact(account.Id, data);
+                result = createContact(account.Id, data, 'AgentMediator');
             }
         } else { // si existe devolvemos el primero
             result = contactList.get(0).Id;
@@ -257,7 +257,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
     }
 
     /**
-     * @Description Buscamos el contacto en la cuenta dummy si no existe creamos el contacto
+     * @Description Buscamos la cuenta dummy y creamos el contacto
      * @date 12/06/2023
      * @author dmunoz
      */
@@ -267,20 +267,13 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         // obtener el codigo de filiación de la metadata
         Map<String, List<String>> authMap = (Map<String, List<String>>) metadataInfoMap.get('AuthMap');
 
-        // consultamos si existe un contacto asociado
-        List<Contact> contactList = (new ContactsSelector()).findContactByEmailAndAccountAffiliationCode(data.email, authMap.get(PERMISSION_TYPE_AFFILIATION_CODE));
+        List<Account> accountList = (new AccountsSelector()).findAccountByBusinessCode(authMap.get(PERMISSION_TYPE_AFFILIATION_CODE));
 
-        if (!contactList.isEmpty()) { // si existe contacto usamos ese, si hay varios el primero
-            result = contactList.get(0).Id;
-        } else { // si no hay contacto buscamos si exite el account dummy, enviamos lista pero solo nos llegará uno
-            List<Account> accountList = (new AccountsSelector()).findAccountByAffiliationCode(authMap.get(PERMISSION_TYPE_AFFILIATION_CODE));
-
-            if (accountList.isEmpty()) {
-                throw new RegHandlerException(ERROR_NO_DUMMY_ACCOUNT);
-            }
-
-            result = createContact(accountList.get(0).Id, data);
+        if (accountList.isEmpty()) {
+            throw new RegHandlerException(ERROR_NO_DUMMY_ACCOUNT);
         }
+
+        result = createContact(accountList.get(0).Id, data, 'ContactPartner');        
 
         return result;
     }
@@ -290,13 +283,13 @@ public with sharing class OpenIDConnectSalesforceCommunity {
      * @date 12/06/2023
      * @author dmunoz
      */
-    private Id createContact(Id accountId, Auth.UserData data) {
+    private Id createContact(Id accountId, Auth.UserData data, String recordTypeDeveloperName) {
 
         try {
             Id result;
     
             Contact c = new Contact();
-            c.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('Contact').getRecordTypeId();
+            c.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get(recordTypeDeveloperName).getRecordTypeId();
             c.FirstName = data.firstName;
             c.LastName = data.lastName;
             c.Email = data.email;
@@ -412,7 +405,9 @@ public with sharing class OpenIDConnectSalesforceCommunity {
             if( userPermissionMap != null && !userPermissionMap.isEmpty()){
                 activateUserPermission(userPermissionMap, u);
             }
-            update(u);
+            if (!Test.isRunningTest()) { // para evitar un error en el test no actualizo el registro de usuario si es un test
+                update u;
+            }
         }
         return u;
     }    

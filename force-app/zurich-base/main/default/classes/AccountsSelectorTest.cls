@@ -678,23 +678,21 @@ private with sharing class AccountsSelectorTest
      * @date 26/06/2023
      */
     @IsTest
-    static void test_findAccountByAffiliationCode()
+    static void test_findAccountByBusinessCode()
     {
         AccountsSelector accSel = new AccountsSelector();
         
-        List<Account> accountsQuery = [SELECT Id, INFOCustomerNumber__c FROM Account LIMIT 1];
+        List<Account> accountsQuery = [SELECT Id, INFOBusinessCode__c FROM Account LIMIT 1];
 
         if (!accountsQuery.isEmpty()) {
             List<String> affiliationCodeList = new List<String>();
-            affiliationCodeList.add(accountsQuery.get(0).INFOCustomerNumber__c);
+            affiliationCodeList.add(accountsQuery.get(0).INFOBusinessCode__c);
 
-            List<Account> result = accSel.findAccountByAffiliationCode(affiliationCodeList);
+            List<Account> result = accSel.findAccountByBusinessCode(affiliationCodeList);
 
             System.assertEquals(true, !result.isEmpty(), 'Debe tener resultados');
 
         }
-
-
 
     }
 

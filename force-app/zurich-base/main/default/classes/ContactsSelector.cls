@@ -284,11 +284,14 @@ public with sharing class ContactsSelector extends RecordsSelector
      */
     public List<Contact> findIntermediaryContactByEmailAndAccountCode(String email, String accountCode) {
         List<Contact> result = new List<Contact>();
+        String idAgentMediator = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('AgentMediator')?.getRecordTypeId();
+
+
         if (email != null && String.isNotEmpty(email) && accountCode != null && String.isNotEmpty(accountCode)) {
             result = new List<Contact>([
                 SELECT Id FROM Contact WHERE Account.RecordTypeId = :ACCOUNT_SCHEMA_SOBJECT_RT_DEVNAME.get('Intermediary').getRecordTypeId() 
                 AND Account.INFOIntermediaryCode__c = :accountCode AND Email = :email 
-                AND RecordtypeId = :rtContactId           
+                AND RecordtypeId = :idAgentMediator       
             ]);
         }
         return result;
@@ -307,7 +310,7 @@ public with sharing class ContactsSelector extends RecordsSelector
         if (email != null && String.isNotEmpty(email) && affiliationCodeList != null && !affiliationCodeList.isEmpty()) {
             result = new List<Contact>([
                 SELECT Id FROM Contact WHERE 
-                Account.INFOCustomerNumber__c = :affiliationCodeList
+                Account.INFOBusinessCode__c = :affiliationCodeList
                 AND RecordtypeId = :rtContactId 
                 AND Email = :email  
             ]);

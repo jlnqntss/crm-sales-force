@@ -658,12 +658,12 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @author dmunoz
      * @date 15/06/2023
      */
-    public List<Account> findAccountByAffiliationCode(List<String> affiliationCodeList) {
+    public List<Account> findAccountByBusinessCode(List<String> businessCodeList) {
 
         List<Account> result = new List<Account>();
 
-        if (affiliationCodeList != null && !affiliationCodeList.isEmpty()) {
-            result = new List<Account>([SELECT Id FROM Account WHERE INFOCustomerNumber__c IN :affiliationCodeList]);
+        if (businessCodeList != null && !businessCodeList.isEmpty()) {
+            result = new List<Account>([SELECT Id FROM Account WHERE INFOBusinessCode__c IN :businessCodeList]);
         }
         return result;
     }

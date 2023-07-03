@@ -32,7 +32,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler {
      * @return {User} Objeto de Salesforce que se corresponde con el usuario.
      */
     global User createUser(Id portalId, Auth.UserData data) {
-
+        System.debug('Entro en Create User ' + data.attributeMap);
         User u;
         
         // obtener rol recibido de IAM
@@ -69,7 +69,6 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler {
      * @param {Auth.UserData} data - Almacena la información del usuario: UserData(identifier, firstName, lastName, fullName, email, link, userName, locale, provider, siteLoginUrl, attributeMap)
      */
     global void updateUser(Id userId, Id portalId, Auth.UserData data) {
-        System.debug('DMM test1');
         
         System.debug('Entro en Update User ' + data.attributeMap);
         // obtener rol recibido de IAM

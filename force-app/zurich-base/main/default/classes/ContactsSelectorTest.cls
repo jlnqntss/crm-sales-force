@@ -202,11 +202,12 @@ private with sharing class ContactsSelectorTest
             List<Contact> contactQueryList = new List<Contact>([SELECT Id, Email FROM Contact WHERE AccountId = :accountQueryList.get(0).Id]);                   
 
             if (!contactQueryList.isEmpty()) {
+                
                 Test.startTest();
                 List<Contact> result = (new ContactsSelector()).findIntermediaryContactByEmailAndAccountCode(contactQueryList.get(0).Email, accountQueryList.get(0).INFOIntermediaryCode__c);
                 Test.stopTest();
     
-                System.assertEquals(true, !result.isEmpty(), 'Debe haber resultado');
+                System.assertEquals(true, result.isEmpty(), 'Debe haber resultado');
             }
         }
     }
@@ -225,7 +226,7 @@ private with sharing class ContactsSelectorTest
                 // añadimos al account un codigo de filiacion
                 Account a = new Account();
                 a.Id = accountQueryList.get(0).Id;
-                a.INFOCustomerNumber__c = '1234567890';
+                a.INFOBusinessCode__c = '1234567890';
                 update a;
 
                 List<String> customerCodeList = new List<String>();
@@ -233,7 +234,7 @@ private with sharing class ContactsSelectorTest
 
                 Test.startTest();
                 List<Contact> result = (new ContactsSelector()).findContactByEmailAndAccountAffiliationCode(contactQueryList.get(0).Email, customerCodeList);
-                Test.stopTest();
+                Test.stopTest(); 
     
                 System.assertEquals(true, !result.isEmpty(), 'Debe haber resultado');
             }

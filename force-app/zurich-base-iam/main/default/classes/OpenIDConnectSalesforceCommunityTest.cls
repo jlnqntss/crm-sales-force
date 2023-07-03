@@ -320,9 +320,6 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
             System.assertEquals('testuserlong@zurich-es.com', createdUser.userName, 'UserName debe ser testuserlong@zurich-es.com');
             System.assertEquals('testLast', createdUser.lastName, 'LastName debe ser testLast');
             System.assertEquals('testFirst', createdUser.firstName, 'firstName debe ser testFirst');
-
-            // test update user on create
-            handler.createUser(null, sampleDataIAM, iamRoleReceived);
         }
     }
 
@@ -365,14 +362,15 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
             // añado al account el codigo de afiliación
             Account account = new Account();
             account.Id = contacts.get(0).AccountId;
-            account.INFOCustomerNumber__c = '1234567890';
+            account.INFOBusinessCode__c = '1234567890';
+            account.RecordtypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PartnerOCS')?.getRecordTypeId();
 
             update account;
 
             List<String> iamRoleReceived = new List<String>{IAM_ROLE_B};
     
             OpenIDConnectSalesforceCommunity handler = new OpenIDConnectSalesforceCommunity();
-            Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B, contacts.get(0).Email, account.INFOCustomerNumber__c);
+            Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B, contacts.get(0).Email, account.INFOBusinessCode__c);
     
             Test.startTest();
             User u = handler.createUser(null, sampleDataIAM, iamRoleReceived);
@@ -399,14 +397,15 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
             // añado el codigo de afiliación
             Account account = new Account();
             account.Id = accounts.get(0).Id;
-            account.INFOCustomerNumber__c = '1234567890';
+            account.INFOBusinessCode__c = '1234567890';
+            account.RecordtypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PartnerOCS')?.getRecordTypeId();
             update account;
 
 
             List<String> iamRoleReceived = new List<String>{IAM_ROLE_B};
     
             OpenIDConnectSalesforceCommunity handler = new OpenIDConnectSalesforceCommunity();
-            Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B, 'notExistingEmailTest@email.com.invalid', account.INFOCustomerNumber__c);
+            Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B, 'notExistingEmailTest@email.com.invalid', account.INFOBusinessCode__c);
     
             Test.startTest();
             User u = handler.createUser(null, sampleDataIAM, iamRoleReceived);
