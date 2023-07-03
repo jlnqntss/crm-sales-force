@@ -1,0 +1,61 @@
+{
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "90f2bd3a-64f4-419f-bf3d-3ad5e9480d16",
+  "label" : "Tareas Equipo",
+  "regions" : [ {
+    "id" : "c33d4e62-d427-430f-97ae-181b215489db",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "enableInlineEdit" : true,
+        "filterName" : "Actividades_pendientes_de_mi_equipo",
+        "layout" : "FULL",
+        "pageSize" : 25,
+        "scope" : "Task",
+        "showActionBar" : true,
+        "showChartsPanel" : true,
+        "showDisplay" : "showall",
+        "showFilterPanel" : true,
+        "showImageIcon" : true,
+        "showManualRefreshButton" : true,
+        "showObjectName" : true,
+        "showPinnedList" : true,
+        "showSearchBar" : true
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "550d658f-d9b2-4772-9af4-c38ad1f0bbef",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "471e0368-2eb9-4b89-87d6-538e7d63e8fc",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "f4ed77ff-cf96-4184-96d1-33d96b589f7b",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Tareas Equipo"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "119a8ddc-e862-4708-8a40-16089ea9ae7d",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "778d8766-3ba7-42cb-992d-74dbbc011931",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-tareas-equipo"
+}

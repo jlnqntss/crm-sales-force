@@ -1,27 +1,23 @@
 {
-  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "componentName": "siteforce:sldsOneColLayout",
-  "dataProviders": [],
-  "id": "9639ba23-715d-43b4-a071-93efcbb46363",
-  "label": "Messages",
-  "regions": [
-    {
-      "components": [
-        {
-          "componentAttributes": {},
-          "componentName": "forceChatter:messages",
-          "id": "09df134e-d6ba-4371-aa22-535ee0f1d3e0",
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
-        }
-      ],
-      "id": "82fbd10d-02cf-43ea-bb5c-e59efc2336bd",
-      "regionName": "content",
-      "type": "region"
-    }
-  ],
-  "themeLayoutType": "Inner",
-  "type": "view",
-  "viewType": "messages"
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "9639ba23-715d-43b4-a071-93efcbb46363",
+  "label" : "Messages",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "forceChatter:messages",
+      "id" : "09df134e-d6ba-4371-aa22-535ee0f1d3e0",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "82fbd10d-02cf-43ea-bb5c-e59efc2336bd",
+    "regionName" : "content",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "messages"
 }

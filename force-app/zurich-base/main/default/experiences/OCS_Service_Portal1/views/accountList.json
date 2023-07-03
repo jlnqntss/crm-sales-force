@@ -1,0 +1,46 @@
+{
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "c05eff8e-1da4-43d8-bf1e-984ac77bc079",
+  "label" : "Account List",
+  "regions" : [ {
+    "id" : "a2a43df4-eb24-4b47-aeba-797309009ceb",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "enableInlineEdit" : true,
+        "filterName" : "RecentlyViewedAccounts",
+        "layout" : "FULL",
+        "pageSize" : 25,
+        "scope" : "Account",
+        "showActionBar" : true,
+        "showChartsPanel" : true,
+        "showDisplay" : "showall",
+        "showFilterPanel" : true,
+        "showImageIcon" : true,
+        "showManualRefreshButton" : true,
+        "showObjectName" : true,
+        "showPinnedList" : true,
+        "showSearchBar" : true
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "1f073ff0-5289-440f-b9fc-3abe0dff5b60",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "95a82f6a-5aaa-401e-bf18-c4e4e1faa8fd",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "f9bed84d-75dd-469f-8fef-3412567c0a8b",
+    "regionName" : "footer",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "list-001"
+}
