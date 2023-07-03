@@ -75,11 +75,56 @@
               "components": [
                 {
                   "componentAttributes": {
-                    "recordId": "{!recordId}",
+                    "relatedListApiName": "Opportunities__r",
+                    "relatedListComponentOverride": "GRID",
                     "width": "MEDIUM"
                   },
-                  "componentName": "forceCommunity:relatedRecords",
-                  "id": "1668d6cb-abe3-4c30-ac6a-9344494ba2b7",
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "1c6da344-d35f-49a6-be4d-5273222d0154",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Policies__r",
+                    "relatedListComponentOverride": "GRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "e6ea8675-7a8c-4fb5-97d8-d1305ffe9f4a",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Claims__r",
+                    "relatedListComponentOverride": "GRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "5a3e5ef3-47ec-49f3-9557-ba8c994af5fa",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Competitors__r",
+                    "relatedListComponentOverride": "GRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "791a7d0a-79bb-4ac0-9011-d76e11f9c1d1",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Propensiones__r",
+                    "relatedListComponentOverride": "GRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "fc812739-f6b2-42d2-ae49-c9970a9f8b99",
                   "renditionMap": {},
                   "type": "component"
                 }
