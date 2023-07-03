@@ -760,6 +760,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler
                 }
                 // Put the values of the User fields in the slots ({n}) of the configured text
                 result = String.format(config_firma, listValues);
+                result = result + Label.IAMUserSignatureLegal;
             } catch( Exception ex ) {
                 ErrorLogUtil.commitError(ex, CLASS_NAME);
             }
