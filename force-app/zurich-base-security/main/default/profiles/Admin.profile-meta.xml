@@ -8799,6 +8799,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.SalesLossReasonDateTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Acta__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8980,6 +8985,11 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>Event.IsRelatedToComercialPlan__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.SalesLossReasonDateTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

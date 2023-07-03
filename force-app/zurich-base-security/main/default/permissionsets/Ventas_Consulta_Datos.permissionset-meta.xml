@@ -2340,6 +2340,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Event.SalesLossReasonDateTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Event.SoyManager__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3716,6 +3721,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.Response__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.SalesLossReasonDateTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
