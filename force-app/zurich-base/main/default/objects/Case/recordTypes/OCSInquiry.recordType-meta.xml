@@ -559,6 +559,10 @@
             <fullName>Retenido</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Traslado a gestión centro tramitador</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>CustomerFoundBy__c</picklist>
@@ -1121,10 +1125,6 @@
     <picklistValues>
         <picklist>TypeN3__c</picklist>
         <values>
-            <fullName>Alegaciones SDC</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Anotación Embargo</fullName>
             <default>false</default>
         </values>
@@ -1201,6 +1201,14 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cumplimiento resolución</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cumplimiento resolución SDC</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Datos Bancarios</fullName>
             <default>false</default>
         </values>
@@ -1210,6 +1218,10 @@
         </values>
         <values>
             <fullName>Devolución</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disconformidad con indemnización</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1325,7 +1337,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Pago Graciable</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Pagos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Petición Alegaciones SDC</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1374,6 +1394,10 @@
         </values>
         <values>
             <fullName>Replica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC</fullName>
             <default>false</default>
         </values>
         <values>
