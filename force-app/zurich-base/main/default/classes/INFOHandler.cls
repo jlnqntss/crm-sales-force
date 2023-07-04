@@ -35,6 +35,8 @@ public class INFOHandler implements ISystem
     public static final String NOTE = 'NOTE';
     public static final String SPECIAL_CONDITION = 'SPECIAL_CONDITION';
     public static final String INTERMEDIARY_KPI = 'INTERMEDIARY_KPI';
+    public static final String ACCOUNT_KPI = 'ACCOUNT_KPI';
+    public static final String POLICY_KPI = 'POLICY_KPI';
     public static final String SOBJECT_CASE = 'Case';
 
     public static final List<String> PRIORITY_ENTITIES =  new List<String>{NOTE};
@@ -140,6 +142,7 @@ public class INFOHandler implements ISystem
      * @throws
      * @where ExternalJobQueueBatch
      * @change 15/05/2023 - aberuete - Refactorizar el método
+     * @change 12/07/2023 - jonandersanjuan - Se agregan nuevas entidades ACCOUNT_KPI y POLICY_KPI
      */
     private static void processExternalRequestByEntity(ExternalRequest__c externalRequest)
     {
@@ -250,6 +253,18 @@ public class INFOHandler implements ISystem
             {
                 KPI__c intermediaryKpiRecord = (KPI__c) ExternalRequestHandlerUtil.tf.transform(INTERMEDIARY_KPI, 'KPI__c', recordValuesMap);
                 ExternalRequestHandlerUtil.addRecordToMap(externalRequest, INTERMEDIARY_KPI, 'KPI__c', intermediaryKpiRecord);
+            }
+            // Account KPIs
+            when 'ACCOUNT_KPI'
+            {
+                Account accountRecord = (Account) ExternalRequestHandlerUtil.tf.transform(ACCOUNT_KPI, 'Account', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, ACCOUNT_KPI, 'Account', accountRecord);
+            }
+            // Policy KPIs
+            when 'POLICY_KPI'
+            {
+                Policy__c policyRecord = (Policy__c) ExternalRequestHandlerUtil.tf.transform(POLICY_KPI, 'Policy__c', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, POLICY_KPI, 'Policy__c', policyRecord);
             }
             when else
             {
