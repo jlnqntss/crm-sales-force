@@ -11,6 +11,51 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
+                <fullName>No Policy-Interested later on</fullName>
+                <default>false</default>
+                <label>No quiero póliza-Interesado más adelante</label>
+            </value>
+            <value>
+                <fullName>No Policy-Interested, managed by my agent</fullName>
+                <default>false</default>
+                <label>No quiero póliza-Interesado, pero prefiero que lo gestione mi agente</label>
+            </value>
+            <value>
+                <fullName>No Policy-Better competition conditions</fullName>
+                <default>false</default>
+                <label>No quiero póliza-Mejores condiciones competencia</label>
+            </value>
+            <value>
+                <fullName>No Policy-Lack/limitation of coverage</fullName>
+                <default>false</default>
+                <label>No quiero póliza-Falta/limitación de coberturas</label>
+            </value>
+            <value>
+                <fullName>No Policy-Insurance required by the bank</fullName>
+                <default>false</default>
+                <label>No quiero póliza-Seguro obligado con el banco</label>
+            </value>
+            <value>
+                <fullName>No Policy-Already take a policy</fullName>
+                <default>false</default>
+                <label>No quiero póliza-Ya ha contratado póliza</label>
+            </value>
+            <value>
+                <fullName>No Policy-Bad experience</fullName>
+                <default>false</default>
+                <label>No quiero póliza-Mala experiencia</label>
+            </value>
+            <value>
+                <fullName>No Policy-Need higher discount</fullName>
+                <default>false</default>
+                <label>No quiero póliza-Necesita descuento mayor</label>
+            </value>
+            <value>
+                <fullName>No Policy-Incidence unresolved with policy</fullName>
+                <default>false</default>
+                <label>No quiero póliza-Incidencia actual no resuelta con alguna póliza en vigor</label>
+            </value>
+            <value>
                 <fullName>CARS-Uses/type of risk</fullName>
                 <default>false</default>
                 <label>AUTO-Usos/tipo de riesgo</label>

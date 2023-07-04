@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-06-2023
+ * @last modified by  : aberuete
+**/
 @isTest
 public class BusinessInsuranceCreateLeadActionTest
 {
@@ -25,7 +32,7 @@ public class BusinessInsuranceCreateLeadActionTest
         Test.stopTest();
 
         // Comprobamos que se ha generado correctamente toda la información
-        List<Account> createdLeads = AccountSearchService.findCustomersByDocumentId(new List<String>{leadInformation.nationalIdentifier}, 'N', RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.GI);
+        List<Account> createdLeads = AccountSearchService.findCustomersByDocumentId(new List<String>{leadInformation.nationalIdentifier}, 'N', RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.GI, null, null);
         System.assertEquals(false, createdLeads.isEmpty(), 'List should NOT be empty');
 
         List<Scope__c> createdScopes = new ScopesSelector().selectByAccountIdAndScope(new Set<Id>{createdLeads.get(0).Id}, RecordsSelector.Scope.ZE);

@@ -4,8 +4,8 @@
         <description>sirve para que le aparezca al agente que llevaba el caso un aviso en la campanita</description>
         <name>Notificar_Agente</name>
         <label>Notificar Agente</label>
-        <locationX>50</locationX>
-        <locationY>935</locationY>
+        <locationX>182</locationX>
+        <locationY>1055</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -50,8 +50,8 @@
     <assignments>
         <name>AssignRecipients</name>
         <label>Assign Recipients</label>
-        <locationX>50</locationX>
-        <locationY>815</locationY>
+        <locationX>182</locationX>
+        <locationY>935</locationY>
         <assignmentItems>
             <assignToReference>NotificationRecipients</assignToReference>
             <operator>Add</operator>
@@ -64,9 +64,31 @@
         </connector>
     </assignments>
     <decisions>
+        <name>CasoCerradoDecision</name>
+        <label>¿El caso esta cerrado?</label>
+        <locationX>50</locationX>
+        <locationY>575</locationY>
+        <defaultConnector>
+            <targetReference>UpdateCase</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Caso NO Cerrado</defaultConnectorLabel>
+        <rules>
+            <name>CasoCerradoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Caso.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Caso Cerrado</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Se_ha_Cerrado_la_Activity</name>
         <label>¿Se ha Cerrado la Activity?</label>
-        <locationX>182</locationX>
+        <locationX>248</locationX>
         <locationY>335</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -135,7 +157,7 @@
         <locationY>455</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>UpdateCase</targetReference>
+            <targetReference>CasoCerradoDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -152,8 +174,8 @@
     <recordLookups>
         <name>CustomNotification</name>
         <label>Custom Notification</label>
-        <locationX>50</locationX>
-        <locationY>695</locationY>
+        <locationX>182</locationX>
+        <locationY>815</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssignRecipients</targetReference>
@@ -173,8 +195,8 @@
     <recordUpdates>
         <name>UpdateCase</name>
         <label>Actualizar Caso</label>
-        <locationX>50</locationX>
-        <locationY>575</locationY>
+        <locationX>182</locationX>
+        <locationY>695</locationY>
         <connector>
             <targetReference>CustomNotification</targetReference>
         </connector>
@@ -257,7 +279,7 @@
         <object>Case</object>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>122</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Se_ha_Cerrado_la_Activity</targetReference>

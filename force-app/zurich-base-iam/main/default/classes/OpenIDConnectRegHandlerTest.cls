@@ -197,5 +197,4 @@ private class OpenIDConnectRegHandlerTest {
             System.assertEquals( 'OpenIDConnectRegHandler.RegHandlerException', e.getTypeName(), 'Se debe haber capturado una excepcion');
         }
     }
-    
 }

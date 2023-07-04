@@ -146,7 +146,7 @@ global class OpenIDConnectRegHandler implements Auth.RegistrationHandler {
         if (roleMetadata != null && !roleMetadata.isEmpty()) {
             result = true;
         }
-
+        
         return result;
     }
 

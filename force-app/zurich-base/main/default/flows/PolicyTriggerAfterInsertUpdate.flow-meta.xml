@@ -82,6 +82,34 @@
                 <elementReference>$Record.PolicyHolder__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.ResultingPolicyNumber__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.EffectiveDate__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.MovementStartDate__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.ProductId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ProductId__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.TotalPremium__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.TotalPremium__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>updateOfferAction</targetReference>
         </connector>

@@ -210,6 +210,78 @@
             <fullName>HOME-Uses%2Ftype of risk</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>LIFE-Age</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIFE-Capital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIFE-High risk CNO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIFE-High risk nationality</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIFE-High risk sport</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIFE-Illness</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIFE-PRP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIFE-Tax Residence</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIFE-Travel abroad %2B 60d</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Policy-Already take a policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Policy-Bad experience</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Policy-Better competition conditions</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Policy-Incidence unresolved with policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Policy-Insurance required by the bank</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Policy-Interested later on</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Policy-Interested%2C managed by my agent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Policy-Lack%2Flimitation of coverage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Policy-Need higher discount</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Priority</picklist>

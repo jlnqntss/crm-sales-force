@@ -3353,10 +3353,10 @@
         <layout>EntityOrderMapping__mdt-Entity Order Mapping Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Event-Event Layout</layout>
+        <layout>Event-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Event-Event Layout</layout>
+        <layout>Event-Agente zrm</layout>
         <recordType>Event.SDM_Event</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -3393,7 +3393,7 @@
         <recordType>Objective__c.Objectives</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Opportunity-Ventas Offer</layout>
+        <layout>Opportunity-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Order-Policy life</layout>
@@ -3407,16 +3407,15 @@
         <layout>OtherProduct__mdt-Other Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PersonAccount-Ventas Customer</layout>
+        <layout>PersonAccount-Agente ZRM</layout>
         <recordType>PersonAccount.Customer</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PersonAccount-Ventas Customer</layout>
-        <recordType>PersonAccount.PersonAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PersonAccount-Ventas Lead</layout>
         <recordType>PersonAccount.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Policy__c-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Quote-Quote Layout</layout>
@@ -3428,34 +3427,34 @@
         <layout>Robot_Hegeo_Setting__mdt-Robot Hegeo Setting Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Agente zrm</layout>
         <recordType>Task.Activity</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Agente zrm</layout>
         <recordType>Task.Activity_USP</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Agente zrm</layout>
         <recordType>Task.CommercialAction</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Agente zrm</layout>
         <recordType>Task.Communication</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Agente zrm</layout>
         <recordType>Task.Interaction</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Agente zrm</layout>
         <recordType>Task.Offer_Policy_Follow_up</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <layout>Task-Agente zrm</layout>
         <recordType>Task.Reminder</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -3829,6 +3828,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>EnableNotifications</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EditEvent</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

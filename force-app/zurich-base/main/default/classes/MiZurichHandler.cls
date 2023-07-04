@@ -3,7 +3,7 @@
  *                      Procesa las external request cuyo origen sea MI_ZURICH con la ayuda de la clase Transformer
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 05-23-2023
+ * @last modified on  : 06-09-2023
  * @last modified by  : aberuete
 **/
 public class MiZurichHandler implements ISystem 
@@ -146,7 +146,7 @@ public class MiZurichHandler implements ISystem
         caseRecord.CallCenter__c = CALL_CENTER_CC_SERVICE;
         caseRecord.Subject = SUBJECT_HELP_REQUEST; 
         caseRecord.Description = getDescription (recordValuesMap);
-
+        
         if (!queueEmailSoporte.isEmpty())
         {
             caseRecord.OwnerId = queueEmailSoporte[0].Id;
@@ -173,36 +173,110 @@ public class MiZurichHandler implements ISystem
     @testvisible
     private static Case linkAccountAndContactToCase(Case caseRecord, Map<String, Object> recordValuesMap)
     {
-        if (recordValuesMap.containsKey('miZurich_nif'))
+        Map<Integer,Case> numAccountByCase = new Map <Integer, Case>();
+        numAccountByCase = linkAccountAndContactToCaseByNif (caseRecord, recordValuesMap);
+        
+        if (numAccountByCase.keySet().iterator().next() == 0)
         {
-            List<Account> accountsByNationalId = new AccountsSelector().findByNationalId(new List<String>{(String)recordValuesMap.get('miZurich_nif')}, '');
+            numAccountByCase = linkAccountAndContactToCaseByEmail (caseRecord, recordValuesMap);
+
+            if (numAccountByCase.keySet().iterator().next() == 0)
+            {
+                numAccountByCase = linkAccountAndContactToCaseByPhone (caseRecord, recordValuesMap);
+            }
+        }
+
+        return numAccountByCase.values()[0];
+    }
+
+    /**
+     * Método que busca si existe una única cuenta en función del valor del dni para asociar el caso.
+     * En caso afirmativo, asocia también el contacto de la cuenta.
+     **
+     * @author aberuete
+     * @date 02/06/2023
+     * @param Case caseRecord : Registro del caso
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     */
+    private static Map<Integer,Case> linkAccountAndContactToCaseByNif (Case caseRecord, Map<String, Object> recordValuesMap)
+    {
+        Map<Integer,Case> numAccountByCase = new Map<Integer, Case>(); 
+        if (recordValuesMap.containsKey('miZurich_nif') && (String)recordValuesMap.get('miZurich_nif') != null && !String.isBlank((String)recordValuesMap.get('miZurich_nif')))
+        {
+            List<Account> accountsByNationalId = AccountSearchService.findCustomersByDocumentId(new List<String>{(String)recordValuesMap.get('miZurich_nif')}, '',null,null, new List<String> {'Customer'}, new List<String>{'F','J'});
+            
             if (accountsByNationalId.size() == 1)
             {
                 caseRecord.AccountId = accountsByNationalId[0].Id;
                 caseRecord.ContactId =  accountsByNationalId[0].PersonContactId;
-            }
-            else if (accountsByNationalId.size() == 0 && recordValuesMap.containsKey('miZurich_email'))
-            {
-                List<Account> accountsByEmail = AccountSearchService.findCustomersByEmail(new List<String>{(String)recordValuesMap.get('miZurich_email')}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
-                if (accountsByEmail.size () == 1)
-                {
-                    caseRecord.AccountId = accountsByEmail[0].Id;
-                    caseRecord.ContactId =  accountsByEmail[0].PersonContactId;
-                }
-                else if (accountsByEmail.size () == 0 && recordValuesMap.containsKey('miZurich_telf')) 
-                {
-                    List<Account> accountsByPhone = AccountSearchService.findCustomersByPhoneNumber(new List<String>{(String)recordValuesMap.get('miZurich_telf')}, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL);
-                    if (accountsByPhone.size () == 1)
-                    {
-                        caseRecord.AccountId = accountsByPhone[0].Id;
-                        caseRecord.ContactId =  accountsByPhone[0].PersonContactId;
-                    }
-                }
-            }
-        
+            } 
+            numAccountByCase.put (accountsByNationalId.size(), caseRecord);
         }
-        
-        return caseRecord;
+        else 
+        {
+            numAccountByCase.put(0, caseRecord);
+        }
+        return numAccountByCase;
+    }
+
+    /**
+     * Método que busca si existe una única cuenta en función del valor del email para asociar el caso.
+     * En caso afirmativo, asocia también el contacto de la cuenta.
+     **
+     * @author aberuete
+     * @date 02/06/2023
+     * @param Case caseRecord : Registro del caso
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     */
+    private static Map<Integer,Case> linkAccountAndContactToCaseByEmail (Case caseRecord, Map<String, Object> recordValuesMap)
+    {
+        Map<Integer,Case> numAccountByCase = new Map<Integer, Case>(); 
+        if (recordValuesMap.containsKey('miZurich_email') && (String)recordValuesMap.get('miZurich_email') != null && !String.isBlank((String)recordValuesMap.get('miZurich_email')))
+        {
+            List<Account> accountsByEmail = AccountSearchService.findCustomersByEmail(new List<String>{(String)recordValuesMap.get('miZurich_email')}, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String>{'F','J'} );
+            
+            if (accountsByEmail.size() == 1)
+            {
+                caseRecord.AccountId = accountsByEmail[0].Id;
+                caseRecord.ContactId =  accountsByEmail[0].PersonContactId;
+            } 
+            numAccountByCase.put (accountsByEmail.size(), caseRecord);
+        }
+        else 
+        {
+            numAccountByCase.put(0, caseRecord);
+        }
+        return numAccountByCase;
+    }
+
+    /**
+     * Método que busca si existe una única cuenta en función del valor del teléfono para asociar el caso.
+     * En caso afirmativo, asocia también el contacto de la cuenta.
+     **
+     * @author aberuete
+     * @date 02/06/2023
+     * @param Case caseRecord : Registro del caso
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     */
+    private static Map<Integer,Case> linkAccountAndContactToCaseByPhone (Case caseRecord, Map<String, Object> recordValuesMap)
+    {
+        Map<Integer,Case> numAccountByCase = new Map<Integer, Case>(); 
+        if (recordValuesMap.containsKey('miZurich_telf') && (String)recordValuesMap.get('miZurich_telf') != null && !String.isBlank((String)recordValuesMap.get('miZurich_telf')))
+        {
+            List<Account> accountsByPhone = AccountSearchService.findCustomersByPhoneNumber(new List<String>{(String)recordValuesMap.get('miZurich_telf')}, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String>{'F','J'} );
+
+            if (accountsByPhone.size() == 1)
+            {
+                caseRecord.AccountId = accountsByPhone[0].Id;
+                caseRecord.ContactId =  accountsByPhone[0].PersonContactId;
+            } 
+            numAccountByCase.put (accountsByPhone.size(), caseRecord);
+        }
+        else 
+        {
+            numAccountByCase.put(0, caseRecord);
+        }
+        return numAccountByCase;
     }
 
     /**
@@ -216,37 +290,61 @@ public class MiZurichHandler implements ISystem
     {
         String descriptionForCase;
         List<String> fieldsDescription = new List<String> {'miZurich_name', 'miZurich_nif', 'miZurich_email', 'miZurich_telf', 'miZurich_description'};
-        List<String> textInDescription = new List<String> {'Nombre: ', 'DNI: ', 'Correo electrónico: ', 'Teléfono: ', 'DESCRIPCIÓN: '};
         
         for (Integer i = 0; i<fieldsDescription.size();i++ ) 
         {
-            if (i == 0)
-            {
-                descriptionForCase = textInDescription[i];
+            descriptionForCase = getTextDescriptionToCase (recordValuesMap, i, descriptionForCase, fieldsDescription);
 
-                if (recordValuesMap.containsKey(fieldsDescription[i]))
-                {
-                    descriptionForCase = descriptionForCase + recordValuesMap.get(fieldsDescription[i]) + ' '; 
-                }
-
-                if (recordValuesMap.containsKey('miZurich_lastName'))
-                {
-                    descriptionForCase = descriptionForCase + recordValuesMap.get('miZurich_lastName') ; 
-                }
-            }
-            else 
-            {
-                descriptionForCase = descriptionForCase + textInDescription[i];
-
-                if (recordValuesMap.containsKey(fieldsDescription[i]))
-                {
-                    descriptionForCase = descriptionForCase + recordValuesMap.get(fieldsDescription[i]);
-                }
-            }
             //Salto de línea
             descriptionForCase = descriptionForCase + '\n';
         }
 
+        return descriptionForCase;
+    }
+
+    /**
+     * Método que obtiene la descripción del caso
+     * @author aberuete
+     * @date 9/06/2023
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     * @param Integer i : Contador para saber que texto hay que poner
+     * @param String descriptionForCase: Campo descripción del caso
+     * List<String> fieldsDescription : Listado de los campos del json de las external request para añadir a la descripcion del caso
+     */
+    private static String getTextDescriptionToCase (Map<String, Object> recordValuesMap, Integer i, String descriptionForCase,List<String> fieldsDescription)
+    {
+        List<String> textInDescription = new List<String> {'Nombre: ', 'DNI: ', 'Correo electrónico: ', 'Teléfono: ', 'INFORMACIÓN ADICIONAL: '};
+
+        if (i == 0)
+        {
+            descriptionForCase = textInDescription[i];
+
+            if (recordValuesMap.containsKey(fieldsDescription[i]))
+            {
+                descriptionForCase = descriptionForCase + recordValuesMap.get(fieldsDescription[i]) + ' '; 
+            }
+
+            if (recordValuesMap.containsKey('miZurich_lastName'))
+            {
+                descriptionForCase = descriptionForCase + recordValuesMap.get('miZurich_lastName') ; 
+            }
+        }
+        else if (i == 4)
+        {
+            if (recordValuesMap.containsKey(fieldsDescription[i]) && !String.isBlank((String) recordValuesMap.get(fieldsDescription[i])) )
+            {
+                descriptionForCase = descriptionForCase + textInDescription[i] + recordValuesMap.get(fieldsDescription[i]);
+            }
+        }
+        else 
+        {
+            descriptionForCase = descriptionForCase + textInDescription[i];
+
+            if (recordValuesMap.containsKey(fieldsDescription[i]))
+            {
+                descriptionForCase = descriptionForCase + recordValuesMap.get(fieldsDescription[i]);
+            }
+        }
         return descriptionForCase;
     }
 }
