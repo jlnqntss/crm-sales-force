@@ -1,61 +1,70 @@
 {
-  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "componentName" : "siteforce:sldsOneColLayout",
-  "dataProviders" : [ ],
-  "id" : "9db667ec-b854-464a-a812-b6650224b640",
-  "label" : "ccCancelaciones",
-  "regions" : [ {
-    "id" : "1049655a-16d8-448f-be24-d2739b763ac2",
-    "regionName" : "header",
-    "type" : "region"
-  }, {
-    "components" : [ {
-      "componentAttributes" : {
-        "enableInlineEdit" : true,
-        "filterName" : "Email_TWW_Anulacion_Case",
-        "layout" : "FULL",
-        "pageSize" : 25,
-        "scope" : "Case",
-        "showActionBar" : true,
-        "showChartsPanel" : true,
-        "showDisplay" : "showall",
-        "showFilterPanel" : true,
-        "showImageIcon" : true,
-        "showManualRefreshButton" : true,
-        "showObjectName" : true,
-        "showPinnedList" : true,
-        "showSearchBar" : true
-      },
-      "componentName" : "forceCommunity:objectHome",
-      "id" : "08e7b10a-7b73-4d89-a2e9-c5888ff3c9d2",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "49969815-e2d7-4339-916b-f337e989707f",
-    "regionName" : "content",
-    "type" : "region"
-  }, {
-    "id" : "977f20f2-d71b-460f-bfc4-2aa05b285573",
-    "regionName" : "footer",
-    "type" : "region"
-  }, {
-    "components" : [ {
-      "componentAttributes" : {
-        "customHeadTags" : "",
-        "description" : "",
-        "title" : "CC Cancelaciones"
-      },
-      "componentName" : "forceCommunity:seoAssistant",
-      "id" : "0e006f79-d780-48c1-96a7-f48709cb9b8f",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "0e9e5904-58af-4b00-8e23-7c70319c737a",
-    "regionName" : "sfdcHiddenRegion",
-    "type" : "region"
-  } ],
-  "themeLayoutType" : "Inner",
-  "type" : "view",
-  "viewType" : "custom-cccancelaciones"
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "9db667ec-b854-464a-a812-b6650224b640",
+  "label": "ccCancelaciones",
+  "regions": [
+    {
+      "id": "1049655a-16d8-448f-be24-d2739b763ac2",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Email_TWW_Anulacion_Case",
+            "layout": "FULL",
+            "pageSize": 25,
+            "scope": "Case",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "08e7b10a-7b73-4d89-a2e9-c5888ff3c9d2",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "49969815-e2d7-4339-916b-f337e989707f",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "977f20f2-d71b-460f-bfc4-2aa05b285573",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "",
+            "title": "CC Cancelaciones"
+          },
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "0e006f79-d780-48c1-96a7-f48709cb9b8f",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "0e9e5904-58af-4b00-8e23-7c70319c737a",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "custom-cccancelaciones"
 }

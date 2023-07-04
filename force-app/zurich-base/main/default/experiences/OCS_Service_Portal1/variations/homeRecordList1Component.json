@@ -1,13 +1,15 @@
 {
-  "componentVariants" : [ {
-    "id" : "22699667-2816-4af6-91cd-f8139e0f84e6",
-    "propertyOverrides" : {
-      "isVisible" : true
-    },
-    "targetId" : "7da4e27e-7bc2-47db-9f12-673afb6e1723",
-    "type" : "componentVariant"
-  } ],
-  "developerName" : "Home_Record_List_1_Component",
-  "id" : "25807820-58b6-4d77-b84b-e2d469ca2538",
-  "type" : "experienceVariation"
+  "componentVariants": [
+    {
+      "id": "22699667-2816-4af6-91cd-f8139e0f84e6",
+      "propertyOverrides": {
+        "isVisible": true
+      },
+      "targetId": "7da4e27e-7bc2-47db-9f12-673afb6e1723",
+      "type": "componentVariant"
+    }
+  ],
+  "developerName": "Home_Record_List_1_Component",
+  "id": "25807820-58b6-4d77-b84b-e2d469ca2538",
+  "type": "experienceVariation"
 }

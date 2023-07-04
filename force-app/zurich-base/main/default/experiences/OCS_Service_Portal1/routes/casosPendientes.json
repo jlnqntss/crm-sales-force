@@ -1,11 +1,11 @@
 {
-  "activeViewId" : "fbd090a3-9075-4dae-b453-a9f2cf27f0ad",
-  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "configurationTags" : [ ],
-  "id" : "c2f81aac-d885-48d7-a683-05a605262af2",
-  "label" : "Casos Pendientes",
-  "pageAccess" : "UseParent",
-  "routeType" : "custom-casospendientes",
-  "type" : "route",
-  "urlPrefix" : "casospendientes"
+  "activeViewId": "fbd090a3-9075-4dae-b453-a9f2cf27f0ad",
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags": [],
+  "id": "c2f81aac-d885-48d7-a683-05a605262af2",
+  "label": "Casos Pendientes",
+  "pageAccess": "UseParent",
+  "routeType": "custom-casospendientes",
+  "type": "route",
+  "urlPrefix": "casospendientes"
 }

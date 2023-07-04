@@ -144,7 +144,7 @@
     <compactLayoutAssignment>Competitor_Compact_Layout</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Entity in which to register relevant data of policies contracted by the Customer with competitors of Zurich.</description>
-    <enableActivities>true</enableActivities>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
@@ -153,12 +153,12 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ReadWrite</externalSharingModel>
+    <externalSharingModel>Private</externalSharingModel>
     <gender>Masculine</gender>
     <label>Competitor</label>
     <nameField>
         <displayFormat>{00000000}</displayFormat>
-        <label>Name</label>
+        <label>Identifier</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>

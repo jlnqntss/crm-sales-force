@@ -1,11 +1,11 @@
 {
-  "activeViewId" : "6dd53038-e174-4cb3-823e-11c667d8f624",
-  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "configurationTags" : [ ],
-  "id" : "5ea2b30f-5a3d-4f16-a0a7-f6a318718f77",
-  "label" : "Flow",
-  "pageAccess" : "UseParent",
-  "routeType" : "flow",
-  "type" : "route",
-  "urlPrefix" : "flow"
+  "activeViewId": "6dd53038-e174-4cb3-823e-11c667d8f624",
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags": [],
+  "id": "5ea2b30f-5a3d-4f16-a0a7-f6a318718f77",
+  "label": "Flow",
+  "pageAccess": "UseParent",
+  "routeType": "flow",
+  "type": "route",
+  "urlPrefix": "flow"
 }

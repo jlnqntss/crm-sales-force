@@ -6,79 +6,79 @@
         <label>AUTOS</label>
     </customValue>
     <customValue>
-        <fullName>HOME</fullName>
+        <fullName>HOGAR</fullName>
         <default>false</default>
-        <label>HOME</label>
+        <label>HOGAR</label>
     </customValue>
     <customValue>
-        <fullName>ACCIDENTS</fullName>
+        <fullName>ACCIDENTES</fullName>
         <default>false</default>
-        <label>ACCIDENTS</label>
+        <label>ACCIDENTES</label>
     </customValue>
     <customValue>
-        <fullName>TRADE</fullName>
+        <fullName>COMERCIOS</fullName>
         <default>false</default>
-        <label>TRADE</label>
+        <label>COMERCIOS</label>
     </customValue>
     <customValue>
-        <fullName>DECESES</fullName>
+        <fullName>DECESOS</fullName>
         <default>false</default>
-        <label>DECESES</label>
+        <label>DECESOS</label>
     </customValue>
     <customValue>
-        <fullName>VESSELS</fullName>
+        <fullName>EMBARCACIONES</fullName>
         <default>false</default>
-        <label>VESSELS</label>
+        <label>EMBARCACIONES</label>
     </customValue>
     <customValue>
-        <fullName>FLEETS</fullName>
+        <fullName>FLOTAS</fullName>
         <default>false</default>
-        <label>FLEETS</label>
+        <label>FLOTAS</label>
     </customValue>
     <customValue>
-        <fullName>PROPERTY</fullName>
+        <fullName>INMUEBLE</fullName>
         <default>false</default>
-        <label>PROPERTY</label>
+        <label>INMUEBLE</label>
     </customValue>
     <customValue>
-        <fullName>OTHER</fullName>
+        <fullName>OTROS</fullName>
         <default>false</default>
-        <label>OTHER</label>
+        <label>OTROS</label>
     </customValue>
     <customValue>
-        <fullName>PATRIMONIALS</fullName>
+        <fullName>PATRIMONIALES</fullName>
         <default>false</default>
-        <label>PATRIMONIALS</label>
+        <label>PATRIMONIALES</label>
     </customValue>
     <customValue>
-        <fullName>PROTPAYMENTS</fullName>
+        <fullName>PROT. PAGOS</fullName>
         <default>false</default>
-        <label>PROT. PAYMENTS</label>
+        <label>PROT. PAGOS</label>
     </customValue>
     <customValue>
-        <fullName>LIABILITY</fullName>
+        <fullName>RESP. CIVIL</fullName>
         <default>false</default>
-        <label>LIABILITY</label>
+        <label>RESP. CIVIL</label>
     </customValue>
     <customValue>
-        <fullName>HEALTH</fullName>
+        <fullName>SALUD</fullName>
         <default>false</default>
-        <label>HEALTH</label>
+        <label>SALUD</label>
     </customValue>
     <customValue>
-        <fullName>TECHNICAL</fullName>
+        <fullName>TECNICOS</fullName>
         <default>false</default>
-        <label>TECHNICAL</label>
+        <label>TECNICOS</label>
     </customValue>
     <customValue>
-        <fullName>TRANSPORTATION</fullName>
+        <fullName>TRANSPORTES</fullName>
         <default>false</default>
-        <label>TRANSPORTATION</label>
+        <label>TRANSPORTES</label>
     </customValue>
     <customValue>
-        <fullName>LIFE</fullName>
+        <fullName>VIDA</fullName>
         <default>false</default>
-        <label>LIFE</label>
+        <label>VIDA</label>
     </customValue>
     <masterLabel>Product Branches</masterLabel>
     <sorted>false</sorted>

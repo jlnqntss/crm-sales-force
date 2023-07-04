@@ -1,11 +1,11 @@
 {
-  "activeViewId" : "e08de5d4-dbd3-4395-aa57-c56263da1a6d",
-  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "configurationTags" : [ ],
-  "id" : "89d4ea3c-9bda-4dfd-89fe-15ce20a51fab",
-  "label" : "Quip Docs Related List",
-  "pageAccess" : "UseParent",
-  "routeType" : "extrelated-quip",
-  "type" : "route",
-  "urlPrefix" : "quip"
+  "activeViewId": "e08de5d4-dbd3-4395-aa57-c56263da1a6d",
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags": [],
+  "id": "89d4ea3c-9bda-4dfd-89fe-15ce20a51fab",
+  "label": "Quip Docs Related List",
+  "pageAccess": "UseParent",
+  "routeType": "extrelated-quip",
+  "type": "route",
+  "urlPrefix": "quip"
 }

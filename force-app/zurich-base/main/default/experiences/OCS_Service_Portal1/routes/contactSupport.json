@@ -1,11 +1,11 @@
 {
-  "activeViewId" : "c88ef655-d402-4d35-a53d-854b10d5d47b",
-  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "configurationTags" : [ ],
-  "id" : "7988e7a5-5cbe-4310-a18e-9384466620b3",
-  "label" : "Contact Support",
-  "pageAccess" : "UseParent",
-  "routeType" : "contactsupport",
-  "type" : "route",
-  "urlPrefix" : "contactsupport"
+  "activeViewId": "c88ef655-d402-4d35-a53d-854b10d5d47b",
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags": [],
+  "id": "7988e7a5-5cbe-4310-a18e-9384466620b3",
+  "label": "Contact Support",
+  "pageAccess": "UseParent",
+  "routeType": "contactsupport",
+  "type": "route",
+  "urlPrefix": "contactsupport"
 }

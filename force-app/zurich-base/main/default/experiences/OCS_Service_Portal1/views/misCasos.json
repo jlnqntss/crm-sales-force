@@ -1,65 +1,75 @@
 {
-  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "componentName" : "siteforce:sldsOneColLayout",
-  "dataProviders" : [ ],
-  "id" : "da486fba-4d2f-4bea-af5a-9677d163134a",
-  "label" : "misCasos",
-  "regions" : [ {
-    "id" : "434456ee-de28-441e-93ac-230102e42bd6",
-    "regionName" : "header",
-    "type" : "region"
-  }, {
-    "components" : [ {
-      "componentAttributes" : {
-        "enableInlineEdit" : true,
-        "filterName" : "Mis_Casos_Respondido_y_Asignados",
-        "layout" : "FULL",
-        "pageSize" : 25,
-        "scope" : "Case",
-        "showActionBar" : true,
-        "showChartsPanel" : true,
-        "showDisplay" : "showall",
-        "showFilterPanel" : true,
-        "showImageIcon" : true,
-        "showManualRefreshButton" : true,
-        "showObjectName" : true,
-        "showPinnedList" : true,
-        "showSearchBar" : true
-      },
-      "componentName" : "forceCommunity:objectHome",
-      "id" : "596815b8-89b5-46a4-a616-3dd733067408",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "da0d511c-4249-4731-89f3-984d4dd04aa0",
-    "regionName" : "content",
-    "type" : "region"
-  }, {
-    "id" : "9ac52ce7-a064-40dc-9580-b0d4e0e4758c",
-    "regionName" : "sidebar",
-    "type" : "region"
-  }, {
-    "id" : "f3230cdf-d565-4fcf-8980-f8631c2f5ee5",
-    "regionName" : "footer",
-    "type" : "region"
-  }, {
-    "components" : [ {
-      "componentAttributes" : {
-        "customHeadTags" : "",
-        "description" : "",
-        "title" : "Mis Casos"
-      },
-      "componentName" : "forceCommunity:seoAssistant",
-      "id" : "978520fa-e80c-4382-87c2-3b62e6858c67",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "fe07003d-da98-4706-936a-cd8693249a4b",
-    "regionName" : "sfdcHiddenRegion",
-    "type" : "region"
-  } ],
-  "themeLayoutType" : "Inner",
-  "type" : "view",
-  "viewType" : "custom-miscasos"
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "da486fba-4d2f-4bea-af5a-9677d163134a",
+  "label": "misCasos",
+  "regions": [
+    {
+      "id": "434456ee-de28-441e-93ac-230102e42bd6",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Mis_Casos_Respondido_y_Asignados",
+            "layout": "FULL",
+            "pageSize": 25,
+            "scope": "Case",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "596815b8-89b5-46a4-a616-3dd733067408",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "da0d511c-4249-4731-89f3-984d4dd04aa0",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "9ac52ce7-a064-40dc-9580-b0d4e0e4758c",
+      "regionName": "sidebar",
+      "type": "region"
+    },
+    {
+      "id": "f3230cdf-d565-4fcf-8980-f8631c2f5ee5",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "",
+            "title": "Mis Casos"
+          },
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "978520fa-e80c-4382-87c2-3b62e6858c67",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "fe07003d-da98-4706-936a-cd8693249a4b",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "custom-miscasos"
 }

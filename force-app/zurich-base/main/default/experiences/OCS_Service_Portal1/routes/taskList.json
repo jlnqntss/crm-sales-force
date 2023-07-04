@@ -1,10 +1,10 @@
 {
-  "activeViewId" : "38d8be42-ad1f-4be5-8fcc-6b2f096f4712",
-  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "configurationTags" : [ ],
-  "id" : "87fc5c06-3643-4e70-8747-f7d18a1dc9d2",
-  "label" : "Task List",
-  "routeType" : "list-00T",
-  "type" : "route",
-  "urlPrefix" : "task"
+  "activeViewId": "38d8be42-ad1f-4be5-8fcc-6b2f096f4712",
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags": [],
+  "id": "87fc5c06-3643-4e70-8747-f7d18a1dc9d2",
+  "label": "Task List",
+  "routeType": "list-00T",
+  "type": "route",
+  "urlPrefix": "task"
 }

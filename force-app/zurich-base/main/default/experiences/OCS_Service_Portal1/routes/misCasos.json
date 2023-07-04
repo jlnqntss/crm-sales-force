@@ -1,11 +1,11 @@
 {
-  "activeViewId" : "da486fba-4d2f-4bea-af5a-9677d163134a",
-  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "configurationTags" : [ ],
-  "id" : "3f80b814-21cc-4835-844c-dd87f2c55263",
-  "label" : "Mis Casos",
-  "pageAccess" : "UseParent",
-  "routeType" : "custom-miscasos",
-  "type" : "route",
-  "urlPrefix" : "miscasos"
+  "activeViewId": "da486fba-4d2f-4bea-af5a-9677d163134a",
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags": [],
+  "id": "3f80b814-21cc-4835-844c-dd87f2c55263",
+  "label": "Mis Casos",
+  "pageAccess": "UseParent",
+  "routeType": "custom-miscasos",
+  "type": "route",
+  "urlPrefix": "miscasos"
 }
