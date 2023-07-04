@@ -3273,10 +3273,6 @@
         <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Ventas Business Customer</layout>
-        <recordType>Account.BusinessCustomer</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-Agente zrm</layout>
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
