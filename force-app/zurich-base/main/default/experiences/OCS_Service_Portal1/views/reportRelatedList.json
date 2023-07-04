@@ -1,45 +1,39 @@
 {
-  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "componentName": "siteforce:sldsOneColLayout",
-  "dataProviders": [],
-  "id": "54e2a449-5806-4e91-8c36-252cfbbea31d",
-  "label": "Report Related List",
-  "regions": [
-    {
-      "id": "1d1d24d6-6314-4a5d-8743-ba73b07ec0fe",
-      "regionName": "header",
-      "type": "region"
-    },
-    {
-      "components": [
-        {
-          "componentAttributes": {
-            "customTitle": "",
-            "parentRecordId": "{!recordId}",
-            "relatedListName": "{!relationshipApiName}",
-            "showBreadCrumbs": true,
-            "showCustomTitle": false,
-            "showManualRefreshButton": true,
-            "showRowNumbers": true
-          },
-          "componentName": "forceCommunity:relatedList",
-          "id": "a325055f-2fe5-49ed-a9f1-a2549f0419b8",
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
-        }
-      ],
-      "id": "78c4fbdf-54e6-4ddb-a201-72a3f67e3416",
-      "regionName": "content",
-      "type": "region"
-    },
-    {
-      "id": "556c8c71-d7cf-4a35-a814-33d916846238",
-      "regionName": "footer",
-      "type": "region"
-    }
-  ],
-  "themeLayoutType": "Inner",
-  "type": "view",
-  "viewType": "relatedlist-00O"
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "54e2a449-5806-4e91-8c36-252cfbbea31d",
+  "label" : "Report Related List",
+  "regions" : [ {
+    "id" : "1d1d24d6-6314-4a5d-8743-ba73b07ec0fe",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customTitle" : "",
+        "parentRecordId" : "{!recordId}",
+        "relatedListName" : "{!relationshipApiName}",
+        "showBreadCrumbs" : true,
+        "showCustomTitle" : false,
+        "showManualRefreshButton" : true,
+        "showRowNumbers" : true
+      },
+      "componentName" : "forceCommunity:relatedList",
+      "id" : "a325055f-2fe5-49ed-a9f1-a2549f0419b8",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "78c4fbdf-54e6-4ddb-a201-72a3f67e3416",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "556c8c71-d7cf-4a35-a814-33d916846238",
+    "regionName" : "footer",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "relatedlist-00O"
 }

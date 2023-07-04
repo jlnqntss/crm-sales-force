@@ -1,10 +1,10 @@
 {
-  "activeViewId": "b0f7f9d3-dfb9-49eb-92ac-6daeef6ab96b",
-  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "configurationTags": [],
-  "id": "4d6b054e-3f52-483d-b7f2-0f0e9a4c2820",
-  "label": "My Account",
-  "routeType": "my-account",
-  "type": "route",
-  "urlPrefix": "comm-my-account"
+  "activeViewId" : "b0f7f9d3-dfb9-49eb-92ac-6daeef6ab96b",
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags" : [ ],
+  "id" : "4d6b054e-3f52-483d-b7f2-0f0e9a4c2820",
+  "label" : "My Account",
+  "routeType" : "my-account",
+  "type" : "route",
+  "urlPrefix" : "comm-my-account"
 }

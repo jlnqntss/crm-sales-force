@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Audience xmlns="http://soap.sforce.com/2006/04/metadata">
+    <audienceName>Supervisor</audienceName>
+    <container>OCS Service Portal</container>
+    <criteria>
+        <criterion>
+            <criteriaNumber>1</criteriaNumber>
+            <criterionValue>
+                <entityField>Title</entityField>
+                <entityType>User</entityType>
+                <fieldValue>Supervisor</fieldValue>
+            </criterionValue>
+            <operator>Equal</operator>
+            <type>FieldBased</type>
+        </criterion>
+    </criteria>
+    <formulaFilterType>AllCriteriaMatch</formulaFilterType>
+    <isDefaultAudience>false</isDefaultAudience>
+    <targets>
+        <target>
+            <groupName>f64c9f93-0d66-4338-b90a-7806e97b6992$#$38b32cde-6b00-4ebb-aec0-1f57280ef126</groupName>
+            <priority>1</priority>
+            <targetType>ExperienceVariation</targetType>
+            <targetValue>Default_Multilevel_Navigation_Menu_Component_Properties</targetValue>
+        </target>
+        <target>
+            <groupName>1195aaea-a283-439e-a9fd-a83a20a76fd7$#$279e8a70-dff4-4dd1-b64a-a100dc497c54</groupName>
+            <priority>1</priority>
+            <targetType>ExperienceVariation</targetType>
+            <targetValue>Home_Multilevel_Navigation_Menu_Component_Properties</targetValue>
+        </target>
+    </targets>
+</Audience>

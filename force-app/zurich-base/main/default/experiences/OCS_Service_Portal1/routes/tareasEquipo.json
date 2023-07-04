@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "90f2bd3a-64f4-419f-bf3d-3ad5e9480d16",
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags" : [ ],
+  "id" : "d7c148fb-08eb-46ad-9de6-c2b160a3e966",
+  "label" : "Tareas Equipo",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-tareas-equipo",
+  "type" : "route",
+  "urlPrefix" : "tareasEquipo"
+}

@@ -1,0 +1,61 @@
+{
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "e2e93eb7-3e66-4487-b523-39d36bfbc0b7",
+  "label" : "Casos Pendientes Equipo",
+  "regions" : [ {
+    "id" : "78928eec-a49e-4825-82e4-9e7e2bc2b590",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "enableInlineEdit" : true,
+        "filterName" : "Casos_Pendientes_de_mi_equipo",
+        "layout" : "FULL",
+        "pageSize" : 25,
+        "scope" : "Case",
+        "showActionBar" : true,
+        "showChartsPanel" : true,
+        "showDisplay" : "showall",
+        "showFilterPanel" : true,
+        "showImageIcon" : true,
+        "showManualRefreshButton" : true,
+        "showObjectName" : true,
+        "showPinnedList" : true,
+        "showSearchBar" : true
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "9a530ffa-1bf6-4a65-9988-e5a38238b475",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "f3f57736-9483-4f96-860d-1d070cc61fe2",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "c8a77a79-44c8-4537-98c5-588b91c88f3a",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Casos Pendientes Equipo"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "9fb9684c-7b33-44df-a8ef-2fbcce9c8ffd",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "2617a2ec-3dcd-4b46-94c7-7a27dfb186de",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-casos-pendientes-equipo"
+}

@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "fa370128-e59e-42a7-bd50-ff1e961c6809",
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags" : [ ],
+  "id" : "87075b07-fab8-48d6-9dcb-634d95811570",
+  "label" : "CC Retención",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-ccretencion",
+  "type" : "route",
+  "urlPrefix" : "ccretencion"
+}
