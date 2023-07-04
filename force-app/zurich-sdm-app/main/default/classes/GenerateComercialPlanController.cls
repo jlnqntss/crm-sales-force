@@ -706,7 +706,8 @@ public with sharing class GenerateComercialPlanController
             // Si es nueva o no
             if( sub.Id == null ) cell.isNew = true;
             // Clave del plan
-            cell.key = cell.id + SEPARATOR + sub.name;
+            //cell.key = cell.id + SEPARATOR + sub.name;
+            cell.key = plan.Id + SEPARATOR + sub.name;
             // Si es un enlace
             cell.isLink = true;
             // compruebo para el plan actual si no es director si el intermediario i tiene la misma zona que el plan
