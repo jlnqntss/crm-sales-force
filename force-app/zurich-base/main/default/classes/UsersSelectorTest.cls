@@ -47,4 +47,45 @@ private with sharing class UsersSelectorTest
 
         System.assertEquals(1, userMap.size(), 'Debe haber 1 usuario en el mapa');
     }
+
+
+    @isTest
+    static void testFindUserByEmail() {
+
+        List<User> userQuery = new List<User>([SELECT Id, Email FROM User LIMIT 1]);
+
+        if (!userQuery.isEmpty()) {
+            User result = new UsersSelector().findUserByEmail(userQuery.get(0).Email);
+
+            System.assertEquals(true, result != null, 'Debe encontrar resultado');
+
+        }
+    }
+
+    @isTest
+    static void testFindUserByCommunityNickname() {
+
+        List<User> userQuery = new List<User>([SELECT Id, CommunityNickname FROM User WHERE IsActive = TRUE LIMIT 1]);
+
+        if (!userQuery.isEmpty()) {
+            User result = new UsersSelector().findUserByCommunityNickname(userQuery.get(0).CommunityNickname);
+
+            System.assertEquals(true, result != null, 'Debe encontrar resultado');
+
+        }
+    }
+
+
+    @isTest
+    static void testGetLoginUserToUpdate() {
+
+        List<User> userQuery = new List<User>([SELECT Id, CommunityNickname FROM User WHERE IsActive = TRUE LIMIT 1]);
+
+        if (!userQuery.isEmpty()) {
+            User result = new UsersSelector().getLoginUserToUpdate(userQuery.get(0).Id);
+
+            System.assertEquals(true, result != null, 'Debe encontrar resultado');
+
+        }
+    }
 }

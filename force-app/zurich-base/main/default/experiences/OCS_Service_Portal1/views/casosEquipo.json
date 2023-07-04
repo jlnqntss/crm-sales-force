@@ -1,0 +1,61 @@
+{
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "22fd01a1-0ac7-418a-a384-dd8062882461",
+  "label" : "CasosEquipo",
+  "regions" : [ {
+    "id" : "43976eb9-b086-471d-89fc-78ceee10a9de",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "enableInlineEdit" : true,
+        "filterName" : "Casos_Respondidos_y_Asignados_Equipo",
+        "layout" : "FULL",
+        "pageSize" : 25,
+        "scope" : "Case",
+        "showActionBar" : true,
+        "showChartsPanel" : true,
+        "showDisplay" : "showall",
+        "showFilterPanel" : true,
+        "showImageIcon" : true,
+        "showManualRefreshButton" : true,
+        "showObjectName" : true,
+        "showPinnedList" : true,
+        "showSearchBar" : true
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "852820d4-e228-415d-afce-6a79f10c9b72",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "320dcd9d-7e31-4373-9e49-41f513b106f8",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "74c06e9d-f855-464e-9973-361e0704ac34",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "CasosEquipo"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "e3cbe77c-0adc-43fb-97e2-8d58dc100293",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "7815bdea-f6c5-43ae-9f6f-dfca75480988",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-casosequipo"
+}

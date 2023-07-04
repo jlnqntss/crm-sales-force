@@ -1,70 +1,60 @@
 {
-  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
-  "componentName": "siteforce:sldsOneColLayout",
-  "dataProviders": [],
-  "id": "5039eb31-4f1f-413d-a652-c0543229aa8e",
-  "label": "Top Articles",
-  "regions": [
-    {
-      "id": "ae3ef755-d9d2-41c1-9fe0-8da6db6abe87",
-      "regionName": "header",
-      "type": "region"
-    },
-    {
-      "components": [
-        {
-          "componentAttributes": {
-            "richTextValue": "             <h1 style=\"text-align: center;\">                 <b style=\"font-size: 20px; color: #1e2443;\">Top Articles</b>             </h1>             "
-          },
-          "componentName": "forceCommunity:richTextInline",
-          "id": "dd97c98a-029f-4526-8773-b862edf50365",
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
-        },
-        {
-          "componentAttributes": {
-            "numberOfArticles": 5,
-            "showTitle": true,
-            "title": "Articles",
-            "topicList": []
-          },
-          "componentName": "forceCommunity:topArticleList",
-          "id": "d71ca56d-8071-4e3e-9945-3113873aec45",
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
-        }
-      ],
-      "id": "2602bb44-9209-40b0-afc5-3e030c3ea0fe",
-      "regionName": "content",
-      "type": "region"
-    },
-    {
-      "id": "776336d8-8eb4-49e7-88c3-414546ca325a",
-      "regionName": "footer",
-      "type": "region"
-    },
-    {
-      "components": [
-        {
-          "componentAttributes": {
-            "customHeadTags": "",
-            "description": "",
-            "title": "Top Articles"
-          },
-          "componentName": "forceCommunity:seoAssistant",
-          "id": "487016e8-316e-4737-a322-7185f7456514",
-          "renditionMap": {},
-          "type": "component"
-        }
-      ],
-      "id": "06d9ca6f-a5c0-4cec-b38c-ffe2e8d54149",
-      "regionName": "sfdcHiddenRegion",
-      "type": "region"
-    }
-  ],
-  "themeLayoutType": "Inner",
-  "type": "view",
-  "viewType": "top-articles"
+  "appPageId" : "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "5039eb31-4f1f-413d-a652-c0543229aa8e",
+  "label" : "Top Articles",
+  "regions" : [ {
+    "id" : "ae3ef755-d9d2-41c1-9fe0-8da6db6abe87",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "richTextValue" : "             <h1 style=\"text-align: center;\">                 <b style=\"font-size: 20px; color: #1e2443;\">Top Articles</b>             </h1>             "
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "dd97c98a-029f-4526-8773-b862edf50365",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "numberOfArticles" : 5,
+        "showTitle" : true,
+        "title" : "Articles",
+        "topicList" : [ ]
+      },
+      "componentName" : "forceCommunity:topArticleList",
+      "id" : "d71ca56d-8071-4e3e-9945-3113873aec45",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "2602bb44-9209-40b0-afc5-3e030c3ea0fe",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "776336d8-8eb4-49e7-88c3-414546ca325a",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Top Articles"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "487016e8-316e-4737-a322-7185f7456514",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "06d9ca6f-a5c0-4cec-b38c-ffe2e8d54149",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "top-articles"
 }

@@ -1,7 +1,7 @@
 {
-  "cmsSettings": {},
-  "id": "a354a47d-8515-4ef7-a7da-ec0e26578c67",
-  "label": "login",
-  "templateName": "Login Template",
-  "type": "appPage"
+  "cmsSettings" : { },
+  "id" : "a354a47d-8515-4ef7-a7da-ec0e26578c67",
+  "label" : "login",
+  "templateName" : "Login Template",
+  "type" : "appPage"
 }
