@@ -37,10 +37,22 @@
         <name>SendEmailUSPAction</name>
         <label>Mandar Email USP</label>
         <locationX>1502</locationX>
-        <locationY>2201</locationY>
+        <locationY>2309</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>OrganizationWideAddress.Address</elementReference>
+            </value>
+        </inputParameters>
         <inputParameters>
             <name>relatedRecordId</name>
             <value>
@@ -634,13 +646,34 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>OrganizationWideAddress</name>
+        <label>Organization wide address</label>
+        <locationX>1502</locationX>
+        <locationY>2201</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>SendEmailUSPAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Address</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>no.responder@zurich.com</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OrgWideEmailAddress</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>PlantillaCasosPendientesUSPAction</name>
         <label>Plantilla Casos Pendientes USP</label>
         <locationX>1502</locationX>
         <locationY>2093</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>SendEmailUSPAction</targetReference>
+            <targetReference>OrganizationWideAddress</targetReference>
         </connector>
         <faultConnector>
             <targetReference>GenerarErrorLogRecuperarPlantilla</targetReference>
