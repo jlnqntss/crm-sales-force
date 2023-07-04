@@ -1013,6 +1013,11 @@ Para usuarios de la comunidad zrm</description>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Propensity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.QuoteLink__c</field>
         <readable>true</readable>

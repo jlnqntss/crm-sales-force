@@ -309,4 +309,58 @@ private class EmailMessagesUtilTest
         System.assertEquals(casosInciales[1].id, casosHijos[0].ParentId, 'El nuevo caso hijo ha de estar asociado al caso cerrado');
         System.assertEquals(emails[1].ParentId, casosHijos[0].Id, 'El email ha de estar asociado al nuevo caso hijo');
     }
+
+    /**
+     * Test que comprueba que se crea correctamente el caso hijo para los casos cuyo call center sea TWW Retención
+     * @author aberuete
+     * @date 26/06/2023
+     */
+    @isTest
+    static void generateChildCasesFromTranscom_OK()
+    {
+        Group queue = new Group (Name = 'Grupo_De_Prueba',Type = 'Queue' );
+        insert queue;
+
+        User usr = [Select id from User where Id = :UserInfo.getUserId()];
+        
+        System.RunAs(usr)
+        {
+            QueueSobject testQueue = new QueueSobject ();
+            testQueue.QueueId = queue.id;
+            testQueue.SobjectType = 'Case';
+            insert testQueue;
+        }
+
+        // Generamos los casos que necesitamos
+        Case caso = new Case ();
+        caso.Status = 'Cerrado';
+        caso.CallCenter__c = 'TWW Retención';
+        caso.RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        caso.OwnerId = queue.id;
+        insert caso;
+
+        List<Case> casosInciales = [SELECT id FROM Case];
+        System.assertEquals(1, casosInciales.size());
+
+        // al insertar los emailMessages debemos haber generado un 3er caso
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(2);
+        emails[0].Incoming = true;
+        emails[0].ParentId = casosInciales[0].Id;
+        emails[0].HtmlBody = '';
+        emails[0].TextBody = '';
+
+        EmailMessagesUtil emUtil = new EmailMessagesUtil();
+
+        Test.startTest();
+        emUtil.checkNewCaseFromClosedCase(emails);
+        Test.stopTest();
+
+        // Comprobamos que se haya creado un 3er caso, y que el email se ha relacionado con el.
+        List<Case> casosFinales = [SELECT id FROM Case];
+        List<Case> casosHijos = [Select id, ParentId, OwnerId FROM Case Where ParentId != ''];
+        System.assertEquals(2, casosFinales.size(), 'Hemos de tener un caso más');
+        System.assertEquals(casosInciales[0].id, casosHijos[0].ParentId, 'El nuevo caso hijo ha de estar asociado al caso cerrado');
+        System.assertEquals(emails[0].ParentId, casosHijos[0].Id, 'El email ha de estar asociado al nuevo caso hijo');
+        System.assertEquals(queue.id, casosHijos[0].OwnerId, 'El owner del caso hijo no es correcto');
+    }
 }
