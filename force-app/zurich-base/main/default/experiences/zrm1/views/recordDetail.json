@@ -11,8 +11,8 @@
           "componentAttributes": {
             "recordId": "{!recordId}"
           },
-          "componentName": "forceCommunity:recordHeadline",
-          "id": "c39cb3fe-6291-4a2b-b0b9-cf85273ecb98",
+          "componentName": "forceCommunity:pathAssistant",
+          "id": "16c5d5fd-201c-4135-865b-97276f887858",
           "renderPriority": "NEUTRAL",
           "renditionMap": {},
           "type": "component"
@@ -28,8 +28,27 @@
           "componentAttributes": {
             "recordId": "{!recordId}"
           },
-          "componentName": "forceCommunity:recordDetail",
-          "id": "13dff091-a86c-4928-8b31-cdbb92c7b6d9",
+          "componentName": "forceCommunity:recordHeadline",
+          "id": "c39cb3fe-6291-4a2b-b0b9-cf85273ecb98",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "detailsTabLabel": "Details",
+            "discussionsTabLabel": "Feed",
+            "recordId": "{!recordId}",
+            "relatedTabLabel": "Related",
+            "showLegacyActivityComposer": false,
+            "tab1Type": "details",
+            "tab2Type": "related",
+            "tab3Type": "timeline",
+            "tab4Type": "none",
+            "timelineTabLabel": "Activity"
+          },
+          "componentName": "forceCommunity:recordHomeTabs",
+          "id": "34532e41-3f43-4607-b163-9bde5c99f0f0",
           "renderPriority": "NEUTRAL",
           "renditionMap": {},
           "type": "component"
@@ -60,36 +79,6 @@
       ],
       "id": "aacb0921-03b0-465a-854f-346e95f35383",
       "regionName": "sfdcHiddenRegion",
-      "type": "region"
-    },
-    {
-      "components": [
-        {
-          "componentAttributes": {
-            "recordId": "{!recordId}",
-            "showLegacyActivityComposer": false
-          },
-          "componentName": "forceCommunity:activityPanel",
-          "id": "89420e9e-1661-4170-bd1b-9dbdf40b6c18",
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
-        },
-        {
-          "componentAttributes": {
-            "relatedListApiName": "AttachedContentDocuments",
-            "relatedListComponentOverride": "GRID",
-            "width": "MEDIUM"
-          },
-          "componentName": "forceCommunity:responsiveRelatedListSingle",
-          "id": "a2302e0d-eb69-4795-803c-da9c51dee226",
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
-        }
-      ],
-      "id": "c13d3d8d-1868-4db0-9d1f-7723eb2de4bd",
-      "regionName": "sidebar",
       "type": "region"
     }
   ],
