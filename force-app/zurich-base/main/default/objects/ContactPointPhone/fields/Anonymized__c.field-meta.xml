@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Anonymized__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>(OCS/ZE). Destinado a borrar debido a la GDPR. Último nivel de restricción de acceso. Anonimización de los datos sensibles o de identificación.</description>
+    <externalId>false</externalId>
+    <label>Anonymized</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

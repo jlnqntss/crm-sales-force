@@ -4801,6 +4801,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Activity.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Activity.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Activity.NLUTypificationFailed__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4872,6 +4882,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Asset.AccountId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Asset.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Asset.Anonymized__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5611,6 +5631,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>CampaignMember.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CampaignMember.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>CampaignMember.LeadPhone__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5667,6 +5697,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.AccountId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5804,6 +5844,11 @@
         <field>Case.GoogleAddress__c</field>
         <readable>true</readable>
     </fieldPermissions> 
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.EconomicImpact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.HasBeenTransfered__c</field>
@@ -6269,6 +6314,11 @@
         <field>Case.TechnicalCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
+     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.TerritorialDirection__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Type</field>
@@ -6332,6 +6382,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.ClaimOwnerFirstname__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6482,6 +6542,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Abandoned_Lead__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+   <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6846,6 +6916,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ContactPointAddress.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointAddress.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ContactPointAddress.ActiveToDate</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6994,6 +7074,16 @@
         <field>ContactPointEmail.ActiveFromDate</field>
         <readable>true</readable>
     </fieldPermissions>
+   <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointEmail.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointEmail.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointEmail.ActiveToDate</field>
@@ -7082,6 +7172,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointPhone.ActiveFromDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointPhone.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointPhone.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7487,6 +7587,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>EmailMessage.GenesysFlowID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EmailMessage.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EmailMessage.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7937,6 +8047,11 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>Event.IsRelatedToComercialPlan__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.SalesLossReasonDateTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9323,6 +9438,16 @@
         <field>Opportunity.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
+   <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Activity__c</field>
@@ -9696,6 +9821,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.SessionId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ProductBranchDetail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ProductBranch__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10350,6 +10485,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Policy__c.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Policy__c.Bonus__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10494,6 +10639,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.ProductBranch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.ProductId__c</field>
         <readable>true</readable>
@@ -10606,6 +10756,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.InfoStatusDescription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.IsNewProduction__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11001,6 +11156,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Scope__c.Contactable__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Scope__c.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Scope__c.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11576,6 +11741,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.IsRelatedToComercialPlan__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.SalesLossReasonDateTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14588,6 +14758,86 @@
         <field>PlanComercial__c.Zone__c</field>
         <readable>true</readable>
     </fieldPermissions>
+     <fieldPermissions>
+        <editable>true</editable>
+        <field>Competitor__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Competitor__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Competitor__c.Customer__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Competitor__c.ExpirationDate__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Competitor__c.InsuranceCompany__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Competitor__c.Lead__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Competitor__c.OfferWon__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Competitor__c.Premium__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Competitor__c.ProductBranch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Competitor__c.ProductType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+     <fieldPermissions>
+        <editable>true</editable>
+        <field>Propensity__c.Customer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propensity__c.Lead__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propensity__c.ProductBranchDetail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propensity__c.ProductBranch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propensity__c.ProductType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propensity__c.Propensity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>false</enabled>
         <flow>Campaign_Member_Status</flow>
@@ -15341,6 +15591,15 @@
     <layoutAssignments>
         <layout>Task-Reminder layout</layout>
         <recordType>Task.Reminder</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Competitor__c-Competitor Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Customer-Formato Cliente</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Propensity__c-Propensity Layout</layout>
     </layoutAssignments>
     <loginIpRanges>
         <description>Avoid security token</description>

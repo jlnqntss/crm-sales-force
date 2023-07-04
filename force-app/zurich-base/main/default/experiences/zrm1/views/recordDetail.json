@@ -5,6 +5,16 @@
   "id" : "d5cf2ba1-1253-490b-89d0-4e21abcf256f",
   "label" : "Record Detail",
   "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "forceCommunity:pathAssistant",
+      "id" : "16c5d5fd-201c-4135-865b-97276f887858",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
     "id" : "bfcce91d-4e13-4a88-a5af-8b03f872c865",
     "regionName" : "header",
     "type" : "region"
@@ -27,8 +37,8 @@
         "showLegacyActivityComposer" : false,
         "tab1Type" : "details",
         "tab2Type" : "related",
-        "tab3Type" : "none",
-        "tab4Type" : "timeline",
+        "tab3Type" : "timeline",
+        "tab4Type" : "none",
         "timelineTabLabel" : "Activity"
       },
       "componentName" : "forceCommunity:recordHomeTabs",

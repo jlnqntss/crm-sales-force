@@ -3,6 +3,7 @@
     <fullName>OfferDefault</fullName>
     <fields>Name</fields>
     <fields>AccountId</fields>
+    <fields>ProductBranch__c</fields>
     <fields>ProductId__c</fields>
     <fields>EffectiveDate__c</fields>
     <fields>TotalPremium__c</fields>

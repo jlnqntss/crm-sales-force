@@ -7,6 +7,7 @@
     <permissionSets>Gestion_Captacion_Avanzada</permissionSets>
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
     <permissionSets>Ventas_Consulta_Datos</permissionSets>
+    <permissionSets>Ventas_Edicion_Competencia_Agente</permissionSets>
     <permissionSets>Ventas_Gestion_Captacion</permissionSets>
     <permissionSets>Ventas_Tareas</permissionSets>
     <status>Updated</status>
