@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 18-05-2023
- * @last modified by  : amiranda
+ * @last modified on  : 06-22-2023
+ * @last modified by  : aberuete
 **/
 @isTest
 private class CaseUtilTest
@@ -798,5 +798,33 @@ private class CaseUtilTest
 
         // Verificar los resultados esperados
         System.assertEquals('Souscrire mon assurance', caso.Type_translation__c,'El valor de Type_translation__c en el caso no se actualizó correctamente' );
+    }
+
+    /*
+    * Test que comprueba que se actualizan correctamente los valores del caso proveniente del email to case de transcom antes de insertarlo
+    * @author aberuete
+    * @date 22/06/2023
+    */
+    @IsTest
+    public static void test_updateTranscomCase()
+    {
+        List<Group> queueRetencion = new GroupSelector().findByName('Email_TWW_Retencion');
+        Id ocsInquiry = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry')?.getRecordTypeId();
+
+        Case caso = new Case();
+        caso.RecordTypeId = ocsInquiry;
+        caso.OwnerId = queueRetencion[0].id;
+        caso.Origin = 'Email';
+        
+        Test.startTest();
+        insert caso;
+        Test.stopTest();
+
+        Case caseAfterInsert = [Select id,CallCenter__c,SourceArea__c,Type,Subtype__c,TypeN3__c from case where ownerid =: queueRetencion[0].id limit 1];
+        System.assertEquals('TWW Retención', caseAfterInsert.CallCenter__c, 'El call center del caso no es correcto');
+        System.assertEquals('Generic end customer', caseAfterInsert.SourceArea__c, 'El area del caso no es correcto');
+        System.assertEquals('Gestión Servicios', caseAfterInsert.Type, 'El tipo del caso no es correcto');
+        System.assertEquals('Anulación', caseAfterInsert.Subtype__c, 'El subtipo del caso no es correcto');
+        System.assertEquals('Anulación', caseAfterInsert.TypeN3__c, 'El tipo N3 del caso no es correcto');
     }
 }
