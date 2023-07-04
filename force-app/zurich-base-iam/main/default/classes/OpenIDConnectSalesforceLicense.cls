@@ -773,7 +773,7 @@ public with sharing class OpenIDConnectSalesforceLicense {
                     // if not empty
                     if( !userList.isEmpty() ) {
                         // for each configured field, get the value
-                        List<String> listFields = config_fields.split(',');
+                        List<String> listFields = config_fields.split(','); 
                         for(String s: listFields) {
                             String fieldText = '';
                             if( userList[0].get(s) != null ) {
@@ -785,6 +785,7 @@ public with sharing class OpenIDConnectSalesforceLicense {
                 }
                 // Put the values of the User fields in the slots ({n}) of the configured text
                 result = String.format(config_firma, listValues);
+                result = result + '<br>' + Label.IAMUserSignatureLegal; 
             } catch( Exception ex ) {
                 ErrorLogUtil.commitError(ex, CLASS_NAME);
             }

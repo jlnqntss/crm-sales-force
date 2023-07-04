@@ -809,7 +809,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
                 // for each configured field, get the value
                 List<String> listFields = configFields.split(',');
                 for (String s: listFields) {
-                    String fieldText = '';
+                    String fieldText = ''; 
                     if (userList[0].get(s) != null) {
                         fieldText = (String)userList[0].get(s);
                     }
@@ -819,6 +819,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         }
         // Put the values of the User fields in the slots ({n}) of the configured text
         result = String.format(configFirma, listValues);
+        result = result + '<br>' + Label.IAMUserSignatureLegal; 
         return result;
     }
 

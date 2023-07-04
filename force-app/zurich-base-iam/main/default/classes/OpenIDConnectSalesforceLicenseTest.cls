@@ -502,7 +502,8 @@ public with sharing class OpenIDConnectSalesforceLicenseTest
 
         User createdUser = [SELECT userName, Department, Signature FROM user WHERE id=:u.Id];
         System.assertEquals('TestDeptA', createdUser.Department, 'The department of the user should be TestDeptA');
-        System.assertEquals('testFirst testLast Zurich Seguros', createdUser.Signature, 'The signature is not correct');
+        String expected = 'testFirst testLast Zurich Seguros<br>' + Label.IAMUserSignatureLegal;
+        System.assertEquals(expected, createdUser.Signature, 'The signature is not correct');
     }
 
     /**
@@ -575,10 +576,11 @@ public with sharing class OpenIDConnectSalesforceLicenseTest
         // Update the configured signature content
         handler.testSignatureContent = 'Klinc seguros';
         handler.updateUser(u.Id, null, sampleDataIAM);
-        Test.stopTest();
+        Test.stopTest(); 
 
         User createdUser = [SELECT Signature FROM user WHERE id=:u.Id];
-        System.assertEquals('Klinc seguros', createdUser.Signature, 'The signature should have changed');
+        String expected = 'Klinc seguros<br>' + Label.IAMUserSignatureLegal;
+        System.assertEquals(expected, createdUser.Signature, 'The signature should have changed');
     }  
 
     /**
@@ -591,7 +593,7 @@ public with sharing class OpenIDConnectSalesforceLicenseTest
     static void testSignatureNotUpdated()
     {
         OpenIDConnectSalesforceLicense handler = new OpenIDConnectSalesforceLicense();
-        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B);
+        Auth.UserData sampleDataIAM = mockAuthData(handler, IAM_ROLE_B); 
 
         String textSignature = 'My signature';
 
