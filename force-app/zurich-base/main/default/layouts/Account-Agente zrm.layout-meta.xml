@@ -7,6 +7,9 @@
     <excludeButtons>CreateCallList</excludeButtons>
     <excludeButtons>CreatePartnerChannelQuickAction</excludeButtons>
     <excludeButtons>CreateSurveyInvitation</excludeButtons>
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
@@ -144,18 +147,18 @@
     <relatedLists>
         <excludeButtons>New</excludeButtons>
         <fields>OPPORTUNITY.NAME</fields>
-        <fields>ACCOUNT.NAME</fields>
+        <fields>OPPORTUNITY.STAGE_NAME</fields>
         <fields>Product_Name__c</fields>
-        <fields>TotalPremium__c</fields>
         <fields>CORE.USERS.FULL_NAME</fields>
-        <relatedList>Opportunity.IntermediaryId__c</relatedList>
+        <fields>TotalPremium__c</fields>
+        <relatedList>RelatedOpportunityList</relatedList>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
-        <fields>ProductId__c</fields>
         <fields>PolicyStatus__c</fields>
+        <fields>ProductId__c</fields>
         <fields>TotalPremium__c</fields>
         <relatedList>Policy__c.IntermediaryId__c</relatedList>
     </relatedLists>
@@ -163,14 +166,14 @@
         <excludeButtons>MassChangeOwner</excludeButtons>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
-        <fields>ClaimResponsible__c</fields>
-        <fields>ClaimType__c</fields>
+        <fields>Product__c</fields>
         <fields>DateOfOccurrence__c</fields>
         <fields>Status__c</fields>
         <relatedList>Claim__c.PolicyHolder__c</relatedList>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
         <fields>ProductBranch__c</fields>
         <fields>OfferWon__c</fields>
         <fields>ExpirationDate__c</fields>

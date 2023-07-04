@@ -75,12 +75,12 @@
               "components": [
                 {
                   "componentAttributes": {
-                    "relatedListApiName": "Opportunities__r",
+                    "relatedListApiName": "Opportunities",
                     "relatedListComponentOverride": "GRID",
                     "width": "MEDIUM"
                   },
                   "componentName": "forceCommunity:responsiveRelatedListSingle",
-                  "id": "1c6da344-d35f-49a6-be4d-5273222d0154",
+                  "id": "bb89f893-04a2-4ce6-b6e7-d9e1009441a5",
                   "renditionMap": {},
                   "type": "component"
                 },
@@ -92,6 +92,17 @@
                   },
                   "componentName": "forceCommunity:responsiveRelatedListSingle",
                   "id": "e6ea8675-7a8c-4fb5-97d8-d1305ffe9f4a",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Polizas__r",
+                    "relatedListComponentOverride": "GRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "8a2e3e24-7639-41d7-b808-502119649b33",
                   "renditionMap": {},
                   "type": "component"
                 },
