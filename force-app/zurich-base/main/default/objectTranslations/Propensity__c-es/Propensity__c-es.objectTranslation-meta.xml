@@ -2,13 +2,20 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>Propensity</value>
+        <value>Propensión</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Propensities</value>
+        <value>Propensiones</value>
     </caseValues>
     <gender>Masculine</gender>
+    <layouts>
+        <layout>Agente zrm</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
     <layouts>
         <layout>Propensity Layout</layout>
         <sections>
@@ -16,4 +23,5 @@
             <section>Custom Links</section>
         </sections>
     </layouts>
+    <nameFieldLabel>Identificador</nameFieldLabel>
 </CustomObjectTranslation>
