@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Offer_zrm_Layout</fullName>
-    <fields>InfoQuoteNumber__c</fields>
-    <fields>AccountId</fields>
-    <fields>ProductBranch__c</fields>
-    <fields>Product_Name__c</fields>
-    <label>Offer zrm Layout</label>
-</CompactLayout>
