@@ -338,10 +338,15 @@
                 <default>false</default>
                 <label>Resolución SDC Inadmitida</label>
             </value>
+            <value>
+                <fullName>Traslado a gestión centro tramitador</fullName>
+                <default>false</default>
+                <label>Traslado a gestión centro tramitador</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
-            <controllingFieldValue>Transferencia</controllingFieldValue>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
@@ -384,6 +389,10 @@
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
             <valueName>Realizado - Confirmación criterio centro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Traslado a gestión centro tramitador</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Transferencia</controllingFieldValue>

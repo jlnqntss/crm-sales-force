@@ -1,0 +1,11 @@
+{
+  "activeViewId": "e2e93eb7-3e66-4487-b523-39d36bfbc0b7",
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags": [],
+  "id": "b50dfc77-a17e-44c2-b35a-81f580d8dd5c",
+  "label": "Casos Pendientes Equipo",
+  "pageAccess": "UseParent",
+  "routeType": "custom-casos-pendientes-equipo",
+  "type": "route",
+  "urlPrefix": "casosPendientesEquipo"
+}

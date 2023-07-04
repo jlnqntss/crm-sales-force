@@ -210,6 +210,16 @@
                 <label>CTL surveys</label>
             </value>
             <value>
+                <fullName>Cumplimiento resolución</fullName>
+                <default>false</default>
+                <label>Cumplimiento resolución</label>
+            </value>
+            <value>
+                <fullName>Cumplimiento resolución SDC</fullName>
+                <default>false</default>
+                <label>Cumplimiento resolución SDC</label>
+            </value>
+            <value>
                 <fullName>Dates</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -247,6 +257,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Digital signature</label>
+            </value>
+            <value>
+                <fullName>Disconformidad con indemnización</fullName>
+                <default>false</default>
+                <label>Disconformidad con indemnización</label>
             </value>
             <value>
                 <fullName>Disconformidad con peritación</fullName>
@@ -531,6 +546,11 @@
                 <label>Otras áreas</label>
             </value>
             <value>
+                <fullName>Pago Graciable</fullName>
+                <default>false</default>
+                <label>Pago Graciable</label>
+            </value>
+            <value>
                 <fullName>Pagos</fullName>
                 <default>false</default>
                 <label>Pagos</label>
@@ -546,6 +566,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Personal information</label>
+            </value>
+            <value>
+                <fullName>Petición Alegaciones SDC</fullName>
+                <default>false</default>
+                <label>Petición Alegaciones SDC</label>
             </value>
             <value>
                 <fullName>Policy</fullName>
@@ -665,6 +690,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Resend receipt</label>
+            </value>
+            <value>
+                <fullName>Resolución SDC</fullName>
+                <default>false</default>
+                <label>Resolución SDC</label>
             </value>
             <value>
                 <fullName>Retención</fullName>
@@ -828,6 +858,10 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Disconformidad con indemnización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
             <valueName>Disconformidad con peritación</valueName>
         </valueSettings>
         <valueSettings>
@@ -844,7 +878,16 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <valueName>Pago Graciable</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
             <valueName>Procesos y herramientas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Replica</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
@@ -860,7 +903,15 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
-            <valueName>Alegaciones SDC</valueName>
+            <valueName>Cumplimiento resolución</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Cumplimiento resolución SDC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Petición Alegaciones SDC</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
@@ -869,7 +920,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
-            <valueName>Replica</valueName>
+            <valueName>Resolución SDC</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>

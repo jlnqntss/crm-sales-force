@@ -321,6 +321,13 @@
         <value>General Insurance</value>
     </labels>
     <labels>
+        <fullName>IAMUserSignatureLegal</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>IAMUserSignatureLegal</shortDescription>
+        <value>&lt;div style=&quot;font-family: Verdana; font-size: 9px;&quot;&gt;Este mensaje y sus anexos pueden contener información confidencial y/o con derecho legal. Está dirigido únicamente a la persona/s o entidad/es reseñadas como único destinatario autorizado. Si este mensaje le hubiera llegado por error, por favor elimínelo sin revisarlo ni reenviarlo y notifíquelo inmediatamente al remitente. Gracias por su colaboración.&lt;/div&gt;</value>
+    </labels>
+    <labels>
         <fullName>IBA_Response_Body</fullName>
         <categories>Values</categories>
         <language>en_US</language>

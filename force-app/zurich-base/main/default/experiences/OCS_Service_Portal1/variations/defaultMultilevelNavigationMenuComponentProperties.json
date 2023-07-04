@@ -1,0 +1,17 @@
+{
+  "componentVariants": [
+    {
+      "id": "de9f1b9f-3a06-4fbc-9e84-ac656dae70ee",
+      "propertyOverrides": {
+        "componentAttributes": {
+          "NavigationMenuEditorRefresh": "OCS_Supervisor_Service_Portal_Menu"
+        }
+      },
+      "targetId": "38b32cde-6b00-4ebb-aec0-1f57280ef126",
+      "type": "componentVariant"
+    }
+  ],
+  "developerName": "Default_Multilevel_Navigation_Menu_Component_Properties",
+  "id": "baa504a9-fd45-4074-8565-efdb31c9b7cc",
+  "type": "experienceVariation"
+}

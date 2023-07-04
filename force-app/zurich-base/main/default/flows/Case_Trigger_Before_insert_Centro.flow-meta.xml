@@ -355,15 +355,20 @@
 				(
 					CONTAINS({!$Record.Owner:Group.Name},&apos;CSM_P&apos;),
 					&apos;CSM Particulares&apos;,
-					IF
-					(
-						{!$User.Department} = &apos;Servicio de Atención al Cliente&apos;,
-						&apos;CC Service&apos;, 
-						{!$User.Department}
-					)
-				)
-			)
-		)
+                    IF
+                    (
+					    CONTAINS({!$Record.Owner:Group.Name},&apos;TWW&apos;),
+					    &apos;TWW Retención&apos;,
+					    IF
+					    (
+						    {!$User.Department} = &apos;Servicio de Atención al Cliente&apos;,
+						    &apos;CC Service&apos;, 
+						    {!$User.Department}
+					    )
+				    )
+			    )
+		    )
+        )
 	),
 	IF
 	(

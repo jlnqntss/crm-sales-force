@@ -1,0 +1,11 @@
+{
+  "activeViewId": "22fd01a1-0ac7-418a-a384-dd8062882461",
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags": [],
+  "id": "8b8f589b-197c-431b-bd96-beb8a3751ef8",
+  "label": "Casos Equipo",
+  "pageAccess": "UseParent",
+  "routeType": "custom-casosequipo",
+  "type": "route",
+  "urlPrefix": "casosequipo"
+}

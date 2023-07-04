@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-22-2023
+ * @last modified by  : aberuete
+**/
 public without sharing class CaseHandler implements ITrigger
 {
     public CaseHandler()
@@ -31,6 +38,7 @@ public without sharing class CaseHandler implements ITrigger
     {
         CaseUtil.assignContactToCase(newList);
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
+        CaseUtil.updateTranscomCase(newList);
     }
 
     /**

@@ -1,6 +1,6 @@
 {
   "activeBrandingSetId": "5044ebbe-2953-4586-be17-5b1eb1d9b9bf",
-  "customCSS": "@font-face {\n    font-family: 'Ogg';\n    src: url('/OCSServicePortal/s/sfsites/c/resource/ZurichFonts/Ogg-Regular/Ogg-AllStyles-v2.0-Webfonts/Ogg-Regular.woff') format('woff');\n}",
+  "customCSS": "@font-face {\n    font-family: 'ZurichSans';\n    src: url('/OCSServicePortal/s/sfsites/c/resource/ZurichSansFont/ZurichSans-Regular.woff') format('woff');\n}",
   "developerName": "webster",
   "id": "9d86ea3f-d8e4-4122-85af-6a9d63916554",
   "label": "Webster",
@@ -143,7 +143,7 @@
                         "NavigationMenuEditorRefresh": "OCS_Service_Portal_Menu",
                         "alignment": "left",
                         "showAppLauncher": false,
-                        "showBackLabel": false,
+                        "showBackLabel": true,
                         "showHomeLink": true
                       },
                       "componentName": "forceCommunity:multiLevelNavigationWrapper",

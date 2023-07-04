@@ -1,0 +1,76 @@
+{
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "a1fcea76-45d2-4b26-9b19-87e9f5bda3f1",
+  "label": "Account Detail",
+  "regions": [
+    {
+      "id": "63762a38-6218-4d7c-aadb-90764805e0c5",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "recordId": "{!recordId}"
+          },
+          "componentName": "forceCommunity:recordHeadline",
+          "id": "671c5212-c191-49a2-b080-9f2628e1a01d",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "detailsTabLabel": "Datos personales",
+            "discussionsTabLabel": "Historial del cliente",
+            "recordId": "{!recordId}",
+            "relatedTabLabel": "Relacionado",
+            "showLegacyActivityComposer": false,
+            "tab1Type": "details",
+            "tab2Type": "related",
+            "tab3Type": "chatter",
+            "tab4Type": "timeline",
+            "timelineTabLabel": "Activity"
+          },
+          "componentName": "forceCommunity:recordHomeTabs",
+          "id": "73e8ea8c-ecee-4008-9c38-fb8221e54bb4",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "2a831036-cade-4c44-ab90-99b7028bfcbb",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "f52c1d91-a6bd-49d5-9046-23229ca5517a",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "",
+            "title": "{!Record._Object}: {!Record._Title}"
+          },
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "45414d18-217a-433b-a86e-a3063c098a43",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "d14b7683-2081-4979-8808-9960dac66585",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "detail-001"
+}

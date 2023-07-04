@@ -240,6 +240,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CaseHistorySelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CaseHistorySelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CaseUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -5838,6 +5846,11 @@
     </fieldPermissions> 
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.EconomicImpact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.HasBeenTransfered__c</field>
         <readable>true</readable>
     </fieldPermissions>   
@@ -6299,6 +6312,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.TechnicalCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.TerritorialDirection__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8029,6 +8047,11 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>Event.IsRelatedToComercialPlan__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.SalesLossReasonDateTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10616,6 +10639,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.ProductBranch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.ProductId__c</field>
         <readable>true</readable>
@@ -11713,6 +11741,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.IsRelatedToComercialPlan__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.SalesLossReasonDateTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CloseResultIncorrect</fullName>
+    <active>true</active>
+    <description>[VR Caso] El resultado de cierre escogido no permite registrar datos en el campo Impacto Económico</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;OCSInquiry&quot; &amp;&amp;
+ISCHANGED(CloseResult__c) &amp;&amp; NOT(ISPICKVAL(CloseResult__c,&quot;Realizado - Cambio criterio centro&quot;)) &amp;&amp; NOT(ISPICKVAL(CloseResult__c,&quot;Realizado&quot;))&amp;&amp; 
+NOT(ISPICKVAL(CloseResult__c,&quot;Resolución SDC Estimada&quot;)) &amp;&amp; NOT(ISPICKVAL(CloseResult__c,&quot;Resolución  SDC Parcialmente estimada&quot;))</errorConditionFormula>
+    <errorMessage>[VR Caso] El resultado de cierre escogido no permite registrar datos en el campo Impacto Económico</errorMessage>
+</ValidationRule>

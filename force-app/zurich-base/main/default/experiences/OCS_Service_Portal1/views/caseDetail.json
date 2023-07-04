@@ -24,15 +24,26 @@
         },
         {
           "componentAttributes": {
-            "detailsTabLabel": "Details",
-            "discussionsTabLabel": "Feed",
+            "flowArguments": "[{\"label\":\"recordId\",\"dataType\":\"String\",\"supportsRecordId\":true,\"value\":\"{!Record.Id}\"}]",
+            "flowName": "CaseSelectCustomer"
+          },
+          "componentName": "forceCommunity:flowCommunity",
+          "id": "d4f6a609-1bac-44e2-b1a8-32129dc8b1b0",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "detailsTabLabel": "Detalles",
+            "discussionsTabLabel": "Historial del Caso",
             "recordId": "{!recordId}",
-            "relatedTabLabel": "Related",
-            "showLegacyActivityComposer": false,
+            "relatedTabLabel": "Relacionado",
+            "showLegacyActivityComposer": true,
             "tab1Type": "details",
-            "tab2Type": "related",
-            "tab3Type": "chatter",
-            "tab4Type": "none",
+            "tab2Type": "chatter",
+            "tab3Type": "none",
+            "tab4Type": "related",
             "timelineTabLabel": "Activity"
           },
           "componentName": "forceCommunity:recordHomeTabs",
