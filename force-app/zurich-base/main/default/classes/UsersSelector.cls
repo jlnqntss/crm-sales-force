@@ -55,4 +55,83 @@ public with sharing class UsersSelector extends RecordsSelector
 
         return result;
     }
+
+
+     /**
+     * Recupera Usuario por email
+     * 
+     * @author dmunoz
+     * @date 15/06/2023
+     * 
+     * @param {List<String> userNames} lista de nombres de usuarios 
+     * @return {Map<Id, User>} mapa de Usuarios
+     */
+    public User findUserByEmail(String userEmail) {
+
+        User result = null;
+
+        if (userEmail != null && String.isNotEmpty(userEmail)) {
+            List<User> users = new List<User>([
+                SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, ManagerId
+                FROM User WHERE email = :userEmail 
+                LIMIT 1
+            ]);
+
+            if( !users.isEmpty() ) {
+                result = users.get(0);
+            }
+        }
+
+        return result;
+    }    
+
+     /**
+     * Recupera Usuario por nickname de comunidad
+     * 
+     * @author dmunoz
+     * @date 15/06/2023
+     * 
+     * @param communityNickname
+     * @return Usuario
+     */
+    public User findUserByCommunityNickname(String communityNickname) {
+
+        User result = null;
+
+        if (communityNickname != null && String.isNotEmpty(communityNickname)) {
+            List<User> manager = new List<User>([SELECT Id FROM User WHERE IsActive = true AND CommunityNickname = :communityNickname LIMIT 1]);
+
+            if (manager != null && !manager.isEmpty()) {
+                result = manager.get(0);
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Recupera los datos de Usuario por id para comprobar si alguno de estos se ha modificado con respecto a la informacion que llega de IAM
+     * 
+     * @author dmunoz
+     * @date 15/06/2023
+     * 
+     * @param communityNickname
+     * @return Usuario
+     */
+    public User getLoginUserToUpdate(Id userId) {
+        User result = null;
+
+        if (userId != null && String.isNotEmpty(userId)) { 
+            List<User> userList = new List<User>([
+                SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title, ManagerId
+                FROM User WHERE Id =: userId LIMIT 1
+            ]);
+
+            if (userList != null && !userList.isEmpty()) {
+                result = userList.get(0);
+            }
+        }
+        return result;
+    }
 }
