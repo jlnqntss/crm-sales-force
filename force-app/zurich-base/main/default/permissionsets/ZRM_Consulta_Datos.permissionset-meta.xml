@@ -56,11 +56,6 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.AnnualRevenue</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Anonymized__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -141,11 +136,6 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.CommercialActivity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Contact_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -187,11 +177,6 @@ Para usuarios de la comunidad zrm</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Expert__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Family__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3042,11 +3027,6 @@ Para usuarios de la comunidad zrm</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.BusinessCode__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Policy__c.BusinessName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
