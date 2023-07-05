@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Permission__c</field>
-        <value xsi:type="xsd:string">Transcom Retenciones</value>
+        <value xsi:type="xsd:string">Transcom_Retenciones</value>
     </values>
     <values>
         <field>Role_Name__c</field>
