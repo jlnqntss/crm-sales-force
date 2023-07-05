@@ -5,7 +5,7 @@
         <name>El_Caso_esta_Pending</name>
         <label>¿El Caso está Pending?</label>
         <locationX>314</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si_OCS</name>
@@ -31,7 +31,7 @@
         </rules>
         <rules>
             <name>SI_USP</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4 OR 5)</conditionLogic>
+            <conditionLogic>1 AND 2 AND (3 OR 4 OR 5 OR 6)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -67,6 +67,13 @@
                     <stringValue>Others</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.PendingBy__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Deferred</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Actualizar_Caso_a_Respondido_USP</targetReference>
             </connector>
@@ -77,7 +84,7 @@
         <name>IsIncomingDecision</name>
         <label>Is incoming?</label>
         <locationX>644</locationX>
-        <locationY>335</locationY>
+        <locationY>323</locationY>
         <defaultConnector>
             <targetReference>IsPendingUSP</targetReference>
         </defaultConnector>
@@ -102,7 +109,7 @@
         <name>IsPendingUSP</name>
         <label>Is pending and USP?</label>
         <locationX>974</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Pending or not USP</defaultConnectorLabel>
         <rules>
             <name>YesPendingOutcome</name>
@@ -161,7 +168,7 @@
         <name>Actualizar_Caso_a_Pendiente</name>
         <label>Actualizar Caso a Pendiente</label>
         <locationX>842</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -188,7 +195,7 @@
         <name>Actualizar_Caso_a_Respondido_OCS</name>
         <label>Actualizar Caso a Respondido OCS</label>
         <locationX>50</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -215,7 +222,7 @@
         <name>Actualizar_Caso_a_Respondido_USP</name>
         <label>Actualizar Caso a Respondido USP</label>
         <locationX>314</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
