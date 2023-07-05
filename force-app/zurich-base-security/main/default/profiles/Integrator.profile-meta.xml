@@ -3861,6 +3861,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.HealthSpecialist__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Income2019__c</field>
         <readable>true</readable>
     </fieldPermissions>
