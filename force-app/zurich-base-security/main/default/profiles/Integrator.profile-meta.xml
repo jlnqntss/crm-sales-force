@@ -14780,11 +14780,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Competitor__c.Customer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Competitor__c.ExpirationDate__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -14792,11 +14787,6 @@
         <editable>true</editable>
         <field>Competitor__c.InsuranceCompany__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Competitor__c.Lead__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -14816,16 +14806,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Competitor__c.ProductType__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-     <fieldPermissions>
-        <editable>true</editable>
-        <field>Propensity__c.Customer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Propensity__c.Lead__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
