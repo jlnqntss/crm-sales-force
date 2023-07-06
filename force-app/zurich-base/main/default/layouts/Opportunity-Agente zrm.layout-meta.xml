@@ -13,6 +13,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>InfoQuoteNumber__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>ProductBranch__c</field>
             </layoutItems>
             <layoutItems>
@@ -22,10 +26,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Description</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>InfoQuoteNumber__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
