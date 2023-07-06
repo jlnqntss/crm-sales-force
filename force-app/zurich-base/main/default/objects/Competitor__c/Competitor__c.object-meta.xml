@@ -155,14 +155,14 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <gender>Masculine</gender>
-    <label>Competitor</label>
+    <label>Competencia</label>
     <nameField>
         <displayFormat>{00000000}</displayFormat>
         <label>Identifier</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Competitors</pluralLabel>
+    <pluralLabel>Competencias</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
