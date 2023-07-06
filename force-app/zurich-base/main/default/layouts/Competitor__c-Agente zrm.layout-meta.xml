@@ -25,7 +25,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>ProductType__c</field>
+                <field>ProductType_del_del__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
