@@ -3330,9 +3330,6 @@
         <layout>Claim__c-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Product2-Agente zrm</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Contact-Ventas Agent Mediator</layout>
         <recordType>Contact.AgentMediator</recordType>
     </layoutAssignments>
