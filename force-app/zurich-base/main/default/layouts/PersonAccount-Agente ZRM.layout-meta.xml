@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
-    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>SendSurveyInvitation</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
@@ -138,10 +135,10 @@
     <relatedLists>
         <excludeButtons>New</excludeButtons>
         <fields>OPPORTUNITY.NAME</fields>
-        <fields>OPPORTUNITY.STAGE_NAME</fields>
         <fields>Product_Name__c</fields>
-        <fields>CORE.USERS.FULL_NAME</fields>
-        <fields>TotalPremium__c</fields>
+        <fields>OPPORTUNITY.STAGE_NAME</fields>
+        <fields>OPPORTUNITY.CLOSE_DATE</fields>
+        <fields>CORE.USERS.ALIAS</fields>
         <relatedList>RelatedOpportunityList</relatedList>
     </relatedLists>
     <relatedLists>
@@ -151,7 +148,8 @@
         <fields>PolicyStatus__c</fields>
         <fields>ProductId__c</fields>
         <fields>TotalPremium__c</fields>
-        <relatedList>Policy__c.IntermediaryId__c</relatedList>
+        <fields>IntermediaryNameForm__c</fields>
+        <relatedList>Policy__c.PolicyHolder__c</relatedList>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
