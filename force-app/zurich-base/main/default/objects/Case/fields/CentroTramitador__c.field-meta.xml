@@ -182,6 +182,26 @@
                 <default>false</default>
                 <label>CTA JURIDICO</label>
             </value>
+            <value>
+                <fullName>Libre Designa ALD</fullName>
+                <default>false</default>
+                <label>Libre Designa ALD</label>
+            </value>
+            <value>
+                <fullName>LESIONES ZONA 1</fullName>
+                <default>false</default>
+                <label>LESIONES ZONA 1</label>
+            </value>
+            <value>
+                <fullName>CT ACCIDENTES</fullName>
+                <default>false</default>
+                <label>CT ACCIDENTES</label>
+            </value>
+            <value>
+                <fullName>CT RC MATERIALES</fullName>
+                <default>false</default>
+                <label>CT RC MATERIALES</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
