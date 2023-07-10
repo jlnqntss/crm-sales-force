@@ -7,6 +7,9 @@
     <excludeButtons>CreateCallList</excludeButtons>
     <excludeButtons>CreatePartnerChannelQuickAction</excludeButtons>
     <excludeButtons>CreateSurveyInvitation</excludeButtons>
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
@@ -144,10 +147,10 @@
     <relatedLists>
         <excludeButtons>New</excludeButtons>
         <fields>OPPORTUNITY.NAME</fields>
-        <fields>Product_Name__c</fields>
         <fields>OPPORTUNITY.STAGE_NAME</fields>
-        <fields>OPPORTUNITY.CLOSE_DATE</fields>
-        <fields>CORE.USERS.ALIAS</fields>
+        <fields>Product_Name__c</fields>
+        <fields>CORE.USERS.FULL_NAME</fields>
+        <fields>TotalPremium__c</fields>
         <relatedList>RelatedOpportunityList</relatedList>
     </relatedLists>
     <relatedLists>
@@ -157,8 +160,7 @@
         <fields>PolicyStatus__c</fields>
         <fields>ProductId__c</fields>
         <fields>TotalPremium__c</fields>
-        <fields>IntermediaryNameForm__c</fields>
-        <relatedList>Policy__c.PolicyHolder__c</relatedList>
+        <relatedList>Policy__c.IntermediaryId__c</relatedList>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
