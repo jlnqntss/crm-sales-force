@@ -147,10 +147,10 @@
     <relatedLists>
         <excludeButtons>New</excludeButtons>
         <fields>OPPORTUNITY.NAME</fields>
-        <fields>OPPORTUNITY.STAGE_NAME</fields>
         <fields>Product_Name__c</fields>
-        <fields>CORE.USERS.FULL_NAME</fields>
-        <fields>TotalPremium__c</fields>
+        <fields>OPPORTUNITY.STAGE_NAME</fields>
+        <fields>OPPORTUNITY.CLOSE_DATE</fields>
+        <fields>CORE.USERS.ALIAS</fields>
         <relatedList>RelatedOpportunityList</relatedList>
     </relatedLists>
     <relatedLists>
@@ -160,13 +160,14 @@
         <fields>PolicyStatus__c</fields>
         <fields>ProductId__c</fields>
         <fields>TotalPremium__c</fields>
-        <relatedList>Policy__c.IntermediaryId__c</relatedList>
+        <fields>IntermediaryNameForm__c</fields>
+        <relatedList>Policy__c.PolicyHolder__c</relatedList>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
-        <fields>Product__c</fields>
+        <fields>ProductName__c</fields>
         <fields>DateOfOccurrence__c</fields>
         <fields>Status__c</fields>
         <relatedList>Claim__c.PolicyHolder__c</relatedList>
