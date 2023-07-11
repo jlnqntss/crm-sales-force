@@ -13,17 +13,17 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>CreatedDate</field>
-                <uiBehavior>Readonly</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
                 <field>PolicyId__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>OfferId__c</field>
+                <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>ClaimId__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
@@ -60,6 +60,11 @@
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
+                <field>CreatedDate</field>
+                <uiBehavior>Readonly</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
                 <field>Type</field>
                 <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
@@ -81,11 +86,6 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>OwnerId</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>AutomaticNotifications__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
