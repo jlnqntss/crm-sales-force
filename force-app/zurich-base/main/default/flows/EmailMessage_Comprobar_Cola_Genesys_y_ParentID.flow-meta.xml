@@ -2,67 +2,9 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <assignments>
-        <name>Asignamos_variable</name>
-        <label>Asignamos variable</label>
-        <locationX>2802</locationX>
-        <locationY>1190</locationY>
-        <assignmentItems>
-            <assignToReference>IdOwnerLoop</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Recorremos_casos_abiertos.OwnerId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Es_user</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Asignamos_variable_cerrados</name>
-        <label>Asignamos variable cerrados</label>
-        <locationX>2734</locationX>
-        <locationY>2198</locationY>
-        <assignmentItems>
-            <assignToReference>IdOwnerLoop</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Recorremos_casos_cerrados.OwnerId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>isUserClosed</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Asignar_Gestor_Caso_Abierto_USP</name>
-        <label>Asignar Gestor Caso Abierto USP</label>
-        <locationX>2670</locationX>
-        <locationY>1406</locationY>
-        <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Recorremos_casos_abiertos.Owner:User.Email</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>AsignarGestorCasoCerradoUSPAssignment</name>
-        <label>Asignar Gestor Caso Cerrado USP</label>
-        <locationX>2602</locationX>
-        <locationY>2414</locationY>
-        <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Recorremos_casos_cerrados.Owner:User.Email</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
         <name>CaseOwnerAssignment</name>
         <label>Asignar propietario caso</label>
-        <locationX>1480</locationX>
+        <locationX>908</locationX>
         <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -150,31 +92,9 @@
         </rules>
     </decisions>
     <decisions>
-        <name>AgenteColaDecision</name>
-        <label>¿Agente o Cola?</label>
-        <locationX>2272</locationX>
-        <locationY>650</locationY>
-        <defaultConnector>
-            <targetReference>getRecordTypeID</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>AgenteOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>IDPropietarioCaso</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>005</stringValue>
-                </rightValue>
-            </conditions>
-            <label>Agente</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>CallCenterDecision</name>
         <label>¿Qué Call Center es?</label>
-        <locationX>1612</locationX>
+        <locationX>1040</locationX>
         <locationY>542</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -229,26 +149,11 @@
             </connector>
             <label>CC Service</label>
         </rules>
-        <rules>
-            <name>USPOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>ColaGenesysCallCenter</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>USP</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AgenteColaDecision</targetReference>
-            </connector>
-            <label>USP</label>
-        </rules>
     </decisions>
     <decisions>
         <name>CaseAssignedToUserDecision</name>
         <label>¿Caso asignado a usuario?</label>
-        <locationX>1612</locationX>
+        <locationX>1040</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>CallCenterDecision</targetReference>
@@ -273,7 +178,7 @@
     <decisions>
         <name>CaseOrOpportunityDecision</name>
         <label>¿Caso u oportunidad?</label>
-        <locationX>2591</locationX>
+        <locationX>1733</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -305,53 +210,6 @@
         </rules>
     </decisions>
     <decisions>
-        <name>CasosCerradosMediadorEncontradosDecision</name>
-        <label>¿Casos Cerrados Mediador Encontrados?</label>
-        <locationX>2646</locationX>
-        <locationY>1982</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>CasosCerradosEncontradosUSPOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>ObtenerCasosCerradosMediadorAction</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Recorremos_casos_cerrados</targetReference>
-            </connector>
-            <label>Casos Cerrados Encontrados USP</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>CasosDeAgentesAbiertosEncontradosDecision</name>
-        <label>¿Casos de agentes abiertos encontrados?</label>
-        <locationX>2646</locationX>
-        <locationY>974</locationY>
-        <defaultConnector>
-            <targetReference>ObtenerCasosCerradosMediadorAction</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>CasosAbiertosEncontrados</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>ObtenerCasosAbiertosAgentesAction</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Recorremos_casos_abiertos</targetReference>
-            </connector>
-            <label>Casos abiertos encontrados</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>ClosedCasesFoundDecision</name>
         <label>¿Casos cerrados encontrados?</label>
         <locationX>1502</locationX>
@@ -374,31 +232,6 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Es_user</name>
-        <label>¿Es user?</label>
-        <locationX>2802</locationX>
-        <locationY>1298</locationY>
-        <defaultConnector>
-            <targetReference>Recorremos_casos_abiertos</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Owner</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>IdOwnerLoop</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>005</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Asignar_Gestor_Caso_Abierto_USP</targetReference>
-            </connector>
-            <label>Owner</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Individual_manager_encontrado</name>
         <label>¿Individual manager encontrado?</label>
         <locationX>182</locationX>
@@ -418,31 +251,6 @@
                 <targetReference>CSMIndividualManagerAssignment</targetReference>
             </connector>
             <label>Individual manager encontrado</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>isUserClosed</name>
-        <label>¿Es user?</label>
-        <locationX>2734</locationX>
-        <locationY>2306</locationY>
-        <defaultConnector>
-            <targetReference>Recorremos_casos_cerrados</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>isOwner</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>IdOwnerLoop</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>005</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AsignarGestorCasoCerradoUSPAssignment</targetReference>
-            </connector>
-            <label>Owner</label>
         </rules>
     </decisions>
     <decisions>
@@ -473,31 +281,6 @@
     <environments>Default</environments>
     <interviewLabel>EmailMessage - Comprobar Cola Genesys y ParentID {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage - Búsqueda gestor preferente</label>
-    <loops>
-        <name>Recorremos_casos_abiertos</name>
-        <label>Recorremos casos abierto</label>
-        <locationX>2582</locationX>
-        <locationY>1082</locationY>
-        <collectionReference>ObtenerCasosAbiertosAgentesAction</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Asignamos_variable</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>ObtenerCasosCerradosMediadorAction</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>Recorremos_casos_cerrados</name>
-        <label>Recorremos casos cerrados</label>
-        <locationX>2514</locationX>
-        <locationY>2090</locationY>
-        <collectionReference>ObtenerCasosCerradosMediadorAction</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Asignamos_variable_cerrados</targetReference>
-        </nextValueConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -584,117 +367,8 @@
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordLookups>
-        <name>getRecordTypeID</name>
-        <label>Obtener RecordType ID</label>
-        <locationX>2646</locationX>
-        <locationY>758</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>ObtenerCasosAbiertosAgentesAction</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>USPInquiry</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>RecordType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>ObtenerCasosAbiertosAgentesAction</name>
-        <label>Obtener Casos Abiertos Agentes</label>
-        <locationX>2646</locationX>
-        <locationY>866</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>CasosDeAgentesAbiertosEncontradosDecision</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>IsClosed</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>AccountId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>IdCuentaCaso</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Id</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <elementReference>NumeroParentId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>RecordTypeId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>getRecordTypeID.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Case</object>
-        <sortField>CreatedDate</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>ObtenerCasosCerradosMediadorAction</name>
-        <label>Obtener Casos Cerrados Mediador</label>
-        <locationX>2646</locationX>
-        <locationY>1874</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>CasosCerradosMediadorEncontradosDecision</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>IsClosed</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>AccountId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>IdCuentaCaso</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Id</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <elementReference>NumeroParentId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>RecordTypeId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>getRecordTypeID.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Case</object>
-        <sortField>CreatedDate</sortField>
-        <sortOrder>Desc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <start>
-        <locationX>2465</locationX>
+        <locationX>1607</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CaseOrOpportunityDecision</targetReference>
