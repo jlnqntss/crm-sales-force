@@ -476,7 +476,11 @@ public with sharing class EmailMessagesUtil
         {
             getOwnerOfChildCaseForTranscom (padre, casoHijo);
         }
-        else 
+        else if(padre.RecordTypeId==uspRecordTypeId && padre.OwnerId!=null)
+        { 
+            casoHijo.OwnerId=padre.OwnerId; //Asignamos como propietario del caso Hijo el mismo que el caso Padre
+        }
+        else
         {
             casoHijo.OwnerId = integratorUserId; // Asignamos Integrator como el Owner del caso
         }
