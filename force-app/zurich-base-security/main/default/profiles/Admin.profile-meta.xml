@@ -10145,6 +10145,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Sales_Loss_SubReason__c</field> 
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable> 
         <field>Opportunity.Discount__c</field>
         <readable>true</readable>

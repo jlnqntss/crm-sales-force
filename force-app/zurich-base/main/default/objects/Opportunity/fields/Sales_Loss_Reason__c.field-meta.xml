@@ -59,6 +59,66 @@
                 <default>false</default>
                 <label>Incidencia actual no resuelta con alguna póliza en vigor</label>
             </value>
+            <value>
+                <fullName>No insurable risk</fullName>
+                <default>false</default>
+                <label>No Dispone de Riesgo Asegurable</label>
+            </value>
+            <value>
+                <fullName>Agenda Not Contacted</fullName>
+                <default>false</default>
+                <label>Agenda No Contactada</label>
+            </value>
+            <value>
+                <fullName>Out of Recruitment Policy</fullName>
+                <default>false</default>
+                <label>Fuera Política Contratación</label>
+            </value>
+            <value>
+                <fullName>Not Zurich customer</fullName>
+                <default>false</default>
+                <label>No es cliente Zurich</label>
+            </value>
+            <value>
+                <fullName>No Recording Accepted</fullName>
+                <default>false</default>
+                <label>No Acepta Grabación</label>
+            </value>
+            <value>
+                <fullName>Unreachable After Hours</fullName>
+                <default>false</default>
+                <label>Ilocalizable Fuera de Horario</label>
+            </value>
+            <value>
+                <fullName>Maximum Attempts</fullName>
+                <default>false</default>
+                <label>Máximo Intentos</label>
+            </value>
+            <value>
+                <fullName>Robinson List</fullName>
+                <default>false</default>
+                <label>Lista Robinson</label>
+            </value>
+            <value>
+                <fullName>No cooperation</fullName>
+                <default>false</default>
+                <label>No colabora</label>
+            </value>
+            <value>
+                <fullName>Interested contact agent</fullName>
+                <default>false</default>
+                <label>Interesado contacta con agente</label>
+            </value>
+            <value>
+                <fullName>Error</fullName>
+                <default>false</default>
+                <label>Error</label>
+            </value>
+            <value>
+                <fullName>Canceled Policy</fullName>
+                <default>false</default>
+                <label>Póliza Anulada</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
@@ -95,6 +155,50 @@
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
             <valueName>Incidence unresolved with policy</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>No insurable risk</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Agenda Not Contacted</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Out of Recruitment Policy</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Not Zurich customer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>No Recording Accepted</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Unreachable After Hours</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Maximum Attempts</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Robinson List</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>No cooperation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Interested contact agent</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Error</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
