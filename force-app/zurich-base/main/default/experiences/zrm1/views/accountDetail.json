@@ -76,7 +76,7 @@
                 {
                   "componentAttributes": {
                     "relatedListApiName": "Opportunities",
-                    "relatedListComponentOverride": "GRID",
+                    "relatedListComponentOverride": "ADVGRID",
                     "width": "MEDIUM"
                   },
                   "componentName": "forceCommunity:responsiveRelatedListSingle",
@@ -86,8 +86,8 @@
                 },
                 {
                   "componentAttributes": {
-                    "relatedListApiName": "Policies__r",
-                    "relatedListComponentOverride": "GRID",
+                    "relatedListApiName": "PoliciesHolder__r",
+                    "relatedListComponentOverride": "ADVGRID",
                     "width": "MEDIUM"
                   },
                   "componentName": "forceCommunity:responsiveRelatedListSingle",
@@ -97,19 +97,8 @@
                 },
                 {
                   "componentAttributes": {
-                    "relatedListApiName": "Polizas__r",
-                    "relatedListComponentOverride": "GRID",
-                    "width": "MEDIUM"
-                  },
-                  "componentName": "forceCommunity:responsiveRelatedListSingle",
-                  "id": "8a2e3e24-7639-41d7-b808-502119649b33",
-                  "renditionMap": {},
-                  "type": "component"
-                },
-                {
-                  "componentAttributes": {
                     "relatedListApiName": "Claims__r",
-                    "relatedListComponentOverride": "GRID",
+                    "relatedListComponentOverride": "ADVGRID",
                     "width": "MEDIUM"
                   },
                   "componentName": "forceCommunity:responsiveRelatedListSingle",
@@ -120,7 +109,7 @@
                 {
                   "componentAttributes": {
                     "relatedListApiName": "Competitors__r",
-                    "relatedListComponentOverride": "GRID",
+                    "relatedListComponentOverride": "ADVGRID",
                     "width": "MEDIUM"
                   },
                   "componentName": "forceCommunity:responsiveRelatedListSingle",
@@ -131,7 +120,7 @@
                 {
                   "componentAttributes": {
                     "relatedListApiName": "Propensiones__r",
-                    "relatedListComponentOverride": "GRID",
+                    "relatedListComponentOverride": "ADVGRID",
                     "width": "MEDIUM"
                   },
                   "componentName": "forceCommunity:responsiveRelatedListSingle",
