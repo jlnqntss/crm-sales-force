@@ -1044,6 +1044,11 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Sales_Loss_SubReason__c</field> 
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.ScopeId__c</field>
         <readable>true</readable>
     </fieldPermissions>
