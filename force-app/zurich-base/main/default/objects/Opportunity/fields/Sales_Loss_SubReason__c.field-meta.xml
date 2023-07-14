@@ -9,6 +9,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
+        <controllingField>Sales_Loss_Reason__c</controllingField>
         <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
@@ -128,5 +129,97 @@
                 <label>VIDA-CNO de riesgo Alto</label>
             </value>
         </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>CARS-Uses/type of risk</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>CARS-Non-contractable guaranties</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>CARS-Age of risk</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>CARS-Score</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>CARS-Bonus/Malus outside of contracting rules</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>CARS-Driver</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>HOME-Uses/type of risk</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>HOME-Non-contractable guaranties</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>HOME-Age of risk</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>HOME-Payment Installment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>HOME-Jewellery and valuable objects</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>HOME-Type of housing construction</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>HOME-Uninhabited</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>HOME-Unoccupied housing</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>LIFE-Capital</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>LIFE-Age</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>LIFE-High risk sport</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>LIFE-Illness</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>LIFE-Travel abroad + 60d</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>LIFE-Tax Residence</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>LIFE-PRP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>LIFE-High risk nationality</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Out of Recruitment Policy</controllingFieldValue>
+            <valueName>LIFE-High risk CNO</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>
