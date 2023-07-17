@@ -3,11 +3,6 @@
     <description>Permisos de los campos exclusivos del objeto Competencia</description>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Competitor__c.Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Competitor__c.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>

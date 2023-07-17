@@ -1686,11 +1686,6 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Competitor__c.Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Competitor__c.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
