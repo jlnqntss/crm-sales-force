@@ -127,6 +127,17 @@
                   "id": "fc812739-f6b2-42d2-ae49-c9970a9f8b99",
                   "renditionMap": {},
                   "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "PersonCampaignMembers",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "7af99ee0-d414-4f77-b221-18e80be8ef76",
+                  "renditionMap": {},
+                  "type": "component"
                 }
               ],
               "id": "4de82d4c-1df5-4faa-983c-b9450c384e8c",
