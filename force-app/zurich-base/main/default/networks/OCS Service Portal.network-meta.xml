@@ -18,7 +18,7 @@
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
     <enableMemberVisibility>false</enableMemberVisibility>
-    <enableNicknameDisplay>true</enableNicknameDisplay>
+    <enableNicknameDisplay>false</enableNicknameDisplay>
     <enablePrivateMessages>false</enablePrivateMessages>
     <enableReputation>false</enableReputation>
     <enableShowAllNetworkSettings>false</enableShowAllNetworkSettings>
