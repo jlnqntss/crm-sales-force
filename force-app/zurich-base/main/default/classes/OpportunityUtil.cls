@@ -10,6 +10,9 @@ public with sharing class OpportunityUtil
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
     public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
     static final String FIELD_OWNER_ID = 'OwnerId';
+    private static List<String> nombresPerfilesVentas; // perfiles de la app ventas y zrm que muestra otro mensaje de error para la validación de cerrada ganada
+    private static String userLoggedProfile; // query que obtiene el nombre del perfil del usuario logeado
+
     /**
      * BULK BEFORE
      * Inicializa un mapa de perfiles a los que se les permite bypasear la regla de validación para
@@ -25,6 +28,10 @@ public with sharing class OpportunityUtil
         // usuarios
         List<String> nombresUsuarios = new List<String>{'Automated Process'};
         listaUsuarios = (new UsersSelector()).getUsersByName(nombresUsuarios);
+
+        // Perfiles Ventas
+        nombresPerfilesVentas = new List<String>{'Agente Ventas', 'Ventas User'};
+        userLoggedProfile = ProfilesSelector.getLoggedUserProfile();
     }
 
     /**
@@ -140,7 +147,7 @@ public with sharing class OpportunityUtil
      * @param oldMap Map<Id, Opportunity> mapa de las oportunidades a actualizar, con los datos anteriores al update
      * */ 
      public static void validateOfferStage(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
-     {
+     {        
         for (Opportunity newOpty : newList)
         {
             Opportunity oldOpty = oldMap.get(newOpty.Id);
@@ -148,7 +155,8 @@ public with sharing class OpportunityUtil
             if (!skipStageNameValidation(newOpty) && !isValidStageName(oldOpty))
             { 
                 // ERROR  : Agregar el mensaje a nivel de campo 
-                newOpty.addError('StageName', Label.OfferStageValidationMessage);
+                
+                newOpty.addError('StageName', nombresPerfilesVentas.contains(userLoggedProfile) ? Label.OfferSalesStageValidationClosedWonMessage : Label.OfferStageValidationMessage);
             } 
         }
     }

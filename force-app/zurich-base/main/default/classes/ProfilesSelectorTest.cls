@@ -27,4 +27,17 @@ public with sharing class ProfilesSelectorTest {
         System.assertEquals(0, perfiles.values().size(), 'No debe encontrar ningún perfil');
     }
 
+    @isTest
+    static void test_getLoggedUserProfile() {
+
+        Profile userProfile = [SELECT Name FROM Profile WHERE Id =: UserInfo.getProfileId()];
+
+        Test.startTest();
+        String logedUserProfile = ProfilesSelector.getLoggedUserProfile();
+
+        Test.stopTest();
+
+        System.assertEquals(userProfile.Name, logedUserProfile, 'Debe coincidir el perfil del usuario');
+    }
+
 }
