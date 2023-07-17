@@ -28,9 +28,22 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>Asignar_CSM_Adm1</name>
+        <label>Asignar CSM Adm</label>
+        <locationX>578</locationX>
+        <locationY>611</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CallCenter__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>CSM Administración</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>AssignCCSAssignment</name>
         <label>Asignar CCS</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>611</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
@@ -43,7 +56,7 @@
     <assignments>
         <name>AssignCSMAdmAssignment</name>
         <label>Asignar CSM Adm</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>719</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
@@ -56,7 +69,7 @@
     <assignments>
         <name>AssignCSMPartAssignment</name>
         <label>Asignar CSM Part</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>719</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
@@ -69,7 +82,7 @@
     <assignments>
         <name>CallCenterAssignment</name>
         <label>Asignar Call Center</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>503</locationY>
         <assignmentItems>
             <assignToReference>$Record.CallCenter__c</assignToReference>
@@ -90,7 +103,7 @@
     <decisions>
         <name>CDEXorCSMOrCCSDecision</name>
         <label>¿Es CDEX, CSM o CCS?</label>
-        <locationX>710</locationX>
+        <locationX>842</locationX>
         <locationY>503</locationY>
         <defaultConnector>
             <targetReference>AssignCCSAssignment</targetReference>
@@ -119,6 +132,28 @@
             <label>CDEX</label>
         </rules>
         <rules>
+            <name>Hegeo</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Owner:Group.Name</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>HEGEO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_CSM_Adm1</targetReference>
+            </connector>
+            <label>Hegeo</label>
+        </rules>
+        <rules>
             <name>CSMOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
@@ -137,7 +172,7 @@
     <decisions>
         <name>CSMCenterDecision</name>
         <label>¿Es Centro CSM?</label>
-        <locationX>710</locationX>
+        <locationX>974</locationX>
         <locationY>611</locationY>
         <defaultConnector>
             <targetReference>AssignCSMAdmAssignment</targetReference>
@@ -204,7 +239,7 @@
     <decisions>
         <name>IsOCSDecision</name>
         <label>¿Es OCS?</label>
-        <locationX>1370</locationX>
+        <locationX>1568</locationX>
         <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -226,7 +261,7 @@
     <decisions>
         <name>UserTypeAndDepartmentDecision</name>
         <label>¿Tipo de user y departamento?</label>
-        <locationX>842</locationX>
+        <locationX>974</locationX>
         <locationY>395</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -409,7 +444,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>1244</locationX>
+        <locationX>1442</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsOCSDecision</targetReference>
