@@ -5,6 +5,7 @@
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
     <permissionSets>Ventas_Edicion_Competencia_Agente</permissionSets>
     <permissionSets>Ventas_Tareas</permissionSets>
+    <permissionSets>ZRMGestionDatos</permissionSets>
     <permissionSets>ZRM_Consulta_Datos</permissionSets>
     <permissionSets>ZRM_Consulta_Informes</permissionSets>
     <permissionSets>ZRM_Gestion_CS</permissionSets>
