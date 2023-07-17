@@ -15,7 +15,7 @@
         {
           "componentAttributes": {
             "enableInlineEdit": true,
-            "filterName": "Mis_casos_pendientes6",
+            "filterName": "Mis_casos_pendientes",
             "layout": "FULL",
             "pageSize": 25,
             "scope": "Case",
