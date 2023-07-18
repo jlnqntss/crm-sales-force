@@ -5,11 +5,12 @@
  * @last modified on  : 04-24-2023
  * @last modified by  : aberuete
 **/
-public with sharing class OpportunityUtil
+public with sharing class OpportunityUtil 
 {
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
     public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
     static final String FIELD_OWNER_ID = 'OwnerId';
+    static final String FIELD_STAGE = 'StageName';
     private static List<String> nombresPerfilesVentas; // perfiles de la app ventas y zrm que muestra otro mensaje de error para la validación de cerrada ganada
     private static String userLoggedProfile; // query que obtiene el nombre del perfil del usuario logeado
 
@@ -156,7 +157,7 @@ public with sharing class OpportunityUtil
             { 
                 // ERROR  : Agregar el mensaje a nivel de campo 
                 
-                newOpty.addError('StageName', nombresPerfilesVentas.contains(userLoggedProfile) ? Label.OfferSalesStageValidationClosedWonMessage : Label.OfferStageValidationMessage);
+                newOpty.addError(FIELD_STAGE, nombresPerfilesVentas.contains(userLoggedProfile) ? Label.OfferSalesStageValidationClosedWonMessage : Label.OfferStageValidationMessage);
             } 
         }
     }
