@@ -80,11 +80,11 @@
                 <field>INFOCustomerNumber__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>NationalIdType__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>NationalId__c</field>
             </layoutItems>
             <layoutItems>
@@ -110,7 +110,7 @@
                 <field>CustomerValue__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Language__c</field>
             </layoutItems>
             <layoutItems>
