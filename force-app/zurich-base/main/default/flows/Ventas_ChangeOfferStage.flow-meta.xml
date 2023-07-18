@@ -42,7 +42,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Cambio de Stage de Offer de Legit Lead a App Submitted cuando los Agentes Mediadores crean una Task relacionada.</description>
+    <description>Cambio de Stage de Offer de Legit Lead a App Submitted cuando los Agentes Mediadores crean una Task relacionada. </description>
     <environments>Default</environments>
     <interviewLabel>ventas_ {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Ventas_ChangeOfferStage</label>
@@ -91,7 +91,7 @@
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
-            <operator>EqualTo</operator>
+            <operator>EqualTo</operator> 
             <value>
                 <elementReference>$Record.WhatId</elementReference>
             </value>
