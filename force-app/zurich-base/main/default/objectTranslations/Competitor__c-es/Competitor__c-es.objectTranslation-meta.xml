@@ -10,10 +10,18 @@
     </caseValues>
     <gender>Masculine</gender>
     <layouts>
+        <layout>Agente zrm</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>Competitor Layout</layout>
         <sections>
             <label></label>
             <section>Custom Links</section>
         </sections>
     </layouts>
+    <nameFieldLabel>Identificador</nameFieldLabel>
 </CustomObjectTranslation>

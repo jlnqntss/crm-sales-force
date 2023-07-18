@@ -373,16 +373,18 @@ public with sharing class EmailMessagesUtil
                                                
                         switch on routingType {
                             when 'Industry' {
-                                if (em.Industry__c != null)
+                                if(!listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == uspRecordTypeId)
                                 {
-                                    genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
-                                }
+                                    if (em.Industry__c != null)
+                                    {
+                                        genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
+                                    }
 
-                                if((em.Industry__c==null || genesysQueue==null) && !listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == uspRecordTypeId)
-                                {
-                                    genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                                    if(em.Industry__c==null || genesysQueue==null)
+                                    {
+                                        genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                                    }
                                 }
-
                             }
                             when else {
                                 genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());                          

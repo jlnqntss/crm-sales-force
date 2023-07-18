@@ -4281,6 +4281,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.PersonLeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Phone</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6252,6 +6257,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.SourceArea__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.SourceAreaDetail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14776,11 +14786,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>PlanComercial__c.Zone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-     <fieldPermissions>
-        <editable>true</editable>
-        <field>Competitor__c.Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

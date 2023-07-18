@@ -834,11 +834,6 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.BusinessCode__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.BusinessName__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1005,6 +1000,16 @@ Para usuarios de la comunidad zrm</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PendingBy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ProductBranchDetail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ProductBranch__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

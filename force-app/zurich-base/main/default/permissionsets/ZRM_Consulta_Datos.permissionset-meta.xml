@@ -401,6 +401,11 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.PersonLeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Phone</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1686,11 +1691,6 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Competitor__c.Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Competitor__c.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2762,11 +2762,6 @@ Para usuarios de la comunidad zrm</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.BuildingCapital__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.BusinessCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

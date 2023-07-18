@@ -899,6 +899,21 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>SourceAreaDetail__c</picklist>
+        <values>
+            <fullName>CRM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Centro tramitador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsable de negocio</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>SourceArea__c</picklist>
         <values>
             <fullName>End customer partner</fullName>

@@ -322,6 +322,11 @@
         <name>Comunicacion</name>
     </quickActions>
     <quickActions>
+        <aspect>Master</aspect>
+        <label>Nueva Oferta</label>
+        <name>NewOffer</name>
+    </quickActions>
+    <quickActions>
         <label></label>
         <name>Recordatorio2</name>
     </quickActions>

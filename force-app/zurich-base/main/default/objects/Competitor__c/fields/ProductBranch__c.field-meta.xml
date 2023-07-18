@@ -17,63 +17,63 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>LP</controllingFieldValue>
-            <valueName>HOME</valueName>
+            <valueName>HOGAR</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>ACCIDENTS</valueName>
+            <valueName>ACCIDENTES</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>TRADE</valueName>
+            <valueName>COMERCIOS</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>DECESES</valueName>
+            <valueName>DECESOS</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>VESSELS</valueName>
+            <valueName>EMBARCACIONES</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>FLEETS</valueName>
+            <valueName>FLOTAS</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>PROPERTY</valueName>
+            <valueName>INMUEBLE</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>OTHER</valueName>
+            <valueName>OTROS</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>PATRIMONIALS</valueName>
+            <valueName>PATRIMONIALES</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>PROTPAYMENTS</valueName>
+            <valueName>PROT. PAGOS</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>LIABILITY</valueName>
+            <valueName>RESP. CIVIL</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>HEALTH</valueName>
+            <valueName>SALUD</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>TECHNICAL</valueName>
+            <valueName>TECNICOS</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>NEG</controllingFieldValue>
-            <valueName>TRANSPORTATION</valueName>
+            <valueName>TRANSPORTES</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>VID</controllingFieldValue>
-            <valueName>LIFE</valueName>
+            <valueName>VIDA</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

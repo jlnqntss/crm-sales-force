@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRMAccountNotEditable</fullName>
+    <active>true</active>
+    <description>Comprueba que no se edite el nombre de la cuenta siempre y cuando el RT de la cuenta no sea Lead.</description>
+    <errorConditionFormula>AND(
+  ISCHANGED(Name),
+  OR(
+    RecordType.DeveloperName = &apos;BusinessCustomer&apos;,
+    RecordType.DeveloperName = &apos;Customer&apos;),
+  OR(
+    $Profile.Name = &apos;Agente Ventas&apos;,
+    $Profile.Name = &apos;Ventas User&apos;))</errorConditionFormula>
+    <errorDisplayField>Name</errorDisplayField>
+    <errorMessage>[VR Cuenta] No tienes permisos para modificar el nombre de la cuenta</errorMessage>
+</ValidationRule>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SourceAreaDetail__c</fullName>
+    <externalId>false</externalId>
+    <label>Source Area Detail</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>SourceArea__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Responsable de negocio</fullName>
+                <default>false</default>
+                <label>Responsable de negocio</label>
+            </value>
+            <value>
+                <fullName>CRM</fullName>
+                <default>false</default>
+                <label>CRM</label>
+            </value>
+            <value>
+                <fullName>Centro tramitador</fullName>
+                <default>false</default>
+                <label>Centro tramitador</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Generic Internal</controllingFieldValue>
+            <valueName>Responsable de negocio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Generic Internal</controllingFieldValue>
+            <valueName>CRM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Generic Internal</controllingFieldValue>
+            <valueName>Centro tramitador</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>
