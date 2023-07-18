@@ -2380,4 +2380,12 @@ Create the record and try again.</value>
         <shortDescription>SDM_PlanAnual_ViewAsModalSubmit</shortDescription>
         <value>Submit</value>
     </labels>
+    <labels>
+        <fullName>OfferSalesStageValidationClosedWonMessage</fullName>
+        <categories>Ventas,Offer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OfferSalesStageValidationClosedWonMessage</shortDescription>
+        <value>[VR Offer] A Closed Won Offer cannot be modified</value>
+    </labels>
 </CustomLabels>

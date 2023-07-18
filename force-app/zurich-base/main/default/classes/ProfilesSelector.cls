@@ -19,4 +19,23 @@ public with sharing class ProfilesSelector {
         }
         
     }
+
+
+    /**
+     * Método que devuelve el perfil del usuario
+     * 
+     * @author dmunoz - nts
+     * @created date 17/07/2023
+     */
+    public static String getLoggedUserProfile() {
+        String result = '';
+
+        List<Profile> profilesQuery = new List<Profile>([SELECT Name FROM Profile WHERE Id =: UserInfo.getProfileId()]);
+
+        if (profilesQuery != null && !profilesQuery.isEmpty()) {
+            result = profilesQuery.get(0).Name;
+        }
+
+        return result;
+    }
 }

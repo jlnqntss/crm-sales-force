@@ -52,6 +52,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Sales_Loss_SubReason__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Sales_Loss_Reason_Date_Time__c</field>
             </layoutItems>
             <layoutItems>

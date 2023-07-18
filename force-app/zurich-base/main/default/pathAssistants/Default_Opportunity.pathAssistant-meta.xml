@@ -6,6 +6,7 @@
     <masterLabel>Default</masterLabel>
     <pathAssistantSteps>
         <fieldNames>Sales_Loss_Reason__c</fieldNames>
+        <fieldNames>Sales_Loss_SubReason__c</fieldNames>
         <fieldNames>Loss_Reason__c</fieldNames>
         <picklistValueName>Closed Lost</picklistValueName>
     </pathAssistantSteps>
