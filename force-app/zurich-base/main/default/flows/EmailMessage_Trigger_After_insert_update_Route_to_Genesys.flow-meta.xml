@@ -517,7 +517,7 @@
             <name>OCS</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>CasoRelacionado.RecordType.Name</leftValueReference>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>OCSInquiry</stringValue>
@@ -537,9 +537,9 @@
         </rules>
         <rules>
             <name>USP</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
-                <leftValueReference>CasoRelacionado.RecordType.Name</leftValueReference>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>USPInquiry</stringValue>
@@ -550,6 +550,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>USP</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetGenesysQueueAction.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Zurich Empresas</stringValue>
                 </rightValue>
             </conditions>
             <connector>
