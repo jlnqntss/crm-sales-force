@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customObject>true</customObject>
+    <description>Muestra los registros del objeto Propensión. En su creación, a 2023/07/07 deben tener acceso a ella los usuarios Administrador.</description>
+    <motif>Custom97: Thermometer</motif>
+</CustomTab>

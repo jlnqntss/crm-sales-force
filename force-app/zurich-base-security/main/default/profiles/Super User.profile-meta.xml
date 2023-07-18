@@ -12203,6 +12203,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Propensity__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Relationship__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
