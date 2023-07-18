@@ -14,11 +14,11 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>OfferStageUpdateRecords</targetReference>
+            <targetReference>OfferRecordLoop</targetReference>
         </connector>
     </assignments>
     <decisions>
-        <name>hasOfferStageLegitLeadDecision</name>
+        <name>HasOfferStageLegitLeadDecision</name>
         <label>Has an Offer in Stage Legit Lead Decision</label>
         <locationX>396</locationX>
         <locationY>539</locationY>
@@ -42,6 +42,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
+    <description>Cambio de Stage de Offer de Legit Lead a App Submitted cuando los Agentes Mediadores crean una Task relacionada. </description>
     <environments>Default</environments>
     <interviewLabel>ventas_ {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Ventas_ChangeOfferStage</label>
@@ -53,8 +54,11 @@
         <collectionReference>OfferGetRecords</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>hasOfferStageLegitLeadDecision</targetReference>
+            <targetReference>HasOfferStageLegitLeadDecision</targetReference>
         </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>OfferStageUpdateRecords</targetReference>
+        </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -87,9 +91,16 @@
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
-            <operator>EqualTo</operator>
+            <operator>EqualTo</operator> 
             <value>
                 <elementReference>$Record.WhatId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Legit Lead</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -99,8 +110,8 @@
     <recordUpdates>
         <name>OfferStageUpdateRecords</name>
         <label>Offer Stage Update Records</label>
-        <locationX>264</locationX>
-        <locationY>755</locationY>
+        <locationX>176</locationX>
+        <locationY>923</locationY>
         <inputReference>OfferRecordLoop</inputReference>
     </recordUpdates>
     <start>
@@ -109,6 +120,7 @@
         <connector>
             <targetReference>OfferGetRecords</targetReference>
         </connector>
+        <filterFormula>({!$Record.Owner:User.Profile.Name} = &apos;Agente Ventas&apos;)</filterFormula>
         <object>Task</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
