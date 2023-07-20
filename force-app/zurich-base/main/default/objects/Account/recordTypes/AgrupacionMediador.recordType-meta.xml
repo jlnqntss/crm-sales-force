@@ -4113,6 +4113,10 @@
             <fullName>Segur Caixa</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>DKV</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Conectivity__c</picklist>
