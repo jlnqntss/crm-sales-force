@@ -3,6 +3,7 @@
     <hasActivationRequired>false</hasActivationRequired>
     <label>Ventas Mediador</label>
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
+    <permissionSets>Ventas_Edicion_AccountRetationship_Agente</permissionSets>
     <permissionSets>Ventas_Edicion_Competencia_Agente</permissionSets>
     <permissionSets>Ventas_Tareas</permissionSets>
     <permissionSets>ZRMGestionDatos</permissionSets>
