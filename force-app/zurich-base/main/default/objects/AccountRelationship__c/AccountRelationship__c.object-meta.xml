@@ -153,14 +153,14 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
-    <gender>Feminine</gender>
-    <label>Account Relationship</label>
+    <gender>Masculine</gender>
+    <label>Cuenta Relacionada</label>
     <nameField>
         <displayFormat>{00000000}</displayFormat>
         <label>Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Accounts Relationships</pluralLabel>
+    <pluralLabel>Cuentas Relacionadas</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
