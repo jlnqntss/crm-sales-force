@@ -77,7 +77,7 @@
     <profileActionOverrides>
         <actionName>View</actionName>
         <content>Ventas_Claim_Record_Page</content>
-        <formFactor>Small</formFactor>
+        <formFactor>Large</formFactor>
         <pageOrSobjectType>Claim__c</pageOrSobjectType>
         <type>Flexipage</type>
         <profile>Ventas User</profile>
