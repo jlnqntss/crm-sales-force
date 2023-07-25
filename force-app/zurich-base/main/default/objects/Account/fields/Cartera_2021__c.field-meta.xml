@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cartera_2021__c</fullName>
+    <externalId>false</externalId>
+    <label>Cartera 2021</label>
+    <summarizedField>KPI__c.Portfolio__c</summarizedField>
+    <summaryFilterItems>
+        <field>KPI__c.CalcYear__c</field>
+        <operation>equals</operation>
+        <value>2021</value>
+    </summaryFilterItems>
+    <summaryForeignKey>KPI__c.Intermediary__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>
