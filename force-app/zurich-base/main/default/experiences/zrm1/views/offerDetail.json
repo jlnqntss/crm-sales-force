@@ -46,7 +46,7 @@
                   "locked": false,
                   "seedComponents": [],
                   "tabKey": "1",
-                  "tabName": "Details"
+                  "tabName": "Detalles"
                 },
                 {
                   "UUID": "624be115-1340-4456-b815-a58d3cd3fa53",
@@ -54,7 +54,7 @@
                   "locked": false,
                   "seedComponents": [],
                   "tabKey": "2",
-                  "tabName": "Related"
+                  "tabName": "Relacionado"
                 }
               ],
               "useOverflowMenu": false
@@ -76,7 +76,7 @@
                 }
               ],
               "id": "6194b4ae-0f22-4a61-ae05-214fcfe4f6a5",
-              "regionLabel": "Details",
+              "regionLabel": "Detalles",
               "regionName": "1",
               "renditionMap": {},
               "type": "region"
@@ -96,7 +96,7 @@
                 }
               ],
               "id": "624be115-1340-4456-b815-a58d3cd3fa53",
-              "regionLabel": "Related",
+              "regionLabel": "Relacionado",
               "regionName": "2",
               "renditionMap": {},
               "type": "region"
