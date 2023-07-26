@@ -138,6 +138,17 @@
                   "id": "7af99ee0-d414-4f77-b221-18e80be8ef76",
                   "renditionMap": {},
                   "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Accounts_Relationships__r",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "f9abefb1-d06e-4b3b-867b-343622512ece",
+                  "renditionMap": {},
+                  "type": "component"
                 }
               ],
               "id": "4de82d4c-1df5-4faa-983c-b9450c384e8c",

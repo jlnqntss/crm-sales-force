@@ -290,6 +290,13 @@
         <relatedList>Claim__c.PolicyHolder__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
+        <fields>RelatedAccount__c</fields>
+        <fields>RelationshipType__c</fields>
+        <relatedList>AccountRelationship__c.Account__c</relatedList>
+    </relatedLists>
+    <relatedLists>
         <fields>RECORDTYPE</fields>
         <fields>Identifier__c</fields>
         <fields>Role__c</fields>
