@@ -2771,6 +2771,11 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.CampaignId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.CommercialCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2922,6 +2927,11 @@ Para usuarios de la comunidad zrm</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.PaymentType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Probability</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
