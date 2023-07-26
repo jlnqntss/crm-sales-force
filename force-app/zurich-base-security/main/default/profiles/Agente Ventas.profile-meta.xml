@@ -3275,6 +3275,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <layoutAssignments>
+        <layout>AccountRelationship__c-Ventas Account Relationship Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
