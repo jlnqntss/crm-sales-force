@@ -104,5 +104,11 @@ public class EmailMessageHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {}
+    {
+        if (Trigger.isAfter && Trigger.isInsert)
+        {
+            emailMessagesUtil.markPublicActivity((Map<Id, EmailMessage>) newMap);
+        }
+        
+    }
 }

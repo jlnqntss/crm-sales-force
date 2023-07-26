@@ -313,6 +313,39 @@ public with sharing class EmailMessagesUtil
     }
 
     /**
+     * Método que marca a public la tarea relacionada con el emailMessage cuando es creado. 
+     * 
+     * @author aberuete
+     * @date 26/07/2023
+     * 
+     * @param {Map<Id, EmailMessage> newMap} Mapa de nuevos emailMessage creados
+     */
+    public void markPublicActivity(Map<Id, EmailMessage> newMap)
+    {
+        Set<Id> activityIds = new Set<Id>();
+
+        for (EmailMessage email : newMap.values()) 
+        {
+            if (email.IsExternallyVisible == true && email.ActivityId != null)
+            {
+                activityIds.add(email.ActivityId);   
+            }
+        }
+
+        List<Task> tasksList = ActivitySelector.selectTasksById (activityIds);
+        
+        if (tasksList != null && !tasksList.isEmpty()) 
+        {
+            for (Task taskToUpdate : tasksList)
+            {
+                taskToUpdate.IsVisibleInSelfService = true;
+            }
+        }
+
+        update tasksList;
+    }
+
+    /**
      * Search for the Genesys Queue data by any of the emails in the toAddress and ccAddress fields of the EmailMessage
      * The first one that match is the one used
      * 
