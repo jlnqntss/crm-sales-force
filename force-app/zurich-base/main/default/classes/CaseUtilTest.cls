@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 06-22-2023
+ * @last modified on  : 07-28-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -15,6 +15,7 @@ private class CaseUtilTest
     static final String MESSAGE_CUSTOMERFOUNDBY_NOT_CORRECT = 'El valor de CustomerFoundBy__c en el caso no se actualizó correctamente';
     static final String MESSAGE_CONTACTID_NOT_CORRECT = 'El valor de ContactId en el caso no se actualizó correctamente';
     static final String LABEL_GENERAL_INSURANCE = 'General Insurance';
+    static final String LABEL_ANULACION = 'Anulación';
 
     @TestSetup
     public static void createScenario()
@@ -809,22 +810,39 @@ private class CaseUtilTest
     public static void test_updateTranscomCase()
     {
         List<Group> queueRetencion = new GroupSelector().findByName('Email_TWW_Retencion');
+        List<Group> queueAnulacion = new GroupSelector().findByName('Email_TWW_Anulacion');
+        List<Case> caseList = new List<Case>();
+        
         Id ocsInquiry = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry')?.getRecordTypeId();
 
         Case caso = new Case();
         caso.RecordTypeId = ocsInquiry;
         caso.OwnerId = queueRetencion[0].id;
         caso.Origin = 'Email';
+        caseList.add(caso);
+
+        Case caso2 = new Case();
+        caso2.RecordTypeId = ocsInquiry;
+        caso2.OwnerId = queueAnulacion[0].id;
+        caso2.Origin = 'Email';
+        caseList.add(caso2);
         
         Test.startTest();
-        insert caso;
+        insert caseList;
         Test.stopTest();
 
-        Case caseAfterInsert = [Select id,CallCenter__c,SourceArea__c,Type,Subtype__c,TypeN3__c from case where ownerid =: queueRetencion[0].id limit 1];
-        System.assertEquals('TWW Retención', caseAfterInsert.CallCenter__c, 'El call center del caso no es correcto');
-        System.assertEquals('Generic end customer', caseAfterInsert.SourceArea__c, 'El area del caso no es correcto');
-        System.assertEquals('Gestión Servicios', caseAfterInsert.Type, 'El tipo del caso no es correcto');
-        System.assertEquals('Anulación', caseAfterInsert.Subtype__c, 'El subtipo del caso no es correcto');
-        System.assertEquals('Anulación', caseAfterInsert.TypeN3__c, 'El tipo N3 del caso no es correcto');
+        Case caseAfterInsertRetencion = [Select id,CallCenter__c,SourceArea__c,Type,Subtype__c,TypeN3__c from case where ownerid =: queueRetencion[0].id limit 1];
+        Case caseAfterInsertAnulacion = [Select id,CallCenter__c,SourceArea__c,Type,Subtype__c,TypeN3__c from case where ownerid =: queueAnulacion[0].id limit 1];
+
+        System.assertEquals('TWW Retención', caseAfterInsertRetencion.CallCenter__c, 'El call center del caso retención no es correcto');
+        System.assertEquals('End customer partner', caseAfterInsertRetencion.SourceArea__c, 'El area del caso retención no es correcto');
+        System.assertEquals('Gestión Servicios', caseAfterInsertRetencion.Type, 'El tipo del caso retención no es correcto');
+        System.assertEquals(LABEL_ANULACION, caseAfterInsertRetencion.Subtype__c, 'El subtipo del caso retención no es correcto');
+        System.assertEquals(LABEL_ANULACION, caseAfterInsertRetencion.TypeN3__c, 'El tipo N3 del caso retención no es correcto');
+        System.assertEquals('TWW Retención', caseAfterInsertAnulacion.CallCenter__c, 'El call center del caso anulación no es correcto');
+        System.assertEquals('Generic end customer', caseAfterInsertAnulacion.SourceArea__c, 'El area del caso anulación no es correcto');
+        System.assertEquals('Gestión Servicios', caseAfterInsertAnulacion.Type, 'El tipo del caso anulación no es correcto');
+        System.assertEquals(LABEL_ANULACION, caseAfterInsertAnulacion.Subtype__c, 'El subtipo del caso anulación no es correcto');
+        System.assertEquals(LABEL_ANULACION, caseAfterInsertAnulacion.TypeN3__c, 'El tipo N3 del caso anulación no es correcto');
     }
 }
