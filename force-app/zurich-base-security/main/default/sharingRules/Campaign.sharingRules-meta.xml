@@ -91,4 +91,19 @@
             <value>Life Insurance,General Insurance</value>
         </criteriaItems>
     </sharingGuestRules>
+    <sharingCriteriaRules>
+        <fullName>Campaign_Agente_Venta</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Permisos de registro para usuarios de ZRM</description>
+        <label>Campaign Agente Venta</label>
+        <sharedTo>
+            <group>Ventas_Agente_Mediador</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Type</field>
+            <operation>equals</operation>
+            <value>Cross Selling</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
 </SharingRules>
