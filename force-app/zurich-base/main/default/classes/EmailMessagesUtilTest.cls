@@ -363,4 +363,28 @@ private class EmailMessagesUtilTest
         System.assertEquals(emails[0].ParentId, casosHijos[0].Id, 'El email ha de estar asociado al nuevo caso hijo');
         System.assertEquals(queue.id, casosHijos[0].OwnerId, 'El owner del caso hijo no es correcto');
     }
+
+    /**
+     * Test que comprueba que se marca correctamente la tarea a pública cuando se crea un email message que tiene una tarea relacionada
+     * @author aberuete
+     * @date 26/07/2023
+     */
+    @isTest
+    static void test_markPublicActivity()
+    {
+        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email');
+        insert casoToEmailMessage;
+
+        Task taskToEmailMessage = new Task (Subject = 'Correo electrónico',Status = 'Nueva',Priority = 'Normal');
+        taskToEmailMessage.WhatId = casoToEmailMessage.id;
+        insert taskToEmailMessage;
+
+        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
+        emailList[0].RelatedToId = casoToEmailMessage.id;
+        emailList[0].ActivityId = taskToEmailMessage.id;
+        insert emailList;
+        
+        List<Task> tasksList = ActivitySelector.selectTasksById (new Set<Id>{taskToEmailMessage.id});
+        System.assertEquals(true, tasksList[0].IsVisibleInSelfService, 'La tarea no se ha actualizado correctamente');
+    }
 }
