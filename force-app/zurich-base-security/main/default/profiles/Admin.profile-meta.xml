@@ -4112,6 +4112,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PreferedContactStart__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PreferedContactEnd__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.WebId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Jigsaw</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9024,7 +9044,7 @@
         <editable>true</editable>
         <field>Event.ClosingObservation__c</field>
         <readable>true</readable>
-    </fieldPermissions>	
+    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Event.IsRelatedToComercialPlan__c</field>
@@ -10156,11 +10176,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Sales_Loss_SubReason__c</field> 
+        <field>Opportunity.Sales_Loss_SubReason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable> 
+        <editable>true</editable>
         <field>Opportunity.Discount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -16266,7 +16286,7 @@
         <modifyAllRecords>true</modifyAllRecords>
         <object>AccionesTratadasActa__c</object>
         <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>	
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -18627,7 +18647,7 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Objetivos</tab> 
+        <tab>Objetivos</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>

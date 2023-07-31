@@ -4141,6 +4141,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PreferedContactStart__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.WebId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PreferedContactEnd__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Jigsaw</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5853,7 +5873,7 @@
         <editable>false</editable>
         <field>Case.GoogleAddress__c</field>
         <readable>true</readable>
-    </fieldPermissions> 
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.EconomicImpact__c</field>
@@ -5863,7 +5883,7 @@
         <editable>true</editable>
         <field>Case.HasBeenTransfered__c</field>
         <readable>true</readable>
-    </fieldPermissions>   
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.HegeoClaimId__c</field>
@@ -7923,7 +7943,7 @@
         <editable>true</editable>
         <field>Event.Acta__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.ANI__c</field>
@@ -8068,7 +8088,7 @@
         <editable>true</editable>
         <field>Event.ClosingObservation__c</field>
         <readable>true</readable>
-    </fieldPermissions>	
+    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Event.IsRelatedToComercialPlan__c</field>
@@ -9690,11 +9710,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Sales_Loss_SubReason__c</field> 
+        <field>Opportunity.Sales_Loss_SubReason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable> 
+        <editable>true</editable>
         <field>Opportunity.Discount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -14901,7 +14921,7 @@
     </flowAccesses>
     <layoutAssignments>
         <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
-    </layoutAssignments>	
+    </layoutAssignments>
 	<layoutAssignments>
         <layout>Acta__c-Acta Layout</layout>
     </layoutAssignments>
@@ -15619,7 +15639,7 @@
         <modifyAllRecords>true</modifyAllRecords>
         <object>AccionesTratadasActa__c</object>
         <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>	
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -17888,7 +17908,7 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Objetivos</tab> 
+        <tab>Objetivos</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>

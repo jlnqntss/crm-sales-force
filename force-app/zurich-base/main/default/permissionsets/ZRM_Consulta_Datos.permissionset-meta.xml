@@ -161,6 +161,11 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.CustomerValue__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Delegations__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2961,7 +2966,7 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Sales_Loss_SubReason__c</field> 
+        <field>Opportunity.Sales_Loss_SubReason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
