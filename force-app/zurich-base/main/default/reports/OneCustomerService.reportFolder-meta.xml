@@ -60,5 +60,10 @@
         <sharedTo>FrontOffice_Reporting</sharedTo>
         <sharedToType>Group</sharedToType>
     </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>Transcom_Retenciones</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
     <name>One Customer Service</name>
 </ReportFolder>
