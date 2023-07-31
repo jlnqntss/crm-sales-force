@@ -9,6 +9,7 @@
     <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>VentasGestionDatos</permissionSets>
     <permissionSets>Ventas_Consulta_Datos</permissionSets>
+    <permissionSets>Ventas_Edicion_AccountRetationship</permissionSets>
     <permissionSets>Ventas_Edicion_Competencia</permissionSets>
     <permissionSets>Ventas_Gestion_Captacion</permissionSets>
     <permissionSets>Ventas_Tareas</permissionSets>
