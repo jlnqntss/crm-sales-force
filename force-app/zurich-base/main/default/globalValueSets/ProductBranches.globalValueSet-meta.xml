@@ -1,77 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>AUTOS</fullName>
+        <fullName>0000000001</fullName>
         <default>false</default>
         <label>AUTOS</label>
     </customValue>
     <customValue>
-        <fullName>HOGAR</fullName>
+        <fullName>0000000002</fullName>
         <default>false</default>
         <label>HOGAR</label>
     </customValue>
     <customValue>
-        <fullName>ACCIDENTES</fullName>
+        <fullName>0000000005</fullName>
         <default>false</default>
         <label>ACCIDENTES</label>
     </customValue>
     <customValue>
-        <fullName>COMERCIOS</fullName>
+        <fullName>0000000003</fullName>
         <default>false</default>
         <label>COMERCIOS</label>
     </customValue>
     <customValue>
-        <fullName>DECESOS</fullName>
+        <fullName>0000000010</fullName>
         <default>false</default>
         <label>DECESOS</label>
     </customValue>
     <customValue>
-        <fullName>EMBARCACIONES</fullName>
+        <fullName>0000000006</fullName>
         <default>false</default>
         <label>EMBARCACIONES</label>
     </customValue>
     <customValue>
-        <fullName>FLOTAS</fullName>
+        <fullName>0000000011</fullName>
         <default>false</default>
         <label>FLOTAS</label>
     </customValue>
     <customValue>
-        <fullName>INMUEBLE</fullName>
+        <fullName>0000000004</fullName>
         <default>false</default>
-        <label>INMUEBLE</label>
+        <label>INMUEBLES</label>
     </customValue>
     <customValue>
-        <fullName>OTROS</fullName>
+        <fullName>0000000008</fullName>
         <default>false</default>
         <label>OTROS</label>
     </customValue>
     <customValue>
-        <fullName>PATRIMONIALES</fullName>
+        <fullName>0000000012</fullName>
         <default>false</default>
         <label>PATRIMONIALES</label>
     </customValue>
     <customValue>
-        <fullName>PROT. PAGOS</fullName>
+        <fullName>0000000015</fullName>
         <default>false</default>
         <label>PROT. PAGOS</label>
     </customValue>
     <customValue>
-        <fullName>RESP. CIVIL</fullName>
+        <fullName>0000000007</fullName>
         <default>false</default>
         <label>RESP. CIVIL</label>
     </customValue>
     <customValue>
-        <fullName>SALUD</fullName>
+        <fullName>0000000009</fullName>
         <default>false</default>
         <label>SALUD</label>
     </customValue>
     <customValue>
-        <fullName>TECNICOS</fullName>
+        <fullName>0000000014</fullName>
         <default>false</default>
         <label>TECNICOS</label>
     </customValue>
     <customValue>
-        <fullName>TRANSPORTES</fullName>
+        <fullName>0000000013</fullName>
         <default>false</default>
         <label>TRANSPORTES</label>
     </customValue>
