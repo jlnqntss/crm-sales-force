@@ -141,6 +141,17 @@
                 },
                 {
                   "componentAttributes": {
+                    "relatedListApiName": "Contacts",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "363848fb-0311-478b-951a-4385701922b7",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
                     "relatedListApiName": "Accounts_Relationships__r",
                     "relatedListComponentOverride": "ADVGRID",
                     "width": "MEDIUM"
@@ -201,7 +212,7 @@
           "componentAttributes": {
             "relatedListApiName": "Scope__r",
             "relatedListComponentOverride": "GRID",
-            "width": "MEDIUM"
+            "width": "SMALL"
           },
           "componentName": "forceCommunity:responsiveRelatedListSingle",
           "id": "c958f925-9d1c-41d5-8815-4ac215ca2b49",
