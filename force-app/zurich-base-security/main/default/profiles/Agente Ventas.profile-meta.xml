@@ -3031,6 +3031,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.CampaignId</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.Discount__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3062,6 +3067,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.PendingBy__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Probability</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3274,6 +3284,9 @@
         <field>purecloud__PureCloud_Queue__c.RouteType__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <layoutAssignments>
+        <layout>AccountRelationship__c-Ventas Account Relationship Layout</layout>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
     </layoutAssignments>

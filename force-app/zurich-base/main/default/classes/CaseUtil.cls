@@ -1003,6 +1003,7 @@ public with sharing class CaseUtil
      * @author: aberuete
      * @date: 21/06/2023
      * @param List<Case> newList : Lista de casos nuevos
+     * @change aberuete - 28/07/2023 Actualizar campo source area en función de la cola
      */
     public static void updateTranscomCase (List<Case> newList)
     {
@@ -1014,10 +1015,18 @@ public with sharing class CaseUtil
             if (caseNew.OwnerId == queueRetencion[0].Id || caseNew.OwnerId == queueAnulacion[0].Id )
             {
                 caseNew.CallCenter__c = 'TWW Retención';
-                caseNew.SourceArea__c = 'Generic end customer';
                 caseNew.Type = 'Gestión Servicios';
                 caseNew.Subtype__c = 'Anulación';
                 caseNew.TypeN3__c = 'Anulación';
+
+                if ( caseNew.OwnerId == queueRetencion[0].Id)
+                {
+                    caseNew.SourceArea__c = 'End customer partner';
+                }
+                else
+                {
+                    caseNew.SourceArea__c = 'Generic end customer';
+                }
             }
         }
     }

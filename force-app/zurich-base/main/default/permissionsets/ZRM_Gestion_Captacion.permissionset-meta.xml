@@ -888,7 +888,7 @@ Para usuarios de la comunidad zrm</description>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Discount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -953,7 +953,7 @@ Para usuarios de la comunidad zrm</description>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.LegalEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1013,7 +1013,7 @@ Para usuarios de la comunidad zrm</description>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.ProductId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1058,7 +1058,7 @@ Para usuarios de la comunidad zrm</description>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Scope__c</field>
         <readable>true</readable>
     </fieldPermissions>

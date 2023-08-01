@@ -9995,6 +9995,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.CommercialCode__c</field>
         <readable>true</readable>
@@ -15459,6 +15464,21 @@
         <field>Propensity__c.Propensity__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.RelatedAccount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.RelationshipType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>true</enabled>
         <flow>Campaign_Member_Status</flow>
@@ -15527,6 +15547,9 @@
         <enabled>true</enabled>
         <flow>ZESearchAndScreenPop</flow>
     </flowAccesses>
+    <layoutAssignments>
+        <layout>AccountRelationship__c-Admin Layout</layout>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
     </layoutAssignments>
@@ -16273,6 +16296,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>AccountRelationship__c-Account Relationship Layout</layout>
     </layoutAssignments>
     <loginIpRanges>
         <endAddress>255.255.255.254</endAddress>
@@ -17500,6 +17526,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Propensity__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>AccountRelationship__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <pageAccesses>

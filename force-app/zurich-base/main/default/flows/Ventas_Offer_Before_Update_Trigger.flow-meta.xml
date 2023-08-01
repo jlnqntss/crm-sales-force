@@ -36,7 +36,7 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Update_Offer</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.StageName</leftValueReference>
                 <operator>IsChanged</operator>
@@ -58,13 +58,20 @@
                     <stringValue>App Submitted</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Legit Lead</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Update_Offer_Stage_to_Quoted</targetReference>
             </connector>
             <label>Update Offer</label>
         </rules>
     </decisions>
-    <description>Actualizar datos de oferta únicamente para aquellas que sean de la App Ventas</description>
+    <description>Se añade la condición para que una oferta en estado legit lead pase también a quoted cuando se informe el campo Número de oferta (INFO)</description>
     <environments>Default</environments>
     <formulas>
         <description>Recortar los 100 primeros caracteres del campo Product.Description que se asocia a la oferta</description>

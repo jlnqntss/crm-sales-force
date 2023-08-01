@@ -27,7 +27,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>userOwnerDecision</targetReference>
+            <targetReference>userOwnerQueueDecision</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -96,7 +96,7 @@
         <locationX>380</locationX>
         <locationY>395</locationY>
         <defaultConnector>
-            <targetReference>userOwnerDecision</targetReference>
+            <targetReference>userOwnerQueueDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Not Sales/Null Quotation Stage</defaultConnectorLabel>
         <rules>
@@ -123,14 +123,14 @@
         </rules>
     </decisions>
     <decisions>
-        <name>userOwnerDecision</name>
-        <label>User Owner</label>
+        <name>userOwnerQueueDecision</name>
+        <label>User Owner Or Queue</label>
         <locationX>380</locationX>
         <locationY>695</locationY>
         <defaultConnectorLabel>Not User</defaultConnectorLabel>
         <rules>
             <name>userCreatedOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 OR 4) AND 2 AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.OwnerId</leftValueReference>
                 <operator>StartsWith</operator>
@@ -150,6 +150,13 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
                 </rightValue>
             </conditions>
             <connector>
