@@ -10168,6 +10168,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Propensity__c.ExternalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Propensity__c.ProductBranchDetail__c</field>
         <readable>true</readable>
     </fieldPermissions>
