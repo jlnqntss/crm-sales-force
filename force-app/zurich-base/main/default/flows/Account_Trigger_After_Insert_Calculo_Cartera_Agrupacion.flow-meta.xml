@@ -35,7 +35,7 @@
     </assignments>
     <environments>Default</environments>
     <interviewLabel>Account Trigger - After Insert Calculo Cartera Agrupacion {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Account Trigger - After Insert Cálculo Cartera Agrupación</label>
+    <label>Account Trigger - After Insert/Update Cálculo Cartera Agrupación</label>
     <loops>
         <name>Sum_Loop</name>
         <label>Sum Loop</label>
