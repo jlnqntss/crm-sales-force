@@ -2,7 +2,7 @@
  * @description       : Clase selectora del sobject User
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 02-20-2023
+ * @last modified on  : 07-31-2023
  * @last modified by  : aberuete
 **/
 public with sharing class UsersSelector extends RecordsSelector 
@@ -32,7 +32,8 @@ public with sharing class UsersSelector extends RecordsSelector
                 User.NotifyDate__c,
                 User.Notified__c
             }
-        );
+        )
+        .selectFields('Profile.Name');
 
         return (List<User>) this.baseQuery.byId(userIds).run();
     }
