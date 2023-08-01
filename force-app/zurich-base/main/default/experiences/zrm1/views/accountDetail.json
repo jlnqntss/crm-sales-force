@@ -36,7 +36,7 @@
                   "locked": false,
                   "seedComponents": [],
                   "tabKey": "1",
-                  "tabName": "Details"
+                  "tabName": "Detalles"
                 },
                 {
                   "UUID": "4de82d4c-1df5-4faa-983c-b9450c384e8c",
@@ -44,7 +44,7 @@
                   "locked": false,
                   "seedComponents": [],
                   "tabKey": "2",
-                  "tabName": "Related"
+                  "tabName": "Relacionado"
                 }
               ],
               "useOverflowMenu": false
@@ -66,7 +66,7 @@
                 }
               ],
               "id": "679ff60d-80ee-4f88-9918-d0db75ecb987",
-              "regionLabel": "Details",
+              "regionLabel": "Detalles",
               "regionName": "1",
               "renditionMap": {},
               "type": "region"
@@ -138,10 +138,21 @@
                   "id": "7af99ee0-d414-4f77-b221-18e80be8ef76",
                   "renditionMap": {},
                   "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Accounts_Relationships__r",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "f9abefb1-d06e-4b3b-867b-343622512ece",
+                  "renditionMap": {},
+                  "type": "component"
                 }
               ],
               "id": "4de82d4c-1df5-4faa-983c-b9450c384e8c",
-              "regionLabel": "Related",
+              "regionLabel": "Relacionado",
               "regionName": "2",
               "renditionMap": {},
               "type": "region"
@@ -186,6 +197,18 @@
     },
     {
       "components": [
+        {
+          "componentAttributes": {
+            "relatedListApiName": "Scope__r",
+            "relatedListComponentOverride": "GRID",
+            "width": "MEDIUM"
+          },
+          "componentName": "forceCommunity:responsiveRelatedListSingle",
+          "id": "c958f925-9d1c-41d5-8815-4ac215ca2b49",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
         {
           "componentAttributes": {
             "recordId": "{!recordId}",
