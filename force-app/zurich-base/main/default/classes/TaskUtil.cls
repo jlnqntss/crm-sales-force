@@ -2,7 +2,7 @@
  * @description       : Clase Util para el objeto Task
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 08-01-2023
+ * @last modified on  : 08-02-2023
  * @last modified by  : aberuete
 **/
 public with sharing class TaskUtil 
@@ -31,8 +31,8 @@ public with sharing class TaskUtil
         for (Task taskToUpdate : newList )
         {
             User ownerTask = mapIdByUser.get(taskToUpdate.OwnerId);
-
-            if ( ownerTask.Profile.name == 'OCS Community User' && taskToUpdate.IsVisibleInSelfService != true )
+            
+            if ( ownerTask != null && ownerTask.Profile.Name != null && !String.isBlank(ownerTask.Profile.Name) && ownerTask.Profile.name == 'OCS Community User' && taskToUpdate.IsVisibleInSelfService != true )
             {
                 taskToUpdate.IsVisibleInSelfService = true;
             }
