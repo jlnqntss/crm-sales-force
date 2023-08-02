@@ -2,18 +2,18 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IntermediaryVisibilityAcc__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
-    <description>Registro de Cuenta Mediador asociado al Cliente que determina la visibilidad del usuario:
+    <description>Registro de Cuenta Mediador asociado a la Póliza que determina la visibilidad del usuario:
 
     - Si existe Agrupación y esta tiene definida que se use la Cuenta Mediador-padre: Cuenta Mediador-padre de la Agrupación
 
-    - Sino: Valor del campo Intermediary_Name__c</description>
+    - Sino: Valor del campo IntermediaryId__c</description>
     <externalId>false</externalId>
     <label>Intermediary Visibility Acc</label>
     <referenceTo>Account</referenceTo>
-    <relationshipLabel>Intermediaries (Visibility)</relationshipLabel>
-    <relationshipName>IntermediariesVisibility</relationshipName>
+    <relationshipLabel>Policies (Intermediary Visibility)</relationshipLabel>
+    <relationshipName>IntermediariesPoliciesVisibility</relationshipName>
     <required>false</required>
-    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
     <type>Lookup</type>
 </CustomField>

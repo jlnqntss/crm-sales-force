@@ -56,4 +56,9 @@
         <default>false</default>
         <label>Journeys</label>
     </standardValue>
+    <standardValue>
+        <fullName>Cross Selling</fullName>
+        <default>false</default>
+        <label>Cross Selling</label>
+    </standardValue>
 </StandardValueSet>
