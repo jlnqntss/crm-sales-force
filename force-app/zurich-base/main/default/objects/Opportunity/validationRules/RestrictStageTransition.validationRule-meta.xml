@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestrictStageTransition</fullName>
+    <active>true</active>
+    <description>Validación para restringir los cambios de etapa: Quoted&gt;App Submitted, Quoted&gt;Legit Lead y App Submitted&gt;Legit Lead</description>
+    <errorConditionFormula>AND(
+    OR( 
+        $Profile.Name = &apos;Ventas User&apos;,
+        $Profile.Name = &apos;Agente Ventas&apos;
+    ),
+    OR(
+       AND(
+          ISPICKVAL(PRIORVALUE(StageName), &apos;Quoted&apos;),
+          ISPICKVAL(StageName, &apos;App Submitted&apos;)
+       ),
+       AND(
+          ISPICKVAL(PRIORVALUE(StageName), &apos;Quoted&apos;),
+          ISPICKVAL(StageName, &apos;Legit Lead&apos;)
+       ),
+       AND(
+          ISPICKVAL(PRIORVALUE(StageName), &apos;App Submitted&apos;),
+          ISPICKVAL(StageName, &apos;Legit Lead&apos;)
+       )
+    ),
+    ISCHANGED(StageName)
+)</errorConditionFormula>
+    <errorDisplayField>StageName</errorDisplayField>
+    <errorMessage>[VR Oferta] Cambio de etapa no permitido</errorMessage>
+</ValidationRule>
