@@ -6,11 +6,6 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Knowledge_Manager</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>Lead_Generation</application>
         <default>false</default>
         <visible>true</visible>
@@ -81,16 +76,6 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>standard__DataManager</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__Insights</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>standard__LightningBolt</application>
         <default>false</default>
         <visible>true</visible>
@@ -117,11 +102,6 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>standard__OnlineSales</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>standard__Optimizer</application>
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
@@ -3804,11 +3784,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.ClosedOnCreate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Case.Commercial_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4040,11 +4015,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.MilestoneStatus</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Case.MilestoneStatusIcon</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4612,7 +4582,7 @@
         <field>Contact.Abandoned_Lead__c</field>
         <readable>true</readable>
     </fieldPermissions>
-   <fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Anonymized__c</field>
         <readable>true</readable>
@@ -5112,7 +5082,7 @@
         <field>ContactPointEmail.ActiveFromDate</field>
         <readable>true</readable>
     </fieldPermissions>
-   <fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointEmail.Anonymized__c</field>
         <readable>true</readable>
@@ -5504,11 +5474,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>ContractLineItem.StatusIndicator</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>ContractLineItem.Subtotal</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5790,11 +5755,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Entitlement.Status</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Entitlement.StatusIndicator</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7061,7 +7021,7 @@
         <field>Opportunity.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
-   <fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Anonymized__c</field>
         <readable>true</readable>
@@ -7109,11 +7069,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.CampaignId</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.ClientName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7298,7 +7253,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Sales_Loss_SubReason__c</field> 
+        <field>Opportunity.Sales_Loss_SubReason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7434,11 +7389,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.TechnicalProductCode__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.TimetoClose__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9113,11 +9063,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>ServiceContract.StatusIndicator</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>ServiceContract.Subtotal</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9183,11 +9128,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>SocialPersona.Klout</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>SocialPersona.ListedCount</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9234,11 +9174,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>SocialPersona.TopicType</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>SocialPersona.UserId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10343,10 +10278,6 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
-        <flow>Integraci_n</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
         <flow>JBSystemFlow_CampaignMember</flow>
     </flowAccesses>
     <flowAccesses>
@@ -10621,9 +10552,6 @@
         <layout>CampaignMember-Campaign Member Page Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>CampaignMemberStatus-Campaign Member Status Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Case-Case Default EON</layout>
         <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>
@@ -10695,9 +10623,6 @@
         <layout>ContactPointAddress-Formato Dirección de punto de contacto</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ContactPointConsent-Formato Consentimiento de punto de contacto</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ContactPointEmail-Formato Correo electrónico de punto de contacto</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -10747,9 +10672,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>EmailsIBA__c-Email IBA Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>EngagementChannelType-Engagement Channel Type Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>EnhancedLetterhead-Enhanced Letterhead Layout</layout>
@@ -10804,9 +10726,6 @@
         <layout>FeedItem-Feed Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>FlowInterview-Flow Interview Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>FollowUp__c-Follow Up Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -10839,9 +10758,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-Lead Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ListEmail-Formato Correo electrónico de lista</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
@@ -10886,15 +10802,8 @@
         <layout>OrderItem-Order Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Outlook-Formato Outlook</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>PersonAccount-Formato de cuenta personal</layout>
         <recordType>PersonAccount.Customer</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>PersonAccount-Formato de cuenta personal</layout>
-        <recordType>PersonAccount.PersonAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PersonAccount-ZE Lead</layout>
@@ -11019,9 +10928,6 @@
         <layout>Seller-Formato Vendedor</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ServiceAppointmentGroup-Formato Service Appointment Group</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ServiceContract-Service Contract Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -11114,12 +11020,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>WorkBadgeDefinition-Badge Layout 192</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WorkProcedure-Formato Procedimiento de trabajo</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WorkProcedureStep-Formato Paso de procedimiento de trabajo</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>WorkThanks-Thanks Layout</layout>
@@ -11665,15 +11565,6 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>SocialPersona</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
         <object>Solution</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -12010,11 +11901,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
-        <recordType>Idea.InternalIdeasIdeaRecordType</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
         <recordType>Knowledge__kav.Knowledge</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
@@ -12058,11 +11944,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>PersonAccount.Lead</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>PersonAccount.PersonAccount</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
@@ -12272,10 +12153,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-ContractLineItem</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-DuplicateRecordSet</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -12391,10 +12268,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ApiEnabled</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ApproveContract</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -12691,10 +12564,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageNetworks</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ManagePackageLicenses</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

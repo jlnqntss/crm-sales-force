@@ -3770,7 +3770,7 @@
         <field>AccionesTratadasActa__c.DueDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>AccionesTratadasActa__c.Observations__c</field>
         <readable>true</readable>
@@ -4103,6 +4103,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.IntermediaryProvinceCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryWithUser__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6257,11 +6267,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.MilestoneStatusIcon</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Case.NetPremiumRating__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6915,7 +6920,7 @@
         <field>Contact.Abandoned_Lead__c</field>
         <readable>true</readable>
     </fieldPermissions>
-   <fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Anonymized__c</field>
         <readable>true</readable>
@@ -7440,7 +7445,7 @@
         <field>ContactPointEmail.ActiveFromDate</field>
         <readable>true</readable>
     </fieldPermissions>
-   <fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointEmail.Anonymized__c</field>
         <readable>true</readable>
@@ -8137,11 +8142,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Entitlement.StatusIndicator</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Entitlement.Type</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8320,392 +8320,392 @@
         <field>MaestroApetito__c.ApetitoRiesgo__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.Autorizacion__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.BaseCalculo__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.Ciber__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.CNAE__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.CodigoActividad845__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.CodigoActividad__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.CodigoProducto__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.CompetitivenessLevel__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConAspiracionAutomatica__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConDestilacion__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConExistenciaLiquidosInflamables__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConFabricacionDeEnvases__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConFoamizado__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConMateriasPlasticasEspumosas__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConNitratos__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConPlanchasCombustibles__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConRecubrimiento__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConSecaderoMadera__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ConTapizados__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DeductiblesTop1__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DeductiblesTop2__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DescripcionActividad845__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DescuentoMediadores__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DescuentoNivel0Suscriptor__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DescuentoNivel1Suscriptor__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DescuentoRespVertical__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DeviationGuaranteeTop1__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DeviationGuaranteeTop2__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DocumentacionRelacionada__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DUO__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.DyO__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.Espumosos__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.Excluida__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.Familia__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaAlmacenMercanciasPeligrosas__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaAlquilerBienesMaquinaria__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaBienesEmpleados__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaBienesPreexistentes__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaCablesConducciones__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaCajasSeguridadHabitaciones__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaColindantes__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaContaminacionAccidental__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaDanosBienesCajaSeguridad__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaDanosBienesCustodia__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaDerribos__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaDetencionTraficoFerroviario__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaDronesMateriales__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaExplotacionesMateriales__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaExportUSACANMateriales__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaGastosMontajeDesmontaje__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaGastosRetirada__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaLavanderiaGuardarropa__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaLocativaAmpliada__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaObjetosHabitaciones__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaObjVehiculoAparcadoRecinto__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaPerjuiciosPatrimoniales__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaProbadoresMateriales__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaProductosMateriales__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaRecomendadaPostTrabajos__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaServiciosAparcacoches__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaUnionMezcla__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaUsoExplosivos__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaVehiculosCustodia__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaVendorsRecomendada__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.FranquiciaVidaPrivada__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.GDC__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.HG__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.HGFlexa__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.HGPrevisionCambio__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.NivelCompetencias__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.NivelSeguridad__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.NombreActividad__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.NombreProducto__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.NotasAyudaSuscripcionRiesgo__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ObservacionesActividad__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ObservacionesProducto__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.PalabrasRelacionadasBuscadorWeb__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.PedirDireccionSituacionRiesgo__c</field>
         <readable>true</readable>
@@ -8715,62 +8715,62 @@
         <field>MaestroApetito__c.PolicyFramework__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.Preferente__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.ProteccionesRobo__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.S1__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.S2__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.S3__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.SharepointLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.SharepointLinkCyber__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.SharepointLinkDO__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.SIC__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.SICDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.Subfamilia__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.UsoExplosivos__c</field>
         <readable>true</readable>
@@ -9024,8 +9024,8 @@
         <editable>true</editable>
         <field>Event.ClosingObservation__c</field>
         <readable>true</readable>
-    </fieldPermissions>	
-	<fieldPermissions>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Event.IsRelatedToComercialPlan__c</field>
         <readable>true</readable>
@@ -9924,7 +9924,7 @@
         <field>Opportunity.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
-   <fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Anonymized__c</field>
         <readable>true</readable>
@@ -9972,6 +9972,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.CampaignId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Campaign__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10095,6 +10100,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.IsUspProduct__c</field>
         <readable>true</readable>
@@ -10156,11 +10166,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Sales_Loss_SubReason__c</field> 
+        <field>Opportunity.Sales_Loss_SubReason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable> 
+        <editable>true</editable>
         <field>Opportunity.Discount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11067,6 +11077,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.IntermediaryName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.IntermediaryVisibilityAcc__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12260,11 +12275,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Survey__c.CustomerNIF__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Survey__c.Customer_Type__c</field>
         <readable>true</readable>
@@ -12588,7 +12598,7 @@
         <editable>true</editable>
         <field>Task.ClosingObservation__c</field>
         <readable>true</readable>
-	</fieldPermissions>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.IsRelatedToComercialPlan__c</field>
@@ -15439,6 +15449,21 @@
         <field>Propensity__c.Propensity__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.RelatedAccount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.RelationshipType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>true</enabled>
         <flow>Campaign_Member_Status</flow>
@@ -15508,9 +15533,12 @@
         <flow>ZESearchAndScreenPop</flow>
     </flowAccesses>
     <layoutAssignments>
+        <layout>AccountRelationship__c-Admin Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
     </layoutAssignments>
-	<layoutAssignments>
+    <layoutAssignments>
         <layout>Acta__c-Acta Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -16266,7 +16294,7 @@
         <modifyAllRecords>true</modifyAllRecords>
         <object>AccionesTratadasActa__c</object>
         <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>	
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -17482,6 +17510,15 @@
         <object>Propensity__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>AccountRelationship__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
         <enabled>true</enabled>
@@ -18351,10 +18388,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-Award</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-Campaign</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -18400,10 +18433,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-ContactRequest</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-ContentDocumentListViewMapping</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -18483,20 +18512,8 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-IdeaTheme</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-IdentityDocument</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-Image</tab>
         <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-Individual</tab>
-        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Lead</tab>
@@ -18627,7 +18644,7 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Objetivos</tab> 
+        <tab>Objetivos</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>
