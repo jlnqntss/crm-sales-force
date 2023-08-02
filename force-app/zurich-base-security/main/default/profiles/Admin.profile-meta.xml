@@ -4107,6 +4107,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryWithUser__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Intermediary_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10100,6 +10110,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.IsUspProduct__c</field>
         <readable>true</readable>
@@ -11072,6 +11087,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.IntermediaryName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.IntermediaryVisibilityAcc__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
