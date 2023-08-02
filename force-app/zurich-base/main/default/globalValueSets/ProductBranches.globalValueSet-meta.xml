@@ -80,6 +80,102 @@
         <default>false</default>
         <label>VIDA</label>
     </customValue>
+    <customValue>
+        <fullName>PATRIMONIALES</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>PATRIMONIALES2</label>
+    </customValue>
+    <customValue>
+        <fullName>INMUEBLES</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>INMUEBLES2</label>
+    </customValue>
+    <customValue>
+        <fullName>OTROS</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>OTROS2</label>
+    </customValue>
+    <customValue>
+        <fullName>AUTOS</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>AUTOS2</label>
+    </customValue>
+    <customValue>
+        <fullName>COMERCIOS</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>COMERCIOS2</label>
+    </customValue>
+    <customValue>
+        <fullName>VIDA</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>VIDA2</label>
+    </customValue>
+    <customValue>
+        <fullName>HOGAR</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>HOGAR2</label>
+    </customValue>
+    <customValue>
+        <fullName>RESP. CIVIL</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>RESP. CIVIL2</label>
+    </customValue>
+    <customValue>
+        <fullName>TRANSPORTES</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>TRANSPORTES2</label>
+    </customValue>
+    <customValue>
+        <fullName>SALUD</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>SALUD2</label>
+    </customValue>
+    <customValue>
+        <fullName>FLOTAS</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>FLOTAS2</label>
+    </customValue>
+    <customValue>
+        <fullName>TECNICOS</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>TECNICOS2</label>
+    </customValue>
+    <customValue>
+        <fullName>EMBARCACIONES</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>EMBARCACIONES2</label>
+    </customValue>
+    <customValue>
+        <fullName>PROT. PAGOS</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>PROT. PAGOS2</label>
+    </customValue>
+    <customValue>
+        <fullName>DECESOS</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>DECESOS2</label>
+    </customValue>
+    <customValue>
+        <fullName>ACCIDENTES</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>ACCIDENTES2</label>
+    </customValue>
     <masterLabel>Product Branches</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
