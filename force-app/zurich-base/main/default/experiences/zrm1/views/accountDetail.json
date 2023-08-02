@@ -141,6 +141,17 @@
                 },
                 {
                   "componentAttributes": {
+                    "relatedListApiName": "CampaignMembers",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "cbf23e75-c0bc-4a88-8630-d61c9f81350e",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
                     "relatedListApiName": "Contacts",
                     "relatedListComponentOverride": "ADVGRID",
                     "width": "MEDIUM"
