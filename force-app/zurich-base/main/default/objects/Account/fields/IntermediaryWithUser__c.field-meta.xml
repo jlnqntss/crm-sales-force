@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IntermediaryWithUser__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Referencia al registro de Cuenta Mediador asociado a la licencia de usuario compartida (si aplica).</description>
+    <externalId>false</externalId>
+    <label>Intermediary With User</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Main Intermediaries</relationshipLabel>
+    <relationshipName>MainIntermediaries</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

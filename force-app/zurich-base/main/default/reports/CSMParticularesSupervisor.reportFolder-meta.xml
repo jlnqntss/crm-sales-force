@@ -55,5 +55,10 @@
         <sharedTo>CSMParticulares_Supervisor</sharedTo>
         <sharedToType>Group</sharedToType>
     </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>Transcom_Retenciones</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
     <name>CSM Particulares - Supervisor</name>
 </ReportFolder>

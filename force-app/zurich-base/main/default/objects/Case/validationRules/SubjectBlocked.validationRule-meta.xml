@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SubjectBlocked</fullName>
+    <active>true</active>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;  ISCHANGED(Subject) &amp;&amp; $Permission.USPTriggerCaseValidationRules</errorConditionFormula>
+    <errorMessage>[VR Caso] No se puede editar el asunto del caso</errorMessage>
+</ValidationRule>

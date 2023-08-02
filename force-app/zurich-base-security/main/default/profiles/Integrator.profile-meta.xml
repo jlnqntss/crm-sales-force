@@ -4136,6 +4136,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryWithUser__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Intermediary_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5853,7 +5863,7 @@
         <editable>false</editable>
         <field>Case.GoogleAddress__c</field>
         <readable>true</readable>
-    </fieldPermissions> 
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.EconomicImpact__c</field>
@@ -5863,7 +5873,7 @@
         <editable>true</editable>
         <field>Case.HasBeenTransfered__c</field>
         <readable>true</readable>
-    </fieldPermissions>   
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.HegeoClaimId__c</field>
@@ -7923,7 +7933,7 @@
         <editable>true</editable>
         <field>Event.Acta__c</field>
         <readable>true</readable>
-    </fieldPermissions>    
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.ANI__c</field>
@@ -8068,7 +8078,7 @@
         <editable>true</editable>
         <field>Event.ClosingObservation__c</field>
         <readable>true</readable>
-    </fieldPermissions>	
+    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Event.IsRelatedToComercialPlan__c</field>
@@ -9514,6 +9524,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.CommercialCode__c</field>
         <readable>true</readable>
@@ -9629,6 +9644,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.IsUspProduct__c</field>
         <readable>true</readable>
@@ -9690,11 +9710,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Sales_Loss_SubReason__c</field> 
+        <field>Opportunity.Sales_Loss_SubReason__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable> 
+        <editable>true</editable>
         <field>Opportunity.Discount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10591,6 +10611,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.IntermediaryName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.IntermediaryVisibilityAcc__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14843,6 +14868,21 @@
         <field>Propensity__c.Propensity__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.RelatedAccount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.RelationshipType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>false</enabled>
         <flow>Campaign_Member_Status</flow>
@@ -14900,8 +14940,11 @@
         <flow>ZESearchAndScreenPop</flow>
     </flowAccesses>
     <layoutAssignments>
+        <layout>AccountRelationship__c-Admin Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
-    </layoutAssignments>	
+    </layoutAssignments>
 	<layoutAssignments>
         <layout>Acta__c-Acta Layout</layout>
     </layoutAssignments>
@@ -15606,6 +15649,9 @@
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>AccountRelationship__c-Account Relationship Layout</layout>
+    </layoutAssignments>
     <loginIpRanges>
         <description>Avoid security token</description>
         <endAddress>255.255.255.255</endAddress>
@@ -15619,7 +15665,7 @@
         <modifyAllRecords>true</modifyAllRecords>
         <object>AccionesTratadasActa__c</object>
         <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>	
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -16772,6 +16818,15 @@
         <object>ReglaAlarma__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>AccountRelationship__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
         <enabled>false</enabled>
@@ -17888,7 +17943,7 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Objetivos</tab> 
+        <tab>Objetivos</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>

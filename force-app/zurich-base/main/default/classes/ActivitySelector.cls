@@ -63,6 +63,7 @@ public without sharing class ActivitySelector
      * @return Listado de tareas, ordenado de forma descendente por SystemModstamp
      * @author nescudero
      * @date 27/10/2020
+     * @change aberuete - 26/07/2023 - Se añade un campo a devolver por la query
      */
     public static List<Task> selectTasksById(Set<Id> taskIds)
     {
@@ -71,6 +72,6 @@ public without sharing class ActivitySelector
             return new List<Task>();
         }
 
-        return [SELECT Id, WhoId, WhatId FROM Task WHERE Id IN : taskIds];
+        return [SELECT Id, WhoId, WhatId,IsVisibleInSelfService FROM Task WHERE Id IN : taskIds];
     }
 }
