@@ -11325,7 +11325,7 @@
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Agente zrm</layout>
+        <layout>Account-Ventas Business Customer</layout>
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -11438,6 +11438,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>CollaborationGroup-Group Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Competitor__c-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Ventas Contact Layout</layout>
