@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 08-03-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class OpenIDConnectSalesforceCommunity {
 
     private static final string USERNAME_SERVER = '@zurich-es.com';
@@ -376,7 +383,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         // GET Manager
         Id managerId = getManagerIdFromNickname(data);
         // Get signature
-        String signature = getSignature(authMap.get(PERMISSION_TYPE_SIGNATURE));
+        String signature = getSignature(userId, authMap.get(PERMISSION_TYPE_SIGNATURE));
 
         // buscar usuario en la bd
         u = (new UsersSelector()).getLoginUserToUpdate(userId);
@@ -423,7 +430,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         Map<String, List<String>> authMap = (Map<String, List<String>>) metadataInfoMap.get('AuthMap');
 
         //Signature
-        String signature = getSignature(authMap.get(PERMISSION_TYPE_SIGNATURE));
+        String signature = getSignature(userId, authMap.get(PERMISSION_TYPE_SIGNATURE));
         if (String.isNotBlank(signature)) {
             User usertoupdate = new User(Id = userId);
             usertoupdate.Signature = signature;
@@ -762,7 +769,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
      *  
      * @author nts (agonzalezisasi)
      */
-    private String getSignature(List<String> signatureSettings) {
+    private String getSignature(ID userId, List<String> signatureSettings) {
        String result = '';
        if (signatureSettings != null && !signatureSettings.isEmpty()) {
            try {
@@ -790,7 +797,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
                     configFields = this.testSignatureFields;
                 }
 
-               result = calculateSignature(configFirma, configFields);
+               result = calculateSignature(userId, configFirma, configFields);
            } catch (Exception ex) {
                ErrorLogUtil.commitError(ex, CLASS_NAME);
            }
@@ -798,7 +805,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
        return result;
     }
 
-    private String calculateSignature(String configFirma, String configFields) { 
+    private String calculateSignature(ID userId, String configFirma, String configFields) { 
         String result = '';
         List<String> listValues = new List<String>();
         if (String.IsNotBlank(configFields)) {
