@@ -6,6 +6,11 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>Knowledge_Manager</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>Lead_Generation</application>
         <default>false</default>
         <visible>true</visible>
@@ -76,6 +81,16 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>standard__DataManager</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>standard__Insights</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>standard__LightningBolt</application>
         <default>false</default>
         <visible>true</visible>
@@ -102,6 +117,11 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>standard__OnlineSales</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>standard__Optimizer</application>
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
@@ -1343,6 +1363,18 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TaskHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskUtil</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskUtilTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TechnicalIncidenceController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1548,48 +1580,78 @@
     </classAccesses>
     <custom>true</custom>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>FollowUp__c.Campaign_with_status__c</field>
+        <editable>false</editable>
+        <field>Account.Cartera_2021__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Cartera_2021_agrupaciones__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Cartera_2021_mediadores__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Category_Version__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.SoW_2021__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>FollowUp__c.Campaign_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
-        <field>FollowUp__c.Participates__c</field>
+        <field>FollowUp__c.Campaign__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>FollowUp__c.Campaign_with_status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>FollowUp__c.Candidates__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
-        <editable>true</editable>
-        <field>FollowUp__c.Offers__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>FollowUp__c.Emissions__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>FollowUp__c.Emissions_currency__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FollowUp__c.Incentive__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>FollowUp__c.Offer_Conversions__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
-        <field>FollowUp__c.Incentive__c</field>
+        <field>FollowUp__c.Offers__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FollowUp__c.Participates__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2124,7 +2186,37 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryWithUser__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Intermediary_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PreferedContactStart__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PreferedContactEnd__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.WebId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3458,6 +3550,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Campaign.ExternalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.HierarchyActualCost</field>
         <readable>true</readable>
@@ -3829,6 +3926,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.ClosedOnCreate</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.Commercial_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4060,6 +4162,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.MilestoneStatus</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.MilestoneStatusIcon</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4627,7 +4734,7 @@
         <field>Contact.Abandoned_Lead__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+   <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Anonymized__c</field>
         <readable>true</readable>
@@ -5127,7 +5234,7 @@
         <field>ContactPointEmail.ActiveFromDate</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+   <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointEmail.Anonymized__c</field>
         <readable>true</readable>
@@ -5519,6 +5626,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ContractLineItem.StatusIndicator</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ContractLineItem.Subtotal</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5800,6 +5912,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Entitlement.Status</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Entitlement.StatusIndicator</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7066,7 +7183,7 @@
         <field>Opportunity.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+   <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Anonymized__c</field>
         <readable>true</readable>
@@ -7114,6 +7231,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.CampaignId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.ClientName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7234,6 +7361,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.IntermediaryName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.IntermediaryVisibilityAcc__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7434,6 +7566,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.TechnicalProductCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.TimetoClose__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8308,6 +8445,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Policy__c.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Policy__c.Intermediary_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9108,6 +9250,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ServiceContract.StatusIndicator</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ServiceContract.Subtotal</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9173,6 +9320,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>SocialPersona.Klout</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>SocialPersona.ListedCount</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9219,6 +9371,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>SocialPersona.TopicType</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SocialPersona.UserId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9659,6 +9816,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.IdentifiedByANI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.IsVisibleInSelfService</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10143,6 +10305,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Propensity__c.ExternalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Propensity__c.ProductBranchDetail__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10159,6 +10326,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Propensity__c.Propensity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.RelatedAccount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.RelationshipType__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <flowAccesses>
@@ -10323,6 +10505,10 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
+        <flow>Integraci_n</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>false</enabled>
         <flow>JBSystemFlow_CampaignMember</flow>
     </flowAccesses>
     <flowAccesses>
@@ -10462,6 +10648,9 @@
         <flow>ZESearchAndScreenPop</flow>
     </flowAccesses>
     <layoutAssignments>
+        <layout>AccountRelationship__c-Admin Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>AccionesTratadasActa__c-Acciones Tratadas Acta Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -10597,6 +10786,9 @@
         <layout>CampaignMember-Campaign Member Page Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>CampaignMemberStatus-Campaign Member Status Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Default EON</layout>
         <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>
@@ -10668,6 +10860,9 @@
         <layout>ContactPointAddress-Formato Dirección de punto de contacto</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ContactPointConsent-Formato Consentimiento de punto de contacto</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ContactPointEmail-Formato Correo electrónico de punto de contacto</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -10717,6 +10912,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>EmailsIBA__c-Email IBA Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>EngagementChannelType-Engagement Channel Type Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>EnhancedLetterhead-Enhanced Letterhead Layout</layout>
@@ -10771,6 +10969,9 @@
         <layout>FeedItem-Feed Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>FlowInterview-Flow Interview Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>FollowUp__c-Follow Up Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -10803,6 +11004,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-Lead Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ListEmail-Formato Correo electrónico de lista</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
@@ -10847,8 +11051,15 @@
         <layout>OrderItem-Order Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Outlook-Formato Outlook</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>PersonAccount-Formato de cuenta personal</layout>
         <recordType>PersonAccount.Customer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PersonAccount-Formato de cuenta personal</layout>
+        <recordType>PersonAccount.PersonAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PersonAccount-ZE Lead</layout>
@@ -10973,6 +11184,9 @@
         <layout>Seller-Formato Vendedor</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ServiceAppointmentGroup-Formato Service Appointment Group</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ServiceContract-Service Contract Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -11067,6 +11281,12 @@
         <layout>WorkBadgeDefinition-Badge Layout 192</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>WorkProcedure-Formato Procedimiento de trabajo</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>WorkProcedureStep-Formato Paso de procedimiento de trabajo</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>WorkThanks-Thanks Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -11077,6 +11297,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>AccountRelationship__c-Account Relationship Layout</layout>
     </layoutAssignments>
     <loginIpRanges>
         <endAddress>255.255.255.254</endAddress>
@@ -11610,6 +11833,15 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>SocialPersona</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>Solution</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -11665,6 +11897,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>purecloud__PureCloud_Queue__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>AccountRelationship__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <pageAccesses>
@@ -11946,6 +12187,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>Idea.InternalIdeasIdeaRecordType</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Knowledge__kav.Knowledge</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
@@ -11989,6 +12235,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>PersonAccount.Lead</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>PersonAccount.PersonAccount</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
@@ -12198,6 +12449,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-ContractLineItem</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-DuplicateRecordSet</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -12313,6 +12568,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ApiEnabled</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ApproveContract</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -12609,6 +12868,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageNetworks</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ManagePackageLicenses</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
