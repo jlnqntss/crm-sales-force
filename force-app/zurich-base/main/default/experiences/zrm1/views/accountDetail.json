@@ -141,6 +141,28 @@
                 },
                 {
                   "componentAttributes": {
+                    "relatedListApiName": "CampaignMembers",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "cbf23e75-c0bc-4a88-8630-d61c9f81350e",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Contacts",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "363848fb-0311-478b-951a-4385701922b7",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
                     "relatedListApiName": "Accounts_Relationships__r",
                     "relatedListComponentOverride": "ADVGRID",
                     "width": "MEDIUM"
@@ -197,6 +219,18 @@
     },
     {
       "components": [
+        {
+          "componentAttributes": {
+            "relatedListApiName": "Scope__r",
+            "relatedListComponentOverride": "GRID",
+            "width": "SMALL"
+          },
+          "componentName": "forceCommunity:responsiveRelatedListSingle",
+          "id": "c958f925-9d1c-41d5-8815-4ac215ca2b49",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
         {
           "componentAttributes": {
             "recordId": "{!recordId}",

@@ -1,12 +1,12 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api } from "lwc";
 
-import NAME_FIELD from '@salesforce/schema/Case.Subject';
+import NAME_FIELD from "@salesforce/schema/Case.Subject";
 
 export default class RecordViewFormStaticContact extends LightningElement {
-    // Expose a field to make it available in the template
-    nameField = NAME_FIELD;
+  // Expose a field to make it available in the template
+  nameField = NAME_FIELD;
 
-    // Flexipage provides recordId and objectApiName
-    @api recordId;
-    @api objectApiName;
+  // Flexipage provides recordId and objectApiName
+  @api recordId;
+  @api objectApiName;
 }

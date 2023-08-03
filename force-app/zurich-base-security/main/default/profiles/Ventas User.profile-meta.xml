@@ -11608,7 +11608,7 @@
         <layout>OrderItem-Order Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PersonAccount-Ventas Customer</layout>
+        <layout>PersonAccount-Agente ZRM</layout>
         <recordType>PersonAccount.Customer</recordType>
     </layoutAssignments>
     <layoutAssignments>

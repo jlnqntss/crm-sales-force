@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <excludeButtons>ChangeOwnerOne</excludeButtons>
+    <excludeButtons>ChangeRecordType</excludeButtons>
+    <excludeButtons>CreateAccountChannel</excludeButtons>
+    <excludeButtons>CreateCallList</excludeButtons>
+    <excludeButtons>CreatePartnerChannelQuickAction</excludeButtons>
+    <excludeButtons>CreateSurveyInvitation</excludeButtons>
+    <excludeButtons>Delete</excludeButtons>
+    <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
+    <excludeButtons>Edit</excludeButtons>
+    <excludeButtons>IncludeOffline</excludeButtons>
+    <excludeButtons>PartnerScorecard</excludeButtons>
+    <excludeButtons>PrintableView</excludeButtons>
+    <excludeButtons>RecordShareHierarchy</excludeButtons>
     <excludeButtons>SendSurveyInvitation</excludeButtons>
+    <excludeButtons>Share</excludeButtons>
+    <excludeButtons>StartOutboundConversation</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
+    <excludeButtons>XClean</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
         <detailHeading>false</detailHeading>
@@ -14,19 +30,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>PersonBirthdate</field>
+                <field>RecordTypeId</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Phone</field>
+                <field>LegalEntity__pc</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>NationalIdType__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Type</field>
+                <field>Birthdate__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -36,15 +48,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>LegalEntity__pc</field>
+                <field>CustomerValue__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>PersonEmail</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>NationalId__c</field>
+                <field>LinkINFO__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -62,6 +70,33 @@
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>GDPR Status</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>ListaRobinson__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Restricted__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Blocked__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Anonymized__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -120,6 +155,7 @@
             <sortOrder>4</sortOrder>
         </platformActionListItems>
     </platformActionList>
+    <quickActionList/>
     <relatedContent>
         <relatedContentItems>
             <layoutItem>
@@ -190,6 +226,17 @@
         <fields>RelatedAccount__c</fields>
         <fields>RelationshipType__c</fields>
         <relatedList>AccountRelationship__c.Account__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>New</excludeButtons>
+        <fields>NAME</fields>
+        <fields>PrimaryPhone__c</fields>
+        <fields>PrimaryEmail__c</fields>
+        <fields>Contactable__c</fields>
+        <relatedList>Scope__c.AccountId__c</relatedList>
+        <sortField>NAME</sortField>
+        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
