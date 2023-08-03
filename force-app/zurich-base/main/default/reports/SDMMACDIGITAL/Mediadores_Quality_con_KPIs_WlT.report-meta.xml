@@ -97,7 +97,7 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.ZurichMarketBonus__c</field>
+        <field>Account.SoW_2021__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
