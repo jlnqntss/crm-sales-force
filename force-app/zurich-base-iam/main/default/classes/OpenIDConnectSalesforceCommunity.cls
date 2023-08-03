@@ -810,7 +810,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         List<String> listValues = new List<String>();
         if (String.IsNotBlank(configFields)) {
             // soql to get the info
-            List<User> userList = Database.query('SELECT ' + configFields + ' FROM User WHERE Id = :userId');
+            List<User> userList = Database.query('SELECT ' + configFields + ' FROM User WHERE Id = \''+ userId + '\'');
             // if not empty
             if (!userList.isEmpty()) {
                 // for each configured field, get the value
