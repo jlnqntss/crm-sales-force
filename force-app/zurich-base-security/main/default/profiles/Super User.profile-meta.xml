@@ -3443,6 +3443,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Campaign.ExternalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.HierarchyActualCost</field>
         <readable>true</readable>
@@ -10184,6 +10189,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Competitor__c.ProductType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propensity__c.ExternalId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
