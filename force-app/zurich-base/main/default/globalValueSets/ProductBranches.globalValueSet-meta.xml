@@ -56,7 +56,7 @@
         <label>PROT. PAGOS</label>
     </customValue>
     <customValue>
-        <fullName>ESP. CIVIL</fullName>
+        <fullName>RESP. CIVIL</fullName>
         <default>false</default>
         <label>RESP. CIVIL</label>
     </customValue>
