@@ -12,6 +12,6 @@
     </values>
     <values>
         <field>Value__c</field>
-        <value xsi:type="xsd:string">Firstname,Lastname</value>
+        <value xsi:type="xsd:string">FirstName,LastName</value>
     </values>
 </CustomMetadata>
