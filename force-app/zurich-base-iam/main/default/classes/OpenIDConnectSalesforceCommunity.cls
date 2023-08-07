@@ -95,7 +95,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         Map<string, Object> metadataInfoMap = getAuthData(iamRoleReceived);
 
         // comprueba si los datos del usuario han cambiado respecto al rol recibido y a los registros de la metadata
-        User u = updateUserData(userId, portalId, data, metadataInfoMap, iamRoleReceived);
+        User u = updateUserData(userId, data, metadataInfoMap, iamRoleReceived);
 
         // añadir configuración restante
         addUserRelated(u.Id, metadataInfoMap);        
@@ -373,7 +373,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
     }
 
 
-    private User updateUserData(Id userId, Id portalId, Auth.UserData data, Map<String, Object> metadataInfoMap, List<String> iamRoleReceived) 
+    private User updateUserData(Id userId, Auth.UserData data, Map<String, Object> metadataInfoMap, List<String> iamRoleReceived) 
     {
         Boolean modified = false;
         User u;
