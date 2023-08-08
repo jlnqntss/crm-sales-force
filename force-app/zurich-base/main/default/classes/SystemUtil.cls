@@ -1378,4 +1378,42 @@ public with sharing class SystemUtil
 
         return mapDependant;
     }
+
+    
+    /**
+     * Método que obtiene los settings de metadatos
+     **
+     * @return Estructura con los metadatos
+     *
+     * @author mfernandez
+     * @date 21/06/2023
+     */
+    public static List <GDPR_OfferDeletion__mdt> getOfferDeletionMetadata()
+    {
+        List<GDPR_OfferDeletion__mdt> results = new List<GDPR_OfferDeletion__mdt>();
+
+        results = [
+            SELECT
+            Id,
+            DeveloperName,
+            MasterLabel,
+            Language,
+            NamespacePrefix,
+            Label,
+            QualifiedApiName,
+            Description__c,
+            Fisica__c,
+            Juridica__c,
+            Ramo__c
+            FROM GDPR_OfferDeletion__mdt
+        ];
+
+        if ( !results.isEmpty() )
+        {
+            return results;
+        }
+
+        return null;
+    }
+    
 }
