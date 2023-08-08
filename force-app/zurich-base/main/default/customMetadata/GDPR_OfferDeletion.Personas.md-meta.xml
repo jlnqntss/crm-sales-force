@@ -8,11 +8,11 @@
     </values>
     <values>
         <field>Fisica__c</field>
-        <value xsi:type="xsd:double">60.0</value>
+        <value xsi:type="xsd:string">60D</value>
     </values>
     <values>
         <field>Juridica__c</field>
-        <value xsi:type="xsd:double">2.0</value>
+        <value xsi:type="xsd:string">2A</value>
     </values>
     <values>
         <field>Ramo__c</field>
