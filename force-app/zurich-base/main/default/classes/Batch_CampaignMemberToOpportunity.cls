@@ -15,7 +15,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     private Set<String> cmOfferAssignedCodes = new Set<String>();
     private List<Opportunity> oppsToInsert = new List <Opportunity>();
     private static UsersSelector usersSelector = new UsersSelector();
-    private static CampaignMemberSelector campaignMemberSelector = new CampaignMemberSelector();
 
     // ##endregion Atributos
 
@@ -32,36 +31,14 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         this.campMemberIdSet = campMemberIdSet;
     }
 
-    public Database.QueryLocator start(Database.BatchableContext bc)
+    public /*Database.QueryLocator*/ List<CampaignMember> start(Database.BatchableContext bc)
     {
-        Set<String> crossSellingCampaigns = new Set<String> {'Cross Selling', 'Venta Cruzada'};
+        List<String> crossSellingCampaigns = new List<String> {'Cross Selling', 'Venta Cruzada'};
 
-        campaignMemberSelector.setFields
-        (
-            new List<Schema.SobjectField>
-        {
-            CampaignMember.Id,
-            CampaignMember.CampaignId,
-            CampaignMember.OfferAssignedCode__c,
-            CampaignMember.OfferAssignedType__c
-        },
-            new List<String>
-        {
-            'CampaignMember.Contact.AccountId',
-            'CampaignMember.Contact.Account.INFOCustomerNumber__c',
-            'CampaignMember.Contact.Account.Intermediary_Name__c',
-            'CampaignMember.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c',
-            'CampaignMember.Campaign.StartDate',
-            'CampaignMember.Campaign.EndDate',
-            'CampaignMember.Campaign.ExternalId__c',
-            'CampaignMember.Campaign.ProductBranch__c',
-            'CampaignMember.Campaign.BusinessCode__c'
-        }
-        );
 
-        campaignMemberSelector.baseQuery.addConditionIn('Campaign.Type', crossSellingCampaigns);
+        return ( new CampaignMembersSelector() ).selectByCampaignType(crossSellingCampaigns);
 
-        return Database.getQueryLocator( campaignMemberSelector.baseQuery.toQueryString() );
+        //return Database.getQueryLocator(campaignMemberSelector.baseQuery.toQueryString());
     }
 
     public void execute(Database.BatchableContext bc, List<sObject> records)
@@ -273,7 +250,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
                                          category='Campaign Member')
     public static void createOffers(List<String> campaignMembers)
     {
-        List<CampaignMember> cms = campaignMemberSelector.getCrossSellingCampaignMembersByListId(campaignMembers);
+        List<CampaignMember> cms = new CampaignMembersSelector().selectById(campaignMembers);
 
         Set<Id> campMemberIdSetFlow = ( new Map<Id,CampaignMember>(cms) ).keySet();
 

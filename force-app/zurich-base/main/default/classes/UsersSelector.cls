@@ -2,8 +2,8 @@
  * @description       : Clase selectora del sobject User
  * @author            : aberuete
  * @group             :
- * @last modified on  : 07-31-2023
- * @last modified by  : aberuete
+ * @last modified on  : 08-08-2023
+ * @last modified by  : jfherrero
  **/
 public with sharing class UsersSelector extends RecordsSelector
 {
@@ -202,4 +202,5 @@ public with sharing class UsersSelector extends RecordsSelector
 
         return result;
     }
+
 }

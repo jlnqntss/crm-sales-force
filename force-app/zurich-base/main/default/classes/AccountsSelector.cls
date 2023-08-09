@@ -442,19 +442,12 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.MainEmail__c,
                 Account.NationalId__c,
                 Account.Channel__c,
-                Account.Segment__c,
-                Account.INFOIntermediaryCode__c,
-                Account.IntermediaryWithUser__c,
-                Account.ParentId
+                Account.Segment__c
             }
-            ).selectFields('Account.Parent.IntermediaryWithUser__c');
+            );
 
             this.baseQuery.addConditionEq(Account.INFOIntermediaryCode__c, paddedCodes);
             this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
-
-            System.Debug ('this.baseQuery.run()');
-            for ( Account a: (List<Account>) this.baseQuery.run() )
-                System.Debug (a);
 
             return (List<Account>) this.baseQuery.run();
         }

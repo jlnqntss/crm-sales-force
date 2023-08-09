@@ -138,4 +138,86 @@ private with sharing class CampaignMembersSelectorTest
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
+
+    @isTest
+    static void test_selectById_matchedRecords()
+    {
+        List<String> campaignMembers = new List<String>();
+
+        for(CampaignMember cm : [SELECT Id FROM CampaignMember])
+        {
+            campaignMembers.add(cm.id);
+        }
+
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectById(campaignMembers);
+        Test.stopTest();
+
+        System.assertEquals(campaignMembers.size(), matchedRecords.size(), 'Records should match');
+    }
+
+    @isTest
+    static void test_selectById_emptyList_matchedRecords()
+    {
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectById(null);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_selectById_null_matchedRecords()
+    {
+        CampaignMember cm = new CampaignMember();
+        List<String> cmIds = new List<String> { String.valueOf(cm.id) };
+
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectById(cmIds);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+
+    @isTest
+    static void test_selectByCampaignType_matchedRecords()
+    {
+        List<String> campaignMembers = new List<String>();
+
+        for(CampaignMember cm : [SELECT Campaign.Type FROM CampaignMember])
+        {
+            campaignMembers.add(cm.Campaign.Type);
+        }
+
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectByCampaignType(campaignMembers);
+        Test.stopTest();
+
+        System.assertEquals(campaignMembers.size(), matchedRecords.size(), 'Records should match');
+    }
+
+    @isTest
+    static void test_selectByCampaignType_emptyList_matchedRecords()
+    {
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectByCampaignType(null);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_selectByCampaignType_null_matchedRecords()
+    {
+        CampaignMember cm = new CampaignMember();
+        List<String> cmIds = new List<String> { 'AXAXAXAXAXAXAXAX' };
+
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectByCampaignType(cmIds);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
 }
