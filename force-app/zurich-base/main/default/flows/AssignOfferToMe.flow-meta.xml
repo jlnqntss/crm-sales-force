@@ -5,7 +5,7 @@
         <description>Comprobaciones iniciales de la oferta que se quiere asignar el Mediador</description>
         <name>Valid_Operation</name>
         <label>Valid Operation</label>
-        <locationX>182</locationX>
+        <locationX>314</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>Update_Offer</targetReference>
@@ -40,6 +40,21 @@
             </connector>
             <label>No</label>
         </rules>
+        <rules>
+            <name>Logged_User_Already_Owner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>OfferOwnerId15</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$User.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Logged_User_Already_Owns_Offer_Screen</targetReference>
+            </connector>
+            <label>Logged User Already Owner</label>
+        </rules>
     </decisions>
     <description>Asignar una oferta al usuario logueado</description>
     <environments>Default</environments>
@@ -48,6 +63,12 @@
         <name>OfferAccountId15</name>
         <dataType>String</dataType>
         <expression>LEFT({!Get_Offer.AccountId}, 15)</expression>
+    </formulas>
+    <formulas>
+        <description>Obtengo el id de 15 para comparar con el usuario que está lanzando el flow si es igual muestro mensaje</description>
+        <name>OfferOwnerId15</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!Get_Offer.OwnerId}, 15)</expression>
     </formulas>
     <interviewLabel>Flow Asignarme Oferta {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Asignarme Oferta</label>
@@ -74,7 +95,7 @@
         <description>Crear un registro de error en Error Log en caso de error</description>
         <name>Create_Error_Event_Update_Campaign_Member</name>
         <label>Create Error Event Update Campaign Member</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>566</locationY>
         <connector>
             <targetReference>Error_Event_Update_Campaign_Member_Screen</targetReference>
@@ -110,7 +131,7 @@
         <description>Crear un registro de error en Error Log en caso de error</description>
         <name>Create_Error_Event_Update_Offer</name>
         <label>Create Error Event Update Offer</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>458</locationY>
         <connector>
             <targetReference>Create_Error_Event_Update_Offer_Screen</targetReference>
@@ -146,7 +167,7 @@
         <description>Consulto la oferta desde la que se está pulsando el botón</description>
         <name>Get_Offer</name>
         <label>Get Offer</label>
-        <locationX>182</locationX>
+        <locationX>314</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -168,7 +189,7 @@
         <description>Actualiza el estado de campaign member de &quot;Pdte. Revisión Mediador&quot; a &quot;Gestión Mediador&quot;</description>
         <name>Update_Campaign_Member_Status</name>
         <label>Update Campaign Member Status</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>458</locationY>
         <connector>
             <targetReference>Completed_Assign_Offer_Screen</targetReference>
@@ -210,7 +231,7 @@
         <description>Asignar la oferta al usuario logueado y blanquear el campo Business Code</description>
         <name>Update_Offer</name>
         <label>Update Offer</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>350</locationY>
         <connector>
             <targetReference>Update_Campaign_Member_Status</targetReference>
@@ -245,7 +266,7 @@
         <description>Muestra el mensaje de éxito en caso que se haya completado el proceso correctamente</description>
         <name>Completed_Assign_Offer_Screen</name>
         <label>Completed Assign Offer Screen</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>566</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -262,7 +283,7 @@
         <description>Muestra el mensaje de error en caso de que haya un error al actualizar el campaign member</description>
         <name>Create_Error_Event_Update_Offer_Screen</name>
         <label>Create Error Event Update Offer Screen</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>566</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -279,7 +300,7 @@
         <description>Muestra el mensaje de error en caso de que haya un error al actualizar la oferta</description>
         <name>Error_Event_Update_Campaign_Member_Screen</name>
         <label>Error Event Update Campaign Member Screen</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -287,6 +308,23 @@
         <fields>
             <name>Error_Update_Offer_Text</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 16px; background-color: rgb(255, 255, 255);&quot;&gt;Se ha producido un error, contacte con su administrador&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Muestra el mensaje de éxito en caso que se haya completado el proceso correctamente</description>
+        <name>Logged_User_Already_Owns_Offer_Screen</name>
+        <label>Logged User Already Owns Offer Screen</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Owned_Offer_Text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(73, 176, 13);&quot;&gt;Esta oferta ya está asignada a su usuario&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -310,7 +348,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Offer</targetReference>
