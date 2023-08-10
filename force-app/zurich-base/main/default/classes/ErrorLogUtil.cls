@@ -304,6 +304,23 @@ public with sharing class ErrorLogUtil
             );
     }
 
+    public static void commitError(Database.DeleteResult dr, String throwingClass, String throwingMethod, String objectName)
+    {
+       
+        publish(
+            dr.getErrors().get(0).getMessage()+dr.getErrors().get(0).getFields(),
+            throwingClass,
+            throwingMethod,
+            null,
+            ERROR_LEVEL_ERROR,
+            null,
+            null,
+            dr.getId(),
+            objectName,
+            null
+            );
+    }
+
     /**
      * Método que publica el evento de tipo ExternalRequestError específico de integración
      **
