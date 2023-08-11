@@ -586,7 +586,7 @@ public with sharing class SystemUtil
             Account.CustomerNum_EMEA__c,
             Account.CustomerNum_Partner__c,
             SourceCountry__c,
-            (Select id, WhatId, OwnerId from Tasks where RecordType.DeveloperName =: Label.Interaction and CallDisposition=: Label.Valid 
+            (Select id, WhatId, OwnerId from Tasks where RecordType.DeveloperName =: Label.Interaction and CallDisposition=: Label.Valid
                 and CreatedDate >= :startDate )
             FROM Contact
             WHERE CustomerNum__c IN :keys
@@ -731,14 +731,14 @@ public with sharing class SystemUtil
             SourceCountry__c,
             IsSubscriber__c,
             Partner__c,
-            LastModifiedDate 
+            LastModifiedDate
             FROM Contact
             WHERE (Email IN :emails
             OR MobilePhone IN:mobiles)
-            AND 
+            AND
             (RecordType.DeveloperName=:Label.LeadLife OR RecordType.DeveloperName=:Label.LeadGI
             OR RecordType.DeveloperName=:Label.CustomerLife OR RecordType.DeveloperName=:Label.CustomerGI)
-            
+
         ];
 
         String legalEntityName;
@@ -752,12 +752,12 @@ public with sharing class SystemUtil
 
                 matchCode = con.Email + String.valueOfGmt(con.Birthdate);
                 addMatchcodeToMap( matchcodeMap,  matchcode,  con);
-                
+
                 matchCode += legalEntityName + con.SourceCountry__c + con.Partner__c;
                 addMatchcodeToMap( matchcodeLECountryPartnerMap,  matchcode,  con);
 
             }
-            
+
             //Rellenar el mapa con matchcode: MOBILEPHONE + BIRTHDATE
             if( !String.isBlank(con.MobilePhone) && con.Birthdate!=null ){
 
@@ -768,7 +768,7 @@ public with sharing class SystemUtil
                 addMatchcodeToMap( matchcodeLECountryPartnerMap,  matchcode,  con);
             }
 
-            //Rellenar el mapa con matchcode: EMAIL + MOBILEPHONE 
+            //Rellenar el mapa con matchcode: EMAIL + MOBILEPHONE
             if( !String.isBlank(con.MobilePhone) && !String.isBlank(con.Email) ){
 
                 matchCode = con.Email + con.SourceCountry__c + con.MobilePhone;
@@ -777,7 +777,7 @@ public with sharing class SystemUtil
                 matchCode += legalEntityName + con.SourceCountry__c + con.Partner__c;
                 addMatchcodeToMap( matchcodeLECountryPartnerMap,  matchcode,  con);
             }
-           
+
             //Rellenar el mapa con matchcode: EMAIL  (excluyendo subscribers)
             if(  !String.isBlank(con.Email) && con.CustomerNum__c != null ){
 
@@ -787,8 +787,8 @@ public with sharing class SystemUtil
                 matchCode += legalEntityName + con.SourceCountry__c + con.Partner__c;
                 addMatchcodeToMap( matchcodeLECountryPartnerMap,  matchcode,  con);
             }
-   
-            //Rellenar el mapa con matchcode: MOBILEPHONE  
+
+            //Rellenar el mapa con matchcode: MOBILEPHONE
             if(  !String.isBlank(con.MobilePhone) ){
 
                 matchCode = con.SourceCountry__c + con.MobilePhone;
@@ -842,7 +842,7 @@ public with sharing class SystemUtil
             }else{
                 matchcodeMap.put(matchCode, con);
             }
-            
+
         }
 
     }
@@ -1162,7 +1162,7 @@ public with sharing class SystemUtil
      * @param String API name de la picklist controladora
      * @param String API name de la picklist dependiente
      * @return Map<String, List<String>> Mapa con las correspondencias.
-     * 
+     *
      * @author arcortazar
      * @date 23/01/2023
      **/
@@ -1201,8 +1201,8 @@ public with sharing class SystemUtil
                 }
 
                 baseCount += 4;
-            }            
-        } 
+            }
+        }
 
         return controllingInfo;
     }
@@ -1234,15 +1234,15 @@ public with sharing class SystemUtil
         }
         if((val & 4) == 4)
         {
-            listaControladores.add(controllingValues[baseCount + 1].getLabel());                
+            listaControladores.add(controllingValues[baseCount + 1].getLabel());
         }
         if((val & 2) == 2)
         {
-            listaControladores.add(controllingValues[baseCount + 2].getLabel());                  
+            listaControladores.add(controllingValues[baseCount + 2].getLabel());
         }
         if((val & 1) == 1)
         {
-            listaControladores.add(controllingValues[baseCount + 3].getLabel());             
+            listaControladores.add(controllingValues[baseCount + 3].getLabel());
         }
 
         return listaControladores;
@@ -1253,7 +1253,7 @@ public with sharing class SystemUtil
         public String validFor;
     }
     // # endregion
-    
+
     public class SystemUtilException extends Exception {}
 
     /**
@@ -1262,34 +1262,34 @@ public with sharing class SystemUtil
      *  {N3_1=(N2_1, N2_2), N3_2=(N2_3), N3_3=(N2_1, N2_2, N2_4),....}
      */
     public static Map<String, List<String>> getControllerPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId )
-    {   
+    {
         String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
         String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId+ '/' + fieldName;
-        
-        HttpRequest httpRequest = new HttpRequest();  
-        httpRequest.setEndpoint(endpoint);  
-        httpRequest.setMethod('GET');    
-       
+
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.setEndpoint(endpoint);
+        httpRequest.setMethod('GET');
+
         String sesionId = UserInfo.getSessionId();
         httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
-        
+
         List<String> listControllers;
         Map<String, List<String>> mapControllers = new Map<String, List<String>>(); // el retorno
-        
-        try {  
-            Http http = new Http();   
-            HttpResponse httpResponse = http.send(httpRequest);  
-            if (httpResponse.getStatusCode() == 200 ) {  
+
+        try {
+            Http http = new Http();
+            HttpResponse httpResponse = http.send(httpRequest);
+            if (httpResponse.getStatusCode() == 200 ) {
                 String jsonString = httpResponse.getBody();
                 Map<String, Object> resultado = (Map<String, Object>)JSON.deserializeUntyped(jsonString);
-                
+
                 // Lista de valores controladores
                 Map<String, Object> mapControllersValues = (Map<String, Object>)resultado.get('controllerValues');
                 listControllers = new List<String>(mapControllersValues.keyset());
-                
-                // Lista de objetos 
+
+                // Lista de objetos
                 List<Object> listValues = (List<Object>)resultado.get('values');
-                
+
                 for(Object val: listValues)
                 {
                     Map<String, Object> valTemp = (Map<String, Object>)val;
@@ -1303,15 +1303,15 @@ public with sharing class SystemUtil
                     }
                     mapControllers.put(key, lstControladores);
                 }
-            } 
-            else 
-            {  
-                throw new CalloutException( httpResponse.getBody() );  
-            }   
-        } catch( System.Exception e) {  
-            throw e;  
-        }  
-                
+            }
+            else
+            {
+                throw new CalloutException( httpResponse.getBody() );
+            }
+        } catch( System.Exception e) {
+            throw e;
+        }
+
         return mapControllers;
     }
 
@@ -1321,34 +1321,34 @@ public with sharing class SystemUtil
      *  {N2_1=(N3_1, N3_2), N2_2=(N3_1, N3_3, N3_4), N2_3=(N3_5), .....}
      */
     public static Map<String, List<String>> getDependantPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId)
-    {   
+    {
         String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
         String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId+ '/' + fieldName;
-        
+
         List<String> listControllers;
         Map<String, List<String>> mapDependant = new Map<String, List<String>>(); // el retorno
 
-        HttpRequest httpRequest = new HttpRequest();  
-        httpRequest.setEndpoint(endpoint);  
-        httpRequest.setMethod('GET');    
-       
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.setEndpoint(endpoint);
+        httpRequest.setMethod('GET');
+
         String sesionId = UserInfo.getSessionId();
         httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
-        
-        try {  
-            Http http = new Http();   
-            HttpResponse httpResponse = http.send(httpRequest); 
-            if (httpResponse.getStatusCode() == 200 ) {  
+
+        try {
+            Http http = new Http();
+            HttpResponse httpResponse = http.send(httpRequest);
+            if (httpResponse.getStatusCode() == 200 ) {
                 String jsonString = httpResponse.getBody();
                 Map<String, Object> resultado = (Map<String, Object>)JSON.deserializeUntyped(jsonString);
-                
+
                 // Lista de valores controladores
                 Map<String, Object> mapControllersValues = (Map<String, Object>)resultado.get('controllerValues');
                 listControllers = new List<String>(mapControllersValues.keyset());
-                
-                // Lista de objetos 
+
+                // Lista de objetos
                 List<Object> listValues = (List<Object>)resultado.get('values');
-                
+
                 for(Object val: listValues)
                 {
                     Map<String, Object> valTemp = (Map<String, Object>)val;
@@ -1358,7 +1358,7 @@ public with sharing class SystemUtil
                     {
                         Integer i = (Integer)pos;
                         String key = listControllers.get(i);
-                        
+
                         if(!mapDependant.keySet().contains(key))
                         {
                             mapDependant.put(key, new List<String>());
@@ -1367,15 +1367,38 @@ public with sharing class SystemUtil
                         mapDependant.get(key).add(label);
                     }
                 }
-            } 
-            else 
-            {  
-                throw new CalloutException( httpResponse.getBody() );  
-            }   
-        } catch( System.Exception e) {  
-            throw e;  
-        }  
+            }
+            else
+            {
+                throw new CalloutException( httpResponse.getBody() );
+            }
+        } catch( System.Exception e) {
+            throw e;
+        }
 
         return mapDependant;
+    }
+
+    /**
+     * @description Método que devuelve el nombre de la instancia de Sandbox.
+     *              En caso de ser producción, devuelve un null.
+     * @author      jgallaga
+     * @date        10/05/2023
+     */
+    public static String getSandboxName()
+    {
+        String orgDomain = getInstanceUrl();
+        System.Domain d = DomainParser.parse(orgDomain);
+        return d.getSandboxName();
+    }
+
+    /**
+     * @description Método para obtener la URL pública de la instancia.
+     * @author      jgallaga
+     * @date        10/05/2023
+     */
+    public static String getInstanceUrl()
+    {
+        return String.valueOf(URL.getSalesforceBaseUrl().toExternalForm());
     }
 }
