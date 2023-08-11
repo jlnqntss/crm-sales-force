@@ -1,8 +1,9 @@
 /**
- * @description       :
+ * @description       : Clase centrada en la asignación a agentes de la comunidad de Mi Agencia
+ *                      de las cuentas de tipo Lead que llegan a Salesforce.
  * @author            : jgallaga
- * @group             :
- * @last modified on  : 11/08/2023
+ * @group             : Seidor
+ * @last modified on  : 12/08/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class AccountLeadAssignment
@@ -11,6 +12,7 @@ public with sharing class AccountLeadAssignment
     private static final String CONTACT_CENTER           = 'CONTACT_CENTER';
     private static final String DEFAULT_ASSIGNEMENT_TYPE = 'Province';
 
+    /*** MEDATADA ***/
     @TestVisible
     private static List<LanguageAssignment__mdt> languageAssignmentMetadata
     {
@@ -75,6 +77,12 @@ public with sharing class AccountLeadAssignment
         set;
     }
 
+    /**
+     * @description Variable con el usuario por defecto que se asigna a aquellos
+     *              Leads a los que no se le encuentra un Agente adecuado
+     * @author      jgallaga
+     * @date        11/08/2023
+     */
     private static Id defaultUserId
     {
         get
@@ -91,7 +99,20 @@ public with sharing class AccountLeadAssignment
         set;
     }
 
-    public static Id getAssignedUserIdByIntermediaryCode(String intermediaryCode)
+    /**
+     * @description Devuelve el Id de Usuario al que le corresponde el código de
+     *              Intermediario o el Id del usuario por defecto si no se encuentra
+     *              a quien pertenece dicho código.
+     *              En caso de que el código de intermediario recibido sea
+     *              CONTACT_CENTER, devolverá ese mismo valor.
+     * @author      jgallaga
+     * @date        11/08/2023
+     * @param       String - intermediaryCode
+     *              Código de intermediario de un agente.
+     * @return      String
+     *              Id de usuario o 'CONTACT_CENTER'
+     */
+    public static String getAssignedUserIdByIntermediaryCode(String intermediaryCode)
     {
         if(intermediaryCode == CONTACT_CENTER)
         {
@@ -101,6 +122,19 @@ public with sharing class AccountLeadAssignment
         return getIntermediaryUserId(intermediaryCode);
     }
 
+    /**
+     * @description Devuelve el Id de Usuario segun el idioma recibido.
+     *              La asignación corresponde segun la defición en el metadato LanguageAssignment__mdt.
+     *              De no encontrar un agente para el idioma facilitado devolverá
+     *              el Id del usuario por defecto.
+     * @author      jgallaga
+     * @date        11/08/2023
+     * @param       String - language
+     *              Valor de idioma a buscar entre los valores de metadato para
+     *              conseguir el Id del usuario.
+     * @return      String
+     *              Id de usuario.
+     */
     public static String getAssignedUserIdByLanguage(String language)
     {
         for(LanguageAssignment__mdt currentLanguageAssignment : languageAssignmentMetadata)
@@ -114,6 +148,20 @@ public with sharing class AccountLeadAssignment
         return defaultUserId;
     }
 
+    /**
+     * @description Devuelve el Id de Usuario segun el valor de origen o código postal
+     *              segun el tipo de asignación que tenga configurado en metadatos.
+     *              De no encontrar una configuración para el origen, se realizará
+     *              asignación por provincia.
+     * @author      jgallaga
+     * @date        11/08/2023
+     * @param       String - origin
+     *              Valor de origen de la información
+     * @patam       String - postalCode
+     *              Valor del código de postal
+     * @return      String
+     *              Id de Usuario
+     */
     public static String getAssignedUserIdByAssignmentType(String origin, String postalCode)
     {
         String assignedUser;
@@ -142,6 +190,18 @@ public with sharing class AccountLeadAssignment
         return assignedUser;
     }
 
+    /**
+     * @description Proceso para conseguir el Id del intermediario a partir
+     *              del origen recibido. Se utiliza el metadato FormOriginAssignment__mdt
+     *              para conocer el código de intermedario al que le corresponde
+     *              el origen con el que se obtiene el Id de usuario.
+     * @author      jgallaga
+     * @date        11/08/2023
+     * @param       String - origin
+     *              Valor de origen de la información
+     * @return      String
+     *              Id de usuario.
+     */
     private static String assignedUserDirectly(String origin)
     {
         if(String.isBlank(origin))
@@ -160,6 +220,18 @@ public with sharing class AccountLeadAssignment
         return defaultUserId;
     }
 
+    /**
+     * @description Proceso para conseguir el Id del intermediario a partir
+     *              del código postal recibido. Se utiliza el metadato MunicipalityAssignment__mdt
+     *              para conocer el código de intermedario al que le corresponde
+     *              el código postal con el que se obtiene el Id de usuario.
+     * @author      jgallaga
+     * @date        11/08/2023
+     * @param       String - postalCode
+     *              Valor del código postal
+     * @return      String
+     *              Id de usuario.
+     */
     private static String assignedUserByMunicipality(String postalCode)
     {
         if(String.isBlank(postalCode))
@@ -179,7 +251,18 @@ public with sharing class AccountLeadAssignment
     }
 
     /**
-     * PostalCode deben ser 5 caracteres
+     * @description Proceso para conseguir el Id del intermediario a partir
+     *              del los dos primeros números del código postal recibido para
+     *              conocer la provincia.
+     *              Se utiliza el metadato ProvinceAssignment__mdt
+     *              para conocer el código de intermedario al que le corresponde
+     *              el código postal con el que se obtiene el Id de usuario.
+     * @author      jgallaga
+     * @date        11/08/2023
+     * @param       String - postalCode
+     *              Valor del código postal, deben ser en formato de 5 carácteres
+     * @return      String
+     *              Id de usuario.
      */
     private static String assignedUserByProvince(String postalCode)
     {
@@ -201,6 +284,21 @@ public with sharing class AccountLeadAssignment
         return defaultUserId;
     }
 
+    /**
+     * @description Método que devuelve la forma de buscar en la que hay que
+     *              realizar la búsqueda del agente intermediario a partir
+     *              del origen recibido.
+     *              El modo de asignación segun origen viene definido en el
+     *              metadato FormOriginAssignment__mdt.
+     *              De no encontrar una configuración, devolverá el valor de
+     *              la variable DEFAULT_ASSIGNEMENT_TYPE como tipo de asignación.
+     * @author      jgallaga
+     * @date        11/08/2023
+     * @param       String - origin
+     *              Valor del origen
+     * @return      String
+     *              La forma de asignación segun origen
+     */
     private static String getAssigmentType(String origin)
     {
         if(String.isBlank(origin))
@@ -219,7 +317,20 @@ public with sharing class AccountLeadAssignment
         return DEFAULT_ASSIGNEMENT_TYPE;
     }
 
-    private static Id getDefaultZRMAccountLeadOwnerId()
+    /**
+     * @description Método para obtener el usuario por defecto segun el entorno
+     *              en el que se encuentre la lógica de asignación.
+     *              De forma automatica conocerá el nombre del entorno en el que
+     *              se encuentra para obtener el usuario correspondiente.
+     *              Cada usuario segun entorno está definido en el metadato NTSUser__mdt.
+     * @return      String
+     *              Id del usuario por defecto
+     * @throws      QueryException
+     *              El método lanzará una excepción si no se encuentra el usuario
+     *              por defecto.
+     */
+    @TestVisible
+    private static String getDefaultZRMAccountLeadOwnerId()
     {
         NTSUser__mdt defaultUserDescription;
 
@@ -256,7 +367,16 @@ public with sharing class AccountLeadAssignment
         throw new QueryException('No default User found for Lead Account assignments.');
     }
 
-    private static Id getIntermediaryUserId(String intermediaryCode)
+    /**
+     * @description Devuelve el Id de Usuario a partir del código de intermediario.
+     * @author      jgallaga
+     * @date        11/08/2023
+     * @param       String - intermediaryCode
+     *              Código de intermediario del agente
+     * @return      String
+     *              Id de usuario.
+     */
+    private static String getIntermediaryUserId(String intermediaryCode)
     {
         if(String.isBlank(intermediaryCode))
         {
