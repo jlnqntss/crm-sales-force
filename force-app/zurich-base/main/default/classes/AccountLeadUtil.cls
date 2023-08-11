@@ -29,29 +29,22 @@ public with sharing class AccountLeadUtil
      */
     public static String leadAssignment(Account acc, String intermediaryCode, String origin, String language, String postalCode)
     {
-        String assignedUserId;
-
         if(String.isNotBlank(intermediaryCode))
         {
-            assignedUserId = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode);
-            return assignedUserId;
+            return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode);
         }
 
         if(acc != null)
         {
-            assignedUserId = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
-            return assignedUserId;
+            return acc.Intermediary_Name__r.INFOIntermediaryCode__c;
         }
 
         if(String.isNotBlank(language) && language != 'ES')
         {
-            assignedUserId = AccountLeadAssignment.getAssignedUserIdByLanguage(language);
-            return assignedUserId;
+            return AccountLeadAssignment.getAssignedUserIdByLanguage(language);
         }
 
-        assignedUserId = AccountLeadAssignment.getAssignedUserIdByAssignmentType(origin, postalCode);
-
-        return assignedUserId;
+        return AccountLeadAssignment.getAssignedUserIdByAssignmentType(origin, postalCode);
     }
 
 }
