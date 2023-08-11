@@ -115,7 +115,7 @@
         <inputAssignments>
             <field>ProductBranch__c</field>
             <value>
-                <elementReference>$Record.ProductId__r.GroupDescription__c</elementReference>
+                <elementReference>$Record.ProductId__r.GroupCode__c</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
