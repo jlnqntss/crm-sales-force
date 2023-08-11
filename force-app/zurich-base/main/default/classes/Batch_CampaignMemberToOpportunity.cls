@@ -31,14 +31,12 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         this.campMemberIdSet = campMemberIdSet;
     }
 
-    public /*Database.QueryLocator*/ List<CampaignMember> start(Database.BatchableContext bc)
+    public List<CampaignMember> start(Database.BatchableContext bc)
     {
         List<String> crossSellingCampaigns = new List<String> {'Cross Selling', 'Venta Cruzada'};
 
 
         return ( new CampaignMembersSelector() ).selectByCampaignType(crossSellingCampaigns);
-
-        //return Database.getQueryLocator(campaignMemberSelector.baseQuery.toQueryString());
     }
 
     public void execute(Database.BatchableContext bc, List<sObject> records)

@@ -79,14 +79,14 @@ public with sharing class CampaignMembersSelector extends BaseSelector
     {
         if( campaignMembers != null && !campaignMembers.isEmpty() )
         {
-            String query = String.format(
-                'SELECT {0} FROM CampaignMember ' +
-                'WHERE Id IN : campaignMembers ',
-                new List<String> {
-                String.join(new List<String> (this.fieldsToQuery), ',')
-            }
-                );
-            return (List<CampaignMember>) Database.query(query);
+            List<CampaignMember> queryResult = [SELECT Id, CampaignMember.CampaignId, CampaignMember.OfferAssignedCode__c, CampaignMember.OfferAssignedType__c,
+                                                CampaignMember.Contact.AccountId, CampaignMember.Contact.Account.INFOCustomerNumber__c, CampaignMember.Contact.Account.Intermediary_Name__c,
+                                                CampaignMember.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c, CampaignMember.Campaign.StartDate, CampaignMember.Campaign.EndDate,
+                                                CampaignMember.Campaign.ExternalId__c, CampaignMember.Campaign.ProductBranch__c,CampaignMember.Campaign.BusinessCode__c
+                                                FROM CampaignMember
+                                                WHERE Id IN : campaignMembers];
+
+            return queryResult;
         }
         else
         {

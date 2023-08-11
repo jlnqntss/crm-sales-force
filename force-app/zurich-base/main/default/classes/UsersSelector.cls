@@ -2,8 +2,8 @@
  * @description       : Clase selectora del sobject User
  * @author            : aberuete
  * @group             :
- * @last modified on  : 08-08-2023
- * @last modified by  : jfherrero
+ * @last modified on  : 07-31-2023
+ * @last modified by  : aberuete
  **/
 public with sharing class UsersSelector extends RecordsSelector
 {

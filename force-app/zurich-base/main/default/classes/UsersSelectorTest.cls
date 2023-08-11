@@ -2,8 +2,8 @@
  * @description       : Clase de test para la clase selectora del sobject User
  * @author            : aberuete
  * @group             :
- * @last modified on  : 02-20-2023
- * @last modified by  : aberuete
+ * @last modified on  : 08-08-2023
+ * @last modified by  : jfherrero
  **/
 @isTest
 private with sharing class UsersSelectorTest
@@ -94,5 +94,76 @@ private with sharing class UsersSelectorTest
             System.assertEquals(true, result != null, 'Debe encontrar resultado');
 
         }
+    }
+
+    @isTest
+    static void test_findByContactAccountId()
+    {
+
+        // Crear cuentas de clientes
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary', 3);
+        insert accounts;
+
+        // Crear contactos de clientes
+        List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(accounts, ContactsSelector.RT_NAME_CONTACT, 1);
+        insert contacts;
+
+        // Crear los usurios para recuperar
+        List<User> userList = new List<User>();
+
+        List<String> adminProfiles = new List<String> {'Administrador del sistema', 'System Administrator'};
+        List<Boolean> activeStatus = new List<Boolean> {true};
+        User adminUser = ( new UsersSelector() ).findByProfileName(adminProfiles, activeStatus, 1)[0];
+
+        System.runAs (adminUser)
+        {
+            String portalProfile = [SELECT Id FROM Profile WHERE UserType = 'PowerPartner' LIMIT 1].Id;
+
+            userList = TestDataFactory.generateUsersByProfile(portalProfile, 3);
+            userList[0].ContactId = contacts[0].Id;
+            userList[1].ContactId = contacts[1].Id;
+            userList[2].ContactId = contacts[2].Id;
+
+            insert userList;
+        }
+
+        Set<Id> contactAccountIds = new Set<Id>();
+
+        for (Account u : accounts)
+        {
+            contactAccountIds.add(u.Id);
+        }
+
+        Test.startTest();
+        List<User> userQuery = ( new UsersSelector() ).findByContactAccountId(contactAccountIds);
+        Test.stopTest();
+
+        System.assertEquals(userList.size(), userQuery.size(), 'No se ha encontrado el número esperado');
+    }
+
+    @isTest
+    static void test_findByAlias()
+    {
+
+        List<User> userList = new List<User>([SELECT Id, Alias FROM User WHERE IsActive = TRUE LIMIT 1]);
+
+        Test.startTest();
+        User userQuery = ( new UsersSelector() ).findByAlias(userList[0].alias);
+        Test.stopTest();
+
+        System.assertEquals(true, userQuery != null, 'Debe encontrar uno');
+    }
+
+    @isTest
+    static void test_findByProfileName()
+    {
+
+        List<String> adminProfiles = new List<String> {'Administrador del sistema', 'System Administrator'};
+
+        Test.startTest();
+        List<User> userQuery = ( new UsersSelector() ).findByProfileName(adminProfiles, null, null);
+        Test.stopTest();
+
+        System.assertEquals(true, userQuery != null, 'Debe encontrar uno');
     }
 }
