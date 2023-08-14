@@ -59,10 +59,10 @@
             <name>Campaign_Running</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Offer.Campaign.StartDate</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
+                <leftValueReference>IsValidDateToAssingOffer</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>$Flow.CurrentDate</elementReference>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -73,6 +73,12 @@
     </decisions>
     <description>Asignar una oferta al usuario logueado</description>
     <environments>Default</environments>
+    <formulas>
+        <description>Devuelve Verdadero en caso de que la campaña no haya empezado permitiendo al usuario asignarse la oferta en las fechas previas</description>
+        <name>IsValidDateToAssingOffer</name>
+        <dataType>Boolean</dataType>
+        <expression>TODAY() &lt; {!Get_Offer.Campaign.StartDate}</expression>
+    </formulas>
     <formulas>
         <description>Recortar id account a 15 para update de campaign member</description>
         <name>OfferAccountId15</name>
