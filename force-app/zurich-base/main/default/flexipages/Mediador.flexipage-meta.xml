@@ -631,7 +631,7 @@
                     <name>relatedListFieldAliases</name>
                     <valueList>
                         <valueListItems>
-                            <value>Campaign__c</value>
+                            <value>Campaign_with_status__c</value>
                         </valueListItems>
                         <valueListItems>
                             <value>Participates__c</value>
