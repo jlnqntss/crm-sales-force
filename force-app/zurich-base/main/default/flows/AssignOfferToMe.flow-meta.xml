@@ -5,7 +5,7 @@
         <description>Comprobaciones iniciales de la oferta que se quiere asignar el Mediador</description>
         <name>Valid_Operation</name>
         <label>Valid Operation</label>
-        <locationX>314</locationX>
+        <locationX>446</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>Update_Offer</targetReference>
@@ -55,6 +55,21 @@
             </connector>
             <label>Logged User Already Owner</label>
         </rules>
+        <rules>
+            <name>Campaign_Running</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Offer.Campaign.StartDate</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Campaign_Running_Screen</targetReference>
+            </connector>
+            <label>Campaign Running</label>
+        </rules>
     </decisions>
     <description>Asignar una oferta al usuario logueado</description>
     <environments>Default</environments>
@@ -95,7 +110,7 @@
         <description>Crear un registro de error en Error Log en caso de error</description>
         <name>Create_Error_Event_Update_Campaign_Member</name>
         <label>Create Error Event Update Campaign Member</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>566</locationY>
         <connector>
             <targetReference>Error_Event_Update_Campaign_Member_Screen</targetReference>
@@ -131,7 +146,7 @@
         <description>Crear un registro de error en Error Log en caso de error</description>
         <name>Create_Error_Event_Update_Offer</name>
         <label>Create Error Event Update Offer</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>458</locationY>
         <connector>
             <targetReference>Create_Error_Event_Update_Offer_Screen</targetReference>
@@ -167,7 +182,7 @@
         <description>Consulto la oferta desde la que se está pulsando el botón</description>
         <name>Get_Offer</name>
         <label>Get Offer</label>
-        <locationX>314</locationX>
+        <locationX>446</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -189,7 +204,7 @@
         <description>Actualiza el estado de campaign member de &quot;Pdte. Revisión Mediador&quot; a &quot;Gestión Mediador&quot;</description>
         <name>Update_Campaign_Member_Status</name>
         <label>Update Campaign Member Status</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>458</locationY>
         <connector>
             <targetReference>Completed_Assign_Offer_Screen</targetReference>
@@ -231,7 +246,7 @@
         <description>Asignar la oferta al usuario logueado y blanquear el campo Business Code</description>
         <name>Update_Offer</name>
         <label>Update Offer</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>350</locationY>
         <connector>
             <targetReference>Update_Campaign_Member_Status</targetReference>
@@ -263,10 +278,27 @@
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
+        <description>Muestra el mensaje de error en caso de que no pase validaciones</description>
+        <name>Campaign_Running_Screen</name>
+        <label>Campaign Running Screen</label>
+        <locationX>578</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Campaign_Running_Text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(255, 0, 0);&quot;&gt;Se ha excedido el tiempo permitido para poder reasignar esta Oferta&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <description>Muestra el mensaje de éxito en caso que se haya completado el proceso correctamente</description>
         <name>Completed_Assign_Offer_Screen</name>
         <label>Completed Assign Offer Screen</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>566</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -283,7 +315,7 @@
         <description>Muestra el mensaje de error en caso de que haya un error al actualizar el campaign member</description>
         <name>Create_Error_Event_Update_Offer_Screen</name>
         <label>Create Error Event Update Offer Screen</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>566</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -300,7 +332,7 @@
         <description>Muestra el mensaje de error en caso de que haya un error al actualizar la oferta</description>
         <name>Error_Event_Update_Campaign_Member_Screen</name>
         <label>Error Event Update Campaign Member Screen</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -348,7 +380,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>188</locationX>
+        <locationX>320</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Offer</targetReference>

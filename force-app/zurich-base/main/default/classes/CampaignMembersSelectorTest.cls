@@ -138,4 +138,14 @@ private with sharing class CampaignMembersSelectorTest
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
+
+    @isTest
+    static void test_findZRMPendingRevMediatorCampaignMembers() {
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().findZRMPendingRevMediatorCampaignMembers();
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+    
 }

@@ -17,14 +17,14 @@ global with sharing class Batch_InitCrossSellingCampaign implements Database.Bat
 
     /*********** Invocar Schedule Batch **************************************************************************/
     /**
-     * Método para programar de forma sencilla al batch pasando una fecha como parámetro
+     * Método para programar de forma sencilla al batch 
      * @param jobName: nombre del batch a ejecutar (opcional)
      * @param timeExpression: expresion CRON para programar el batch
      * @return String: job id
      * @author dmunoz
-     * @date 09/09/2022
+     * @date 11/08/2023
      */
-    public static String createStandardScheduleByDate(String jobName, String timeExpression) {
+    public static String createStandardSchedule(String jobName, String timeExpression) {
         jobName = setJobName(jobName);
         timeExpression = setTimeExpression(timeExpression);
         
