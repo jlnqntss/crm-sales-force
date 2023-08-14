@@ -46,7 +46,7 @@ public with sharing class UserSelector {
      */
     public List<User> getSDMUsers() {
 
-        List<User> result = new List<User>([SELECT Id, Name, UserRole.DeveloperName FROM user WHERE UserRole.DeveloperName IN ('SDM_DT', 'SDM_RN') OR Id = :UserInfo.getUserId() ORDER BY Name ASC]);
+        List<User> result = new List<User>([SELECT Id, Name, UserRole.DeveloperName FROM user WHERE UserRole.DeveloperName IN ('SDM_DT', 'SDM_RN', 'SDM_DV', 'SDM_CV') OR Id = :UserInfo.getUserId() ORDER BY Name ASC]);
 
         return result;
     }
