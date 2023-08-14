@@ -30,7 +30,15 @@ private without sharing class GenesysInteractionsServiceTest
         intermediaries.get(0).Phone = '111555777';
         intermediaries.get(0).MainMobilePhone__c = '666018472';//202102: Añadido phone para mandar SMS a los intermediarios
         intermediaries.get(0).MainEmail__c = 'intermediario@email.com';//202102: Añadido email para los intermediarios
-        update intermediaries.get(0);
+
+        intermediaries.get(1).INFOIntermediaryCode__c = '0999777888';
+        intermediaries.get(1).Phone = '111555888';
+        intermediaries.get(1).MainEmail__c = 'intermediario2@email.com';//202102: Añadido email para los intermediarios
+
+        List<Account> intermediariesUpdate = new List<Account>();
+        intermediariesUpdate.add(intermediaries.get(0));
+        intermediariesUpdate.add(intermediaries.get(1));
+        update intermediariesUpdate;
 
         List<Account> partners = TestDataFactory.generateAccounts('001', 'PartnerOCS', 10);
         insert partners;
@@ -991,7 +999,7 @@ private without sharing class GenesysInteractionsServiceTest
         // Test
         Test.startTest();
 
-        List<GenesysInteractionsService.Agent> bestAgents = GenesysInteractionsService.findBestAgents(intermediary);
+        List<GenesysInteractionsService.Agent> bestAgents = GenesysInteractionsService.findBestAgents(intermediary, true);
 
         Test.stopTest();
 
@@ -1015,7 +1023,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
         List<Account> partners = [SELECT Id, PartnerSFCode__c FROM Account WHERE RecordTypeId = :partnerRecordTypeId LIMIT 2];
-        List<Account> intermediary = [SELECT Id, MainMobilePhone__c, Phone, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
+        List<Account> intermediary = [SELECT Id, MainMobilePhone__c, Phone, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' OR INFOIntermediaryCode__c = '0999777888' ORDER BY INFOIntermediaryCode__c DESC LIMIT 2]; //mismo nº que en createScenario()
 
         List<Product2> products = new List<Product2>
         {
@@ -1057,16 +1065,14 @@ private without sharing class GenesysInteractionsServiceTest
             if(i < 5)
             {
                 policies[i].Partner__c = partners[0].Id;
-                policies[i].Intermediary_Code__c = '0001112223';
                 policies[i].ProductId__c = products[0].Id;
                 policies[i].IntermediaryId__c = intermediary[0].Id;
             }
             else
             {
                 policies[i].Partner__c = partners[1].Id;
-                policies[i].Intermediary_Code__c = '0001112224';
                 policies[i].ProductId__c = products[1].Id;
-                policies[i].IntermediaryId__c = intermediary[0].Id;
+                policies[i].IntermediaryId__c = intermediary[1].Id;
             }
         }
         update policies;
@@ -1087,16 +1093,16 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(2, activePolicies.byIntermediary.size(), 'No se ha informado correctamente el listado de pólizas por intermediario');
         System.assertEquals(2, activePolicies.byType.size(), 'No se ha informado correctamente el listado de pólizas por tipo o ramo');
 
-        System.assertEquals(5, activePolicies.byIntermediary.get('0001112223').size(), 'No se ha informado correctamente el listado de pólizas por intermediario');
-        System.assertEquals(5, activePolicies.byIntermediary.get('0001112224').size(), 'No se ha informado correctamente el listado de pólizas por intermediario');
+        System.assertEquals(5, activePolicies.byIntermediary.get('0999888777').size(), 'No se ha informado correctamente el listado de pólizas por intermediario');
+        System.assertEquals(5, activePolicies.byIntermediary.get('0999777888').size(), 'No se ha informado correctamente el listado de pólizas por intermediario');
         System.assertEquals(5, activePolicies.byType.get('Group 1').size(), 'No se ha informado correctamente el listado de pólizas por tipo o ramo');
         System.assertEquals(5, activePolicies.byType.get('Group 2').size(), 'No se ha informado correctamente el listado de pólizas por tipo o ramo');
 
         System.assertEquals(policies.get(0).Id, activePolicies.byType.get('Group 1').get(0).id, 'No se ha informado correctamente el id de la póliza');
         System.assertEquals(policies.get(5).Id, activePolicies.byType.get('Group 2').get(0).id, 'No se ha informado correctamente el id de la póliza');
 
-        System.assertEquals(intermediary[0].Phone, activePolicies.byIntermediary.get('0001112224').get(0).intermediaryPhone, 'No se ha informado correctamente el teléfono del intermediario de la póliza');
-        System.assertEquals(intermediary[0].MainEmail__c, activePolicies.byIntermediary.get('0001112224').get(0).intermediaryEmail, 'No se ha informado correctamente el email del intermediario de la póliza');
+        System.assertEquals(intermediary[0].Phone, activePolicies.byIntermediary.get('0999888777').get(0).intermediaryPhone, 'No se ha informado correctamente el teléfono del intermediario de la póliza');
+        System.assertEquals(intermediary[0].MainEmail__c, activePolicies.byIntermediary.get('0999888777').get(0).intermediaryEmail, 'No se ha informado correctamente el email del intermediario de la póliza');
     }
 
     /**

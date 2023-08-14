@@ -15,7 +15,7 @@
         <inputParameters>
             <name>phone</name>
             <value>
-                <elementReference>phone</elementReference>
+                <elementReference>prefixFormula</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -151,6 +151,13 @@
                 <elementReference>FindContactRequest.PreferredPhone</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>BusinessCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FindContactRequest.BusinessCode__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>OpenCreateLeadFlow</targetReference>
         </connector>
@@ -180,6 +187,13 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>FindContactRequestById.WebIdentifier__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>BusinessCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FindContactRequestById.BusinessCode__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -349,6 +363,13 @@
         <expression>NOW()</expression>
     </formulas>
     <formulas>
+        <name>prefixFormula</name>
+        <dataType>String</dataType>
+        <expression>IF(LEN( {!phone} ) = 9,  &apos;+34&apos;+ {!phone} , 
+    IF(BEGINS( {!phone} , &apos;+&apos; ), {!phone},  &apos;+&apos; +  {!phone} )
+)</expression>
+    </formulas>
+    <formulas>
         <description>Calcula la fecha de ayer</description>
         <name>Yesterday</name>
         <dataType>DateTime</dataType>
@@ -407,7 +428,7 @@
         <inputAssignments>
             <field>TelephoneNumber</field>
             <value>
-                <elementReference>phone</elementReference>
+                <elementReference>prefixFormula</elementReference>
             </value>
         </inputAssignments>
         <object>ContactPointPhone</object>
@@ -436,7 +457,7 @@
         <inputAssignments>
             <field>PrimaryPhone__c</field>
             <value>
-                <elementReference>phone</elementReference>
+                <elementReference>prefixFormula</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -485,6 +506,7 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>WebName__c</queriedFields>
         <queriedFields>PreferredPhone</queriedFields>
+        <queriedFields>BusinessCode__c</queriedFields>
         <sortField>CreatedDate</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -513,6 +535,7 @@
         <queriedFields>WebName__c</queriedFields>
         <queriedFields>PreferredPhone</queriedFields>
         <queriedFields>WebIdentifier__c</queriedFields>
+        <queriedFields>BusinessCode__c</queriedFields>
         <sortField>CreatedDate</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -531,7 +554,7 @@
             <field>PrimaryPhone__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>phone</elementReference>
+                <elementReference>prefixFormula</elementReference>
             </value>
         </filters>
         <filters>
@@ -568,6 +591,12 @@
         <locationX>1502</locationX>
         <locationY>1094</locationY>
         <flowName>ZECreateLead</flowName>
+        <inputAssignments>
+            <name>inputBusinessCode</name>
+            <value>
+                <elementReference>BusinessCode</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <name>InputPhone</name>
             <value>
@@ -618,7 +647,21 @@
                 <elementReference>WebName</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <name>inputBusinessCode</name>
+            <value>
+                <elementReference>BusinessCode</elementReference>
+            </value>
+        </inputAssignments>
     </subflows>
+    <variables>
+        <description>Variable para almacenar el Business Code</description>
+        <name>BusinessCode</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
     <variables>
         <name>phone</name>
         <dataType>String</dataType>

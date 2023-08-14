@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>El propósito de este metadato es indicar los elementos que se tienen que borrar y el orden de borrado</description>
+    <label>GDPR Orden Borrado</label>
+    <pluralLabel>GDPR Ordenes Borrado</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

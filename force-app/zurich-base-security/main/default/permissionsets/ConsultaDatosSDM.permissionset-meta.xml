@@ -10,9 +10,17 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GeneratePDFActaController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UsefulLinksController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <pageAccesses>
+        <apexPage>TemplateActaPDF</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
     <fieldPermissions>
         <editable>true</editable>
         <field>AccionesTratadasActa__c.Actions__c</field>
@@ -31,6 +39,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>AccionesTratadasActa__c.PersonInCharge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>	
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>AccionesTratadasActa__c.ActionResponsible__c</field>
         <readable>true</readable>
     </fieldPermissions>	
 	<fieldPermissions>
@@ -96,6 +109,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>PlanComercial__c.FollowUp__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PlanComercial__c.IsOwnedByHomeOffice__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -180,7 +198,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Category_Version__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Category__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.EMail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.InactiveOrNonExistentUsers__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -235,6 +268,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.ManagerName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Multitarifier__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -247,6 +285,11 @@
         <editable>false</editable>
         <field>Account.PYMEManagedBonus__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.PYMEManagerName__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -331,6 +374,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.LifeConsultantEmail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.LifeManagerName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -436,6 +484,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.EnterpriseSegment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.EnterpriseManagerName__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -715,6 +768,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.TerritoryManagerName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.SAMTechnicalIssues__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -741,6 +799,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Segment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.SoW_2021__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -954,6 +1017,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Event.Acta__c</field>
         <readable>true</readable>
@@ -1115,6 +1188,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Scope__c.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Scope__c.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Scope__c.FirstWonQuoteDate__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1162,6 +1245,11 @@
         <editable>false</editable>
         <field>Scope__c.TotalNetPremium__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Acta__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -2310,6 +2398,41 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>FollowUp__c.CIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>FollowUp__c.Detail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>FollowUp__c.EndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>FollowUp__c.IntermediaryCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>FollowUp__c.Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>FollowUp__c.Observation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>FollowUp__c.StartDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>purecloud__PureCloud_Entity__c.purecloud__PureCloud_Division_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2331,6 +2454,116 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>purecloud__PureCloud_Entity__c.purecloud__Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+        <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CampaignMember.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CampaignMember.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Claim__c.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Claim__c.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Asset.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Asset.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Activity.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Activity.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>EmailMessage.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>EmailMessage.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactPointEmail.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactPointEmail.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactPointPhone.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactPointPhone.Blocked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactPointAddress.Anonymized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactPointAddress.Blocked__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
@@ -2378,6 +2611,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Contact</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>FollowUp__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -2439,6 +2681,10 @@
         <recordType>Task.Offer_Policy_Follow_up</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <tabSettings>
+        <tab>FollowUp__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
     <tabSettings>
         <tab>PlanComercial__c</tab>
         <visibility>Visible</visibility>

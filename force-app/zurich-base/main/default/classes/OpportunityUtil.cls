@@ -1,6 +1,18 @@
-public with sharing class OpportunityUtil
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 04-24-2023
+ * @last modified by  : aberuete
+**/
+public with sharing class OpportunityUtil 
 {
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
+    public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
+    static final String FIELD_OWNER_ID = 'OwnerId';
+    static final String FIELD_STAGE = 'StageName';
+    private static List<String> nombresPerfilesVentas; // perfiles de la app ventas y zrm que muestra otro mensaje de error para la validación de cerrada ganada
+    private static String userLoggedProfile; // query que obtiene el nombre del perfil del usuario logeado
 
     /**
      * BULK BEFORE
@@ -9,9 +21,18 @@ public with sharing class OpportunityUtil
      * @date 24/02/2021
      */
     public static void initMapOfProfiles()
-    {
+    {   
+        // perfiles
         List<String> nombresPerfiles = new List<String>{'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
         listaPerfiles = ProfilesSelector.getProfilesByName(nombresPerfiles);
+
+        // usuarios
+        List<String> nombresUsuarios = new List<String>{'Automated Process'};
+        listaUsuarios = (new UsersSelector()).getUsersByName(nombresUsuarios);
+
+        // Perfiles Ventas
+        nombresPerfilesVentas = new List<String>{'Agente Ventas', 'Ventas User'};
+        userLoggedProfile = ProfilesSelector.getLoggedUserProfile();
     }
 
     /**
@@ -127,7 +148,7 @@ public with sharing class OpportunityUtil
      * @param oldMap Map<Id, Opportunity> mapa de las oportunidades a actualizar, con los datos anteriores al update
      * */ 
      public static void validateOfferStage(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
-     {
+     {        
         for (Opportunity newOpty : newList)
         {
             Opportunity oldOpty = oldMap.get(newOpty.Id);
@@ -135,7 +156,8 @@ public with sharing class OpportunityUtil
             if (!skipStageNameValidation(newOpty) && !isValidStageName(oldOpty))
             { 
                 // ERROR  : Agregar el mensaje a nivel de campo 
-                newOpty.addError('StageName', Label.OfferStageValidationMessage);
+                
+                newOpty.addError(FIELD_STAGE, nombresPerfilesVentas.contains(userLoggedProfile) ? Label.OfferSalesStageValidationClosedWonMessage : Label.OfferStageValidationMessage);
             } 
         }
     }
@@ -175,7 +197,7 @@ public with sharing class OpportunityUtil
         Boolean retorno = false;
         
         // Bypass por perfil
-        if(!listaPerfiles.isEmpty() && listaPerfiles.containsKey(UserInfo.getProfileId()))
+        if(!listaPerfiles.isEmpty() && (listaPerfiles.containsKey(UserInfo.getProfileId()) || listaUsuarios.containsKey(UserInfo.getUserId())))
         {
             retorno = true;
         }
@@ -251,7 +273,7 @@ public with sharing class OpportunityUtil
                 if (mapUsersZEAdvisors.get(UserInfo.getUserId()) != null && oldOpty.OwnerId != integratorId)
                 {
                     //ERROR: Agregar el mensaje a nivel de campo 
-                    newOpty.addError('OwnerId', Label.OfferChangeOwnerValidationMessage);
+                    newOpty.addError(FIELD_OWNER_ID, Label.OfferChangeOwnerValidationMessage);
                 }	
             }
         }   

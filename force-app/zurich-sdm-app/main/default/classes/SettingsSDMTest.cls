@@ -41,7 +41,7 @@ private class SettingsSDMTest
         SettingsSDM settings = new SettingsSDM();
         List<SDMCommercialPlan__mdt> testSettingsIndicator = new List<SDMCommercialPlan__mdt>();
         testSettingsIndicator.add(TestDataFactorySDM.generateSDMSettingsPlan(
-            'PN', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_SUM, 'PN__c', null));
+            'PN', PlanComercialSDM.SETTINGS_CALCULATION_TYPE_SUM, 'PN__c', null, false, null));
         Map<String, SDMCommercialPlan__mdt> result = settings.getSettingsIndicator(testSettingsIndicator);
         Test.stopTest();
 
@@ -61,7 +61,7 @@ private class SettingsSDMTest
         Test.startTest();
         SettingsSDM settings = new SettingsSDM();
         List<SDMAccountTeamRole__mdt> testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD,AccountsSelector.SDM_DT_NAME_FIELD
         );
         List<SDMAccountTeamRole__mdt> result = settings.getAccountRolesWithIntermediaryFields(
             testSettingsATM

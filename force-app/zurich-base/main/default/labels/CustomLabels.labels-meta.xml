@@ -321,6 +321,13 @@
         <value>General Insurance</value>
     </labels>
     <labels>
+        <fullName>IAMUserSignatureLegal</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>IAMUserSignatureLegal</shortDescription>
+        <value>&lt;div style=&quot;font-family: Verdana; font-size: 9px;&quot;&gt;Este mensaje y sus anexos pueden contener información confidencial y/o con derecho legal. Está dirigido únicamente a la persona/s o entidad/es reseñadas como único destinatario autorizado. Si este mensaje le hubiera llegado por error, por favor elimínelo sin revisarlo ni reenviarlo y notifíquelo inmediatamente al remitente. Gracias por su colaboración.&lt;/div&gt;</value>
+    </labels>
+    <labels>
         <fullName>IBA_Response_Body</fullName>
         <categories>Values</categories>
         <language>en_US</language>
@@ -2228,5 +2235,157 @@ Related fields: [{3}]</value>
         <protected>false</protected>
         <shortDescription>SDM_ControlIntermediaryNotifiaction_SuccessToastTitle</shortDescription>
         <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_DownloadButton</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_DownloadButton</shortDescription>
+        <value>Download</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_PreviewButton</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_PreviewButton</shortDescription>
+        <value>Preview</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_ErrorToastTitle</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_ErrorToastTitle</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_NoActaErrorToastMessage</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_NoActaErrorToastMessage</shortDescription>
+        <value>Event record not found</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_WarningToastTitle</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_WarningToastTitle</shortDescription>
+        <value>Warning</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_CreatePDFTitleModal</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_CreatePDFTitleModal</shortDescription>
+        <value>Generate PDF Acta</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Acta_NoActaWarningToastMessage</fullName>
+        <categories>SDM,Acta</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_Acta_NoActaWarningToastMessage</shortDescription>
+        <value>The PDF cannot be created, the record is missing in the event.
+Create the record and try again.</value>
+    </labels>
+    <labels>
+        <fullName>ZeGDPR</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZeGDPR</shortDescription>
+        <value>Antes de nada informarte que Zurich Insurance plc, Sucursal en España procederá a grabar esta llamada por motivos de calidad en base a interés legítimo y también para dejar prueba de la solicitud realizada en base a ejecución contractual. Para más información sobre protección de datos y cómo ejercer tus derechos, consulta la web www.zurich.es/rgpd</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Home_RN_Dashboard_detail</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM Home RN Dashboard detail</shortDescription>
+        <value>Detail</value>
+    </labels>
+    <labels>
+        <fullName>SDM_Home_RN_Dashboard_general_view</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM Home RN Dashboard general view</shortDescription>
+        <value>General view</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_NextPage</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_NextPage</shortDescription>
+        <value>Next Page</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_PreviousPage</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_PreviousPage</shortDescription>
+        <value>Previous Page</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsButton</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsButton</shortDescription>
+        <value>View As User</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ShowPlansFrom</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ShowPlansFrom</shortDescription>
+        <value>Showing Plans of:</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsModalLabel</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsModalLabel</shortDescription>
+        <value>View As User</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsModalChangeUser</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsModalChangeUser</shortDescription>
+        <value>Change to:</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsModalFilterUsers</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsModalFilterUsers</shortDescription>
+        <value>Filter users</value>
+    </labels>
+    <labels>
+        <fullName>SDM_PlanAnual_ViewAsModalSubmit</fullName>
+        <categories>SDM,PlanAnual</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_PlanAnual_ViewAsModalSubmit</shortDescription>
+        <value>Submit</value>
+    </labels>
+    <labels>
+        <fullName>OfferSalesStageValidationClosedWonMessage</fullName>
+        <categories>Ventas,Offer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OfferSalesStageValidationClosedWonMessage</shortDescription>
+        <value>[VR Offer] A Closed Won Offer cannot be modified</value>
     </labels>
 </CustomLabels>

@@ -1152,6 +1152,230 @@ public with sharing class SystemUtil
 
         return response;
     }
+
+    //#region DependentPicklist Utils
+    /**
+     * Método que devuelve los valores activos de una picklist dependiente, ordenados por su controlador
+     **
+
+     * @param String nombre de objeto que contiene la picklist
+     * @param String API name de la picklist controladora
+     * @param String API name de la picklist dependiente
+     * @return Map<String, List<String>> Mapa con las correspondencias.
+     * 
+     * @author arcortazar
+     * @date 23/01/2023
+     **/
+    public static Map<String, List<String>> getDependantPicklistValues(String objectName, String controllingField, String dependentField)
+    {
+        Map<String, List<String>> controllingInfo = new Map<String, List<String>>();
+
+        Schema.SObjectType objType = Schema.getGlobalDescribe().get(objectName);
+
+        Schema.DescribeSObjectResult describeResult = objType.getDescribe();
+        Schema.DescribeFieldResult controllingFieldInfo = describeResult.fields.getMap().get(controllingField).getDescribe();
+        Schema.DescribeFieldResult dependentFieldInfo = describeResult.fields.getMap().get(dependentField).getDescribe();
+
+        List<Schema.PicklistEntry> controllingValues = controllingFieldInfo.getPicklistValues();
+        List<Schema.PicklistEntry> dependentValues = dependentFieldInfo.getPicklistValues();
+
+        for(Schema.PicklistEntry currControllingValue : controllingValues)
+        {
+            controllingInfo.put(currControllingValue.getLabel(), new List<String>());
+        }
+
+        for(Schema.PicklistEntry currDependentValue : dependentValues)
+        {
+            String jsonString = JSON.serialize(currDependentValue);
+            MyPickListInfo info = (MyPickListInfo) JSON.deserialize(jsonString, MyPickListInfo.class);
+
+            String hexString = EncodingUtil.convertToHex(EncodingUtil.base64Decode(info.validFor)).toUpperCase();
+            Integer baseCount = 0;
+            for(Integer curr : hexString.getChars())
+            {
+                List<String> returningControllers = getControllers(curr, baseCount, controllingValues);
+
+                for(String controller : returningControllers)
+                {
+                    controllingInfo.get(controller).add(currDependentValue.getLabel());
+                }
+
+                baseCount += 4;
+            }            
+        } 
+
+        return controllingInfo;
+    }
+
+
+    /**
+     * Método privado que devuelve una lista con los valores de la picklist controladora que habilitan el valor dependiente que estamos analizando
+     **
+     * @author arcortazar
+     * @date 26/01/2023
+     **/
+    private static List<String> getControllers(Integer currentHex, Integer basecount, List<Schema.PicklistEntry> controllingValues)
+    {
+        Integer val = 0;
+        List<String> listaControladores = new List<String>();
+
+        if(currentHex >= 65)
+        {
+            val = currentHex - 65 + 10;
+        }
+        else
+        {
+            val = currentHex - 48;
+        }
+
+        if((val & 8) == 8)
+        {
+            listaControladores.add(controllingValues[baseCount + 0].getLabel());
+        }
+        if((val & 4) == 4)
+        {
+            listaControladores.add(controllingValues[baseCount + 1].getLabel());                
+        }
+        if((val & 2) == 2)
+        {
+            listaControladores.add(controllingValues[baseCount + 2].getLabel());                  
+        }
+        if((val & 1) == 1)
+        {
+            listaControladores.add(controllingValues[baseCount + 3].getLabel());             
+        }
+
+        return listaControladores;
+    }
+
+    public class MyPickListInfo
+    {
+        public String validFor;
+    }
+    // # endregion
     
     public class SystemUtilException extends Exception {}
+
+    /**
+     * Método que devuelve los valores que controlan una picklist dependiente, segun su recordType.
+     * Es decir, si le solicitamos el campo N3 que depente del N2 obtendremos un mapa con la siguiente estructura:
+     *  {N3_1=(N2_1, N2_2), N3_2=(N2_3), N3_3=(N2_1, N2_2, N2_4),....}
+     */
+    public static Map<String, List<String>> getControllerPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId )
+    {   
+        String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
+        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId+ '/' + fieldName;
+        
+        HttpRequest httpRequest = new HttpRequest();  
+        httpRequest.setEndpoint(endpoint);  
+        httpRequest.setMethod('GET');    
+       
+        String sesionId = UserInfo.getSessionId();
+        httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
+        
+        List<String> listControllers;
+        Map<String, List<String>> mapControllers = new Map<String, List<String>>(); // el retorno
+        
+        try {  
+            Http http = new Http();   
+            HttpResponse httpResponse = http.send(httpRequest);  
+            if (httpResponse.getStatusCode() == 200 ) {  
+                String jsonString = httpResponse.getBody();
+                Map<String, Object> resultado = (Map<String, Object>)JSON.deserializeUntyped(jsonString);
+                
+                // Lista de valores controladores
+                Map<String, Object> mapControllersValues = (Map<String, Object>)resultado.get('controllerValues');
+                listControllers = new List<String>(mapControllersValues.keyset());
+                
+                // Lista de objetos 
+                List<Object> listValues = (List<Object>)resultado.get('values');
+                
+                for(Object val: listValues)
+                {
+                    Map<String, Object> valTemp = (Map<String, Object>)val;
+                    String key = (String)valTemp.get('label');
+                    List<Object> lstPosiciones = (List<Object>)valTemp.get('validFor');
+                    List<String> lstControladores = new List<String>();
+                    for (Object pos : lstPosiciones)
+                    {
+                        Integer i = (Integer)pos;
+                        lstControladores.add(listControllers.get(i));
+                    }
+                    mapControllers.put(key, lstControladores);
+                }
+            } 
+            else 
+            {  
+                throw new CalloutException( httpResponse.getBody() );  
+            }   
+        } catch( System.Exception e) {  
+            throw e;  
+        }  
+                
+        return mapControllers;
+    }
+
+    /**
+     * Método que devuelve los valores que controlan una picklist dependiente, segun su recordType.
+     * Es decir, si le solicitamos el campo N3 que depente del N2 obtendremos un mapa con la siguiente estructura:
+     *  {N2_1=(N3_1, N3_2), N2_2=(N3_1, N3_3, N3_4), N2_3=(N3_5), .....}
+     */
+    public static Map<String, List<String>> getDependantPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId)
+    {   
+        String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
+        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId+ '/' + fieldName;
+        
+        List<String> listControllers;
+        Map<String, List<String>> mapDependant = new Map<String, List<String>>(); // el retorno
+
+        HttpRequest httpRequest = new HttpRequest();  
+        httpRequest.setEndpoint(endpoint);  
+        httpRequest.setMethod('GET');    
+       
+        String sesionId = UserInfo.getSessionId();
+        httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
+        
+        try {  
+            Http http = new Http();   
+            HttpResponse httpResponse = http.send(httpRequest); 
+            if (httpResponse.getStatusCode() == 200 ) {  
+                String jsonString = httpResponse.getBody();
+                Map<String, Object> resultado = (Map<String, Object>)JSON.deserializeUntyped(jsonString);
+                
+                // Lista de valores controladores
+                Map<String, Object> mapControllersValues = (Map<String, Object>)resultado.get('controllerValues');
+                listControllers = new List<String>(mapControllersValues.keyset());
+                
+                // Lista de objetos 
+                List<Object> listValues = (List<Object>)resultado.get('values');
+                
+                for(Object val: listValues)
+                {
+                    Map<String, Object> valTemp = (Map<String, Object>)val;
+                    String label = (String)valTemp.get('label');
+                    List<Object> lstPosiciones = (List<Object>)valTemp.get('validFor');
+                    for (Object pos : lstPosiciones)
+                    {
+                        Integer i = (Integer)pos;
+                        String key = listControllers.get(i);
+                        
+                        if(!mapDependant.keySet().contains(key))
+                        {
+                            mapDependant.put(key, new List<String>());
+                        }
+
+                        mapDependant.get(key).add(label);
+                    }
+                }
+            } 
+            else 
+            {  
+                throw new CalloutException( httpResponse.getBody() );  
+            }   
+        } catch( System.Exception e) {  
+            throw e;  
+        }  
+
+        return mapDependant;
+    }
 }

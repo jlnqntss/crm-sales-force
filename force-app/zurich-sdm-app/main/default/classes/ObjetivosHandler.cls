@@ -50,7 +50,9 @@ public class ObjetivosHandler implements ITrigger {
      * has modified any values. The record is 'read only' by this point.
      */
     public void afterInsert(List<SObject> newList) {
-        ObjetivosUtil.altaJobInsertObjetivos(newList);
+        if (!System.isBatch() && !newList.isEmpty()) {
+            Database.executeBatch(new SDMInsertPlansAsyncBatch(newList, 'InsertFromObjectives'), 200);
+        }
     }
 
     /**
@@ -60,7 +62,9 @@ public class ObjetivosHandler implements ITrigger {
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap) {
-        ObjetivosUtil.altaJobUpdateObjetivos(newList, oldMap);
+        if (!System.isBatch() && !newList.isEmpty()) {
+            Database.executeBatch(new SDMUpdatePlansAsyncBatch(newList, oldMap, 'UpdateFromObjectives'), 200);
+        }
     }
 
     /**
@@ -70,7 +74,9 @@ public class ObjetivosHandler implements ITrigger {
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap) {
-        ObjetivosUtil.altaJobEliminarObjetivos(oldMap);
+        if (!System.isBatch() && !oldMap.isEmpty()) {
+            Database.executeBatch(new SDMDeletePlansAsyncBatch(oldMap, 'DeleteFromObjectives'), 200);
+        }
     }
 
     /**

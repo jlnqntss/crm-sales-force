@@ -67,4 +67,39 @@ private with sharing class ContentVersionUtilTest
         System.assertEquals(false, createdTasks.isEmpty(), 'List is not empty');
         System.assertEquals(true, createdTasks.get(0).Description.contains(createdContentVersion.ContentDocumentId), 'Task contains ContentDocumentId');
     }
+
+     /**
+     * Test que comprueba que el mapa que contiene el caso y el campo DocumentationHashId__c se rellena correctamente
+     *
+     * @author aberuete
+     * @date 19/04/2023
+     */
+    @isTest
+    static void testIfHashToContentVersionNotEmptyFillHashToCaseMap() 
+    {
+        Map<String, ContentVersion> hashToContentVersion = new Map<String, ContentVersion>();
+        String contentData = 'Test Content Data';
+        Blob contentDataAsBlob = Blob.valueOf(contentData);
+        String encodeContentData = EncodingUtil.base64Encode(contentDataAsBlob);
+
+        ContentVersion cv = new ContentVersion();
+        cv.Title = 'Test Document';
+        cv.PathOnClient = 'Test Path on Client';
+        cv.VersionData = EncodingUtil.base64Decode(encodeContentData);
+        cv.Guest_Record_fileupload__c = 'hash1';
+        insert cv;
+
+        hashToContentVersion.put('hash1', cv);
+
+        Case caso = new Case();
+        caso.DocumentationHashId__c = 'hash1';
+        insert caso;
+        
+        Test.startTest();
+        ContentVersionUtil.ifHashToContentVersionNotEmptyFillHashToCaseMap(hashToContentVersion);
+        Test.stopTest();
+        
+        System.assertEquals(caso.Id, ContentVersionUtil.hashToCaseMap.get('hash1').Id, 'El mapa creado no es correcto');
+    }
+
 }

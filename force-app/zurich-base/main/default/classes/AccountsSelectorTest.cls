@@ -1,3 +1,10 @@
+/**
+ * @description       : Clase de test para la clase AccountsSelector
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-06-2023
+ * @last modified by  : aberuete
+**/
 @isTest
 private with sharing class AccountsSelectorTest
 {
@@ -7,6 +14,7 @@ private with sharing class AccountsSelectorTest
     public static final String ACC_ERROR_MSG            =   'There should be Accounts';
     public static final String INTERMEDIARY_EMAIL       =   'intermediary01@invalid.com';
     public static final String INTERMEDIARY_EMAIL_FIELD =   'MainEmail__c';
+    public static final String MESSAGE_DEBERIA_HABER_CUENTAS = 'Deberia haber cuentas';
 
     @TestSetup
     public static void createScenario()
@@ -527,6 +535,32 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, agrupated.isEmpty(), 'Deberia haber cuentas de Agrupacion de Intermediarios');
     }
 
+    @isTest
+    static void test_findIntermediariesByParentId()
+    {
+        AccountsSelector accSel = new AccountsSelector();
+        
+        List<Account> agrupations = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtAgrupationId];
+        System.assertEquals(1, agrupations.size(), 'Deberia haber 1 agrupacion');
+
+        List<Account> accounts = [SELECT ParentId FROM Account WHERE RecordTypeId = :accSel.rtIntermediaryId LIMIT 4];
+        System.assert(!accounts.isEmpty(), MESSAGE_DEBERIA_HABER_CUENTAS);
+
+        for (Account account : accounts)
+        {
+            account.ParentId = agrupations.get(0).Id;
+        }
+
+        update accounts;
+
+        Test.startTest();
+        List<Account> intermediaries = accSel.findIntermediariesByParentId(new Set<Id>{agrupations.get(0).Id});
+        Test.stopTest();
+
+        System.assert(!intermediaries.isEmpty(), 'Debería haber intermediarios');
+        System.assertEquals(accounts.size(), intermediaries.size(), 'Debería haber ' + accounts.size() + ' intermediarios.');
+    }
+
     /**
      * Test del metodo que busca un email en los campos dados
      *
@@ -556,7 +590,7 @@ private with sharing class AccountsSelectorTest
     {
         AccountsSelector accSel = new AccountsSelector();
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtIntermediaryId];
-        System.assertEquals(false, accounts.isEmpty(), 'Deberia haber cuentas');
+        System.assertEquals(false, accounts.isEmpty(), MESSAGE_DEBERIA_HABER_CUENTAS);
 
         Set<String> fields = new Set<String>{'Name'};
 
@@ -564,7 +598,7 @@ private with sharing class AccountsSelectorTest
         accounts = accSel.findWithFields(accounts, fields);
         Test.stopTest();
 
-        System.assertEquals(false, accounts.isEmpty(), 'Deberia haber cuentas');
+        System.assertEquals(false, accounts.isEmpty(), MESSAGE_DEBERIA_HABER_CUENTAS);
         System.assertEquals(true, String.isNotBlank(accounts[0].Name), 'El nombre de la cuenta no deberia estar vacio');
     }
 
@@ -619,5 +653,99 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         System.assertEquals(1, accountsfound.size(), 'Deberia encontrar 1 cliente');
+    }
+
+    /**
+    * Test del método que recupera las cuentas intermediario activas(status 001 o 002)
+    * @author lrodriguez6@seidor.es
+    * @date 09/02/2023
+    */
+    @IsTest
+    static void test_findAccountsIntermediaryRatio()
+    {
+        AccountsSelector accSel = new AccountsSelector();
+        
+        List<Account> accountsIntermediary = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtAccountIntermediaryId ];
+        accountsIntermediary[0].Status__c='001';
+        accountsIntermediary[1].Status__c='002';
+
+        update accountsIntermediary;
+
+        Test.startTest();
+        String query = new AccountsSelector().getQueryStringAccountIntermediaryRatio();
+        List<Account> matchedAccountRecords = (List<Account>) Database.query(query);
+        Test.stopTest();
+
+        System.assertEquals(2, matchedAccountRecords.size(), 'Deberia encontrar 2 cuentas');
+    }
+
+
+    /**
+     * Test del método que recupera cuentas de mediador por codigo de afiliación
+     * @author dmunoz
+     * @date 26/06/2023
+     */
+    @IsTest
+    static void test_findAccountByBusinessCode()
+    {
+        AccountsSelector accSel = new AccountsSelector();
+        
+        List<Account> accountsQuery = [SELECT Id, INFOBusinessCode__c FROM Account LIMIT 1];
+
+        if (!accountsQuery.isEmpty()) {
+            List<String> affiliationCodeList = new List<String>();
+            affiliationCodeList.add(accountsQuery.get(0).INFOBusinessCode__c);
+
+            List<Account> result = accSel.findAccountByBusinessCode(affiliationCodeList);
+
+            System.assertEquals(true, !result.isEmpty(), 'Debe tener resultados');
+
+        }
+
+    }
+
+    /**
+    * Test del método que recupera las cuentas filtradas por record type name
+    * @author aberuete
+    * @date 02/06/2023
+    */
+    @IsTest
+    static void test_setRecordType()
+    {
+        List<Account> allAccountsList = [Select id from Account];
+        System.assertEquals(21, allAccountsList.size(), 'El número de cuentas totales no es correcto');
+        Map<Id,Account> mapAccountsById = new Map<Id,Account> (allAccountsList);
+
+        Test.startTest();
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setRecordType(new List<String>{'Customer'});
+        List<Account> matchedRecords = accountsSelector.selectById(mapAccountsById.keySet());
+        Test.stopTest();
+
+        System.assertEquals(10, matchedRecords.size(), 'El número de cuentas de Customer no es correcto');
+    }
+
+    /**
+    * Test del método que recupera las cuentas filtradas por tipo de cuenta
+    * @author aberuete
+    * @date 06/06/2023
+    */
+    @IsTest
+    static void test_setTypeOfAccount()
+    {
+        List<Account> allAccountsList = [Select id from Account];
+        allAccountsList[0].Type = 'F';
+        allAccountsList[1].Type = 'J';
+        update allAccountsList;
+        System.assertEquals(21, allAccountsList.size(), 'El número de cuentas totales no es correcto');
+        Map<Id,Account> mapAccountsById = new Map<Id,Account> (allAccountsList);
+
+        Test.startTest();
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setTypeOfAccount(new List<String>{'F','J'});
+        List<Account> matchedRecords = accountsSelector.selectById(mapAccountsById.keySet());
+        Test.stopTest();
+
+        System.assertEquals(2, matchedRecords.size(), 'El número de cuentas de tipo F y J no es correcto');
     }
 }

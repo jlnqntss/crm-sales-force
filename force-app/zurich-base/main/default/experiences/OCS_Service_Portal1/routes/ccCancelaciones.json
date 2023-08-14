@@ -1,0 +1,11 @@
+{
+  "activeViewId": "9db667ec-b854-464a-a812-b6650224b640",
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "configurationTags": [],
+  "id": "9a56abed-6f1a-47fa-8677-55fd339d41af",
+  "label": "CC Cancelaciones",
+  "pageAccess": "UseParent",
+  "routeType": "custom-cccancelaciones",
+  "type": "route",
+  "urlPrefix": "cccancelaciones"
+}

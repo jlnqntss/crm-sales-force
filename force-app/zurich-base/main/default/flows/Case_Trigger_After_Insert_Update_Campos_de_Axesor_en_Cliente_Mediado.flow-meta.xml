@@ -5,7 +5,7 @@
         <name>Asignamos_nuevos_valores_en_Cliente_Mediado</name>
         <label>Asignamos nuevos valores en Cliente Mediado</label>
         <locationX>50</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>Obtener_Cliente_Mediado.BillingStreet</assignToReference>
             <operator>Assign</operator>
@@ -52,7 +52,7 @@
             <assignToReference>Obtener_Cliente_Mediado.CNAE__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.RobotCompanyActivityCnaeCode__c</elementReference>
+                <elementReference>AxesorCNAECode</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -73,28 +73,14 @@
             <assignToReference>Obtener_Cliente_Mediado.BillingLongitude</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.RobotCompanyLongitude__c</elementReference>
+                <elementReference>AxesorLongitude</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>Obtener_Cliente_Mediado.BillingLatitude</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.RobotCompanyLatitude__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Obtener_Cliente_Mediado.ActivityIndex__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.RobotCompanyActivityIndex__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Obtener_Cliente_Mediado.FinancialScoring__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.RobotCompanyRiskScore__c</elementReference>
+                <elementReference>AxesorLatitude</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -105,7 +91,7 @@
         <name>Se_encontr_el_Cliente_Mediado</name>
         <label>Se encontró el Cliente Mediado?</label>
         <locationX>314</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si</name>
@@ -126,8 +112,8 @@
     <decisions>
         <name>Tipo_de_caso</name>
         <label>Tipo de caso</label>
-        <locationX>534</locationX>
-        <locationY>335</locationY>
+        <locationX>578</locationX>
+        <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>USP</name>
@@ -156,6 +142,29 @@ NOT(ISNULL({!$Record.RobotCompanyRoadName__c}))),
 IF(NOT(ISNULL({!$Record.RobotCompanyAdditionalInformation__c})),
 {!$Record.RobotCompanyRoadType__c}+&apos; &apos;+{!$Record.RobotCompanyRoadName__c}+&apos; &apos;+{!$Record.RobotCompanyRoadNumber__c}+&apos; &apos;+{!$Record.RobotCompanyAdditionalInformation__c}, {!$Record.RobotCompanyRoadType__c}+&apos; &apos;+{!$Record.RobotCompanyRoadName__c}+&apos; &apos;+{!$Record.RobotCompanyRoadNumber__c}),&apos;&apos;)</expression>
     </formulas>
+    <formulas>
+        <name>AxesorCNAECode</name>
+        <dataType>String</dataType>
+        <expression>IF(
+AND(
+LEN({!$Record.RobotCompanyActivityCnaeCode__c}) &lt; 5,
+!BEGINS({!$Record.RobotCompanyActivityCnaeCode__c}, &apos;0&apos;)),
+LPAD({!$Record.RobotCompanyActivityCnaeCode__c}, 5, &apos;0&apos;),
+{!$Record.RobotCompanyActivityCnaeCode__c})</expression>
+    </formulas>
+    <formulas>
+        <description>Convertimos tipo texto a numero</description>
+        <name>AxesorLatitude</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(SUBSTITUTE({!$Record.RobotCompanyLatitude__c}, &quot;,&quot;, &quot;.&quot;))</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>AxesorLongitude</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(SUBSTITUTE({!$Record.RobotCompanyLongitude__c}, &quot;,&quot;, &quot;.&quot;))</expression>
+        <scale>2</scale>
+    </formulas>
     <interviewLabel>Case Trigger - After Insert/Update - Comprobar remitente {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - Campos de Axesor en Cliente Mediado</label>
     <processMetadataValues>
@@ -181,7 +190,7 @@ IF(NOT(ISNULL({!$Record.RobotCompanyAdditionalInformation__c})),
         <name>CreateErrorLogAction</name>
         <label>Crear Error Log</label>
         <locationX>314</locationX>
-        <locationY>935</locationY>
+        <locationY>863</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -219,7 +228,7 @@ IF(NOT(ISNULL({!$Record.RobotCompanyAdditionalInformation__c})),
         <name>Obtener_Cliente_Mediado</name>
         <label>Obtener Cliente Mediado</label>
         <locationX>314</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Se_encontr_el_Cliente_Mediado</targetReference>
@@ -240,23 +249,29 @@ IF(NOT(ISNULL({!$Record.RobotCompanyAdditionalInformation__c})),
         <name>Actualizamos_Cliente_Mediado</name>
         <label>Actualizamos Cliente Mediado</label>
         <locationX>50</locationX>
-        <locationY>815</locationY>
+        <locationY>755</locationY>
         <faultConnector>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
         <inputReference>Obtener_Cliente_Mediado</inputReference>
     </recordUpdates>
     <start>
-        <locationX>408</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Tipo_de_caso</targetReference>
         </connector>
         <filterFormula>AND(
-ISCHANGED({!$Record.MediatedCustomer__c}),
-NOT(ISNULL({!$Record.MediatedCustomer__c})),
-NOT(ISNULL({!$Record.RobotNif__c})),
-{!$Record.RobotNif__c} = {!$Record.MediatedCustomer__r.NationalId__c})</filterFormula>
+	OR(
+		ISNEW(),
+		ISCHANGED({!$Record.MediatedCustomer__c}),
+		ISCHANGED({!$Record.RobotNif__c}),
+        ISCHANGED({!$Record.RecordTypeId})
+	),
+	NOT(ISNULL({!$Record.MediatedCustomer__c})),
+	NOT(ISNULL({!$Record.RobotNif__c})),
+	{!$Record.RobotNif__c} = {!$Record.MediatedCustomer__r.NationalId__c}
+)</filterFormula>
         <object>Case</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>

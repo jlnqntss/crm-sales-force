@@ -1,0 +1,70 @@
+{
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "fa370128-e59e-42a7-bd50-ff1e961c6809",
+  "label": "ccRetencion",
+  "regions": [
+    {
+      "id": "1f64fc6e-3de4-4d1d-a0f5-5ac12c7178b8",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Email_TWW_Retencion_Case",
+            "layout": "FULL",
+            "pageSize": 25,
+            "scope": "Case",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "c3d4d847-bff7-465e-b5e9-6fa2170da879",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "7630a996-261f-4954-886d-eaf9fe7246ae",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "11e4da32-dce9-4722-97d6-d8cbb24ccb19",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "",
+            "title": "CC Retención"
+          },
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "b055a9e7-a947-489e-acb1-25eef1d8671a",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "a3a4faf7-604c-42a8-a1a5-fd80fcf0cc27",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "custom-ccretencion"
+}

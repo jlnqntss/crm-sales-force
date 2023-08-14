@@ -1,0 +1,202 @@
+{
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName": "siteforce:sldsTwoCol66Layout",
+  "dataProviders": [],
+  "id": "84bc5e2b-f3cf-4e41-9c77-6e2c72a46cf3",
+  "label": "Home",
+  "regions": [
+    {
+      "id": "d4ad0016-a93c-469b-b469-1b6db1a00271",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "id": "9c6887b3-8f11-4966-a284-73eb3303d8cb",
+      "regionName": "featured",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Mis_casos_en_curso",
+            "layout": "STANDARD",
+            "pageSize": 3,
+            "scope": "Case",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "e8c8c369-254c-4450-a388-d879187b1fca",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Casos_pendientes_de_mi_equipo_gestor",
+            "layout": "STANDARD",
+            "pageSize": 3,
+            "scope": "Case",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "7da4e27e-7bc2-47db-9f12-673afb6e1723",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Mis_casos_respondidos",
+            "layout": "STANDARD",
+            "pageSize": 3,
+            "scope": "Case",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "06488fae-b12a-4721-906c-7c77d30c9641",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "395b55f8-a34a-4440-9c59-6ed16f8694a7",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Casos_respondidos_de_mi_equipo_gestor",
+            "layout": "STANDARD",
+            "pageSize": 3,
+            "scope": "Case",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "f1a4e97f-5c0e-4853-92b2-d4beff841d52",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Mis_actividades_pendientes",
+            "layout": "STANDARD",
+            "pageSize": 3,
+            "scope": "Task",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "095b00da-db36-4c6d-a8a7-f17132d78d3c",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Actividades_de_mi_equipo",
+            "layout": "STANDARD",
+            "pageSize": 3,
+            "scope": "Task",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "05953c58-abe7-4fb2-9780-4c31e7048d87",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "8830839f-9188-464c-b772-bd102659f354",
+      "regionName": "sidebar",
+      "type": "region"
+    },
+    {
+      "id": "a28bcb94-2a24-4966-83a5-d330bfee02cf",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "",
+            "title": "Inicio"
+          },
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "a9c57dd1-8189-4415-8c6a-798f1dc69865",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "0c211dad-bcd3-444b-b970-7c3eedbb1394",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    },
+    {
+      "id": "5dda796e-b1de-4629-a608-9e6db82ebf0d",
+      "regionName": "sidebarAlt",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Home",
+  "type": "view",
+  "viewType": "home"
+}

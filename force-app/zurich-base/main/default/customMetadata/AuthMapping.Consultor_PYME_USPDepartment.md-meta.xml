@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Order__c</field>
-        <value xsi:type="xsd:int">1</value>
+        <value xsi:type="xsd:double">1.0</value>
     </values>
     <values>
         <field>Permission_Type__c</field>
@@ -12,10 +12,14 @@
     </values>
     <values>
         <field>Permission__c</field>
-        <value xsi:type="xsd:string">Direcci�n Territorial</value>
+        <value xsi:type="xsd:string">Consultor PYMES</value>
     </values>
     <values>
         <field>Role_Name__c</field>
         <value xsi:type="xsd:string">Consultor_PYME_USP</value>
+    </values>
+    <values>
+        <field>User_Permision_Value__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
 </CustomMetadata>

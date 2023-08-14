@@ -39,8 +39,6 @@ public with sharing class EmailMessagesUtil
     @testvisible
     private static final Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
 
-    private static final Id integratorUserId = [Select Id FROM User WHERE Profile.Name like :Label.IntegratorUser].get(0).Id;
-
     /**
      * Get from the metadata configuration the list of emails configured for the Hegeo robot
      * 
@@ -91,21 +89,8 @@ public with sharing class EmailMessagesUtil
             mapaCasosPadre.put(c.Id, c);
         }
 
-        // Para cada email que ha llegado, comprobamos si el caso asociado está cerrado y si el RT es el adecuado (OCS o USP). En caso afirmativo, creamos el caso hijo
-        for (Integer posicion : mapaPosiciones.keyset())
-        {
-            Case padre = mapaCasosPadre.get(mapaPosiciones.get(posicion));           
-            if(padre?.IsClosed && (padre?.RecordTypeId == ocsRecordTypeId || padre?.RecordTypeId == uspRecordTypeId ))
-            {
-                EmailMessage email = emailList.get(posicion);
-                Boolean heredamosTipificacion = (padre?.RecordTypeId == ocsRecordTypeId && padre?.CallCenter__c == 'CC Service'); // Corregimos para que solo herede la tipificación en los casos que corresponde
-                Case casoHijo = CaseUtil.createCaseFromParent(padre, email, heredamosTipificacion); 
-                casoHijo.OwnerId = integratorUserId; // Asignamos Integrator como el Owner del caso
-                mapaCasosHijos.put(posicion, casoHijo);
-            }
-        }
-        insert mapaCasosHijos.values();
-
+        mapaCasosHijos = checkIfCaseCloseCreateChildCase (mapaPosiciones, emailList, mapaCasosPadre );
+        
         // Mediante el orden de llegada del email (la posición en la lista), sustituímos las referencias a los casos en los emails
         for (Integer posicion : mapaCasosHijos.keySet())
         {
@@ -328,6 +313,39 @@ public with sharing class EmailMessagesUtil
     }
 
     /**
+     * Método que marca a public la tarea relacionada con el emailMessage cuando es creado. 
+     * 
+     * @author aberuete
+     * @date 26/07/2023
+     * 
+     * @param {Map<Id, EmailMessage> newMap} Mapa de nuevos emailMessage creados
+     */
+    public void markPublicActivity(Map<Id, EmailMessage> newMap)
+    {
+        Set<Id> activityIds = new Set<Id>();
+
+        for (EmailMessage email : newMap.values()) 
+        {
+            if (email.IsExternallyVisible == true && email.ActivityId != null)
+            {
+                activityIds.add(email.ActivityId);   
+            }
+        }
+
+        List<Task> tasksList = ActivitySelector.selectTasksById (activityIds);
+        
+        if (tasksList != null && !tasksList.isEmpty()) 
+        {
+            for (Task taskToUpdate : tasksList)
+            {
+                taskToUpdate.IsVisibleInSelfService = true;
+            }
+        }
+
+        update tasksList;
+    }
+
+    /**
      * Search for the Genesys Queue data by any of the emails in the toAddress and ccAddress fields of the EmailMessage
      * The first one that match is the one used
      * 
@@ -362,6 +380,15 @@ public with sharing class EmailMessagesUtil
             {
                 // List of emails to check
                 List<String> emailsToCheck = new List<String>();
+                String industryGeneric= 'Generico';
+
+                // list of related cases
+                Set<String> idCaso = new Set<String>();
+        
+                // Obtenemos el caso asociado al email que esta llegando
+                if(em.Incoming && String.isNotBlank(em.ParentId)) idCaso.add(em.ParentId); 
+                List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
+
                 // Add the emails from the ToAddress field
                 if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
                 // Add the emails from the CcAddress field
@@ -379,9 +406,17 @@ public with sharing class EmailMessagesUtil
                                                
                         switch on routingType {
                             when 'Industry' {
-                                if (em.Industry__c != null)
+                                if(!listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == uspRecordTypeId)
                                 {
-                                    genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
+                                    if (em.Industry__c != null)
+                                    {
+                                        genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
+                                    }
+
+                                    if(em.Industry__c==null || genesysQueue==null)
+                                    {
+                                        genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                                    }
                                 }
                             }
                             when else {
@@ -452,7 +487,112 @@ public with sharing class EmailMessagesUtil
             threadID = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseId.left(5)  + caseId.mid(10,5) +'';
         }
         return threadID;
+    }
 
+    /**
+     * Obtener el owner del caso hijo
+     * 
+     * @author aberuete
+     * @date 26/06/2023
+     * @param Case padre : caso padre
+     * @param Case casoHijo : caso hijo
+    */
+    private Case getOwnerOfChildCase (Case padre, Case casoHijo)
+    {
+        Id integratorUserId;
+        Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'OCS Community User'});
+
+        if (UserInfo.getProfileId() != listaPerfiles.keySet().iterator().next())
+        {
+            integratorUserId = [Select Id FROM User WHERE Profile.Name like :Label.IntegratorUser].get(0).Id;
+        }
+
+        if (padre.CallCenter__c == 'TWW Retención')
+        {
+            getOwnerOfChildCaseForTranscom (padre, casoHijo);
+        }
+        else if(padre.RecordTypeId==uspRecordTypeId && padre.OwnerId!=null)
+        { 
+            casoHijo.OwnerId=padre.OwnerId; //Asignamos como propietario del caso Hijo el mismo que el caso Padre
+        }
+        else
+        {
+            casoHijo.OwnerId = integratorUserId; // Asignamos Integrator como el Owner del caso
+        }
+        return casoHijo;
+    }
+
+    /**
+     * Obtener el owner del caso hijo en los casos en que el call center sea TWW Retención
+     * 
+     * @author aberuete
+     * @date 26/06/2023
+     * @param Case padre : caso padre
+     * @param Case casoHijo : caso hijo
+    */
+    private Case getOwnerOfChildCaseForTranscom (Case padre, Case casoHijo)
+    {
+        if (String.valueof(padre.OwnerId).startsWith('00G') ) 
+        {
+            casoHijo.OwnerId = padre.OwnerId;
+        }
+        
+        else 
+        {
+            // buscar en el caso history la cola más reciente   
+            List<CaseHistory> historyCase = new CaseHistorySelector().findByCaseIdAndFieldAndDatType (padre.Id,'Owner', 'EntityId');
+            Integer i = 0;
+
+            if (!historyCase.isEmpty())
+            {
+                while ( !String.valueOf(historyCase[i].OldValue).startsWith('00G') && i < historyCase.size() - 1)
+                {
+                    i++;
+                }
+                
+                if ( String.valueOf(historyCase[i].OldValue).startsWith('00G'))
+                {
+                    casoHijo.OwnerId = String.valueOf(historyCase[i].OldValue);
+                }
+            }
+        } 
+        return casoHijo;
+    }
+
+    /**
+     * Crear caso hijo en caso de que el caso este cerrado y sea de OCS o USP
+     * 
+     * @author 
+     * @date 26/06/2023
+     * @param Map<Integer, Id> mapaPosiciones : Mapa que relaciona un caso con la posición del email entrante
+     * @param List<EmailMessage> emailList : Lista de email message
+     * @param Map<Id, Case> mapaCasosPadre : Mapa de id del caso padre y el caso padre 
+     * @change aberuete - Refactorización del método checkNewCaseFromClosedCase
+    */
+    private Map<Integer,Case> checkIfCaseCloseCreateChildCase (Map<Integer, Id> mapaPosiciones, List<EmailMessage> emailList, Map<Id, Case> mapaCasosPadre ) 
+    {
+        Map<Integer, Case> mapaCasosHijos = new Map<Integer, Case>(); //Relaciona un caso hijo con la posicion en la lista del email que entra
+
+        // Para cada email que ha llegado, comprobamos si el caso asociado está cerrado y si el RT es el adecuado (OCS o USP). En caso afirmativo, creamos el caso hijo
+        for (Integer posicion : mapaPosiciones.keyset())
+        {
+            Case padre = mapaCasosPadre.get(mapaPosiciones.get(posicion));  
+
+            if(padre?.IsClosed && (padre?.RecordTypeId == ocsRecordTypeId || padre?.RecordTypeId == uspRecordTypeId ))
+            {
+                EmailMessage email = emailList.get(posicion);
+                // Comprobamos si ha de heredarse la tipificación del caso padre
+                Boolean tipificacionCorrecta = CaseUtil.checkTypification(padre);
+                Boolean heredamosTipificacion = (padre?.RecordTypeId == ocsRecordTypeId && (padre?.CallCenter__c == 'CC Service' || padre?.CallCenter__c == 'TWW Retención') ); // Corregimos para que solo herede la tipificación en los casos que corresponde
+                
+                Case casoHijo = CaseUtil.createCaseFromParent(padre, email, (tipificacionCorrecta && heredamosTipificacion)); 
+                casoHijo = getOwnerOfChildCase (padre, casoHijo); // Asignamos el owner del caso
+                casoHijo.SuppliedEmail = email.FromAddress; // Asignamos el from del email que general el caso hijo como SuppliedEmail
+                mapaCasosHijos.put(posicion, casoHijo);
+            }
+        }
+        insert mapaCasosHijos.values();
+        return mapaCasosHijos;
     }
 
     private class EmailMessagesUtilException extends Exception {}

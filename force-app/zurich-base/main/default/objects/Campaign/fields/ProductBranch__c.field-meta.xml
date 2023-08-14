@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProductBranch__c</fullName>
+    <description>Ramo correspondiente al producto asociado a la campaña.</description>
+    <externalId>false</externalId>
+    <label>Product Branch</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>ProductBranches</valueSetName>
+    </valueSet>
+</CustomField>

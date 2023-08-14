@@ -40,7 +40,7 @@
             </value>
         </inputParameters>
     </actionCalls>
-    <apiVersion>57.0</apiVersion>
+    <apiVersion>56.0</apiVersion>
     <assignments>
         <description>Añadir usuario destinatario de la notificación</description>
         <name>Set_Recipient</name>

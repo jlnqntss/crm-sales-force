@@ -22,7 +22,7 @@
         <defaultConnectorLabel>Not Change</defaultConnectorLabel>
         <rules>
             <name>ownerChangeOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 OR 4) AND 2 AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>$Record__Prior.OwnerId</leftValueReference>
                 <operator>StartsWith</operator>
@@ -44,12 +44,20 @@
                     <stringValue>USPInquiry</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Owner:User.LastName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>statusAssignment</targetReference>
             </connector>
             <label>Owner Change</label>
         </rules>
     </decisions>
+    <environments>Default</environments>
     <interviewLabel>Case Trigger-After Insert/Update-Update Status {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger-After Insert/Update-Update Status</label>
     <processMetadataValues>
@@ -90,4 +98,5 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>120</triggerOrder>
 </Flow>

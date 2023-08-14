@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <description>Actualizar la información de Ramo si se asocia un producto</description>
+        <name>Update_Offer_Ramo</name>
+        <label>Update Offer Ramo</label>
+        <locationX>182</locationX>
+        <locationY>587</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Update_Ramo</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ProductId__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Offer_Ramo_Values</targetReference>
+            </connector>
+            <label>Update Ramo</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Si se actualiza el Número de Oferta (INFO) se debe pasar la oferta de App Submitted a Quoted</description>
+        <name>Update_Stage_To_Quote</name>
+        <label>Update Stage To Quote</label>
+        <locationX>182</locationX>
+        <locationY>287</locationY>
+        <defaultConnector>
+            <targetReference>Update_Offer_Ramo</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Update_Offer</name>
+            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.InfoQuoteNumber__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>App Submitted</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Legit Lead</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Offer_Stage_to_Quoted</targetReference>
+            </connector>
+            <label>Update Offer</label>
+        </rules>
+    </decisions>
+    <description>Se añade la condición para que una oferta en estado legit lead pase también a quoted cuando se informe el campo Número de oferta (INFO)</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Recortar los 100 primeros caracteres del campo Product.Description que se asocia a la oferta</description>
+        <name>ProductBranchDetailFormula</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Record.ProductId__r.Description}, 100)</expression>
+    </formulas>
+    <interviewLabel>Ventas Offer Before Update Trigger {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Ventas Offer Before Update Trigger</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Actualizamos los campos ramo de la oferta a partir de la información de producto que llega por INFO en el mensaje Quote</description>
+        <name>Update_Offer_Ramo_Values</name>
+        <label>Update Offer Ramo Values</label>
+        <locationX>50</locationX>
+        <locationY>695</locationY>
+        <inputAssignments>
+            <field>ProductBranchDetail__c</field>
+            <value>
+                <elementReference>ProductBranchDetailFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ProductBranch__c</field>
+            <value>
+                <elementReference>$Record.ProductId__r.GroupDescription__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Actualizamos la etapa de Qpp Submitted a Quoted</description>
+        <name>Update_Offer_Stage_to_Quoted</name>
+        <label>Update Offer Stage to Quoted</label>
+        <locationX>50</locationX>
+        <locationY>395</locationY>
+        <connector>
+            <targetReference>Update_Offer_Ramo</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>StageName</field>
+            <value>
+                <stringValue>Quoted</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Update_Stage_To_Quote</targetReference>
+        </connector>
+        <filterFormula>({!$Record.Owner.Profile.Name} = &apos;Agente Ventas&apos; || {!$Record.Owner.Profile.Name} = &apos;Ventas User&apos;) 
+&amp;&amp; 
+( NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Won&apos;)) || NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Lost&apos;)) )</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

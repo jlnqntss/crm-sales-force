@@ -7,6 +7,13 @@
 @isTest(SeeAllData=false)
 private with sharing class ContactPointPhoneUtilTest
 {
+    static final String MESSAGE_ONE_CONTACT_POINT_PHONE = 'There should be 1 primary ContactPointPhone';
+    static final String MESSAGE_ONE_SCOPE = 'There should be 1 scope';
+    static final String MESSAGE_SAME_PHONE = 'Phone should be the same';
+    static final String MESSAGE_LIST_NOT_EMPTY = 'List should NOT be empty';
+    static final String MESSAGE_FORMATTED_PHONE_WRONG = 'Se ha formateado el teléfono de forma incorrecta';
+    static final String PHONE_TEST = '+34123456789';
+
     @TestSetup
     public static void createScenario()
     {
@@ -55,11 +62,11 @@ private with sharing class ContactPointPhoneUtilTest
         List<ContactPointPhone> currentContactPoints = new ContactPointPhonesSelector().selectByScopeIdAndIsPrimary(
             new Set<Id> {relatedScopes.get(0).Id}, true, null
             );
-        System.assertEquals(1, currentContactPoints.size(), 'There should be 1 primary ContactPointPhone');
+        System.assertEquals(1, currentContactPoints.size(), MESSAGE_ONE_CONTACT_POINT_PHONE);
 
         List<Scope__c> updatedScopes = new ScopesSelector(new Set<String> {'Id', 'PrimaryPhone__c'}).selectById(new Set<Id> {relatedScopes.get(0).Id});
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(phoneToInsert, updatedScopes.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(phoneToInsert, updatedScopes.get(0).PrimaryPhone__c, MESSAGE_SAME_PHONE);
     }
 
     /**
@@ -73,7 +80,7 @@ private with sharing class ContactPointPhoneUtilTest
     static void test_update_primaryContactPointPhone_ok()
     {
         List<ContactPointPhone> contactPointPhones = new ContactPointPhonesSelector(new Set<String> {'Id', 'IsPrimary', 'TelephoneNumber', 'ScopeId__c'}).selectByIsPrimary(false);
-        System.assertEquals(false, contactPointPhones.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, contactPointPhones.isEmpty(),MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointPhone> contactPointPhonesToUpdate = new List<ContactPointPhone> {contactPointPhones.get(0)};
         contactPointPhonesToUpdate.get(0).IsPrimary = true;
@@ -87,11 +94,11 @@ private with sharing class ContactPointPhoneUtilTest
         List<ContactPointPhone> currentContactPoints = new ContactPointPhonesSelector().selectByScopeIdAndIsPrimary(
             new Set<Id> {contactPointPhonesToUpdate.get(0).ScopeId__c}, true, null
             );
-        System.assertEquals(1, currentContactPoints.size(), 'There should be 1 primary ContactPointPhone');
+        System.assertEquals(1, currentContactPoints.size(), MESSAGE_ONE_CONTACT_POINT_PHONE);
 
         List<Scope__c> updatedScopes = new ScopesSelector(new Set<String> {'Id', 'PrimaryPhone__c'}).selectById(new Set<Id> {contactPointPhonesToUpdate.get(0).ScopeId__c});
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(contactPointPhonesToUpdate.get(0).TelephoneNumber, updatedScopes.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(contactPointPhonesToUpdate.get(0).TelephoneNumber, updatedScopes.get(0).PrimaryPhone__c, MESSAGE_SAME_PHONE);
     }
 
     /**
@@ -110,7 +117,7 @@ private with sharing class ContactPointPhoneUtilTest
         List<ContactPointPhone> notPrimaryContactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary', 'TelephoneNumber', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByIsPrimary(false);
-        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointPhone> firstContactPointPhones = new List<ContactPointPhone> {notPrimaryContactPointPhones.get(0)};
 
@@ -140,15 +147,15 @@ private with sharing class ContactPointPhoneUtilTest
             new Set<String> {'Id', 'TelephoneNumber'}
             ).selectByScopeIdAndIsPrimary(new Set<Id> {currentScopeId}, true, null);
 
-        System.assertEquals(1, insertedPrimaryContactPoints.size(), 'There should be 1 primary ContactPointPhone');
+        System.assertEquals(1, insertedPrimaryContactPoints.size(), MESSAGE_ONE_CONTACT_POINT_PHONE);
         System.assertEquals(insertedPrimaryContactPoints.get(0).Id, newContactPoints.get(0).Id, 'Id should be the same');
 
         List<Scope__c> updatedScopes = new ScopesSelector(
             new Set<String> {'Id', 'PrimaryPhone__c'}
             ).selectById(new Set<Id> {currentScopeId});
 
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(insertedPrimaryContactPoints.get(0).TelephoneNumber, updatedScopes.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(insertedPrimaryContactPoints.get(0).TelephoneNumber, updatedScopes.get(0).PrimaryPhone__c, MESSAGE_SAME_PHONE);
 
         List<ContactPointPhone> updatedNotPrimaryContactPoints = new ContactPointPhonesSelector().selectByScopeIdAndIsPrimary(
             new Set<Id> {currentScopeId}, false, null
@@ -173,12 +180,10 @@ private with sharing class ContactPointPhoneUtilTest
     @isTest
     static void test_update_primaryContactPointPhone_update_related_ok()
     {
-        String phoneToInsert = '123456789';
-
         List<ContactPointPhone> notPrimaryContactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary', 'TelephoneNumber', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByIsPrimary(false);
-        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointPhone> firstContactPointPhones = new List<ContactPointPhone> {notPrimaryContactPointPhones.get(0)};
 
@@ -191,7 +196,7 @@ private with sharing class ContactPointPhoneUtilTest
         notPrimaryContactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary', 'TelephoneNumber', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByScopeIdAndIsPrimary(new Set<Id> {currentScopeId}, false, null);
-        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointPhone> secondContactPointPhones = new List<ContactPointPhone> {notPrimaryContactPointPhones.get(0)};
         secondContactPointPhones.get(0).IsPrimary = true;
@@ -204,15 +209,15 @@ private with sharing class ContactPointPhoneUtilTest
         List<ContactPointPhone> updatedPrimaryContactPoints = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'TelephoneNumber'}
             ).selectByScopeIdAndIsPrimary(new Set<Id> {currentScopeId}, true, null);
-        System.assertEquals(1, updatedPrimaryContactPoints.size(), 'There should be 1 primary ContactPointPhone');
+        System.assertEquals(1, updatedPrimaryContactPoints.size(), MESSAGE_ONE_CONTACT_POINT_PHONE);
         System.assertEquals(updatedPrimaryContactPoints.get(0).Id, secondContactPointPhones.get(0).Id, 'Id should be the same');
 
         List<Scope__c> updatedScopes = new ScopesSelector(
             new Set<String> {'Id', 'PrimaryPhone__c'}
             ).selectById(new Set<Id> {currentScopeId});
 
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(updatedPrimaryContactPoints.get(0).TelephoneNumber, updatedScopes.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(updatedPrimaryContactPoints.get(0).TelephoneNumber, updatedScopes.get(0).PrimaryPhone__c, MESSAGE_SAME_PHONE);
 
         List<ContactPointPhone> updatedNotPrimaryContactPoints = new ContactPointPhonesSelector().selectByScopeIdAndIsPrimary(
             new Set<Id> {currentScopeId}, false, null
@@ -240,11 +245,9 @@ private with sharing class ContactPointPhoneUtilTest
         List<ContactPointPhone> notPrimaryContactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary', 'TelephoneNumber', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByIsPrimary(false);
-        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointPhone> firstContactPointPhones = new List<ContactPointPhone> {notPrimaryContactPointPhones.get(0)};
-
-        Id currentScopeId = firstContactPointPhones.get(0).ScopeId__c;
 
         //Actualizamos un ContactPointPhone primero
         firstContactPointPhones.get(0).IsPrimary = true;
@@ -276,7 +279,7 @@ private with sharing class ContactPointPhoneUtilTest
         List<ContactPointPhone> notPrimaryContactPointPhones = new ContactPointPhonesSelector(
             new Set<String> {'Id', 'IsPrimary', 'TelephoneNumber', 'ParentId', 'Scope__c', 'ScopeId__c'}
             ).selectByIsPrimary(false);
-        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), 'List should NOT be empty');
+        System.assertEquals(false, notPrimaryContactPointPhones.isEmpty(), MESSAGE_LIST_NOT_EMPTY);
 
         List<ContactPointPhone> contactPointPhonesToDelete = new List<ContactPointPhone> {notPrimaryContactPointPhones.get(0)};
 
@@ -300,8 +303,8 @@ private with sharing class ContactPointPhoneUtilTest
         List<Scope__c> updatedScopes = new ScopesSelector(
             new Set<String> {'Id', 'PrimaryPhone__c'}
             ).selectById(new Set<Id> {currentScopeId});
-        System.assertEquals(1, updatedScopes.size(), 'There should be 1 scope');
-        System.assertEquals(currentPrimaryEmail, updatedScopes.get(0).PrimaryPhone__c, 'Phone should be the same');
+        System.assertEquals(1, updatedScopes.size(), MESSAGE_ONE_SCOPE);
+        System.assertEquals(currentPrimaryEmail, updatedScopes.get(0).PrimaryPhone__c, MESSAGE_SAME_PHONE);
     }
 
     /**
@@ -399,7 +402,7 @@ private with sharing class ContactPointPhoneUtilTest
         String formattedNumber = ContactPointPhoneUtil.formatPhoneNumber(null, '123456789');
         Test.stopTest();
 
-        System.assertEquals('123456789', formattedNumber, 'Se ha formateado el teléfono de forma incorrecta');
+        System.assertEquals('123456789', formattedNumber, MESSAGE_FORMATTED_PHONE_WRONG);
     }
 
     /**
@@ -415,7 +418,7 @@ private with sharing class ContactPointPhoneUtilTest
         String formattedNumber = ContactPointPhoneUtil.formatPhoneNumber('+34', '123456789');
         Test.stopTest();
 
-        System.assertEquals('+34123456789', formattedNumber, 'Se ha formateado el teléfono de forma incorrecta');
+        System.assertEquals(PHONE_TEST, formattedNumber, MESSAGE_FORMATTED_PHONE_WRONG);
     }
 
     /**
@@ -431,7 +434,7 @@ private with sharing class ContactPointPhoneUtilTest
         String formattedNumber = ContactPointPhoneUtil.formatPhoneNumber('34', '123456789');
         Test.stopTest();
 
-        System.assertEquals('+34123456789', formattedNumber, 'Se ha formateado el teléfono de forma incorrecta');
+        System.assertEquals(PHONE_TEST, formattedNumber, MESSAGE_FORMATTED_PHONE_WRONG);
     }
 
     /**
@@ -447,6 +450,80 @@ private with sharing class ContactPointPhoneUtilTest
         String formattedNumber = ContactPointPhoneUtil.formatPhoneNumber('+34', '+34123456789');
         Test.stopTest();
 
-        System.assertEquals('+34123456789', formattedNumber, 'Se ha formateado el teléfono de forma incorrecta');
+        System.assertEquals(PHONE_TEST, formattedNumber, MESSAGE_FORMATTED_PHONE_WRONG);
+    }
+
+    
+    /**
+     * Test que comprueba que se rellena correctamente el mapa de contact point phones a actualizar
+     *
+     * @author aberuete
+     * @date 26/04/2023
+     */
+    @isTest
+    static void test_updateMapContactPointPhones()
+    {
+        List<ContactPointPhone> newContactPointPhone = [Select id,ScopeId__c from ContactPointPhone where ScopeId__c != null limit 2];
+        System.assertEquals(2, newContactPointPhone.size(), 'Deberían existir al menos dos contact point email con el scopeId distinto a nulo');
+        ContactPointPhoneUtil.relatedContactPointPhonesMap = new Map<Id, List<ContactPointPhone> >();
+        ContactPointPhoneUtil.contactPointPhonesToUpdate = new Map<Id, ContactPointPhone>();
+
+        ContactPointPhoneUtil.relatedContactPointPhonesMap.put(newContactPointPhone[0].ScopeId__c, newContactPointPhone);
+
+        Test.startTest();
+        ContactPointPhoneUtil.updateMapContactPointPhones(newContactPointPhone[0].ScopeId__c, newContactPointPhone[1]);
+        Test.stopTest();
+
+        System.assertEquals(new Set<Id>{newContactPointPhone[0].id}, ContactPointPhoneUtil.contactPointPhonesToUpdate.keySet(), 'Debería estar en el mapa a actualizar');
+        System.assertEquals(false, ContactPointPhoneUtil.contactPointPhonesToUpdate.values().IsPrimary, 'El campo se debería haber actualizado a falso');
+    }
+
+    /**
+     * Test que comprueba que se rellena correctamente el mapa de scopes a actualizar
+     *
+     * @author aberuete
+     * @date 26/04/2023
+     */
+    @isTest
+    static void test_updateMapScopesToUpdate()
+    {
+        List<ContactPointPhone> newContactPointPhone = [Select id,ScopeId__c,TelephoneNumber, AreaCode from ContactPointPhone where ScopeId__c != null and TelephoneNumber != null limit 1];
+        System.assertEquals(1, newContactPointPhone.size(), 'Debería existir al menos un contact point email con el scopeId y el teléfono distinto a nulo');
+
+        List<Scope__c> scopeToContactPoint = [Select id from Scope__c where id =:newContactPointPhone[0].ScopeId__c limit 1];
+        System.assertEquals(1, scopeToContactPoint.size(), 'Debería existir al menos un scope');
+
+        ContactPointPhoneUtil.scopesToUpdate = new Map<Id, Scope__c>();
+        ContactPointPhoneUtil.relatedScopesMap = new Map<Id, Scope__c>();
+        ContactPointPhoneUtil.relatedScopesMap.put(scopeToContactPoint[0].id, scopeToContactPoint[0]);
+
+        Test.startTest();
+        ContactPointPhoneUtil.updateMapScopesToUpdate(newContactPointPhone[0].ScopeId__c, newContactPointPhone[0]);
+        Test.stopTest();
+
+        System.assertEquals(new Set<Id>{scopeToContactPoint[0].id}, ContactPointPhoneUtil.scopesToUpdate.keySet(), 'Debería estar en el mapa a actualizar');
+        System.assertEquals(newContactPointPhone[0].TelephoneNumber, ContactPointPhoneUtil.scopesToUpdate.values().PrimaryPhone__c, 'El campo se debería haber actualizado al teléfono del nuevo contact point');
+    }
+
+    /**
+     * Test que comprueba que en caso de que no haya ningun contact point phone relacionado que sea primario , lanza un error
+     *
+     * @author aberuete
+     * @date 26/04/2023
+     */
+    @isTest
+    static void test_ifIsPrimaryFoundFalseThrowError()
+    {
+        List<ContactPointPhone> newContactPointPhone = [Select id,ScopeId__c,isPrimary from ContactPointPhone where ScopeId__c != null and isPrimary = false limit 2];
+        System.assertEquals(2, newContactPointPhone.size(), 'Deberían existir al menos dos contact point email con el scopeId distinto a nulo');
+        ContactPointPhoneUtil.relatedContactPointPhonesMap = new Map<Id, List<ContactPointPhone> >();
+
+        ContactPointPhoneUtil.relatedContactPointPhonesMap.put(newContactPointPhone[0].ScopeId__c, newContactPointPhone);
+
+        Test.startTest();
+        ContactPointPhoneUtil.ifIsPrimaryFoundFalseThrowError(newContactPointPhone[0].ScopeId__c, newContactPointPhone[1]);
+        Test.stopTest();
+
+        System.assertEquals(Label.PrimaryContactPointPhoneRequired, newContactPointPhone[1].getErrors()[0].getMessage(), 'Debería tener un error asociado');
     }
 }

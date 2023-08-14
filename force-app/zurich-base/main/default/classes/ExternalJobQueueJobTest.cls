@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 05-24-2023
+ * @last modified by  : aberuete
+**/
 @isTest
 private class ExternalJobQueueJobTest
 {
@@ -11,7 +18,7 @@ private class ExternalJobQueueJobTest
     static void test_execute()
     {
         Test.startTest();
-        Id jobId = System.enqueueJob( new ExternalJobQueueJob('INFO') );
+        Id jobId = System.enqueueJob( new ExternalJobQueueJob() );
         Test.stopTest();
 
         System.assert (jobId != null, 'No se ha encolado el trabajo correctamente');

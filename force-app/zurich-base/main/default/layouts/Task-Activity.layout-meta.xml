@@ -27,6 +27,18 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>CaseMediator__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>SegmentMediatorCase__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>MediatedCustomer__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Description</field>
             </layoutItems>
         </layoutColumns>
@@ -123,6 +135,9 @@
             </layoutItem>
         </relatedContentItems>
     </relatedContent>
+    <relatedLists>
+        <relatedList>RelatedContentNoteList</relatedList>
+    </relatedLists>
     <relatedObjects>WhoId</relatedObjects>
     <relatedObjects>WhatId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>

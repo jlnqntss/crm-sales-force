@@ -1,0 +1,11 @@
+{
+  "activeViewId": "1849cdbd-db80-4f11-960b-9d62dd9ee225",
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "configurationTags": [],
+  "id": "2c04be91-c798-4d23-8205-25b2065bd3c7",
+  "label": "Competitor List",
+  "objectApiName": "Competitor__c",
+  "routeType": "list-a1Z",
+  "type": "route",
+  "urlPrefix": "competitor"
+}

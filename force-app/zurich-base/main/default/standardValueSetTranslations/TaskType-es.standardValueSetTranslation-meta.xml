@@ -9,6 +9,10 @@
         <translation>Correo electrónico</translation>
     </valueTranslation>
     <valueTranslation>
+        <masterLabel>Forms</masterLabel>
+        <translation>Formularios</translation>
+    </valueTranslation>
+    <valueTranslation>
         <masterLabel>Meeting</masterLabel>
         <translation>Reunión</translation>
     </valueTranslation>
@@ -23,6 +27,10 @@
     <valueTranslation>
         <masterLabel>Other</masterLabel>
         <translation>Otro</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Outbound Email</masterLabel>
+        <translation>Correo eléctronico saliente</translation>
     </valueTranslation>
     <valueTranslation>
         <masterLabel>Scaled Case</masterLabel>

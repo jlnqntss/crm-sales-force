@@ -213,7 +213,7 @@
     <reportType>AccountCustomEntity$KPI__c</reportType>
     <scope>organization</scope>
     <showDetails>false</showDetails>
-    <showGrandTotal>true</showGrandTotal>
+    <showGrandTotal>false</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>

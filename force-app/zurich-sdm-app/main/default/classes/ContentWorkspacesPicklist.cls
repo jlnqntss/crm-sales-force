@@ -8,6 +8,7 @@
 public with sharing class ContentWorkspacesPicklist extends VisualEditor.DynamicPickList
 {
     @testVisible
+    private static final String TEST_CONTENTWORKSPACE = 'EnlacesDeInteresTestContentWorkspace';
     private static final String DEFAULT_CONTENTWORKSPACE = 'Enlaces de interés';
 
     /**
@@ -59,6 +60,12 @@ public with sharing class ContentWorkspacesPicklist extends VisualEditor.Dynamic
             }
 
             dynamicContentWorkspaces.addRow(row);
+        }
+
+        // Si se está ejecutando el test, la biblioteca por defecto es 'TEST_CONTENTWORKSPACE'
+        if ( Test.isRunningTest() )
+        {
+            dynamicContentWorkspaces.addRow( new VisualEditor.DataRow(TEST_CONTENTWORKSPACE, TEST_CONTENTWORKSPACE, true) );
         }
 
         return dynamicContentWorkspaces;

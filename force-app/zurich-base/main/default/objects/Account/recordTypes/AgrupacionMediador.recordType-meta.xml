@@ -4113,6 +4113,10 @@
             <fullName>Segur Caixa</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>DKV</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Conectivity__c</picklist>
@@ -4589,27 +4593,27 @@
     <picklistValues>
         <picklist>Multitarifier__c</picklist>
         <values>
-            <fullName>Avant2 - Codeoscopic</fullName>
+            <fullName>CODEOSCOPIC - Avant2</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Gecose</fullName>
+            <fullName>WILLPLATINE</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>MPM</fullName>
+            <fullName>MPM - Tarifai</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Merlín - Ebroker</fullName>
+            <fullName>EBROKER - Merlin</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Otros</fullName>
+            <fullName>OTROS</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Soft QS</fullName>
+            <fullName>SOFTQS</fullName>
             <default>false</default>
         </values>
     </picklistValues>

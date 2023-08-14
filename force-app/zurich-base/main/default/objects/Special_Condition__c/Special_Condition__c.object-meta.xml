@@ -154,13 +154,13 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <gender>Feminine</gender>
-    <label>Special Condition</label>
+    <label>Condición especial</label>
     <nameField>
         <label>Condition Type</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Special Conditions</pluralLabel>
-    <searchLayouts/>
+    <pluralLabel>Condiciones especiales</pluralLabel>
+    <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

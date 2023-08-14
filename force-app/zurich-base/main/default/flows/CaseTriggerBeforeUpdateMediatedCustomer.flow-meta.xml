@@ -2,10 +2,36 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>Account_ID_Offer_Assignment</name>
+        <label>Account ID Offer Assignment</label>
+        <locationX>1634</locationX>
+        <locationY>827</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.OfferId__r.IntermediaryId__c</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Account_ID_Offer_Assignment_2</name>
+        <label>Account ID Offer Assignment</label>
+        <locationX>1898</locationX>
+        <locationY>827</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.OfferId__r.AccountId</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>Account_ID_Policy_Assignment</name>
         <label>Account ID Policy Assignment</label>
         <locationX>842</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -18,7 +44,7 @@
         <name>Account_ID_Policy_Assignment2</name>
         <label>Account ID Policy Assignment</label>
         <locationX>1106</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignmentItems>
             <assignToReference>$Record.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -31,7 +57,7 @@
         <name>Copy_1_of_Customer_policy_Assignment</name>
         <label>Mediated Costumer Policy Assignment</label>
         <locationX>1106</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -44,10 +70,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Copy_1_of_Mediated_Costumer_Offer_Assignment</name>
+        <label>Mediated Costumer Offer Assignment</label>
+        <locationX>1898</locationX>
+        <locationY>611</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.MediatedCustomer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.OfferId__r.AccountId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Call_Center_offer</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>customerOfferAssignment</name>
         <label>Customer Offer Assignment</label>
         <locationX>314</locationX>
-        <locationY>551</locationY>
+        <locationY>611</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -55,12 +97,52 @@
                 <elementReference>$Record.OfferId__r.Account.Id</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.ProductGroup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetOfferProductAction.HegeoGroupCode__c</elementReference>
+            </value>
+        </assignmentItems>
     </assignments>
     <assignments>
         <name>customerPolicyAssignment</name>
         <label>Customer policy Assignment</label>
         <locationX>50</locationX>
-        <locationY>551</locationY>
+        <locationY>611</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.MediatedCustomer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.PolicyId__r.PolicyHolder__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.ProductGroup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetPolicyProductAction.HegeoGroupCode__c</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Mediated_Costumer_from_Offer_Assignment</name>
+        <label>Mediated Costumer from Offer Assignment</label>
+        <locationX>2954</locationX>
+        <locationY>719</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.MediatedCustomer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.OfferId__r.AccountId</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Mediated_Costumer_from_Policy_Assignment</name>
+        <label>Mediated Costumer from Policy Assignment</label>
+        <locationX>2690</locationX>
+        <locationY>719</locationY>
         <assignmentItems>
             <assignToReference>$Record.MediatedCustomer__c</assignToReference>
             <operator>Assign</operator>
@@ -71,10 +153,55 @@
     </assignments>
     <decisions>
         <description>Depende del call center asignaremos unos valores u otros</description>
+        <name>Call_Center_offer</name>
+        <label>Call Center</label>
+        <locationX>1898</locationX>
+        <locationY>719</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CSM_offer</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CSM Administración</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CSM Particulares</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Account_ID_Offer_Assignment</targetReference>
+            </connector>
+            <label>CSM</label>
+        </rules>
+        <rules>
+            <name>CCS_offer</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CC Service</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Account_ID_Offer_Assignment_2</targetReference>
+            </connector>
+            <label>CCS</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Depende del call center asignaremos unos valores u otros</description>
         <name>CCS_Or_CSM</name>
         <label>Call Center</label>
         <locationX>1106</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>CSM</name>
@@ -116,9 +243,9 @@
     </decisions>
     <decisions>
         <name>Copy_1_of_Offer_policy_null</name>
-        <label>Policy Not Null</label>
-        <locationX>1370</locationX>
-        <locationY>551</locationY>
+        <label>Policy/Offer Not Null</label>
+        <locationX>1766</locationX>
+        <locationY>503</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>Copy_1_of_Policy_Not_Null</name>
@@ -130,19 +257,135 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.PolicyId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Copy_1_of_Customer_policy_Assignment</targetReference>
             </connector>
             <label>Policy Not Null</label>
+        </rules>
+        <rules>
+            <name>Offer_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OfferId__r.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OfferId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Mediated_Costumer_Offer_Assignment</targetReference>
+            </connector>
+            <label>Offer Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Has_policy_or_offer</name>
+        <label>Has policy or offer?</label>
+        <locationX>2954</locationX>
+        <locationY>611</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Policy_available</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PolicyId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.PolicyId__r.PolicyHolder__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Mediated_Costumer_from_Policy_Assignment</targetReference>
+            </connector>
+            <label>Policy available</label>
+        </rules>
+        <rules>
+            <name>Offer_available</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OfferId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OfferId__r.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Mediated_Costumer_from_Offer_Assignment</targetReference>
+            </connector>
+            <label>Offer available</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>hasIntermediaryAccount</name>
+        <label>Has intermediary account?</label>
+        <locationX>3218</locationX>
+        <locationY>503</locationY>
+        <defaultConnectorLabel>Customer account</defaultConnectorLabel>
+        <rules>
+            <name>Intermediary_account</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>PartnerOCS</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Has_policy_or_offer</targetReference>
+            </connector>
+            <label>Intermediary account</label>
         </rules>
     </decisions>
     <decisions>
         <description>Si el caso corresponde a una inserción de tareas masivas, procesaremos la información.</description>
         <name>Is_Massive_Task</name>
         <label>Is Massive Task?</label>
-        <locationX>1634</locationX>
-        <locationY>431</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <locationX>2756</locationX>
+        <locationY>395</locationY>
+        <defaultConnectorLabel>Default outcome</defaultConnectorLabel>
         <rules>
             <name>Case_Origin_Massive_Task</name>
             <conditionLogic>and</conditionLogic>
@@ -153,17 +396,36 @@
                     <stringValue>MassiveTasks</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Id</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
             <connector>
                 <targetReference>Copy_1_of_Offer_policy_null</targetReference>
             </connector>
             <label>Case Origin Massive Task</label>
+        </rules>
+        <rules>
+            <name>Case_Origin_Others</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>MassiveTasks</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>hasIntermediaryAccount</targetReference>
+            </connector>
+            <label>Case Origin Others</label>
         </rules>
     </decisions>
     <decisions>
         <name>offerPolicyDecision</name>
         <label>Offer policy null</label>
         <locationX>314</locationX>
-        <locationY>431</locationY>
+        <locationY>395</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>PolicyNameNotNullOutcome</name>
@@ -176,7 +438,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>customerPolicyAssignment</targetReference>
+                <targetReference>GetPolicyProductAction</targetReference>
             </connector>
             <label>Policy Not Null</label>
         </rules>
@@ -191,7 +453,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>customerOfferAssignment</targetReference>
+                <targetReference>GetOfferProductAction</targetReference>
             </connector>
             <label>Offer Not Null</label>
         </rules>
@@ -201,8 +463,8 @@
 El flujo en un principio era para la USP before update, y se ha modificado para que también se use en OCS before insert.</description>
         <name>RecordTypeDecision</name>
         <label>Record Type Decision</label>
-        <locationX>1238</locationX>
-        <locationY>311</locationY>
+        <locationX>2162</locationX>
+        <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>UspDefault</name>
@@ -240,10 +502,6 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
                     <stringValue>OCSInquiry</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.Id</leftValueReference>
-                <operator>EqualTo</operator>
-            </conditions>
             <connector>
                 <targetReference>Is_Massive_Task</targetReference>
             </connector>
@@ -272,15 +530,78 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>GetOfferProductAction</name>
+        <label>Get Offer Product</label>
+        <locationX>314</locationX>
+        <locationY>503</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>customerOfferAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OfferId__r.ProductId__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Product2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetPolicyProductAction</name>
+        <label>Get Policy Product</label>
+        <locationX>50</locationX>
+        <locationY>503</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>customerPolicyAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.PolicyId__r.ProductId__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Product2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>1112</locationX>
+        <locationX>2036</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>or</filterLogic>
         <filters>
             <field>MediatedCustomer__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PolicyId__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OfferId__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ProductGroup__c</field>
             <operator>IsNull</operator>
             <value>
                 <booleanValue>true</booleanValue>

@@ -9,14 +9,14 @@ public with sharing class CasesSelector extends RecordsSelector
 
     //#endregion
 
-    public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+   
 
-    // Recupera el Id del RecordType de casos USP
-    public ID rtUSPId {
-        get {
-            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
-        }
-    }
+    public static final String CASES_LAST_DATE = 'Case.CreatedDate = LAST_N_DAYS:';
+
+    public static final String CASES_MODIFY_LAST_DATE = 'Case.LastModifiedDate = LAST_N_DAYS:';
+
+
+   
 
     /**
      * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
@@ -159,10 +159,10 @@ public with sharing class CasesSelector extends RecordsSelector
                 Case.RobotDocumentId__c,
                 Case.MediatedCustomer__c
             })
-            .addConditionEq(Case.RecordTypeId, rtUSPId)
+            .addConditionEq(Case.RecordTypeId, CaseUtil.rtUSPId)
             .addConditionNotNull(Case.RobotDocumentId__c)
             .addConditionNull(Case.MediatedCustomer__c)
-            .addConditionString('Case.CreatedDate = LAST_N_DAYS:' + days);
+            .addConditionString(CASES_LAST_DATE + days);
 
             return this.baseQuery.toQueryString();
         }
@@ -188,10 +188,10 @@ public with sharing class CasesSelector extends RecordsSelector
                 Case.CreatedOffer__c,
                 Case.OfferId__c
             })
-            .addConditionEq(Case.RecordTypeId, rtUSPId)
+            .addConditionEq(Case.RecordTypeId, CaseUtil.rtUSPId)
             .addConditionNotNull(Case.CreatedOffer__c)
             .addConditionNull(Case.OfferId__c)
-            .addConditionString('Case.CreatedDate = LAST_N_DAYS:' + days);
+            .addConditionString(CASES_LAST_DATE + days);
 
             return this.baseQuery.toQueryString();
         }
@@ -201,4 +201,84 @@ public with sharing class CasesSelector extends RecordsSelector
         }
     }
 
+    /**
+     * Método utilizado por el batch Batch_RatioConversionIntermediary para obtener los casos que se tendrán en cuenta para
+     * calcular el ratio sobre el mediador.
+     * @author lrodriguez6@seidor.es
+     * @date 08/02/2023
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
+    public List<Case> getQueryCasesConversionRatio(List<Account> accountsIntermediary,String statusCombinado, String typeVenta, String rtCasesUSPId, String queryDays, String cerrado)
+    {
+        if(accountsIntermediary != null && statusCombinado!=null && !String.isBlank(statusCombinado) && typeVenta!=null && !String.isBlank(typeVenta) && rtCasesUSPId!=null && !String.isBlank(rtCasesUSPId) )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.AccountId,
+                Case.QuotationStage__c
+            })
+            .addConditionIn(Case.AccountId, accountsIntermediary)
+            .addConditionNotEq(Case.Status, statusCombinado)
+            .addConditionEq(Case.Type, typeVenta)
+            .addConditionString(CASES_MODIFY_LAST_DATE+queryDays)
+            .addConditionEq(Case.RecordTypeId,rtCasesUSPId )
+            .addConditionEq(Case.Status,cerrado);
+
+            return (List<Case>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<Case>() ;
+        }
+    }
+
+    /**
+     * Método utilizado por el batch Batch_CompleteCases para obtener los casos de la última semana sin vinculación a Poliza u Oferta
+     * @author arcortazar
+     * @date 23/03/2022
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
+    public String getQueryStringCasesWithoutPolicyOffer(String days, List<String> origins, List<String> recordTypes)
+    {
+        if(days != null && !String.isBlank(days) )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.Id,
+                Case.PolicyId__c,
+                Case.OfferId__c,
+                Case.HegeoOfferId__c,
+                Case.HegeoPolicyId__c,
+                Case.HegeoPrePolicyId__c
+            })
+            .addConditionNull(Case.PolicyId__c)
+            .addConditionNull(Case.OfferId__c)
+            .addConditionString(CASES_LAST_DATE + days);
+
+            if(origins != null && !origins.isEmpty())
+            {
+                this.baseQuery.addConditionIn(Case.Origin, origins);
+            }
+
+            if(recordTypes != null && !recordTypes.isEmpty())
+            {
+                List<String> idsRecordType = new List<String>();
+                for(String rt : recordTypes)
+                {
+                    String recordTypeID = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rt).getRecordTypeId();
+                    idsRecordType.add(recordTypeID);
+                }
+                this.baseQuery.addConditionIn(Case.RecordTypeId, idsRecordType);
+            }
+
+            System.debug('++++: ' + this.baseQuery.toQueryString());
+
+            return this.baseQuery.toQueryString();
+        }
+        else
+        {
+            return '';
+        }
+    }
+    
 }

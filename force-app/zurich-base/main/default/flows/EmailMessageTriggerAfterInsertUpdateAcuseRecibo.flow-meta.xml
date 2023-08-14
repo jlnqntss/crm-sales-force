@@ -3,8 +3,8 @@
     <actionCalls>
         <name>SendConfirmationEmailAction</name>
         <label>Enviar Acuse de recibo</label>
-        <locationX>451</locationX>
-        <locationY>1320</locationY>
+        <locationX>286</locationX>
+        <locationY>1440</locationY>
         <actionName>Case.Acuse_de_recibo</actionName>
         <actionType>emailAlert</actionType>
         <faultConnector>
@@ -22,7 +22,7 @@
     <assignments>
         <name>DomainMatchAssignment</name>
         <label>Asignar coincidencia dominio</label>
-        <locationX>407</locationX>
+        <locationX>374</locationX>
         <locationY>888</locationY>
         <assignmentItems>
             <assignToReference>DomainMatchVariable</assignToReference>
@@ -38,7 +38,7 @@
     <decisions>
         <name>DomainMatchDecision</name>
         <label>¿Coincide Dominio?</label>
-        <locationX>539</locationX>
+        <locationX>506</locationX>
         <locationY>768</locationY>
         <defaultConnector>
             <targetReference>LoopExcludedDomainListAction</targetReference>
@@ -63,10 +63,10 @@
     <decisions>
         <name>ExcludedSenderDecision</name>
         <label>¿Remitente excluido?</label>
-        <locationX>319</locationX>
+        <locationX>286</locationX>
         <locationY>1200</locationY>
         <defaultConnector>
-            <targetReference>SendConfirmationEmailAction</targetReference>
+            <targetReference>IsSuppliedEmailAvailable</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Remitente no excluido</defaultConnectorLabel>
         <rules>
@@ -83,10 +83,32 @@
         </rules>
     </decisions>
     <decisions>
+        <name>IsSuppliedEmailAvailable</name>
+        <label>¿Tenemos dirección destino?</label>
+        <locationX>550</locationX>
+        <locationY>1320</locationY>
+        <defaultConnectorLabel>No tenemos</defaultConnectorLabel>
+        <rules>
+            <name>Tenemos</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Parent.SuppliedEmail</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SendConfirmationEmailAction</targetReference>
+            </connector>
+            <label>Tenemos</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Se comprueba si la cola está configurada para enviar acuses de recibo</description>
         <name>SendConfirmationEmailDecision</name>
         <label>¿Enviar acuse de recibo?</label>
-        <locationX>649</locationX>
+        <locationX>682</locationX>
         <locationY>408</locationY>
         <defaultConnectorLabel>No enviar acuse de recibo</defaultConnectorLabel>
         <rules>
@@ -106,6 +128,7 @@
         </rules>
     </decisions>
     <description>Flujo encargado de orquestar el envío de acuses de recibo para los emails entrantes en base a la cola de destino</description>
+    <environments>Default</environments>
     <formulas>
         <description>Define el valor CCS o CSM en función de la cola asignada del email</description>
         <name>CallCenterFormula</name>
@@ -120,7 +143,7 @@
     <loops>
         <name>LoopExcludedDomainListAction</name>
         <label>Recorrer listado exclusiones</label>
-        <locationX>319</locationX>
+        <locationX>286</locationX>
         <locationY>648</locationY>
         <collectionReference>GetExludedDomainsAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -153,8 +176,8 @@
     <recordCreates>
         <name>Crear_error_log_0_0_0</name>
         <label>Crear error log</label>
-        <locationX>715</locationX>
-        <locationY>1440</locationY>
+        <locationX>550</locationX>
+        <locationY>1560</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -186,7 +209,7 @@
         <description>Recupera los dominios excluidos</description>
         <name>GetExludedDomainsAction</name>
         <label>Obtener listado de exclusiones</label>
-        <locationX>319</locationX>
+        <locationX>286</locationX>
         <locationY>528</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -208,7 +231,7 @@
         <description>Recupera la cola de genesys para comprobar si aplica enviar notificación</description>
         <name>GetGenesysQueueAction</name>
         <label>Obtener Cola Genesys</label>
-        <locationX>649</locationX>
+        <locationX>682</locationX>
         <locationY>288</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -268,7 +291,7 @@
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>DomainMatchVariable</name>
         <dataType>Boolean</dataType>

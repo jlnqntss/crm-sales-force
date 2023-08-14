@@ -344,8 +344,7 @@ public class Test_SystemUtil
 
         Test.startTest();
         SystemUtil.contactsSelectorMatchCode(keys, mobiles, null, null, null, mapa);
-        // mapa = SystemUtil.contactsSelectorSubscribers(keys);
-
+        
         System.assert (
             !mapa.isEmpty(),
             'Test_SystemUtil: No se han podido recuperar los contactos'
@@ -606,5 +605,36 @@ public class Test_SystemUtil
             'Test_SystemUtil: No se han podido crear el json'
             );
         Test.stopTest();
+    }
+
+    @IsTest
+    static void test_getDependantPicklistValues()
+    {
+
+        Map<String, List<String>> resultados = new Map<String, List<String>>();
+        test.startTest();
+        resultados = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
+        test.stopTest();
+
+        System.assertNotEquals(0, resultados.keySet().size());
+    }
+
+    /*
+    * Test del método que obtiene los valores de una picklist dependiente relacionados con sus controladores
+    * @author arcortazar
+    * @date 15/02/2023
+    */
+    @IsTest
+    static void test_getDependantPicklistValuesByRecordType()
+    {
+        Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+
+        Map<String, List<String>> resultados = new Map<String, List<String>>();
+        test.startTest();
+        Test.setMock(HttpCalloutMock.class, new ToolingAPIMock());
+        resultados = SystemUtil.getDependantPicklistValuesByRecordType('Case', 'Subtype__c', ocsRecordTypeId);
+        test.stopTest();
+
+        System.assertNotEquals(0, resultados.keySet().size());
     }
 }

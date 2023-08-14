@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "811fa56c-6ff9-4110-8db8-c3bb31cf4a53",
+  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "configurationTags" : [ ],
+  "id" : "aa71b370-98ff-4187-8a86-77280c70e8a7",
+  "label" : "Policy List",
+  "objectApiName" : "Policy__c",
+  "routeType" : "list-a1B",
+  "type" : "route",
+  "urlPrefix" : "policy"
+}

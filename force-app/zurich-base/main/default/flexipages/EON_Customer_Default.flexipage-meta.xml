@@ -267,13 +267,31 @@
                             <value>CASES.CASE_NUMBER</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>CASES.SUBJECT</value>
-                        </valueListItems>
-                        <valueListItems>
                             <value>CASES.CREATED_DATE</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>CASES.TYPE</value>
+                            <value>Subtype__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>TypeN3__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>CASES.SUBJECT</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>CASES.STATUS</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>CloseResult__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>PendingBy__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Intermediary__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>OWNER_NAME</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
@@ -443,6 +461,24 @@
                 </componentInstanceProperties>
                 <componentName>flowruntime:interview</componentName>
                 <identifier>flowruntime_interview</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>accountType</name>
+                    <value>Customer</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>salesforceObject</name>
+                    <value>CustomerWarning__c</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Avisos</value>
+                </componentInstanceProperties>
+                <componentName>warningAndAgreementViewer</componentName>
+                <identifier>c_warningAndAgreementViewer</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>

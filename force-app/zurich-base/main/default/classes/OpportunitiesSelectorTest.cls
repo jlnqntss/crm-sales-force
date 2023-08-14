@@ -284,4 +284,46 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(1, offersFound.size(), 'Deberia encontrar 1 oferta');
     }
 
+    /**
+     * Test del método que busca las oportunidades por nombre. Resultado OK
+     * @author acortazar
+     * @date 23/02/2023
+     */
+    @IsTest
+    static void test_findByName_OK()
+    {
+        List<Opportunity> listaOportunidades = [SELECT Name FROM Opportunity];
+        System.debug('++++ listaOportunidades: ' + listaOportunidades);
+        Set<String> setNames = new Set<String>();
+
+        for (Opportunity o : listaOportunidades)
+        {
+            setNames.add(o.Name);
+        }
+
+        test.startTest();
+        List<Opportunity> resultados = new OpportunitiesSelector().findByName(setNames);
+        test.stopTest();
+
+        System.assertEquals(listaOportunidades.size(), resultados.size(), 'Ha debido encontrar los mismos registros');
+    }
+
+    /**
+     * Test del método que busca las oportunidades por nombre. Resultado KO
+     * @author acortazar
+     * @date 23/02/2023
+     */
+    @IsTest
+    static void test_findByName_KO()
+    {
+        Set<String> setNames = new Set<String>();
+
+        test.startTest();
+        List<Opportunity> resultados = new OpportunitiesSelector().findByName(setNames);
+        test.stopTest();
+
+        System.assertEquals(0, resultados.size(), 'Ls lista devuelta ha de estar vacía');
+    }
+
+
 }

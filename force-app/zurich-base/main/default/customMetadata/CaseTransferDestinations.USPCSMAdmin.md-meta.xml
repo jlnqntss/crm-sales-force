@@ -7,6 +7,10 @@
         <value xsi:type="xsd:string">CSM Administración</value>
     </values>
     <values>
+        <field>DestinationQueue__c</field>
+        <value xsi:type="xsd:string">CSM_Admin_Traspaso_Tareas</value>
+    </values>
+    <values>
         <field>DestinationRecordType__c</field>
         <value xsi:type="xsd:string">OCSInquiry</value>
     </values>

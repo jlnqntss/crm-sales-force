@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>IF(
+    PlanComercial__c.Actual_KPI__c:SUM &gt; 0,
+    PlanComercial__c.Actual_KPI__c:SUM / PlanComercial__c.TargetKPI__c:SUM,
+    0
+)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>% de cumplimiento vs. Objetivo</description>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% de cumplimiento vs. Objetivo</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <aggregates>
+        <calculatedFormula>IF(
+  PlanComercial__c.PAActualKPI__c:SUM &gt; 0,
+  (PlanComercial__c.Actual_KPI__c:SUM - PlanComercial__c.PAActualKPI__c:SUM) / PlanComercial__c.PAActualKPI__c:SUM,
+  PlanComercial__c.Actual_KPI__c:SUM / 100
+)</calculatedFormula>
+        <datatype>percent</datatype>
+        <description>% de crecimiento vs. PA</description>
+        <developerName>FORMULA2</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>% de crecimiento vs. PA</masterLabel>
+        <scale>2</scale>
+    </aggregates>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.PlanComercial__r$Actual_KPI__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.PlanComercial__r$TargetKPI__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.PlanComercial__r$PAActualKPI__c</field>
+    </columns>
+    <description>Informe que muestra los planes comerciales mensuales del mes actual para el indicador &apos;Cartera&apos; agrupados por mediador.</description>
+    <filter>
+        <criteriaItems>
+            <column>Account.PlanComercial__r$TargetKPI__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.PlanComercial__r$RecordType</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>PlanComercial__c.MensualPlan</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.PlanComercial__r$EndDate__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>THIS_MONTH</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.PlanComercial__r$Indicator__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Portfolio</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.PlanComercial__r$Intermediary_Description__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account$INFOIntermediaryCode__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Prima Cartera Mediadores</name>
+    <params>
+        <name>co</name>
+        <value>0</value>
+    </params>
+    <reportType>AccountsWithPlanesComerciales__c</reportType>
+    <scope>ownaccountteam</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Account$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>

@@ -30,6 +30,21 @@
         <default>false</default>
         <label>USP</label>
     </customValue>
+    <customValue>
+        <fullName>Zurich Empresas</fullName>
+        <default>false</default>
+        <label>Zurich Empresas</label>
+    </customValue>
+    <customValue>
+        <fullName>Centro Excelencia</fullName>
+        <default>false</default>
+        <label>Centro Excelencia</label>
+    </customValue>
+    <customValue>
+        <fullName>TWW Retención</fullName>
+        <default>false</default>
+        <label>TWW Retención</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

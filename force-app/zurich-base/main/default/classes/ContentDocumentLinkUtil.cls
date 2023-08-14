@@ -21,6 +21,9 @@ public with sharing class ContentDocumentLinkUtil
     public static List<EmailMessage> emailMessagesToUpdate = new List<EmailMessage>();
     public static List<Case> casesToUpdate = new List<Case>();
 
+    public static id recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+    public static id recordTypeUSP = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+
     private static void initSettings()
     {
         if( robotHegeoSettings == null ) {
@@ -444,7 +447,19 @@ public with sharing class ContentDocumentLinkUtil
                                                 }
                                             }
                                         }
-                                       
+
+                                        // Obtenemos el tipo 
+                                        String rtRecibido = types.get(types.size() - 1);
+                                        if (rtRecibido.equalsIgnoreCase('OCS'))
+                                        {
+                                            caseFieldsMap.put('RecordTypeId', recordTypeOCS);
+                                        }
+                                        else if (rtRecibido.equalsIgnoreCase('EON'))
+                                        {
+                                            caseFieldsMap.put('RecordTypeId', recordTypeUSP);
+                                            caseFieldsMap.put('CallCenter__c', 'USP');
+                                        }
+                                
                                         casesToUpdate.add(
                                             (Case) JSON.deserialize(
                                                 JSON.serialize(caseFieldsMap), Case.class

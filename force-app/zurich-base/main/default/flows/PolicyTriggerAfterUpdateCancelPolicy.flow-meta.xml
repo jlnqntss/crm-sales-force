@@ -2,10 +2,27 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>52.0</apiVersion>
     <assignments>
+        <description>Setear el motivo de pérdida venta con el valor &quot;Póliza Anulada&quot;</description>
+        <name>Set_Motivo_P_rdida_Venta</name>
+        <label>Set Motivo Pérdida Venta</label>
+        <locationX>50</locationX>
+        <locationY>755</locationY>
+        <assignmentItems>
+            <assignToReference>GetRelatedOfferAction.Sales_Loss_Reason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Canceled Policy</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UpdateOfferAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>UpdateOfferClosedLostAssignment</name>
         <label>Cambiar Oferta a Closed Lost</label>
-        <locationX>50</locationX>
-        <locationY>575</locationY>
+        <locationX>182</locationX>
+        <locationY>539</locationY>
         <assignmentItems>
             <assignToReference>GetRelatedOfferAction.StageName</assignToReference>
             <operator>Assign</operator>
@@ -14,14 +31,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>UpdateOfferAction</targetReference>
+            <targetReference>Es_Ventas</targetReference>
         </connector>
     </assignments>
     <decisions>
         <name>CheckPreviousStatusDecision</name>
         <label>Verificar si antes estaba en vigor</label>
-        <locationX>446</locationX>
-        <locationY>335</locationY>
+        <locationX>600</locationX>
+        <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>WasValid</name>
@@ -46,6 +63,41 @@
             <label>Estaba en vigor</label>
         </rules>
     </decisions>
+    <decisions>
+        <description>Si la póliza está asignada a una oferta cuyo owner sea un usuario de Venta</description>
+        <name>Es_Ventas</name>
+        <label>Es Ventas</label>
+        <locationX>182</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>UpdateOfferAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>ZRM_CC</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>GetRelatedOfferAction.Owner.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ventas User</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedOfferAction.Owner.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Agente Ventas</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Motivo_P_rdida_Venta</targetReference>
+            </connector>
+            <label>ZRM/CC</label>
+        </rules>
+    </decisions>
+    <description>[Ventas] Setear el motivo de pérdida con valor &quot;Póliza Anulada&quot; si la oferta pertenece a un Usuario CC o ZRM</description>
+    <environments>Default</environments>
     <interviewLabel>Póliza Trigger - After update - Anular Póliza {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Póliza Trigger - After update - Anular Póliza</label>
     <processMetadataValues>
@@ -71,8 +123,8 @@
         <description>Se inserta un registro de log de errores en el sistema.</description>
         <name>CreateErrorLogAction</name>
         <label>Registrar Error</label>
-        <locationX>314</locationX>
-        <locationY>815</locationY>
+        <locationX>490</locationX>
+        <locationY>1055</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -115,8 +167,8 @@
     <recordLookups>
         <name>GetRelatedOfferAction</name>
         <label>Conseguir Oferta Relacionada</label>
-        <locationX>50</locationX>
-        <locationY>455</locationY>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>UpdateOfferClosedLostAssignment</targetReference>
@@ -140,15 +192,15 @@
     <recordUpdates>
         <name>UpdateOfferAction</name>
         <label>Actualizar Oferta</label>
-        <locationX>50</locationX>
-        <locationY>695</locationY>
+        <locationX>182</locationX>
+        <locationY>947</locationY>
         <faultConnector>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
         <inputReference>GetRelatedOfferAction</inputReference>
     </recordUpdates>
     <start>
-        <locationX>320</locationX>
+        <locationX>474</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CheckPreviousStatusDecision</targetReference>
@@ -174,4 +226,5 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>1700</triggerOrder>
 </Flow>

@@ -198,6 +198,99 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>OCS Community Business Customer</layout>
+        <sections>
+            <label>Información de compañia</label>
+            <section>Company Information</section>
+        </sections>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Campos</label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>GDPR</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>OCS Community Customer</layout>
+        <layoutType>PersonAccount</layoutType>
+        <sections>
+            <label>Dirección</label>
+            <section>Address</section>
+        </sections>
+        <sections>
+            <label>Descripción</label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label>GDPR</label>
+            <section>GDPR Status</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>OCS Community Intermediary</layout>
+        <sections>
+            <label>Dirección</label>
+            <section>Address</section>
+        </sections>
+        <sections>
+            <label>Asignación</label>
+            <section>Allocation</section>
+        </sections>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Indicadores</label>
+            <section>Indicators</section>
+        </sections>
+        <sections>
+            <label>Contacto de intermediario</label>
+            <section>Intermediary Contact</section>
+        </sections>
+        <sections>
+            <label>Información general</label>
+            <section>Main section</section>
+        </sections>
+        <sections>
+            <label>Información del sistema</label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>OCS Community Lead</layout>
+        <layoutType>PersonAccount</layoutType>
+        <sections>
+            <label></label>
+            <section>Telemarketing</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>OCS Community Partner</layout>
+        <sections>
+            <label>Contacto</label>
+            <section>Contact</section>
+        </sections>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Campos</label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label>Información del sistema</label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>OCS Partner</layout>
         <sections>
             <label>Contacto</label>
@@ -320,6 +413,11 @@
     <quickActions>
         <label></label>
         <name>Comunicacion</name>
+    </quickActions>
+    <quickActions>
+        <aspect>Master</aspect>
+        <label>Nueva Oferta</label>
+        <name>NewOffer</name>
     </quickActions>
     <quickActions>
         <label></label>

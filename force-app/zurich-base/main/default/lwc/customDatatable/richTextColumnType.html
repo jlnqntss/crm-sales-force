@@ -1,0 +1,14 @@
+<template>
+  <template if:true={wrapText}>
+    <lightning-formatted-rich-text value={value} href={value}>
+    </lightning-formatted-rich-text>
+  </template>
+  <template if:false={wrapText}>
+    <lightning-formatted-rich-text
+      value={value}
+      class="slds-truncate"
+      href={value}
+    >
+    </lightning-formatted-rich-text>
+  </template>
+</template>

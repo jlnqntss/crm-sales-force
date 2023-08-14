@@ -36,4 +36,14 @@
         <default>false</default>
         <label>Minisite</label>
     </standardValue>
+    <standardValue>
+        <fullName>Outbound Email</fullName>
+        <default>false</default>
+        <label>Outbound Email</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Forms</fullName>
+        <default>false</default>
+        <label>Forms</label>
+    </standardValue>
 </StandardValueSet>

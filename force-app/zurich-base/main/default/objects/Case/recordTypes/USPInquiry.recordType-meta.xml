@@ -12,6 +12,10 @@
             <fullName>USP</fullName>
             <default>true</default>
         </values>
+        <values>
+            <fullName>Zurich Empresas</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>CauseOfLoss__c</picklist>
@@ -452,6 +456,34 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Aprobada - Ajuste de precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Emisión Póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Modificación Capitales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Modificación Clausulado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Modificación Garantías</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Protecciones del riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprobada - Suplemento no económico</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Caducada</fullName>
             <default>false</default>
         </values>
@@ -465,6 +497,34 @@
         </values>
         <values>
             <fullName>Declinada - Precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Ajuste de precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Emisión Póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Modificación Capitales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Modificación Clausulado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Modificación Garantías</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Protecciones del riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Suplemento no económico</fullName>
             <default>false</default>
         </values>
         <values>
@@ -509,10 +569,6 @@
         </values>
         <values>
             <fullName>Perdida - Tiempo respuesta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Gestión Competencias</fullName>
             <default>false</default>
         </values>
         <values>
@@ -846,6 +902,73 @@
         <values>
             <fullName>Medium</fullName>
             <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+      <picklist>ProductGroup__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9</fullName>
+            <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>

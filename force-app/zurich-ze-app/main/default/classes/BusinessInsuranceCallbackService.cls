@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-06-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class BusinessInsuranceCallbackService
 {
     public static final String REQUIRED_FIELD_MISSING = 'Required field is missing';
@@ -50,7 +57,7 @@ public with sharing class BusinessInsuranceCallbackService
         List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
         genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
 
-        List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone}, RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.ALL);
+        List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone}, RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.ALL, null, null);
 
         try
         {
@@ -59,6 +66,7 @@ public with sharing class BusinessInsuranceCallbackService
             callMeBack.PreferredPhone = requestCallMeBack.phone;
             callMeBack.WebName__c = requestCallMeBack.name;
             callMeBack.WebIdentifier__c = requestCallMeBack.webIdentifier; // arcortazar - fiz-ZE-1234, asignamos el campo que viene desde la request al objeto CallMeBack
+            callMeBack.BusinessCode__c = requestCallMeBack.businessCode; // amunoz - feat-ZE-1761, asignamos el businessCode que viene desde la request al objeto CallMeBack
             if( !genesysQueue.isEmpty() )
             {   //Cola de Genesys OPCIONAL, si no se rellena, no entrará al ProcessBuilder que rellena el id de interacción
                 callMeBack.GenesysCloudQueueId__c = genesysQueue[0].Id;
@@ -89,6 +97,7 @@ public with sharing class BusinessInsuranceCallbackService
         public Datetime bestTimeFrom {get; set;}
         public Datetime bestTimeUntil {get; set;}
         public String webIdentifier {get; set;}
+        public String businessCode {get; set;}
     }
 
     /**

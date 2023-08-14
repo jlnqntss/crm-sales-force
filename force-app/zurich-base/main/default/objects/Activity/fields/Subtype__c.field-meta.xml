@@ -134,6 +134,11 @@
                 <default>false</default>
                 <label>Campaign Actions (Massive)</label>
             </value>
+            <value>
+                <fullName>Incidences Record MiZurich</fullName>
+                <default>false</default>
+                <label>Incidences Record MiZurich</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

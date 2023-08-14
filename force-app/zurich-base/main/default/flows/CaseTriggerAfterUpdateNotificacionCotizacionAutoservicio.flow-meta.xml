@@ -30,7 +30,7 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>YesOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND NOT (3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -43,6 +43,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.SuppliedEmail</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>@zurich.com</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -113,7 +120,7 @@
         <inputAssignments>
             <field>CloseResult__c</field>
             <value>
-                <stringValue>Declinada - Medidas protección</stringValue>
+                <stringValue>No Realizado USP</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -136,7 +143,8 @@
         <connector>
             <targetReference>CaseUSPSelfServiceQuotationDecision</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6)</filterLogic>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6) AND 7</filterLogic>
         <filters>
             <field>Subtype__c</field>
             <operator>EqualTo</operator>
@@ -145,38 +153,45 @@
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>CYBER</stringValue>
+                <stringValue>17</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>COMERCIOS</stringValue>
+                <stringValue>4</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>PATRIMONIALES</stringValue>
+                <stringValue>8</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>ACCIDENTES</stringValue>
+                <stringValue>5</stringValue>
             </value>
         </filters>
         <filters>
-            <field>ProductGroupDescription__c</field>
+            <field>ProductGroup__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>RESP. CIVIL</stringValue>
+                <stringValue>9</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cerrado</stringValue>
             </value>
         </filters>
         <object>Case</object>

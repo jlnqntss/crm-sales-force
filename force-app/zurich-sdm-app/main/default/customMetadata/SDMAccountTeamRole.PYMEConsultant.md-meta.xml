@@ -7,6 +7,10 @@
         <value xsi:type="xsd:string">PYMEConsultantEmail__c</value>
     </values>
     <values>
+        <field>IntermediaryNameField__c</field>
+        <value xsi:type="xsd:string">SMEConsultant__c</value>
+    </values>
+    <values>
         <field>Role__c</field>
         <value xsi:type="xsd:string">PYMEConsultant</value>
     </values>

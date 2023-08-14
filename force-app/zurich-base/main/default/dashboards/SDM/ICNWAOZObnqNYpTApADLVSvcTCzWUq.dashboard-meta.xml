@@ -407,25 +407,25 @@
                     <flexTableColumn>
                         <reportColumn>PARENT.NAME</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PoliciesPN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PA_PoliciesPN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA4</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableSortInfo>
@@ -467,13 +467,13 @@
                     <flexTableColumn>
                         <reportColumn>PARENT.NAME</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PoliciesPN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableSortInfo>
@@ -515,13 +515,13 @@
                     <flexTableColumn>
                         <reportColumn>PARENT.NAME</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA1</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableSortInfo>
@@ -563,13 +563,13 @@
                     <flexTableColumn>
                         <reportColumn>PARENT.NAME</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA2</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>false</showTotal>
+                        <showTotal>true</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableSortInfo>

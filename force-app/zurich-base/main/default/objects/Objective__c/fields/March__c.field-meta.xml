@@ -4,7 +4,7 @@
     <defaultValue>0</defaultValue>
     <externalId>false</externalId>
     <label>Marzo</label>
-    <precision>5</precision>
+    <precision>6</precision>
     <required>false</required>
     <scale>2</scale>
     <trackHistory>true</trackHistory>

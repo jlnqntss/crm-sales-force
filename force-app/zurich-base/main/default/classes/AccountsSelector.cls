@@ -1,3 +1,10 @@
+/**
+ * @description       :
+ * @author            :
+ * @group             :
+ * @last modified on  : 08-08-2023
+ * @last modified by  : mfernandezcarrera
+ **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
     public RecordsSelector.Scope relatedRecordsScope;
@@ -5,6 +12,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     // SDM: Campos del mediador donde se guardan los emails de los usuarios que cumplen una funcion dentro del mediador
     public static final String SDM_RN_EMAIL_FIELD = 'BusinessManagerEmail__c';      // Responsable de negocio
     public static final String SDM_DT_EMAIL_FIELD = 'TerritoryManagerEmail__c';     // Director Territorial
+    public static final String SDM_DT_NAME_FIELD = 'TerritoryManagerName__c';
     public static final String SDM_DZ_EMAIL_FIELD = 'ManagerEmail__c';              // Director Zona
     public static final String SDM_DV_EMAIL_FIELD = 'LifeManagerEmail__c';          // Director Vida
     public static final String SDM_CV_EMAIL_FIELD = 'LifeConsultantEmail__c';       // Consultor Vida
@@ -17,17 +25,22 @@ public with sharing class AccountsSelector extends RecordsSelector
 
     public AccountsSelector()
     {
-        super(Account.getSObjectType());
+        super( Account.getSObjectType() );
     }
 
     //#endregion
 
     //#region RECORD TYPES
-    
+    public static final String RT_NAME_FIELD = 'Account.RecordType.DeveloperName';
+    public static final String TYPE_FIELD = 'Account.Type';
     public static final String RT_NAME_AGRUPATION = 'AgrupacionMediador';
     public static final String RT_NAME_INTERMEDIARY = 'Intermediary';
     public static final String RT_NAME_CUSTOMER = 'Customer';
     public static final String RT_NAME_BUSINESSCUSTOMER = 'BusinessCustomer';
+    public static final String RT_NAME_ACCOUNT_INTERMEDIARY= 'Intermediary';
+
+    public static final String INTERMEDIARY_ACTIVE_1='001';
+    public static final String INTERMEDIARY_ACTIVE_2='002';
 
     // Recupera el Id del RecordType de cuentas de Agrupacion de Mediadores
     public ID rtAgrupationId {
@@ -54,6 +67,13 @@ public with sharing class AccountsSelector extends RecordsSelector
         }
     }
 
+    //Recupera el Id del RecordType de cuentas Intermediario
+    public ID rtAccountIntermediaryId {
+        get {
+            return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_ACCOUNT_INTERMEDIARY)?.getRecordTypeId();
+        }
+    }
+
     //#endregion
 
     /**
@@ -72,20 +92,27 @@ public with sharing class AccountsSelector extends RecordsSelector
         String leadRecordType = accountRecordTypeInfosByDeveloperName.get('Lead').getRecordTypeId();
         String partnerOCSRecordType = accountRecordTypeInfosByDeveloperName.get('PartnerOCS').getRecordTypeId();
 
-        
-        if( scope == RecordsSelector.Scope.ALL ) { // ALL
-            this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, businessRecordType, leadRecordType});
-        } else if( scope == RecordsSelector.Scope.Z ) { // Z
-            this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, businessRecordType});
+
+        if( scope == RecordsSelector.Scope.ALL )   // ALL
+        {
+            this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String> {customerRecordType, businessRecordType, leadRecordType});
+        }
+        else if( scope == RecordsSelector.Scope.Z )     // Z
+        {
+            this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String> {customerRecordType, businessRecordType});
 
             this.relatedRecordsScope = RecordsSelector.Scope.Z;
-        } else if( scope == RecordsSelector.Scope.ZE ) { // ZE
-            this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, leadRecordType, businessRecordType, partnerOCSRecordType});
+        }
+        else if( scope == RecordsSelector.Scope.ZE )     // ZE
+        {
+            this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String> {customerRecordType, leadRecordType, businessRecordType, partnerOCSRecordType});
 
             this.relatedRecordsScope = RecordsSelector.Scope.ZE;
-        } else if( scope == RecordsSelector.Scope.ZEO ) { // ZEO
-            this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, leadRecordType, businessRecordType, partnerOCSRecordType});
-            
+        }
+        else if( scope == RecordsSelector.Scope.ZEO )     // ZEO
+        {
+            this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String> {customerRecordType, leadRecordType, businessRecordType, partnerOCSRecordType});
+
             this.relatedRecordsScope = RecordsSelector.Scope.ZEO;
         }
 
@@ -101,10 +128,41 @@ public with sharing class AccountsSelector extends RecordsSelector
      */
     public AccountsSelector setLegalEntity(RecordsSelector.LegalEntity legalEntity)
     {
-        if( legalEntity == RecordsSelector.LegalEntity.GI || legalEntity == RecordsSelector.LegalEntity.LIFE ) { // GI,LIFE
-            this.baseQuery.addConditionEq(Account.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity));
+        if( legalEntity == RecordsSelector.LegalEntity.GI || legalEntity == RecordsSelector.LegalEntity.LIFE )   // GI,LIFE
+        {
+            this.baseQuery.addConditionEq( Account.LegalEntity__c, RecordsSelector.getLegalEntity(legalEntity) );
         }
 
+        return this;
+    }
+
+    /**
+     * Aplicar el filtro de record type name a los registros obtenidos en la búsqueda
+     * @author aberuete
+     * @date 02/06/2023
+     * @param List<String> recordTypeNames : Listado de record type names a filtrar
+     */
+    public AccountsSelector setRecordType (List<String> recordTypeNames)
+    {
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty() )
+        {
+            this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
+        }
+        return this;
+    }
+
+    /**
+     * Aplicar el filtro de tipo de cuenta a los registros obtenidos en la búsqueda
+     * @author aberuete
+     * @date 06/06/2023
+     * @param List<String> typeNames : Listado de tipos de cuentas a filtrar
+     */
+    public AccountsSelector setTypeOfAccount (List<String> typeNames)
+    {
+        if ( typeNames != null && !typeNames.isEmpty() )
+        {
+            this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
+        }
         return this;
     }
 
@@ -123,23 +181,23 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.selectFields
         (
             new List<Schema.SObjectField>
-            {
-                Account.Id,
-                Account.Name,
-                Account.PersonContactId,
-                Account.NationalId__c,
-                Account.NumPolicies__pc,
-                Account.NumQuotes__pc,
-                Account.MainMobilePhone__c,
-                Account.Phone,
-                Account.MainEmail__c,
-                Account.NationalId__c
-            }
+        {
+            Account.Id,
+            Account.Name,
+            Account.PersonContactId,
+            Account.NationalId__c,
+            Account.NumPolicies__pc,
+            Account.NumQuotes__pc,
+            Account.MainMobilePhone__c,
+            Account.Phone,
+            Account.MainEmail__c,
+            Account.NationalId__c
+        }
         );
 
         this.baseQuery.addConditionIn(Account.NationalId__c, nationalIds);
 
-        if(!String.isBlank(nationalIdType))
+        if( !String.isBlank(nationalIdType) )
         {
             this.baseQuery.addConditionEq(Account.NationalIdType__c, nationalIdType);
         }
@@ -160,18 +218,18 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.selectFields
         (
             new List<Schema.SObjectField>
-            {
-                Account.Id,
-                Account.Name,
-                Account.PersonContactId,
-                Account.NationalId__c,
-                Account.NumPolicies__pc,
-                Account.NumQuotes__pc,
-                Account.MainMobilePhone__c,
-                Account.Phone,
-                Account.MainEmail__c,
-                Account.NationalId__c
-            }
+        {
+            Account.Id,
+            Account.Name,
+            Account.PersonContactId,
+            Account.NationalId__c,
+            Account.NumPolicies__pc,
+            Account.NumQuotes__pc,
+            Account.MainMobilePhone__c,
+            Account.Phone,
+            Account.MainEmail__c,
+            Account.NationalId__c
+        }
         );
 
         return (List<Account>) this.baseQuery.byId( matchedRecordIds).run();
@@ -190,18 +248,18 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.selectFields
         (
             new List<Schema.SObjectField>
-            {
-                Account.Id,
-                Account.Name,
-                Account.PersonContactId,
-                Account.NationalId__c,
-                Account.NumPolicies__pc,
-                Account.NumQuotes__pc,
-                Account.MainMobilePhone__c,
-                Account.Phone,
-                Account.MainEmail__c,
-                Account.NationalId__c
-            }
+        {
+            Account.Id,
+            Account.Name,
+            Account.PersonContactId,
+            Account.NationalId__c,
+            Account.NumPolicies__pc,
+            Account.NumQuotes__pc,
+            Account.MainMobilePhone__c,
+            Account.Phone,
+            Account.MainEmail__c,
+            Account.NationalId__c
+        }
         );
 
         return (List<Account>) this.baseQuery.byId( matchedRecordIds).run();
@@ -214,32 +272,32 @@ public with sharing class AccountsSelector extends RecordsSelector
      */
     public List<Account> findByPolicyNumber(String[] policyNumbers)
     {
-        if(policyNumbers != null && !policyNumbers.isEmpty())
+        if( policyNumbers != null && !policyNumbers.isEmpty() )
         {
             for (Integer i = 0; i < policyNumbers.size(); i++)
             {
                 // rellenar con 0 hasta completar 14 digitos
                 if(policyNumbers.get(i) != null)
                 {
-                    policyNumbers.set(i, policyNumbers.get(i).leftPad(14, '0'));
+                    policyNumbers.set( i, policyNumbers.get(i).leftPad(14, '0') );
                 }
             }
 
             this.baseQuery.selectFields
             (
                 new List<Schema.SObjectField>
-                {
-                    Account.Id,
-                    Account.Name,
-                    Account.PersonContactId,
-                    Account.NationalId__c,
-                    Account.NumPolicies__pc,
-                    Account.NumQuotes__pc,
-                    Account.MainMobilePhone__c,
-                    Account.Phone,
-                    Account.MainEmail__c,
-                    Account.NationalId__c
-                }
+            {
+                Account.Id,
+                Account.Name,
+                Account.PersonContactId,
+                Account.NationalId__c,
+                Account.NumPolicies__pc,
+                Account.NumQuotes__pc,
+                Account.MainMobilePhone__c,
+                Account.Phone,
+                Account.MainEmail__c,
+                Account.NationalId__c
+            }
             );
 
             this.baseQuery.lookup
@@ -264,32 +322,32 @@ public with sharing class AccountsSelector extends RecordsSelector
      */
     public List<Account> findByQuoteNumber(String[] quoteNumbers)
     {
-        if(quoteNumbers != null && !quoteNumbers.isEmpty())
+        if( quoteNumbers != null && !quoteNumbers.isEmpty() )
         {
             for (Integer i = 0; i < quoteNumbers.size(); i++)
             {
                 // rellenar con 0 hasta completar 14 digitos
                 if(quoteNumbers.get(i) != null)
                 {
-                    quoteNumbers.set(i, quoteNumbers.get(i).leftPad(14, '0'));
+                    quoteNumbers.set( i, quoteNumbers.get(i).leftPad(14, '0') );
                 }
             }
 
             this.baseQuery.selectFields
             (
                 new List<Schema.SObjectField>
-                {
-                    Account.Id,
-                    Account.Name,
-                    Account.PersonContactId,
-                    Account.NationalId__c,
-                    Account.NumPolicies__pc,
-                    Account.NumQuotes__pc,
-                    Account.MainMobilePhone__c,
-                    Account.Phone,
-                    Account.MainEmail__c,
-                    Account.NationalId__c
-                }
+            {
+                Account.Id,
+                Account.Name,
+                Account.PersonContactId,
+                Account.NationalId__c,
+                Account.NumPolicies__pc,
+                Account.NumQuotes__pc,
+                Account.MainMobilePhone__c,
+                Account.Phone,
+                Account.MainEmail__c,
+                Account.NationalId__c
+            }
             );
 
             this.baseQuery.lookup
@@ -329,18 +387,20 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.selectFields
         (
             new List<Schema.SObjectField>
-            {
-                Account.Id,
-                Account.TerritorialDirectionCode__c,
-                Account.ChannelZoneCode__c,
-                Account.ZoneCode__c,
-                Account.CsmIndividualsManager__c,
-                Account.CsmAdministrationManager__c,
-                Account.MainMobilePhone__c,
-                Account.Phone,
-                Account.MainEmail__c,
-                Account.NationalId__c
-            }
+        {
+            Account.Id,
+            Account.TerritorialDirectionCode__c,
+            Account.ChannelZoneCode__c,
+            Account.ZoneCode__c,
+            Account.CsmIndividualsManager__c,
+            Account.CsmAdministrationManager__c,
+            Account.MainMobilePhone__c,
+            Account.Phone,
+            Account.MainEmail__c,
+            Account.NationalId__c,
+            Account.Channel__c,
+            Account.Segment__c
+        }
         );
 
         this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
@@ -355,13 +415,13 @@ public with sharing class AccountsSelector extends RecordsSelector
      */
     public List<Account> findByIntermediaryCode(List<String> codes)
     {
-        if(codes != null && !codes.isEmpty())
+        if( codes != null && !codes.isEmpty() )
         {
             Set<String> paddedCodes = new Set<String>();
 
             for(String code : codes)
             {
-                paddedCodes.add(code.leftPad(10, '0'));
+                paddedCodes.add( code.leftPad(10, '0') );
 
             }
 
@@ -370,19 +430,24 @@ public with sharing class AccountsSelector extends RecordsSelector
             this.baseQuery.selectFields
             (
                 new List<Schema.SObjectField>
-                {
-                    Account.Id,
-                    Account.TerritorialDirectionCode__c,
-                    Account.ChannelZoneCode__c,
-                    Account.ZoneCode__c,
-                    Account.CsmIndividualsManager__c,
-                    Account.CsmAdministrationManager__c,
-                    Account.MainMobilePhone__c,
-                    Account.Phone,
-                    Account.MainEmail__c,
-                    Account.NationalId__c
-                }
-            );
+            {
+                Account.Id,
+                Account.TerritorialDirectionCode__c,
+                Account.ChannelZoneCode__c,
+                Account.ZoneCode__c,
+                Account.CsmIndividualsManager__c,
+                Account.CsmAdministrationManager__c,
+                Account.MainMobilePhone__c,
+                Account.Phone,
+                Account.MainEmail__c,
+                Account.NationalId__c,
+                Account.Channel__c,
+                Account.Segment__c,
+                Account.INFOIntermediaryCode__c,
+                Account.IntermediaryWithUser__c,
+                Account.ParentId
+            }
+            ).selectFields('Account.Parent.IntermediaryWithUser__c');
 
             this.baseQuery.addConditionEq(Account.INFOIntermediaryCode__c, paddedCodes);
             this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
@@ -405,13 +470,15 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @param accountIds   list of account ids
      * @param scopeTypes    list of type of scopes to filter (ZE, ZEO)
      */
-    public List<Account> findByIdsAndScope(Set<Id> accountIds, List<String> scopeTypes) {
+    public List<Account> findByIdsAndScope(Set<Id> accountIds, List<String> scopeTypes)
+    {
         List<Account> result = new List<Account>();
-        if( accountIds != null && !accountIds.isEmpty() && scopeTypes != null && !scopeTypes.isEmpty() ) {
+        if( accountIds != null && !accountIds.isEmpty() && scopeTypes != null && !scopeTypes.isEmpty() )
+        {
             result = [SELECT Id, SincronizarMC__pc,
-                        (SELECT Id, Contactable__c FROM Scope__r WHERE Scope__c IN :scopeTypes)
+                      (SELECT Id, Contactable__c FROM Scope__r WHERE Scope__c IN : scopeTypes)
                       FROM Account
-                      WHERE Id IN :accountIds];
+                      WHERE Id IN : accountIds];
         }
         return result;
     }
@@ -426,14 +493,16 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         this.baseQuery.selectFields (
             new List<Schema.SObjectField> {
-                Account.Id,
-                Account.ZoneCode__c,
-                Account.MainMobilePhone__c,
-                Account.Phone,
-                Account.MainEmail__c,
-                Account.NationalId__c
-            }
-        );
+            Account.Id,
+            Account.ZoneCode__c,
+            Account.MainMobilePhone__c,
+            Account.Phone,
+            Account.MainEmail__c,
+            Account.NationalId__c,
+            Account.INFOIntermediaryCode__c,
+            Account.TerritorialDirection__c
+        }
+            );
         //Devolver lista vacía
         if ( accountIds == null || accountIds.isEmpty() )
         {
@@ -444,40 +513,71 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-     * Obtiene un listado de cuentas de Agrupacion 
+     * Obtiene un listado de cuentas de Agrupacion
      */
     public List<Account> findAgrupatedIntermediaries(List<Account> acList)
     {
         Set<String> natIdSet = new Set<String>();
         for (Account a: acList)
         {
-            if (String.isNotBlank(a.NationalId__c) && !natIdSet.contains(a.NationalId__c)) natIdSet.add(a.NationalId__c);
+            if ( String.isNotBlank(a.NationalId__c) && !natIdSet.contains(a.NationalId__c) )
+                natIdSet.add(a.NationalId__c);
         }
 
         this.baseQuery.selectFields (
             new List<Schema.SObjectField> {
-                Account.Id,
-                Account.NationalId__c
-            }
-        );
+            Account.Id,
+            Account.NationalId__c,
+            Account.Status__c,
+            Account.StatusIntermediary__c
+        }
+            );
         this.baseQuery.addConditionEq(Account.RecordTypeId, rtAgrupationId);
         this.baseQuery.addConditionIn(Account.NationalId__c, natIdSet); //Meter parte del filtro del NationalId
 
         return (List<Account>) this.baseQuery.run();
     }
 
+    public List<Account> findIntermediariesByParentId(Set<Id> parentIds)
+    {
+        List<Account> intermediaries = new List<Account>();
+
+        if ( parentIds != null && !parentIds.isEmpty() )
+        {
+            this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.ParentId,
+                Account.NationalId__c,
+                Account.Status__c,
+                Account.StatusIntermediary__c
+            }
+            );
+
+            this.baseQuery.addConditionIn(Account.ParentId, parentIds);
+            this.baseQuery.addConditionEq(Account.RecordTypeId, rtIntermediaryId);
+
+            intermediaries = (List<Account>) this.baseQuery.run();
+        }
+
+        return intermediaries;
+    }
+
     /**
      * Recupera los Mediadores que tengan el email dado en alguno de los campos de la lista dada.
-     * 
+     *
      * @param {String email} el email a buscar
      * @param {List<String> fields} la lista de campos donde buscar
      */
     public List<Account> findIntermediariesByEmailInFields(String email, Set<String> fields)
-    { 
+    {
         List<Account> result = null;
 
-        if( String.isNotBlank(email) && fields != null & !fields.isEmpty() ) {
-            Set<String> queryFields = new Set<String>{
+        if( String.isNotBlank(email) && fields != null & !fields.isEmpty() )
+        {
+            Set<String> queryFields = new Set<String> {
                 'Id', 'Name', 'ParentId', 'IntermediaryDescription__c', 'Zone__c'
             };
             queryFields.addAll(fields);
@@ -486,9 +586,9 @@ public with sharing class AccountsSelector extends RecordsSelector
             this.baseQuery.addConditionString(condition);
             this.baseQuery.addConditionEq(Account.RecordTypeId, this.rtIntermediaryId);
 
-            result = (List<Account>)this.baseQuery.run();
+            result = (List<Account>) this.baseQuery.run();
         }
-        
+
         return result;
     }
 
@@ -502,23 +602,24 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         List<Account> result = null;
 
-        if( accounts != null && !accounts.isEmpty() && fields != null & !fields.isEmpty() ) {
+        if( accounts != null && !accounts.isEmpty() && fields != null & !fields.isEmpty() )
+        {
             this.baseQuery.selectFields(fields);
             this.baseQuery.addConditionIn(Account.Id, accounts);
 
-            result = (List<Account>)this.baseQuery.run();
+            result = (List<Account>) this.baseQuery.run();
         }
-        
+
         return result;
     }
 
     /**
      * Recupera los mediadores de tipo agrupacion cuyo id lo cumpla una subquery
      * Ejemplo: SELECT id FROM Account WHERE Id IN (SELECT AccountId FROM contact)
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 28/07/2021
-     * 
+     *
      * @param {Query subquery} subquery con los ids a buscar
      * @return {List<Account>} lista de agrupaciones de mediador
      */
@@ -526,42 +627,46 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         List<Account> result = null;
 
-        if( subquery != null ) {
-            this.baseQuery.selectFields(new Set<String>{
+        if( subquery != null )
+        {
+            this.baseQuery.selectFields(new Set<String> {
                 'Id', 'NationalId__c'
             });
             this.baseQuery.addConditionEq(Account.RecordTypeId, this.rtAgrupationId);
             this.baseQuery.addConditionIn(Account.Id, subquery);
 
-            result = (List<Account>)this.baseQuery.run();            
+            result = (List<Account>) this.baseQuery.run();
         }
 
         return result;
     }
 
     /**
-    * Método utilizado por el batch RelateCasesToNewAccountsBatch para definir el scope
-    * @author jjuaristi@seidor.es
-    * @date 19/10/2022
-    * @param String days para filtrar la query
-    * @return String query que se va a lanzar en el batch
-    */
+     * Método utilizado por el batch RelateCasesToNewAccountsBatch para definir el scope
+     * @author jjuaristi@seidor.es
+     * @date 19/10/2022
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
     public List<Account> findByCIFAndCreationDate(List<String> cifs, String daysToRetrieve)
     {
-        if(daysToRetrieve != null && !String.isBlank(daysToRetrieve) && cifs != null && !cifs.isEmpty())
+        if( daysToRetrieve != null && !String.isBlank(daysToRetrieve) && cifs != null && !cifs.isEmpty() )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Account.Id,
-                Account.NationalId__c
+                Account.NationalId__c,
+                Account.Blocked__c
             })
-            .addConditionIn(Account.NationalId__c, cifs);
+            .addConditionIn(Account.NationalId__c, cifs)
+            .addConditionNotEq(Account.Blocked__c, true)
+            .addConditionString('CreatedDate = LAST_N_DAYS:' + daysToRetrieve);
 
             // Añadimos la condición de que el RT sea Customer o BusinessCustomer
             Query.Condition condition = Query.doOr
-            (
+                                        (
                 Query.conditionEq(Account.RecordTypeId, rtCustomerId),
                 Query.conditionEq(Account.RecordTypeId, rtBusinessCustomerId)
-            );
+                                        );
 
             this.baseQuery.addCondition(condition);
 
@@ -571,5 +676,64 @@ public with sharing class AccountsSelector extends RecordsSelector
         {
             return new List<Account>();
         }
+    }
+
+
+    /**
+     * Método utilizado por el batch Batch_RatioConversionIntermediary para definir el scope
+     * @author lrodriguez6@seidor.es
+     * @date 06/02/2023
+     * @return String query que se va a lanzar en el batch
+     */
+
+    public String getQueryStringAccountIntermediaryRatio()
+    {
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+            Account.Id
+
+        })
+
+        .addConditionEq(Account.RecordTypeId, rtAccountIntermediaryId);
+
+        // Añadimos la condición de que el RT sea Customer o BusinessCustomer
+        Query.Condition condition = Query.doOr
+                                    (
+            Query.conditionEq(Account.Status__c,INTERMEDIARY_ACTIVE_1),
+            Query.conditionEq(Account.Status__c,INTERMEDIARY_ACTIVE_2)
+                                    );
+
+        this.baseQuery.addCondition(condition);
+
+        return this.baseQuery.toQueryString();
+    }
+    /**
+     * Método utilizado por OpenIDConnectSalesforceCommunity para buscar la cuenta dummy a la que asociar los usuarios
+     * @author dmunoz
+     * @date 15/06/2023
+     */
+    public List<Account> findAccountByBusinessCode(List<String> businessCodeList)
+    {
+
+        List<Account> result = new List<Account>();
+
+        if ( businessCodeList != null && !businessCodeList.isEmpty() )
+        {
+            result = new List<Account>([SELECT Id FROM Account WHERE INFOBusinessCode__c IN: businessCodeList]);
+        }
+        return result;
+
+    }
+    /**
+     * Método que obtiene los cuentas tipo Lead que no tengan ofertas asociadas para borrarlas
+     **
+     * @author mfernandezcarrera
+     * @date 28/06/2023
+     **/
+    public static String getAccountsToDelete()
+    {
+        String query =
+            'SELECT Id from Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
+        return query;
     }
 }

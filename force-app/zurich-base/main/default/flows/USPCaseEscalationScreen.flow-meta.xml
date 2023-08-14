@@ -3,8 +3,8 @@
     <actionCalls>
         <name>caseEscalationAction</name>
         <label>CaseEscalationAction</label>
-        <locationX>226</locationX>
-        <locationY>2750</locationY>
+        <locationX>248</locationX>
+        <locationY>2966</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <faultConnector>
@@ -45,7 +45,7 @@
     <actionCalls>
         <name>removeDuplicatesAction</name>
         <label>removeDuplicates</label>
-        <locationX>226</locationX>
+        <locationX>248</locationX>
         <locationY>638</locationY>
         <actionName>RemoveDuplicatesAction</actionName>
         <actionType>apex</actionType>
@@ -95,8 +95,8 @@
     <assignments>
         <name>idUserAssignment</name>
         <label>idUserAssignment</label>
-        <locationX>402</locationX>
-        <locationY>2054</locationY>
+        <locationX>314</locationX>
+        <locationY>2174</locationY>
         <assignmentItems>
             <assignToReference>IdsOwner</assignToReference>
             <operator>Add</operator>
@@ -118,7 +118,7 @@
     <assignments>
         <name>IdUserGroupAssignment</name>
         <label>Id User Assignment</label>
-        <locationX>490</locationX>
+        <locationX>534</locationX>
         <locationY>1598</locationY>
         <assignmentItems>
             <assignToReference>idUserToChoose</assignToReference>
@@ -150,7 +150,7 @@
     <assignments>
         <name>ownerQueueIdUserAssigment</name>
         <label>Owner Queue Owner User</label>
-        <locationX>402</locationX>
+        <locationX>446</locationX>
         <locationY>1238</locationY>
         <assignmentItems>
             <assignToReference>ownerId</assignToReference>
@@ -180,9 +180,34 @@
         </value>
     </choices>
     <decisions>
+        <name>EmptyQueue</name>
+        <label>EmptyQueue</label>
+        <locationX>446</locationX>
+        <locationY>1934</locationY>
+        <defaultConnector>
+            <targetReference>Screen_Error_Empty_Queue</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Yes</defaultConnectorLabel>
+        <rules>
+            <name>NoUsers</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getUsersNamesActions</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>userScreen</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>internalOrExternalDecision</name>
         <label>Internal or External</label>
-        <locationX>974</locationX>
+        <locationX>1073</locationX>
         <locationY>398</locationY>
         <defaultConnector>
             <targetReference>updateRecordExternalAction</targetReference>
@@ -207,7 +232,7 @@
     <decisions>
         <name>queueOrUserValueDecision</name>
         <label>QueueOrUserValue</label>
-        <locationX>226</locationX>
+        <locationX>248</locationX>
         <locationY>1118</locationY>
         <defaultConnector>
             <targetReference>ownerQueueIdUserAssigment</targetReference>
@@ -332,12 +357,24 @@
         <dataType>String</dataType>
         <expression>{!principioBody} + {!caseRecordAction.CaseNumber}</expression>
     </formulas>
+    <formulas>
+        <description>Fórmula que devuelve el nombre del cliente mediado. Debido a un bug identificado por parte de Salesforce es necesario utilizar diferentes campos en función de si la cuenta es de tipo &apos;person account&apos; o no.
+
+Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-accountname-field-shows-blank-for-person-account-type-records-in-lightning-and-api</description>
+        <name>MediatedCustomer</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  {!caseRecordAction.MediatedCustomer__r.IsPersonAccount},
+  {!caseRecordAction.MediatedCustomer__r.FirstName} &amp; &apos; &apos; &amp; {!caseRecordAction.MediatedCustomer__r.LastName},
+  {!caseRecordAction.MediatedCustomer__r.Name}
+)</expression>
+    </formulas>
     <interviewLabel>USP Case Escalation Screen {!$Flow.CurrentDateTime}</interviewLabel>
     <label>USP Case Escalation Screen</label>
     <loops>
         <name>nameUserLoop</name>
         <label>Name User Loop</label>
-        <locationX>402</locationX>
+        <locationX>446</locationX>
         <locationY>1478</locationY>
         <collectionReference>getUsersAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -370,8 +407,8 @@
     <recordCreates>
         <name>CreateRecordsGetNotificationErrorAction</name>
         <label>Create Records Get Notification Error Action</label>
-        <locationX>930</locationX>
-        <locationY>2750</locationY>
+        <locationX>1106</locationX>
+        <locationY>2966</locationY>
         <connector>
             <targetReference>ScreenErrorGetNotification</targetReference>
         </connector>
@@ -405,8 +442,8 @@
     <recordCreates>
         <name>CreateRecordsSendNotificacionErrorAction</name>
         <label>Create Records Send Notificacion Error Action</label>
-        <locationX>666</locationX>
-        <locationY>2870</locationY>
+        <locationX>842</locationX>
+        <locationY>3086</locationY>
         <connector>
             <targetReference>ScreenErrorNotficationAction</targetReference>
         </connector>
@@ -440,8 +477,8 @@
     <recordCreates>
         <name>CreateRecordsUpdateRecordErrorAction</name>
         <label>Create Records Update Record Error Action</label>
-        <locationX>1194</locationX>
-        <locationY>2630</locationY>
+        <locationX>1370</locationX>
+        <locationY>2846</locationY>
         <connector>
             <targetReference>ErrorScreen</targetReference>
         </connector>
@@ -475,8 +512,8 @@
     <recordCreates>
         <name>createTaskAction</name>
         <label>Create Task</label>
-        <locationX>226</locationX>
-        <locationY>2390</locationY>
+        <locationX>248</locationX>
+        <locationY>2606</locationY>
         <assignRecordIdToReference>taskId</assignRecordIdToReference>
         <connector>
             <targetReference>updateRecordAction</targetReference>
@@ -491,15 +528,39 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>CaseMediator__c</field>
+            <value>
+                <elementReference>InfoMediador</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Description</field>
             <value>
                 <elementReference>comments</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>MediatedCustomer__c</field>
+            <value>
+                <elementReference>MediatedCustomer</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>ownerId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Priority</field>
             <value>
                 <stringValue>Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SegmentMediatorCase__c</field>
+            <value>
+                <elementReference>InfoSegmento</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -537,8 +598,8 @@
     <recordCreates>
         <name>CreateTaskErrorAction</name>
         <label>Create Task Erro rAction</label>
-        <locationX>1458</locationX>
-        <locationY>2510</locationY>
+        <locationX>1634</locationX>
+        <locationY>2726</locationY>
         <connector>
             <targetReference>ScreenErrorTask</targetReference>
         </connector>
@@ -572,7 +633,7 @@
     <recordLookups>
         <name>caseRecordAction</name>
         <label>Get case record</label>
-        <locationX>974</locationX>
+        <locationX>1073</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -593,8 +654,8 @@
     <recordLookups>
         <name>getCustomNotificationAction</name>
         <label>Get Custom Notification</label>
-        <locationX>226</locationX>
-        <locationY>2630</locationY>
+        <locationX>248</locationX>
+        <locationY>2846</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>caseEscalationAction</targetReference>
@@ -617,7 +678,7 @@
     <recordLookups>
         <name>getIdQueueAction</name>
         <label>Get Id Queue</label>
-        <locationX>226</locationX>
+        <locationX>248</locationX>
         <locationY>998</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -645,7 +706,7 @@
     <recordLookups>
         <name>GetSccaledTypeAction</name>
         <label>Get scaled type</label>
-        <locationX>226</locationX>
+        <locationX>248</locationX>
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -666,7 +727,7 @@
     <recordLookups>
         <name>getUsersAction</name>
         <label>GetUsersAction</label>
-        <locationX>402</locationX>
+        <locationX>446</locationX>
         <locationY>1358</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -687,11 +748,11 @@
     <recordLookups>
         <name>getUsersNamesActions</name>
         <label>GetUsersNamesActions</label>
-        <locationX>402</locationX>
+        <locationX>446</locationX>
         <locationY>1814</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>userScreen</targetReference>
+            <targetReference>EmptyQueue</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -708,8 +769,8 @@
     <recordUpdates>
         <name>updateRecordAction</name>
         <label>Update Record</label>
-        <locationX>226</locationX>
-        <locationY>2510</locationY>
+        <locationX>248</locationX>
+        <locationY>2726</locationY>
         <connector>
             <targetReference>getCustomNotificationAction</targetReference>
         </connector>
@@ -741,7 +802,7 @@
     <recordUpdates>
         <name>updateRecordExternalAction</name>
         <label>Update Record External</label>
-        <locationX>1722</locationX>
+        <locationX>1898</locationX>
         <locationY>518</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -769,7 +830,7 @@
     <screens>
         <name>AreaTypeScreen</name>
         <label>AreaTypeScreen</label>
-        <locationX>226</locationX>
+        <locationX>248</locationX>
         <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -791,8 +852,8 @@
     <screens>
         <name>dataInputScreen</name>
         <label>Data Input</label>
-        <locationX>226</locationX>
-        <locationY>2270</locationY>
+        <locationX>248</locationX>
+        <locationY>2486</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -808,6 +869,9 @@
         </fields>
         <fields>
             <name>comments</name>
+            <defaultValue>
+                <stringValue>{!caseRecordAction.RelatedPolicyOffer__c}</stringValue>
+            </defaultValue>
             <fieldText>Comentarios</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>false</isRequired>
@@ -818,8 +882,8 @@
     <screens>
         <name>ErrorScreen</name>
         <label>Screen Error</label>
-        <locationX>1194</locationX>
-        <locationY>2750</locationY>
+        <locationX>1370</locationX>
+        <locationY>2966</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -834,7 +898,7 @@
     <screens>
         <name>queueTypeAction</name>
         <label>Queue Type</label>
-        <locationX>226</locationX>
+        <locationX>248</locationX>
         <locationY>878</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -856,7 +920,7 @@
     <screens>
         <name>ScaledTypeScreen</name>
         <label>Tipo Escalado</label>
-        <locationX>974</locationX>
+        <locationX>1073</locationX>
         <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -877,10 +941,26 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Screen_Error_Empty_Queue</name>
+        <label>Screen Error Empty Queue</label>
+        <locationX>578</locationX>
+        <locationY>2054</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Empty_Queue</name>
+            <fieldText>&lt;p&gt;No hay personas añadidas en la cola escogida.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>ScreenErrorGetNotification</name>
         <label>Screen Error Get Notification</label>
-        <locationX>930</locationX>
-        <locationY>2870</locationY>
+        <locationX>1106</locationX>
+        <locationY>3086</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -895,8 +975,8 @@
     <screens>
         <name>ScreenErrorNotficationAction</name>
         <label>Screen Error Notfication Action</label>
-        <locationX>666</locationX>
-        <locationY>2990</locationY>
+        <locationX>842</locationX>
+        <locationY>3206</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -911,8 +991,8 @@
     <screens>
         <name>ScreenErrorTask</name>
         <label>Screen Error Task</label>
-        <locationX>1458</locationX>
-        <locationY>2630</locationY>
+        <locationX>1634</locationX>
+        <locationY>2846</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -927,8 +1007,8 @@
     <screens>
         <name>userScreen</name>
         <label>User Screen</label>
-        <locationX>402</locationX>
-        <locationY>1934</locationY>
+        <locationX>314</locationX>
+        <locationY>2054</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -947,7 +1027,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>848</locationX>
+        <locationX>947</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>caseRecordAction</targetReference>
@@ -1053,6 +1133,26 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>InfoMediador</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>{!caseRecordAction.Account.Name} </stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>InfoSegmento</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>caseRecordAction.Account.Segment__c</elementReference>
+        </value>
     </variables>
     <variables>
         <name>IntExtInput</name>

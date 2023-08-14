@@ -5,7 +5,7 @@
         <name>policyAssignment</name>
         <label>Policy Assignment</label>
         <locationX>402</locationX>
-        <locationY>1511</locationY>
+        <locationY>1487</locationY>
         <assignmentItems>
             <assignToReference>casesLoop.PolicyId__c</assignToReference>
             <operator>Assign</operator>
@@ -21,7 +21,7 @@
         <name>stageWonAssignment</name>
         <label>Stage Won</label>
         <locationX>138</locationX>
-        <locationY>1751</locationY>
+        <locationY>1703</locationY>
         <assignmentItems>
             <assignToReference>casesLoop.QuotationStage__c</assignToReference>
             <operator>Assign</operator>
@@ -37,7 +37,7 @@
         <name>statusStageAssignment</name>
         <label>Status Stage Assignment</label>
         <locationX>402</locationX>
-        <locationY>1751</locationY>
+        <locationY>1703</locationY>
         <assignmentItems>
             <assignToReference>casesLoop.Status</assignToReference>
             <operator>Assign</operator>
@@ -74,12 +74,40 @@
         <name>updateCustomerOffer</name>
         <label>Update Customer Offer</label>
         <locationX>114</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>getRelatedOfferAction.AccountId</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>$Record.PolicyHolder__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.ResultingPolicyNumber__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.EffectiveDate__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.MovementStartDate__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.ProductId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ProductId__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.TotalPremium__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.TotalPremium__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -91,7 +119,7 @@
         <name>updateOfferClosedWonAssignment</name>
         <label>Update Offer Closed Won</label>
         <locationX>246</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <assignmentItems>
             <assignToReference>getRelatedOfferAction.StageName</assignToReference>
             <operator>Assign</operator>
@@ -143,7 +171,7 @@
         <name>updateCustomerDecision</name>
         <label>Update Customer</label>
         <locationX>246</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>updateOfferAction</targetReference>
         </defaultConnector>
@@ -175,7 +203,7 @@
         <name>uspSalesDecision</name>
         <label>USP Sales</label>
         <locationX>402</locationX>
-        <locationY>1631</locationY>
+        <locationY>1595</locationY>
         <defaultConnector>
             <targetReference>updateCaseAction</targetReference>
         </defaultConnector>
@@ -225,7 +253,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Automatismo que cada vez que se inserta o actualiza una póliza se actualiza la etapa de la oferta relacionada</description>
+    <description>Añadir la actualización del campo Intermediary_Name__c de account con el valor de mediador que llega desde la póliza</description>
     <environments>Default</environments>
     <formulas>
         <name>timeSearch</name>
@@ -238,7 +266,7 @@
         <name>casesLoop</name>
         <label>Cases Loop</label>
         <locationX>50</locationX>
-        <locationY>1391</locationY>
+        <locationY>1379</locationY>
         <collectionReference>getUSPSalesCasesLast30DaysAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -300,7 +328,7 @@
         <name>createRecordGetMetadataErrorAction</name>
         <label>Create Record Get Metadata Error Action</label>
         <locationX>970</locationX>
-        <locationY>1151</locationY>
+        <locationY>1163</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -332,7 +360,7 @@
         <name>createRecordUpdateCasesErrorAction</name>
         <label>Create Record Update Cases Error Action</label>
         <locationX>842</locationX>
-        <locationY>2087</locationY>
+        <locationY>2003</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -365,7 +393,7 @@
         <name>createRecordUpdateOfferErrorAction</name>
         <label>Create Record Update Offer Error Action</label>
         <locationX>1234</locationX>
-        <locationY>1031</locationY>
+        <locationY>947</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -398,7 +426,7 @@
         <name>getMetadataDaysAction</name>
         <label>Get Metadata Days</label>
         <locationX>246</locationX>
-        <locationY>1031</locationY>
+        <locationY>1055</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getUSPSalesCasesLast30DaysAction</targetReference>
@@ -423,7 +451,7 @@
         <name>getRelatedOfferAction</name>
         <label>Get Related Offer</label>
         <locationX>246</locationX>
-        <locationY>335</locationY>
+        <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>updateOfferClosedWonAssignment</targetReference>
@@ -448,7 +476,7 @@
         <name>getUSPSalesCasesLast30DaysAction</name>
         <label>Get USP Sales Cases Last 30 Days</label>
         <locationX>246</locationX>
-        <locationY>1151</locationY>
+        <locationY>1163</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>nullCasesDecision</targetReference>
@@ -476,10 +504,35 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <description>Actualiza el campo Intermediary_Name__c de Account para vincularlo con el ultimo que ha vendido una póliza a este cliente</description>
+        <name>Update_Intermediary_Name</name>
+        <label>Update Intermediary Name</label>
+        <locationX>246</locationX>
+        <locationY>947</locationY>
+        <connector>
+            <targetReference>getMetadataDaysAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.PolicyHolder__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Intermediary_Name__c</field>
+            <value>
+                <elementReference>$Record.IntermediaryId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>updateCaseAction</name>
         <label>Update Case</label>
         <locationX>402</locationX>
-        <locationY>1967</locationY>
+        <locationY>1895</locationY>
         <connector>
             <targetReference>casesLoop</targetReference>
         </connector>
@@ -493,9 +546,9 @@
         <name>updateOfferAction</name>
         <label>Update Offer</label>
         <locationX>246</locationX>
-        <locationY>911</locationY>
+        <locationY>839</locationY>
         <connector>
-            <targetReference>getMetadataDaysAction</targetReference>
+            <targetReference>Update_Intermediary_Name</targetReference>
         </connector>
         <faultConnector>
             <targetReference>createRecordUpdateOfferErrorAction</targetReference>
@@ -521,4 +574,5 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>1500</triggerOrder>
 </Flow>

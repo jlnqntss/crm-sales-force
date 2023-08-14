@@ -302,46 +302,10 @@
               field-name="Segment__c"
               class="slds-border_bottom"
             ></lightning-output-field>
-          </lightning-layout-item>
-          <lightning-layout-item
-            size="12"
-            medium-device-size="6"
-            small-device-size="12"
-            padding="horizontal-small"
-          >
-            <lightning-output-field
-              field-name="TargetKPI__c"
-              class="slds-border_bottom"
-            ></lightning-output-field>
-          </lightning-layout-item>
-          <lightning-layout-item
-            size="12"
-            medium-device-size="6"
-            small-device-size="12"
-            padding="horizontal-small"
-          >
             <lightning-output-field
               field-name="Product__c"
               class="slds-border_bottom"
             ></lightning-output-field>
-          </lightning-layout-item>
-          <lightning-layout-item
-            size="12"
-            medium-device-size="6"
-            small-device-size="12"
-            padding="horizontal-small"
-          >
-            <lightning-output-field
-              field-name="Actual_KPI__c"
-              class="slds-border_bottom"
-            ></lightning-output-field>
-          </lightning-layout-item>
-          <lightning-layout-item
-            size="12"
-            medium-device-size="6"
-            small-device-size="12"
-            padding="horizontal-small"
-          >
             <lightning-output-field
               field-name="Indicator__c"
               class="slds-border_bottom"
@@ -357,10 +321,26 @@
             small-device-size="12"
             padding="horizontal-small"
           >
-            <lightning-output-field
-              field-name="SendNotifications__c"
-              class="slds-border_bottom"
-            ></lightning-output-field>
+            <template if:true={isVisibleKPI}>
+              <lightning-output-field
+                field-name="TargetKPI__c"
+                class="slds-border_bottom"
+              ></lightning-output-field>
+              <lightning-output-field
+                field-name="Actual_KPI__c"
+                class="slds-border_bottom"
+              ></lightning-output-field>
+              <lightning-output-field
+                field-name="PAActualKPI__c"
+                class="slds-border_bottom"
+              ></lightning-output-field>
+              <template if:true={isVisibleSendNotification}>
+                <lightning-output-field
+                  field-name="SendNotifications__c"
+                  class="slds-border_bottom"
+                ></lightning-output-field>
+              </template>
+            </template>
           </lightning-layout-item>
         </lightning-layout>
       </div>

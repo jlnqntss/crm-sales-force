@@ -11499,6 +11499,10 @@
         <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Summary USP</layout>
+        <recordType>Case.USPInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -11649,6 +11653,17 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Frequency of notifications</layout>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+        <recordType>Objective__c.Objectives</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Opportunity Layout</layout>

@@ -4,7 +4,7 @@
     <assignments>
         <name>Asignar_CCS</name>
         <label>Asignar CCS</label>
-        <locationX>578</locationX>
+        <locationX>1106</locationX>
         <locationY>1031</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
@@ -22,9 +22,29 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>Asignar_CE</name>
+        <label>Asignar CE</label>
+        <locationX>50</locationX>
+        <locationY>1031</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.EntitlementId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Entitlement_CE.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.BusinessHoursId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Entitlement_CE.BusinessHoursId</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>Asignar_CSM</name>
         <label>Asignar CSM</label>
-        <locationX>50</locationX>
+        <locationX>578</locationX>
         <locationY>1031</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
@@ -44,7 +64,7 @@
     <assignments>
         <name>Asignar_Default</name>
         <label>Asignar Default</label>
-        <locationX>1370</locationX>
+        <locationX>1898</locationX>
         <locationY>791</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
@@ -64,7 +84,7 @@
     <assignments>
         <name>Asignar_Default_CCS</name>
         <label>Asignar Default CCS</label>
-        <locationX>842</locationX>
+        <locationX>1370</locationX>
         <locationY>1151</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
@@ -82,9 +102,29 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>Asignar_Default_CE</name>
+        <label>Asignar Default CE</label>
+        <locationX>314</locationX>
+        <locationY>1151</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.EntitlementId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Default_CE.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.BusinessHoursId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Default_CE.BusinessHoursId</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>Asignar_Default_CSM</name>
         <label>Asignar Default CSM</label>
-        <locationX>314</locationX>
+        <locationX>842</locationX>
         <locationY>1151</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
@@ -104,7 +144,7 @@
     <assignments>
         <name>CaseEntitlementAssignment</name>
         <label>Asignar Entitlement Caso</label>
-        <locationX>2844</locationX>
+        <locationX>3372</locationX>
         <locationY>1283</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
@@ -113,13 +153,35 @@
                 <elementReference>FoundUspEntitlement</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.BusinessHoursId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FoundUspBusinessHours</elementReference>
+            </value>
+        </assignmentItems>
     </assignments>
     <decisions>
-        <name>CCS_o_CSM</name>
-        <label>¿CCS o CSM?</label>
-        <locationX>644</locationX>
+        <name>CCS_o_CSM_o_CE</name>
+        <label>¿CCS, CSM o CE?</label>
+        <locationX>908</locationX>
         <locationY>671</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Centro_Excelencia</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Centro Excelencia</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Entitlement_CE</targetReference>
+            </connector>
+            <label>Centro Excelencia</label>
+        </rules>
         <rules>
             <name>CSM</name>
             <conditionLogic>and</conditionLogic>
@@ -168,7 +230,7 @@
     <decisions>
         <name>Encontrado_Entitlement_CCS</name>
         <label>¿Encontrado Entitlement CCS?</label>
-        <locationX>710</locationX>
+        <locationX>1238</locationX>
         <locationY>911</locationY>
         <defaultConnector>
             <targetReference>Default_CCS</targetReference>
@@ -191,9 +253,34 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Encontrado_Entitlement_CE</name>
+        <label>¿Encontrado Entitlement CE?</label>
+        <locationX>182</locationX>
+        <locationY>911</locationY>
+        <defaultConnector>
+            <targetReference>Default_CE</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Encontrado CE</defaultConnectorLabel>
+        <rules>
+            <name>Encontrado_CE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Entitlement_CE</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_CE</targetReference>
+            </connector>
+            <label>Encontrado CE</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Encontrado_Entitlement_CSM</name>
         <label>¿Encontrado Entitlement CSM?</label>
-        <locationX>182</locationX>
+        <locationX>710</locationX>
         <locationY>911</locationY>
         <defaultConnector>
             <targetReference>Default_CSM</targetReference>
@@ -218,7 +305,7 @@
     <decisions>
         <name>GotEntitlementResultsDecision</name>
         <label>Existen resultados USP</label>
-        <locationX>2294</locationX>
+        <locationX>2822</locationX>
         <locationY>791</locationY>
         <defaultConnector>
             <targetReference>GetDefaultUSPAction</targetReference>
@@ -288,7 +375,7 @@
     <decisions>
         <name>GotUspPartnerEntitlementResultsDecision</name>
         <label>Existen resultados USP Partner</label>
-        <locationX>3042</locationX>
+        <locationX>3570</locationX>
         <locationY>791</locationY>
         <defaultConnector>
             <targetReference>GetDefaultUspPartnerAction</targetReference>
@@ -314,12 +401,12 @@
         <description>Comprueba que el origen sea email y que alguno de los campos que se usan para definir el Entitlement hayan cambiado</description>
         <name>MeetsEntryCriteriaDecision</name>
         <label>¿Cumple criterios?</label>
-        <locationX>3251</locationX>
+        <locationX>3779</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>No cumple criterios</defaultConnectorLabel>
         <rules>
             <name>MeetsEntryCriteriaOutcome</name>
-            <conditionLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6)</conditionLogic>
+            <conditionLogic>(1 OR 7) AND (2 OR 3 OR 4 OR 5 OR 6)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Origin</leftValueReference>
                 <operator>EqualTo</operator>
@@ -362,6 +449,13 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NoteINFO</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>RelatedAccountDecision</targetReference>
             </connector>
@@ -371,7 +465,7 @@
     <decisions>
         <name>RecordTypeDecision</name>
         <label>¿Tipo de registro?</label>
-        <locationX>2621</locationX>
+        <locationX>3116</locationX>
         <locationY>311</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -409,7 +503,7 @@
         <description>Comprueba si tiene un mediador asociado y este cuenta con los datos necesarios informados o si es un partner. De lo contrario asocia el SLA por defecto</description>
         <name>RelatedAccountDecision</name>
         <label>¿Cuenta asociada?</label>
-        <locationX>2844</locationX>
+        <locationX>3372</locationX>
         <locationY>551</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -471,7 +565,7 @@
     <decisions>
         <name>Se_han_modificado_los_campos</name>
         <label>¿Se han modificado los campos?</label>
-        <locationX>1320</locationX>
+        <locationX>1782</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -507,7 +601,7 @@
     <decisions>
         <name>Tiene_Cuenta_asociada</name>
         <label>¿Tiene Cuenta asociada?</label>
-        <locationX>1007</locationX>
+        <locationX>1403</locationX>
         <locationY>551</locationY>
         <defaultConnector>
             <targetReference>Default</targetReference>
@@ -524,7 +618,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>CCS_o_CSM</targetReference>
+                <targetReference>CCS_o_CSM_o_CE</targetReference>
             </connector>
             <label>Si hay cuenta</label>
         </rules>
@@ -562,7 +656,7 @@
     <recordLookups>
         <name>Default</name>
         <label>Default</label>
-        <locationX>1370</locationX>
+        <locationX>1898</locationX>
         <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -583,7 +677,7 @@
     <recordLookups>
         <name>Default_CCS</name>
         <label>Default CCS</label>
-        <locationX>842</locationX>
+        <locationX>1370</locationX>
         <locationY>1031</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -602,9 +696,30 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Default_CE</name>
+        <label>Default CE</label>
+        <locationX>314</locationX>
+        <locationY>1031</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Asignar_Default_CE</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Default CDEX</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Entitlement</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Default_CSM</name>
         <label>Default CSM</label>
-        <locationX>314</locationX>
+        <locationX>842</locationX>
         <locationY>1031</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -625,7 +740,7 @@
     <recordLookups>
         <name>Entitlement_CCS</name>
         <label>Entitlement CCS</label>
-        <locationX>710</locationX>
+        <locationX>1238</locationX>
         <locationY>791</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -660,6 +775,55 @@
                 <stringValue>CC Service</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Entitlement</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Entitlement_CE</name>
+        <label>Entitlement CE</label>
+        <locationX>182</locationX>
+        <locationY>791</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Encontrado_Entitlement_CE</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CaseTypeN2__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Subtype__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseTypeN3__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.TypeN3__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Centro Excelencia</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Entitlement</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -667,13 +831,13 @@
     <recordLookups>
         <name>Entitlement_CSM</name>
         <label>Entitlement CSM</label>
-        <locationX>182</locationX>
+        <locationX>710</locationX>
         <locationY>791</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Encontrado_Entitlement_CSM</targetReference>
         </connector>
-        <filterLogic>1 AND 2 AND 3 AND (4 OR 5)</filterLogic>
+        <filterLogic>1 AND 2 AND 3 AND (4 OR 5) AND 6</filterLogic>
         <filters>
             <field>CaseTypeN2__c</field>
             <operator>EqualTo</operator>
@@ -709,6 +873,13 @@
                 <stringValue>CSM Particulares</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Entitlement</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -716,7 +887,7 @@
     <recordLookups>
         <name>GetDefaultUSPAction</name>
         <label>Recuperar Entitlement Default USP</label>
-        <locationX>2690</locationX>
+        <locationX>3218</locationX>
         <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -740,6 +911,10 @@
         </filters>
         <object>Entitlement</object>
         <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -747,7 +922,7 @@
     <recordLookups>
         <name>GetDefaultUSPNotProductiveAction</name>
         <label>Recuperar Entitlement Default No Productivo USP</label>
-        <locationX>2426</locationX>
+        <locationX>2954</locationX>
         <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -770,6 +945,10 @@
         </filters>
         <object>Entitlement</object>
         <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -777,7 +956,7 @@
     <recordLookups>
         <name>GetDefaultUspPartnerAction</name>
         <label>Recuperar Entitlement Default USP Partner</label>
-        <locationX>3130</locationX>
+        <locationX>3658</locationX>
         <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -800,6 +979,10 @@
         </filters>
         <object>Entitlement</object>
         <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -807,7 +990,7 @@
     <recordLookups>
         <name>GetDefaultUSPProductiveAction</name>
         <label>Recuperar Entitlement Default Productivo USP</label>
-        <locationX>2162</locationX>
+        <locationX>2690</locationX>
         <locationY>911</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -831,6 +1014,10 @@
         </filters>
         <object>Entitlement</object>
         <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
         </outputAssignments>
@@ -838,13 +1025,13 @@
     <recordLookups>
         <name>GetUSPEntitlementAction</name>
         <label>Recuperar Entitlement USP</label>
-        <locationX>2294</locationX>
+        <locationX>2822</locationX>
         <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GotEntitlementResultsDecision</targetReference>
         </connector>
-        <filterLogic>1 AND 2 AND 3 AND 4 AND (5 OR 6) AND 7</filterLogic>
+        <filterLogic>1 AND 2 AND 3 AND 4 AND (5 OR 6) AND 7 AND 8</filterLogic>
         <filters>
             <field>CaseTypeN2__c</field>
             <operator>EqualTo</operator>
@@ -870,7 +1057,7 @@
             <field>AccountSegment__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Account.Segment__c</elementReference>
+                <elementReference>$Record.Account.SegmentDescription__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -894,7 +1081,18 @@
                 <stringValue>USP</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
+            </value>
+        </filters>
         <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
         <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
@@ -905,7 +1103,7 @@
     <recordLookups>
         <name>GetUspPartnerEntitlementAction</name>
         <label>Recuperar Entitlement USP Partner</label>
-        <locationX>3042</locationX>
+        <locationX>3570</locationX>
         <locationY>671</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -947,7 +1145,18 @@
                 <stringValue>Partner</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
+            </value>
+        </filters>
         <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
         <outputAssignments>
             <assignToReference>FoundUspEntitlement</assignToReference>
             <field>Id</field>
@@ -956,7 +1165,7 @@
         <sortOrder>Desc</sortOrder>
     </recordLookups>
     <start>
-        <locationX>2495</locationX>
+        <locationX>2990</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
@@ -967,6 +1176,13 @@
     </start>
     <status>Active</status>
     <triggerOrder>100</triggerOrder>
+    <variables>
+        <name>FoundUspBusinessHours</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>FoundUspEntitlement</name>
         <dataType>String</dataType>

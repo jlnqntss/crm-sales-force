@@ -1229,16 +1229,12 @@ public class TestDataFactory
      * @author nts (agonzalezisasi)
      * @date 15/02/2021
      */
-    public static List<Map<String, Object> > getINFONoteJson(
-        Integer totalItems
-        )
+    public static List<Map<String, Object> > getINFONoteJson (Integer totalItems)
     {
         return buildINFONoteJson(totalItems);
     }
 
-    private static List<Map<String, Object> > buildINFONoteJson(
-        Integer totalItems
-        )
+    private static List<Map<String, Object> > buildINFONoteJson(Integer totalItems)
     {
         if (totalItems == null || totalItems < 1)
         {
@@ -1283,6 +1279,73 @@ public class TestDataFactory
 
         return jsonElementsList;
     }
+
+     /**
+     * Obtener estructura json del sistema de origen MiZurich para registros
+     * de entidad Form Inc
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author nts (aberuete)
+     * @date 12/05/2023
+     */
+    public static List<Map<String, Object>> getMiZurichFormIncJson (Integer totalItems)
+    {
+        return buildMiZurichFromIncJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildMiZurichFromIncJson(Integer totalItems)
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems debe ser igual o mayor que 1');
+        }   
+
+         // From Metadata Robot_Hegeo_Field_Mapping__mdt
+         String tipo = '';
+         String subtype = 'No puedo registrarme';
+         String typeN3 = 'Mis datos introducidos son erróneos';
+ 
+         List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+ 
+         for (Integer i = 0; i < totalItems; i++)
+         {
+             /* REGISTRO FORM INC*/
+             jsonElementsList.add(
+                 new Map<String, Object> {
+                     'miZurich_description' => 'Descripcion del caso'+ i,
+                     'miZurich_nif' => '73562398D',
+                     'miZurich_inputForm1' => tipo,
+                     'miZurich_inputForm2' => subtype,
+                     'miZurich_inputForm3' => typeN3,
+                     'miZurich_telf' => '602543627',
+                     'miZurich_email' => 'mizruchemail@gmail.com'
+                    }
+                );
+         }
+ 
+         return jsonElementsList;
+    }
+
+    private static List<ExternalRequest__c> addExternalRequestToList (List<Map<String, Object>> jsonElementList, List<ExternalRequest__c> externalRequestList, String origin,String entity, Id infoRecordTypeId, Integer numIntentos)
+    {
+        for ( Map<String, Object> payload : jsonElementList)
+        {
+            externalRequestList.add(
+                new ExternalRequest__c(
+                    Origin__c = origin,
+                    Entity__c = entity,
+                    Action__c = 'UPSERT',
+                    Payload__c = JSON.serialize(payload),
+                    ContentFormat__c = 'JSON',
+                    recordTypeId = infoRecordTypeId,
+                    NumRetry__c = numIntentos
+                    )
+                );
+        }
+        return externalRequestList;
+    }
+
 
     /**
      * Obtener estructura json del sistema de origen INFO para registros
@@ -1416,11 +1479,7 @@ public class TestDataFactory
      * @author adelgado
      * @date 23/10/2020
      */
-    public static List<ExternalRequest__c> generateExternalRequest(
-        String origin,
-        String type,
-        Integer numRecords
-        )
+    public static List<ExternalRequest__c> generateExternalRequest(String origin, String type, Integer numRecords)
     {
         List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
@@ -1429,338 +1488,106 @@ public class TestDataFactory
         switch on type.toUpperCase()
         {
             // Persona física
-            when 'NATURAL_ACCOUNT' {
-                for (
-                    Map<String, Object> payload : getINFOCustomerJson(numRecords, 'F')
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'ACCOUNT',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'NATURAL_ACCOUNT' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOCustomerJson(numRecords, 'F'), externalRequestList, origin, 'ACCOUNT', infoRecordTypeId, 0);
             }
             // Persona jurídica
-            when 'LEGAL_ACCOUNT' {
-                for (Map<String, Object> payload : getINFOCustomerJson(numRecords, 'J') )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'ACCOUNT',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'LEGAL_ACCOUNT' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOCustomerJson(numRecords, 'J'), externalRequestList, origin, 'ACCOUNT', infoRecordTypeId, 0);
             }
             // Vía de contacto
-            when 'CONTACT_POINT_ADDRESS' {
-                for (
-                    Map<String, Object> payload : getINFOContactPointJson(numRecords, 'P')
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'CONTACT_POINT',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'CONTACT_POINT_ADDRESS' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOContactPointJson(numRecords, 'P'), externalRequestList, origin, 'CONTACT_POINT', infoRecordTypeId, 0);
             }
             // Vía de contacto
-            when 'CONTACT_POINT_PHONE' {
-                for (
-                    Map<String, Object> payload : getINFOContactPointJson(numRecords, 'T')
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'CONTACT_POINT',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'CONTACT_POINT_PHONE' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOContactPointJson(numRecords, 'T'), externalRequestList, origin, 'CONTACT_POINT', infoRecordTypeId, 0);
             }
             // Vía de contacto
-            when 'CONTACT_POINT_EMAIL' {
-                for (
-                    Map<String, Object> payload : getINFOContactPointJson(numRecords, 'E')
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'CONTACT_POINT',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'CONTACT_POINT_EMAIL' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOContactPointJson(numRecords, 'E'), externalRequestList, origin, 'CONTACT_POINT', infoRecordTypeId, 0);
             }
             // Producto
-            when 'PRODUCT' {
-                for (Map<String, Object> payload : getINFOProductJson(numRecords) )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'PRODUCT',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'PRODUCT' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOProductJson(numRecords), externalRequestList, origin, 'PRODUCT', infoRecordTypeId, 0);
             }
             // Oferta
-            when 'QUOTE' {
-                for (Map<String, Object> payload : getINFOQuoteJson(numRecords) )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'QUOTE',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'QUOTE' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOQuoteJson(numRecords), externalRequestList, origin, 'QUOTE', infoRecordTypeId, 0);
             }
             // Opción oferta
-            when 'QUOTE_OPTION' {
-                for (Map<String, Object> payload : getINFOQuoteOptionJson(numRecords) )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'QUOTE_OPTION',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'QUOTE_OPTION' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOQuoteOptionJson(numRecords), externalRequestList, origin, 'QUOTE_OPTION', infoRecordTypeId, 0);
             }
             // Póliza
-            when 'POLICY' {
-                for (Map<String, Object> payload : getINFOPolicyJson(numRecords) )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'POLICY',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'POLICY' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOPolicyJson(numRecords), externalRequestList, origin, 'POLICY', infoRecordTypeId, 0);
             }
             // Objeto asegurado
-            when 'INSURED_OBJECT' {
-                for (
-                    Map<String, Object> payload : getINFOInsuredObjectJson(numRecords)
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'INSURED_OBJECT',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'INSURED_OBJECT' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOInsuredObjectJson(numRecords), externalRequestList, origin, 'INSURED_OBJECT', infoRecordTypeId, 0);
             }
             // Siniestro
-            when 'CLAIM' {
-                for (
-                    Map<String, Object> payload : getINFOClaimJson(numRecords)
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'CLAIM',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'CLAIM' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOClaimJson(numRecords), externalRequestList, origin, 'CLAIM', infoRecordTypeId, 0);
             }
             // Rol póliza
-            when 'POLICY_RELATIONSHIP' {
-                for (
-                    Map<String, Object> payload : getINFOPolicyRelationshipJson(
-                        numRecords
-                        )
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'POLICY_RELATIONSHIP',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'POLICY_RELATIONSHIP' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOPolicyRelationshipJson(numRecords), externalRequestList, origin, 'POLICY_RELATIONSHIP', infoRecordTypeId, 0);
             }
             // Rol oferta
-            when 'QUOTE_RELATIONSHIP' {
-                for (
-                    Map<String, Object> payload : getINFOQuoteRelationshipJson(numRecords)
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'QUOTE_RELATIONSHIP',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'QUOTE_RELATIONSHIP' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOQuoteRelationshipJson(numRecords), externalRequestList, origin, 'QUOTE_RELATIONSHIP', infoRecordTypeId, 0);
             }
             // Rol siniestro
-            when 'CLAIM_RELATIONSHIP' {
-                for (
-                    Map<String, Object> payload : getINFOClaimRelationshipJson(numRecords)
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'CLAIM_RELATIONSHIP',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'CLAIM_RELATIONSHIP' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOClaimRelationshipJson(numRecords), externalRequestList, origin, 'CLAIM_RELATIONSHIP', infoRecordTypeId, 0);
             }
             //Partner
-            when 'PARTNER' {
-                for (
-                    Map<String, Object> payload : getINFOPartnerJson(numRecords)
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'PARTNER',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'PARTNER' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOPartnerJson(numRecords), externalRequestList, origin, 'PARTNER', infoRecordTypeId, 0);
             }
             //Mediador
-            when 'INTERMEDIARY' {
-                for (
-                    Map<String, Object> payload : getINFOIntermediaryJson(numRecords)
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'INTERMEDIARY',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'INTERMEDIARY' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOIntermediaryJson(numRecords), externalRequestList, origin, 'INTERMEDIARY', infoRecordTypeId, 0);
             }
-            when 'NOTE' {
-                for (
-                    Map<String, Object> payload : getINFONoteJson(numRecords)
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'NOTE',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId,
-                            NumRetry__c = 2
-                            )
-                        );
-                }
+            when 'NOTE' 
+            {
+                externalRequestList = addExternalRequestToList (getINFONoteJson(numRecords), externalRequestList, origin, 'NOTE', infoRecordTypeId, 2);
+            }
+            when 'FORM_INC' 
+            {
+                externalRequestList = addExternalRequestToList (getMiZurichFormIncJson(numRecords),externalRequestList, origin, 'FORM_INC', infoRecordTypeId, 0);
             }
             // Condición Especial Partner
-            when 'SPECIAL_CONDITION' {
-                for (
-                    Map<String, Object> payload : getINFOSpecialConditionJson(numRecords)
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'SPECIAL_CONDITION',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'SPECIAL_CONDITION' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOSpecialConditionJson(numRecords),externalRequestList, origin, 'SPECIAL_CONDITION', infoRecordTypeId, 0);
             }
             // SDM KPIs
-            when 'INTERMEDIARY_KPI' {
-                for (
-                    Map<String, Object> payload : getINFOSDMKPIJson(numRecords)
-                    )
-                {
-                    externalRequestList.add(
-                        new ExternalRequest__c(
-                            Origin__c = origin,
-                            Entity__c = 'INTERMEDIARY_KPI',
-                            Action__c = 'UPSERT',
-                            Payload__c = JSON.serialize(payload),
-                            ContentFormat__c = 'JSON',
-                            recordTypeId = infoRecordTypeId
-                            )
-                        );
-                }
+            when 'INTERMEDIARY_KPI' 
+            {
+                externalRequestList = addExternalRequestToList (getINFOSDMKPIJson(numRecords),externalRequestList, origin, 'INTERMEDIARY_KPI', infoRecordTypeId, 0);
+            }
+            when else  
+            {
+                return externalRequestList;
             }
 
         }
@@ -3374,7 +3201,7 @@ public class TestDataFactory
      * @date 23/12/2022
      * @return {Event} 
      */
-    public static void generateEvent() {
+    public static Event generateEvent() {
         Event e = new Event();
         e.subject = 'EventTest';
         e.EventType__c = 'Call';
@@ -3382,5 +3209,31 @@ public class TestDataFactory
         e.DurationInMinutes = 60;
         e.ActivityDateTime = DateTime.now();
         insert e;
+
+        return e;
+    }
+
+    /**
+     * Genera un acta y lo asocia a un evento
+     *
+     * @author nts (dmunoz)
+     * @date 23/12/2022
+     * @return {Event} 
+     */
+    public static Acta__c generateActa(Event event) {
+
+        Acta__c acta = new Acta__c();
+        acta.Attendees__c = 'Attendee';
+        acta.MeetingObjective__c = event.Subject;
+        acta.Location__c = 'Sala 1';
+
+        insert acta;
+
+        Event e = new Event();
+        e.Id = event.Id;
+        e.Acta__c = acta.Id;
+        update e;
+
+        return acta;
     }
 }

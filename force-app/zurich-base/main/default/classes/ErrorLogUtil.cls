@@ -5,7 +5,7 @@
  * @date 01/04/2020
  * @testClass Test_ErrorLogUtil
  */
-public without sharing class ErrorLogUtil
+public with sharing class ErrorLogUtil
 {
     public static final String ERROR_LEVEL_CRITICAL = 'Critical';
     public static final String ERROR_LEVEL_ERROR = 'Error';
@@ -15,6 +15,7 @@ public without sharing class ErrorLogUtil
     static final String SETTING_NOTIFY_TO;
     static final String SETTING_NOTIFY_FROM;
     static final Boolean SETTING_SEND_EMAIL;
+    static final String END_CELL = '</td><td>';
 
     static {
         // Cargar los valores de configuración
@@ -494,11 +495,11 @@ public without sharing class ErrorLogUtil
                         errHtmlTableLines.add(
                             '<tr><td>' +
                             err.Id +
-                            '</td><td>' +
+                            END_CELL +
                             err.Message__c +
-                            '</td><td>' +
+                            END_CELL +
                             err.Level__c +
-                            '</td><td>' +
+                            END_CELL +
                             String.valueOfGmt(err.CreatedDate) +
                             '</td><td><a href="' +
                             System.URL.getSalesforceBaseUrl().toExternalForm() +

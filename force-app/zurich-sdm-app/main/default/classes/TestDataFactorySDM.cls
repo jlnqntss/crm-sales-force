@@ -34,7 +34,7 @@ public class TestDataFactorySDM
      * @author nts (agonzalezisasi)
      * @date 02/07/2021
      */
-    public static List<SDMAccountTeamRole__mdt> getSDMSettingsATM(string role, string field)
+    public static List<SDMAccountTeamRole__mdt> getSDMSettingsATM(string role, string field,String fieldName)
     {
         List<SDMAccountTeamRole__mdt> settings = new List<SDMAccountTeamRole__mdt>();
         settings.add(new SDMAccountTeamRole__mdt(
@@ -42,6 +42,7 @@ public class TestDataFactorySDM
             DeveloperName= 'testATM',
             Role__c= role,
             IntermediaryField__c= field,
+            IntermediaryNameField__c=fieldName,
             Status__c= 'Active'
         ));
         return settings;
@@ -73,7 +74,7 @@ public class TestDataFactorySDM
     /**
      * Metodo que genera un objeto de tipo configuracion del indicador del plan comercial
      */
-    public static SDMCommercialPlan__mdt generateSDMSettingsPlan(String indicator, String calcType, string firstField, string secondField)
+    public static SDMCommercialPlan__mdt generateSDMSettingsPlan(String indicator, String calcType, string firstField, string secondField, Boolean calculatedPreviousPeriod, String previousPeriodField)
     {
         return new SDMCommercialPlan__mdt(
                 Label= 'testPlanSum',
@@ -81,7 +82,9 @@ public class TestDataFactorySDM
                 Indicator__c= indicator,
                 CalculationType__c= calcType,
                 FirstField__c= firstField,
-                SecondField__c= secondField
+                SecondField__c= secondField,
+                CalculatedPreviousPeriod__c = calculatedPreviousPeriod,
+                PreviousPeriodField__c = previousPeriodField
         );
     }
 
@@ -198,7 +201,7 @@ public class TestDataFactorySDM
         IntermediarySDM sdm = new IntermediarySDM();
         // Preparamos la configuracion para el campo que nos interesa
         sdm.testSettingsATM = TestDataFactorySDM.getSDMSettingsATM(
-            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD
+            SettingsSDM.ATM_ROL_TERRITORY, AccountsSelector.SDM_DT_EMAIL_FIELD,AccountsSelector.SDM_DT_NAME_FIELD
         );
         // asignacion de la agrupacion
         sdm.assignIntermediaryAgrupation(intermediaries);
@@ -230,8 +233,10 @@ public class TestDataFactorySDM
         System.assertEquals(6, kpis.size(), 'Se deberian haber generado 6 KPIs');
         // Primer mediador => suma [10=10] El segundo KPI no se considera en el filtrado
         kpis[0].PN__c = 10;
+        kpis[0].PA_PN__c = 8;
         kpis[0].ProductGroup__c = 'AUTOS';
         kpis[1].PN__c = 15;
+        kpis[1].PA_PN__c = 17;
         kpis[1].ProductGroup__c = 'HOGAR';
         // Segundo mediador => ratio [20/50=0,4]
         kpis[2].TotalLoad__c = 12;
@@ -256,6 +261,7 @@ public class TestDataFactorySDM
         // Añadimos un kpi Anual. No deberia contar para los mensuales
         kpis = TestDataFactorySDM.generateKPIs(new List<Account>{intermediaries[0]}, 2);
         kpis[0].PN__c = 13;
+        kpis[0].PA_PN__c = 10;
         kpis[0].Temporalidad__c = KPIsSelector.TEMPORALIDAD_YTD;
         kpis[0].CalcMonth__c = '8'; // aunque no mes de ejecucion (9), si deberia contar por ser ultimo mes disponible
         kpis[1].PN__c = 5;
@@ -554,5 +560,31 @@ public class TestDataFactorySDM
         }
 
         return plans;
+    }
+
+    /**
+     * Metodo que genera Seguimientos asociados a cuentas de intermediario
+     */
+    public static List<FollowUp__c> generateFollowUps (Integer num, Set<Id> accountIds, String type, String rol)
+    {
+        List<FollowUp__c> seguimientos = new List<FollowUp__c> ();
+        for (Id idIntermediary : accountIds)
+        {
+            for (Integer i=0;i<num;i++)
+            {
+                FollowUp__c seguimiento = new FollowUp__c 
+                (
+                    Type__c = type,
+                    Detail__c = 'Participa: Si',
+                    Account__c = idIntermediary,
+                    Notify__c = rol    
+                );
+                
+                seguimientos.add(seguimiento);
+            }
+            
+        }
+
+        return seguimientos;
     }
 }

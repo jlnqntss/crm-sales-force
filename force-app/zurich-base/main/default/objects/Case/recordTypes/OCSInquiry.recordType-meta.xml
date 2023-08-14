@@ -20,6 +20,14 @@
             <fullName>CSM Particulares</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Centro Excelencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TWW Retención</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>CauseOfLoss__c</picklist>
@@ -57,6 +65,161 @@
         </values>
         <values>
             <fullName>Water Damage</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CentroTramitador__c</picklist>
+        <values>
+            <fullName>BASICOS DAÑOS EXPRESS 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS LC %26 CORP%2E BARCELONA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS LC %26 CORP%2E MADRID</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC MATERIALES 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC MATERIALES 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RC MATERIALES 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BASICOS RECLAMACIÓN DAÑOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Básicos Líneas Personales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CC Comercialización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CC Retención</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CS TECNICO DAÑOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CSM Administración</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CSM Particulares</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT ACCIDENTES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT RC MATERIALES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CT RECOBRO INDEMNIZABLES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA AUTO CONVENIOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA DAÑOS PROPIOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA INTERNACIONAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA JURIDICO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA LESIONES RECLAMACION</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA MOTOR EXPRESS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA RECLAMACION LESIONES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTA%2E CONVENCIONAL AUTO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD BCN 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD BCN 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD BCN 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD BCN 4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD LC %26 CORP%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD LINEAS PERSONALES</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD PYMES 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTD PYMES 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contact Center Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LESIONES ZONA 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Libre Designa ALD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZURICH ASISTENCIA SH BASICOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZURICH LUNAS %28NO DISPONIBLE%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zurich Asistencia Auto</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -484,7 +647,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Realizado - Cambio criterio centro</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Realizado - Con extorno</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realizado - Confirmación criterio centro</fullName>
             <default>false</default>
         </values>
         <values>
@@ -524,7 +695,31 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Resolución SDC Desestimada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC Estimada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC Inadmitida</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC Parcialmente estimada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC estimada centro</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Retenido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Traslado a gestión centro tramitador</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -859,6 +1054,21 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>SourceAreaDetail__c</picklist>
+        <values>
+            <fullName>CRM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Centro tramitador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsable de negocio</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>SourceArea__c</picklist>
         <values>
             <fullName>End customer partner</fullName>
@@ -987,6 +1197,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Incidencias-Consultas Siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Información</fullName>
             <default>false</default>
         </values>
@@ -1004,6 +1218,10 @@
         </values>
         <values>
             <fullName>Reclamación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reclamación Siniestros</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1089,6 +1307,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Atención deficiente tramitador</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Bloqueo %2F Desbloqueo</fullName>
             <default>false</default>
         </values>
@@ -1153,6 +1375,14 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cumplimiento resolución</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cumplimiento resolución SDC</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Datos Bancarios</fullName>
             <default>false</default>
         </values>
@@ -1162,6 +1392,22 @@
         </values>
         <values>
             <fullName>Devolución</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disconformidad con indemnización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disconformidad con peritación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disconformidad con rehuse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disconformidad con resolución</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1190,6 +1436,10 @@
         </values>
         <values>
             <fullName>Fallo registro identificado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Falta de información</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1261,7 +1511,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Pago Graciable</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Pagos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Petición Alegaciones SDC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Procesos y herramientas</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1305,7 +1567,27 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Replica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución SDC</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Retención</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso Indemnización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso Peritación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retraso Tramitación</fullName>
             <default>false</default>
         </values>
         <values>

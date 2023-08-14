@@ -4878,6 +4878,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Activity.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Activity.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Activity.NLUTypificationFailed__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4944,6 +4954,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Asset.AccountId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Asset.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Asset.Anonymized__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5663,6 +5683,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>CampaignMember.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CampaignMember.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>CampaignMember.ScopeId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5718,6 +5748,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.AssetId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5734,6 +5774,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.CauseOfLoss__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.CentroTramitador__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5812,9 +5857,19 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.EconomicImpact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.Form_type__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.HasBeenTransfered__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -5978,6 +6033,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.RelatedPolicyOffer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.ScopeId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5994,6 +6054,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.SourceArea__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.SourceAreaDetail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6069,6 +6134,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Claim__c.ClaimOwnerFirstname__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Claim__c.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6214,6 +6289,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Abandoned_Lead__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+   <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6563,6 +6648,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ContactPointAddress.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointAddress.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ContactPointAddress.ActiveToDate</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6716,6 +6811,16 @@
         <field>ContactPointEmail.ActiveFromDate</field>
         <readable>true</readable>
     </fieldPermissions>
+   <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointEmail.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointEmail.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointEmail.ActiveToDate</field>
@@ -6804,6 +6909,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointPhone.ActiveFromDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointPhone.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ContactPointPhone.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7199,6 +7314,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>EmailMessage.GenesysFlowID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EmailMessage.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>EmailMessage.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8029,6 +8154,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.AccountId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+   <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8903,6 +9038,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Policy__c.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.Blocked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Policy__c.BusinessCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9569,6 +9714,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Scope__c.Contactable__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Scope__c.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Scope__c.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13287,6 +13442,17 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Frequency of notifications</layout>
+        <recordType>Objective__c.FrequencyNotifications</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Objective__c-Objetivos Layout</layout>
+        <recordType>Objective__c.Objectives</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Opportunity Layout</layout>

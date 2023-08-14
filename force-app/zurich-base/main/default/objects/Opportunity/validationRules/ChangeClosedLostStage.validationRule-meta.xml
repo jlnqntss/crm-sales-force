@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ChangeClosedLostStage</fullName>
+    <active>true</active>
+    <description>Validación que no permite modificar la etapa de una oferta en estado Cerrada perdida para aquellos que no tienen el custom permission Editar_ofertas_cerradas para los usuarios ventas</description>
+    <errorConditionFormula>($Profile.Name = &apos;Ventas User&apos; ||
+$Profile.Name = &apos;Agente Ventas&apos;) &amp;&amp;
+NOT($Permission.Editar_ofertas_cerradas) &amp;&amp;
+ISPICKVAL(PRIORVALUE(StageName),&quot;Closed Lost&quot;) &amp;&amp;
+ISCHANGED(StageName)</errorConditionFormula>
+    <errorDisplayField>StageName</errorDisplayField>
+    <errorMessage>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Perdida</errorMessage>
+</ValidationRule>

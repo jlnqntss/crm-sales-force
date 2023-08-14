@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>GenesysFlowRoutingInvocableAction</name>
-        <label>Enrutar a Flow Genesys</label>
-        <locationX>308</locationX>
-        <locationY>768</locationY>
-        <actionName>GenesysCloudRouteEmailAction</actionName>
+        <description>Se procede con el envío de la Nota INFO a Genesys Cloud.</description>
+        <name>genesysCloudRouteMessageAction</name>
+        <label>Enrutar mensaje a Genesys Cloud</label>
+        <locationX>902</locationX>
+        <locationY>1116</locationY>
+        <actionName>GenesysCloudRouteMessageAction</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>GetInteractionRecordTypeIdAction</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>CreateErrorLogAction</targetReference>
-        </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>queueIdAttribute</name>
             <value>
-                <elementReference>GetGenesysCloudQueueAction.genesysQueueName</elementReference>
+                <elementReference>genesysQueueName</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -37,6 +34,12 @@
             <name>fromName</name>
             <value>
                 <elementReference>$Record.SuppliedName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>ownerId</name>
+            <value>
+                <elementReference>GestorPreferenteSearchFromEmailSubflow.GestorPreferenteAsignado</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -63,8 +66,58 @@
                 <elementReference>$Record.Subject</elementReference>
             </value>
         </inputParameters>
+        <outputParameters>
+            <assignToReference>interactionId</assignToReference>
+            <name>interactionId</name>
+        </outputParameters>
     </actionCalls>
     <apiVersion>53.0</apiVersion>
+    <assignments>
+        <name>Asignamos_variables_generico</name>
+        <label>Asignamos variables generico</label>
+        <locationX>1034</locationX>
+        <locationY>600</locationY>
+        <assignmentItems>
+            <assignToReference>genesysQueueID</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetGenesysCloudQueueAction.genesysQueueId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysQueueName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetGenesysCloudQueueAction.genesysQueueName</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetGenesysQueueAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignamos_variables_Intermediary</name>
+        <label>Asignamos variables Intermediary</label>
+        <locationX>770</locationX>
+        <locationY>600</locationY>
+        <assignmentItems>
+            <assignToReference>genesysQueueID</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Obtener_cola_de_Genesys_Cloud_desde_Intermediary.genesysQueueId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysQueueName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Obtener_cola_de_Genesys_Cloud_desde_Intermediary.genesysQueueName</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetGenesysQueueAction</targetReference>
+        </connector>
+    </assignments>
     <constants>
         <description>Nombre API del tipo de registro Task: Interaction</description>
         <name>RECORDTYPE_INTERACTION</name>
@@ -73,7 +126,106 @@
             <stringValue>Interaction</stringValue>
         </value>
     </constants>
-    <description>Este flujo es ejecutado tras ser insertado un caso cuyo origen sea Nota INFO (API: NoteINFO)
+    <decisions>
+        <name>Check_Origin</name>
+        <label>Check Origin</label>
+        <locationX>902</locationX>
+        <locationY>1332</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Origin_NotaInfo</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NoteINFO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getSalesforceQueue</targetReference>
+            </connector>
+            <label>Origin NotaInfo</label>
+        </rules>
+        <rules>
+            <name>Origin_Web</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Web</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CreateTaskWebMiZurichAction</targetReference>
+            </connector>
+            <label>Origin Web</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Comprobamos si la cuenta asociada al caso es de tipo intermediario, ya que en caso afirmativo habrá que enviar más información al sistema de enrutado</description>
+        <name>Is_Intermediary_Account</name>
+        <label>Is Intermediary Account?</label>
+        <locationX>902</locationX>
+        <locationY>384</locationY>
+        <defaultConnector>
+            <targetReference>GetGenesysCloudQueueAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Obtener_cola_de_Genesys_Cloud_desde_Intermediary</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsUSPAndClosedDecision</name>
+        <label>Is USP and Closed?</label>
+        <locationX>506</locationX>
+        <locationY>276</locationY>
+        <defaultConnector>
+            <targetReference>Is_Intermediary_Account</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YesClosedOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Yes Closed</label>
+        </rules>
+    </decisions>
+    <description>Este flujo es ejecutado tras ser insertado un caso cuyo origen sea Nota INFO  (API: NoteINFO) o Web
 Se consulta en un sub-flujo la cola a la que debe ser enrutado.
 Se utiliza una acción de Apex para enviar el mensaje a Genesy sCloud.
 Se registra el resultado en una tarea relacionada al caso con el identificador de la interacción en Genesys Cloud.</description>
@@ -89,12 +241,13 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.CsmIndividualsManager__c})</expression>
     </formulas>
     <formulas>
+        <description>Fórmula que comprobará si el campo SpecializationType está informado</description>
         <name>SpecializationType</name>
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!$Record.AccountId}), &apos;&apos;, TEXT({!$Record.Account.SpecializationType__c}))</expression>
     </formulas>
-    <interviewLabel>Case Trigger - After Insert - Enrutador de Notas INFO {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger - After Insert - Enrutador de Notas INFO</label>
+    <interviewLabel>Case Trigger - After Insert - Enrutador de casos a Genesys  {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Trigger - After Insert - Enrutador de casos a Genesys</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -118,8 +271,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se registra el error en Salesforce con el detalle del mismo.</description>
         <name>CreateErrorLogAction</name>
         <label>Registrar error</label>
-        <locationX>836</locationX>
-        <locationY>1008</locationY>
+        <locationX>1694</locationX>
+        <locationY>1332</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -169,8 +322,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
         <name>CreateTaskAction</name>
         <label>Registrar tarea</label>
-        <locationX>308</locationX>
-        <locationY>1008</locationY>
+        <locationX>374</locationX>
+        <locationY>1656</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -220,11 +373,66 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
+        <name>CreateTaskWebMiZurichAction</name>
+        <label>Registrar tarea Web MiZurich</label>
+        <locationX>902</locationX>
+        <locationY>1440</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CreateErrorLogAction</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>CallObject</field>
+            <value>
+                <elementReference>interactionId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>GetInteractionRecordTypeIdAction.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>$Record.Subject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <stringValue>Incidences Record MiZurich</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Forms</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Get Genesys Queue</label>
-        <locationX>308</locationX>
-        <locationY>408</locationY>
+        <locationX>902</locationX>
+        <locationY>792</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GestorPreferenteSearchFromEmailSubflow</targetReference>
@@ -234,7 +442,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <field>Name</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>GetGenesysCloudQueueAction.genesysQueueName</elementReference>
+                <elementReference>genesysQueueName</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -245,11 +453,11 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera el identificador del tipo de registro Task: Interaction para registrar la siguiente tarea.</description>
         <name>GetInteractionRecordTypeIdAction</name>
         <label>Obetener tipo de registro Task: Interaction</label>
-        <locationX>308</locationX>
-        <locationY>888</locationY>
+        <locationX>902</locationX>
+        <locationY>1224</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>CreateTaskAction</targetReference>
+            <targetReference>Check_Origin</targetReference>
         </connector>
         <faultConnector>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -266,10 +474,55 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <object>RecordType</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>getSalesforceQueue</name>
+        <label>Get Salesforce queue</label>
+        <locationX>374</locationX>
+        <locationY>1440</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_case_owner</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>genesysQueueName</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Group</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_case_owner</name>
+        <label>Update case owner</label>
+        <locationX>374</locationX>
+        <locationY>1548</locationY>
+        <connector>
+            <targetReference>CreateTaskAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>getSalesforceQueue.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 OR (2 AND 3)</filterLogic>
         <filters>
             <field>Origin</field>
             <operator>EqualTo</operator>
@@ -277,11 +530,25 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
                 <stringValue>NoteINFO</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>Origin</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Web</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Solicitud de ayuda al registro de MiZurich</stringValue>
+            </value>
+        </filters>
         <object>Case</object>
         <recordTriggerType>Create</recordTriggerType>
         <scheduledPaths>
             <connector>
-                <targetReference>GetGenesysCloudQueueAction</targetReference>
+                <targetReference>IsUSPAndClosedDecision</targetReference>
             </connector>
             <pathType>AsyncAfterCommit</pathType>
         </scheduledPaths>
@@ -291,8 +558,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <subflows>
         <name>GestorPreferenteSearchFromEmailSubflow</name>
         <label>Buscar Gestor Preferente</label>
-        <locationX>308</locationX>
-        <locationY>528</locationY>
+        <locationX>902</locationX>
+        <locationY>900</locationY>
         <connector>
             <targetReference>PriorityCalculationSubflow</targetReference>
         </connector>
@@ -348,13 +615,13 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
     <subflows>
-        <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados.</description>
+        <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados sin los datos de las DTs a las que enrutar</description>
         <name>GetGenesysCloudQueueAction</name>
         <label>Obtener cola de Genesys Cloud</label>
-        <locationX>308</locationX>
-        <locationY>288</locationY>
+        <locationX>1034</locationX>
+        <locationY>492</locationY>
         <connector>
-            <targetReference>GetGenesysQueueAction</targetReference>
+            <targetReference>Asignamos_variables_generico</targetReference>
         </connector>
         <flowName>GenesysQueueRouter</flowName>
         <inputAssignments>
@@ -378,12 +645,54 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
     <subflows>
+        <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados. En los casos en los que la cuenta asociada al caso sea de tipo Intermediario, se les pasará los valores contenidos en los campos &quot;Email Particulares&quot; e &quot;Email Administración&quot;</description>
+        <name>Obtener_cola_de_Genesys_Cloud_desde_Intermediary</name>
+        <label>Obtener cola de Genesys Cloud desde Intermediary</label>
+        <locationX>770</locationX>
+        <locationY>492</locationY>
+        <connector>
+            <targetReference>Asignamos_variables_Intermediary</targetReference>
+        </connector>
+        <flowName>GenesysQueueRouter</flowName>
+        <inputAssignments>
+            <name>emailAdministracion</name>
+            <value>
+                <elementReference>$Record.Account.AdministrationEmail__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>emailParticulares</name>
+            <value>
+                <elementReference>$Record.Account.IndividualsEmail__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>routeIndustry</name>
+            <value>
+                <elementReference>$Record.Industry__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>routeType</name>
+            <value>
+                <elementReference>$Record.Origin</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>routeValue</name>
+            <value>
+                <elementReference>$Record.CallCenter__c</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
         <name>PriorityCalculationSubflow</name>
         <label>Calcular Prioridad</label>
-        <locationX>308</locationX>
-        <locationY>648</locationY>
+        <locationX>902</locationX>
+        <locationY>1008</locationY>
         <connector>
-            <targetReference>GenesysFlowRoutingInvocableAction</targetReference>
+            <targetReference>genesysCloudRouteMessageAction</targetReference>
         </connector>
         <flowName>EmailMessagePriorityCalculation</flowName>
         <inputAssignments>
@@ -407,11 +716,33 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
     <variables>
+        <name>genesysQueueID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>genesysQueueName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <description>Identificador de la interacción producida por el enrutado en Genesys Cloud.</description>
         <name>interactionId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>salesforceQueue</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Group</objectType>
     </variables>
 </Flow>

@@ -308,6 +308,13 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.SendNotifications__c</fieldItem>
                 <identifier>RecordSendNotifications__cField</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IsOwnedByHomeOffice__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -319,7 +326,7 @@
                 <fieldItem>Record.TargetKPIPercent__c</fieldItem>
                 <identifier>RecordTargetKPIPercent__cField</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 OR 2 OR 3 OR 4 OR 5 OR 6 OR 7</booleanFilter>
+                    <booleanFilter>1 OR 2 OR 3 OR 4 OR (5 AND (8 OR 9)) OR (6 AND (8 OR 9)) OR 7</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
@@ -354,6 +361,16 @@
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>Totaldiscount</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.IsOwnedByHomeOffice__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.RecordType.DeveloperName}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>MensualPlan</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -417,6 +434,42 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.Actual_KPI__c</fieldItem>
                 <identifier>RecordActual_KPI__cField</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IsOwnedByHomeOffice__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.RecordType.DeveloperName}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>MensualPlan</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.PAActualKPI__c</fieldItem>
+                <identifier>RecordPAActualKPI_cField</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.IsOwnedByHomeOffice__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>false</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.RecordType.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>MensualPlan</rightValue>
+                    </criteria>
+                </visibilityRule>
             </fieldInstance>
         </itemInstances>
         <name>Facet-a4928c05-0cf1-4cee-a11f-8c6ffc6c1e2e</name>
@@ -587,6 +640,9 @@
                             <value>Actual_KPI__c</value>
                         </valueListItems>
                         <valueListItems>
+                            <value>PAActualKPI__c</value>
+                        </valueListItems>
+                        <valueListItems>
                             <value>Indicator__c</value>
                         </valueListItems>
                         <valueListItems>
@@ -679,6 +735,10 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentInstanceProperties>
+                    <name>showLegacyActivityComposer</name>
+                    <value>false</value>
+                </componentInstanceProperties>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
                 <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>

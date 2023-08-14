@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 05-24-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class ExternalRequestsSelector
 {
     // #Region Properties
@@ -16,7 +23,7 @@ public with sharing class ExternalRequestsSelector
         {
             if(externalRequestFieldsToQuery == null)
             {
-                externalRequestFieldsToQuery = new Set<String> {'Id', 'Name'};
+                externalRequestFieldsToQuery = new Set<String> {'Id', 'Name','Origin__c', 'Index__c'};
             }
 
             return externalRequestFieldsToQuery;
@@ -209,10 +216,11 @@ public with sharing class ExternalRequestsSelector
      *
      * @author adelgado
      * @param  recordTypeId RecordType a recuperar
+     * @param  index Índice de la entidad a procesar
      * @param  orderType ASC o DESC. Si es nulo será ASC
      * @return Listado de external request recuperadas. Si no se recibe ningún recordtype se devuelve una lista vacía
      */
-    public ExternalRequest__c[] selectMinMaxPendingByRecordType(Id recordTypeId, String orderType)
+    public ExternalRequest__c[] selectMinMaxPendingByRecordType(Id recordTypeId, String orderType, Integer index)
     {
         if( recordTypeId == null)
         {
@@ -222,7 +230,7 @@ public with sharing class ExternalRequestsSelector
         return Database.query( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
-            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false ORDER BY Id ' + orderType,
+            'WHERE RecordTypeId = :recordTypeId AND Processed__c = false AND Index__c = :index ORDER BY Id ' + orderType,
             limitCondition
         }) );
     }
@@ -295,6 +303,33 @@ public with sharing class ExternalRequestsSelector
             ErrorLogUtil.commitError(ex, 'ExternalRequestSelector');
             return null;
         }
+    }
+
+    public Integer getPriorityToProcess()
+    {
+        Integer priorityToProcess;
+        
+        try 
+        {
+            List<ExternalRequest__c> er = Database.query(String.format(DEFAULT_STRING_FORMAT, new List<String>
+            {
+                baseQuery,
+                'WHERE Processed__c = false AND RecordType.DeveloperName = \'INFO\' ORDER BY Index__c ASC',
+                limitCondition
+            }));
+
+            // Si se encuentran ER sin procesar, se recoge el índice más prioritario por procesar
+            if (!er.isEmpty())
+            {
+                priorityToProcess = Integer.valueOf((Decimal) er.get(0).Index__c);
+            }
+        }
+        catch (Exception ex) 
+        { 
+            ErrorLogUtil.commitError(ex, 'ExternalRequestSelector');
+        }
+
+        return priorityToProcess;
     }
 
     // #endregion

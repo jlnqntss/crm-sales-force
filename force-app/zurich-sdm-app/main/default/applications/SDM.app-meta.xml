@@ -298,6 +298,9 @@
         <profile>SDM RN</profile>
     </profileActionOverrides>
     <tabs>standard-home</tabs>
+    <tabs>Seguimientos_Masivos</tabs>
+    <tabs>Mobile_Home_SDM</tabs>
+    <tabs>standard-MobileHome</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Task</tabs>
     <tabs>PlanComercial__c</tabs>
@@ -310,11 +313,15 @@
     <tabs>standard-Dashboard</tabs>
     <tabs>standard-Feed</tabs>
     <tabs>standard-ContentNote</tabs>
+    <tabs>FollowUp__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>SDM_UtilityBar</utilityBar>
     <workspaceConfig>
         <mappings>
             <tab>Alertas_por_Mediador</tab>
+        </mappings>
+        <mappings>
+            <tab>FollowUp__c</tab>
         </mappings>
         <mappings>
             <tab>GenerarPlan</tab>
@@ -324,6 +331,12 @@
         </mappings>
         <mappings>
             <tab>Objetivos</tab>
+        </mappings>
+        <mappings>
+            <tab>Seguimientos_Masivos</tab>
+        </mappings>
+        <mappings>
+            <tab>Mobile_Home_SDM</tab>
         </mappings>
         <mappings>
             <fieldName>ParentId</fieldName>
@@ -345,6 +358,9 @@
         </mappings>
         <mappings>
             <tab>standard-Feed</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-MobileHome</tab>
         </mappings>
         <mappings>
             <fieldName>WhoId</fieldName>

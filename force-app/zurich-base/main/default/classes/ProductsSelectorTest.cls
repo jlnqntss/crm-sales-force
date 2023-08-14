@@ -66,4 +66,32 @@ private with sharing class ProductsSelectorTest
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
+
+    @isTest
+    static void test_selectByID_ok()
+    {
+        List<Product2> existingProducts = [SELECT Id FROM Product2];
+        System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
+
+        Test.startTest();
+        List<Product2> matchedRecords = new ProductsSelector(
+            new Set<String> {'Id'}).selectByID(existingProducts[0].id);
+        Test.stopTest();
+
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
+
+    }
+
+    @isTest
+    static void test_selectByID_KO()
+    {
+       
+        Test.startTest();
+        List<Product2> matchedRecords = new ProductsSelector(
+            new Set<String> {'Id'}).selectByID('invent');
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+
+    }
 }

@@ -2,10 +2,23 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>56.0</apiVersion>
     <assignments>
+        <name>AnsweredAssignment</name>
+        <label>Answered Assignment</label>
+        <locationX>50</locationX>
+        <locationY>911</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Respondido</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>QuotationProspectAssignment</name>
         <label>Quotation Prospect</label>
-        <locationX>50</locationX>
-        <locationY>551</locationY>
+        <locationX>248</locationX>
+        <locationY>503</locationY>
         <assignmentItems>
             <assignToReference>$Record.QuotationStage__c</assignToReference>
             <operator>Assign</operator>
@@ -14,14 +27,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>userOwnerDecision</targetReference>
+            <targetReference>userOwnerQueueDecision</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>statusAssignedAssignment</name>
         <label>Status Assigned</label>
-        <locationX>50</locationX>
-        <locationY>887</locationY>
+        <locationX>314</locationX>
+        <locationY>911</locationY>
         <assignmentItems>
             <assignToReference>$Record.Status</assignToReference>
             <operator>Assign</operator>
@@ -33,8 +46,8 @@
     <decisions>
         <name>caseUspDecision</name>
         <label>Case Usp</label>
-        <locationX>380</locationX>
-        <locationY>311</locationY>
+        <locationX>611</locationX>
+        <locationY>287</locationY>
         <defaultConnectorLabel>No USP</defaultConnectorLabel>
         <rules>
             <name>UspOutcome</name>
@@ -53,12 +66,37 @@
         </rules>
     </decisions>
     <decisions>
+        <name>ParentCaseDecision</name>
+        <label>Parent Case?</label>
+        <locationX>182</locationX>
+        <locationY>803</locationY>
+        <defaultConnector>
+            <targetReference>statusAssignedAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>YesOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AnsweredAssignment</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>salesTypeQuotationStageDecision</name>
         <label>Sales Type And Quotation Stage</label>
-        <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationX>380</locationX>
+        <locationY>395</locationY>
         <defaultConnector>
-            <targetReference>userOwnerDecision</targetReference>
+            <targetReference>userOwnerQueueDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Not Sales/Null Quotation Stage</defaultConnectorLabel>
         <rules>
@@ -85,14 +123,14 @@
         </rules>
     </decisions>
     <decisions>
-        <name>userOwnerDecision</name>
-        <label>User Owner</label>
-        <locationX>182</locationX>
-        <locationY>767</locationY>
+        <name>userOwnerQueueDecision</name>
+        <label>User Owner Or Queue</label>
+        <locationX>380</locationX>
+        <locationY>695</locationY>
         <defaultConnectorLabel>Not User</defaultConnectorLabel>
         <rules>
-            <name>userOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <name>userCreatedOutcome</name>
+            <conditionLogic>(1 OR 4) AND 2 AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.OwnerId</leftValueReference>
                 <operator>StartsWith</operator>
@@ -114,10 +152,17 @@
                     <stringValue>Integrator</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>statusAssignedAssignment</targetReference>
+                <targetReference>ParentCaseDecision</targetReference>
             </connector>
-            <label>User</label>
+            <label>Created By User</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -143,7 +188,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>254</locationX>
+        <locationX>485</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>caseUspDecision</targetReference>
@@ -153,4 +198,5 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>140</triggerOrder>
 </Flow>

@@ -6,194 +6,193 @@
   @last modified by  : jjuaristi
 -->
 <template>
-  <div>
-    <div class="slds-float_right">
-      <lightning-button
-        if:false={booleanMaestroFijado}
-        label="Buscar nuevo SIC"
-        class="slds-button"
-        onclick={handleSIC}
-        variant="brand"
-      ></lightning-button>
-      <p></p>
-      <lightning-button
-        if:false={booleanMaestroFijado}
-        label="Ver Actividades comerciales"
-        class="slds-button"
-        onclick={handleCommercial}
-      ></lightning-button>
-      <p></p>
-      <lightning-button
-        label="Ver Marcos de actuación"
-        class="slds-button"
-        onclick={goToDoc}
-        if:true={showFramework}
-      ></lightning-button>
-      <p></p>
-      <lightning-button
-        label={labelSetTechPolicyButton}
-        class="slds-button"
-        onclick={holdTechPolicy}
-        if:true={caseRecord}
-      ></lightning-button>
-      <br />
-      <div if:true={caseRecord}><br /><br /><br /><br /></div>
-      <div if:true={filtersVisible}><br /><br /></div>
-      <div if:false={caseRecord} if:true={filtersVisible}>
-        <br /><br /><br /><br />
+  <div class="slds-grid">
+    <div class="slds-col slds-size_6-of-12">
+      <div class="slds-grid slds-grid_vertical">
+        <div class="slds-col">
+          <lightning-breadcrumbs>
+            <lightning-breadcrumb label={sicLabelTrack} onclick={handleSIC}>
+            </lightning-breadcrumb>
+            <lightning-breadcrumb label={bunchLabelTrack} onclick={handleBunch}>
+            </lightning-breadcrumb>
+            <lightning-breadcrumb
+              label={activityLabelTrack}
+              onclick={handleCommercial}
+            >
+            </lightning-breadcrumb>
+          </lightning-breadcrumbs>
+        </div>
+        <div class="slds-col">
+          <div class="slds-p-top_large">
+            <template if:true={filtersVisible}>
+              <lightning-input
+                if:true={showExplosives}
+                type="checkbox"
+                label="Con uso de explosivos"
+                onchange={filterPolicies}
+                id="filter-0"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showEspumosos}
+                type="checkbox"
+                label="Con existencia de espumosos"
+                onchange={filterPolicies}
+                id="filter-1"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showAspiration}
+                type="checkbox"
+                label="Con aspiración automática"
+                onchange={filterPolicies}
+                id="filter-2"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showCover}
+                type="checkbox"
+                label="Con recubrimiento"
+                onchange={filterPolicies}
+                id="filter-3"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showCombustible}
+                type="checkbox"
+                label="Con planchas combustibles"
+                onchange={filterPolicies}
+                id="filter-4"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showContainer}
+                type="checkbox"
+                label="Con fabricación de envases"
+                onchange={filterPolicies}
+                id="filter-5"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showDistillation}
+                type="checkbox"
+                label="Con destilación"
+                onchange={filterPolicies}
+                id="filter-6"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showFlammable}
+                type="checkbox"
+                label="Con existencia de líquidos inflamables"
+                onchange={filterPolicies}
+                id="filter-7"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showFoaming}
+                type="checkbox"
+                label="Con foamizado"
+                onchange={filterPolicies}
+                id="filter-8"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showPlasticFoaming}
+                type="checkbox"
+                label="Con materias plácticas espumosas"
+                onchange={filterPolicies}
+                id="filter-9"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showNitrates}
+                type="checkbox"
+                label="Con nitratos"
+                onchange={filterPolicies}
+                id="filter-10"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showUpholstered}
+                type="checkbox"
+                label="Con tapizados"
+                onchange={filterPolicies}
+                id="filter-11"
+              >
+              </lightning-input>
+              <lightning-input
+                if:true={showWood}
+                type="checkbox"
+                label="Con secadero de madera"
+                onchange={filterPolicies}
+                id="filter-12"
+              >
+              </lightning-input>
+            </template>
+          </div>
+        </div>
       </div>
-      <div class="slds-float_right slds-p-top_medium" if:true={showCheckboxes}>
-        <lightning-button-icon
-          icon-name="utility:filterList"
-          onclick={handleFilter}
-        ></lightning-button-icon>
-        <lightning-button-icon
-          icon-name="utility:table"
-          onclick={openModal}
-        ></lightning-button-icon>
-        <lightning-button-icon
-          icon-name="utility:chevronleft"
-          onclick={moveLeft}
-        ></lightning-button-icon>
-        <span class="slds-text-heading_small">
-          {currentCounter}/{sizeTrack}
-        </span>
-        <lightning-button-icon
-          icon-name="utility:chevronright"
-          onclick={moveRight}
-        ></lightning-button-icon>
+    </div> 
+    <div class="slds-col slds-size_6-of-12 slds-col_bump-left">
+      <div class="slds-grid slds-grid_vertical">
+        <div class="slds-col">
+          <lightning-button
+            if:false={booleanMaestroFijado}
+            label="Buscar nuevo SIC"
+            class="slds-button"
+            onclick={handleSIC}
+            variant="brand"
+          ></lightning-button>
+        </div>
+        <div class="slds-col">
+          <lightning-button
+            if:false={booleanMaestroFijado}
+            label="Ver Actividades comerciales"
+            class="slds-button"
+            onclick={handleCommercial}
+          ></lightning-button>
+        </div>
+        <div class="slds-col">
+          <lightning-button
+            label="Ver Marcos de actuación"
+            class="slds-button"
+            onclick={goToDoc}
+            if:true={showFramework}
+          ></lightning-button>
+        </div>
+        <div class="slds-col">
+          <lightning-button
+            label={labelSetTechPolicyButton}
+            class="slds-button"
+            onclick={holdTechPolicy}
+            if:true={caseRecord}
+          ></lightning-button>
+        </div>
+        <div class="slds-col slds-float_right slds-p-top_medium slds-p-right_medium " if:true={showCheckboxes}>
+          <lightning-button-icon
+            icon-name="utility:filterList"
+            onclick={handleFilter}
+          ></lightning-button-icon>
+          <lightning-button-icon
+            icon-name="utility:table"
+            onclick={openModal}
+          ></lightning-button-icon>
+          <lightning-button-icon
+            icon-name="utility:chevronleft"
+            onclick={moveLeft}
+          ></lightning-button-icon>
+          <span class="slds-text-heading_small">
+            {currentCounter}/{sizeTrack}
+          </span>
+          <lightning-button-icon
+            icon-name="utility:chevronright"
+            onclick={moveRight}
+          ></lightning-button-icon>
+        </div>
       </div>
-    </div>
-    <lightning-breadcrumbs>
-      <lightning-breadcrumb label={sicLabelTrack} onclick={handleSIC}>
-      </lightning-breadcrumb>
-      <lightning-breadcrumb label={bunchLabelTrack} onclick={handleBunch}>
-      </lightning-breadcrumb>
-      <lightning-breadcrumb
-        label={activityLabelTrack}
-        onclick={handleCommercial}
-      >
-      </lightning-breadcrumb>
-    </lightning-breadcrumbs>
-    <br /><br /><br /><br />
-    <div>
-      <div class="slds-p-top_large">
-        <template if:true={filtersVisible}>
-          <lightning-input
-            if:true={showExplosives}
-            type="checkbox"
-            label="Con uso de explosivos"
-            onchange={filterPolicies}
-            id="filter-0"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showEspumosos}
-            type="checkbox"
-            label="Con existencia de espumosos"
-            onchange={filterPolicies}
-            id="filter-1"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showAspiration}
-            type="checkbox"
-            label="Con aspiración automática"
-            onchange={filterPolicies}
-            id="filter-2"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showCover}
-            type="checkbox"
-            label="Con recubrimiento"
-            onchange={filterPolicies}
-            id="filter-3"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showCombustible}
-            type="checkbox"
-            label="Con planchas combustibles"
-            onchange={filterPolicies}
-            id="filter-4"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showContainer}
-            type="checkbox"
-            label="Con fabricación de envases"
-            onchange={filterPolicies}
-            id="filter-5"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showDistillation}
-            type="checkbox"
-            label="Con destilación"
-            onchange={filterPolicies}
-            id="filter-6"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showFlammable}
-            type="checkbox"
-            label="Con existencia de líquidos inflamables"
-            onchange={filterPolicies}
-            id="filter-7"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showFoaming}
-            type="checkbox"
-            label="Con foamizado"
-            onchange={filterPolicies}
-            id="filter-8"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showPlasticFoaming}
-            type="checkbox"
-            label="Con materias plácticas espumosas"
-            onchange={filterPolicies}
-            id="filter-9"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showNitrates}
-            type="checkbox"
-            label="Con nitratos"
-            onchange={filterPolicies}
-            id="filter-10"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showUpholstered}
-            type="checkbox"
-            label="Con tapizados"
-            onchange={filterPolicies}
-            id="filter-11"
-          >
-          </lightning-input>
-          <lightning-input
-            if:true={showWood}
-            type="checkbox"
-            label="Con secadero de madera"
-            onchange={filterPolicies}
-            id="filter-12"
-          >
-          </lightning-input>
-        </template>
-      </div>
-    </div>
-    <br />
-    <div if:false={filtersVisible}><br /><br /><br /><br /></div>
-    <div if:true={filtersVisible}><br /><br /></div>
-    <div if:false={caseRecord} if:true={filtersVisible}>
-      <br /><br /><br /><br />
     </div>
   </div>
-  <div if:true={caseRecord}><br /><br /><br /></div>
   <div class="slds-p-top_medium">
     <lightning-record-view-form
       record-id={currentId}

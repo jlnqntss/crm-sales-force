@@ -46,6 +46,78 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>actionNames</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>MassChangeOwner</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>NewCase</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>adminFilters</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>maxRecordsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>Account.Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>Cases</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListDisplayType</name>
+                    <value>ADVGRID</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListFieldAliases</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>CASES.CASE_NUMBER</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>CASES.SUBJECT</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>CASES.CREATED_DATE_DATE_ONLY</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>CASES.STATUS</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>OWNER_NAME</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListLabel</name>
+                    <value>Casos</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showActionBar</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sortFieldAlias</name>
+                    <value>CASES.CREATED_DATE</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sortFieldOrder</name>
+                    <value>Descending</value>
+                </componentInstanceProperties>
+                <componentName>lst:dynamicRelatedList</componentName>
+                <identifier>lst_dynamicRelatedList</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>parentFieldApiName</name>
                     <value>Account.Id</value>
                 </componentInstanceProperties>
@@ -205,7 +277,7 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>columns</name>
-                    <value>[{"label":"Number","fieldName":"url","type":"url","typeAttributes":{"label":{"fieldName":"Name"},"tooltip":{"fieldName":"url","target":"_self"}}},{"label":"Prefered Contact Datetime","fieldName":"PreferredContactDatetime__c","type":"date","typeAttributes":{"day":"numeric","month":"numeric","year":"numeric","hour":"2-digit","minute":"2-digit"}},{"label":"Status","fieldName":"Preferred_Status__c","type":"text"},{"label":"Cancel","type":"button-icon","initialWidth":40,"typeAttributes":{"iconName":"utility:clear","name":"cancelConReq","title":"Cancel Call Me Back","variant":"container"}}]</value>
+                    <value>[{&quot;label&quot;:&quot;Number&quot;,&quot;fieldName&quot;:&quot;url&quot;,&quot;type&quot;:&quot;url&quot;,&quot;typeAttributes&quot;:{&quot;label&quot;:{&quot;fieldName&quot;:&quot;Name&quot;},&quot;tooltip&quot;:{&quot;fieldName&quot;:&quot;url&quot;,&quot;target&quot;:&quot;_self&quot;}}},{&quot;label&quot;:&quot;Business Code&quot;,&quot;fieldName&quot;:&quot;BusinessCode__c&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;label&quot;:&quot;Prefered Contact Datetime&quot;,&quot;fieldName&quot;:&quot;PreferredContactDatetime__c&quot;,&quot;type&quot;:&quot;date&quot;,&quot;typeAttributes&quot;:{&quot;day&quot;:&quot;numeric&quot;,&quot;month&quot;:&quot;numeric&quot;,&quot;year&quot;:&quot;numeric&quot;,&quot;hour&quot;:&quot;2-digit&quot;,&quot;minute&quot;:&quot;2-digit&quot;}},{&quot;label&quot;:&quot;Status&quot;,&quot;fieldName&quot;:&quot;Preferred_Status__c&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;label&quot;:&quot;Cancel&quot;,&quot;type&quot;:&quot;button-icon&quot;,&quot;initialWidth&quot;:40,&quot;typeAttributes&quot;:{&quot;iconName&quot;:&quot;utility:clear&quot;,&quot;name&quot;:&quot;cancelConReq&quot;,&quot;title&quot;:&quot;Cancel Call Me Back&quot;,&quot;variant&quot;:&quot;container&quot;}}]</value>
                 </componentInstanceProperties>
                 <componentName>callMeBackList</componentName>
                 <identifier>c_callMeBackList1</identifier>
@@ -213,6 +285,31 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
+                <componentInstanceProperties>
+                    <name>decorate</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 13, 13); font-size: 20px; font-family: tahoma;&quot;&gt;&lt;em&gt;Texto Legal GDPR&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 18px; font-family: sans-serif; color: rgb(255, 8, 8);&quot;&gt;{!$Label.ZeGDPR}&lt;/span&gt;&lt;/p&gt;</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:richText</componentName>
+                <identifier>flexipage_richText2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!$User.Profile.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>ZE User</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>showLegacyActivityComposer</name>
+                    <value>false</value>
+                </componentInstanceProperties>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
                 <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>

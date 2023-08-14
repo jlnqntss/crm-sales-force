@@ -13,6 +13,18 @@
         <template>OneCustomerService/Acuse_de_recibo_1647336844925</template>
     </alerts>
     <alerts>
+        <fullName>Apertura_caso_formulario_MiZurich</fullName>
+        <description>Apertura caso formulario MiZurich</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>zurichsoporte@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Caso_abierto_formulario_Mi_Zurich_1685959019896</template>
+    </alerts>
+    <alerts>
         <fullName>Apertura_de_caso</fullName>
         <description>Apertura de caso</description>
         <protected>false</protected>
@@ -85,6 +97,30 @@
         <template>OneCustomerService/General_1614253232658</template>
     </alerts>
     <alerts>
+        <fullName>Caso_pendiente_CSM</fullName>
+        <description>Caso pendiente CSM</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Caso_pendiente_CSM_1674558409726</template>
+    </alerts>
+    <alerts>
+        <fullName>Caso_pendiente_USP</fullName>
+        <description>Caso pendiente USP</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Caso_pendiente_USP_1681279561141</template>
+    </alerts>
+    <alerts>
         <fullName>Cierre_de_caso</fullName>
         <description>Cierre de caso</description>
         <protected>false</protected>
@@ -107,6 +143,18 @@
         <senderAddress>no.responder@zurich.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>OneCustomerService/Caso_cerrado_sin_finalizar_1615309685093</template>
+    </alerts>
+    <alerts>
+        <fullName>Cierre_de_caso_automatico_CSM</fullName>
+        <description>Cierre de caso automático CSM</description>
+        <protected>false</protected>
+        <recipients>
+            <field>SuppliedEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>no.responder@zurich.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>OneCustomerService/Caso_cerrado_sin_finalizar_CSM_1674643956298</template>
     </alerts>
     <alerts>
         <fullName>Notificacion_Apertura_USP</fullName>
@@ -170,9 +218,7 @@
         </actions>
         <active>true</active>
         <description>KLINC: Sends auto response email to Web2Case Germany, triggered when email provided in the form and the customer&apos;s email associated to the case are different.</description>
-        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),SourceCountry__c = &quot;Germany&quot;,Owner:Queue.QueueName = &quot;Customer Care - Germany&quot;,
- !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email  
-,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
+        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),SourceCountry__c = &quot;Germany&quot;,Owner:Queue.QueueName = &quot;Customer Care - Germany&quot;,  !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email   ,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>
@@ -183,9 +229,7 @@
         </actions>
         <active>true</active>
         <description>KLINC: Sends auto response email to Web2Case Spain, triggered when email provided in the form and the customer&apos;s email associated to the case are different.</description>
-        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),  OR(ISBLANK(Partner__c ), ISNULL(Partner__c ) ),Owner:Queue.QueueName = &quot;Customer Care&quot;,
- !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email 
-,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
+        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),  OR(ISBLANK(Partner__c ), ISNULL(Partner__c ) ),Owner:Queue.QueueName = &quot;Customer Care&quot;,  !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email  ,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>
@@ -196,9 +240,7 @@
         </actions>
         <active>true</active>
         <description>KLINC: Sends auto response email to Web2Case France, triggered when email provided in the form and the customer&apos;s email associated to the case are different.</description>
-        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),SourceCountry__c = &quot;France&quot;,Owner:Queue.QueueName = &quot;Customer Care - France&quot;,
- !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email 
-,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
+        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;),SourceCountry__c = &quot;France&quot;,Owner:Queue.QueueName = &quot;Customer Care - France&quot;,  !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email  ,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>
@@ -209,9 +251,7 @@
         </actions>
         <active>true</active>
         <description>KLINC: Sends auto response email to Web2Case Orange, triggered when email provided in the form and the customer&apos;s email associated to the case are different.</description>
-        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;), Partner__c = &quot;Orange Seguros&quot;,Owner:Queue.QueueName = &quot;Customer Care - Orange&quot;,
- !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email  
-,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
+        <formula>AND(ISPICKVAL(Origin, &quot;Web&quot;), Partner__c = &quot;Orange Seguros&quot;,Owner:Queue.QueueName = &quot;Customer Care - Orange&quot;,  !ISBLANK(ContactId ) , SuppliedEmail != Contact.Email   ,  RecordType.DeveloperName = &apos;Enquiry&apos;)</formula>
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>

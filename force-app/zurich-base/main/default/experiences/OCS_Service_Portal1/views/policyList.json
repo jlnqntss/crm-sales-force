@@ -1,0 +1,52 @@
+{
+  "appPageId": "711c1d49-c575-45f7-abf9-c415da1d4414",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "698576a5-0f6a-4ef2-a7c5-1f84aff06553",
+  "label": "Policy List",
+  "regions": [
+    {
+      "id": "fef211a2-98dd-4830-9230-8635d1266e43",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "enableInlineEdit": true,
+            "filterName": "Zurich_Empresas",
+            "layout": "FULL",
+            "pageSize": 25,
+            "scope": "Policy__c",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
+          },
+          "componentName": "forceCommunity:objectHome",
+          "id": "cfcd0dc1-bcd2-4e8c-a82f-6860b6aef477",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "2c970147-c582-46fe-982a-e6fb92bc6f68",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "29c84885-c8ae-4f4b-bdad-0362b038082a",
+      "regionName": "footer",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "list-a1B"
+}

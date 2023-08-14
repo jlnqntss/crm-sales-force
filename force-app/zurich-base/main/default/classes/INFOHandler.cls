@@ -7,14 +7,6 @@
  */
 public class INFOHandler implements ISystem
 {
-    @testVisible
-    private static Map<String, Map<String, Map<sObject, ExternalRequest__c>>> recordsToUpsertByEntity = new Map<String, Map<String, Map<sObject, ExternalRequest__c>>>();
-    @testVisible
-    private static Map<String, Map<String, Map<sObject, ExternalRequest__c>>> recordsToDeleteByEntity = new Map<String, Map<String, Map<sObject, ExternalRequest__c>>>();
-    @testVisible
-    private static List<ExternalRequest__c> externalRequestResultList = new List<ExternalRequest__c>();
-
-    private static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
     // Si se da un Insured Object, guardara los valores del picklist ObjectType__c que representan las equivalencias
     // entre el codigo de objeto (INFO) y el campo Name en Salesforce
     private static Map<String, String> mapInsuredObjectTypeToName = null;
@@ -24,14 +16,6 @@ public class INFOHandler implements ISystem
     private static Map<String, Map<String, String>> mapEquivalencesByEntity = null;
     @testvisible
     private static Map<String, Map<String, String>> mapEquivalencesByEntityTest = null;
-
-    // CUSTOM METATDATA
-    @testVisible
-    private static Transformer tf;
-    @testVisible
-    private static Map<String, Map<String, String>> externalIdByEntity = new Map<String, Map<String, String>>();
-    @testVisible
-    private static Integer maxRetries;
 
     public static final String HANDLER_ORIGIN = 'INFO';
 
@@ -51,66 +35,12 @@ public class INFOHandler implements ISystem
     public static final String NOTE = 'NOTE';
     public static final String SPECIAL_CONDITION = 'SPECIAL_CONDITION';
     public static final String INTERMEDIARY_KPI = 'INTERMEDIARY_KPI';
+    public static final String ACCOUNT_KPI = 'ACCOUNT_KPI';
+    public static final String POLICY_KPI = 'POLICY_KPI';
+    public static final String SOBJECT_CASE = 'Case';
 
     public static final List<String> PRIORITY_ENTITIES =  new List<String>{NOTE};
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
-
-    // Orden de DML sobre entidades
-    private static List<String> entityOrder = new List<String>
-    {
-        ACCOUNT, // 1
-        PARTNER, // 2
-        INTERMEDIARY, // 3
-        CONTACT_POINT, // 4
-        PRODUCT, // 5
-        QUOTE, // 6
-        QUOTE_OPTION, // 7
-        POLICY, // 8
-        INSURED_OBJECT, // 9
-        CLAIM, // 10
-        QUOTE_RELATIONSHIP, // 11
-        POLICY_RELATIONSHIP, // 12
-        CLAIM_RELATIONSHIP, // 13
-        NOTE, // 14
-        SPECIAL_CONDITION, // 15
-        INTERMEDIARY_KPI // 16
-    };
-
-    public static final String SOBJECT_ACCOUNT = 'Account';
-    public static final String SOBJECT_CONTACT = 'Contact';
-    public static final String SOBJECT_CONTACT_POINT_ADDRESS = 'ContactPointAddress';
-    public static final String SOBJECT_CONTACT_POINT_PHONE = 'ContactPointPhone';
-    public static final String SOBJECT_CONTACT_POINT_EMAIL = 'ContactPointEmail';
-    public static final String SOBJECT_PRODUCT = 'Product2';
-    public static final String SOBJECT_OPPORTUNITY = 'Opportunity';
-    public static final String SOBJECT_QUOTE = 'Quote';
-    public static final String SOBJECT_POLICY = 'Policy__c';
-    public static final String SOBJECT_ASSET = 'Asset';
-    public static final String SOBJECT_CLAIM = 'Claim__c';
-    public static final String SOBJECT_RELATIONSHIP = 'Relationship__c';
-    public static final String SOBJECT_CASE = 'Case';
-    public static final String SOBJECT_SPECIAL_CONDITION = 'Special_Condition__c';
-    public static final String SOBJECT_KPI = 'KPI__c';
-
-    // Orden de DML sobre SObjects
-    private static List<String> sObjectOrder = new List<String>
-    {
-        SOBJECT_ACCOUNT,
-        SOBJECT_CONTACT,
-        SOBJECT_CONTACT_POINT_ADDRESS,
-        SOBJECT_CONTACT_POINT_PHONE,
-        SOBJECT_CONTACT_POINT_EMAIL,
-        SOBJECT_PRODUCT,
-        SOBJECT_OPPORTUNITY,
-        SOBJECT_QUOTE,
-        SOBJECT_POLICY,
-        SOBJECT_ASSET,
-        SOBJECT_CLAIM,
-        SOBJECT_RELATIONSHIP,
-        SOBJECT_CASE,
-        SOBJECT_SPECIAL_CONDITION,
-        SOBJECT_KPI
-    };
 
     private static final String NOTE_CASE_ORIGIN = 'NoteINFO';
     private static final String NOTE_CASE_SOURCE_AREA = 'Mediator';
@@ -126,33 +56,11 @@ public class INFOHandler implements ISystem
      * @return void
      * @throws
      * @where ExternalJobQueueBatch
+     * @change 15/05/2023 - aberuete - Extraer la función a clase Util
      */
     public static void prepare(Transformer infoTransformer, List<ExternalRequest__c> externalRequestList)
     {
-        // 1 - Obtener el tranformer a utilizar
-        tf = infoTransformer;
-
-        // 2 - Creación de un mapa con una clave por cada entidad del CRM que se utilice en la integración con INFO
-        recordsToUpsertByEntity = tf.initRequestsMapBySettings();
-        recordsToDeleteByEntity = tf.initRequestsMapBySettings();
-
-        // 3 - Obtener identificadores externos por cada entidad
-        for (ExternalIdField__mdt externalId : new ExternalIdFieldsSelector
-            (new List<Schema.SObjectField> {ExternalIdField__mdt.OriginEntity__c, ExternalIdField__mdt.SalesforceEntity__c, ExternalIdField__mdt.ExternalId__c}
-            ).selectByOrigin(new Set<String> {Transformer.ORIGIN_NAME_INFO}) )
-        {
-            if(!externalIdByEntity.containsKey(externalId.OriginEntity__c))
-            {
-                externalIdByEntity.put(externalId.OriginEntity__c, new Map<String, String>());
-            }
-            externalIdByEntity.get(externalId.OriginEntity__c).put(externalId.SalesforceEntity__c, externalId.ExternalId__c);
-        }
-
-        // 4 - Obtener el número máximo de reintentos
-        maxRetries = (Integer) new ExternalJobQueueBatchesSelector
-        (
-            new List<Schema.SObjectField> {ExternalJobQueueBatch__mdt.Retries__c}
-        ).selectByOrigin(new Set<String> {Transformer.ORIGIN_NAME_INFO}).get(0).Retries__c;
+        ExternalRequestHandlerUtil.prepareExternalRequestToProcess(infoTransformer, HANDLER_ORIGIN);
     }
 
     /**
@@ -181,12 +89,12 @@ public class INFOHandler implements ISystem
                 else
                 {
                     // 1.1.2 - El formato recibido no está soportado
-                    setExternalRequest(externalRequest, true, 'KO', 'No se ha recibido información correcta del registro en INFO', false);
+                    ExternalRequestHandlerUtil.setExternalRequest(externalRequest, true, 'KO', 'No se ha recibido información correcta del registro en INFO', false);
                 }
             }
             catch (Exception e)
             {
-                setExternalRequest(externalRequest, true, 'KO', e.getMessage() + '\n' + e.getStackTraceString(), false);
+                ExternalRequestHandlerUtil.setExternalRequest(externalRequest, true, 'KO', e.getMessage() + '\n' + e.getStackTraceString(), false);
             }
         }
     }
@@ -200,28 +108,11 @@ public class INFOHandler implements ISystem
      * @return void
      * @throws
      * @where ExternalJobQueueBatch
+     * @change 15/05/2023 - aberuete - Extraer la función a clase Util
      */
     public static void persists(List<ExternalRequest__c> externalRequestList)
     {
-        try
-        {
-            // Upsert
-            if ( recordsToUpsertByEntity != null && !recordsToUpsertByEntity.isEmpty() )
-            {
-                persistRecords('UPSERT', recordsToUpsertByEntity);
-            }
-            // Delete
-            if ( recordsToDeleteByEntity != null && !recordsToDeleteByEntity.isEmpty() )
-            {
-                persistRecords('DELETE', recordsToDeleteByEntity);
-            }
-
-        }
-        catch (Exception e)
-        {
-            
-            ErrorLogUtil.commitError(e, 'INFOHandler', 'persists');
-        }
+        ExternalRequestHandlerUtil.persistExternalRequest ('INFOHandler');
     }
 
     /**
@@ -234,64 +125,11 @@ public class INFOHandler implements ISystem
      * @return void
      * @throws
      * @where ExternalJobQueueBatch
+     * @change 15/05/2023 - aberuete - Extraer la función a clase Util
      */
     public static void manageResult(Id jobId, List<ExternalRequest__c> externalRequestList)
     {
-        List<ExternalRequestErrorEvent__e> erErrorEventList = new List<ExternalRequestErrorEvent__e>();
-
-        try
-        {
-            if ( externalRequestResultList != null && !externalRequestResultList.isEmpty() )
-            {
-                // 1 - Actualizar las external request con el resultado
-                Database.update(externalRequestResultList,false);
-
-                // 2 - Publicar las external request que no se hayan procesado correctamente
-                for ( ExternalRequest__c externalRequest : externalRequestResultList )
-                {
-                    try
-                    {
-                        // 2.1 - Solo publicar evento de error si el resultado es 'KO' y se ha superado el número máximo de reintentos
-                        if ( externalRequest.Processed__c && externalRequest.ProcessResult__c == 'KO' )
-                        {
-                            erErrorEventList.add
-                            (
-                                new ExternalRequestErrorEvent__e
-                                (
-                                    JobId__c = jobId,
-                                    RecordId__c = externalRequest.Id,
-                                    Origin__c = externalRequest.Origin__c,
-                                    Entity__c = externalRequest.Entity__c,
-                                    Action__c = externalRequest.Action__c,
-                                    ContentFormat__c = externalRequest.ContentFormat__c,
-                                    Payload__c = externalRequest.Payload__c,
-                                    Message__c = externalRequest.Error_Log__c,
-                                    StackTrace__c = externalRequest.Error_Log__c,
-                                    ThrowingTime__c = Datetime.now(),
-                                    ExternalRequestCreatedDate__c = externalRequest.CreatedDate
-                                )
-                            );
-                        }
-                    }
-                    catch ( Exception e )
-                    {
-                        
-                        ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
-                    }
-                }
-
-                // 3 - Publicar external request erróneas
-                if ( !erErrorEventList.isEmpty() )
-                {
-                    EventBus.publish(erErrorEventList);
-                }
-            }
-        }
-        catch ( Exception e )
-        {
-            
-            ErrorLogUtil.commitError(e, 'INFOHandler', 'manageResult');
-        }
+        ExternalRequestHandlerUtil.manageResultExternalRequest (jobId, externalRequestList, 'INFOHandler');
     }
 
     /**
@@ -303,6 +141,8 @@ public class INFOHandler implements ISystem
      * @return void
      * @throws
      * @where ExternalJobQueueBatch
+     * @change 15/05/2023 - aberuete - Refactorizar el método
+     * @change 12/07/2023 - jonandersanjuan - Se agregan nuevas entidades ACCOUNT_KPI y POLICY_KPI
      */
     private static void processExternalRequestByEntity(ExternalRequest__c externalRequest)
     {
@@ -321,425 +161,115 @@ public class INFOHandler implements ISystem
             // Persona
             when 'ACCOUNT'
             {
-                if (recordValuesMap.containsKey('CLIENTE_TIPO_PERSONA') )
-                {
-                    // Persona física
-                    if (((String) recordValuesMap.get('CLIENTE_TIPO_PERSONA') ).equalsIgnoreCase('F'))
-                    {
-                        Account accountRecord = (Account) tf.transform(ACCOUNT, 'Account', recordValuesMap);
-                        accountRecord.FirstName = recordValuesMap.containsKey('CLIENTE_NOMBRE') ? (String) recordValuesMap.get('CLIENTE_NOMBRE') : null;
-                        accountRecord.LastName = (recordValuesMap.containsKey('CLIENTE_APELLIDO1') ? (String) recordValuesMap.get('CLIENTE_APELLIDO1'): null) + ' ' +
-                                                    (recordValuesMap.containsKey('CLIENTE_APELLIDO2') ? (String) recordValuesMap.get('CLIENTE_APELLIDO2') : null);
-                        accountRecord.LegalEntity__pc = recordValuesMap.containsKey('CLIENTE_ENTIDAD_LEGAL') ? (String) recordValuesMap.get('CLIENTE_ENTIDAD_LEGAL') : null;
-                        // 30.04.2021 - nts (agonzalezisasi) - ocs 1729 visibilidad GDRP
-                        accountRecord.LegalEntity__c = accountRecord.LegalEntity__pc;
-                        accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
-
-                        addRecordToMap(externalRequest, ACCOUNT, 'Account', accountRecord);
-                    }
-                    // Persona jurídica
-                    else if (((String) recordValuesMap.get('CLIENTE_TIPO_PERSONA') ).equalsIgnoreCase('J'))
-                    {
-                        //Cuenta
-                        Account accountRecord = (Account) tf.transform(ACCOUNT, 'Account', recordValuesMap);
-                        accountRecord.Name = (recordValuesMap.containsKey('CLIENTE_NOMBRE') ? (String) recordValuesMap.get('CLIENTE_NOMBRE') : null) + ' ' +
-                                                (recordValuesMap.containsKey('CLIENTE_APELLIDO1') ? (String) recordValuesMap.get('CLIENTE_APELLIDO1') : null) + ' ' +
-                                                (recordValuesMap.containsKey('CLIENTE_APELLIDO2') ? (String) recordValuesMap.get('CLIENTE_APELLIDO2') : null);
-                        accountRecord.LegalEntity__c = recordValuesMap.containsKey('CLIENTE_ENTIDAD_LEGAL') ? (String) recordValuesMap.get('CLIENTE_ENTIDAD_LEGAL') : null;
-                        accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
-
-                        addRecordToMap(externalRequest, ACCOUNT, 'Account', accountRecord);
-
-                        //Contacto
-                        Contact contactRecord = (Contact) tf.transform(ACCOUNT, 'Contact', recordValuesMap);
-                        contactRecord.FirstName = recordValuesMap.containsKey('CLIENTE_NOMBRE') ? (String) recordValuesMap.get('CLIENTE_NOMBRE'): null;
-                        contactRecord.LastName = (recordValuesMap.containsKey('CLIENTE_APELLIDO1') ? (String) recordValuesMap.get('CLIENTE_APELLIDO1') : null) + ' ' +
-                                                    (recordValuesMap.containsKey('CLIENTE_APELLIDO2') ? (String) recordValuesMap.get('CLIENTE_APELLIDO2') : null);
-                        contactRecord.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('Contact').getRecordTypeId();
-
-                        addRecordToMap(externalRequest, ACCOUNT, 'Contact', contactRecord);
-                    }
-                    else
-                    {
-                        setExternalRequest(externalRequest, true, 'KO', 'No se ha podido identificar el tipo de cliente', false);
-                    }
-                }
+                processAccount (recordValuesMap, externalRequest);
             }
             // Vía de contacto
             when 'CONTACT_POINT'
             {
-                if (recordValuesMap.containsKey('TIPO_DOMICILIO'))
-                {
-                    // Vía de contacto postal (A, B, P)
-                    if (((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('A') ||
-                        ((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('B') ||
-                        ((String) recordValuesMap.get('TIPO_DOMICILIO') ).equalsIgnoreCase('P'))
-                    {
-                        ContactPointAddress cpaRecord = (ContactPointAddress) tf.transform(CONTACT_POINT, 'ContactPointAddress', recordValuesMap);
-                        cpaRecord.Street = String.join
-                        (
-                            new List<String>
-                            {
-                                cpaRecord.StreetType__c,
-                                cpaRecord.Street,
-                                cpaRecord.StreetNumber__c,
-                                cpaRecord.OtherInfo__c
-                            }
-                            , ' '
-                        );
-                        addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointAddress', cpaRecord);
-                    }
-                    else if (((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('T'))
-                    {
-                        //  Vía de contacto telefónico (T)
-                        ContactPointPhone cppRecord = (ContactPointPhone) tf.transform(CONTACT_POINT, 'ContactPointPhone', recordValuesMap);
-                        addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointPhone', cppRecord);
-                    }
-                    else if (((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('E'))
-                    {
-                        // Vía de contacto email (E)
-                        ContactPointEmail cpeRecord = (ContactPointEmail) tf.transform(CONTACT_POINT, 'ContactPointEmail', recordValuesMap);
-                        addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointEmail', cpeRecord);
-                    }
-                    else
-                    {
-                        setExternalRequest(externalRequest, true, 'KO', 'No se ha podido identificar el tipo de vía de contacto', false);
-                    }
-                }
+                processContactPoint (recordValuesMap, externalRequest);
             }
             //Producto
             when 'PRODUCT'
             {
-                Product2 prodRecord = (Product2) tf.transform(PRODUCT, 'Product2', recordValuesMap);
-                addRecordToMap(externalRequest, PRODUCT, 'Product2', prodRecord);
+                Product2 prodRecord = (Product2) ExternalRequestHandlerUtil.tf.transform(PRODUCT, 'Product2', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, PRODUCT, 'Product2', prodRecord);
             }
             // Oferta
             when 'QUOTE'
             {
-                Opportunity quoteRecord = (Opportunity) tf.transform(QUOTE, 'Opportunity', recordValuesMap);
+                Opportunity quoteRecord = (Opportunity) ExternalRequestHandlerUtil.tf.transform(QUOTE, 'Opportunity', recordValuesMap);
                 quoteRecord.isUpdatedFromINFO__c = true; // arcortazar - nts (29/03/2022): fix-ZE-1289
-                addRecordToMap(externalRequest, QUOTE, 'Opportunity', quoteRecord);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, QUOTE, 'Opportunity', quoteRecord);
             }
             // Opción oferta
             when 'QUOTE_OPTION'
             {
-                Quote optionRecord = (Quote) tf.transform(QUOTE_OPTION, 'Quote', recordValuesMap);
-                addRecordToMap(externalRequest, QUOTE_OPTION, 'Quote', optionRecord);
+                Quote optionRecord = (Quote) ExternalRequestHandlerUtil.tf.transform(QUOTE_OPTION, 'Quote', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, QUOTE_OPTION, 'Quote', optionRecord);
             }
             // Póliza
             when 'POLICY'
             {
-                Policy__c policyRecord = (Policy__c) tf.transform(POLICY, 'Policy__c', recordValuesMap);
-                addRecordToMap(externalRequest, POLICY, 'Policy__c', policyRecord);
+                Policy__c policyRecord = (Policy__c) ExternalRequestHandlerUtil.tf.transform(POLICY, 'Policy__c', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, POLICY, 'Policy__c', policyRecord);
             }
             // Objeto asegurado
             when 'INSURED_OBJECT'
             {
-                
-                Asset insObjRecord = (Asset) tf.transform(INSURED_OBJECT, 'Asset', recordValuesMap);
-                
-                // Recuperamos la etiqueta con el nombre a partir del codigo de tipo de objeto
-                if( mapInsuredObjectTypeToName == null ) {
-                    
-                    mapInsuredObjectTypeToName = new Map<String, String>();
-
-                    Schema.DescribeFieldResult fieldResult = Asset.ObjectType__c.getDescribe();
-                    List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
-                    for(Schema.PicklistEntry p : ple) {
-                        mapInsuredObjectTypeToName.put(p.getValue(), p.getLabel());
-                    }
-                }
-                insObjRecord.Name = insObjRecord.ObjectType__c.trim();
-                if( mapInsuredObjectTypeToName.containsKey(insObjRecord.Name) ) {
-                    insObjRecord.Name = mapInsuredObjectTypeToName.get(insObjRecord.Name);
-                }
-                // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
-                String recordTypeDevName = getEquivalence(HANDLER_ORIGIN, 'INSURED_OBJECT', insObjRecord.ObjectType__c.trim());
-                
-                if( String.isBlank(recordTypeDevName) ) {
-                    throw new INFOHandlerException('RecordType equivalence not found for the following Object Type: ' + insObjRecord.ObjectType__c.trim());
-                }
-                insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(recordTypeDevName).getRecordTypeId();
-                addRecordToMap(externalRequest, INSURED_OBJECT, 'Asset', insObjRecord);
+                processInsuredObject (recordValuesMap, externalRequest);
             }
             // Siniestro
             when 'CLAIM'
             {
-                Claim__c claimRecord = (Claim__c) tf.transform(CLAIM, 'Claim__c', recordValuesMap);
-                addRecordToMap(externalRequest, CLAIM, 'Claim__c', claimRecord);
+                Claim__c claimRecord = (Claim__c) ExternalRequestHandlerUtil.tf.transform(CLAIM, 'Claim__c', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, CLAIM, 'Claim__c', claimRecord);
             }
             // Rol póliza
             when 'POLICY_RELATIONSHIP'
             {
-                Relationship__c polRelRecord = (Relationship__c) tf.transform(POLICY_RELATIONSHIP, 'Relationship__c', recordValuesMap);
+                Relationship__c polRelRecord = (Relationship__c) ExternalRequestHandlerUtil.tf.transform(POLICY_RELATIONSHIP, 'Relationship__c', recordValuesMap);
                 polRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Policy').getRecordTypeId();
-                addRecordToMap(externalRequest, POLICY_RELATIONSHIP, 'Relationship__c', polRelRecord);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, POLICY_RELATIONSHIP, 'Relationship__c', polRelRecord);
             }
             // Rol oferta
             when 'QUOTE_RELATIONSHIP'
             {
-                Relationship__c quoRelRecord = (Relationship__c) tf.transform(QUOTE_RELATIONSHIP, 'Relationship__c', recordValuesMap);
+                Relationship__c quoRelRecord = (Relationship__c) ExternalRequestHandlerUtil.tf.transform(QUOTE_RELATIONSHIP, 'Relationship__c', recordValuesMap);
                 quoRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Offer').getRecordTypeId();
-                addRecordToMap(externalRequest, QUOTE_RELATIONSHIP, 'Relationship__c', quoRelRecord);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, QUOTE_RELATIONSHIP, 'Relationship__c', quoRelRecord);
             }
             // Rol siniestro
             when 'CLAIM_RELATIONSHIP'
             {
-                Relationship__c claimRelRecord = (Relationship__c) tf.transform(CLAIM_RELATIONSHIP, 'Relationship__c', recordValuesMap);
+                Relationship__c claimRelRecord = (Relationship__c) ExternalRequestHandlerUtil.tf.transform(CLAIM_RELATIONSHIP, 'Relationship__c', recordValuesMap);
                 claimRelRecord.RecordTypeId = Schema.SObjectType.Relationship__c.getRecordTypeInfosByDeveloperName().get('Claim').getRecordTypeId();
-                addRecordToMap(externalRequest, CLAIM_RELATIONSHIP, 'Relationship__c', claimRelRecord);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, CLAIM_RELATIONSHIP, 'Relationship__c', claimRelRecord);
             }
             // Partner
             when 'PARTNER'
             {
-                Account partnerRecord = (Account) tf.transform(PARTNER, 'Account', recordValuesMap);
+                Account partnerRecord = (Account) ExternalRequestHandlerUtil.tf.transform(PARTNER, 'Account', recordValuesMap);
                 partnerRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PartnerOCS').getRecordTypeId();
-                addRecordToMap(externalRequest, PARTNER, 'Account', partnerRecord);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, PARTNER, 'Account', partnerRecord);
             }
             // Mediador
             when 'INTERMEDIARY'
             {
-                Account intermRecord = (Account) tf.transform(INTERMEDIARY, 'Account', recordValuesMap);
+                Account intermRecord = (Account) ExternalRequestHandlerUtil.tf.transform(INTERMEDIARY, 'Account', recordValuesMap);
                 intermRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
-                addRecordToMap(externalRequest, INTERMEDIARY, 'Account', intermRecord);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, INTERMEDIARY, 'Account', intermRecord);
             }
             // Note
             when 'NOTE'
             {
-                // Normal transformation of fields
-                Case caseRecord = (Case) tf.transform(NOTE, SOBJECT_CASE, recordValuesMap);
-                // Assign the Case Origin to "Nota INFO"
-                caseRecord.Origin = NOTE_CASE_ORIGIN;
-                // Assign the Case Source Area to "Mediator"
-                caseRecord.SourceArea__c = NOTE_CASE_SOURCE_AREA;
-
-                //Tipo de NOTA INFO
-                //Se utiliza el método getEquivalence para comprobar si el tipo de Nota INFO es RBCO/RBNW/SINO
-                //En este caso el RecordType del nuevo caso generado es automáticamente OCS
-                String valorNotaInfo = getEquivalence(HANDLER_ORIGIN,NOTE,(String)recordValuesMap.get('note_cod_agrupacion_TA'));
-
-                if(String.isNotBlank(valorNotaInfo))
-                {
-                    caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(valorNotaInfo).getRecordTypeId();
-                }
-                else 
-                {
-                    // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
-                    String recordTypeDevName = getEquivalence(HANDLER_ORIGIN,NOTE,caseRecord.HegeoProductGroupCode__c.trim());
-
-                    if( String.isBlank(recordTypeDevName) ) 
-                    {
-                        //En caso de no encontrar equivalencia se establece el caso tendrá RecordType OCS
-                        caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
-                    }
-                    else 
-                    {
-                        caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeDevName).getRecordTypeId();
-                    }
-                }
-
-                // Get the Type, Subytype and TypeN3 from the HEGEO fields metadata configuration
-
-                if( recordValuesMap.containsKey('NOTE_DESC_TIPO_ENVIO') &&
-                    recordValuesMap.containsKey('NOTE_DESC_SUBTIPO') ) {
-                        String infoType = (String)recordValuesMap.get('NOTE_DESC_TIPO_ENVIO');
-                        String infoSubtype = (String)recordValuesMap.get('NOTE_DESC_SUBTIPO');
-
-                    List<Robot_Hegeo_Field_Mapping__mdt> hegeoFieldConfig = [
-                        SELECT Type__c, Subtype__c, TypeN3__c
-                        FROM Robot_Hegeo_Field_Mapping__mdt
-                        WHERE SourceType__c = :infoType AND SourceSubtype__c = :infoSubtype
-                    ];
-                    // if any, get the first one...
-                    if( !hegeoFieldConfig.isEmpty() ) {
-                        caseRecord.Type = hegeoFieldConfig[0].Type__c;
-                        caseRecord.SubType__c = hegeoFieldConfig[0].Subtype__c;
-                        caseRecord.TypeN3__c = hegeoFieldConfig[0].TypeN3__c;
-                    }
-                }
-
-                addRecordToMap(externalRequest, NOTE, SOBJECT_CASE, caseRecord);
+                processNoteToCase (recordValuesMap, externalRequest);
             }
             when 'SPECIAL_CONDITION'
             {
-                Special_Condition__c specialConditionRecord = (Special_Condition__c) tf.transform(SPECIAL_CONDITION, 'Special_Condition__c', recordValuesMap);
-                addRecordToMap(externalRequest, SPECIAL_CONDITION, 'Special_Condition__c', specialConditionRecord);
+                Special_Condition__c specialConditionRecord = (Special_Condition__c) ExternalRequestHandlerUtil.tf.transform(SPECIAL_CONDITION, 'Special_Condition__c', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, SPECIAL_CONDITION, 'Special_Condition__c', specialConditionRecord);
             }
             when 'INTERMEDIARY_KPI'
             {
-                KPI__c intermediaryKpiRecord = (KPI__c) tf.transform(INTERMEDIARY_KPI, 'KPI__c', recordValuesMap);
-                // En principio viene ya como texto desde el Origen
-                // // El Mes de calculo en INFO viene como numero y en Salesforce necesitamos que sea un String
-                // if( recordValuesMap.containsKey('MES_CALCULO') ) {
-                //     intermediaryKpiRecord.CalcMonth__c = String.valueOf(recordValuesMap.get('MES_CALCULO'));
-                // }
-                // // Lo mismo para el Año de calculo
-                // if( recordValuesMap.containsKey('ANO_CALCULO') ) {
-                //     intermediaryKpiRecord.CalcYear__c = String.valueOf(recordValuesMap.get('ANO_CALCULO'));
-                // }
-
-                addRecordToMap(externalRequest, INTERMEDIARY_KPI, 'KPI__c', intermediaryKpiRecord);
+                KPI__c intermediaryKpiRecord = (KPI__c) ExternalRequestHandlerUtil.tf.transform(INTERMEDIARY_KPI, 'KPI__c', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, INTERMEDIARY_KPI, 'KPI__c', intermediaryKpiRecord);
+            }
+            // Account KPIs
+            when 'ACCOUNT_KPI'
+            {
+                Account accountRecord = (Account) ExternalRequestHandlerUtil.tf.transform(ACCOUNT_KPI, 'Account', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, ACCOUNT_KPI, 'Account', accountRecord);
+            }
+            // Policy KPIs
+            when 'POLICY_KPI'
+            {
+                Policy__c policyRecord = (Policy__c) ExternalRequestHandlerUtil.tf.transform(POLICY_KPI, 'Policy__c', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, POLICY_KPI, 'Policy__c', policyRecord);
             }
             when else
             {
-                setExternalRequest(externalRequest, true, 'KO', 'No se ha encontrado la entidad indicada', false);
+                ExternalRequestHandlerUtil.setExternalRequest(externalRequest, true, 'KO', 'No se ha encontrado la entidad indicada', false);
             }
-        }
-    }
-
-    /**
-     * Realizar las operaciones DML sobre los registros generados
-     **
-     * @author adelgado
-     * @date 05/11/2020
-     * @param action Acción a realizar sobre los registros
-     * @param recordsToPersist Mapa con los registros sobre los que realizar las operaciones DML por objeto
-     * @return void
-     */
-    private static void persistRecords(String action, Map<String, Map<String, Map<sObject, ExternalRequest__c>>> recordsToPersist)
-    {
-        List<sObject> recordList;
-        List<ExternalRequest__c> externalRequestList;
-        ExternalRequest__c extReq;
-
-        // 1 - Realizar las operaciones DML sobre los registros generados y actualizar external request con resultado
-        for ( String entity : entityOrder )
-        {
-            if ( recordsToPersist.containsKey(entity) )
-            {
-                for ( String objectName : sObjectOrder )
-                {
-                    if ( recordsToPersist.get(entity).containsKey(objectName) && !recordsToPersist.get(entity).get(objectName).isEmpty() )
-                    {
-                        Schema.SObjectField externalIdField = globalDescribe.get(objectName).getDescribe().fields.getMap().get(externalIdByEntity.get(entity).get(objectName));
-
-                        recordList = new List<sObject>(recordsToPersist.get(entity).get(objectName).keySet());
-                        externalRequestList = recordsToPersist.get(entity).get(objectName).values();
-
-                        if(action == 'UPSERT')
-                        {
-                            Database.UpsertResult[] resultList = Database.upsert(recordList, externalIdField, false);
-
-                            for(Integer i = 0; i < externalRequestList.size(); i++)
-                            {
-                                extReq = externalRequestList.get(i);
-
-                                //Procesamiento correcto
-                                if ( resultList.get(i).isSuccess() )
-                                {
-                                    setExternalRequest(extReq, true, 'OK', null, false);
-                                }
-                                //Procesamiento incorrecto
-                                else
-                                {   
-                                    setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
-                                }
-                            }
-                        }
-                        else if(action == 'DELETE')
-                        {
-                            Set<String> externalIdValues = new Set<String>(); //Query.apex no permite sObject
-
-                            for(sObject sObj : recordList)
-                            {
-                                externalIdValues.add((String) sObj.get(externalIdField));
-                            }
-
-                            Database.DeleteResult[] resultList = Database.delete(new Query(globalDescribe.get(objectName)).addConditionIn(externalIdField, externalIdValues).run());
-
-                            for(Integer i = 0; i < externalRequestList.size(); i++)
-                            {
-                                extReq = externalRequestList.get(i);
-
-                                //Procesamiento correcto
-                                if ( resultList.get(i).isSuccess() )
-                                {
-                                    setExternalRequest(extReq, true, 'OK', null, false);
-                                }
-                                //Procesamiento incorrecto
-                                else
-                                {
-                                    setExternalRequest(extReq, false, 'KO', string.join(resultList.get(i).getErrors(), '\n'), true);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-
-    /**
-     * Informar la external request con el resultado del procesamiento
-     **
-     * @author adelgado
-     * @date 05/11/2020
-     * @param externalRequest External request que debe ser informada
-     * @param processed Indica si se ha procesado la external request
-     * @param processResult Resultado del procesamiento de la external request
-     * @param error Error que se ha producido al procesar la external request
-     * @param sumRetry Indica si hay que sumar un reinteto
-     * @return void
-     *
-     * @change 31/05/2021 - nts (agonzalezisasi) - Al marcar la external request como procesada se cambia tambien el record type
-     */
-    private static void setExternalRequest(ExternalRequest__c externalRequest, Boolean processed, String processResult, String error, Boolean sumRetry)
-    {
-        if(!externalRequestResultList.contains(externalRequest))
-        {
-            // 1 - Sumar un reintento a la external request
-            if(sumRetry)
-            {
-                externalRequest.NumRetry__c = externalRequest.NumRetry__c == null ? 1: externalRequest.NumRetry__c + 1;
-            }
-
-            // 2 - Si se supera el número de reintentos se marca la external request como procesada
-            if ( externalRequest.NumRetry__c >= maxRetries )
-            {
-                externalRequest.Processed__c = true;
-            }
-            else
-            {
-                externalRequest.Processed__c = processed;
-            }
-            if( externalRequest.Processed__c ) {
-                Id recordTypeId = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get('INFOProcessed').getRecordTypeId();
-                externalRequest.RecordTypeId = recordTypeId;
-            }
-
-            // 3 - Si se marca la external request como procesada se indica la fecha de procesamiento
-            if(processed)
-            {
-                externalRequest.processedDate__c = Datetime.now();
-            }
-
-            externalRequest.ProcessResult__c = processResult;
-            externalRequest.Error_Log__c = error;
-
-            externalRequestResultList.add(externalRequest);
-        }
-    }
-
-    /**
-     * Añadir registros generados al mapa correspondiente dependiendo de la acción a realizar UPSERT/DELETE
-     **
-     * @author adelgado
-     * @date 05/11/2020
-     * @param externalRequest External request que debe ser añadida al mapa
-     * @param sObjectType Objeto de Salesforce
-     * @param record Registro generado
-     * @return void
-     */
-    private static void addRecordToMap(ExternalRequest__c externalRequest, String entity, String sObjectType, sObject record)
-    {
-        if(externalRequest.Action__c.equalsIgnoreCase('UPSERT'))
-        {
-            recordsToUpsertByEntity.get(entity).get(sObjectType).put(record, externalRequest);
-        }
-        else if(externalRequest.Action__c.equalsIgnoreCase('DELETE'))
-        {
-            recordsToDeleteByEntity.get(entity).get(sObjectType).put(record, externalRequest);
         }
     }
 
@@ -755,13 +285,14 @@ public class INFOHandler implements ISystem
      */
     private static String getEquivalence(String origin, String entity, String originKey)
     {
-        
         String result = '';
-        if( mapEquivalencesByEntity == null ) {
+        if( mapEquivalencesByEntity == null ) 
+        {
             mapEquivalencesByEntity = new Map<String, Map<String, String>>();
         }
 
-        if( !mapEquivalencesByEntity.containsKey(entity) ) {
+        if( !mapEquivalencesByEntity.containsKey(entity) ) 
+        {
             
             List<TransformerEquivalences__mdt> settigs = [
                 SELECT Id, OriginKey__c, Value__c
@@ -769,10 +300,14 @@ public class INFOHandler implements ISystem
                 WHERE Origin__c = :origin AND OriginEntity__c = :entity
             ];
 
-            for(TransformerEquivalences__mdt te: settigs) {
-                if( mapEquivalencesByEntity.containsKey(entity) ) {
+            for(TransformerEquivalences__mdt te: settigs) 
+            {
+                if( mapEquivalencesByEntity.containsKey(entity) ) 
+                {
                     mapEquivalencesByEntity.get(entity).put(te.OriginKey__c, te.Value__c);
-                } else {
+                } 
+                else 
+                {
                     mapEquivalencesByEntity.put(entity, new Map<String, String>{
                         te.OriginKey__c => te.Value__c
                     });
@@ -780,15 +315,242 @@ public class INFOHandler implements ISystem
             }
         }
 
-        if( Test.isRunningTest() && mapEquivalencesByEntityTest != null ) {
+        if( Test.isRunningTest() && mapEquivalencesByEntityTest != null ) 
+        {
             mapEquivalencesByEntity = mapEquivalencesByEntityTest;
         }
 
-        if( mapEquivalencesByEntity.containsKey(entity) && mapEquivalencesByEntity.get(entity).containsKey(originKey) ) {
+        if( mapEquivalencesByEntity.containsKey(entity) && mapEquivalencesByEntity.get(entity).containsKey(originKey) ) 
+        {
             result = mapEquivalencesByEntity.get(entity).get(originKey);
         }
         
-
         return result;
+    }
+
+    /**
+     * Procesar la entidad ACCOUNT al objeto account de salesforce
+     **
+     * @author aberuete
+     * @date 15/05/2023
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     * @param ExternalRequest__c externalRequest : External request que debe ser procesada
+     */
+    private static void processAccount (Map<String, Object> recordValuesMap, ExternalRequest__c externalRequest)
+    {
+        if (recordValuesMap.containsKey('CLIENTE_TIPO_PERSONA') )
+        {
+            // Persona física
+            if (((String) recordValuesMap.get('CLIENTE_TIPO_PERSONA') ).equalsIgnoreCase('F'))
+            {
+                Account accountRecord = (Account) ExternalRequestHandlerUtil.tf.transform(ACCOUNT, 'Account', recordValuesMap);
+                accountRecord.FirstName = getFirstAndLastName (recordValuesMap)[0];
+                accountRecord.LastName = getFirstAndLastName (recordValuesMap)[1];
+                accountRecord.LegalEntity__pc = getLegalEntity (recordValuesMap);
+                // 30.04.2021 - nts (agonzalezisasi) - ocs 1729 visibilidad GDRP
+                accountRecord.LegalEntity__c = accountRecord.LegalEntity__pc;
+                accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
+
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, ACCOUNT, 'Account', accountRecord);
+            }
+            // Persona jurídica
+            else if (((String) recordValuesMap.get('CLIENTE_TIPO_PERSONA') ).equalsIgnoreCase('J'))
+            {
+                //Cuenta
+                Account accountRecord = (Account) ExternalRequestHandlerUtil.tf.transform(ACCOUNT, 'Account', recordValuesMap);
+                accountRecord.Name = getFirstAndLastName (recordValuesMap)[0] + ' ' + getFirstAndLastName (recordValuesMap)[1];
+                accountRecord.LegalEntity__c = getLegalEntity (recordValuesMap);
+                accountRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
+
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, ACCOUNT, 'Account', accountRecord);
+
+                //Contacto
+                Contact contactRecord = (Contact) ExternalRequestHandlerUtil.tf.transform(ACCOUNT, 'Contact', recordValuesMap);
+                
+                contactRecord.FirstName = getFirstAndLastName (recordValuesMap)[0];
+                contactRecord.LastName = getFirstAndLastName (recordValuesMap)[1];
+                contactRecord.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByDeveloperName().get('Contact').getRecordTypeId();
+
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, ACCOUNT, 'Contact', contactRecord);
+            }
+            else
+            {
+                ExternalRequestHandlerUtil.setExternalRequest(externalRequest, true, 'KO', 'No se ha podido identificar el tipo de cliente', false);
+            }
+        } 
+    }
+
+     /**
+     * Método que obtiene el nombre y apellidos dependiendo del contenido del mapa recordValuesMap
+     **
+     * @author aberuete
+     * @date 15/05/2023
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     */
+    @testvisible
+    private static List<String> getFirstAndLastName (Map<String, Object> recordValuesMap)
+    {
+        String firstName = recordValuesMap.containsKey('CLIENTE_NOMBRE') ? (String) recordValuesMap.get('CLIENTE_NOMBRE') : null;
+        String lastName = (recordValuesMap.containsKey('CLIENTE_APELLIDO1') ? (String) recordValuesMap.get('CLIENTE_APELLIDO1'): null) + ' ' +
+                                (recordValuesMap.containsKey('CLIENTE_APELLIDO2') ? (String) recordValuesMap.get('CLIENTE_APELLIDO2') : null);   
+        return new List<String>{firstName,lastName};
+    }
+
+    /**
+     * Método que obtiene la entidad legal dependiendo del contenido del mapa recordValuesMap
+     **
+     * @author aberuete
+     * @date 15/05/2023
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     */
+    @testvisible
+    private static String getLegalEntity (Map<String, Object> recordValuesMap)
+    {
+        return recordValuesMap.containsKey('CLIENTE_ENTIDAD_LEGAL') ? (String) recordValuesMap.get('CLIENTE_ENTIDAD_LEGAL') : null; 
+    }
+
+    /**
+     * Procesar la entidad CONTACT_POINT al objeto ContactPointAddress,ContactPointPhone o ContactPointEmail de salesforce 
+     * en función del contenido del mapa recordValuesMap
+     **
+     * @author aberuete
+     * @date 15/05/2023
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     * @param ExternalRequest__c externalRequest : External request que debe ser procesada
+     */
+    @testvisible
+    private static void processContactPoint (Map<String, Object> recordValuesMap, ExternalRequest__c externalRequest)
+    {
+        if (recordValuesMap.containsKey('TIPO_DOMICILIO'))
+        {
+            // Vía de contacto postal (A, B, P)
+            if (((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('A') ||
+                ((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('B') ||
+                ((String) recordValuesMap.get('TIPO_DOMICILIO') ).equalsIgnoreCase('P'))
+            {
+                ContactPointAddress cpaRecord = (ContactPointAddress) ExternalRequestHandlerUtil.tf.transform(CONTACT_POINT, 'ContactPointAddress', recordValuesMap);
+                cpaRecord.Street = String.join
+                (
+                    new List<String>
+                    {
+                        cpaRecord.StreetType__c,
+                        cpaRecord.Street,
+                        cpaRecord.StreetNumber__c,
+                        cpaRecord.OtherInfo__c
+                    }
+                    , ' '
+                );
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointAddress', cpaRecord);
+            }
+            else if (((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('T'))
+            {
+                //  Vía de contacto telefónico (T)
+                ContactPointPhone cppRecord = (ContactPointPhone) ExternalRequestHandlerUtil.tf.transform(CONTACT_POINT, 'ContactPointPhone', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointPhone', cppRecord);
+            }
+            else if (((String) recordValuesMap.get('TIPO_DOMICILIO')).equalsIgnoreCase('E'))
+            {
+                // Vía de contacto email (E)
+                ContactPointEmail cpeRecord = (ContactPointEmail) ExternalRequestHandlerUtil.tf.transform(CONTACT_POINT, 'ContactPointEmail', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, CONTACT_POINT, 'ContactPointEmail', cpeRecord);
+            }
+            else
+            {
+                ExternalRequestHandlerUtil.setExternalRequest(externalRequest, true, 'KO', 'No se ha podido identificar el tipo de vía de contacto', false);
+            }
+        }  
+    }
+
+    /**
+     * Procesar la entidad INSURED_OBJECT al objeto asset de salesforce
+     **
+     * @author aberuete
+     * @date 15/05/2023
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     * @param ExternalRequest__c externalRequest : External request que debe ser procesada
+     */
+    @testvisible
+    private static void processInsuredObject (Map<String, Object> recordValuesMap, ExternalRequest__c externalRequest)
+    {
+        Asset insObjRecord = (Asset) ExternalRequestHandlerUtil.tf.transform(INSURED_OBJECT, 'Asset', recordValuesMap);
+                
+        // Recuperamos la etiqueta con el nombre a partir del codigo de tipo de objeto
+        if( mapInsuredObjectTypeToName == null ) 
+        {
+            mapInsuredObjectTypeToName = new Map<String, String>();
+
+            Schema.DescribeFieldResult fieldResult = Asset.ObjectType__c.getDescribe();
+            List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+            for(Schema.PicklistEntry p : ple) 
+            {
+                mapInsuredObjectTypeToName.put(p.getValue(), p.getLabel());
+            }
+        }
+        insObjRecord.Name = insObjRecord.ObjectType__c.trim();
+        
+        if( mapInsuredObjectTypeToName.containsKey(insObjRecord.Name) ) 
+        {
+            insObjRecord.Name = mapInsuredObjectTypeToName.get(insObjRecord.Name);
+        }
+        
+        // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
+        String recordTypeDevName = getEquivalence(HANDLER_ORIGIN, 'INSURED_OBJECT', insObjRecord.ObjectType__c.trim());
+                
+        if( String.isBlank(recordTypeDevName) ) 
+        {
+            throw new INFOHandlerException('RecordType equivalence not found for the following Object Type: ' + insObjRecord.ObjectType__c.trim());
+        }
+
+        insObjRecord.RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get(recordTypeDevName).getRecordTypeId();
+        ExternalRequestHandlerUtil.addRecordToMap(externalRequest, INSURED_OBJECT, 'Asset', insObjRecord);
+    }
+
+    /**
+     * Procesar la entidad NOTE al objeto caso de salesforce
+     **
+     * @author aberuete
+     * @date 15/05/2023
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     * @param ExternalRequest__c externalRequest : External request que debe ser procesada
+     */
+    @testvisible
+    private static void processNoteToCase (Map<String, Object> recordValuesMap, ExternalRequest__c externalRequest)
+    {
+        // Normal transformation of fields
+        Case caseRecord = (Case) ExternalRequestHandlerUtil.tf.transform(NOTE, SOBJECT_CASE, recordValuesMap);
+        // Assign the Case Origin to "Nota INFO"
+        caseRecord.Origin = NOTE_CASE_ORIGIN;
+        // Assign the Case Source Area to "Mediator"
+        caseRecord.SourceArea__c = NOTE_CASE_SOURCE_AREA;
+
+        //Tipo de NOTA INFO
+        //Se utiliza el método getEquivalence para comprobar si el tipo de Nota INFO es RBCO/RBNW/SINO
+        //En este caso el RecordType del nuevo caso generado es automáticamente OCS
+        String valorNotaInfo = getEquivalence(HANDLER_ORIGIN,NOTE,(String)recordValuesMap.get('note_cod_agrupacion_TA'));
+
+        if(String.isNotBlank(valorNotaInfo))
+        {
+            caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(valorNotaInfo).getRecordTypeId();
+        }
+        else 
+        {
+            // Recuperamos de la configuracion la equivalencia entre el ObjectType y su record type en Salesforce
+            String recordTypeDevName = getEquivalence(HANDLER_ORIGIN,NOTE,caseRecord.HegeoProductGroupCode__c.trim());
+
+            if( String.isBlank(recordTypeDevName) ) 
+            {
+                //En caso de no encontrar equivalencia se establece el caso tendrá RecordType OCS
+                caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+            }
+            else 
+            {
+                caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(recordTypeDevName).getRecordTypeId();
+            }
+        }
+
+        // Get the Type, Subytype and TypeN3 from the HEGEO fields metadata configuration
+        caseRecord = ExternalRequestHandlerUtil.fillTypificationIntoCase (recordValuesMap, 'NOTE_DESC_TIPO_ENVIO', 'NOTE_DESC_SUBTIPO', caseRecord);
+
+        ExternalRequestHandlerUtil.addRecordToMap(externalRequest, NOTE, SOBJECT_CASE, caseRecord);
     }
 }

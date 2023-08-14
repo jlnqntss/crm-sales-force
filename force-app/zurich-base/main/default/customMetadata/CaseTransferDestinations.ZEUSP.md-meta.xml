@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>ZE - USP</label>
+    <protected>false</protected>
+    <values>
+        <field>DestinationCallCenter__c</field>
+        <value xsi:type="xsd:string">USP</value>
+    </values>
+    <values>
+        <field>DestinationQueue__c</field>
+        <value xsi:type="xsd:string">Email_USP_Generico</value>
+    </values>
+    <values>
+        <field>DestinationRecordType__c</field>
+        <value xsi:type="xsd:string">USPInquiry</value>
+    </values>
+    <values>
+        <field>SourceCallCenter__c</field>
+        <value xsi:type="xsd:string">Zurich Empresas</value>
+    </values>
+    <values>
+        <field>SourceQueue__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>

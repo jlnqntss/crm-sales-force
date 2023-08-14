@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Competencia</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Competencias</value>
+    </caseValues>
+    <gender>Feminine</gender>
+    <layouts>
+        <layout>Agente zrm</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Competitor Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Identificador</nameFieldLabel>
+</CustomObjectTranslation>

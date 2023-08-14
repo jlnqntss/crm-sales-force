@@ -4,6 +4,7 @@
     <label>USP_Gerente</label>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
+    <permissionSets>Consulta_de_KPI</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>Gestion_Suscripcion</permissionSets>
     <status>Updated</status>

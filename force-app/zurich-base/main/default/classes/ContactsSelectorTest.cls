@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 06-06-2023
+ * @last modified by  : aberuete
+**/
 @isTest
 private with sharing class ContactsSelectorTest
 {
@@ -12,6 +19,8 @@ private with sharing class ContactsSelectorTest
 
         List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 10);
         insert contactPointEmails;
+
+        TestDataFactorySDM.intermediarySetupData();   
     }
 
     @isTest
@@ -152,7 +161,7 @@ private with sharing class ContactsSelectorTest
     static void test_findByEmailField()
     {
         List<Contact> contacts = [SELECT Id, Email FROM Contact];
-        System.assertEquals(10, contacts.size(), 'There should be 10 contactos');
+        System.assertEquals(14, contacts.size(), 'There should be 14 contactos');
 
         List<String> emails = new List<String>();
 
@@ -168,7 +177,7 @@ private with sharing class ContactsSelectorTest
         contacts = new ContactsSelector().findByEmailField(emails);
         Test.stopTest();
 
-        System.assertEquals(10, contacts.size(), 'There should be 10 accounts found');
+        System.assertEquals(14, contacts.size(), 'There should be 14 accounts found');
     }
 
     @IsTest
@@ -189,5 +198,101 @@ private with sharing class ContactsSelectorTest
         Test.stopTest();
 
         System.assertEquals(10, contacts.size(), 'There should be 10 contacts found');
+    }
+
+    @isTest
+    static void testFindIntermediaryContactByEmailAndAccountCode() {
+        List<Account> accountQueryList = new List<Account>([SELECT Id, INFOIntermediaryCode__c FROM Account 
+                                                            WHERE Account.RecordTypeId = :Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId() LIMIT 1]);
+        
+        if (!accountQueryList.isEmpty()) {
+            List<Contact> contactQueryList = new List<Contact>([SELECT Id, Email FROM Contact WHERE AccountId = :accountQueryList.get(0).Id]);                   
+
+            if (!contactQueryList.isEmpty()) {
+                
+                Test.startTest();
+                List<Contact> result = (new ContactsSelector()).findIntermediaryContactByEmailAndAccountCode(contactQueryList.get(0).Email, accountQueryList.get(0).INFOIntermediaryCode__c);
+                Test.stopTest();
+    
+                System.assertEquals(true, result.isEmpty(), 'Debe haber resultado');
+            }
+        }
+    }
+
+    @isTest
+    static void testFindContactByEmailAndAccountAffiliationCode() {
+        List<Account> accountQueryList = new List<Account>([SELECT Id, INFOCustomerNumber__c FROM Account 
+                                                            WHERE Account.RecordTypeId = :Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId() LIMIT 1]);
+        
+        if (!accountQueryList.isEmpty()) {
+            List<Contact> contactQueryList = new List<Contact>([SELECT Id, Email, RecordType.DeveloperName FROM Contact WHERE AccountId = :accountQueryList.get(0).Id]);
+            System.debug('contactQueryList ' + contactQueryList);            
+
+            if (!contactQueryList.isEmpty()) {
+
+                // añadimos al account un codigo de filiacion
+                Account a = new Account();
+                a.Id = accountQueryList.get(0).Id;
+                a.INFOBusinessCode__c = '1234567890';
+                update a;
+
+                List<String> customerCodeList = new List<String>();
+                customerCodeList.add('1234567890');
+
+                Test.startTest();
+                List<Contact> result = (new ContactsSelector()).findContactByEmailAndAccountAffiliationCode(contactQueryList.get(0).Email, customerCodeList);
+                Test.stopTest(); 
+    
+                System.assertEquals(true, !result.isEmpty(), 'Debe haber resultado');
+            }
+        }
+    }
+
+    /**
+    * Test del método que recupera los contactos asociados a cuentas filtradas por record type name
+    * @author aberuete
+    * @date 02/06/2023
+    */
+    @IsTest
+    static void test_setRecordType()
+    {
+        Contact contactNew = new Contact (LastName = 'prueba');
+        insert contactNew;
+       
+        List<Contact> allContacsList = [Select id from Contact];
+        Map<Id,Contact> mapContactsById = new Map<Id,Contact> (allContacsList);
+
+        Test.startTest();
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setRecordType(new List<String>{'Customer'});
+        contactsSelector.baseQuery.selectFields (new List<Schema.SObjectField> {Contact.Id});
+        List<Contact> matchedRecords = contactsSelector.baseQuery.byId(mapContactsById.keySet()).run();
+        Test.stopTest();
+
+        System.assertEquals(10, matchedRecords.size(), 'El número de contactos asociados a cuentas de Customer no es correcto');
+    }
+
+     /**
+    * Test del método que recupera los contactos asociados a cuentas filtradas por tipo de cuenta
+    * @author aberuete
+    * @date 06/06/2023
+    */
+    @IsTest
+    static void test_setTypeOfAccount()
+    {
+        Contact contactNew = new Contact (LastName = 'prueba');
+        insert contactNew;
+       
+        List<Contact> allContacsList = [Select id,Account.Type from Contact];
+        Map<Id,Contact> mapContactsById = new Map<Id,Contact> (allContacsList);
+
+        Test.startTest();
+        ContactsSelector contactsSelector = new ContactsSelector();
+        contactsSelector.setTypeOfAccount(new List<String>{'F','J'});
+        contactsSelector.baseQuery.selectFields (new List<Schema.SObjectField> {Contact.Id});
+        List<Contact> matchedRecords = contactsSelector.baseQuery.byId(mapContactsById.keySet()).run();
+        Test.stopTest();
+
+        System.assertEquals(0, matchedRecords.size(), 'El número de contactos asociados a cuentas de tipo F o J no es correcto');
     }
 }

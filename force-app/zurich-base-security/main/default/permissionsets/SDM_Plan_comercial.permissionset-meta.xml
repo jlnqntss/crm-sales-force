@@ -4,6 +4,10 @@
         <apexClass>GenerateComercialPlanController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>ViewAsModalGeneratePlanController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <description>SDM: otorga los permisos sobre los campos de la entiedad Plan comercail</description>
     <fieldPermissions>
         <editable>false</editable>
@@ -52,6 +56,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PlanComercial__c.PAActualKPI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PlanComercial__c.ParentPlan__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PlanComercial__c.SentNotifications__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -83,11 +97,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>PlanComercial__c.TargetKPI__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>PlanComercial__c.ParentPlan__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>

@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>RevenuesPerEmployees__c</fullName>
     <externalId>false</externalId>
-    <formula>Incomes2020__c  /  NumberEmployees__c</formula>
+    <formula>Income2014__c / NumberEmployees__c</formula>
     <label>Revenues per employees</label>
     <precision>18</precision>
     <required>false</required>

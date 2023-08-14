@@ -7,11 +7,23 @@
     <picklistValues>
         <picklist>Indicator__c</picklist>
         <values>
+            <fullName>APES</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>PN</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Portfolio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ratio_Claim</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ratio_Retention</fullName>
             <default>false</default>
         </values>
     </picklistValues>

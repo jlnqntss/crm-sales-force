@@ -2,10 +2,49 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>Asignar_SLA_Caso_Hijio</name>
+        <label>Asignar SLA caso hijo</label>
+        <locationX>578</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>calculatedSla</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>4320.0</numberValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_SLA_caso_respondido</name>
+        <label>Asignar SLA caso respondido</label>
+        <locationX>842</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>calculatedSla</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>4320.0</numberValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>AsignarSLACasoInmuebles</name>
+        <label>Asignar SLA caso inmuebles</label>
+        <locationX>1370</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>calculatedSla</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>5760.0</numberValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>MaxSlaAssignment</name>
         <label>Asignar SLA máximo</label>
         <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -18,7 +57,7 @@
         <name>SlaCalculationAssignment</name>
         <label>Cálculo de SLA</label>
         <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -30,8 +69,8 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Call Center?</label>
-        <locationX>380</locationX>
-        <locationY>158</locationY>
+        <locationX>996</locationX>
+        <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>USPOutcome</name>
@@ -48,12 +87,86 @@
             </connector>
             <label>USP</label>
         </rules>
+        <rules>
+            <name>CCS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>caseCallCenter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CC Service</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getCase</targetReference>
+            </connector>
+            <label>CCS</label>
+        </rules>
+        <rules>
+            <name>CSMParticularesOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>caseCallCenter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CSM Particulares</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>RecuperarCasoCSMAction</targetReference>
+            </connector>
+            <label>CSM PARTICULARES</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>isChildCase</name>
+        <label>¿Es caso hijo?</label>
+        <locationX>842</locationX>
+        <locationY>350</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Caso_hijo</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casoEncontrado.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>casoEncontrado.ParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_SLA_Caso_Hijio</targetReference>
+            </connector>
+            <label>Caso hijo</label>
+        </rules>
+        <rules>
+            <name>Caso_respondido</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casoEncontrado.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Respondido</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_SLA_caso_respondido</targetReference>
+            </connector>
+            <label>Caso respondido</label>
+        </rules>
     </decisions>
     <decisions>
         <name>IsQuoteResponseDecision</name>
         <label>¿Es respuesta de venta?</label>
         <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <defaultConnector>
             <targetReference>GetCaseMilestoneAction</targetReference>
         </defaultConnector>
@@ -74,7 +187,30 @@
             <label>Es respuesta de venta</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>RamoInmueblesDecision</name>
+        <label>¿Ramo Inmuebles ?</label>
+        <locationX>1502</locationX>
+        <locationY>350</locationY>
+        <defaultConnectorLabel>No inmuebles</defaultConnectorLabel>
+        <rules>
+            <name>InmueblesOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casoEncontrado.HegeoProductGroupCode__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>3</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AsignarSLACasoInmuebles</targetReference>
+            </connector>
+            <label>Inmuebles</label>
+        </rules>
+    </decisions>
     <description>Subflujo encargado de definir la prioridad de la interacción a enrutar, basándose en el call center al que vaya destinada</description>
+    <environments>Default</environments>
     <formulas>
         <name>slaFormula</name>
         <dataType>Number</dataType>
@@ -103,10 +239,35 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <description>Recuperamos el caso con el que trabajamos</description>
+        <name>getCase</name>
+        <label>Recuperar caso</label>
+        <locationX>842</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>isChildCase</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>caseId</elementReference>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputReference>casoEncontrado</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ParentId</queriedFields>
+        <queriedFields>Origin</queriedFields>
+        <queriedFields>Status</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>GetCaseMilestoneAction</name>
         <label>Recuperar Case Milestone</label>
         <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SlaCalculationAssignment</targetReference>
@@ -126,8 +287,31 @@
         <queriedFields>TimeRemainingInMins</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <description>Recuperamos el caso con el que trabajamos</description>
+        <name>RecuperarCasoCSMAction</name>
+        <label>Recuperar caso CSM</label>
+        <locationX>1502</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>RamoInmueblesDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>caseId</elementReference>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputReference>casoEncontrado</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>HegeoProductGroupCode__c</queriedFields>
+    </recordLookups>
     <start>
-        <locationX>254</locationX>
+        <locationX>870</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CallCenterDecision</targetReference>
@@ -158,6 +342,14 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>casoEncontrado</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
     </variables>
     <variables>
         <name>isResponse</name>

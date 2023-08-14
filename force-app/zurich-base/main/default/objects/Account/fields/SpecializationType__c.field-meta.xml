@@ -27,6 +27,11 @@
                 <default>false</default>
                 <label>Plan Madrid</label>
             </value>
+            <value>
+                <fullName>Plan Asturias</fullName>
+                <default>false</default>
+                <label>Plan Asturias</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

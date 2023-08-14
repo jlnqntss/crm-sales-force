@@ -49,4 +49,24 @@
             <value>Zurich Empresas</value>
         </criteriaItems>
     </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Ventas_CC</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Permisos de escritura para Oportunidades Zurich Ventas</description>
+        <label>Ventas CC</label>
+        <sharedTo>
+            <group>Write_Ventas_CC</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Zurich</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Scope__c</field>
+            <operation>equals</operation>
+            <value>Zurich Ventas</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
 </SharingRules>

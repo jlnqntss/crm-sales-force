@@ -3,6 +3,11 @@
     <fullName>Pesos_Suma_100</fullName>
     <active>true</active>
     <description>Comprobar que la suma de los pesos suma 100 para los registros de tipo &apos;Objetivo&apos;.</description>
-    <errorConditionFormula>AND(RecordType.DeveloperName = &apos;Objectives&apos;, Total__c &lt;&gt; 1)</errorConditionFormula>
+    <errorConditionFormula>AND(
+				RecordType.DeveloperName = &apos;Objectives&apos;,
+				Total__c &lt;&gt; 1,
+				NOT (ISPICKVAL( Indicator__c , &apos;Ratio_Retention&apos;)),
+				NOT (ISPICKVAL( Indicator__c , &apos;Ratio_Claim&apos;))
+)</errorConditionFormula>
     <errorMessage>La suma de los pesos debe ser 100%</errorMessage>
 </ValidationRule>

@@ -1,5 +1,5 @@
 import { LightningElement, track } from "lwc";
-
+import ViewAsModal from "c/viewAsModalGenerateComercialPlan";
 import FORM_FACTOR from "@salesforce/client/formFactor";
 
 import SDM_PlanAnual_KPICompare from "@salesforce/label/c.SDM_PlanAnual_KPICompare";
@@ -34,9 +34,15 @@ import SDM_PlanAnual_ValidationMessage from "@salesforce/label/c.SDM_PlanAnual_V
 import SDM_PlanAnual_ButtonRefresh from "@salesforce/label/c.SDM_PlanAnual_ButtonRefresh";
 import SDM_PlanAnual_Legend from "@salesforce/label/c.SDM_PlanAnual_Legend";
 import SDM_PlanAnual_WarningCero from "@salesforce/label/c.SDM_PlanAnual_WarningCero";
+import SDM_PlanAnual_PreviousPage from "@salesforce/label/c.SDM_PlanAnual_PreviousPage";
+import SDM_PlanAnual_NextPage from "@salesforce/label/c.SDM_PlanAnual_NextPage";
+import SDM_PlanAnual_ViewAsButton from "@salesforce/label/c.SDM_PlanAnual_ViewAsButton";
+import SDM_PlanAnual_ShowPlansFrom from "@salesforce/label/c.SDM_PlanAnual_ShowPlansFrom";
+import SDM_PlanAnual_ViewAsModalLabel from "@salesforce/label/c.SDM_PlanAnual_ViewAsModalLabel";
 
 import saveData from "@salesforce/apex/generateComercialPlanController.saveData";
 import getRecords from "@salesforce/apex/generateComercialPlanController.getRecords";
+
 import { NavigationMixin } from "lightning/navigation";
 import { CloseActionScreenEvent } from "lightning/actions";
 
@@ -77,7 +83,12 @@ export default class GenerateComercialPlan extends NavigationMixin(
     SDM_PlanAnual_ValidationMessage,
     SDM_PlanAnual_ButtonRefresh,
     SDM_PlanAnual_Legend,
-    SDM_PlanAnual_WarningCero
+    SDM_PlanAnual_WarningCero,
+    SDM_PlanAnual_PreviousPage,
+    SDM_PlanAnual_NextPage,
+    SDM_PlanAnual_ViewAsButton,
+    SDM_PlanAnual_ShowPlansFrom,
+    SDM_PlanAnual_ViewAsModalLabel
   };
 
   @track isEdited = false;
@@ -93,6 +104,15 @@ export default class GenerateComercialPlan extends NavigationMixin(
   numActivePlans = 0;
   thereArePlans = false;
   deletedPlans = 0;
+
+  // atributos paginacion
+  @track pageNumber = 0; // pagina en la que se encuentra el usuario, por defecto 0, si hay resultados se cambia a 1
+  @track pageSize = 1; // numero de elementos por paginas a visualizar, valor por defecto se toma de metadata
+
+  // atributos view as
+  showViewAsButton = false;
+  viewAsUserId;
+  viewAsUserName;
 
   Indicator = {
     type_percent: "type_percent",
@@ -120,7 +140,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
   // Evento: inicializacion de la pantalla
   connectedCallback() {
-    this.getDataRecords(this.yearValue);
+    this.getDataRecords(this.yearValue, this.viewAsUserId);
   }
 
   // Evento: Gestiona el cambio en los campos de cabecera de la tabla. Nombre del plan
@@ -242,6 +262,11 @@ export default class GenerateComercialPlan extends NavigationMixin(
       this.numActivePlans++;
       // Actualizamos que hay planes
       this.thereArePlans = true;
+
+      // si borramos todos los planes y le damos a nuevo hay que actualizar la información del paginador
+      if (this.pageNumber === 0 && this.totalPages !== 0) {
+        this.pageNumber = 1;
+      }
     } catch (error) {
       console.error(error);
     }
@@ -274,13 +299,20 @@ export default class GenerateComercialPlan extends NavigationMixin(
           // Si es columna existente => marcar para borrar cabecera y filas
           this.deletedPlans++;
           this.tabledata.headers.Cells[pos].isDeleted = true;
+          this.tabledata.headers.Cells[pos].isPlanVisible = false; // al borrar un elemento lo marcamos como no visible
           this.tabledata.rows.forEach((row) => {
             row.Cells[pos].isDeleted = true;
+            row.Cells[pos].isPlanVisible = false; // al borrar un elemento lo marcamos como no visible
           });
           this.tabledata.footers.Cells[pos].isDeleted = true;
+          this.tabledata.footers.Cells[pos].isPlanVisible = false; // al borrar un elemento lo marcamos como no visible
         }
         // Restamos en uno los planes activos
         this.numActivePlans--;
+
+        // recalculamos distintos elementos de paginación
+        this.recalculatePaginationInDelete(pos);
+
         // Y comprobamos si queda alguno activo
         if (this.numActivePlans === 0) this.thereArePlans = false;
       }
@@ -305,7 +337,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
           this.labels.SDM_PlanAnual_SavingSuccess,
           this.labels.SDM_PlanAnual_SavingSuccessMessage
         );
-        this.getDataRecords(this.yearValue);
+        this.getDataRecords(this.yearValue, this.viewAsUserId);
         this.error = undefined;
       })
       .catch((error) => {
@@ -348,7 +380,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
   // Evento: Gestiona el desplegable de cambio de año
   handleChangeYear(event) {
-    this.getDataRecords(event.detail.value);
+    this.getDataRecords(event.detail.value, this.viewAsUserId);
   }
 
   // Evento: Edita la tabla al hacer doble click en la cabecera o las columnas
@@ -388,7 +420,7 @@ export default class GenerateComercialPlan extends NavigationMixin(
 
   // Evento: refresh
   handleRefresh() {
-    this.getDataRecords(this.yearValue);
+    this.getDataRecords(this.yearValue, this.viewAsUserId);
   }
 
   /*-------------------- RESTO DE METODOS --------------------*/
@@ -699,12 +731,12 @@ export default class GenerateComercialPlan extends NavigationMixin(
   }
 
   // Metodo: recupera los registros para un año dado
-  getDataRecords(year) {
+  getDataRecords(year, viewAsUserId) {
     // Marcamos que se estan obteniendo los datos
     this.isLoading = true;
 
     // Llamamos al controller
-    getRecords({ year: year })
+    getRecords({ year: year, viewAsUserId: viewAsUserId })
       .then((result) => {
         // Si ha se ejecuto correctamente
 
@@ -727,6 +759,15 @@ export default class GenerateComercialPlan extends NavigationMixin(
         this.deletedPlans = 0;
         // Por defecto no hay nuevos planes
         this.newKey = 0;
+
+        // paginacion, actualizamos variable de paginación
+        this.pageSize = this.tabledata.numVisiblePlans;
+        if (this.numActivePlans !== 0) {
+          this.pageNumber = 1;
+        }
+
+        // mostrar el botón cambiar vista usuario
+        this.showViewAsButton = this.tabledata.showViewAsButton;
 
         this.error = undefined;
       })
@@ -799,5 +840,186 @@ export default class GenerateComercialPlan extends NavigationMixin(
   // Propiedad: indica si el formulario se esta ejecutando en una pantalla pequeña
   get isPhone() {
     return FORM_FACTOR === "Small";
+  }
+
+  /******************* Métodos Paginación  *******************************/
+  // getter de pagina actual para usar en html
+  get currentPageNumber() {
+    return this.pageNumber;
+  }
+
+  // gestionar el comportamiento del botón página anterior, no se comprueba el numero de la pagina porque los botones se desactivan en el minimo y máximo
+  handlePrevious() {
+    this.pageNumber = this.pageNumber - 1;
+    this.handleHeaderPagination();
+    this.handleRowsPagination();
+    this.handleFootersPagination();
+  }
+
+  // gestionar el comportamiento del botón página siguiente, no se comprueba el numero de la pagina porque los botones se desactivan en el minimo y máximo
+  handleNext() {
+    this.pageNumber = this.pageNumber + 1;
+    this.handleHeaderPagination();
+    this.handleRowsPagination();
+    this.handleFootersPagination();
+  }
+
+  // getter total de páginas a usar en el html
+  get totalPages() {
+    return Math.ceil(this.numActivePlans / this.pageSize);
+  }
+
+  // habilita o deshabilita el botón página anterior
+  get isPreviousDisabled() {
+    return this.pageNumber <= 1;
+  }
+
+  // habilita o deshabilita el botón página siguiente
+  get isNextDisabled() {
+    return this.pageNumber >= this.totalPages;
+  }
+
+  /**************** Metodos auxiliares paginacion ***************/
+  /* controla la visibilidad del header de los planes al cambiar de página ya sea anterior o posterior. 
+  Si el elemento está en el rango de visibilidad definido por el numero de elementos por páginase se muestra*/
+  handleHeaderPagination() {
+    let contador = 0;
+    let positionMin = this.pageSize * (this.pageNumber - 1);
+    let positionMax = this.pageSize * this.pageNumber;
+
+    for (let header of this.tabledata.headers.Cells) {
+      if (contador < positionMin) {
+        header.isPlanVisible = false;
+      } else if (
+        contador >= positionMin &&
+        contador < positionMax &&
+        !header.isDeleted
+      ) {
+        // si el contador esta entre las posiciones permitidas es visible
+        header.isPlanVisible = true;
+      } else {
+        header.isPlanVisible = false;
+      }
+      if (!header.isDeleted) {
+        contador++;
+      }
+    }
+  }
+
+  /* controla la visibilidad de las filas de los planes al cambiar de página ya sea anterior o posterior. 
+  Si el elemento está en el rango de visibilidad definido por el numero de elementos por páginase se muestra*/
+  handleRowsPagination() {
+    let contador = 0;
+    let positionMin = this.pageSize * (this.pageNumber - 1);
+    let positionMax = this.pageSize * this.pageNumber;
+
+    for (let row of this.tabledata.rows) {
+      for (let cell of row.Cells) {
+        if (contador < positionMin) {
+          cell.isPlanVisible = false;
+        } else if (
+          contador >= positionMin &&
+          contador < positionMax &&
+          !cell.isDeleted
+        ) {
+          cell.isPlanVisible = true;
+        } else {
+          cell.isPlanVisible = false;
+        }
+        if (!cell.isDeleted) {
+          contador++;
+        }
+      }
+      contador = 0; // reseteo el contador para la siguiente fila
+    }
+  }
+
+  /* controla la visibilidad del footer de los planes al cambiar de página ya sea anterior o posterior. 
+  Si el elemento está en el rango de visibilidad definido por el numero de elementos por páginase se muestra*/
+  handleFootersPagination() {
+    let contador = 0;
+    let positionMin = this.pageSize * (this.pageNumber - 1);
+    let positionMax = this.pageSize * this.pageNumber;
+
+    for (let footer of this.tabledata.footers.Cells) {
+      if (contador < positionMin) {
+        footer.isPlanVisible = false;
+      } else if (
+        contador >= positionMin &&
+        contador < positionMax &&
+        !footer.isDeleted
+      ) {
+        footer.isPlanVisible = true;
+      } else {
+        footer.isPlanVisible = false;
+      }
+      if (!footer.isDeleted) {
+        contador++;
+      }
+    }
+  }
+
+  /* considerando que el tamaño de header, rows y footer 
+  es el mismo siempre en caso de borrar un plan ponemos a true el primer elemento no visible y no eliminado siguiente al eliminado que haya en tabledata
+  */
+  recalculatePaginationInDelete(pos) {
+    let found = false;
+    let position = pos;
+    let element;
+
+    // buscamos si hay algún elemento no visible que pueda mostrarse
+    while (!found && position < this.tabledata.headers.Cells.length) {
+      element = this.tabledata.headers.Cells[position];
+      if (!element.isDeleted && !element.isPlanVisible) {
+        // si el elemento no es visible ni se ha eliminado obtengo su posicion y hago visible dicho plan
+        found = true;
+      } else {
+        position++;
+      }
+    }
+
+    // Si lo hemos encontrado...
+    if (found) {
+      // cabecera
+      this.tabledata.headers.Cells[position].isPlanVisible = true;
+      // filas
+      this.tabledata.rows.forEach((row) => {
+        row.Cells[position].isPlanVisible = true;
+      });
+      // footer
+      this.tabledata.footers.Cells[position].isPlanVisible = true;
+    }
+
+    /* si de la ultima pagina se borran todos hay que recalcular la visibilidad de los planes para mostrar los de la pagina anterior.
+     Si tenemos 2/2 en el paginador y borramos todos lo que haya en la última página quedaría el paginador con valores 2/1 por eso queda así la condición e invocamos el método handlePrevious*/
+    if (this.pageNumber > this.totalPages) {
+      this.handlePrevious();
+    }
+  }
+
+  /****************************************** Lógica de View As ****************************************************************************/
+
+  async handleModalOpen() {
+    await ViewAsModal.open({
+      label: this.labels.SDM_PlanAnual_ViewAsModalLabel,
+      size: "small"
+    })
+      .then((result) => {
+        // prompt modal has been closed
+        this.handleChangeView(result);
+      })
+      .catch((error) => {
+        console.log(JSON.stringify(error));
+      });
+    // if modal closed with X button, promise returns result = 'undefined'
+    // if modal closed with OK button, promise returns result = 'okay'
+  }
+
+  handleChangeView(result) {
+    if (result !== undefined) {
+      this.viewAsUserId = result.selectedUserId;
+      this.viewAsUserName = result.selectedUserName;
+      this.handleRefresh();
+    }
   }
 }

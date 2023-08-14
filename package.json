@@ -29,7 +29,7 @@
     "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
     "release:authenticate": "node scripts/source/authenticate.js",
     "release:scan": "node scripts/source/scan",
-    "release:test:lwc": "node scripts/source/test-lwc.js",
+    "release:test:lwc": "sfdx-lwc-jest --skipApiVersionCheck --coverage",
     "release:test:apex": "node scripts/source/test-apex.js",
     "release:validate": "node scripts/source/deploy.js --check",
     "release:deploy": "node scripts/source/deploy.js",

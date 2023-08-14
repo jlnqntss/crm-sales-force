@@ -4,6 +4,27 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>decorate</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;⚠️ &lt;/span&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Póliza de otro mediador&lt;/strong&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;⚠️&lt;/span&gt;&lt;/p&gt;</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:richText</componentName>
+                <identifier>flexipage_richText</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.IsNotSameIntermediary__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>true</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
                     <name>createQuickActionName</name>
                     <value>NewCase</value>
                 </componentInstanceProperties>
@@ -152,6 +173,10 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentInstanceProperties>
+                    <name>showLegacyActivityComposer</name>
+                    <value>false</value>
+                </componentInstanceProperties>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
                 <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>
@@ -289,7 +314,7 @@
                             <value>Case.Generar_Seguimiento</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Case.Transferir</value>
+                            <value>CustomButton.Case.Transferir</value>
                         </valueListItems>
                         <valueListItems>
                             <value>Case.Diferido</value>
@@ -334,6 +359,33 @@
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
                 <identifier>force_highlightsPanel</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>displaySubject</componentName>
+                <identifier>c_displaySubject2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>decorate</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;⚠️ &lt;/span&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Código de actividad excluido&lt;/strong&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt; ⚠️&lt;/span&gt;&lt;/p&gt;</value>
+                </componentInstanceProperties>
+                <componentName>flexipage:richText</componentName>
+                <identifier>flexipage_richText2</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.RiskAppetite__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Excluido</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -451,7 +503,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>updateQuickActionName</name>
-                    <value>Account.UpdateIntermediary</value>
+                    <value>Account.UpdateIntermediaryEON</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord3</identifier>
@@ -497,8 +549,8 @@
                         <rightValue>PartnerOCS</rightValue>
                     </criteria>
                     <criteria>
-                        <leftValue>{!Record.RobotNif__c}</leftValue>
-                        <operator>EQUAL</operator>
+                        <leftValue>{!Record.MediatedCustomer__r.Name}</leftValue>
+                        <operator>NE</operator>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -635,38 +687,6 @@
                         <leftValue>{!Record.ShowFlowCaseSelectCustomer__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>true</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>decorate</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>richTextValue</name>
-                    <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;a href=&quot;https://zurichinsurance.sharepoint.com/:u:/r/sites/CCWEBProcesos/SitePages/Grabacion-Contractual.aspx?csf=1&amp;amp;web=1&amp;amp;e=DOuHkE&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;Abrir texto de grabación contractual&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:richText</componentName>
-                <identifier>flexipage_richText</identifier>
-                <visibilityRule>
-                    <booleanFilter>1 AND (2 OR 3)</booleanFilter>
-                    <criteria>
-                        <leftValue>{!Record.Type}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Gestión Servicios</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Subtype__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Modificación</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Subtype__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Rehabilitación</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>

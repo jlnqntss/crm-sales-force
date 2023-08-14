@@ -73,7 +73,8 @@ public with sharing class SettingsSDM
         Map<String, SDMCommercialPlan__mdt> mapSettingsIndicator = new Map<String, SDMCommercialPlan__mdt>();
         // Recuperamos los datos de configuracion de los indicadores
         List<SDMCommercialPlan__mdt> settings = [
-            SELECT Indicator__c, CalculationType__c, FirstField__c, SecondField__c FROM SDMCommercialPlan__mdt
+            SELECT Indicator__c, CalculationType__c, FirstField__c, SecondField__c, ThirdField__c, PreviousPeriodField__c, CalculatedPreviousPeriod__c 
+            FROM SDMCommercialPlan__mdt
         ];
 
         // Solo para los test cambiamos la configuracion
@@ -96,8 +97,8 @@ public with sharing class SettingsSDM
     public List<SDMAccountTeamRole__mdt> getAccountRolesWithIntermediaryFields(List<SDMAccountTeamRole__mdt> testSettingsATM)
     {
         List<SDMAccountTeamRole__mdt> result = [
-            SELECT Role__c, IntermediaryField__c, Status__c 
-            FROM SDMAccountTeamRole__mdt
+            SELECT Role__c, IntermediaryField__c, Status__c , IntermediaryNameField__c
+            FROM SDMAccountTeamRole__mdt ORDER BY IntermediaryField__c
         ];
 
         // Solo para los test cambiamos los datos de configuracion

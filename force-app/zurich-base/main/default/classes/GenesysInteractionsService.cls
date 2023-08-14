@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : jjuaristi
  * @group             : 
- * @last modified on  : 20-10-2021
- * @last modified by  : jjuaristi
+ * @last modified on  : 06-06-2023
+ * @last modified by  : aberuete
 **/
 public with sharing class GenesysInteractionsService
 {
@@ -127,10 +127,10 @@ public with sharing class GenesysInteractionsService
         if(interactionLog.caller != null)
         {
             interactionTask.IdentifiedByNIF__c = !(interactionLog.caller.identifiedByNIF == null || interactionLog.caller.identifiedByNIF == false);
-            interactionTask.IdentifiedByANI__c = interactionLog.caller.identifiedByANI == null || interactionLog.caller.identifiedByANI == false ? false : true;
-            interactionTask.NoIdentified__c = interactionLog.caller.noIdentified == null || interactionLog.caller.noIdentified == false ? false : true;
-            interactionTask.MultiIdentifiedByNIF__c = interactionLog.caller.multiIdentifiedByNIF == null || interactionLog.caller.multiIdentifiedByNIF == false ? false : true;
-            interactionTask.MultiIdentifiedByANI__c = interactionLog.caller.multiIdentifiedByANI == null || interactionLog.caller.multiIdentifiedByANI == false ? false : true;
+            interactionTask.IdentifiedByANI__c = (interactionLog.caller.identifiedByANI != null && interactionLog.caller.identifiedByANI );
+            interactionTask.NoIdentified__c = (interactionLog.caller.noIdentified != null && interactionLog.caller.noIdentified );
+            interactionTask.MultiIdentifiedByNIF__c = (interactionLog.caller.multiIdentifiedByNIF != null && interactionLog.caller.multiIdentifiedByNIF );
+            interactionTask.MultiIdentifiedByANI__c = (interactionLog.caller.multiIdentifiedByANI != null && interactionLog.caller.multiIdentifiedByANI );
         }
 
         insert interactionTask;
@@ -361,7 +361,7 @@ public with sharing class GenesysInteractionsService
             // Construimos un intermediario falso (es el id del partner) para pasar al método el ID del partner y que el agente sea el owner de un caso abierto
             Intermediary fakePartner = new Intermediary();
             fakePartner.intermediaryId = partner.Id;
-            results.bestAgents = findBestAgents(fakePartner);
+            results.bestAgents = findBestAgents(fakePartner, false);
         }
 
         //20210804: Estadísticas/Informes
@@ -404,7 +404,6 @@ public with sharing class GenesysInteractionsService
             {
                 Policy__c.Id,
                 Policy__c.Name,
-                Policy__c.Intermediary_Code__c,
                 Policy__c.PolicyType__c
             },
             new List<String>
@@ -417,7 +416,8 @@ public with sharing class GenesysInteractionsService
                 'IntermediaryId__r.Phone',
                 'IntermediaryId__r.MainEmail__c',
                 'IntermediaryId__r.Channel__c',
-                'IntermediaryId__r.Segment__c'
+                'IntermediaryId__r.Segment__c', 
+                'IntermediaryId__r.INFOIntermediaryCode__c' 
             }
         );
 
@@ -468,7 +468,8 @@ public with sharing class GenesysInteractionsService
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
                 'Policy__r.Partner__r.GrandparentBusinessName__c',
-                'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
+                'Policy__r.Name',
+                'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c', 
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
                 'Policy__r.IntermediaryId__r.MainEmail__c',
@@ -523,15 +524,15 @@ public with sharing class GenesysInteractionsService
         {
             when 'phone'
             {
-                accounts = AccountSearchService.findCustomersByPhoneNumber( new List<String>{request.value}, scope, legalEntity );
+                accounts = AccountSearchService.findCustomersByPhoneNumber( new List<String>{request.value}, scope, legalEntity, null, null );
             }
             when 'email'
             {
-                accounts = AccountSearchService.findCustomersByEmail( new List<String>{request.value}, scope, legalEntity );
+                accounts = AccountSearchService.findCustomersByEmail( new List<String>{request.value}, scope, legalEntity, null, null );
             }
             when 'document'
             {
-                accounts = AccountSearchService.findCustomersByDocumentId( new List<String>{request.value}, null, scope, legalEntity );
+                accounts = AccountSearchService.findCustomersByDocumentId( new List<String>{request.value}, null, scope, legalEntity, null, null );
             }
             when 'policy_code'
             {
@@ -622,8 +623,10 @@ public with sharing class GenesysInteractionsService
             results.phone = String.isBlank(intermediary.MainMobilePhone__c)? intermediary.Phone : intermediary.MainMobilePhone__c;
             results.email = intermediary.MainEmail__c;
             results.nationalId = intermediary.NationalId__c;
+            results.intermediaryChannel = intermediary.Channel__c;
+            results.intermediarySegment = intermediary.Segment__c;
 
-            results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c));
+            results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c), true);
         }
 
         //20210804: Estadísticas/Informes
@@ -649,7 +652,7 @@ public with sharing class GenesysInteractionsService
      * @author adelgado
      * @date 24/11/2020
      */
-    public static List<Agent> findBestAgents(Intermediary intermediary)
+    public static List<Agent> findBestAgents(Intermediary intermediary, Boolean isIntermediary)
     {
         Set<Agent> bestAgents = new Set<Agent>();
 
@@ -667,12 +670,18 @@ public with sharing class GenesysInteractionsService
             }
         );
 
-        for(Case openCase : casesSelector.findOpenByAccount(new List<String>{intermediary.intermediaryId}))
+        if(!isIntermediary)
         {
-            bestAgents.add
-            (
-                new Agent(openCase.Owner.Email, true, false, false)
-            );
+            for(Case openCase : casesSelector.findOpenByAccount(new List<String>{intermediary.intermediaryId}))
+            {
+                if (openCase.Owner.Email != null)
+                {
+                    bestAgents.add
+                    (
+                        new Agent(openCase.Owner.Email, true, false, false)
+                    );
+                }
+            }
         }
 
         // 2 - Comprobar si uno de los gestores con casos abiertos es el preferente del mediador para individuals
@@ -756,7 +765,6 @@ public with sharing class GenesysInteractionsService
             {
                 Policy__c.Id,
                 Policy__c.Name,
-                Policy__c.Intermediary_Code__c,
                 Policy__c.PolicyType__c
             },
             new List<String>
@@ -769,6 +777,7 @@ public with sharing class GenesysInteractionsService
                 'IntermediaryId__r.MainEmail__c',
                 'IntermediaryId__r.Channel__c',
                 'IntermediaryId__r.Segment__c',
+                'IntermediaryId__r.INFOIntermediaryCode__c',
                 'Partner__r.GrandparentBusinessName__c'
             }
         );
@@ -812,7 +821,8 @@ public with sharing class GenesysInteractionsService
                 'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
                 'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
                 'Policy__r.Partner__r.GrandparentBusinessName__c',
-                'Policy__r.Intermediary_Code__c', 'Policy__r.Name',
+                'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c',
+                'Policy__r.Name',
                 'Policy__r.IntermediaryId__r.MainMobilePhone__c',
                 'Policy__r.IntermediaryId__r.Phone',
                 'Policy__r.IntermediaryId__r.MainEmail__c',
@@ -1124,6 +1134,10 @@ public with sharing class GenesysInteractionsService
         public Boolean multiIdentifiedByNIF;
         public Boolean multiIdentifiedByANI;
 
+        // 2023-03-01 (arcortazar)
+        public String intermediaryChannel;
+        public String intermediarySegment;
+
         public override String toString()
         {
             return JSON.serialize(this);
@@ -1353,7 +1367,7 @@ public with sharing class GenesysInteractionsService
             this.type = String.isNotBlank(policy.PolicyType__c) ? policy.PolicyType__c : policy.ProductId__r.GroupDescription__c;
             this.partnerName = policy.Partner__r.GrandparentBusinessName__c;
             this.partnerSector = policy.Partner__r.PartnerSector__c;
-            this.intermediaryCode = policy.Intermediary_Code__c;
+            this.intermediaryCode = policy.IntermediaryId__r.INFOIntermediaryCode__c;
             this.intermediaryChannel = policy.IntermediaryId__r.Channel__c;
             this.intermediarySegment = policy.IntermediaryId__r.Segment__c;
             this.intermediaryEmail = policy.IntermediaryId__r.MainEmail__c;

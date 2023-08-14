@@ -5521,6 +5521,43 @@
         <name>SDM_Acta_CheckOwner</name>
     </customLabels>
     <customLabels>
+        <label>Descargar</label>
+        <name>SDM_Acta_DownloadButton</name>
+    </customLabels>
+	<customLabels>
+        <label>Previsualizar</label>
+        <name>SDM_Acta_PreviewButton</name>
+    </customLabels>
+	<customLabels>
+        <label>Atención</label>
+        <name>SDM_Acta_WarningToastTitle</name>
+    </customLabels>
+	<customLabels>
+        <label>Error</label>
+        <name>SDM_Acta_ErrorToastTitle</name>
+    </customLabels>
+	<customLabels>
+        <label>No se ha encontrado registro de evento</label>
+        <name>SDM_Acta_NoActaErrorToastMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Generar PDF Acta</label>
+        <name>SDM_Acta_CreatePDFTitleModal</name>
+    </customLabels>
+	<customLabels>
+        <label>No se puede generar el PDF, no se ha creado el acta en el evento.
+Cree el acta y vuelva a intentarlo.</label>
+        <name>SDM_Acta_NoActaWarningToastMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Detalle</label>
+        <name>SDM_Home_RN_Dashboard_detail</name>
+    </customLabels>
+    <customLabels>
+        <label>Vista general</label>
+        <name>SDM_Home_RN_Dashboard_general_view</name>
+    </customLabels>
+    <customLabels>
         <label>Activo</label>
         <name>SDM_Objetivos_Active</name>
     </customLabels>
@@ -5801,6 +5838,10 @@
         <name>SDM_PlanAnual_NewPlan</name>
     </customLabels>
     <customLabels>
+        <label>Página Siguiente</label>
+        <name>SDM_PlanAnual_NextPage</name>
+    </customLabels>
+    <customLabels>
         <label>No hay planes anuales definidos.</label>
         <name>SDM_PlanAnual_NoPlan</name>
     </customLabels>
@@ -5819,6 +5860,10 @@
     <customLabels>
         <label>Planes a eliminar al guardar</label>
         <name>SDM_PlanAnual_PlansToDelete</name>
+    </customLabels>
+    <customLabels>
+        <label>Página Anterior</label>
+        <name>SDM_PlanAnual_PreviousPage</name>
     </customLabels>
     <customLabels>
         <label>Selecciona el producto</label>
@@ -5939,6 +5984,30 @@
     <customLabels>
         <label>Fuente DW sin contemplar normalización de Flotas ni códigos de Digital</label>
         <name>SDM_PlanAnual_Message_Fleets</name>
+    </customLabels>
+    <customLabels>
+        <label>Cambiar Vista Usuario</label>
+        <name>SDM_PlanAnual_ViewAsButton</name>
+    </customLabels>
+	<customLabels>
+        <label>Mostrando planes de:</label>
+        <name>SDM_PlanAnual_ShowPlansFrom</name>
+    </customLabels>
+	<customLabels>
+        <label>Cambiar Vista Usuario</label>
+        <name>SDM_PlanAnual_ViewAsModalLabel</name>
+    </customLabels>
+	<customLabels>
+        <label>Cambiar a:</label>
+        <name>SDM_PlanAnual_ViewAsModalChangeUser</name>
+    </customLabels>
+	<customLabels>
+        <label>Filtrar usuarios</label>
+        <name>SDM_PlanAnual_ViewAsModalFilterUsers</name>
+    </customLabels>
+	<customLabels>
+        <label>Cambiar</label>
+        <name>SDM_PlanAnual_ViewAsModalSubmit</name>
     </customLabels>
     <customLabels>
         <label>Activos</label>
@@ -6119,6 +6188,10 @@
     <customLabels>
         <label>Ver todo</label>
         <name>SDM_LinksInteres_ViewAll</name>
+    </customLabels>
+    <customLabels>
+        <label>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Ganada</label>
+        <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>

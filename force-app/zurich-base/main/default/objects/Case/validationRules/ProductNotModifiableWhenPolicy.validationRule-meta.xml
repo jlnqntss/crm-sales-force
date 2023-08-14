@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProductNotModifiableWhenPolicy</fullName>
+    <active>true</active>
+    <description>[VR Caso] No se puede modificar el ramo si la póliza o la oferta está informada</description>
+    <errorConditionFormula>ISCHANGED( ProductGroup__c ) &amp;&amp; 
+(
+ NOT(ISBLANK( OfferId__c )) || NOT(ISBLANK( PolicyId__c ))
+)
+&amp;&amp; NOT (ISCHANGED( PolicyId__c ))
+&amp;&amp; NOT (ISCHANGED( OfferId__c ))
+&amp;&amp; $Permission.USPTriggerCaseValidationRules</errorConditionFormula>
+    <errorDisplayField>ProductGroup__c</errorDisplayField>
+    <errorMessage>[VR Caso] No se puede modificar el ramo si la póliza o la oferta está informada</errorMessage>
+</ValidationRule>
