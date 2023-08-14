@@ -3,10 +3,7 @@
     <fullName>Fisica__c</fullName>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <label>Física</label>
-    <precision>18</precision>
+    <label>Fisica</label>
     <required>false</required>
-    <scale>0</scale>
-    <type>Number</type>
-    <unique>false</unique>
+    <type>TextArea</type>
 </CustomField>

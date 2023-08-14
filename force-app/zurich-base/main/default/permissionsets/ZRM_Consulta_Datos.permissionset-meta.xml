@@ -3827,6 +3827,10 @@ Para usuarios de la comunidad zrm</description>
 	<fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.PendingIntermediaryReview__c</field>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.RecordType__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
