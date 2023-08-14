@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+
     <fullName>Ventas User</fullName>
     <applicationVisibilities>
         <application>Klinc</application>
@@ -11325,7 +11326,7 @@
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Ventas Business Customer</layout>
+        <layout>Account-Agente zrm</layout>
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
