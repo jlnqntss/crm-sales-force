@@ -2,8 +2,8 @@
  * @description       : Clase de test para la clase selectora del sobject User
  * @author            : aberuete
  * @group             :
- * @last modified on  : 08-08-2023
- * @last modified by  : jfherrero
+ * @last modified on  : 02-20-2023
+ * @last modified by  : aberuete
  **/
 @isTest
 private with sharing class UsersSelectorTest
@@ -117,7 +117,7 @@ private with sharing class UsersSelectorTest
 
         System.runAs (adminUser)
         {
-            String portalProfile = [SELECT Id FROM Profile WHERE UserType = 'PowerPartner' LIMIT 1].Id;
+            String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
 
             userList = TestDataFactory.generateUsersByProfile(portalProfile, 3);
             userList[0].ContactId = contacts[0].Id;
@@ -166,4 +166,5 @@ private with sharing class UsersSelectorTest
 
         System.assertEquals(true, userQuery != null, 'Debe encontrar uno');
     }
+
 }

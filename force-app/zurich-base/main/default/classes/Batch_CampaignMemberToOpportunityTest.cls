@@ -105,15 +105,9 @@ public class Batch_CampaignMemberToOpportunityTest
 
         System.runAs (adminUser)
         {
-            UserRole portalRole = [SELECT Id
-                                   FROM UserRole
-                                   WHERE PortalType = 'None'
-                                                      LIMIT 1];
+            UserRole portalRole = [SELECT Id FROM UserRole WHERE PortalType = 'None' LIMIT 1];
 
-            Profile portalProfile = [SELECT Id
-                                     FROM Profile
-                                     WHERE UserType = 'PowerPartner'
-                                                      LIMIT 1];
+            Profile portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1];
 
             String portalProfileId= portalProfile.Id;
 

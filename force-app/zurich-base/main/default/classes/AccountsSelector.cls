@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
+ * @last modified on  : 08-08-2023
+ * @last modified by  : mfernandezcarrera
  **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -442,9 +442,12 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.MainEmail__c,
                 Account.NationalId__c,
                 Account.Channel__c,
-                Account.Segment__c
+                Account.Segment__c,
+                Account.INFOIntermediaryCode__c,
+                Account.IntermediaryWithUser__c,
+                Account.ParentId
             }
-            );
+            ).selectFields('Account.Parent.IntermediaryWithUser__c');
 
             this.baseQuery.addConditionEq(Account.INFOIntermediaryCode__c, paddedCodes);
             this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
@@ -704,7 +707,6 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return this.baseQuery.toQueryString();
     }
-
     /**
      * Método utilizado por OpenIDConnectSalesforceCommunity para buscar la cuenta dummy a la que asociar los usuarios
      * @author dmunoz
@@ -720,6 +722,18 @@ public with sharing class AccountsSelector extends RecordsSelector
             result = new List<Account>([SELECT Id FROM Account WHERE INFOBusinessCode__c IN: businessCodeList]);
         }
         return result;
-    }
 
+    }
+    /**
+     * Método que obtiene los cuentas tipo Lead que no tengan ofertas asociadas para borrarlas
+     **
+     * @author mfernandezcarrera
+     * @date 28/06/2023
+     **/
+    public static String getAccountsToDelete()
+    {
+        String query =
+            'SELECT Id from Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
+        return query;
+    }
 }

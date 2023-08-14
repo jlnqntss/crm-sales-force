@@ -53,7 +53,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
         // 1. Inicializa el mapa accountByIntermCode a partir del campo OfferAssignedCode__c (Código de Mediador) y el campo
         // Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c de todos los registros de CampaignMember del scope
-        Map<String, Account> accountByIntermCode = getAccountByIntermCode(records);
+        Map<String, Account> accountByIntermCode = getAccountByIntermCode(campaignMembers);
 
         // 2. Inicializa el mapa userIdByAccountId a partir del mapa accountByIntermCode
         Map<Id, Id> userIdByAccountId = getUserIdByAccountId(accountByIntermCode);
