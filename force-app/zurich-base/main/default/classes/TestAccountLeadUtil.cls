@@ -2,7 +2,7 @@
  * @description       : Test funcionales de la asignación de Leads a Agentes.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 12/08/2023
+ * @last modified on  : 14/08/2023
  * @last modified by  : jgallaga
 **/
 @IsTest
@@ -108,6 +108,7 @@ public with sharing class TestAccountLeadUtil
 
     /**
      * @description Método para generar los dintintos usuario que se utilizarán en los test.
+     *              El indice se define como el nombre de usuario de comunidad o código de intermediario
      * @author      jgallaga
      * @date        11/08/2023
      */
@@ -157,12 +158,160 @@ public with sharing class TestAccountLeadUtil
     private static void setMetadataConfigurations()
     {
         //Creación de metadatos
+
+        //LANGUAGE
         List<LanguageAssignment__mdt> testLanguageAssignmentMetadata = new List<LanguageAssignment__mdt>();
         testLanguageAssignmentMetadata.add(new LanguageAssignment__mdt(DeveloperName = 'Español', AssignTo__c = 'IDIOMA-ES', Language__c = 'ES'));
         testLanguageAssignmentMetadata.add(new LanguageAssignment__mdt(DeveloperName = 'Frances', AssignTo__c = 'IDIOMA-FR', Language__c = 'FR'));
 
         AccountLeadAssignment.languageAssignmentMetadata = testLanguageAssignmentMetadata;
+
+        //FORUM ASSIGNMENT
+        List<ForumOriginAssignment__mdt> testforumOriginAssignmentMetadata = new List<ForumOriginAssignment__mdt>();
+        testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_accidentes', AssignmentType__c = 'Direct',AssignTo__c='IDIOMA-ES',ForumOrigin__c = 'formulario accidentes'));
+        testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_automonos', AssignmentType__c = 'Province',AssignTo__c='IDIOMA-FR',ForumOrigin__c = 'formulario automonos'));
+        testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_embarcaciones', AssignmentType__c = 'Municipality',AssignTo__c='IDIOMA-FR',ForumOrigin__c = 'formulario embarcaciones'));
+
+        AccountLeadAssignment.forumOriginAssignmentMetadata = testforumOriginAssignmentMetadata;
+
+        //MUNICIPALITY ASSIGNMENT
+        List<MunicipalityAssignment__mdt> testMunicipalityAssignmentMetadata = new List<MunicipalityAssignment__mdt>();
+        testMunicipalityAssignmentMetadata.add(new MunicipalityAssignment__mdt(DeveloperName = 'X01520', AssignTo__c= 'IDIOMA-ES', PostalCode__c= 25000));
+
+        AccountLeadAssignment.MunicipalityAssignmentMetadata = testMunicipalityAssignmentMetadata;
+
+        //PROVINCE ASSIGNMENT
+        List<ProvinceAssignment__mdt> testProvinceAssignmentMetadata = new List<ProvinceAssignment__mdt>();
+        testProvinceAssignmentMetadata.add(new ProvinceAssignment__mdt(DeveloperName = 'Albacete',AssignTo__c='IDIOMA-FR',PostalCode__c=2,Province__c='Albacete'));
+
+        AccountLeadAssignment.ProvinceAssignmentMetadata = testProvinceAssignmentMetadata;
     }
+
+
+    /*** ASSIGNMENT BY INTERMEDIARY CODE ***/
+
+    @isTest
+    static void test_intermediaryCodeContactCenter_OK()
+    {
+        String contactCenter = 'CONTACT_CENTER';
+
+        Test.startTest();
+        String result = AccountLeadUtil.leadAssignment(null, contactCenter, null, null, null);
+        Test.stopTest();
+
+        Assert.areEqual(contactCenter, result, 'No se ha devuelto el valor de contact center');
+    }
+
+    /**
+     * @description Test que comprueba que recibiendo un código de intermediario
+     *              es posible encontrar el Id del usuario. El usuario se encuentra
+     *              buscando una cuenta que tenga asignado su código intermediario en
+     *              el campo INFOIntermediaryCode__c.
+     * @author      jgallaga
+     * @date        14/08/2023
+     */
+    @isTest
+    static void test_intermediaryAssignment_OK()
+    {
+        User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
+
+        Test.startTest();
+        // Indicando el código de intermeadiario, el resto de parametros no se tienen en cuenta
+        String assignedId = AccountLeadUtil.leadAssignment(new Account(), 'IDIOMA-ES', 'origen', 'idioma', 'código postal');
+        Test.stopTest();
+
+        Assert.areEqual(intermediary.Id, assignedId, 'No es el intermediario correcto');
+    }
+
+    /**
+     * @description Test que comprueba que recibiendo un código de intermediario
+     *              que no tiene ninguna cuenta asignada a su nombre, la lógica
+     *              devuelve el ID del usuario por defecto indicado en los metadatos
+     *              para la sandbox correspondiente.
+     * @author      jgallaga
+     * @date        14/08/2023
+     */
+    @isTest
+    static void test_intermediaryAssignment_KO()
+    {
+        String defaultUserId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
+
+        Test.startTest();
+        String assignedId = AccountLeadUtil.leadAssignment(null, 'MadeUp Intermediary Code', null, null, null);
+        Test.stopTest();
+
+        Assert.areEqual(defaultUserId, assignedId, 'Se debería haber asignado el intermediario por defecto');
+    }
+
+    /*** ASSIGNMENT BY ACCOUNT ***/
+
+    /**
+     * @description Test que comprueba que se consigue el Id del intermediario que esta relacionado
+     *              con la cuenta que se recibe.
+     * @author      jgallaga
+     * @date        14/08/2023
+    */
+    @isTest
+    static void test_AssignmnetIntermediaryAccount_OK()
+    {
+        User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-QQ'];
+        Account intermediaryAccount = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = 'IDIOMA-QQ'];
+
+        Account testAccount = new Account(Name = 'TestAccount', Intermediary_Name__c = intermediaryAccount.Id);
+        insert testAccount;
+        testAccount = [SELECT Intermediary_Name__r.INFOIntermediaryCode__c FROM Account Where Id = :testAccount.Id];
+
+        Test.startTest();
+        String assignedId = AccountLeadUtil.leadAssignment(testAccount, null, 'origin', 'language', 'postalCode');
+        Test.stopTest();
+
+        Assert.areEqual(intermediary.Id, assignedId, 'No se ha asignado el intermediario esperado');
+    }
+
+    /**
+     * @description Test que asegura que cuando se quiere asignar un Lead a partir de una cuenta que
+     *              no tiene relacionada la cuenta de intermediario, se recibe el usuario por defecto.
+     * @author      jgallaga
+     * @date        14/08/2023
+     */
+    @isTest
+    static void test_AssignmentIntermadiaryAccount_NoRelatedIntermediaryAccount_KO()
+    {
+        String defaultUserId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
+        Account testAccount = new Account(Name = 'TestAccount');
+
+        Test.startTest();
+        String assignedId = AccountLeadUtil.leadAssignment(testAccount, null, 'origin', 'language', 'postalCode');
+        Test.stopTest();
+
+        Assert.areEqual(defaultUserId, assignedId, 'No se ha asignado el intermediario esperado');
+    }
+
+    /**
+     * @description Test que asegura que se asigna el usuario por defecto si la cuenta de intermediario
+     *              relacionada con la cuenta recibida, no tiene un código de intermediario de un usuario
+     *              existente.
+     * @author      jgallaga
+     * @date        14/08/2023
+     */
+    @isTest
+    static void test_AssignmentIntermediaryAccount_NoIntermediaryCodeInRelatedIntermediaryAccount_KO()
+    {
+        String defaultUserId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
+        Account madeUpIntermediaryAccount = new Account(Name = 'MadeUp', INFOIntermediaryCode__c = 'NO-ACCOUNT');
+        insert madeUpIntermediaryAccount;
+        Account testAccount = new Account(Name = 'TestAccount', Intermediary_Name__c = madeUpIntermediaryAccount.Id);
+        insert testAccount;
+        testAccount = [SELECT Intermediary_Name__r.INFOIntermediaryCode__c FROM Account Where Id = :testAccount.Id];
+
+        Test.startTest();
+        String assignedId = AccountLeadUtil.leadAssignment(testAccount, null, 'origin','language', 'postalcode');
+        Test.stopTest();
+
+        Assert.areEqual(defaultUserId, assignedId, 'No se ha asignado el usuario por defecto');
+    }
+
+    /*** ASSIGNMENT BY LANGUAGE ***/
 
     /**
      * @description Test que comprueba que a partir del idioma FR se consigue
@@ -205,7 +354,7 @@ public with sharing class TestAccountLeadUtil
      * @date        11/08/2023
      */
     @isTest
-    static void test_AssignmentMadeUpLanguageToDefaultAgent_OK()
+    static void test_AssignmentMadeUpLanguage_KO()
     {
         setMetadataConfigurations();
 
@@ -216,6 +365,29 @@ public with sharing class TestAccountLeadUtil
         Test.stopTest();
 
         Assert.areEqual(defaultAgenteId, resultAssignmentUserId, 'El usuario asignado para el lenguaje que no tiene configuración definida no es correcto.');
+    }
+
+    /*** ASSIGNMENT BY ASSIGNMENT TYPE */
+
+    /**
+     * @description Test para comprobar la asignación directa de un intermediario segun
+     *              la configuración indicada en metadatos para un origen concreto del
+     *              formulario.
+     * @author      jgallaga
+     * @date        14/08/2023
+     */
+    @isTest
+    static void test_AssigmentDirectly_OK()
+    {
+        setMetadataConfigurations();
+
+        User intermediary = [SELECT ID FROM User WHERE LastName = 'IDIOMA-ES'];
+
+        Test.startTest();
+        String assignedId = AccountLeadUtil.leadAssignment(null, null, 'formulario accidentes','ES', null);
+        Test.stopTest();
+
+        Assert.areEqual(intermediary.Id, assignedId, 'No se ha asignado directamente al intermadiario esperado.');
     }
 
 }

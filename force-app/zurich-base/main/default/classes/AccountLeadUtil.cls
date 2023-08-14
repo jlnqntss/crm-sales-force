@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 12/08/2023
+ * @last modified on  : 14/08/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class AccountLeadUtil
@@ -36,7 +36,12 @@ public with sharing class AccountLeadUtil
 
         if(acc != null)
         {
-            return acc.Intermediary_Name__r.INFOIntermediaryCode__c;
+            if(String.isNotBlank(acc.Intermediary_Name__c))
+            {
+                intermediaryCode = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
+            }
+
+            return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode);
         }
 
         if(String.isNotBlank(language) && language != 'ES')

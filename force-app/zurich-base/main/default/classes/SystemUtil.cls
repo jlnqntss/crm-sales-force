@@ -1401,4 +1401,22 @@ public with sharing class SystemUtil
     {
         return String.valueOf(URL.getSalesforceBaseUrl().toExternalForm());
     }
+
+    /**
+     * @description Elimina la coletilla del nombre de usuario de sandbox recibido y lo reemplaza con el de
+     *              la sandbox donde se esta utilizando.
+     * @author      jgallaga
+     * @date        14/08/2023
+     */
+    public static String switchDevUserName(String userName)
+    {
+        if(String.isBlank(userName) || userName.lastIndexOf('.') < 0)
+        {
+            return userName;
+        }
+
+        Integer lastPeriod = userName.lastIndexOf('.');
+        String nakedUserName = userName.substring(0, lastPeriod);
+        return nakedUserName + '.' + SystemUtil.getSandboxName();
+    }
 }

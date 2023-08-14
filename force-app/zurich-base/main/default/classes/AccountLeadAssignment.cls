@@ -3,7 +3,7 @@
  *                      de las cuentas de tipo Lead que llegan a Salesforce.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 12/08/2023
+ * @last modified on  : 14/08/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class AccountLeadAssignment
@@ -30,17 +30,17 @@ public with sharing class AccountLeadAssignment
     }
 
     @TestVisible
-    private static List<ForumOriginAssignment__mdt> formOriginAssignmentMetadata
+    private static List<ForumOriginAssignment__mdt> forumOriginAssignmentMetadata
     {
         get
         {
-            if(formOriginAssignmentMetadata != null)
+            if(forumOriginAssignmentMetadata != null)
             {
-                return formOriginAssignmentMetadata;
+                return forumOriginAssignmentMetadata;
             }
 
-            formOriginAssignmentMetadata = ForumOriginAssignment__mdt.getAll().values();
-            return formOriginAssignmentMetadata;
+            forumOriginAssignmentMetadata = ForumOriginAssignment__mdt.getAll().values();
+            return forumOriginAssignmentMetadata;
         }
         set;
     }
@@ -209,7 +209,7 @@ public with sharing class AccountLeadAssignment
             return defaultUserId;
         }
 
-        for(ForumOriginAssignment__mdt currentFOA : formOriginAssignmentMetadata)
+        for(ForumOriginAssignment__mdt currentFOA : forumOriginAssignmentMetadata)
         {
             if(currentFOA.ForumOrigin__c == origin && String.isNotBlank(currentFOA.AssignTo__c))
             {
@@ -289,7 +289,7 @@ public with sharing class AccountLeadAssignment
      *              realizar la búsqueda del agente intermediario a partir
      *              del origen recibido.
      *              El modo de asignación segun origen viene definido en el
-     *              metadato FormOriginAssignment__mdt.
+     *              metadato ForumOriginAssignment__mdt.
      *              De no encontrar una configuración, devolverá el valor de
      *              la variable DEFAULT_ASSIGNEMENT_TYPE como tipo de asignación.
      * @author      jgallaga
@@ -306,10 +306,14 @@ public with sharing class AccountLeadAssignment
             return DEFAULT_ASSIGNEMENT_TYPE;
         }
 
-        for(ForumOriginAssignment__mdt currentFOA : formOriginAssignmentMetadata)
+        for(ForumOriginAssignment__mdt currentFOA : forumOriginAssignmentMetadata)
         {
+            System.debug('@@@ Origen recibido ' + origin);
+
             if(currentFOA.ForumOrigin__c == origin && String.isNotBlank(currentFOA.AssignmentType__c))
             {
+                System.debug('Metadato encontrado ' + currentFOA.DeveloperName);
+                System.debug('Tipo Asignacion ' + currentFOA.AssignmentType__c);
                 return currentFOA.AssignmentType__c;
             }
         }
@@ -332,40 +336,47 @@ public with sharing class AccountLeadAssignment
     @TestVisible
     private static String getDefaultZRMAccountLeadOwnerId()
     {
-        NTSUser__mdt defaultUserDescription;
+        String defaultUserName;
 
         switch on SystemUtil.getSandboxName()
         {
             when null // Producción
             {
-                defaultUserDescription = NTSUser__mdt.getinstance('EntornoPro');
+                NTSUser__mdt defaultUserDescription = NTSUser__mdt.getinstance('EntornoPro');
+                defaultUserName = defaultUserDescription.Username__c;
             }
             when 'qa'
             {
-                defaultUserDescription = NTSUser__mdt.getinstance('EntornoQA');
+                NTSUser__mdt defaultUserDescription = NTSUser__mdt.getinstance('EntornoQA');
+                defaultUserName = defaultUserDescription.Username__c;
             }
             when 'staging'
             {
-                defaultUserDescription = NTSUser__mdt.getinstance('EntornoStaging');
+                NTSUser__mdt defaultUserDescription = NTSUser__mdt.getinstance('EntornoStaging');
+                defaultUserName = defaultUserDescription.Username__c;
             }
             when else // Resto de entornos
             {
-                defaultUserDescription = NTSUser__mdt.getInstance('EntornoDev');
+                NTSUser__mdt defaultUserDescription = NTSUser__mdt.getInstance('EntornoDev');
+                // Cambiar coletilla de usuario por la sandbox en la que se esté.
+                defaultUserName = SystemUtil.switchDevUserName(defaultUserDescription.Username__c);
             }
         }
 
-        if(defaultUserDescription != null && String.isNotBlank(defaultUserDescription.Username__c))
+        if(String.isNotBlank(defaultUserName))
         {
-            User defaultUser = [SELECT Id, isActive FROM User WHERE UserName = :defaultUserDescription.Username__c]; //TODO - Llevar a selector
+            List<User> defaultUser = [SELECT Id FROM User WHERE UserName = :defaultUserName AND IsActive = true]; //TODO - Llevar a selector
 
-            if(defaultUser != null && defaultUser.isActive)
+            if(! defaultUser.isEmpty())
             {
-                return defaultUser.id;
+                return defaultUser.get(0).id;
             }
         }
 
         throw new QueryException('No default User found for Lead Account assignments.');
     }
+
+
 
     /**
      * @description Devuelve el Id de Usuario a partir del código de intermediario.
@@ -383,18 +394,18 @@ public with sharing class AccountLeadAssignment
             return defaultUserId;
         }
 
-        Account intermediaryAccount = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = :intermediaryCode];
+        List<Account> intermediaryAccount = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = :intermediaryCode];
 
-        if(intermediaryAccount == null)
+        if(intermediaryAccount.isEmpty())
         {
             return defaultUserId;
         }
 
-        User intermediary = [SELECT Id FROM User WHERE Contact.AccountId = : intermediaryAccount.Id];
+        List<User> intermediary = [SELECT Id FROM User WHERE Contact.AccountId = : intermediaryAccount.get(0).Id AND isActive = true];
 
-        if(intermediary != null)
+        if(! intermediary.isEmpty())
         {
-            return intermediary.Id;
+            return intermediary.get(0).Id;
         }
 
         return defaultUserId;
