@@ -4,7 +4,7 @@
     <active>true</active>
     <description>Impide tipificar el motivo de perdida como “Interesado mas adelante” sin haber completado el campo “Fecha/Hora motivo de pérdida venta”</description>
     <errorConditionFormula>AND(
-   ISPICKVAL(Sales_Loss_Reason__c, &quot;Interesado más adelante&quot;),
+   ISPICKVAL(Sales_Loss_Reason__c, &quot;Interested later on&quot;),
    ISBLANK(Sales_Loss_Reason_Date_Time__c)
 )</errorConditionFormula>
     <errorDisplayField>Sales_Loss_Reason__c</errorDisplayField>
