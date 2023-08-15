@@ -38,6 +38,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     public static final String RT_NAME_CUSTOMER = 'Customer';
     public static final String RT_NAME_BUSINESSCUSTOMER = 'BusinessCustomer';
     public static final String RT_NAME_ACCOUNT_INTERMEDIARY= 'Intermediary';
+    public static final String RT_NAME_LEAD= 'Lead';
 
     public static final String INTERMEDIARY_ACTIVE_1='001';
     public static final String INTERMEDIARY_ACTIVE_2='002';
@@ -58,6 +59,12 @@ public with sharing class AccountsSelector extends RecordsSelector
     public ID rtCustomerId {
         get {
             return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_CUSTOMER)?.getRecordTypeId();
+        }
+    }
+    // Recupera el Id del RecordType de clientes Lead
+    public ID rtLeadId {
+        get {
+            return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_LEAD)?.getRecordTypeId();
         }
     }
     // Recupera el Id del RecordType de clientes

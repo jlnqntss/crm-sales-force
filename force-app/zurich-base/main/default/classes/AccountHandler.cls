@@ -28,7 +28,9 @@ public class AccountHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
-    {}
+    {
+       AccountLeadUtil.checkLeadDuplicates(newList);
+    }
 
     /**
      * beforeUpdate

@@ -7,13 +7,34 @@ public class AccountLeadUtil
 {
     /**
      * FIXME: añadir una descripción
+     * @author overes
+     * @date 08/08/2023
+     */
+    public static void checkLeadDuplicates(List<Account> newList)
+    { //FIXME: convertir SObject en listado de Accounts
+        // comprobar que son accounts lo que recibo
+        // invocar al método leadDuplicate...
+        AccountUtil.checkOwner(newList);
+        for (Account acc : newList)
+        {
+            if (leadDuplicatesControl(acc.NationalId__c, acc.Phone) != null) 
+            {
+                acc.NationalId__c.addError('Ya existe un Cuenta con el mismo Documento de identidad o Teléfono');
+                // ❔ mostrar el error en el campo o general??
+            }
+        }
+    }
+
+    /**
+     * FIXME: añadir una descripción
      * El proceso de control de duplicados recibe como datos de entrada 2 campos (NIF y/o Número de Teléfono) y devuelve la Cuenta de tipo Cliente o de tipo Lead localizada, en el caso de que se localice alguna.
      * @author overes
      * @date 08/08/2023
      * @return acc
      */
-    public static Account leadDuplicatesControl(String documentID, String phone) { //FIXME: revisar valor devuelto --> devuelve la cuenta de tipo Cliente o tipo Lead en caso que se localice alguna
-        Account acc = new Account();
+    public static Account leadDuplicatesControl(String documentID, String phone) 
+    { //FIXME: revisar valor devuelto --> devuelve la cuenta de tipo Cliente o tipo Lead en caso que se localice alguna
+        Account acc = new Account(); //FIXME: revisar si se ha de un new Account()
         if (documentID != null) //comprueba si el NIF está informado
         {
             List<Account> accList = [SELECT Id, RecordType.Name, NationalId__c FROM account WHERE NationalId__c =:documentID AND (RecordType.Name ='Customer' OR RecordType.Name ='Business Customer')];
