@@ -19,7 +19,7 @@ public class AccountLeadUtil
     {
         if (ProfilesSelector.getLoggedUserProfile() == VENTAS_USER || ProfilesSelector.getLoggedUserProfile() == AGENTE_VENTAS)
         {
-            List<Account> accList = checkLeads(newList);
+            checkLeads(newList);
         }
     }
     
