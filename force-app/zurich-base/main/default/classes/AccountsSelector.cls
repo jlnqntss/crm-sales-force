@@ -735,19 +735,5 @@ public with sharing class AccountsSelector extends RecordsSelector
         String query =
             'SELECT Id from Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
         return query;
-
     }
-    /**
-     * Método que obtiene los cuentas tipo Lead que no tengan ofertas asociadas para borrarlas
-     **
-     * @author mfernandezcarrera
-     * @date 28/06/2023
-     **/
-    public static String getAccountsToDelete()
-    {
-        String query =
-            'SELECT Id from Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
-        return query;
-    }
-
 }
