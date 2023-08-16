@@ -5,84 +5,80 @@
 
 public class AccountLeadUtil
 {
+    public static final String VENTAS_USER = 'Ventas User';
+    public static final String AGENTE_VENTAS = 'Agente Ventas';
+    public static final String ERROR_MESSAGE = 'Ya existe una Cuenta con el mismo Documento de identidad o Teléfono';
+    public static final String LEAD = 'Lead';
+
     /**
-     * FIXME: añadir una descripción
+     * Método que comprueba que se lance la validación sólo se lance desde los dos perfiles indicados
      * @author overes
      * @date 08/08/2023
      */
     public static void checkLeadDuplicates(List<Account> newList)
-    { //FIXME: convertir SObject en listado de Accounts
-        // comprobar que son accounts lo que recibo
-        // invocar al método leadDuplicate...
-        AccountUtil.checkOwner(newList);
-        for (Account acc : newList)
+    {
+        if (ProfilesSelector.getLoggedUserProfile() == VENTAS_USER || ProfilesSelector.getLoggedUserProfile() == AGENTE_VENTAS)
         {
-            if (leadDuplicatesControl(acc.NationalId__c, acc.Phone) != null) 
-            {
-                acc.NationalId__c.addError('Ya existe un Cuenta con el mismo Documento de identidad o Teléfono');
-                // ❔ mostrar el error en el campo o general??
-            }
+            List<Account> accList = checkLeads(newList);
         }
     }
+    
+    /**
+     * Método que mustra el mensaje en caso que se encuentre otro registro igual
+     * @author overes
+     * @date 08/08/2023
+     */
+    public static List<Account> checkLeads(List<Account> newList){
+        List<Account> accList = newList;
+        for (Account acc : accList)
+        {
+            Account newAcc = new Account();
+            newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
+            if ((newAcc != null) && (newAcc.RecordType.DeveloperName == LEAD))
+            {
+                acc.addError( ERROR_MESSAGE + ' (' + newAcc.Name + ' ' + newAcc.Id + ')');
+            }
+        }
+        return accList;
+    }
+
 
     /**
-     * FIXME: añadir una descripción
-     * El proceso de control de duplicados recibe como datos de entrada 2 campos (NIF y/o Número de Teléfono) y devuelve la Cuenta de tipo Cliente o de tipo Lead localizada, en el caso de que se localice alguna.
+     * Método que evuelve la Cuenta de tipo Cliente o de tipo Lead localizada, en el caso de que se localice alguna.
      * @author overes
      * @date 08/08/2023
      * @return acc
      */
-    public static Account leadDuplicatesControl(String documentID, String phone) 
-    { //FIXME: revisar valor devuelto --> devuelve la cuenta de tipo Cliente o tipo Lead en caso que se localice alguna
-        Account acc = new Account(); //FIXME: revisar si se ha de un new Account()
-        if (documentID != null) //comprueba si el NIF está informado
+    public static Account leadDuplicatesControl(String documentID, String phone)
+    {
+        Account acc = new Account();
+        AccountsSelector accountsSelector = new AccountsSelector();
+        if (documentID != null)
         {
-            List<Account> accList = [SELECT Id, RecordType.Name, NationalId__c FROM account WHERE NationalId__c =:documentID AND (RecordType.Name ='Customer' OR RecordType.Name ='Business Customer')];
+            List<Account> accList = accountsSelector.findByNationalIdAndRcTypeCustAndBC(new List<String>{documentID});
             if (!accList.isEmpty())
-            /*
-            *          El método valida que existe un registro del objeto Cuenta
-            *          con RecordType “Customer” o “Business Customer” con el valor del campo
-            *          Documento de identidad (API Name: NationalID__c) igual al valor de documentID.
-            */
-            {//Si: El método finaliza devolviendo el registro de Cuenta-Cliente mediante acc
-                acc = accList.get(0); //FIXME: revisar nomenclatura
-                return acc;
-            } else
-            /**
-            *  Sino:   El método valida que existe un registro del objeto Cuenta
-            *          con RecordType “Lead” con el valor del campo
-            *          Documento de identidad (API Name: NationalID__c) igual al valor de documentID.
-            */
             {
-                List<Account> accLeadList = [SELECT Id, RecordType.Name, NationalId__c FROM account WHERE NationalId__c =:documentID AND RecordType.Name ='Lead'];
+                acc = accList.get(0);
+            } else
+            {
+                List<Account> accLeadList = accountsSelector.findByNationalIdAndRcTypeLead(new List<String>{documentID});
                 if (!accLeadList.isEmpty())
-                { //Si: El método finaliza devolviendo el registro de Cuenta-Lead mediante acc
-                    acc = accLeadList.get(0); //FIXME: revisar nomenclatura
-                    return acc;
+                {
+                    acc = accLeadList.get(0);
                 }
             }
         } else
         {
             if(phone != null)
-            /**
-             *      El método valida que existe un registro del objeto Cuenta con RecordType Lead
-             *      con el valor del campo Teléfono (API Name: Phone) igual al valor de Phone.
-             */
             {
-                List<Account> accPhoneList = [SELECT Id, RecordType.Name, NationalId__c FROM account WHERE Phone =:phone AND RecordType.Name ='Lead' ORDER BY CreatedDate DESC];
-                if (accPhoneList.size() == 1) //Si existe solo una Cuenta-Lead, el método finaliza devolviendo el registro de la misma mediante acc.
+                List<Account> accPhoneList = accountsSelector.findByPhoneAndRcTypeLead(new List<String>{phone});
+                if (!accPhoneList.isEmpty())
                 {
                     acc = accPhoneList.get(0);
-                    return acc;
                 }
-                if (accPhoneList.size() > 1) //Si existe más de una Cuenta-Lead, el método finaliza devolviendo el registro Cuenta-Lead más reciente mediante acc.
-                {
-                    acc = accPhoneList.get(0);
-                    return acc;
-                }
-            } else //Sino: El método finaliza devolviendo null.
+            } else
             {
-                return null; //FIXME: comprobar nomenclatura
+                acc = null;
             }
         }
         return acc;
