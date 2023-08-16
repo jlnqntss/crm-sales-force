@@ -140,6 +140,15 @@ private with sharing class CampaignMembersSelectorTest
     }
 
     @isTest
+    static void test_findZRMPendingRevMediatorCampaignMembers() {
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().findZRMPendingRevMediatorCampaignMembers();
+        Test.stopTest();
+
+        System.assertEquals(campaignMembers.size(), matchedRecords.size(), 'Records should match');
+    }
+
+    @isTest
     static void test_selectById_matchedRecords()
     {
         List<String> campaignMembers = new List<String>();
@@ -219,5 +228,4 @@ private with sharing class CampaignMembersSelectorTest
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
-
 }

@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <description>Comprobaciones iniciales de la oferta que se quiere asignar el Mediador</description>
+        <name>Valid_Operation</name>
+        <label>Valid Operation</label>
+        <locationX>446</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>Update_Offer</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Yes</defaultConnectorLabel>
+        <rules>
+            <name>No</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Offer.PendingIntermediaryReview__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Offer.IsClosed</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Offer.Campaign__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>No_Valid_Offer_Screen</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+        <rules>
+            <name>Logged_User_Already_Owner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>OfferOwnerId15</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$User.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Logged_User_Already_Owns_Offer_Screen</targetReference>
+            </connector>
+            <label>Logged User Already Owner</label>
+        </rules>
+        <rules>
+            <name>Campaign_Running</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsValidDateToAssingOffer</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Campaign_Running_Screen</targetReference>
+            </connector>
+            <label>Campaign Running</label>
+        </rules>
+    </decisions>
+    <description>Asignar una oferta al usuario logueado</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Devuelve Verdadero en caso de que la campaña no haya empezado permitiendo al usuario asignarse la oferta en las fechas previas</description>
+        <name>IsValidDateToAssingOffer</name>
+        <dataType>Boolean</dataType>
+        <expression>TODAY() &lt; {!Get_Offer.Campaign.StartDate}</expression>
+    </formulas>
+    <formulas>
+        <description>Recortar id account a 15 para update de campaign member</description>
+        <name>OfferAccountId15</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!Get_Offer.AccountId}, 15)</expression>
+    </formulas>
+    <formulas>
+        <description>Obtengo el id de 15 para comparar con el usuario que está lanzando el flow si es igual muestro mensaje</description>
+        <name>OfferOwnerId15</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!Get_Offer.OwnerId}, 15)</expression>
+    </formulas>
+    <interviewLabel>Flow Asignarme Oferta {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Asignarme Oferta</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <description>Crear un registro de error en Error Log en caso de error</description>
+        <name>Create_Error_Event_Update_Campaign_Member</name>
+        <label>Create Error Event Update Campaign Member</label>
+        <locationX>1106</locationX>
+        <locationY>566</locationY>
+        <connector>
+            <targetReference>Error_Event_Update_Campaign_Member_Screen</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Level__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Record_Object__c</field>
+            <value>
+                <elementReference>$Flow.CurrentRecord</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>AssignOfferToMe</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Error_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Crear un registro de error en Error Log en caso de error</description>
+        <name>Create_Error_Event_Update_Offer</name>
+        <label>Create Error Event Update Offer</label>
+        <locationX>1370</locationX>
+        <locationY>458</locationY>
+        <connector>
+            <targetReference>Create_Error_Event_Update_Offer_Screen</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Level__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Record_Object__c</field>
+            <value>
+                <elementReference>$Flow.CurrentRecord</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>AssignOfferToMe</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Error_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <description>Consulto la oferta desde la que se está pulsando el botón</description>
+        <name>Get_Offer</name>
+        <label>Get Offer</label>
+        <locationX>446</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Valid_Operation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Actualiza el estado de campaign member de &quot;Pdte. Revisión Mediador&quot; a &quot;Gestión Mediador&quot;</description>
+        <name>Update_Campaign_Member_Status</name>
+        <label>Update Campaign Member Status</label>
+        <locationX>842</locationX>
+        <locationY>458</locationY>
+        <connector>
+            <targetReference>Completed_Assign_Offer_Screen</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_Error_Event_Update_Campaign_Member</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CampaignId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Offer.CampaignId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>OfferAccountId15</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pdte. Revisión Mediador</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Gestión Mediador</stringValue>
+            </value>
+        </inputAssignments>
+        <object>CampaignMember</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Asignar la oferta al usuario logueado y blanquear el campo Business Code</description>
+        <name>Update_Offer</name>
+        <label>Update Offer</label>
+        <locationX>842</locationX>
+        <locationY>350</locationY>
+        <connector>
+            <targetReference>Update_Campaign_Member_Status</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_Error_Event_Update_Offer</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Offer.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>BusinessCode__c</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+    </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <screens>
+        <description>Muestra el mensaje de error en caso de que no pase validaciones</description>
+        <name>Campaign_Running_Screen</name>
+        <label>Campaign Running Screen</label>
+        <locationX>578</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Campaign_Running_Text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(255, 0, 0);&quot;&gt;Se ha excedido el tiempo permitido para poder reasignar esta Oferta&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Muestra el mensaje de éxito en caso que se haya completado el proceso correctamente</description>
+        <name>Completed_Assign_Offer_Screen</name>
+        <label>Completed Assign Offer Screen</label>
+        <locationX>842</locationX>
+        <locationY>566</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Valid_Offer_Text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(73, 176, 13); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 16px; background-color: rgb(255, 255, 255);&quot;&gt;Reasignación Completada con éxito&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Muestra el mensaje de error en caso de que haya un error al actualizar el campaign member</description>
+        <name>Create_Error_Event_Update_Offer_Screen</name>
+        <label>Create Error Event Update Offer Screen</label>
+        <locationX>1370</locationX>
+        <locationY>566</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Update_Campaign_Member_Text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 16px; background-color: rgb(255, 255, 255);&quot;&gt;Se ha producido un error, contacte con su administrador&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Muestra el mensaje de error en caso de que haya un error al actualizar la oferta</description>
+        <name>Error_Event_Update_Campaign_Member_Screen</name>
+        <label>Error Event Update Campaign Member Screen</label>
+        <locationX>1106</locationX>
+        <locationY>674</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Update_Offer_Text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 16px; background-color: rgb(255, 255, 255);&quot;&gt;Se ha producido un error, contacte con su administrador&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Muestra el mensaje de éxito en caso que se haya completado el proceso correctamente</description>
+        <name>Logged_User_Already_Owns_Offer_Screen</name>
+        <label>Logged User Already Owns Offer Screen</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Owned_Offer_Text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(73, 176, 13);&quot;&gt;Esta oferta ya está asignada a su usuario&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Muestra el mensaje de error en caso de que no pase validaciones</description>
+        <name>No_Valid_Offer_Screen</name>
+        <label>No Valid Offer Screen</label>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Not_Valid_Offer_Text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(255, 0, 0);&quot;&gt;Operación no válida&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Offer</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Almacena el registro que está visualizando el usuario</description>
+        <name>recordId</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>
