@@ -2,7 +2,7 @@
  * @description       : Clase test para la clase TaskUtil
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 08-01-2023
+ * @last modified on  : 08-03-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -36,7 +36,7 @@ private class TaskUtilTest
     @isTest
     static void test_createTaskOwnerCommunity()
     {
-        User userCommunity = [Select id from User where profile.name = 'OCS Community User' limit 1 ];
+        User userCommunity = [Select id from User where profile.name = 'OCS Community User' and isActive = true limit 1 ];
         Task taskToCreate = new Task();
         taskToCreate.Status = 'Asignada';
         taskToCreate.Priority = 'Normal';
@@ -58,7 +58,7 @@ private class TaskUtilTest
     @isTest
     static void test_updateTaskOwnerCommunity()
     {
-        User userCommunity = [Select id from User where profile.name = 'OCS Community User' limit 1 ];
+        User userCommunity = [Select id from User where profile.name = 'OCS Community User' and isActive = true limit 1 ];
 
         Task taskToCreate = new Task();
         taskToCreate.Status = 'Asignada';

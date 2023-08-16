@@ -83,4 +83,58 @@ public with sharing class CampaignMembersSelector extends BaseSelector
                                                                 AND Status = 'Pdte. Revisión Mediador']);
         return result;
     }
+    
+    /**
+     * Busca miembros de campaña a partir del Status
+     *
+     * @author jfherrero
+     * @date 07/08/2023
+     * @param  status   Estado del miembro de campaña a buscar
+     * @return          Listado de CampaignMembers sobre los que se ha realizado match
+     */
+    public List<CampaignMember> selectById(List<String> campaignMembers)
+    {
+        if( campaignMembers != null && !campaignMembers.isEmpty() )
+        {
+            List<CampaignMember> queryResult = [SELECT Id, CampaignMember.CampaignId, CampaignMember.OfferAssignedCode__c, CampaignMember.OfferAssignedType__c,
+                                                CampaignMember.Contact.AccountId, CampaignMember.Contact.Account.INFOCustomerNumber__c, CampaignMember.Contact.Account.Intermediary_Name__c,
+                                                CampaignMember.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c, CampaignMember.Campaign.StartDate, CampaignMember.Campaign.EndDate,
+                                                CampaignMember.Campaign.ExternalId__c, CampaignMember.Campaign.ProductBranch__c,CampaignMember.Campaign.BusinessCode__c
+                                                FROM CampaignMember
+                                                WHERE Id IN : campaignMembers];
+
+            return queryResult;
+        }
+        else
+        {
+            return new List<CampaignMember>();
+        }
+    }
+
+    /**
+     * Busca miembros de campaña a partir del Status
+     *
+     * @author jfherrero
+     * @date 07/08/2023
+     * @param  status   Estado del miembro de campaña a buscar
+     * @return          Listado de CampaignMembers sobre los que se ha realizado match
+     */
+    public List<CampaignMember> selectByCampaignType(List<String> campaignTypes)
+    {
+        if( campaignTypes != null && !campaignTypes.isEmpty() )
+        {
+            List<CampaignMember> queryResult = [SELECT Id, CampaignMember.CampaignId, CampaignMember.OfferAssignedCode__c, CampaignMember.OfferAssignedType__c,
+                                                CampaignMember.Contact.AccountId, CampaignMember.Contact.Account.INFOCustomerNumber__c, CampaignMember.Contact.Account.Intermediary_Name__c,
+                                                CampaignMember.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c, CampaignMember.Campaign.StartDate, CampaignMember.Campaign.EndDate,
+                                                CampaignMember.Campaign.ExternalId__c, CampaignMember.Campaign.ProductBranch__c,CampaignMember.Campaign.BusinessCode__c
+                                                FROM CampaignMember
+                                                WHERE Campaign.Type IN : campaignTypes];
+
+            return queryResult;
+        }
+        else
+        {
+            return new List<CampaignMember>();
+        }
+    }
 }

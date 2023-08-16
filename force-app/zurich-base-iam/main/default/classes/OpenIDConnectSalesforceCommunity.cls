@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 08-07-2023
+ * @last modified by  : aberuete
+**/
 public with sharing class OpenIDConnectSalesforceCommunity {
 
     private static final string USERNAME_SERVER = '@zurich-es.com';
@@ -88,7 +95,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         Map<string, Object> metadataInfoMap = getAuthData(iamRoleReceived);
 
         // comprueba si los datos del usuario han cambiado respecto al rol recibido y a los registros de la metadata
-        User u = updateUserData(userId, portalId, data, metadataInfoMap, iamRoleReceived);
+        User u = updateUserData(userId, data, metadataInfoMap, iamRoleReceived);
 
         // añadir configuración restante
         addUserRelated(u.Id, metadataInfoMap);        
@@ -309,6 +316,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
      * @Description Preparar el registro User para su inserción
      * @date 12/06/2023
      * @author dmunoz
+     * change aberuete - 07/08/2023 - Añadir firma del usuario 
      */
     private User createUserData(Auth.UserData data, Map<String, Object> metadataInfoMap, Id contactId, List<String> iamRoleReceived) {
 
@@ -354,12 +362,19 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         if (ManagerId != null) {
             u.ManagerId = ManagerId;
         }
+
+        String signature = getSignature(u, authMap.get(PERMISSION_TYPE_SIGNATURE));
+
+        if (String.isNotBlank(signature)) 
+        {
+            u.Signature = signature;
+        }
         return u;
     }
 
 
-    private User updateUserData(Id userId, Id portalId, Auth.UserData data, Map<String, Object> metadataInfoMap, List<String> iamRoleReceived) {
-
+    private User updateUserData(Id userId, Auth.UserData data, Map<String, Object> metadataInfoMap, List<String> iamRoleReceived) 
+    {
         Boolean modified = false;
         User u;
 
@@ -375,11 +390,11 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         String title = getTitleFromRoles(authMap.get(PERMISSION_TYPE_TITLE));
         // GET Manager
         Id managerId = getManagerIdFromNickname(data);
-        // Get signature
-        String signature = getSignature(authMap.get(PERMISSION_TYPE_SIGNATURE));
 
         // buscar usuario en la bd
         u = (new UsersSelector()).getLoginUserToUpdate(userId);
+        // Get signature
+        String signature = getSignature(u, authMap.get(PERMISSION_TYPE_SIGNATURE));
         // si hay modificaciones se actualiza el usuario
         modified = (u.firstName != data.firstName || u.lastName != data.lastName || u.Department != department ||
                     u.userName != data.username + USERNAME_SERVER || u.profileId != profileId || 
@@ -417,19 +432,11 @@ public with sharing class OpenIDConnectSalesforceCommunity {
      * @Description Se ha de actualizar el usuario con la información de grupo público y asignar un permission set group
      * @date 12/06/2023
      * @author dmunoz
+     * change aberuete - 07/08/2023 - Quitar actualizar la firma del usuario en este método y añadirlo en método createUserData y updateUserData
      */
-    private void addUserRelated(Id userId, Map<String, Object> metadataInfoMap) {
-
+    private void addUserRelated(Id userId, Map<String, Object> metadataInfoMap) 
+    {
         Map<String, List<String>> authMap = (Map<String, List<String>>) metadataInfoMap.get('AuthMap');
-
-        //Signature
-        String signature = getSignature(authMap.get(PERMISSION_TYPE_SIGNATURE));
-        if (String.isNotBlank(signature)) {
-            User usertoupdate = new User(Id = userId);
-            usertoupdate.Signature = signature;
-            update usertoupdate;
-        }
-
         // GROUPS
         // Obtener los ids de los grupos públicos en salesforce
         List<Id> publicGroupIdList = getPublicGroupsFromRoles(authMap.get(PERMISSION_TYPE_PUBLIC_GROUP));
@@ -762,7 +769,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
      *  
      * @author nts (agonzalezisasi)
      */
-    private String getSignature(List<String> signatureSettings) {
+    private String getSignature(User user, List<String> signatureSettings) {
        String result = '';
        if (signatureSettings != null && !signatureSettings.isEmpty()) {
            try {
@@ -790,7 +797,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
                     configFields = this.testSignatureFields;
                 }
 
-               result = calculateSignature(configFirma, configFields);
+               result = calculateSignature(user, configFirma, configFields);
            } catch (Exception ex) {
                ErrorLogUtil.commitError(ex, CLASS_NAME);
            }
@@ -798,23 +805,23 @@ public with sharing class OpenIDConnectSalesforceCommunity {
        return result;
     }
 
-    private String calculateSignature(String configFirma, String configFields) { 
+    private String calculateSignature(User user, String configFirma, String configFields) 
+    { 
         String result = '';
+        String userFields = JSON.serialize(user);
+        Map<String, Object> mapUserFields = (Map<String,Object>) JSON.deserializeUntyped(userFields);
         List<String> listValues = new List<String>();
-        if (String.IsNotBlank(configFields)) {
-            // soql to get the info
-            List<User> userList = Database.query('SELECT ' + configFields + ' FROM User WHERE Id = :userId');
-            // if not empty
-            if (!userList.isEmpty()) {
-                // for each configured field, get the value
-                List<String> listFields = configFields.split(',');
-                for (String s: listFields) {
-                    String fieldText = ''; 
-                    if (userList[0].get(s) != null) {
-                        fieldText = (String)userList[0].get(s);
-                    }
-                    listValues.add(fieldText);
-                }
+        if (String.IsNotBlank(configFields)) 
+        {
+            List<String> listFields = configFields.split(',');
+            for (String s: listFields) 
+            {
+                 String fieldText = '';
+                 if ((mapUserFields.keySet()).contains(s))
+                 {
+                    fieldText = (String) mapUserFields.get(s);
+                 }
+                 listValues.add(fieldText);
             }
         }
         // Put the values of the User fields in the slots ({n}) of the configured text
