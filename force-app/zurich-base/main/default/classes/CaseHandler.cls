@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 06-22-2023
+ * @last modified on  : 08-16-2023
  * @last modified by  : aberuete
 **/
 public without sharing class CaseHandler implements ITrigger
@@ -17,7 +17,25 @@ public without sharing class CaseHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        List<Case> listCasesFromZurich = new List<Case> ();
+        if (Trigger.isInsert)
+        {
+            for (Case newCase : (List<Case>)newList)
+            {
+                if (newCase.Subject == 'Solicitud de ayuda al registro de MiZurich')
+                {
+                    listCasesFromZurich.add(newCase);
+                }
+            }
+
+            if (!listCasesFromZurich.isEmpty())
+            {
+                CaseUtil.assignAccountAndContactFromDniSuppliedEmailAndPhone(listCasesFromZurich);
+            }
+            
+        }
+    }
 
     /**
      * bulkAfter
