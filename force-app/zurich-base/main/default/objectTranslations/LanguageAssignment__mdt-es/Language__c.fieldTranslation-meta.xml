@@ -23,6 +23,10 @@
         <translation>Alemán</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Others</masterLabel>
+        <translation>Otros</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Spanish</masterLabel>
         <translation>Español</translation>
     </picklistValues>

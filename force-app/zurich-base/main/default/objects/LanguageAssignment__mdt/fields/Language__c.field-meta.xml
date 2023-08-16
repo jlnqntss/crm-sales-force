@@ -37,6 +37,11 @@
                 <label>German</label>
             </value>
             <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <label>Others</label>
+            </value>
+            <value>
                 <fullName>ES</fullName>
                 <default>false</default>
                 <label>Spanish</label>
