@@ -1,9 +1,9 @@
 /**
- * @description       : 
- * @author            : 
- * @group             : 
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
+ * @description       :
+ * @author            :
+ * @group             :
+ * @last modified on  : 16/08/2023
+ * @last modified by  : jgallaga
 **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -92,7 +92,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         String leadRecordType = accountRecordTypeInfosByDeveloperName.get('Lead').getRecordTypeId();
         String partnerOCSRecordType = accountRecordTypeInfosByDeveloperName.get('PartnerOCS').getRecordTypeId();
 
-        
+
         if( scope == RecordsSelector.Scope.ALL ) { // ALL
             this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, businessRecordType, leadRecordType});
         } else if( scope == RecordsSelector.Scope.Z ) { // Z
@@ -105,7 +105,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             this.relatedRecordsScope = RecordsSelector.Scope.ZE;
         } else if( scope == RecordsSelector.Scope.ZEO ) { // ZEO
             this.baseQuery.addConditionIn(Account.RecordTypeId, new Set<String>{customerRecordType, leadRecordType, businessRecordType, partnerOCSRecordType});
-            
+
             this.relatedRecordsScope = RecordsSelector.Scope.ZEO;
         }
 
@@ -193,7 +193,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         {
             this.baseQuery.addConditionEq(Account.NationalIdType__c, nationalIdType);
         }
-        
+
         return (List<Account>) this.baseQuery.run();
     }
 
@@ -390,7 +390,7 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.Phone,
                 Account.MainEmail__c,
                 Account.NationalId__c,
-                Account.Channel__c, 
+                Account.Channel__c,
                 Account.Segment__c
             }
         );
@@ -432,8 +432,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                     Account.MainMobilePhone__c,
                     Account.Phone,
                     Account.MainEmail__c,
-                    Account.NationalId__c, 
-                    Account.Channel__c, 
+                    Account.NationalId__c,
+                    Account.Channel__c,
                     Account.Segment__c
                 }
             );
@@ -500,7 +500,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-     * Obtiene un listado de cuentas de Agrupacion 
+     * Obtiene un listado de cuentas de Agrupacion
      */
     public List<Account> findAgrupatedIntermediaries(List<Account> acList)
     {
@@ -541,10 +541,10 @@ public with sharing class AccountsSelector extends RecordsSelector
                     Account.StatusIntermediary__c
                 }
             );
-    
+
             this.baseQuery.addConditionIn(Account.ParentId, parentIds);
             this.baseQuery.addConditionEq(Account.RecordTypeId, rtIntermediaryId);
-    
+
             intermediaries = (List<Account>) this.baseQuery.run();
         }
 
@@ -553,12 +553,12 @@ public with sharing class AccountsSelector extends RecordsSelector
 
     /**
      * Recupera los Mediadores que tengan el email dado en alguno de los campos de la lista dada.
-     * 
+     *
      * @param {String email} el email a buscar
      * @param {List<String> fields} la lista de campos donde buscar
      */
     public List<Account> findIntermediariesByEmailInFields(String email, Set<String> fields)
-    { 
+    {
         List<Account> result = null;
 
         if( String.isNotBlank(email) && fields != null & !fields.isEmpty() ) {
@@ -573,7 +573,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
             result = (List<Account>)this.baseQuery.run();
         }
-        
+
         return result;
     }
 
@@ -593,17 +593,17 @@ public with sharing class AccountsSelector extends RecordsSelector
 
             result = (List<Account>)this.baseQuery.run();
         }
-        
+
         return result;
     }
 
     /**
      * Recupera los mediadores de tipo agrupacion cuyo id lo cumpla una subquery
      * Ejemplo: SELECT id FROM Account WHERE Id IN (SELECT AccountId FROM contact)
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 28/07/2021
-     * 
+     *
      * @param {Query subquery} subquery con los ids a buscar
      * @return {List<Account>} lista de agrupaciones de mediador
      */
@@ -618,7 +618,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             this.baseQuery.addConditionEq(Account.RecordTypeId, this.rtAgrupationId);
             this.baseQuery.addConditionIn(Account.Id, subquery);
 
-            result = (List<Account>)this.baseQuery.run();            
+            result = (List<Account>)this.baseQuery.run();
         }
 
         return result;
@@ -671,12 +671,12 @@ public with sharing class AccountsSelector extends RecordsSelector
 
     public String getQueryStringAccountIntermediaryRatio()
     {
-        
+
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Account.Id
-                
+
             })
-            
+
         .addConditionEq(Account.RecordTypeId, rtAccountIntermediaryId);
 
         // Añadimos la condición de que el RT sea Customer o BusinessCustomer
@@ -688,7 +688,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         this.baseQuery.addCondition(condition);
 
-        return this.baseQuery.toQueryString();       
+        return this.baseQuery.toQueryString();
     }
 
     /**
@@ -704,6 +704,25 @@ public with sharing class AccountsSelector extends RecordsSelector
             result = new List<Account>([SELECT Id FROM Account WHERE INFOBusinessCode__c IN :businessCodeList]);
         }
         return result;
+    }
+
+    /**
+     * @description Selector para conseguir las cuentas que tenga el código intermediario en el campo INFOIntermediaryCode__c
+     * @author      jgallaga
+     * @date        16/08/2023
+     */
+    public List<Account> findByINFOIntermediaryCode(List<String> intermediaryCodes)
+    {
+        List<Account> intermediaryAccounts = new List<Account>();
+
+        if(intermediaryCodes == null || intermediaryCodes.isEmpty())
+        {
+            return intermediaryAccounts;
+        }
+
+        this.baseQuery.addConditionIn(Account.INFOIntermediaryCode__c, intermediaryCodes);
+
+        return (List<Account>) this.baseQuery.run();
     }
 
 }

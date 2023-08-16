@@ -1,24 +1,24 @@
 /**
  * @description       : Clase selectora del sobject User
  * @author            : aberuete
- * @group             : 
- * @last modified on  : 07-31-2023
- * @last modified by  : aberuete
+ * @group             :
+ * @last modified on  : 16/08/2023
+ * @last modified by  : jgallaga
 **/
-public with sharing class UsersSelector extends RecordsSelector 
+public with sharing class UsersSelector extends RecordsSelector
 {
-    public UsersSelector() 
+    public UsersSelector()
     {
         super(User.getSObjectType());
     }
 
      /**
      * Recupera los Usuarios cuya id coincidan con un conjunto dado
-     * 
+     *
      * @author aberuete
      * @date 20/02/2023
-     * 
-     * @param {Set<Id> userIds} Set de ids de usuarios 
+     *
+     * @param {Set<Id> userIds} Set de ids de usuarios
      * @return {List<User>} lista de Usuarios
      */
     public List<User> findById (Set<Id> userIds)
@@ -40,11 +40,11 @@ public with sharing class UsersSelector extends RecordsSelector
 
     /**
      * Recupera los Usuarios cuya id coincidan con un conjunto dado de nombres
-     * 
+     *
      * @author dmunoz
      * @date 23/05/2023
-     * 
-     * @param {List<String> userNames} lista de nombres de usuarios 
+     *
+     * @param {List<String> userNames} lista de nombres de usuarios
      * @return {Map<Id, User>} mapa de Usuarios
      */
     public Map<Id, User> getUsersByName(List<String> userNames) {
@@ -60,11 +60,11 @@ public with sharing class UsersSelector extends RecordsSelector
 
      /**
      * Recupera Usuario por email
-     * 
+     *
      * @author dmunoz
      * @date 15/06/2023
-     * 
-     * @param {List<String> userNames} lista de nombres de usuarios 
+     *
+     * @param {List<String> userNames} lista de nombres de usuarios
      * @return {Map<Id, User>} mapa de Usuarios
      */
     public User findUserByEmail(String userEmail) {
@@ -74,7 +74,7 @@ public with sharing class UsersSelector extends RecordsSelector
         if (userEmail != null && String.isNotEmpty(userEmail)) {
             List<User> users = new List<User>([
                 SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, ManagerId
-                FROM User WHERE email = :userEmail 
+                FROM User WHERE email = :userEmail
                 LIMIT 1
             ]);
 
@@ -84,14 +84,14 @@ public with sharing class UsersSelector extends RecordsSelector
         }
 
         return result;
-    }    
+    }
 
      /**
      * Recupera Usuario por nickname de comunidad
-     * 
+     *
      * @author dmunoz
      * @date 15/06/2023
-     * 
+     *
      * @param communityNickname
      * @return Usuario
      */
@@ -113,17 +113,17 @@ public with sharing class UsersSelector extends RecordsSelector
 
     /**
      * Recupera los datos de Usuario por id para comprobar si alguno de estos se ha modificado con respecto a la informacion que llega de IAM
-     * 
+     *
      * @author dmunoz
      * @date 15/06/2023
-     * 
+     *
      * @param communityNickname
      * @return Usuario
      */
     public User getLoginUserToUpdate(Id userId) {
         User result = null;
 
-        if (userId != null && String.isNotEmpty(userId)) { 
+        if (userId != null && String.isNotEmpty(userId)) {
             List<User> userList = new List<User>([
                 SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title, ManagerId
                 FROM User WHERE Id =: userId LIMIT 1
@@ -134,5 +134,45 @@ public with sharing class UsersSelector extends RecordsSelector
             }
         }
         return result;
+    }
+
+    /**
+     * @description Selector para conseguir usuarios a partir de su relación con Ids de Account
+     * @author      jgallaga
+     * @date        16/08/2023
+     */
+    public List<User> findUsersByAccountId(List<String> accountIds)
+    {
+        List<User> foundUsers = new List<User>();
+
+        if(accountIds == null || accountIds.isEmpty())
+        {
+            return foundUsers;
+        }
+
+        this.baseQuery.addConditionIn(User.Contact.AccountId, accountIds);
+        this.baseQuery.addConditionEq(User.IsActive, true);
+
+        return (List<User>) this.baseQuery.run();
+    }
+
+    /**
+     * @description Selector para conseguir usuarios a partir de su User Name
+     * @author      jgallaga
+     * @date        16/08/2023
+     */
+    public List<User> finUsersByUserName(List<String> userNames)
+    {
+        List<User> users = new List<User>();
+
+        if(userNames == null || userNames.isEmpty())
+        {
+            return users;
+        }
+
+        this.baseQuery.addConditionIn(User.UserName, userNames);
+        this.baseQuery.addConditionEq(User.IsActive,true);
+
+        return (List<User>) This.baseQuery.run();
     }
 }

@@ -365,7 +365,8 @@ public with sharing class AccountLeadAssignment
 
         if(String.isNotBlank(defaultUserName))
         {
-            List<User> defaultUser = [SELECT Id FROM User WHERE UserName = :defaultUserName AND IsActive = true]; //TODO - Llevar a selector
+            UsersSelector userQuery = new UsersSelector();
+            List<User> defaultUser = userQuery.finUsersByUserName(new List<String>{defaultUserName});
 
             if(! defaultUser.isEmpty())
             {
@@ -397,14 +398,16 @@ public with sharing class AccountLeadAssignment
             return defaultUserId;
         }
 
-        List<Account> intermediaryAccount = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = :intermediaryCode];
+        AccountsSelector accountQuery = new AccountsSelector();
+        List<Account> intermediaryAccount = accountQuery.findByINFOIntermediaryCode(new List<String>{intermediaryCode});
 
         if(intermediaryAccount.isEmpty())
         {
             return defaultUserId;
         }
 
-        List<User> intermediary = [SELECT Id FROM User WHERE Contact.AccountId = : intermediaryAccount.get(0).Id AND isActive = true];
+        UsersSelector userQuery = new UsersSelector();
+        List<User> intermediary = userQuery.findUsersByAccountId(new List<String>{intermediaryAccount.get(0).Id});
 
         if(! intermediary.isEmpty())
         {

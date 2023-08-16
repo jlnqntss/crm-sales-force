@@ -1,7 +1,7 @@
 /**
- * @description       :
+ * @description       : Test para comprobar el funcionamiento unitario de los metodos de la clase Account Lead Assignment
  * @author            : jgallaga
- * @group             :
+ * @group             : Seidor
  * @last modified on  : 16/08/2023
  * @last modified by  : jgallaga
 **/
