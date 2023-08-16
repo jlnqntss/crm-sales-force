@@ -3,14 +3,14 @@
  *                      de las cuentas de tipo Lead que llegan a Salesforce.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 14/08/2023
+ * @last modified on  : 16/08/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class AccountLeadAssignment
 {
 
-    private static final String CONTACT_CENTER           = 'CONTACT_CENTER';
-    private static final String DEFAULT_ASSIGNEMENT_TYPE = 'Province';
+    private static final String CONTACT_CENTER = 'CONTACT_CENTER';
+    @TestVisible private static final String DEFAULT_ASSIGNEMENT_TYPE = 'Province';
 
     /*** MEDATADA ***/
     @TestVisible
@@ -114,7 +114,7 @@ public with sharing class AccountLeadAssignment
      */
     public static String getAssignedUserIdByIntermediaryCode(String intermediaryCode)
     {
-        if(intermediaryCode == CONTACT_CENTER)
+        if(String.isNotBlank(intermediaryCode) && intermediaryCode == CONTACT_CENTER)
         {
             return CONTACT_CENTER;
         }
@@ -202,6 +202,7 @@ public with sharing class AccountLeadAssignment
      * @return      String
      *              Id de usuario.
      */
+    @TestVisible
     private static String assignedUserDirectly(String origin)
     {
         if(String.isBlank(origin))
@@ -232,6 +233,7 @@ public with sharing class AccountLeadAssignment
      * @return      String
      *              Id de usuario.
      */
+    @TestVisible
     private static String assignedUserByMunicipality(String postalCode)
     {
         if(String.isBlank(postalCode))
@@ -264,6 +266,7 @@ public with sharing class AccountLeadAssignment
      * @return      String
      *              Id de usuario.
      */
+    @TestVisible
     private static String assignedUserByProvince(String postalCode)
     {
         if(String.isBlank(postalCode))
@@ -299,6 +302,7 @@ public with sharing class AccountLeadAssignment
      * @return      String
      *              La forma de asignación segun origen
      */
+    @TestVisible
     private static String getAssigmentType(String origin)
     {
         if(String.isBlank(origin))
@@ -308,12 +312,8 @@ public with sharing class AccountLeadAssignment
 
         for(ForumOriginAssignment__mdt currentFOA : forumOriginAssignmentMetadata)
         {
-            System.debug('@@@ Origen recibido ' + origin);
-
             if(currentFOA.ForumOrigin__c == origin && String.isNotBlank(currentFOA.AssignmentType__c))
             {
-                System.debug('Metadato encontrado ' + currentFOA.DeveloperName);
-                System.debug('Tipo Asignacion ' + currentFOA.AssignmentType__c);
                 return currentFOA.AssignmentType__c;
             }
         }
@@ -376,10 +376,12 @@ public with sharing class AccountLeadAssignment
         throw new QueryException('No default User found for Lead Account assignments.');
     }
 
-
-
     /**
      * @description Devuelve el Id de Usuario a partir del código de intermediario.
+     *              Se busca una cuenta cuyo campo INFOIntermediaryCode__c tenga el
+     *              cógido de intermediario. Después se busca aquel usuario que apunte
+     *              mediante su relación con el contacto a esa cuenta para conseguir
+     *              el identificador de intermediario.
      * @author      jgallaga
      * @date        11/08/2023
      * @param       String - intermediaryCode
@@ -387,6 +389,7 @@ public with sharing class AccountLeadAssignment
      * @return      String
      *              Id de usuario.
      */
+    @TestVisible
     private static String getIntermediaryUserId(String intermediaryCode)
     {
         if(String.isBlank(intermediaryCode))
