@@ -38,6 +38,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     public static final String RT_NAME_CUSTOMER = 'Customer';
     public static final String RT_NAME_BUSINESSCUSTOMER = 'BusinessCustomer';
     public static final String RT_NAME_ACCOUNT_INTERMEDIARY= 'Intermediary';
+    public static final String RT_NAME_LEAD= 'Lead';
 
     public static final String INTERMEDIARY_ACTIVE_1='001';
     public static final String INTERMEDIARY_ACTIVE_2='002';
@@ -58,6 +59,12 @@ public with sharing class AccountsSelector extends RecordsSelector
     public ID rtCustomerId {
         get {
             return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_CUSTOMER)?.getRecordTypeId();
+        }
+    }
+    // Recupera el Id del RecordType de clientes Lead
+    public ID rtLeadId {
+        get {
+            return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_LEAD)?.getRecordTypeId();
         }
     }
     // Recupera el Id del RecordType de clientes
@@ -203,6 +210,56 @@ public with sharing class AccountsSelector extends RecordsSelector
         }
 
         return (List<Account>) this.baseQuery.run();
+    }
+
+    /**
+     * Busca cuentas a partir de un listado de DNIs y record type Customer o Business Customer
+     * @author overes
+     * @date 16/08/2023
+     * @param  documents Listado de DNIs
+     * @return           Listado de cuentas
+     */
+    public List<Account> findByNationalIdAndRcTypeCustAndBC(List<String> documents)
+    {
+        List<Account> result = new List<Account>();
+
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
+        }
+        return result;
+    }
+    /**
+     * Busca cuentas a partir de un listado de DNIs y lecord type Lead
+     * @author overes
+     * @date 16/08/2023
+     * @param  documents   Listado de DNIs
+     * @return             Listado de cuentas sobre los que se ha realizado match
+     */
+    public List<Account> findByNationalIdAndRcTypeLead(List<String> documents)
+    {
+        List<Account> result = new List<Account>();
+
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
+        }
+        return result;
+    }
+
+    /**
+     * Busca cuentas a partir de un listado de números de teléfono y record types Lead
+     * @author overes
+     * @date 16/08/2023
+     * @param  phones  Listado de números de teléfono
+     * @return         Listado de cuentas sobre los que se ha realizado match
+     */
+    public List<Account> findByPhoneAndRcTypeLead(List<String> phones)
+    {
+        List<Account> result = new List<Account>();
+
+        if (phones != null && !phones.isEmpty()) {
+            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
+        }
+        return result;
     }
 
     /**

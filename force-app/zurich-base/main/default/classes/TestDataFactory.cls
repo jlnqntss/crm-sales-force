@@ -1914,6 +1914,20 @@ public class TestDataFactory
                     );
                 }
             }
+            when 'Lead' { // Lead
+                for (Integer i = 0; i < numRecords; i++)
+                {
+                    accounts.add(
+                        new Account(
+                            LastName = 'testnameLead' + i,
+                            LegalEntity__c = legalEntity,
+                            NationalId__c = generateSpanishFormatDNI(),
+                            NationalIdType__c = 'N',
+                            RecordTypeId = recordTypeId
+                        )
+                    );
+                }
+            }
             when 'AgrupacionMediador' { // SDM: agrupacion mediadores
                 for (Integer i = 0; i < numRecords; i++)
                 {

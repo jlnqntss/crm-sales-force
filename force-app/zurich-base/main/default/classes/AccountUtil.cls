@@ -27,12 +27,12 @@ public class AccountUtil
 
         if (partnerSF != null)
         {
-            
+
             customer.MasterPolicy__c = partnerSF.Id;
         }
         else
         {
-            
+
             Account newPartner = new Account(
                 Name = customer.MasterPolicyDesc__c,
                 Masterpolicy__c = customer.MasterPolicyNum__c,
@@ -82,12 +82,12 @@ public class AccountUtil
 
         if (partnerSF != null)
         {
-            
+
             order.MasterPolicy__c = partnerSF.Id;
         }
         else
         {
-            
+
             Account newPartner = new Account(
                 Name = order.MasterPolicyDescr__c,
                 Masterpolicy__c = order.MasterPolicyNum__c,
@@ -168,7 +168,7 @@ public class AccountUtil
         if(accounts != null && !accounts.isEmpty())
         {
             //Mapa para identificar cada cuenta con su cif
-                    
+
             // Se recorre la lista de cuentas para no tener que recorrerla una vez por cada caso
             for(Account currentAccount : accounts)
             {
