@@ -897,11 +897,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.EffectiveDate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.ExpectedRevenue</field>
         <readable>true</readable>
@@ -1124,6 +1119,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.ValidationErrors__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PreferedContactEnd__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PreferedContactStart__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
