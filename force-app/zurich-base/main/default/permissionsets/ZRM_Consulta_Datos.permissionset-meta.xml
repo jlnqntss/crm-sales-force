@@ -986,17 +986,7 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>CampaignMember.purecloud__Last_Attempt__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>CampaignMember.purecloud__Last_Result__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>CampaignMember.purecloud__Last_Sync__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1011,7 +1001,7 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>CampaignMember.purecloud__Synced_to_PureCloud__c</field>
+        <field>CampaignMember.purecloud__Last_Attempt__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
