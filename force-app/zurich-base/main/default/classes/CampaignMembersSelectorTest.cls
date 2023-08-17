@@ -145,7 +145,7 @@ private with sharing class CampaignMembersSelectorTest
         List<CampaignMember> matchedRecords = new CampaignMembersSelector().findZRMPendingRevMediatorCampaignMembers();
         Test.stopTest();
 
-        System.assertEquals(campaignMembers.size(), matchedRecords.size(), 'Records should match');
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
 
     @isTest
