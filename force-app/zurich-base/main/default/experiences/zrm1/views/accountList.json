@@ -19,7 +19,7 @@
             "layout": "FULL",
             "pageSize": 25,
             "scope": "{!objectName}",
-            "showActionBar": false,
+            "showActionBar": true,
             "showChartsPanel": true,
             "showDisplay": "showall",
             "showFilterPanel": true,

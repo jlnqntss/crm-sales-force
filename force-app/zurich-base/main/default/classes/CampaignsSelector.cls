@@ -38,4 +38,22 @@ public with sharing class CampaignsSelector extends BaseSelector
             return new List<Campaign>();
         }
     }
+
+    /**
+     * Busca campaña a partir de un conjunto de external id
+     *
+     * @author dmunoz
+     * @date 11/08/2023
+     * @return          Listado de CampaignMembers 
+     */
+    public List<Campaign> findCampaignByExternalId(Set<String> externalIdSet) {
+
+        List<Campaign> result = new List<Campaign>();
+
+        if (!externalIdSet.isEmpty()) {
+            result = new List<Campaign>([SELECT Id, ExternalId__c FROM Campaign WHERE ExternalId__c IN :externalIdSet]);
+        }
+
+        return result;
+    }
 }

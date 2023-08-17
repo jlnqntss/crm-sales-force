@@ -5,6 +5,11 @@ private with sharing class CampaignsSelectorTest
     public static void createScenario()
     {
         List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 10);
+        Integer i = 0;
+        for (Campaign c: campaigns) {
+            c.ExternalId__c = 'Test' + i;
+            i++;
+        }
         insert campaigns;
     }
 
@@ -63,5 +68,17 @@ private with sharing class CampaignsSelectorTest
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_findCampaignByExternalId() {
+        Set<String> externalIdsSet = new Set<String>();
+        externalIdsSet.add('Test0');
+
+        Test.startTest();
+        List<Campaign> matchedRecords = new CampaignsSelector().findCampaignByExternalId(externalIdsSet);
+        Test.stopTest();
+
+        System.assertEquals(true, !matchedRecords.isEmpty(), 'List should not be empty');
     }
 }

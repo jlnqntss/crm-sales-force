@@ -2,7 +2,7 @@
  * @description       : Clase de test para la clase AccountsSelector
  * @author            : 
  * @group             : 
- * @last modified on  : 06-06-2023
+ * @last modified on  : 08-16-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -747,5 +747,59 @@ private with sharing class AccountsSelectorTest
         Test.stopTest();
 
         System.assertEquals(2, matchedRecords.size(), 'El número de cuentas de tipo F y J no es correcto');
+    }
+
+    /**
+    * Test del método que recupera las cuentas filtradas por tipo de cuenta, recordtype name y que exista un contactpointemail asociado para una lista de emails dada
+    * @author aberuete
+    * @date 16/08/2023
+    */
+    @IsTest
+    static void test_findByEmailAdressRecordTypeNameAndType()
+    {
+        Account account = [select id,NationalId__c,type from account where RecordType.DeveloperName = 'Customer' limit 1];
+        account.type = 'J';
+        update account;
+
+        ContactPointEmail newContactPointEmail = new ContactPointEmail ();
+        newContactPointEmail.ParentId = account.Id;
+        newContactPointEmail.EmailAddress = 'emailtocontactpointemail@gmail.com.invalid';
+        insert newContactPointEmail;
+
+        Test.startTest();
+        List<Account> accountFromQuery = new AccountsSelector().findByEmailAdressRecordTypeNameAndType (new List<String> {'emailtocontactpointemail@gmail.com.invalid'},new List<String> {'Customer'}, new List<String>{'F','J'});
+        Test.stopTest();
+
+        System.assertEquals(1, accountFromQuery.size(), 'Debe haber una cuenta en la lista');
+        System.assertEquals(account.id, accountFromQuery[0].id, 'La cuenta devuelta no es correcta');
+        System.assertEquals(1, accountFromQuery[0].ContactPointEmails.size(), 'La cuenta debería tener asociada un contactpointemail');
+        System.assertEquals(newContactPointEmail.Id, accountFromQuery[0].ContactPointEmails[0].Id, 'El contactpointemail asociado a la cuenta no es correcto');
+    }
+
+    /**
+    * Test del método que recupera las cuentas filtradas por tipo de cuenta, recordtype name y que exista un contactpointphone asociado para una lista de teléfonos dada
+    * @author aberuete
+    * @date 16/08/2023
+    */
+    @IsTest
+    static void test_findByPhoneRecordTypeNameAndType()
+    {
+        List<Account> newAccount = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        newAccount[0].type = 'J';
+        insert newAccount;
+
+        ContactPointPhone newContactPointPhone = new ContactPointPhone();
+        newContactPointPhone.ParentId = newAccount[0].Id;
+        newContactPointPhone.TelephoneNumber = '603452389';
+        insert newContactPointPhone;
+
+        Test.startTest();
+        List<Account> accountFromQuery = new AccountsSelector().findByPhoneRecordTypeNameAndType(new List<String> {'603452389'},new List<String> {'Customer'}, new List<String>{'F','J'});
+        Test.stopTest();
+
+        System.assertEquals(1, accountFromQuery.size(), 'Debe haber una cuenta en la lista');
+        System.assertEquals(newAccount[0].id, accountFromQuery[0].id, 'La cuenta devuelta no es correcta');
+        System.assertEquals(1, accountFromQuery[0].ContactPointPhones.size(), 'La cuenta debería tener asociada un contactpointphone');
+        System.assertEquals(newContactPointPhone.Id, accountFromQuery[0].ContactPointPhones[0].Id, 'El contactpointphone asociado a la cuenta no es correcto');
     }
 }
