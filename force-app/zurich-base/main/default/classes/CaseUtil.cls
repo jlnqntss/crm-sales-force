@@ -260,6 +260,65 @@ public with sharing class CaseUtil
         }
     }
 
+    /**
+     * Método que busca si existe una única cuenta en función del valor del dni, email y teléfono para asociar el caso.
+     * En caso afirmativo, asocia también el contacto de la cuenta. Utilizado para los casos creados desde el formulario miZurich
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     * @param List<Case> newList : Lista de casos
+     */
+    public static void assignAccountAndContactFromDniSuppliedEmailAndPhone (List<Case> newList)
+    {
+        Integer numAccount;
+        List<String> nationalIds = new List<String>();
+        List<String> emails = new List<String>();
+        List<String> phones = new List<String>();
+
+        Map<String,List<Account>> mapAccountsByNatinalId = new Map<String,List<Account>> ();
+        Map<String,List<Account>> mapAccountsByEmails = new Map<String,List<Account>> ();
+        Map<String,List<Account>> mapAccountsByPhones = new Map<String,List<Account>> ();
+
+        for (Case newCase : newList)
+        {
+            nationalIds.add(newCase.RobotNif__c);
+            emails.add(newCase.SuppliedEmail);
+            phones.add(newCase.SuppliedPhone);
+        }
+
+        mapAccountsByNatinalId = getMapOfAccountRelatedByNatinalId (nationalIds);
+        mapAccountsByEmails = getMapOfAccountRelatedByEmail (emails);
+        mapAccountsByPhones = getMapOfAccountRelatedByPhone (phones);
+        
+        for (Case caseToUpdate : newList)
+        {
+            numAccount = numAccountsByNationalId (caseToUpdate, mapAccountsByNatinalId );
+            if ( numAccount == 1 )
+            {
+                caseToUpdate.AccountId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].Id;
+                caseToUpdate.ContactId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].PersonContactId;
+            }
+            else if (numAccount == 0)
+            {
+                numAccount = numAccountsByEmail (caseToUpdate, mapAccountsByEmails);
+                if (numAccount == 1)
+                {
+                    caseToUpdate.AccountId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].Id;
+                    caseToUpdate.ContactId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].PersonContactId;
+                }
+                else if (numAccount == 0)
+                {
+                    numAccount = numAccountsByPhone (caseToUpdate, mapAccountsByPhones);
+                    if ( numAccount == 1)
+                    {
+                        caseToUpdate.AccountId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].Id;
+                        caseToUpdate.ContactId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].PersonContactId;
+                    }
+                }
+            }
+        }   
+    }
+
     /**BEFOREUPDATE
      * IMPORTANTE: la modificación del CaseMilestone no puede ser después de la actualización del caso
      * porque el caso ya se ha salido del entitlement process y salta el siguiente error:
@@ -1030,4 +1089,149 @@ public with sharing class CaseUtil
             }
         }
     }
+
+    /**
+     * Método que genera un mapa de lista de cuentas por dni. 
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     * @param List<String> nationalIds : Lista de dnis
+     */
+    private static Map<String,List<Account>> getMapOfAccountRelatedByNatinalId (List<String> nationalIds)
+    {
+        Map<String,List<Account>> mapAccountsByNatinalId = new Map<String,List<Account>> ();
+        List<Account> accountsByNationalId = AccountSearchService.findCustomersByDocumentId(nationalIds, '',null,null, new List<String> {'Customer'}, new List<String>{'F','J'});
+
+        for (Account account :accountsByNationalId)
+        {
+            List<Account> accountList = mapAccountsByNatinalId.get(account.NationalId__c);
+            if( accountList == null ) 
+            {
+                accountList = new List<Account>();
+                mapAccountsByNatinalId.put(account.NationalId__c, accountList);
+            }
+            accountList.add(account);
+        }
+        
+        return mapAccountsByNatinalId;
+    }
+
+    /**
+     * Método que genera un mapa de lista de cuentas por email. 
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     * @param List<String> emails : Lista de emails
+     */
+    private static Map<String, List<Account>> getMapOfAccountRelatedByEmail (List<String> emails)
+    {
+        Map<String,List<Account>> mapAccountsByEmails = new Map<String,List<Account>> ();
+        List<Account> accountsByEmail = new AccountsSelector().findByEmailAdressRecordTypeNameAndType (emails, new List<String> {'Customer'}, new List<String>{'F','J'} );
+
+        if (!accountsByEmail.isEmpty())
+        {
+            for (Account accountbyEmail : accountsByEmail) 
+            {
+                for (Integer i=0; i<accountbyEmail.ContactPointEmails.size(); i++)
+                {
+                    List<Account> accountListByEmails = mapAccountsByEmails.get(accountbyEmail.ContactPointEmails.get(i).EmailAddress);
+                    if( accountListByEmails == null ) 
+                    {
+                        accountListByEmails = new List<Account>();
+                        mapAccountsByEmails.put(accountbyEmail.ContactPointEmails.get(i).EmailAddress, accountListByEmails);
+                    }
+                    accountListByEmails.add(accountbyEmail);  
+                }
+            }
+        }
+        return mapAccountsByEmails;
+    }
+
+    /**
+     * Método que genera un mapa de lista de cuentas por teléfono. 
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     * @param List<String> phones : Lista de teléfonos
+     */
+    private static Map<String, List<Account>> getMapOfAccountRelatedByPhone (List<String> phones)
+    {
+        Map<String,List<Account>> mapAccountsByPhones = new Map<String,List<Account>> ();
+        List<Account> accountsByPhone =  new AccountsSelector().findByPhoneRecordTypeNameAndType (phones, new List<String> {'Customer'}, new List<String>{'F','J'});
+
+        if (!accountsByPhone.isEmpty())
+        {
+            for (Account accountByPhone : accountsByPhone) 
+            {
+                for (Integer i=0; i<accountByPhone.ContactPointPhones.size(); i++)
+                {
+                    List<Account> accountListByPhones = mapAccountsByPhones.get(accountByPhone.ContactPointPhones.get(i).TelephoneNumber);
+
+                    if( accountListByPhones == null ) 
+                    {
+                        accountListByPhones = new List<Account>();
+                        mapAccountsByPhones.put(accountByPhone.ContactPointPhones.get(i).TelephoneNumber, accountListByPhones);
+                    }
+                    accountListByPhones.add(accountByPhone);  
+                }
+            }
+        }
+
+        return mapAccountsByPhones;
+    }
+
+    /**
+     * Método que obtiene el número de cuentas asociadas a un dni. 
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     * @param Case caseToUpdate : caso
+     * @param Map<String,List<Account>> mapAccountsByNatinalId : Mapa de lista de cuentas por dni
+     */
+    private static Integer numAccountsByNationalId (Case caseToUpdate, Map<String,List<Account>> mapAccountsByNatinalId )
+    {
+        Integer numAccounts = 0;
+        if (caseToUpdate.RobotNif__c != null && !String.isBlank(caseToUpdate.RobotNif__c) && !mapAccountsByNatinalId.isEmpty() && mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c) != null )
+        {
+            numAccounts = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c).size();
+        } 
+        return numAccounts;
+    }
+
+    /**
+     * Método que obtiene el número de cuentas asociadas a un email. 
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     * @param Case caseToUpdate : caso
+     * @param Map<String,List<Account>> mapAccountsByEmails : Mapa de lista de cuentas por email
+     */
+    private static Integer numAccountsByEmail (Case caseToUpdate, Map<String,List<Account>> mapAccountsByEmails )
+    {
+        Integer numAccounts = 0;
+        if ( caseToUpdate.SuppliedEmail != null && !String.isBlank(caseToUpdate.SuppliedEmail) && !mapAccountsByEmails.isEmpty() && mapAccountsByEmails.get(caseToUpdate.SuppliedEmail) != null )
+        {
+            numAccounts = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail).size();
+        } 
+        return numAccounts;
+    }
+
+    /**
+     * Método que obtiene el número de cuentas asociadas a un teléfono. 
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     * @param Case caseToUpdate : caso
+     * @param Map<String,List<Account>> mapAccountsByPhones : Mapa de lista de cuentas por teléfono
+     */
+    private static Integer numAccountsByPhone (Case caseToUpdate, Map<String,List<Account>> mapAccountsByPhones )
+    {
+        Integer numAccounts = 0;
+        if ( caseToUpdate.SuppliedPhone != null && !String.isBlank(caseToUpdate.SuppliedPhone) && !mapAccountsByPhones.isEmpty() && mapAccountsByPhones.get(caseToUpdate.SuppliedPhone) != null )
+        {
+            numAccounts = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone).size();
+        } 
+        return numAccounts;
+    }
+
 }

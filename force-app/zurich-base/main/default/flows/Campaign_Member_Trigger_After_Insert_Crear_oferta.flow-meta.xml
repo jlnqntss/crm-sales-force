@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Lanza el batch con los registros actualizados.</description>
+        <name>ExecuteBatch_CampaignMemberToOpportunity</name>
+        <label>Ejecutar Batch_CampaignMemberToOpportunity</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <actionName>Batch_CampaignMemberToOpportunity</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>campaignMembers</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <description>Genera automáticamente Ofertas para Agentes Mediadores o Agente genérico CC al crear miembros de campaña. El batch selecciona sólo miembros de campañas de venta cruzada.</description>
+    <environments>Default</environments>
+    <interviewLabel>Campaign Member Trigger - After Insert - Crear oferta {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Campaign Member Trigger - After Insert - Generación Automática Ofertas</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>ExecuteBatch_CampaignMemberToOpportunity</targetReference>
+        </connector>
+        <object>CampaignMember</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

@@ -3,7 +3,7 @@
  *                      Procesa las external request cuyo origen sea MI_ZURICH con la ayuda de la clase Transformer
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-09-2023
+ * @last modified on  : 08-16-2023
  * @last modified by  : aberuete
 **/
 public class MiZurichHandler implements ISystem 
@@ -154,131 +154,10 @@ public class MiZurichHandler implements ISystem
 
         // Obtener tipificaciones del metadata Robot Hegeo
         caseRecord = ExternalRequestHandlerUtil.fillTypificationIntoCase (recordValuesMap, 'miZurich_inputForm2', 'miZurich_inputForm3', caseRecord);
-
-        //Enlazar Cuenta y Contact en caso de que encuentre unícamente una cuenta 
-        caseRecord = linkAccountAndContactToCase(caseRecord, recordValuesMap);
-
+        
         ExternalRequestHandlerUtil.addRecordToMap(externalRequest, FORM_INC, SOBJECT_CASE, caseRecord);
     }
-
-    /**
-     * Método que busca si existe una única cuenta en función del valor del dni, email y teléfono para asociar el caso.
-     * En caso afirmativo, asocia también el contacto de la cuenta.
-     **
-     * @author aberuete
-     * @date 15/05/2023
-     * @param Case caseRecord : Registro del caso
-     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
-     */
-    @testvisible
-    private static Case linkAccountAndContactToCase(Case caseRecord, Map<String, Object> recordValuesMap)
-    {
-        Map<Integer,Case> numAccountByCase = new Map <Integer, Case>();
-        numAccountByCase = linkAccountAndContactToCaseByNif (caseRecord, recordValuesMap);
-        
-        if (numAccountByCase.keySet().iterator().next() == 0)
-        {
-            numAccountByCase = linkAccountAndContactToCaseByEmail (caseRecord, recordValuesMap);
-
-            if (numAccountByCase.keySet().iterator().next() == 0)
-            {
-                numAccountByCase = linkAccountAndContactToCaseByPhone (caseRecord, recordValuesMap);
-            }
-        }
-
-        return numAccountByCase.values()[0];
-    }
-
-    /**
-     * Método que busca si existe una única cuenta en función del valor del dni para asociar el caso.
-     * En caso afirmativo, asocia también el contacto de la cuenta.
-     **
-     * @author aberuete
-     * @date 02/06/2023
-     * @param Case caseRecord : Registro del caso
-     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
-     */
-    private static Map<Integer,Case> linkAccountAndContactToCaseByNif (Case caseRecord, Map<String, Object> recordValuesMap)
-    {
-        Map<Integer,Case> numAccountByCase = new Map<Integer, Case>(); 
-        if (recordValuesMap.containsKey('miZurich_nif') && (String)recordValuesMap.get('miZurich_nif') != null && !String.isBlank((String)recordValuesMap.get('miZurich_nif')))
-        {
-            List<Account> accountsByNationalId = AccountSearchService.findCustomersByDocumentId(new List<String>{(String)recordValuesMap.get('miZurich_nif')}, '',null,null, new List<String> {'Customer'}, new List<String>{'F','J'});
-            
-            if (accountsByNationalId.size() == 1)
-            {
-                caseRecord.AccountId = accountsByNationalId[0].Id;
-                caseRecord.ContactId =  accountsByNationalId[0].PersonContactId;
-            } 
-            numAccountByCase.put (accountsByNationalId.size(), caseRecord);
-        }
-        else 
-        {
-            numAccountByCase.put(0, caseRecord);
-        }
-        return numAccountByCase;
-    }
-
-    /**
-     * Método que busca si existe una única cuenta en función del valor del email para asociar el caso.
-     * En caso afirmativo, asocia también el contacto de la cuenta.
-     **
-     * @author aberuete
-     * @date 02/06/2023
-     * @param Case caseRecord : Registro del caso
-     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
-     */
-    private static Map<Integer,Case> linkAccountAndContactToCaseByEmail (Case caseRecord, Map<String, Object> recordValuesMap)
-    {
-        Map<Integer,Case> numAccountByCase = new Map<Integer, Case>(); 
-        if (recordValuesMap.containsKey('miZurich_email') && (String)recordValuesMap.get('miZurich_email') != null && !String.isBlank((String)recordValuesMap.get('miZurich_email')))
-        {
-            List<Account> accountsByEmail = AccountSearchService.findCustomersByEmail(new List<String>{(String)recordValuesMap.get('miZurich_email')}, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String>{'F','J'} );
-            
-            if (accountsByEmail.size() == 1)
-            {
-                caseRecord.AccountId = accountsByEmail[0].Id;
-                caseRecord.ContactId =  accountsByEmail[0].PersonContactId;
-            } 
-            numAccountByCase.put (accountsByEmail.size(), caseRecord);
-        }
-        else 
-        {
-            numAccountByCase.put(0, caseRecord);
-        }
-        return numAccountByCase;
-    }
-
-    /**
-     * Método que busca si existe una única cuenta en función del valor del teléfono para asociar el caso.
-     * En caso afirmativo, asocia también el contacto de la cuenta.
-     **
-     * @author aberuete
-     * @date 02/06/2023
-     * @param Case caseRecord : Registro del caso
-     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
-     */
-    private static Map<Integer,Case> linkAccountAndContactToCaseByPhone (Case caseRecord, Map<String, Object> recordValuesMap)
-    {
-        Map<Integer,Case> numAccountByCase = new Map<Integer, Case>(); 
-        if (recordValuesMap.containsKey('miZurich_telf') && (String)recordValuesMap.get('miZurich_telf') != null && !String.isBlank((String)recordValuesMap.get('miZurich_telf')))
-        {
-            List<Account> accountsByPhone = AccountSearchService.findCustomersByPhoneNumber(new List<String>{(String)recordValuesMap.get('miZurich_telf')}, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String>{'F','J'} );
-
-            if (accountsByPhone.size() == 1)
-            {
-                caseRecord.AccountId = accountsByPhone[0].Id;
-                caseRecord.ContactId =  accountsByPhone[0].PersonContactId;
-            } 
-            numAccountByCase.put (accountsByPhone.size(), caseRecord);
-        }
-        else 
-        {
-            numAccountByCase.put(0, caseRecord);
-        }
-        return numAccountByCase;
-    }
-
+    
     /**
      * Método que obtiene la descripción del caso
      * @author aberuete

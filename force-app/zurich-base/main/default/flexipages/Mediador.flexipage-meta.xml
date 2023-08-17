@@ -631,22 +631,28 @@
                     <name>relatedListFieldAliases</name>
                     <valueList>
                         <valueListItems>
-                            <value>NAME</value>
+                            <value>Campaign_with_status__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Name__c</value>
+                            <value>Participates__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Detail__c</value>
+                            <value>Candidates__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>StartDate__c</value>
+                            <value>Offers__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>EndDate__c</value>
+                            <value>Emissions__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>CREATED_DATE</value>
+                            <value>Offer_Conversions__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Emissions_currency__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Incentive__c</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>

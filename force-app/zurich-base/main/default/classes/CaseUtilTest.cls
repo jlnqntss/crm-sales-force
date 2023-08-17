@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 07-28-2023
+ * @last modified on  : 08-16-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -16,6 +16,9 @@ private class CaseUtilTest
     static final String MESSAGE_CONTACTID_NOT_CORRECT = 'El valor de ContactId en el caso no se actualizó correctamente';
     static final String LABEL_GENERAL_INSURANCE = 'General Insurance';
     static final String LABEL_ANULACION = 'Anulación';
+    static final String MESSAGE_CUENTA_NO_ASIGNADA = 'La cuenta no se ha asignado correctamente';
+    static final String LABEL_SUBJECT_ZURICH = 'Solicitud de ayuda al registro de MiZurich';
+    static final String EMAIL_CASE = 'exampletocontactpointemail@gmail.com.invalid';
 
     @TestSetup
     public static void createScenario()
@@ -845,4 +848,95 @@ private class CaseUtilTest
         System.assertEquals(LABEL_ANULACION, caseAfterInsertAnulacion.Subtype__c, 'El subtipo del caso anulación no es correcto');
         System.assertEquals(LABEL_ANULACION, caseAfterInsertAnulacion.TypeN3__c, 'El tipo N3 del caso anulación no es correcto');
     }
+
+    /**
+     * Test que comprueba que se asocia correctamente la cuenta al caso por CIF 
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     */
+    @isTest
+    static void test_linkAccountAndContactToCaseByCIF()
+    {
+        Case caseRecord = new Case ();
+        caseRecord.Subject = LABEL_SUBJECT_ZURICH;
+        caseRecord.RobotNif__c = '73562398D';
+
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        accountFromCase[0].NationalId__c = '73562398D';
+        accountFromCase[0].Type = 'F';
+        insert accountFromCase;
+
+        Test.startTest();
+        insert caseRecord;
+        Test.stopTest();
+
+        Case caseAfterInsert = [Select id,AccountId from Case where id =:caseRecord.id];
+        
+        System.assertEquals(accountFromCase[0].id, caseAfterInsert.AccountId, MESSAGE_CUENTA_NO_ASIGNADA);
+    }
+
+    /**
+     * Test que comprueba que se asocia correctamente la cuenta al caso por email 
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     */
+    @isTest
+    static void test_linkAccountAndContactToCaseByEmail()
+    {
+        Case caseRecord = new Case ();
+        caseRecord.Subject = LABEL_SUBJECT_ZURICH;
+        caseRecord.RobotNif__c = '73562398D';
+        caseRecord.SuppliedEmail = EMAIL_CASE;
+
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        accountFromCase[0].Type = 'F';
+        insert accountFromCase;
+
+        List<ContactPointEmail> contactPointEmailsToInsert = TestDataFactory.generateContactPointEmailsFromAccounts(accountFromCase, 1);
+        contactPointEmailsToInsert[0].EmailAddress = EMAIL_CASE;
+        insert contactPointEmailsToInsert;
+
+        Test.startTest();
+        insert caseRecord;
+        Test.stopTest();
+
+        Case caseAfterInsert = [Select id,AccountId from Case where id =:caseRecord.id];
+        
+        System.assertEquals(accountFromCase[0].id, caseAfterInsert.AccountId, MESSAGE_CUENTA_NO_ASIGNADA);
+    }
+
+    /**
+     * Test que comprueba que se asocia correctamente la cuenta al caso por teléfono
+     **
+     * @author aberuete
+     * @date 16/08/2023
+     */
+    @isTest
+    static void test_linkAccountAndContactToCaseByPhone()
+    {
+        Case caseRecord = new Case ();
+        caseRecord.Subject =  LABEL_SUBJECT_ZURICH;
+        caseRecord.RobotNif__c = '73562398D';
+        caseRecord.SuppliedEmail = EMAIL_CASE;
+        caseRecord.SuppliedPhone = '607342167';
+
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        accountFromCase[0].Type = 'F';
+        insert accountFromCase;
+
+        List<ContactPointPhone> contactPointPhonesToInsert = TestDataFactory.generateContactPointPhonesFromAccounts (accountFromCase, 1);
+        contactPointPhonesToInsert[0].TelephoneNumber = '607342167';
+        insert contactPointPhonesToInsert;
+
+        Test.startTest();
+        insert caseRecord;
+        Test.stopTest();
+
+        Case caseAfterInsert = [Select id,AccountId from Case where id =:caseRecord.id];
+        
+        System.assertEquals(accountFromCase[0].id, caseAfterInsert.AccountId, MESSAGE_CUENTA_NO_ASIGNADA);
+    }
+
 }

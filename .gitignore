@@ -43,3 +43,5 @@ IlluminatedCloud/
 
 # Salesforce- Ignorar ListViews / Vistas de Lista
 *.listView-meta.xml
+
+.sf

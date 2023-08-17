@@ -2913,6 +2913,31 @@ public class TestDataFactory
         return campaignMembers;
     }
 
+
+    /**
+     * Añade a una campaña nuevos estados de miembro de campaña
+     **
+     * @param List<String> newStatusList lista de los nuevos estados a añadir
+     * @param Id campaignId id de campaña a la cual añadirla
+     *
+     * @return List<CampaignMemberStatus> listado de registros generados
+     * @author dmunoz
+     * @date 14/08/2023
+     */
+    public static List<CampaignMemberStatus> generateCampaignStatus(List<String> newStatusList, Id campaignId) {
+        List<CampaignMemberStatus> result = new List<CampaignMemberStatus>();
+        CampaignMemberStatus cms;
+
+        for (String newStatus: newStatusList) {
+            cms = new CampaignMemberStatus();
+            cms.Label = newStatus;
+            cms.campaignId = campaignId;
+
+            result.add(cms);
+        }
+        return result;
+    }
+
     /**
      * Genera Oportunidades relacionadas con Scopes
      **
