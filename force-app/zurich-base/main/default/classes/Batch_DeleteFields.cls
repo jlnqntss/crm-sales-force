@@ -37,7 +37,7 @@ global class Batch_DeleteFields implements Database.Batchable<SObject>, Schedula
 
         //Read these names and from them, retrieve the ids of the offers
         idToDelete= new List<String>();
-        for (Integer i=1;i<filelines.size();i++)
+        for (Integer i=0;i<filelines.size();i++)
         {
             String[] inputvalues = new String[]{};
             inputvalues = filelines[i].split(',');
@@ -48,7 +48,7 @@ global class Batch_DeleteFields implements Database.Batchable<SObject>, Schedula
         }
 
 
-        string queryObject='SELECT Id FROM ' + nameObject+ ' WHERE Name =:idToDelete';
+        string queryObject='SELECT Id FROM ' + nameObject+ ' WHERE '+ fieldToDelete+ ' =:idToDelete';
 
         return Database.getQueryLocator(queryObject);
     }
@@ -56,11 +56,8 @@ global class Batch_DeleteFields implements Database.Batchable<SObject>, Schedula
     global void execute(Database.BatchableContext context, List<SObject> records) {
        
         try{
-            for (SObject reco:records)
-            {
-                reco.put(fieldToDelete, null);
-            }
-        update records;}
+            
+        delete records;}
         catch(Exception e){
             System.debug('Error al borrar : '+e.getMessage());
             System.debug('Lugar del error : '+e.getStackTraceString());

@@ -29,7 +29,7 @@ public with sharing class Batch_DeleteFieldsTest {
     {
         List<String> parame= new  List<String>();
         parame.add('OfferDeleteTemplate');
-        parame.add('Description');
+        parame.add('Name');
         parame.add('Opportunity');
         Batch_DeleteFields batch = new Batch_DeleteFields(parame);
 
@@ -46,7 +46,7 @@ public with sharing class Batch_DeleteFieldsTest {
         List<Opportunity> opps2 = [SELECT Id,Description FROM Opportunity WHERE Id IN:Opps];
 
         // Se comprueba que el batch ha borrado las Ofertas
-        System.assertEquals(null, opps2[5].Description, 'Borrado ok');
+        System.assertEquals(0, opps2.size(), 'Borrado ok');
 
     }
 }
