@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DefaultUser__c</fullName>
+    <description>Alias del usuario genérico al que asignar Ofertas de Venta Cruzada y de Leads en caso de error en la asignación.
+ej: ntsadmin</description>
+    <externalId>false</externalId>
+    <label>Usuario Por Defecto</label>
+    <length>10</length>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
