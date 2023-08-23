@@ -1,42 +1,45 @@
 ## Descripción
 
-(Resume de forma concisa el bug/feature)
+_(Resume de forma concisa el bug/feature)_
 
-## Pasos para reproducir el error
-
-(En caso de bug)
-
-## Comportamiento del bug
-
-(Qué es lo que pasa técnicamente)
-
-## Comportamiento esperado
-
-(Que es lo que debería pasar)
-
-## Logs o capturas de pantalla relevantes
-
-(Añadir cualquier log o captura relevante, para añadir logs utiliza bloques de código (```) para formatear la salida de la consola)
+> ####  Pasos para reproducir el error
+>
+> _(Solo rellenar en caso de bug, borrar esta sección si no es necesaria)_
+>
+> #### Comportamiento del bug
+>
+> _(Qué es lo que pasa técnicamente)_
+>
+> #### Comportamiento esperado
+>
+> _(Que es lo que debería pasar)_
+>
+> #### Logs o capturas de pantalla relevantes
+>
+> _(Añadir cualquier log o captura relevante, para añadir logs utiliza bloques de código (\`\`\`) para formatear la salida de la consola)_
 
 ## Solución
 
-(Análisis de la solución)
+_(Análisis de la solución)_
 
 ## Enlaces de interés
 
-(Enlace a jira, documentación de confluence y otras aplicaciones que apliquen)
+_(Enlace a jira, documentación de confluence y otras aplicaciones que apliquen)_
 
 ## Validación
 
-(Captura de pantalla de la validación contra Staging)
+_(Captura de pantalla de la validación contra staging)_
 
 ## Reconocimiento
 
-- [ ] He validado y testeado la solución
-- [ ] He añadido evidencias de testing en la US
-- [ ] He añadido la documentación técnica en Confluence
-- [ ] He enlazado la documentación en su US
-- [ ] No hay conflictos con la rama destino
+* [ ] He seguido las naming conventions en commits y merge request
+* [ ] He validado y testeado la solución
+* [ ] He añadido evidencias de testing en la US
+* [ ] He añadido la documentación técnica en Confluence
+* [ ] He enlazado la documentación en su US
+* [ ] No hay conflictos con la rama destino
+
+_Eliminar labels que no apliquen a continuación, debe quedar una en cada línea_
 
 /label ~Bug ~Feature
 /label ~OCS ~SDM ~USP ~ZRM ~ZE ~KLINC ~CROSS
