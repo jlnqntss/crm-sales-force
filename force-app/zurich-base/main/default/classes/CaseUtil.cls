@@ -270,7 +270,6 @@ public with sharing class CaseUtil
      */
     public static void assignAccountAndContactFromDniSuppliedEmailAndPhone (List<Case> newList)
     {
-        Integer numAccount;
         List<String> nationalIds = new List<String>();
         List<String> emails = new List<String>();
         List<String> phones = new List<String>();
@@ -281,9 +280,19 @@ public with sharing class CaseUtil
 
         for (Case newCase : newList)
         {
-            nationalIds.add(newCase.RobotNif__c);
-            emails.add(newCase.SuppliedEmail);
-            phones.add(newCase.SuppliedPhone);
+            if (newCase.RobotNif__c != null)
+            {
+                nationalIds.add(newCase.RobotNif__c);
+            }
+
+            if (newCase.SuppliedEmail != null)
+            {
+                emails.add(newCase.SuppliedEmail);
+            }
+            if (newCase.SuppliedPhone != null)
+            {
+                phones.add(newCase.SuppliedPhone);
+            }
         }
 
         mapAccountsByNatinalId = getMapOfAccountRelatedByNatinalId (nationalIds);
@@ -292,30 +301,7 @@ public with sharing class CaseUtil
         
         for (Case caseToUpdate : newList)
         {
-            numAccount = numAccountsByNationalId (caseToUpdate, mapAccountsByNatinalId );
-            if ( numAccount == 1 )
-            {
-                caseToUpdate.AccountId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].Id;
-                caseToUpdate.ContactId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].PersonContactId;
-            }
-            else if (numAccount == 0)
-            {
-                numAccount = numAccountsByEmail (caseToUpdate, mapAccountsByEmails);
-                if (numAccount == 1)
-                {
-                    caseToUpdate.AccountId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].Id;
-                    caseToUpdate.ContactId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].PersonContactId;
-                }
-                else if (numAccount == 0)
-                {
-                    numAccount = numAccountsByPhone (caseToUpdate, mapAccountsByPhones);
-                    if ( numAccount == 1)
-                    {
-                        caseToUpdate.AccountId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].Id;
-                        caseToUpdate.ContactId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].PersonContactId;
-                    }
-                }
-            }
+            caseToUpdate = getAccountAndContactToAssign (caseToUpdate, mapAccountsByNatinalId, mapAccountsByEmails, mapAccountsByPhones);
         }   
     }
 
@@ -1127,7 +1113,12 @@ public with sharing class CaseUtil
     {
         Map<Id,List<String>> mapIdAccountByEmails = new Map <Id, List<String>> ();
         Map<String,List<Account>> mapAccountsByEmails = new Map<String,List<Account>> ();
-        List<ContactPointEmail> contactPointsEmail = [FIND :String.join(emails, ' OR ') IN EMAIL FIELDS RETURNING ContactPointEmail(Id, ParentId,EmailAddress )][0];
+        List<ContactPointEmail> contactPointsEmail = new List<ContactPointEmail> ();
+
+        if ( !emails.isEmpty() && emails != null)
+        {
+            contactPointsEmail = [FIND :String.join(emails, ' OR ') IN EMAIL FIELDS RETURNING ContactPointEmail(Id, ParentId,EmailAddress )][0];
+        }
 
         for (ContactPointEmail contactPointEmail :contactPointsEmail)
         {
@@ -1176,8 +1167,13 @@ public with sharing class CaseUtil
     {
         Map<Id,List<String>> mapIdAccountByPhones = new Map <Id, List<String>> ();
         Map<String,List<Account>> mapAccountsByPhones = new Map<String,List<Account>> ();
-        List<ContactPointPhone> contactPointsPhone = [FIND :String.join(phones, ' OR ') IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, TelephoneNumber)][0];
-       
+        List<ContactPointPhone> contactPointsPhone = new List<ContactPointPhone> ();
+        
+        if ( !phones.isEmpty() && phones != null)
+        {
+            contactPointsPhone = [FIND :String.join(phones, ' OR ') IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, TelephoneNumber)][0];
+        }
+
         for (ContactPointPhone contactPointPhone :contactPointsPhone)
         {
             List<String> accountIdListByPhones = mapIdAccountByPhones.get(contactPointPhone.ParentId);
@@ -1265,6 +1261,48 @@ public with sharing class CaseUtil
             numAccounts = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone).size();
         } 
         return numAccounts;
+    }
+
+    /**
+     * Método que asigna una cuenta y contacto a un caso en caso de que haya una unica cuenta a asignar por dni,email y teléfono. 
+     **
+     * @author aberuete
+     * @date 23/08/2023
+     * @param Case caseToUpdate : caso
+     * @param Map<String,List<Account>> mapAccountsByNatinalId : Mapa de lista de cuentas por dni
+     * @param Map<String,List<Account>> mapAccountsByEmails : Mapa de lista de cuentas por email
+     * @param Map<String,List<Account>> mapAccountsByPhones : Mapa de lista de cuentas por teléfono
+     */
+    private static Case getAccountAndContactToAssign (Case caseToUpdate, Map<String,List<Account>> mapAccountsByNatinalId, Map<String,List<Account>> mapAccountsByEmails, Map<String,List<Account>> mapAccountsByPhones)
+    {
+        Integer numAccount = numAccountsByNationalId (caseToUpdate, mapAccountsByNatinalId );
+
+        if ( numAccount == 1 )
+        {
+            caseToUpdate.AccountId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].Id;
+            caseToUpdate.ContactId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].PersonContactId;
+        }
+        else if (numAccount == 0)
+        {
+            numAccount = numAccountsByEmail (caseToUpdate, mapAccountsByEmails);
+
+            if (numAccount == 1)
+            {
+                caseToUpdate.AccountId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].Id;
+                caseToUpdate.ContactId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].PersonContactId;
+            }
+            else if (numAccount == 0)
+            {
+                numAccount = numAccountsByPhone (caseToUpdate, mapAccountsByPhones);
+
+                if ( numAccount == 1)
+                {
+                    caseToUpdate.AccountId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].Id;
+                    caseToUpdate.ContactId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].PersonContactId;
+                }
+            }
+        }
+        return caseToUpdate;
     }
 
 }
