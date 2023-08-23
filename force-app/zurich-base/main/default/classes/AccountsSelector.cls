@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 18/08/2023
+ * @last modified on  : 23/08/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -896,6 +896,10 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @description Selector para conseguir las cuentas que tenga el código intermediario en el campo INFOIntermediaryCode__c
      * @author      jgallaga
      * @date        16/08/2023
+     * *
+     * @modification
+     *              El query selector parece no ser capaz de recoger un campo del Parent, por lo que la query original no
+     *              funciona. Se pone directamente la query para poder recuperar la información necesaria.
      */
     public List<Account> findByINFOIntermediaryCode(List<String> intermediaryCodes)
     {
@@ -906,9 +910,26 @@ public with sharing class AccountsSelector extends RecordsSelector
             return intermediaryAccounts;
         }
 
-        this.baseQuery.addConditionIn(Account.INFOIntermediaryCode__c, intermediaryCodes);
+        this.baseQuery.selectFields(new List<Schema.SObjectField>{
+            Account.INFOIntermediaryCode__c,
+            Account.Parent.IntermediaryWithUser__c,
+            Account.ParentId
+        });
 
-        return (List<Account>) this.baseQuery.run();
+        this.baseQuery.addConditionIn(Account.INFOIntermediaryCode__c, intermediaryCodes);
+        this.baseQuery.addConditionNotEq(Account.Parent.IntermediaryWithUser__c, null);
+        this.baseQuery.addConditionEq(Account.IsPartner, false);
+
+        //return (List<Account>) this.baseQuery.run();
+
+        return
+        [
+            SELECT  INFOIntermediaryCode__c, ParentId, Parent.IntermediaryWithUser__c
+            FROM    Account
+            WHERE   INFOIntermediaryCode__c IN :intermediaryCodes
+            AND     IsPartner = false
+            AND     Parent.IntermediaryWithUser__c != null
+        ];
     }
 
 }

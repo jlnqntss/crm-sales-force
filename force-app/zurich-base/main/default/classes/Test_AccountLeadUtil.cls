@@ -2,16 +2,43 @@
  * @description       : Test funcionales de la asignación de Leads a Agentes.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 16/08/2023
+ * @last modified on  : 23/08/2023
  * @last modified by  : jgallaga
 **/
 @isTest
 public with sharing class Test_AccountLeadUtil
 {
+    private static String DEFAULT_ADMIN_ALIAS // Añadir el alias de cada user admin para cada entorno si fuera necesario
+    {
+        get
+        {
+            if(String.isBlank(DEFAULT_ADMIN_ALIAS))
+            {
+                if(SystemUtil.getSandboxName() == 'qa')
+                {
+                    DEFAULT_ADMIN_ALIAS = 'ntsadmin';
+                }
+                else
+                {
+                    DEFAULT_ADMIN_ALIAS = 'adminkli';
+                }
+            }
+            return DEFAULT_ADMIN_ALIAS;
+        }
+        set;
+    }
+
     @TestSetup
     static void makeData()
     {
         createCommnunityUsers(); // Crea usuarios de comunidad con su cuenta y contact correspondiente
+
+        // Crear Custom Setting para default user
+        Cross_Selling__c setting = new Cross_Selling__c();
+        setting.Name = 'Test Setting';
+        setting.ContactCenterUser__c = '-';
+        setting.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
+        insert setting;
     }
 
     /**
@@ -90,18 +117,42 @@ public with sharing class Test_AccountLeadUtil
     {
         Map<String ,Account> agentAccounts = new Map<String, Account>();
         RecordType agentAccountRecordType = [SELECT Id FROM RecordType WHERE Name = 'Parent Account' AND SobjectType = 'Account'];
-
+        RecordType intermediaryAccountRecordType = [SELECT Id FROM RecordType WHERE Name = 'Intermediary' AND SobjectType = 'Account'];
 
         for(String currentCommunityName : communityUserNames)
         {
             agentAccounts.put(currentCommunityName, new Account(
-                Name = currentCommunityName,
-                RecordTypeId = agentAccountRecordType.Id,
-                INFOIntermediaryCode__c = currentCommunityName
+                Name = currentCommunityName + 'a',
+                RecordTypeId = agentAccountRecordType.Id
             ));
         }
 
         insert agentAccounts.values();
+
+        Map<String,Account> parentAccounts = new Map<String,Account>();
+        for(String currentCommunityName : communityUserNames)
+        {
+            parentAccounts.put(currentCommunityName,new Account(
+                Name = currentCommunityName + 'p',
+                RecordTypeId = intermediaryAccountRecordType.Id,
+                IntermediaryWithUser__c = agentACcounts.get(currentCommunityName).Id
+            ));
+        }
+
+        insert parentAccounts.values();
+
+        Map<String,Account> intermediaryAccounts = new Map<String,Account>();
+        for(String currentCommunityName : communityUserNames)
+        {
+            intermediaryAccounts.put(currentCommunityName,new Account(
+                Name = currentCommunityName + 'i',
+                RecordTypeId = intermediaryAccountRecordType.Id,
+                INFOIntermediaryCode__c = currentCommunityName,
+                ParentId = parentAccounts.get(currentCommunityName).Id
+            ));
+        }
+
+        insert intermediaryAccounts.values();
 
         return agentAccounts;
     }
@@ -209,10 +260,10 @@ public with sharing class Test_AccountLeadUtil
         String contactCenter = 'CONTACT_CENTER';
 
         Test.startTest();
-        String result = AccountLeadUtil.leadAssignment(null, contactCenter, null, null, null);
+        Map<String,Account> result = AccountLeadUtil.leadAssignment(null, contactCenter, null, null, null);
         Test.stopTest();
 
-        Assert.areEqual(contactCenter, result, 'No se ha devuelto el valor de contact center');
+        Assert.areEqual(contactCenter, new List<String>(result.keySet()).get(0), 'No se ha devuelto el valor de contact center');
     }
 
     /**
@@ -230,10 +281,14 @@ public with sharing class Test_AccountLeadUtil
 
         Test.startTest();
         // Indicando el código de intermeadiario, el resto de parametros no se tienen en cuenta
-        String assignedId = AccountLeadUtil.leadAssignment(new Account(), 'IDIOMA-ES', 'origen', 'idioma', 'código postal');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(new Account(), 'IDIOMA-ES', 'origen', 'idioma', 'código postal');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, assignedId, 'No es el intermediario correcto');
+        Assert.areEqual(intermediary.Id, new List<String>(assignee.keySet()).get(0), 'No es el intermediario correcto');
+
+        Account intermediaryAccount = assignee.get(intermediary.Id);
+        Assert.isNotNull(intermediaryAccount, 'No se ha recuperado la cuenta del intermediario');
+        Assert.isNotNull(intermediaryAccount.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
     }
 
     /**
@@ -250,10 +305,10 @@ public with sharing class Test_AccountLeadUtil
         String defaultUserId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, 'MadeUp Intermediary Code', null, null, null);
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, 'MadeUp Intermediary Code', null, null, null);
         Test.stopTest();
 
-        Assert.areEqual(defaultUserId, assignedId, 'Se debería haber asignado el intermediario por defecto');
+        Assert.areEqual(defaultUserId, new List<String>(assignee.keySet()).get(0), 'Se debería haber asignado el intermediario por defecto');
     }
 
     /*** ASSIGNMENT BY ACCOUNT ***/
@@ -275,10 +330,14 @@ public with sharing class Test_AccountLeadUtil
         testAccount = [SELECT Intermediary_Name__r.INFOIntermediaryCode__c FROM Account Where Id = :testAccount.Id];
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(testAccount, null, 'origin', 'language', 'postalCode');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(testAccount, null, 'origin', 'language', 'postalCode');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, assignedId, 'No se ha asignado el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>(assignee.keySet()).get(0), 'No se ha asignado el intermediario esperado');
+
+        Account intermediaryAccountAsignee = assignee.get(intermediary.Id);
+        Assert.isNotNull(intermediaryAccountAsignee, 'No se ha recuperado la cuenta del intermediario');
+        Assert.isNotNull(intermediaryAccountAsignee.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
     }
 
     /**
@@ -294,10 +353,10 @@ public with sharing class Test_AccountLeadUtil
         Account testAccount = new Account(Name = 'TestAccount');
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(testAccount, null, 'origin', 'language', 'postalCode');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(testAccount, null, 'origin', 'language', 'postalCode');
         Test.stopTest();
 
-        Assert.areEqual(defaultUserId, assignedId, 'No se ha asignado el intermediario esperado');
+        Assert.areEqual(defaultUserId, new List<String>(assignee.keySet()).get(0), 'No se ha asignado el usuario por defecto');
     }
 
     /**
@@ -318,10 +377,10 @@ public with sharing class Test_AccountLeadUtil
         testAccount = [SELECT Intermediary_Name__r.INFOIntermediaryCode__c FROM Account Where Id = :testAccount.Id];
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(testAccount, null, 'origin','language', 'postalcode');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(testAccount, null, 'origin','language', 'postalcode');
         Test.stopTest();
 
-        Assert.areEqual(defaultUserId, assignedId, 'No se ha asignado el usuario por defecto');
+        Assert.areEqual(defaultUserId, new List<String>(assignee.keySet()).get(0), 'No se ha asignado el usuario por defecto');
     }
 
     /*** ASSIGNMENT BY LANGUAGE ***/
@@ -347,10 +406,14 @@ public with sharing class Test_AccountLeadUtil
         String frenchAgenteId = [SELECT Id FROM User WHERE Lastname = 'IDIOMA-FR'].Id;
 
         Test.startTest();
-        String resultAssignmentUserId = AccountLeadUtil.leadAssignment(null, null, 'formulario test', 'FR', '99999');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario test', 'FR', '99999');
         Test.stopTest();
 
-        Assert.areEqual(frenchAgenteId, resultAssignmentUserId, 'El usuario asignado para el lenguaje frances no es correcto.');
+        Assert.areEqual(frenchAgenteId, new List<String>(assignee.keySet()).get(0), 'El usuario asignado para el lenguaje frances no es correcto.');
+
+        Account intermediaryAccount = assignee.get(frenchAgenteId);
+        Assert.isNotNull(intermediaryAccount, 'No se ha recuperado la cuenta del intermediario');
+        Assert.isNotNull(intermediaryAccount.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
     }
 
     /**
@@ -374,10 +437,10 @@ public with sharing class Test_AccountLeadUtil
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String resultAssignmentUserId = AccountLeadUtil.leadAssignment(null,null,null,'QQ',null);
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null,null,null,'QQ',null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, resultAssignmentUserId, 'El usuario asignado para el lenguaje que no tiene configuración definida no es correcto.');
+        Assert.areEqual(defaultAgenteId, new List<String>(assignee.keySet()).get(0), 'El usuario asignado para el lenguaje que no tiene configuración definida no es correcto.');
     }
 
     /*** ASSIGNMENT BY ASSIGNMENT TYPE */
@@ -390,17 +453,21 @@ public with sharing class Test_AccountLeadUtil
      * @date        14/08/2023
      */
     @isTest
-    static void test_AssigmentDirectly_OK()
+    static void test_AssignmentDirectly_OK()
     {
         setMetadataConfigurations();
 
         User intermediary = [SELECT ID FROM User WHERE LastName = 'IDIOMA-ES'];
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, null, 'formulario accidentes','ES', null);
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario accidentes','ES', null);
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, assignedId, 'No se ha asignado directamente al intermadiario esperado.');
+        Assert.areEqual(intermediary.Id, new List<String>(assignee.keySet()).get(0), 'No se ha asignado directamente al intermadiario esperado.');
+
+        Account intermediaryAccount = assignee.get(intermediary.Id);
+        Assert.isNotNull(intermediaryAccount, 'No se ha recuperado la cuenta del intermediario');
+        Assert.isNotNull(intermediaryAccount.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
     }
 
     /**
@@ -425,10 +492,10 @@ public with sharing class Test_AccountLeadUtil
         ));
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, null, 'formulario inventado', 'ES', null);
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario inventado', 'ES', null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, assignedId, 'No se ha asignado el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(assignee.keySet()).get(0), 'No se ha asignado el usuario por defecto');
     }
 
     /**
@@ -453,10 +520,14 @@ public with sharing class Test_AccountLeadUtil
         ));
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, null, 'formulario inventado', 'ES', '02458');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario inventado', 'ES', '02458');
         Test.stopTest();
 
-        Assert.areEqual(intermediaryFrance.Id, assignedId, 'No se ha asignado el usuario por defecto');
+        Assert.areEqual(intermediaryFrance.Id, new List<String>(assignee.keySet()).get(0), 'No se ha asignado el usuario por defecto');
+
+        Account intermediaryAccount = assignee.get(intermediaryFrance.Id);
+        Assert.isNotNull(intermediaryAccount, 'No se ha recuperado la cuenta del intermediario');
+        Assert.isNotNull(intermediaryAccount.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
     }
 
     /**
@@ -481,10 +552,10 @@ public with sharing class Test_AccountLeadUtil
         ));
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, null, 'formulario inventado', 'ES', null);
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario inventado', 'ES', null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, assignedId, 'No se ha asignado el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(assignee.keySet()).get(0), 'No se ha asignado el usuario por defecto');
     }
 
     /**
@@ -502,10 +573,14 @@ public with sharing class Test_AccountLeadUtil
 
         //formulario_automonos - 2
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, null, 'formulario automonos', 'ES', '02340');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario automonos', 'ES', '02340');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, assignedId, 'No se ha asignado al intermediario de la provincia correctamente.');
+        Assert.areEqual(intermediary.Id, new List<String>(assignee.keySet()).get(0), 'No se ha asignado al intermediario de la provincia correctamente.');
+
+        Account intermediaryAccount = assignee.get(intermediary.Id);
+        Assert.isNotNull(intermediaryAccount, 'No se ha recuperado la cuenta del intermediario');
+        Assert.isNotNull(intermediaryAccount.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
     }
 
     /**
@@ -522,10 +597,10 @@ public with sharing class Test_AccountLeadUtil
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, null, 'formulario automonos', 'ES', '41555');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario automonos', 'ES', '41555');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, assignedId, 'Se debería haber asignado al usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(assignee.keySet()).get(0), 'Se debería haber asignado al usuario por defecto');
     }
 
     /**
@@ -546,10 +621,10 @@ public with sharing class Test_AccountLeadUtil
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, null, 'formulario pymes', 'ES', '48522');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario pymes', 'ES', '48522');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, assignedId, 'No se ha asignado el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(assignee.keySet()).get(0), 'No se ha asignado el usuario por defecto');
     }
 
 
@@ -567,10 +642,14 @@ public with sharing class Test_AccountLeadUtil
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, null, 'formulario embarcaciones', 'ES', '25000');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario embarcaciones', 'ES', '25000');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, assignedId, 'No se ha asignado al intermediario correcto para este municipio.');
+        Assert.areEqual(intermediary.Id, new List<String>(assignee.keySet()).get(0), 'No se ha asignado al intermediario correcto para este municipio.');
+
+        Account intermediaryAccount = assignee.get(intermediary.Id);
+        Assert.isNotNull(intermediaryAccount, 'No se ha recuperado la cuenta del intermediario');
+        Assert.isNotNull(intermediaryAccount.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
     }
 
     /**
@@ -587,9 +666,9 @@ public with sharing class Test_AccountLeadUtil
         String defaultAgentId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String assignedId = AccountLeadUtil.leadAssignment(null, null,'formulario salud','ES','12458');
+        Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null,'formulario salud','ES','12458');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgentId, assignedId, 'No se ha asignado al usuario por defecto.');
+        Assert.areEqual(defaultAgentId, new List<String>(assignee.keySet()).get(0), 'No se ha asignado al usuario por defecto.');
     }
 }

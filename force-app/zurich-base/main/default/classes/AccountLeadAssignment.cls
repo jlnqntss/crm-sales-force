@@ -3,11 +3,33 @@
  *                      de las cuentas de tipo Lead que llegan a Salesforce.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 16/08/2023
+ * @last modified on  : 22/08/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class AccountLeadAssignment
 {
+
+    public class Assignment
+    {
+        String assignee;
+        Account relatedTo;
+
+        public Assignment(String assigneeValue)
+        {
+            assignee = assigneeValue;
+        }
+
+        public Assignment setRelatedAccount(Account record)
+        {
+            relatedTo = record;
+            return this;
+        }
+
+        public Map<String, Account> getAssignmentAsMap()
+        {
+            return new Map<String,Account> { assignee => relatedTo};
+        }
+    }
 
     private static final String CONTACT_CENTER = 'CONTACT_CENTER';
     @TestVisible private static final String DEFAULT_ASSIGNEMENT_TYPE = 'Province';
@@ -83,18 +105,18 @@ public with sharing class AccountLeadAssignment
      * @author      jgallaga
      * @date        11/08/2023
      */
-    private static Id defaultUserId
+    private static Assignment defaultUser
     {
         get
         {
-            if(String.isNotBlank(defaultUserId))
+            if(defaultUser != null)
             {
-                return defaultUserId;
+                return defaultUser;
             }
 
-            defaultUserId = getDefaultZRMAccountLeadOwnerId();
+            defaultUser = new Assignment(getDefaultZRMAccountLeadOwnerId());
 
-            return defaultUserId;
+            return defaultUser;
         }
         set;
     }
@@ -112,11 +134,11 @@ public with sharing class AccountLeadAssignment
      * @return      String
      *              Id de usuario o 'CONTACT_CENTER'
      */
-    public static String getAssignedUserIdByIntermediaryCode(String intermediaryCode)
+    public static Assignment getAssignedUserIdByIntermediaryCode(String intermediaryCode)
     {
         if(String.isNotBlank(intermediaryCode) && intermediaryCode == CONTACT_CENTER)
         {
-            return CONTACT_CENTER;
+            return new Assignment(CONTACT_CENTER);
         }
 
         return getIntermediaryUserId(intermediaryCode);
@@ -135,7 +157,7 @@ public with sharing class AccountLeadAssignment
      * @return      String
      *              Id de usuario.
      */
-    public static String getAssignedUserIdByLanguage(String language)
+    public static Assignment getAssignedUserIdByLanguage(String language)
     {
         for(LanguageAssignment__mdt currentLanguageAssignment : languageAssignmentMetadata)
         {
@@ -145,7 +167,7 @@ public with sharing class AccountLeadAssignment
             }
         }
 
-        return defaultUserId;
+        return defaultUser;
     }
 
     /**
@@ -162,9 +184,9 @@ public with sharing class AccountLeadAssignment
      * @return      String
      *              Id de Usuario
      */
-    public static String getAssignedUserIdByAssignmentType(String origin, String postalCode)
+    public static Assignment getAssignedUserIdByAssignmentType(String origin, String postalCode)
     {
-        String assignedUser;
+        Assignment assignedUser;
         String assignmentType = getAssigmentType(origin);
 
         switch on assignmentType
@@ -183,7 +205,7 @@ public with sharing class AccountLeadAssignment
             }
             when else
             {
-                assignedUser = defaultUserId;
+                assignedUser = defaultUser;
             }
         }
 
@@ -203,11 +225,11 @@ public with sharing class AccountLeadAssignment
      *              Id de usuario.
      */
     @TestVisible
-    private static String assignedUserDirectly(String origin)
+    private static Assignment assignedUserDirectly(String origin)
     {
         if(String.isBlank(origin))
         {
-            return defaultUserId;
+            return defaultUser;
         }
 
         for(ForumOriginAssignment__mdt currentFOA : forumOriginAssignmentMetadata)
@@ -218,7 +240,7 @@ public with sharing class AccountLeadAssignment
             }
         }
 
-        return defaultUserId;
+        return defaultUser;
     }
 
     /**
@@ -234,11 +256,11 @@ public with sharing class AccountLeadAssignment
      *              Id de usuario.
      */
     @TestVisible
-    private static String assignedUserByMunicipality(String postalCode)
+    private static Assignment assignedUserByMunicipality(String postalCode)
     {
         if(String.isBlank(postalCode))
         {
-            return defaultUserId;
+            return defaultUser;
         }
 
         for(MunicipalityAssignment__mdt currentMA : municipalityAssignmentMetadata)
@@ -249,7 +271,7 @@ public with sharing class AccountLeadAssignment
             }
         }
 
-        return defaultUserId;
+        return defaultUser;
     }
 
     /**
@@ -267,11 +289,11 @@ public with sharing class AccountLeadAssignment
      *              Id de usuario.
      */
     @TestVisible
-    private static String assignedUserByProvince(String postalCode)
+    private static Assignment assignedUserByProvince(String postalCode)
     {
         if(String.isBlank(postalCode))
         {
-            return defaultUserId;
+            return defaultUser;
         }
 
         Integer postalProvince = Integer.valueOf(postalCode.substring(0, 2));
@@ -284,7 +306,7 @@ public with sharing class AccountLeadAssignment
             }
         }
 
-        return defaultUserId;
+        return defaultUser;
     }
 
     /**
@@ -336,37 +358,15 @@ public with sharing class AccountLeadAssignment
     @TestVisible
     private static String getDefaultZRMAccountLeadOwnerId()
     {
-        String defaultUserName;
+        // Se recupera el alias? del usuario por defecto de un custom setting
+        String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 
-        switch on SystemUtil.getSandboxName()
-        {
-            when null // Producción
-            {
-                NTSUser__mdt defaultUserDescription = NTSUser__mdt.getinstance('EntornoPro');
-                defaultUserName = defaultUserDescription.Username__c;
-            }
-            when 'qa'
-            {
-                NTSUser__mdt defaultUserDescription = NTSUser__mdt.getinstance('EntornoQA');
-                defaultUserName = defaultUserDescription.Username__c;
-            }
-            when 'staging'
-            {
-                NTSUser__mdt defaultUserDescription = NTSUser__mdt.getinstance('EntornoStaging');
-                defaultUserName = defaultUserDescription.Username__c;
-            }
-            when else // Resto de entornos
-            {
-                NTSUser__mdt defaultUserDescription = NTSUser__mdt.getInstance('EntornoDev');
-                // Cambiar coletilla de usuario por la sandbox en la que se esté.
-                defaultUserName = SystemUtil.switchDevUserName(defaultUserDescription.Username__c);
-            }
-        }
+        System.debug('Alias entonctado en Custom setting '+ aliasDefaultUser);
 
-        if(String.isNotBlank(defaultUserName))
+        if(String.isNotBlank(aliasDefaultUser))
         {
             UsersSelector userQuery = new UsersSelector();
-            List<User> defaultUser = userQuery.finUsersByUserName(new List<String>{defaultUserName});
+            List<User> defaultUser = userQuery.findUsersByAlias(new List<String>{aliasDefaultUser});
 
             if(! defaultUser.isEmpty())
             {
@@ -375,6 +375,7 @@ public with sharing class AccountLeadAssignment
         }
 
         throw new QueryException('No default User found for Lead Account assignments.');
+
     }
 
     /**
@@ -391,11 +392,12 @@ public with sharing class AccountLeadAssignment
      *              Id de usuario.
      */
     @TestVisible
-    private static String getIntermediaryUserId(String intermediaryCode)
+    private static Assignment getIntermediaryUserId(String intermediaryCode)
     {
+
         if(String.isBlank(intermediaryCode))
         {
-            return defaultUserId;
+            return defaultUser;
         }
 
         AccountsSelector accountQuery = new AccountsSelector();
@@ -403,17 +405,17 @@ public with sharing class AccountLeadAssignment
 
         if(intermediaryAccount.isEmpty())
         {
-            return defaultUserId;
+            return defaultUser;
         }
 
         UsersSelector userQuery = new UsersSelector();
-        List<User> intermediary = userQuery.findUsersByAccountId(new List<String>{intermediaryAccount.get(0).Id});
+        List<User> intermediary = userQuery.findUsersByAccountId(new List<String>{intermediaryAccount.get(0).Parent.IntermediaryWithUser__c});
 
         if(! intermediary.isEmpty())
         {
-            return intermediary.get(0).Id;
+            return new Assignment(intermediary.get(0).Id).setRelatedAccount(intermediaryAccount.get(0));
         }
 
-        return defaultUserId;
+        return defaultUser;
     }
 }

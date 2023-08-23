@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 18/08/2023
+ * @last modified on  : 22/08/2023
  * @last modified by  : jgallaga
 **/
 public class AccountLeadUtil
@@ -105,11 +105,11 @@ public class AccountLeadUtil
      *              Puede devolver el Id del Agente si se encuentra la configuración correcta.
      *              Si no puede que devuelva el Id del usuario por defecto o el valor 'CONTACT_CENTER'
      */
-    public static String leadAssignment(Account acc, String intermediaryCode, String origin, String language, String postalCode)
+    public static Map<String, Account> leadAssignment(Account acc, String intermediaryCode, String origin, String language, String postalCode)
     {
         if(String.isNotBlank(intermediaryCode))
         {
-            return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode);
+            return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
         }
 
         if(acc != null)
@@ -119,15 +119,15 @@ public class AccountLeadUtil
                 intermediaryCode = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
             }
 
-            return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode);
+            return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
         }
 
         if(String.isNotBlank(language) && language != 'ES')
         {
-            return AccountLeadAssignment.getAssignedUserIdByLanguage(language);
+            return AccountLeadAssignment.getAssignedUserIdByLanguage(language).getAssignmentAsMap();
         }
 
-        return AccountLeadAssignment.getAssignedUserIdByAssignmentType(origin, postalCode);
+        return AccountLeadAssignment.getAssignedUserIdByAssignmentType(origin, postalCode).getAssignmentAsMap();
     }
 
 }

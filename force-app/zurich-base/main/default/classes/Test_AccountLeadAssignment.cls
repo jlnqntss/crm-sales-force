@@ -2,16 +2,43 @@
  * @description       : Test para comprobar el funcionamiento unitario de los metodos de la clase Account Lead Assignment
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 16/08/2023
+ * @last modified on  : 23/08/2023
  * @last modified by  : jgallaga
 **/
 @isTest
 public with sharing class Test_AccountLeadAssignment
 {
+    private static String DEFAULT_ADMIN_ALIAS // Añadir el alias de cada user admin para cada entorno si fuera necesario
+    {
+        get
+        {
+            if(String.isBlank(DEFAULT_ADMIN_ALIAS))
+            {
+                if(SystemUtil.getSandboxName() == 'qa')
+                {
+                    DEFAULT_ADMIN_ALIAS = 'ntsadmin';
+                }
+                else
+                {
+                    DEFAULT_ADMIN_ALIAS = 'adminkli';
+                }
+            }
+            return DEFAULT_ADMIN_ALIAS;
+        }
+        set;
+    }
+
     @TestSetup
     static void makeData()
     {
         createCommnunityUsers(); // Crea usuarios de comunidad con su cuenta y contact correspondiente
+
+        // Crear Custom Setting para default user
+        Cross_Selling__c setting = new Cross_Selling__c();
+        setting.Name = 'Test Setting';
+        setting.ContactCenterUser__c = '-';
+        setting.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
+        insert setting;
     }
 
     /**
@@ -90,18 +117,44 @@ public with sharing class Test_AccountLeadAssignment
     {
         Map<String ,Account> agentAccounts = new Map<String, Account>();
         RecordType agentAccountRecordType = [SELECT Id FROM RecordType WHERE Name = 'Parent Account' AND SobjectType = 'Account'];
+        RecordType intermediaryAccountRecordType = [SELECT Id FROM RecordType WHERE Name = 'Intermediary' AND SobjectType = 'Account'];
 
 
         for(String currentCommunityName : communityUserNames)
         {
             agentAccounts.put(currentCommunityName, new Account(
-                Name = currentCommunityName,
-                RecordTypeId = agentAccountRecordType.Id,
-                INFOIntermediaryCode__c = currentCommunityName
+                Name = currentCommunityName + 'a',
+                RecordTypeId = agentAccountRecordType.Id
             ));
         }
 
         insert agentAccounts.values();
+
+        Map<String,Account> parentAccounts = new Map<String,Account>();
+        for(String currentCommunityName : communityUserNames)
+        {
+            parentAccounts.put(currentCommunityName,new Account(
+                Name = currentCommunityName + 'p',
+                RecordTypeId = intermediaryAccountRecordType.Id,
+                IntermediaryWithUser__c = agentACcounts.get(currentCommunityName).Id
+            ));
+        }
+
+        insert parentAccounts.values();
+
+        Map<String,Account> intermediaryAccounts = new Map<String,Account>();
+        for(String currentCommunityName : communityUserNames)
+        {
+            intermediaryAccounts.put(currentCommunityName,new Account(
+                Name = currentCommunityName + 'i',
+                RecordTypeId = intermediaryAccountRecordType.Id,
+                INFOIntermediaryCode__c = currentCommunityName,
+                ParentId = parentAccounts.get(currentCommunityName).Id
+            ));
+        }
+
+        insert intermediaryAccounts.values();
+
 
         return agentAccounts;
     }
@@ -215,10 +268,10 @@ public with sharing class Test_AccountLeadAssignment
         String contactCenter = 'CONTACT_CENTER';
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(contactCenter);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(contactCenter);
         Test.stopTest();
 
-        Assert.areEqual(contactCenter, result, 'Para el valor de CONTACT CENTER, no ha devuelto CONTACT_CENTER');
+        Assert.areEqual(contactCenter, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'Para el valor de CONTACT CENTER, no ha devuelto CONTACT_CENTER');
     }
 
     /**
@@ -234,10 +287,10 @@ public with sharing class Test_AccountLeadAssignment
         User intermediary = [SELECT Id FROM User WHERE LastName = :intermediaryCode];
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode);
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, result, 'No es el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No es el intermediario esperado');
     }
 
     /**
@@ -252,10 +305,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(null);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No ha duelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha duelto el usuario por defecto');
     }
 
     /**
@@ -270,10 +323,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode('FAKE INTERMEDIARY');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode('FAKE INTERMEDIARY');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No ha duelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha duelto el usuario por defecto');
     }
 
     /**
@@ -290,10 +343,10 @@ public with sharing class Test_AccountLeadAssignment
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByLanguage('FR');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByLanguage('FR');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, result,'No es el intermediario para este idioma');
+        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No es el intermediario para este idioma');
     }
 
     /**
@@ -310,10 +363,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByLanguage(null);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByLanguage(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No ha devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el usuario por defecto');
     }
 
     /**
@@ -331,10 +384,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByLanguage('IT');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByLanguage('IT');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No ha devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el usuario por defecto');
     }
 
     /**
@@ -351,10 +404,10 @@ public with sharing class Test_AccountLeadAssignment
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByAssignmentType('formulario accidentes', null);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByAssignmentType('formulario accidentes', null);
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, result, 'No ha devuelto el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el intermediario esperado');
     }
 
     /**
@@ -371,10 +424,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByAssignmentType(null, null);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByAssignmentType(null, null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No ha devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el usuario por defecto');
     }
 
     /**
@@ -391,10 +444,10 @@ public with sharing class Test_AccountLeadAssignment
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByAssignmentType('formulario automonos', '02000');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByAssignmentType('formulario automonos', '02000');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, result, 'No ha devuelto el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el intermediario esperado');
     }
 
     /**
@@ -411,10 +464,10 @@ public with sharing class Test_AccountLeadAssignment
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
 
         Test.startTest();
-        String result = AccountLeadAssignment.getAssignedUserIdByAssignmentType('formulario embarcaciones', '25000');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByAssignmentType('formulario embarcaciones', '25000');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, result, 'No ha devuelto el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto el intermediario esperado');
     }
 
     /**
@@ -431,10 +484,10 @@ public with sharing class Test_AccountLeadAssignment
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserDirectly('formulario accidentes');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserDirectly('formulario accidentes');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, result, 'No se ha conseguido el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha conseguido el intermediario esperado');
     }
 
     /**
@@ -452,10 +505,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserDirectly('formulario desconocido');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserDirectly('formulario desconocido');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No se ha asignado al usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado al usuario por defecto');
     }
 
     /**
@@ -472,10 +525,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserDirectly(null);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserDirectly(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No se ha asignado al usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado al usuario por defecto');
     }
 
     /**
@@ -500,10 +553,10 @@ public with sharing class Test_AccountLeadAssignment
         );
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserDirectly('formulario asignacion');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserDirectly('formulario asignacion');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No ha devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto el usuario por defecto');
     }
 
     /**
@@ -521,10 +574,10 @@ public with sharing class Test_AccountLeadAssignment
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserByMunicipality('25000');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByMunicipality('25000');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, result, 'No se ha conseguido el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha conseguido el intermediario esperado');
     }
 
     /**
@@ -541,10 +594,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserByMunicipality(null);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByMunicipality(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'Tendría que haber devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'Tendría que haber devuelto el usuario por defecto');
     }
 
     /**
@@ -561,10 +614,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserByMunicipality('12639');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByMunicipality('12639');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'Tendría que haber devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'Tendría que haber devuelto el usuario por defecto');
     }
 
     /**
@@ -583,10 +636,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserByMunicipality('12639');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByMunicipality('12639');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'Tendría que haber devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'Tendría que haber devuelto el usuario por defecto');
     }
 
     /**
@@ -603,10 +656,10 @@ public with sharing class Test_AccountLeadAssignment
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserByProvince('02365');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByProvince('02365');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, result, 'No se ha asignado el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado el intermediario esperado');
     }
 
     /**
@@ -622,10 +675,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserByProvince(null);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByProvince(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No se ha asignado el intermediario esperado');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado el intermediario esperado');
     }
 
     /**
@@ -642,10 +695,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserByProvince('15000');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByProvince('15000');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No se ha asignado el intermediario esperado');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado el intermediario esperado');
     }
 
     /**
@@ -666,10 +719,10 @@ public with sharing class Test_AccountLeadAssignment
             DeveloperName = 'Albacete',PostalCode__c=17,Province__c='Albacete'));
 
         Test.startTest();
-        String result = AccountLeadAssignment.assignedUserByProvince('17845');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByProvince('17845');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No se ha asignado el intermediario esperado');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado el intermediario esperado');
     }
 
     /**
@@ -747,10 +800,10 @@ public with sharing class Test_AccountLeadAssignment
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
 
         Test.startTest();
-        String result = AccountLeadAssignment.getIntermediaryUserId('IDIOMA-FR');
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getIntermediaryUserId('IDIOMA-FR');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, result, 'No se ha encontrado al intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha encontrado al intermediario esperado');
     }
 
     /**
@@ -765,10 +818,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result = AccountLeadAssignment.getIntermediaryUserId(null);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getIntermediaryUserId(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No ha devuelto al usuario por defecto.');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto al usuario por defecto.');
     }
 
     /**
@@ -783,10 +836,10 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         Test.startTest();
-        String result =  AccountLeadAssignment.getIntermediaryUserId('IDIOMA-FALSE');
+        AccountLeadAssignment.Assignment result =  AccountLeadAssignment.getIntermediaryUserId('IDIOMA-FALSE');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No ha devuelto al usuario por defecto.');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto al usuario por defecto.');
     }
 
     /**
@@ -804,9 +857,9 @@ public with sharing class Test_AccountLeadAssignment
         Insert testAccount;
 
         Test.startTest();
-        String result =  AccountLeadAssignment.getIntermediaryUserId('IDIOMA-FALSE');
+        AccountLeadAssignment.Assignment result =  AccountLeadAssignment.getIntermediaryUserId('IDIOMA-FALSE');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, result, 'No ha devuelto al usuario por defecto.');
+        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto al usuario por defecto.');
     }
 }
