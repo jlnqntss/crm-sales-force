@@ -1094,7 +1094,7 @@ public with sharing class CaseUtil
      * Método que genera un mapa de lista de cuentas por dni. 
      **
      * @author aberuete
-     * @date 16/08/2023
+     * @date 22/08/2023
      * @param List<String> nationalIds : Lista de dnis
      */
     private static Map<String,List<Account>> getMapOfAccountRelatedByNatinalId (List<String> nationalIds)
@@ -1120,29 +1120,47 @@ public with sharing class CaseUtil
      * Método que genera un mapa de lista de cuentas por email. 
      **
      * @author aberuete
-     * @date 16/08/2023
+     * @date 22/08/2023
      * @param List<String> emails : Lista de emails
      */
     private static Map<String, List<Account>> getMapOfAccountRelatedByEmail (List<String> emails)
     {
+        Map<Id,List<String>> mapIdAccountByEmails = new Map <Id, List<String>> ();
         Map<String,List<Account>> mapAccountsByEmails = new Map<String,List<Account>> ();
-        List<Account> accountsByEmail = new AccountsSelector().findByEmailAdressRecordTypeNameAndType (emails, new List<String> {'Customer'}, new List<String>{'F','J'} );
+        List<ContactPointEmail> contactPointsEmail = [FIND :String.join(emails, ' OR ') IN EMAIL FIELDS RETURNING ContactPointEmail(Id, ParentId,EmailAddress )][0];
 
-        if (!accountsByEmail.isEmpty())
+        for (ContactPointEmail contactPointEmail :contactPointsEmail)
         {
-            for (Account accountbyEmail : accountsByEmail) 
+            List<String> accountIdListByEmails = mapIdAccountByEmails.get(contactPointEmail.ParentId);
+
+            if (accountIdListByEmails == null) 
             {
-                for (Integer i=0; i<accountbyEmail.ContactPointEmails.size(); i++)
+                accountIdListByEmails = new List<String>();
+                mapIdAccountByEmails.put(contactPointEmail.ParentId, accountIdListByEmails);
+            }
+            accountIdListByEmails.add(contactPointEmail.EmailAddress);
+        }
+
+        if (!mapIdAccountByEmails.isEmpty())
+        {
+            List<Account> accountsToRelate = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(mapIdAccountByEmails.keySet(), new List<String> {'Customer'}, new List<String>{'F','J'});
+            
+            for (Account accountToRelate : accountsToRelate)
+            {
+                List<String> emailsList = mapIdAccountByEmails.get(accountToRelate.id);
+                
+                for (String email : emailsList) 
                 {
-                    List<Account> accountListByEmails = mapAccountsByEmails.get(accountbyEmail.ContactPointEmails.get(i).EmailAddress);
+                    List<Account> accountListByEmails = mapAccountsByEmails.get(email);
+                    
                     if( accountListByEmails == null ) 
                     {
                         accountListByEmails = new List<Account>();
-                        mapAccountsByEmails.put(accountbyEmail.ContactPointEmails.get(i).EmailAddress, accountListByEmails);
+                        mapAccountsByEmails.put(email, accountListByEmails);
                     }
-                    accountListByEmails.add(accountbyEmail);  
-                }
-            }
+                    accountListByEmails.add(accountToRelate);  
+                } 
+            }  
         }
         return mapAccountsByEmails;
     }
@@ -1156,27 +1174,42 @@ public with sharing class CaseUtil
      */
     private static Map<String, List<Account>> getMapOfAccountRelatedByPhone (List<String> phones)
     {
+        Map<Id,List<String>> mapIdAccountByPhones = new Map <Id, List<String>> ();
         Map<String,List<Account>> mapAccountsByPhones = new Map<String,List<Account>> ();
-        List<Account> accountsByPhone =  new AccountsSelector().findByPhoneRecordTypeNameAndType (phones, new List<String> {'Customer'}, new List<String>{'F','J'});
-
-        if (!accountsByPhone.isEmpty())
+        List<ContactPointPhone> contactPointsPhone = [FIND :String.join(phones, ' OR ') IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, TelephoneNumber)][0];
+       
+        for (ContactPointPhone contactPointPhone :contactPointsPhone)
         {
-            for (Account accountByPhone : accountsByPhone) 
-            {
-                for (Integer i=0; i<accountByPhone.ContactPointPhones.size(); i++)
-                {
-                    List<Account> accountListByPhones = mapAccountsByPhones.get(accountByPhone.ContactPointPhones.get(i).TelephoneNumber);
+            List<String> accountIdListByPhones = mapIdAccountByPhones.get(contactPointPhone.ParentId);
 
+            if (accountIdListByPhones == null) 
+            {
+                accountIdListByPhones = new List<String>();
+                mapIdAccountByPhones.put(contactPointPhone.ParentId, accountIdListByPhones);
+            }
+            accountIdListByPhones.add(contactPointPhone.TelephoneNumber);
+        }
+        
+        if (!mapIdAccountByPhones.isEmpty())
+        {
+            List<Account> accountsToRelate = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(mapIdAccountByPhones.keySet(), new List<String> {'Customer'}, new List<String>{'F','J'});
+
+            for (Account accountToRelate : accountsToRelate)
+            {
+                List<String> phonesList = mapIdAccountByPhones.get(accountToRelate.id);
+                
+                for (String phone : phonesList) 
+                {
+                    List<Account> accountListByPhones = mapAccountsByPhones.get(phone);
                     if( accountListByPhones == null ) 
                     {
                         accountListByPhones = new List<Account>();
-                        mapAccountsByPhones.put(accountByPhone.ContactPointPhones.get(i).TelephoneNumber, accountListByPhones);
+                        mapAccountsByPhones.put(phone, accountListByPhones);
                     }
-                    accountListByPhones.add(accountByPhone);  
-                }
-            }
+                    accountListByPhones.add(accountToRelate);  
+                }    
+            } 
         }
-
         return mapAccountsByPhones;
     }
 
