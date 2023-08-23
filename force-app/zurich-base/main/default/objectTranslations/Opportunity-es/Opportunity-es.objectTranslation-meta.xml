@@ -63,4 +63,8 @@
             <section>Vínculos personalizados</section>
         </sections>
     </layouts>
+    <validationRules>
+        <errorMessage>[VR] Reasignación manual no permitida</errorMessage>
+        <name>RestrictOwnerChange</name>
+    </validationRules>
 </CustomObjectTranslation>

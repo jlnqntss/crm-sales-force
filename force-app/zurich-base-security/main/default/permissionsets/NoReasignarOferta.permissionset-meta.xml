@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>NoReasignarOferta</name>
+    </customPermissions>
+    <description>Permission Set que incluye el Custom Permission &apos;No Reasignar Oferta&apos; con la finalidad de bloquear la reasignación manual de ofertas por parte de un Agente CC o un Agente Mediador.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>No Reasignar Oferta</label>
+</PermissionSet>
