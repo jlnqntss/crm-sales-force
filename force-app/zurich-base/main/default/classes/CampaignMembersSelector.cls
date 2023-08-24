@@ -76,16 +76,16 @@ public with sharing class CampaignMembersSelector extends BaseSelector
      *
      * @author dmunoz
      * @date 11/08/2023
-     * @return          Listado de CampaignMembers
+     * @return          Listado de CampaignMembers 
      */
     public List<CampaignMember> findZRMPendingRevMediatorCampaignMembers()
     {
         List<CampaignMember> result = new List<CampaignMember>([SELECT ContactId, CampaignId, Campaign.ExternalId__c, LeadPhone__c
                                                                 FROM CampaignMember
                                                                 WHERE Campaign.Type = 'Cross Selling'
-                                                                                      AND Campaign.IsActive = true
-                                                                                                              AND Campaign.StartDate >= TODAY
-                                                                                                              AND Status = 'Pdte. Revisión Mediador']);
+                                                                AND Campaign.IsActive = true
+                                                                AND Campaign.StartDate >= TODAY
+                                                                AND Status = 'Pdte. Revisión Mediador']);
         return result;
     }
 
