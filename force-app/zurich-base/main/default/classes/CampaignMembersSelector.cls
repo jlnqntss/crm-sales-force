@@ -1,5 +1,9 @@
 public with sharing class CampaignMembersSelector extends BaseSelector
 {
+    //#region Atributos
+    private final static String BASE_SELECT = 'SELECT {0} FROM CampaignMember ';
+    //#endregion
+
     //#region Contructores
     public CampaignMembersSelector()
     {}
@@ -26,7 +30,7 @@ public with sharing class CampaignMembersSelector extends BaseSelector
         if(campaignId != null && contactIds != null)
         {
             String query = String.format(
-                'SELECT {0} FROM CampaignMember ' +
+                BASE_SELECT +
                 'WHERE campaignId = : campaignId AND ContactId IN : contactIds ',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -53,7 +57,7 @@ public with sharing class CampaignMembersSelector extends BaseSelector
         if( String.isNotBlank(status) )
         {
             String query = String.format(
-                'SELECT {0} FROM CampaignMember ' +
+                BASE_SELECT +
                 'WHERE Status = : status ',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -100,7 +104,7 @@ public with sharing class CampaignMembersSelector extends BaseSelector
             campaignMemberIds != null && !campaignMemberIds.IsEmpty() )
         {
             String query = String.format(
-                'SELECT {0} FROM CampaignMember ' +
+                BASE_SELECT +
                 'WHERE Campaign.Type IN : campaignTypes and Id IN : campaignMemberIds ',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
