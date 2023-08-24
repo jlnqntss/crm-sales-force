@@ -272,7 +272,8 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             'CampaignMember.Campaign.ProductBranch__c', 'CampaignMember.Campaign.BusinessCode__c'
         });
 
-        List<CampaignMember> cms = campaignMembersSelector.selectByCampaignTypeAndId(crossSellingCampaigns, campMemberIdSetFlow);
+        Map<Id, CampaignMember> cms = new Map<Id, CampaignMember>( campaignMembersSelector.selectByCampaignTypeAndId(crossSellingCampaigns, campMemberIdSetReceived) );
+        Set<Id> campMemberIdSetFlow = cms.keyset();
 
         Database.executeBatch( new Batch_CampaignMemberToOpportunity(campMemberIdSetFlow) );
     }
