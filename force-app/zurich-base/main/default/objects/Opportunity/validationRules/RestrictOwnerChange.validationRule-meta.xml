@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestrictOwnerChange</fullName>
+    <active>true</active>
+    <description>Regla de validación que bloquea la reasignación manual de ofertas por parte de un Agente CC o un Agente Mediador.</description>
+    <errorConditionFormula>AND
+( 
+    ISCHANGED(OwnerId),
+    $Permission.NoReasignarOferta 
+)</errorConditionFormula>
+    <errorDisplayField>OwnerId</errorDisplayField>
+    <errorMessage>[VR Offer] Manual reassignment not allowed</errorMessage>
+</ValidationRule>
