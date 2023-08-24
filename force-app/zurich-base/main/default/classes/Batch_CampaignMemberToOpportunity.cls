@@ -255,11 +255,11 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
                                          category='Campaign Member')
     public static void createOffers(List<String> campaignMembers)
     {
-        Set<Id> campMemberIdSetFlow = new Set<Id>();
+        Set<Id> campMemberIdSetReceived = new Set<Id>();
 
         for (String cmId : campaignMembers)
         {
-            campMemberIdSetFlow.add(cmId);
+            campMemberIdSetReceived.add(cmId);
         }
 
         List<String> crossSellingCampaigns = new List<String> {'Cross Selling', 'Venta Cruzada'};
