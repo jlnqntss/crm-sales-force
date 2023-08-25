@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 08-16-2023
+ * @last modified on  : 08-22-2023
  * @last modified by  : aberuete
 **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -734,106 +734,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             return new List<Account>();
         }
     }
-
-    /**
-    * Recupera las cuentas y los contactpointemails asociadas a ellas filtrando por tipo de cuenta, recordtype name y 
-    * que exista al menos un contactpointemail asociado para una lista de emails dada
-    * @author aberuete
-    * @date 16/08/2023
-    * @param List<String> emails : Lista de direcciones de correo 
-    * @param List<String> recordTypeNames : Lista de record type names
-    * @param List<String> typeNames : Lista de tipos de cuenta 
-    */
-    public List<Account> findByEmailAdressRecordTypeNameAndType (List<String> emails,List<String> recordTypeNames, List<String> typeNames )
-    {
-        Query subquery = new Query(ContactPointEmail.getSObjectType());
-        subquery.selectFields(new List<Schema.SObjectField> {
-            ContactPointEmail.ParentId
-            });
-        subquery.addConditionIn(ContactPointEmail.EmailAddress, emails);
-
-        this.baseQuery.selectFields 
-        (
-            new List<Schema.SObjectField> 
-            {
-                Account.Id,
-                Account.PersonContactId
-            }
-        );
-        
-        this.baseQuery.addSubquery(Query.subquery('ContactPointEmails').selectFields
-        (
-            new List<Schema.SObjectField> 
-            {
-                ContactPointEmail.EmailAddress
-            }
-        )
-        .addConditionIn(ContactPointEmail.EmailAddress,emails)
-        );
-        if ( recordTypeNames != null && !recordTypeNames.isEmpty())
-        {
-            this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
-        }
-
-        if ( typeNames != null && !typeNames.isEmpty())
-        {
-            this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
-        }
-
-        this.baseQuery.addConditionIn(Account.Id, subquery);
-        return (List<Account>)this.baseQuery.run();
-    }
-
-    /**
-    * Recupera las cuentas y los contactpointphones asociadas a ellas filtrando por tipo de cuenta, recordtype name y 
-    * que exista al menos un contactpointphone asociado para una lista de teléfonos dada
-    * @author aberuete
-    * @date 16/08/2023
-    * @param List<String> phones : Lista de teléfonos
-    * @param List<String> recordTypeNames : Lista de record type names
-    * @param List<String> typeNames : Lista de tipos de cuenta 
-    */
-    public List<Account> findByPhoneRecordTypeNameAndType (List<String> phones,List<String> recordTypeNames, List<String> typeNames )
-    {
-        Query subquery = new Query(ContactPointPhone.getSObjectType());
-        subquery.selectFields(new List<Schema.SObjectField> {
-            ContactPointPhone.ParentId
-            });
-        subquery.addConditionIn(ContactPointPhone.TelephoneNumber, phones);
-
-        this.baseQuery.selectFields 
-        (
-            new List<Schema.SObjectField> 
-            {
-                Account.Id,
-                Account.PersonContactId
-            }
-        );
-        
-        this.baseQuery.addSubquery(Query.subquery('ContactPointPhones').selectFields
-        (
-            new List<Schema.SObjectField> 
-            {
-                ContactPointPhone.TelephoneNumber
-            }
-        )
-        .addConditionIn(ContactPointPhone.TelephoneNumber,phones)
-        );
-        if ( recordTypeNames != null && !recordTypeNames.isEmpty())
-        {
-            this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
-        }
-
-        if ( typeNames != null && !typeNames.isEmpty())
-        {
-            this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
-        }
-
-        this.baseQuery.addConditionIn(Account.Id, subquery);
-        return (List<Account>)this.baseQuery.run();
-    }
-
-
+    
     /**
      * Método utilizado por el batch Batch_RatioConversionIntermediary para definir el scope
      * @author lrodriguez6@seidor.es
@@ -879,6 +780,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         return result;
 
     }
+
     /**
      * Método que obtiene los cuentas tipo Lead que no tengan ofertas asociadas para borrarlas
      **
@@ -890,5 +792,38 @@ public with sharing class AccountsSelector extends RecordsSelector
         String query =
             'SELECT Id from Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
         return query;
+    }
+
+    /**
+     * Método que obtiene las cuentas filtradas por un conjunto de ids de cuentas, recordtype name y tipo de cuenta
+     **
+     * @author aberuete
+     * @date 22/08/2023
+     * @param Set<Id> accountIds: Conjunto de ids de cuentas
+     * @param List<String> recordtypeNames : Lista de record type names
+     * @param List<String> typeNames : Lista de nombres de tipo de cuenta
+     **/
+    public List<Account> findByAccountIdsRecordTypeNameAndType (Set<Id> accountIds, List<String> recordtypeNames, List<String> typeNames)
+    {
+        this.baseQuery.selectFields 
+        (
+            new List<Schema.SObjectField> 
+            {
+                Account.Id,
+                Account.PersonContactId
+            }
+        );
+
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty() )
+        {
+            this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
+        }
+
+        if ( typeNames != null && !typeNames.isEmpty() )
+        {
+            this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
+        }
+
+        return (List<Account>) this.baseQuery.byId(accountIds).run();
     }
 }
