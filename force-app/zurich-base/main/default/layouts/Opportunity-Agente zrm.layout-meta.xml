@@ -91,7 +91,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Inforación producto</label>
+        <label>Información producto</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
