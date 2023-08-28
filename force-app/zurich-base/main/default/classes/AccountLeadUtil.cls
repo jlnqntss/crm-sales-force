@@ -5,11 +5,8 @@
 
 public class AccountLeadUtil
 {
-    public static final String VENTAS_USER = 'Ventas User';
-    public static final String AGENTE_VENTAS = 'Agente Ventas';
-    public static final String ERROR_MESSAGE = 'Ya existe una Cuenta con el mismo Documento de identidad o Teléfono';
     public static final String LEAD = 'Lead';
-
+    
     /**
      * Método que comprueba que se lance la validación sólo se lance desde los dos perfiles indicados
      * @author overes
@@ -17,7 +14,7 @@ public class AccountLeadUtil
      */
     public static void checkLeadDuplicates(List<Account> newList)
     {
-        if (ProfilesSelector.getLoggedUserProfile() == VENTAS_USER || ProfilesSelector.getLoggedUserProfile() == AGENTE_VENTAS)
+        if (ProfilesSelector.getLoggedUserProfile() == Label.Profile_Ventas_User || ProfilesSelector.getLoggedUserProfile() == Label.Profile_Agente_Ventas)
         {
             checkLeads(newList);
         }
@@ -32,12 +29,17 @@ public class AccountLeadUtil
         List<Account> accList = newList;
         for (Account acc : accList)
         {
-            Account newAcc = new Account();
-            newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
-            if ((newAcc != null) && (newAcc.RecordType.DeveloperName == LEAD))
+            if (acc.RecordType.DeveloperName == LEAD)
             {
-                acc.addError( ERROR_MESSAGE + ' (' + newAcc.Name + ' ' + newAcc.Id + ')');
+                Account newAcc = new Account();
+                newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
+                if (newAcc != null)
+                {
+                    acc.addError( Label.Lead_Duplicates_Control_Error + ' (' + newAcc.Name + ' ' + newAcc.Id + ')');
+                }
+
             }
+
         }
         return accList;
     }

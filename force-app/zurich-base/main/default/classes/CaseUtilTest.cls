@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 08-16-2023
+ * @last modified on  : 08-22-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -880,7 +880,7 @@ private class CaseUtilTest
      * Test que comprueba que se asocia correctamente la cuenta al caso por email 
      **
      * @author aberuete
-     * @date 16/08/2023
+     * @date 22/08/2023
      */
     @isTest
     static void test_linkAccountAndContactToCaseByEmail()
@@ -898,6 +898,16 @@ private class CaseUtilTest
         contactPointEmailsToInsert[0].EmailAddress = EMAIL_CASE;
         insert contactPointEmailsToInsert;
 
+        Set<Id> recordIds = new Set<Id>();
+
+        for(ContactPointEmail contactPoint : [SELECT Id, ParentId, ContactId__c FROM ContactPointEmail])
+        {
+            recordIds.add(contactPoint.ParentId);
+            recordIds.add(contactPoint.Id);
+        }
+
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
+
         Test.startTest();
         insert caseRecord;
         Test.stopTest();
@@ -911,7 +921,7 @@ private class CaseUtilTest
      * Test que comprueba que se asocia correctamente la cuenta al caso por teléfono
      **
      * @author aberuete
-     * @date 16/08/2023
+     * @date 22/08/2023
      */
     @isTest
     static void test_linkAccountAndContactToCaseByPhone()
@@ -930,6 +940,14 @@ private class CaseUtilTest
         contactPointPhonesToInsert[0].TelephoneNumber = '607342167';
         insert contactPointPhonesToInsert;
 
+        Set<Id> recordIds = new Set<Id>();
+        for(ContactPointPhone contactPoint : [SELECT Id, ParentId, ContactId__c FROM ContactPointPhone])
+        {
+            recordIds.add(contactPoint.ParentId);
+            recordIds.add(contactPoint.Id);
+        }
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
+
         Test.startTest();
         insert caseRecord;
         Test.stopTest();
@@ -938,5 +956,4 @@ private class CaseUtilTest
         
         System.assertEquals(accountFromCase[0].id, caseAfterInsert.AccountId, MESSAGE_CUENTA_NO_ASIGNADA);
     }
-
 }
