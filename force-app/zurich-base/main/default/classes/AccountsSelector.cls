@@ -919,8 +919,6 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.addConditionIn(Account.INFOIntermediaryCode__c, intermediaryCodes);
         this.baseQuery.addConditionNotEq(Account.Parent.IntermediaryWithUser__c, null);
 
-        //return (List<Account>) this.baseQuery.run();
-
         return
         [
             SELECT  INFOIntermediaryCode__c, ParentId, Parent.IntermediaryWithUser__c
