@@ -1,6 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
+        <fullName>AUTOS</fullName>
+        <default>false</default>
+        <label>AUTOS_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>HOGAR</fullName>
+        <default>false</default>
+        <label>HOGAR_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>ACCIDENTES</fullName>
+        <default>false</default>
+        <label>ACCIDENTES_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>COMERCIOS</fullName>
+        <default>false</default>
+        <label>COMERCIOS_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>DECESOS</fullName>
+        <default>false</default>
+        <label>DECESOS_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>EMBARCACIONES</fullName>
+        <default>false</default>
+        <label>EMBARCACIONES_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>FLOTAS</fullName>
+        <default>false</default>
+        <label>FLOTAS_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>INMUEBLES</fullName>
+        <default>false</default>
+        <label>INMUEBLES_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>OTROS</fullName>
+        <default>false</default>
+        <label>OTROS_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>PATRIMONIALES</fullName>
+        <default>false</default>
+        <label>PATRIMONIALES_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>PROT. PAGOS</fullName>
+        <default>false</default>
+        <label>PROT. PAGOS_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>RESP. CIVIL</fullName>
+        <default>false</default>
+        <label>RESP. CIVIL_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>SALUD</fullName>
+        <default>false</default>
+        <label>SALUD_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>TECNICOS</fullName>
+        <default>false</default>
+        <label>TECNICOS_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>TRANSPORTES</fullName>
+        <default>false</default>
+        <label>TRANSPORTES_OLD</label>
+    </customValue>
+    <customValue>
+        <fullName>VIDA</fullName>
+        <default>false</default>
+        <label>VIDA_OLD</label>
+    </customValue>
+    <customValue>
         <fullName>0000000001</fullName>
         <default>false</default>
         <label>AUTOS</label>
