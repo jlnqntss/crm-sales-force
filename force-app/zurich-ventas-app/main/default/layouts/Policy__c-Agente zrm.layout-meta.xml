@@ -20,6 +20,10 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PolicyVersion__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>ProductBranch__c</field>
             </layoutItems>
@@ -87,6 +91,10 @@
                 <behavior>Edit</behavior>
                 <field>InfoCreatedDate__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>MovementStartDate__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -116,11 +124,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>TotalPremium__c</field>
+                <field>PaymentType__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>PaymentType__c</field>
+                <field>TotalPremium__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -191,9 +199,6 @@
         <fields>DateOfOccurrence__c</fields>
         <fields>Status__c</fields>
         <relatedList>Claim__c.Policy__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <relatedList>RelatedFileList</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
