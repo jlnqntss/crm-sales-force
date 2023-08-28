@@ -7,6 +7,25 @@
 @IsTest(SeeAllData=false)
 public class Batch_CampaignMemberToOpportunityTest
 {
+    private static String DEFAULT_ADMIN_ALIAS // Añadir el alias de cada user admin para cada entorno si fuera necesario
+    {
+        get
+        {
+            if(String.isBlank(DEFAULT_ADMIN_ALIAS))
+            {
+                if(SystemUtil.getSandboxName() == 'qa')
+                {
+                    DEFAULT_ADMIN_ALIAS = 'ntsadmin';
+                }
+                else
+                {
+                    DEFAULT_ADMIN_ALIAS = 'adminkli';
+                }
+            }
+            return DEFAULT_ADMIN_ALIAS;
+        }
+        set;
+    }
 
     @TestSetup
     static void makeData()
@@ -47,6 +66,7 @@ public class Batch_CampaignMemberToOpportunityTest
         // Crear custom setting que indica el usuario genérico
         Cross_Selling__c ventaCruzada = new Cross_Selling__c();
         ventaCruzada.ContactCenterUser__c = 'generico';
+        ventaCruzada.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
 
         insert ventaCruzada;
 
