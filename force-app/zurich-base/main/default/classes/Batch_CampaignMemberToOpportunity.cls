@@ -35,8 +35,15 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     {
         List<String> crossSellingCampaigns = new List<String> {'Cross Selling', 'Venta Cruzada'};
 
+        CampaignMembersSelector campaignMembersSelector = new CampaignMembersSelector(new Set<String> {
+            'Id', 'CampaignMember.CampaignId', 'CampaignMember.OfferAssignedCode__c', 'CampaignMember.OfferAssignedType__c',
+            'CampaignMember.Contact.AccountId', 'CampaignMember.Contact.Account.INFOCustomerNumber__c',
+            'CampaignMember.Contact.Account.Intermediary_Name__c', 'CampaignMember.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c',
+            'CampaignMember.Campaign.StartDate', 'CampaignMember.Campaign.EndDate', 'CampaignMember.Campaign.ExternalId__c',
+            'CampaignMember.Campaign.ProductBranch__c', 'CampaignMember.Campaign.BusinessCode__c'
+        });
 
-        return ( new CampaignMembersSelector() ).selectByCampaignType(crossSellingCampaigns);
+        return ( campaignMembersSelector.selectByCampaignTypeAndId(crossSellingCampaigns, campMemberIdSet) );
     }
 
     public void execute(Database.BatchableContext bc, List<sObject> records)
@@ -248,9 +255,25 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
                                          category='Campaign Member')
     public static void createOffers(List<String> campaignMembers)
     {
-        List<CampaignMember> cms = new CampaignMembersSelector().selectById(campaignMembers);
+        Set<Id> campMemberIdSetReceived = new Set<Id>();
 
-        Set<Id> campMemberIdSetFlow = ( new Map<Id,CampaignMember>(cms) ).keySet();
+        for (String cmId : campaignMembers)
+        {
+            campMemberIdSetReceived.add(cmId);
+        }
+
+        List<String> crossSellingCampaigns = new List<String> {'Cross Selling', 'Venta Cruzada'};
+
+        CampaignMembersSelector campaignMembersSelector = new CampaignMembersSelector(new Set<String> {
+            'Id', 'CampaignMember.CampaignId', 'CampaignMember.OfferAssignedCode__c', 'CampaignMember.OfferAssignedType__c',
+            'CampaignMember.Contact.AccountId', 'CampaignMember.Contact.Account.INFOCustomerNumber__c',
+            'CampaignMember.Contact.Account.Intermediary_Name__c', 'CampaignMember.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c',
+            'CampaignMember.Campaign.StartDate', 'CampaignMember.Campaign.EndDate', 'CampaignMember.Campaign.ExternalId__c',
+            'CampaignMember.Campaign.ProductBranch__c', 'CampaignMember.Campaign.BusinessCode__c'
+        });
+
+        Map<Id, CampaignMember> cms = new Map<Id, CampaignMember>( campaignMembersSelector.selectByCampaignTypeAndId(crossSellingCampaigns, campMemberIdSetReceived) );
+        Set<Id> campMemberIdSetFlow = cms.keyset();
 
         Database.executeBatch( new Batch_CampaignMemberToOpportunity(campMemberIdSetFlow) );
     }
