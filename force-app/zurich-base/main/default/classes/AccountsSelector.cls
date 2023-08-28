@@ -924,7 +924,6 @@ public with sharing class AccountsSelector extends RecordsSelector
             SELECT  INFOIntermediaryCode__c, ParentId, Parent.IntermediaryWithUser__c
             FROM    Account
             WHERE   INFOIntermediaryCode__c IN :intermediaryCodes
-            AND     IsPartner = false
             AND     Parent.IntermediaryWithUser__c != null
         ];
     }
