@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 23/08/2023
+ * @last modified on  : 28/08/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -918,7 +918,6 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         this.baseQuery.addConditionIn(Account.INFOIntermediaryCode__c, intermediaryCodes);
         this.baseQuery.addConditionNotEq(Account.Parent.IntermediaryWithUser__c, null);
-        this.baseQuery.addConditionEq(Account.IsPartner, false);
 
         //return (List<Account>) this.baseQuery.run();
 
