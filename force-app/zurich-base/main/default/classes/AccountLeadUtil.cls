@@ -2,14 +2,11 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 22/08/2023
+ * @last modified on  : 28/08/2023
  * @last modified by  : jgallaga
 **/
 public class AccountLeadUtil
 {
-    public static final String VENTAS_USER = 'Ventas User';
-    public static final String AGENTE_VENTAS = 'Agente Ventas';
-    public static final String ERROR_MESSAGE = 'Ya existe una Cuenta con el mismo Documento de identidad o Teléfono';
     public static final String LEAD = 'Lead';
 
     /**
@@ -19,7 +16,7 @@ public class AccountLeadUtil
      */
     public static void checkLeadDuplicates(List<Account> newList)
     {
-        if (ProfilesSelector.getLoggedUserProfile() == VENTAS_USER || ProfilesSelector.getLoggedUserProfile() == AGENTE_VENTAS)
+        if (ProfilesSelector.getLoggedUserProfile() == Label.Profile_Ventas_User || ProfilesSelector.getLoggedUserProfile() == Label.Profile_Agente_Ventas)
         {
             checkLeads(newList);
         }
@@ -34,16 +31,18 @@ public class AccountLeadUtil
         List<Account> accList = newList;
         for (Account acc : accList)
         {
-            Account newAcc = new Account();
-            newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
-            if ((newAcc != null) && (newAcc.RecordType.DeveloperName == LEAD))
+            if (Schema.getGlobalDescribe().get('Account').getDescribe().getRecordTypeInfosById().get(acc.RecordTypeId).getName() == LEAD)
             {
-                acc.addError( ERROR_MESSAGE + ' (' + newAcc.Name + ' ' + newAcc.Id + ')');
+                Account newAcc = new Account();
+                newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
+                if (newAcc != null)
+                {
+                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + newAcc.Name + ' ' + newAcc.Id + ')');
+                }
             }
         }
         return accList;
     }
-
 
     /**
      * Método que evuelve la Cuenta de tipo Cliente o de tipo Lead localizada, en el caso de que se localice alguna.
@@ -67,17 +66,16 @@ public class AccountLeadUtil
                 if (!accLeadList.isEmpty())
                 {
                     acc = accLeadList.get(0);
+                } else
+                {
+                    acc = null;
                 }
             }
         } else
         {
             if(phone != null)
             {
-                List<Account> accPhoneList = accountsSelector.findByPhoneAndRcTypeLead(new List<String>{phone});
-                if (!accPhoneList.isEmpty())
-                {
-                    acc = accPhoneList.get(0);
-                }
+                acc = checkLeadDuplicatePhone(phone, accountsSelector);
             } else
             {
                 acc = null;
@@ -130,4 +128,23 @@ public class AccountLeadUtil
         return AccountLeadAssignment.getAssignedUserIdByAssignmentType(origin, postalCode).getAssignmentAsMap();
     }
 
+    /**
+     * Método que evuelve la Cuenta de tipo Cliente o de tipo Lead localizada, en el caso de que se localice alguna con el phone indicado
+     * @author overes
+     * @date 25/08/2023
+     * @return acc
+     */
+    public static Account checkLeadDuplicatePhone(String phone, AccountsSelector accountsSelector)
+    {
+        Account acc = new Account();
+        List<Account> accPhoneList = accountsSelector.findByPhoneAndRcTypeLead(new List<String>{phone});
+        if (!accPhoneList.isEmpty())
+        {
+            acc = accPhoneList.get(0);
+        } else
+        {
+            acc = null;
+        }
+        return acc;
+    }
 }

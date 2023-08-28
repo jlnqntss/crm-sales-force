@@ -445,6 +445,14 @@
         <value>Se ha detectado quote de vida con más de un objectId nulo</value>
     </labels>
     <labels>
+        <fullName>Lead_Duplicates_Control_Error</fullName>
+        <categories>Ventas, Lead</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lead_Duplicates_Control_Error</shortDescription>
+        <value>An Account already exists with the same ID or Phone number</value>
+    </labels>
+    <labels>
         <fullName>LongitudTextoNoValida</fullName>
         <categories>WebService Parser</categories>
         <language>en_US</language>
@@ -651,6 +659,22 @@
         <protected>false</protected>
         <shortDescription>PrimaryContactPointPhoneRequired</shortDescription>
         <value>There should be at least one primary contact point phone</value>
+    </labels>
+    <labels>
+        <fullName>Profile_Agente_Ventas</fullName>
+        <categories>Ventas, Profile</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Profile_Agente_Ventas</shortDescription>
+        <value>Agente Ventas</value>
+    </labels>
+    <labels>
+        <fullName>Profile_Ventas_User</fullName>
+        <categories>Ventas, Profile</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Profile_Ventas_User</shortDescription>
+        <value>Ventas User</value>
     </labels>
     <labels>
         <fullName>PruebaLabel</fullName>

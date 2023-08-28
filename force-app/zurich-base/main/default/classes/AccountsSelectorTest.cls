@@ -2,7 +2,7 @@
  * @description       : Clase de test para la clase AccountsSelector
  * @author            : 
  * @group             : 
- * @last modified on  : 08-16-2023
+ * @last modified on  : 08-22-2023
  * @last modified by  : aberuete
 **/
 @isTest
@@ -750,56 +750,27 @@ private with sharing class AccountsSelectorTest
     }
 
     /**
-    * Test del método que recupera las cuentas filtradas por tipo de cuenta, recordtype name y que exista un contactpointemail asociado para una lista de emails dada
+    * Test del método que recupera las cuentas filtradas por un conjunto de ids de cuentas, record type name y tipo de cuenta
     * @author aberuete
-    * @date 16/08/2023
+    * @date 22/08/2023
     */
     @IsTest
-    static void test_findByEmailAdressRecordTypeNameAndType()
+    static void test_findByAccountIdsRecordTypeNameAndType()
     {
-        Account account = [select id,NationalId__c,type from account where RecordType.DeveloperName = 'Customer' limit 1];
-        account.type = 'J';
-        update account;
+        Map<Id,Account> accountList = new Map<Id,Account>([Select id from Account]);
+        List<Account> accountListCustomer = [Select id,RecordType.DeveloperName,Type from Account where RecordType.DeveloperName = 'Customer'];
 
-        ContactPointEmail newContactPointEmail = new ContactPointEmail ();
-        newContactPointEmail.ParentId = account.Id;
-        newContactPointEmail.EmailAddress = 'emailtocontactpointemail@gmail.com.invalid';
-        insert newContactPointEmail;
+        for (Account accountToUpdate : accountListCustomer)
+        {
+            accountToUpdate.Type = 'J';
+        }
+        update accountListCustomer;
 
         Test.startTest();
-        List<Account> accountFromQuery = new AccountsSelector().findByEmailAdressRecordTypeNameAndType (new List<String> {'emailtocontactpointemail@gmail.com.invalid'},new List<String> {'Customer'}, new List<String>{'F','J'});
+        List<Account> accountListAfterQuery = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(new Set<Id>(accountList.keySet()), new List<String> {'Customer'}, new List<String>{'F','J'});
         Test.stopTest();
 
-        System.assertEquals(1, accountFromQuery.size(), 'Debe haber una cuenta en la lista');
-        System.assertEquals(account.id, accountFromQuery[0].id, 'La cuenta devuelta no es correcta');
-        System.assertEquals(1, accountFromQuery[0].ContactPointEmails.size(), 'La cuenta debería tener asociada un contactpointemail');
-        System.assertEquals(newContactPointEmail.Id, accountFromQuery[0].ContactPointEmails[0].Id, 'El contactpointemail asociado a la cuenta no es correcto');
-    }
-
-    /**
-    * Test del método que recupera las cuentas filtradas por tipo de cuenta, recordtype name y que exista un contactpointphone asociado para una lista de teléfonos dada
-    * @author aberuete
-    * @date 16/08/2023
-    */
-    @IsTest
-    static void test_findByPhoneRecordTypeNameAndType()
-    {
-        List<Account> newAccount = TestDataFactory.generateAccounts('001', 'Customer', 1);
-        newAccount[0].type = 'J';
-        insert newAccount;
-
-        ContactPointPhone newContactPointPhone = new ContactPointPhone();
-        newContactPointPhone.ParentId = newAccount[0].Id;
-        newContactPointPhone.TelephoneNumber = '603452389';
-        insert newContactPointPhone;
-
-        Test.startTest();
-        List<Account> accountFromQuery = new AccountsSelector().findByPhoneRecordTypeNameAndType(new List<String> {'603452389'},new List<String> {'Customer'}, new List<String>{'F','J'});
-        Test.stopTest();
-
-        System.assertEquals(1, accountFromQuery.size(), 'Debe haber una cuenta en la lista');
-        System.assertEquals(newAccount[0].id, accountFromQuery[0].id, 'La cuenta devuelta no es correcta');
-        System.assertEquals(1, accountFromQuery[0].ContactPointPhones.size(), 'La cuenta debería tener asociada un contactpointphone');
-        System.assertEquals(newContactPointPhone.Id, accountFromQuery[0].ContactPointPhones[0].Id, 'El contactpointphone asociado a la cuenta no es correcto');
+        System.assertNotEquals(accountList.size(), accountListAfterQuery.size(), 'El número de cuentas no debería ser el mismo');
+        System.assertEquals(10, accountListAfterQuery.size(), 'El número de cuentas de tipo customer debería ser 10');
     }
 }

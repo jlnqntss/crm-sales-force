@@ -1,5 +1,9 @@
 public with sharing class CampaignMembersSelector extends BaseSelector
 {
+    //#region Atributos
+    private final static String BASE_SELECT = 'SELECT {0} FROM CampaignMember ';
+    //#endregion
+
     //#region Contructores
     public CampaignMembersSelector()
     {}
@@ -26,7 +30,7 @@ public with sharing class CampaignMembersSelector extends BaseSelector
         if(campaignId != null && contactIds != null)
         {
             String query = String.format(
-                'SELECT {0} FROM CampaignMember ' +
+                BASE_SELECT +
                 'WHERE campaignId = : campaignId AND ContactId IN : contactIds ',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -53,7 +57,7 @@ public with sharing class CampaignMembersSelector extends BaseSelector
         if( String.isNotBlank(status) )
         {
             String query = String.format(
-                'SELECT {0} FROM CampaignMember ' +
+                BASE_SELECT +
                 'WHERE Status = : status ',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
@@ -83,54 +87,29 @@ public with sharing class CampaignMembersSelector extends BaseSelector
                                                                 AND Status = 'Pdte. Revisión Mediador']);
         return result;
     }
-    
-    /**
-     * Busca miembros de campaña a partir del Status
-     *
-     * @author jfherrero
-     * @date 07/08/2023
-     * @param  status   Estado del miembro de campaña a buscar
-     * @return          Listado de CampaignMembers sobre los que se ha realizado match
-     */
-    public List<CampaignMember> selectById(List<String> campaignMembers)
-    {
-        if( campaignMembers != null && !campaignMembers.isEmpty() )
-        {
-            List<CampaignMember> queryResult = [SELECT Id, CampaignMember.CampaignId, CampaignMember.OfferAssignedCode__c, CampaignMember.OfferAssignedType__c,
-                                                CampaignMember.Contact.AccountId, CampaignMember.Contact.Account.INFOCustomerNumber__c, CampaignMember.Contact.Account.Intermediary_Name__c,
-                                                CampaignMember.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c, CampaignMember.Campaign.StartDate, CampaignMember.Campaign.EndDate,
-                                                CampaignMember.Campaign.ExternalId__c, CampaignMember.Campaign.ProductBranch__c,CampaignMember.Campaign.BusinessCode__c
-                                                FROM CampaignMember
-                                                WHERE Id IN : campaignMembers];
-
-            return queryResult;
-        }
-        else
-        {
-            return new List<CampaignMember>();
-        }
-    }
 
     /**
      * Busca miembros de campaña a partir del Status
      *
      * @author jfherrero
      * @date 07/08/2023
-     * @param  status   Estado del miembro de campaña a buscar
-     * @return          Listado de CampaignMembers sobre los que se ha realizado match
+     * @param  campaignTypes       Tipologías que deben tener todos los miembros de campaña
+     * @param  campaignMemberIds   Ids de miembros de campaña a recuperar
+     * @return                     Listado de CampaignMembers sobre los que se ha realizado match
      */
-    public List<CampaignMember> selectByCampaignType(List<String> campaignTypes)
+    public List<CampaignMember> selectByCampaignTypeAndId(List<String> campaignTypes, Set<Id> campaignMemberIds)
     {
-        if( campaignTypes != null && !campaignTypes.isEmpty() )
+        if( campaignTypes != null && !campaignTypes.IsEmpty() &&
+            campaignMemberIds != null && !campaignMemberIds.IsEmpty() )
         {
-            List<CampaignMember> queryResult = [SELECT Id, CampaignMember.CampaignId, CampaignMember.OfferAssignedCode__c, CampaignMember.OfferAssignedType__c,
-                                                CampaignMember.Contact.AccountId, CampaignMember.Contact.Account.INFOCustomerNumber__c, CampaignMember.Contact.Account.Intermediary_Name__c,
-                                                CampaignMember.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c, CampaignMember.Campaign.StartDate, CampaignMember.Campaign.EndDate,
-                                                CampaignMember.Campaign.ExternalId__c, CampaignMember.Campaign.ProductBranch__c,CampaignMember.Campaign.BusinessCode__c
-                                                FROM CampaignMember
-                                                WHERE Campaign.Type IN : campaignTypes];
-
-            return queryResult;
+            String query = String.format(
+                BASE_SELECT +
+                'WHERE Campaign.Type IN : campaignTypes and Id IN : campaignMemberIds ',
+                new List<String> {
+                String.join(new List<String> (this.fieldsToQuery), ',')
+            }
+                );
+            return (List<CampaignMember>) Database.query(query);
         }
         else
         {

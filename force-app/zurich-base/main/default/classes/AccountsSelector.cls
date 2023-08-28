@@ -879,6 +879,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         return result;
 
     }
+
     /**
      * Método que obtiene los cuentas tipo Lead que no tengan ofertas asociadas para borrarlas
      **
@@ -890,6 +891,39 @@ public with sharing class AccountsSelector extends RecordsSelector
         String query =
             'SELECT Id from Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
         return query;
+    }
+
+    /**
+     * Método que obtiene las cuentas filtradas por un conjunto de ids de cuentas, recordtype name y tipo de cuenta
+     **
+     * @author aberuete
+     * @date 22/08/2023
+     * @param Set<Id> accountIds: Conjunto de ids de cuentas
+     * @param List<String> recordtypeNames : Lista de record type names
+     * @param List<String> typeNames : Lista de nombres de tipo de cuenta
+     **/
+    public List<Account> findByAccountIdsRecordTypeNameAndType (Set<Id> accountIds, List<String> recordtypeNames, List<String> typeNames)
+    {
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.PersonContactId
+            }
+        );
+
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty() )
+        {
+            this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
+        }
+
+        if ( typeNames != null && !typeNames.isEmpty() )
+        {
+            this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
+        }
+
+        return (List<Account>) this.baseQuery.byId(accountIds).run();
     }
 
     /**

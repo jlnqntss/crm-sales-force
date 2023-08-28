@@ -5,6 +5,7 @@
     <permissionSets>Acceso_App_Ventas</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_Captacion_Avanzada</permissionSets>
+    <permissionSets>NoReasignarOferta</permissionSets>
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
     <permissionSets>VentasGestionDatos</permissionSets>
     <permissionSets>Ventas_Consulta_Datos</permissionSets>
