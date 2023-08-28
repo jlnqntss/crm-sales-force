@@ -3,7 +3,7 @@
  *                      de las cuentas de tipo Lead que llegan a Salesforce.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 22/08/2023
+ * @last modified on  : 28/08/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class AccountLeadAssignment
@@ -348,7 +348,6 @@ public with sharing class AccountLeadAssignment
      *              en el que se encuentre la lógica de asignación.
      *              De forma automatica conocerá el nombre del entorno en el que
      *              se encuentra para obtener el usuario correspondiente.
-     *              Cada usuario segun entorno está definido en el metadato NTSUser__mdt.
      * @return      String
      *              Id del usuario por defecto
      * @throws      QueryException
