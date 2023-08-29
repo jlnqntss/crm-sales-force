@@ -1,8 +1,44 @@
+/**
+ * @description       :
+ * @author            : jgallaga
+ * @group             :
+ * @last modified on  : 29/08/2023
+ * @last modified by  : jgallaga
+**/
 @isTest
-public with sharing class Batch_InitCrossSellingCampaignTest {
-    
+public with sharing class Batch_InitCrossSellingCampaignTest
+{
+
+    private static String DEFAULT_ADMIN_ALIAS // Añadir el alias de cada user admin para cada entorno si fuera necesario
+    {
+        get
+        {
+            if(String.isBlank(DEFAULT_ADMIN_ALIAS))
+            {
+                if(SystemUtil.getSandboxName() == 'qa')
+                {
+                    DEFAULT_ADMIN_ALIAS = 'ntsadmin';
+                }
+                else
+                {
+                    DEFAULT_ADMIN_ALIAS = 'adminkli';
+                }
+            }
+            return DEFAULT_ADMIN_ALIAS;
+        }
+        set;
+    }
+
     @TestSetup
     static void makeData() {
+
+        // Crear custom setting que indica el usuario genérico
+        Cross_Selling__c ventaCruzada = new Cross_Selling__c();
+        ventaCruzada.ContactCenterUser__c = 'generico';
+        ventaCruzada.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
+
+        insert ventaCruzada;
+
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
 
@@ -12,6 +48,7 @@ public with sharing class Batch_InitCrossSellingCampaignTest {
             c.Type = 'Cross Selling';
             c.IsActive = true;
             c.StartDate = Date.today();
+            c.EndDate = Date.today() + 7;
             c.ExternalId__c = 'TestCampaign';
 
             if (i == 1) { // la segunda campaña será para probar el clone al CC
@@ -42,7 +79,7 @@ public with sharing class Batch_InitCrossSellingCampaignTest {
         }
         insert campaignMembers;
 
-        
+
     }
 
     @isTest
@@ -65,11 +102,11 @@ public with sharing class Batch_InitCrossSellingCampaignTest {
 
     @isTest
     static void testScheduleByQuery() {
-        
+
         // prueba batch
         Test.startTest();
-        String jobName = 'Prueba Test Batch'; 
-        String cron = '0 0 3 * * ?'; 
+        String jobName = 'Prueba Test Batch';
+        String cron = '0 0 3 * * ?';
 
         String jobId = Batch_InitCrossSellingCampaign.createStandardSchedule(jobName, cron);
 
@@ -77,6 +114,6 @@ public with sharing class Batch_InitCrossSellingCampaignTest {
 
         List<CronTrigger> cronList = new List<CronTrigger>([SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobId]);
 
-        System.assertEquals(1, cronList.size(), 'Debe haber un job programado');        
+        System.assertEquals(1, cronList.size(), 'Debe haber un job programado');
     }
 }

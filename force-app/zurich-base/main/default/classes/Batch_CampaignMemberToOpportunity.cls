@@ -36,7 +36,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     {
         List<String> crossSellingCampaigns = new List<String> {'Cross Selling', 'Venta Cruzada'};
 
-        obtainDefaultUserOnError(); // Prepara los Ids para el usuario por defecto CC y el usuario por defecto en caso de error
 
         CampaignMembersSelector campaignMembersSelector = new CampaignMembersSelector(new Set<String> {
             'Id', 'CampaignMember.CampaignId', 'CampaignMember.OfferAssignedCode__c', 'CampaignMember.OfferAssignedType__c',
@@ -51,6 +50,8 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     public void execute(Database.BatchableContext bc, List<sObject> records)
     {
+        obtainDefaultUserOnError(); // Recupera el usuario por defecto, al no ser Stateful, hay que recuperar en cada lote
+
         List<CampaignMember> campaignMembers = new List<CampaignMember>();
         for(sObject record : records)
         {
