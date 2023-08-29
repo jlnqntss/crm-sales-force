@@ -1,6 +1,6 @@
 {
   "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "componentName": "siteforce:sldsOneColLayout",
+  "componentName": "siteforce:sldsTwoCol84Layout",
   "dataProviders": [],
   "id": "e414896d-640d-49c4-995f-16ec0792996b",
   "label": "Policy Detail",
@@ -122,6 +122,25 @@
       ],
       "id": "8e0d208d-9995-458f-9fb1-06df8dd210c6",
       "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "relatedListApiName": "AttachedContentDocuments",
+            "relatedListComponentOverride": "GRID",
+            "width": "SMALL"
+          },
+          "componentName": "forceCommunity:responsiveRelatedListSingle",
+          "id": "c760b4aa-92d2-47ff-905e-f6e9cdf97402",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "152fca62-990e-485c-ba1b-6177ffc557cc",
+      "regionName": "sidebar",
       "type": "region"
     }
   ],
