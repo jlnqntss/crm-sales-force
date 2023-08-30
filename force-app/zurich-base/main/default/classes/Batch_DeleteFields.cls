@@ -15,6 +15,12 @@ global class Batch_DeleteFields implements Database.Batchable<SObject> {
         //Names of offers to be deleted are retrieved
         String querySR = 'SELECT Id, Name, Body FROM StaticResource WHERE Name =\'' + nameSR + '\'';
         List<StaticResource> docs = Database.query(querySR);
+
+        if (docs.isEmpty()) 
+        {
+            throw new QueryException('There are no Static Resources with the provided name');
+        }
+
         StaticResource theDocument = (StaticResource)docs.get(0);
         String nameFile = blobToString(theDocument.Body,'ISO-8859-1');
         String[] filelines = nameFile.split('\n');
@@ -31,7 +37,7 @@ global class Batch_DeleteFields implements Database.Batchable<SObject> {
             idToDelete.add(auxiliar);
         }
 
-        string queryObject='SELECT Id FROM ' + nameObject+ ' WHERE '+ fieldToDelete+ ' =:idToDelete';
+        String queryObject = 'SELECT Id FROM ' + nameObject+ ' WHERE '+ fieldToDelete+ ' =:idToDelete';
         return Database.getQueryLocator(queryObject);
     }
     
