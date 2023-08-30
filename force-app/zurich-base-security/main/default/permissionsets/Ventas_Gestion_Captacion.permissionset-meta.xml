@@ -811,7 +811,7 @@
         <field>Opportunity.Activity__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Amount</field>
         <readable>false</readable>
@@ -839,6 +839,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.BusinessName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.CarRegistration__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -891,7 +896,7 @@
         <field>Opportunity.Description</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Discovery_Completed__c</field>
         <readable>true</readable>
@@ -951,7 +956,7 @@
         <field>Opportunity.LegalEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.LossSubReasonDescription__c</field>
         <readable>false</readable>
@@ -1031,7 +1036,7 @@
         <field>Opportunity.PendingBy__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.ProductBranchDetail__c</field>
         <readable>true</readable>
@@ -1061,7 +1066,7 @@
         <field>Opportunity.ResultingPolicyNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.ScopeId__c</field>
         <readable>true</readable>
@@ -1121,7 +1126,7 @@
         <field>Opportunity.ValidationErrors__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PreferedContactEnd__c</field>
         <readable>true</readable>
