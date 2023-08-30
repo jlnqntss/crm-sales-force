@@ -27,25 +27,18 @@ public with sharing class Batch_DeleteFieldsTest {
     @IsTest
     static void test_DeleteFields_OK()
     {
-        List<String> parame= new  List<String>();
-        parame.add('OfferDeleteTemplate');
-        parame.add('Name');
-        parame.add('Opportunity');
-        Batch_DeleteFields batch = new Batch_DeleteFields(parame);
-
-        List<Opportunity> opps = [SELECT Id FROM Opportunity];
-
         // Se comprueba que existían 200 Ofertas
+        List<Opportunity> opps = [SELECT Id FROM Opportunity];
         System.assertEquals(200, opps.size(), 'Existen 200 Ofertas');
-        
+
+        Batch_DeleteFields batch = new Batch_DeleteFields('OfferDeleteTemplate', 'Name', 'Opportunity');
 
         Test.startTest();
-        Id batchId = Database.executeBatch(batch);
+        Database.executeBatch(batch);
         Test.stopTest();
 
-        List<Opportunity> opps2 = [SELECT Id,Description FROM Opportunity WHERE Id IN:Opps];
-
         // Se comprueba que el batch ha borrado las Ofertas
+        List<Opportunity> opps2 = [SELECT Id,Description FROM Opportunity WHERE Id IN:Opps];
         System.assertEquals(0, opps2.size(), 'Borrado ok');
 
     }
