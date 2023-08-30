@@ -265,6 +265,11 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
                                          category='Campaign Member')
     public static void createOffers(List<String> campaignMembers)
     {
+        if(System.isBatch())
+        {
+            return;
+        }
+
         Set<Id> campMemberIdSetReceived = new Set<Id>();
 
         for (String cmId : campaignMembers)
