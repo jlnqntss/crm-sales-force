@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>59.0</apiVersion>
+    <apiVersion>58.0</apiVersion>
     <description>Insertar un registro de AccountTeamMember cuando se crea o actualiza una Oferta cuyo propietario tiene el perfil &apos;Agente Ventas&apos;</description>
     <environments>Default</environments>
     <interviewLabel>Offer Trigger - After Insert/Update - Account Team Members {!$Flow.CurrentDateTime}</interviewLabel>
@@ -68,4 +68,5 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>1700</triggerOrder>
 </Flow>

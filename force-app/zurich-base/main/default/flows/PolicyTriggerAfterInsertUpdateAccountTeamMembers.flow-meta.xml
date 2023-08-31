@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>59.0</apiVersion>
+    <apiVersion>58.0</apiVersion>
     <assignments>
         <name>AccountTeamMemberInstanceAssignment</name>
         <label>Account Team Member Instance Assignment</label>
@@ -82,7 +82,7 @@
     <description>Obtener el User asociado a la Cuenta Mediador Visibilidad y almacenar su id en intermediaryUserId.
 Si intermediaryUserId no es nulo: Insertar un registro de AccountTeamMember</description>
     <environments>Default</environments>
-    <interviewLabel>AND(NOT(ISBLANK({!$Record.IntermediaryVisibilityAcc__c})), OR(ISNEW(), ISCHANGED({!$Record.IntermediaryVisibilityAcc__c}))) {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>Policy Trigger - After Insert/Update - Account Team Members {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Policy Trigger - After Insert/Update - Account Team Members</label>
     <loops>
         <name>IntermediaryUsersLoop</name>
@@ -200,6 +200,7 @@ Si intermediaryUserId no es nulo: Insertar un registro de AccountTeamMember</des
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <triggerOrder>1700</triggerOrder>
     <variables>
         <name>accountTeamMembersToInsert</name>
         <dataType>SObject</dataType>
