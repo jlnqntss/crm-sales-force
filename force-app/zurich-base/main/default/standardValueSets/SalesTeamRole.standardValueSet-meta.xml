@@ -56,4 +56,9 @@
         <default>false</default>
         <label>Formador</label>
     </standardValue>
+    <standardValue>
+        <fullName>Mediador</fullName>
+        <default>false</default>
+        <label>Mediador</label>
+    </standardValue>
 </StandardValueSet>
