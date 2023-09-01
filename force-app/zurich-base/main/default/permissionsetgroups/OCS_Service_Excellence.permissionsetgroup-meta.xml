@@ -2,12 +2,13 @@
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
     <hasActivationRequired>false</hasActivationRequired>
     <label>OCS Service Excellence</label>
+    <mutingPermissionSets>OCS_Service_Excellence_Muted</mutingPermissionSets>
     <permissionSets>Acceso_App_OCS</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_CS</permissionSets>
     <permissionSets>Gestion_Gestor_Personalizado</permissionSets>
-    <permissionSets>Gestion_Whatsapp</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
+    <permissionSets>Gestion_Whatsapp</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

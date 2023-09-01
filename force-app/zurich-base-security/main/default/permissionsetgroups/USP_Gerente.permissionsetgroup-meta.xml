@@ -2,6 +2,7 @@
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
     <hasActivationRequired>false</hasActivationRequired>
     <label>USP_Gerente</label>
+    <mutingPermissionSets>USP_Gerente_Muted</mutingPermissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Consulta_de_KPI</permissionSets>
