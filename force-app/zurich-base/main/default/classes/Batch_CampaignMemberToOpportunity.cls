@@ -12,6 +12,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     private Set<Id> campMemberIdSet = new Set<Id>();
     private Id defaultUserCC {get; set;}
+    private Id defaultUserOnError {get;set;}
     private Set<String> cmOfferAssignedCodes = new Set<String>();
     private List<Opportunity> oppsToInsert = new List <Opportunity>();
     private static UsersSelector usersSelector = new UsersSelector();
@@ -35,6 +36,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     {
         List<String> crossSellingCampaigns = new List<String> {'Cross Selling', 'Venta Cruzada'};
 
+
         CampaignMembersSelector campaignMembersSelector = new CampaignMembersSelector(new Set<String> {
             'Id', 'CampaignMember.CampaignId', 'CampaignMember.OfferAssignedCode__c', 'CampaignMember.OfferAssignedType__c',
             'CampaignMember.Contact.AccountId', 'CampaignMember.Contact.Account.INFOCustomerNumber__c',
@@ -48,9 +50,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     public void execute(Database.BatchableContext bc, List<sObject> records)
     {
-        String aliasDefaultUserCC = Cross_Selling__c.getInstance().ContactCenterUser__c;
-
-        defaultUserCC = usersSelector.findByAlias(aliasDefaultUserCC).Id;
+        obtainDefaultUserOnError(); // Recupera el usuario por defecto, al no ser Stateful, hay que recuperar en cada lote
 
         List<CampaignMember> campaignMembers = new List<CampaignMember>();
         for(sObject record : records)
@@ -194,12 +194,21 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
         opp.IntermediaryCode__c = cm.OfferAssignedCode__c;
 
+        if(String.isBlank(cm.OfferAssignedCode__c) || accountByIntermCode.containsKey(cm.OfferAssignedCode__c))
+        {
+            opp.OwnerId = defaultUserOnError;
+        }
+
         if (accountByIntermCode.get(cm.OfferAssignedCode__c).Parent.IntermediaryWithUser__c != null )
         {
             if (accountByIntermCode.get(cm.OfferAssignedCode__c) != null &&
                 userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Parent.IntermediaryWithUser__c) != null)
             {
                 opp.OwnerId = userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Parent.IntermediaryWithUser__c);
+            }
+            else
+            {
+                opp.OwnerId = defaultUserOnError;
             }
         }
 
@@ -209,8 +218,10 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             {
                 opp.OwnerId = userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Id);
             }
-
-            opp.OwnerId = userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Id);
+            else
+            {
+                opp.OwnerId = defaultUserOnError;
+            }
         }
 
         return opp;
@@ -226,7 +237,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     {
         opp.IntermediaryId__c = cm.Contact.Account.Intermediary_Name__c;
         opp.IntermediaryCode__c = cm.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c;
-        opp.OwnerId = defaultUserCC;
         opp.BusinessCode__c = cm.Campaign.BusinessCode__c;
 
         return opp;
@@ -255,6 +265,11 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
                                          category='Campaign Member')
     public static void createOffers(List<String> campaignMembers)
     {
+        if(System.isBatch())
+        {
+            return;
+        }
+
         Set<Id> campMemberIdSetReceived = new Set<Id>();
 
         for (String cmId : campaignMembers)
@@ -276,6 +291,25 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         Set<Id> campMemberIdSetFlow = cms.keyset();
 
         Database.executeBatch( new Batch_CampaignMemberToOpportunity(campMemberIdSetFlow) );
+    }
+
+
+    /**
+     * @description Método para recuperar los Ids de los usuarios configurados para ser los
+     *              Ids por defecto para el usuario por defecto CC y el usuario por defecto
+     *              en caso de error.
+     * @author      jgallaga
+     * @date        18/08/2023
+     */
+    private void obtainDefaultUserOnError()
+    {
+        String aliasDeaultUserOnError   = Cross_Selling__c.getinstance().DefaultUser__c;
+
+        UsersSelector userQuery = new UsersSelector();
+
+        List<User> defaultUsers = userQuery.findUsersByAlias(new List<String>{aliasDeaultUserOnError});
+
+        defaultUserOnError = defaultUsers.get(0).Id;
     }
 
     // ##endregion Resto métodos

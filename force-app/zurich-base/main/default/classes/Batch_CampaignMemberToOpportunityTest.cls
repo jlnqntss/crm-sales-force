@@ -47,6 +47,7 @@ public class Batch_CampaignMemberToOpportunityTest
         // Crear custom setting que indica el usuario genérico
         Cross_Selling__c ventaCruzada = new Cross_Selling__c();
         ventaCruzada.ContactCenterUser__c = 'generico';
+        ventaCruzada.DefaultUser__c = 'adminkli';
 
         insert ventaCruzada;
 

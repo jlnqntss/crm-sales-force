@@ -2,8 +2,8 @@
  * @description       : Clase selectora del sobject User
  * @author            : aberuete
  * @group             :
- * @last modified on  : 10-08-2023
- * @last modified by  : jfherrero
+ * @last modified on  : 23/08/2023
+ * @last modified by  : jgallaga
  **/
 public with sharing class UsersSelector extends RecordsSelector
 {
@@ -184,16 +184,47 @@ public with sharing class UsersSelector extends RecordsSelector
         List<User> result = new List<User>([SELECT Id, Contact.AccountId FROM User WHERE Contact.AccountId IN: contactAccountIds]);
         return result;
     }
-    /**
-     * Obtiene un usuario a través de su alias
-     * @param Alias: cadena de caracteres que se corresponde con el alias del usuario Text(8)
-     * @author jfherrero
-     * @date 02/08/2023
-     */
 
-    public User findByAlias(String alias)
+    /**
+     * @description Selector para conseguir usuarios a partir de su alias.
+     *              Se recuperan los campos Id y Alias.
+     * @author      jgallaga
+     * @date        18/08/2023
+     */
+    public List<User> findUsersByAlias(List<String> aliases)
     {
-        User result = [SELECT Id, Alias FROM User WHERE Alias = : alias LIMIT 1];
-        return result;
+        List<User> foundUsers = new List<User>();
+
+        if(aliases == null || aliases.isEmpty())
+        {
+            return foundUsers;
+        }
+
+        this.baseQuery.selectField(User.Alias);
+
+        this.baseQuery.addConditionIN(User.Alias, aliases);
+        this.baseQuery.addConditionEq(User.IsActive, true);
+
+        return (List<User>) this.baseQuery.run();
+    }
+
+    /**
+     * @description Selector para conseguir usuarios a partir de su relación con Ids de Account
+     * @author      jgallaga
+     * @date        16/08/2023
+     */
+    public List<User> findUsersByAccountId(List<String> accountIds)
+    {
+        List<User> foundUsers = new List<User>();
+
+        if(accountIds == null || accountIds.isEmpty())
+        {
+            return foundUsers;
+        }
+
+        this.baseQuery.addConditionIn(User.Contact.AccountId, accountIds);
+        this.baseQuery.addConditionEq(User.IsActive, true);
+
+        return (List<User>) this.baseQuery.run();
     }
 }
