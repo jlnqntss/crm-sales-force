@@ -48,6 +48,8 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     public void execute(Database.BatchableContext bc, List<sObject> records)
     {
+        oppsToInsert.clear();
+
         String aliasDefaultUserCC = Cross_Selling__c.getInstance().ContactCenterUser__c;
 
         defaultUserCC = usersSelector.findByAlias(aliasDefaultUserCC).Id;
