@@ -36,11 +36,6 @@
                 <default>false</default>
                 <label>Esencial (PV3)</label>
             </value>
-            <value>
-                <fullName>Varios</fullName>
-                <default>false</default>
-                <label>Varios</label>
-            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
