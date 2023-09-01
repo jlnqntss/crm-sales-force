@@ -6,7 +6,8 @@
     <errorConditionFormula>AND
 ( 
     ISCHANGED(OwnerId),
-    $Permission.NoReasignarOferta 
+    $Permission.NoReasignarOferta,
+				PRIORVALUE(PendingIntermediaryReview__c) = false
 )</errorConditionFormula>
     <errorDisplayField>OwnerId</errorDisplayField>
     <errorMessage>[VR Offer] Manual reassignment not allowed</errorMessage>
