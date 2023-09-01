@@ -2,11 +2,28 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
     <assignments>
+        <description>Se blanquea la visibilidad al blanquear el mediador principal</description>
+        <name>Blank_Visibility</name>
+        <label>Blank Visibility</label>
+        <locationX>50</locationX>
+        <locationY>395</locationY>
+        <assignmentItems>
+            <assignToReference>IntermediaryVisibilityAccount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UpdateTriggeredAccountAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Asignar el Mediador relacionado con el cliente (Account de tipo &apos;Customer&apos; o &apos;Business Customer&apos;).</description>
         <name>intermediaryAccountToIntermediaryVisibilityAccountAssignment</name>
         <label>Assign Intermediary Account to Intermediary Visibility Account</label>
-        <locationX>314</locationX>
-        <locationY>395</locationY>
+        <locationX>578</locationX>
+        <locationY>503</locationY>
         <assignmentItems>
             <assignToReference>IntermediaryVisibilityAccount</assignToReference>
             <operator>Assign</operator>
@@ -22,8 +39,8 @@
         <description>Asignar el Mediador Principal de la Agrupación relacionada con el Mediador del cliente (Account de tipo &apos;Customer&apos; o &apos;Business Customer&apos;).</description>
         <name>mainIntermediaryAccountToIntermediaryVisibilityAccountAssignment</name>
         <label>Assign Main Intermediary Account to Intermediary Visibility Account</label>
-        <locationX>50</locationX>
-        <locationY>395</locationY>
+        <locationX>314</locationX>
+        <locationY>503</locationY>
         <assignmentItems>
             <assignToReference>IntermediaryVisibilityAccount</assignToReference>
             <operator>Assign</operator>
@@ -36,11 +53,44 @@
         </connector>
     </assignments>
     <decisions>
+        <description>Se ha blanqueado el mediador principal</description>
+        <name>Changed_To_Blank_Intermediary_Name</name>
+        <label>Changed To Blank Intermediary Name</label>
+        <locationX>248</locationX>
+        <locationY>287</locationY>
+        <defaultConnector>
+            <targetReference>IsThereGroupingAccountAndIntermediaryMainAccountDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Blanked_Intermediary_Name</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Intermediary_Name__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Intermediary_Name__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Blank_Visibility</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Decidir si el cliente (Account de tipo &apos;Customer&apos; o &apos;Business Customer&apos;) tiene asociado un mediador que perteneces a una Agrupación, y a su vez dicha Agrupación dispone de un Mediador Principal.</description>
         <name>IsThereGroupingAccountAndIntermediaryMainAccountDecision</name>
         <label>Is there a Grouping Account and a Intermediary Main Account?</label>
-        <locationX>182</locationX>
-        <locationY>287</locationY>
+        <locationX>446</locationX>
+        <locationY>395</locationY>
         <defaultConnector>
             <targetReference>intermediaryAccountToIntermediaryVisibilityAccountAssignment</targetReference>
         </defaultConnector>
@@ -62,13 +112,20 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Intermediary_Name__r.IsPartner</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>mainIntermediaryAccountToIntermediaryVisibilityAccountAssignment</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Flujo que se inicia de forma automática en la actualización de un registro del objeto Account. Trata de actualizar el campo &apos;IntermediaryVisibilityAcc__&apos; si cumple las condiciones definidas.</description>
+    <description>Tiene en cuenta el quitar mediador principal para la visibilidad de zrm y en los casos que un usuario de agrupación tiene usuario propio no se toma el de la agrupación</description>
     <environments>Default</environments>
     <interviewLabel>Account Trigger - Before Update - {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Account Trigger - Before Update - Update IntermediaryVisibilityAcc Field</label>
@@ -95,8 +152,8 @@
         <description>Actualizar el campo &apos;IntermediaryVisibilityAcc__c&apos; con el valor guardado en la variable &apos;IntermediaryVisibilityAccount&apos; en el proceso de decisión anterior.</description>
         <name>UpdateTriggeredAccountAction</name>
         <label>Update Triggered Account</label>
-        <locationX>182</locationX>
-        <locationY>587</locationY>
+        <locationX>248</locationX>
+        <locationY>779</locationY>
         <inputAssignments>
             <field>IntermediaryVisibilityAcc__c</field>
             <value>
@@ -106,17 +163,18 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>122</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>IsThereGroupingAccountAndIntermediaryMainAccountDecision</targetReference>
+            <targetReference>Changed_To_Blank_Intermediary_Name</targetReference>
         </connector>
         <filterFormula>AND(
      OR(
          {!$Record.RecordType.DeveloperName} = &apos;Customer&apos;,
-         {!$Record.RecordType.DeveloperName} = &apos;BusinessCustomer&apos;),
-      NOT(ISBLANK({!$Record.Intermediary_Name__c})),
-      {!$Record__Prior.Intermediary_Name__c} &lt;&gt; {!$Record.Intermediary_Name__c})</filterFormula>
+         {!$Record.RecordType.DeveloperName} = &apos;BusinessCustomer&apos;
+		),      
+      {!$Record__Prior.Intermediary_Name__c} &lt;&gt; {!$Record.Intermediary_Name__c}
+	)</filterFormula>
         <object>Account</object>
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
