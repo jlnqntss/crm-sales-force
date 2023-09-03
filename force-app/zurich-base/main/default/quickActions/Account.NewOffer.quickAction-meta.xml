@@ -5,6 +5,10 @@
         <formula>ADDMONTHS(TODAY(),1)</formula>
     </fieldOverrides>
     <fieldOverrides>
+        <field>LegalEntity__c</field>
+        <literalValue>001</literalValue>
+    </fieldOverrides>
+    <fieldOverrides>
         <field>Name</field>
         <formula>LEFT(&apos;OF&apos; &amp; TEXT(UNIXTIMESTAMP(NOW())) &amp; Account.Id, 120)</formula>
     </fieldOverrides>
