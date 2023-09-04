@@ -50,7 +50,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable {
     }
 
     /**
-    * Método TODO: finalizar descripción
+    * Método
     * *
     * @author overes | 08-31-2023
     * @param accountRecord
@@ -60,62 +60,47 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable {
     **/
     public static void processOpportunityAndPolicy(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode) {
         List<Opportunity> listOffer = new List<Opportunity>();
-        // TODO: 1. Inicializa las variables auxiliares   --->> offerToInsertUpdate = offerRecord -------------> ¿qué variables se espera inicializar?
-        Opportunity offerToInsertUpdate = new Opportunity();
+        Opportunity offerToInsertUpdate = offerRecord;
 
-        //FIXME: 2. Construye una query sobre Opportunity para obtener registros duplicados de la Oferta a procesar
+        //Construye una query sobre Opportunity para obtener registros duplicados de la Oferta a procesar
+        OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+        // List<Opportunity> duplicateOpp = oppSelector.findDuplicatesById(offerRecord.Id);
 
-        //FIXME: 2.1. Si offerRecord.InfoQuoteNumber__c == null:
         if (offerRecord.InfoQuoteNumber__c == null) {
-            listOffer = [SELECT Id, SessionId__c, InfoQuoteNumber__c, StageName FROM Opportunity
-
-            WHERE SessionId__c = :offerRecord.SessionId__c
-
-            OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
-
-            ORDER BY CreatedDate DESC];
+            listOffer = oppSelector.findOppWhenInfoQuoteNumberIsNull(offerRecord);
         } else {
-            listOffer = [SELECT Id, SessionId__c, InfoQuoteNumber__c, StageName FROM Opportunity
-
-            WHERE SessionId__c = :offerRecord.SessionId__c
-
-            OR InfoQuoteNumber__c = :offerRecord.InfoQuoteNumber__c
-
-            OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
-
-            ORDER BY CreatedDate DESC];
+            listOffer = oppSelector.findOppWhenInfoQuoteNumberIsNOTNull(offerRecord);
         }
 
-        // FIXME: 3. Ejecuta la query obtenida en el paso anterior y recorre los registros obtenidos, y para cada uno offerQuery
         for (Opportunity offerQuery : listOffer) {
             //3.1. Se debe finalizar el proceso si es alguno de los escenarios de integración 2 o 3 y existe una Oferta cerrada con el mismo QuoteNumber de INFO, o si es el escenario de integración 1 y existe una Oferta ya registrada para la misma Sesión del Asistente.
-            //TODO: minimizar la cantidad de condiciones
             if ((offerRecord.InfoQuoteNumber__c != null && offerQuery.InfoQuoteNumber__c == offerRecord.InfoQuoteNumber__c && (offerQuery.StageName == 'Cerrada-Ganada' || offerQuery.StageName == 'Cerrada-Perdida'))  || (offerRecord.InfoQuoteNumber__c == null && offerQuery.SessionId__c == offerRecord.SessionId__c)) {
                 offerToInsertUpdate = null;
                 break;
-            //3.2. Se debe actualizar la Oferta offerQuery si es alguno de los escenarios de integración 2 o 3 y existe una Oferta abierta con el mismo QuoteNumber de INFO.
             } else if (offerRecord.InfoQuoteNumber__c != null && offerQuery.InfoQuoteNumber__c == offerRecord.InfoQuoteNumber__c) {
                 offerToInsertUpdate.Id = offerQuery.Id;
-            //3.3. Se debe actualizar la Oferta offerQuery si no se cumple la condición anterior pero sí existe una Oferta abierta sin QuoteNumber de INFO para la misma Cuenta, Matrícula y Origen.
             } else if (offerToInsertUpdate.Id == null && offerQuery.InfoQuoteNumber__c == null) {
                 offerToInsertUpdate.Id = offerQuery.Id;
             }
         }
 
-        //FIXME: 5. Si offerToInsertUpdate != null && offerToInsertUpdate.Id == null: insertar registro offerToInsertUpdate
-
-        // FIXME: 6. Si offerToInsertUpdate != null && offerToInsertUpdate.Id != null: actualizar registro offerToInsertUpdate
-
-        // FIXME: 7. Si policyRecord != null: insertar registro policyRecord con las siguientes asignaciones previas
-        if (policyRecord != null) {
-            policyRecord.OpportunityName__c= offerToInsertUpdate.Id;
-            policyRecord.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
-            // pol.IntermediaryId__c = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = :offerToInsertUpdate.IntermediaryCode__c];
-            // pol.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c; 
-
-
+        if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null) {
+            insert offerToInsertUpdate;
+        } else if (offerToInsertUpdate != null && offerToInsertUpdate.Id != null) {
+            update offerToInsertUpdate;
         }
 
+        if (policyRecord != null && offerToInsertUpdate != null) {
+            Policy__c policyToInsert = policyRecord;
+            AccountsSelector accSelector = new AccountsSelector();
+            List<Account> listAcc = accSelector.findByINFOIntermediaryCode(new List<String>{(String)offerToInsertUpdate.IntermediaryCode__c});
+            policyToInsert.OpportunityName__c = offerToInsertUpdate.Id;
+            policyToInsert.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
+            if (listAcc.size() > 0) {
+                policyToInsert.IntermediaryId__c = listAcc.get(0).Id;
+            }
+            policyToInsert.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c; 
+            insert policyToInsert;
+        }
     }
-
 }

@@ -55,7 +55,10 @@ public with sharing class SalesCRMQuoteAndBuyService {
 
     public static String getOfferIntermediaryId(Lead requestData) {
         List<Account> offerIntermediaryId = new List<Account>(accountSelector.findByINFOIntermediaryCode(new List<String>{requestData.poliza.codigoIntermediario}));
-        return (String)offerIntermediaryId.get(0).Id;
+        if (offerIntermediaryId.size() > 0 ) {
+            return (String)offerIntermediaryId.get(0).Id;
+        } 
+        return null;
     }
 
     /**

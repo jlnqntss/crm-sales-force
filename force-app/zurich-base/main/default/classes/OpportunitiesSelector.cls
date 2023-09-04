@@ -51,7 +51,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @param ownerProfileNames Conjunto de nombres de perfiles para filtrar los propietarios de las ofertas
      *
      * @return                  Listado de opportunies sobre los que se ha realizado match
-     * 
+     *
      * @last modified by  : arcortazar
      */
     public List<Opportunity> selectByAccountIdScopesAndOwnerProfile(Id accountId, Set<Id> scopeIds, Set<String> ownerProfileNames)
@@ -79,7 +79,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
     /**
      * Busca Ofertas a partir del Id del cliente, del ambito.
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 04/06/2021
      * @param {Id accountId} id del cliente
@@ -103,20 +103,20 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
     /**
      * Busca Ofertas a partir del Id del cliente, del ambito.
-     * 
+     *
      * @author nts (arcortazar)
      * @date 01/02/2022
      * @param {Id id} id de la oportunidad
      * @return {List<Opportunity} ofertas encontradas
      */
     public List<Opportunity> findById(Id id)
-    {   
+    {
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Opportunity.Id,
             Opportunity.AccountId,
             Opportunity.ScopeId__c,
             Opportunity.OwnerId,
-            Opportunity.IsTest__c 
+            Opportunity.IsTest__c
         })
         .selectFields('Owner.ProfileId')
         .selectFields('Owner.Profile.Name')
@@ -126,7 +126,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
     /**
      * Busca Ofertas a partir del AccountId, ScopeId y que tenga distinto ID
-     * 
+     *
      * @author nts (arcortazar)
      * @date 01/02/2022
      * @param {Id id} id de la oportunidad
@@ -146,14 +146,14 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         .addCondition(Query.conditionNotEq(Opportunity.Id, id))
         .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
         .addCondition(Query.conditionEq(Opportunity.ScopeId__c, scope));
-        
+
         return (List<Opportunity>) this.baseQuery.run();
-        
+
     }
 
     /**
      * Busca Ofertas a partir del Id del cliente, del ambito.
-     * 
+     *
      * @author nts (arcortazar)
      * @date 30/03/2022
      * @param {Set<String> } lista de InfoQuoteNumber por los que buscar
@@ -178,7 +178,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             }
             return setInfoQuoteNumbers;
         }
-        else 
+        else
         {
             return setInfoQuoteNumbers;
         }
@@ -201,7 +201,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             })
             .addConditionIn(Opportunity.InfoQuoteNumber__c, createdOffer);
 
-           
+
 
             return (List<Opportunity>) this.baseQuery.run();
         }
@@ -214,14 +214,14 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
     /**
      * Busca Ofertas a partir del Id del cliente, del ambito.
-     * 
+     *
      * @author nts (arcortazar)
      * @date 01/02/2022
      * @param {Id id} id de la oportunidad
      * @return {List<Opportunity} ofertas encontradas
      */
     public List<Opportunity> findByName(Set<String> setNames)
-    {   
+    {
         if(setNames != null && !setNames.isEmpty())
         {
             this.baseQuery.selectFields(new Set<Schema.SObjectField>{
@@ -242,11 +242,11 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     * de intermediario, el ramo, la fecha de creación y que la oferta no esté cerrada.
     *
     * @author amiranda
-    * @date 01-09-2023 
+    * @date 01-09-2023
     * @param Id accountId Id de la cuenta asociada a la oportunidad
     * @param String intermediaryCode Código de intermedairio asociado a la oportunidad
     * @param String productBranch Ramo de la oportunidad
-    * @param Query.DateLiteral daysToRetrieve Días a tener en cuenta 
+    * @param Query.DateLiteral daysToRetrieve Días a tener en cuenta
     * @return List<Opportunity> Lista de ofertas encontradas
     **/
     public List<Opportunity> findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
@@ -287,4 +287,31 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         return retrievedOpportunities;
     }
+
+    /**
+     *
+     * *
+     * @author overes | 04-09-2023
+     *
+     */
+    public List<Opportunity> findOppWhenInfoQuoteNumberIsNull(Opportunity offerRecord) {
+        return [SELECT Id, SessionId__c, InfoQuoteNumber__c, StageName, Name, CloseDate FROM Opportunity
+        WHERE SessionId__c = :offerRecord.SessionId__c
+        OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
+        ORDER BY CreatedDate DESC];
+    }
+
+    public List<Opportunity> findOppWhenInfoQuoteNumberIsNOTNull(Opportunity offerRecord) {
+        return [SELECT Id, SessionId__c, InfoQuoteNumber__c, StageName, Name, CloseDate FROM Opportunity
+        WHERE SessionId__c = :offerRecord.SessionId__c
+        OR InfoQuoteNumber__c = :offerRecord.InfoQuoteNumber__c
+        OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
+        ORDER BY CreatedDate DESC];
+    }
+
+    // public List<Opportunity> findDuplicatesById(Id oppId) {
+    //     return [SELECT Id, Name, SessionId__c, PersonLeadSource__c, Description, PreferedContactStart__c, PreferedContactEnd__c, ProductBranch__c, InfoQuoteNumber__c, CloseDate FROM Opportunity
+    //     WHERE Id = :oppId];
+    // }
+
 }
