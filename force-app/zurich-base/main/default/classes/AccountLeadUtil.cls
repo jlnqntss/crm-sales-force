@@ -2,8 +2,8 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 28/08/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 04-09-2023
+ * @last modified by  : amiranda
 **/
 public class AccountLeadUtil
 {
@@ -26,6 +26,9 @@ public class AccountLeadUtil
      * Método que mustra el mensaje en caso que se encuentre otro registro igual
      * @author overes
      * @date 08/08/2023
+     * 
+     * @change amiranda 04/09/2023 Se cambia el mensaje a mostrar. En vez de utilizar
+     * el campo 'Name', se concatena el campo 'FirstName' + 'LastName'.
      */
     public static List<Account> checkLeads(List<Account> newList){
         List<Account> accList = newList;
@@ -37,7 +40,7 @@ public class AccountLeadUtil
                 newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
                 if (newAcc != null)
                 {
-                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + newAcc.Name + ' ' + newAcc.Id + ')');
+                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + newAcc.FirstName + ' ' + newAcc.LastName + ' ' + newAcc.Id + ')');
                 }
             }
         }

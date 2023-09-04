@@ -1,6 +1,7 @@
 @isTest
 private with sharing class OpportunitiesSelectorTest
 {
+
     @TestSetup
     public static void createScenario()
     {
@@ -340,12 +341,14 @@ private with sharing class OpportunitiesSelectorTest
     @isTest
     static void test_findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed_OK()
     {
+        String productBranchAutos = '0000000001';
+        
         Account accRelatedToOffer = [SELECT INFOIntermediaryCode__c FROM Account LIMIT 1];
 
         Opportunity offer = [SELECT AccountId, IntermediaryCode__c, ProductBranch__c FROM Opportunity LIMIT 1];
         offer.AccountId = accRelatedToOffer.Id;
         offer.IntermediaryCode__c = accRelatedToOffer.INFOIntermediaryCode__c;
-        offer.ProductBranch__c = 'AUTOS';
+        offer.ProductBranch__c = productBranchAutos;
         offer.StageName = 'Legit Lead';
         update offer;
 
@@ -353,7 +356,7 @@ private with sharing class OpportunitiesSelectorTest
         List<Opportunity> offers = new OpportunitiesSelector().findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
             accRelatedToOffer.Id,
             accRelatedToOffer.INFOIntermediaryCode__c,
-            'AUTOS',
+            productBranchAutos,
             Query.last_n_days(7) );
         Test.stopTest();
 
