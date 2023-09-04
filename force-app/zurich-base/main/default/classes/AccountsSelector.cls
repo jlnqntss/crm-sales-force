@@ -1,9 +1,9 @@
 /**
- * @description       : 
- * @author            : 
- * @group             : 
- * @last modified on  : 08-16-2023
- * @last modified by  : aberuete
+ * @description       :
+ * @author            :
+ * @group             :
+ * @last modified on  : 28/08/2023
+ * @last modified by  : jgallaga
 **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -736,13 +736,13 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-    * Recupera las cuentas y los contactpointemails asociadas a ellas filtrando por tipo de cuenta, recordtype name y 
+    * Recupera las cuentas y los contactpointemails asociadas a ellas filtrando por tipo de cuenta, recordtype name y
     * que exista al menos un contactpointemail asociado para una lista de emails dada
     * @author aberuete
     * @date 16/08/2023
-    * @param List<String> emails : Lista de direcciones de correo 
+    * @param List<String> emails : Lista de direcciones de correo
     * @param List<String> recordTypeNames : Lista de record type names
-    * @param List<String> typeNames : Lista de tipos de cuenta 
+    * @param List<String> typeNames : Lista de tipos de cuenta
     */
     public List<Account> findByEmailAdressRecordTypeNameAndType (List<String> emails,List<String> recordTypeNames, List<String> typeNames )
     {
@@ -752,18 +752,18 @@ public with sharing class AccountsSelector extends RecordsSelector
             });
         subquery.addConditionIn(ContactPointEmail.EmailAddress, emails);
 
-        this.baseQuery.selectFields 
+        this.baseQuery.selectFields
         (
-            new List<Schema.SObjectField> 
+            new List<Schema.SObjectField>
             {
                 Account.Id,
                 Account.PersonContactId
             }
         );
-        
+
         this.baseQuery.addSubquery(Query.subquery('ContactPointEmails').selectFields
         (
-            new List<Schema.SObjectField> 
+            new List<Schema.SObjectField>
             {
                 ContactPointEmail.EmailAddress
             }
@@ -785,13 +785,13 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-    * Recupera las cuentas y los contactpointphones asociadas a ellas filtrando por tipo de cuenta, recordtype name y 
+    * Recupera las cuentas y los contactpointphones asociadas a ellas filtrando por tipo de cuenta, recordtype name y
     * que exista al menos un contactpointphone asociado para una lista de teléfonos dada
     * @author aberuete
     * @date 16/08/2023
     * @param List<String> phones : Lista de teléfonos
     * @param List<String> recordTypeNames : Lista de record type names
-    * @param List<String> typeNames : Lista de tipos de cuenta 
+    * @param List<String> typeNames : Lista de tipos de cuenta
     */
     public List<Account> findByPhoneRecordTypeNameAndType (List<String> phones,List<String> recordTypeNames, List<String> typeNames )
     {
@@ -801,18 +801,18 @@ public with sharing class AccountsSelector extends RecordsSelector
             });
         subquery.addConditionIn(ContactPointPhone.TelephoneNumber, phones);
 
-        this.baseQuery.selectFields 
+        this.baseQuery.selectFields
         (
-            new List<Schema.SObjectField> 
+            new List<Schema.SObjectField>
             {
                 Account.Id,
                 Account.PersonContactId
             }
         );
-        
+
         this.baseQuery.addSubquery(Query.subquery('ContactPointPhones').selectFields
         (
-            new List<Schema.SObjectField> 
+            new List<Schema.SObjectField>
             {
                 ContactPointPhone.TelephoneNumber
             }
@@ -860,7 +860,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         this.baseQuery.addCondition(condition);
 
-        return this.baseQuery.toQueryString();  
+        return this.baseQuery.toQueryString();
     }
     /**
      * Método utilizado por OpenIDConnectSalesforceCommunity para buscar la cuenta dummy a la que asociar los usuarios
@@ -879,6 +879,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         return result;
 
     }
+
     /**
      * Método que obtiene los cuentas tipo Lead que no tengan ofertas asociadas para borrarlas
      **
@@ -891,4 +892,74 @@ public with sharing class AccountsSelector extends RecordsSelector
             'SELECT Id from Account WHERE Id NOT IN (select AccountId from Opportunity) AND RecordType.Name=\'Lead\'';
         return query;
     }
+
+    /**
+     * Método que obtiene las cuentas filtradas por un conjunto de ids de cuentas, recordtype name y tipo de cuenta
+     **
+     * @author aberuete
+     * @date 22/08/2023
+     * @param Set<Id> accountIds: Conjunto de ids de cuentas
+     * @param List<String> recordtypeNames : Lista de record type names
+     * @param List<String> typeNames : Lista de nombres de tipo de cuenta
+     **/
+    public List<Account> findByAccountIdsRecordTypeNameAndType (Set<Id> accountIds, List<String> recordtypeNames, List<String> typeNames)
+    {
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.PersonContactId
+            }
+        );
+
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty() )
+        {
+            this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
+        }
+
+        if ( typeNames != null && !typeNames.isEmpty() )
+        {
+            this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
+        }
+
+        return (List<Account>) this.baseQuery.byId(accountIds).run();
+    }
+
+    /**
+     * @description Selector para conseguir las cuentas que tenga el código intermediario en el campo INFOIntermediaryCode__c
+     * @author      jgallaga
+     * @date        16/08/2023
+     * *
+     * @modification
+     *              El query selector parece no ser capaz de recoger un campo del Parent, por lo que la query original no
+     *              funciona. Se pone directamente la query para poder recuperar la información necesaria.
+     */
+    public List<Account> findByINFOIntermediaryCode(List<String> intermediaryCodes)
+    {
+        List<Account> intermediaryAccounts = new List<Account>();
+
+        if(intermediaryCodes == null || intermediaryCodes.isEmpty())
+        {
+            return intermediaryAccounts;
+        }
+
+        this.baseQuery.selectFields(new List<Schema.SObjectField>{
+            Account.INFOIntermediaryCode__c,
+            Account.Parent.IntermediaryWithUser__c,
+            Account.ParentId
+        });
+
+        this.baseQuery.addConditionIn(Account.INFOIntermediaryCode__c, intermediaryCodes);
+        this.baseQuery.addConditionNotEq(Account.Parent.IntermediaryWithUser__c, null);
+
+        return
+        [
+            SELECT  INFOIntermediaryCode__c, ParentId, Parent.IntermediaryWithUser__c
+            FROM    Account
+            WHERE   INFOIntermediaryCode__c IN :intermediaryCodes
+            AND     Parent.IntermediaryWithUser__c != null
+        ];
+    }
+
 }

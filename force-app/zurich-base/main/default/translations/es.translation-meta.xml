@@ -209,6 +209,10 @@
         <name>LeadLife</name>
     </customLabels>
     <customLabels>
+        <label>Ya existe una Cuenta con el mismo Documento de identidad o Teléfono</label>
+        <name>Lead_Duplicates_Control_Error</name>
+    </customLabels>
+    <customLabels>
         <label><!-- LegalEntityError --></label>
         <name>LegalEntityError</name>
     </customLabels>

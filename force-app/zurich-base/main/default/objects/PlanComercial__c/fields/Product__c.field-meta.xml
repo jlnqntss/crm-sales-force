@@ -69,6 +69,11 @@
                 <label>Resto</label>
             </value>
             <value>
+                <fullName>Communitdades</fullName>
+                <default>false</default>
+                <label>Communities</label>
+            </value>
+            <value>
                 <fullName>Resto Particulares</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -110,6 +115,10 @@
             <controllingFieldValue>Particulares</controllingFieldValue>
             <controllingFieldValue>PYMEs</controllingFieldValue>
             <valueName>Resto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Particulares</controllingFieldValue>
+            <valueName>Communitdades</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>PYMEs</controllingFieldValue>

@@ -270,7 +270,6 @@ public with sharing class CaseUtil
      */
     public static void assignAccountAndContactFromDniSuppliedEmailAndPhone (List<Case> newList)
     {
-        Integer numAccount;
         List<String> nationalIds = new List<String>();
         List<String> emails = new List<String>();
         List<String> phones = new List<String>();
@@ -281,9 +280,19 @@ public with sharing class CaseUtil
 
         for (Case newCase : newList)
         {
-            nationalIds.add(newCase.RobotNif__c);
-            emails.add(newCase.SuppliedEmail);
-            phones.add(newCase.SuppliedPhone);
+            if (newCase.RobotNif__c != null)
+            {
+                nationalIds.add(newCase.RobotNif__c);
+            }
+
+            if (newCase.SuppliedEmail != null)
+            {
+                emails.add(newCase.SuppliedEmail);
+            }
+            if (newCase.SuppliedPhone != null)
+            {
+                phones.add(newCase.SuppliedPhone);
+            }
         }
 
         mapAccountsByNatinalId = getMapOfAccountRelatedByNatinalId (nationalIds);
@@ -292,30 +301,7 @@ public with sharing class CaseUtil
         
         for (Case caseToUpdate : newList)
         {
-            numAccount = numAccountsByNationalId (caseToUpdate, mapAccountsByNatinalId );
-            if ( numAccount == 1 )
-            {
-                caseToUpdate.AccountId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].Id;
-                caseToUpdate.ContactId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].PersonContactId;
-            }
-            else if (numAccount == 0)
-            {
-                numAccount = numAccountsByEmail (caseToUpdate, mapAccountsByEmails);
-                if (numAccount == 1)
-                {
-                    caseToUpdate.AccountId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].Id;
-                    caseToUpdate.ContactId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].PersonContactId;
-                }
-                else if (numAccount == 0)
-                {
-                    numAccount = numAccountsByPhone (caseToUpdate, mapAccountsByPhones);
-                    if ( numAccount == 1)
-                    {
-                        caseToUpdate.AccountId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].Id;
-                        caseToUpdate.ContactId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].PersonContactId;
-                    }
-                }
-            }
+            caseToUpdate = getAccountAndContactToAssign (caseToUpdate, mapAccountsByNatinalId, mapAccountsByEmails, mapAccountsByPhones);
         }   
     }
 
@@ -1094,7 +1080,7 @@ public with sharing class CaseUtil
      * Método que genera un mapa de lista de cuentas por dni. 
      **
      * @author aberuete
-     * @date 16/08/2023
+     * @date 22/08/2023
      * @param List<String> nationalIds : Lista de dnis
      */
     private static Map<String,List<Account>> getMapOfAccountRelatedByNatinalId (List<String> nationalIds)
@@ -1120,29 +1106,52 @@ public with sharing class CaseUtil
      * Método que genera un mapa de lista de cuentas por email. 
      **
      * @author aberuete
-     * @date 16/08/2023
+     * @date 22/08/2023
      * @param List<String> emails : Lista de emails
      */
     private static Map<String, List<Account>> getMapOfAccountRelatedByEmail (List<String> emails)
     {
+        Map<Id,List<String>> mapIdAccountByEmails = new Map <Id, List<String>> ();
         Map<String,List<Account>> mapAccountsByEmails = new Map<String,List<Account>> ();
-        List<Account> accountsByEmail = new AccountsSelector().findByEmailAdressRecordTypeNameAndType (emails, new List<String> {'Customer'}, new List<String>{'F','J'} );
+        List<ContactPointEmail> contactPointsEmail = new List<ContactPointEmail> ();
 
-        if (!accountsByEmail.isEmpty())
+        if ( !emails.isEmpty() && emails != null)
         {
-            for (Account accountbyEmail : accountsByEmail) 
+            contactPointsEmail = [FIND :String.join(emails, ' OR ') IN EMAIL FIELDS RETURNING ContactPointEmail(Id, ParentId,EmailAddress )][0];
+        }
+
+        for (ContactPointEmail contactPointEmail :contactPointsEmail)
+        {
+            List<String> accountIdListByEmails = mapIdAccountByEmails.get(contactPointEmail.ParentId);
+
+            if (accountIdListByEmails == null) 
             {
-                for (Integer i=0; i<accountbyEmail.ContactPointEmails.size(); i++)
+                accountIdListByEmails = new List<String>();
+                mapIdAccountByEmails.put(contactPointEmail.ParentId, accountIdListByEmails);
+            }
+            accountIdListByEmails.add(contactPointEmail.EmailAddress);
+        }
+
+        if (!mapIdAccountByEmails.isEmpty())
+        {
+            List<Account> accountsToRelate = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(mapIdAccountByEmails.keySet(), new List<String> {'Customer'}, new List<String>{'F','J'});
+            
+            for (Account accountToRelate : accountsToRelate)
+            {
+                List<String> emailsList = mapIdAccountByEmails.get(accountToRelate.id);
+                
+                for (String email : emailsList) 
                 {
-                    List<Account> accountListByEmails = mapAccountsByEmails.get(accountbyEmail.ContactPointEmails.get(i).EmailAddress);
+                    List<Account> accountListByEmails = mapAccountsByEmails.get(email);
+                    
                     if( accountListByEmails == null ) 
                     {
                         accountListByEmails = new List<Account>();
-                        mapAccountsByEmails.put(accountbyEmail.ContactPointEmails.get(i).EmailAddress, accountListByEmails);
+                        mapAccountsByEmails.put(email, accountListByEmails);
                     }
-                    accountListByEmails.add(accountbyEmail);  
-                }
-            }
+                    accountListByEmails.add(accountToRelate);  
+                } 
+            }  
         }
         return mapAccountsByEmails;
     }
@@ -1156,27 +1165,47 @@ public with sharing class CaseUtil
      */
     private static Map<String, List<Account>> getMapOfAccountRelatedByPhone (List<String> phones)
     {
+        Map<Id,List<String>> mapIdAccountByPhones = new Map <Id, List<String>> ();
         Map<String,List<Account>> mapAccountsByPhones = new Map<String,List<Account>> ();
-        List<Account> accountsByPhone =  new AccountsSelector().findByPhoneRecordTypeNameAndType (phones, new List<String> {'Customer'}, new List<String>{'F','J'});
-
-        if (!accountsByPhone.isEmpty())
+        List<ContactPointPhone> contactPointsPhone = new List<ContactPointPhone> ();
+        
+        if ( !phones.isEmpty() && phones != null)
         {
-            for (Account accountByPhone : accountsByPhone) 
-            {
-                for (Integer i=0; i<accountByPhone.ContactPointPhones.size(); i++)
-                {
-                    List<Account> accountListByPhones = mapAccountsByPhones.get(accountByPhone.ContactPointPhones.get(i).TelephoneNumber);
+            contactPointsPhone = [FIND :String.join(phones, ' OR ') IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, TelephoneNumber)][0];
+        }
 
+        for (ContactPointPhone contactPointPhone :contactPointsPhone)
+        {
+            List<String> accountIdListByPhones = mapIdAccountByPhones.get(contactPointPhone.ParentId);
+
+            if (accountIdListByPhones == null) 
+            {
+                accountIdListByPhones = new List<String>();
+                mapIdAccountByPhones.put(contactPointPhone.ParentId, accountIdListByPhones);
+            }
+            accountIdListByPhones.add(contactPointPhone.TelephoneNumber);
+        }
+        
+        if (!mapIdAccountByPhones.isEmpty())
+        {
+            List<Account> accountsToRelate = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(mapIdAccountByPhones.keySet(), new List<String> {'Customer'}, new List<String>{'F','J'});
+
+            for (Account accountToRelate : accountsToRelate)
+            {
+                List<String> phonesList = mapIdAccountByPhones.get(accountToRelate.id);
+                
+                for (String phone : phonesList) 
+                {
+                    List<Account> accountListByPhones = mapAccountsByPhones.get(phone);
                     if( accountListByPhones == null ) 
                     {
                         accountListByPhones = new List<Account>();
-                        mapAccountsByPhones.put(accountByPhone.ContactPointPhones.get(i).TelephoneNumber, accountListByPhones);
+                        mapAccountsByPhones.put(phone, accountListByPhones);
                     }
-                    accountListByPhones.add(accountByPhone);  
-                }
-            }
+                    accountListByPhones.add(accountToRelate);  
+                }    
+            } 
         }
-
         return mapAccountsByPhones;
     }
 
@@ -1232,6 +1261,48 @@ public with sharing class CaseUtil
             numAccounts = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone).size();
         } 
         return numAccounts;
+    }
+
+    /**
+     * Método que asigna una cuenta y contacto a un caso en caso de que haya una unica cuenta a asignar por dni,email y teléfono. 
+     **
+     * @author aberuete
+     * @date 23/08/2023
+     * @param Case caseToUpdate : caso
+     * @param Map<String,List<Account>> mapAccountsByNatinalId : Mapa de lista de cuentas por dni
+     * @param Map<String,List<Account>> mapAccountsByEmails : Mapa de lista de cuentas por email
+     * @param Map<String,List<Account>> mapAccountsByPhones : Mapa de lista de cuentas por teléfono
+     */
+    private static Case getAccountAndContactToAssign (Case caseToUpdate, Map<String,List<Account>> mapAccountsByNatinalId, Map<String,List<Account>> mapAccountsByEmails, Map<String,List<Account>> mapAccountsByPhones)
+    {
+        Integer numAccount = numAccountsByNationalId (caseToUpdate, mapAccountsByNatinalId );
+
+        if ( numAccount == 1 )
+        {
+            caseToUpdate.AccountId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].Id;
+            caseToUpdate.ContactId = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c)[0].PersonContactId;
+        }
+        else if (numAccount == 0)
+        {
+            numAccount = numAccountsByEmail (caseToUpdate, mapAccountsByEmails);
+
+            if (numAccount == 1)
+            {
+                caseToUpdate.AccountId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].Id;
+                caseToUpdate.ContactId = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail)[0].PersonContactId;
+            }
+            else if (numAccount == 0)
+            {
+                numAccount = numAccountsByPhone (caseToUpdate, mapAccountsByPhones);
+
+                if ( numAccount == 1)
+                {
+                    caseToUpdate.AccountId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].Id;
+                    caseToUpdate.ContactId = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone)[0].PersonContactId;
+                }
+            }
+        }
+        return caseToUpdate;
     }
 
 }

@@ -2,8 +2,8 @@
  * @description       : Clase de test para la clase selectora del sobject User
  * @author            : aberuete
  * @group             :
- * @last modified on  : 02-20-2023
- * @last modified by  : aberuete
+ * @last modified on  : 18/08/2023
+ * @last modified by  : jgallaga
  **/
 @isTest
 private with sharing class UsersSelectorTest
@@ -141,17 +141,58 @@ private with sharing class UsersSelectorTest
         System.assertEquals(userList.size(), userQuery.size(), 'No se ha encontrado el número esperado');
     }
 
+    /**
+     * @description Test que comprueba que se recupera un usuario a partir de su alias.
+     * @author      jgallaga
+     * @date        18/08/2023
+     */
     @isTest
-    static void test_findByAlias()
+    static void test_findUsersByAlias_OK()
     {
+        String testAlias = 'fiali';
+        List<User> aliasesTestUsers = new List<User>();
 
-        List<User> userList = new List<User>([SELECT Id, Alias FROM User WHERE IsActive = TRUE LIMIT 1]);
+        Profile testForProfile = [Select Id from Profile where name = 'Super User']; // Perfil de comunidad de agentes de Mi Agencia
+
+        User aliasTestUser = new User(
+            Username        = 'testFindAliasZurich1@zurich.com',
+            Alias           = testAlias,
+            Email           = 'testFindAlias@zurich.com',
+            EmailEncodingKey ='UTF-8',
+            Firstname       = 'Test',
+            Lastname        = 'Find Alias',
+            LanguageLocaleKey ='es',
+            LocaleSidKey    = 'es',
+            TimeZoneSidKey  = 'Europe/Madrid',
+            ProfileId       = testForProfile.Id
+        );
+
+        User aliasTestUserNOT = new User(
+            Username        = 'testFindAliasZurich2@zurich.com',
+            Alias           = testAlias + 'not',
+            Email           = 'testFindAlias@zurich.com',
+            EmailEncodingKey ='UTF-8',
+            Firstname       = 'Test',
+            Lastname        = 'Find Alias',
+            LanguageLocaleKey ='es',
+            LocaleSidKey    = 'es',
+            TimeZoneSidKey  = 'Europe/Madrid',
+            ProfileId       = testForProfile.Id
+        );
+
+        aliasesTestUsers.add(aliasTestUser);
+        aliasesTestUsers.add(aliasTestUserNOT);
+
+        insert aliasesTestUsers;
+
+        UsersSelector userSelection = new UsersSelector();
 
         Test.startTest();
-        User userQuery = ( new UsersSelector() ).findByAlias(userList[0].alias);
+        List<User> results = userSelection.findUsersByAlias(new List<String>{testAlias});
         Test.stopTest();
 
-        System.assertEquals(true, userQuery != null, 'Debe encontrar uno');
+        Assert.isTrue(results.size() == 1, 'Se ha encontrado mas de un usuario con el alias de test');
+        Assert.areEqual(testAlias, results.get(0).Alias, 'El alias del usuario recuperado no es el esperado');
     }
 
     @isTest

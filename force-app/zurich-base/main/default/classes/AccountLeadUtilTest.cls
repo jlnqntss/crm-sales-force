@@ -92,7 +92,7 @@ private class AccountLeadUtilTest
     @isTest
     static void testcheckLeads()
     {
-        List<Account> a = [SELECT Id,NationalId__c,Phone FROM account WHERE NationalId__c = '222'];
+        List<Account> a = [SELECT Id,NationalId__c,Phone,RecordType.DeveloperName FROM account WHERE NationalId__c = '222'];
 
         Test.startTest();
         List<Account> acc = AccountLeadUtil.checkLeads(a);
