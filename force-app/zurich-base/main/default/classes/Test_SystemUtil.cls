@@ -344,7 +344,7 @@ public class Test_SystemUtil
 
         Test.startTest();
         SystemUtil.contactsSelectorMatchCode(keys, mobiles, null, null, null, mapa);
-        
+
         System.assert (
             !mapa.isEmpty(),
             'Test_SystemUtil: No se han podido recuperar los contactos'
@@ -637,4 +637,38 @@ public class Test_SystemUtil
 
         System.assertNotEquals(0, resultados.keySet().size());
     }
+
+    @isTest
+    static void test_getSandboxName_OK()
+    {
+        String instanceName;
+        Boolean sandbox = [SELECT isSandbox FROM Organization LIMIT 1].isSandbox;
+
+        Test.startTest();
+        instanceName = SystemUtil.getSandboxName();
+        Test.stopTest();
+
+        if(sandbox)
+        {
+            Assert.isTrue(String.isNotBlank(instanceName));
+        }
+        else
+        {
+            Assert.isTrue(String.isBlank(instanceName));
+        }
+    }
+
+    @isTest
+    static void test_getInstanceURL_OK()
+    {
+        String instanceURL = URL.getSalesforceBaseUrl().toExternalForm();
+        String testURL;
+
+        Test.startTest();
+        testURL = SystemUtil.getInstanceUrl();
+        Test.stopTest();
+
+        Assert.areEqual(instanceURL, testURL, 'La URL de la instancia no coincide');
+    }
+
 }

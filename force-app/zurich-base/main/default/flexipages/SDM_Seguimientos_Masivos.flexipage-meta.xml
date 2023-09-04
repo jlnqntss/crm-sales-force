@@ -12,7 +12,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>componentTitle</name>
-                    <value>Seguimientos asociados a cuentas de intermediario</value>
+                    <value>Seguimiento (Formacion, Saneamiento y Salto de Tramo) - Cuentas de intermediario</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>hasRecordId</name>
@@ -27,6 +27,28 @@
                 </componentInstanceProperties>
                 <componentName>pw_si:CuratedImport</componentName>
                 <identifier>pw_si_CuratedImport</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>buttonText</name>
+                    <value>Importar Seguimientos</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentTitle</name>
+                    <value>Seguimiento (Campañas) - Cuentas de intermediario</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hasRecordId</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>mappingId</name>
+                    <value>54152</value>
+                </componentInstanceProperties>
+                <componentName>pw_si:CuratedImport</componentName>
+                <identifier>pw_si_CuratedImport3</identifier>
             </componentInstance>
         </itemInstances>
         <name>column1</name>
@@ -44,7 +66,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>componentTitle</name>
-                    <value>Seguimientos asociados a cuentas de agrupación de mediadores</value>
+                    <value>Seguimiento (Formacion, Saneamiento y Salto de Tramo) - Cuentas de agrupación CIF</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>hasRecordId</name>
@@ -59,6 +81,34 @@
                 </componentInstanceProperties>
                 <componentName>pw_si:CuratedImport</componentName>
                 <identifier>pw_si_CuratedImport2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>buttonText</name>
+                    <value>Importar Seguimientos</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentMessage</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentTitle</name>
+                    <value>Seguimiento (Campañas) - Cuentas de agrupación CIF</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hasRecordId</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>mappingId</name>
+                    <value>54153</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sourceRecordId</name>
+                </componentInstanceProperties>
+                <componentName>pw_si:CuratedImport</componentName>
+                <identifier>pw_si_CuratedImport4</identifier>
             </componentInstance>
         </itemInstances>
         <name>column2</name>
