@@ -69,4 +69,16 @@
         </criteriaItems>
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Ventas_CC_Ofertas_Agente_Venta</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Un usuario de Venta CC puede editar las ofertas de un mediador ZRM</description>
+        <label>Ventas_CC_Ofertas_Agente_Venta</label>
+        <sharedTo>
+            <group>Write_Ventas_CC</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>Ventas_Agente_Mediador</group>
+        </sharedFrom>
+    </sharingOwnerRules>
 </SharingRules>
