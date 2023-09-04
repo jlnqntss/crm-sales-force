@@ -4,6 +4,9 @@
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>CreateCallList</excludeButtons>
     <excludeButtons>CreateSurveyInvitation</excludeButtons>
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -48,6 +51,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Channel__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>TestPorcentaje__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -100,8 +107,6 @@
                 <behavior>Edit</behavior>
                 <field>TrainerEmail__c</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CsmAdministrationManager__c</field>
@@ -110,6 +115,8 @@
                 <behavior>Edit</behavior>
                 <field>CsmIndividualsManager__c</field>
             </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CsmPhone__c</field>
@@ -133,6 +140,14 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>SAMTechnicalIssues__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Category__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Category_Version__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
