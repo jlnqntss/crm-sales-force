@@ -38,7 +38,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>RecordTypeId</field>
+                <field>RecordType__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>

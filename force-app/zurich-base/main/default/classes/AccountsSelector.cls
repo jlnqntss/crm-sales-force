@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 31-08-2023
+ * @last modified on  : 04-09-2023
  * @last modified by  : amiranda
 **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -739,7 +739,106 @@ public with sharing class AccountsSelector extends RecordsSelector
             return new List<Account>();
         }
     }
-    
+
+    /**
+    * Recupera las cuentas y los contactpointemails asociadas a ellas filtrando por tipo de cuenta, recordtype name y
+    * que exista al menos un contactpointemail asociado para una lista de emails dada
+    * @author aberuete
+    * @date 16/08/2023
+    * @param List<String> emails : Lista de direcciones de correo
+    * @param List<String> recordTypeNames : Lista de record type names
+    * @param List<String> typeNames : Lista de tipos de cuenta
+    */
+    public List<Account> findByEmailAdressRecordTypeNameAndType (List<String> emails,List<String> recordTypeNames, List<String> typeNames )
+    {
+        Query subquery = new Query(ContactPointEmail.getSObjectType());
+        subquery.selectFields(new List<Schema.SObjectField> {
+            ContactPointEmail.ParentId
+            });
+        subquery.addConditionIn(ContactPointEmail.EmailAddress, emails);
+
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.PersonContactId
+            }
+        );
+
+        this.baseQuery.addSubquery(Query.subquery('ContactPointEmails').selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                ContactPointEmail.EmailAddress
+            }
+        )
+        .addConditionIn(ContactPointEmail.EmailAddress,emails)
+        );
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty())
+        {
+            this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
+        }
+
+        if ( typeNames != null && !typeNames.isEmpty())
+        {
+            this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
+        }
+
+        this.baseQuery.addConditionIn(Account.Id, subquery);
+        return (List<Account>)this.baseQuery.run();
+    }
+
+    /**
+    * Recupera las cuentas y los contactpointphones asociadas a ellas filtrando por tipo de cuenta, recordtype name y
+    * que exista al menos un contactpointphone asociado para una lista de teléfonos dada
+    * @author aberuete
+    * @date 16/08/2023
+    * @param List<String> phones : Lista de teléfonos
+    * @param List<String> recordTypeNames : Lista de record type names
+    * @param List<String> typeNames : Lista de tipos de cuenta
+    */
+    public List<Account> findByPhoneRecordTypeNameAndType (List<String> phones,List<String> recordTypeNames, List<String> typeNames )
+    {
+        Query subquery = new Query(ContactPointPhone.getSObjectType());
+        subquery.selectFields(new List<Schema.SObjectField> {
+            ContactPointPhone.ParentId
+            });
+        subquery.addConditionIn(ContactPointPhone.TelephoneNumber, phones);
+
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.PersonContactId
+            }
+        );
+
+        this.baseQuery.addSubquery(Query.subquery('ContactPointPhones').selectFields
+        (
+            new List<Schema.SObjectField>
+            {
+                ContactPointPhone.TelephoneNumber
+            }
+        )
+        .addConditionIn(ContactPointPhone.TelephoneNumber,phones)
+        );
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty())
+        {
+            this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
+        }
+
+        if ( typeNames != null && !typeNames.isEmpty())
+        {
+            this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
+        }
+
+        this.baseQuery.addConditionIn(Account.Id, subquery);
+        return (List<Account>)this.baseQuery.run();
+    }
+
+
     /**
      * Método utilizado por el batch Batch_RatioConversionIntermediary para definir el scope
      * @author lrodriguez6@seidor.es
@@ -766,7 +865,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         this.baseQuery.addCondition(condition);
 
-        return this.baseQuery.toQueryString();  
+        return this.baseQuery.toQueryString();
     }
     /**
      * Método utilizado por OpenIDConnectSalesforceCommunity para buscar la cuenta dummy a la que asociar los usuarios
@@ -810,9 +909,9 @@ public with sharing class AccountsSelector extends RecordsSelector
      **/
     public List<Account> findByAccountIdsRecordTypeNameAndType (Set<Id> accountIds, List<String> recordtypeNames, List<String> typeNames)
     {
-        this.baseQuery.selectFields 
+        this.baseQuery.selectFields
         (
-            new List<Schema.SObjectField> 
+            new List<Schema.SObjectField>
             {
                 Account.Id,
                 Account.PersonContactId
@@ -831,4 +930,41 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return (List<Account>) this.baseQuery.byId(accountIds).run();
     }
+
+    /**
+     * @description Selector para conseguir las cuentas que tenga el código intermediario en el campo INFOIntermediaryCode__c
+     * @author      jgallaga
+     * @date        16/08/2023
+     * *
+     * @modification
+     *              El query selector parece no ser capaz de recoger un campo del Parent, por lo que la query original no
+     *              funciona. Se pone directamente la query para poder recuperar la información necesaria.
+     */
+    public List<Account> findByINFOIntermediaryCode(List<String> intermediaryCodes)
+    {
+        List<Account> intermediaryAccounts = new List<Account>();
+
+        if(intermediaryCodes == null || intermediaryCodes.isEmpty())
+        {
+            return intermediaryAccounts;
+        }
+
+        this.baseQuery.selectFields(new List<Schema.SObjectField>{
+            Account.INFOIntermediaryCode__c,
+            Account.Parent.IntermediaryWithUser__c,
+            Account.ParentId
+        });
+
+        this.baseQuery.addConditionIn(Account.INFOIntermediaryCode__c, intermediaryCodes);
+        this.baseQuery.addConditionNotEq(Account.Parent.IntermediaryWithUser__c, null);
+
+        return
+        [
+            SELECT  INFOIntermediaryCode__c, ParentId, Parent.IntermediaryWithUser__c
+            FROM    Account
+            WHERE   INFOIntermediaryCode__c IN :intermediaryCodes
+            AND     Parent.IntermediaryWithUser__c != null
+        ];
+    }
+
 }

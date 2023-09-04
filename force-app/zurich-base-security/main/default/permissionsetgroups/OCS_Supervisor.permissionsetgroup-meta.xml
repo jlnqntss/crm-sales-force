@@ -2,6 +2,7 @@
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
     <hasActivationRequired>false</hasActivationRequired>
     <label>OCS Supervisor</label>
+    <mutingPermissionSets>OCS_Supervisor_Muted</mutingPermissionSets>
     <permissionSets>Acceso_App_OCS</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>

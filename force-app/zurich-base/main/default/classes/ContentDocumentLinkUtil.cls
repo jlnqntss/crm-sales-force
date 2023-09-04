@@ -83,22 +83,19 @@ public with sharing class ContentDocumentLinkUtil
             {
                 Map<String, String> typeValuesMap = new Map<String, String>();
 
-                if( String.isNotBlank(fieldMapping.Type__c) )
-                {
-                    typeValuesMap.put('Type', fieldMapping.Type__c);
-                    typeValuesMap.put('RobotTypeN1__c', fieldMapping.Type__c);
-                }
-                if( String.isNotBlank(fieldMapping.Subtype__c) )
-                {
-                    typeValuesMap.put('Subtype__c', fieldMapping.Subtype__c);
-                    typeValuesMap.put('RobotTypeN2__c', fieldMapping.Subtype__c);
-                }
-                if( String.isNotBlank(fieldMapping.TypeN3__c) )
-                {
-                    typeValuesMap.put('TypeN3__c', fieldMapping.TypeN3__c);
-                    typeValuesMap.put('RobotTypeN3__c', fieldMapping.TypeN3__c);
-                }
+                // OCS-8133 - arcortazar - 31/08/2023: 
+                // Cambiamos y cargamos los valores aunque estén en blanco. Así, si el caso ya habia heredado 
+                // valores de un posible caso padre, se limpiarán con los correctos
 
+                typeValuesMap.put('Type', fieldMapping.Type__c);
+                typeValuesMap.put('RobotTypeN1__c', fieldMapping.Type__c);
+                
+                typeValuesMap.put('Subtype__c', fieldMapping.Subtype__c);
+                typeValuesMap.put('RobotTypeN2__c', fieldMapping.Subtype__c);
+            
+                typeValuesMap.put('TypeN3__c', fieldMapping.TypeN3__c);
+                typeValuesMap.put('RobotTypeN3__c', fieldMapping.TypeN3__c);
+                
                 caseTypesMapping.put(fieldMapping.SourceType__c + fieldMapping.SourceSubtype__c, typeValuesMap);
             }
         }
