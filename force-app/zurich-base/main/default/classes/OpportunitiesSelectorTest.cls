@@ -5,6 +5,10 @@ private with sharing class OpportunitiesSelectorTest
     public static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
+        for (Account account : accounts)
+        {
+            account.INFOIntermediaryCode__c = String.valueOf( (Math.random() * 100000000).intValue() );
+        }
         insert accounts;
 
         List<Scope__c> scopes = TestDataFactory.generateScopesForEachAccount(accounts, 'ZE', 1);
@@ -325,5 +329,35 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(0, resultados.size(), 'Ls lista devuelta ha de estar vacía');
     }
 
+    /**
+    * @description Método que se encarga de comprobar el correcto funcionamiento
+    * del método 'findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed'
+    * de la clase 'OpportunitiesSelector'.
+    *
+    * @author amiranda
+    * @date 04-09-2023 
+    **/
+    @isTest
+    static void test_findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed_OK()
+    {
+        Account accRelatedToOffer = [SELECT INFOIntermediaryCode__c FROM Account LIMIT 1];
+
+        Opportunity offer = [SELECT AccountId, IntermediaryCode__c, ProductBranch__c FROM Opportunity LIMIT 1];
+        offer.AccountId = accRelatedToOffer.Id;
+        offer.IntermediaryCode__c = accRelatedToOffer.INFOIntermediaryCode__c;
+        offer.ProductBranch__c = 'AUTOS';
+        offer.StageName = 'Legit Lead';
+        update offer;
+
+        Test.startTest();
+        List<Opportunity> offers = new OpportunitiesSelector().findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
+            accRelatedToOffer.Id,
+            accRelatedToOffer.INFOIntermediaryCode__c,
+            'AUTOS',
+            Query.last_n_days(7) );
+        Test.stopTest();
+
+        Assert.isFalse(offers.isEmpty(), 'Offers list should not be empty');
+    }
 
 }
