@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tipo de asignación</label>
+    <name>AssignmentType__c</name>
+    <picklistValues>
+        <masterLabel>Direct</masterLabel>
+        <translation>Directa</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Municipality</masterLabel>
+        <translation>Municipio</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Province</masterLabel>
+        <translation>Provincia</translation>
+    </picklistValues>
+</CustomFieldTranslation>
