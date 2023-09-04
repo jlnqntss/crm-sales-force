@@ -52,10 +52,6 @@
                 <behavior>Edit</behavior>
                 <field>Channel__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>TestPorcentaje__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
