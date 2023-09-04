@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Role xmlns="http://soap.sforce.com/2006/04/metadata">
-    <caseAccessLevel>None</caseAccessLevel>
-    <contactAccessLevel>None</contactAccessLevel>
+    <caseAccessLevel>Edit</caseAccessLevel>
+    <contactAccessLevel>Edit</contactAccessLevel>
     <mayForecastManagerShare>false</mayForecastManagerShare>
-    <name>Administrators</name>
-    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <name>KLINC Global</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
     <parentRole>Reporting</parentRole>
 </Role>

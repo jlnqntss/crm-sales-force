@@ -6,4 +6,5 @@
     <mayForecastManagerShare>false</mayForecastManagerShare>
     <name>SDM Home Office</name>
     <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>Reporting</parentRole>
 </Role>

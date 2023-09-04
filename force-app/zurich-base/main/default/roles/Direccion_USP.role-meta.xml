@@ -5,4 +5,5 @@
     <mayForecastManagerShare>false</mayForecastManagerShare>
     <name>Dirección USP</name>
     <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>Reporting</parentRole>
 </Role>
