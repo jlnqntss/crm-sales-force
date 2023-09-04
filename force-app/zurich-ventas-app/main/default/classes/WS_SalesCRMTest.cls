@@ -8,6 +8,7 @@
  * Modifications Log
  * Ver   Date         Author     Modification
  * 1.0   01-09-2023   amiranda   Initial Version
+ * 1.1   05-09-2023   overes     Added quoteAndBuy test
  **/
 @isTest
 public with sharing class WS_SalesCRMTest
@@ -43,6 +44,83 @@ public with sharing class WS_SalesCRMTest
         mediatorUsers.get(0).UserRole = portalRoleId;
         mediatorUsers.get(0).ContactId = intermediaryContacts.get(0).Id;
         insert mediatorUsers;
+    }
+
+    /**
+     * @description Método que comprueba el correcto procesamiento de la petición
+     * realizada al recurso 'QuoteAndBuy'.
+     *
+     * @author overes
+     * @date 05-09-2023
+     **/
+    @isTest
+    static void test_doPost_processRequest_quoteAndBuy_ok()
+    {
+        RestRequest request = new RestRequest();
+        RestResponse response = new RestResponse();
+
+        request.requestURI = QUOTE_AND_BUY_GENERATION_URI;
+        request.httpMethod = HTTP_POST_METHOD;
+        request.addHeader(HEADER_CONTENT_TYPE, HEADER_APPLICATION_JSON);
+
+        String requestData = '{' +
+                                '"Sesion": "0060C00000CADyrQAH",' +
+                                '"Origen": "Quote&Buy Auto",' +
+                                '"cliente":{' +
+                                   '"idFiscal": "5555h",' +
+                                   '"nombre": "Ana",' +
+                                    '"primerApellido": "Gomez",' +
+                                    '"segundoApellido": "Garcia",' +
+                                    '"fechaNacimiento": 19900121,' +
+                                    '"fechaCarnet": 20140121,' +
+                                    '"paisCarnet": "ESP",' +
+                                    '"sexo": "V",' +
+                                    '"contacto":{' +
+                                        '"telefono": "+346872222",' +
+                                        '"email": "test@test.com",' +
+                                        '"codigoPostal": "08921",' +
+                                        '"poblacion": "BARCELONA",' +
+                                        '"llamada": 20210916,' +
+                                        '"horaDesde": "10:15",' +
+                                        '"horaHasta": "12:00",' +
+                                        '"quiereLlamada": "S"' +
+                                    '}' +
+                                '},' +
+                                '"poliza":{' +
+                                    '"ramo":"0000000001",' +
+                                    '"numeroPoliza": "215111",' +
+                                    '"numeroOferta": "215111",' +
+                                    '"fechaInicio": 20230901,' +
+                                    '"precioAnual": 145.94,' +
+                                    '"codigoIntermediario": "0000030109",' +
+                                    '"paquete": "TERCEROS",' +
+                                    '"coche":{' +
+                                        '"marca": "SEAT",' +
+                                        '"modelo": "ATECA",' +
+                                        '"version": "2.0 TDI",' +
+                                        '"matricula": "5456LKM",' +
+                                        '"paisMatriculacion": "ESP"' +
+                                    '}' +
+                                '}' +
+                            '}';
+
+        request.requestBody = Blob.valueOf(requestData);
+
+        RestContext.response = response;
+        RestContext.request = request;
+
+        Test.startTest();
+        WS_SalesCRM.doPost();
+        Test.stopTest();
+
+        Assert.areEqual(200, response.statusCode, 'Response statusCode should be 200');
+
+        List<Error_Log__c> errors = [SELECT Id, Level__c FROM Error_Log__c];
+        Assert.areEqual(false, errors.isEmpty(), ASSERT_ERROR_LOGS_COMMITTED_MESSAGE);
+
+        for (Error_Log__c error : errors) {
+            Assert.areEqual(ErrorLogUtil.ERROR_LEVEL_WARNING.toLowerCase(), error.Level__c.toLowerCase(), ASSERT_ERROR_LOGS_LEVEL_MESSAGE);
+        }
     }
 
     /**
@@ -237,8 +315,8 @@ public with sharing class WS_SalesCRMTest
     * los campos requeridos no se encuentra en la información recibida en el
     * recurso 'leadGeneration'.
     *
-    * @author amiranda 
-    * @date 04-09-2023 
+    * @author amiranda
+    * @date 04-09-2023
     **/
     @isTest
     static void test_doPost_missingRequiredFields_leadGeneration_ko()
