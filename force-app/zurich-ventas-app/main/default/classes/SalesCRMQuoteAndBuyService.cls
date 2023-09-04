@@ -17,7 +17,6 @@ public with sharing class SalesCRMQuoteAndBuyService {
     };
 
     private static Map<String, Schema.SObjectField> notNullableFields = new Map<String, Schema.SObjectField> {
-        'Sesion' => Opportunity.SessionId__c,
         'Origen' => Account.PersonLeadSource__c,
         'cliente.idFiscal' => Account.NationalId__c,
         'cliente.fechaNacimiento' => Account.Birthdate__c,
@@ -55,7 +54,7 @@ public with sharing class SalesCRMQuoteAndBuyService {
     }
 
     public static String getOfferIntermediaryId(Lead requestData) {
-        List<Account> offerIntermediaryId = new List<Account>(accountSelector.findOfferIntermediaryId(requestData.poliza.codigoIntermediario));
+        List<Account> offerIntermediaryId = new List<Account>(accountSelector.findByINFOIntermediaryCode(new List<String>{requestData.poliza.codigoIntermediario}));
         return (String)offerIntermediaryId.get(0).Id;
     }
 
@@ -85,15 +84,10 @@ public with sharing class SalesCRMQuoteAndBuyService {
                 duplicateAcc = new Account();
                 duplicateAcc.RecordTypeId = accountSelector.rtLeadId;
                 duplicateAcc.PersonLeadSource__c = requestData.origen;
-                duplicateAcc.Name = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
-                duplicateAcc.NationalId__c = requestData.cliente.idFiscal;
-                duplicateAcc.Birthdate__c = convertIntegerToDate(requestData.cliente.fechaNacimiento);
+                duplicateAcc.LastName = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
                 duplicateAcc.Phone = requestData.cliente.contacto.telefono;
-                duplicateAcc.PersonEmail = requestData.cliente.contacto.email;
-                duplicateAcc.PreferedContactStart__c = convertStringToDateTime(requestData.cliente.contacto.horaDesde);
-                duplicateAcc.PreferedContactEnd__c = convertStringToDateTime(requestData.cliente.contacto.horaHasta);
                 duplicateAcc.Description = setDesc(requestData);
-            }
+            } 
 
             fillAccountFields(duplicateAcc, requestData);
             upsert duplicateAcc;
@@ -216,11 +210,15 @@ public with sharing class SalesCRMQuoteAndBuyService {
     * @param requestData
     **/
     private static void checkRequiredFields(Lead requestData) {
-        Set<String> receivedFields = requestData.getReceivedFields();
+        Set<String> receivedFieldsLead = requestData.getReceivedFields();
+        Set<String> receivedFieldsCliente = requestData.cliente.getReceivedFields();
+        Set<String> receivedFieldsContacto = requestData.cliente.contacto.getReceivedFields();
+        Set<String> receivedFieldsPoliza = requestData.poliza.getReceivedFields();
+
         Set<String> missedRequiredFields = new Set<String>();
 
         for (String requiredField : requiredFields) {
-            if (!receivedFields.contains(requiredField)) {
+            if (!receivedFieldsLead.contains(requiredField) && !receivedFieldsCliente.contains(requiredField) && !receivedFieldsContacto.contains(requiredField) && !receivedFieldsPoliza.contains(requiredField)) {
                 missedRequiredFields.add(requiredField);
             }
         }
@@ -667,10 +665,6 @@ public with sharing class SalesCRMQuoteAndBuyService {
     **/
     private static void fillAccountFields(Account accountToFill, Lead requestData)
     {
-        accountToFill.Name = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
-        accountToFill.Phone = requestData.cliente.contacto.telefono;
-        accountToFill.Description = setDesc(requestData);
-
         for (String notNullableField : notNullableFields.keySet()) {
             if (requestData.get(notNullableField) != null) {
                 accountToFill.put(notNullableFields.get(notNullableField), requestData.get(notNullableField));
