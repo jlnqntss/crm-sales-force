@@ -4,7 +4,6 @@
  * @last modified on  : 09-04-2023
 **/
 public with sharing class SalesCRMQuoteAndBuyService {
-
     /**
      * Listado de campos que son requeridos
      */
@@ -18,40 +17,47 @@ public with sharing class SalesCRMQuoteAndBuyService {
     };
 
     private static Map<String, Schema.SObjectField> notNullableFields = new Map<String, Schema.SObjectField> {
-        'Sesion' => Account.SesionId__c,
+        'Sesion' => Opportunity.SessionId__c,
         'Origen' => Account.PersonLeadSource__c,
-        'Cliente.idFiscal' => Account.NationalId__c,
-        'Cliente.fechaNacimiento' => Account.Birthdate__c,
-        'Cliente.Contacto.email' => Account.PersonEmail,
-        'Cliente.Contacto.horaDesde' => Account.PreferedContactStart__c,
-        'Cliente.Contacto.horaHasta' => Account.PreferedContactEnd__c
+        'cliente.idFiscal' => Account.NationalId__c,
+        'cliente.fechaNacimiento' => Account.Birthdate__c,
+        'cliente.contacto.email' => Account.PersonEmail,
+        'cliente.contacto.horaDesde' => Account.PreferedContactStart__c,
+        'cliente.contacto.horaHasta' => Account.PreferedContactEnd__c
     };
 
-    /**
-     * Inicializando la variable desc
-     */
-    // FIXME: revisar si es Lead o requestdata para completar el valor
-    private static String desc = 'Fecha de carnet:' + Lead.Cliente.fechaCarnet + 
-        '\n País de carnet: ' + Lead.Cliente.paisCarnet +
-        '\n Nuemero de oferta: ' + Lead.Poliza.numOferta +
-        '\n Fecha de inicio: ' + Lead.Poliza.fechaInicio +
-        '\n Precio Anual: ' + Lead.Poliza.precioAnual +
-        '\n Paquete: ' + Lead.Poliza.paquete +
-        '\n Marca: ' + Lead.Poliza.Coche.marca +
-        '\n Modelo: ' + Lead.Poliza.Coche.Modelo +
-        '\n Version: ' + Lead.Poliza.Coche.Version +
-        '\n Matricula: ' + Lead.Poliza.Coche.matricula +
-        '\n País matriculación: ' + Lead.Poliza.Coche.paisMatriculacion;
-
     private static AccountsSelector accountSelector = new AccountsSelector();
-
-    private static List<Account> offerIntermediaryId = new List<Account>(accountSelector.findOfferIntermediaryId(Lead.Poliza.codigoIntermediario));
-
 
     /**
      * Error que representa que se ha indicado un campo inexistente o no válido (Code 400)
      */
     private static final String INVALID_FIELD = 'INVALID_FIELD';
+
+    /**
+    *
+    * *
+    * @author overes | 09-04-2023
+    * @param requestData
+    * @return String
+    **/
+    public static String setDesc(Lead requestData) {
+        return '{"Fecha de carnet":"' + requestData.cliente.fechaCarnet +
+        '"\n "País de carnet":"' + requestData.cliente.paisCarnet +
+        '"\n "Numero de oferta":"' + requestData.poliza.numeroOferta +
+        '"\n "Fecha de inicio":"' + requestData.poliza.fechaInicio +
+        '"\n "Precio Anual":"' + requestData.poliza.precioAnual +
+        '"\n "Paquete":"' + requestData.poliza.paquete +
+        '"\n "Marca":"' + requestData.poliza.Coche.marca +
+        '"\n "Modelo":"' + requestData.poliza.Coche.Modelo +
+        '"\n "Version":"' + requestData.poliza.Coche.Version +
+        '"\n "Matricula":"' + requestData.poliza.Coche.matricula +
+        '"\n "País matriculación":"' + requestData.poliza.Coche.paisMatriculacion + '"}';
+    }
+
+    public static String getOfferIntermediaryId(Lead requestData) {
+        List<Account> offerIntermediaryId = new List<Account>(accountSelector.findOfferIntermediaryId(requestData.poliza.codigoIntermediario));
+        return (String)offerIntermediaryId.get(0).Id;
+    }
 
     /**
     *
@@ -71,7 +77,7 @@ public with sharing class SalesCRMQuoteAndBuyService {
     * @return Account
     **/
     public static Account manageLead(Lead requestData) {
-        Account duplicateAcc = AccountLeadUtil.leadDuplicatesControl(requestData.Cliente.idFiscal, requestData.Cliente.Contacto.telefono);
+        Account duplicateAcc = AccountLeadUtil.leadDuplicatesControl(requestData.cliente.idFiscal, requestData.cliente.contacto.telefono);
 
         // Actualizar registro a partir de los datos de la request
         if ((duplicateAcc != null && duplicateAcc.RecordTypeId.equals(accountSelector.rtLeadId)) || duplicateAcc == null) {
@@ -79,14 +85,14 @@ public with sharing class SalesCRMQuoteAndBuyService {
                 duplicateAcc = new Account();
                 duplicateAcc.RecordTypeId = accountSelector.rtLeadId;
                 duplicateAcc.PersonLeadSource__c = requestData.origen;
-                duplicateAcc.Name = requestData.Cliente.nombre + ' ' + requestData.Cliente.primerApellido + ' ' + requestData.Cliente.segundoApellido;
-                duplicateAcc.NationalId__c = requestData.Cliente.idFiscal;
-                duplicateAcc.Birthdate__c = requestData.Cliente.fechaNacimiento;
-                duplicateAcc.Phone = requestData.Cliente.Contacto.telefono;
-                duplicateAcc.PersonEmail = requestData.Cliente.Contacto.email;
-                duplicateAcc.PreferedContactStart__c = requestData.Cliente.Contacto.horaDesde;
-                duplicateAcc.PreferedContactEnd__c = requestData.Cliente.Contacto.horaHasta;
-                duplicateAcc.Description = desc;
+                duplicateAcc.Name = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
+                duplicateAcc.NationalId__c = requestData.cliente.idFiscal;
+                duplicateAcc.Birthdate__c = convertIntegerToDate(requestData.cliente.fechaNacimiento);
+                duplicateAcc.Phone = requestData.cliente.contacto.telefono;
+                duplicateAcc.PersonEmail = requestData.cliente.contacto.email;
+                duplicateAcc.PreferedContactStart__c = convertStringToDateTime(requestData.cliente.contacto.horaDesde);
+                duplicateAcc.PreferedContactEnd__c = convertStringToDateTime(requestData.cliente.contacto.horaHasta);
+                duplicateAcc.Description = setDesc(requestData);
             }
 
             fillAccountFields(duplicateAcc, requestData);
@@ -97,60 +103,110 @@ public with sharing class SalesCRMQuoteAndBuyService {
     }
 
     /**
+    * Método que convierte el String "10:15" recibido en el Json a DateTime
+    * *
+    * @author overes | 09-04-2023
+    * @param timeString
+    * @return DateTime
+    **/
+    public static DateTime convertStringToDateTime(String timeString) {
+        Date today = Date.today();
+
+        // Divide la cadena en partes (hora y minuto)
+        List<String> timeParts = timeString.split(':');
+
+        if (timeParts.size() == 2) {
+            Integer hour = Integer.valueOf(timeParts[0]);
+            Integer minute = Integer.valueOf(timeParts[1]);
+
+            // Combina la fecha de referencia y la hora para crear un DateTime
+            DateTime dateTimeValue = DateTime.newInstance(
+                today.year(), today.month(), today.day(),
+                hour, minute, 0
+            );
+            return dateTimeValue;
+        } else {
+            // Manejar el caso en que la cadena no tenga el formato esperado
+            return null;
+        }
+    }
+
+    /**
+    * Método que convierte el entero de fechaNaciemiento a Date para el Objeto Account y considerando que le llega este formato '19900121'
+    * *
+    * @author overes | 09-04-2023
+    * @param numeroEntero
+    * @return Date
+    **/
+    public static Date convertIntegerToDate(Integer inputInteger) {
+        String integerAsText = String.valueOf(inputInteger);
+        // Los primeros 4 caracteres son el año
+        String year = integerAsText.substring(0, 4);
+        // Los siguientes 2 caracteres son el mes
+        String month = integerAsText.substring(4, 6);
+        // Los últimos 2 caracteres son el día
+        String day = integerAsText.substring(6, 8);
+
+        Date dateFromInteger = Date.newInstance(Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(day));
+
+        return dateFromInteger;
+    }
+
+    /**
     *
     * *
     * @author overes | 09-03-2023
     * @param requestData
     * @return Opportunity
     **/
-    public static Opportunity manageOpportunity(Account leadAccount, Lead requestData) {
-        OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
-        
-        //#region Fragmento de código temporal
-        User userToAssign = [SELECT Contact.Account.Id FROM User WHERE Alias = 'agente.m' LIMIT 1];
-        Account userToAssignRelatedAccount = [SELECT INFOIntermediaryCode__c FROM Account WHERE Id =: userToAssign.Contact.Account.Id];
-        
-        Id offerIntermediaryId = userToAssignRelatedAccount.Id;
-        String intermediaryCode = userToAssignRelatedAccount.INFOIntermediaryCode__c;
-        //#endregion
-        
+    public static Opportunity manageOpportunity(Account leadAccount, Lead requestData, Policy__c pol) {
+
         Opportunity offer = new Opportunity();
         offer.SessionId__c = requestData.sesion;
-        offer.Name = requestData.Cliente.nombre;
-        offer.InfoQuoteNumber__c = requestData.Poliza.numeroOferta;
-        offer.ResultingPolicyNumber__c = requestData.Poliza.numeroPoliza;
-        offer.StageName = 'Cerrada-Ganada';
+        offer.Name = requestData.cliente.nombre;
+        offer.InfoQuoteNumber__c = requestData.poliza.numeroOferta;
+        offer.ResultingPolicyNumber__c = requestData.poliza.numeroPoliza;
         offer.CloseDate = Date.today().addDays(10);
         offer.AccountId = leadAccount.Id;
         offer.IssuedOnline__c = true;
-        offer.IntermediaryId__c = offerIntermediaryId;
-        offer.IntermediaryCode__c = requestData.Poliza.codigoIntermediario;
+        offer.IntermediaryId__c = getOfferIntermediaryId(requestData);
+        offer.IntermediaryCode__c = requestData.poliza.codigoIntermediario;
         offer.PersonLeadSource__c = requestData.origen;
-        offer.ProductBranch__c = requestData.Poliza.ramo;
-        offer.PreferedContactStart__c = requestData.Cliente.Contacto.horaDesde;
-        offer.PreferedContactEnd__c = requestData.Cliente.Contacto.horaHasta;
-        offer.CarRegistration__c = requestData.Poliza.Coche.matricula;
-        offer.Description = desc;
+        offer.ProductBranch__c = requestData.poliza.ramo;
+        offer.PreferedContactStart__c = convertStringToDateTime(requestData.cliente.contacto.horaDesde);
+        offer.PreferedContactEnd__c = convertStringToDateTime(requestData.cliente.contacto.horaHasta);
+        offer.CarRegistration__c = requestData.poliza.Coche.matricula;
+        offer.Description = setDesc(requestData);
 
-        if (requestData.Poliza.numeroPoliza != null && requestData.Poliza.numeroOferta != null) {
+        if (requestData.poliza.numeroPoliza != null && requestData.poliza.numeroOferta != null) {
             offer.StageName = 'Cerrada-Ganada';
             offer.CloseDate = Date.today();
         }
 
+        return offer;
+    }
+
+    /**
+    *
+    * *
+    * @author overes | 09-04-2023
+    * @param leadAccount
+    * @param requestData
+    * @return Opportunity
+    **/
+    public static Policy__c managePolicy(Account leadAccount, Lead requestData) {
         Policy__c pol = new Policy__c();
-        pol.Name = requestData.Poliza.numeroPoliza;
-        pol.InfoPolicyNumber__c = requestData.Poliza.numeroOferta;
-        pol.InfoQuoteNumber__c = requestData.Poliza.numeroPoliza;
+        pol.Name = requestData.poliza.numeroPoliza;
+        pol.InfoPolicyNumber__c = requestData.poliza.numeroOferta;
+        pol.InfoQuoteNumber__c = requestData.poliza.numeroPoliza;
         pol.PolicyHolder__c = leadAccount.Id;
         pol.IssuedOnline__c = true;
         pol.InfoCreatedDate__c = Date.today();
-        pol.StartDate__c = requestData.Poliza.fechaInicio;
-        pol.IntermediaryId__c = offerIntermediaryId;
-        pol.Intermediary_Code__c = intermediaryCode;
+        pol.StartDate__c = convertIntegerToDate(requestData.poliza.fechaInicio);
+        pol.IntermediaryId__c = getOfferIntermediaryId(requestData);
+        pol.Intermediary_Code__c = requestData.poliza.codigoIntermediario;
 
-        // FIXME: revisar
-        // AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, pol, codigoPostal, telefono);
-        return offer;
+        return pol;
     }
 
     /**
@@ -175,12 +231,11 @@ public with sharing class SalesCRMQuoteAndBuyService {
     }
 
     /**
-    *
+    * El valor de 'ramo' debe ser 0000000001 | AUTOS
     * *
     * @author overes | 09-03-2023
     * @param requestData
     **/
-    // FIXME: revisar si aquí es donde debo comprobar que el valor de 'ramo' debe ser 0000000001 | AUTOS
     private static void checkPicklistValues(Lead requestData) {
         Set<String> invalidFields = new Set<String>();
 
@@ -231,6 +286,7 @@ public with sharing class SalesCRMQuoteAndBuyService {
                 valuesByProperty.put('Sesion', value);
             }
         }
+
         // Propiedades para el campo "Origen"
         public String origen {
             get {
@@ -240,240 +296,27 @@ public with sharing class SalesCRMQuoteAndBuyService {
                 valuesByProperty.put('Origen', value);
             }
         }
+
         // Propiedades para el campo "cliente"
-        public class Cliente {
-            public String idFiscal {
-                get {
-                    return (String)get('cliente.idFiscal');
+        public Cliente cliente {
+            get {
+                if (cliente == null) {
+                    cliente = new Cliente();
                 }
-                set {
-                    valuesByProperty.put('cliente.idFiscal', value);
-                }
+                return cliente;
             }
-            public String nombre {
-                get {
-                    return (String)get('cliente.nombre');
-                }
-                set {
-                    valuesByProperty.put('cliente.nombre', value);
-                }
-            }
-            public String primerApellido {
-                get {
-                    return (String)get('cliente.primerApellido');
-                }
-                set {
-                    valuesByProperty.put('cliente.primerApellido', value);
-                }
-            }
-            public String segundoApellido {
-                get {
-                    return (String)get('cliente.segundoApellido');
-                }
-                set {
-                    valuesByProperty.put('cliente.segundoApellido', value);
-                }
-            }
-            public Integer fechaNacimiento {
-                get {
-                    return (Integer)get('cliente.fechaNacimiento');
-                }
-                set {
-                    valuesByProperty.put('cliente.fechaNacimiento', value);
-                }
-            }
-            public Integer fechaCarnet {
-                get {
-                    return (Integer)get('cliente.fechaCarnet');
-                }
-                set {
-                    valuesByProperty.put('cliente.fechaCarnet', value);
-                }
-            }
-            public String paisCarnet {
-                get {
-                    return (String)get('cliente.paisCarnet');
-                }
-                set {
-                    valuesByProperty.put('cliente.paisCarnet', value);
-                }
-            }
-            public String sexo {
-                get {
-                    return (String)get('cliente.sexo');
-                }
-                set {
-                    valuesByProperty.put('cliente.sexo', value);
-                }
-            }
-            // Propiedades para el campo "contacto"
-            public class Contacto {
-                public String telefono {
-                    get {
-                        return (String)get('poliza.telefono');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.telefono', value);
-                    }
-                }
-                public String email {
-                    get {
-                        return (String)get('poliza.email');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.email', value);
-                    }
-                }
-                public String codigoPostal {
-                    get {
-                        return (String)get('poliza.codigoPostal');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.codigoPostal', value);
-                    }
-                }
-                public String poblacion {
-                    get {
-                        return (String)get('poliza.poblacion');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.poblacion', value);
-                    }
-                }
-                public Integer llamada {
-                    get {
-                        return (Integer)get('poliza.llamada');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.llamada', value);
-                    }
-                }
-                public String horaDesde {
-                    get {
-                        return (String)get('poliza.horaDesde');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.horaDesde', value);
-                    }
-                }
-                public String horaHasta {
-                    get {
-                        return (String)get('poliza.horaHasta');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.horaHasta', value);
-                    }
-                }
-                public String quiereLlamada {
-                    get {
-                        return (String)get('poliza.quiereLlamada');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.quiereLlamada', value);
-                    }
-                }
-            }
+            set;
         }
+
         // Propiedades para el campo "poliza"
-        public class Poliza {
-            public String ramo {
-                get {
-                    return (String)get('poliza.ramo');
+        public Poliza poliza {
+            get {
+                if (poliza == null) {
+                    poliza = new Poliza();
                 }
-                set {
-                    valuesByProperty.put('poliza.ramo', value);
-                }
+                return poliza;
             }
-            public String numeroPoliza {
-                get {
-                    return (String)get('poliza.numeroPoliza');
-                }
-                set {
-                    valuesByProperty.put('poliza.numeroPoliza', value);
-                }
-            }
-            public String numeroOferta {
-                get {
-                    return (String)get('poliza.numeroOferta');
-                }
-                set {
-                    valuesByProperty.put('poliza.numeroOferta', value);
-                }
-            }
-            public Integer fechaInicio {
-                get {
-                    return (Integer)get('poliza.fechaInicio');
-                }
-                set {
-                    valuesByProperty.put('poliza.fechaInicio', value);
-                }
-            }
-            public Decimal precioAnual {
-                get {
-                    return (Decimal)get('poliza.precioAnual');
-                }
-                set {
-                    valuesByProperty.put('poliza.precioAnual', value);
-                }
-            }
-            public String codigoIntermediario {
-                get {
-                    return (String)get('poliza.codigoIntermediario');
-                }
-                set {
-                    valuesByProperty.put('poliza.codigoIntermediario', value);
-                }
-            }
-            public String paquete {
-                get {
-                    return (String)get('poliza.paquete');
-                }
-                set {
-                    valuesByProperty.put('poliza.paquete', value);
-                }
-            }
-            public class Conche {
-                public String marca {
-                    get {
-                        return (String)get('poliza.marca');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.marca', value);
-                    }
-                }
-                public String modelo {
-                    get {
-                        return (String)get('poliza.modelo');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.modelo', value);
-                    }
-                }
-                public String version {
-                    get {
-                        return (String)get('poliza.version');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.version', value);
-                    }
-                }
-                public String matricula {
-                    get {
-                        return (String)get('poliza.matricula');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.matricula', value);
-                    }
-                }
-                public String paisMatriculacion {
-                    get {
-                        return (String)get('poliza.paisMatriculacion');
-                    }
-                    set {
-                        valuesByProperty.put('poliza.paisMatriculacion', value);
-                    }
-                }
-            }
+            set;
         }
 
         // Propiedades para otros campos anidados o de nivel superior si es necesario
@@ -486,8 +329,337 @@ public with sharing class SalesCRMQuoteAndBuyService {
         }
     }
 
+    // Clase interna para "cliente"
+    public class Cliente {
+        private Map<String, Object> valuesByProperty {
+            get {
+                if (valuesByProperty == null) {
+                    valuesByProperty = new Map<String, Object>();
+                }
+                return valuesByProperty;
+            }
+            set;
+        }
+        public String idFiscal {
+            get {
+                return (String)get('idFiscal');
+            }
+            set {
+                valuesByProperty.put('idFiscal', value);
+            }
+        }
+
+        public String nombre {
+            get {
+                return (String)get('nombre');
+            }
+            set {
+                valuesByProperty.put('nombre', value);
+            }
+        }
+        public String primerApellido {
+            get {
+                return (String)get('primerApellido');
+            }
+            set {
+                valuesByProperty.put('primerApellido', value);
+            }
+        }
+        public String segundoApellido {
+            get {
+                return (String)get('segundoApellido');
+            }
+            set {
+                valuesByProperty.put('segundoApellido', value);
+            }
+        }
+        public Integer fechaNacimiento {
+            get {
+                return (Integer)get('fechaNacimiento');
+            }
+            set {
+                valuesByProperty.put('fechaNacimiento', value);
+            }
+        }
+        public Integer fechaCarnet {
+            get {
+                return (Integer)get('fechaCarnet');
+            }
+            set {
+                valuesByProperty.put('fechaCarnet', value);
+            }
+        }
+        public String paisCarnet {
+            get {
+                return (String)get('paisCarnet');
+            }
+            set {
+                valuesByProperty.put('paisCarnet', value);
+            }
+        }
+        public String sexo {
+            get {
+                return (String)get('sexo');
+            }
+            set {
+                valuesByProperty.put('sexo', value);
+            }
+        }
+        public Contacto contacto {
+            get {
+                if (contacto == null) {
+                    contacto = new Contacto();
+                }
+                return contacto;
+            }
+            set;
+        }
+
+        // Propiedades para otros campos anidados o de nivel superior si es necesario
+        private Set<String> getReceivedFields() {
+            return valuesByProperty.keySet().clone();
+        }
+
+        private Object get(String property) {
+            return valuesByProperty.get(property);
+        }
+    }
+
+    // Propiedades para el campo "contacto"
+    public class Contacto {
+        private Map<String, Object> valuesByProperty {
+            get {
+                if (valuesByProperty == null) {
+                    valuesByProperty = new Map<String, Object>();
+                }
+                return valuesByProperty;
+            }
+            set;
+        }
+        public String telefono {
+            get {
+                return (String)get('telefono');
+            }
+            set {
+                valuesByProperty.put('telefono', value);
+            }
+        }
+        public String email {
+            get {
+                return (String)get('email');
+            }
+            set {
+                valuesByProperty.put('email', value);
+            }
+        }
+        public String codigoPostal {
+            get {
+                return (String)get('codigoPostal');
+            }
+            set {
+                valuesByProperty.put('codigoPostal', value);
+            }
+        }
+        public String poblacion {
+            get {
+                return (String)get('poblacion');
+            }
+            set {
+                valuesByProperty.put('poblacion', value);
+            }
+        }
+        public Integer llamada {
+            get {
+                return (Integer)get('llamada');
+            }
+            set {
+                valuesByProperty.put('llamada', value);
+            }
+        }
+        public String horaDesde {
+            get {
+                return (String)get('horaDesde');
+            }
+            set {
+                valuesByProperty.put('horaDesde', value);
+            }
+        }
+        public String horaHasta {
+            get {
+                return (String)get('horaHasta');
+            }
+            set {
+                valuesByProperty.put('horaHasta', value);
+            }
+        }
+        public String quiereLlamada {
+            get {
+                return (String)get('quiereLlamada');
+            }
+            set {
+                valuesByProperty.put('quiereLlamada', value);
+            }
+        }
+        // Propiedades para otros campos anidados o de nivel superior si es necesario
+        private Set<String> getReceivedFields() {
+            return valuesByProperty.keySet().clone();
+        }
+
+        private Object get(String property) {
+            return valuesByProperty.get(property);
+        }
+    }
+
+    // Clase interna para "poliza"
+    public class Poliza {
+        private Map<String, Object> valuesByProperty {
+            get {
+                if (valuesByProperty == null) {
+                    valuesByProperty = new Map<String, Object>();
+                }
+                return valuesByProperty;
+            }
+            set;
+        }
+        public String ramo {
+            get {
+                return (String)get('ramo');
+            }
+            set {
+                valuesByProperty.put('ramo', value);
+            }
+        }
+        public String numeroPoliza {
+            get {
+                return (String)get('numeroPoliza');
+            }
+            set {
+                valuesByProperty.put('numeroPoliza', value);
+            }
+        }
+        public String numeroOferta {
+            get {
+                return (String)get('numeroOferta');
+            }
+            set {
+                valuesByProperty.put('numeroOferta', value);
+            }
+        }
+        public Integer fechaInicio {
+            get {
+                return (Integer)get('fechaInicio');
+            }
+            set {
+                valuesByProperty.put('fechaInicio', value);
+            }
+        }
+        public Decimal precioAnual {
+            get {
+                return (Decimal)get('precioAnual');
+            }
+            set {
+                valuesByProperty.put('precioAnual', value);
+            }
+        }
+        public String codigoIntermediario {
+            get {
+                return (String)get('codigoIntermediario');
+            }
+            set {
+                valuesByProperty.put('codigoIntermediario', value);
+            }
+        }
+        public String paquete {
+            get {
+                return (String)get('paquete');
+            }
+            set {
+                valuesByProperty.put('paquete', value);
+            }
+        }
+        public Coche coche {
+            get {
+                if (coche == null) {
+                    coche = new Coche();
+                }
+                return coche;
+            }
+            set;
+        }
+        // Propiedades para otros campos anidados o de nivel superior si es necesario
+        private Set<String> getReceivedFields() {
+            return valuesByProperty.keySet().clone();
+        }
+
+        private Object get(String property) {
+            return valuesByProperty.get(property);
+        }
+
+    }
+
+    // Propiedades para el campo "coche"
+    public class Coche {
+        private Map<String, Object> valuesByProperty {
+            get {
+                if (valuesByProperty == null) {
+                    valuesByProperty = new Map<String, Object>();
+                }
+                return valuesByProperty;
+            }
+            set;
+        }
+        public String marca {
+            get {
+                return (String)get('marca');
+            }
+            set {
+                valuesByProperty.put('marca', value);
+            }
+        }
+        public String modelo {
+            get {
+                return (String)get('modelo');
+            }
+            set {
+                valuesByProperty.put('modelo', value);
+            }
+        }
+        public String version {
+            get {
+                return (String)get('version');
+            }
+            set {
+                valuesByProperty.put('version', value);
+            }
+        }
+        public String matricula {
+            get {
+                return (String)get('matricula');
+            }
+            set {
+                valuesByProperty.put('matricula', value);
+            }
+        }
+        public String paisMatriculacion {
+            get {
+                return (String)get('paisMatriculacion');
+            }
+            set {
+                valuesByProperty.put('paisMatriculacion', value);
+            }
+        }
+        // Propiedades para otros campos anidados o de nivel superior si es necesario
+        private Set<String> getReceivedFields() {
+            return valuesByProperty.keySet().clone();
+        }
+
+        private Object get(String property) {
+            return valuesByProperty.get(property);
+        }
+    }
+
     /**
-    *
+    * Método que rellena los campos del registro Account y se almacena en SF
     * *
     * @author overes | 09-02-2023
     * @param accountToFill
@@ -495,9 +667,9 @@ public with sharing class SalesCRMQuoteAndBuyService {
     **/
     private static void fillAccountFields(Account accountToFill, Lead requestData)
     {
-        accountToFill.Name = requestData.Cliente.nombre + ' ' + requestData.Cliente.primerApellido + ' ' + requestData.Cliente.segundoApellido;
-        accountToFill.Phone = requestData.Cliente.Contacto.telefono;
-        accountToFill.Description = desc;
+        accountToFill.Name = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
+        accountToFill.Phone = requestData.cliente.contacto.telefono;
+        accountToFill.Description = setDesc(requestData);
 
         for (String notNullableField : notNullableFields.keySet()) {
             if (requestData.get(notNullableField) != null) {
