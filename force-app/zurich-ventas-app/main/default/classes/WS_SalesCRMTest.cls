@@ -67,7 +67,7 @@ public with sharing class WS_SalesCRMTest
                              '"name":"Test Name",' +
                              '"phone":"+3400000000",' +
                              '"language": "German",' +
-                             '"productBranch": "AUTOS",' +
+                             '"productBranch": "0000000001",' +
                              '"webIdentifier": "1234",' +
                              '"bestTimeFrom": "2023-06-26T11:00:00.000Z",' +
                              '"documentId": "00000000L"' +
@@ -255,7 +255,7 @@ public with sharing class WS_SalesCRMTest
                              '"name":"Test Name",' +
                              '"phone":"+3400000000",' +
                              '"language": "German",' +
-                             '"productBranch": "AUTOS",' +
+                             '"productBranch": "0000000001",' +
                              '"webIdentifier": "1234",' +
                              '"bestTimeFrom": "2023-06-26T11:00:00.000Z",' +
                              '"documentId": "00000000L"' +

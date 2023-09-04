@@ -237,15 +237,16 @@ public with sharing class AccountsSelector extends RecordsSelector
      * 
      * @change amiranda 31/08/2023 Se elimina el campo 'Name' de la query. Es un 
      * campo de solo lectura que se conforma por la concatenación de los campos
-     * 'FirstName' y 'LastName' (entre otros). Por lo tanto, al intentar actualizar
-     * la lista de cuentas que nos devuelve este método, Salesforce lanza una excepción.
+     * 'FirstName' y 'LastName' (entre otros) que son los que se consultarán
+     * en la query. Por lo tanto, al intentar actualizar la lista de cuentas que
+     *  nos devuelve este método, Salesforce lanza una excepción.
      */
     public List<Account> findByNationalIdAndRcTypeLead(List<String> documents)
     {
         List<Account> result = new List<Account>();
 
         if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
         }
         return result;
     }
