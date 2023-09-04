@@ -189,7 +189,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
      **/
     private Opportunity fillMediatorData(Opportunity opp, CampaignMember cm, Map<String, Account> accountByIntermCode, Map<Id, Id> userIdByAccountId)
     {
-        if (accountByIntermCode.get(cm.OfferAssignedCode__c).Id != null)
+        if (accountByIntermCode.get(cm.OfferAssignedCode__c) != null)
         {
             opp.IntermediaryId__c = accountByIntermCode.get(cm.OfferAssignedCode__c).Id;
         }
