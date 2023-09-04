@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 09-04-2023
- * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @last modified on  : 04-09-2023
+ * @last modified by  : amiranda
 **/
 public with sharing class AccountsSelector extends RecordsSelector
 {

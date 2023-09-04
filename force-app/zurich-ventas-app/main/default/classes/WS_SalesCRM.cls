@@ -4,8 +4,8 @@
  *
  * @author            : amiranda
  * @date              : 04-09-2023
- * @last modified on  : 09-04-2023
- * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @last modified on  : 04-09-2023
+ * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
  * 1.0   01-09-2023   amiranda   Initial Version
@@ -78,17 +78,6 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
 
                     ResponseData responseData = new ResponseData('success', leadAccount.Id, offer.Id);
                     response.responseBody = Blob.valueOf( JSON.serialize(responseData) );
-                }
-                when 'quoteAndBuy'
-                {
-                    SalesCRMQuoteAndBuyService.Lead deserializedRequest = (SalesCRMQuoteAndBuyService.Lead) JSON.deserializeStrict(requestInformation, SalesCRMQuoteAndBuyService.Lead.class);
-                    SalesCRMQuoteAndBuyService.validateRequestData(deserializedRequest);
-                    Account leadAccount = SalesCRMQuoteAndBuyService.manageLead(deserializedRequest);
-                    Policy__c pol = SalesCRMQuoteAndBuyService.managePolicy(leadAccount,deserializedRequest);
-                    Opportunity offer = SalesCRMQuoteAndBuyService.manageOpportunity(leadAccount, deserializedRequest, pol);
-                    AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(leadAccount, offer, pol, deserializedRequest.cliente.contacto.codigoPostal);
-
-                    response.responseBody = Blob.valueOf('{"status":"success", "message":"Success creating client"}');
                 }
                 when else
                 {
