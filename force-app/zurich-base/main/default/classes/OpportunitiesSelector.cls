@@ -236,4 +236,55 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             return new List<Opportunity>();
         }
     }
+
+    /**
+    * @description Método que recupera ofertas en base al Id de la cuenta, el códig
+    * de intermediario, el ramo, la fecha de creación y que la oferta no esté cerrada.
+    *
+    * @author amiranda
+    * @date 01-09-2023 
+    * @param Id accountId Id de la cuenta asociada a la oportunidad
+    * @param String intermediaryCode Código de intermedairio asociado a la oportunidad
+    * @param String productBranch Ramo de la oportunidad
+    * @param Query.DateLiteral daysToRetrieve Días a tener en cuenta 
+    * @return List<Opportunity> Lista de ofertas encontradas
+    **/
+    public List<Opportunity> findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
+        Id accountId,
+        String intermediaryCode,
+        String productBranch,
+        Query.DateLiteral daysToRetrieve)
+    {
+
+        List<Opportunity> retrievedOpportunities = new List<Opportunity>();
+
+        if ( accountId != null && intermediaryCode != null && String.isNotBlank(productBranch) && daysToRetrieve != null )
+        {
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Opportunity.Name,
+                Opportunity.StageName,
+                Opportunity.AccountId,
+                Opportunity.OwnerId,
+                Opportunity.IntermediaryId__c,
+                Opportunity.IntermediaryCode__c,
+                Opportunity.PersonLeadSource__c,
+                Opportunity.ProductBranch__c,
+                Opportunity.Description,
+                Opportunity.PreferedContactStart__c,
+                Opportunity.PreferedContactEnd__c
+            };
+
+            retrievedOpportunities = this.baseQuery.selectfields(fieldsToRetrieve)
+                                     .addConditionEq(Opportunity.AccountId, accountId)
+                                     .addConditionEq(Opportunity.IntermediaryCode__c, intermediaryCode)
+                                     .addConditionEq(Opportunity.ProductBranch__c, productBranch)
+                                     .addConditionEq(Opportunity.CreatedDate, daysToRetrieve)
+                                     .addConditionNotEq(Opportunity.StageName, 'Closed Won')
+                                     .addConditionNotEq(Opportunity.StageName, 'Closed Lost')
+                                     .run();
+        }
+
+        return retrievedOpportunities;
+    }
 }

@@ -1,9 +1,9 @@
 /**
- * @description       :
- * @author            :
- * @group             :
- * @last modified on  : 28/08/2023
- * @last modified by  : jgallaga
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 09-04-2023
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -234,13 +234,18 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 16/08/2023
      * @param  documents   Listado de DNIs
      * @return             Listado de cuentas sobre los que se ha realizado match
+     * 
+     * @change amiranda 31/08/2023 Se elimina el campo 'Name' de la query. Es un 
+     * campo de solo lectura que se conforma por la concatenación de los campos
+     * 'FirstName' y 'LastName' (entre otros). Por lo tanto, al intentar actualizar
+     * la lista de cuentas que nos devuelve este método, Salesforce lanza una excepción.
      */
     public List<Account> findByNationalIdAndRcTypeLead(List<String> documents)
     {
         List<Account> result = new List<Account>();
 
         if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
+            result = new List<Account>([SELECT Id, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
         }
         return result;
     }
