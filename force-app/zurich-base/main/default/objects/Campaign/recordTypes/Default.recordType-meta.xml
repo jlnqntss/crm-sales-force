@@ -169,6 +169,10 @@
     <picklistValues>
         <picklist>Type</picklist>
         <values>
+            <fullName>Cross Selling</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Demo Signup %2F Trial</fullName>
             <default>false</default>
         </values>

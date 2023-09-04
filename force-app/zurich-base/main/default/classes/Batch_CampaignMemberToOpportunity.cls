@@ -50,7 +50,11 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     public void execute(Database.BatchableContext bc, List<sObject> records)
     {
-        obtainDefaultUserOnError(); // Recupera el usuario por defecto, al no ser Stateful, hay que recuperar en cada lote
+        oppsToInsert.clear();
+
+        String aliasDefaultUserCC = Cross_Selling__c.getInstance().ContactCenterUser__c;
+
+        defaultUserCC = usersSelector.findByAlias(aliasDefaultUserCC).Id;
 
         List<CampaignMember> campaignMembers = new List<CampaignMember>();
         for(sObject record : records)
@@ -187,7 +191,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
      **/
     private Opportunity fillMediatorData(Opportunity opp, CampaignMember cm, Map<String, Account> accountByIntermCode, Map<Id, Id> userIdByAccountId)
     {
-        if (accountByIntermCode.get(cm.OfferAssignedCode__c).Id != null)
+        if (accountByIntermCode.get(cm.OfferAssignedCode__c) != null)
         {
             opp.IntermediaryId__c = accountByIntermCode.get(cm.OfferAssignedCode__c).Id;
         }

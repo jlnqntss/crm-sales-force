@@ -46,6 +46,7 @@
         <connector>
             <targetReference>ExecuteBatch_CampaignMemberToOpportunity</targetReference>
         </connector>
+        <filterFormula>ISPICKVAL({!$Record.Campaign.Type}, &quot;Cross Selling&quot;)</filterFormula>
         <object>CampaignMember</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
