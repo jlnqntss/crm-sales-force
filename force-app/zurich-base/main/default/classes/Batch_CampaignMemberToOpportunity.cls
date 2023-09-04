@@ -52,9 +52,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     {
         oppsToInsert.clear();
 
-        String aliasDefaultUserCC = Cross_Selling__c.getInstance().ContactCenterUser__c;
-
-        defaultUserCC = usersSelector.findByAlias(aliasDefaultUserCC).Id;
+        obtainDefaultUserOnError(); // Recupera el usuario por defecto, al no ser Stateful, hay que recuperar en cada lote
 
         List<CampaignMember> campaignMembers = new List<CampaignMember>();
         for(sObject record : records)
