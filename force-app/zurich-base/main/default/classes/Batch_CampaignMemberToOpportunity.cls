@@ -201,7 +201,8 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             opp.OwnerId = defaultUserOnError;
         }
 
-        if (accountByIntermCode.get(cm.OfferAssignedCode__c).Parent.IntermediaryWithUser__c != null )
+        if (accountByIntermCode.get(cm.OfferAssignedCode__c) != null &&
+            accountByIntermCode.get(cm.OfferAssignedCode__c).Parent.IntermediaryWithUser__c != null )
         {
             if (accountByIntermCode.get(cm.OfferAssignedCode__c) != null &&
                 userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Parent.IntermediaryWithUser__c) != null)
@@ -216,7 +217,8 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
         else
         {
-            if (userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Id) != null)
+            if (accountByIntermCode.get(cm.OfferAssignedCode__c) != null &&
+                userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Id) != null)
             {
                 opp.OwnerId = userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Id);
             }
