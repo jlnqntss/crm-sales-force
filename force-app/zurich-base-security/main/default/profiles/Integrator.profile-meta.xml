@@ -852,6 +852,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>WS_SalesCRM</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>WebServicesParser</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -9587,6 +9591,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.CarRegistration__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.PreferedContactEnd__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -12213,6 +12222,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Trigger_Setting__mdt.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>User.ContactAccountId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

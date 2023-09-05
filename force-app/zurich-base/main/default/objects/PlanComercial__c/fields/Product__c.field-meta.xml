@@ -26,7 +26,7 @@
             <value>
                 <fullName>Inmuebles</fullName>
                 <default>false</default>
-                <label>Estate</label>
+                <label>Communities</label>
             </value>
             <value>
                 <fullName>Accidentes</fullName>
@@ -67,11 +67,6 @@
                 <fullName>Resto</fullName>
                 <default>false</default>
                 <label>Resto</label>
-            </value>
-            <value>
-                <fullName>Communitdades</fullName>
-                <default>false</default>
-                <label>Communities</label>
             </value>
             <value>
                 <fullName>Resto Particulares</fullName>
@@ -115,10 +110,6 @@
             <controllingFieldValue>Particulares</controllingFieldValue>
             <controllingFieldValue>PYMEs</controllingFieldValue>
             <valueName>Resto</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Particulares</controllingFieldValue>
-            <valueName>Communitdades</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>PYMEs</controllingFieldValue>
