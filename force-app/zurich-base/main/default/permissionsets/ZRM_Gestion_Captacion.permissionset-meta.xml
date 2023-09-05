@@ -812,7 +812,7 @@ Para usuarios de la comunidad zrm</description>
         <field>Opportunity.Activity__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Amount</field>
         <readable>false</readable>
@@ -835,6 +835,11 @@ Para usuarios de la comunidad zrm</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.BusinessName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.CarRegistration__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -997,7 +1002,7 @@ Para usuarios de la comunidad zrm</description>
         <field>Opportunity.PendingBy__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.ProductBranchDetail__c</field>
         <readable>true</readable>
@@ -1107,7 +1112,7 @@ Para usuarios de la comunidad zrm</description>
         <field>Opportunity.ValidationErrors__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PreferedContactEnd__c</field>
         <readable>true</readable>
