@@ -60,20 +60,33 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable {
     **/
     public static void processOpportunityAndPolicy(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode) {
         Opportunity offerToInsertUpdate = offerRecord;
+        List<Opportunity> listOffer = new List<Opportunity>();
+        OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+        if (offerRecord.InfoQuoteNumber__c == null) {
+            listOffer = oppSelector.findOppWhenInfoQuoteNumberIsNull(offerRecord);
+        } else {
+            listOffer = oppSelector.findOppWhenInfoQuoteNumberIsNOTNull(offerRecord);
+        }
 
-        offerToInsertUpdate = manageOfferRecord(offerRecord, policyRecord, offerToInsertUpdate);
-        managePolicyRecord(offerRecord, policyRecord, offerToInsertUpdate);
+        manageOfferRecord(offerRecord, offerToInsertUpdate, listOffer);
+
+        if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null) {
+            insert offerToInsertUpdate;
+        } else if (offerToInsertUpdate != null && offerToInsertUpdate.Id != null) {
+            update offerToInsertUpdate;
+        }
+
+        managePolicyRecord(policyRecord, offerToInsertUpdate);
     }
 
     /**
      * Método que gestiona la creación de una póliza
      * *
      * @author overes | 08-31-2023
-     * @param offerRecord 
      * @param policyRecord 
      * @param offerToInsertUpdate 
      */
-    private static void managePolicyRecord(Opportunity offerRecord, Policy__c policyRecord, Opportunity offerToInsertUpdate) {
+    private static void managePolicyRecord(Policy__c policyRecord, Opportunity offerToInsertUpdate) {
         if (policyRecord != null && offerToInsertUpdate != null) {
             Policy__c policyToInsert = policyRecord;
             AccountsSelector accSelector = new AccountsSelector();
@@ -93,22 +106,9 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable {
      * * 
      * @author overes | 08-31-2023
      * @param offerRecordParam 
-     * @param policyRecordParam 
      * @param offerToInsertUpdateParam 
-     * @return  Opportunity
      */
-    private static Opportunity manageOfferRecord(Opportunity offerRecordParam, Policy__c policyRecordParam, Opportunity offerToInsertUpdateParam) {
-        List<Opportunity> listOffer = new List<Opportunity>();
-        OpportunitiesSelector oppSelector = new OpportunitiesSelector();
-        Opportunity offerRecord = offerRecordParam;
-        Policy__c policyRecord = policyRecordParam;
-        Opportunity offerToInsertUpdate = offerToInsertUpdateParam;
-        if (offerRecord.InfoQuoteNumber__c == null) {
-            listOffer = oppSelector.findOppWhenInfoQuoteNumberIsNull(offerRecord);
-        } else {
-            listOffer = oppSelector.findOppWhenInfoQuoteNumberIsNOTNull(offerRecord);
-        }
-
+    private static void manageOfferRecord(Opportunity offerRecord, Opportunity offerToInsertUpdate,List<Opportunity> listOffer) {
         for (Opportunity offerQuery : listOffer) {
             if ((offerRecord.InfoQuoteNumber__c != null && offerQuery.InfoQuoteNumber__c == offerRecord.InfoQuoteNumber__c && (offerQuery.StageName == 'Cerrada-Ganada' || offerQuery.StageName == 'Cerrada-Perdida'))  || (offerRecord.InfoQuoteNumber__c == null && offerQuery.SessionId__c == offerRecord.SessionId__c)) {
                 offerToInsertUpdate = null;
@@ -119,12 +119,5 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable {
                 offerToInsertUpdate.Id = offerQuery.Id;
             }
         }
-
-        if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null) {
-            insert offerToInsertUpdate;
-        } else if (offerToInsertUpdate != null && offerToInsertUpdate.Id != null) {
-            update offerToInsertUpdate;
-        }
-        return offerToInsertUpdate;
     }
 }
