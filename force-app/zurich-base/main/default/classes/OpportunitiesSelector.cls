@@ -289,10 +289,11 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     }
 
     /**
-     *
+     * Método que recupera las ofertas que InfoQuoteNumber es nulo
      * *
-     * @author overes | 04-09-2023
-     *
+     * @author overes | 09-04-2023
+     * @param offerRecord
+     * @return  List<Opportunity>
      */
     public List<Opportunity> findOppWhenInfoQuoteNumberIsNull(Opportunity offerRecord) {
         return [SELECT Id, SessionId__c, InfoQuoteNumber__c, StageName, Name, CloseDate FROM Opportunity
@@ -301,6 +302,13 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         ORDER BY CreatedDate DESC];
     }
 
+    /**
+     * Método que recupera las ofertas que InfoQuoteNumber no es nulo
+     * *
+     * @author overes | 09-04-2023
+     * @param offerRecord
+     * @return  List<Opportunity>
+     */
     public List<Opportunity> findOppWhenInfoQuoteNumberIsNOTNull(Opportunity offerRecord) {
         return [SELECT Id, SessionId__c, InfoQuoteNumber__c, StageName, Name, CloseDate FROM Opportunity
         WHERE SessionId__c = :offerRecord.SessionId__c
@@ -308,10 +316,4 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
         ORDER BY CreatedDate DESC];
     }
-
-    // public List<Opportunity> findDuplicatesById(Id oppId) {
-    //     return [SELECT Id, Name, SessionId__c, PersonLeadSource__c, Description, PreferedContactStart__c, PreferedContactEnd__c, ProductBranch__c, InfoQuoteNumber__c, CloseDate FROM Opportunity
-    //     WHERE Id = :oppId];
-    // }
-
 }

@@ -4,14 +4,9 @@
  * @last modified on  : 09-04-2023
 **/
 public with sharing class SalesCRMQuoteAndBuyService {
-    /**
-     * Listado de campos que son requeridos
-     */
+
     private static Set<String> requiredFields = new Set<String> {'Sesion', 'Origen', 'nombre', 'primerApellido', 'telefono', 'ramo'};
 
-    /**
-     * Listado de campos que deben estár informados desde el objeto correspondiente
-     */
     private static Map<String, Schema.SObjectField> picklistTypeFieldsByJsonFieldName = new Map<String, Schema.SObjectField> {
         'ramo' => Opportunity.ProductBranch__c
     };
@@ -27,13 +22,10 @@ public with sharing class SalesCRMQuoteAndBuyService {
 
     private static AccountsSelector accountSelector = new AccountsSelector();
 
-    /**
-     * Error que representa que se ha indicado un campo inexistente o no válido (Code 400)
-     */
     private static final String INVALID_FIELD = 'INVALID_FIELD';
 
     /**
-    *
+    * Método que rellena el valor de Description
     * *
     * @author overes | 09-04-2023
     * @param requestData
@@ -53,6 +45,13 @@ public with sharing class SalesCRMQuoteAndBuyService {
         '"\n "País matriculación":"' + requestData.poliza.Coche.paisMatriculacion + '"}';
     }
 
+    /**
+     * Método que recupera el Id de la oferta con el condigoIntermediario correspondiente
+     * *
+     * @author overes | 09-04-2023
+     * @param requestData 
+     * @return  String
+     */    
     public static String getOfferIntermediaryId(Lead requestData) {
         List<Account> offerIntermediaryId = new List<Account>(accountSelector.findByINFOIntermediaryCode(new List<String>{requestData.poliza.codigoIntermediario}));
         if (offerIntermediaryId.size() > 0 ) {
@@ -62,17 +61,18 @@ public with sharing class SalesCRMQuoteAndBuyService {
     }
 
     /**
-    *
+    * Método que comprueba que los valores requeridos vinenen informados
     * *
     * @author overes | 09-02-2023
     * @param requestData
     **/
     public static void validateRequestData(Lead requestData) {
         checkRequiredFields(requestData);
+        checkPicklistValues(requestData);
     }
 
     /**
-    *
+    * Método que gestiona el la creación/actualización del Lead
     * *
     * @author overes | 09-03-2023
     * @param requestData
@@ -150,7 +150,7 @@ public with sharing class SalesCRMQuoteAndBuyService {
     }
 
     /**
-    *
+    * Método que gestiona la creación/actualización de la Oferta
     * *
     * @author overes | 09-03-2023
     * @param requestData
@@ -184,7 +184,7 @@ public with sharing class SalesCRMQuoteAndBuyService {
     }
 
     /**
-    *
+    * Método que gestiona la creación/actualización de la Poliza
     * *
     * @author overes | 09-04-2023
     * @param leadAccount
@@ -232,7 +232,7 @@ public with sharing class SalesCRMQuoteAndBuyService {
     }
 
     /**
-    * El valor de 'ramo' debe ser 0000000001 | AUTOS
+    * Comprobando los valores informado en la Picklist
     * *
     * @author overes | 09-03-2023
     * @param requestData

@@ -59,13 +59,50 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable {
     * @param postalCode
     **/
     public static void processOpportunityAndPolicy(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode) {
-        List<Opportunity> listOffer = new List<Opportunity>();
         Opportunity offerToInsertUpdate = offerRecord;
 
-        //Construye una query sobre Opportunity para obtener registros duplicados de la Oferta a procesar
-        OpportunitiesSelector oppSelector = new OpportunitiesSelector();
-        // List<Opportunity> duplicateOpp = oppSelector.findDuplicatesById(offerRecord.Id);
+        offerToInsertUpdate = manageOfferRecord(offerRecord, policyRecord, offerToInsertUpdate);
+        managePolicyRecord(offerRecord, policyRecord, offerToInsertUpdate);
+    }
 
+    /**
+     * Método que gestiona la creación de una póliza
+     * *
+     * @author overes | 08-31-2023
+     * @param offerRecord 
+     * @param policyRecord 
+     * @param offerToInsertUpdate 
+     */
+    private static void managePolicyRecord(Opportunity offerRecord, Policy__c policyRecord, Opportunity offerToInsertUpdate) {
+        if (policyRecord != null && offerToInsertUpdate != null) {
+            Policy__c policyToInsert = policyRecord;
+            AccountsSelector accSelector = new AccountsSelector();
+            List<Account> listAcc = accSelector.findByINFOIntermediaryCode(new List<String>{(String)offerToInsertUpdate.IntermediaryCode__c});
+            policyToInsert.OpportunityName__c = offerToInsertUpdate.Id;
+            policyToInsert.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
+            if (listAcc.size() > 0) {
+                policyToInsert.IntermediaryId__c = listAcc.get(0).Id;
+            }
+            policyToInsert.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c; 
+            insert policyToInsert;
+        }
+    }
+
+    /**
+     * Método que gestiona la creación o la actualización de Policy__c
+     * * 
+     * @author overes | 08-31-2023
+     * @param offerRecordParam 
+     * @param policyRecordParam 
+     * @param offerToInsertUpdateParam 
+     * @return  Opportunity
+     */
+    private static Opportunity manageOfferRecord(Opportunity offerRecordParam, Policy__c policyRecordParam, Opportunity offerToInsertUpdateParam) {
+        List<Opportunity> listOffer = new List<Opportunity>();
+        OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+        Opportunity offerRecord = offerRecordParam;
+        Policy__c policyRecord = policyRecordParam;
+        Opportunity offerToInsertUpdate = offerToInsertUpdateParam;
         if (offerRecord.InfoQuoteNumber__c == null) {
             listOffer = oppSelector.findOppWhenInfoQuoteNumberIsNull(offerRecord);
         } else {
@@ -73,7 +110,6 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable {
         }
 
         for (Opportunity offerQuery : listOffer) {
-            //3.1. Se debe finalizar el proceso si es alguno de los escenarios de integración 2 o 3 y existe una Oferta cerrada con el mismo QuoteNumber de INFO, o si es el escenario de integración 1 y existe una Oferta ya registrada para la misma Sesión del Asistente.
             if ((offerRecord.InfoQuoteNumber__c != null && offerQuery.InfoQuoteNumber__c == offerRecord.InfoQuoteNumber__c && (offerQuery.StageName == 'Cerrada-Ganada' || offerQuery.StageName == 'Cerrada-Perdida'))  || (offerRecord.InfoQuoteNumber__c == null && offerQuery.SessionId__c == offerRecord.SessionId__c)) {
                 offerToInsertUpdate = null;
                 break;
@@ -89,18 +125,6 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable {
         } else if (offerToInsertUpdate != null && offerToInsertUpdate.Id != null) {
             update offerToInsertUpdate;
         }
-
-        if (policyRecord != null && offerToInsertUpdate != null) {
-            Policy__c policyToInsert = policyRecord;
-            AccountsSelector accSelector = new AccountsSelector();
-            List<Account> listAcc = accSelector.findByINFOIntermediaryCode(new List<String>{(String)offerToInsertUpdate.IntermediaryCode__c});
-            policyToInsert.OpportunityName__c = offerToInsertUpdate.Id;
-            policyToInsert.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
-            if (listAcc.size() > 0) {
-                policyToInsert.IntermediaryId__c = listAcc.get(0).Id;
-            }
-            policyToInsert.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c; 
-            insert policyToInsert;
-        }
+        return offerToInsertUpdate;
     }
 }
