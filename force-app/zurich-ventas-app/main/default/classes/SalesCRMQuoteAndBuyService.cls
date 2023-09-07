@@ -32,17 +32,17 @@ public with sharing class SalesCRMQuoteAndBuyService {
     * @return String
     **/
     public static String setDesc(Lead requestData) {
-        return '{"Fecha de carnet":"' + requestData.cliente.fechaCarnet +
-        '"\n "País de carnet":"' + requestData.cliente.paisCarnet +
-        '"\n "Numero de oferta":"' + requestData.poliza.numeroOferta +
-        '"\n "Fecha de inicio":"' + requestData.poliza.fechaInicio +
-        '"\n "Precio Anual":"' + requestData.poliza.precioAnual +
-        '"\n "Paquete":"' + requestData.poliza.paquete +
-        '"\n "Marca":"' + requestData.poliza.Coche.marca +
-        '"\n "Modelo":"' + requestData.poliza.Coche.Modelo +
-        '"\n "Version":"' + requestData.poliza.Coche.Version +
-        '"\n "Matricula":"' + requestData.poliza.Coche.matricula +
-        '"\n "País matriculación":"' + requestData.poliza.Coche.paisMatriculacion + '"}';
+        return 'Fecha de carnet: ' + requestData.cliente.fechaCarnet +
+        '\n País de carnet:' + requestData.cliente.paisCarnet +
+        '\n Numero de oferta:' + requestData.poliza.numeroOferta +
+        '\n Fecha de inicio:' + requestData.poliza.fechaInicio +
+        '\n Precio Anual:' + requestData.poliza.precioAnual +
+        '\n Paquete:' + requestData.poliza.paquete +
+        '\n Marca:' + requestData.poliza.Coche.marca +
+        '\n Modelo:' + requestData.poliza.Coche.Modelo +
+        '\n Version:' + requestData.poliza.Coche.Version +
+        '\n Matricula:' + requestData.poliza.Coche.matricula +
+        '\n País matriculación:' + requestData.poliza.Coche.paisMatriculacion;
     }
 
     /**
