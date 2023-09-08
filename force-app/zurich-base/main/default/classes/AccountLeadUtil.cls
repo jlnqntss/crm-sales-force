@@ -40,7 +40,7 @@ public class AccountLeadUtil
                 newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
                 if (newAcc != null)
                 {
-                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + newAcc.FirstName + ' ' + newAcc.LastName + ' ' + newAcc.Id + ')');
+                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + newAcc.Name + ' ' + newAcc.Id + ')'); 
                 }
             }
         }
