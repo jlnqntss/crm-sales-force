@@ -3,7 +3,7 @@
  * @author            : 
  * @group             : 
  * @last modified on  : 09-10-2023
- * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @last modified by  : overes
 **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -951,8 +951,8 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date        16/08/2023
      * *
      * @modification
-     *              El query selector parece no ser capaz de recoger un campo del Parent, por lo que la query original no
-     *              funciona. Se pone directamente la query para poder recuperar la información necesaria.
+     *              El query selector parece no ser capaz de recoger un campo del Parent, por lo que en la query original no
+     *              no se puede recuperar. Se pone directamente la query para poder recuperar la información necesaria para la implementacción de leadAssignment.
      */
     public List<Account> findByINFOIntermediaryCode(List<String> intermediaryCodes)
     {
