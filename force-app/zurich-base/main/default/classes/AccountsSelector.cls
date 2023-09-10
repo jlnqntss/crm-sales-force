@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 04-09-2023
- * @last modified by  : amiranda
+ * @last modified on  : 09-10-2023
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -224,10 +224,23 @@ public with sharing class AccountsSelector extends RecordsSelector
         List<Account> result = new List<Account>();
 
         if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
         }
         return result;
     }
+
+    /**
+    * Método que recupera el Name de id de cuenta pasado por parámentro
+    * *
+    * @author overes | 09-10-2023 
+    * @param documents 
+    * @return List<Account> 
+    **/
+    public List<Account> findAccountNameById(List<String> ids)
+    {
+        return [SELECT Id, Name FROM account WHERE Id IN :ids];
+    }
+
     /**
      * Busca cuentas a partir de un listado de DNIs y lecord type Lead
      * @author overes
@@ -244,7 +257,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     public List<Account> findByNationalIdAndRcTypeLead(List<String> documents)
     {
         List<Account> result = new List<Account>();
-
+        
         if (documents != null && !documents.isEmpty()) {
             result = new List<Account>([SELECT Id, FirstName, LastName, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
         }
