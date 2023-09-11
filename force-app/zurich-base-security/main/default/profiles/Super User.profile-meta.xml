@@ -2171,6 +2171,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.PreferredContactChannel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.WebId__c</field>
         <readable>true</readable>
     </fieldPermissions>
