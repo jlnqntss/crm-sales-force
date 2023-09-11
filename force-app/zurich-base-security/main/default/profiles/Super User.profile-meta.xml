@@ -2900,6 +2900,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+		<editable>true</editable>
+		<field>Account.IntermediaryGroup__c</field>
+		<readable>true</readable>
+	</fieldPermissions>	
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.INFOIntermediaryGroupCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Activity.Related_Case_Status__c</field>
         <readable>true</readable>
