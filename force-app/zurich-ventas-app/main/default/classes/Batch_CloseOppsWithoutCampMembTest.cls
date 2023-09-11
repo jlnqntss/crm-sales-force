@@ -115,22 +115,17 @@ public class Batch_CloseOppsWithoutCampMembTest
 
         for(Opportunity currentOpportunity : [SELECT Name, CampaignId, Campaign.Type, StageName, Sales_Loss_Reason__c FROM Opportunity])
         {
-            System.debug('OPP ' + currentOpportunity.name + ' Type ' + currentOpportunity.Campaign.Type + ' StageName ' + currentOpportunity.StageName);
-            /*
-            if(currentOppotunity.Campaign.Type == 'Cross Selling')
+            if(currentOpportunity.Campaign.Type == 'Cross Selling')
             {
-                Assert.isTrue(currentOppotunity.StageName == 'Closed Lost');
-                Assert.isTrue(currentOppotunity.Sales_Loss_Reason__c == 'Not interested Policy - Revocation Consents');
+                Assert.isTrue(currentOpportunity.StageName == 'Closed Lost');
+                Assert.isTrue(currentOpportunity.Sales_Loss_Reason__c == 'Not interested Policy - Revocation Consents');
             }
             else
             {
-                Assert.isFalse(currentOppotunity.StageName == 'Closed Lost');
-                Assert.isFalse(currentOppotunity.Sales_Loss_Reason__c == 'Not interested Policy - Revocation Consents');
-
+                Assert.isFalse(currentOpportunity.StageName == 'Closed Lost');
+                Assert.isFalse(currentOpportunity.Sales_Loss_Reason__c == 'Not interested Policy - Revocation Consents');
             }
-            */
         }
-
     }
 
     @isTest
