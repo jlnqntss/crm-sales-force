@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Agrupación Mediador</label>
+    <lookupFilter>
+        <errorMessage></errorMessage>
+    </lookupFilter>
+    <name>IntermediaryGroup__c</name>
+    <relationshipLabel></relationshipLabel>
+</CustomFieldTranslation>
