@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Acción para lanzar el Batch &quot;Batch_CloseOppsWithoutCampMemb&quot;</description>
+        <name>Ejecucion_Batch_cierre_oportunidades</name>
+        <label>Ejecucion Batch cierre oportunidades</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <actionName>Batch_CloseOppsWithoutCampMemb</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+    </actionCalls>
+    <apiVersion>59.0</apiVersion>
+    <description>Flujo para lanzar el proceso de cierre de oportunidades de miembros de campaña que se hayan eliminado de una campaña.</description>
+    <environments>Default</environments>
+    <interviewLabel>Close Cross Selling Offers Without Camp. Memb. {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Close Cross Selling Offers Without Camp. Memb.</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <description>Pantalla que se muestra al usuario al comenzar el flujo.</description>
+        <name>Pantalla_inicial</name>
+        <label>Pantalla inicial</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Ejecucion_Batch_cierre_oportunidades</targetReference>
+        </connector>
+        <fields>
+            <name>MensajeUsuario</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;Pulsar ‘Siguiente’ para ejecutar el proceso Batch&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Siguiente</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Pantalla_inicial</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+</Flow>

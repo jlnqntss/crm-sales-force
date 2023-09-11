@@ -1,3 +1,10 @@
+/**
+ * @description       :
+ * @author            : jgallaga
+ * @group             :
+ * @last modified on  : 11/09/2023
+ * @last modified by  : jgallaga
+**/
 public with sharing class OpportunitiesSelector extends RecordsSelector
 {
     //#region Contructores
@@ -52,7 +59,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      *
      * @return                  Listado de opportunies sobre los que se ha realizado match
      *
-     * @last modified by  : arcortazar
+     * @last modified by  : jgallaga
      */
     public List<Opportunity> selectByAccountIdScopesAndOwnerProfile(Id accountId, Set<Id> scopeIds, Set<String> ownerProfileNames)
     {
@@ -315,5 +322,23 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         OR InfoQuoteNumber__c = :offerRecord.InfoQuoteNumber__c
         OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
         ORDER BY CreatedDate DESC];
+    }
+
+
+    /**
+     * Devuelve un String con la query para conseguir oportunidades de campaña de Venta Cruzada que no esten cerradas
+     * *
+     * @author  jgallaga | 07-09-2023
+     * @return  String
+     */
+    public String findCrossSellingOpportunitiesNotClosed()
+    {
+        this.baseQuery
+            .selectFields(new List<Schema.SObjectField>{Opportunity.AccountId, Opportunity.CampaignId, Opportunity.Campaign.Type})
+            .addConditionEq(Opportunity.Campaign.Type, 'Cross Selling')
+            .addConditionEq(Opportunity.IsClosed, false);
+
+        return 'SELECT Accountid, Campaignid, Campaign.type FROM Opportunity WHERE (Campaign.Type = \'Cross Selling\') AND (IsClosed = false)';
+        //return this.baseQuery.toQueryString();
     }
 }
