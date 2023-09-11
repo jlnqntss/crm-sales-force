@@ -421,12 +421,12 @@ public with sharing class EmailMessagesUtil
                             }
                             when else {
                                 genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());
-                                
-                                if((listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
+
+                                if((!listaCaso.isEmpty())&&(listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
                                 {
                                     genesysQueue=null;
                                 }
-                                else if((listaCaso.get(0).RecordTypeId == ocsRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='OCSInquiry'))
+                                else if((!listaCaso.isEmpty())&&(listaCaso.get(0).RecordTypeId == ocsRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='OCSInquiry'))
                                 {
                                     genesysQueue=null;
                                 }
