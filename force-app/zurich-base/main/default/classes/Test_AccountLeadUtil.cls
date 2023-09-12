@@ -55,6 +55,7 @@ public with sharing class Test_AccountLeadUtil
 
         Map<String, User> communityAgents = prepareNewUsers();
 
+        Account agrupacionMediadorAccount = insertAgrupacionMediador();
         Map<String, Account> communityAgentAccounts = insertAccounts(communityAgents.keySet());
         Map<String, Contact> communitAgentContacts = insertContacts(communityAgents.keySet(), communityAgentAccounts); //Contact
 
@@ -81,6 +82,22 @@ public with sharing class Test_AccountLeadUtil
         }
 
         insert communityAgents.values();
+    }
+
+    /**
+     * description  Debido a la modificación de la agrupación de mediadores para ventas, se ha de insertar un nuevo registro agrupación mediador para asociarlo al mediador que se insertará
+     * @author      dmunoz
+     * @date        12/09/2023
+     */
+    private static Account insertAgrupacionMediador() {
+        
+        Account agrupacionMediador = new Account();
+        agrupacionMediador.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('AgrupacionMediador').getRecordTypeId();
+        agrupacionMediador.Name = 'Agrupacion1';
+
+        insert agrupacionMediador;
+
+        return agrupacionMediador;
     }
 
     /**
@@ -129,17 +146,17 @@ public with sharing class Test_AccountLeadUtil
 
         insert agentAccounts.values();
 
-        Map<String,Account> parentAccounts = new Map<String,Account>();
+        Map<String,Account> intermediaryGroup = new Map<String,Account>();
         for(String currentCommunityName : communityUserNames)
         {
-            parentAccounts.put(currentCommunityName,new Account(
+            intermediaryGroup.put(currentCommunityName,new Account(
                 Name = currentCommunityName + 'p',
-                RecordTypeId = intermediaryAccountRecordType.Id,
+                RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('AgrupacionMediador').getRecordTypeId(),
                 IntermediaryWithUser__c = agentACcounts.get(currentCommunityName).Id
             ));
         }
 
-        insert parentAccounts.values();
+        insert intermediaryGroup.values();
 
         Map<String,Account> intermediaryAccounts = new Map<String,Account>();
         for(String currentCommunityName : communityUserNames)
@@ -148,7 +165,7 @@ public with sharing class Test_AccountLeadUtil
                 Name = currentCommunityName + 'i',
                 RecordTypeId = intermediaryAccountRecordType.Id,
                 INFOIntermediaryCode__c = currentCommunityName,
-                ParentId = parentAccounts.get(currentCommunityName).Id
+                IntermediaryGroup__c = intermediaryGroup.get(currentCommunityName).Id
             ));
         }
 

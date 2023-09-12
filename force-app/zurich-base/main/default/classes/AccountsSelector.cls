@@ -952,7 +952,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         this.baseQuery.selectFields(new List<Schema.SObjectField>{
             Account.INFOIntermediaryCode__c,
-            Account.Parent.IntermediaryWithUser__c,
+            Account.IntermediaryGroup__r.IntermediaryWithUser__c,
             Account.ParentId
         });
 
@@ -961,10 +961,10 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return
         [
-            SELECT  INFOIntermediaryCode__c, ParentId, Parent.IntermediaryWithUser__c
+            SELECT  INFOIntermediaryCode__c, IntermediaryGroup__r.IntermediaryWithUser__c
             FROM    Account
             WHERE   INFOIntermediaryCode__c IN :intermediaryCodes
-            AND     Parent.IntermediaryWithUser__c != null
+            AND     IntermediaryGroup__r.IntermediaryWithUser__c != null
         ];
     }
 
