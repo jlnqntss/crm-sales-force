@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 07/09/2023
+ * @last modified on  : 12/09/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class CampaignMembersSelector extends BaseSelector
@@ -137,7 +137,14 @@ public with sharing class CampaignMembersSelector extends BaseSelector
     {
         ProperCampaignMembersSelector myCampaignMemberSelector = new ProperCampaignMembersSelector();
 
-        return myCampaignMemberSelector.selectCampaignMembersByCampaignIdAndAccountFromContact(campaignIds,accountIds);
+        //return myCampaignMemberSelector.selectCampaignMembersByCampaignIdAndAccountFromContact(campaignIds,accountIds);
+
+        return [
+            SELECT  CampaignId, ContactId, Contact.AccountId
+            FROM    CampaignMember
+            WHERE   CampaignId IN :campaignIds
+            AND     Contact.AccountId IN : accountIds
+            ];
     }
 
     public class ProperCampaignMembersSelector extends RecordsSelector
