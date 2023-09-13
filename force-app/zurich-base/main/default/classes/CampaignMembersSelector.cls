@@ -135,8 +135,6 @@ public with sharing class CampaignMembersSelector extends BaseSelector
      */
     public List<CampaignMember> selectCampaignMembersByCampaignIdAndAccountFromContact(Set<Id> campaignIds, Set<Id> accountIds)
     {
-        ProperCampaignMembersSelector myCampaignMemberSelector = new ProperCampaignMembersSelector();
-
         return [
             SELECT  CampaignId, ContactId, Contact.AccountId
             FROM    CampaignMember
