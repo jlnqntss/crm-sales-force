@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 09-10-2023
+ * @last modified on  : 13-09-2023
  * @last modified by  : overes
 **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -224,7 +224,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         List<Account> result = new List<Account>();
 
         if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
         }
         return result;
     }
@@ -259,7 +259,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         List<Account> result = new List<Account>();
         
         if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
         }
         return result;
     }
