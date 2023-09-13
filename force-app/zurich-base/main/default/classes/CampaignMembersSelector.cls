@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 12/09/2023
+ * @last modified on  : 13/09/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class CampaignMembersSelector extends BaseSelector
@@ -136,8 +136,6 @@ public with sharing class CampaignMembersSelector extends BaseSelector
     public List<CampaignMember> selectCampaignMembersByCampaignIdAndAccountFromContact(Set<Id> campaignIds, Set<Id> accountIds)
     {
         ProperCampaignMembersSelector myCampaignMemberSelector = new ProperCampaignMembersSelector();
-
-        //return myCampaignMemberSelector.selectCampaignMembersByCampaignIdAndAccountFromContact(campaignIds,accountIds);
 
         return [
             SELECT  CampaignId, ContactId, Contact.AccountId

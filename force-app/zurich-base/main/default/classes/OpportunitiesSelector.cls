@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 11/09/2023
+ * @last modified on  : 13/09/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class OpportunitiesSelector extends RecordsSelector
@@ -339,6 +339,5 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             .addConditionEq(Opportunity.IsClosed, false);
 
         return 'SELECT Accountid, Campaignid, Campaign.type FROM Opportunity WHERE (Campaign.Type = \'Cross Selling\') AND (IsClosed = false)';
-        //return this.baseQuery.toQueryString();
     }
 }
