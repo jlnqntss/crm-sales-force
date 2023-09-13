@@ -55,7 +55,6 @@ public with sharing class Test_AccountLeadUtil
 
         Map<String, User> communityAgents = prepareNewUsers();
 
-        Account agrupacionMediadorAccount = insertAgrupacionMediador();
         Map<String, Account> communityAgentAccounts = insertAccounts(communityAgents.keySet());
         Map<String, Contact> communitAgentContacts = insertContacts(communityAgents.keySet(), communityAgentAccounts); //Contact
 
@@ -84,21 +83,6 @@ public with sharing class Test_AccountLeadUtil
         insert communityAgents.values();
     }
 
-    /**
-     * description  Debido a la modificación de la agrupación de mediadores para ventas, se ha de insertar un nuevo registro agrupación mediador para asociarlo al mediador que se insertará
-     * @author      dmunoz
-     * @date        12/09/2023
-     */
-    private static Account insertAgrupacionMediador() {
-        
-        Account agrupacionMediador = new Account();
-        agrupacionMediador.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('AgrupacionMediador').getRecordTypeId();
-        agrupacionMediador.Name = 'Agrupacion1';
-
-        insert agrupacionMediador;
-
-        return agrupacionMediador;
-    }
 
     /**
      * description  Funcionalidad para insertar los contactos que se utilizarán para crear los

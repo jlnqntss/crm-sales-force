@@ -54,9 +54,7 @@ public with sharing class Test_AccountLeadAssignment
         User adminUser = [SELECT Id FRom User WHERE Profile.Name = 'System Administrator' AND Id != :UserInfo.getUserId() AND isActive = true LIMIT 1];
 
         Map<String, User> communityAgents = prepareNewUsers();
-
         
-        Account agrupacionMediadorAccount = insertAgrupacionMediador();
         Map<String, Account> communityAgentAccounts = insertAccounts(communityAgents.keySet());
         Map<String, Contact> communitAgentContacts = insertContacts(communityAgents.keySet(), communityAgentAccounts); //Contact
 
@@ -83,22 +81,6 @@ public with sharing class Test_AccountLeadAssignment
         }
 
         insert communityAgents.values();
-    }
-
-    /**
-     * description  Debido a la modificación de la agrupación de mediadores para ventas, se ha de insertar un nuevo registro agrupación mediador para asociarlo al mediador que se insertará
-     * @author      dmunoz
-     * @date        12/09/2023
-     */
-    private static Account insertAgrupacionMediador() {
-        
-        Account agrupacionMediador = new Account();
-        agrupacionMediador.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('AgrupacionMediador').getRecordTypeId();
-        agrupacionMediador.Name = 'Agrupacion1';
-
-        insert agrupacionMediador;
-
-        return agrupacionMediador;
     }
 
 
