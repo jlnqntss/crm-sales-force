@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 13-09-2023
- * @last modified by  : overes
+ * @last modified on  : 14-09-2023
+ * @last modified by  : amiranda
 **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -224,7 +224,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         List<Account> result = new List<Account>();
 
         if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c,Intermediary_Name__r.INFOIntermediaryCode__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
         }
         return result;
     }
@@ -259,7 +259,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         List<Account> result = new List<Account>();
         
         if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
         }
         return result;
     }
@@ -276,7 +276,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         List<Account> result = new List<Account>();
 
         if (phones != null && !phones.isEmpty()) {
-            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
         }
         return result;
     }
