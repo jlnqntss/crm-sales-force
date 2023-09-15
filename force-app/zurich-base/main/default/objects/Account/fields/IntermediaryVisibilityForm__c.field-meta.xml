@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IntermediaryVisibilityForm__c</fullName>
+    <description>Campo fórmula para recalcular visibilidad en ZRM</description>
+    <externalId>false</externalId>
+    <formula>IF(IntermediaryVisibilityAcc__c = Intermediary_Name__c, 
+	IF(ISBLANK(IntermediaryVisibilityAcc__c), 
+		&apos;WithoutIntermediary&apos;, 
+		&apos;CurrentIntermediary&apos;
+	), 
+	IF(IntermediaryVisibilityAcc__c = Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, 
+		&apos;MainIntermediary&apos;, 
+		null
+	)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Intermediary Visibility Form</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
