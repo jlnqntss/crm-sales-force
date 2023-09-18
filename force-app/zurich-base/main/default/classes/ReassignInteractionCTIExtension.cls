@@ -12,6 +12,8 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private final static String TASK_STATUS_TYPE_FORMS = 'Forms';
     private final static String TASK_RECORDTYPE_ID_INTERACTION = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
     private final static String CRM_VENTAS_PROFILE = 'Ventas User';
+    private final static String CALL_DISPOSITION_NO_RESPONSE = 'No contesta / Contestador Automático';
+    private final static String CALL_CALLBACK_ERRONEO_TRANSF = 'CallBack erróneo Transferencia';
 
     /**
      * Identifica una tarea a través del parámetro data.interaction.id y devuelve dicha tarea modificando el usuario Asignado
@@ -58,20 +60,25 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * @description A partir del tipo de evento, se gestiona la interacción de la forma adecuada
      * @param       Task - La interacción relacionada con el evento
      * @param       Map<String,Obejct> - Mapa con la información del evento
+     * Modificaciones
+     * ***
+     * @date    11/09/2023
+     * @author  fpalomo
+     * @description
+     *          CV-684: eventOnInteractionDisconnected() ahora recibe como parámetro el mapa con la información de la interacción
      */
     private static void manageInteractionEvents(Task interactionTask, Map<String, Object> eventData)
     {
+        Map<String, Object> interaction = (Map<String, Object>) eventData.get('interaction');
         String eventName = (String) eventData.get('eventName');
 
         if(String.isBlank(eventName))
         {
             return;
         }
-
+        
         if(eventName == 'interactionChanged')
         {
-            Map<String, Object> interaction = (Map<String, Object>) eventData.get('interaction');
-
             if( String.isEmpty(interactionTask.Id))
             {
                 eventOnInteractionChanged(interactionTask, interaction);
@@ -83,7 +90,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }
         else if(eventName == 'interactionDisconnected')
         {
-            eventOnInteractionDisconnected(interactionTask);
+            eventOnInteractionDisconnected(interactionTask, interaction);
         }
     }
 
@@ -169,7 +176,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }
     }
 
-        /**
+    /**
      * @author      jgallaga
      * @date        05/08/2022
      * @description Al finalizar una interacción, el estado de la tarea pasa a cerrada.
@@ -177,13 +184,41 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * ***
      * Modificaciones
      * ***
-     * @date    05/08/20222
+     * @date    05/08/2022
      * @author  jgallaga
      * @description
      *          Se añade que en el cierre de la interacción, se asigne como propietario de la tarea al usuario que esta ejecutando la acción
+     * ***
+     * @date    11/09/2023
+     * @author  fpalomo
+     * @description
+     *          CV-684: Se añade el campo CampaignMemberID__c para poder relacionar la tarea con el CampaignMember, se comprueba que el contacto sea un
+     *                  CampaignMember y que el motivo de cierre sea "No contesta / Contestador Automático"
      */
-    private static void eventOnInteractionDisconnected(Task interactionTask)
+    private static void eventOnInteractionDisconnected(Task interactionTask, Map<String, Object> eventInteractionData)
     {
+        Boolean isCampaignMember = (eventInteractionData.containsKey('dialerContactId') && ((String)eventInteractionData.get('dialerContactId')).toUppercase().startsWith('00V'));
+        Boolean dispositionNoResponse = (eventInteractionData.containsKey('disposition') && (String)eventInteractionData.get('disposition') == CALL_DISPOSITION_NO_RESPONSE);
+        Boolean dispositionCBErroneoTransf = (eventInteractionData.containsKey('disposition') && (String)eventInteractionData.get('disposition') == CALL_CALLBACK_ERRONEO_TRANSF);
+
+        if(isCampaignMember)
+        {
+            Set<String> cmFields = new Set<String> { 'CallRetries__c', 'CampaignMember.CampaignId', 'Campaign.MaxCallRetries__c' };
+            CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id>{ (Id)eventInteractionData.get('dialerContactId') })[0];
+            Integer maxCallRetries = cm.Campaign.MaxCallRetries__c.intValue();
+            
+            if((maxCallRetries > cm.CallRetries__c) && !dispositionCBErroneoTransf)
+            {
+                cm.CallRetries__c = cm.CallRetries__c + 1;
+                update cm;
+                
+                if(dispositionNoResponse)
+                {
+                    interactionTask.CampaignMemberID__c = cm.Id;
+                }
+            }
+        }
+        
         interactionTask.Status  = TASK_STATUS_CLOSED;
         interactionTask.OwnerId = UserInfo.getUserId();
     }
