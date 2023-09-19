@@ -316,4 +316,22 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
         ORDER BY CreatedDate DESC];
     }
+
+    /**
+     * Método que recupera las ofertas que necesitan recalcular la visibilidad para zrm
+     * *
+     * @author dmonuz | 18/9/2023
+     * @return  List<Opportunity>
+     */
+    public List<Opportunity> findOffersWithIncorrectVisibility() {
+
+        List<Opportunity> result = new List<Opportunity>([SELECT Id, IntermediaryId__c, IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
+                                                            IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
+                                                            FROM Opportunity
+                                                            WHERE (IntermediaryVisibilityForm__c = null
+                                                            OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
+                                                            OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+
+        return result;
+    }
 }

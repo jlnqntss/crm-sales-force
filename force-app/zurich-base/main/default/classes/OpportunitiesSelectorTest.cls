@@ -363,4 +363,14 @@ private with sharing class OpportunitiesSelectorTest
         Assert.isFalse(offers.isEmpty(), 'Offers list should not be empty');
     }
 
+    @isTest
+    static void findOffersWithIncorrectVisibilityTest() {
+
+        Test.startTest();
+        List<Opportunity> offerList = (new OpportunitiesSelector()).findOffersWithIncorrectVisibility();
+        Test.stopTest();
+
+        System.assertEquals(0, offerList.size(), 'No debe encontrar registros');
+    }
+
 }
