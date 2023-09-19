@@ -1,8 +1,8 @@
 /**
- * @description       :
- * @author            :
- * @group             :
- * @last modified on  : 04-09-2023
+ * @description       : 
+ * @author            : 
+ * @group             : 
+ * @last modified on  : 14-09-2023
  * @last modified by  : amiranda
  **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -223,12 +223,24 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         List<Account> result = new List<Account>();
 
-        if ( documents != null && !documents.isEmpty() )
-        {
-            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN: documents AND (RecordTypeId = : rtCustomerId OR RecordTypeId = : rtBusinessCustomerId)]);
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c,Intermediary_Name__r.INFOIntermediaryCode__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
         }
         return result;
     }
+
+    /**
+    * Método que recupera el Name de id de cuenta pasado por parámentro
+    * *
+    * @author overes | 09-10-2023 
+    * @param documents 
+    * @return List<Account> 
+    **/
+    public List<Account> findAccountNameById(List<String> ids)
+    {
+        return [SELECT Id, Name FROM account WHERE Id IN :ids];
+    }
+
     /**
      * Busca cuentas a partir de un listado de DNIs y lecord type Lead
      * @author overes
@@ -245,10 +257,9 @@ public with sharing class AccountsSelector extends RecordsSelector
     public List<Account> findByNationalIdAndRcTypeLead(List<String> documents)
     {
         List<Account> result = new List<Account>();
-
-        if ( documents != null && !documents.isEmpty() )
-        {
-            result = new List<Account>([SELECT Id, FirstName, LastName, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN: documents AND RecordTypeId = : rtLeadId]);
+        
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
         }
         return result;
     }
@@ -264,9 +275,8 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         List<Account> result = new List<Account>();
 
-        if ( phones != null && !phones.isEmpty() )
-        {
-            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, Phone FROM account WHERE Phone IN: phones AND RecordTypeId = : rtLeadId ORDER BY CreatedDate DESC]);
+        if (phones != null && !phones.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
         }
         return result;
     }
@@ -941,8 +951,8 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date        16/08/2023
      * *
      * @modification
-     *              El query selector parece no ser capaz de recoger un campo del Parent, por lo que la query original no
-     *              funciona. Se pone directamente la query para poder recuperar la información necesaria.
+     *              El query selector parece no ser capaz de recoger un campo del Parent, por lo que en la query original no
+     *              no se puede recuperar. Se pone directamente la query para poder recuperar la información necesaria para la implementacción de leadAssignment.
      */
     public List<Account> findByINFOIntermediaryCode(List<String> intermediaryCodes)
     {

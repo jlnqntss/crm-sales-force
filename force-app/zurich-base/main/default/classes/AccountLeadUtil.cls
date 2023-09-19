@@ -1,9 +1,9 @@
 /**
  * @description       :
- * @author            : jgallaga
+ * @author            : overes
  * @group             :
- * @last modified on  : 04-09-2023
- * @last modified by  : amiranda
+ * @last modified on  : 10-09-2023
+ * @last modified by  : overes
 **/
 public class AccountLeadUtil
 {
@@ -32,6 +32,7 @@ public class AccountLeadUtil
      */
     public static List<Account> checkLeads(List<Account> newList){
         List<Account> accList = newList;
+        AccountsSelector accSelector = new AccountsSelector();
         for (Account acc : accList)
         {
             if (Schema.getGlobalDescribe().get('Account').getDescribe().getRecordTypeInfosById().get(acc.RecordTypeId).getName() == LEAD)
@@ -40,7 +41,7 @@ public class AccountLeadUtil
                 newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
                 if (newAcc != null)
                 {
-                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + newAcc.FirstName + ' ' + newAcc.LastName + ' ' + newAcc.Id + ')');
+                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + accSelector.findAccountNameById(new List<String>{(String)newAcc.Id}).get(0).Name + ' ' + newAcc.Id + ')'); 
                 }
             }
         }
