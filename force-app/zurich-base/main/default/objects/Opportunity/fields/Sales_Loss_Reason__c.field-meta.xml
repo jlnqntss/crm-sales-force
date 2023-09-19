@@ -119,6 +119,11 @@
                 <default>false</default>
                 <label>Póliza Anulada</label>
             </value>
+            <value>
+                <fullName>Not interested Policy - Revocation Consents</fullName>
+                <default>false</default>
+                <label>No quiere Póliza - Revocación Consentimientos</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
@@ -203,6 +208,10 @@
         <valueSettings>
             <controllingFieldValue>Closed Lost</controllingFieldValue>
             <valueName>Canceled Policy</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Closed Lost</controllingFieldValue>
+            <valueName>Not interested Policy - Revocation Consents</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

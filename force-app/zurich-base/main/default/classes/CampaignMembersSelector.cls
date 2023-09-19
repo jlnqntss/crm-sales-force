@@ -1,3 +1,10 @@
+/**
+ * @description       :
+ * @author            : jgallaga
+ * @group             :
+ * @last modified on  : 13/09/2023
+ * @last modified by  : jgallaga
+**/
 public with sharing class CampaignMembersSelector extends BaseSelector
 {
     //#region Atributos
@@ -104,14 +111,14 @@ public with sharing class CampaignMembersSelector extends BaseSelector
      *
      * @author dmunoz
      * @date 11/08/2023
-     * @return          Listado de CampaignMembers 
+     * @return          Listado de CampaignMembers
      */
     public List<CampaignMember> findZRMPendingRevMediatorCampaignMembers() {
         List<CampaignMember> result = new List<CampaignMember>([SELECT ContactId, CampaignId, Campaign.ExternalId__c, LeadPhone__c
-                                                                FROM CampaignMember 
-                                                                WHERE Campaign.Type = 'Cross Selling' 
-                                                                AND Campaign.IsActive = true 
-                                                                AND Campaign.StartDate >= TODAY 
+                                                                FROM CampaignMember
+                                                                WHERE Campaign.Type = 'Cross Selling'
+                                                                AND Campaign.IsActive = true
+                                                                AND Campaign.StartDate >= TODAY
                                                                 AND Status = 'Pdte. Revisión Mediador']);
         return result;
     }
@@ -142,6 +149,43 @@ public with sharing class CampaignMembersSelector extends BaseSelector
         else
         {
             return new List<CampaignMember>();
+        }
+    }
+
+    /**
+     * Método para recoger aquellos miembros de campaña pertenecientes a unas campañas concretas relacionadas con una cuentas concretas.
+     * *
+     * @author  jgallaga | 07-09-2023
+     * @param   Set<Id>
+     *          Set de Ids de campaña
+     * @param   Set<Id>
+     *          Set de ids de cuenta
+     */
+    public List<CampaignMember> selectCampaignMembersByCampaignIdAndAccountFromContact(Set<Id> campaignIds, Set<Id> accountIds)
+    {
+        return [
+            SELECT  CampaignId, ContactId, Contact.AccountId
+            FROM    CampaignMember
+            WHERE   CampaignId IN :campaignIds
+            AND     Contact.AccountId IN : accountIds
+            ];
+    }
+
+    public class ProperCampaignMembersSelector extends RecordsSelector
+    {
+        ProperCampaignMembersSelector()
+        {
+            super(CampaignMember.getSObjectType());
+        }
+
+        List<CampaignMember> selectCampaignMembersByCampaignIdAndAccountFromContact(Set<Id> campaignIds, Set<Id> accountIds)
+        {
+            this.baseQuery
+                .selectFields(new List<Schema.SObjectField>{CampaignMember.CampaignId,CampaignMember.Contact.AccountId})
+                .addConditionIn(CampaignMember.CampaignId, campaignIds)
+                .addConditionIn(CampaignMember.Contact.AccountId, accountIds);
+
+            return this.baseQuery.run();
         }
     }
 }
