@@ -45,7 +45,7 @@
             <assignToReference>IntermediaryVisibilityAccount</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>$Record.IntermediaryId__r.Parent.IntermediaryWithUser__c</elementReference>
+                <elementReference>$Record.IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -99,14 +99,14 @@
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.IntermediaryId__r.ParentId</leftValueReference>
+                <leftValueReference>$Record.IntermediaryId__r.IntermediaryGroup__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.IntermediaryId__r.Parent.IntermediaryWithUser__c</leftValueReference>
+                <leftValueReference>$Record.IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -125,7 +125,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Tiene en cuenta el quitar mediador principal para la visibilidad de zrm y en los casos que un usuario de agrupación tiene usuario propio no se toma el de la agrupación</description>
+    <description>Modificar el campo parent por el nuevo IntermediaryGroup__c para recoger la información de visibilidad en agrupaciones</description>
     <environments>Default</environments>
     <interviewLabel>AccountTriggerBeforeUpdateUpdateIntermediaryVisibilityAccField {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Offer Trigger - Before Insert/Update - Update Intermediary Visibility Acc Field</label>

@@ -4158,6 +4158,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+		<editable>true</editable>
+		<field>Account.IntermediaryGroup__c</field>
+		<readable>true</readable>
+	</fieldPermissions>	
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.INFOIntermediaryGroupCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Intermediary_Name__c</field>
         <readable>true</readable>
@@ -15820,7 +15830,7 @@
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-EON Intermediary</layout>
+        <layout>Account-Intermediary - Admin</layout>
         <recordType>Account.Intermediary</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -16498,7 +16508,7 @@
         <layout>purecloud__PureCloud_Script__c-purecloud__PureCloud Script Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Intermediary Group</layout>
+        <layout>Account-Intermediary Group - Admin</layout>
         <recordType>Account.AgrupacionMediador</recordType>
     </layoutAssignments>
     <layoutAssignments>

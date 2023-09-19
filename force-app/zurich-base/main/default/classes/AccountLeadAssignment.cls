@@ -408,7 +408,7 @@ public with sharing class AccountLeadAssignment
         }
 
         UsersSelector userQuery = new UsersSelector();
-        List<User> intermediary = userQuery.findUsersByAccountId(new List<String>{intermediaryAccount.get(0).Parent.IntermediaryWithUser__c});
+        List<User> intermediary = userQuery.findUsersByAccountId(new List<String>{intermediaryAccount.get(0).IntermediaryGroup__r.IntermediaryWithUser__c}); 
 
         if(! intermediary.isEmpty())
         {
