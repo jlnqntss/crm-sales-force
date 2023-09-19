@@ -15905,6 +15905,10 @@
         <recordType>Campaign.Telemarketing</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Campaign-Campaign Layout - Admin</layout>
+        <recordType>Campaign.Default</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>CampaignInfluenceModel-Campaign Influence Model Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
