@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 13/09/2023
+ * @last modified on  : 19/09/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class CampaignMembersSelector extends BaseSelector
@@ -28,7 +28,7 @@ public with sharing class CampaignMembersSelector extends BaseSelector
      *
      * @author fpalomo
      * @date 11/09/2023
-     * 
+     *
      * @param  campaignMembersIds Set de IDs de CampaignMember
      * @return Listado de CampaignMembers correspondientes a las IDs recibidas
      */
@@ -118,7 +118,7 @@ public with sharing class CampaignMembersSelector extends BaseSelector
                                                                 FROM CampaignMember
                                                                 WHERE Campaign.Type = 'Cross Selling'
                                                                 AND Campaign.IsActive = true
-                                                                AND Campaign.StartDate >= TODAY
+                                                                AND Campaign.StartDate <= TODAY
                                                                 AND Status = 'Pdte. Revisión Mediador']);
         return result;
     }
