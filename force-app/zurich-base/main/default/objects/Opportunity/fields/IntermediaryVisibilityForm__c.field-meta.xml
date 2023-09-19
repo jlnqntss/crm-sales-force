@@ -3,14 +3,20 @@
     <fullName>IntermediaryVisibilityForm__c</fullName>
     <description>Campo fórmula para recalcular visibilidad en ZRM</description>
     <externalId>false</externalId>
-    <formula>IF(IntermediaryVisibilityAcc__c = IntermediaryId__c, 
+    <formula>IF(Account.Blocked__c, 
 	IF(ISBLANK(IntermediaryVisibilityAcc__c), 
-		&apos;WithoutIntermediary&apos;, 
-		&apos;CurrentIntermediary&apos;
-	), 
-	IF(IntermediaryVisibilityAcc__c = IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, 
-		&apos;MainIntermediary&apos;, 
+		&apos;AccountBlocked&apos;, 
 		null
+	), 
+	IF(IntermediaryVisibilityAcc__c = IntermediaryId__c,
+		IF(ISBLANK(IntermediaryVisibilityAcc__c), 
+			&apos;WithoutIntermediary&apos;, 
+			&apos;CurrentIntermediary&apos;
+		), 
+		IF(IntermediaryVisibilityAcc__c = IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, 
+			&apos;MainIntermediary&apos;, 
+			null
+		)
 	)
 )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
