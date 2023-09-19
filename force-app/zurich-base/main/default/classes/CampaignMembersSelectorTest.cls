@@ -93,6 +93,69 @@ private with sharing class CampaignMembersSelectorTest
     }
 
     @isTest
+    static void test_selectById_matchedRecords()
+    {
+        List<Campaign> campaigns = [SELECT Id FROM Campaign];
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        List<CampaignMember> currentCampaignMembers = [SELECT ContactId FROM CampaignMember];
+        System.assertEquals(false, currentCampaignMembers.isEmpty(), 'List should NOT be empty');
+
+        Set<Id> campaignMembersIDs = new Set<Id>();
+        for(CampaignMember member: currentCampaignMembers)
+        {
+            campaignMembersIDs.add(member.Id);
+        }
+
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector(new Set<String> {'Id', 'ContactId', 'CampaignId'}).selectById(campaignMembersIDs);
+        Test.stopTest();
+
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
+
+        for(CampaignMember matched: matchedRecords)
+        {
+            System.assertEquals(true, campaignMembersIDs.contains(matched.Id), 'Set should contain ContactId');
+        }
+    }
+
+    @isTest
+    static void test_selectById_emptySet_matchedRecords()
+    {
+        List<Campaign> campaigns = [SELECT Id FROM Campaign];
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectById(new Set<Id>());
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_selectById_null_matchedRecords()
+    {
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectById(null);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_selectById_invalidFields_matchedRecords()
+    {
+        List<Campaign> campaigns = [SELECT Id FROM Campaign];
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector(new Set<String> {'invalidField'}).selectById(new Set<Id>());
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
     static void test_selectByStatus_matchedRecords()
     {
         List<Campaign> campaigns = [SELECT Id FROM Campaign];

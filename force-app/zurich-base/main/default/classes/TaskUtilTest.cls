@@ -1,19 +1,21 @@
 /**
  * @description       : Clase test para la clase TaskUtil
  * @author            : aberuete
- * @group             : 
+ * @group             :
  * @last modified on  : 08-03-2023
  * @last modified by  : aberuete
-**/
+ **/
 @isTest
-private class TaskUtilTest 
+private class TaskUtilTest
 {
     @testSetup
     public static void createScenario()
     {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
         Account portalAccount = new Account();
         portalAccount.Name = 'TestAccount';
-        insert portalAccount;
+        accounts.add(portalAccount);
+        insert accounts;
 
         Contact contactPortal = new Contact ();
         contactPortal.FirstName = 'Test';
@@ -26,13 +28,47 @@ private class TaskUtilTest
         List<User> ocsUser =TestDataFactory.generateUsersByProfile(profileId, 1);
         ocsUser[0].ContactId = contactPortal.Id;
         insert ocsUser;
+
+        List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 1);
+        insert campaigns;
+
+        List<Account> personAccounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null AND Name != 'TestAccount']);
+        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(personAccounts, campaigns, 'Subscribed');
+        insert campaignMembers;
+    }
+
+    @isTest
+    static void test_retryCallNotReachedCampaignMember()
+    {
+        List<Campaign> campaigns = [SELECT Id FROM Campaign];
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        Map<Id, CampaignMember> currentCampaignMembers = new Map<Id, CampaignMember>([SELECT Id FROM CampaignMember]);
+        System.assertEquals(false, currentCampaignMembers.isEmpty(), 'Map should NOT be empty');
+
+        List<CampaignMember> campaignMembers = new CampaignMembersSelector(new Set<String> {'ContactId', 'CallRetries__c'}).selectById( currentCampaignMembers.keySet() );
+        Assert.areNotEqual(0, campaignMembers.size(), 'No se han recuperado CampaignMembers');
+
+        List<Task> tasks = new List<Task>();
+        tasks.add( new Task(
+                       CampaignMemberID__c = campaignMembers[0].Id,
+                       Status = 'No contactado',
+                       Priority = 'Normal'
+                       ) );
+
+        Test.startTest();
+        insert tasks;
+        Test.stopTest();
+
+        List<CampaignMember> cmAfterInsert = [SELECT Id, CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMembers[0].ContactId];
+        Assert.isFalse(cmAfterInsert.isEmpty(), 'No se han recuperado CampaignMembers tras la inserción de la tarea');
     }
 
     /*
-    * Test que comprueba que al crear una tarea cuyo owner sea un usuario de la comunidad de ocs se crea con el valor public a true
-    * @author aberuete
-    * @date 01/08/2023
-    */
+     * Test que comprueba que al crear una tarea cuyo owner sea un usuario de la comunidad de ocs se crea con el valor public a true
+     * @author aberuete
+     * @date 01/08/2023
+     */
     @isTest
     static void test_createTaskOwnerCommunity()
     {
@@ -51,10 +87,10 @@ private class TaskUtilTest
     }
 
     /*
-    * Test que comprueba que al actualizar una tarea cuyo owner sea un usuario de la comunidad de ocs se crea con el valor public a true
-    * @author aberuete
-    * @date 01/08/2023
-    */
+     * Test que comprueba que al actualizar una tarea cuyo owner sea un usuario de la comunidad de ocs se crea con el valor public a true
+     * @author aberuete
+     * @date 01/08/2023
+     */
     @isTest
     static void test_updateTaskOwnerCommunity()
     {
@@ -78,10 +114,10 @@ private class TaskUtilTest
     }
 
     /*
-    * Test que comprueba que se borra una tarea correctamente
-    * @author aberuete
-    * @date 01/08/2023
-    */
+     * Test que comprueba que se borra una tarea correctamente
+     * @author aberuete
+     * @date 01/08/2023
+     */
     @isTest
     static void test_deleteTask()
     {
@@ -89,12 +125,12 @@ private class TaskUtilTest
         taskToCreate.Status = 'Asignada';
         taskToCreate.Priority = 'Normal';
         insert taskToCreate;
-        
+
         Test.startTest();
         delete taskToCreate;
         Test.stopTest();
 
         List<Task> taskAfterDelete = [Select id from Task];
-        System.assertEquals(0, taskAfterDelete.size(), 'La tarea no debería existir'); 
+        System.assertEquals(0, taskAfterDelete.size(), 'La tarea no debería existir');
     }
 }

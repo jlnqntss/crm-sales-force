@@ -1,3 +1,10 @@
+/**
+ * @description       :
+ * @author            : jgallaga
+ * @group             :
+ * @last modified on  : 13/09/2023
+ * @last modified by  : jgallaga
+**/
 public with sharing class CampaignMembersSelector extends BaseSelector
 {
     //#region Atributos
@@ -15,6 +22,34 @@ public with sharing class CampaignMembersSelector extends BaseSelector
         this.fieldsToQuery = fieldsToQuery;
     }
     //#endregion
+
+    /**
+     * Recupera miembros de campaña a partir del Id
+     *
+     * @author fpalomo
+     * @date 11/09/2023
+     * 
+     * @param  campaignMembersIds Set de IDs de CampaignMember
+     * @return Listado de CampaignMembers correspondientes a las IDs recibidas
+     */
+    public List<CampaignMember> selectById(Set<Id> campaignMembersIds)
+    {
+        if(campaignMembersIds != null)
+        {
+            String query = String.format(
+                BASE_SELECT +
+                'WHERE Id IN :campaignMembersIds ',
+                new List<String> {
+                    String.join(new List<String> (this.fieldsToQuery), ',')
+                }
+            );
+            return (List<CampaignMember>) Database.query(query);
+        }
+        else
+        {
+            return new List<CampaignMember>();
+        }
+    }
 
     /**
      * Busca miembros de campaña a partir del Id de campaña y de un conjuno de Ids de contactos
@@ -76,14 +111,14 @@ public with sharing class CampaignMembersSelector extends BaseSelector
      *
      * @author dmunoz
      * @date 11/08/2023
-     * @return          Listado de CampaignMembers 
+     * @return          Listado de CampaignMembers
      */
     public List<CampaignMember> findZRMPendingRevMediatorCampaignMembers() {
         List<CampaignMember> result = new List<CampaignMember>([SELECT ContactId, CampaignId, Campaign.ExternalId__c, LeadPhone__c
-                                                                FROM CampaignMember 
-                                                                WHERE Campaign.Type = 'Cross Selling' 
-                                                                AND Campaign.IsActive = true 
-                                                                AND Campaign.StartDate >= TODAY 
+                                                                FROM CampaignMember
+                                                                WHERE Campaign.Type = 'Cross Selling'
+                                                                AND Campaign.IsActive = true
+                                                                AND Campaign.StartDate >= TODAY
                                                                 AND Status = 'Pdte. Revisión Mediador']);
         return result;
     }
@@ -114,6 +149,43 @@ public with sharing class CampaignMembersSelector extends BaseSelector
         else
         {
             return new List<CampaignMember>();
+        }
+    }
+
+    /**
+     * Método para recoger aquellos miembros de campaña pertenecientes a unas campañas concretas relacionadas con una cuentas concretas.
+     * *
+     * @author  jgallaga | 07-09-2023
+     * @param   Set<Id>
+     *          Set de Ids de campaña
+     * @param   Set<Id>
+     *          Set de ids de cuenta
+     */
+    public List<CampaignMember> selectCampaignMembersByCampaignIdAndAccountFromContact(Set<Id> campaignIds, Set<Id> accountIds)
+    {
+        return [
+            SELECT  CampaignId, ContactId, Contact.AccountId
+            FROM    CampaignMember
+            WHERE   CampaignId IN :campaignIds
+            AND     Contact.AccountId IN : accountIds
+            ];
+    }
+
+    public class ProperCampaignMembersSelector extends RecordsSelector
+    {
+        ProperCampaignMembersSelector()
+        {
+            super(CampaignMember.getSObjectType());
+        }
+
+        List<CampaignMember> selectCampaignMembersByCampaignIdAndAccountFromContact(Set<Id> campaignIds, Set<Id> accountIds)
+        {
+            this.baseQuery
+                .selectFields(new List<Schema.SObjectField>{CampaignMember.CampaignId,CampaignMember.Contact.AccountId})
+                .addConditionIn(CampaignMember.CampaignId, campaignIds)
+                .addConditionIn(CampaignMember.Contact.AccountId, accountIds);
+
+            return this.baseQuery.run();
         }
     }
 }

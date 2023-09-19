@@ -26,12 +26,12 @@
             ramos.add(offerDeletion.Ramo__c.toPlainString());
             ramosMap.put(offerDeletion.Ramo__c.toPlainString(),offerDeletion);
 
-            if(fechaFisicaMinimaGDPR == null || numberDays(offerDeletion.Fisica__c)<fechaFisicaMinimaGDPR )
+            if(fechaFisicaMinimaGDPR == null || numberDays(offerDeletion.Fisica__c)>fechaFisicaMinimaGDPR )
             {
                 fechaFisicaMinimaGDPR = numberDays(offerDeletion.Fisica__c);
             }
 
-            if(fechaJuridicaMinimaGDPR == null || numberDays(offerDeletion.Juridica__c)<fechaJuridicaMinimaGDPR )
+            if(fechaJuridicaMinimaGDPR == null || numberDays(offerDeletion.Juridica__c)>fechaJuridicaMinimaGDPR )
             {
                 fechaJuridicaMinimaGDPR = numberDays(offerDeletion.Juridica__c);
             }
