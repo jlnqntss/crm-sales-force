@@ -57,16 +57,16 @@ public class AccountLeadUtil
     public static Account leadDuplicatesControl(String documentID, String phone)
     {
         Account acc = new Account();
-        AccountsSelector accountsSelector = new AccountsSelector();
+        AccountSelectorWithoutSharing accountsSelectorWS = new AccountSelectorWithoutSharing();
         if (documentID != null)
         {
-            List<Account> accList = accountsSelector.findByNationalIdAndRcTypeCustAndBC(new List<String>{documentID});
+            List<Account> accList = accountsSelectorWS.findByNationalIdAndRcTypeCustAndBC(new List<String>{documentID});
             if (!accList.isEmpty())
             {
                 acc = accList.get(0);
             } else
             {
-                List<Account> accLeadList = accountsSelector.findByNationalIdAndRcTypeLead(new List<String>{documentID});
+                List<Account> accLeadList = accountsSelectorWS.findByNationalIdAndRcTypeLead(new List<String>{documentID});
                 if (!accLeadList.isEmpty())
                 {
                     acc = accLeadList.get(0);
@@ -79,7 +79,7 @@ public class AccountLeadUtil
         {
             if(phone != null)
             {
-                acc = checkLeadDuplicatePhone(phone, accountsSelector);
+                acc = checkLeadDuplicatePhone(phone, accountsSelectorWS);
             } else
             {
                 acc = null;
@@ -138,10 +138,10 @@ public class AccountLeadUtil
      * @date 25/08/2023
      * @return acc
      */
-    public static Account checkLeadDuplicatePhone(String phone, AccountsSelector accountsSelector)
+    public static Account checkLeadDuplicatePhone(String phone, AccountSelectorWithoutSharing accountsSelectorWS)
     {
         Account acc = new Account();
-        List<Account> accPhoneList = accountsSelector.findByPhoneAndRcTypeLead(new List<String>{phone});
+        List<Account> accPhoneList = accountsSelectorWS.findByPhoneAndRcTypeLead(new List<String>{phone});
         if (!accPhoneList.isEmpty())
         {
             acc = accPhoneList.get(0);
