@@ -3,7 +3,6 @@
     <fullName>Cartera_2021__c</fullName>
     <externalId>false</externalId>
     <formula>IF(ISNULL(Cartera_2021_agrupaciones__c), Cartera_2021_mediadores__c, Cartera_2021_agrupaciones__c)</formula>
-    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Cartera 2021</label>
     <precision>18</precision>
     <required>false</required>

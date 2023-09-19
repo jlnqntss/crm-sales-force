@@ -8,7 +8,7 @@
         <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>cartera2021Agrupacion</assignToReference>
-            <operator>Assign</operator>
+            <operator>Add</operator>
             <value>
                 <elementReference>Sum_Loop.Cartera_2021_mediadores__c</elementReference>
             </value>
