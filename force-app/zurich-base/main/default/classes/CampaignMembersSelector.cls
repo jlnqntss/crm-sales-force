@@ -17,6 +17,34 @@ public with sharing class CampaignMembersSelector extends BaseSelector
     //#endregion
 
     /**
+     * Recupera miembros de campaña a partir del Id
+     *
+     * @author fpalomo
+     * @date 11/09/2023
+     * 
+     * @param  campaignMembersIds Set de IDs de CampaignMember
+     * @return Listado de CampaignMembers correspondientes a las IDs recibidas
+     */
+    public List<CampaignMember> selectById(Set<Id> campaignMembersIds)
+    {
+        if(campaignMembersIds != null)
+        {
+            String query = String.format(
+                BASE_SELECT +
+                'WHERE Id IN :campaignMembersIds ',
+                new List<String> {
+                    String.join(new List<String> (this.fieldsToQuery), ',')
+                }
+            );
+            return (List<CampaignMember>) Database.query(query);
+        }
+        else
+        {
+            return new List<CampaignMember>();
+        }
+    }
+
+    /**
      * Busca miembros de campaña a partir del Id de campaña y de un conjuno de Ids de contactos
      *
      * @author rlopez
