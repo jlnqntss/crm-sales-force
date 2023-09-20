@@ -8047,6 +8047,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Acta__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11927,6 +11932,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Special_Condition__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Campaign__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
