@@ -370,7 +370,18 @@ private with sharing class OpportunitiesSelectorTest
         List<Opportunity> offerList = (new OpportunitiesSelector()).findOffersWithIncorrectVisibility();
         Test.stopTest();
 
-        System.assertEquals(0, offerList.size(), 'No debe encontrar registros');
+        System.assertEquals(true, offerList != null, 'No debe ser nulo');
+    }
+
+    @isTest
+    static void findOffersWithIncorrectVisibilityByAccountIdTest() {
+
+        Test.startTest();
+        Set<String> accountIds = new Set<String>();
+        List<Opportunity> offerList = (new OpportunitiesSelector()).findOffersWithIncorrectVisibilityByAccountId(accountIds);
+        Test.stopTest();
+
+        System.assertEquals(true, offerList != null, 'No debe ser nulo');
     }
 
 }

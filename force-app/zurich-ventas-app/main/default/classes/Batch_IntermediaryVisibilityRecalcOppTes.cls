@@ -5,6 +5,13 @@ public with sharing class Batch_IntermediaryVisibilityRecalcOppTes {
     static void makeData() {
         
         /********************************  INTERMEDIARIOS  ********************************/
+        // Crear custom setting que indica el usuario genérico
+        Cross_Selling__c ventaCruzada = new Cross_Selling__c();
+        ventaCruzada.ContactCenterUser__c = 'generico';
+        ventaCruzada.DefaultUser__c = 'adminkli';
+
+        insert ventaCruzada;
+
         // Crear cuentas de intermediarios
         List<Account> intermediaries = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary', 3);
         // Crear grupo de intermediarios
@@ -114,19 +121,90 @@ public with sharing class Batch_IntermediaryVisibilityRecalcOppTes {
         System.debug('Valor antes ' + opBefore.IntermediaryVisibilityAcc__c);
 
         // cambio el mediador de agrupacion para que el batch recalcule la visibilidad, para ello obtengo el id de la otra agrupación primero
-        List<Account> agrupacionList = new List<Account>([SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'AgrupacionMediador' AND Id != :opBefore.IntermediaryId__r.IntermediaryGroup__c]);
+        List<Account> customerList = new List<Account>([SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'AgrupacionMediador' AND Id != :opBefore.IntermediaryId__r.IntermediaryGroup__c]);
 
-        if (!agrupacionList.isEmpty()) {
+        if (!customerList.isEmpty()) {
 
             // actualizo el mediador
             Account mediatorNotPartner = new Account();
             mediatorNotPartner.Id = opBefore.IntermediaryId__c;
-            mediatorNotPartner.IntermediaryGroup__c = agrupacionList.get(0).Id;
+            mediatorNotPartner.IntermediaryGroup__c = customerList.get(0).Id;
             update mediatorNotPartner;
 
 
             Test.startTest();
             Batch_IntermediaryVisibilityRecalcOpp batch = new Batch_IntermediaryVisibilityRecalcOpp();
+            Database.executeBatch(batch, 200);
+            Test.stopTest();
+    
+            Opportunity opAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Opportunity WHERE Id = :opBefore.Id];
+            System.debug('Valor despues ' + opAfter.IntermediaryVisibilityAcc__c);
+            System.assertNotEquals(opBefore.IntermediaryVisibilityAcc__c, opAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad');
+        }
+    }
+
+
+    /**
+     * Test que blanquea la visibilidad para un cliente que se ha bloqueado por gdpr
+     * @author dmunoz
+     * @date 19/09/2023
+     */
+    @isTest
+    static void testGDPRBlankVisibilityOK() {
+        Opportunity opBefore = [SELECT Id, IntermediaryVisibilityAcc__c, AccountId FROM Opportunity WHERE IntermediaryId__r.IsPartner = false];
+        System.debug('Valor antes ' + opBefore.IntermediaryVisibilityAcc__c);
+
+        // consulto el cliente de la oportunidad
+        List<Account> customerList = new List<Account>([SELECT Id FROM Account WHERE Id = :opBefore.AccountId]);
+
+        if (!customerList.isEmpty()) {
+
+            // actualizo el cliente
+            Account customer = new Account();
+            customer.Id = customerList.get(0).Id;
+            customer.Blocked__c = true;
+            update customer;
+
+
+            Test.startTest();
+            Batch_IntermediaryVisibilityRecalcOpp batch = new Batch_IntermediaryVisibilityRecalcOpp();
+            Database.executeBatch(batch, 200);
+            Test.stopTest();
+    
+            Opportunity opAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Opportunity WHERE Id = :opBefore.Id];
+            System.debug('Valor despues ' + opAfter.IntermediaryVisibilityAcc__c);
+            System.assertEquals(null, opAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad');
+        }
+    }
+
+
+    /**
+     * Test que recalcula la visibilidad a partir de una lista de ids
+     * @author dmunoz
+     * @date 19/09/2023
+     */
+    @isTest
+    static void testRecalculateVisibilityGivenAccountListOK() {
+        Opportunity opBefore = [SELECT Id, IntermediaryVisibilityAcc__c, AccountId FROM Opportunity WHERE IntermediaryId__r.IsPartner = true];
+        System.debug('Valor antes ' + opBefore.IntermediaryVisibilityAcc__c);
+
+        // cambio el mediador de agrupacion para que el batch recalcule la visibilidad, para ello obtengo el id de la otra agrupación primero
+        List<Account> customerList = new List<Account>([SELECT Id,Blocked__c FROM Account LIMIT 50]);
+
+        if (!customerList.isEmpty()) {
+            List<Account> customerToUpdate = new List<Account>();
+            Set<String> customerIds = new Set<String>();
+            for (Account customer: customerList) {
+                customer.Blocked__c = true;
+                customerToUpdate.add(customer);
+                customerIds.add(Customer.Id);
+            }
+
+            update customerToUpdate;
+            
+
+            Test.startTest();
+            Batch_IntermediaryVisibilityRecalcOpp batch = new Batch_IntermediaryVisibilityRecalcOpp(customerIds);
             Database.executeBatch(batch, 200);
             Test.stopTest();
     

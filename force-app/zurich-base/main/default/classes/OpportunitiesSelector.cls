@@ -325,12 +325,36 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      */
     public List<Opportunity> findOffersWithIncorrectVisibility() {
 
-        List<Opportunity> result = new List<Opportunity>([SELECT Id, IntermediaryId__c, IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
+        List<Opportunity> result = new List<Opportunity>([SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, 
+                                                        IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
+                                                        IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
+                                                        FROM Opportunity
+                                                        WHERE IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                                        OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
+                                                        OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+        return result;
+    }
+
+
+    /**
+     * Método que recupera las ofertas que necesitan recalcular la visibilidad para zrm a partir de una lista de ids
+     * *
+     * @author dmonuz | 18/9/2023
+     * @return  List<Opportunity>
+     */
+    public List<Opportunity> findOffersWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
+
+        List<Opportunity> result = new List<Opportunity>();
+
+        if (accountIds != null && !accountIds.isEmpty()) {
+            result = new List<Opportunity>([SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, 
+                                                            IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
                                                             IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
                                                             FROM Opportunity
-                                                            WHERE (IntermediaryVisibilityForm__c = null
+                                                            WHERE AccountId IN :accountIds AND IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
                                                             OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
                                                             OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+        }
 
         return result;
     }
