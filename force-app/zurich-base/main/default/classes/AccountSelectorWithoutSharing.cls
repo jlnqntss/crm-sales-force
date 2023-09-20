@@ -3,11 +3,11 @@
  * @description       : Clase Apex con el without sharing en la cual creamos 3 métodos, que serán referenciados en la clase AccountLeadUtil
  * @author            : overes
 **/ 
-public without sharing class AccountSelectorWithoutSharing extends RecordsSelector
+public without sharing class AccountSelectorWithoutSharing
 {
     public AccountSelectorWithoutSharing()
     {
-        super( Account.getSObjectType() );
+       
     }
 
     //#region RECORD TYPES
@@ -40,7 +40,7 @@ public without sharing class AccountSelectorWithoutSharing extends RecordsSelect
         }
     }
 
-    /**
+   /**
      * Busca cuentas a partir de un listado de DNIs y record type Customer o Business Customer
      * @author overes
      * @date 16/08/2023
@@ -51,9 +51,8 @@ public without sharing class AccountSelectorWithoutSharing extends RecordsSelect
     {
         List<Account> result = new List<Account>();
 
-        if (documents != null && !documents.isEmpty()) 
-        {
-            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c,Intermediary_Name__r.INFOIntermediaryCode__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
         }
         return result;
     }
@@ -64,8 +63,8 @@ public without sharing class AccountSelectorWithoutSharing extends RecordsSelect
      * @date 16/08/2023
      * @param  documents   Listado de DNIs
      * @return             Listado de cuentas sobre los que se ha realizado match
-     * 
-     * @change amiranda 31/08/2023 Se elimina el campo 'Name' de la query. Es un 
+     *
+     * @change amiranda 31/08/2023 Se elimina el campo 'Name' de la query. Es un
      * campo de solo lectura que se conforma por la concatenación de los campos
      * 'FirstName' y 'LastName' (entre otros) que son los que se consultarán
      * en la query. Por lo tanto, al intentar actualizar la lista de cuentas que
@@ -74,10 +73,9 @@ public without sharing class AccountSelectorWithoutSharing extends RecordsSelect
     public List<Account> findByNationalIdAndRcTypeLead(List<String> documents)
     {
         List<Account> result = new List<Account>();
-
-        if (documents != null && !documents.isEmpty()) 
-        {
-            result = new List<Account>([SELECT Id, FirstName, LastName, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
+        
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
         }
         return result;
     }
@@ -93,9 +91,8 @@ public without sharing class AccountSelectorWithoutSharing extends RecordsSelect
     {
         List<Account> result = new List<Account>();
 
-        if (phones != null && !phones.isEmpty()) 
-        {
-            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
+        if (phones != null && !phones.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
         }
         return result;
     }

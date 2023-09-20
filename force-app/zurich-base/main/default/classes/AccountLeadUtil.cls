@@ -41,7 +41,14 @@ public class AccountLeadUtil
                 newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
                 if (newAcc != null)
                 {
-                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + accSelector.findAccountNameById(new List<String>{(String)newAcc.Id}).get(0).Name + ' ' + newAcc.Id + ')'); 
+                    String errorMsg = Label.Lead_Duplicates_Control_Error + ': ';
+                    if (!String.isBlank(newAcc.FirstName)) {
+                        errorMsg += + newAcc.FirstName + ' ';
+                    }
+                    if (!String.isBlank(newAcc.LastName)) {
+                        errorMsg += newAcc.LastName + ' ';
+                    }
+                    acc.addError(errorMsg + '(' +  newAcc.Id + ')');
                 }
             }
         }

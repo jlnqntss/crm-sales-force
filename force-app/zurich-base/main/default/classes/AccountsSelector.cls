@@ -213,18 +213,6 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-    * Método que recupera el Name de id de cuenta pasado por parámentro
-    * *
-    * @author overes | 09-10-2023 
-    * @param documents 
-    * @return List<Account> 
-    **/
-    public List<Account> findAccountNameById(List<String> ids)
-    {
-        return [SELECT Id, Name FROM account WHERE Id IN :ids];
-    }
-
-    /**
      * Busca cuentas a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
      * maximizar resultados de búsqueda
      * @param  phones Listado de teléfonos. Válido cualquier formato
