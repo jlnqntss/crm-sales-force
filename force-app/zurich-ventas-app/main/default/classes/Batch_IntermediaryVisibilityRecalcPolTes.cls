@@ -135,7 +135,7 @@ public with sharing class Batch_IntermediaryVisibilityRecalcPolTes {
             Test.stopTest();
     
             Policy__c polAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Policy__c WHERE Id = :polBefore.Id];
-            System.assertNotEquals(polBefore.IntermediaryVisibilityAcc__c, polAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad');
+            System.assertNotEquals(polBefore.IntermediaryVisibilityAcc__c, polAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad a la nueva cuenta');
         }
     }
 

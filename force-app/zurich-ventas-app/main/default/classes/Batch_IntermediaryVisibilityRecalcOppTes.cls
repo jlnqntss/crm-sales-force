@@ -118,7 +118,6 @@ public with sharing class Batch_IntermediaryVisibilityRecalcOppTes {
     @isTest
     static void testCambioAgrupacionMedidadorNotPartnerOK() {
         Opportunity opBefore = [SELECT Id, IntermediaryVisibilityAcc__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c FROM Opportunity WHERE IntermediaryId__r.IsPartner = false];
-        System.debug('Valor antes ' + opBefore.IntermediaryVisibilityAcc__c);
 
         // cambio el mediador de agrupacion para que el batch recalcule la visibilidad, para ello obtengo el id de la otra agrupación primero
         List<Account> customerList = new List<Account>([SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'AgrupacionMediador' AND Id != :opBefore.IntermediaryId__r.IntermediaryGroup__c]);
@@ -138,8 +137,7 @@ public with sharing class Batch_IntermediaryVisibilityRecalcOppTes {
             Test.stopTest();
     
             Opportunity opAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Opportunity WHERE Id = :opBefore.Id];
-            System.debug('Valor despues ' + opAfter.IntermediaryVisibilityAcc__c);
-            System.assertNotEquals(opBefore.IntermediaryVisibilityAcc__c, opAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad');
+            System.assertNotEquals(opBefore.IntermediaryVisibilityAcc__c, opAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad a la nueva cuenta');
         }
     }
 
@@ -152,7 +150,6 @@ public with sharing class Batch_IntermediaryVisibilityRecalcOppTes {
     @isTest
     static void testGDPRBlankVisibilityOK() {
         Opportunity opBefore = [SELECT Id, IntermediaryVisibilityAcc__c, AccountId FROM Opportunity WHERE IntermediaryId__r.IsPartner = false];
-        System.debug('Valor antes ' + opBefore.IntermediaryVisibilityAcc__c);
 
         // consulto el cliente de la oportunidad
         List<Account> customerList = new List<Account>([SELECT Id FROM Account WHERE Id = :opBefore.AccountId]);
@@ -172,7 +169,6 @@ public with sharing class Batch_IntermediaryVisibilityRecalcOppTes {
             Test.stopTest();
     
             Opportunity opAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Opportunity WHERE Id = :opBefore.Id];
-            System.debug('Valor despues ' + opAfter.IntermediaryVisibilityAcc__c);
             System.assertEquals(null, opAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad');
         }
     }
@@ -186,7 +182,6 @@ public with sharing class Batch_IntermediaryVisibilityRecalcOppTes {
     @isTest
     static void testRecalculateVisibilityGivenAccountListOK() {
         Opportunity opBefore = [SELECT Id, IntermediaryVisibilityAcc__c, AccountId FROM Opportunity WHERE IntermediaryId__r.IsPartner = true];
-        System.debug('Valor antes ' + opBefore.IntermediaryVisibilityAcc__c);
 
         // cambio el mediador de agrupacion para que el batch recalcule la visibilidad, para ello obtengo el id de la otra agrupación primero
         List<Account> customerList = new List<Account>([SELECT Id,Blocked__c FROM Account LIMIT 50]);
@@ -209,7 +204,6 @@ public with sharing class Batch_IntermediaryVisibilityRecalcOppTes {
             Test.stopTest();
     
             Opportunity opAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Opportunity WHERE Id = :opBefore.Id];
-            System.debug('Valor despues ' + opAfter.IntermediaryVisibilityAcc__c);
             System.assertNotEquals(opBefore.IntermediaryVisibilityAcc__c, opAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad');
         }
     }
