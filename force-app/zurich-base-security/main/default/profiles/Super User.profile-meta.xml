@@ -10748,7 +10748,7 @@
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-EON Intermediary</layout>
+        <layout>Account-Intermediary - Admin</layout>
         <recordType>Account.Intermediary</recordType>
     </layoutAssignments>
     <layoutAssignments>
