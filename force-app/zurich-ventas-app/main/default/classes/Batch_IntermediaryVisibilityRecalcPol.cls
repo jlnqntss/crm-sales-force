@@ -22,7 +22,7 @@ global with sharing class Batch_IntermediaryVisibilityRecalcPol implements Datab
     /**
      * Metodo start del batch, devuelve la lista de elementos a los que se recalculará la visibilidad
      * @param bc: batch context
-     * @return List los campaign member a clonar
+     * @return List de policy a procesar
      * @author dmunoz
      * @date 20/09/2023
      */
