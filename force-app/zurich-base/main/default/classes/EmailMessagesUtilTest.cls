@@ -76,6 +76,18 @@ private class EmailMessagesUtilTest
     @isTest
     static void assignGenesysRoutingFields_insert_ok()
     {
+         // Generamos los casos que necesitamos
+         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+         insert accounts;
+ 
+         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 5);
+         cases[0].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+         cases[1].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+         cases[2].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+         cases[3].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+         cases[4].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+         insert cases;
+
         // Prepare the emails message to be inserted. The first one will have the queue email
         // in the CC field
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
@@ -85,6 +97,7 @@ private class EmailMessagesUtilTest
             addressList.add(EMAIL_QUEUE);
 
             emails[i].Incoming = true;
+            emails[i].ParentId = cases[i].Id;
 
             if( i == 0 ) {
                 emails[i].CcAddress = String.join(addressList, ';');
@@ -108,11 +121,24 @@ private class EmailMessagesUtilTest
     @isTest
     static void assignGenesysRoutingFields_update_ok() 
     {
+        // Generamos los casos que necesitamos
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+ 
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 5);
+        cases[0].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        cases[1].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        cases[2].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        cases[3].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        cases[4].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        insert cases;
+
         // The first time the emails dont have any valid genesys queue email receipts
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
         
         for(Integer i=0; i<emails.size();i++) {
             emails[i].Incoming = true;
+            emails[i].ParentId = cases[i].Id;
         }
         
         insert emails;
