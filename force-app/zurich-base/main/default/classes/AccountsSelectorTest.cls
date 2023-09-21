@@ -54,6 +54,12 @@ private with sharing class AccountsSelectorTest
             '001', AccountsSelector.RT_NAME_AGRUPATION, 1
             );
         insert agrupations;
+
+        for (Integer i=2; i < intermediaryAccounts.size(); i++)
+        {
+            intermediaryAccounts[i].IntermediaryGroup__c = agrupations[0].Id;
+        }
+        update intermediaryAccounts;
     }
 
     @isTest
@@ -793,8 +799,8 @@ private with sharing class AccountsSelectorTest
     @IsTest
     static void test_findByINFOIntermediaryCode_ok()
     {
-        List<Account> accountListIntermediary = [SELECT Id, ParentId, Parent.IntermediaryWithUser__c, INFOIntermediaryCode__c FROM Account
-                                                 WHERE Account.INFOIntermediaryCode__c != null AND Parent.IntermediaryWithUser__c != null];
+        List<Account> accountListIntermediary = [SELECT Id, ParentId, IntermediaryGroup__r.IntermediaryWithUser__c, INFOIntermediaryCode__c FROM Account
+                                                 WHERE Account.INFOIntermediaryCode__c != null AND IntermediaryGroup__r.IntermediaryWithUser__c != null];
 
         List<String> intermediaryCodes = new List<String>();
 
