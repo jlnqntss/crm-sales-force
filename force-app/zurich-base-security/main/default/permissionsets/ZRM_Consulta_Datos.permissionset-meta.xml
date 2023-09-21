@@ -3843,6 +3843,11 @@ Para usuarios de la comunidad zrm</description>
         <field>Campaign.ParentId</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>User.ContactAccountId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>ZRM Consulta Datos</label>
     <objectPermissions>

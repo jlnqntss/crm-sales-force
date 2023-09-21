@@ -5,6 +5,18 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>actionNames</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>Opportunity.CloneOfferForIntermediary</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!Record.Sales_Loss_Reason__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>Interested contact agent</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                    </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>collapsed</name>
