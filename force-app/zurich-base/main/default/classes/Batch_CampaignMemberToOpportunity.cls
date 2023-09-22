@@ -11,9 +11,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     // ##region Atributos
 
     private Set<Id> campMemberIdSet = new Set<Id>();
-    private Id defaultUserCC {get; set;}
-    private Id defaultUserOnError {get;set;}
-    private Set<String> cmOfferAssignedCodes = new Set<String>();
+    private Id defaultUserOnError {get; set;}
     private List<Opportunity> oppsToInsert = new List <Opportunity>();
     private static UsersSelector usersSelector = new UsersSelector();
 
@@ -85,7 +83,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     private Map<String, Account> getAccountByIntermCode(List<CampaignMember> campaignMembers)
     {
-        cmOfferAssignedCodes = new Set<String>();
+        Set<String> cmOfferAssignedCodes = new Set<String>();
 
         for (CampaignMember cr : campaignMembers)
         {
@@ -122,14 +120,14 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         {
             intermAccountIds.add(accountByIntermCode.get(abic).Id);
 
-            if (accountByIntermCode.get(abic).Parent.IntermediaryWithUser__c != null)
+            if (accountByIntermCode.get(abic).IntermediaryGroup__c != null &&
+                accountByIntermCode.get(abic).IntermediaryGroup__r.IntermediaryWithUser__c != null)
             {
-                intermAccountIds.add(accountByIntermCode.get(abic).Parent.IntermediaryWithUser__c);
+                intermAccountIds.add(accountByIntermCode.get(abic).IntermediaryGroup__r.IntermediaryWithUser__c);
             }
         }
 
         // Mapa <Id Cuenta Mediador, Id Usuario> para poder asignar las Ofertas de Mediador
-
         List<User> intermUsers = usersSelector.findByContactAccountId(intermAccountIds);
 
         Map<Id, Id> userIdByAccountId = new Map<Id, Id>();
@@ -161,7 +159,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             opp.AccountId = cm.Contact.AccountId;
             opp.ProductBranch__c = cm.Campaign.ProductBranch__c;
             opp.CampaignId = cm.CampaignId;
-
 
             // M se corresponde con miembros de campaña para Agentes Mediador
             if (cm.OfferAssignedType__c == 'M')
@@ -196,36 +193,26 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
         opp.IntermediaryCode__c = cm.OfferAssignedCode__c;
 
-        if(String.isBlank(cm.OfferAssignedCode__c) || accountByIntermCode.containsKey(cm.OfferAssignedCode__c))
+        // No hay Cuenta Mediador para el código de mediador del miembro de campaña
+        if ( accountByIntermCode.get(cm.OfferAssignedCode__c) == null ||
+             !accountByIntermCode.containsKey(cm.OfferAssignedCode__c) )
         {
             opp.OwnerId = defaultUserOnError;
         }
 
-        if (accountByIntermCode.get(cm.OfferAssignedCode__c) != null &&
-            accountByIntermCode.get(cm.OfferAssignedCode__c).Parent.IntermediaryWithUser__c != null )
+        // La Cuenta Mediador no tiene usuario propio y existe una Cuenta Mediador padre con usuario con licencia compartida
+        else if (!accountByIntermCode.get(cm.OfferAssignedCode__c).IsPartner &&
+                 accountByIntermCode.get(cm.OfferAssignedCode__c).IntermediaryGroup__c != null &&
+                 accountByIntermCode.get(cm.OfferAssignedCode__c).IntermediaryGroup__r.IntermediaryWithUser__c != null)
         {
-            if (accountByIntermCode.get(cm.OfferAssignedCode__c) != null &&
-                userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Parent.IntermediaryWithUser__c) != null)
-            {
-                opp.OwnerId = userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Parent.IntermediaryWithUser__c);
-            }
-            else
-            {
-                opp.OwnerId = defaultUserOnError;
-            }
+            opp.OwnerId = userIdByAccountId.containsKey(accountByIntermCode.get(cm.OfferAssignedCode__c).IntermediaryGroup__r.IntermediaryWithUser__c)
+            ? userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).IntermediaryGroup__r.IntermediaryWithUser__c) : defaultUserOnError;
         }
 
         else
         {
-            if (accountByIntermCode.get(cm.OfferAssignedCode__c) != null &&
-                userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Id) != null)
-            {
-                opp.OwnerId = userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Id);
-            }
-            else
-            {
-                opp.OwnerId = defaultUserOnError;
-            }
+            opp.OwnerId = userIdByAccountId.containsKey(accountByIntermCode.get(cm.OfferAssignedCode__c).Id)
+            ? userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Id) : defaultUserOnError;
         }
 
         return opp;
@@ -269,7 +256,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
                                          category='Campaign Member')
     public static void createOffers(List<String> campaignMembers)
     {
-        if(System.isBatch())
+        if( System.isBatch() )
         {
             return;
         }
@@ -311,7 +298,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
         UsersSelector userQuery = new UsersSelector();
 
-        List<User> defaultUsers = userQuery.findUsersByAlias(new List<String>{aliasDeaultUserOnError});
+        List<User> defaultUsers = userQuery.findUsersByAlias(new List<String> {aliasDeaultUserOnError});
 
         defaultUserOnError = defaultUsers.get(0).Id;
     }

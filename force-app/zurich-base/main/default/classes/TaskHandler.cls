@@ -17,7 +17,9 @@ public class TaskHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        TaskUtil.mapBeforeData((List<Task>) newList);
+    }
 
     /**
      * bulkAfter
@@ -37,6 +39,7 @@ public class TaskHandler implements ITrigger
     public void beforeInsert(List<SObject> newList)
     {
         TaskUtil.markPublicWhenOwnerUserCommunity( (List<Task>) newList);
+        TaskUtil.retryCallNotReachedCampaignMember((List<Task>) newList);
     }
 
     /**
@@ -47,7 +50,8 @@ public class TaskHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        TaskUtil.markPublicWhenOwnerUserCommunity( (List<Task>) newList); 
+        TaskUtil.markPublicWhenOwnerUserCommunity( (List<Task>) newList);
+        TaskUtil.retryCallNotReachedCampaignMember((List<Task>) newList);
     }
 
     /**
@@ -94,5 +98,7 @@ public class TaskHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {}
+    {
+        TaskUtil.executeCampaignMembersDML();
+    }
 }

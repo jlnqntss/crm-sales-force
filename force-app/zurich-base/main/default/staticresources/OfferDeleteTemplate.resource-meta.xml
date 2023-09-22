@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>text/plain</contentType>
+    <description>Recurso estático necesario para el test que utiliza el Batch DelteFields (Borrado de registros a partir de un campo bajo demanda)</description>
+</StaticResource>

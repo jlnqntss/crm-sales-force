@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestrictPendingClientInformationEdition</fullName>
+    <active>true</active>
+    <description>Validación que no permite modificar el checkbox “Pendiente Información Cliente” en etapas diferentes a “Quoted”</description>
+    <errorConditionFormula>AND(
+   ISCHANGED(PendingClientInformation__c),
+   NOT( ISPICKVAL(StageName, &apos;Quoted&apos;) )
+)</errorConditionFormula>
+    <errorDisplayField>PendingClientInformation__c</errorDisplayField>
+    <errorMessage>[VR Oferta] No se puede modificar el campo Pendiente Información Cliente fuera de la etapa Quoted</errorMessage>
+</ValidationRule>

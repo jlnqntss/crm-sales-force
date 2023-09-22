@@ -12,6 +12,8 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private final static String TASK_STATUS_TYPE_FORMS = 'Forms';
     private final static String TASK_RECORDTYPE_ID_INTERACTION = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
     private final static String CRM_VENTAS_PROFILE = 'Ventas User';
+    private final static String CALL_DISPOSITION_NO_RESPONSE = 'No contesta / Contestador Automático';
+    private final static String CALL_CALLBACK_ERRONEO_TRANSF = 'CallBack erróneo Transferencia';
 
     /**
      * Identifica una tarea a través del parámetro data.interaction.id y devuelve dicha tarea modificando el usuario Asignado
@@ -58,21 +60,26 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * @description A partir del tipo de evento, se gestiona la interacción de la forma adecuada
      * @param       Task - La interacción relacionada con el evento
      * @param       Map<String,Obejct> - Mapa con la información del evento
+     * Modificaciones
+     * ***
+     * @date    11/09/2023
+     * @author  fpalomo
+     * @description
+     *          CV-684: eventOnInteractionDisconnected() ahora recibe como parámetro el mapa con la información de la interacción
      */
     private static void manageInteractionEvents(Task interactionTask, Map<String, Object> eventData)
     {
+        Map<String, Object> interaction = (Map<String, Object>) eventData.get('interaction');
         String eventName = (String) eventData.get('eventName');
 
-        if(String.isBlank(eventName))
+        if( String.isBlank(eventName) )
         {
             return;
         }
 
         if(eventName == 'interactionChanged')
         {
-            Map<String, Object> interaction = (Map<String, Object>) eventData.get('interaction');
-
-            if( String.isEmpty(interactionTask.Id))
+            if( String.isEmpty(interactionTask.Id) )
             {
                 eventOnInteractionChanged(interactionTask, interaction);
             }
@@ -83,7 +90,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }
         else if(eventName == 'interactionDisconnected')
         {
-            eventOnInteractionDisconnected(interactionTask);
+            eventOnInteractionDisconnected(interactionTask, interaction);
         }
     }
 
@@ -120,10 +127,11 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         else if(interactionTask.type == TASK_SUBTYPE_EMAIL)
         {
             List<EmailMessage> relatedEmailMessages = new EmailMessagesSelector(new Set<String> { 'Id', 'ParentId', 'Status', 'ToIds', 'ActivityId' }).selectByInteractionId(new Set<String> { interactionId });
-            if (interactionTask.Subtype__c == null){
+            if (interactionTask.Subtype__c == null)
+            {
                 interactionTask.Subtype__c = TASK_SUBTYPE_EMAIL;
             }
-            
+
             if(!relatedEmailMessages.isEmpty() && relatedEmailMessages[0].ActivityId != null)
             {
                 interactionTask.Id = relatedEmailMessages[0].ActivityId;
@@ -154,7 +162,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         interactionTask.OwnerId     = UserInfo.getUserId();
     }
 
-        /**
+    /**
      * @author      jgallaga
      * @date        05/08/2022
      * @description En caso de que la interaccion sea por whatsapp, unicamente se cambia el estado de la tarea a asignada.
@@ -169,7 +177,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }
     }
 
-        /**
+    /**
      * @author      jgallaga
      * @date        05/08/2022
      * @description Al finalizar una interacción, el estado de la tarea pasa a cerrada.
@@ -177,13 +185,42 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * ***
      * Modificaciones
      * ***
-     * @date    05/08/20222
+     * @date    05/08/2022
      * @author  jgallaga
      * @description
      *          Se añade que en el cierre de la interacción, se asigne como propietario de la tarea al usuario que esta ejecutando la acción
+     * ***
+     * @date    11/09/2023
+     * @author  fpalomo
+     * @description
+     *          CV-684: Se añade el campo CampaignMemberID__c para poder relacionar la tarea con el CampaignMember, se comprueba que el contacto sea un
+     *                  CampaignMember y que el motivo de cierre sea "No contesta / Contestador Automático"
      */
-    private static void eventOnInteractionDisconnected(Task interactionTask)
+    private static void eventOnInteractionDisconnected(Task interactionTask, Map<String, Object> eventInteractionData)
     {
+        Boolean isCampaignMember = ( eventInteractionData.containsKey('dialerContactId') && ( (String) eventInteractionData.get('dialerContactId') ).toUppercase().startsWith('00V') );
+        Boolean dispositionNoResponse = (eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == CALL_DISPOSITION_NO_RESPONSE);
+        Boolean dispositionCBErroneoTransf = (eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == CALL_CALLBACK_ERRONEO_TRANSF);
+
+        if(isCampaignMember)
+        {
+            Set<String> cmFields = new Set<String> { 'CallRetries__c', 'CampaignMember.CampaignId', 'Campaign.MaxCallRetries__c' };
+            CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id> { (Id) eventInteractionData.get('dialerContactId') })[0];
+            Integer maxCallRetries = cm.Campaign.MaxCallRetries__c.intValue();
+
+            if( (maxCallRetries > cm.CallRetries__c) && !dispositionCBErroneoTransf )
+            {
+                cm.CallRetries__c = cm.CallRetries__c + 1;
+                update cm;
+
+                if(dispositionNoResponse)
+                {
+                    interactionTask.CampaignMemberID__c = cm.Id;
+                }
+            }
+            interactionTask.Campaign__c = cm.CampaignId;
+        }
+
         interactionTask.Status  = TASK_STATUS_CLOSED;
         interactionTask.OwnerId = UserInfo.getUserId();
     }
@@ -203,39 +240,39 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         Id taskId, whatId, whoId;
         String idField = 'id', wahtIdField = 'whatid', whoIdField = 'whoid';
 
-        for (String key : callLog.keySet())
+        for ( String key : callLog.keySet() )
         {
             String field = key.toLowerCase();
 
             if(field == idField)
             {
-                taskId = parseId(callLog.remove(key));
+                taskId = parseId( callLog.remove(key) );
             }
 
             if(field == wahtIdField)
             {
-                whatId = parseId(callLog.remove(key));
+                whatId = parseId( callLog.remove(key) );
             }
 
             if(field == whoIdField)
             {
-                whoId = parseId(callLog.remove(key));
+                whoId = parseId( callLog.remove(key) );
             }
         }
 
         interactionTask = (Task) JSON.deserialize(JSON.serialize(callLog), Task.class);
 
-        if(String.isNotBlank(taskId) )
+        if( String.isNotBlank(taskId) )
         {
             interactionTask.Id = taskId;
         }
 
-        if(String.isNotBlank(whatId) )
+        if( String.isNotBlank(whatId) )
         {
             interactionTask.WhatId = whatId;
         }
 
-        if(String.isNotBlank(whoId) )
+        if( String.isNotBlank(whoId) )
         {
             interactionTask.WhoId = whoId;
         }
@@ -277,10 +314,10 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         Matcher match15 = pattern15.matcher( strId );
         Matcher match18 = pattern18.matcher( strId );
 
-        if(match15.matches() || match18.matches())
+        if( match15.matches() || match18.matches() )
         {
             //Si es de 18 comprobar el checksum
-            if(match18.matches())
+            if( match18.matches() )
             {
                 String id15 = strId.substring(0,16);
                 String idChecksumCalculated = sfdc15To18(id15);
@@ -306,7 +343,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     @TestVisible
     private static void changeOwnerFromQueueToUser(Task interactionTask)
     {
-        if(interactionTask == null || String.isBlank(interactionTask.WhatId))
+        if( interactionTask == null || String.isBlank(interactionTask.WhatId) )
         {
             return;
         }
@@ -333,7 +370,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             else if(interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
             {
                 List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
-                if(!contactrequests.isEmpty() )
+                if( !contactrequests.isEmpty() )
                 {
                     //Cambiar el propietario al usuario actual siempre
                     contactrequests[0].OwnerId = UserInfo.getUserId();
@@ -343,7 +380,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             else if(interactionTask.WhatId.getsObjectType() == Opportunity.sObjectType)
             {
                 List<Opportunity> offers = new OpportunitiesSelector().findById(interactionTask.WhatId);
-                if(!offers.isEmpty() )
+                if( !offers.isEmpty() )
                 {
                     List<Opportunity> totalOffers = new List<Opportunity>();
 
@@ -358,7 +395,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                         Id scopeId = offers[0].ScopeId__c;
                         List<Opportunity> extraOffers = new List<Opportunity>();
                         extraOffers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(interactionTask.WhatId, accountId, scopeId);
-                        if(!extraOffers.isEmpty() )
+                        if( !extraOffers.isEmpty() )
                         {
                             totalOffers.addAll(extraOffers);
                         }
@@ -381,7 +418,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         }
         catch(Exception e)
         {
-            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, e.getMessage(), 'ReassignInteractionCTIExtension', e.getStackTraceString());
+            ErrorLogUtil.commitError( ErrorLogUtil.ERROR_LEVEL_ERROR, e.getMessage(), 'ReassignInteractionCTIExtension', e.getStackTraceString() );
         }
     }
 
@@ -389,7 +426,8 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * Método de ayuda para comprobar si es un ID de SF
      * @date 5/7/2021
      */
-    private static String sfdc15To18 (String original15) {
+    private static String sfdc15To18 (String original15)
+    {
         // This method expects a 15-char valid Salesforce ID, and returns the 18-char equivalent
         Map<String,String> lookup5bin = new Map<String,String>();
         String piece1 = '';
@@ -407,35 +445,37 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
         lookup5bin.put('00110','G'); lookup5bin.put('01110','O'); lookup5bin.put('10110','W'); lookup5bin.put('11110','4');
         lookup5bin.put('00111','H'); lookup5bin.put('01111','P'); lookup5bin.put('10111','X'); lookup5bin.put('11111','5');
 
-        piece1 = sfdc0Or1(original15.substring(4,5)) +
-        sfdc0Or1(original15.substring(3,4)) +
-        sfdc0Or1(original15.substring(2,3)) +
-        sfdc0Or1(original15.substring(1,2)) +
-        sfdc0Or1(original15.substring(0,1));
+        piece1 = sfdc0Or1( original15.substring(4,5) ) +
+                 sfdc0Or1( original15.substring(3,4) ) +
+                 sfdc0Or1( original15.substring(2,3) ) +
+                 sfdc0Or1( original15.substring(1,2) ) +
+                 sfdc0Or1( original15.substring(0,1) );
 
-        piece2 = sfdc0Or1(original15.substring(9,10)) +
-        sfdc0Or1(original15.substring(8,9)) +
-        sfdc0Or1(original15.substring(7,8)) +
-        sfdc0Or1(original15.substring(6,7)) +
-        sfdc0Or1(original15.substring(5,6));
+        piece2 = sfdc0Or1( original15.substring(9,10) ) +
+                 sfdc0Or1( original15.substring(8,9) ) +
+                 sfdc0Or1( original15.substring(7,8) ) +
+                 sfdc0Or1( original15.substring(6,7) ) +
+                 sfdc0Or1( original15.substring(5,6) );
 
-        piece3 = sfdc0Or1(original15.substring(14,15)) +
-        sfdc0Or1(original15.substring(13,14)) +
-        sfdc0Or1(original15.substring(12,13)) +
-        sfdc0Or1(original15.substring(11,12)) +
-        sfdc0Or1(original15.substring(10,11));
+        piece3 = sfdc0Or1( original15.substring(14,15) ) +
+                 sfdc0Or1( original15.substring(13,14) ) +
+                 sfdc0Or1( original15.substring(12,13) ) +
+                 sfdc0Or1( original15.substring(11,12) ) +
+                 sfdc0Or1( original15.substring(10,11) );
 
-        return (original15 + lookup5bin.get(piece1) + lookup5bin.get(piece2) + lookup5bin.get(piece3));
+        return ( original15 + lookup5bin.get(piece1) + lookup5bin.get(piece2) + lookup5bin.get(piece3) );
     }
 
     /**
      * Método de ayuda para comprobar si es un ID de SF
      * @date 5/7/2021
      */
-    private static String sfdc0Or1 (String charX) {
+    private static String sfdc0Or1 (String charX)
+    {
         // This method accepts a one-char string and returns '1' if it's between A and Z, otherwise '0'.
 
-        if (charX.compareTo('A') >= 0 && charX.compareTo('A') <= 25 && charX.compareTo('Z') >= -25 && charX.compareTo('Z') <= 0) return '1';
+        if (charX.compareTo('A') >= 0 && charX.compareTo('A') <= 25 && charX.compareTo('Z') >= -25 && charX.compareTo('Z') <= 0)
+            return '1';
         return '0';
     }
 
