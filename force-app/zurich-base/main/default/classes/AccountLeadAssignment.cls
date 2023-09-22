@@ -406,30 +406,31 @@ public with sharing class AccountLeadAssignment
         }
 
         AccountsSelector accountQuery = new AccountsSelector();
-        List<Account> intermediaryAccount = accountQuery.findByINFOIntermediaryCode(new List<String>{intermediaryCode});
+        List<Account> intermediaryAccounts = accountQuery.findByINFOIntermediaryCode(new List<String>{intermediaryCode});
 
-        if(intermediaryAccount.isEmpty())
+        if(intermediaryAccounts.isEmpty())
         {
             return defaultUser;
         }
 
         UsersSelector userQuery = new UsersSelector();
         List<User> intermediary = new List<User>();
+        Account intermediaryAccount = intermediaryAccounts.get(0);
 
-        if (intermediaryAccount.get(0).isPartner)
+        if (intermediaryAccount.isPartner)
         {
             // Si el Mediador tiene usuario asociado, se busca el usuario asociado a dicho Mediador
-            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.get(0).Id}); 
+            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.Id}); 
         }
-        else
+        else if(intermediaryAccount.IntermediaryGroup__r.IntermediaryWithUser__c != null)
         {
             // Si el Mediador no tiene un usuario asociado (no es partner), se busca el usuario asociado al Mediador principal indicado en la Agrupación
-            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.get(0).IntermediaryGroup__r.IntermediaryWithUser__c}); 
+            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.IntermediaryGroup__r.IntermediaryWithUser__c}); 
         }
 
         if(! intermediary.isEmpty())
         {
-            return new Assignment(intermediary.get(0).Id).setRelatedAccount(intermediaryAccount.get(0));
+            return new Assignment(intermediary.get(0).Id).setRelatedAccount(intermediaryAccount);
         }
 
         return defaultUser;
