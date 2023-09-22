@@ -60,49 +60,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>SDMAssociation__c</picklist>
-        <values>
-            <fullName>ACSV</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ADECOSE</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AMZ</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>APROCOR</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA Compromiso</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CENTERBROCK</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>COJEBRO</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NEWCORRED</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>WNETWORKS</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Association2__c</picklist>
         <values>
             <fullName>ACSV</fullName>
@@ -3331,6 +3288,33 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Category__c</picklist>
+        <values>
+            <fullName>Básica %28PV2%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Esencial %28PV3%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estándar %28PV1%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Plus %28PV0%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium %28PV-1%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Varios</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Channel__c</picklist>
         <values>
             <fullName>Agents</fullName>
@@ -4074,6 +4058,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>DKV</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Fiatc</fullName>
             <default>false</default>
         </values>
@@ -4111,10 +4099,6 @@
         </values>
         <values>
             <fullName>Segur Caixa</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>DKV</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -4597,15 +4581,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>WILLPLATINE</fullName>
+            <fullName>EBROKER - Merlin</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>MPM - Tarifai</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>EBROKER - Merlin</fullName>
             <default>false</default>
         </values>
         <values>
@@ -4614,6 +4594,10 @@
         </values>
         <values>
             <fullName>SOFTQS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WILLPLATINE</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -4797,6 +4781,49 @@
         </values>
         <values>
             <fullName>Urban</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SDMAssociation__c</picklist>
+        <values>
+            <fullName>ACSV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ADECOSE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AMZ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>APROCOR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AUNNA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AUNNA Compromiso</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CENTERBROCK</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>COJEBRO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NEWCORRED</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WNETWORKS</fullName>
             <default>false</default>
         </values>
     </picklistValues>
