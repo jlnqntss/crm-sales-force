@@ -87,19 +87,20 @@ public with sharing class SalesCRMLeadGenerationService
 
     public static void manageCallMeBack(Lead requestData)
     {
+        Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
+        String queueName = leadOffersCS.VoiceQueue__c;
+        String businessHoursName = leadOffersCS.BusinessHour__c;
+        String businessCode = leadOffersCS.BusinessCode__c;
+
         CallMeBackUtil.CallMeBack callMeBack = new CallMeBackUtil.CallMeBack();
         callMeBack.name = requestData.name;
         callMeBack.phone = requestData.phone;
         callMeBack.bestTimeFrom = requestData.bestTimeFrom;
         callMeBack.bestTimeUntil = requestData.bestTimeUntil;
         callMeBack.webIdentifier = requestData.webIdentifier;
+        callMeBack.businessCode = businessCode;
 
-        Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
-        String queueName = leadOffersCS.VoiceQueue__c;
-        String businessHoursName = leadOffersCS.BusinessHour__c;
-        String businessCode = leadOffersCS.BusinessCode__c;
-
-        CallMeBackUtil.insertCallMeBack(callMeBack, queueName, businessHoursName, businessCode);
+        CallMeBackUtil.insertCallMeBack(callMeBack, queueName, businessHoursName);
     }
 
     /**
@@ -113,7 +114,7 @@ public with sharing class SalesCRMLeadGenerationService
     * @param Lead requestData con la inforamción del Lead
     * @return Opportunity recuperada/generada
     **/
-    public static Opportunity manageOffer(Account leadAccount, Lead requestData)
+    public static Opportunity manageOffer(Map<String, Account> accountByRelatedUser, Id leadId, Lead requestData)
     {
         Id offerOwnerId = new List<String>( accountByRelatedUser.keySet() ).get(0);
         Account account = accountByRelatedUser.get(offerOwnerId);

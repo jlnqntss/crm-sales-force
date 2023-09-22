@@ -1,8 +1,8 @@
 /**
  * @description       : Clase de utilidad para trabajar sobre CallMeBacks
  * @author            : amiranda
- * @date              : 21-09-2023
- * @last modified on  : 21-09-2023
+ * @date              : 22-09-2023
+ * @last modified on  : 22-09-2023
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -24,7 +24,7 @@ public with sharing class CallMeBackUtil
      * @return String Id de SF del ContactRequest
      * @throws CallMeBackException
      **/
-    public static String insertCallMeBack(CallMeBack requestCallMeBack, String queueName, String businessHoursName, String businessCode)
+    public static String insertCallMeBack(CallMeBack requestCallMeBack, String queueName, String businessHoursName)
     {
         if (queueName == null)
         {
@@ -54,7 +54,7 @@ public with sharing class CallMeBackUtil
             contactRequest.PreferredPhone = requestCallMeBack.phone;
             contactRequest.WebName__c = requestCallMeBack.name;
             contactRequest.WebIdentifier__c = requestCallMeBack.webIdentifier;
-            contactRequest.BusinessCode__c = businessCode;
+            contactRequest.BusinessCode__c = requestCallMeBack.businessCode;
             contactRequest.GenesysCloudQueueId__c = genesysQueue[0].Id;
 
             if( !customers.isEmpty() )

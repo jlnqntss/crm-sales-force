@@ -3,8 +3,8 @@
  * de la clase 'CallMeBackUtil'.
  *
  * @author            : amiranda
- * @date              : 21-09-2023
- * @last modified on  : 21-09-2023
+ * @date              : 22-09-2023
+ * @last modified on  : 22-09-2023
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -41,7 +41,7 @@ public with sharing class CallMeBackUtilTest
         CallMeBackUtil.CallMeBack requestedCallMeBack = generateCallMeBack();
 
         Test.startTest();
-        String contactRequestId = CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName, businessCode);
+        String contactRequestId = CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName);
         Test.stopTest();
 
         ContactRequest cr = [SELECT Id FROM ContactRequest LIMIT 1];
@@ -73,7 +73,7 @@ public with sharing class CallMeBackUtilTest
         Test.startTest();
         try
         {
-            CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName, businessCode);
+            CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName);
         }
         catch (Exception ex)
         {
@@ -107,7 +107,7 @@ public with sharing class CallMeBackUtilTest
         Test.startTest();
         try
         {
-            CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName, businessCode);
+            CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName);
         }
         catch (Exception ex)
         {
