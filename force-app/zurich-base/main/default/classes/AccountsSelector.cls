@@ -406,7 +406,8 @@ public with sharing class AccountsSelector extends RecordsSelector
             Account.MainEmail__c,
             Account.NationalId__c,
             Account.Channel__c,
-            Account.Segment__c
+            Account.Segment__c,
+            Account.Association__c
         }
         );
 
@@ -452,7 +453,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.Segment__c,
                 Account.INFOIntermediaryCode__c,
                 Account.IntermediaryGroup__c,
-                Account.IsPartner
+                Account.IsPartner,
+                Account.Association__c
             }
             ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c');
 
