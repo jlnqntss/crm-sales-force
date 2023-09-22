@@ -3,7 +3,7 @@
     <fullName>WebId__c</fullName>
     <externalId>false</externalId>
     <label>Web ID</label>
-    <length>40</length>
+    <length>255</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>

@@ -1,3 +1,15 @@
+/**
+ * @description       : Clase de servicio que gestiona la lógica del recurso
+ * 'leadGeneration' del web service 'WS_SalesCRM'.
+ *
+ * @author            : amiranda
+ * @date              : 22-09-2023
+ * @last modified on  : 22-09-2023
+ * @last modified by  : amiranda
+ * Modifications Log
+ * Ver   Date         Author     Modification
+ * 1.0   21-09-2023   amiranda   Initial Version
+ **/
 public with sharing class SalesCRMLeadGenerationService
 {
     // #region Attributes
@@ -17,9 +29,11 @@ public with sharing class SalesCRMLeadGenerationService
         'bestTimeUntil' => Account.PreferedContactEnd__c,
         'comments' => Account.Description
     };
-    // #endregion
-
     private static final String INVALID_FIELD = 'INVALID_FIELD';
+    @TestVisible
+    private static final String NATIONAL_ID_TYPE_NIF = 'N';
+
+    // #endregion
 
     // #region Public methods
 
@@ -71,6 +85,23 @@ public with sharing class SalesCRMLeadGenerationService
         return duplicateAccount;
     }
 
+    public static void manageCallMeBack(Lead requestData)
+    {
+        CallMeBackUtil.CallMeBack callMeBack = new CallMeBackUtil.CallMeBack();
+        callMeBack.name = requestData.name;
+        callMeBack.phone = requestData.phone;
+        callMeBack.bestTimeFrom = requestData.bestTimeFrom;
+        callMeBack.bestTimeUntil = requestData.bestTimeUntil;
+        callMeBack.webIdentifier = requestData.webIdentifier;
+
+        Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
+        String queueName = leadOffersCS.VoiceQueue__c;
+        String businessHoursName = leadOffersCS.BusinessHour__c;
+        String businessCode = leadOffersCS.BusinessCode__c;
+
+        CallMeBackUtil.insertCallMeBack(callMeBack, queueName, businessHoursName, businessCode);
+    }
+
     /**
     * @description Método que se encarga de comprobar si existe una oferta asociada
     * a un Lead. Si no existe se crea la oferta.
@@ -78,41 +109,35 @@ public with sharing class SalesCRMLeadGenerationService
     * @author amiranda 
     * @date 02-09-2023 
     * @param Account leadAccount cuenta de tipo Lead
+    * @param Id leadId Id de la cuenta de tipo 'Lead' insertada en SF
     * @param Lead requestData con la inforamción del Lead
     * @return Opportunity recuperada/generada
     **/
     public static Opportunity manageOffer(Account leadAccount, Lead requestData)
     {
-        //#region Fragmento de código temporal
-        User userToAssign = [SELECT Contact.Account.Id FROM User WHERE Alias = 'agente.m' AND Contact.AccountId != null LIMIT 1];
-        Account userToAssignRelatedAccount = [SELECT INFOIntermediaryCode__c FROM Account WHERE Id =: userToAssign.Contact.Account.Id];
-
-        Id offerIntermediaryId = userToAssignRelatedAccount.Id;
-        String offerIntermediaryCode = userToAssignRelatedAccount.INFOIntermediaryCode__c;
-        //#endregion
+        Id offerOwnerId = new List<String>( accountByRelatedUser.keySet() ).get(0);
+        Account account = accountByRelatedUser.get(offerOwnerId);
 
         List<Opportunity> offers = new OpportunitiesSelector()
-                            .findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
-            leadAccount.Id,
-            offerIntermediaryCode,
+                                   .findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
+            leadId,
+            account != null ? account.INFOIntermediaryCode__c : null,
             requestData.productBranch,
-            Query.last_n_days(7));
+            Query.last_n_days(7) );
 
-        if ( offers.isEmpty())
+        if ( offers.isEmpty() )
         {
             Opportunity offerToInsert = new Opportunity();
-            offerToInsert.Name = ('OF' + Datetime.now().getTime() + leadAccount.Id).left(120);
+            offerToInsert.Name = ( 'OF' + Datetime.now().getTime() / 1000 + leadId.to15() ).left(120);
             offerToInsert.StageName = 'Legit Lead';
             offerToInsert.CloseDate = Date.today().addDays(10);
-            offerToInsert.AccountId = leadAccount.Id;
-            offerToInsert.OwnerId = userToAssign.Id;
-            offerToInsert.IntermediaryId__c = offerIntermediaryId;
-            offerToInsert.IntermediaryCode__c = offerIntermediaryCode;
+            offerToInsert.AccountId = leadId;
+            offerToInsert.OwnerId = offerOwnerId;
+            offerToInsert.IntermediaryId__c = account != null ? account.Id : null;
+            offerToInsert.IntermediaryCode__c = account != null ? account.INFOIntermediaryCode__c : null;
             offerToInsert.PersonLeadSource__c = requestData.origin;
             offerToInsert.ProductBranch__c = requestData.productBranch;
             offerToInsert.Description = requestData.comments;
-            offerToInsert.PreferedContactStart__c = requestData.bestTimeFrom;
-            offerToInsert.PReferedContactEnd__c = requestData.bestTimeUntil;
 
             offers.add(offerToInsert);
 
@@ -133,7 +158,9 @@ public with sharing class SalesCRMLeadGenerationService
     * @author amiranda
     * @date 02-09-2023 
     * @param Lead requestData con la información del Lead
+    * @throws LeadGenerationException
     **/
+    @TestVisible
     private static void checkRequiredFields(Lead requestData)
     {
         Set<String> receivedFields = requestData.getReceivedFields();
@@ -162,7 +189,9 @@ public with sharing class SalesCRMLeadGenerationService
     * @author amiranda
     * @date 02-09-2023 
     * @param Lead requestData con la información del Lead
+    * @throws LeadGenerationException
     **/
+    @TestVisible
     private static void checkPicklistValues(Lead requestData)
     {
         Set<String> invalidFields = new Set<String>();
@@ -212,11 +241,14 @@ public with sharing class SalesCRMLeadGenerationService
     * @param Account accountToFill que se va a rellenar con los datos del Lead
     * @param Lead requestData con la información del Lead
     **/
+    @TestVisible
     private static void fillAccountFields(Account accountToFill, Lead requestData)
     {
         accountToFill.LastName = requestData.name;
         accountToFill.Phone = requestData.phone;
         accountToFill.WebId__c = requestData.webIdentifier;
+
+        setNationalIdType( accountToFill, (String) requestData.get('documentId') );
 
         for ( String notNullableField : notNullableFields.keySet() )
         {
@@ -224,6 +256,28 @@ public with sharing class SalesCRMLeadGenerationService
             {
                 accountToFill.put( notNullableFields.get(notNullableField), requestData.get(notNullableField) );
             }
+        }
+    }
+
+    /**
+     * @description Método que se encarga de informar el campo 'NationalIdType__c'
+     * con valor 'N' (NIF). Se informará siempre y cuando el parámetro 'documentId'
+     * no sea nulo y la cuenta sobre la que se informará el campo `NationalIdType__c'
+     * (accountToFill) no tenga este último campo informado o no tenga el campo
+     * 'NationalId__c' informado.
+     *
+     * @author amiranda
+     * @date 13-09-2023
+     * @param accountToFill Cuenta sobre la que se va a informar el campo NationalIdType__c
+     * @param documentId Documento de identidad del Lead recibido en la request
+     **/
+    @TestVisible
+    private static void setNationalIdType(Account accountToFill, String documentId)
+    {
+        if ( String.isNotBlank(documentId) &&
+             (accountToFill.NationalIdType__c == null || accountToFill.NationalId__c == null) )
+        {
+            accountToFill.NationalIdType__c = NATIONAL_ID_TYPE_NIF;
         }
     }
 
@@ -236,6 +290,7 @@ public with sharing class SalesCRMLeadGenerationService
      */
     public class Lead
     {
+        @TestVisible
         private Map<String, Object> valuesByProperty
         {
             get
@@ -320,7 +375,7 @@ public with sharing class SalesCRMLeadGenerationService
         {
             get
             {
-                return (String) valuesByProperty.get('phone');
+                return (String) valuesByProperty.get('language');
             }
             set
             {
@@ -399,6 +454,7 @@ public with sharing class SalesCRMLeadGenerationService
             return valuesByProperty.keySet().clone();
         }
 
+        @TestVisible
         private Object get(String property)
         {
             return valuesByProperty.get(property);

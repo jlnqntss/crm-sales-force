@@ -1456,4 +1456,39 @@ public with sharing class SystemUtil
         String nakedUserName = userName.substring(0, lastPeriod);
         return nakedUserName + '.' + SystemUtil.getSandboxName();
     }
+
+    /**
+    * @description Método que comprueba si la fecha solicitada se encuentra dentro
+    * del horario de atención. Si la fecha y hora no se encuentra dentro de la
+    * franja horaria marcada por las business hours, devuelve la siguiente hora 
+    * hábil.
+    *
+    * @author amiranda
+    * @date 20-09-2023 
+    * @param requestedDatetime fecha y hora de preferencia de contacto
+    * @param businessHours nombre de las business hours. Estas indican la franja
+    * horaria en la que un usuario estará disponible.
+    * @return Datetime fecha y hora que se encuentra dentro de la franja horaria
+    * de las business hours
+    **/
+    public static Datetime getContactDatetime(Datetime requestedDatetime, String businessHoursName)
+    {
+        if (requestedDatetime == null)
+        {
+            requestedDatetime = System.now();
+        }
+
+        if (businessHoursName != null)
+        {
+            //Recuperamos la configuración del horario de atención del ZRM Ventas
+            List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name =: businessHoursName LIMIT 1];
+
+            if (businessHoursList != null && !businessHoursList.isEmpty())
+            {
+                return BusinessHours.nextStartDate(businessHoursList.get(0).Id, requestedDatetime);
+            }
+        }
+
+        return requestedDatetime;
+    }
 }

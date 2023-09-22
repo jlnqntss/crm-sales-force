@@ -3,8 +3,8 @@
  *                      de las cuentas de tipo Lead que llegan a Salesforce.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 28/08/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 22-09-2023
+ * @last modified by  : amiranda
 **/
 public with sharing class AccountLeadAssignment
 {
@@ -389,6 +389,12 @@ public with sharing class AccountLeadAssignment
      *              Código de intermediario del agente
      * @return      String
      *              Id de usuario.
+     * 
+     * @change amiranda 15/09/2023 Se debe comprobar si la cuenta de tipo Mediador
+     * es partner. Si es partner significa que tiene usuario asociado, por lo tanto
+     * se buscará el usuario asociado a esta cuenta. Si no es partener, significa
+     * que no tiene usuario asociado y se buscará el usuario del Mediador principal.
+     * Se identifica a este Mediador a través de la Agrupación.
      */
     @TestVisible
     private static Assignment getIntermediaryUserId(String intermediaryCode)
@@ -408,7 +414,18 @@ public with sharing class AccountLeadAssignment
         }
 
         UsersSelector userQuery = new UsersSelector();
-        List<User> intermediary = userQuery.findUsersByAccountId(new List<String>{intermediaryAccount.get(0).Parent.IntermediaryWithUser__c});
+        List<User> intermediary = new List<User>();
+
+        if (intermediaryAccount.get(0).isPartner)
+        {
+            // Si el Mediador tiene usuario asociado, se busca el usuario asociado a dicho Mediador
+            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.get(0).Id}); 
+        }
+        else
+        {
+            // Si el Mediador no tiene un usuario asociado (no es partner), se busca el usuario asociado al Mediador principal indicado en la Agrupación
+            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.get(0).IntermediaryGroup__r.IntermediaryWithUser__c}); 
+        }
 
         if(! intermediary.isEmpty())
         {
