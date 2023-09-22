@@ -32,7 +32,6 @@ public class AccountLeadUtil
      */
     public static List<Account> checkLeads(List<Account> newList){
         List<Account> accList = newList;
-        AccountsSelector accSelector = new AccountsSelector();
         for (Account acc : accList)
         {
             if (Schema.getGlobalDescribe().get('Account').getDescribe().getRecordTypeInfosById().get(acc.RecordTypeId).getName() == LEAD)
@@ -41,7 +40,14 @@ public class AccountLeadUtil
                 newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
                 if (newAcc != null)
                 {
-                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + accSelector.findAccountNameById(new List<String>{(String)newAcc.Id}).get(0).Name + ' ' + newAcc.Id + ')'); 
+                    String errorMsg = Label.Lead_Duplicates_Control_Error + ': ';
+                    if (!String.isBlank(newAcc.FirstName)) {
+                        errorMsg += + newAcc.FirstName + ' ';
+                    }
+                    if (!String.isBlank(newAcc.LastName)) {
+                        errorMsg += newAcc.LastName + ' ';
+                    }
+                    acc.addError(errorMsg + '(' +  newAcc.Id + ')');
                 }
             }
         }
@@ -57,16 +63,16 @@ public class AccountLeadUtil
     public static Account leadDuplicatesControl(String documentID, String phone)
     {
         Account acc = new Account();
-        AccountsSelector accountsSelector = new AccountsSelector();
+        AccountSelectorWithoutSharing accountsSelectorWS = new AccountSelectorWithoutSharing();
         if (documentID != null)
         {
-            List<Account> accList = accountsSelector.findByNationalIdAndRcTypeCustAndBC(new List<String>{documentID});
+            List<Account> accList = accountsSelectorWS.findByNationalIdAndRcTypeCustAndBC(new List<String>{documentID});
             if (!accList.isEmpty())
             {
                 acc = accList.get(0);
             } else
             {
-                List<Account> accLeadList = accountsSelector.findByNationalIdAndRcTypeLead(new List<String>{documentID});
+                List<Account> accLeadList = accountsSelectorWS.findByNationalIdAndRcTypeLead(new List<String>{documentID});
                 if (!accLeadList.isEmpty())
                 {
                     acc = accLeadList.get(0);
@@ -79,7 +85,7 @@ public class AccountLeadUtil
         {
             if(phone != null)
             {
-                acc = checkLeadDuplicatePhone(phone, accountsSelector);
+                acc = checkLeadDuplicatePhone(phone, accountsSelectorWS);
             } else
             {
                 acc = null;
@@ -138,10 +144,10 @@ public class AccountLeadUtil
      * @date 25/08/2023
      * @return acc
      */
-    public static Account checkLeadDuplicatePhone(String phone, AccountsSelector accountsSelector)
+    public static Account checkLeadDuplicatePhone(String phone, AccountSelectorWithoutSharing accountsSelectorWS)
     {
         Account acc = new Account();
-        List<Account> accPhoneList = accountsSelector.findByPhoneAndRcTypeLead(new List<String>{phone});
+        List<Account> accPhoneList = accountsSelectorWS.findByPhoneAndRcTypeLead(new List<String>{phone});
         if (!accPhoneList.isEmpty())
         {
             acc = accPhoneList.get(0);
