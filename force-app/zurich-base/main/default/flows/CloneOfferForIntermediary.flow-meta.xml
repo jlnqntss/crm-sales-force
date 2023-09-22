@@ -327,7 +327,7 @@
         </connector>
         <inputReference>OriginOffer</inputReference>
     </recordUpdates>
-    <runInMode>SystemModeWithoutSharing</runInMode>
+    <runInMode>DefaultMode</runInMode>
     <start>
         <locationX>56</locationX>
         <locationY>0</locationY>

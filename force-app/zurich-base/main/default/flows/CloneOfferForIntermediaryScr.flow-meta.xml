@@ -50,7 +50,7 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <runInMode>SystemModeWithoutSharing</runInMode>
+    <runInMode>DefaultMode</runInMode>
     <screens>
         <description>Muestra un mensaje de error si la oferta ya ha sido clonada</description>
         <name>clonedOfferForIntermediaryIsTrueErrorScreen</name>
