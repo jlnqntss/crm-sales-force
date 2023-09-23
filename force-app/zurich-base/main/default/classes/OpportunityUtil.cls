@@ -1,11 +1,11 @@
 /**
- * @description       : 
- * @author            : 
- * @group             : 
+ * @description       :
+ * @author            :
+ * @group             :
  * @last modified on  : 04-24-2023
  * @last modified by  : aberuete
-**/
-public with sharing class OpportunityUtil 
+ **/
+public with sharing class OpportunityUtil
 {
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
     public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
@@ -21,17 +21,17 @@ public with sharing class OpportunityUtil
      * @date 24/02/2021
      */
     public static void initMapOfProfiles()
-    {   
+    {
         // perfiles
-        List<String> nombresPerfiles = new List<String>{'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
+        List<String> nombresPerfiles = new List<String> {'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
         listaPerfiles = ProfilesSelector.getProfilesByName(nombresPerfiles);
 
         // usuarios
-        List<String> nombresUsuarios = new List<String>{'Automated Process'};
-        listaUsuarios = (new UsersSelector()).getUsersByName(nombresUsuarios);
+        List<String> nombresUsuarios = new List<String> {'Automated Process'};
+        listaUsuarios = ( new UsersSelector() ).getUsersByName(nombresUsuarios);
 
         // Perfiles Ventas
-        nombresPerfilesVentas = new List<String>{'Agente Ventas', 'Ventas User'};
+        nombresPerfilesVentas = new List<String> {'Agente Ventas', 'Ventas User'};
         userLoggedProfile = ProfilesSelector.getLoggedUserProfile();
     }
 
@@ -72,11 +72,37 @@ public with sharing class OpportunityUtil
      */
     public static void detectOpportunityAccountChange(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
     {
-        for(Integer i=0,j=newList.size();i<j;i++) {
+        for(Integer i=0,j=newList.size(); i < j; i++)
+        {
             Opportunity o = newList[i];
 
-            if( o.AccountId != oldMap.get(o.Id).AccountId ) {
+            if( o.AccountId != oldMap.get(o.Id).AccountId )
+            {
                 o.OldAccountId__c = oldMap.get(o.Id).AccountId;
+            }
+        }
+    }
+
+    /**
+     * Assign the Sales Process value according to the Account Record Type
+     *
+     * @author nts (jfherrero)
+     * @date 15/09/2023
+     * @trigger beforeInsert
+     */
+    public static void setSalesProcess(List<Opportunity> newList)
+    {
+        for(Opportunity opp : newList)
+        {
+
+            if( opp.Account.RecordType.DeveloperName == 'Lead' )
+            {
+                opp.SalesProcess__c = 'L';
+            }
+            else if (opp.Account.RecordType.DeveloperName == 'Business Customer' ||
+                     opp.Account.RecordType.DeveloperName == 'Customer' )
+            {
+                opp.SalesProcess__c = 'VC';
             }
         }
     }
@@ -89,7 +115,7 @@ public with sharing class OpportunityUtil
     {
         for(Opportunity opty : newList)
         {
-            if(String.isBlank(opty.StageName))
+            if( String.isBlank(opty.StageName) )
             {
                 opty.StageName = 'Open';
             }
@@ -111,22 +137,22 @@ public with sharing class OpportunityUtil
     {
         for(Opportunity opty : newList)
         {
-            if(String.isBlank(opty.StageName))
+            if( String.isBlank(opty.StageName) )
             {
                 Opportunity oldOffer = oldMap.get(opty.Id);
                 opty.StageName = oldOffer.StageName;
             }
 
-            if (String.isBlank(opty.AccountId) && !String.isBlank(oldMap?.get(opty.Id)?.AccountId))
+            if ( String.isBlank(opty.AccountId) && !String.isBlank(oldMap?.get(opty.Id)?.AccountId) )
             {
                 opty.AccountId = oldMap?.get(opty.Id)?.AccountId;
-            } 
+            }
         }
     }
 
-    /** 
+    /**
      * Método privado que sustituye la Regla de validación de Opportunity llamada NoCloseWon
-     * 
+     *
      * [VR] de Offer -> NoCloseWon.
 
             ISPICKVAL(StageName,"Closed Won") &&
@@ -138,44 +164,44 @@ public with sharing class OpportunityUtil
             $User.Username <> 'agustin.zapata@zurich-es.com' &&
             $User.Username <> 'j.tomegarcia@zurich-es.com' &&
             $User.Username <> 'julio.fabeiro@zurich-es.com' &&
-            $User.Username <> 'francisco.orta@zurich-es.com' 
-     * 
-     * 
+            $User.Username <> 'francisco.orta@zurich-es.com'
+     *
+     *
      * @author arcortazar - nts
      * @created date 09/03/2022
-     * 
+     *
      * @param newList List<Opportunity> lista de oportunidades a updatear con los datos actualizados
      * @param oldMap Map<Id, Opportunity> mapa de las oportunidades a actualizar, con los datos anteriores al update
-     * */ 
-     public static void validateOfferStage(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
-     {        
+     * */
+    public static void validateOfferStage(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
+    {
         for (Opportunity newOpty : newList)
         {
             Opportunity oldOpty = oldMap.get(newOpty.Id);
 
-            if (!skipStageNameValidation(newOpty) && !isValidStageName(oldOpty))
-            { 
-                // ERROR  : Agregar el mensaje a nivel de campo 
-                
+            if ( !skipStageNameValidation(newOpty) && !isValidStageName(oldOpty) )
+            {
+                // ERROR  : Agregar el mensaje a nivel de campo
+
                 newOpty.addError(FIELD_STAGE, nombresPerfilesVentas.contains(userLoggedProfile) ? Label.OfferSalesStageValidationClosedWonMessage : Label.OfferStageValidationMessage);
-            } 
+            }
         }
     }
 
-    /** 
+    /**
      * Método privado que comprueba el StageName de la oportunidad. Si esta se encuentra en closed won, no se podrá actualizar
      *
      * @author arcortazar - nts
      * @created date 09/03/2022
-     * 
+     *
      * @param oldOpty Opportunity que se va a updatear.
      * @return Booleano que indica si el StageName de la opportunity es el adecuado para proceder al update (true) o no (false)
-     * */ 
+     * */
     @TestVisible
     private static Boolean isValidStageName(Opportunity oldOpty)
     {
         Boolean retorno = true;
-        if( oldOpty != null && oldOpty.StageName.equalsIgnoreCase('Closed won'))
+        if( oldOpty != null && oldOpty.StageName.equalsIgnoreCase('Closed won') )
         {
             retorno = false;
         }
@@ -183,32 +209,32 @@ public with sharing class OpportunityUtil
         return retorno;
     }
 
-    /** 
+    /**
      * Método privado que comprueba si se ha producido un cambio en el OwnerId.
      * @author arcortazar - nts
      * @created date 09/03/2022
-     * 
+     *
      * @param newOpty Opportunity  que se va a comprobar si se puede bypasear las reglas para su actualización
      * @return Boolean que indica si puede bypasearse (true) o no (false).
-     * */ 
+     * */
     @TestVisible
     private static Boolean skipStageNameValidation(Opportunity newOpty)
     {
         Boolean retorno = false;
-        
+
         // Bypass por perfil
-        if(!listaPerfiles.isEmpty() && (listaPerfiles.containsKey(UserInfo.getProfileId()) || listaUsuarios.containsKey(UserInfo.getUserId())))
+        if( !listaPerfiles.isEmpty() && ( listaPerfiles.containsKey( UserInfo.getProfileId() ) || listaUsuarios.containsKey( UserInfo.getUserId() ) ) )
         {
             retorno = true;
         }
-        
+
 
         // Bypass por usuario (usando los Custom Permisson)
-        if(FeatureManagement.checkPermission('Editar_ofertas_cerradas'))
+        if( FeatureManagement.checkPermission('Editar_ofertas_cerradas') )
         {
             retorno = true;
         }
-        
+
 
         // Bypass por reasignación
         if(newOpty.HasBeenReassigned__c)
@@ -229,9 +255,9 @@ public with sharing class OpportunityUtil
     public static Map<String, Opportunity> generateMapByCreatedOffer(List<Opportunity> oportunities)
     {
         Map<String, Opportunity> mapOpportunitiesToRelateByCreatedOffer = new Map<String,Opportunity>();
-        if(oportunities != null && !oportunities.isEmpty())
+        if( oportunities != null && !oportunities.isEmpty() )
         {
-            //Mapa para identificar cada oportunidad con su oferta generada    
+            //Mapa para identificar cada oportunidad con su oferta generada
             // Se recorre la lista de oportunidades para no tener que recorrerla una vez por cada caso
             for(Opportunity currentOportunity : oportunities)
             {
@@ -241,41 +267,41 @@ public with sharing class OpportunityUtil
         return mapOpportunitiesToRelateByCreatedOffer;
     }
 
-        /* 
-    * Si el usuario conectado es un ZE_Advisor no dejar modificar el Owner a excepción de si el OldOwner es Integrator.
-    * @author jpereztirado - nts
-    * @created date 20/12/2022
-    * @param newList List<Opportunity> lista de oportunidades a updatear con los datos actualizados
-    * @param oldMap Map<Id, Opportunity> mapa de las oportunidades a actualizar, con los datos anteriores al update
-    */ 
+    /*
+     * Si el usuario conectado es un ZE_Advisor no dejar modificar el Owner a excepción de si el OldOwner es Integrator.
+     * @author jpereztirado - nts
+     * @created date 20/12/2022
+     * @param newList List<Opportunity> lista de oportunidades a updatear con los datos actualizados
+     * @param oldMap Map<Id, Opportunity> mapa de las oportunidades a actualizar, con los datos anteriores al update
+     */
     public static void validateChangeOwner(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
     {
-        List<PermissionSetAssignment> userList = [SELECT AssigneeId,Assignee.Profile.Name FROM PermissionSetAssignment WHERE (PermissionSet.Name = 'ZE_Advisor' OR Assignee.Profile.Name='Integrator') 
-            AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
-		Id integratorId=null;
+        List<PermissionSetAssignment> userList = [SELECT AssigneeId,Assignee.Profile.Name FROM PermissionSetAssignment WHERE (PermissionSet.Name = 'ZE_Advisor' OR Assignee.Profile.Name='Integrator')
+                                                  AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
+        Id integratorId=null;
         for (Opportunity newOpty : newList)
         {
             Opportunity oldOpty = oldMap.get(newOpty.Id);
             if (newOpty.OwnerId != oldOpty.OwnerId)
-            { 
+            {
                 Map<Id, PermissionSetAssignment> mapUsersZEAdvisors = new Map<Id, PermissionSetAssignment>();
                 for(PermissionSetAssignment user : userList)
                 {
- 					if (user.Assignee.Profile.Name == 'Integrator')
+                    if (user.Assignee.Profile.Name == 'Integrator')
                     {
-                    	integratorId = user.AssigneeId;
+                        integratorId = user.AssigneeId;
                     }
                     else
                     {
-                    	mapUsersZEAdvisors.put(user.AssigneeId, user);
+                        mapUsersZEAdvisors.put(user.AssigneeId, user);
                     }
                 }
-                if (mapUsersZEAdvisors.get(UserInfo.getUserId()) != null && oldOpty.OwnerId != integratorId)
+                if (mapUsersZEAdvisors.get( UserInfo.getUserId() ) != null && oldOpty.OwnerId != integratorId)
                 {
-                    //ERROR: Agregar el mensaje a nivel de campo 
+                    //ERROR: Agregar el mensaje a nivel de campo
                     newOpty.addError(FIELD_OWNER_ID, Label.OfferChangeOwnerValidationMessage);
-                }	
+                }
             }
-        }   
+        }
     }
 }
