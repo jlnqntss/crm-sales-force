@@ -124,6 +124,16 @@
                 <default>false</default>
                 <label>No quiere Póliza - Revocación Consentimientos</label>
             </value>
+            <value>
+                <fullName>HOME- Never had it and does not want it</fullName>
+                <default>false</default>
+                <label>HOGAR- No ha tenido nunca y no lo quiere</label>
+            </value>
+            <value>
+                <fullName>Insufficient/incorrect data</fullName>
+                <default>false</default>
+                <label>Datos insuficientes/erróneos</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
@@ -229,6 +239,15 @@
             <controllingFieldValue>L</controllingFieldValue>
             <controllingFieldValue>VC</controllingFieldValue>
             <valueName>Not interested Policy - Revocation Consents</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>HOME- Never had it and does not want it</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <valueName>Insufficient/incorrect data</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>VC</controllingFieldValue>

@@ -8,6 +8,7 @@
 public with sharing class OpportunityUtil
 {
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
+    public static Map<Id, String> mapAccountRecordTypes; //Mapa de Accounts con sus respectivos RecordType.DeveloperName
     public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
     static final String FIELD_OWNER_ID = 'OwnerId';
     static final String FIELD_STAGE = 'StageName';
@@ -33,6 +34,39 @@ public with sharing class OpportunityUtil
         // Perfiles Ventas
         nombresPerfilesVentas = new List<String> {'Agente Ventas', 'Ventas User'};
         userLoggedProfile = ProfilesSelector.getLoggedUserProfile();
+    }
+
+    /**
+     * Inicializa un mapa de Ids de Account y RecordType.DeveloperName para realizar cálculos antes de la inserción
+     *
+     * @author nts (jfherrero)
+     * @date 15/09/2023
+     * @trigger bulkBefore
+     */
+    public static void initMapOfAccountRecordTypes(List<Opportunity> newList)
+    {
+        mapAccountRecordTypes = new Map<Id, String>();
+
+        Set<Id> accountIds = new Set<Id>();
+
+        for (Opportunity opp : newList)
+        {
+            accountIds.add(opp.AccountId);
+        }
+
+        List<Account> oppAccounts = new AccountsSelector().selectById(accountIds);
+
+        for (Opportunity opp : newList)
+        {
+            for (Account acc : oppAccounts)
+            {
+                if (opp.AccountId == acc.Id)
+                {
+                    mapAccountRecordTypes.put(acc.Id, acc.RecordType.DeveloperName);
+                    break;
+                }
+            }
+        }
     }
 
     /**

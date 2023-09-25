@@ -71,6 +71,14 @@
                 <field>StageName</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>SalesProcess__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PendingClientInformation__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Sales_Loss_Reason__c</field>
             </layoutItems>
