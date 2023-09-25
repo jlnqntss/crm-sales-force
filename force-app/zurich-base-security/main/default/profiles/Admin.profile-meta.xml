@@ -5763,6 +5763,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Campaign.MaxCallRetries__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Campaign.ActualCost</field>
         <readable>true</readable>
@@ -5995,6 +6000,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Campaign.purecloud__Time_Zone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CampaignMember.CallRetries__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8955,6 +8965,11 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>MaestroApetito__c.UsoExplosivos__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.CampaignMemberID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

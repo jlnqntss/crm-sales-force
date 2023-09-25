@@ -4605,6 +4605,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Campaign.MaxCallRetries__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Campaign.ActualCost</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4832,6 +4837,11 @@
         <editable>false</editable>
         <field>Campaign.purecloud__Time_Zone__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CampaignMember.CallRetries__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -8627,6 +8637,11 @@
         <editable>false</editable>
         <field>Special_Condition__c.StartDate__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.CampaignMemberID__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
