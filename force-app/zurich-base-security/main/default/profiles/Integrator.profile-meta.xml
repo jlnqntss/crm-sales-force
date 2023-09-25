@@ -5841,6 +5841,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Association__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.Blocked__c</field>
         <readable>true</readable>
@@ -8047,6 +8052,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Acta__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9651,9 +9661,14 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.PreferedContactEndFor__c</field>
+        <readable>true</readable>
+        </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.PreferedContactStartFor__c</field>
         <readable>true</readable>
-    </fieldPermissions>
+        </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.ClonedOfferForIntermediary__c</field>
@@ -9672,11 +9687,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PendingClientInformationMore__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.PreferedContactEndFor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11927,6 +11937,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Special_Condition__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Campaign__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

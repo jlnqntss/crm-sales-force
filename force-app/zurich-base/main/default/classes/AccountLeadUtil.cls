@@ -32,7 +32,6 @@ public with sharing class AccountLeadUtil
      */
     public static List<Account> checkLeads(List<Account> newList){
         List<Account> accList = newList;
-        AccountsSelector accSelector = new AccountsSelector();
         for (Account acc : accList)
         {
             if (Schema.getGlobalDescribe().get('Account').getDescribe().getRecordTypeInfosById().get(acc.RecordTypeId).getName() == LEAD)
@@ -41,7 +40,14 @@ public with sharing class AccountLeadUtil
                 newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
                 if (newAcc != null)
                 {
-                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + accSelector.findAccountNameById(new List<String>{(String)newAcc.Id}).get(0).Name + ' ' + newAcc.Id + ')');
+                    String errorMsg = Label.Lead_Duplicates_Control_Error + ': ';
+                    if (!String.isBlank(newAcc.FirstName)) {
+                        errorMsg += + newAcc.FirstName + ' ';
+                    }
+                    if (!String.isBlank(newAcc.LastName)) {
+                        errorMsg += newAcc.LastName + ' ';
+                    }
+                    acc.addError(errorMsg + '(' +  newAcc.Id + ')');
                 }
             }
         }

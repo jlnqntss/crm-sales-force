@@ -625,6 +625,7 @@ public with sharing class GenesysInteractionsService
             results.nationalId = intermediary.NationalId__c;
             results.intermediaryChannel = intermediary.Channel__c;
             results.intermediarySegment = intermediary.Segment__c;
+            results.association = intermediary.Association__c;
 
             results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c), true);
         }
@@ -1137,6 +1138,9 @@ public with sharing class GenesysInteractionsService
         // 2023-03-01 (arcortazar)
         public String intermediaryChannel;
         public String intermediarySegment;
+
+        // 2023-09-20 (arcortazar)
+        public String association;
 
         public override String toString()
         {
