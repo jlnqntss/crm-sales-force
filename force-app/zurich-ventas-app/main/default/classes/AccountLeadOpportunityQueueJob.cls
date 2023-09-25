@@ -109,19 +109,15 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
     public static void manageCallMeBack(Account accountRecord, Opportunity offerToInsertUpdate)
     {
         Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
-        String queueName = leadOffersCS.VoiceQueue__c;
-        String businessHoursName = leadOffersCS.BusinessHour__c;
-        String businessCode = leadOffersCS.BusinessCode__c;
 
         CallMeBackUtil.CallMeBack callMeBack = new CallMeBackUtil.CallMeBack();
         callMeBack.name = accountRecord.Name;
         callMeBack.phone = phone;
         callMeBack.bestTimeFrom = offerToInsertUpdate.PreferedContactStartFor__c;
         callMeBack.bestTimeUntil = offerToInsertUpdate.PreferedContactEndFor__c;
-        //! callMeBack.webIdentifier = requestData.webIdentifier;
-        callMeBack.businessCode = CustomSetting Lead_Offers__c.BusinessCode__c;
+        callMeBack.businessCode = leadOffersCS.BusinessCode__c;
 
-        CallMeBackUtil.insertCallMeBack(callMeBack, queueName, businessHoursName);
+        CallMeBackUtil.insertCallMeBack(callMeBack, leadOffersCS.VoiceQueue__c, leadOffersCS.BusinessHour__c);
     }
 
     /**
