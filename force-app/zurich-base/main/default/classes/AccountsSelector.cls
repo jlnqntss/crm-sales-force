@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 21/09/2023
+ * @last modified on  : 22/09/2023
  * @last modified by  : jgallaga
  **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -240,7 +240,7 @@ public with sharing class AccountsSelector extends RecordsSelector
                             OR
                                 RecordTypeId = :rtBusinessCustomerId
                             )
-                    ORDER BY    CreatedDate DESC
+                    ORDER BY LastModifiedDate DESC
                 ]);
         }
         return result;
@@ -287,7 +287,7 @@ public with sharing class AccountsSelector extends RecordsSelector
                     FROM    account
                     WHERE   NationalId__c IN :documents
                     AND     RecordTypeId = :rtLeadId
-                    ORDER BY Createddate DESC
+                    ORDER BY LastModifiedDate DESC
                 ]);
         }
         return result;
@@ -312,7 +312,7 @@ public with sharing class AccountsSelector extends RecordsSelector
                     FROM    Account
                     WHERE   Phone IN :phones
                     AND     RecordTypeId = :rtLeadId
-                    ORDER BY CreatedDate DESC]
+                    ORDER BY LastModifiedDate DESC]
                 );
         }
         return result;

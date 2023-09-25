@@ -2,7 +2,7 @@
  * @description       :
  * @author            : overes
  * @group             :
- * @last modified on  : 21/09/2023
+ * @last modified on  : 25/09/2023
  * @last modified by  : jgallaga
 **/
 public with sharing class AccountLeadUtil
@@ -178,6 +178,35 @@ public with sharing class AccountLeadUtil
             return acc;
         }
 
+        Map<Id,List<ContactPointPhone>> scopeByAccountId = getContactPointPhonesByLeadAccountId(phone);
+
+        // Si no hay contact point phones -> nulo
+        if(scopeByAccountId.isEmpty())
+        {
+            return acc;
+        }
+
+        // Si solo hay una cuenta, devolver ese
+        if(scopeByAccountId.size() == 1)
+        {
+            Id foundAccount = new List<Id>(scopeByAccountId.keySet()).get(0);
+            return [SELECT Id FROM Account WHERE Id = :foundAccount];
+        }
+
+        // En el resto, buscar la cuenta mas reciente, con preferencia a los de RecordType Lead
+        String targetAccountId = getMostRecentAccountFromContactPointPhones(scopeByAccountId.values());
+
+        if(String.isBlank(targetAccountId))
+        {
+            return null;
+        }
+
+        // TODO - Selector
+        return [SELECT Id FROM Account WHERE id = :targetAccountId];
+    }
+
+    private static Map<Id, List<ContactPointPhone>> getContactPointPhonesByLeadAccountId(String phone)
+    {
         Map<Id,List<ContactPointPhone>> scopeByAccountId = new Map<Id,List<ContactPointPhone>>();
 
         // TODO - Selector Scope
@@ -194,31 +223,10 @@ public with sharing class AccountLeadUtil
             scopeByAccountId.get(currentScope.ScopeId__r.AccountId__c).Add(currentScope);
         }
 
-        // Si existe un scope o varios para una misma cuenta, devolver esa cuenta.
-
-        if(scopeByAccountId.isEmpty())
-        {
-            return null;
-        }
-
-        if(scopeByAccountId.size() == 1)
-        {
-            Id foundAccount = new List<Id>(scopeByAccountId.keySet()).get(0);
-            return [SELECT Id FROM Account WHERE Id = :foundAccount];
-        }
-
-        ContactPointPhone targetAccountCPP = getMostRecentAccountFromContactPointPhones(scopeByAccountId.values());
-
-        if(targetAccountCPP == null)
-        {
-            return null;
-        }
-
-        // TODO - Selector
-        return [SELECT Id FROM Account WHERE id = :targetAccountCPP.ScopeId__r.AccountId__c];
+        return scopeByAccountId;
     }
 
-    private static ContactPointPhone getMostRecentAccountFromContactPointPhones(List<List<ContactPointPhone>> cpps)
+    private static String getMostRecentAccountFromContactPointPhones(List<List<ContactPointPhone>> cpps)
     {
 
         Boolean accountLeadFound = false;
@@ -235,14 +243,14 @@ public with sharing class AccountLeadUtil
                     continue;
                 }
 
-                // Si ya tenemos una cuenta del scope de ventas, no hace falta mirar el resto
+                // Si ya se ha encontrado al menos una cuenta del scope de ventas, no hace falta mirar el resto de scopes
                 if(currentCPP.ScopeId__r.Scope__c != 'Ventas' && accountLeadFound)
                 {
                     continue;
                 }
 
                 // Si la cuenta del scope es mas reciente, nos lo quedamos, si ademas es de ventas, ponemos a true que tenemos al menos uno
-                if(targetAccountCPP.ScopeId__r.AccountId__r.CreatedDate > currentCPP.ScopeId__r.AccountId__r.CreatedDate)
+                if(targetAccountCPP.ScopeId__r.AccountId__r.LastModifiedDate > currentCPP.ScopeId__r.AccountId__r.LastModifiedDate)
                 {
                     targetAccountCPP = currentCPP;
                     accountLeadFound = currentCPP.ScopeId__r.Scope__c == 'Ventas';
@@ -250,6 +258,101 @@ public with sharing class AccountLeadUtil
             }
         }
 
-        return targetAccountCPP;
+        return targetAccountCPP.ScopeId__r.AccountId__c;
+    }
+
+    /** */
+
+    public static void createScopesForVentaLeads(List<Account> accounts, Map<Id,Account> oldAccounts)
+    {
+        List<Id> allCandidateAccounts = getLeadAccountsForCrossScope(accounts, oldAccounts);
+
+        Set<Id> accountIdsWithoutScope = new Set<Id>();
+        Set<Id> accountIdsWithScope = new Set<Id>();
+
+        for(Scope__c currentCPP : [SELECT AccountId__c FROM Scope__c WHERE AccountId__c IN : allCandidateAccounts AND Scope__c = 'Ventas'])
+        {
+            accountIdsWithScope.add(currentCPP.AccountId__c);
+        }
+
+        for(Id currentAccountId : allCandidateAccounts)
+        {
+            if(!accountIdsWithScope.contains(currentAccountId))
+            {
+                accountIdsWithoutScope.add(currentAccountId);
+            }
+        }
+
+        List<Scope__c> scopesToInsert = new List<Scope__c>();
+
+        if(accountIdsWithoutScope.isEmpty())
+        {
+            return;
+        }
+
+        Map<Id,Account> accountsById = new Map<Id,Account>(accounts);
+        for(Id currentAccountWithoutScope : accountIdsWithoutScope)
+        {
+            Account currentAccount = accountsById.get(currentAccountWithoutScope);
+            scopesToInsert.add(new Scope__c(
+                AccountId__c = currentAccount.Id,
+                PrimaryPhone__c = currentAccount.Phone,
+                Scope__c = 'Ventas',
+                Name = 'Zurich Ventas'
+            ));
+        }
+
+        insert scopesToInsert;
+
+        List<ContactPointPhone> contactPointsForScopes = new List<ContactPointPhone>();
+
+        for(Scope__c currentScope : scopesToInsert)
+        {
+            contactPointsForScopes.add(new ContactPointPhone(
+                ScopeId__c = currentScope.Id,
+                Scope__c = 'Ventas',
+                ParentId = currentScope.AccountId__c,
+                TelephoneNumber = currentScope.PrimaryPhone__c
+            ));
+        }
+
+        insert contactPointsForScopes;
+    }
+
+    public static List<Id> getLeadAccountsForCrossScope(List<Account> accountList, Map<Id,Account> oldAccounts)
+    {
+        List<Id> result = new List<Id>();
+
+        if(accountList == null)
+        {
+            return result;
+        }
+
+        Id accountLeadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
+
+        for(Account nextAccount : accountList)
+        {
+            if(nextAccount.RecordTypeId != accountLeadRecordTypeId)
+            {
+                continue;
+            }
+
+            if(oldAccounts != null && ! oldAccounts.isEmpty())
+            {
+                if(String.isblank(nextAccount.Phone) && String.IsBlank(oldAccounts.get(nextAccount.Id).Phone))
+                {
+                    result.add(nextAccount.Id);
+                }
+            }
+            else
+            {
+                if(String.isNotBlank(nextAccount.Phone))
+                {
+                    result.add(nextAccount.Id);
+                }
+            }
+        }
+
+        return result;
     }
 }

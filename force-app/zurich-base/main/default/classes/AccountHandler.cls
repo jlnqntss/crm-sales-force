@@ -1,4 +1,11 @@
-public class AccountHandler implements ITrigger
+/**
+ * @description       :
+ * @author            : jgallaga
+ * @group             :
+ * @last modified on  : 25/09/2023
+ * @last modified by  : jgallaga
+**/
+public with sharing class AccountHandler implements ITrigger
 {
     public AccountHandler()
     {}
@@ -60,6 +67,7 @@ public class AccountHandler implements ITrigger
     public void afterInsert(List<SObject> newList)
     {
         AccountUtil.generateScope(newList);
+        AccountLeadUtil.createScopesForVentaLeads(newList,null);
     }
 
     /**
@@ -69,7 +77,9 @@ public class AccountHandler implements ITrigger
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        AccountLeadUtil.createScopesForVentaLeads(newList,(Map<Id,Account>)oldMap);
+    }
 
     /**
      * afterDelete

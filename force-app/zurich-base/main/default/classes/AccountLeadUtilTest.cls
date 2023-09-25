@@ -82,7 +82,7 @@ private class AccountLeadUtilTest
 
         System.assertNotEquals(null,acc, 'No hay duplicados con le National Id indicado');
     }
-    
+
     /**
      * Validar que se comprueba el duplicado de lead con un listado de cuentas informado
      * *
@@ -99,7 +99,7 @@ private class AccountLeadUtilTest
         Test.stopTest();
 
         System.assertNotEquals(null,acc, 'No hay duplicados con le National Id indicado');
-       
+
     }
 
     /**
@@ -116,5 +116,33 @@ private class AccountLeadUtilTest
         Test.stopTest();
 
         System.assertEquals(null,acc, 'No hay duplicados con el teléfono');
+    }
+
+    @isTest
+    static void test_NewLeadVentasAccounts_CreateScope_OK()
+    {
+        Id accountLeadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
+
+        List<Account> newAccounts = new List<Account>();
+
+        for(Integer i = 0; i < 4 ; i++)
+        {
+            newAccounts.add(new account(
+                LastName = 'Test'+i,
+                RecordTypeId = accountLeadRecordTypeId,
+                Phone = '1111'+i
+            ));
+        }
+
+        Test.startTest();
+        insert newAccounts;
+        Test.stopTest();
+
+        Map<Id,Account> insertedAccount = new Map<Id,Account>(newAccounts);
+
+        List<Scope__c> scopes = [SELECT Scope__c From Scope__c WHERE AccountId__c IN : newAccounts];
+
+        Assert.areEqual(insertedAccount.size(), scopes.size());
+
     }
 }
