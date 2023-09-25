@@ -4,13 +4,13 @@
  * @group             :
  * @last modified on  : 13/09/2023
  * @last modified by  : jgallaga
-**/
+ **/
 public with sharing class OpportunitiesSelector extends RecordsSelector
 {
     //#region Contructores
     public OpportunitiesSelector()
     {
-        super(Opportunity.getSObjectType());
+        super( Opportunity.getSObjectType() );
     }
 
     //#endregion
@@ -29,15 +29,16 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     {
         List<Opportunity> result = new List<Opportunity>();
 
-        if( accountId != null && scopeIds != null ) {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        if( accountId != null && scopeIds != null )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Opportunity.Id,
                 Opportunity.AccountId,
                 Opportunity.ScopeId__c,
                 Opportunity.OwnerId
             })
-            .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
-            .addCondition(Query.conditionIn(Opportunity.ScopeId__c, scopeIds))
+            .addCondition( Query.conditionEq(Opportunity.AccountId, accountId) )
+            .addCondition( Query.conditionIn(Opportunity.ScopeId__c, scopeIds) )
             .orderBy(Opportunity.CreatedDate.getDescribe().getName(), 'DESC');
 
             result = (List<Opportunity>) this.baseQuery.run();
@@ -65,17 +66,18 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     {
         List<Opportunity> result = new List<Opportunity>();
 
-        if(accountId != null && scopeIds != null && ownerProfileNames != null) {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        if(accountId != null && scopeIds != null && ownerProfileNames != null)
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Opportunity.Id,
                 Opportunity.AccountId,
                 Opportunity.ScopeId__c,
                 Opportunity.OwnerId
             })
-            .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
-            .addCondition(Query.conditionIn(Opportunity.ScopeId__c, scopeIds))
+            .addCondition( Query.conditionEq(Opportunity.AccountId, accountId) )
+            .addCondition( Query.conditionIn(Opportunity.ScopeId__c, scopeIds) )
             .addConditionString('Owner.Profile.Name IN (\'' + String.join(new List<String>(ownerProfileNames), '\',\'') + '\')')
-            .addCondition(Query.conditionEq(Opportunity.IsTest__c, false)) // arcortazar - 31/01/2022: Incluímos esta condición para que no devuelva las ofertas de test
+            .addCondition( Query.conditionEq(Opportunity.IsTest__c, false) ) // arcortazar - 31/01/2022: Incluímos esta condición para que no devuelva las ofertas de test
             .orderBy(Opportunity.CreatedDate.getDescribe().getName(), 'DESC');
 
             result = (List<Opportunity>) this.baseQuery.run();
@@ -95,14 +97,14 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      */
     public List<Opportunity> findByAccountIdAndScope(Id accountId, String scope)
     {
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             Opportunity.Id,
             Opportunity.InfoQuoteNumber__c,
             Opportunity.SessionId__c,
             Opportunity.isUpdatedFromINFO__c
         })
-        .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
-        .addCondition(Query.conditionEq(Opportunity.Scope__c, scope));
+        .addCondition( Query.conditionEq(Opportunity.AccountId, accountId) )
+        .addCondition( Query.conditionEq(Opportunity.Scope__c, scope) );
 
         return (List<Opportunity>) this.baseQuery.run();
     }
@@ -118,7 +120,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      */
     public List<Opportunity> findById(Id id)
     {
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             Opportunity.Id,
             Opportunity.AccountId,
             Opportunity.ScopeId__c,
@@ -127,7 +129,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         })
         .selectFields('Owner.ProfileId')
         .selectFields('Owner.Profile.Name')
-        .addCondition(Query.conditionEq(Opportunity.Id, id));
+        .addCondition( Query.conditionEq(Opportunity.Id, id) );
         return (List<Opportunity>) this.baseQuery.run();
     }
 
@@ -143,16 +145,16 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      */
     public List<Opportunity> findByAccountIdAndScopeAndNotId(Id id, Id accountId, String scope)
     {
-        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             Opportunity.Id,
             Opportunity.IsTest__c,
             Opportunity.OwnerId
         })
         .selectFields('Owner.ProfileId')
         .selectFields('Owner.Profile.Name')
-        .addCondition(Query.conditionNotEq(Opportunity.Id, id))
-        .addCondition(Query.conditionEq(Opportunity.AccountId, accountId))
-        .addCondition(Query.conditionEq(Opportunity.ScopeId__c, scope));
+        .addCondition( Query.conditionNotEq(Opportunity.Id, id) )
+        .addCondition( Query.conditionEq(Opportunity.AccountId, accountId) )
+        .addCondition( Query.conditionEq(Opportunity.ScopeId__c, scope) );
 
         return (List<Opportunity>) this.baseQuery.run();
 
@@ -171,12 +173,12 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         Set<String> setInfoQuoteNumbers = new Set<String>();
         if(!quoteNumbers.isEmpty() && quoteNumbers != null)
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Opportunity.Id,
                 Opportunity.InfoQuoteNumber__c
             })
             .addConditionString('InfoQuoteNumber__c IN (\'' + String.join(new List<String>(quoteNumbers), '\',\'') + '\')')
-            .addCondition(Query.conditionEq(Opportunity.isUpdatedFromINFO__c, true));
+            .addCondition( Query.conditionEq(Opportunity.isUpdatedFromINFO__c, true) );
 
             List<Opportunity> listaRetorno = (List<Opportunity>) this.baseQuery.run();
             for (Opportunity o : listaRetorno)
@@ -191,18 +193,18 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         }
     }
 
-   /**
-    * Método utilizado por el batch RelateCasesToNewOffersBatch para definir el scope
-    * @author lrodriguez6@seidor.es
-    * @date 11/11/2022
-    * @param String days para filtrar la query
-    * @return String query que se va a lanzar en el batch
-    */
+    /**
+     * Método utilizado por el batch RelateCasesToNewOffersBatch para definir el scope
+     * @author lrodriguez6@seidor.es
+     * @date 11/11/2022
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
     public List<Opportunity> findByCreatedOfferAndCreationDate(List<String> createdOffer, String daysToRetrieve)
     {
-        if(daysToRetrieve != null && !String.isBlank(daysToRetrieve) && createdOffer != null && !createdOffer.isEmpty())
+        if( daysToRetrieve != null && !String.isBlank(daysToRetrieve) && createdOffer != null && !createdOffer.isEmpty() )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Opportunity.Id,
                 Opportunity.InfoQuoteNumber__c
             })
@@ -229,13 +231,13 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      */
     public List<Opportunity> findByName(Set<String> setNames)
     {
-        if(setNames != null && !setNames.isEmpty())
+        if( setNames != null && !setNames.isEmpty() )
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Opportunity.Id,
                 Opportunity.Name
             })
-            .addCondition(Query.conditionIn(Opportunity.Name, setNames));
+            .addCondition( Query.conditionIn(Opportunity.Name, setNames) );
             return (List<Opportunity>) this.baseQuery.run();
         }
         else
@@ -245,17 +247,17 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     }
 
     /**
-    * @description Método que recupera ofertas en base al Id de la cuenta, el códig
-    * de intermediario, el ramo, la fecha de creación y que la oferta no esté cerrada.
-    *
-    * @author amiranda
-    * @date 01-09-2023
-    * @param Id accountId Id de la cuenta asociada a la oportunidad
-    * @param String intermediaryCode Código de intermedairio asociado a la oportunidad
-    * @param String productBranch Ramo de la oportunidad
-    * @param Query.DateLiteral daysToRetrieve Días a tener en cuenta
-    * @return List<Opportunity> Lista de ofertas encontradas
-    **/
+     * @description Método que recupera ofertas en base al Id de la cuenta, el códig
+     * de intermediario, el ramo, la fecha de creación y que la oferta no esté cerrada.
+     *
+     * @author amiranda
+     * @date 01-09-2023
+     * @param Id accountId Id de la cuenta asociada a la oportunidad
+     * @param String intermediaryCode Código de intermedairio asociado a la oportunidad
+     * @param String productBranch Ramo de la oportunidad
+     * @param Query.DateLiteral daysToRetrieve Días a tener en cuenta
+     * @return List<Opportunity> Lista de ofertas encontradas
+     **/
     public List<Opportunity> findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
         Id accountId,
         String intermediaryCode,
@@ -265,7 +267,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         List<Opportunity> retrievedOpportunities = new List<Opportunity>();
 
-        if ( accountId != null && intermediaryCode != null && String.isNotBlank(productBranch) && daysToRetrieve != null )
+        if ( accountId != null  && daysToRetrieve != null )
         {
             Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
             {
@@ -302,11 +304,12 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @param offerRecord
      * @return  List<Opportunity>
      */
-    public List<Opportunity> findOppWhenInfoQuoteNumberIsNull(Opportunity offerRecord) {
+    public List<Opportunity> findOppWhenInfoQuoteNumberIsNull(Opportunity offerRecord)
+    {
         return [SELECT Id, SessionId__c, InfoQuoteNumber__c, StageName, Name, CloseDate FROM Opportunity
-        WHERE SessionId__c = :offerRecord.SessionId__c
-        OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
-        ORDER BY CreatedDate DESC];
+                WHERE SessionId__c = : offerRecord.SessionId__c
+                                     OR (AccountId = : offerRecord.InfoQuoteNumber__c AND CarRegistration__c = : offerRecord.CarRegistration__c AND PersonLeadSource__c = : offerRecord.PersonLeadSource__c)
+                                     ORDER BY CreatedDate DESC];
     }
 
     /**
@@ -316,12 +319,13 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @param offerRecord
      * @return  List<Opportunity>
      */
-    public List<Opportunity> findOppWhenInfoQuoteNumberIsNOTNull(Opportunity offerRecord) {
+    public List<Opportunity> findOppWhenInfoQuoteNumberIsNOTNull(Opportunity offerRecord)
+    {
         return [SELECT Id, SessionId__c, InfoQuoteNumber__c, StageName, Name, CloseDate FROM Opportunity
-        WHERE SessionId__c = :offerRecord.SessionId__c
-        OR InfoQuoteNumber__c = :offerRecord.InfoQuoteNumber__c
-        OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
-        ORDER BY CreatedDate DESC];
+                WHERE SessionId__c = : offerRecord.SessionId__c
+                                     OR InfoQuoteNumber__c = : offerRecord.InfoQuoteNumber__c
+                                                             OR (AccountId = : offerRecord.InfoQuoteNumber__c AND CarRegistration__c = : offerRecord.CarRegistration__c AND PersonLeadSource__c = : offerRecord.PersonLeadSource__c)
+                                                             ORDER BY CreatedDate DESC];
     }
 
 
@@ -334,9 +338,9 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     public String findCrossSellingOpportunitiesNotClosed()
     {
         this.baseQuery
-            .selectFields(new List<Schema.SObjectField>{Opportunity.AccountId, Opportunity.CampaignId, Opportunity.Campaign.Type})
-            .addConditionEq(Opportunity.Campaign.Type, 'Cross Selling')
-            .addConditionEq(Opportunity.IsClosed, false);
+        .selectFields(new List<Schema.SObjectField> {Opportunity.AccountId, Opportunity.CampaignId, Opportunity.Campaign.Type})
+        .addConditionEq(Opportunity.Campaign.Type, 'Cross Selling')
+        .addConditionEq(Opportunity.IsClosed, false);
 
         return 'SELECT Accountid, Campaignid, Campaign.type FROM Opportunity WHERE (Campaign.Type = \'Cross Selling\') AND (IsClosed = false)';
     }

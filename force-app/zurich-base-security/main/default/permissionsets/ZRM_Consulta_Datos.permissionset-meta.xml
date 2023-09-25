@@ -13,7 +13,7 @@
         <name>AdminSetupParameter__mdt</name>
     </customMetadataTypeAccesses>
     <description>Leer todos los datos del sistema relativos a OCS para la App Ventas
-Para usuarios de la comunidad zrm</description>
+        Para usuarios de la comunidad zrm</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AccidentRate__c</field>
@@ -1684,7 +1684,7 @@ Para usuarios de la comunidad zrm</description>
         <field>Claim__c.OpenDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
-        <fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Claim__c.CloseDate__c</field>
         <readable>true</readable>
@@ -2831,6 +2831,16 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.ClonedOfferForIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.SourceOpportunity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.ExpirationDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2927,6 +2937,21 @@ Para usuarios de la comunidad zrm</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.PaymentType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.PersonLeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.PreferedContactEndFor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.PreferedContactStartFor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3789,22 +3814,22 @@ Para usuarios de la comunidad zrm</description>
         <field>purecloud__PureCloud_Queue__c.SalesforceQueueName__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.BusinessCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.ProductBranch__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>CampaignMember.BusinessCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>CampaignMember.OfferAssignedCode__c</field>
         <readable>true</readable>
@@ -3814,7 +3839,7 @@ Para usuarios de la comunidad zrm</description>
         <field>CampaignMember.OfferAssignedType__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.PendingIntermediaryReview__c</field>
     </fieldPermissions>
@@ -3822,23 +3847,23 @@ Para usuarios de la comunidad zrm</description>
         <editable>false</editable>
         <field>Account.RecordType__c</field>
         <readable>true</readable>
-    </fieldPermissions>  
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.ExternalId__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.StartDate</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.EndDate</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.ParentId</field>
         <readable>true</readable>

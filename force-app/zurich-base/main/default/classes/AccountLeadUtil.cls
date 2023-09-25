@@ -4,7 +4,7 @@
  * @group             :
  * @last modified on  : 10-09-2023
  * @last modified by  : overes
-**/
+ **/
 public class AccountLeadUtil
 {
     public static final String LEAD = 'Lead';
@@ -26,13 +26,13 @@ public class AccountLeadUtil
      * Método que mustra el mensaje en caso que se encuentre otro registro igual
      * @author overes
      * @date 08/08/2023
-     * 
+     *
      * @change amiranda 04/09/2023 Se cambia el mensaje a mostrar. En vez de utilizar
      * el campo 'Name', se concatena el campo 'FirstName' + 'LastName'.
      */
-    public static List<Account> checkLeads(List<Account> newList){
+    public static List<Account> checkLeads(List<Account> newList)
+    {
         List<Account> accList = newList;
-        AccountsSelector accSelector = new AccountsSelector();
         for (Account acc : accList)
         {
             if (Schema.getGlobalDescribe().get('Account').getDescribe().getRecordTypeInfosById().get(acc.RecordTypeId).getName() == LEAD)
@@ -41,7 +41,16 @@ public class AccountLeadUtil
                 newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
                 if (newAcc != null)
                 {
-                    acc.addError(Label.Lead_Duplicates_Control_Error + ' (' + accSelector.findAccountNameById(new List<String>{(String)newAcc.Id}).get(0).Name + ' ' + newAcc.Id + ')'); 
+                    String errorMsg = Label.Lead_Duplicates_Control_Error + ': ';
+                    if ( !String.isBlank(newAcc.FirstName) )
+                    {
+                        errorMsg += +newAcc.FirstName + ' ';
+                    }
+                    if ( !String.isBlank(newAcc.LastName) )
+                    {
+                        errorMsg += newAcc.LastName + ' ';
+                    }
+                    acc.addError(errorMsg + '(' +  newAcc.Id + ')');
                 }
             }
         }
@@ -57,30 +66,34 @@ public class AccountLeadUtil
     public static Account leadDuplicatesControl(String documentID, String phone)
     {
         Account acc = new Account();
-        AccountsSelector accountsSelector = new AccountsSelector();
+        AccountSelectorWithoutSharing accountsSelectorWS = new AccountSelectorWithoutSharing();
         if (documentID != null)
         {
-            List<Account> accList = accountsSelector.findByNationalIdAndRcTypeCustAndBC(new List<String>{documentID});
-            if (!accList.isEmpty())
+            List<Account> accList = accountsSelectorWS.findByNationalIdAndRcTypeCustAndBC(new List<String> {documentID});
+            if ( !accList.isEmpty() )
             {
                 acc = accList.get(0);
-            } else
+            }
+            else
             {
-                List<Account> accLeadList = accountsSelector.findByNationalIdAndRcTypeLead(new List<String>{documentID});
-                if (!accLeadList.isEmpty())
+                List<Account> accLeadList = accountsSelectorWS.findByNationalIdAndRcTypeLead(new List<String> {documentID});
+                if ( !accLeadList.isEmpty() )
                 {
                     acc = accLeadList.get(0);
-                } else
+                }
+                else
                 {
                     acc = null;
                 }
             }
-        } else
+        }
+        else
         {
             if(phone != null)
             {
-                acc = checkLeadDuplicatePhone(phone, accountsSelector);
-            } else
+                acc = checkLeadDuplicatePhone(phone, accountsSelectorWS);
+            }
+            else
             {
                 acc = null;
             }
@@ -109,14 +122,14 @@ public class AccountLeadUtil
      */
     public static Map<String, Account> leadAssignment(Account acc, String intermediaryCode, String origin, String language, String postalCode)
     {
-        if(String.isNotBlank(intermediaryCode))
+        if( String.isNotBlank(intermediaryCode) )
         {
             return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
         }
 
         if(acc != null)
         {
-            if(String.isNotBlank(acc.Intermediary_Name__c))
+            if( String.isNotBlank(acc.Intermediary_Name__c) )
             {
                 intermediaryCode = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
             }
@@ -138,14 +151,15 @@ public class AccountLeadUtil
      * @date 25/08/2023
      * @return acc
      */
-    public static Account checkLeadDuplicatePhone(String phone, AccountsSelector accountsSelector)
+    public static Account checkLeadDuplicatePhone(String phone, AccountSelectorWithoutSharing accountsSelectorWS)
     {
         Account acc = new Account();
-        List<Account> accPhoneList = accountsSelector.findByPhoneAndRcTypeLead(new List<String>{phone});
-        if (!accPhoneList.isEmpty())
+        List<Account> accPhoneList = accountsSelectorWS.findByPhoneAndRcTypeLead(new List<String> {phone});
+        if ( !accPhoneList.isEmpty() )
         {
             acc = accPhoneList.get(0);
-        } else
+        }
+        else
         {
             acc = null;
         }

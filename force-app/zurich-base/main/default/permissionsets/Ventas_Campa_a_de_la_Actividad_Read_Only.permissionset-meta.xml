@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Este permission set otorga permiso de lectura sobre el campo Activity.Campaign__c</description>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Event.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Ventas Campaña de la Actividad (Read-Only)</label>
+</PermissionSet>

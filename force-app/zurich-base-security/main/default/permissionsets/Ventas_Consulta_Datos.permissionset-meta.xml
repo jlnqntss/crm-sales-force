@@ -657,7 +657,7 @@
         <editable>false</editable>
         <field>Asset.Anonymized__c</field>
         <readable>true</readable>
-    </fieldPermissions>  
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Asset.ActivityDescription__c</field>
@@ -1043,7 +1043,7 @@
         <field>Case.Assigned_Center__c</field>
         <readable>true</readable>
     </fieldPermissions>
-        <fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.Anonymized__c</field>
         <readable>true</readable>
@@ -3075,6 +3075,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.PreferedContactEndFor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.PreferedContactStartFor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.ResultingPolicyNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3307,7 +3317,7 @@
         <editable>false</editable>
         <field>Policy__c.ProductBranch__c</field>
         <readable>true</readable>
-    </fieldPermissions>        
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.ProductId__c</field>
@@ -3963,22 +3973,22 @@
         <field>Propensity__c.Propensity__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.BusinessCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.ProductBranch__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>CampaignMember.BusinessCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>CampaignMember.OfferAssignedCode__c</field>
         <readable>true</readable>
@@ -3988,7 +3998,7 @@
         <field>CampaignMember.OfferAssignedType__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.PendingIntermediaryReview__c</field>
     </fieldPermissions>
@@ -4007,17 +4017,17 @@
         <field>Campaign.ExternalId__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.StartDate</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.EndDate</field>
         <readable>true</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.ParentId</field>
         <readable>true</readable>

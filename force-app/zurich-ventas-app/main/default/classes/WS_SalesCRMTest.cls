@@ -2,8 +2,8 @@
  * @description       : Clase de test que comprueba el correcto funcionamiento
  * del servicio web Ws_SalesCRM.
  * @author            : amiranda
- * @date              : 04-09-2023
- * @last modified on  : 04-09-2023
+ * @date              : 21-09-2023
+ * @last modified on  : 21-09-2023
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -26,25 +26,42 @@ public with sharing class WS_SalesCRMTest
     static final String ASSERT_ERROR_LOGS_WARNING_LEVEL_MESSAGE = 'Error log level should be ' + ErrorLogUtil.ERROR_LEVEL_WARNING;
     static final String ASSERT_STATUS_CODE_400_MESSAGE = 'Response statusCode should be 400';
 
+    private static String DEFAULT_ADMIN_ALIAS // Añadir el alias de cada user admin para cada entorno si fuera necesario
+    {
+        get
+        {
+            if( String.isBlank(DEFAULT_ADMIN_ALIAS) )
+            {
+                if(SystemUtil.getSandboxName() == 'qa')
+                {
+                    DEFAULT_ADMIN_ALIAS = 'ntsadmin';
+                }
+                else
+                {
+                    DEFAULT_ADMIN_ALIAS = 'adminkli';
+                }
+            }
+            return DEFAULT_ADMIN_ALIAS;
+        }
+        set;
+    }
+
+
     @TestSetup
     static void makeData()
     {
-        List<Account> intermediaries = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Intermediary', 1);
-        insert intermediaries;
+        // Crear Custom Setting para las colas y Business Hours
+        Lead_Offers__c leadOffer = TestDataFactory.generateLeadOfferCS();
+        insert leadOffer;
 
-        List<Contact> intermediaryContacts = TestDataFactory.generateContactsFromAccounts(intermediaries, 'Contact', 1);
-        insert intermediaryContacts;
-
-        Id portalUsersProfileId = [SELECT Id FROM Profile
-                                   WHERE Name = 'Agente Ventas' LIMIT 1].Id;
-        UserRole portalRoleId = [SELECT Id FROM UserRole
-                                 WHERE PortalType = 'None' LIMIT 1];
-        List<User> mediatorUsers = TestDataFactory.generateUsersByProfile(portalUsersProfileId, 1);
-        mediatorUsers.get(0).Alias = 'agente.m';
-        mediatorUsers.get(0).UserRole = portalRoleId;
-        mediatorUsers.get(0).ContactId = intermediaryContacts.get(0).Id;
-        insert mediatorUsers;
+        // Crear Custom Setting para default user
+        Cross_Selling__c setting = new Cross_Selling__c();
+        setting.Name = 'Test Setting';
+        setting.ContactCenterUser__c = '-';
+        setting.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
+        insert setting;
     }
+
 
     /**
      * @description Método que comprueba el correcto procesamiento de la petición
@@ -64,45 +81,45 @@ public with sharing class WS_SalesCRMTest
         request.addHeader(HEADER_CONTENT_TYPE, HEADER_APPLICATION_JSON);
 
         String requestData = '{' +
-                                '"Sesion": "0060C00000CADyrQAH",' +
-                                '"Origen": "Quote&Buy Auto",' +
-                                '"cliente":{' +
-                                   '"idFiscal": "5555h",' +
-                                   '"nombre": "Ana",' +
-                                    '"primerApellido": "Gomez",' +
-                                    '"segundoApellido": "Garcia",' +
-                                    '"fechaNacimiento": 19900121,' +
-                                    '"fechaCarnet": 20140121,' +
-                                    '"paisCarnet": "ESP",' +
-                                    '"sexo": "V",' +
-                                    '"contacto":{' +
-                                        '"telefono": "+346872222",' +
-                                        '"email": "test@test.com",' +
-                                        '"codigoPostal": "08921",' +
-                                        '"poblacion": "BARCELONA",' +
-                                        '"llamada": 20210916,' +
-                                        '"horaDesde": "10:15",' +
-                                        '"horaHasta": "12:00",' +
-                                        '"quiereLlamada": "S"' +
-                                    '}' +
-                                '},' +
-                                '"poliza":{' +
-                                    '"ramo":"0000000001",' +
-                                    '"numeroPoliza": "215111",' +
-                                    '"numeroOferta": "215111",' +
-                                    '"fechaInicio": 20230901,' +
-                                    '"precioAnual": 145.94,' +
-                                    '"codigoIntermediario": "0000030109",' +
-                                    '"paquete": "TERCEROS",' +
-                                    '"coche":{' +
-                                        '"marca": "SEAT",' +
-                                        '"modelo": "ATECA",' +
-                                        '"version": "2.0 TDI",' +
-                                        '"matricula": "5456LKM",' +
-                                        '"paisMatriculacion": "ESP"' +
-                                    '}' +
-                                '}' +
-                            '}';
+                             '"Sesion": "0060C00000CADyrQAH",' +
+                             '"Origen": "Quote&Buy Auto",' +
+                             '"cliente":{' +
+                             '"idFiscal": "5555h",' +
+                             '"nombre": "Ana",' +
+                             '"primerApellido": "Gomez",' +
+                             '"segundoApellido": "Garcia",' +
+                             '"fechaNacimiento": 19900121,' +
+                             '"fechaCarnet": 20140121,' +
+                             '"paisCarnet": "ESP",' +
+                             '"sexo": "V",' +
+                             '"contacto":{' +
+                             '"telefono": "+346872222",' +
+                             '"email": "test@test.com",' +
+                             '"codigoPostal": "08921",' +
+                             '"poblacion": "BARCELONA",' +
+                             '"llamada": 20210916,' +
+                             '"horaDesde": "10:15",' +
+                             '"horaHasta": "12:00",' +
+                             '"quiereLlamada": "S"' +
+                             '}' +
+                             '},' +
+                             '"poliza":{' +
+                             '"ramo":"0000000001",' +
+                             '"numeroPoliza": "215111",' +
+                             '"numeroOferta": "215111",' +
+                             '"fechaInicio": 20230901,' +
+                             '"precioAnual": 145.94,' +
+                             '"codigoIntermediario": "0000030109",' +
+                             '"paquete": "TERCEROS",' +
+                             '"coche":{' +
+                             '"marca": "SEAT",' +
+                             '"modelo": "ATECA",' +
+                             '"version": "2.0 TDI",' +
+                             '"matricula": "5456LKM",' +
+                             '"paisMatriculacion": "ESP"' +
+                             '}' +
+                             '}' +
+                             '}';
 
         request.requestBody = Blob.valueOf(requestData);
 
@@ -118,7 +135,8 @@ public with sharing class WS_SalesCRMTest
         List<Error_Log__c> errors = [SELECT Id, Level__c FROM Error_Log__c];
         Assert.areEqual(false, errors.isEmpty(), ASSERT_ERROR_LOGS_COMMITTED_MESSAGE);
 
-        for (Error_Log__c error : errors) {
+        for (Error_Log__c error : errors)
+        {
             Assert.areEqual(ErrorLogUtil.ERROR_LEVEL_WARNING.toLowerCase(), error.Level__c.toLowerCase(), ASSERT_ERROR_LOGS_LEVEL_MESSAGE);
         }
     }
@@ -175,6 +193,55 @@ public with sharing class WS_SalesCRMTest
                             error.Level__c.toLowerCase(),
                             ASSERT_ERROR_LOGS_LEVEL_MESSAGE);
         }
+    }
+
+    /**
+     * @description Método de test que comprueba que se genera un registro de tipo
+     * 'ContactRequest' cuando se recibe el valor 'CONTACT_CENTER' en la clave
+     * 'intermediaryCode' del JSON de la request.
+     *
+     * @author amiranda
+     * @date 21-09-2023
+     **/
+    @isTest
+    static void test_doPost_leadGeneration_contactCenter_OK()
+    {
+        RestRequest request = new RestRequest();
+        RestResponse response = new RestResponse();
+
+        request.requestURI = LEAD_GENERATION_URI;
+        request.httpMethod = HTTP_POST_METHOD;
+        request.addHeader(HEADER_CONTENT_TYPE, HEADER_APPLICATION_JSON);
+
+        String requestData = '{' +
+                             '"origin":"formulario embarcaciones",' +
+                             '"intermediaryCode": "CONTACT_CENTER",' +
+                             '"name":"Test Name",' +
+                             '"phone":"+3400000000",' +
+                             '"language": "German",' +
+                             '"productBranch": "0000000001",' +
+                             '"webIdentifier": "1234",' +
+                             '"bestTimeFrom": "2023-06-26T11:00:00.000Z",' +
+                             '"documentId": "00000000L"' +
+                             '}';
+
+        request.requestBody = Blob.valueOf(requestData);
+
+        RestContext.response = response;
+        RestContext.request = request;
+
+        Test.startTest();
+        WS_SalesCRM.doPost();
+        Test.stopTest();
+
+        Assert.areEqual(200,
+                        response.statusCode,
+                        'Response statusCode should be 200');
+
+        List<ContactRequest> contactRequest = [SELECT Id FROM ContactRequest];
+        Assert.areEqual(1,
+                        contactRequest.size(),
+                        'Se debería haber generado un único registro de tipo \'ContactRequest\'');
     }
 
     /**
@@ -311,13 +378,13 @@ public with sharing class WS_SalesCRMTest
     }
 
     /**
-    * @description Método que comprueba que se lanza un error si alguno de
-    * los campos requeridos no se encuentra en la información recibida en el
-    * recurso 'leadGeneration'.
-    *
-    * @author amiranda
-    * @date 04-09-2023
-    **/
+     * @description Método que comprueba que se lanza un error si alguno de
+     * los campos requeridos no se encuentra en la información recibida en el
+     * recurso 'leadGeneration'.
+     *
+     * @author amiranda
+     * @date 04-09-2023
+     **/
     @isTest
     static void test_doPost_missingRequiredFields_leadGeneration_ko()
     {
