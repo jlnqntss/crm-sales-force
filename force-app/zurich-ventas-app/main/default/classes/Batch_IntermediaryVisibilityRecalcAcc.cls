@@ -20,8 +20,8 @@ global with sharing class Batch_IntermediaryVisibilityRecalcAcc implements Datab
 
 
     @InvocableMethod
-    global static void invocableExecuteBatch() {
-        Database.executeBatch(new Batch_IntermediaryVisibilityRecalcAcc(), 200);
+    global static void invocableExecuteBatch(List<String> accountIds) {
+        Database.executeBatch(new Batch_IntermediaryVisibilityRecalcAcc(new Set<String>(accountIds)), 200);
     }
     
     /*********** Métodos Batch **************************************************************************/
