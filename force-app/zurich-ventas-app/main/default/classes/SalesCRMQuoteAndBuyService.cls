@@ -1,19 +1,17 @@
 /**
  * @description       : Nuevo Web Service REST que extiende de la clase APEX actual "WS_BaseAPIService"
  * @author            : nts - overes
- * @last modified on  : 09-21-2023
+ * @last modified on  : 09-25-2023
  **/
 public with sharing class SalesCRMQuoteAndBuyService
 {
 
-    private static Set<String> requiredFields = new Set<String> {'sesion', 'origen', 'nombre', 'primerApellido', 'telefono', 'ramo'};
-
+    private static Set<String> requiredFields = new Set<String> {'sesion', 'origen', 'cliente.nombre', 'cliente.primerApellido', 'cliente.contacto.telefono', 'poliza.ramo'};
     private static Map<String, Schema.SObjectField> picklistTypeFieldsByJsonFieldName = new Map<String, Schema.SObjectField> {
         'ramo' => Opportunity.ProductBranch__c
     };
 
     private static Map<String, Schema.SObjectField> notNullableFields = new Map<String, Schema.SObjectField> {
-        'origen' => Account.PersonLeadSource__c,
         'cliente.idFiscal' => Account.NationalId__c,
         'cliente.fechaNacimiento' => Account.Birthdate__c,
         'cliente.contacto.email' => Account.PersonEmail,
@@ -28,7 +26,8 @@ public with sharing class SalesCRMQuoteAndBuyService
     private static final String NATIONAL_ID_TYPE_NIF = 'N';
 
     /**
-     * Método que rellena el valor de Description
+     * Método que construye el contenido para el campo "Description" con la información
+     * recibida en la request
      * *
      * @author overes | 09-04-2023
      * @param requestData
@@ -37,16 +36,16 @@ public with sharing class SalesCRMQuoteAndBuyService
     public static String setDesc(Lead requestData)
     {
         return 'Fecha de carnet: ' + requestData.cliente.fechaCarnet +
-               '\n País de carnet:' + requestData.cliente.paisCarnet +
-               '\n Numero de oferta:' + requestData.poliza.numeroOferta +
-               '\n Fecha de inicio:' + requestData.poliza.fechaInicio +
-               '\n Precio Anual:' + requestData.poliza.precioAnual +
-               '\n Paquete:' + requestData.poliza.paquete +
-               '\n Marca:' + requestData.poliza.Coche.marca +
-               '\n Modelo:' + requestData.poliza.Coche.Modelo +
-               '\n Version:' + requestData.poliza.Coche.Version +
-               '\n Matricula:' + requestData.poliza.Coche.matricula +
-               '\n País matriculación:' + requestData.poliza.Coche.paisMatriculacion;
+               '\n País de carnet: ' + requestData.cliente.paisCarnet +
+               '\n Numero de oferta: ' + requestData.poliza.numeroOferta +
+               '\n Fecha de inicio: ' + requestData.poliza.fechaInicio +
+               '\n Precio Anual: ' + requestData.poliza.precioAnual +
+               '\n Paquete: ' + requestData.poliza.paquete +
+               '\n Marca: ' + requestData.poliza.Coche.marca +
+               '\n Modelo: ' + requestData.poliza.Coche.Modelo +
+               '\n Version: ' + requestData.poliza.Coche.Version +
+               '\n Matricula: ' + requestData.poliza.Coche.matricula +
+               '\n País matriculación: ' + requestData.poliza.Coche.paisMatriculacion;
     }
 
     /**
@@ -87,26 +86,24 @@ public with sharing class SalesCRMQuoteAndBuyService
      **/
     public static Account manageLead(Lead requestData)
     {
-        Account duplicateAcc = AccountLeadUtil.leadDuplicatesControl(requestData.cliente.idFiscal, requestData.cliente.contacto.telefono);
+        Account acc = AccountLeadUtil.leadDuplicatesControl(requestData.cliente.idFiscal, requestData.cliente.contacto.telefono);
 
         // Actualizar registro a partir de los datos de la request
-        if ( ( duplicateAcc != null && duplicateAcc.RecordTypeId.equals(accountSelector.rtLeadId) ) || duplicateAcc == null )
+        if ( ( acc != null && acc.RecordTypeId.equals(accountSelector.rtLeadId) ) || acc == null )
         {
-            if (duplicateAcc == null)
+            if (acc == null)
             {
-                duplicateAcc = new Account();
-                duplicateAcc.RecordTypeId = accountSelector.rtLeadId;
-                duplicateAcc.PersonLeadSource__c = requestData.origen;
-                duplicateAcc.LastName = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
-                duplicateAcc.Phone = requestData.cliente.contacto.telefono;
-                duplicateAcc.Description = setDesc(requestData);
+                acc = new Account();
+                acc.RecordTypeId = accountSelector.rtLeadId;
+                acc.PersonLeadSource__c = requestData.origen;
+                acc.NationalIdType__c = NATIONAL_ID_TYPE_NIF;
             }
 
-            fillAccountFields(duplicateAcc, requestData);
-            upsert duplicateAcc;
+            fillAccountFields(acc, requestData);
+            upsert acc;
         }
 
-        return duplicateAcc;
+        return acc;
     }
 
     /**
@@ -165,18 +162,17 @@ public with sharing class SalesCRMQuoteAndBuyService
     }
 
     /**
-     * Método que gestiona la creación/actualización de la Oferta
+     * todo definición
      * *
      * @author overes | 09-03-2023
      * @param requestData
      * @return Opportunity
      **/
-    public static Opportunity manageOpportunity(Account leadAccount, Lead requestData, Policy__c pol)
+    public static Opportunity manageOpportunity(Account leadAccount, Lead requestData)
     {
-
         Opportunity offer = new Opportunity();
         offer.SessionId__c = requestData.sesion;
-        offer.Name = requestData.cliente.nombre;
+        offer.Name = requestData.poliza.numeroOferta;
         offer.InfoQuoteNumber__c = requestData.poliza.numeroOferta;
         offer.ResultingPolicyNumber__c = requestData.poliza.numeroPoliza;
         offer.CloseDate = Date.today().addDays(10);
@@ -189,7 +185,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         offer.CarRegistration__c = requestData.poliza.Coche.matricula;
         offer.Description = setDesc(requestData);
 
-        if (requestData.poliza.numeroPoliza != null && requestData.poliza.numeroOferta != null)
+        if ( String.isNotBlank(requestData.poliza.numeroPoliza)  && String.isNotBlank(requestData.poliza.numeroOferta) )
         {
             offer.StageName = 'Cerrada-Ganada';
             offer.CloseDate = Date.today();
@@ -223,6 +219,42 @@ public with sharing class SalesCRMQuoteAndBuyService
     }
 
     /**
+     * Método que llama a la clase AccountLeadOpportunityQueueJob con un delay de 30min
+     * en caso que el número de Póliza sea nulo pero el número de oferta no
+     * *
+     * @author overes | 09-25-2023
+     * @param acc
+     * @param offer
+     * @param postalCode
+     * @param phone
+     **/
+    public static void manageCallAccountLeadOpportunityQueueJobWithDelay(Account acc, Opportunity offer, Lead requestData)
+    {
+        if ( String.isBlank(requestData.poliza.numeroPoliza) )
+        {
+            if ( String.isBlank(requestData.poliza.numeroOferta) )
+            {
+                offer.Name = ( 'OF' + Datetime.now().getTime() / 1000 + leadId.to15() ).left(120);
+                offer.StageName = 'App Submitted';
+                if (requestData.cliente.contacto.quiereLlamada == 'S')
+                {
+                    AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone);
+                }
+                else
+                {
+                    System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 60);
+                }
+            }
+            else
+            {
+                offer.StageName = 'Quoted';
+                System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 30);
+            }
+
+        }
+    }
+
+    /**
      * Método que valida que los campos requeridos estén rellenos
      * *
      * @author overes | 09-02-2023
@@ -231,15 +263,11 @@ public with sharing class SalesCRMQuoteAndBuyService
     private static void checkRequiredFields(Lead requestData)
     {
         Set<String> receivedFieldsLead = requestData.getReceivedFields();
-        Set<String> receivedFieldsCliente = requestData.cliente.getReceivedFields();
-        Set<String> receivedFieldsContacto = requestData.cliente.contacto.getReceivedFields();
-        Set<String> receivedFieldsPoliza = requestData.poliza.getReceivedFields();
-
         Set<String> missedRequiredFields = new Set<String>();
 
         for (String requiredField : requiredFields)
         {
-            if ( !receivedFieldsLead.contains(requiredField) && !receivedFieldsCliente.contains(requiredField) && !receivedFieldsContacto.contains(requiredField) && !receivedFieldsPoliza.contains(requiredField) )
+            if ( !receivedFieldsLead.contains(requiredField) )
             {
                 missedRequiredFields.add(requiredField);
             }
@@ -293,8 +321,49 @@ public with sharing class SalesCRMQuoteAndBuyService
     }
 
     /**
-     * Clase que representa los valores que tiene la solicitud de QuoteAndBuy
-     */
+     * Método que rellena los campos del registro Account y se almacena en SF
+     * *
+     * @author overes | 09-02-2023
+     * @param accountToFill se rellena con los datos del Lead
+     * @param requestData contiene la configuración del Lead
+     **/
+    private static void fillAccountFields(Account acc, Lead requestData)
+    {
+        acc.LastName = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
+        acc.Phone = requestData.cliente.contacto.telefono;
+        acc.Description = setDesc(requestData);
+        setNationalIdType( acc, (String) requestData.get('documentId') );
+
+        for ( String notNullableField : notNullableFields.keySet() )
+        {
+            if (requestData.get(notNullableField) != null)
+            {
+                acc.put( notNullableFields.get(notNullableField), requestData.get(notNullableField) );
+            }
+        }
+    }
+
+    /**
+     * @description Método que se encarga de informar el campo 'NationalIdType__c'
+     * con valor 'N' (NIF). Se informará siempre y cuando el parámetro 'documentId'
+     * no sea nulo y la cuenta sobre la que se informará el campo `NationalIdType__c'
+     * (accountToFill) no tenga este último campo informado o no tenga el campo
+     * 'NationalId__c' informado.
+     * @author overes | 09-21-2023
+     * @param accountToFill
+     * @param documentId
+     **/
+    private static void setNationalIdType(Account acc, String documentId)
+    {
+        if ( String.isNotBlank(documentId) && (acc.NationalIdType__c == null || acc.NationalId__c == null) )
+        {
+            acc.NationalIdType__c = NATIONAL_ID_TYPE_NIF;
+        }
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*   Clase que representa los valores que tiene la solicitud de QuoteAndBuy   */
+    /* -------------------------------------------------------------------------- */
     public class Lead
     {
         private Map<String, Object> valuesByProperty {
@@ -363,7 +432,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         }
     }
 
-    // Clase interna para "cliente"
+    /* ----- * Clase interna para la propiedad "cliente" de la clase "Lead" ----- */
     public class Cliente
     {
         private Map<String, Object> valuesByProperty {
@@ -464,7 +533,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         }
     }
 
-    // Propiedades para el campo "contacto"
+    /* Clase interna para la propiedad "contacto" de la clase "Cliente" */
     public class Contacto
     {
         private Map<String, Object> valuesByProperty {
@@ -553,7 +622,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         }
     }
 
-    // Clase interna para "poliza"
+    /* ------- Clase interna para la propiedad "poliza" de la clase "Lead" ------ */
     public class Poliza
     {
         private Map<String, Object> valuesByProperty {
@@ -652,10 +721,9 @@ public with sharing class SalesCRMQuoteAndBuyService
         {
             return valuesByProperty.get(property);
         }
-
     }
 
-    // Propiedades para el campo "coche"
+    /* Clase interna para la propiedad "coche" de la clase "Poliza" */
     public class Coche
     {
         private Map<String, Object> valuesByProperty {
@@ -720,7 +788,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         }
     }
 
-    // Propiedades para el campo "coche"
+    /* Clase interna para la propiedad "errores" de la clase "Poliza" */
     public class Errores
     {
         private Map<String, Object> valuesByProperty {
@@ -761,51 +829,9 @@ public with sharing class SalesCRMQuoteAndBuyService
         }
     }
 
-    /**
-     * Método que rellena los campos del registro Account y se almacena en SF
-     * *
-     * @author overes | 09-02-2023
-     * @param accountToFill se rellena con los datos del Lead
-     * @param requestData contiene la configuración del Lead
-     **/
-    private static void fillAccountFields(Account accountToFill, Lead requestData)
-    {
-        accountToFill.LastName = requestData.name;
-        accountToFill.Phone = requestData.phone;
-        setNationalIdType( accountToFill, (String) requestData.get('documentId') );
-
-        for ( String notNullableField : notNullableFields.keySet() )
-        {
-            if (requestData.get(notNullableField) != null)
-            {
-                accountToFill.put( notNullableFields.get(notNullableField), requestData.get(notNullableField) );
-            }
-        }
-    }
-
-
-    /**
-     * @description Método que se encarga de informar el campo 'NationalIdType__c'
-     * con valor 'N' (NIF). Se informará siempre y cuando el parámetro 'documentId'
-     * no sea nulo y la cuenta sobre la que se informará el campo `NationalIdType__c'
-     * (accountToFill) no tenga este último campo informado o no tenga el campo
-     * 'NationalId__c' informado.
-     * @author overes | 09-21-2023
-     * @param accountToFill
-     * @param documentId
-     **/
-    private static void setNationalIdType(Account accountToFill, String documentId)
-    {
-        if ( String.isNotBlank(documentId) &&
-             (accountToFill.NationalIdType__c == null || accountToFill.NationalId__c == null) )
-        {
-            accountToFill.NationalIdType__c = NATIONAL_ID_TYPE_NIF;
-        }
-    }
-
-    /**
-     * Clase que representa un error que se produce dentro de SalesCRMQuoteAndBuyService
-     */
+    /* ----------------------------------------------------------------------------------- */
+    /*  Clase que representa un error que se produce dentro de SalesCRMQuoteAndBuyService  */
+    /* ----------------------------------------------------------------------------------- */
     public class QuoteAndBuyException extends Exception
     {
         public String statusCode {get; set;}

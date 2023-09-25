@@ -1,7 +1,7 @@
 /**
  * @description       : Clase-queueable ejecutada desde el WS de Quote&Buy que inserta/actualiza/asigna un registro de Oferta de Lead e inserta un registro de Póliza (si aplica)
  * @author            : nts - overes
- * @last modified on  : 09-21-2023
+ * @last modified on  : 09-25-2023
  **/
 
 public with sharing class AccountLeadOpportunityQueueJob implements Queueable
@@ -23,6 +23,10 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * Código Postal
      **/
     private String postalCode;
+    /**
+     * Teléfono
+     **/
+    private String phone;
 
     /**
      * Constructor de la clase que inicializa los parámentros recibidos
@@ -32,13 +36,15 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param offerRecord
      * @param policyRecord
      * @param postalCode
+     * @param phone
      **/
-    public AccountLeadOpportunityQueueJob(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode)
+    public AccountLeadOpportunityQueueJob(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode, String phone)
     {
         this.accountRecord = accountRecord;
         this.offerRecord = offerRecord;
         this.policyRecord = policyRecord;
         this.postalCode = postalCode;
+        this.phone = phone;
     }
 
     /**
@@ -49,7 +55,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      **/
     public void execute(QueueableContext context)
     {
-        processOpportunityAndPolicy(this.accountRecord, this.offerRecord, this.policyRecord, this.postalCode);
+        processOpportunityAndPolicy(this.accountRecord, this.offerRecord, this.policyRecord, this.postalCode, this.phone);
     }
 
     /**
@@ -61,7 +67,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param policyRecord
      * @param postalCode
      **/
-    public static void processOpportunityAndPolicy(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode)
+    public static void processOpportunityAndPolicy(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode, String phone)
     {
         Opportunity offerToInsertUpdate = offerRecord;
         List<Opportunity> listOffer = new List<Opportunity>();
