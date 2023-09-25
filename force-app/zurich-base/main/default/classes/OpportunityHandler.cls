@@ -25,8 +25,7 @@ public class OpportunityHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * beforeInsert
@@ -48,13 +47,13 @@ public class OpportunityHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        OpportunityUtil.preventNullUpdates( (List<Opportunity>) newList, (Map<Id, Opportunity>) oldMap );
-        OpportunityUtil.detectOpportunityAccountChange( (List<Opportunity>) newList, (Map<Id, Opportunity>) oldMap );
+        OpportunityUtil.preventNullUpdates((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
+        OpportunityUtil.detectOpportunityAccountChange((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
 
         // arcortazar - 09/03/2022: Validamos si puede llevarse a cabo el cambio que se presenta
-        OpportunityUtil.validateOfferStage( (List<Opportunity>) newList, (Map<Id, Opportunity>) oldMap );
+        OpportunityUtil.validateOfferStage((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
         // jpereztirado - 23/12/2022: Validamos que el Old Owner y New Owner no sean ambos ZE Advisors
-        OpportunityUtil.validateChangeOwner( (List<Opportunity>) newList, (Map<Id, Opportunity>) oldMap );
+        OpportunityUtil.validateChangeOwner((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
     }
 
     /**
@@ -64,8 +63,7 @@ public class OpportunityHandler implements ITrigger
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * afterInsert
@@ -97,8 +95,7 @@ public class OpportunityHandler implements ITrigger
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap)
-    {
-    }
+    {}
 
     /**
      * andFinally
@@ -107,6 +104,5 @@ public class OpportunityHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {
-    }
+    {}
 }

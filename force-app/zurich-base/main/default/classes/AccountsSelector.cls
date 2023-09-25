@@ -223,9 +223,8 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         List<Account> result = new List<Account>();
 
-        if ( documents != null && !documents.isEmpty() )
-        {
-            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN: documents AND (RecordTypeId = : rtCustomerId OR RecordTypeId = : rtBusinessCustomerId)]);
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
         }
         return result;
     }
@@ -246,9 +245,8 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         List<Account> result = new List<Account>();
 
-        if ( documents != null && !documents.isEmpty() )
-        {
-            result = new List<Account>([SELECT Id, FirstName, LastName, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN: documents AND RecordTypeId = : rtLeadId]);
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
         }
         return result;
     }
@@ -264,9 +262,8 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         List<Account> result = new List<Account>();
 
-        if ( phones != null && !phones.isEmpty() )
-        {
-            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, Phone FROM account WHERE Phone IN: phones AND RecordTypeId = : rtLeadId ORDER BY CreatedDate DESC]);
+        if (phones != null && !phones.isEmpty()) {
+            result = new List<Account>([SELECT Id, Name, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
         }
         return result;
     }
@@ -756,7 +753,7 @@ public with sharing class AccountsSelector extends RecordsSelector
      */
     public List<Account> findByEmailAdressRecordTypeNameAndType (List<String> emails,List<String> recordTypeNames, List<String> typeNames )
     {
-        Query subquery = new Query( ContactPointEmail.getSObjectType() );
+        Query subquery = new Query(ContactPointEmail.getSObjectType());
         subquery.selectFields(new List<Schema.SObjectField> {
             ContactPointEmail.ParentId
         });
@@ -780,18 +777,18 @@ public with sharing class AccountsSelector extends RecordsSelector
                                    )
                                    .addConditionIn(ContactPointEmail.EmailAddress,emails)
                                    );
-        if ( recordTypeNames != null && !recordTypeNames.isEmpty() )
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty())
         {
             this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
         }
 
-        if ( typeNames != null && !typeNames.isEmpty() )
+        if ( typeNames != null && !typeNames.isEmpty())
         {
             this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
         }
 
         this.baseQuery.addConditionIn(Account.Id, subquery);
-        return (List<Account>) this.baseQuery.run();
+        return (List<Account>)this.baseQuery.run();
     }
 
     /**
@@ -805,7 +802,7 @@ public with sharing class AccountsSelector extends RecordsSelector
      */
     public List<Account> findByPhoneRecordTypeNameAndType (List<String> phones,List<String> recordTypeNames, List<String> typeNames )
     {
-        Query subquery = new Query( ContactPointPhone.getSObjectType() );
+        Query subquery = new Query(ContactPointPhone.getSObjectType());
         subquery.selectFields(new List<Schema.SObjectField> {
             ContactPointPhone.ParentId
         });
@@ -829,18 +826,18 @@ public with sharing class AccountsSelector extends RecordsSelector
                                    )
                                    .addConditionIn(ContactPointPhone.TelephoneNumber,phones)
                                    );
-        if ( recordTypeNames != null && !recordTypeNames.isEmpty() )
+        if ( recordTypeNames != null && !recordTypeNames.isEmpty())
         {
             this.baseQuery.addConditionIn(RT_NAME_FIELD, recordTypeNames);
         }
 
-        if ( typeNames != null && !typeNames.isEmpty() )
+        if ( typeNames != null && !typeNames.isEmpty())
         {
             this.baseQuery.addConditionIn(TYPE_FIELD, typeNames);
         }
 
         this.baseQuery.addConditionIn(Account.Id, subquery);
-        return (List<Account>) this.baseQuery.run();
+        return (List<Account>)this.baseQuery.run();
     }
 
 
@@ -949,12 +946,12 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         List<Account> intermediaryAccounts = new List<Account>();
 
-        if( intermediaryCodes == null || intermediaryCodes.isEmpty() )
+        if(intermediaryCodes == null || intermediaryCodes.isEmpty())
         {
             return intermediaryAccounts;
         }
 
-        this.baseQuery.selectFields(new List<Schema.SObjectField> {
+        this.baseQuery.selectFields(new List<Schema.SObjectField>{
             Account.INFOIntermediaryCode__c,
             Account.Parent.IntermediaryWithUser__c,
             Account.ParentId
@@ -965,10 +962,10 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return
             [
-            SELECT INFOIntermediaryCode__c, ParentId, Parent.IntermediaryWithUser__c
-            FROM Account
-            WHERE INFOIntermediaryCode__c IN :intermediaryCodes
-            AND Parent.IntermediaryWithUser__c != null
+            SELECT  INFOIntermediaryCode__c, ParentId, Parent.IntermediaryWithUser__c
+            FROM    Account
+            WHERE   INFOIntermediaryCode__c IN :intermediaryCodes
+            AND     Parent.IntermediaryWithUser__c != null
             ];
     }
 
