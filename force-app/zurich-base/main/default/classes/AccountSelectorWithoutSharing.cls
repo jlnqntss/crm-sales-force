@@ -51,7 +51,7 @@ public without sharing class AccountSelectorWithoutSharing
 
         if ( documents != null && !documents.isEmpty() )
         {
-            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c,Intermediary_Name__r.INFOIntermediaryCode__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN: documents AND (RecordTypeId = : rtCustomerId OR RecordTypeId = : rtBusinessCustomerId)]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c,Intermediary_Name__r.INFOIntermediaryCode__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c, PreferedContactStart__c, PreferedContactEnd__c FROM account WHERE NationalId__c IN: documents AND (RecordTypeId = : rtCustomerId OR RecordTypeId = : rtBusinessCustomerId)]);
         }
         return result;
     }
@@ -75,7 +75,7 @@ public without sharing class AccountSelectorWithoutSharing
 
         if ( documents != null && !documents.isEmpty() )
         {
-            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN: documents AND RecordTypeId = : rtLeadId]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c, PreferedContactStart__c, PreferedContactEnd__c FROM account WHERE NationalId__c IN: documents AND RecordTypeId = : rtLeadId]);
         }
         return result;
     }
@@ -93,7 +93,7 @@ public without sharing class AccountSelectorWithoutSharing
 
         if ( phones != null && !phones.isEmpty() )
         {
-            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone FROM account WHERE Phone IN: phones AND RecordTypeId = : rtLeadId ORDER BY CreatedDate DESC]);
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone, PreferedContactStart__c, PreferedContactEnd__c FROM account WHERE Phone IN: phones AND RecordTypeId = : rtLeadId ORDER BY CreatedDate DESC]);
         }
         return result;
     }
