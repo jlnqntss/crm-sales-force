@@ -96,25 +96,62 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
 
         managePolicyRecord(policyRecord, offerToInsertUpdate);
 
+        offerToInsertUpdate = manageOfferToInsertUpdate (offerToInsertUpdate, accountRecord, postalCode, phone);
+
+        insert fillPolicyRecord(policyRecord, offerToInsertUpdate);
+    }
+
+    public static Policy__c fillPolicyRecord(Policy__c policyRecord, Opportunity offerToInsertUpdate)
+    {
+        Policy__c pol = policyRecord;
+        pol.OpportunityName__c= offerToInsertUpdate.Id;
+        pol.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
+        pol.IntermediaryId__c = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = : offerToInsertUpdate.IntermediaryCode__c].get(0).Id;
+        pol.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c;
+
+        return pol;
+    }
+
+    public static Opportunity manageOfferToInsertUpdate (Opportunity offerToInsertUpdate, Account accountRecord, String postalCode, String phone)
+    {
+        Opportunity offerToUpdate = offerToInsertUpdate;
         if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null && offerToInsertUpdate.StageName != 'Cerrada-Ganada')   //Ejecutar Proceso de Asignación si la Oferta se debe insertar y no es el escenario de integración 3.
         {
             Map<String, Account> assign = AccountLeadUtil.leadAssignment(accountRecord, offerToInsertUpdate.IntermediaryCode__c, offerToInsertUpdate.IntermediaryCode__c, null, postalCode);
             if ( assign.containsKey(CONTACT_CENTER) )
             {
-                manageCallMeBack(accountRecord, offerToInsertUpdate);
+                Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
+                manageCallMeBack(accountRecord, offerToInsertUpdate, leadOffersCS, phone);
+
+                if (offerToInsertUpdate.InfoQuoteNumber__c == null)
+                {
+                    offerToUpdate = null;
+                }
+                else
+                {
+                    offerToUpdate.BusinessCode__c = leadOffersCS.BusinessCode__c;
+                }
+            }
+            else
+            {
+                offerToUpdate.OwnerId = new List<String>( assign.keySet() ).get(0);
+                if (assign.get(offerToInsertUpdate.OwnerId) != null)
+                {
+                    offerToUpdate.IntermediaryId__c = assign.get(offerToInsertUpdate.OwnerId).Id;
+                    offerToUpdate.IntermediaryCode__c = assign.get(offerToInsertUpdate.OwnerId).INFOIntermediaryCode__c;
+                }
             }
         }
+        return offerToUpdate;
     }
 
-    public static void manageCallMeBack(Account accountRecord, Opportunity offerToInsertUpdate)
+    public static void manageCallMeBack(Account accountRecord, Opportunity offerToInsertUpdate, Lead_Offers__c leadOffersCS, String phone)
     {
-        Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
-
         CallMeBackUtil.CallMeBack callMeBack = new CallMeBackUtil.CallMeBack();
         callMeBack.name = accountRecord.Name;
         callMeBack.phone = phone;
-        callMeBack.bestTimeFrom = offerToInsertUpdate.PreferedContactStartFor__c;
-        callMeBack.bestTimeUntil = offerToInsertUpdate.PreferedContactEndFor__c;
+        callMeBack.bestTimeFrom = accountRecord.PreferedContactStart__c;
+        callMeBack.bestTimeUntil = accountRecord.PreferedContactEnd__c;
         callMeBack.businessCode = leadOffersCS.BusinessCode__c;
 
         CallMeBackUtil.insertCallMeBack(callMeBack, leadOffersCS.VoiceQueue__c, leadOffersCS.BusinessHour__c);

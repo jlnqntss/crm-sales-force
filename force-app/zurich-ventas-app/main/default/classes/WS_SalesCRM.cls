@@ -96,8 +96,8 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
                     Account leadAccount = SalesCRMQuoteAndBuyService.manageLead(deserializedRequest);
                     Opportunity offer = SalesCRMQuoteAndBuyService.manageOpportunity(leadAccount, deserializedRequest);
                     Policy__c pol = SalesCRMQuoteAndBuyService.managePolicy(leadAccount,deserializedRequest);
-                    AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(leadAccount, offer, pol, deserializedRequest.cliente.contacto.codigoPostal);
-                    manageOfferStage(leadAccount, offer, deserializedRequest);
+                    AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(leadAccount, offer, pol, deserializedRequest.cliente.contacto.codigoPostal, deserializedRequest.cliente.contacto.telefono);
+                    SalesCRMQuoteAndBuyService.manageOfferStage(leadAccount, offer, deserializedRequest, leadAccount.Id);
 
                     response.responseBody = Blob.valueOf('{"status":"success", "message":"Success creating client"}');
                 }
