@@ -209,8 +209,8 @@ public with sharing class AccountLeadUtil
     {
         Map<Id,List<ContactPointPhone>> scopeByAccountId = new Map<Id,List<ContactPointPhone>>();
 
-        // TODO - Selector Scope
-        List<ContactPointPhone> scopesWithPhone =  [SELECT Scope__c,ScopeId__c, ScopeId__r.AccountId__c, ScopeId__r.AccountId__r.Createddate FROM ContactPointPhone WHERE TelephoneNumber = :phone AND ScopeId__r.AccountId__r.RecordType.DeveloperName = 'Lead'];
+        ContactPointPhonesSelector cppSelector = new ContactPointPhonesSelector();
+        List<ContactPointPhone> scopesWithPhone = cppSelector.selectByAccountScopeLead(phone);
 
         // Ordenamos los scopes por cuenta para ver si hay varias cuentas con el mismo teléfono
         for(ContactPointPhone currentScope : scopesWithPhone)
@@ -270,7 +270,9 @@ public with sharing class AccountLeadUtil
         Set<Id> accountIdsWithoutScope = new Set<Id>();
         Set<Id> accountIdsWithScope = new Set<Id>();
 
-        for(Scope__c currentCPP : [SELECT AccountId__c FROM Scope__c WHERE AccountId__c IN : allCandidateAccounts AND Scope__c = 'Ventas'])
+        ScopesSelector scopeS = new ScopesSelector();
+
+        for(Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts))
         {
             accountIdsWithScope.add(currentCPP.AccountId__c);
         }
@@ -283,12 +285,12 @@ public with sharing class AccountLeadUtil
             }
         }
 
-        List<Scope__c> scopesToInsert = new List<Scope__c>();
-
         if(accountIdsWithoutScope.isEmpty())
         {
             return;
         }
+
+        List<Scope__c> scopesToInsert = new List<Scope__c>();
 
         Map<Id,Account> accountsById = new Map<Id,Account>(accounts);
         for(Id currentAccountWithoutScope : accountIdsWithoutScope)
@@ -339,7 +341,7 @@ public with sharing class AccountLeadUtil
 
             if(oldAccounts != null && ! oldAccounts.isEmpty())
             {
-                if(String.isblank(nextAccount.Phone) && String.IsBlank(oldAccounts.get(nextAccount.Id).Phone))
+                if(String.isNotblank(nextAccount.Phone) && String.IsBlank(oldAccounts.get(nextAccount.Id).Phone))
                 {
                     result.add(nextAccount.Id);
                 }

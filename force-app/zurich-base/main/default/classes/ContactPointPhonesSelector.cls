@@ -1,9 +1,9 @@
 /**
- * @description       : 
- * @author            : 
- * @group             : 
- * @last modified on  : 04-24-2023
- * @last modified by  : aberuete
+ * @description       :
+ * @author            :
+ * @group             :
+ * @last modified on  : 25/09/2023
+ * @last modified by  : jgallaga
 **/
 public with sharing class ContactPointPhonesSelector
 {
@@ -165,5 +165,10 @@ public with sharing class ContactPointPhonesSelector
         {
             return new List<ContactPointPhone>();
         }
+    }
+
+    public List<ContactpointPhone> selectByAccountScopeLead(string phone)
+    {
+        return [SELECT Scope__c,ScopeId__c, ScopeId__r.AccountId__c, ScopeId__r.AccountId__r.Createddate FROM ContactPointPhone WHERE TelephoneNumber = :phone AND ScopeId__r.AccountId__r.RecordType.DeveloperName = 'Lead'];
     }
 }

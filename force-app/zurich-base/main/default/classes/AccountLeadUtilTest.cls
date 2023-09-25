@@ -143,6 +143,37 @@ private class AccountLeadUtilTest
         List<Scope__c> scopes = [SELECT Scope__c From Scope__c WHERE AccountId__c IN : newAccounts];
 
         Assert.areEqual(insertedAccount.size(), scopes.size());
+    }
+
+    @isTest
+    static void test_UpdateLeadVentasPhone_CreateScope_OK()
+    {
+        Id accountLeadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
+
+        List<Account> oldAccounts = new List<Account>();
+
+        for(Integer i = 0; i < 4; i++)
+        {
+            oldAccounts.add(new Account(
+                LastName = 'Test'+i,
+                RecordTypeId = accountLeadRecordTypeId
+            ));
+        }
+
+        insert oldAccounts;
+
+        for(Integer i = 0; i < 4; i++)
+        {
+            oldAccounts[i].Phone = '0000' + i;
+        }
+
+        Test.startTest();
+        update oldAccounts;
+        Test.stopTest();
+
+        List<Scope__c> scopes = [SELECT Scope__c FROM Scope__c WHERE AccountId__c IN : oldAccounts];
+
+        Assert.areEqual(oldAccounts.size(), scopes.size());
 
     }
 }
