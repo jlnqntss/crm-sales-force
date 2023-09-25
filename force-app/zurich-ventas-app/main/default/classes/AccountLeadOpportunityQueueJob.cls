@@ -28,6 +28,8 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      **/
     private String phone;
 
+    private static final String CONTACT_CENTER = 'CONTACT_CENTER';
+
     /**
      * Constructor de la clase que inicializa los parámentros recibidos
      * *
@@ -93,6 +95,33 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         }
 
         managePolicyRecord(policyRecord, offerToInsertUpdate);
+
+        if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null && offerToInsertUpdate.StageName != 'Cerrada-Ganada')   //Ejecutar Proceso de Asignación si la Oferta se debe insertar y no es el escenario de integración 3.
+        {
+            Map<String, Account> assign = AccountLeadUtil.leadAssignment(accountRecord, offerToInsertUpdate.IntermediaryCode__c, offerToInsertUpdate.IntermediaryCode__c, null, postalCode);
+            if ( assign.containsKey(CONTACT_CENTER) )
+            {
+                manageCallMeBack(accountRecord, offerToInsertUpdate);
+            }
+        }
+    }
+
+    public static void manageCallMeBack(Account accountRecord, Opportunity offerToInsertUpdate)
+    {
+        Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
+        String queueName = leadOffersCS.VoiceQueue__c;
+        String businessHoursName = leadOffersCS.BusinessHour__c;
+        String businessCode = leadOffersCS.BusinessCode__c;
+
+        CallMeBackUtil.CallMeBack callMeBack = new CallMeBackUtil.CallMeBack();
+        callMeBack.name = accountRecord.Name;
+        callMeBack.phone = phone;
+        callMeBack.bestTimeFrom = offerToInsertUpdate.PreferedContactStartFor__c;
+        callMeBack.bestTimeUntil = offerToInsertUpdate.PreferedContactEndFor__c;
+        //! callMeBack.webIdentifier = requestData.webIdentifier;
+        callMeBack.businessCode = CustomSetting Lead_Offers__c.BusinessCode__c;
+
+        CallMeBackUtil.insertCallMeBack(callMeBack, queueName, businessHoursName);
     }
 
     /**

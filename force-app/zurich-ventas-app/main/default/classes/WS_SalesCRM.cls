@@ -98,6 +98,7 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
                     Policy__c pol = SalesCRMQuoteAndBuyService.managePolicy(leadAccount,deserializedRequest);
                     AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(leadAccount, offer, pol, deserializedRequest.cliente.contacto.codigoPostal);
                     manageOfferStage(leadAccount, offer, deserializedRequest);
+
                     response.responseBody = Blob.valueOf('{"status":"success", "message":"Success creating client"}');
                 }
                 when else

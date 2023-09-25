@@ -2,8 +2,8 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 13/09/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 09-25-2023
+ * @last modified by  : overes
  **/
 public with sharing class OpportunitiesSelector extends RecordsSelector
 {
@@ -60,7 +60,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      *
      * @return                  Listado de opportunies sobre los que se ha realizado match
      *
-     * @last modified by  : jgallaga
+     * @last modified by  : overes
      */
     public List<Opportunity> selectByAccountIdScopesAndOwnerProfile(Id accountId, Set<Id> scopeIds, Set<String> ownerProfileNames)
     {
@@ -324,7 +324,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         return [SELECT Id, SessionId__c, InfoQuoteNumber__c, StageName, Name, CloseDate FROM Opportunity
                 WHERE SessionId__c = : offerRecord.SessionId__c
                                      OR InfoQuoteNumber__c = : offerRecord.InfoQuoteNumber__c
-                                                             OR (AccountId = : offerRecord.InfoQuoteNumber__c AND CarRegistration__c = : offerRecord.CarRegistration__c AND PersonLeadSource__c = : offerRecord.PersonLeadSource__c)
+                                                             OR (AccountId = : offerRecord.AccountId AND CarRegistration__c = : offerRecord.CarRegistration__c AND PersonLeadSource__c = : offerRecord.PersonLeadSource__c)
                                                              ORDER BY CreatedDate DESC];
     }
 
