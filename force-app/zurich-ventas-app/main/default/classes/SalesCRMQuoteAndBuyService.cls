@@ -228,7 +228,7 @@ public with sharing class SalesCRMQuoteAndBuyService
      * @param postalCode
      * @param phone
      **/
-    public static void manageCallAccountLeadOpportunityQueueJobWithDelay(Account acc, Opportunity offer, Lead requestData)
+    public static void manageOfferStage(Account acc, Opportunity offer, Lead requestData)
     {
         if ( String.isBlank(requestData.poliza.numeroPoliza) )
         {

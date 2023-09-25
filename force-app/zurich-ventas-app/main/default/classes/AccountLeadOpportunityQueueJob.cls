@@ -72,7 +72,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         Opportunity offerToInsertUpdate = offerRecord;
         List<Opportunity> listOffer = new List<Opportunity>();
         OpportunitiesSelector oppSelector = new OpportunitiesSelector();
-        if (offerRecord.InfoQuoteNumber__c == null)
+        if ( String.isBlank(offerRecord.InfoQuoteNumber__c) )
         {
             listOffer = oppSelector.findOppWhenInfoQuoteNumberIsNull(offerRecord);
         }

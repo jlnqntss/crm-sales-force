@@ -4,7 +4,7 @@
  *
  * @author            : amiranda
  * @date              : 04-09-2023
- * @last modified on  : 09-23-2023
+ * @last modified on  : 09-25-2023
  * @last modified by  : overes
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -87,7 +87,7 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
                     Opportunity offer = SalesCRMQuoteAndBuyService.manageOpportunity(leadAccount, deserializedRequest);
                     Policy__c pol = SalesCRMQuoteAndBuyService.managePolicy(leadAccount,deserializedRequest);
                     AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(leadAccount, offer, pol, deserializedRequest.cliente.contacto.codigoPostal);
-
+                    manageOfferStage(leadAccount, offer, deserializedRequest);
                     response.responseBody = Blob.valueOf('{"status":"success", "message":"Success creating client"}');
                 }
                 when else
