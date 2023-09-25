@@ -113,7 +113,7 @@ public with sharing class Batch_IntermediaryVisibilityRecalcAccTes {
      */
     @isTest
     static void testCambioAgrupacionMedidadorNotPartnerOK() {
-        Account accBefore = [SELECT Id, IntermediaryVisibilityAcc__c,Intermediary_Name__r.IntermediaryGroup__c FROM Account WHERE Intermediary_Name__r.IsPartner = false LIMIT 1];
+        Account accBefore = [SELECT Id, IntermediaryVisibilityAcc__c,Intermediary_Name__r.IntermediaryGroup__c FROM Account WHERE RecordType.DeveloperName = 'Customer' AND Intermediary_Name__r.IsPartner = false LIMIT 1];
 
         // cambio el mediador de agrupacion para que el batch recalcule la visibilidad, para ello obtengo el id de la otra agrupación primero
         List<Account> agrupacionMediadorList = new List<Account>([SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'AgrupacionMediador' AND Id != :accBefore.Intermediary_Name__r.IntermediaryGroup__c LIMIT 1]);

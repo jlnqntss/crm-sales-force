@@ -20,8 +20,13 @@ global with sharing class Batch_IntermediaryVisibilityRecalcAcc implements Datab
 
 
     @InvocableMethod
-    global static void invocableExecuteBatch(List<String> accountIds) {
-        Database.executeBatch(new Batch_IntermediaryVisibilityRecalcAcc(new Set<String>(accountIds)), 200);
+    global static void invocableExecuteBatch(List<String> accountIds) {       
+        Set<String> accountIdsSet = new Set<String>();
+        // al invocarse desde el screen flow Recalculate Intermediaries Visibility la lista vacia llega como "accountIds {null}" por lo que compruebo si el primer elemento llega nulo para que haga la query correcta
+        if (accountIds != null && !accountIds.isEmpty() && String.isNotEmpty(new List<String>(accountIds).get(0))) {
+           accountIdsSet = new Set<String>(accountIds);
+        } 
+        Database.executeBatch(new Batch_IntermediaryVisibilityRecalcAcc(accountIdsSet), 200);
     }
     
     /*********** Métodos Batch **************************************************************************/
