@@ -171,18 +171,48 @@ public with sharing class SalesCRMQuoteAndBuyService
     public static Opportunity manageOpportunity(Account leadAccount, Lead requestData)
     {
         Opportunity offer = new Opportunity();
+        if ( String.isBlank(requestData.poliza.numeroOferta) )
+        {
+            offer.Name = null;
+            offer.InfoQuoteNumber__c = null;
+        }
+        else
+        {
+            offer.Name = requestData.poliza.numeroOferta;
+            offer.InfoQuoteNumber__c = requestData.poliza.numeroOferta;
+        }
+        if ( String.isBlank(requestData.poliza.numeroPoliza) )
+        {
+            offer.ResultingPolicyNumber__c = null;
+        }
+        else
+        {
+            offer.ResultingPolicyNumber__c = requestData.poliza.numeroPoliza;
+        }
+        if ( String.isBlank(requestData.poliza.codigoIntermediario) )
+        {
+            offer.IntermediaryCode__c = null;
+        }
+        else
+        {
+            offer.IntermediaryCode__c = requestData.poliza.codigoIntermediario;
+        }
+        if ( String.isBlank(requestData.poliza.Coche.matricula) )
+        {
+            offer.CarRegistration__c = null;
+        }
+        else
+        {
+            offer.CarRegistration__c = requestData.poliza.Coche.matricula;
+        }
+
         offer.SessionId__c = requestData.sesion;
-        offer.Name = requestData.poliza.numeroOferta;
-        offer.InfoQuoteNumber__c = requestData.poliza.numeroOferta;
-        offer.ResultingPolicyNumber__c = requestData.poliza.numeroPoliza;
         offer.CloseDate = Date.today().addDays(10);
         offer.AccountId = leadAccount.Id;
         offer.IssuedOnline__c = true;
         offer.IntermediaryId__c = getOfferIntermediaryId(requestData);
-        offer.IntermediaryCode__c = requestData.poliza.codigoIntermediario;
         offer.PersonLeadSource__c = requestData.origen;
         offer.ProductBranch__c = requestData.poliza.ramo;
-        offer.CarRegistration__c = requestData.poliza.Coche.matricula;
         offer.Description = setDesc(requestData);
 
         if ( String.isNotBlank(requestData.poliza.numeroPoliza)  && String.isNotBlank(requestData.poliza.numeroOferta) )
