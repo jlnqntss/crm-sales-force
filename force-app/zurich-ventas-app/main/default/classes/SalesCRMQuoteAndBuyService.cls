@@ -6,7 +6,6 @@
 public with sharing class SalesCRMQuoteAndBuyService
 {
 
-    //! private static Set<String> requiredFields = new Set<String> {'sesion', 'origen', 'cliente.nombre', 'cliente.primerApellido', 'cliente.contacto.telefono', 'poliza.ramo'};
     private static Set<String> requiredFields = new Set<String> {'sesion', 'origen', 'nombre', 'primerApellido', 'telefono', 'ramo'};
     private static Map<String, Schema.SObjectField> picklistTypeFieldsByJsonFieldName = new Map<String, Schema.SObjectField> {
         'ramo' => Opportunity.ProductBranch__c
@@ -163,7 +162,7 @@ public with sharing class SalesCRMQuoteAndBuyService
     }
 
     /**
-     * todo definición
+     * Método que gestiona la información de la oferta
      * *
      * @author overes | 09-03-2023
      * @param requestData
