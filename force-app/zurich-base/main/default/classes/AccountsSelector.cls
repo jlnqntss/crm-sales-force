@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 14-09-2023
+ * @last modified on  : 22-09-2023
  * @last modified by  : amiranda
  **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -475,7 +475,8 @@ public with sharing class AccountsSelector extends RecordsSelector
             Account.MainEmail__c,
             Account.NationalId__c,
             Account.Channel__c,
-            Account.Segment__c
+            Account.Segment__c,
+            Account.Association__c
         }
         );
 
@@ -521,7 +522,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.Segment__c,
                 Account.INFOIntermediaryCode__c,
                 Account.IntermediaryGroup__c,
-                Account.IsPartner
+                Account.IsPartner,
+                Account.Association__c
             }
             ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c');
 
@@ -951,8 +953,17 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date        16/08/2023
      * *
      * @modification
-     *              El query selector parece no ser capaz de recoger un campo del Parent, por lo que en la query original no
-     *              no se puede recuperar. Se pone directamente la query para poder recuperar la información necesaria para la implementacción de leadAssignment.
+     *              El query selector parece no ser capaz de recoger un campo del Parent, por lo que la query original no
+     *              funciona. Se pone directamente la query para poder recuperar la información necesaria.
+     * 
+     * @change amiranda 15/09/2023 se elimina la condición 
+     * 'IntermediaryGroup__r.IntermediaryWithUser__c != null' debido a que este
+     * campo no siempre estará informado. Si una cuenta de tipo 'Agrupación' 
+     * solamente tiene asociada una cuenta de tipo 'Mediador' con usuario nominal,
+     * no será necesario informar este campo ya que a los registros relacionados 
+     * se le asignará como Owner el Id del propio Mediador. No existe la necesidad
+     * de buscar en su Agrupación cuál es el Mediador principal.
+     * 
      */
     public List<Account> findByINFOIntermediaryCode(List<String> intermediaryCodes)
     {

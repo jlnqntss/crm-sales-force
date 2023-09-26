@@ -838,7 +838,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.BusinessName__c</field>
+        <field>Opportunity.PendingClientInformation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PendingClientInformationMore__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1059,11 +1064,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.ROI_Analysis_Completed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.ResultingPolicyNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
         <fieldPermissions>

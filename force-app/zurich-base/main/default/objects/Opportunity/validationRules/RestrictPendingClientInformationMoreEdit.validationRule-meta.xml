@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestrictPendingClientInformationMoreEdit</fullName>
+    <active>true</active>
+    <description>Validación que no permite añadir “Información Pendiente” de una oferta en PendingClientInformation__c igual a FALSE.</description>
+    <errorConditionFormula>AND(
+    NOT(PendingClientInformation__c),
+    NOT(ISBLANK(PendingClientInformationMore__c))
+)</errorConditionFormula>
+    <errorDisplayField>PendingClientInformationMore__c</errorDisplayField>
+    <errorMessage>[VR Oferta] No se puede añadir Información Pendiente cuando sin completar el campo Pendiente Información Cliente</errorMessage>
+</ValidationRule>

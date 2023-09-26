@@ -5,6 +5,7 @@
     <permissionSets>NoReasignarOferta</permissionSets>
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
     <permissionSets>Ventas_Edicion_AccountRetationship_Agente</permissionSets>
+    <permissionSets>Ventas_Campa_a_de_la_Actividad_Read_Only</permissionSets>
     <permissionSets>Ventas_Edicion_Competencia_Agente</permissionSets>
     <permissionSets>Ventas_Tareas</permissionSets>
     <permissionSets>ZRMGestionDatos</permissionSets>

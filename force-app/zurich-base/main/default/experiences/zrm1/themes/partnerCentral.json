@@ -62,10 +62,6 @@
                 "searchObjects": [
                   {
                     "isPublic": false,
-                    "name": "Lead"
-                  },
-                  {
-                    "isPublic": false,
                     "name": "Opportunity"
                   },
                   {
@@ -75,6 +71,22 @@
                   {
                     "isPublic": false,
                     "name": "ContentDocument"
+                  },
+                  {
+                    "isPublic": false,
+                    "name": "Claim__c"
+                  },
+                  {
+                    "isPublic": false,
+                    "name": "Account"
+                  },
+                  {
+                    "isPublic": false,
+                    "name": "Policy__c"
+                  },
+                  {
+                    "isPublic": false,
+                    "name": "Objective__c"
                   }
                 ]
               },

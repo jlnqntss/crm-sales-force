@@ -4163,6 +4163,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+		<editable>true</editable>
+		<field>Account.IntermediaryGroup__c</field>
+		<readable>true</readable>
+	</fieldPermissions>	
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.INFOIntermediaryGroupCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Intermediary_Name__c</field>
         <readable>true</readable>
@@ -4180,6 +4190,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.PreferedContactEnd__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PreferredContactChannel__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4495,6 +4510,36 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Type</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWPorfolioBuilding__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWPortfolioRCDamage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWPortfolioSpecialties__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWSaleBuilding__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWSaleRCDamage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWSaleSpecialties__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6040,6 +6085,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Association__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8914,6 +8964,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.Additional_Information__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8985,6 +9040,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.SalesLossReasonDateTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.Campaign__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10068,7 +10128,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.PreferedContactEnd__c</field>
+        <field>Opportunity.ClonedOfferForIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.SourceOpportunity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PendingClientInformation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PendingClientInformationMore__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10076,6 +10151,21 @@
         <field>Opportunity.PreferedContactStart__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PreferedContactEnd__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PreferedContactEndFor__c</field>
+        <readable>true</readable>
+        </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PreferedContactStartFor__c</field>
+        <readable>true</readable>
+        </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.AccountId</field>
@@ -15770,7 +15860,7 @@
         <recordType>Account.BusinessCustomer</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-EON Intermediary</layout>
+        <layout>Account-Intermediary - Admin</layout>
         <recordType>Account.Intermediary</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -15843,6 +15933,10 @@
     <layoutAssignments>
         <layout>Campaign-Telemarketing</layout>
         <recordType>Campaign.Telemarketing</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Campaign-Campaign Layout - Admin</layout>
+        <recordType>Campaign.Default</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CampaignInfluenceModel-Campaign Influence Model Layout</layout>
@@ -16448,7 +16542,7 @@
         <layout>purecloud__PureCloud_Script__c-purecloud__PureCloud Script Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Intermediary Group</layout>
+        <layout>Account-Intermediary Group - Admin</layout>
         <recordType>Account.AgrupacionMediador</recordType>
     </layoutAssignments>
     <layoutAssignments>

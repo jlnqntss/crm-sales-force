@@ -3,8 +3,8 @@
  * para los Web Services relacionados con el CRM de Ventas
  *
  * @author            : amiranda
- * @date              : 04-09-2023
- * @last modified on  : 04-09-2023
+ * @date              : 22-09-2023
+ * @last modified on  : 22-09-2023
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -68,15 +68,25 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
                     SalesCRMLeadGenerationService.validateRequestData(deserializedRequest);
 
                     Account leadAccount = SalesCRMLeadGenerationService.manageLead(deserializedRequest);
+                    Opportunity offer;
+                    
+                    Map<String, Account> accountByRelatedUser = AccountLeadUtil.leadAssignment(leadAccount,
+                                                                                               deserializedRequest.intermediaryCode,
+                                                                                               deserializedRequest.origin,
+                                                                                               deserializedRequest.language,
+                                                                                               deserializedRequest.postalCode);
+                    if ( accountByRelatedUser.containsKey(CONTACT_CENTER) )
+                    {
+                        SalesCRMLeadGenerationService.manageCallMeBack(deserializedRequest);
+                    }
+                    else
+                    {
+                        offer = SalesCRMLeadGenerationService.manageOffer(accountByRelatedUser,
+                                                                          leadAccount.Id,
+                                                                          deserializedRequest);
+                    }
 
-                    // TODO Invocar el método 'leadAssignment' - https://zurichspain.atlassian.net/wiki/spaces/CV/pages/2390130689/M+todo+leadAssignment
-                    /* Mientras este método no se implementa, se asigna al usuario/cuenta con el alias 'agente.m'
-                     *  Se hardcodea la query para buscar al usuario y su cuenta asociada
-                     */
-
-                    Opportunity offer = SalesCRMLeadGenerationService.manageOffer(leadAccount, deserializedRequest);
-
-                    ResponseData responseData = new ResponseData('success', leadAccount.Id, offer.Id);
+                    ResponseData responseData = new ResponseData('success', leadAccount.Id, offer != null ? offer.Id : null);
                     response.responseBody = Blob.valueOf( JSON.serialize(responseData) );
                 }
                 when 'quoteAndBuy'
@@ -115,7 +125,9 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
             Database.rollback(sp);
 
             response.statusCode = 400;
-            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(leadGenerationException.statusCode, leadGenerationException.getMessage(), false);
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(leadGenerationException.statusCode,
+                                                                                             leadGenerationException.getMessage(),
+                                                                                             false);
             ResponseData responseData = new ResponseData(apiException, 'error');
             response.responseBody = Blob.valueOf( JSON.serialize(responseData) );
 
@@ -128,7 +140,9 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
             Database.rollback(sp);
 
             response.statusCode = 400;
-            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_JSON_KO, jsonException.getMessage(), false);
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(WS_BaseAPIService.API_JSON_KO,
+                                                                                             jsonException.getMessage(),
+                                                                                             false);
             ResponseData responseData = new ResponseData(apiException, 'error');
             response.responseBody = Blob.valueOf( JSON.serialize(responseData) );
 
@@ -142,7 +156,9 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
 
             response.statusCode = 500;
 
-            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(INTERNAL_ERROR, integrationException.getMessage(), false);
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(INTERNAL_ERROR,
+                                                                                             integrationException.getMessage(),
+                                                                                             false);
             ResponseData responseData = new ResponseData(apiException, 'error');
             response.responseBody = Blob.valueOf( JSON.serialize(responseData) );
 
@@ -156,7 +172,9 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
 
             response.statusCode = 500;
 
-            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(INTERNAL_ERROR, 'Error processing the request', false);
+            WS_BaseAPIService.ApiException apiException = new WS_BaseAPIService.ApiException(INTERNAL_ERROR,
+                                                                                             'Error processing the request',
+                                                                                             false);
             ResponseData responseData = new ResponseData(apiException, 'error');
             response.responseBody = Blob.valueOf( JSON.serialize(responseData) );
 
