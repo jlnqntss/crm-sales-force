@@ -47,26 +47,22 @@ public with sharing class OpportunityUtil
     {
         mapAccountRecordTypes = new Map<Id, String>();
 
-        Set<Id> accountIds = new Set<Id>();
+        if (newList != null && newList.size() > 0) {
+            Set<Id> accountIds = new Set<Id>();
 
-        for (Opportunity opp : newList)
-        {
-            accountIds.add(opp.AccountId);
-        }
-
-        List<Account> oppAccounts = new AccountsSelector().selectById(accountIds);
-
-        if (oppAccounts != null && oppAccounts.size() > 0)
-        {
-
-            for (Opportunity opp : newList)
-            {
-                for (Account acc : oppAccounts)
-                {
-                    if (opp.AccountId == acc.Id)
-                    {
-                        mapAccountRecordTypes.put(acc.Id, acc.RecordType.DeveloperName);
-                        break;
+            for (Opportunity opp : newList) {
+                accountIds.add(opp.AccountId);
+            }
+    
+            List<Account> oppAccounts = new AccountsSelector().selectById(accountIds);
+    
+            if (oppAccounts != null && oppAccounts.size() > 0) {
+                for (Opportunity opp : newList) {
+                    for (Account acc : oppAccounts) {
+                        if (opp.AccountId == acc.Id) {
+                            mapAccountRecordTypes.put(acc.Id, acc.RecordType.DeveloperName);
+                            break;
+                        }
                     }
                 }
             }
