@@ -171,42 +171,14 @@ public with sharing class SalesCRMQuoteAndBuyService
     public static Opportunity manageOpportunity(Account leadAccount, Lead requestData)
     {
         Opportunity offer = new Opportunity();
-        if ( String.isBlank(requestData.poliza.numeroOferta) )
-        {
-            offer.Name = null;
-            offer.InfoQuoteNumber__c = null;
-        }
-        else
-        {
-            offer.Name = requestData.poliza.numeroOferta;
-            offer.InfoQuoteNumber__c = requestData.poliza.numeroOferta;
-        }
-        if ( String.isBlank(requestData.poliza.numeroPoliza) )
-        {
-            offer.ResultingPolicyNumber__c = null;
-        }
-        else
-        {
-            offer.ResultingPolicyNumber__c = requestData.poliza.numeroPoliza;
-        }
-        if ( String.isBlank(requestData.poliza.codigoIntermediario) )
-        {
-            offer.IntermediaryCode__c = null;
-        }
-        else
-        {
-            offer.IntermediaryCode__c = requestData.poliza.codigoIntermediario;
-        }
-        if ( String.isBlank(requestData.poliza.Coche.matricula) )
-        {
-            offer.CarRegistration__c = null;
-        }
-        else
-        {
-            offer.CarRegistration__c = requestData.poliza.Coche.matricula;
-        }
-
         offer.SessionId__c = requestData.sesion;
+        // Es un campo reuerido para la inserción de Opportunity y se asigna un valor quererido en la request
+        offer.Name = requestData.cliente.nombre + requestData.cliente.contacto.telefono;
+        offer.InfoQuoteNumber__c = requestData.poliza.numeroOferta;
+        offer.ResultingPolicyNumber__c = requestData.poliza.numeroPoliza;
+        offer.IntermediaryCode__c = requestData.poliza.codigoIntermediario;
+        offer.CarRegistration__c = requestData.poliza.Coche.matricula;
+
         offer.CloseDate = Date.today().addDays(10);
         offer.AccountId = leadAccount.Id;
         offer.IssuedOnline__c = true;
@@ -279,13 +251,13 @@ public with sharing class SalesCRMQuoteAndBuyService
                 }
                 else
                 {
-                    System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 60);
+                    System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 10);
                 }
             }
             else
             {
                 offer.StageName = 'Quoted';
-                System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 30);
+                System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 10);
             }
 
         }
