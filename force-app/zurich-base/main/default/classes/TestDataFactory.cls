@@ -3276,6 +3276,43 @@ public class TestDataFactory
         return acta;
     }
 
+    
+    /**
+    * @description Método que genera un registro para el Custom Setting 'Lead_Offers__c'
+    * con la información necesaria.
+    *
+    * @author amiranda
+    * @date 21-09-2023 
+    * @return Lead_Offers__c custom setting con la información necesaria informada
+    **/
+    public static Lead_Offers__c generateLeadOfferCS()
+    {
+        // Crear cola de Genesys
+        List<purecloud__PureCloud_Queue__c> queues = generateGenesysQueues(1);
+        insert queues;
+
+        // Se recuperan las BH por defecto de la org
+        BusinessHours defaultBusinessHours = [SELECT Id, Name FROM BusinessHours WHERE IsDefault = true];
+
+        // Usuario genérico del Contact Center necesario para el Custom Setting
+        Id ventasUserProfileId = [SELECT Id FROM Profile
+                                   WHERE Name = 'Ventas User' LIMIT 1].Id;
+        List<User> contactCenterUser = generateUsersByProfile(ventasUserProfileId, 1);
+        insert contactCenterUser;
+
+        // Crear Custom Setting
+        Lead_Offers__c leadOffers = new Lead_Offers__c(
+            VoiceQueue__c = queues.get(0).Name,
+            BusinessHour__c = defaultBusinessHours.Name,
+            BusinessCode__c = '1234567890',
+            NotificationDaysBeforeDue__c = 5,
+            DaysToReassignOffer__c = 10,
+            ContactCenterUser__c = contactCenterUser.get(0).Alias
+            );
+        
+        return leadOffers;
+    }
+    
     public static void insertCrossSellingCustomSetting()
     {
         // Crear custom setting que indica el usuario genérico

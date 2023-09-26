@@ -265,7 +265,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         List<Opportunity> retrievedOpportunities = new List<Opportunity>();
 
-        if ( accountId != null && intermediaryCode != null && String.isNotBlank(productBranch) && daysToRetrieve != null )
+        if ( accountId != null  && daysToRetrieve != null )
         {
             Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
             {
