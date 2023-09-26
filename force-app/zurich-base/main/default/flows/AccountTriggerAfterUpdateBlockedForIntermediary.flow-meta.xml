@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Lanzar el batch sobre los registros del flow para recalcular la visibilidad de ZRM para account, policy y offer</description>
+        <name>Execute_Batch_IntermediaryVisibilityRecalcAcc</name>
+        <label>Execute Batch_IntermediaryVisibilityRecalcAcc</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <actionName>Batch_IntermediaryVisibilityRecalcAcc</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>accountIds</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <description>Recalcular la visibilidad de ZRM en caso de que por GDPR se bloquee un cliente, los mediadores no deben de poder ver su información de account, policy y offer</description>
+    <environments>Default</environments>
+    <interviewLabel>Account Trigger - After Update -  Blocked For Intermediary {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Account Trigger - After Update -  Blocked For Intermediary</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Execute_Batch_IntermediaryVisibilityRecalcAcc</targetReference>
+        </connector>
+        <filterFormula>AND(
+	OR(
+		{!$Record.RecordType.DeveloperName} = &apos;Customer&apos;,
+		{!$Record.RecordType.DeveloperName} = &apos;BusinessCustomer&apos;
+	), 
+	ISCHANGED({!$Record.Blocked__c}),
+	{!$Record.Blocked__c}=true
+)</filterFormula>
+        <object>Account</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
