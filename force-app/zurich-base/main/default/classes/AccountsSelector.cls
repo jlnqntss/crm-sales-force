@@ -617,7 +617,8 @@ public with sharing class AccountsSelector extends RecordsSelector
             Account.INFOIntermediaryCode__c,
             Account.TerritorialDirection__c
         }
-            );
+            ).selectFields('Account.RecordType.DeveloperName');
+
         //Devolver lista vacía
         if ( accountIds == null || accountIds.isEmpty() )
         {
