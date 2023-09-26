@@ -88,10 +88,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>PendingClientInformation__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>PendingClientInformationMore__c</field>
             </layoutItems>
         </layoutColumns>
