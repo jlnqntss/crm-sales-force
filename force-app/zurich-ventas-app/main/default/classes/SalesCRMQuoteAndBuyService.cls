@@ -1,12 +1,13 @@
 /**
  * @description       : Nuevo Web Service REST que extiende de la clase APEX actual "WS_BaseAPIService"
  * @author            : nts - overes
- * @last modified on  : 09-25-2023
+ * @last modified on  : 09-26-2023
  **/
 public with sharing class SalesCRMQuoteAndBuyService
 {
 
-    private static Set<String> requiredFields = new Set<String> {'sesion', 'origen', 'cliente.nombre', 'cliente.primerApellido', 'cliente.contacto.telefono', 'poliza.ramo'};
+    //! private static Set<String> requiredFields = new Set<String> {'sesion', 'origen', 'cliente.nombre', 'cliente.primerApellido', 'cliente.contacto.telefono', 'poliza.ramo'};
+    private static Set<String> requiredFields = new Set<String> {'sesion', 'origen', 'nombre', 'primerApellido', 'telefono', 'ramo'};
     private static Map<String, Schema.SObjectField> picklistTypeFieldsByJsonFieldName = new Map<String, Schema.SObjectField> {
         'ramo' => Opportunity.ProductBranch__c
     };
@@ -211,7 +212,14 @@ public with sharing class SalesCRMQuoteAndBuyService
         pol.PolicyHolder__c = leadAccount.Id;
         pol.IssuedOnline__c = true;
         pol.InfoCreatedDate__c = Date.today();
-        pol.StartDate__c = convertIntegerToDate(requestData.poliza.fechaInicio);
+        if( requestData.poliza.fechaInicio != null )
+        {
+            pol.StartDate__c = convertIntegerToDate(requestData.poliza.fechaInicio);
+        }
+        else
+        {
+            pol.StartDate__c = null;
+        }
         pol.IntermediaryId__c = getOfferIntermediaryId(requestData);
         pol.Intermediary_Code__c = requestData.poliza.codigoIntermediario;
 
@@ -263,11 +271,14 @@ public with sharing class SalesCRMQuoteAndBuyService
     private static void checkRequiredFields(Lead requestData)
     {
         Set<String> receivedFieldsLead = requestData.getReceivedFields();
+        Set<String> receivedFieldsCliente = requestData.cliente.getReceivedFields();
+        Set<String> receivedFieldsContacto = requestData.cliente.contacto.getReceivedFields();
+        Set<String> receivedFieldsPoliza = requestData.poliza.getReceivedFields();
         Set<String> missedRequiredFields = new Set<String>();
 
         for (String requiredField : requiredFields)
         {
-            if ( !receivedFieldsLead.contains(requiredField) )
+            if ( !receivedFieldsLead.contains(requiredField) && !receivedFieldsCliente.contains(requiredField) && !receivedFieldsContacto.contains(requiredField) && !receivedFieldsPoliza.contains(requiredField) )
             {
                 missedRequiredFields.add(requiredField);
             }

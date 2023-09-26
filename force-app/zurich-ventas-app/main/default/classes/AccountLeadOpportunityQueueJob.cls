@@ -1,7 +1,7 @@
 /**
  * @description       : Clase-queueable ejecutada desde el WS de Quote&Buy que inserta/actualiza/asigna un registro de Oferta de Lead e inserta un registro de Póliza (si aplica)
  * @author            : nts - overes
- * @last modified on  : 09-25-2023
+ * @last modified on  : 09-26-2023
  **/
 
 public with sharing class AccountLeadOpportunityQueueJob implements Queueable
@@ -85,6 +85,8 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
 
         manageOfferRecord(offerRecord, offerToInsertUpdate, listOffer);
 
+        offerToInsertUpdate = manageOfferToInsertUpdate (offerToInsertUpdate, accountRecord, postalCode, phone);
+
         if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null)
         {
             insert offerToInsertUpdate;
@@ -95,21 +97,6 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         }
 
         managePolicyRecord(policyRecord, offerToInsertUpdate);
-
-        offerToInsertUpdate = manageOfferToInsertUpdate (offerToInsertUpdate, accountRecord, postalCode, phone);
-
-        insert fillPolicyRecord(policyRecord, offerToInsertUpdate);
-    }
-
-    public static Policy__c fillPolicyRecord(Policy__c policyRecord, Opportunity offerToInsertUpdate)
-    {
-        Policy__c pol = policyRecord;
-        pol.OpportunityName__c= offerToInsertUpdate.Id;
-        pol.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
-        pol.IntermediaryId__c = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = : offerToInsertUpdate.IntermediaryCode__c].get(0).Id;
-        pol.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c;
-
-        return pol;
     }
 
     public static Opportunity manageOfferToInsertUpdate (Opportunity offerToInsertUpdate, Account accountRecord, String postalCode, String phone)
