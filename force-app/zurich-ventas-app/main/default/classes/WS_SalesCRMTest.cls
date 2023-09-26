@@ -81,45 +81,45 @@ public with sharing class WS_SalesCRMTest
         request.addHeader(HEADER_CONTENT_TYPE, HEADER_APPLICATION_JSON);
 
         String requestData = '{' +
-                                '"Sesion": "0060C00000CADyrQAH",' +
-                                '"Origen": "Quote&Buy Auto",' +
-                                '"cliente":{' +
-                                   '"idFiscal": "5555h",' +
-                                   '"nombre": "Ana",' +
-                                    '"primerApellido": "Gomez",' +
-                                    '"segundoApellido": "Garcia",' +
-                                    '"fechaNacimiento": 19900121,' +
-                                    '"fechaCarnet": 20140121,' +
-                                    '"paisCarnet": "ESP",' +
-                                    '"sexo": "V",' +
-                                    '"contacto":{' +
-                                        '"telefono": "+346872222",' +
-                                        '"email": "test@test.com",' +
-                                        '"codigoPostal": "08921",' +
-                                        '"poblacion": "BARCELONA",' +
-                                        '"llamada": 20210916,' +
-                                        '"horaDesde": "10:15",' +
-                                        '"horaHasta": "12:00",' +
-                                        '"quiereLlamada": "S"' +
-                                    '}' +
-                                '},' +
-                                '"poliza":{' +
-                                    '"ramo":"0000000001",' +
-                                    '"numeroPoliza": "215111",' +
-                                    '"numeroOferta": "215111",' +
-                                    '"fechaInicio": 20230901,' +
-                                    '"precioAnual": 145.94,' +
-                                    '"codigoIntermediario": "0000030109",' +
-                                    '"paquete": "TERCEROS",' +
-                                    '"coche":{' +
-                                        '"marca": "SEAT",' +
-                                        '"modelo": "ATECA",' +
-                                        '"version": "2.0 TDI",' +
-                                        '"matricula": "5456LKM",' +
-                                        '"paisMatriculacion": "ESP"' +
-                                    '}' +
-                                '}' +
-                            '}';
+                             '"Sesion": "0060C00000CADyrQAH",' +
+                             '"Origen": "Quote&Buy Auto",' +
+                             '"cliente":{' +
+                             '"idFiscal": "5555h",' +
+                             '"nombre": "Ana",' +
+                             '"primerApellido": "Gomez",' +
+                             '"segundoApellido": "Garcia",' +
+                             '"fechaNacimiento": 19900121,' +
+                             '"fechaCarnet": 20140121,' +
+                             '"paisCarnet": "ESP",' +
+                             '"sexo": "V",' +
+                             '"contacto":{' +
+                             '"telefono": "+346872222",' +
+                             '"email": "test@test.com",' +
+                             '"codigoPostal": "08921",' +
+                             '"poblacion": "BARCELONA",' +
+                             '"llamada": 20210916,' +
+                             '"horaDesde": "10:15",' +
+                             '"horaHasta": "12:00",' +
+                             '"quiereLlamada": "S"' +
+                             '}' +
+                             '},' +
+                             '"poliza":{' +
+                             '"ramo":"0000000001",' +
+                             '"numeroPoliza": "215111",' +
+                             '"numeroOferta": "215111",' +
+                             '"fechaInicio": 20230901,' +
+                             '"precioAnual": 145.94,' +
+                             '"codigoIntermediario": "0000030109",' +
+                             '"paquete": "TERCEROS",' +
+                             '"coche":{' +
+                             '"marca": "SEAT",' +
+                             '"modelo": "ATECA",' +
+                             '"version": "2.0 TDI",' +
+                             '"matricula": "5456LKM",' +
+                             '"paisMatriculacion": "ESP"' +
+                             '}' +
+                             '}' +
+                             '}';
 
         request.requestBody = Blob.valueOf(requestData);
 
@@ -135,7 +135,8 @@ public with sharing class WS_SalesCRMTest
         List<Error_Log__c> errors = [SELECT Id, Level__c FROM Error_Log__c];
         Assert.areEqual(false, errors.isEmpty(), ASSERT_ERROR_LOGS_COMMITTED_MESSAGE);
 
-        for (Error_Log__c error : errors) {
+        for (Error_Log__c error : errors)
+        {
             Assert.areEqual(ErrorLogUtil.ERROR_LEVEL_WARNING.toLowerCase(), error.Level__c.toLowerCase(), ASSERT_ERROR_LOGS_LEVEL_MESSAGE);
         }
     }
@@ -377,13 +378,13 @@ public with sharing class WS_SalesCRMTest
     }
 
     /**
-    * @description Método que comprueba que se lanza un error si alguno de
-    * los campos requeridos no se encuentra en la información recibida en el
-    * recurso 'leadGeneration'.
-    *
-    * @author amiranda
-    * @date 04-09-2023
-    **/
+     * @description Método que comprueba que se lanza un error si alguno de
+     * los campos requeridos no se encuentra en la información recibida en el
+     * recurso 'leadGeneration'.
+     *
+     * @author amiranda
+     * @date 04-09-2023
+     **/
     @isTest
     static void test_doPost_missingRequiredFields_leadGeneration_ko()
     {

@@ -4,7 +4,7 @@
  * @group             :
  * @last modified on  : 19/09/2023
  * @last modified by  : jgallaga
-**/
+ **/
 public with sharing class CampaignMembersSelector extends BaseSelector
 {
     //#region Atributos
@@ -40,9 +40,9 @@ public with sharing class CampaignMembersSelector extends BaseSelector
                 BASE_SELECT +
                 'WHERE Id IN :campaignMembersIds ',
                 new List<String> {
-                    String.join(new List<String> (this.fieldsToQuery), ',')
-                }
-            );
+                String.join(new List<String> (this.fieldsToQuery), ',')
+            }
+                );
             return (List<CampaignMember>) Database.query(query);
         }
         else
@@ -113,13 +113,14 @@ public with sharing class CampaignMembersSelector extends BaseSelector
      * @date 11/08/2023
      * @return          Listado de CampaignMembers
      */
-    public List<CampaignMember> findZRMPendingRevMediatorCampaignMembers() {
+    public List<CampaignMember> findZRMPendingRevMediatorCampaignMembers()
+    {
         List<CampaignMember> result = new List<CampaignMember>([SELECT ContactId, CampaignId, Campaign.ExternalId__c, LeadPhone__c
                                                                 FROM CampaignMember
                                                                 WHERE Campaign.Type = 'Cross Selling'
-                                                                AND Campaign.IsActive = true
-                                                                AND Campaign.StartDate <= TODAY
-                                                                AND Status = 'Pdte. Revisión Mediador']);
+                                                                                      AND Campaign.IsActive = true
+                                                                                                              AND Campaign.StartDate <= TODAY
+                                                                                                              AND Status = 'Pdte. Revisión Mediador']);
         return result;
     }
 
@@ -164,26 +165,26 @@ public with sharing class CampaignMembersSelector extends BaseSelector
     public List<CampaignMember> selectCampaignMembersByCampaignIdAndAccountFromContact(Set<Id> campaignIds, Set<Id> accountIds)
     {
         return [
-            SELECT  CampaignId, ContactId, Contact.AccountId
-            FROM    CampaignMember
-            WHERE   CampaignId IN :campaignIds
-            AND     Contact.AccountId IN : accountIds
-            ];
+            SELECT CampaignId, ContactId, Contact.AccountId
+            FROM CampaignMember
+            WHERE CampaignId IN : campaignIds
+            AND Contact.AccountId IN : accountIds
+        ];
     }
 
     public class ProperCampaignMembersSelector extends RecordsSelector
     {
         ProperCampaignMembersSelector()
         {
-            super(CampaignMember.getSObjectType());
+            super( CampaignMember.getSObjectType() );
         }
 
         List<CampaignMember> selectCampaignMembersByCampaignIdAndAccountFromContact(Set<Id> campaignIds, Set<Id> accountIds)
         {
             this.baseQuery
-                .selectFields(new List<Schema.SObjectField>{CampaignMember.CampaignId,CampaignMember.Contact.AccountId})
-                .addConditionIn(CampaignMember.CampaignId, campaignIds)
-                .addConditionIn(CampaignMember.Contact.AccountId, accountIds);
+            .selectFields(new List<Schema.SObjectField> {CampaignMember.CampaignId,CampaignMember.Contact.AccountId})
+            .addConditionIn(CampaignMember.CampaignId, campaignIds)
+            .addConditionIn(CampaignMember.Contact.AccountId, accountIds);
 
             return this.baseQuery.run();
         }
