@@ -24,15 +24,15 @@ public with sharing class OpportunityUtil
     public static void initMapOfProfiles()
     {
         // perfiles
-        List<String> nombresPerfiles = new List<String>{'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
+        List<String> nombresPerfiles = new List<String> {'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
         listaPerfiles = ProfilesSelector.getProfilesByName(nombresPerfiles);
 
         // usuarios
-        List<String> nombresUsuarios = new List<String>{'Automated Process'};
-        listaUsuarios = (new UsersSelector()).getUsersByName(nombresUsuarios);
+        List<String> nombresUsuarios = new List<String> {'Automated Process'};
+        listaUsuarios = ( new UsersSelector() ).getUsersByName(nombresUsuarios);
 
         // Perfiles Ventas
-        nombresPerfilesVentas = new List<String>{'Agente Ventas', 'Ventas User'};
+        nombresPerfilesVentas = new List<String> {'Agente Ventas', 'Ventas User'};
         userLoggedProfile = ProfilesSelector.getLoggedUserProfile();
     }
 
@@ -56,14 +56,18 @@ public with sharing class OpportunityUtil
 
         List<Account> oppAccounts = new AccountsSelector().selectById(accountIds);
 
-        for (Opportunity opp : newList)
+        if (oppAccounts != null && oppAccounts.size() > 0)
         {
-            for (Account acc : oppAccounts)
+
+            for (Opportunity opp : newList)
             {
-                if (opp.AccountId == acc.Id)
+                for (Account acc : oppAccounts)
                 {
-                    mapAccountRecordTypes.put(acc.Id, acc.RecordType.DeveloperName);
-                    break;
+                    if (opp.AccountId == acc.Id)
+                    {
+                        mapAccountRecordTypes.put(acc.Id, acc.RecordType.DeveloperName);
+                        break;
+                    }
                 }
             }
         }
@@ -106,10 +110,12 @@ public with sharing class OpportunityUtil
      */
     public static void detectOpportunityAccountChange(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
     {
-        for(Integer i=0,j=newList.size();i<j;i++) {
+        for(Integer i=0,j=newList.size(); i < j; i++)
+        {
             Opportunity o = newList[i];
 
-            if( o.AccountId != oldMap.get(o.Id).AccountId ) {
+            if( o.AccountId != oldMap.get(o.Id).AccountId )
+            {
                 o.OldAccountId__c = oldMap.get(o.Id).AccountId;
             }
         }
@@ -147,7 +153,7 @@ public with sharing class OpportunityUtil
     {
         for(Opportunity opty : newList)
         {
-            if(String.isBlank(opty.StageName))
+            if( String.isBlank(opty.StageName) )
             {
                 opty.StageName = 'Open';
             }
@@ -165,22 +171,22 @@ public with sharing class OpportunityUtil
      * @date 25/02/2021
      * @last modified 16/11/2021 : ZE-1149 Ofertas sin tomador.
      */
-     public static void preventNullUpdates(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
-     {
-         for(Opportunity opty : newList)
-         {
-             if(String.isBlank(opty.StageName))
-             {
-                 Opportunity oldOffer = oldMap.get(opty.Id);
-                 opty.StageName = oldOffer.StageName;
-             }
- 
-             if (String.isBlank(opty.AccountId) && !String.isBlank(oldMap?.get(opty.Id)?.AccountId))
-             {
-                 opty.AccountId = oldMap?.get(opty.Id)?.AccountId;
-             } 
-         }
-     }
+    public static void preventNullUpdates(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
+    {
+        for(Opportunity opty : newList)
+        {
+            if( String.isBlank(opty.StageName) )
+            {
+                Opportunity oldOffer = oldMap.get(opty.Id);
+                opty.StageName = oldOffer.StageName;
+            }
+
+            if ( String.isBlank(opty.AccountId) && !String.isBlank(oldMap?.get(opty.Id)?.AccountId) )
+            {
+                opty.AccountId = oldMap?.get(opty.Id)?.AccountId;
+            }
+        }
+    }
 
     /**
      * Método privado que sustituye la Regla de validación de Opportunity llamada NoCloseWon
@@ -211,7 +217,7 @@ public with sharing class OpportunityUtil
         {
             Opportunity oldOpty = oldMap.get(newOpty.Id);
 
-            if (!skipStageNameValidation(newOpty) && !isValidStageName(oldOpty))
+            if ( !skipStageNameValidation(newOpty) && !isValidStageName(oldOpty) )
             {
                 // ERROR  : Agregar el mensaje a nivel de campo
 
@@ -233,7 +239,7 @@ public with sharing class OpportunityUtil
     private static Boolean isValidStageName(Opportunity oldOpty)
     {
         Boolean retorno = true;
-        if( oldOpty != null && oldOpty.StageName.equalsIgnoreCase('Closed won'))
+        if( oldOpty != null && oldOpty.StageName.equalsIgnoreCase('Closed won') )
         {
             retorno = false;
         }
@@ -255,14 +261,14 @@ public with sharing class OpportunityUtil
         Boolean retorno = false;
 
         // Bypass por perfil
-        if(!listaPerfiles.isEmpty() && (listaPerfiles.containsKey(UserInfo.getProfileId()) || listaUsuarios.containsKey(UserInfo.getUserId())))
+        if( !listaPerfiles.isEmpty() && ( listaPerfiles.containsKey( UserInfo.getProfileId() ) || listaUsuarios.containsKey( UserInfo.getUserId() ) ) )
         {
             retorno = true;
         }
 
 
         // Bypass por usuario (usando los Custom Permisson)
-        if(FeatureManagement.checkPermission('Editar_ofertas_cerradas'))
+        if( FeatureManagement.checkPermission('Editar_ofertas_cerradas') )
         {
             retorno = true;
         }
@@ -287,7 +293,7 @@ public with sharing class OpportunityUtil
     public static Map<String, Opportunity> generateMapByCreatedOffer(List<Opportunity> oportunities)
     {
         Map<String, Opportunity> mapOpportunitiesToRelateByCreatedOffer = new Map<String,Opportunity>();
-        if(oportunities != null && !oportunities.isEmpty())
+        if( oportunities != null && !oportunities.isEmpty() )
         {
             //Mapa para identificar cada oportunidad con su oferta generada
             // Se recorre la lista de oportunidades para no tener que recorrerla una vez por cada caso
@@ -328,7 +334,7 @@ public with sharing class OpportunityUtil
                         mapUsersZEAdvisors.put(user.AssigneeId, user);
                     }
                 }
-                if (mapUsersZEAdvisors.get(UserInfo.getUserId()) != null && oldOpty.OwnerId != integratorId)
+                if (mapUsersZEAdvisors.get( UserInfo.getUserId() ) != null && oldOpty.OwnerId != integratorId)
                 {
                     //ERROR: Agregar el mensaje a nivel de campo
                     newOpty.addError(FIELD_OWNER_ID, Label.OfferChangeOwnerValidationMessage);
