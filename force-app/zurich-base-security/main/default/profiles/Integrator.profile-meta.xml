@@ -4186,6 +4186,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.IntermediaryVisibilityForm__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.IntermediaryWithUser__c</field>
         <readable>true</readable>
@@ -5526,6 +5531,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Campaign.MaxCallRetries__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Campaign.ActualCost</field>
         <readable>true</readable>
@@ -5753,6 +5763,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Campaign.purecloud__Time_Zone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CampaignMember.CallRetries__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9871,6 +9886,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.IntermediaryVisibilityForm__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.IsUspProduct__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10842,6 +10862,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.IntermediaryVisibilityForm__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11937,6 +11962,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Special_Condition__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.CampaignMemberID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <description>Si la oferta cierra porque el cliente está interesado pero quiere que lo gestione su agentemediador, se lanza este flow para clonar la oferta. Asigna la nueva al agente mediador, rellena los campos y actualiza la oferta clonada para reflejar ésta acción.</description>
+    <environments>Default</environments>
+    <interviewLabel>Sales_Loss_Reason__c = ‘Interesado prefiere que lo gestione mi Agente’ {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Offer Trigger - After Update - Clone Offer For Intermediary</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>cloneOfferForIntermediarySubflow</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Sales_Loss_Reason__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Interested, managed by my agent</stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>Lanza el subflow preparado para realizar el clonado y la actualización del registro antiguo</description>
+        <name>cloneOfferForIntermediarySubflow</name>
+        <label>Lanza Clone Offer For Intermediary</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <flowName>CloneOfferForIntermediary</flowName>
+        <inputAssignments>
+            <name>OriginOffer</name>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+</Flow>

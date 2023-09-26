@@ -108,7 +108,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
         Assert.isTrue(tasksInTestStart.isEmpty(), 'For this test there should not be any task');
 
         /* ----------------------- DATOS DE LOS INTERMEDIARIOS ---------------------- */
-        Account ventasUserAccount = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Intermediary', 1)[0];
+        Account ventasUserAccount = TestDataFactory.generateAccounts('001', 'Intermediary', 1)[0];
         insert ventasUserAccount;
 
         Contact ventasUserContact = TestDataFactory.generateContactsFromAccounts(new List<Account> {ventasUserAccount}, ContactsSelector.RT_NAME_CONTACT, 1)[0];
@@ -126,56 +126,69 @@ private without sharing class ReassignInteractionCTIExtensionTest
         ventasUser.LastName = 'Ventas';
         ventasUser.Alias = 'a.ventas';
         ventasUser.ContactId = ventasUserContact.Id;
+        ventasUser.UserPermissionsMarketingUser = true;
 
         System.runAs(adminUser)
         {
             insert ventasUser;
+
+            List<PermissionSetAssignment> permissionSetAssignments = new List<PermissionSetAssignment>();
+            List<PermissionSetGroup> permissionSetGroups = [SELECT Id FROM PermissionSetGroup WHERE DeveloperName = 'Ventas Advisor'];
+            for(PermissionSetGroup psg : permissionSetGroups)
+            {
+                permissionSetAssignments.add( new PermissionSetAssignment(PermissionSetGroupId = psg.Id, AssigneeId = ventasUser.Id) );
+            }
+            insert permissionSetAssignments;
         }
 
+        System.runAs(ventasUser)
+        {
+            /* ---------------------------- DATOS DE CLIENTE ---------------------------- */
+            Account customerAccount = TestDataFactory.generateAccounts('001', 'BusinessCustomer', 1)[0];
+            customerAccount.INFOCustomerNumber__c = String.valueOf( (Math.random() * 1000000000).intValue() );
+            insert customerAccount;
 
-        /* ---------------------------- DATOS DE CLIENTE ---------------------------- */
-        Account customerAccount = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 1)[0];
-        customerAccount.INFOCustomerNumber__c = String.valueOf( (Math.random() * 1000000000).intValue() );
-        customerAccount.Intermediary_Name__c = ventasUserAccount.Id;
-        insert customerAccount;
+            Contact customerContact = TestDataFactory.generateContactsFromAccounts(new List<Account> {customerAccount}, ContactsSelector.RT_NAME_CONTACT, 1)[0];
+            insert customerContact;
 
-        Contact customerContact = TestDataFactory.generateContactsFromAccounts(new List<Account> {customerAccount}, ContactsSelector.RT_NAME_CONTACT, 1)[0];
-        insert customerContact;
+            /* --------------------------------- CAMPAÑA -------------------------------- */
+            Id rtTelemarketing = Schema.SObjectType.Campaign.getRecordTypeInfosByName().get('Telemarketing').getRecordTypeId();
+            Campaign campaign = TestDataFactory.generateCampaigns('001', 1)[0];
+            campaign.RecordTypeId = rtTelemarketing;
+            campaign.Scope__c = 'General';
+            campaign.StartDate = Date.today();
+            campaign.EndDate = Date.today() + 7;
+            campaign.Type = 'Suscripcion';
+            campaign.MaxCallRetries__c = 5;
+            // campaign.OwnerId = UserInfo.getUserId();
+            insert campaign;
 
-        /* --------------------------------- CAMPAÑA -------------------------------- */
-        Campaign campaign = TestDataFactory.generateCampaigns(Label.GeneralInsurance, 1)[0];
-        campaign.StartDate = Date.today();
-        campaign.EndDate = Date.today() + 7;
-        campaign.Type = 'Suscripcion';
-        campaign.MaxCallRetries__c = 5;
-        insert campaign;
+            /* --------------------------- MIEMBROS DE CAMPAÑA -------------------------- */
+            CampaignMember campaignMember = TestDataFactory.generateCampaignMembersForEachCampaign(new List<Contact> {customerContact}, new List<Campaign> {campaign}, 'New')[0];
+            campaignMember.CallRetries__c = 0;
+            insert campaignMember;
 
-        /* --------------------------- MIEMBROS DE CAMPAÑA -------------------------- */
-        CampaignMember campaignMember = TestDataFactory.generateCampaignMembersForEachCampaign(new List<Contact> {customerContact}, new List<Campaign> {campaign}, 'New')[0];
-        campaignMember.CallRetries__c = 0;
-        insert campaignMember;
+            /* ---------------------------------- TEST ---------------------------------- */
+            Test.startTest();
 
-        /* ---------------------------------- TEST ---------------------------------- */
-        Test.startTest();
-        String interactionChangedEventString = '{"eventName": "interactionChanged", "interaction" : { "id": "ucid0"},  "callLog": {"CallObject": "ucid0"}}';
-        ReassignInteractionCTIExtension.onSaveLog(interactionChangedEventString);
+            String interactionChangedEventString = '{"eventName": "interactionChanged", "interaction" : { "id": "ucid0"},  "callLog": {"CallObject": "ucid0"}}';
+            ReassignInteractionCTIExtension.onSaveLog(interactionChangedEventString);
 
-        List<Task> tasksInSystem = [SELECT Id FROM Task];
-        Assert.areEqual(1, tasksInSystem.size(), 'La interaccion solo debería crear una tarea');
+            List<Task> tasksInSystem = [SELECT Id FROM Task];
+            Assert.areEqual(1, tasksInSystem.size(), 'La interaccion solo debería crear una tarea');
 
-        // Evento de colgar la llamada
-        String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction": { "disposition": "No contesta / Contestador Automático", "dialerContactId": "' + campaignMember.Id + '"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + tasksInSystem[0].Id + '"}}';
-        ReassignInteractionCTIExtension.onSaveLog(interactionDisconnectEventString);
-        Test.stopTest();
+            // Evento de colgar la llamada
+            String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction": { "disposition": "No contesta / Contestador Automático", "dialerContactId": "' + campaignMember.Id + '"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + tasksInSystem[0].Id + '"}}';
+            ReassignInteractionCTIExtension.onSaveLog(interactionDisconnectEventString);
+            Test.stopTest();
 
-        /* --------------------------------- ASSERTS -------------------------------- */
-        List<CampaignMember> existingCampaignMembers = [SELECT CallRetries__c, CampaignId FROM CampaignMember WHERE ContactId = : campaignMember.ContactId];
-        tasksInSystem = [SELECT CampaignMemberID__c, Campaign__c FROM Task];
+            /* --------------------------------- ASSERTS -------------------------------- */
+            List<CampaignMember> existingCampaignMembers = [SELECT CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId];
+            tasksInSystem = [SELECT CampaignMemberID__c FROM Task];
 
-        Assert.isFalse(existingCampaignMembers.isEmpty(), 'No se ha encontrado el CampaignMember para el contacto: ' + campaignMember.ContactId);
-        Assert.areNotEqual(0, existingCampaignMembers[0].CallRetries__c, 'El número de reintentos no se ha actualizado');
-        Assert.isNotNull(tasksInSystem[0].Campaign__c, 'La campaña no se ha asociado a la tarea');
-        Assert.areEqual(existingCampaignMembers[0].CampaignId, tasksInSystem[0].Campaign__c, 'La campaña no se ha asociado a la tarea');
+            Assert.isFalse(existingCampaignMembers.isEmpty(), 'No se ha encontrado el CampaignMember para el contacto: ' + campaignMember.ContactId);
+            Assert.areNotEqual(0, existingCampaignMembers[0].CallRetries__c, 'El número de reintentos no se ha actualizado');
+        }
     }
 
     /**

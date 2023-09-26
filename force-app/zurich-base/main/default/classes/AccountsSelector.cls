@@ -213,6 +213,75 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
+     * Busca cuentas a partir de un listado de DNIs y record type Customer o Business Customer
+     * @author overes
+     * @date 16/08/2023
+     * @param  documents Listado de DNIs
+     * @return           Listado de cuentas
+     */
+    public List<Account> findByNationalIdAndRcTypeCustAndBC(List<String> documents)
+    {
+        List<Account> result = new List<Account>();
+
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c,Intermediary_Name__r.INFOIntermediaryCode__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
+        }
+        return result;
+    }
+
+    /**
+    * Método que recupera el Name de id de cuenta pasado por parámentro
+    * *
+    * @author overes | 09-10-2023 
+    * @param documents 
+    * @return List<Account> 
+    **/
+    public List<Account> findAccountNameById(List<String> ids)
+    {
+        return [SELECT Id, Name FROM account WHERE Id IN :ids];
+    }
+
+    /**
+     * Busca cuentas a partir de un listado de DNIs y lecord type Lead
+     * @author overes
+     * @date 16/08/2023
+     * @param  documents   Listado de DNIs
+     * @return             Listado de cuentas sobre los que se ha realizado match
+     *
+     * @change amiranda 31/08/2023 Se elimina el campo 'Name' de la query. Es un
+     * campo de solo lectura que se conforma por la concatenación de los campos
+     * 'FirstName' y 'LastName' (entre otros) que son los que se consultarán
+     * en la query. Por lo tanto, al intentar actualizar la lista de cuentas que
+     *  nos devuelve este método, Salesforce lanza una excepción.
+     */
+    public List<Account> findByNationalIdAndRcTypeLead(List<String> documents)
+    {
+        List<Account> result = new List<Account>();
+        
+        if (documents != null && !documents.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
+        }
+        return result;
+    }
+
+    /**
+     * Busca cuentas a partir de un listado de números de teléfono y record types Lead
+     * @author overes
+     * @date 16/08/2023
+     * @param  phones  Listado de números de teléfono
+     * @return         Listado de cuentas sobre los que se ha realizado match
+     */
+    public List<Account> findByPhoneAndRcTypeLead(List<String> phones)
+    {
+        List<Account> result = new List<Account>();
+
+        if (phones != null && !phones.isEmpty()) {
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
+        }
+        return result;
+    }
+
+    /**
      * Busca cuentas a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
      * maximizar resultados de búsqueda
      * @param  phones Listado de teléfonos. Válido cualquier formato
@@ -915,11 +984,58 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.addConditionNotEq(Account.Parent.IntermediaryWithUser__c, null);
 
         return
-            [
-            SELECT INFOIntermediaryCode__c, IntermediaryGroup__r.IntermediaryWithUser__c, IsPartner
-            FROM Account
-            WHERE INFOIntermediaryCode__c IN :intermediaryCodes
-            ];
+        [
+            SELECT  INFOIntermediaryCode__c, IntermediaryGroup__r.IntermediaryWithUser__c
+            FROM    Account
+            WHERE   INFOIntermediaryCode__c IN :intermediaryCodes
+            AND     IntermediaryGroup__r.IntermediaryWithUser__c != null
+        ];
+    }
+
+
+    /**
+     * Busca account a las cuales se recalculará la visibilidad de ZRM para esos registros
+     *
+     * @author dmunoz
+     * @date 21/09/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public List<Account> findAccountsWithIncorrectVisibility() {
+
+        List<Account> result = new List<Account>([SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, 
+                                                    Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
+                                                    FROM Account
+                                                    WHERE RecordType.DeveloperName IN ('Customer','BusinessCustomer')
+                                                    AND Intermediary_Name__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                                    OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
+                                                    OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+
+        return result;
+    }
+
+    /**
+     * Busca account a las cuales se recalculará la visibilidad de ZRM para esos registros a partir de unos ids de clientes
+     *
+     * @author dmunoz
+     * @date 21/09/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public List<Account> findAccountsWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
+
+        List<Account> result = new List<Account>();
+
+        if (accountIds != null && !accountIds.isEmpty()) {
+            result = new List<Account>([SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, 
+                                            Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
+                                            FROM Account
+                                            WHERE RecordType.DeveloperName IN ('Customer','BusinessCustomer') AND Id IN :accountIds
+                                            AND Intermediary_Name__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                            OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
+                                            OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+
+        }
+
+        return result;
     }
 
 }
