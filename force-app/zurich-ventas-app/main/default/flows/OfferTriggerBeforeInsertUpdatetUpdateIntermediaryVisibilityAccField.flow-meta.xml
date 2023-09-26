@@ -5,7 +5,7 @@
         <description>Se blanquea la visibilidad al blanquear el mediador</description>
         <name>Blank_Visibility</name>
         <label>Blank Visibility</label>
-        <locationX>50</locationX>
+        <locationX>110</locationX>
         <locationY>395</locationY>
         <assignmentItems>
             <assignToReference>IntermediaryVisibilityAccount</assignToReference>
@@ -22,7 +22,7 @@
         <description>Asignar el Mediador relacionado con el cliente (Account de tipo &apos;Customer&apos; o &apos;Business Customer&apos;).</description>
         <name>intermediaryAccountToIntermediaryVisibilityAccountAssignment</name>
         <label>Assign Intermediary Account to Intermediary Visibility Account</label>
-        <locationX>578</locationX>
+        <locationX>638</locationX>
         <locationY>503</locationY>
         <assignmentItems>
             <assignToReference>IntermediaryVisibilityAccount</assignToReference>
@@ -39,7 +39,7 @@
         <description>Asignar el Mediador Principal de la Agrupación relacionada con el Mediador del cliente (Account de tipo &apos;Customer&apos; o &apos;Business Customer&apos;).</description>
         <name>mainIntermediaryAccountToIntermediaryVisibilityAccountAssignment</name>
         <label>Assign Main Intermediary Account to Intermediary Visibility Account</label>
-        <locationX>314</locationX>
+        <locationX>374</locationX>
         <locationY>503</locationY>
         <assignmentItems>
             <assignToReference>IntermediaryVisibilityAccount</assignToReference>
@@ -56,7 +56,7 @@
         <description>Se ha blanqueado el mediador</description>
         <name>Changed_To_Blank_Intermediary_Name</name>
         <label>Changed To Blank Intermediary Name</label>
-        <locationX>248</locationX>
+        <locationX>176</locationX>
         <locationY>287</locationY>
         <defaultConnector>
             <targetReference>IsThereGroupingAccountAndIntermediaryMainAccountDecision</targetReference>
@@ -80,16 +80,32 @@
                 </rightValue>
             </conditions>
             <connector>
+                <isGoTo>true</isGoTo>
                 <targetReference>Blank_Visibility</targetReference>
             </connector>
             <label>Yes</label>
+        </rules>
+        <rules>
+            <name>Is_Blocked</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Blocked__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Blank_Visibility</targetReference>
+            </connector>
+            <label>Is Blocked</label>
         </rules>
     </decisions>
     <decisions>
         <description>Decidir si el cliente (Account de tipo &apos;Customer&apos; o &apos;Business Customer&apos;) tiene asociado un mediador que perteneces a una Agrupación, y a su vez dicha Agrupación dispone de un Mediador Principal.</description>
         <name>IsThereGroupingAccountAndIntermediaryMainAccountDecision</name>
         <label>Is there a Grouping Account and a Intermediary Main Account?</label>
-        <locationX>446</locationX>
+        <locationX>506</locationX>
         <locationY>395</locationY>
         <defaultConnector>
             <targetReference>intermediaryAccountToIntermediaryVisibilityAccountAssignment</targetReference>
@@ -125,7 +141,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Modificar el campo parent por el nuevo IntermediaryGroup__c para recoger la información de visibilidad en agrupaciones</description>
+    <description>No actualizar la visibilidad en caso que se bloquee el registro</description>
     <environments>Default</environments>
     <interviewLabel>AccountTriggerBeforeUpdateUpdateIntermediaryVisibilityAccField {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Offer Trigger - Before Insert/Update - Update Intermediary Visibility Acc Field</label>
@@ -152,7 +168,7 @@
         <description>Actualizar el campo &apos;IntermediaryVisibilityAcc__c&apos; con el valor guardado en la variable &apos;IntermediaryVisibilityAccount&apos; en el proceso de decisión anterior.</description>
         <name>UpdateTriggeredOfferAction</name>
         <label>Update Triggered Offer</label>
-        <locationX>248</locationX>
+        <locationX>176</locationX>
         <locationY>779</locationY>
         <inputAssignments>
             <field>IntermediaryVisibilityAcc__c</field>
@@ -163,7 +179,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>122</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Changed_To_Blank_Intermediary_Name</targetReference>
@@ -176,7 +192,7 @@ ISCHANGED({!$Record.IntermediaryId__c})
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>IntermediaryVisibilityAccount</name>
         <dataType>String</dataType>

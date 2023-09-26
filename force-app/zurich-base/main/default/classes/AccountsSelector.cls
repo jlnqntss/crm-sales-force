@@ -1022,10 +1022,57 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return
         [
-            SELECT  INFOIntermediaryCode__c, IntermediaryGroup__r.IntermediaryWithUser__c, IsPartner
+            SELECT  INFOIntermediaryCode__c, IntermediaryGroup__r.IntermediaryWithUser__c
             FROM    Account
             WHERE   INFOIntermediaryCode__c IN :intermediaryCodes
+            AND     IntermediaryGroup__r.IntermediaryWithUser__c != null
         ];
+    }
+
+
+    /**
+     * Busca account a las cuales se recalculará la visibilidad de ZRM para esos registros
+     *
+     * @author dmunoz
+     * @date 21/09/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public List<Account> findAccountsWithIncorrectVisibility() {
+
+        List<Account> result = new List<Account>([SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, 
+                                                    Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
+                                                    FROM Account
+                                                    WHERE RecordType.DeveloperName IN ('Customer','BusinessCustomer')
+                                                    AND Intermediary_Name__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                                    OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
+                                                    OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+
+        return result;
+    }
+
+    /**
+     * Busca account a las cuales se recalculará la visibilidad de ZRM para esos registros a partir de unos ids de clientes
+     *
+     * @author dmunoz
+     * @date 21/09/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public List<Account> findAccountsWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
+
+        List<Account> result = new List<Account>();
+
+        if (accountIds != null && !accountIds.isEmpty()) {
+            result = new List<Account>([SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, 
+                                            Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
+                                            FROM Account
+                                            WHERE RecordType.DeveloperName IN ('Customer','BusinessCustomer') AND Id IN :accountIds
+                                            AND Intermediary_Name__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                            OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
+                                            OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+
+        }
+
+        return result;
     }
 
 }
