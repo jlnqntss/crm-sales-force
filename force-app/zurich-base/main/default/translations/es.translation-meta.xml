@@ -6231,6 +6231,28 @@ Cree el acta y vuelva a intentarlo.</label>
     </flowDefinitions>
     <flowDefinitions>
         <flows/>
+        <fullName>CloneOfferForIntermediary</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows>
+            <label>Generar Oferta para Mediador</label>
+            <screens>
+                <fields>
+                    <name>ClonedOfferForIntermediaryTrueErrorMessage</name>
+                </fields>
+                <name>clonedOfferForIntermediaryIsTrueErrorScreen</name>
+            </screens>
+            <screens>
+                <fields>
+                    <name>OfferCloningSucceeded</name>
+                </fields>
+                <name>offerSuccessfullyCreatedMessage</name>
+            </screens>
+        </flows>
+        <fullName>CloneOfferForIntermediaryScr</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows/>
         <fullName>Customer_Care_Case_priority</fullName>
     </flowDefinitions>
     <flowDefinitions>
@@ -6256,6 +6278,10 @@ Cree el acta y vuelva a intentarlo.</label>
     <flowDefinitions>
         <flows/>
         <fullName>New_Campaign_Member_Status_Creation</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows/>
+        <fullName>OfferTriggerAfterUpdateCloneOfferForIntermediary</fullName>
     </flowDefinitions>
     <flowDefinitions>
         <flows/>

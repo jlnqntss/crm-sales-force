@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <description>¿Ha sido ya clonada para un mediador la oferta de origen?</description>
+        <name>clonedOfferForIntermediaryIsTrueDecision</name>
+        <label>Oferta para Mediador ya generada?</label>
+        <locationX>182</locationX>
+        <locationY>134</locationY>
+        <defaultConnector>
+            <targetReference>cloneOfferForIntermediarySubflow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>clonedOfferForIntermediaryIsTrue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId.ClonedOfferForIntermediary__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>clonedOfferForIntermediaryIsTrueErrorScreen</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <description>Screen Flow para clonar una oferta para el intermediario.</description>
+    <environments>Default</environments>
+    <interviewLabel>recordId {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Clone Offer For Intermediary Screen Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <runInMode>DefaultMode</runInMode>
+    <screens>
+        <description>Muestra un mensaje de error si la oferta ya ha sido clonada</description>
+        <name>clonedOfferForIntermediaryIsTrueErrorScreen</name>
+        <label>Error por oferta ya clonada</label>
+        <locationX>50</locationX>
+        <locationY>242</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>ClonedOfferForIntermediaryTrueErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(255, 0, 0);&quot;&gt;Oferta para Mediador ya generada&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Muestra un mensaje de éxito tras generar la oferta de mediador</description>
+        <name>offerSuccessfullyCreatedMessage</name>
+        <label>Mensaje por Oferta creada con éxito</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>OfferCloningSucceeded</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(73, 176, 13); font-size: 16px;&quot;&gt;Oferta para Mediador generada con éxito&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>clonedOfferForIntermediaryIsTrueDecision</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>Lanza el subflow preparado para realizar el clonado y la actualización del registro antiguo</description>
+        <name>cloneOfferForIntermediarySubflow</name>
+        <label>Lanza Clone Offer For Intermediary</label>
+        <locationX>314</locationX>
+        <locationY>242</locationY>
+        <connector>
+            <targetReference>offerSuccessfullyCreatedMessage</targetReference>
+        </connector>
+        <flowName>CloneOfferForIntermediary</flowName>
+        <inputAssignments>
+            <name>OriginOffer</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <variables>
+        <description>Oferta a clonar</description>
+        <name>recordId</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>
