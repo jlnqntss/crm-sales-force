@@ -22,7 +22,7 @@ public with sharing class SalesCRMQuoteAndBuyService
     private static AccountsSelector accountSelector = new AccountsSelector();
 
     private static final String INVALID_FIELD = 'INVALID_FIELD';
-
+    @TestVisible
     private static final String NATIONAL_ID_TYPE_NIF = 'N';
 
     /**
@@ -269,6 +269,7 @@ public with sharing class SalesCRMQuoteAndBuyService
      * @author overes | 09-02-2023
      * @param requestData
      **/
+    @TestVisible
     private static void checkRequiredFields(Lead requestData)
     {
         Set<String> receivedFieldsLead = requestData.getReceivedFields();
@@ -297,6 +298,7 @@ public with sharing class SalesCRMQuoteAndBuyService
      * @author overes | 09-03-2023
      * @param requestData
      **/
+    @TestVisible
     private static void checkPicklistValues(Lead requestData)
     {
         Set<String> invalidFields = new Set<String>();
@@ -339,6 +341,7 @@ public with sharing class SalesCRMQuoteAndBuyService
      * @param accountToFill se rellena con los datos del Lead
      * @param requestData contiene la configuración del Lead
      **/
+    @TestVisible
     private static void fillAccountFields(Account acc, Lead requestData)
     {
         acc.LastName = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
@@ -365,6 +368,7 @@ public with sharing class SalesCRMQuoteAndBuyService
      * @param accountToFill
      * @param documentId
      **/
+    @TestVisible
     private static void setNationalIdType(Account acc, String documentId)
     {
         if ( String.isNotBlank(documentId) && (acc.NationalIdType__c == null || acc.NationalId__c == null) )
@@ -378,6 +382,7 @@ public with sharing class SalesCRMQuoteAndBuyService
     /* -------------------------------------------------------------------------- */
     public class Lead
     {
+        @TestVisible
         private Map<String, Object> valuesByProperty {
             get {
                 if (valuesByProperty == null)
@@ -437,7 +442,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         {
             return valuesByProperty.keySet().clone();
         }
-
+        @TestVisible
         private Object get(String property)
         {
             return valuesByProperty.get(property);
@@ -447,6 +452,7 @@ public with sharing class SalesCRMQuoteAndBuyService
     /* ----- * Clase interna para la propiedad "cliente" de la clase "Lead" ----- */
     public class Cliente
     {
+        @TestVisible
         private Map<String, Object> valuesByProperty {
             get {
                 if (valuesByProperty == null)
@@ -538,7 +544,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         {
             return valuesByProperty.keySet().clone();
         }
-
+        @TestVisible
         private Object get(String property)
         {
             return valuesByProperty.get(property);
@@ -548,6 +554,7 @@ public with sharing class SalesCRMQuoteAndBuyService
     /* Clase interna para la propiedad "contacto" de la clase "Cliente" */
     public class Contacto
     {
+        @TestVisible
         private Map<String, Object> valuesByProperty {
             get {
                 if (valuesByProperty == null)
@@ -627,7 +634,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         {
             return valuesByProperty.keySet().clone();
         }
-
+        @TestVisible
         private Object get(String property)
         {
             return valuesByProperty.get(property);
@@ -637,6 +644,7 @@ public with sharing class SalesCRMQuoteAndBuyService
     /* ------- Clase interna para la propiedad "poliza" de la clase "Lead" ------ */
     public class Poliza
     {
+        @TestVisible
         private Map<String, Object> valuesByProperty {
             get {
                 if (valuesByProperty == null)
@@ -728,7 +736,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         {
             return valuesByProperty.keySet().clone();
         }
-
+        @TestVisible
         private Object get(String property)
         {
             return valuesByProperty.get(property);
@@ -738,6 +746,7 @@ public with sharing class SalesCRMQuoteAndBuyService
     /* Clase interna para la propiedad "coche" de la clase "Poliza" */
     public class Coche
     {
+        @TestVisible
         private Map<String, Object> valuesByProperty {
             get {
                 if (valuesByProperty == null)
@@ -793,7 +802,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         {
             return valuesByProperty.keySet().clone();
         }
-
+        @TestVisible
         private Object get(String property)
         {
             return valuesByProperty.get(property);
@@ -803,6 +812,7 @@ public with sharing class SalesCRMQuoteAndBuyService
     /* Clase interna para la propiedad "errores" de la clase "Poliza" */
     public class Errores
     {
+        @TestVisible
         private Map<String, Object> valuesByProperty {
             get {
                 if (valuesByProperty == null)
@@ -834,7 +844,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         {
             return valuesByProperty.keySet().clone();
         }
-
+        @TestVisible
         private Object get(String property)
         {
             return valuesByProperty.get(property);
