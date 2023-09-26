@@ -30,7 +30,8 @@ public with sharing class AccountLeadUtil
      * @change amiranda 04/09/2023 Se cambia el mensaje a mostrar. En vez de utilizar
      * el campo 'Name', se concatena el campo 'FirstName' + 'LastName'.
      */
-    public static List<Account> checkLeads(List<Account> newList){
+    public static List<Account> checkLeads(List<Account> newList)
+    {
         List<Account> accList = newList;
         for (Account acc : accList)
         {
@@ -41,10 +42,12 @@ public with sharing class AccountLeadUtil
                 if (newAcc != null)
                 {
                     String errorMsg = Label.Lead_Duplicates_Control_Error + ': ';
-                    if (!String.isBlank(newAcc.FirstName)) {
-                        errorMsg += + newAcc.FirstName + ' ';
+                    if ( !String.isBlank(newAcc.FirstName) )
+                    {
+                        errorMsg += +newAcc.FirstName + ' ';
                     }
-                    if (!String.isBlank(newAcc.LastName)) {
+                    if ( !String.isBlank(newAcc.LastName) )
+                    {
                         errorMsg += newAcc.LastName + ' ';
                     }
                     acc.addError(errorMsg + '(' +  newAcc.Id + ')');
@@ -108,14 +111,14 @@ public with sharing class AccountLeadUtil
      */
     public static Map<String, Account> leadAssignment(Account acc, String intermediaryCode, String origin, String language, String postalCode)
     {
-        if(String.isNotBlank(intermediaryCode))
+        if( String.isNotBlank(intermediaryCode) )
         {
             return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
         }
 
         if(acc != null)
         {
-            if(String.isNotBlank(acc.Intermediary_Name__c))
+            if( String.isNotBlank(acc.Intermediary_Name__c) )
             {
                 intermediaryCode = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
             }

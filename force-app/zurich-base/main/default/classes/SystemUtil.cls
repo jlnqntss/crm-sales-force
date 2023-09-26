@@ -42,7 +42,7 @@ public with sharing class SystemUtil
             Notify_From__c,
             Send_Email__c
             FROM ErrorManagementSetting__mdt
-            WHERE MasterLabel = :Label.ErrorMetadata
+            WHERE MasterLabel = : Label.ErrorMetadata
         ];
 
         if ( !results.isEmpty() )
@@ -105,7 +105,7 @@ public with sharing class SystemUtil
             WS_Source_IBA_EMEA__c,
             NumDaysCallAtribution__c
             FROM AdminSetup__mdt
-            WHERE MasterLabel = :ADMINSETUP_LABEL
+            WHERE MasterLabel = : ADMINSETUP_LABEL
         ];
 
         if ( !results.isEmpty() )
@@ -185,7 +185,7 @@ public with sharing class SystemUtil
     /**
      * Método que genera el hash de seguridad de un string, utiliza la cadena mas corta de encriptado.
      * El resultado de es transformad en base64.
-     Este has es tres veces mas corto el el generado por el método generateHash.
+       Este has es tres veces mas corto el el generado por el método generateHash.
      **
      * @param String id
      * @return String
@@ -457,7 +457,7 @@ public with sharing class SystemUtil
             RecordType rt = [
                 SELECT id
                 FROM RecordType
-                WHERE sObjectType = 'Account' AND DeveloperName = :Label.Master
+                WHERE sObjectType = 'Account' AND DeveloperName = : Label.Master
             ];
             identifier = rt.id;
         }
@@ -499,7 +499,7 @@ public with sharing class SystemUtil
      **/
     public static User recordOwnerSelector()
     {
-        User user = [SELECT ID FROM User WHERE Name = :Label.RecordOwner];
+        User user = [SELECT ID FROM User WHERE Name = : Label.RecordOwner];
 
         return user;
     }
@@ -516,7 +516,7 @@ public with sharing class SystemUtil
         List<Account> listaPartner = [
             SELECT Id, Name, Masterpolicy__c
             FROM Account
-            WHERE RecordType.Name = :Label.Partner AND Masterpolicy__c IN :keys
+            WHERE RecordType.Name = : Label.Partner AND Masterpolicy__c IN : keys
         ];
         //Rellenar el mapa cuyo key es el número de Masterpolicy de IBA
         for (Account acc : listaPartner)
@@ -548,7 +548,7 @@ public with sharing class SystemUtil
             numDays = adminSetup.NumDaysCallAtribution__c;
         }
 
-        Date startDate = Date.today().addDays(-Integer.valueOf(numDays) );
+        Date startDate = Date.today().addDays( -Integer.valueOf(numDays) );
 
         List<Contact> listaContactos = [
             SELECT
@@ -587,9 +587,9 @@ public with sharing class SystemUtil
             Account.CustomerNum_Partner__c,
             SourceCountry__c,
             (Select id, WhatId, OwnerId from Tasks where RecordType.DeveloperName =: Label.Interaction and CallDisposition=: Label.Valid
-                and CreatedDate >= :startDate )
+                                                                                                                            and CreatedDate >= : startDate )
             FROM Contact
-            WHERE CustomerNum__c IN :keys
+            WHERE CustomerNum__c IN : keys
         ];
 
         //Rellenar el mapa cuyo key es el número de cliente de IBA
@@ -653,8 +653,8 @@ public with sharing class SystemUtil
             SourceCountry__c,
             Partner__c
             FROM Contact
-            WHERE email IN :emails
-            AND RecordType.DeveloperName IN :developerNames
+            WHERE email IN : emails
+            AND RecordType.DeveloperName IN : developerNames
         ];
 
         //Rellenar el mapa cuyo key es el email
@@ -733,11 +733,11 @@ public with sharing class SystemUtil
             Partner__c,
             LastModifiedDate
             FROM Contact
-            WHERE (Email IN :emails
-            OR MobilePhone IN:mobiles)
+            WHERE (Email IN : emails
+                   OR MobilePhone IN : mobiles)
             AND
-            (RecordType.DeveloperName=:Label.LeadLife OR RecordType.DeveloperName=:Label.LeadGI
-            OR RecordType.DeveloperName=:Label.CustomerLife OR RecordType.DeveloperName=:Label.CustomerGI)
+                (RecordType.DeveloperName=: Label.LeadLife OR RecordType.DeveloperName=: Label.LeadGI
+                                                                                        OR RecordType.DeveloperName=: Label.CustomerLife OR RecordType.DeveloperName=: Label.CustomerGI)
 
         ];
 
@@ -748,7 +748,8 @@ public with sharing class SystemUtil
             legalEntityName = legalIdentityByLabel.get(con.LegalEntity__c);
 
             //Rellenar el mapa con matchcode: EMAIL + BIRTHDATE
-            if( !String.isBlank(con.Email) && con.Birthdate!=null ){
+            if( !String.isBlank(con.Email) && con.Birthdate != null )
+            {
 
                 matchCode = con.Email + String.valueOfGmt(con.Birthdate);
                 addMatchcodeToMap( matchcodeMap,  matchcode,  con);
@@ -759,7 +760,8 @@ public with sharing class SystemUtil
             }
 
             //Rellenar el mapa con matchcode: MOBILEPHONE + BIRTHDATE
-            if( !String.isBlank(con.MobilePhone) && con.Birthdate!=null ){
+            if( !String.isBlank(con.MobilePhone) && con.Birthdate != null )
+            {
 
                 matchCode = con.SourceCountry__c + con.MobilePhone + String.valueOfGmt(con.Birthdate);
                 addMatchcodeToMap( matchcodeMap,  matchcode,  con);
@@ -769,7 +771,8 @@ public with sharing class SystemUtil
             }
 
             //Rellenar el mapa con matchcode: EMAIL + MOBILEPHONE
-            if( !String.isBlank(con.MobilePhone) && !String.isBlank(con.Email) ){
+            if( !String.isBlank(con.MobilePhone) && !String.isBlank(con.Email) )
+            {
 
                 matchCode = con.Email + con.SourceCountry__c + con.MobilePhone;
                 addMatchcodeToMap( matchcodeMap,  matchcode,  con);
@@ -779,7 +782,8 @@ public with sharing class SystemUtil
             }
 
             //Rellenar el mapa con matchcode: EMAIL  (excluyendo subscribers)
-            if(  !String.isBlank(con.Email) && con.CustomerNum__c != null ){
+            if(  !String.isBlank(con.Email) && con.CustomerNum__c != null )
+            {
 
                 matchCode = con.Email;
                 addMatchcodeToMap( matchcodeMap,  matchcode,  con);
@@ -789,7 +793,8 @@ public with sharing class SystemUtil
             }
 
             //Rellenar el mapa con matchcode: MOBILEPHONE
-            if(  !String.isBlank(con.MobilePhone) ){
+            if(  !String.isBlank(con.MobilePhone) )
+            {
 
                 matchCode = con.SourceCountry__c + con.MobilePhone;
                 addMatchcodeToMap( matchcodeMap,  matchcode,  con);
@@ -814,7 +819,7 @@ public with sharing class SystemUtil
         }
     }
 
-     /**
+    /**
      * Método que añade el contacto al mapa de matchcodes
      ** Si existen múltiples contactos con el mismo matchcode, se escoge el cliente frente a un lead
      ** y si hay varios leads se escogerá el que tenga última modificación más reciente
@@ -823,23 +828,30 @@ public with sharing class SystemUtil
      **/
     public static void addMatchcodeToMap(Map<String, Contact> matchcodeMap, String matchcode, Contact con)
     {
-        if( matchcodeMap != null ){
+        if( matchcodeMap != null )
+        {
 
-            if( matchcodeMap.containsKey(matchCode)){
+            if( matchcodeMap.containsKey(matchCode) )
+            {
 
                 Contact contactInMap = matchcodeMap.get(matchCode);
                 //Si es cliente, se sobreescribe el registro en el mapa
-                if( con.status__c == 'Activo'){
+                if( con.status__c == 'Activo')
+                {
 
                     matchcodeMap.put(matchCode, con);
 
-                // Si es lead y es más reciente, se sobreescribe el registro en el mapa
-                } else if ( con.status__c == 'Lead' && contactInMap.status__c == 'Lead' && (con.LastModifiedDate  > contactInMap.LastModifiedDate) ){
+                    // Si es lead y es más reciente, se sobreescribe el registro en el mapa
+                }
+                else if ( con.status__c == 'Lead' && contactInMap.status__c == 'Lead' && (con.LastModifiedDate  > contactInMap.LastModifiedDate) )
+                {
 
                     matchcodeMap.put(matchCode, con);
                 }
 
-            }else{
+            }
+            else
+            {
                 matchcodeMap.put(matchCode, con);
             }
 
@@ -883,9 +895,9 @@ public with sharing class SystemUtil
             )
             FROM Order
             WHERE
-                (RecordType.DeveloperName = :Label.PolicyGI
-                                            OR RecordType.DeveloperName = :Label.PolicyLife)
-            AND PolicyNum__c IN :keys
+                (RecordType.DeveloperName = : Label.PolicyGI
+                                            OR RecordType.DeveloperName = : Label.PolicyLife)
+            AND PolicyNum__c IN : keys
         ];
 
         for (Order acc : listaPolicy)
@@ -924,10 +936,10 @@ public with sharing class SystemUtil
             QuoteStatus__c
             FROM Order
             WHERE
-                (RecordType.DeveloperName = :Label.QuoteGI
-                                            OR RecordType.DeveloperName = :Label.QuoteLife)
-            AND ContactId__r.CustomerNum__c IN :customerNum
-            AND Id IN (Select OrderId from OrderItem where Product2.Name IN :products)
+                (RecordType.DeveloperName = : Label.QuoteGI
+                                            OR RecordType.DeveloperName = : Label.QuoteLife)
+            AND ContactId__r.CustomerNum__c IN : customerNum
+            AND Id IN (Select OrderId from OrderItem where Product2.Name IN : products)
         ];
 
 
@@ -982,9 +994,9 @@ public with sharing class SystemUtil
             // (SELECT Id, Product2.Name, itemId__c,ItemAge__c,Active__c,ServiceDate,ItemStatus__c,IMEIDocumentation__c,TicketDocumentation__c,OrderId from OrderItems)
             FROM Order
             WHERE
-                (RecordType.DeveloperName = :Label.QuoteGI
-                                            OR RecordType.DeveloperName = :Label.QuoteLife)
-            AND QuoteEntry__c IN :keys
+                (RecordType.DeveloperName = : Label.QuoteGI
+                                            OR RecordType.DeveloperName = : Label.QuoteLife)
+            AND QuoteEntry__c IN : keys
         ];
 
         for (Order acc : listaQuote)
@@ -1008,7 +1020,7 @@ public with sharing class SystemUtil
         List<OrderItem> listaOrderItem = [
             SELECT id, ItemId__c, ItemAge__c, OrderId
             FROM OrderItem
-            WHERE ItemId__c IN :keys
+            WHERE ItemId__c IN : keys
         ];
 
         for (OrderItem ord : listaOrderItem)
@@ -1037,7 +1049,7 @@ public with sharing class SystemUtil
             Product2.Family,
             Product2.Brand__c
             FROM PricebookEntry
-            WHERE Product2.ProductID__c IN :keys
+            WHERE Product2.ProductID__c IN : keys
         ];
 
         for (PricebookEntry prod : listaProductos)
@@ -1072,7 +1084,7 @@ public with sharing class SystemUtil
         List<Cover__c> listaCovers = [
             SELECT Id, PolicyProduct__r.ItemId__c, CoverId__c, ParentCoverId__c, Name
             FROM Cover__c
-            WHERE CoverId__c IN :keys
+            WHERE CoverId__c IN : keys
         ];
 
         for (Cover__c cover : listaCovers)
@@ -1095,7 +1107,7 @@ public with sharing class SystemUtil
         List<Case> listaClaims = [
             SELECT Id, ClaimNumber__c
             FROM Case
-            WHERE RecordType.DeveloperName = :Label.Claim AND ClaimNumber__c IN :keys
+            WHERE RecordType.DeveloperName = : Label.Claim AND ClaimNumber__c IN : keys
         ];
 
         for (Case claim : listaClaims)
@@ -1166,9 +1178,9 @@ public with sharing class SystemUtil
      * @author arcortazar
      * @date 23/01/2023
      **/
-    public static Map<String, List<String>> getDependantPicklistValues(String objectName, String controllingField, String dependentField)
+    public static Map<String, List<String> > getDependantPicklistValues(String objectName, String controllingField, String dependentField)
     {
-        Map<String, List<String>> controllingInfo = new Map<String, List<String>>();
+        Map<String, List<String> > controllingInfo = new Map<String, List<String> >();
 
         Schema.SObjectType objType = Schema.getGlobalDescribe().get(objectName);
 
@@ -1181,7 +1193,7 @@ public with sharing class SystemUtil
 
         for(Schema.PicklistEntry currControllingValue : controllingValues)
         {
-            controllingInfo.put(currControllingValue.getLabel(), new List<String>());
+            controllingInfo.put( currControllingValue.getLabel(), new List<String>() );
         }
 
         for(Schema.PicklistEntry currDependentValue : dependentValues)
@@ -1189,15 +1201,15 @@ public with sharing class SystemUtil
             String jsonString = JSON.serialize(currDependentValue);
             MyPickListInfo info = (MyPickListInfo) JSON.deserialize(jsonString, MyPickListInfo.class);
 
-            String hexString = EncodingUtil.convertToHex(EncodingUtil.base64Decode(info.validFor)).toUpperCase();
+            String hexString = EncodingUtil.convertToHex( EncodingUtil.base64Decode(info.validFor) ).toUpperCase();
             Integer baseCount = 0;
-            for(Integer curr : hexString.getChars())
+            for( Integer curr : hexString.getChars() )
             {
                 List<String> returningControllers = getControllers(curr, baseCount, controllingValues);
 
                 for(String controller : returningControllers)
                 {
-                    controllingInfo.get(controller).add(currDependentValue.getLabel());
+                    controllingInfo.get(controller).add( currDependentValue.getLabel() );
                 }
 
                 baseCount += 4;
@@ -1228,21 +1240,21 @@ public with sharing class SystemUtil
             val = currentHex - 48;
         }
 
-        if((val & 8) == 8)
+        if( (val & 8) == 8 )
         {
-            listaControladores.add(controllingValues[baseCount + 0].getLabel());
+            listaControladores.add( controllingValues[baseCount + 0].getLabel() );
         }
-        if((val & 4) == 4)
+        if( (val & 4) == 4 )
         {
-            listaControladores.add(controllingValues[baseCount + 1].getLabel());
+            listaControladores.add( controllingValues[baseCount + 1].getLabel() );
         }
-        if((val & 2) == 2)
+        if( (val & 2) == 2 )
         {
-            listaControladores.add(controllingValues[baseCount + 2].getLabel());
+            listaControladores.add( controllingValues[baseCount + 2].getLabel() );
         }
-        if((val & 1) == 1)
+        if( (val & 1) == 1 )
         {
-            listaControladores.add(controllingValues[baseCount + 3].getLabel());
+            listaControladores.add( controllingValues[baseCount + 3].getLabel() );
         }
 
         return listaControladores;
@@ -1254,17 +1266,18 @@ public with sharing class SystemUtil
     }
     // # endregion
 
-    public class SystemUtilException extends Exception {}
+    public class SystemUtilException extends Exception
+    {}
 
     /**
      * Método que devuelve los valores que controlan una picklist dependiente, segun su recordType.
      * Es decir, si le solicitamos el campo N3 que depente del N2 obtendremos un mapa con la siguiente estructura:
      *  {N3_1=(N2_1, N2_2), N3_2=(N2_3), N3_3=(N2_1, N2_2, N2_4),....}
      */
-    public static Map<String, List<String>> getControllerPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId )
+    public static Map<String, List<String> > getControllerPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId )
     {
         String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
-        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId+ '/' + fieldName;
+        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId + '/' + fieldName;
 
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.setEndpoint(endpoint);
@@ -1274,32 +1287,34 @@ public with sharing class SystemUtil
         httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
 
         List<String> listControllers;
-        Map<String, List<String>> mapControllers = new Map<String, List<String>>(); // el retorno
+        Map<String, List<String> > mapControllers = new Map<String, List<String> >(); // el retorno
 
-        try {
+        try
+        {
             Http http = new Http();
             HttpResponse httpResponse = http.send(httpRequest);
-            if (httpResponse.getStatusCode() == 200 ) {
+            if (httpResponse.getStatusCode() == 200 )
+            {
                 String jsonString = httpResponse.getBody();
-                Map<String, Object> resultado = (Map<String, Object>)JSON.deserializeUntyped(jsonString);
+                Map<String, Object> resultado = (Map<String, Object>) JSON.deserializeUntyped(jsonString);
 
                 // Lista de valores controladores
-                Map<String, Object> mapControllersValues = (Map<String, Object>)resultado.get('controllerValues');
-                listControllers = new List<String>(mapControllersValues.keyset());
+                Map<String, Object> mapControllersValues = (Map<String, Object>) resultado.get('controllerValues');
+                listControllers = new List<String>( mapControllersValues.keyset() );
 
                 // Lista de objetos
-                List<Object> listValues = (List<Object>)resultado.get('values');
+                List<Object> listValues = (List<Object>) resultado.get('values');
 
                 for(Object val: listValues)
                 {
-                    Map<String, Object> valTemp = (Map<String, Object>)val;
-                    String key = (String)valTemp.get('label');
-                    List<Object> lstPosiciones = (List<Object>)valTemp.get('validFor');
+                    Map<String, Object> valTemp = (Map<String, Object>) val;
+                    String key = (String) valTemp.get('label');
+                    List<Object> lstPosiciones = (List<Object>) valTemp.get('validFor');
                     List<String> lstControladores = new List<String>();
                     for (Object pos : lstPosiciones)
                     {
-                        Integer i = (Integer)pos;
-                        lstControladores.add(listControllers.get(i));
+                        Integer i = (Integer) pos;
+                        lstControladores.add( listControllers.get(i) );
                     }
                     mapControllers.put(key, lstControladores);
                 }
@@ -1308,7 +1323,9 @@ public with sharing class SystemUtil
             {
                 throw new CalloutException( httpResponse.getBody() );
             }
-        } catch( System.Exception e) {
+        }
+        catch( System.Exception e)
+        {
             throw e;
         }
 
@@ -1320,13 +1337,13 @@ public with sharing class SystemUtil
      * Es decir, si le solicitamos el campo N3 que depente del N2 obtendremos un mapa con la siguiente estructura:
      *  {N2_1=(N3_1, N3_2), N2_2=(N3_1, N3_3, N3_4), N2_3=(N3_5), .....}
      */
-    public static Map<String, List<String>> getDependantPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId)
+    public static Map<String, List<String> > getDependantPicklistValuesByRecordType(String objectName, String fieldName, String recordTypeId)
     {
         String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
-        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId+ '/' + fieldName;
+        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId + '/' + fieldName;
 
         List<String> listControllers;
-        Map<String, List<String>> mapDependant = new Map<String, List<String>>(); // el retorno
+        Map<String, List<String> > mapDependant = new Map<String, List<String> >(); // el retorno
 
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.setEndpoint(endpoint);
@@ -1335,33 +1352,35 @@ public with sharing class SystemUtil
         String sesionId = UserInfo.getSessionId();
         httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
 
-        try {
+        try
+        {
             Http http = new Http();
             HttpResponse httpResponse = http.send(httpRequest);
-            if (httpResponse.getStatusCode() == 200 ) {
+            if (httpResponse.getStatusCode() == 200 )
+            {
                 String jsonString = httpResponse.getBody();
-                Map<String, Object> resultado = (Map<String, Object>)JSON.deserializeUntyped(jsonString);
+                Map<String, Object> resultado = (Map<String, Object>) JSON.deserializeUntyped(jsonString);
 
                 // Lista de valores controladores
-                Map<String, Object> mapControllersValues = (Map<String, Object>)resultado.get('controllerValues');
-                listControllers = new List<String>(mapControllersValues.keyset());
+                Map<String, Object> mapControllersValues = (Map<String, Object>) resultado.get('controllerValues');
+                listControllers = new List<String>( mapControllersValues.keyset() );
 
                 // Lista de objetos
-                List<Object> listValues = (List<Object>)resultado.get('values');
+                List<Object> listValues = (List<Object>) resultado.get('values');
 
                 for(Object val: listValues)
                 {
-                    Map<String, Object> valTemp = (Map<String, Object>)val;
-                    String label = (String)valTemp.get('label');
-                    List<Object> lstPosiciones = (List<Object>)valTemp.get('validFor');
+                    Map<String, Object> valTemp = (Map<String, Object>) val;
+                    String label = (String) valTemp.get('label');
+                    List<Object> lstPosiciones = (List<Object>) valTemp.get('validFor');
                     for (Object pos : lstPosiciones)
                     {
-                        Integer i = (Integer)pos;
+                        Integer i = (Integer) pos;
                         String key = listControllers.get(i);
 
-                        if(!mapDependant.keySet().contains(key))
+                        if( !mapDependant.keySet().contains(key) )
                         {
-                            mapDependant.put(key, new List<String>());
+                            mapDependant.put( key, new List<String>() );
                         }
 
                         mapDependant.get(key).add(label);
@@ -1372,7 +1391,9 @@ public with sharing class SystemUtil
             {
                 throw new CalloutException( httpResponse.getBody() );
             }
-        } catch( System.Exception e) {
+        }
+        catch( System.Exception e)
+        {
             throw e;
         }
 
@@ -1436,7 +1457,7 @@ public with sharing class SystemUtil
      */
     public static String getInstanceUrl()
     {
-        return String.valueOf(URL.getSalesforceBaseUrl().toExternalForm());
+        return String.valueOf( URL.getSalesforceBaseUrl().toExternalForm() );
     }
 
     /**
@@ -1458,19 +1479,19 @@ public with sharing class SystemUtil
     }
 
     /**
-    * @description Método que comprueba si la fecha solicitada se encuentra dentro
-    * del horario de atención. Si la fecha y hora no se encuentra dentro de la
-    * franja horaria marcada por las business hours, devuelve la siguiente hora 
-    * hábil.
-    *
-    * @author amiranda
-    * @date 20-09-2023 
-    * @param requestedDatetime fecha y hora de preferencia de contacto
-    * @param businessHours nombre de las business hours. Estas indican la franja
-    * horaria en la que un usuario estará disponible.
-    * @return Datetime fecha y hora que se encuentra dentro de la franja horaria
-    * de las business hours
-    **/
+     * @description Método que comprueba si la fecha solicitada se encuentra dentro
+     * del horario de atención. Si la fecha y hora no se encuentra dentro de la
+     * franja horaria marcada por las business hours, devuelve la siguiente hora
+     * hábil.
+     *
+     * @author amiranda
+     * @date 20-09-2023
+     * @param requestedDatetime fecha y hora de preferencia de contacto
+     * @param businessHours nombre de las business hours. Estas indican la franja
+     * horaria en la que un usuario estará disponible.
+     * @return Datetime fecha y hora que se encuentra dentro de la franja horaria
+     * de las business hours
+     **/
     public static Datetime getContactDatetime(Datetime requestedDatetime, String businessHoursName)
     {
         if (requestedDatetime == null)
@@ -1483,7 +1504,7 @@ public with sharing class SystemUtil
             //Recuperamos la configuración del horario de atención del ZRM Ventas
             List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name =: businessHoursName LIMIT 1];
 
-            if (businessHoursList != null && !businessHoursList.isEmpty())
+            if ( businessHoursList != null && !businessHoursList.isEmpty() )
             {
                 return BusinessHours.nextStartDate(businessHoursList.get(0).Id, requestedDatetime);
             }

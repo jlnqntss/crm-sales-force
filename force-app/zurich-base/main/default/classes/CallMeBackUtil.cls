@@ -33,7 +33,7 @@ public with sharing class CallMeBackUtil
 
         List<purecloud__PureCloud_Queue__c> genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c
                                                             FROM purecloud__PureCloud_Queue__c
-                                                            WHERE Name = :queueName];
+                                                            WHERE Name = : queueName];
 
         if ( genesysQueue == null || genesysQueue.isEmpty() )
         {

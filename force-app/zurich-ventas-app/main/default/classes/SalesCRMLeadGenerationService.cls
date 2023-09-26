@@ -38,13 +38,13 @@ public with sharing class SalesCRMLeadGenerationService
     // #region Public methods
 
     /**
-    * @description Método que se encarga de validar la información recibida en el
-    * Ws 'WS_SalesCRM' para el recurso 'leadGeneration'
-    *
-    * @author amiranda
-    * @date 02-09-2023 
-    * @param Lead requestData con la información del Lead
-    **/
+     * @description Método que se encarga de validar la información recibida en el
+     * Ws 'WS_SalesCRM' para el recurso 'leadGeneration'
+     *
+     * @author amiranda
+     * @date 02-09-2023
+     * @param Lead requestData con la información del Lead
+     **/
     public static void validateRequestData(Lead requestData)
     {
         checkRequiredFields(requestData);
@@ -52,15 +52,15 @@ public with sharing class SalesCRMLeadGenerationService
     }
 
     /**
-    * @description Método que se encarga de comprobar si el Lead recibido existe
-    * en el sistema. Si existe se actualiza, sino se crea un nuevo Lead con los
-    * datos recibidos.
-    *
-    * @author amiranda
-    * @date 02-09-2023 
-    * @param Lead requestData con la información del Lead
-    * @return Account de tipo Lead recuperada o generada
-    **/
+     * @description Método que se encarga de comprobar si el Lead recibido existe
+     * en el sistema. Si existe se actualiza, sino se crea un nuevo Lead con los
+     * datos recibidos.
+     *
+     * @author amiranda
+     * @date 02-09-2023
+     * @param Lead requestData con la información del Lead
+     * @return Account de tipo Lead recuperada o generada
+     **/
     public static Account manageLead(Lead requestData)
     {
         Account duplicateAccount = AccountLeadUtil.leadDuplicatesControl(requestData.documentID, requestData.phone);
@@ -104,16 +104,16 @@ public with sharing class SalesCRMLeadGenerationService
     }
 
     /**
-    * @description Método que se encarga de comprobar si existe una oferta asociada
-    * a un Lead. Si no existe se crea la oferta.
-    *
-    * @author amiranda 
-    * @date 02-09-2023 
-    * @param Account leadAccount cuenta de tipo Lead
-    * @param Id leadId Id de la cuenta de tipo 'Lead' insertada en SF
-    * @param Lead requestData con la inforamción del Lead
-    * @return Opportunity recuperada/generada
-    **/
+     * @description Método que se encarga de comprobar si existe una oferta asociada
+     * a un Lead. Si no existe se crea la oferta.
+     *
+     * @author amiranda
+     * @date 02-09-2023
+     * @param Account leadAccount cuenta de tipo Lead
+     * @param Id leadId Id de la cuenta de tipo 'Lead' insertada en SF
+     * @param Lead requestData con la inforamción del Lead
+     * @return Opportunity recuperada/generada
+     **/
     public static Opportunity manageOffer(Map<String, Account> accountByRelatedUser, Id leadId, Lead requestData)
     {
         Id offerOwnerId = new List<String>( accountByRelatedUser.keySet() ).get(0);
@@ -153,14 +153,14 @@ public with sharing class SalesCRMLeadGenerationService
     // #region Private methods
 
     /**
-    * @description Método que comprueba que se han recibido los campos requeridos
-    * en el objeto de la clase pasada por parámetro
-    * 
-    * @author amiranda
-    * @date 02-09-2023 
-    * @param Lead requestData con la información del Lead
-    * @throws LeadGenerationException
-    **/
+     * @description Método que comprueba que se han recibido los campos requeridos
+     * en el objeto de la clase pasada por parámetro
+     *
+     * @author amiranda
+     * @date 02-09-2023
+     * @param Lead requestData con la información del Lead
+     * @throws LeadGenerationException
+     **/
     @TestVisible
     private static void checkRequiredFields(Lead requestData)
     {
@@ -184,14 +184,14 @@ public with sharing class SalesCRMLeadGenerationService
     }
 
     /**
-    * @description Método que comprueba que los valores recibidos en los campos
-    * de tipo picklist de la clase pasasa por parámetro son valores válidos en SF 
-    *
-    * @author amiranda
-    * @date 02-09-2023 
-    * @param Lead requestData con la información del Lead
-    * @throws LeadGenerationException
-    **/
+     * @description Método que comprueba que los valores recibidos en los campos
+     * de tipo picklist de la clase pasasa por parámetro son valores válidos en SF
+     *
+     * @author amiranda
+     * @date 02-09-2023
+     * @param Lead requestData con la información del Lead
+     * @throws LeadGenerationException
+     **/
     @TestVisible
     private static void checkPicklistValues(Lead requestData)
     {
@@ -234,14 +234,14 @@ public with sharing class SalesCRMLeadGenerationService
     }
 
     /**
-    * @description Método que se encarga de rellenar los campos del registro de 
-    * Account que se almacenará en SF con los datos recibidos.
-    *
-    * @author amiranda
-    * @date 02-09-2023 
-    * @param Account accountToFill que se va a rellenar con los datos del Lead
-    * @param Lead requestData con la información del Lead
-    **/
+     * @description Método que se encarga de rellenar los campos del registro de
+     * Account que se almacenará en SF con los datos recibidos.
+     *
+     * @author amiranda
+     * @date 02-09-2023
+     * @param Account accountToFill que se va a rellenar con los datos del Lead
+     * @param Lead requestData con la información del Lead
+     **/
     @TestVisible
     private static void fillAccountFields(Account accountToFill, Lead requestData)
     {

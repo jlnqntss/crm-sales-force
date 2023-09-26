@@ -52,7 +52,7 @@ public abstract class RecordsSelector
                 legalEntitiesByStringCode = new Map<String, LegalEntity>
                 {
                     LegalEntity.GI.name()    => LegalEntity.GI,
-                    LegalEntity.LIFE.name()  => LegalEntity.LIFE
+                                    LegalEntity.LIFE.name()  => LegalEntity.LIFE
                 };
             }
             return legalEntitiesByStringCode;
@@ -73,7 +73,7 @@ public abstract class RecordsSelector
 
     public static Scope getScope(String scope)
     {
-        return String.isBlank(scope) || !scopesByCode.containsKey(scope.toUpperCase()) ? scopesByCode.get('ALL') : scopesByCode.get(scope.toUpperCase());
+        return String.isBlank(scope) || !scopesByCode.containsKey( scope.toUpperCase() ) ? scopesByCode.get('ALL') : scopesByCode.get( scope.toUpperCase() );
     }
 
     public static String getLegalEntity(LegalEntity legalEntity)
@@ -83,7 +83,7 @@ public abstract class RecordsSelector
 
     public static LegalEntity getLegalEntity(String legalEntity)
     {
-        return String.isBlank(legalEntity) || !legalEntitiesByStringCode.containsKey(legalEntity.toUpperCase()) ? null : legalEntitiesByStringCode.get(legalEntity.toUpperCase());
+        return String.isBlank(legalEntity) || !legalEntitiesByStringCode.containsKey( legalEntity.toUpperCase() ) ? null : legalEntitiesByStringCode.get( legalEntity.toUpperCase() );
     }
 
     /**
@@ -120,13 +120,13 @@ public abstract class RecordsSelector
      * @author adelgado
      * @param  fields Campos a recuperar
      */
-    public void setFields(Schema.SobjectField[] fields, String[] relationshipFields) 
+    public void setFields(Schema.SobjectField[] fields, String[] relationshipFields)
     {
         this.setFields(fields);
         this.baseQuery.selectFields(relationshipFields);
     }
 
-    public void setFields(Schema.SobjectField[] fields) 
+    public void setFields(Schema.SobjectField[] fields)
     {
         this.baseQuery.selectFields(fields);
     }

@@ -1,14 +1,12 @@
 /**
- * 
+ *
  * @description       : Clase Apex con el without sharing en la cual creamos 3 métodos, que serán referenciados en la clase AccountLeadUtil
  * @author            : overes
-**/ 
+ **/
 public without sharing class AccountSelectorWithoutSharing
 {
     public AccountSelectorWithoutSharing()
-    {
-       
-    }
+    {}
 
     //#region RECORD TYPES
     public static final String RT_NAME_CUSTOMER = 'Customer';
@@ -16,31 +14,31 @@ public without sharing class AccountSelectorWithoutSharing
     public static final String RT_NAME_LEAD= 'Lead';
 
     // Recupera el Id del RecordType de clientes personales
-    public ID rtCustomerId 
+    public ID rtCustomerId
     {
-        get 
+        get
         {
             return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_CUSTOMER)?.getRecordTypeId();
         }
     }
     // Recupera el Id del RecordType de clientes Lead
-    public ID rtLeadId 
+    public ID rtLeadId
     {
-        get 
+        get
         {
             return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_LEAD)?.getRecordTypeId();
         }
     }
     // Recupera el Id del RecordType de clientes
-    public ID rtBusinessCustomerId 
+    public ID rtBusinessCustomerId
     {
-        get 
+        get
         {
             return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_BUSINESSCUSTOMER)?.getRecordTypeId();
         }
     }
 
-   /**
+    /**
      * Busca cuentas a partir de un listado de DNIs y record type Customer o Business Customer
      * @author overes
      * @date 16/08/2023
@@ -51,8 +49,9 @@ public without sharing class AccountSelectorWithoutSharing
     {
         List<Account> result = new List<Account>();
 
-        if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c,Intermediary_Name__r.INFOIntermediaryCode__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
+        if ( documents != null && !documents.isEmpty() )
+        {
+            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c,Intermediary_Name__r.INFOIntermediaryCode__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c, PreferedContactStart__c, PreferedContactEnd__c FROM account WHERE NationalId__c IN: documents AND (RecordTypeId = : rtCustomerId OR RecordTypeId = : rtBusinessCustomerId)]);
         }
         return result;
     }
@@ -73,9 +72,10 @@ public without sharing class AccountSelectorWithoutSharing
     public List<Account> findByNationalIdAndRcTypeLead(List<String> documents)
     {
         List<Account> result = new List<Account>();
-        
-        if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
+
+        if ( documents != null && !documents.isEmpty() )
+        {
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c, PreferedContactStart__c, PreferedContactEnd__c FROM account WHERE NationalId__c IN: documents AND RecordTypeId = : rtLeadId]);
         }
         return result;
     }
@@ -91,8 +91,9 @@ public without sharing class AccountSelectorWithoutSharing
     {
         List<Account> result = new List<Account>();
 
-        if (phones != null && !phones.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
+        if ( phones != null && !phones.isEmpty() )
+        {
+            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone, PreferedContactStart__c, PreferedContactEnd__c FROM account WHERE Phone IN: phones AND RecordTypeId = : rtLeadId ORDER BY CreatedDate DESC]);
         }
         return result;
     }

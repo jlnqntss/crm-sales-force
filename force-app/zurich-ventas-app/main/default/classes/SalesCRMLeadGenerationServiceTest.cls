@@ -92,7 +92,7 @@ public with sharing class SalesCRMLeadGenerationServiceTest
     {
         List<Opportunity> offers = [SELECT Id FROM Opportunity];
         Assert.isTrue(offers.isEmpty(), 'No debería haber ninguna oferta en el sistema.');
-        
+
         List<Account> leadAccounts = TestDataFactory.generateAccounts(null, 'Lead', 1);
         insert leadAccounts;
 
