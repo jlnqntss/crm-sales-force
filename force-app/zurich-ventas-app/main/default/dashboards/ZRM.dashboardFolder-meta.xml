@@ -2,8 +2,8 @@
 <DashboardFolder xmlns="http://soap.sforce.com/2006/04/metadata">
     <folderShares>
         <accessLevel>Manage</accessLevel>
-        <sharedTo>ccabasallado@deloittezurich.es</sharedTo>
-        <sharedToType>User</sharedToType>
+        <sharedTo>Administrators</sharedTo>
+        <sharedToType>Group</sharedToType>
     </folderShares>
     <folderShares>
         <accessLevel>View</accessLevel>
@@ -17,8 +17,13 @@
     </folderShares>
     <folderShares>
         <accessLevel>View</accessLevel>
-        <sharedTo>TESTQADTTSocioUsuario</sharedTo>
-        <sharedToType>PortalRole</sharedToType>
+        <sharedTo>Ventas_Director</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>Ventas_Supervisor</sharedTo>
+        <sharedToType>Group</sharedToType>
     </folderShares>
     <name>ZRM</name>
 </DashboardFolder>
