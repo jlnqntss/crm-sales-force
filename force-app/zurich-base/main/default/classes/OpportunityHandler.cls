@@ -14,6 +14,8 @@ public class OpportunityHandler implements ITrigger
     {
         // arcortazar - 11/03/2022: ZE-1327, cargamos un listado de perfiles que tienen permitido efectuar modificaciones en las ofertas cerradas ganadas
         OpportunityUtil.initMapOfProfiles();
+        // jfherrero - 21/09/2023: CV-458, cargamos un mapa de Accounts con sus record types para informar un campo en las ofertas creadas
+        OpportunityUtil.initMapOfAccountRecordTypes(newList);
     }
 
     /**
@@ -34,6 +36,7 @@ public class OpportunityHandler implements ITrigger
     public void beforeInsert(List<SObject> newList)
     {
         OpportunityUtil.setStageNameOpen(newList);
+        OpportunityUtil.setSalesProcess(newList);
     }
 
     /**
