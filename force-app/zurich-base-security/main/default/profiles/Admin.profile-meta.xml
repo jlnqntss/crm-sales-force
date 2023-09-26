@@ -15488,6 +15488,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>purecloud__PureCloud_Queue__c.RecordTypeInfo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>purecloud__PureCloud_Queue__c.RouteType__c</field>
         <readable>true</readable>
     </fieldPermissions>

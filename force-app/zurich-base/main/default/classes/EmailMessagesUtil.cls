@@ -188,7 +188,7 @@ public with sharing class EmailMessagesUtil
         }
 
         for(purecloud__PureCloud_Queue__c genesysQueue: [
-            SELECT Id, Name, CallCenter__c, GenesysFlowId__c, SalesforceRecipientEmail__c 
+            SELECT Id, Name, CallCenter__c, GenesysFlowId__c, SalesforceRecipientEmail__c,RecordTypeInfo__c 
             FROM purecloud__PureCloud_Queue__c
             WHERE SalesforceRecipientEmail__c != null
         ]) {
@@ -426,9 +426,18 @@ public with sharing class EmailMessagesUtil
                                     }
                                 }
                                 when else {
-                                    genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());                          
+                                    genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());
+
+                                    if((!listaCaso.isEmpty())&&(listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
+                                    {
+                                        genesysQueue=null;
+                                    }
+                                    else if((!listaCaso.isEmpty())&&(listaCaso.get(0).RecordTypeId == ocsRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='OCSInquiry'))
+                                    {
+                                        genesysQueue=null;
+                                    }
                                 }
-                            }
+                            }    
                             
                             i++;
                         }
