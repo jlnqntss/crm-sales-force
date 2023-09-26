@@ -1023,7 +1023,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return
         [
-            SELECT  INFOIntermediaryCode__c, IntermediaryGroup__r.IntermediaryWithUser__c
+            SELECT  INFOIntermediaryCode__c, IntermediaryGroup__r.IntermediaryWithUser__c, ParentId
             FROM    Account
             WHERE   INFOIntermediaryCode__c IN :intermediaryCodes
             AND     IntermediaryGroup__r.IntermediaryWithUser__c != null
