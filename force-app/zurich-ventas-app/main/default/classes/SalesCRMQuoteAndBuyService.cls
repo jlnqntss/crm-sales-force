@@ -5,14 +5,14 @@
 **/
 public with sharing class SalesCRMQuoteAndBuyService {
 
-    private static Set<String> requiredFields = new Set<String> {'Sesion', 'Origen', 'nombre', 'primerApellido', 'telefono', 'ramo'};
+    private static Set<String> requiredFields = new Set<String> {'sesion', 'origen', 'nombre', 'primerApellido', 'telefono', 'ramo'};
 
     private static Map<String, Schema.SObjectField> picklistTypeFieldsByJsonFieldName = new Map<String, Schema.SObjectField> {
         'ramo' => Opportunity.ProductBranch__c
     };
 
     private static Map<String, Schema.SObjectField> notNullableFields = new Map<String, Schema.SObjectField> {
-        'Origen' => Account.PersonLeadSource__c,
+        'origen' => Account.PersonLeadSource__c,
         'cliente.idFiscal' => Account.NationalId__c,
         'cliente.fechaNacimiento' => Account.Birthdate__c,
         'cliente.contacto.email' => Account.PersonEmail,
@@ -32,17 +32,17 @@ public with sharing class SalesCRMQuoteAndBuyService {
     * @return String
     **/
     public static String setDesc(Lead requestData) {
-        return '{"Fecha de carnet":"' + requestData.cliente.fechaCarnet +
-        '"\n "País de carnet":"' + requestData.cliente.paisCarnet +
-        '"\n "Numero de oferta":"' + requestData.poliza.numeroOferta +
-        '"\n "Fecha de inicio":"' + requestData.poliza.fechaInicio +
-        '"\n "Precio Anual":"' + requestData.poliza.precioAnual +
-        '"\n "Paquete":"' + requestData.poliza.paquete +
-        '"\n "Marca":"' + requestData.poliza.Coche.marca +
-        '"\n "Modelo":"' + requestData.poliza.Coche.Modelo +
-        '"\n "Version":"' + requestData.poliza.Coche.Version +
-        '"\n "Matricula":"' + requestData.poliza.Coche.matricula +
-        '"\n "País matriculación":"' + requestData.poliza.Coche.paisMatriculacion + '"}';
+        return 'Fecha de carnet: ' + requestData.cliente.fechaCarnet +
+        '\n País de carnet:' + requestData.cliente.paisCarnet +
+        '\n Numero de oferta:' + requestData.poliza.numeroOferta +
+        '\n Fecha de inicio:' + requestData.poliza.fechaInicio +
+        '\n Precio Anual:' + requestData.poliza.precioAnual +
+        '\n Paquete:' + requestData.poliza.paquete +
+        '\n Marca:' + requestData.poliza.Coche.marca +
+        '\n Modelo:' + requestData.poliza.Coche.Modelo +
+        '\n Version:' + requestData.poliza.Coche.Version +
+        '\n Matricula:' + requestData.poliza.Coche.matricula +
+        '\n País matriculación:' + requestData.poliza.Coche.paisMatriculacion;
     }
 
     /**
@@ -278,23 +278,23 @@ public with sharing class SalesCRMQuoteAndBuyService {
             }
             set;
         }
-        // Propiedades para el campo "Sesion"
+        // Propiedades para el campo "sesion"
         public String sesion {
             get {
-                return (String)valuesByProperty.get('Sesion');
+                return (String)valuesByProperty.get('sesion');
             }
             set {
-                valuesByProperty.put('Sesion', value);
+                valuesByProperty.put('sesion', value);
             }
         }
 
-        // Propiedades para el campo "Origen"
+        // Propiedades para el campo "origen"
         public String origen {
             get {
-                return (String)valuesByProperty.get('Origen');
+                return (String)valuesByProperty.get('origen');
             }
             set {
-                valuesByProperty.put('Origen', value);
+                valuesByProperty.put('origen', value);
             }
         }
 
@@ -587,6 +587,15 @@ public with sharing class SalesCRMQuoteAndBuyService {
             }
             set;
         }
+        public Errores errores {
+            get {
+                if (errores == null) {
+                    errores = new Errores();
+                }
+                return errores;
+            }
+            set;
+        }
         // Propiedades para otros campos anidados o de nivel superior si es necesario
         private Set<String> getReceivedFields() {
             return valuesByProperty.keySet().clone();
@@ -647,6 +656,43 @@ public with sharing class SalesCRMQuoteAndBuyService {
             }
             set {
                 valuesByProperty.put('paisMatriculacion', value);
+            }
+        }
+        // Propiedades para otros campos anidados o de nivel superior si es necesario
+        private Set<String> getReceivedFields() {
+            return valuesByProperty.keySet().clone();
+        }
+
+        private Object get(String property) {
+            return valuesByProperty.get(property);
+        }
+    }
+    
+    // Propiedades para el campo "coche"
+    public class Errores {
+        private Map<String, Object> valuesByProperty {
+            get {
+                if (valuesByProperty == null) {
+                    valuesByProperty = new Map<String, Object>();
+                }
+                return valuesByProperty;
+            }
+            set;
+        }
+        public String oferta {
+            get {
+                return (String)get('marca');
+            }
+            set {
+                valuesByProperty.put('marca', value);
+            }
+        }
+        public String poliza {
+            get {
+                return (String)get('modelo');
+            }
+            set {
+                valuesByProperty.put('modelo', value);
             }
         }
         // Propiedades para otros campos anidados o de nivel superior si es necesario

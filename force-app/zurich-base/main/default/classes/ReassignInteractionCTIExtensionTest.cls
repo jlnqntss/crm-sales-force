@@ -4,28 +4,28 @@
  * @group             :
  * @last modified on  : 09/08/2022
  * @last modified by  : jgallaga
-**/
+ **/
 @isTest(SeeAllData = false)
 private without sharing class ReassignInteractionCTIExtensionTest
 {
     /**
-    * @description  Se asegura que al cambiar de advisor en una interacción, este ultimo queda como propietario de la tarea.
-    *               Se usan dos usuarios y se simula una llamada. La llamada será primero tratada por el primer Advisor que tomará la
-    *               llamada y después se la "traspasa" al segundo advisor. El traspaso produce un evento de colgar la interaccion en el primer usuario.
-    *               Cuando el segundo agente toma esa llamada, comienza la interaccion con el usuario que deberá quedarse con la posesión
-    *               de la tarea (interacción) al terminar el proceso.
-    * @author jgallaga | 05/08/2022
-    **/
+     * @description  Se asegura que al cambiar de advisor en una interacción, este ultimo queda como propietario de la tarea.
+     *               Se usan dos usuarios y se simula una llamada. La llamada será primero tratada por el primer Advisor que tomará la
+     *               llamada y después se la "traspasa" al segundo advisor. El traspaso produce un evento de colgar la interaccion en el primer usuario.
+     *               Cuando el segundo agente toma esa llamada, comienza la interaccion con el usuario que deberá quedarse con la posesión
+     *               de la tarea (interacción) al terminar el proceso.
+     * @author jgallaga | 05/08/2022
+     **/
     @isTest
     static void test_onSaveLog_chageTaskOwner()
     {
         List<Task> tasksInTestStart = [SELECT Id From Task];
 
-        System.assert(tasksInTestStart.isEmpty(), 'For this test there should not be any task');
+        System.assert (tasksInTestStart.isEmpty(), 'For this test there should not be any task');
 
         // Creamos los dos advisors
         String zeAdvisorProfileName = 'ZE User';
-        Id advisorProfileId         = [SELECT Id FROM Profile WHERE Name = :zeAdvisorProfileName].Id;
+        Id advisorProfileId         = [SELECT Id FROM Profile WHERE Name = : zeAdvisorProfileName].Id;
         List<User> advisorUsers     = TestDataFactory.generateUsersByProfile(advisorProfileId,2);
         insert advisorUsers;
 
@@ -50,7 +50,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
         Task createdTask = tasksInSystem.get(0);
 
         // Evento de colgar la llamada
-        String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction" : { "id": "'+ createdTask.Id +'"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + createdTask.Id +'"}}';
+        String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction" : { "id": "' + createdTask.Id + '"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + createdTask.Id + '"}}';
 
         // Se "traspasa" la llamada
         System.runAs(advisor1)
@@ -94,7 +94,101 @@ private without sharing class ReassignInteractionCTIExtensionTest
         System.assertEquals(advisor2.Id, currentTask.OwnerId, 'El propietario de la primera interacción no es correcta');
 
         List<Error_Log__c> errores = [SELECT id FROM Error_Log__c];
-        System.assert(errores.isEmpty(),' El proceso no puede haber generado errores');
+        System.assert (errores.isEmpty(),' El proceso no puede haber generado errores');
+    }
+
+    /**
+     * @description Simula una llamada con resultado "No contesta / Contestador Automático" y comprueba que se aumente el numero de reintentos de llamada
+     * @author fpalomo | 14/09/2023
+     */
+    @isTest
+    static void test_onSaveLog_eventOnInteractionDisconnected()
+    {
+        List<Task> tasksInTestStart = [SELECT Id From Task];
+        Assert.isTrue(tasksInTestStart.isEmpty(), 'For this test there should not be any task');
+
+        /* ----------------------- DATOS DE LOS INTERMEDIARIOS ---------------------- */
+        Account ventasUserAccount = TestDataFactory.generateAccounts('001', 'Intermediary', 1)[0];
+        insert ventasUserAccount;
+
+        Contact ventasUserContact = TestDataFactory.generateContactsFromAccounts(new List<Account> {ventasUserAccount}, ContactsSelector.RT_NAME_CONTACT, 1)[0];
+        insert ventasUserContact;
+
+        /* -------------------------------- USUARIOS -------------------------------- */
+        String ventasUserProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+        List<String> adminProfiles = new List<String> {'Administrador del sistema', 'System Administrator'};
+        List<Boolean> activeStatus = new List<Boolean> {true};
+
+        User adminUser = ( new UsersSelector() ).findByProfileName(adminProfiles, activeStatus, 1)[0];
+
+        User ventasUser = TestDataFactory.generateUsersByProfile(ventasUserProfile, 1)[0];
+        ventasUser.FirstName = 'Agente';
+        ventasUser.LastName = 'Ventas';
+        ventasUser.Alias = 'a.ventas';
+        ventasUser.ContactId = ventasUserContact.Id;
+        ventasUser.UserPermissionsMarketingUser = true;
+
+        System.runAs(adminUser)
+        {
+            insert ventasUser;
+
+            List<PermissionSetAssignment> permissionSetAssignments = new List<PermissionSetAssignment>();
+            List<PermissionSetGroup> permissionSetGroups = [SELECT Id FROM PermissionSetGroup WHERE DeveloperName = 'Ventas Advisor'];
+            for(PermissionSetGroup psg : permissionSetGroups)
+            {
+                permissionSetAssignments.add( new PermissionSetAssignment(PermissionSetGroupId = psg.Id, AssigneeId = ventasUser.Id) );
+            }
+            insert permissionSetAssignments;
+        }
+
+        System.runAs(ventasUser)
+        {
+            /* ---------------------------- DATOS DE CLIENTE ---------------------------- */
+            Account customerAccount = TestDataFactory.generateAccounts('001', 'BusinessCustomer', 1)[0];
+            customerAccount.INFOCustomerNumber__c = String.valueOf( (Math.random() * 1000000000).intValue() );
+            insert customerAccount;
+
+            Contact customerContact = TestDataFactory.generateContactsFromAccounts(new List<Account> {customerAccount}, ContactsSelector.RT_NAME_CONTACT, 1)[0];
+            insert customerContact;
+
+            /* --------------------------------- CAMPAÑA -------------------------------- */
+            Id rtTelemarketing = Schema.SObjectType.Campaign.getRecordTypeInfosByName().get('Telemarketing').getRecordTypeId();
+            Campaign campaign = TestDataFactory.generateCampaigns('001', 1)[0];
+            campaign.RecordTypeId = rtTelemarketing;
+            campaign.Scope__c = 'General';
+            campaign.StartDate = Date.today();
+            campaign.EndDate = Date.today() + 7;
+            campaign.Type = 'Suscripcion';
+            campaign.MaxCallRetries__c = 5;
+            // campaign.OwnerId = UserInfo.getUserId();
+            insert campaign;
+
+            /* --------------------------- MIEMBROS DE CAMPAÑA -------------------------- */
+            CampaignMember campaignMember = TestDataFactory.generateCampaignMembersForEachCampaign(new List<Contact> {customerContact}, new List<Campaign> {campaign}, 'New')[0];
+            campaignMember.CallRetries__c = 0;
+            insert campaignMember;
+
+            /* ---------------------------------- TEST ---------------------------------- */
+            Test.startTest();
+
+            String interactionChangedEventString = '{"eventName": "interactionChanged", "interaction" : { "id": "ucid0"},  "callLog": {"CallObject": "ucid0"}}';
+            ReassignInteractionCTIExtension.onSaveLog(interactionChangedEventString);
+
+            List<Task> tasksInSystem = [SELECT Id FROM Task];
+            Assert.areEqual(1, tasksInSystem.size(), 'La interaccion solo debería crear una tarea');
+
+            // Evento de colgar la llamada
+            String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction": { "disposition": "No contesta / Contestador Automático", "dialerContactId": "' + campaignMember.Id + '"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + tasksInSystem[0].Id + '"}}';
+            ReassignInteractionCTIExtension.onSaveLog(interactionDisconnectEventString);
+            Test.stopTest();
+
+            /* --------------------------------- ASSERTS -------------------------------- */
+            List<CampaignMember> existingCampaignMembers = [SELECT CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId];
+            tasksInSystem = [SELECT CampaignMemberID__c FROM Task];
+
+            Assert.isFalse(existingCampaignMembers.isEmpty(), 'No se ha encontrado el CampaignMember para el contacto: ' + campaignMember.ContactId);
+            Assert.areNotEqual(0, existingCampaignMembers[0].CallRetries__c, 'El número de reintentos no se ha actualizado');
+        }
     }
 
     /**
@@ -499,7 +593,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
 
         Test.startTest();
         ReassignInteractionCTIExtension.onSaveLog(
-            '{"eventName": "interactionChanged", "interaction" : { "id": "'+taskId+'"},  "callLog": {"CallObject": "'+taskId+'", "Id": "'+taskId+'", "Status":"Asignada"}}'
+            '{"eventName": "interactionChanged", "interaction" : { "id": "' + taskId + '"},  "callLog": {"CallObject": "' + taskId + '", "Id": "' + taskId + '", "Status":"Asignada"}}'
             );
         Test.stopTest();
 
@@ -532,8 +626,8 @@ private without sharing class ReassignInteractionCTIExtensionTest
 
         Test.startTest();
         ReassignInteractionCTIExtension.onSaveLog(
-            '{"eventName": "interactionChanged", "interaction" : { "id": "'+taskId+'", "messageType": "whatsapp"},  "callLog": {"CallObject": "'+taskId+'", "Id": "'+taskId+'"}}'
-        );
+            '{"eventName": "interactionChanged", "interaction" : { "id": "' + taskId + '", "messageType": "whatsapp"},  "callLog": {"CallObject": "' + taskId + '", "Id": "' + taskId + '"}}'
+            );
         Test.stopTest();
 
         //Hacer query para recuperar los nuevos valores

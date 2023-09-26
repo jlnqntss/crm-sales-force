@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NotificationDaysBeforeDue__c</fullName>
+    <description>Número de días antes del vencimiento de la Oferta de Lead para lanzar la notificación de vencimiento al Mediador. Valor 0 si se desea desactivar la notificación.</description>
+    <externalId>false</externalId>
+    <label>Días Notificación Vencimiento</label>
+    <precision>10</precision>
+    <required>true</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

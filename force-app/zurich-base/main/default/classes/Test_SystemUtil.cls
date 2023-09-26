@@ -671,4 +671,74 @@ public class Test_SystemUtil
         Assert.areEqual(instanceURL, testURL, 'La URL de la instancia no coincide');
     }
 
+    /**
+    * @description Método de test que comprueba que si la fecha y hora pasada por parámetro
+    * se encuentra dentro de la franja horaria de las Business Hours seleccionadas,
+    * devuelve dicha fecha y hora.
+    *
+    * @author amiranda 
+    * @date 20-09-2023 
+    **/
+    @isTest
+    static void test_getContactDatetime_OK()
+    {
+        // Solamente puede haber una BH por defecto en el sistema y no puede haber más de dos BH por defecto
+        BusinessHours defaultBusinessHours = [SELECT Id, Name FROM BusinessHours WHERE IsDefault = true];
+        Date today = Date.today();
+        Datetime requestedDateTime = Datetime.newInstance(today.year(), today.month(), today.day(), 10, 0, 0);
+
+        Test.startTest();
+        Datetime result = SystemUtil.getContactDatetime(requestedDatetime, defaultBusinessHours.Name);
+        Test.stopTest();
+
+        Assert.isNotNull(result,
+                        'Debería haber devuelto la siguiente fecha y hora: ' + requestedDateTime.formatLong());
+        Assert.areEqual(requestedDateTime, 
+                        result,
+                        'El valor devuelto debería coincidir con la fecha y hora: ' + requestedDateTime.formatLong());
+    }
+
+    /**
+    * @description Método de test que comprueba que si no se pasa por parámetro 
+    * la fecha y hora, devuelve la fecha y hora del momento actual.
+    *
+    * @author amiranda 
+    * @date 20-09-2023 
+    **/
+    @isTest
+    static void test_getContactDatetime_null_requestDateTime_OK()
+    {
+        // Solamente puede haber una BH por defecto en el sistema y no puede haber más de dos BH por defecto
+        BusinessHours defaultBusinessHours = [SELECT Id, Name FROM BusinessHours WHERE IsDefault = true];
+        
+        Test.startTest();
+        Datetime result = SystemUtil.getContactDatetime(null, defaultBusinessHours.Name);
+        Test.stopTest();
+
+        Assert.isNotNull(result, 'Debería haber devuelto la fecha y hora del momento actual.');
+    }
+
+    /**
+    * @description Método de test que comprueba que si no se pasa por parámetro 
+    * unas BH, devuelve la fecha y hora que se ha pasado por parámetro.
+    *
+    * @author amiranda 
+    * @date 20-09-2023 
+    **/
+    @isTest
+    static void test_getContactDatetime_null_businessHoursName_OK()
+    {
+        Date today = Date.today();
+        Datetime requestedDateTime = Datetime.newInstance(today.year(), today.month(), today.day(), 10, 0, 0);
+
+        Test.startTest();
+        Datetime result = SystemUtil.getContactDatetime(requestedDateTime, null);
+        Test.stopTest();
+
+        Assert.isNotNull(result,
+                        'Debería haber devuelto la siguiente fecha y hora: ' + requestedDateTime.formatLong());
+        Assert.areEqual(requestedDateTime, 
+                        result,
+                        'El valor devuelto debería coincidir con la fecha y hora: ' + requestedDateTime.formatLong());
+    }
 }

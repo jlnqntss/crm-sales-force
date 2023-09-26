@@ -5,7 +5,7 @@
         <name>Asignar_CCS</name>
         <label>Asignar CCS</label>
         <locationX>1106</locationX>
-        <locationY>1031</locationY>
+        <locationY>935</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -25,7 +25,7 @@
         <name>Asignar_CE</name>
         <label>Asignar CE</label>
         <locationX>50</locationX>
-        <locationY>1031</locationY>
+        <locationY>935</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -45,7 +45,7 @@
         <name>Asignar_CSM</name>
         <label>Asignar CSM</label>
         <locationX>578</locationX>
-        <locationY>1031</locationY>
+        <locationY>935</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -65,7 +65,7 @@
         <name>Asignar_Default</name>
         <label>Asignar Default</label>
         <locationX>1898</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -85,7 +85,7 @@
         <name>Asignar_Default_CCS</name>
         <label>Asignar Default CCS</label>
         <locationX>1370</locationX>
-        <locationY>1151</locationY>
+        <locationY>1043</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -105,7 +105,7 @@
         <name>Asignar_Default_CE</name>
         <label>Asignar Default CE</label>
         <locationX>314</locationX>
-        <locationY>1151</locationY>
+        <locationY>1043</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -125,7 +125,7 @@
         <name>Asignar_Default_CSM</name>
         <label>Asignar Default CSM</label>
         <locationX>842</locationX>
-        <locationY>1151</locationY>
+        <locationY>1043</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -145,7 +145,7 @@
         <name>CaseEntitlementAssignment</name>
         <label>Asignar Entitlement Caso</label>
         <locationX>3372</locationX>
-        <locationY>1283</locationY>
+        <locationY>1169</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -165,7 +165,7 @@
         <name>CCS_o_CSM_o_CE</name>
         <label>¿CCS, CSM o CE?</label>
         <locationX>908</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Centro_Excelencia</name>
@@ -231,7 +231,7 @@
         <name>Encontrado_Entitlement_CCS</name>
         <label>¿Encontrado Entitlement CCS?</label>
         <locationX>1238</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <defaultConnector>
             <targetReference>Default_CCS</targetReference>
         </defaultConnector>
@@ -256,7 +256,7 @@
         <name>Encontrado_Entitlement_CE</name>
         <label>¿Encontrado Entitlement CE?</label>
         <locationX>182</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <defaultConnector>
             <targetReference>Default_CE</targetReference>
         </defaultConnector>
@@ -281,7 +281,7 @@
         <name>Encontrado_Entitlement_CSM</name>
         <label>¿Encontrado Entitlement CSM?</label>
         <locationX>710</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <defaultConnector>
             <targetReference>Default_CSM</targetReference>
         </defaultConnector>
@@ -306,7 +306,7 @@
         <name>GotEntitlementResultsDecision</name>
         <label>Existen resultados USP</label>
         <locationX>2822</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <defaultConnector>
             <targetReference>GetDefaultUSPAction</targetReference>
         </defaultConnector>
@@ -376,7 +376,7 @@
         <name>GotUspPartnerEntitlementResultsDecision</name>
         <label>Existen resultados USP Partner</label>
         <locationX>3570</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <defaultConnector>
             <targetReference>GetDefaultUspPartnerAction</targetReference>
         </defaultConnector>
@@ -402,11 +402,11 @@
         <name>MeetsEntryCriteriaDecision</name>
         <label>¿Cumple criterios?</label>
         <locationX>3779</locationX>
-        <locationY>431</locationY>
+        <locationY>395</locationY>
         <defaultConnectorLabel>No cumple criterios</defaultConnectorLabel>
         <rules>
             <name>MeetsEntryCriteriaOutcome</name>
-            <conditionLogic>(1 OR 7) AND (2 OR 3 OR 4 OR 5 OR 6)</conditionLogic>
+            <conditionLogic>(1 OR 7) AND (2 OR 3 OR 4 OR 5 OR 6 OR 8)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Origin</leftValueReference>
                 <operator>EqualTo</operator>
@@ -456,6 +456,13 @@
                     <stringValue>NoteINFO</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>RelatedAccountDecision</targetReference>
             </connector>
@@ -466,7 +473,7 @@
         <name>RecordTypeDecision</name>
         <label>¿Tipo de registro?</label>
         <locationX>3116</locationX>
-        <locationY>311</locationY>
+        <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>OCSInquiryOutcome</name>
@@ -504,7 +511,7 @@
         <name>RelatedAccountDecision</name>
         <label>¿Cuenta asociada?</label>
         <locationX>3372</locationX>
-        <locationY>551</locationY>
+        <locationY>503</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>GetDefaultUSPAction</targetReference>
@@ -566,7 +573,7 @@
         <name>Se_han_modificado_los_campos</name>
         <label>¿Se han modificado los campos?</label>
         <locationX>1782</locationX>
-        <locationY>431</locationY>
+        <locationY>395</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si_se_modificaron</name>
@@ -592,6 +599,13 @@
                     <elementReference>$Record__Prior.AccountId</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record__Prior.RecordTypeId</elementReference>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Tiene_Cuenta_asociada</targetReference>
             </connector>
@@ -602,7 +616,7 @@
         <name>Tiene_Cuenta_asociada</name>
         <label>¿Tiene Cuenta asociada?</label>
         <locationX>1403</locationX>
-        <locationY>551</locationY>
+        <locationY>503</locationY>
         <defaultConnector>
             <targetReference>Default</targetReference>
         </defaultConnector>
@@ -657,7 +671,7 @@
         <name>Default</name>
         <label>Default</label>
         <locationX>1898</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_Default</targetReference>
@@ -678,7 +692,7 @@
         <name>Default_CCS</name>
         <label>Default CCS</label>
         <locationX>1370</locationX>
-        <locationY>1031</locationY>
+        <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_Default_CCS</targetReference>
@@ -699,7 +713,7 @@
         <name>Default_CE</name>
         <label>Default CE</label>
         <locationX>314</locationX>
-        <locationY>1031</locationY>
+        <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_Default_CE</targetReference>
@@ -720,7 +734,7 @@
         <name>Default_CSM</name>
         <label>Default CSM</label>
         <locationX>842</locationX>
-        <locationY>1031</locationY>
+        <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_Default_CSM</targetReference>
@@ -741,7 +755,7 @@
         <name>Entitlement_CCS</name>
         <label>Entitlement CCS</label>
         <locationX>1238</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Encontrado_Entitlement_CCS</targetReference>
@@ -790,7 +804,7 @@
         <name>Entitlement_CE</name>
         <label>Entitlement CE</label>
         <locationX>182</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Encontrado_Entitlement_CE</targetReference>
@@ -832,7 +846,7 @@
         <name>Entitlement_CSM</name>
         <label>Entitlement CSM</label>
         <locationX>710</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Encontrado_Entitlement_CSM</targetReference>
@@ -888,7 +902,7 @@
         <name>GetDefaultUSPAction</name>
         <label>Recuperar Entitlement Default USP</label>
         <locationX>3218</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <isGoTo>true</isGoTo>
@@ -923,7 +937,7 @@
         <name>GetDefaultUSPNotProductiveAction</name>
         <label>Recuperar Entitlement Default No Productivo USP</label>
         <locationX>2954</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CaseEntitlementAssignment</targetReference>
@@ -957,7 +971,7 @@
         <name>GetDefaultUspPartnerAction</name>
         <label>Recuperar Entitlement Default USP Partner</label>
         <locationX>3658</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CaseEntitlementAssignment</targetReference>
@@ -991,7 +1005,7 @@
         <name>GetDefaultUSPProductiveAction</name>
         <label>Recuperar Entitlement Default Productivo USP</label>
         <locationX>2690</locationX>
-        <locationY>911</locationY>
+        <locationY>827</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <isGoTo>true</isGoTo>
@@ -1026,7 +1040,7 @@
         <name>GetUSPEntitlementAction</name>
         <label>Recuperar Entitlement USP</label>
         <locationX>2822</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GotEntitlementResultsDecision</targetReference>
@@ -1104,7 +1118,7 @@
         <name>GetUspPartnerEntitlementAction</name>
         <label>Recuperar Entitlement USP Partner</label>
         <locationX>3570</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GotUspPartnerEntitlementResultsDecision</targetReference>

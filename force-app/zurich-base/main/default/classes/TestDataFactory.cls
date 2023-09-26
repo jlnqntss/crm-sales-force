@@ -12,23 +12,23 @@ public class TestDataFactory
 
           // Get random number between 0 and 10 Apex
           Integer randomNumber = Integer.valueof((Math.random() * 10));
-          
+
 
           // Get random number between 0 and 100 Apex
           Integer randomNumber = Integer.valueof((Math.random() * 100));
-          
+
 
           // Get random Boolean value Apex
           Integer randomNumber = Integer.valueof((math.random() * 10));
           Boolean randomBoolean = Math.mod(randomNumber,2) == 0 ? true : false;
-          
+
 
           // Get random String from list of strings Apex
           List<String> availableValues = new List<String>{'Red','Green','Blue','White','Black'};
           Integer listSize = availableValues.size() - 1;
           Integer randomNumber = Integer.valueof((Math.random() * listSize));
           String randomString= availableValues[randomNumber];
-          
+
      */
 
     /**
@@ -1299,15 +1299,15 @@ public class TestDataFactory
         if (totalItems == null || totalItems < 1)
         {
             throw new TestException('totalItems debe ser igual o mayor que 1');
-        }   
+        }
 
          // From Metadata Robot_Hegeo_Field_Mapping__mdt
          String tipo = '';
          String subtype = 'No puedo registrarme';
          String typeN3 = 'Mis datos introducidos son erróneos';
- 
+
          List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
- 
+
          for (Integer i = 0; i < totalItems; i++)
          {
              /* REGISTRO FORM INC*/
@@ -1323,7 +1323,7 @@ public class TestDataFactory
                     }
                 );
          }
- 
+
          return jsonElementsList;
     }
 
@@ -1391,10 +1391,10 @@ public class TestDataFactory
     /**
      * Obtener estructura json del sistema de origen INFO para registros
      * de entidad KPI__c (Aplicacion SDM)
-     * 
+     *
      * @author nts (agonzalezisasi)
      * @date 03/09/2021
-     * 
+     *
      * @param Integer numero de elementos a generar
      * @return List<Map<String, Object>> listado de elementos simulando json
      */
@@ -1488,104 +1488,104 @@ public class TestDataFactory
         switch on type.toUpperCase()
         {
             // Persona física
-            when 'NATURAL_ACCOUNT' 
+            when 'NATURAL_ACCOUNT'
             {
                 externalRequestList = addExternalRequestToList (getINFOCustomerJson(numRecords, 'F'), externalRequestList, origin, 'ACCOUNT', infoRecordTypeId, 0);
             }
             // Persona jurídica
-            when 'LEGAL_ACCOUNT' 
+            when 'LEGAL_ACCOUNT'
             {
                 externalRequestList = addExternalRequestToList (getINFOCustomerJson(numRecords, 'J'), externalRequestList, origin, 'ACCOUNT', infoRecordTypeId, 0);
             }
             // Vía de contacto
-            when 'CONTACT_POINT_ADDRESS' 
+            when 'CONTACT_POINT_ADDRESS'
             {
                 externalRequestList = addExternalRequestToList (getINFOContactPointJson(numRecords, 'P'), externalRequestList, origin, 'CONTACT_POINT', infoRecordTypeId, 0);
             }
             // Vía de contacto
-            when 'CONTACT_POINT_PHONE' 
+            when 'CONTACT_POINT_PHONE'
             {
                 externalRequestList = addExternalRequestToList (getINFOContactPointJson(numRecords, 'T'), externalRequestList, origin, 'CONTACT_POINT', infoRecordTypeId, 0);
             }
             // Vía de contacto
-            when 'CONTACT_POINT_EMAIL' 
+            when 'CONTACT_POINT_EMAIL'
             {
                 externalRequestList = addExternalRequestToList (getINFOContactPointJson(numRecords, 'E'), externalRequestList, origin, 'CONTACT_POINT', infoRecordTypeId, 0);
             }
             // Producto
-            when 'PRODUCT' 
+            when 'PRODUCT'
             {
                 externalRequestList = addExternalRequestToList (getINFOProductJson(numRecords), externalRequestList, origin, 'PRODUCT', infoRecordTypeId, 0);
             }
             // Oferta
-            when 'QUOTE' 
+            when 'QUOTE'
             {
                 externalRequestList = addExternalRequestToList (getINFOQuoteJson(numRecords), externalRequestList, origin, 'QUOTE', infoRecordTypeId, 0);
             }
             // Opción oferta
-            when 'QUOTE_OPTION' 
+            when 'QUOTE_OPTION'
             {
                 externalRequestList = addExternalRequestToList (getINFOQuoteOptionJson(numRecords), externalRequestList, origin, 'QUOTE_OPTION', infoRecordTypeId, 0);
             }
             // Póliza
-            when 'POLICY' 
+            when 'POLICY'
             {
                 externalRequestList = addExternalRequestToList (getINFOPolicyJson(numRecords), externalRequestList, origin, 'POLICY', infoRecordTypeId, 0);
             }
             // Objeto asegurado
-            when 'INSURED_OBJECT' 
+            when 'INSURED_OBJECT'
             {
                 externalRequestList = addExternalRequestToList (getINFOInsuredObjectJson(numRecords), externalRequestList, origin, 'INSURED_OBJECT', infoRecordTypeId, 0);
             }
             // Siniestro
-            when 'CLAIM' 
+            when 'CLAIM'
             {
                 externalRequestList = addExternalRequestToList (getINFOClaimJson(numRecords), externalRequestList, origin, 'CLAIM', infoRecordTypeId, 0);
             }
             // Rol póliza
-            when 'POLICY_RELATIONSHIP' 
+            when 'POLICY_RELATIONSHIP'
             {
                 externalRequestList = addExternalRequestToList (getINFOPolicyRelationshipJson(numRecords), externalRequestList, origin, 'POLICY_RELATIONSHIP', infoRecordTypeId, 0);
             }
             // Rol oferta
-            when 'QUOTE_RELATIONSHIP' 
+            when 'QUOTE_RELATIONSHIP'
             {
                 externalRequestList = addExternalRequestToList (getINFOQuoteRelationshipJson(numRecords), externalRequestList, origin, 'QUOTE_RELATIONSHIP', infoRecordTypeId, 0);
             }
             // Rol siniestro
-            when 'CLAIM_RELATIONSHIP' 
+            when 'CLAIM_RELATIONSHIP'
             {
                 externalRequestList = addExternalRequestToList (getINFOClaimRelationshipJson(numRecords), externalRequestList, origin, 'CLAIM_RELATIONSHIP', infoRecordTypeId, 0);
             }
             //Partner
-            when 'PARTNER' 
+            when 'PARTNER'
             {
                 externalRequestList = addExternalRequestToList (getINFOPartnerJson(numRecords), externalRequestList, origin, 'PARTNER', infoRecordTypeId, 0);
             }
             //Mediador
-            when 'INTERMEDIARY' 
+            when 'INTERMEDIARY'
             {
                 externalRequestList = addExternalRequestToList (getINFOIntermediaryJson(numRecords), externalRequestList, origin, 'INTERMEDIARY', infoRecordTypeId, 0);
             }
-            when 'NOTE' 
+            when 'NOTE'
             {
                 externalRequestList = addExternalRequestToList (getINFONoteJson(numRecords), externalRequestList, origin, 'NOTE', infoRecordTypeId, 2);
             }
-            when 'FORM_INC' 
+            when 'FORM_INC'
             {
                 externalRequestList = addExternalRequestToList (getMiZurichFormIncJson(numRecords),externalRequestList, origin, 'FORM_INC', infoRecordTypeId, 0);
             }
             // Condición Especial Partner
-            when 'SPECIAL_CONDITION' 
+            when 'SPECIAL_CONDITION'
             {
                 externalRequestList = addExternalRequestToList (getINFOSpecialConditionJson(numRecords),externalRequestList, origin, 'SPECIAL_CONDITION', infoRecordTypeId, 0);
             }
             // SDM KPIs
-            when 'INTERMEDIARY_KPI' 
+            when 'INTERMEDIARY_KPI'
             {
                 externalRequestList = addExternalRequestToList (getINFOSDMKPIJson(numRecords),externalRequestList, origin, 'INTERMEDIARY_KPI', infoRecordTypeId, 0);
             }
-            when else  
+            when else
             {
                 return externalRequestList;
             }
@@ -3189,7 +3189,7 @@ public class TestDataFactory
         }
 
         return result;
-    } 
+    }
 
 
     /**
@@ -3199,7 +3199,7 @@ public class TestDataFactory
      * @date 11/07/2022
      * @param {String year} Año del objetivo
      * @param {Integer num} Numero a crear
-     * @return {Objective__c} 
+     * @return {Objective__c}
      * @change amiranda 04/01/2023 Se añade el campo 'RecordTypeId' con el Id del tipo de registro 'Objectives'
      */
     public static Objective__c generateObjective(Integer year, String indicator, String segment, String product, String zone, Decimal january, Decimal february, Decimal march, Decimal april,
@@ -3232,13 +3232,13 @@ public class TestDataFactory
 
         return obj;
     }
-    
+
     /**
      * Genera un evento
      *
      * @author nts (dmunoz)
      * @date 23/12/2022
-     * @return {Event} 
+     * @return {Event}
      */
     public static Event generateEvent() {
         Event e = new Event();
@@ -3257,7 +3257,7 @@ public class TestDataFactory
      *
      * @author nts (dmunoz)
      * @date 23/12/2022
-     * @return {Event} 
+     * @return {Event}
      */
     public static Acta__c generateActa(Event event) {
 
@@ -3275,4 +3275,52 @@ public class TestDataFactory
 
         return acta;
     }
+
+    
+    /**
+    * @description Método que genera un registro para el Custom Setting 'Lead_Offers__c'
+    * con la información necesaria.
+    *
+    * @author amiranda
+    * @date 21-09-2023 
+    * @return Lead_Offers__c custom setting con la información necesaria informada
+    **/
+    public static Lead_Offers__c generateLeadOfferCS()
+    {
+        // Crear cola de Genesys
+        List<purecloud__PureCloud_Queue__c> queues = generateGenesysQueues(1);
+        insert queues;
+
+        // Se recuperan las BH por defecto de la org
+        BusinessHours defaultBusinessHours = [SELECT Id, Name FROM BusinessHours WHERE IsDefault = true];
+
+        // Usuario genérico del Contact Center necesario para el Custom Setting
+        Id ventasUserProfileId = [SELECT Id FROM Profile
+                                   WHERE Name = 'Ventas User' LIMIT 1].Id;
+        List<User> contactCenterUser = generateUsersByProfile(ventasUserProfileId, 1);
+        insert contactCenterUser;
+
+        // Crear Custom Setting
+        Lead_Offers__c leadOffers = new Lead_Offers__c(
+            VoiceQueue__c = queues.get(0).Name,
+            BusinessHour__c = defaultBusinessHours.Name,
+            BusinessCode__c = '1234567890',
+            NotificationDaysBeforeDue__c = 5,
+            DaysToReassignOffer__c = 10,
+            ContactCenterUser__c = contactCenterUser.get(0).Alias
+            );
+        
+        return leadOffers;
+    }
+    
+    public static void insertCrossSellingCustomSetting()
+    {
+        // Crear custom setting que indica el usuario genérico
+        Cross_Selling__c ventaCruzada = new Cross_Selling__c();
+        ventaCruzada.ContactCenterUser__c = 'generico';
+        ventaCruzada.DefaultUser__c = 'adminkli';
+
+        insert ventaCruzada;
+    }
+
 }

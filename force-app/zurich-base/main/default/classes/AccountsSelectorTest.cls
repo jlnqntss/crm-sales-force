@@ -1,10 +1,10 @@
 /**
  * @description       : Clase de test para la clase AccountsSelector
- * @author            : 
- * @group             : 
+ * @author            :
+ * @group             :
  * @last modified on  : 08-22-2023
  * @last modified by  : aberuete
-**/
+ **/
 @isTest
 private with sharing class AccountsSelectorTest
 {
@@ -38,12 +38,28 @@ private with sharing class AccountsSelectorTest
         //Intermediary-> NO tienen ContactPointPhones!!!
         List<Account> intermediaryAccounts = TestDataFactory.generateAccounts('001', 'Intermediary', 10);
         intermediaryAccounts[0].put(INTERMEDIARY_EMAIL_FIELD, INTERMEDIARY_EMAIL);
+
         insert intermediaryAccounts;
 
+        //Jerarquía y códigos para la parte de visibilidad
+        intermediaryAccounts[0].IntermediaryWithUser__c = intermediaryAccounts[1].Id;
+        for (Integer i=2; i < intermediaryAccounts.size(); i++)
+        {
+            intermediaryAccounts[i].ParentId = intermediaryAccounts[0].Id;
+        }
+        update intermediaryAccounts;
+
+        //Agrupations
         List<Account> agrupations = TestDataFactory.generateAccounts(
             '001', AccountsSelector.RT_NAME_AGRUPATION, 1
-        );
+            );
         insert agrupations;
+
+        for (Integer i=2; i < intermediaryAccounts.size(); i++)
+        {
+            intermediaryAccounts[i].IntermediaryGroup__c = agrupations[0].Id;
+        }
+        update intermediaryAccounts;
     }
 
     @isTest
@@ -202,7 +218,7 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(recordIds));
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>( new AccountsSelector().selectById(recordIds) );
 
         for(Account record : matchedRecords)
         {
@@ -250,7 +266,7 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(recordIds) );
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>( new AccountsSelector().selectById(recordIds) );
 
         for(Account record : matchedRecords)
         {
@@ -286,7 +302,7 @@ private with sharing class AccountsSelectorTest
         }
         //recuperar las pólizas que hay
         List<String> policyNumbers = new List<String>();
-        List<Policy__c> policiesSelected = [SELECT InfoPolicyNumber__c FROM Policy__c WHERE PolicyHolder__c IN :accountIds];
+        List<Policy__c> policiesSelected = [SELECT InfoPolicyNumber__c FROM Policy__c WHERE PolicyHolder__c IN : accountIds];
         for(Policy__c policy: policiesSelected)
         {
             policyNumbers.add(policy.InfoPolicyNumber__c);
@@ -338,7 +354,7 @@ private with sharing class AccountsSelectorTest
         }
         //recuperar las ofertas que hay
         List<String> quoteNumbers = new List<String>();
-        List<Opportunity> quotesSelected = [SELECT InfoQuoteNumber__c FROM Opportunity WHERE AccountId IN :accountIds];
+        List<Opportunity> quotesSelected = [SELECT InfoQuoteNumber__c FROM Opportunity WHERE AccountId IN : accountIds];
         for(Opportunity quote: quotesSelected)
         {
             if( !String.isBlank(quote.InfoQuoteNumber__c) )
@@ -485,7 +501,7 @@ private with sharing class AccountsSelectorTest
         List<Account> result = accountSel.findByIdsAndScope(ids, new List<String> {'ZE', 'ZEO'});
         Test.stopTest();
 
-        
+
         System.assertEquals(2, result.size(), 'There should be 2 accounts');
         System.assertEquals(3, result[0].Scope__r.size(), 'There should be 3 scopes for the first account');
         System.assertEquals(3, result[1].Scope__r.size(), 'There should be 3 scopes for the second account');
@@ -496,7 +512,7 @@ private with sharing class AccountsSelectorTest
     {
         Test.startTest();
 
-        List<Account> selectedAccounts = new AccountsSelector().selectById(new Set<Id>());
+        List<Account> selectedAccounts = new AccountsSelector().selectById( new Set<Id>() );
 
         Test.stopTest();
 
@@ -512,7 +528,7 @@ private with sharing class AccountsSelectorTest
         // Test
         Test.startTest();
 
-        Map<Id, Account> selectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(accountIds));
+        Map<Id, Account> selectedAccountsById = new Map<Id, Account>( new AccountsSelector().selectById(accountIds) );
 
         Test.stopTest();
 
@@ -539,12 +555,12 @@ private with sharing class AccountsSelectorTest
     static void test_findIntermediariesByParentId()
     {
         AccountsSelector accSel = new AccountsSelector();
-        
-        List<Account> agrupations = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtAgrupationId];
+
+        List<Account> agrupations = [SELECT Id FROM Account WHERE RecordTypeId = : accSel.rtAgrupationId];
         System.assertEquals(1, agrupations.size(), 'Deberia haber 1 agrupacion');
 
-        List<Account> accounts = [SELECT ParentId FROM Account WHERE RecordTypeId = :accSel.rtIntermediaryId LIMIT 4];
-        System.assert(!accounts.isEmpty(), MESSAGE_DEBERIA_HABER_CUENTAS);
+        List<Account> accounts = [SELECT ParentId FROM Account WHERE RecordTypeId = : accSel.rtIntermediaryId LIMIT 4];
+        System.assert (!accounts.isEmpty(), MESSAGE_DEBERIA_HABER_CUENTAS);
 
         for (Account account : accounts)
         {
@@ -554,10 +570,10 @@ private with sharing class AccountsSelectorTest
         update accounts;
 
         Test.startTest();
-        List<Account> intermediaries = accSel.findIntermediariesByParentId(new Set<Id>{agrupations.get(0).Id});
+        List<Account> intermediaries = accSel.findIntermediariesByParentId(new Set<Id> {agrupations.get(0).Id});
         Test.stopTest();
 
-        System.assert(!intermediaries.isEmpty(), 'Debería haber intermediarios');
+        System.assert (!intermediaries.isEmpty(), 'Debería haber intermediarios');
         System.assertEquals(accounts.size(), intermediaries.size(), 'Debería haber ' + accounts.size() + ' intermediarios.');
     }
 
@@ -572,8 +588,8 @@ private with sharing class AccountsSelectorTest
     {
         Test.startTest();
         List<Account> intermediaries = new AccountsSelector().findIntermediariesByEmailInFields(
-            INTERMEDIARY_EMAIL, new Set<String>{INTERMEDIARY_EMAIL_FIELD}
-        );
+            INTERMEDIARY_EMAIL, new Set<String> {INTERMEDIARY_EMAIL_FIELD}
+            );
         Test.stopTest();
 
         System.assertEquals(1, intermediaries.size(), 'Deberia haber 1 Mediador');
@@ -589,10 +605,10 @@ private with sharing class AccountsSelectorTest
     static void test_findWithFields()
     {
         AccountsSelector accSel = new AccountsSelector();
-        List<Account> accounts = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtIntermediaryId];
+        List<Account> accounts = [SELECT Id FROM Account WHERE RecordTypeId = : accSel.rtIntermediaryId];
         System.assertEquals(false, accounts.isEmpty(), MESSAGE_DEBERIA_HABER_CUENTAS);
 
-        Set<String> fields = new Set<String>{'Name'};
+        Set<String> fields = new Set<String> {'Name'};
 
         Test.startTest();
         accounts = accSel.findWithFields(accounts, fields);
@@ -613,17 +629,17 @@ private with sharing class AccountsSelectorTest
     static void test_findAgrupationsBySubquery()
     {
         AccountsSelector accSel = new AccountsSelector();
-        
-        List<Account> agrupations = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtAgrupationId];
+
+        List<Account> agrupations = [SELECT Id FROM Account WHERE RecordTypeId = : accSel.rtAgrupationId];
         System.assertEquals(1, agrupations.size(), 'Deberia haber 1 agrupacion');
 
         List<Contact> contacts = TestDataFactory.generateContactsFromAccounts(
             agrupations, ContactsSelector.RT_NAME_CONTACT, 1
-        );
+            );
         insert contacts;
 
         // Se recupera el id del recordtype de agrupacion de mediadores si no se ha hecho ya
-        Query subquery = new Query(Contact.getSObjectType());
+        Query subquery = new Query( Contact.getSObjectType() );
         subquery.selectField(Contact.AccountId);
         subquery.addConditionIn(Contact.Id, contacts);
 
@@ -644,28 +660,28 @@ private with sharing class AccountsSelectorTest
     {
         AccountsSelector accSel = new AccountsSelector();
         String cif = '11223344';
-        Account customer = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = :accSel.rtCustomerId LIMIT 1];
+        Account customer = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = : accSel.rtCustomerId LIMIT 1];
         customer.NationalId__c = cif;
         update customer;
 
         Test.startTest();
-        List<Account> accountsfound = new AccountsSelector().findByCIFAndCreationDate(new List<String>{cif}, '1');
+        List<Account> accountsfound = new AccountsSelector().findByCIFAndCreationDate(new List<String> {cif}, '1');
         Test.stopTest();
 
         System.assertEquals(1, accountsfound.size(), 'Deberia encontrar 1 cliente');
     }
 
     /**
-    * Test del método que recupera las cuentas intermediario activas(status 001 o 002)
-    * @author lrodriguez6@seidor.es
-    * @date 09/02/2023
-    */
+     * Test del método que recupera las cuentas intermediario activas(status 001 o 002)
+     * @author lrodriguez6@seidor.es
+     * @date 09/02/2023
+     */
     @IsTest
     static void test_findAccountsIntermediaryRatio()
     {
         AccountsSelector accSel = new AccountsSelector();
-        
-        List<Account> accountsIntermediary = [SELECT Id FROM Account WHERE RecordTypeId = :accSel.rtAccountIntermediaryId ];
+
+        List<Account> accountsIntermediary = [SELECT Id FROM Account WHERE RecordTypeId = : accSel.rtAccountIntermediaryId ];
         accountsIntermediary[0].Status__c='001';
         accountsIntermediary[1].Status__c='002';
 
@@ -689,10 +705,11 @@ private with sharing class AccountsSelectorTest
     static void test_findAccountByBusinessCode()
     {
         AccountsSelector accSel = new AccountsSelector();
-        
+
         List<Account> accountsQuery = [SELECT Id, INFOBusinessCode__c FROM Account LIMIT 1];
 
-        if (!accountsQuery.isEmpty()) {
+        if ( !accountsQuery.isEmpty() )
+        {
             List<String> affiliationCodeList = new List<String>();
             affiliationCodeList.add(accountsQuery.get(0).INFOBusinessCode__c);
 
@@ -705,10 +722,10 @@ private with sharing class AccountsSelectorTest
     }
 
     /**
-    * Test del método que recupera las cuentas filtradas por record type name
-    * @author aberuete
-    * @date 02/06/2023
-    */
+     * Test del método que recupera las cuentas filtradas por record type name
+     * @author aberuete
+     * @date 02/06/2023
+     */
     @IsTest
     static void test_setRecordType()
     {
@@ -718,18 +735,18 @@ private with sharing class AccountsSelectorTest
 
         Test.startTest();
         AccountsSelector accountsSelector = new AccountsSelector();
-        accountsSelector.setRecordType(new List<String>{'Customer'});
-        List<Account> matchedRecords = accountsSelector.selectById(mapAccountsById.keySet());
+        accountsSelector.setRecordType(new List<String> {'Customer'});
+        List<Account> matchedRecords = accountsSelector.selectById( mapAccountsById.keySet() );
         Test.stopTest();
 
         System.assertEquals(10, matchedRecords.size(), 'El número de cuentas de Customer no es correcto');
     }
 
     /**
-    * Test del método que recupera las cuentas filtradas por tipo de cuenta
-    * @author aberuete
-    * @date 06/06/2023
-    */
+     * Test del método que recupera las cuentas filtradas por tipo de cuenta
+     * @author aberuete
+     * @date 06/06/2023
+     */
     @IsTest
     static void test_setTypeOfAccount()
     {
@@ -742,18 +759,18 @@ private with sharing class AccountsSelectorTest
 
         Test.startTest();
         AccountsSelector accountsSelector = new AccountsSelector();
-        accountsSelector.setTypeOfAccount(new List<String>{'F','J'});
-        List<Account> matchedRecords = accountsSelector.selectById(mapAccountsById.keySet());
+        accountsSelector.setTypeOfAccount(new List<String> {'F','J'});
+        List<Account> matchedRecords = accountsSelector.selectById( mapAccountsById.keySet() );
         Test.stopTest();
 
         System.assertEquals(2, matchedRecords.size(), 'El número de cuentas de tipo F y J no es correcto');
     }
 
     /**
-    * Test del método que recupera las cuentas filtradas por un conjunto de ids de cuentas, record type name y tipo de cuenta
-    * @author aberuete
-    * @date 22/08/2023
-    */
+     * Test del método que recupera las cuentas filtradas por un conjunto de ids de cuentas, record type name y tipo de cuenta
+     * @author aberuete
+     * @date 22/08/2023
+     */
     @IsTest
     static void test_findByAccountIdsRecordTypeNameAndType()
     {
@@ -767,10 +784,62 @@ private with sharing class AccountsSelectorTest
         update accountListCustomer;
 
         Test.startTest();
-        List<Account> accountListAfterQuery = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(new Set<Id>(accountList.keySet()), new List<String> {'Customer'}, new List<String>{'F','J'});
+        List<Account> accountListAfterQuery = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(new Set<Id>( accountList.keySet() ), new List<String> {'Customer'}, new List<String> {'F','J'});
         Test.stopTest();
 
         System.assertNotEquals(accountList.size(), accountListAfterQuery.size(), 'El número de cuentas no debería ser el mismo');
         System.assertEquals(10, accountListAfterQuery.size(), 'El número de cuentas de tipo customer debería ser 10');
     }
+
+    /**
+     * Test del método que recupera los intermediarios por su código
+     * @author jfherrero
+     * @date 13/09/2023
+     */
+    @IsTest
+    static void test_findByINFOIntermediaryCode_ok()
+    {
+        List<Account> accountListIntermediary = [SELECT Id, ParentId, IntermediaryGroup__r.IntermediaryWithUser__c, INFOIntermediaryCode__c FROM Account
+                                                 WHERE Account.INFOIntermediaryCode__c != null AND IntermediaryGroup__r.IntermediaryWithUser__c != null];
+
+        List<String> intermediaryCodes = new List<String>();
+
+        for (Account interm : accountListIntermediary)
+        {
+            intermediaryCodes.add(interm.INFOIntermediaryCode__c);
+        }
+
+        Test.startTest();
+        List<Account> accountListAfterQuery = new AccountsSelector().findByINFOIntermediaryCode(intermediaryCodes);
+        Test.stopTest();
+
+        System.assertEquals(intermediaryCodes.size(), accountListAfterQuery.size(), 'El número de cuentas recuperadas no coincide');
+    }
+
+    /**
+     * Test del método que recupera los intermediarios por su código. Contempla la ruta por la que la lista está vacía o nula
+     * @author jfherrero
+     * @date 13/09/2023
+     */
+    @IsTest
+    static void test_findByINFOIntermediaryCode_null()
+    {
+        Test.startTest();
+        List<Account> accountListAfterQuery = new AccountsSelector().findByINFOIntermediaryCode( new List<String>() );
+        Test.stopTest();
+
+        System.assertEquals(0, accountListAfterQuery.size(), 'El número de cuentas recuperadas debería ser 0');
+    }
+
+    /**
+     * Test del método que devuelve una Query con cuentas pasa borrar
+     * @author jfherrero
+     * @date 13/09/2023
+     */
+    @IsTest
+    static void test_getAccountsToDelete()
+    {
+        String accToDelete = AccountsSelector.getAccountsToDelete();
+    }
+
 }

@@ -4186,6 +4186,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.IntermediaryVisibilityForm__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.IntermediaryWithUser__c</field>
         <readable>true</readable>
@@ -4213,6 +4218,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.PreferedContactEnd__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PreferredContactChannel__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4518,6 +4528,36 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Type</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWPorfolioBuilding__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWPortfolioRCDamage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWPortfolioSpecialties__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWSaleBuilding__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWSaleRCDamage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.UWSaleSpecialties__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4878,6 +4918,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.PYMESpecialist__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+		<editable>true</editable>
+		<field>Account.IntermediaryGroup__c</field>
+		<readable>true</readable>
+	</fieldPermissions>	
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.INFOIntermediaryGroupCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5481,6 +5531,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Campaign.MaxCallRetries__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Campaign.ActualCost</field>
         <readable>true</readable>
@@ -5712,6 +5767,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>CampaignMember.CallRetries__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>CampaignMember.AccountId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5793,6 +5853,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Anonymized__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Association__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8002,6 +8067,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Campaign__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Acta__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9606,6 +9676,36 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.PreferedContactEndFor__c</field>
+        <readable>true</readable>
+        </fieldPermissions>
+        <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PreferedContactStartFor__c</field>
+        <readable>true</readable>
+        </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ClonedOfferForIntermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.SourceOpportunity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PendingClientInformation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PendingClientInformationMore__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9782,6 +9882,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.IntermediaryVisibilityForm__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10757,6 +10862,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.IntermediaryVisibilityForm__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11852,6 +11962,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Special_Condition__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.CampaignMemberID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Campaign__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

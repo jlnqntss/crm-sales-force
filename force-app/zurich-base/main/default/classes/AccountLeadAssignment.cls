@@ -3,8 +3,8 @@
  *                      de las cuentas de tipo Lead que llegan a Salesforce.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 28/08/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 22-09-2023
+ * @last modified by  : amiranda
 **/
 public with sharing class AccountLeadAssignment
 {
@@ -389,6 +389,12 @@ public with sharing class AccountLeadAssignment
      *              Código de intermediario del agente
      * @return      String
      *              Id de usuario.
+     * 
+     * @change amiranda 15/09/2023 Se debe comprobar si la cuenta de tipo Mediador
+     * es partner. Si es partner significa que tiene usuario asociado, por lo tanto
+     * se buscará el usuario asociado a esta cuenta. Si no es partener, significa
+     * que no tiene usuario asociado y se buscará el usuario del Mediador principal.
+     * Se identifica a este Mediador a través de la Agrupación.
      */
     @TestVisible
     private static Assignment getIntermediaryUserId(String intermediaryCode)
@@ -400,19 +406,31 @@ public with sharing class AccountLeadAssignment
         }
 
         AccountsSelector accountQuery = new AccountsSelector();
-        List<Account> intermediaryAccount = accountQuery.findByINFOIntermediaryCode(new List<String>{intermediaryCode});
+        List<Account> intermediaryAccounts = accountQuery.findByINFOIntermediaryCode(new List<String>{intermediaryCode});
 
-        if(intermediaryAccount.isEmpty())
+        if(intermediaryAccounts.isEmpty())
         {
             return defaultUser;
         }
 
         UsersSelector userQuery = new UsersSelector();
-        List<User> intermediary = userQuery.findUsersByAccountId(new List<String>{intermediaryAccount.get(0).Parent.IntermediaryWithUser__c});
+        List<User> intermediary = new List<User>();
+        Account intermediaryAccount = intermediaryAccounts.get(0);
+
+        if (intermediaryAccount.isPartner)
+        {
+            // Si el Mediador tiene usuario asociado, se busca el usuario asociado a dicho Mediador
+            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.Id}); 
+        }
+        else if(intermediaryAccount.IntermediaryGroup__r.IntermediaryWithUser__c != null)
+        {
+            // Si el Mediador no tiene un usuario asociado (no es partner), se busca el usuario asociado al Mediador principal indicado en la Agrupación
+            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.IntermediaryGroup__r.IntermediaryWithUser__c}); 
+        }
 
         if(! intermediary.isEmpty())
         {
-            return new Assignment(intermediary.get(0).Id).setRelatedAccount(intermediaryAccount.get(0));
+            return new Assignment(intermediary.get(0).Id).setRelatedAccount(intermediaryAccount);
         }
 
         return defaultUser;

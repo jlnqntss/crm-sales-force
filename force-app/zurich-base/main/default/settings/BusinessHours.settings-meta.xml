@@ -102,6 +102,22 @@
         <wednesdayEndTime>20:00:00.000Z</wednesdayEndTime>
         <wednesdayStartTime>09:00:00.000Z</wednesdayStartTime>
     </businessHours>
+    <businessHours>
+        <active>true</active>
+        <default>false</default>
+        <fridayEndTime>17:00:00.000Z</fridayEndTime>
+        <fridayStartTime>09:00:00.000Z</fridayStartTime>
+        <mondayEndTime>19:00:00.000Z</mondayEndTime>
+        <mondayStartTime>09:00:00.000Z</mondayStartTime>
+        <name>ZRM Ventas</name>
+        <thursdayEndTime>19:00:00.000Z</thursdayEndTime>
+        <thursdayStartTime>09:00:00.000Z</thursdayStartTime>
+        <timeZoneId>Europe/Madrid</timeZoneId>
+        <tuesdayEndTime>19:00:00.000Z</tuesdayEndTime>
+        <tuesdayStartTime>09:00:00.000Z</tuesdayStartTime>
+        <wednesdayEndTime>19:00:00.000Z</wednesdayEndTime>
+        <wednesdayStartTime>09:00:00.000Z</wednesdayStartTime>
+    </businessHours>
     <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
@@ -447,5 +463,21 @@
         <recurrenceStartDate>2023-01-02</recurrenceStartDate>
         <recurrenceType>RecursWeekly</recurrenceType>
         <startTime>14:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <businessHours>ZRM Ventas</businessHours>
+        <endTime>16:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>Jornada intensiva verano ZRM Ventas</name>
+        <recurrenceDayOfWeek>Monday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Tuesday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Wednesday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Thursday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Friday</recurrenceDayOfWeek>
+        <recurrenceEndDate>2023-09-15</recurrenceEndDate>
+        <recurrenceInterval>1</recurrenceInterval>
+        <recurrenceStartDate>2023-06-15</recurrenceStartDate>
+        <recurrenceType>RecursWeekly</recurrenceType>
+        <startTime>09:00:00.000Z</startTime>
     </holidays>
 </BusinessHoursSettings>

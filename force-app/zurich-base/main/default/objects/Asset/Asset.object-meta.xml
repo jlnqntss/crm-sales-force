@@ -120,10 +120,15 @@
         <lookupPhoneDialogsAdditionalFields>ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>CONTACT.NAME</lookupPhoneDialogsAdditionalFields>
         <searchResultsAdditionalFields>ASSET.NAME</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>ASSET.SERIAL_NUMBER</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>ASSET.INSTALL_DATE</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>ACCOUNT.NAME</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CONTACT.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OfferPolicyNumber__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>RegistrationNumber__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>BrandName__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Model__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>AddressType__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>AddressName__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>AddressNumber__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>AddressAdditionalInfo__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>City__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>Private</sharingModel>
 </CustomObject>

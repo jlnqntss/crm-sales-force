@@ -389,55 +389,60 @@ public with sharing class EmailMessagesUtil
                 if(em.Incoming && String.isNotBlank(em.ParentId)) idCaso.add(em.ParentId); 
                 List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
 
-                // Add the emails from the ToAddress field
-                if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
-                // Add the emails from the CcAddress field
-                if( String.isNotBlank(em.CcAddress) ) emailsToCheck.addAll(em.CcAddress.split(';'));
-            
-                // if any...
-                if( !emailsToCheck.isEmpty() ) {
-                    // Check each email in the list with the map of Genesys Queue data objects by email receipt
-                    Integer i = 0;
-                    
-                    while( genesysQueue == null && i < emailsToCheck.size()  ) {
-                        String routingType;
-                     
-                        routingType = getEmailRouteType(emailsToCheck[i]);
-                                               
-                        switch on routingType {
-                            when 'Industry' {
-                                if(!listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == uspRecordTypeId)
-                                {
-                                    if (em.Industry__c != null)
-                                    {
-                                        genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
-                                    }
-
-                                    if(em.Industry__c==null || genesysQueue==null)
-                                    {
-                                        genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
-                                    }
-                                }
-                            }
-                            when else {
-                                genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());
-
-                                if((!listaCaso.isEmpty())&&(listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
-                                {
-                                    genesysQueue=null;
-                                }
-                                else if((!listaCaso.isEmpty())&&(listaCaso.get(0).RecordTypeId == ocsRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='OCSInquiry'))
-                                {
-                                    genesysQueue=null;
-                                }
-
-
-                            }
-                        }
+                if(listaCaso.get(0).RecordTypeId == ocsRecordTypeId && em.Industry__c != null && em.Industry__c.contains('@'))
+                {
+                    genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());                          
+                }
+                else
+                {
+                    // Add the emails from the ToAddress field
+                    if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
+                    // Add the emails from the CcAddress field
+                    if( String.isNotBlank(em.CcAddress) ) emailsToCheck.addAll(em.CcAddress.split(';'));
+                
+                    // if any...
+                    if( !emailsToCheck.isEmpty() ) {
+                        // Check each email in the list with the map of Genesys Queue data objects by email receipt
+                        Integer i = 0;
                         
-                        i++;
-                    }
-                } 
+                        while( genesysQueue == null && i < emailsToCheck.size()  ) {
+                            String routingType;
+                        
+                            routingType = getEmailRouteType(emailsToCheck[i]);
+                                                
+                            switch on routingType {
+                                when 'Industry' {
+                                    if(!listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == uspRecordTypeId)
+                                    {
+                                        if (em.Industry__c != null)
+                                        {
+                                            genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
+                                        }
+
+                                        if(em.Industry__c==null || genesysQueue==null)
+                                        {
+                                            genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                                        }
+                                    }
+                                }
+                                when else {
+                                    genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());
+
+                                    if((!listaCaso.isEmpty())&&(listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
+                                    {
+                                        genesysQueue=null;
+                                    }
+                                    else if((!listaCaso.isEmpty())&&(listaCaso.get(0).RecordTypeId == ocsRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='OCSInquiry'))
+                                    {
+                                        genesysQueue=null;
+                                    }
+                                }
+                            }    
+                            
+                            i++;
+                        }
+                    } 
+                }
             } catch (Exception e) {
                     
                 ErrorLogUtil.commitError(e, 'Fallo');

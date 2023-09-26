@@ -1,3 +1,10 @@
+/**
+ * @description       :
+ * @author            : jgallaga
+ * @group             :
+ * @last modified on  : 13/09/2023
+ * @last modified by  : jgallaga
+**/
 public with sharing class OpportunitiesSelector extends RecordsSelector
 {
     //#region Contructores
@@ -52,7 +59,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      *
      * @return                  Listado de opportunies sobre los que se ha realizado match
      *
-     * @last modified by  : arcortazar
+     * @last modified by  : jgallaga
      */
     public List<Opportunity> selectByAccountIdScopesAndOwnerProfile(Id accountId, Set<Id> scopeIds, Set<String> ownerProfileNames)
     {
@@ -258,7 +265,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         List<Opportunity> retrievedOpportunities = new List<Opportunity>();
 
-        if ( accountId != null && intermediaryCode != null && String.isNotBlank(productBranch) && daysToRetrieve != null )
+        if ( accountId != null  && daysToRetrieve != null )
         {
             Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
             {
@@ -315,5 +322,64 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         OR InfoQuoteNumber__c = :offerRecord.InfoQuoteNumber__c
         OR (AccountId = :offerRecord.InfoQuoteNumber__c AND CarRegistration__c = :offerRecord.CarRegistration__c AND PersonLeadSource__c = :offerRecord.PersonLeadSource__c)
         ORDER BY CreatedDate DESC];
+    }
+
+    /**
+     * Método que recupera las ofertas que necesitan recalcular la visibilidad para zrm
+     * *
+     * @author dmonuz | 18/9/2023
+     * @return  List<Opportunity>
+     */
+    public List<Opportunity> findOffersWithIncorrectVisibility() {
+
+        List<Opportunity> result = new List<Opportunity>([SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, 
+                                                        IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
+                                                        IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
+                                                        FROM Opportunity
+                                                        WHERE IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                                        OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
+                                                        OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+        return result;
+    }
+
+
+    /**
+     * Método que recupera las ofertas que necesitan recalcular la visibilidad para zrm a partir de una lista de ids
+     * *
+     * @author dmonuz | 18/9/2023
+     * @return  List<Opportunity>
+     */
+    public List<Opportunity> findOffersWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
+
+        List<Opportunity> result = new List<Opportunity>();
+
+        if (accountIds != null && !accountIds.isEmpty()) {
+            result = new List<Opportunity>([SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, 
+                                                            IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
+                                                            IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
+                                                            FROM Opportunity
+                                                            WHERE AccountId IN :accountIds AND IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                                            OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
+                                                            OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+        }
+
+        return result;
+
+    }
+
+    /**
+     * Devuelve un String con la query para conseguir oportunidades de campaña de Venta Cruzada que no esten cerradas
+     * *
+     * @author  jgallaga | 07-09-2023
+     * @return  String
+     */
+    public String findCrossSellingOpportunitiesNotClosed()
+    {
+        this.baseQuery
+            .selectFields(new List<Schema.SObjectField>{Opportunity.AccountId, Opportunity.CampaignId, Opportunity.Campaign.Type})
+            .addConditionEq(Opportunity.Campaign.Type, 'Cross Selling')
+            .addConditionEq(Opportunity.IsClosed, false);
+
+        return 'SELECT Accountid, Campaignid, Campaign.type FROM Opportunity WHERE (Campaign.Type = \'Cross Selling\') AND (IsClosed = false)';
     }
 }
