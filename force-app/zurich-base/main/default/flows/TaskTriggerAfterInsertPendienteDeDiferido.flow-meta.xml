@@ -1,61 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <actionCalls>
-        <name>SendNotificacionDiferidoAction</name>
-        <label>Send Notificacion Diferido</label>
-        <locationX>578</locationX>
-        <locationY>648</locationY>
-        <actionName>customNotificationAction</actionName>
-        <actionType>customNotificationAction</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>customNotifTypeId</name>
-            <value>
-                <elementReference>GetNotificacionDiferidosAction.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>body</name>
-            <value>
-                <elementReference>FormulaBody</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>title</name>
-            <value>
-                <elementReference>TituloNotificacionDiferido</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>recipientIds</name>
-            <value>
-                <elementReference>idsOwner</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>targetId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
     <apiVersion>56.0</apiVersion>
-    <assignments>
-        <name>idsOwnerAssignment</name>
-        <label>idsOwner Assignment</label>
-        <locationX>578</locationX>
-        <locationY>408</locationY>
-        <assignmentItems>
-            <assignToReference>idsOwner</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>$Record.OwnerId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>GetNotificacionDiferidosAction</targetReference>
-        </connector>
-    </assignments>
     <environments>Default</environments>
     <formulas>
         <name>FormulaBody</name>
@@ -87,7 +32,7 @@
         <name>CaseUpdateCreate_Error_Log</name>
         <label>Create Error Log</label>
         <locationX>314</locationX>
-        <locationY>408</locationY>
+        <locationY>384</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -119,7 +64,7 @@
         <name>CreateErrorLogScheduledUpdateAction</name>
         <label>Create Error Log</label>
         <locationX>842</locationX>
-        <locationY>408</locationY>
+        <locationY>384</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -147,32 +92,11 @@
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordLookups>
-        <name>GetNotificacionDiferidosAction</name>
-        <label>Get Notificación Diferidos</label>
-        <locationX>578</locationX>
-        <locationY>528</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>SendNotificacionDiferidoAction</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>NotificacionDiferidos</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>CustomNotificationType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordUpdates>
         <name>UpdateRelatedCaseAction</name>
         <label>Update Related Case</label>
         <locationX>50</locationX>
-        <locationY>288</locationY>
+        <locationY>276</locationY>
         <faultConnector>
             <targetReference>CaseUpdateCreate_Error_Log</targetReference>
         </faultConnector>
@@ -208,10 +132,7 @@
         <name>UpdateRelatedCaseScheduledAction</name>
         <label>Update Related Case</label>
         <locationX>578</locationX>
-        <locationY>288</locationY>
-        <connector>
-            <targetReference>idsOwnerAssignment</targetReference>
-        </connector>
+        <locationY>276</locationY>
         <faultConnector>
             <targetReference>CreateErrorLogScheduledUpdateAction</targetReference>
         </faultConnector>
