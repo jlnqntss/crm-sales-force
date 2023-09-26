@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 22-09-2023
- * @last modified by  : amiranda
+ * @last modified on  : 25/09/2023
+ * @last modified by  : jgallaga
  **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -218,13 +218,30 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 16/08/2023
      * @param  documents Listado de DNIs
      * @return           Listado de cuentas
+     * **
+     * @modification    Se añade que se ordene por fecha de creación
+     * @author          jgallaga
+     * @date            21/09/2023
      */
     public List<Account> findByNationalIdAndRcTypeCustAndBC(List<String> documents)
     {
         List<Account> result = new List<Account>();
 
-        if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c,Intermediary_Name__r.INFOIntermediaryCode__c, NationalIdType__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND (RecordTypeId = :rtCustomerId OR RecordTypeId = :rtBusinessCustomerId)]);
+        if (documents != null && !documents.isEmpty())
+        {
+            result = new List<Account>(
+                [
+                    SELECT  Id, FirstName, LastName, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c,
+                            NationalIdType__c, RecordType.DeveloperName, NationalId__c
+                    FROM    Account
+                    WHERE   NationalId__c IN :documents
+                    AND     (
+                                RecordTypeId = :rtCustomerId
+                            OR
+                                RecordTypeId = :rtBusinessCustomerId
+                            )
+                    ORDER BY LastModifiedDate DESC
+                ]);
         }
         return result;
     }
@@ -232,9 +249,9 @@ public with sharing class AccountsSelector extends RecordsSelector
     /**
     * Método que recupera el Name de id de cuenta pasado por parámentro
     * *
-    * @author overes | 09-10-2023 
-    * @param documents 
-    * @return List<Account> 
+    * @author overes | 09-10-2023
+    * @param documents
+    * @return List<Account>
     **/
     public List<Account> findAccountNameById(List<String> ids)
     {
@@ -253,13 +270,25 @@ public with sharing class AccountsSelector extends RecordsSelector
      * 'FirstName' y 'LastName' (entre otros) que son los que se consultarán
      * en la query. Por lo tanto, al intentar actualizar la lista de cuentas que
      *  nos devuelve este método, Salesforce lanza una excepción.
+     * *
+     * @modification    Se añade que el resultado este ordenado por fecha de creación, mas reciente primero
+     * @author          jgallaga
+     * @date            21/09/2023
      */
     public List<Account> findByNationalIdAndRcTypeLead(List<String> documents)
     {
         List<Account> result = new List<Account>();
-        
-        if (documents != null && !documents.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c FROM account WHERE NationalId__c IN :documents AND RecordTypeId = :rtLeadId]);
+
+        if (documents != null && !documents.isEmpty())
+        {
+            result = new List<Account>(
+                [
+                    SELECT  Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c
+                    FROM    account
+                    WHERE   NationalId__c IN :documents
+                    AND     RecordTypeId = :rtLeadId
+                    ORDER BY LastModifiedDate DESC
+                ]);
         }
         return result;
     }
@@ -275,8 +304,16 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
         List<Account> result = new List<Account>();
 
-        if (phones != null && !phones.isEmpty()) {
-            result = new List<Account>([SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone FROM account WHERE Phone IN :phones AND RecordTypeId = :rtLeadId ORDER BY CreatedDate DESC]);
+        if (phones != null && !phones.isEmpty())
+        {
+            result = new List<Account>(
+                [
+                    SELECT  Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, NationalId__c, RecordType.DeveloperName, Phone
+                    FROM    Account
+                    WHERE   Phone IN :phones
+                    AND     RecordTypeId = :rtLeadId
+                    ORDER BY LastModifiedDate DESC]
+                );
         }
         return result;
     }

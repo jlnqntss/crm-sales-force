@@ -1,9 +1,9 @@
 /**
- * @description       : 
- * @author            : 
- * @group             : 
- * @last modified on  : 04-24-2023
- * @last modified by  : aberuete
+ * @description       :
+ * @author            :
+ * @group             :
+ * @last modified on  : 25/09/2023
+ * @last modified by  : jgallaga
 **/
 public with sharing class ScopesSelector extends BaseSelector
 {
@@ -84,7 +84,7 @@ public with sharing class ScopesSelector extends BaseSelector
      * @return          Listado de scopes sobre los que se ha realizado match
      */
     public List<Scope__c> selectByAccountIdAndScope(Set<Id> ids, RecordsSelector.Scope scope)
-    { 
+    {
         String scopeToFilter;
 
         if(ids != null)
@@ -94,7 +94,7 @@ public with sharing class ScopesSelector extends BaseSelector
             String query = String.format(
                 QUERY_SELECT +
                 'WHERE AccountId__c IN : ids AND Scope__c = : scopeToFilter',
-                new List<String> 
+                new List<String>
                 {
                     String.join(new List<String> (this.fieldsToQuery), ',')
                 }
@@ -105,5 +105,10 @@ public with sharing class ScopesSelector extends BaseSelector
         {
             return new List<Scope__c>();
         }
+    }
+
+    public List<Scope__c> selectByAccountIdAndVentasScope(List<String> accountIds)
+    {
+        return [SELECT AccountId__c FROM Scope__c WHERE AccountId__c IN : accountIds AND Scope__c = 'Ventas'];
     }
 }

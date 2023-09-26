@@ -2,10 +2,10 @@
  * @description       :
  * @author            : overes
  * @group             :
- * @last modified on  : 10-09-2023
- * @last modified by  : overes
- **/
-public class AccountLeadUtil
+ * @last modified on  : 25/09/2023
+ * @last modified by  : jgallaga
+**/
+public with sharing class AccountLeadUtil
 {
     public static final String LEAD = 'Lead';
 
@@ -62,42 +62,30 @@ public class AccountLeadUtil
      * @author overes
      * @date 08/08/2023
      * @return acc
+     * *
+     * @modification    Se crea un método privado para buscar el lead a partir del identificador del documento
+     * @author          jgallaga
+     * @date            21/09/2023
      */
     public static Account leadDuplicatesControl(String documentID, String phone)
     {
-        Account acc = new Account();
-        AccountSelectorWithoutSharing accountsSelectorWS = new AccountSelectorWithoutSharing();
-        if (documentID != null)
+        Account acc = null;
+
+        if (String.isNotBlank(documentID))
         {
-            List<Account> accList = accountsSelectorWS.findByNationalIdAndRcTypeCustAndBC(new List<String> {documentID});
-            if ( !accList.isEmpty() )
-            {
-                acc = accList.get(0);
-            }
-            else
-            {
-                List<Account> accLeadList = accountsSelectorWS.findByNationalIdAndRcTypeLead(new List<String> {documentID});
-                if ( !accLeadList.isEmpty() )
-                {
-                    acc = accLeadList.get(0);
-                }
-                else
-                {
-                    acc = null;
-                }
-            }
+            acc = checkLeadCuplicateByDocumentID(documentID);
         }
-        else
+
+        if(acc != null)
         {
-            if(phone != null)
-            {
-                acc = checkLeadDuplicatePhone(phone, accountsSelectorWS);
-            }
-            else
-            {
-                acc = null;
-            }
+            return acc;
         }
+
+        if(String.isNotBlank(phone))
+        {
+            acc = checkLeadDuplicatePhone(phone);
+        }
+
         return acc;
     }
 
@@ -106,6 +94,7 @@ public class AccountLeadUtil
      *              al que se le debe asignar la cuenta de Lead. A partir de los parametros
      *              recibidos se realizará una búsqueda del agente mediante la configuración
      *              de metadatos.
+     * @author      jgallaga
      * @param       Account - acc
      *              Un registro de cuenta
      * @param       String - intermediaryCode
@@ -146,23 +135,235 @@ public class AccountLeadUtil
     }
 
     /**
-     * Método que evuelve la Cuenta de tipo Cliente o de tipo Lead localizada, en el caso de que se localice alguna con el phone indicado
-     * @author overes
-     * @date 25/08/2023
-     * @return acc
+     * @description Método para buscar una cuenta de tipo Lead asociada al documento de identificación facilitado
+     * @author  jgallaga
+     * @date    21/09/2023
      */
-    public static Account checkLeadDuplicatePhone(String phone, AccountSelectorWithoutSharing accountsSelectorWS)
+    private static Account checkLeadCuplicateByDocumentID(String documentId)
     {
-        Account acc = new Account();
-        List<Account> accPhoneList = accountsSelectorWS.findByPhoneAndRcTypeLead(new List<String> {phone});
-        if ( !accPhoneList.isEmpty() )
+        Account acc = null;
+        AccountsSelector accountsSelector = new AccountsSelector();
+
+        if(String.isBlank(documentId))
         {
-            acc = accPhoneList.get(0);
+            return acc;
+        }
+
+        List<Account> accList = accountsSelector.findByNationalIdAndRcTypeCustAndBC(new List<String>{documentID});
+
+        if (!accList.isEmpty())
+        {
+            acc = accList.get(0);
         }
         else
         {
-            acc = null;
+            List<Account> accLeadList = accountsSelector.findByNationalIdAndRcTypeLead(new List<String>{documentID});
+
+            if (!accLeadList.isEmpty())
+            {
+                acc = accLeadList.get(0);
+            }
         }
+
         return acc;
+    }
+
+    /**
+     * Método que devuelve la Cuenta de tipo Cliente o de tipo Lead localizada, en el caso de que se localice alguna con el phone indicado
+     * @author overes
+     * @date 25/08/2023
+     * @return acc
+     * *
+     * @modification    Se adapta la lógica de selección de Lead teniendo en cuenta el Scope__c y ContactPointPhone
+     * @author          jgallaga
+     * @date            21/09/2023
+     */
+    public static Account checkLeadDuplicatePhone(String phone)
+    {
+        Account acc = null;
+
+        if(String.isBlank(phone))
+        {
+            return acc;
+        }
+
+        Map<Id,List<ContactPointPhone>> scopeByAccountId = getContactPointPhonesByLeadAccountId(phone);
+
+        // Si no hay contact point phones -> nulo
+        if(scopeByAccountId.isEmpty())
+        {
+            return acc;
+        }
+
+        // Si solo hay una cuenta, devolver ese
+        if(scopeByAccountId.size() == 1)
+        {
+            Id foundAccount = new List<Id>(scopeByAccountId.keySet()).get(0);
+            return [SELECT Id FROM Account WHERE Id = :foundAccount];
+        }
+
+        // En el resto, buscar la cuenta mas reciente, con preferencia a los de RecordType Lead
+        String targetAccountId = getMostRecentAccountFromContactPointPhones(scopeByAccountId.values());
+
+        if(String.isBlank(targetAccountId))
+        {
+            return null;
+        }
+
+        // TODO - Selector
+        return [SELECT Id FROM Account WHERE id = :targetAccountId];
+    }
+
+    private static Map<Id, List<ContactPointPhone>> getContactPointPhonesByLeadAccountId(String phone)
+    {
+        Map<Id,List<ContactPointPhone>> scopeByAccountId = new Map<Id,List<ContactPointPhone>>();
+
+        ContactPointPhonesSelector cppSelector = new ContactPointPhonesSelector();
+        List<ContactPointPhone> scopesWithPhone = cppSelector.selectByAccountScopeLead(phone);
+
+        // Ordenamos los scopes por cuenta para ver si hay varias cuentas con el mismo teléfono
+        for(ContactPointPhone currentScope : scopesWithPhone)
+        {
+            if(! scopeByAccountId.containsKey(currentScope.ScopeId__r.AccountId__c))
+            {
+                scopeByAccountId.put(currentScope.ScopeId__r.AccountId__c, new List<ContactPointPhone>());
+            }
+
+            scopeByAccountId.get(currentScope.ScopeId__r.AccountId__c).Add(currentScope);
+        }
+
+        return scopeByAccountId;
+    }
+
+    private static String getMostRecentAccountFromContactPointPhones(List<List<ContactPointPhone>> cpps)
+    {
+
+        Boolean accountLeadFound = false;
+        ContactPointPhone targetAccountCPP = null;
+
+        for(List<ContactPointPhone> currentCPPGroup : cpps)
+        {
+            for(ContactPointPhone currentCPP : currentCPPGroup)
+            {
+                // El primero siempre sirve
+                if(targetAccountCPP == null)
+                {
+                    targetAccountCPP = currentCPP;
+                    continue;
+                }
+
+                // Si ya se ha encontrado al menos una cuenta del scope de ventas, no hace falta mirar el resto de scopes
+                if(currentCPP.ScopeId__r.Scope__c != 'Ventas' && accountLeadFound)
+                {
+                    continue;
+                }
+
+                // Si la cuenta del scope es mas reciente, nos lo quedamos, si ademas es de ventas, ponemos a true que tenemos al menos uno
+                if(targetAccountCPP.ScopeId__r.AccountId__r.LastModifiedDate > currentCPP.ScopeId__r.AccountId__r.LastModifiedDate)
+                {
+                    targetAccountCPP = currentCPP;
+                    accountLeadFound = currentCPP.ScopeId__r.Scope__c == 'Ventas';
+                }
+            }
+        }
+
+        return targetAccountCPP.ScopeId__r.AccountId__c;
+    }
+
+    /** */
+
+    public static void createScopesForVentaLeads(List<Account> accounts, Map<Id,Account> oldAccounts)
+    {
+        List<Id> allCandidateAccounts = getLeadAccountsForCrossScope(accounts, oldAccounts);
+
+        Set<Id> accountIdsWithoutScope = new Set<Id>();
+        Set<Id> accountIdsWithScope = new Set<Id>();
+
+        ScopesSelector scopeS = new ScopesSelector();
+
+        for(Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts))
+        {
+            accountIdsWithScope.add(currentCPP.AccountId__c);
+        }
+
+        for(Id currentAccountId : allCandidateAccounts)
+        {
+            if(!accountIdsWithScope.contains(currentAccountId))
+            {
+                accountIdsWithoutScope.add(currentAccountId);
+            }
+        }
+
+        if(accountIdsWithoutScope.isEmpty())
+        {
+            return;
+        }
+
+        List<Scope__c> scopesToInsert = new List<Scope__c>();
+
+        Map<Id,Account> accountsById = new Map<Id,Account>(accounts);
+        for(Id currentAccountWithoutScope : accountIdsWithoutScope)
+        {
+            Account currentAccount = accountsById.get(currentAccountWithoutScope);
+            scopesToInsert.add(new Scope__c(
+                AccountId__c = currentAccount.Id,
+                PrimaryPhone__c = currentAccount.Phone,
+                Scope__c = 'Ventas',
+                Name = 'Zurich Ventas'
+            ));
+        }
+
+        insert scopesToInsert;
+
+        List<ContactPointPhone> contactPointsForScopes = new List<ContactPointPhone>();
+
+        for(Scope__c currentScope : scopesToInsert)
+        {
+            contactPointsForScopes.add(new ContactPointPhone(
+                ScopeId__c = currentScope.Id,
+                Scope__c = 'Ventas',
+                ParentId = currentScope.AccountId__c,
+                TelephoneNumber = currentScope.PrimaryPhone__c
+            ));
+        }
+
+        insert contactPointsForScopes;
+    }
+
+    public static List<Id> getLeadAccountsForCrossScope(List<Account> accountList, Map<Id,Account> oldAccounts)
+    {
+        List<Id> result = new List<Id>();
+
+        if(accountList == null)
+        {
+            return result;
+        }
+
+        Id accountLeadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
+
+        for(Account nextAccount : accountList)
+        {
+            if(nextAccount.RecordTypeId != accountLeadRecordTypeId)
+            {
+                continue;
+            }
+
+            if(oldAccounts != null && ! oldAccounts.isEmpty())
+            {
+                if(String.isNotblank(nextAccount.Phone) && String.IsBlank(oldAccounts.get(nextAccount.Id).Phone))
+                {
+                    result.add(nextAccount.Id);
+                }
+            }
+            else
+            {
+                if(String.isNotBlank(nextAccount.Phone))
+                {
+                    result.add(nextAccount.Id);
+                }
+            }
+        }
+
+        return result;
     }
 }

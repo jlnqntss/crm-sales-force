@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRMRequiredFieldsForLead</fullName>
+    <active>true</active>
+    <description>Validación que requiere que esté informado el campo “NationalId__c“ o el campo “Phone“ si el tipo de registro es PersonAccount.Lead y el perfil del usuario es “Ventas User“ o “Agente Ventas“.</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Type, &quot;PersonAccount.Lead&quot;),
+    OR(
+        $Profile.Name = &quot;Ventas User&quot;,
+        $Profile.Name = &quot;Agente Ventas&quot;
+    ),
+    OR(
+        NOT(ISBLANK(NationalId__c)),
+        NOT(ISBLANK(Phone))
+    )
+)</errorConditionFormula>
+    <errorMessage>[VR Cuenta] Debe informar el campo “Documento de identidad” o el campo “Teléfono”</errorMessage>
+</ValidationRule>
