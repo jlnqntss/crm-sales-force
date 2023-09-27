@@ -133,7 +133,7 @@ public with sharing class OpportunityUtil
             {
                 opp.SalesProcess__c = 'L';
             }
-            else if (opp.Account.RecordType.DeveloperName == 'Business Customer' ||
+            else if (opp.Account.RecordType.DeveloperName == 'BusinessCustomer' ||
                      opp.Account.RecordType.DeveloperName == 'Customer' )
             {
                 opp.SalesProcess__c = 'VC';

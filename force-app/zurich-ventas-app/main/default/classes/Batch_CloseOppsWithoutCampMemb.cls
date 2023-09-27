@@ -137,6 +137,17 @@ global with sharing class Batch_CloseOppsWithoutCampMemb implements Database.Bat
             if(!hasMember)
             {
                 currentOpportunity.StageName = 'Closed Lost';
+                
+                if( currentOpportunity.Account.RecordType.DeveloperName == 'Lead' )
+                {
+                    currentOpportunity.SalesProcess__c = 'L';
+                }
+                else if (currentOpportunity.Account.RecordType.DeveloperName == 'BusinessCustomer' ||
+                         currentOpportunity.Account.RecordType.DeveloperName == 'Customer' )
+                {
+                    currentOpportunity.SalesProcess__c = 'VC';
+                }
+                
                 currentOpportunity.Sales_Loss_Reason__c = 'Not interested Policy - Revocation Consents';
 
                 changedOpportunities.add(currentOpportunity);
