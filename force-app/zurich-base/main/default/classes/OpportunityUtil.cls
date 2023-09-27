@@ -126,17 +126,17 @@ public with sharing class OpportunityUtil
      */
     public static void setSalesProcess(List<Opportunity> newList)
     {
-        for(Opportunity opp : newList)
-        {
+        for(Opportunity opp : newList) {
 
-            if( opp.Account.RecordType.DeveloperName == 'Lead' )
-            {
-                opp.SalesProcess__c = 'L';
-            }
-            else if (opp.Account.RecordType.DeveloperName == 'BusinessCustomer' ||
-                     opp.Account.RecordType.DeveloperName == 'Customer' )
-            {
-                opp.SalesProcess__c = 'VC';
+            if (mapAccountRecordTypes.get(opp.AccountId) != null) {
+                
+                if(mapAccountRecordTypes.get(opp.AccountId) == 'Lead' ) {
+                    opp.SalesProcess__c = 'L';
+                }
+                else if (mapAccountRecordTypes.get(opp.AccountId) == 'BusinessCustomer' ||
+                         mapAccountRecordTypes.get(opp.AccountId) == 'Customer' ) {
+                    opp.SalesProcess__c = 'VC';
+                } 
             }
         }
     }
