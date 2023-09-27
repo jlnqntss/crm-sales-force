@@ -1,7 +1,7 @@
 /**
  * @description       : Clase-queueable ejecutada desde el WS de Quote&Buy que inserta/actualiza/asigna un registro de Oferta de Lead e inserta un registro de Póliza (si aplica)
  * @author            : nts - overes
- * @last modified on  : 09-26-2023
+ * @last modified on  : 27-09-2023
  **/
 
 public with sharing class AccountLeadOpportunityQueueJob implements Queueable
@@ -99,39 +99,72 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         managePolicyRecord(policyRecord, offerToInsertUpdate);
     }
 
+    /**
+     * @description
+     * @author overes | 27-09-2023
+     * @param offerToInsertUpdate
+     * @param accountRecord
+     * @param postalCode
+     * @param phone
+     * @return Opportunity
+     **/
     public static Opportunity manageOfferToInsertUpdate (Opportunity offerToInsertUpdate, Account accountRecord, String postalCode, String phone)
     {
         Opportunity offerToUpdate = offerToInsertUpdate;
         if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null && offerToInsertUpdate.StageName != 'Cerrada-Ganada')   //Ejecutar Proceso de Asignación si la Oferta se debe insertar y no es el escenario de integración 3.
         {
             Map<String, Account> assign = AccountLeadUtil.leadAssignment(accountRecord, offerToInsertUpdate.IntermediaryCode__c, offerToInsertUpdate.IntermediaryCode__c, null, postalCode);
-            if ( assign.containsKey(CONTACT_CENTER) )
-            {
-                Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
-                manageCallMeBack(accountRecord, offerToInsertUpdate, leadOffersCS, phone);
+            offerToUpdate = manageConstrainsKey(assign, accountRecord, offerToInsertUpdate,phone);
+        }
+        return offerToUpdate;
+    }
 
-                if (offerToInsertUpdate.InfoQuoteNumber__c == null)
-                {
-                    offerToUpdate = null;
-                }
-                else
-                {
-                    offerToUpdate.BusinessCode__c = leadOffersCS.BusinessCode__c;
-                }
+    /**
+     * @description
+     * @author overes | 27-09-2023
+     * @param assign
+     * @param accountRecord
+     * @param offerToInsertUpdate
+     * @param phone
+     * @return Opportunity
+     **/
+    public static Opportunity manageConstrainsKey (Map<String,Account> assign, Account accountRecord, Opportunity offerToInsertUpdate, String phone)
+    {
+        Opportunity offerToUpdate = offerToInsertUpdate;
+        if ( assign.containsKey(CONTACT_CENTER) )
+        {
+            Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
+            manageCallMeBack(accountRecord, offerToInsertUpdate, leadOffersCS, phone);
+
+            if (offerToInsertUpdate.InfoQuoteNumber__c == null)
+            {
+                offerToUpdate = null;
             }
             else
             {
-                offerToUpdate.OwnerId = new List<String>( assign.keySet() ).get(0);
-                if (assign.get(offerToInsertUpdate.OwnerId) != null)
-                {
-                    offerToUpdate.IntermediaryId__c = assign.get(offerToInsertUpdate.OwnerId).Id;
-                    offerToUpdate.IntermediaryCode__c = assign.get(offerToInsertUpdate.OwnerId).INFOIntermediaryCode__c;
-                }
+                offerToUpdate.BusinessCode__c = leadOffersCS.BusinessCode__c;
+            }
+        }
+        else
+        {
+            offerToUpdate.OwnerId = new List<String>( assign.keySet() ).get(0);
+            if (assign.get(offerToInsertUpdate.OwnerId) != null)
+            {
+                offerToUpdate.IntermediaryId__c = assign.get(offerToInsertUpdate.OwnerId).Id;
+                offerToUpdate.IntermediaryCode__c = assign.get(offerToInsertUpdate.OwnerId).INFOIntermediaryCode__c;
             }
         }
         return offerToUpdate;
     }
 
+    /**
+     * @description
+     * @author overes | 27-09-2023
+     * @param accountRecord
+     * @param offerToInsertUpdate
+     * @param leadOffersCS
+     * @param phone
+     **/
     public static void manageCallMeBack(Account accountRecord, Opportunity offerToInsertUpdate, Lead_Offers__c leadOffersCS, String phone)
     {
         CallMeBackUtil.CallMeBack callMeBack = new CallMeBackUtil.CallMeBack();
@@ -176,6 +209,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param offerRecordParam
      * @param offerToInsertUpdateParam
      */
+    @TestVisible
     private static void manageOfferRecord(Opportunity offerRecord, Opportunity offerToInsertUpdate,List<Opportunity> listOffer)
     {
         for (Opportunity offerQuery : listOffer)

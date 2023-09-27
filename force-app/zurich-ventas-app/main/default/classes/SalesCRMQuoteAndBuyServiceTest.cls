@@ -122,28 +122,6 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
         }
         Test.stopTest();
     }
-    /**
-     * @description Método que comprueba que la clase excepción
-     * funciona como es esperado
-     *
-     * @author overes | 26-09-2023
-     **/
-    @isTest
-    static void test_exception_OK()
-    {
-        SalesCRMQuoteAndBuyService.Lead lead = generateLead();
-
-        Test.startTest();
-        try
-        {
-            SalesCRMQuoteAndBuyService.checkRequiredFields(lead);
-        }
-        catch (Exception ex)
-        {
-            Assert.fail('No debería haberse lanzado ninguna excepción');
-        }
-        Test.stopTest();
-    }
 
     /**
      * @description Método que comprueba que se rellenan los campos de una cuenta
@@ -286,7 +264,7 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
      * @author overes | 26-09-2023
      **/
     @isTest
-    static void test_excepption_OK()
+    static void test_exception_OK()
     {
         Test.startTest();
         try

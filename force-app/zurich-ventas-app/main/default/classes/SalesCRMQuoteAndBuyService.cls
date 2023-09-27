@@ -1,7 +1,7 @@
 /**
  * @description       : Nuevo Web Service REST que extiende de la clase APEX actual "WS_BaseAPIService"
  * @author            : nts - overes
- * @last modified on  : 09-26-2023
+ * @last modified on  : 27-09-2023
  **/
 public with sharing class SalesCRMQuoteAndBuyService
 {
@@ -251,7 +251,7 @@ public with sharing class SalesCRMQuoteAndBuyService
                 }
                 else
                 {
-                    System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 10);
+                    System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 5);
                 }
             }
             else
