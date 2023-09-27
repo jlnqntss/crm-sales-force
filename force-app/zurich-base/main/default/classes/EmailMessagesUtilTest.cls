@@ -16,6 +16,7 @@ private class EmailMessagesUtilTest
     public static final String GENESYS_QUEUE_ID = 'gnesys queue id';
     public static final String EMAIL_INDUSTRY = 'empresas.dtmad@zurich.com';
     public static final String INDUSTRY_VALUE = 'Prueba Industria';
+    public static final String OCS_RECORDTYPE_VALUE = 'OCSInquiry';
 
     /**
      * Metodo comun para todas los metodos de test. Inicializa los datos de prueba
@@ -31,6 +32,7 @@ private class EmailMessagesUtilTest
         queues[0].GenesysFlowId__c = GENESYS_FLOW_ID;
         queues[0].purecloud__PureCloud_Queue_ID__c = GENESYS_QUEUE_ID;
         queues[0].Industry__c = INDUSTRY_VALUE;
+        queues[0].RecordTypeInfo__c = OCS_RECORDTYPE_VALUE;
         insert queues;
     }
 
