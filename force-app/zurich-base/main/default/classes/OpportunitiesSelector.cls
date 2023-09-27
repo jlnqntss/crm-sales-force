@@ -384,6 +384,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         .addConditionEq(Opportunity.Campaign.Type, 'Cross Selling')
         .addConditionEq(Opportunity.IsClosed, false);
 
-        return 'SELECT Accountid, Campaignid, Campaign.type FROM Opportunity WHERE (Campaign.Type = \'Cross Selling\') AND (IsClosed = false)';
+        return 'SELECT Accountid, Campaignid, Campaign.type, SalesProcess__c, Account.RecordType.DeveloperName FROM Opportunity WHERE (Campaign.Type = \'Cross Selling\') AND (IsClosed = false)';
     }
 }
