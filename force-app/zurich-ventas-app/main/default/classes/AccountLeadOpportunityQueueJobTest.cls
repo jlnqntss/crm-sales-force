@@ -39,16 +39,6 @@ private with sharing class AccountLeadOpportunityQueueJobTest
         setting.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
         insert setting;
 
-
-        // Lead_Offers__c setting_Lead_offer = new Lead_Offers__c();
-        // setting_Lead_offer.BusinessCode__c = '1234567890';
-        // setting_Lead_offer.VoiceQueue__c = 'Voz_ZurichEmpresas';
-        // setting_Lead_offer.NotificationDaysBeforeDue__c = 5;
-        // setting_Lead_offer.DaysToReassignOffer__c = 10;
-        // setting_Lead_offer.BusinessHour__c = 'ZRM Ventas';
-        // setting_Lead_offer.ContactCenterUser__c = 'Default';
-        // insert setting_Lead_offer;
-
         // Crear Custom Setting para las colas y Business Hours
         Lead_Offers__c leadOffer = TestDataFactory.generateLeadOfferCS();
         insert leadOffer;
@@ -68,8 +58,6 @@ private with sharing class AccountLeadOpportunityQueueJobTest
 
         System.assert (jobId != null, 'No se ha encolado el trabajo correctamente');
     }
-
-
 
     @isTest
     static void test_execute_KO()
@@ -173,7 +161,4 @@ private with sharing class AccountLeadOpportunityQueueJobTest
         }
         Test.stopTest();
     }
-
-
-
 }

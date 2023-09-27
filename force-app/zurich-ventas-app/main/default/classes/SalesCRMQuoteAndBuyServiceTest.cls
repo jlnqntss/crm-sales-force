@@ -1,17 +1,52 @@
 /**
  * @description       : Clase test para comprobar el correcto funcionamiento de lo métodos
- * de la clase 'SalesCRMQuoteAndBuyService'
+ *                      de la clase 'SalesCRMQuoteAndBuyService'
  * @author            : overes
  * @group             :
- * @last modified on  : 26-09-2023
+ * @last modified on  : 27-09-2023
  * @last modified by  : overes
  **/
 @isTest
 private with sharing class SalesCRMQuoteAndBuyServiceTest
 {
+    private static String DEFAULT_ADMIN_ALIAS // Añadir el alias de cada user admin para cada entorno si fuera necesario
+    {
+        get
+        {
+            if( String.isBlank(DEFAULT_ADMIN_ALIAS) )
+            {
+                if(SystemUtil.getSandboxName() == 'qa')
+                {
+                    DEFAULT_ADMIN_ALIAS = 'ntsadmin';
+                }
+                else
+                {
+                    DEFAULT_ADMIN_ALIAS = 'adminkli';
+                }
+            }
+            return DEFAULT_ADMIN_ALIAS;
+        }
+        set;
+    }
+
+    @TestSetup
+    static void setup()
+    {
+        // Crear Custom Setting para default user
+        Cross_Selling__c setting = new Cross_Selling__c();
+        setting.Name = 'Test Setting';
+        setting.ContactCenterUser__c = '-';
+        setting.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
+        insert setting;
+
+        // Crear Custom Setting para las colas y Business Hours
+        Lead_Offers__c leadOffer = TestDataFactory.generateLeadOfferCS();
+        insert leadOffer;
+    }
 
     /**
      * @description Método que comprueba que la creación de leads se hace correctamente
+     *
      * @author overes | 26-09-2023
      **/
     @isTest
@@ -45,7 +80,6 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
                         leadAccountsCreated.get(0).RecordType.Name,
                         'Se debería haber creado una cuenta de tipo Lead.');
     }
-
 
     /**
      * @description Método de test que se encarga de comprobar que si no existe
@@ -88,6 +122,7 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
         insert leadAccounts;
         Opportunity offer = SalesCRMQuoteAndBuyService.manageOpportunity(leadAccounts.get(0),lead);
 
+
         Test.startTest();
         try
         {
@@ -95,7 +130,7 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
         }
         catch (Exception ex)
         {
-            Assert.fail('No debería haberse lanzado ninguna excepción');
+            Assert.fail('No debería haberse lanzado ninguna excepción en el manejo de estados de la Oferta \n ' + ex);
         }
         Test.stopTest();
     }
@@ -213,7 +248,6 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
         List<Account> leadAccounts = TestDataFactory.generateAccounts(null, 'Lead', 1);
         insert leadAccounts;
 
-
         Test.startTest();
         Policy__c policy = SalesCRMQuoteAndBuyService.managePolicy(leadAccounts.get(0),lead);
         Test.stopTest();
@@ -256,26 +290,6 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
         Date returnDate = SalesCRMQuoteAndBuyService.convertIntegerToDate(integerToConvert);
         Test.stopTest();
         Assert.areEqual(expectedDate, returnDate, 'El entero 19900121 debería haberse convertido a tipo Date');
-    }
-
-    /**
-     * @description Método de test que comprueba que la excepción funiona correctamente
-     *
-     * @author overes | 26-09-2023
-     **/
-    @isTest
-    static void test_exception_OK()
-    {
-        Test.startTest();
-        try
-        {
-            throw new SalesCRMQuoteAndBuyService.QuoteAndBuyException( 'INVALID_FIELD', 'Se ejecuta la excepcion' );
-        }
-        catch (Exception ex)
-        {
-            Assert.fail('No debería haberse lanzado ninguna excepción.');
-        }
-        Test.stopTest();
     }
 
     /**
