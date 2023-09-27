@@ -199,7 +199,7 @@ Si intermediaryUserId no es nulo: Insertar un registro de AccountTeamMember</des
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Draft</status>
     <triggerOrder>1700</triggerOrder>
     <variables>
         <name>accountTeamMembersToInsert</name>
