@@ -3,8 +3,8 @@
  *                      de las cuentas de tipo Lead que llegan a Salesforce.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 22-09-2023
- * @last modified by  : amiranda
+ * @last modified on  : 28/09/2023
+ * @last modified by  : jgallaga
 **/
 public with sharing class AccountLeadAssignment
 {
@@ -133,14 +133,14 @@ public with sharing class AccountLeadAssignment
      *              Código de intermediario de un agente.
      * @return      String
      *              Id de usuario o 'CONTACT_CENTER'
+     * *
+     * @modification
+     *              El parametro de entrada nunca va a set CONTACT_CENTER, se quita esa parte del código
+     * @author      jgallaga
+     * @date        28/09/2023
      */
     public static Assignment getAssignedUserIdByIntermediaryCode(String intermediaryCode)
     {
-        if(String.isNotBlank(intermediaryCode) && intermediaryCode == CONTACT_CENTER)
-        {
-            return new Assignment(CONTACT_CENTER);
-        }
-
         return getIntermediaryUserId(intermediaryCode);
     }
 
@@ -360,8 +360,6 @@ public with sharing class AccountLeadAssignment
         // Se recupera el alias? del usuario por defecto de un custom setting
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 
-        System.debug('Alias entonctado en Custom setting '+ aliasDefaultUser);
-
         if(String.isNotBlank(aliasDefaultUser))
         {
             UsersSelector userQuery = new UsersSelector();
@@ -389,12 +387,20 @@ public with sharing class AccountLeadAssignment
      *              Código de intermediario del agente
      * @return      String
      *              Id de usuario.
-     * 
+     *
      * @change amiranda 15/09/2023 Se debe comprobar si la cuenta de tipo Mediador
      * es partner. Si es partner significa que tiene usuario asociado, por lo tanto
      * se buscará el usuario asociado a esta cuenta. Si no es partener, significa
      * que no tiene usuario asociado y se buscará el usuario del Mediador principal.
      * Se identifica a este Mediador a través de la Agrupación.
+     * **
+     * @modification
+     *              Desde la asignación de agente por metadato puede que alguno de ellos
+     *              tenga indicado el valor "CONTACT_CENTER" en vez de un código de
+     *              intermediario. En esos casos, se devuelve directamente una asignación
+     *              con ese calor con una cuenta a null.
+     * @author      jgallaga
+     * @date        28/09/2023
      */
     @TestVisible
     private static Assignment getIntermediaryUserId(String intermediaryCode)
@@ -403,6 +409,11 @@ public with sharing class AccountLeadAssignment
         if(String.isBlank(intermediaryCode))
         {
             return defaultUser;
+        }
+
+        if(intermediaryCode == CONTACT_CENTER)
+        {
+            return new Assignment(CONTACT_CENTER);
         }
 
         AccountsSelector accountQuery = new AccountsSelector();
@@ -420,12 +431,12 @@ public with sharing class AccountLeadAssignment
         if (intermediaryAccount.isPartner)
         {
             // Si el Mediador tiene usuario asociado, se busca el usuario asociado a dicho Mediador
-            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.Id}); 
+            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.Id});
         }
         else if(intermediaryAccount.IntermediaryGroup__r.IntermediaryWithUser__c != null)
         {
             // Si el Mediador no tiene un usuario asociado (no es partner), se busca el usuario asociado al Mediador principal indicado en la Agrupación
-            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.IntermediaryGroup__r.IntermediaryWithUser__c}); 
+            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.IntermediaryGroup__r.IntermediaryWithUser__c});
         }
 
         if(! intermediary.isEmpty())
