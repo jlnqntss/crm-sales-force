@@ -67,6 +67,6 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Draft</status>
     <triggerOrder>1700</triggerOrder>
 </Flow>

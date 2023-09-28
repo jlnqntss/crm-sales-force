@@ -101,6 +101,11 @@
         <field>Contact.Email</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.SalesProcess__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>ZRM Gestión Datos</label>
     <objectPermissions>
