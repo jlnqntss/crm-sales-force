@@ -125,14 +125,12 @@ public with sharing class AccountLeadAssignment
      * @description Devuelve el Id de Usuario al que le corresponde el código de
      *              Intermediario o el Id del usuario por defecto si no se encuentra
      *              a quien pertenece dicho código.
-     *              En caso de que el código de intermediario recibido sea
-     *              CONTACT_CENTER, devolverá ese mismo valor.
      * @author      jgallaga
      * @date        11/08/2023
      * @param       String - intermediaryCode
      *              Código de intermediario de un agente.
      * @return      String
-     *              Id de usuario o 'CONTACT_CENTER'
+     *              Id de usuario
      * *
      * @modification
      *              El parametro de entrada nunca va a set CONTACT_CENTER, se quita esa parte del código
