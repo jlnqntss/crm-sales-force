@@ -9,10 +9,16 @@
                         <valueListItems>
                             <value>Opportunity.CloneOfferForIntermediary</value>
                             <visibilityRule>
+                                <booleanFilter>1 AND 2</booleanFilter>
                                 <criteria>
                                     <leftValue>{!Record.Sales_Loss_Reason__c}</leftValue>
                                     <operator>EQUAL</operator>
                                     <rightValue>Interested contact agent</rightValue>
+                                </criteria>
+                                <criteria>
+                                    <leftValue>{!Record.SalesProcess__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>VC</rightValue>
                                 </criteria>
                             </visibilityRule>
                         </valueListItems>

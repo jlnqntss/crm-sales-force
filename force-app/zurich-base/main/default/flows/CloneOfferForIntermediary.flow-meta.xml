@@ -5,8 +5,8 @@
         <description>Se marca el registro como clonado y se añade el sufijo #OLD a su nombre</description>
         <name>clonedOfferFieldsAssignment</name>
         <label>Actualizar registro clonado</label>
-        <locationX>182</locationX>
-        <locationY>1358</locationY>
+        <locationX>545</locationX>
+        <locationY>2150</locationY>
         <assignmentItems>
             <assignToReference>OriginOffer.Name</assignToReference>
             <operator>Add</operator>
@@ -22,14 +22,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>originOpportunityUpdate</targetReference>
+            <targetReference>clonedOpportunityInsert</targetReference>
         </connector>
     </assignments>
     <assignments>
         <description>Asignar valor de la oferta origen en la nueva oferta</description>
         <name>cloneOfferAssignmet</name>
         <label>Clonar Oferta</label>
-        <locationX>182</locationX>
+        <locationX>545</locationX>
         <locationY>134</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer</assignToReference>
@@ -65,7 +65,7 @@
         <description>Si lo va a gestionar agente, se da un plazo de 10 días para el cierre.</description>
         <name>ClosedDate10DaysAssignment</name>
         <label>Asignar cierra a 10 dias</label>
-        <locationX>50</locationX>
+        <locationX>413</locationX>
         <locationY>650</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.CloseDate</assignToReference>
@@ -82,7 +82,7 @@
         <description>Si lo va a gestionar agente, se da un plazo de 30 días para el cierre.</description>
         <name>ClosedDate30DaysAssignment</name>
         <label>Asignar cierra a 30 dias</label>
-        <locationX>314</locationX>
+        <locationX>677</locationX>
         <locationY>650</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.CloseDate</assignToReference>
@@ -96,10 +96,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>DefaultOwnerIdAssignment</name>
+        <label>Asignar propietario default</label>
+        <locationX>314</locationX>
+        <locationY>1874</locationY>
+        <assignmentItems>
+            <assignToReference>ClonedOffer.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getDefaultUser.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>clonedOfferFieldsAssignment</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Actualizar las ofertas original y clonada en dicho supuesto.</description>
         <name>Informar_si_InfoQuotedNumber_es_nulo</name>
         <label>Informar si InfoQuotedNumber es nulo</label>
-        <locationX>314</locationX>
+        <locationX>677</locationX>
         <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.StageName</assignToReference>
@@ -116,7 +132,7 @@
         <description>Actualizar las ofertas original y clonada en dicho supuesto.</description>
         <name>Informar_si_InfoQuotedNumber_no_es_nulo</name>
         <label>Informar si InfoQuotedNumber no es nulo</label>
-        <locationX>50</locationX>
+        <locationX>413</locationX>
         <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.StageName</assignToReference>
@@ -137,11 +153,27 @@
         </connector>
     </assignments>
     <assignments>
+        <name>IntermediaryGroupOwnerIdAssignment</name>
+        <label>Asignar propietario grupo mediador</label>
+        <locationX>578</locationX>
+        <locationY>1766</locationY>
+        <assignmentItems>
+            <assignToReference>ClonedOffer.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getIntermediaryGroupUser.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>clonedOfferFieldsAssignment</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Asigna como intermediario de la oferta al mediador principal del cliente</description>
         <name>IntermediaryIdAssignment</name>
         <label>Mediador principal a Id Intermediario</label>
-        <locationX>50</locationX>
-        <locationY>950</locationY>
+        <locationX>479</locationX>
+        <locationY>1058</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.IntermediaryId__c</assignToReference>
             <operator>Assign</operator>
@@ -150,15 +182,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>getIntermediaryUser</targetReference>
+            <targetReference>isTheIntermediaryPartnerDecision</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <description>Una vez obtenido el usuario del intermediario, se asigna como propietario de la oferta clonada.</description>
-        <name>OwnerIdAssignment</name>
-        <label>Asignar propietario</label>
-        <locationX>182</locationX>
-        <locationY>1250</locationY>
+        <name>IntermediaryOwnerIdAssignment</name>
+        <label>Asignar propietario mediador</label>
+        <locationX>50</locationX>
+        <locationY>1658</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.OwnerId</assignToReference>
             <operator>Assign</operator>
@@ -171,10 +202,58 @@
         </connector>
     </assignments>
     <decisions>
+        <name>AccountIntermediaryNameNullDecision</name>
+        <label>Es Account.Intermediary_Name__c nulo?</label>
+        <locationX>347</locationX>
+        <locationY>950</locationY>
+        <defaultConnector>
+            <targetReference>IntermediaryIdAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>AccountIntermediaryNameIsNull</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ClonedOffer.Account.Intermediary_Name__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>groupIntermediaryUserNotFoundDecision</name>
+        <label>Se ha recuperado el User de grupo?</label>
+        <locationX>710</locationX>
+        <locationY>1658</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>getCrossSellingDefaultUser</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>intermediaryGroupUserFound</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getIntermediaryGroupUser</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IntermediaryGroupOwnerIdAssignment</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Se decide como informar la fecha de cierre en base a si el motivo de pérdida es &apos;Interesado prefiere que lo gestione mi Agente&apos;</description>
         <name>interestedManagedByMyAgentDecision</name>
         <label>Interesado prefiere que lo gestione mi Agente?</label>
-        <locationX>182</locationX>
+        <locationX>545</locationX>
         <locationY>542</locationY>
         <defaultConnector>
             <targetReference>ClosedDate30DaysAssignment</targetReference>
@@ -197,10 +276,61 @@
         </rules>
     </decisions>
     <decisions>
+        <name>intermediaryGroupUserNullDecision</name>
+        <label>Hay Intermediary Group User?</label>
+        <locationX>908</locationX>
+        <locationY>1442</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>getCrossSellingDefaultUser</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>intermediaryGroupWithUserNotNull</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ClonedOffer.IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getIntermediaryGroupUser</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>intermediaryUserNotFoundDecision</name>
+        <label>Se ha recuperado el User de mediador?</label>
+        <locationX>182</locationX>
+        <locationY>1550</locationY>
+        <defaultConnector>
+            <targetReference>getCrossSellingDefaultUser</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>intermediaryUserFound</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getIntermediaryUser</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IntermediaryOwnerIdAssignment</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>En función del info quote se informan unos campos u otros</description>
         <name>isNotNullInfoQuoteNumberDecision</name>
         <label>Es InfoQuoteNumber no nulo?</label>
-        <locationX>182</locationX>
+        <locationX>545</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>Informar_si_InfoQuotedNumber_es_nulo</targetReference>
@@ -225,11 +355,11 @@
     <decisions>
         <description>En base a si el Id de Intermediario de la oferta es nulo se asignará éste o el Intermediario Principal del cliente.</description>
         <name>IsNullIntermediaryIdDecision</name>
-        <label>Es IntermediaryId__c nulo?</label>
-        <locationX>182</locationX>
+        <label>Es el IntermediaryId de la oferta clonada nulo?</label>
+        <locationX>545</locationX>
         <locationY>842</locationY>
         <defaultConnector>
-            <targetReference>getIntermediaryUser</targetReference>
+            <targetReference>isTheIntermediaryPartnerDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -243,7 +373,32 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IntermediaryIdAssignment</targetReference>
+                <targetReference>AccountIntermediaryNameNullDecision</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>isTheIntermediaryPartnerDecision</name>
+        <label>Es Partner el Mediador?</label>
+        <locationX>545</locationX>
+        <locationY>1334</locationY>
+        <defaultConnector>
+            <targetReference>intermediaryGroupUserNullDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>IntermediaryIsPartner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ClonedOffer.IntermediaryId__r.IsPartner</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getIntermediaryUser</targetReference>
             </connector>
             <label>Si</label>
         </rules>
@@ -287,19 +442,86 @@
         <description>Insertar oferta clonada</description>
         <name>clonedOpportunityInsert</name>
         <label>Insertar registro clonado</label>
-        <locationX>182</locationX>
-        <locationY>1574</locationY>
+        <locationX>545</locationX>
+        <locationY>2258</locationY>
+        <connector>
+            <targetReference>originOpportunityUpdate</targetReference>
+        </connector>
         <inputReference>ClonedOffer</inputReference>
     </recordCreates>
+    <recordLookups>
+        <description>Recuperamos del custom setting el usuario por defecto.</description>
+        <name>getCrossSellingDefaultUser</name>
+        <label>Get Cross Selling Default User</label>
+        <locationX>314</locationX>
+        <locationY>1658</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>getDefaultUser</targetReference>
+        </connector>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Cross_Selling__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Obtiene el user por defecto si no se recuperase un Mediador.</description>
+        <name>getDefaultUser</name>
+        <label>getDefaultUser</label>
+        <locationX>314</locationX>
+        <locationY>1766</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>DefaultOwnerIdAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Alias</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getCrossSellingDefaultUser.DefaultUser__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Obtiene el user correspondiente al mediador de la oferta</description>
+        <name>getIntermediaryGroupUser</name>
+        <label>getIntermediaryGroupUser</label>
+        <locationX>710</locationX>
+        <locationY>1550</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>groupIntermediaryUserNotFoundDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ContactAccountId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ClonedOffer.IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <description>Obtiene el user correspondiente al mediador de la oferta</description>
         <name>getIntermediaryUser</name>
         <label>getIntermediaryUser</label>
         <locationX>182</locationX>
-        <locationY>1142</locationY>
+        <locationY>1442</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>OwnerIdAssignment</targetReference>
+            <targetReference>intermediaryUserNotFoundDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -320,16 +542,13 @@
         <description>Se actualiza el registro original</description>
         <name>originOpportunityUpdate</name>
         <label>Actualizar registro original</label>
-        <locationX>182</locationX>
-        <locationY>1466</locationY>
-        <connector>
-            <targetReference>clonedOpportunityInsert</targetReference>
-        </connector>
+        <locationX>545</locationX>
+        <locationY>2366</locationY>
         <inputReference>OriginOffer</inputReference>
     </recordUpdates>
     <runInMode>DefaultMode</runInMode>
     <start>
-        <locationX>56</locationX>
+        <locationX>419</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>cloneOfferAssignmet</targetReference>
