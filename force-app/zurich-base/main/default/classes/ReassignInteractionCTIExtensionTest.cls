@@ -168,6 +168,8 @@ private without sharing class ReassignInteractionCTIExtensionTest
             campaignMember.CallRetries__c = 0;
             insert campaignMember;
 
+            String originalCampaignMemberId = campaignMember.Id;
+
             /* ---------------------------------- TEST ---------------------------------- */
             Test.startTest();
 
@@ -183,11 +185,11 @@ private without sharing class ReassignInteractionCTIExtensionTest
             Test.stopTest();
 
             /* --------------------------------- ASSERTS -------------------------------- */
-            List<CampaignMember> existingCampaignMembers = [SELECT CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId];
-            tasksInSystem = [SELECT CampaignMemberID__c FROM Task];
+            List<CampaignMember> clonedCampaignMemberList = [SELECT Id, ContactId, CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId AND CampaignId = : campaignMember.CampaignId];
 
-            Assert.isFalse(existingCampaignMembers.isEmpty(), 'No se ha encontrado el CampaignMember para el contacto: ' + campaignMember.ContactId);
-            Assert.areNotEqual(0, existingCampaignMembers[0].CallRetries__c, 'El número de reintentos no se ha actualizado');
+            Assert.isFalse(clonedCampaignMemberList.isEmpty(), 'No se ha encontrado el CampaignMember clonado.');
+            Assert.areNotEqual(0, clonedCampaignMemberList[0].CallRetries__c, 'El número de reintentos no se ha actualizado.');
+            Assert.areNotEqual(originalCampaignMemberId, clonedCampaignMemberList[0].Id, 'El campaign member clonado no ha cambiado de ID, puede que no se haya borrado el antiguo.');
         }
     }
 
