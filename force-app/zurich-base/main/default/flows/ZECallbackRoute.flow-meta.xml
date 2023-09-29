@@ -54,7 +54,12 @@
         <description>Usado en el Flow ZEScreenPopAndSearch para abrir ficha, y si no hay ficha, se abrirá el ContactRequest que ese siempre existe</description>
         <name>ScreenPopURL</name>
         <dataType>String</dataType>
-        <expression>&apos;/flow/ZEGetCallback?id=&apos;+{!ContactRequest.Id}</expression>
+        <expression>IF
+(
+    {!ContactRequest.GenesysCloudQueueId__r.Name} = &apos;Call_Me_Back_Gestores CC Interno&apos;,
+    {!ContactRequest.WhatId},
+    &apos;/flow/ZEGetCallback?id=&apos;+{!ContactRequest.Id}
+)</expression>
     </formulas>
     <interviewLabel>Zurich Empresas - Enrutamiento de call me backs {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Zurich Empresas - Enrutamiento de call me backs</label>
