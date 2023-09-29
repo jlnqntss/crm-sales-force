@@ -83,10 +83,6 @@
                   {
                     "isPublic": false,
                     "name": "Policy__c"
-                  },
-                  {
-                    "isPublic": false,
-                    "name": "Objective__c"
                   }
                 ]
               },
