@@ -2,43 +2,17 @@
  * @description       : Test para comprobar el funcionamiento unitario de los metodos de la clase Account Lead Assignment
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 23/08/2023
+ * @last modified on  : 28/09/2023
  * @last modified by  : jgallaga
 **/
 @isTest
 public with sharing class Test_AccountLeadAssignment
 {
-    private static String DEFAULT_ADMIN_ALIAS // Añadir el alias de cada user admin para cada entorno si fuera necesario
-    {
-        get
-        {
-            if(String.isBlank(DEFAULT_ADMIN_ALIAS))
-            {
-                if(SystemUtil.getSandboxName() == 'qa')
-                {
-                    DEFAULT_ADMIN_ALIAS = 'ntsadmin';
-                }
-                else
-                {
-                    DEFAULT_ADMIN_ALIAS = 'adminkli';
-                }
-            }
-            return DEFAULT_ADMIN_ALIAS;
-        }
-        set;
-    }
-
     @TestSetup
     static void makeData()
     {
+        TestDataFactory.insertCrossSellingCustomSetting();
         createCommnunityUsers(); // Crea usuarios de comunidad con su cuenta y contact correspondiente
-
-        // Crear Custom Setting para default user
-        Cross_Selling__c setting = new Cross_Selling__c();
-        setting.Name = 'Test Setting';
-        setting.ContactCenterUser__c = '-';
-        setting.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
-        insert setting;
     }
 
     /**
@@ -54,7 +28,7 @@ public with sharing class Test_AccountLeadAssignment
         User adminUser = [SELECT Id FRom User WHERE Profile.Name = 'System Administrator' AND Id != :UserInfo.getUserId() AND isActive = true LIMIT 1];
 
         Map<String, User> communityAgents = prepareNewUsers();
-        
+
         Map<String, Account> communityAgentAccounts = insertAccounts(communityAgents.keySet());
         Map<String, Contact> communitAgentContacts = insertContacts(communityAgents.keySet(), communityAgentAccounts); //Contact
 
@@ -256,10 +230,9 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.ProvinceAssignmentMetadata = testProvinceAssignmentMetadata;
     }
 
-
     /**
-     * @description Test que asegura que si se recibe el valor CONTACT_CENTER se devuelve
-     *              ese valor.
+     * @description Test que asegura que si el el código de intermediario es Contact center
+     *              la asignación se genera como "CONTACT_CENTER" con cuenta a null.
      * @author      jgallaga
      * @date        16/08/2023
      */
@@ -269,7 +242,7 @@ public with sharing class Test_AccountLeadAssignment
         String contactCenter = 'CONTACT_CENTER';
 
         Test.startTest();
-        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(contactCenter);
+        AccountLeadAssignment.Assignment result = AccountLeadAssignment.getIntermediaryUserId(contactCenter);
         Test.stopTest();
 
         Assert.areEqual(contactCenter, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'Para el valor de CONTACT CENTER, no ha devuelto CONTACT_CENTER');
