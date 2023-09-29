@@ -45,7 +45,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>mappingId</name>
-                    <value>54152</value>
+                    <value>56483</value>
                 </componentInstanceProperties>
                 <componentName>pw_si:CuratedImport</componentName>
                 <identifier>pw_si_CuratedImport3</identifier>
@@ -102,7 +102,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>mappingId</name>
-                    <value>54153</value>
+                    <value>56484</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>sourceRecordId</name>
