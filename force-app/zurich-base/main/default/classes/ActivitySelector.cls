@@ -74,4 +74,21 @@ public without sharing class ActivitySelector
 
         return [SELECT Id, WhoId, WhatId,IsVisibleInSelfService FROM Task WHERE Id IN : taskIds];
     }
+
+    /**
+     * Obtiene un listado de tareas asociadas al conjuto de ids recibidos
+     * @param accountId: Ids. de account asociados a las tareas
+     * @return Listado de tareas, 
+     * @author dmunoz
+     * @date 29/9/2023
+     */
+    public List<Task> findZRMTaskAssignedToAccountIds(Set<String> accountIds) {
+        List<Task> result = new List<Task>();
+
+        if (accountIds != null && !accountIds.isEmpty()) {
+            result = new List<Task>([SELECT Id, OwnerId FROM Task WHERE AccountId IN :accountIds AND Owner.Profile.Name = 'Agente Ventas']);
+        }
+
+        return result;
+    }
 }
