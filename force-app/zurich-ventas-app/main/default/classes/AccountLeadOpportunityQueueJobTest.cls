@@ -9,35 +9,11 @@
 private with sharing class AccountLeadOpportunityQueueJobTest
 {
 
-    private static String DEFAULT_ADMIN_ALIAS // Añadir el alias de cada user admin para cada entorno si fuera necesario
-    {
-        get
-        {
-            if( String.isBlank(DEFAULT_ADMIN_ALIAS) )
-            {
-                if(SystemUtil.getSandboxName() == 'qa')
-                {
-                    DEFAULT_ADMIN_ALIAS = 'ntsadmin';
-                }
-                else
-                {
-                    DEFAULT_ADMIN_ALIAS = 'adminkli';
-                }
-            }
-            return DEFAULT_ADMIN_ALIAS;
-        }
-        set;
-    }
-
     @TestSetup
     static void setup()
     {
         // Crear Custom Setting para default user
-        Cross_Selling__c setting = new Cross_Selling__c();
-        setting.Name = 'Test Setting';
-        setting.ContactCenterUser__c = '-';
-        setting.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
-        insert setting;
+        TestDataFactory.insertCrossSellingCustomSetting();
 
         // Crear Custom Setting para las colas y Business Hours
         Lead_Offers__c leadOffer = TestDataFactory.generateLeadOfferCS();
