@@ -1076,4 +1076,28 @@ public with sharing class AccountsSelector extends RecordsSelector
         return result;
     }
 
+
+    /**
+     * Busca account a las cuales hay que quitar la visibilidad de sus tareas y eventos
+     *
+     * @author dmunoz
+     * @date 21/09/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public List<Account> findZRMBlockedAccountWithActivitiesFromIds(Set<String> accountIds) {
+
+        List<Account> result = new List<Account>();
+
+        if (accountIds != null && !accountIds.isEmpty()) {
+            result = new List<Account>([SELECT Id, (SELECT Id, OwnerId FROM Tasks WHERE Owner.Profile.Name = 'Agente Ventas'),
+                                        (SELECT Id, OwnerId FROM PersonTasks WHERE Owner.Profile.Name = 'Agente Ventas'),
+                                        (SELECT Id, OwnerId FROM Events WHERE Owner.Profile.Name = 'Agente Ventas'),
+                                        (SELECT Id, OwnerId FROM PersonEvents WHERE Owner.Profile.Name = 'Agente Ventas')
+                                        FROM Account WHERE Id IN :accountIds AND Blocked__c = true]);
+
+        }
+
+        return result;
+    }
+
 }

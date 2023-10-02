@@ -63,7 +63,7 @@ global with sharing class Batch_IntermediaryVisibilityRecalcOpp implements Datab
      */
     global void finish(Database.BatchableContext bc) {
         if (!Test.isRunningTest() && accountIds != null && !accountIds.isEmpty()) {            
-            Database.executeBatch(new Batch_IntermediaryVisibilityRecalcTask(accountIds), 200); 
+            Database.executeBatch(new Batch_IntermediaryVisibilityAccActivites(accountIds), 200); 
         }
     }
     
