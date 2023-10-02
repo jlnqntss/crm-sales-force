@@ -212,15 +212,9 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             if(isCampaignMember)
             {
                 Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c', 'CallRetries__c', 'CampaignId', 'ContactId', 'Status'};
-                // All fields from the object are aded to allow the clone() used in retryCallNotReachedCampaignMember() to make an exact copy of the CampaignMember
-                // for ( Schema.SObjectField sObjectField : Schema.getGlobalDescribe().get('CampaignMember').getDescribe().fields.getMap().values() )
-                // {
-                //     cmFields.add( sObjectField.getDescribe().getName() );
-                // }
 
                 CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id> { (Id) eventInteractionData.get('dialerContactId') })[0];
                 Integer maxCallRetries = (cm.Campaign.MaxCallRetries__c == null) ? 0 : cm.Campaign.MaxCallRetries__c.intValue();
-                System.debug(cm);
 
                 if( (maxCallRetries > cm.CallRetries__c) && !dispositionCBErroneoTransf )
                 {
