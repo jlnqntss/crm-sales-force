@@ -1,7 +1,7 @@
 /**
  * @description       : Clase-queueable ejecutada desde el WS de Quote&Buy que inserta/actualiza/asigna un registro de Oferta de Lead e inserta un registro de Póliza (si aplica)
  * @author            : nts - overes
- * @last modified on  : 27-09-2023
+ * @last modified on  : 02-10-2023
  **/
 
 public with sharing class AccountLeadOpportunityQueueJob implements Queueable
@@ -188,17 +188,20 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
     {
         if (policyRecord != null && offerToInsertUpdate != null)
         {
-            Policy__c policyToInsert = policyRecord;
-            AccountsSelector accSelector = new AccountsSelector();
-            List<Account> listAcc = accSelector.findByINFOIntermediaryCode(new List<String> {(String) offerToInsertUpdate.IntermediaryCode__c});
-            policyToInsert.OpportunityName__c = offerToInsertUpdate.Id;
-            policyToInsert.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
-            if (listAcc.size() > 0)
+            if (policyRecord.InfoPolicyNumber__c != null && offerToInsertUpdate.InfoQuoteNumber__c != null)
             {
-                policyToInsert.IntermediaryId__c = listAcc.get(0).Id;
+                Policy__c policyToInsert = policyRecord;
+                AccountsSelector accSelector = new AccountsSelector();
+                List<Account> listAcc = accSelector.findByINFOIntermediaryCode(new List<String> {(String) offerToInsertUpdate.IntermediaryCode__c});
+                policyToInsert.OpportunityName__c = offerToInsertUpdate.Id;
+                policyToInsert.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
+                if (listAcc.size() > 0)
+                {
+                    policyToInsert.IntermediaryId__c = listAcc.get(0).Id;
+                }
+                policyToInsert.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c;
+                insert policyToInsert;
             }
-            policyToInsert.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c;
-            insert policyToInsert;
         }
     }
 
