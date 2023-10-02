@@ -1,16 +1,16 @@
 /**
  * @description       : Clase Handler para el objeto Task
  * @author            : aberuete
- * @group             : 
+ * @group             :
  * @last modified on  : 08-01-2023
  * @last modified by  : aberuete
-**/
+ **/
 public class TaskHandler implements ITrigger
 {
-    public TaskHandler() 
+    public TaskHandler()
     {}
 
-     /**
+    /**
      * bulkBefore
      *
      * This method is called prior to execution of a BEFORE trigger. Use this to cache
@@ -18,7 +18,6 @@ public class TaskHandler implements ITrigger
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        TaskUtil.mapBeforeData((List<Task>) newList);
     }
 
     /**
@@ -28,7 +27,8 @@ public class TaskHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * beforeInsert
@@ -38,8 +38,7 @@ public class TaskHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
-        TaskUtil.markPublicWhenOwnerUserCommunity( (List<Task>) newList);
-        TaskUtil.retryCallNotReachedCampaignMember((List<Task>) newList);
+        TaskUtil.markPublicWhenOwnerUserCommunity( (List<Task>) newList );
     }
 
     /**
@@ -50,8 +49,7 @@ public class TaskHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        TaskUtil.markPublicWhenOwnerUserCommunity( (List<Task>) newList);
-        TaskUtil.retryCallNotReachedCampaignMember((List<Task>) newList);
+        TaskUtil.markPublicWhenOwnerUserCommunity( (List<Task>) newList );
     }
 
     /**
@@ -61,7 +59,8 @@ public class TaskHandler implements ITrigger
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * afterInsert
@@ -71,7 +70,8 @@ public class TaskHandler implements ITrigger
      * has modified any values. The record is 'read only' by this point.
      */
     public void afterInsert(List<SObject> newList)
-    {}
+    {
+    }
 
     /**
      * afterUpdate
@@ -80,7 +80,8 @@ public class TaskHandler implements ITrigger
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * afterDelete
@@ -89,7 +90,8 @@ public class TaskHandler implements ITrigger
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * andFinally
@@ -99,6 +101,5 @@ public class TaskHandler implements ITrigger
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
     {
-        TaskUtil.executeCampaignMembersDML();
     }
 }

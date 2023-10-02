@@ -1,8 +1,8 @@
 /**
  * @description       : Clase de utilidad para trabajar sobre CallMeBacks
  * @author            : amiranda
- * @date              : 22-09-2023
- * @last modified on  : 22-09-2023
+ * @date              : 29-09-2023
+ * @last modified on  : 29-09-2023
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -40,11 +40,12 @@ public with sharing class CallMeBackUtil
             throw new CallMeBackException('Genesys ' + queueName + ' queue does not exist');
         }
 
-        List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone},
+        /*List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone},
                                                                                   RecordsSelector.Scope.VENTAS,
                                                                                   RecordsSelector.LegalEntity.ALL,
                                                                                   null,
-                                                                                  null);
+                                                                                  null);*/
+        List<Account> customers = [SELECT Id FROM Account WHERE Phone =: requestCallMeBack.phone];
         String contactRequestId;
 
         try
@@ -59,7 +60,7 @@ public with sharing class CallMeBackUtil
 
             if( !customers.isEmpty() )
             {
-                contactRequest.WhoId = customers.get(0).PersonContactId;
+                contactRequest.WhatId = customers.get(0).Id;
             }
 
             insert contactRequest;

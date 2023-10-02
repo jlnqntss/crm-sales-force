@@ -5,10 +5,10 @@
         <description>¿Ha sido ya clonada para un mediador la oferta de origen?</description>
         <name>clonedOfferForIntermediaryIsTrueDecision</name>
         <label>Oferta para Mediador ya generada?</label>
-        <locationX>182</locationX>
+        <locationX>248</locationX>
         <locationY>134</locationY>
         <defaultConnector>
-            <targetReference>cloneOfferForIntermediarySubflow</targetReference>
+            <targetReference>noIntermediariesDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -25,6 +25,39 @@
                 <targetReference>clonedOfferForIntermediaryIsTrueErrorScreen</targetReference>
             </connector>
             <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Si ni la oferta original tiene un mediador asignado ni el cliente tiene un mediador principal, no se puede generar la nueva oferta.</description>
+        <name>noIntermediariesDecision</name>
+        <label>Hay mediadores posibles?</label>
+        <locationX>446</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>cloneOfferForIntermediarySubflow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Si</defaultConnectorLabel>
+        <rules>
+            <name>noAvailableIntermediaries</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId.IntermediaryId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>recordId.Account.Intermediary_Name__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NoIntermediariesErrorScreen</targetReference>
+            </connector>
+            <label>No</label>
         </rules>
     </decisions>
     <description>Screen Flow para clonar una oferta para el intermediario.</description>
@@ -69,11 +102,28 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <description>Muestra un mensaje de error si no hay mediadores para los cuales generar la oferta</description>
+        <name>NoIntermediariesErrorScreen</name>
+        <label>Error por no haber mediadores</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>noIntermediaryTrueErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(255, 0, 0);&quot;&gt;No se puede generar la oferta.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(255, 0, 0);&quot;&gt;Ni la oferta original ni el cliente tienen asignado un mediador.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <description>Muestra un mensaje de éxito tras generar la oferta de mediador</description>
         <name>offerSuccessfullyCreatedMessage</name>
         <label>Mensaje por Oferta creada con éxito</label>
-        <locationX>314</locationX>
-        <locationY>350</locationY>
+        <locationX>578</locationX>
+        <locationY>458</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -86,7 +136,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>122</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>clonedOfferForIntermediaryIsTrueDecision</targetReference>
@@ -97,8 +147,8 @@
         <description>Lanza el subflow preparado para realizar el clonado y la actualización del registro antiguo</description>
         <name>cloneOfferForIntermediarySubflow</name>
         <label>Lanza Clone Offer For Intermediary</label>
-        <locationX>314</locationX>
-        <locationY>242</locationY>
+        <locationX>578</locationX>
+        <locationY>350</locationY>
         <connector>
             <targetReference>offerSuccessfullyCreatedMessage</targetReference>
         </connector>

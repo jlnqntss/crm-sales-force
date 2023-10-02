@@ -2,9 +2,9 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 25/09/2023
- * @last modified by  : jgallaga
-**/
+ * @last modified on  : 28-09-2023
+ * @last modified by  : overes
+ **/
 public with sharing class ContactPointPhonesSelector
 {
     static final String QUERY_SELECT = 'SELECT {0} FROM ContactPointPhone ';
@@ -165,10 +165,5 @@ public with sharing class ContactPointPhonesSelector
         {
             return new List<ContactPointPhone>();
         }
-    }
-
-    public List<ContactpointPhone> selectByAccountScopeLead(string phone)
-    {
-        return [SELECT Scope__c,ScopeId__c, ScopeId__r.AccountId__c, ScopeId__r.AccountId__r.Createddate FROM ContactPointPhone WHERE TelephoneNumber = :phone AND ScopeId__r.AccountId__r.RecordType.DeveloperName = 'Lead'];
     }
 }

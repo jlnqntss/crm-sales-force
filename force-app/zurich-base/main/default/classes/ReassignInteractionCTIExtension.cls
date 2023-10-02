@@ -12,8 +12,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private final static String TASK_STATUS_TYPE_FORMS = 'Forms';
     private final static String TASK_RECORDTYPE_ID_INTERACTION = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
     private final static String CRM_VENTAS_PROFILE = 'Ventas User';
-    private final static String CALL_DISPOSITION_NO_RESPONSE = 'No contesta / Contestador Automático';
-    private final static String CALL_CALLBACK_ERRONEO_TRANSF = 'CallBack erróneo Transferencia';
 
     /**
      * Identifica una tarea a través del parámetro data.interaction.id y devuelve dicha tarea modificando el usuario Asignado
@@ -198,24 +196,46 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      */
     private static void eventOnInteractionDisconnected(Task interactionTask, Map<String, Object> eventInteractionData)
     {
+        Map<String, String> genesysWrapUpMapping = new Map<String, String>();
+        List<ZRM_Genesys_WrapUp_mapping__mdt> genesysWrapUpMappingMetadata = ZRM_Genesys_WrapUp_mapping__mdt.getAll().values();
+        for(ZRM_Genesys_WrapUp_mapping__mdt mdt : genesysWrapUpMappingMetadata)
+        {
+            genesysWrapUpMapping.put(mdt.Key__c, mdt.WrapUp__c);
+        }
+
         Boolean isCampaignMember = ( eventInteractionData.containsKey('dialerContactId') && ( (String) eventInteractionData.get('dialerContactId') ).toUppercase().startsWith('00V') );
-        Boolean dispositionNoResponse = (eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == CALL_DISPOSITION_NO_RESPONSE);
-        Boolean dispositionCBErroneoTransf = (eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == CALL_CALLBACK_ERRONEO_TRANSF);
+        Boolean dispositionNoResponse = ( eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == genesysWrapUpMapping.get('NO_CONTESTA') );
+        Boolean dispositionCBErroneoTransf = ( eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == genesysWrapUpMapping.get('CALLBACK_ERRONEO') );
 
         if(isCampaignMember)
         {
-            Set<String> cmFields = new Set<String> { 'CallRetries__c', 'CampaignMember.CampaignId', 'Campaign.MaxCallRetries__c' };
+            Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c'};
+            // All fields from the object are aded to allow the clone() used in retryCallNotReachedCampaignMember() to make an exact copy of the CampaignMember
+            for ( Schema.SObjectField sObjectField : Schema.getGlobalDescribe().get('CampaignMember').getDescribe().fields.getMap().values() )
+            {
+                cmFields.add( sObjectField.getDescribe().getName() );
+            }
+
             CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id> { (Id) eventInteractionData.get('dialerContactId') })[0];
-            Integer maxCallRetries = cm.Campaign.MaxCallRetries__c.intValue();
+            Integer maxCallRetries = (cm.Campaign.MaxCallRetries__c == null) ? 0 : cm.Campaign.MaxCallRetries__c.intValue();
 
             if( (maxCallRetries > cm.CallRetries__c) && !dispositionCBErroneoTransf )
             {
-                cm.CallRetries__c = cm.CallRetries__c + 1;
-                update cm;
-
                 if(dispositionNoResponse)
                 {
-                    interactionTask.CampaignMemberID__c = cm.Id;
+                    System.debug('Se clona');
+                    CampaignMember cmClone = cm.clone(false, false, false, true);
+                    cmClone.CallRetries__c = cmClone.CallRetries__c + 1;
+                    cmClone.Status = '';
+                    delete cm;
+                    insert cmClone;
+                    //interactionTask.CampaignMemberID__c = cm.Id;
+                }
+                else
+                {
+                    System.debug('Se actualiza');
+                    cm.CallRetries__c = cm.CallRetries__c + 1;
+                    update cm;
                 }
             }
             interactionTask.Campaign__c = cm.CampaignId;
