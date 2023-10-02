@@ -186,22 +186,19 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      */
     private static void managePolicyRecord(Policy__c policyRecord, Opportunity offerToInsertUpdate)
     {
-        if (policyRecord != null && offerToInsertUpdate != null)
+        if ( (policyRecord != null && offerToInsertUpdate != null) && (policyRecord.InfoPolicyNumber__c != null && offerToInsertUpdate.InfoQuoteNumber__c != null) )
         {
-            if (policyRecord.InfoPolicyNumber__c != null && offerToInsertUpdate.InfoQuoteNumber__c != null)
+            Policy__c policyToInsert = policyRecord;
+            AccountsSelector accSelector = new AccountsSelector();
+            List<Account> listAcc = accSelector.findByINFOIntermediaryCode(new List<String> {(String) offerToInsertUpdate.IntermediaryCode__c});
+            policyToInsert.OpportunityName__c = offerToInsertUpdate.Id;
+            policyToInsert.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
+            if (listAcc.size() > 0)
             {
-                Policy__c policyToInsert = policyRecord;
-                AccountsSelector accSelector = new AccountsSelector();
-                List<Account> listAcc = accSelector.findByINFOIntermediaryCode(new List<String> {(String) offerToInsertUpdate.IntermediaryCode__c});
-                policyToInsert.OpportunityName__c = offerToInsertUpdate.Id;
-                policyToInsert.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
-                if (listAcc.size() > 0)
-                {
-                    policyToInsert.IntermediaryId__c = listAcc.get(0).Id;
-                }
-                policyToInsert.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c;
-                insert policyToInsert;
+                policyToInsert.IntermediaryId__c = listAcc.get(0).Id;
             }
+            policyToInsert.Intermediary_Code__c = offerToInsertUpdate.IntermediaryCode__c;
+            insert policyToInsert;
         }
     }
 
