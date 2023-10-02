@@ -1,7 +1,7 @@
 /**
  * @description       : Nuevo Web Service REST que extiende de la clase APEX actual "WS_BaseAPIService"
  * @author            : nts - overes
- * @last modified on  : 27-09-2023
+ * @last modified on  : 02-10-2023
  **/
 public with sharing class SalesCRMQuoteAndBuyService
 {
@@ -344,7 +344,6 @@ public with sharing class SalesCRMQuoteAndBuyService
     @TestVisible
     private static void fillAccountFields(Account acc, Lead requestData)
     {
-        acc.LastName = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
         acc.Phone = requestData.cliente.contacto.telefono;
         acc.Description = setDesc(requestData);
         setNationalIdType( acc, (String) requestData.get('documentId') );
