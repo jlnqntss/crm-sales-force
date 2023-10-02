@@ -175,8 +175,15 @@ private without sharing class ReassignInteractionCTIExtensionTest
             List<Task> tasksInSystem = [SELECT Id FROM Task];
             Assert.areEqual(1, tasksInSystem.size(), 'La interaccion solo debería crear una tarea');
 
+            Map<String, String> genesysWrapUpMapping = new Map<String, String>();
+            List<ZRM_Genesys_WrapUp_mapping__mdt> genesysWrapUpMappingMetadata = ZRM_Genesys_WrapUp_mapping__mdt.getAll().values();
+            for(ZRM_Genesys_WrapUp_mapping__mdt mdt : genesysWrapUpMappingMetadata)
+            {
+                genesysWrapUpMapping.put(mdt.Key__c, mdt.WrapUp__c);
+            }
+
             // Evento de colgar la llamada
-            String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction": { "disposition": "No contesta / Contestador Automático", "dialerContactId": "' + campaignMember.Id + '"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + tasksInSystem[0].Id + '"}}';
+            String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction": { "disposition": "' + genesysWrapUpMapping.get('NO_CONTESTA') + '", "dialerContactId": "' + campaignMember.Id + '"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + tasksInSystem[0].Id + '"}}';
             ReassignInteractionCTIExtension.onSaveLog(interactionDisconnectEventString);
             Test.stopTest();
 

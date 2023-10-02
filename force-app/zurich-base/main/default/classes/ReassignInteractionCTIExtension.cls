@@ -211,26 +211,28 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
             if(isCampaignMember)
             {
-                Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c'};
+                Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c', 'CallRetries__c', 'CampaignId', 'ContactId', 'Status'};
                 // All fields from the object are aded to allow the clone() used in retryCallNotReachedCampaignMember() to make an exact copy of the CampaignMember
-                for ( Schema.SObjectField sObjectField : Schema.getGlobalDescribe().get('CampaignMember').getDescribe().fields.getMap().values() )
-                {
-                    cmFields.add( sObjectField.getDescribe().getName() );
-                }
+                // for ( Schema.SObjectField sObjectField : Schema.getGlobalDescribe().get('CampaignMember').getDescribe().fields.getMap().values() )
+                // {
+                //     cmFields.add( sObjectField.getDescribe().getName() );
+                // }
 
                 CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id> { (Id) eventInteractionData.get('dialerContactId') })[0];
                 Integer maxCallRetries = (cm.Campaign.MaxCallRetries__c == null) ? 0 : cm.Campaign.MaxCallRetries__c.intValue();
+                System.debug(cm);
 
                 if( (maxCallRetries > cm.CallRetries__c) && !dispositionCBErroneoTransf )
                 {
                     if(dispositionNoResponse)
                     {
-                        CampaignMember cmClone = cm.clone(false, false, false, true);
-                        cmClone.CallRetries__c = cmClone.CallRetries__c + 1;
+                        CampaignMember cmClone = new CampaignMember();
+                        cmClone.CallRetries__c = cm.CallRetries__c + 1;
+                        cmClone.CampaignId = cm.CampaignId;
+                        cmClone.ContactId = cm.ContactId;
                         cmClone.Status = '';
                         delete cm;
                         insert cmClone;
-                        //interactionTask.CampaignMemberID__c = cm.Id;
                     }
                     else
                     {
