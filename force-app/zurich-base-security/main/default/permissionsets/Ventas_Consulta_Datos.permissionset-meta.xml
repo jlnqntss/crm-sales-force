@@ -270,6 +270,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.IntermediaryWithUser__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Intermediary_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
