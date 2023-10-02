@@ -340,10 +340,20 @@ public with sharing class SalesCRMQuoteAndBuyService
      * @author overes | 09-02-2023
      * @param accountToFill se rellena con los datos del Lead
      * @param requestData contiene la configuración del Lead
+     *
+     * @change overes 02/10/2023 Se añade una condición para informar el campo
+     * LastName únicamente si la cuenta que se pasa por parámetro se encuentra en
+     * Salesforce.
      **/
     @TestVisible
     private static void fillAccountFields(Account acc, Lead requestData)
     {
+        // Si el Id no está informado se considera que no se ha encontrado una cuenta duplicada en el sistema
+        if ( !acc.isSet(Account.Id) )
+        {
+            acc.LastName = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
+        }
+
         acc.Phone = requestData.cliente.contacto.telefono;
         acc.Description = setDesc(requestData);
         setNationalIdType( acc, (String) requestData.get('documentId') );
