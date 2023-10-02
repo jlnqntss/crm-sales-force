@@ -196,49 +196,50 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      */
     private static void eventOnInteractionDisconnected(Task interactionTask, Map<String, Object> eventInteractionData)
     {
-        Map<String, String> genesysWrapUpMapping = new Map<String, String>();
-        List<ZRM_Genesys_WrapUp_mapping__mdt> genesysWrapUpMappingMetadata = ZRM_Genesys_WrapUp_mapping__mdt.getAll().values();
-        for(ZRM_Genesys_WrapUp_mapping__mdt mdt : genesysWrapUpMappingMetadata)
+        if ( new UserSelector().getUserInfo( UserInfo.getUserId() ).Profile.Name.equalsIgnoreCase(CRM_VENTAS_PROFILE) )
         {
-            genesysWrapUpMapping.put(mdt.Key__c, mdt.WrapUp__c);
-        }
-
-        Boolean isCampaignMember = ( eventInteractionData.containsKey('dialerContactId') && ( (String) eventInteractionData.get('dialerContactId') ).toUppercase().startsWith('00V') );
-        Boolean dispositionNoResponse = ( eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == genesysWrapUpMapping.get('NO_CONTESTA') );
-        Boolean dispositionCBErroneoTransf = ( eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == genesysWrapUpMapping.get('CALLBACK_ERRONEO') );
-
-        if(isCampaignMember)
-        {
-            Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c'};
-            // All fields from the object are aded to allow the clone() used in retryCallNotReachedCampaignMember() to make an exact copy of the CampaignMember
-            for ( Schema.SObjectField sObjectField : Schema.getGlobalDescribe().get('CampaignMember').getDescribe().fields.getMap().values() )
+            Map<String, String> genesysWrapUpMapping = new Map<String, String>();
+            List<ZRM_Genesys_WrapUp_mapping__mdt> genesysWrapUpMappingMetadata = ZRM_Genesys_WrapUp_mapping__mdt.getAll().values();
+            for(ZRM_Genesys_WrapUp_mapping__mdt mdt : genesysWrapUpMappingMetadata)
             {
-                cmFields.add( sObjectField.getDescribe().getName() );
+                genesysWrapUpMapping.put(mdt.Key__c, mdt.WrapUp__c);
             }
 
-            CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id> { (Id) eventInteractionData.get('dialerContactId') })[0];
-            Integer maxCallRetries = (cm.Campaign.MaxCallRetries__c == null) ? 0 : cm.Campaign.MaxCallRetries__c.intValue();
+            Boolean isCampaignMember = ( eventInteractionData.containsKey('dialerContactId') && ( (String) eventInteractionData.get('dialerContactId') ).toUppercase().startsWith('00V') );
+            Boolean dispositionNoResponse = ( eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == genesysWrapUpMapping.get('NO_CONTESTA') );
+            Boolean dispositionCBErroneoTransf = ( eventInteractionData.containsKey('disposition') && (String) eventInteractionData.get('disposition') == genesysWrapUpMapping.get('CALLBACK_ERRONEO') );
 
-            if( (maxCallRetries > cm.CallRetries__c) && !dispositionCBErroneoTransf )
+            if(isCampaignMember)
             {
-                if(dispositionNoResponse)
+                Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c'};
+                // All fields from the object are aded to allow the clone() used in retryCallNotReachedCampaignMember() to make an exact copy of the CampaignMember
+                for ( Schema.SObjectField sObjectField : Schema.getGlobalDescribe().get('CampaignMember').getDescribe().fields.getMap().values() )
                 {
-                    System.debug('Se clona');
-                    CampaignMember cmClone = cm.clone(false, false, false, true);
-                    cmClone.CallRetries__c = cmClone.CallRetries__c + 1;
-                    cmClone.Status = '';
-                    delete cm;
-                    insert cmClone;
-                    //interactionTask.CampaignMemberID__c = cm.Id;
+                    cmFields.add( sObjectField.getDescribe().getName() );
                 }
-                else
+
+                CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id> { (Id) eventInteractionData.get('dialerContactId') })[0];
+                Integer maxCallRetries = (cm.Campaign.MaxCallRetries__c == null) ? 0 : cm.Campaign.MaxCallRetries__c.intValue();
+
+                if( (maxCallRetries > cm.CallRetries__c) && !dispositionCBErroneoTransf )
                 {
-                    System.debug('Se actualiza');
-                    cm.CallRetries__c = cm.CallRetries__c + 1;
-                    update cm;
+                    if(dispositionNoResponse)
+                    {
+                        CampaignMember cmClone = cm.clone(false, false, false, true);
+                        cmClone.CallRetries__c = cmClone.CallRetries__c + 1;
+                        cmClone.Status = '';
+                        delete cm;
+                        insert cmClone;
+                        //interactionTask.CampaignMemberID__c = cm.Id;
+                    }
+                    else
+                    {
+                        cm.CallRetries__c = cm.CallRetries__c + 1;
+                        update cm;
+                    }
                 }
+                interactionTask.Campaign__c = cm.CampaignId;
             }
-            interactionTask.Campaign__c = cm.CampaignId;
         }
 
         interactionTask.Status  = TASK_STATUS_CLOSED;

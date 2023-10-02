@@ -111,11 +111,8 @@ private without sharing class ReassignInteractionCTIExtensionTest
         Account ventasUserAccount = TestDataFactory.generateAccounts('001', 'Intermediary', 1)[0];
         insert ventasUserAccount;
 
-        Contact ventasUserContact = TestDataFactory.generateContactsFromAccounts(new List<Account> {ventasUserAccount}, ContactsSelector.RT_NAME_CONTACT, 1)[0];
-        insert ventasUserContact;
-
         /* -------------------------------- USUARIOS -------------------------------- */
-        String ventasUserProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+        String ventasUserProfile = [SELECT Id FROM Profile WHERE Name = 'Ventas User' LIMIT 1].Id;
         List<String> adminProfiles = new List<String> {'Administrador del sistema', 'System Administrator'};
         List<Boolean> activeStatus = new List<Boolean> {true};
 
@@ -125,7 +122,6 @@ private without sharing class ReassignInteractionCTIExtensionTest
         ventasUser.FirstName = 'Agente';
         ventasUser.LastName = 'Ventas';
         ventasUser.Alias = 'a.ventas';
-        ventasUser.ContactId = ventasUserContact.Id;
         ventasUser.UserPermissionsMarketingUser = true;
 
         System.runAs(adminUser)
