@@ -62,7 +62,9 @@ global with sharing class Batch_IntermediaryVisibilityRecalcOpp implements Datab
      * @date 18/09/2023
      */
     global void finish(Database.BatchableContext bc) {
-        // nothing
+        if (!Test.isRunningTest() && accountIds != null && !accountIds.isEmpty()) {            
+            Database.executeBatch(new Batch_IntermediaryVisibilityAccActivites(accountIds), 200); 
+        }
     }
     
     

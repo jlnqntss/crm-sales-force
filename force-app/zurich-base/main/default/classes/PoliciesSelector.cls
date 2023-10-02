@@ -228,7 +228,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                                         IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, 
                                                         IntermediaryVisibilityAcc__c, PolicyHolder__c 
                                                         FROM Policy__c
-                                                        WHERE IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                                        WHERE (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null)
+                                                        AND (IntermediaryVisibilityForm__c = null
                                                         OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
                                                         OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
 
@@ -251,7 +252,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                                             IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, 
                                                             IntermediaryVisibilityAcc__c, PolicyHolder__c 
                                                             FROM Policy__c
-                                                            WHERE PolicyHolder__c IN :accountIds AND IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                                            WHERE PolicyHolder__c IN :accountIds AND (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null)
+                                                            AND (IntermediaryVisibilityForm__c = null
                                                             OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
                                                             OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
 
