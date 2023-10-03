@@ -943,17 +943,17 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 21/09/2023
      * @return List<Account> Listado de account a las que recalcular la visibilidad
      */
-    public List<Account> findAccountsWithIncorrectVisibility()
+    public String findAccountsWithIncorrectVisibility()
     {
 
-        List<Account> result = new List<Account>([SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, 
-                                                    Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
-                                                    FROM Account
-                                                    WHERE RecordType.DeveloperName IN ('Customer','BusinessCustomer')
-                                                    AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null)
-                                                    AND (IntermediaryVisibilityForm__c = null
-                                                    OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
-                                                    OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+        String result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, ' +
+                                                    'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                                                    'FROM Account ' +
+                                                    'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') ' +
+                                                    'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
+                                                    'AND (IntermediaryVisibilityForm__c = null ' +
+                                                    'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                                                    'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
 
         return result;
     }
@@ -965,20 +965,20 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 21/09/2023
      * @return List<Account> Listado de account a las que recalcular la visibilidad
      */
-    public List<Account> findAccountsWithIncorrectVisibilityByAccountId(Set<String> accountIds)
+    public String findAccountsWithIncorrectVisibilityByAccountId(Set<String> accountIds)
     {
 
-        List<Account> result = new List<Account>();
+        String result;
 
         if (accountIds != null && !accountIds.isEmpty()) {
-            result = new List<Account>([SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, 
-                                            Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
-                                            FROM Account
-                                            WHERE RecordType.DeveloperName IN ('Customer','BusinessCustomer') AND Id IN :accountIds
-                                            AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null)
-                                            AND (IntermediaryVisibilityForm__c = null
-                                            OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
-                                            OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+            result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c,  ' +
+                                            'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                                            'FROM Account ' +
+                                            'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') AND Id IN  :accountIds ' +
+                                            'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
+                                            'AND (IntermediaryVisibilityForm__c = null ' +
+                                            'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                                            'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
 
         }
 
@@ -993,16 +993,16 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 21/09/2023
      * @return List<Account> Listado de account a las que recalcular la visibilidad
      */
-    public List<Account> findZRMBlockedAccountWithActivitiesFromIds(Set<String> accountIds) {
+    public String findZRMBlockedAccountWithActivitiesFromIds(Set<String> accountIds) {
 
-        List<Account> result = new List<Account>();
+        String result;
 
         if (accountIds != null && !accountIds.isEmpty()) {
-            result = new List<Account>([SELECT Id, (SELECT Id, OwnerId FROM Tasks WHERE Owner.Profile.Name = 'Agente Ventas'),
-                                        (SELECT Id, OwnerId FROM PersonTasks WHERE Owner.Profile.Name = 'Agente Ventas'),
-                                        (SELECT Id, OwnerId FROM Events WHERE Owner.Profile.Name = 'Agente Ventas'),
-                                        (SELECT Id, OwnerId FROM PersonEvents WHERE Owner.Profile.Name = 'Agente Ventas')
-                                        FROM Account WHERE Id IN :accountIds AND Blocked__c = true]);
+            result = 'SELECT Id, (SELECT Id, OwnerId FROM Tasks WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
+                                        '(SELECT Id, OwnerId FROM PersonTasks WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
+                                        '(SELECT Id, OwnerId FROM Events WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
+                                        '(SELECT Id, OwnerId FROM PersonEvents WHERE Owner.Profile.Name = \'Agente Ventas\') ' +
+                                        'FROM Account WHERE Id IN :accountIds AND Blocked__c = true';
 
         }
 

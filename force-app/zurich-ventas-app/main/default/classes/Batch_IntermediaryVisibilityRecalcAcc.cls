@@ -37,11 +37,11 @@ global with sharing class Batch_IntermediaryVisibilityRecalcAcc implements Datab
      * @author dmunoz
      * @date 21/09/2023
      */
-    global List<Account> start(Database.BatchableContext bc) { 
+    global Database.QueryLocator start(Database.BatchableContext bc) { 
         if (accountIds != null && !accountIds.isEmpty()) {
-            return (new AccountsSelector()).findAccountsWithIncorrectVisibilityByAccountId(accountIds);
+            return Database.getQueryLocator(new AccountsSelector().findAccountsWithIncorrectVisibilityByAccountId(accountIds));
         } else {
-            return (new AccountsSelector()).findAccountsWithIncorrectVisibility();
+            return Database.getQueryLocator(new AccountsSelector().findAccountsWithIncorrectVisibility());
         }
     }
 
