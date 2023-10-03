@@ -21,12 +21,12 @@ global with sharing class Batch_IntermediaryVisibilityAccActivites implements Da
      * @author dmunoz
      * @date 29/09/2023
      */
-    global List<Account> start(Database.BatchableContext bc) { 
+    global Database.QueryLocator start(Database.BatchableContext bc) { 
 
         if (accountIds != null && !accountIds.isEmpty()) {
-            return (new AccountsSelector()).findZRMBlockedAccountWithActivitiesFromIds(accountIds);
+            return Database.getQueryLocator(new AccountsSelector().findZRMBlockedAccountWithActivitiesFromIds(accountIds)); 
         } else {
-            return new List<Account> (); 
+            return null;
         }
     }
 
@@ -48,9 +48,6 @@ global with sharing class Batch_IntermediaryVisibilityAccActivites implements Da
 
             List<Task> updatedTaskVisibilityList = updateTasksVisibility(activitiesMap, defaultUserId);
             List<Event> updatedEventVisibilityList = updateEventsVisibility(activitiesMap, defaultUserId);
-
-
-            System.debug('Tareas antes de actualizar ' + updatedTaskVisibilityList);
 
             update updatedTaskVisibilityList;
             update updatedEventVisibilityList;

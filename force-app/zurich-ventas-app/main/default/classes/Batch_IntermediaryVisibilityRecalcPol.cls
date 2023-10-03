@@ -26,11 +26,11 @@ global with sharing class Batch_IntermediaryVisibilityRecalcPol implements Datab
      * @author dmunoz
      * @date 20/09/2023
      */
-    global List<Policy__c> start(Database.BatchableContext bc) { 
+    global Database.QueryLocator start(Database.BatchableContext bc) { 
         if (accountIds != null && !accountIds.isEmpty()) {
-            return (new PoliciesSelector()).findPoliciesWithIncorrectVisibilityByAccountId(accountIds);
+            return Database.getQueryLocator(new PoliciesSelector().findPoliciesWithIncorrectVisibilityByAccountId(accountIds));
         } else {
-            return (new PoliciesSelector()).findPoliciesWithIncorrectVisibility();
+            return Database.getQueryLocator(new PoliciesSelector().findPoliciesWithIncorrectVisibility());
         }
     }
 
