@@ -381,6 +381,7 @@ public with sharing class EmailMessagesUtil
                 // List of emails to check
                 List<String> emailsToCheck = new List<String>();
                 String industryGeneric= 'Generico';
+                String industryDefault;
 
                 // list of related cases
                 Set<String> idCaso = new Set<String>();
@@ -441,6 +442,19 @@ public with sharing class EmailMessagesUtil
                             
                             i++;
                         }
+
+                        if((listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue==null))
+                        {
+                            industryDefault=em.Industry__c;
+                            System.debug('INDUSTRIA: '+industryDefault);
+                            genesysQueue=this.findGenesysQueueByIndustry(industryDefault.trim().toLowerCase());
+                                if(genesysQueue==null)
+                                {  
+                                    genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                                }
+                        }
+
+                        
                     } 
                 }
             } catch (Exception e) {
