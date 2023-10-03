@@ -39,6 +39,13 @@
                 <stringValue>Interested, managed by my agent</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>SalesProcess__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>VC</stringValue>
+            </value>
+        </filters>
         <object>Opportunity</object>
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>

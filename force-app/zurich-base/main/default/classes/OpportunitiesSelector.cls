@@ -340,7 +340,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                                         IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
                                                         IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
                                                         FROM Opportunity
-                                                        WHERE IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                                        WHERE (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null)
+                                                        AND (IntermediaryVisibilityForm__c = null
                                                         OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
                                                         OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
         return result;
@@ -362,7 +363,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                                             IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
                                                             IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
                                                             FROM Opportunity
-                                                            WHERE AccountId IN :accountIds AND IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
+                                                            WHERE AccountId IN :accountIds AND (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null)
+                                                            AND (IntermediaryVisibilityForm__c = null
                                                             OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
                                                             OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
         }

@@ -32,10 +32,10 @@ private class PlanComercialSelectorTest
     {
         Test.startTest();
         PlanComercialSelector.eIndicator indicatorType = PlanComercialSelector.getIndicatorType(PlanComercialSelector.INDICATOR_PN);
-        System.assertEquals(PlanComercialSelector.eIndicator.type_number, indicatorType, 'Deberia ser de tipo number');
+        System.assertEquals(PlanComercialSelector.eIndicator.type_currency, indicatorType, 'Deberia ser de tipo currency');
 
         String targetKpiField = PlanComercialSelector.getTargetKPIFieldByType(indicatorType);
-        System.assertEquals('TargetKPINumber__c', targetKpiField, 'Deberia ser el campo TargetKPINumber__c');
+        System.assertEquals('TargetKPICurrency__c', targetKpiField, 'Deberia ser el campo TargetKPICurrency__c');
 
         Map<String, String> mapIndicatorTypes = PlanComercialSelector.getMapIndicatorType();
         System.assertNotEquals(null, mapIndicatorTypes, 'Deberia existir el mapa de equivalencias de tipo de indicadores');

@@ -2,9 +2,9 @@
  * @description       :
  * @author            : overes
  * @group             :
- * @last modified on  : 25/09/2023
- * @last modified by  : jgallaga
-**/
+ * @last modified on  : 28-09-2023
+ * @last modified by  : overes
+ **/
 public with sharing class AccountLeadUtil
 {
     public static final String LEAD = 'Lead';
@@ -41,16 +41,8 @@ public with sharing class AccountLeadUtil
                 newAcc = leadDuplicatesControl(acc.NationalId__c, acc.Phone);
                 if (newAcc != null)
                 {
-                    String errorMsg = Label.Lead_Duplicates_Control_Error + ': ';
-                    if ( !String.isBlank(newAcc.FirstName) )
-                    {
-                        errorMsg += +newAcc.FirstName + ' ';
-                    }
-                    if ( !String.isBlank(newAcc.LastName) )
-                    {
-                        errorMsg += newAcc.LastName + ' ';
-                    }
-                    acc.addError(errorMsg + '(' +  newAcc.Id + ')');
+                    AccountSelectorWithoutSharing accountsSelectorWS = new AccountSelectorWithoutSharing();
+                    acc.addError(Label.Lead_Duplicates_Control_Error + ': ' + accountsSelectorWS.findAccountNameById(newAcc.Id).get(0).Name + ' (' +  newAcc.Id + ')');
                 }
             }
         }
@@ -71,7 +63,7 @@ public with sharing class AccountLeadUtil
     {
         Account acc = null;
 
-        if (String.isNotBlank(documentID))
+        if ( String.isNotBlank(documentID) )
         {
             acc = checkLeadCuplicateByDocumentID(documentID);
         }
@@ -81,7 +73,7 @@ public with sharing class AccountLeadUtil
             return acc;
         }
 
-        if(String.isNotBlank(phone))
+        if( String.isNotBlank(phone) )
         {
             acc = checkLeadDuplicatePhone(phone);
         }
@@ -143,23 +135,24 @@ public with sharing class AccountLeadUtil
     {
         Account acc = null;
         AccountsSelector accountsSelector = new AccountsSelector();
+        AccountSelectorWithoutSharing accountsSelectorWS = new AccountSelectorWithoutSharing();
 
-        if(String.isBlank(documentId))
+        if( String.isBlank(documentId) )
         {
             return acc;
         }
 
-        List<Account> accList = accountsSelector.findByNationalIdAndRcTypeCustAndBC(new List<String>{documentID});
+        List<Account> accList = accountsSelectorWS.findByNationalIdAndRcTypeCustAndBC(new List<String> {documentID});
 
-        if (!accList.isEmpty())
+        if ( !accList.isEmpty() )
         {
             acc = accList.get(0);
         }
         else
         {
-            List<Account> accLeadList = accountsSelector.findByNationalIdAndRcTypeLead(new List<String>{documentID});
+            List<Account> accLeadList = accountsSelectorWS.findByNationalIdAndRcTypeLead(new List<String> {documentID});
 
-            if (!accLeadList.isEmpty())
+            if ( !accLeadList.isEmpty() )
             {
                 acc = accLeadList.get(0);
             }
@@ -182,15 +175,15 @@ public with sharing class AccountLeadUtil
     {
         Account acc = null;
 
-        if(String.isBlank(phone))
+        if( String.isBlank(phone) )
         {
             return acc;
         }
 
-        Map<Id,List<ContactPointPhone>> scopeByAccountId = getContactPointPhonesByLeadAccountId(phone);
+        Map<Id,List<ContactPointPhone> > scopeByAccountId = getContactPointPhonesByLeadAccountId(phone);
 
         // Si no hay contact point phones -> nulo
-        if(scopeByAccountId.isEmpty())
+        if( scopeByAccountId.isEmpty() )
         {
             return acc;
         }
@@ -198,35 +191,34 @@ public with sharing class AccountLeadUtil
         // Si solo hay una cuenta, devolver ese
         if(scopeByAccountId.size() == 1)
         {
-            Id foundAccount = new List<Id>(scopeByAccountId.keySet()).get(0);
-            return [SELECT Id FROM Account WHERE Id = :foundAccount];
+            Id foundAccount = new List<Id>( scopeByAccountId.keySet() ).get(0);
+            return ( new AccountSelectorWithoutSharing() ).findAccountById(foundAccount);
         }
 
         // En el resto, buscar la cuenta mas reciente, con preferencia a los de RecordType Lead
-        String targetAccountId = getMostRecentAccountFromContactPointPhones(scopeByAccountId.values());
+        String targetAccountId = getMostRecentAccountFromContactPointPhones( scopeByAccountId.values() );
 
-        if(String.isBlank(targetAccountId))
+        if( String.isBlank(targetAccountId) )
         {
             return null;
         }
 
-        // TODO - Selector
-        return [SELECT Id FROM Account WHERE id = :targetAccountId];
+        return ( new AccountSelectorWithoutSharing() ).findAccountById(targetAccountId);
     }
 
-    private static Map<Id, List<ContactPointPhone>> getContactPointPhonesByLeadAccountId(String phone)
+    private static Map<Id, List<ContactPointPhone> > getContactPointPhonesByLeadAccountId(String phone)
     {
-        Map<Id,List<ContactPointPhone>> scopeByAccountId = new Map<Id,List<ContactPointPhone>>();
+        Map<Id,List<ContactPointPhone> > scopeByAccountId = new Map<Id,List<ContactPointPhone> >();
 
-        ContactPointPhonesSelector cppSelector = new ContactPointPhonesSelector();
+        AccountSelectorWithoutSharing cppSelector = new AccountSelectorWithoutSharing();
         List<ContactPointPhone> scopesWithPhone = cppSelector.selectByAccountScopeLead(phone);
 
         // Ordenamos los scopes por cuenta para ver si hay varias cuentas con el mismo teléfono
         for(ContactPointPhone currentScope : scopesWithPhone)
         {
-            if(! scopeByAccountId.containsKey(currentScope.ScopeId__r.AccountId__c))
+            if( !scopeByAccountId.containsKey(currentScope.ScopeId__r.AccountId__c) )
             {
-                scopeByAccountId.put(currentScope.ScopeId__r.AccountId__c, new List<ContactPointPhone>());
+                scopeByAccountId.put( currentScope.ScopeId__r.AccountId__c, new List<ContactPointPhone>() );
             }
 
             scopeByAccountId.get(currentScope.ScopeId__r.AccountId__c).Add(currentScope);
@@ -235,7 +227,7 @@ public with sharing class AccountLeadUtil
         return scopeByAccountId;
     }
 
-    private static String getMostRecentAccountFromContactPointPhones(List<List<ContactPointPhone>> cpps)
+    private static String getMostRecentAccountFromContactPointPhones(List<List<ContactPointPhone> > cpps)
     {
 
         Boolean accountLeadFound = false;
@@ -281,20 +273,20 @@ public with sharing class AccountLeadUtil
 
         ScopesSelector scopeS = new ScopesSelector();
 
-        for(Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts))
+        for( Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts) )
         {
             accountIdsWithScope.add(currentCPP.AccountId__c);
         }
 
         for(Id currentAccountId : allCandidateAccounts)
         {
-            if(!accountIdsWithScope.contains(currentAccountId))
+            if( !accountIdsWithScope.contains(currentAccountId) )
             {
                 accountIdsWithoutScope.add(currentAccountId);
             }
         }
 
-        if(accountIdsWithoutScope.isEmpty())
+        if( accountIdsWithoutScope.isEmpty() )
         {
             return;
         }
@@ -305,12 +297,12 @@ public with sharing class AccountLeadUtil
         for(Id currentAccountWithoutScope : accountIdsWithoutScope)
         {
             Account currentAccount = accountsById.get(currentAccountWithoutScope);
-            scopesToInsert.add(new Scope__c(
-                AccountId__c = currentAccount.Id,
-                PrimaryPhone__c = currentAccount.Phone,
-                Scope__c = 'Ventas',
-                Name = 'Zurich Ventas'
-            ));
+            scopesToInsert.add( new Scope__c(
+                                    AccountId__c = currentAccount.Id,
+                                    PrimaryPhone__c = currentAccount.Phone,
+                                    Scope__c = 'Ventas',
+                                    Name = 'Zurich Ventas'
+                                    ) );
         }
 
         insert scopesToInsert;
@@ -319,12 +311,12 @@ public with sharing class AccountLeadUtil
 
         for(Scope__c currentScope : scopesToInsert)
         {
-            contactPointsForScopes.add(new ContactPointPhone(
-                ScopeId__c = currentScope.Id,
-                Scope__c = 'Ventas',
-                ParentId = currentScope.AccountId__c,
-                TelephoneNumber = currentScope.PrimaryPhone__c
-            ));
+            contactPointsForScopes.add( new ContactPointPhone(
+                                            ScopeId__c = currentScope.Id,
+                                            Scope__c = 'Ventas',
+                                            ParentId = currentScope.AccountId__c,
+                                            TelephoneNumber = currentScope.PrimaryPhone__c
+                                            ) );
         }
 
         insert contactPointsForScopes;
@@ -348,16 +340,16 @@ public with sharing class AccountLeadUtil
                 continue;
             }
 
-            if(oldAccounts != null && ! oldAccounts.isEmpty())
+            if( oldAccounts != null && !oldAccounts.isEmpty() )
             {
-                if(String.isNotblank(nextAccount.Phone) && String.IsBlank(oldAccounts.get(nextAccount.Id).Phone))
+                if( String.isNotblank(nextAccount.Phone) && String.IsBlank(oldAccounts.get(nextAccount.Id).Phone) )
                 {
                     result.add(nextAccount.Id);
                 }
             }
             else
             {
-                if(String.isNotBlank(nextAccount.Phone))
+                if( String.isNotBlank(nextAccount.Phone) )
                 {
                     result.add(nextAccount.Id);
                 }

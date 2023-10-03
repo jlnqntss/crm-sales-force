@@ -4,8 +4,8 @@
  *
  * @author            : amiranda
  * @date              : 22-09-2023
- * @last modified on  : 22-09-2023
- * @last modified by  : amiranda
+ * @last modified on  : 02-10-2023
+ * @last modified by  : overes
  * Modifications Log
  * Ver   Date         Author     Modification
  * 1.0   21-09-2023   amiranda   Initial Version
@@ -241,11 +241,20 @@ public with sharing class SalesCRMLeadGenerationService
      * @date 02-09-2023
      * @param Account accountToFill que se va a rellenar con los datos del Lead
      * @param Lead requestData con la información del Lead
+     *
+     * @change amiranda 02/10/2023 Se añade una condición para informar el campo
+     * LastName únicamente si la cuenta que se pasa por parámetro se encuentra en
+     * Salesforce.
      **/
     @TestVisible
     private static void fillAccountFields(Account accountToFill, Lead requestData)
     {
-        accountToFill.LastName = requestData.name;
+        // Si el Id no está informado se considera que no se ha encontrado una cuenta duplicada en el sistema
+        if ( !accountToFill.isSet(Account.Id) )
+        {
+            accountToFill.LastName = requestData.name;
+        }
+
         accountToFill.Phone = requestData.phone;
         accountToFill.WebId__c = requestData.webIdentifier;
 

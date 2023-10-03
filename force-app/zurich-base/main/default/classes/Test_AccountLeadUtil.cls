@@ -2,43 +2,17 @@
  * @description       : Test funcionales de la asignación de Leads a Agentes.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 23/08/2023
+ * @last modified on  : 28/09/2023
  * @last modified by  : jgallaga
 **/
 @isTest
 public with sharing class Test_AccountLeadUtil
 {
-    private static String DEFAULT_ADMIN_ALIAS // Añadir el alias de cada user admin para cada entorno si fuera necesario
-    {
-        get
-        {
-            if(String.isBlank(DEFAULT_ADMIN_ALIAS))
-            {
-                if(SystemUtil.getSandboxName() == 'qa')
-                {
-                    DEFAULT_ADMIN_ALIAS = 'ntsadmin';
-                }
-                else
-                {
-                    DEFAULT_ADMIN_ALIAS = 'adminkli';
-                }
-            }
-            return DEFAULT_ADMIN_ALIAS;
-        }
-        set;
-    }
-
     @TestSetup
     static void makeData()
     {
+        TestDataFactory.insertCrossSellingCustomSetting();
         createCommnunityUsers(); // Crea usuarios de comunidad con su cuenta y contact correspondiente
-
-        // Crear Custom Setting para default user
-        Cross_Selling__c setting = new Cross_Selling__c();
-        setting.Name = 'Test Setting';
-        setting.ContactCenterUser__c = '-';
-        setting.DefaultUser__c = DEFAULT_ADMIN_ALIAS;
-        insert setting;
     }
 
     /**
@@ -237,6 +211,7 @@ public with sharing class Test_AccountLeadUtil
         testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_pymes', AssignmentType__c = 'Province',AssignTo__c='IDIOMA-FR',ForumOrigin__c = 'formulario pymes'));
         testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_embarcaciones', AssignmentType__c = 'Municipality',AssignTo__c='IDIOMA-QQ',ForumOrigin__c = 'formulario embarcaciones'));
         testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_salud', AssignmentType__c = 'Municipality',AssignTo__c='IDIOMA-QQ',ForumOrigin__c = 'formulario salud'));
+        testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'ContactCenter', AssignmentType__c = 'Direct',AssignTo__c='CONTACT_CENTER',ForumOrigin__c = 'ContactCenter'));
 
         AccountLeadAssignment.forumOriginAssignmentMetadata = testforumOriginAssignmentMetadata;
 
@@ -255,16 +230,33 @@ public with sharing class Test_AccountLeadUtil
 
     /*** ASSIGNMENT BY INTERMEDIARY CODE ***/
 
+
+    /**
+     * @description Test que comprueba que recibiendo un origen de formulario que
+     *              corresponde a un Contact Center se recupera una asignación con
+     *              valor "CONTACT CENTER" sin una cuenta asociada.
+     * @author      jgallaga
+     * @date        14/08/2023
+     * **
+     * @modification
+     *              La asignacion del Contact Center se realiza desde metadatos también
+     *              Se modifica el Test para que genere los metadatos que permiten
+     *              comprobar la asignacion al Contact Center segun configuracion
+     * @author      jgallaga
+     * @date        28/09/2023
+     */
     @isTest
     static void test_intermediaryCodeContactCenter_OK()
     {
-        String contactCenter = 'CONTACT_CENTER';
+        setMetadataConfigurations();
+        String origin = 'ContactCenter';
+        String resultIntermediary = 'CONTACT_CENTER';
 
         Test.startTest();
-        Map<String,Account> result = AccountLeadUtil.leadAssignment(null, contactCenter, null, null, null);
+        Map<String,Account> result = AccountLeadUtil.leadAssignment(null, null, origin, null, null);
         Test.stopTest();
 
-        Assert.areEqual(contactCenter, new List<String>(result.keySet()).get(0), 'No se ha devuelto el valor de contact center');
+        Assert.areEqual(resultIntermediary, new List<String>(result.keySet()).get(0), 'No se ha devuelto el valor de contact center');
     }
 
     /**

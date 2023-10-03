@@ -1,7 +1,7 @@
 /**
  * @description       : Clase-queueable ejecutada desde el WS de Quote&Buy que inserta/actualiza/asigna un registro de Oferta de Lead e inserta un registro de Póliza (si aplica)
  * @author            : nts - overes
- * @last modified on  : 27-09-2023
+ * @last modified on  : 02-10-2023
  **/
 
 public with sharing class AccountLeadOpportunityQueueJob implements Queueable
@@ -186,7 +186,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      */
     private static void managePolicyRecord(Policy__c policyRecord, Opportunity offerToInsertUpdate)
     {
-        if (policyRecord != null && offerToInsertUpdate != null)
+        if ( (policyRecord != null && offerToInsertUpdate != null) && (policyRecord.InfoPolicyNumber__c != null && offerToInsertUpdate.InfoQuoteNumber__c != null) )
         {
             Policy__c policyToInsert = policyRecord;
             AccountsSelector accSelector = new AccountsSelector();

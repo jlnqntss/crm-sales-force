@@ -111,11 +111,8 @@ private without sharing class ReassignInteractionCTIExtensionTest
         Account ventasUserAccount = TestDataFactory.generateAccounts('001', 'Intermediary', 1)[0];
         insert ventasUserAccount;
 
-        Contact ventasUserContact = TestDataFactory.generateContactsFromAccounts(new List<Account> {ventasUserAccount}, ContactsSelector.RT_NAME_CONTACT, 1)[0];
-        insert ventasUserContact;
-
         /* -------------------------------- USUARIOS -------------------------------- */
-        String ventasUserProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+        String ventasUserProfile = [SELECT Id FROM Profile WHERE Name = 'Ventas User' LIMIT 1].Id;
         List<String> adminProfiles = new List<String> {'Administrador del sistema', 'System Administrator'};
         List<Boolean> activeStatus = new List<Boolean> {true};
 
@@ -125,7 +122,6 @@ private without sharing class ReassignInteractionCTIExtensionTest
         ventasUser.FirstName = 'Agente';
         ventasUser.LastName = 'Ventas';
         ventasUser.Alias = 'a.ventas';
-        ventasUser.ContactId = ventasUserContact.Id;
         ventasUser.UserPermissionsMarketingUser = true;
 
         System.runAs(adminUser)
@@ -168,6 +164,8 @@ private without sharing class ReassignInteractionCTIExtensionTest
             campaignMember.CallRetries__c = 0;
             insert campaignMember;
 
+            String originalCampaignMemberId = campaignMember.Id;
+
             /* ---------------------------------- TEST ---------------------------------- */
             Test.startTest();
 
@@ -177,17 +175,24 @@ private without sharing class ReassignInteractionCTIExtensionTest
             List<Task> tasksInSystem = [SELECT Id FROM Task];
             Assert.areEqual(1, tasksInSystem.size(), 'La interaccion solo debería crear una tarea');
 
+            Map<String, String> genesysWrapUpMapping = new Map<String, String>();
+            List<ZRM_Genesys_WrapUp_mapping__mdt> genesysWrapUpMappingMetadata = ZRM_Genesys_WrapUp_mapping__mdt.getAll().values();
+            for(ZRM_Genesys_WrapUp_mapping__mdt mdt : genesysWrapUpMappingMetadata)
+            {
+                genesysWrapUpMapping.put(mdt.Key__c, mdt.WrapUp__c);
+            }
+
             // Evento de colgar la llamada
-            String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction": { "disposition": "No contesta / Contestador Automático", "dialerContactId": "' + campaignMember.Id + '"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + tasksInSystem[0].Id + '"}}';
+            String interactionDisconnectEventString = '{"eventName": "interactionDisconnected", "interaction": { "disposition": "' + genesysWrapUpMapping.get('NO_CONTESTA') + '", "dialerContactId": "' + campaignMember.Id + '"},  "callLog": {"CallObject": "ucid0", "calldurationinseconds":2, "id":"' + tasksInSystem[0].Id + '"}}';
             ReassignInteractionCTIExtension.onSaveLog(interactionDisconnectEventString);
             Test.stopTest();
 
             /* --------------------------------- ASSERTS -------------------------------- */
-            List<CampaignMember> existingCampaignMembers = [SELECT CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId];
-            tasksInSystem = [SELECT CampaignMemberID__c FROM Task];
+            List<CampaignMember> clonedCampaignMemberList = [SELECT Id, ContactId, CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId AND CampaignId = : campaignMember.CampaignId];
 
-            Assert.isFalse(existingCampaignMembers.isEmpty(), 'No se ha encontrado el CampaignMember para el contacto: ' + campaignMember.ContactId);
-            Assert.areNotEqual(0, existingCampaignMembers[0].CallRetries__c, 'El número de reintentos no se ha actualizado');
+            Assert.isFalse(clonedCampaignMemberList.isEmpty(), 'No se ha encontrado el CampaignMember clonado.');
+            Assert.areNotEqual(0, clonedCampaignMemberList[0].CallRetries__c, 'El número de reintentos no se ha actualizado.');
+            Assert.areNotEqual(originalCampaignMemberId, clonedCampaignMemberList[0].Id, 'El campaign member clonado no ha cambiado de ID, puede que no se haya borrado el antiguo.');
         }
     }
 
