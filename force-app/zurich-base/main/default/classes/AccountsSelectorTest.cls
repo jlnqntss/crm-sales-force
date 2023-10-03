@@ -15,6 +15,9 @@ private with sharing class AccountsSelectorTest
     public static final String INTERMEDIARY_EMAIL       =   'intermediary01@invalid.com';
     public static final String INTERMEDIARY_EMAIL_FIELD =   'MainEmail__c';
     public static final String MESSAGE_DEBERIA_HABER_CUENTAS = 'Deberia haber cuentas';
+    public static final String INTERMEDIARY_NIF         =   '01234567A';
+    public static final String INTERMEDIARY_NIF_FIELD   =   'NationalId__c';
+    public static final String INTERMEDIARY_STATUS_FIELD   =   'Status__c';
 
     @TestSetup
     public static void createScenario()
@@ -38,6 +41,8 @@ private with sharing class AccountsSelectorTest
         //Intermediary-> NO tienen ContactPointPhones!!!
         List<Account> intermediaryAccounts = TestDataFactory.generateAccounts('001', 'Intermediary', 10);
         intermediaryAccounts[0].put(INTERMEDIARY_EMAIL_FIELD, INTERMEDIARY_EMAIL);
+        intermediaryAccounts[0].put(INTERMEDIARY_STATUS_FIELD, '001');
+        intermediaryAccounts[0].put(INTERMEDIARY_NIF_FIELD, INTERMEDIARY_NIF);
 
         insert intermediaryAccounts;
 
@@ -842,4 +847,30 @@ private with sharing class AccountsSelectorTest
         String accToDelete = AccountsSelector.getAccountsToDelete();
     }
 
+    @isTest
+    static void test_findIntermediariesByNif_ok()
+    {
+
+        List<String> listaNIF = new List<String>();
+        listaNIF.add(INTERMEDIARY_NIF);
+
+        Test.startTest();
+        List<Account> accountListAfterQuery = new AccountsSelector().findIntermediariesByNIF( listaNIF );
+        Test.stopTest();
+
+        System.assertEquals(1, accountListAfterQuery.size(), 'El número de cuentas ha de ser mayor de 0');
+
+    }
+
+    @isTest
+    static void test_findIntermediariesByNif_ko()
+    {
+
+        Test.startTest();
+        List<Account> accountListAfterQuery = new AccountsSelector().findIntermediariesByNIF( new List<String>() );
+        Test.stopTest();
+
+        System.assertEquals(0, accountListAfterQuery.size(), 'El número de cuentas recuperadas debería ser 0');
+
+    }
 }

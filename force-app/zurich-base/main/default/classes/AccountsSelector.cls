@@ -983,4 +983,41 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return result;
     }
+
+    /**
+     * Busca cuentas de MEDIADORES partir de un número de teléfono (No usan ContactPointPhone)
+     * @param nifs 
+     * @return listado de cuentas
+     */
+    public List<Account> findIntermediariesByNIF(List<String> nifs)
+    {
+        String intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+        {
+            Account.Id,
+            Account.TerritorialDirectionCode__c,
+            Account.ChannelZoneCode__c,
+            Account.ZoneCode__c,
+            Account.CsmIndividualsManager__c,
+            Account.CsmAdministrationManager__c,
+            Account.MainMobilePhone__c,
+            Account.Phone,
+            Account.MainEmail__c,
+            Account.NationalId__c,
+            Account.Channel__c,
+            Account.Segment__c,
+            Account.Association__c
+        }
+        );
+
+        this.baseQuery.addConditionEq(Account.NationalId__c, nifs);
+        this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
+        this.baseQuery.addConditionEq(Account.Status__c, '001');
+
+        return (List<Account>) this.baseQuery.run();
+    }
+
 }
