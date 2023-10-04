@@ -176,4 +176,31 @@ private class AccountLeadUtilTest
         Assert.areEqual(oldAccounts.size(), scopes.size());
 
     }
+
+    @IsTest
+    static void testFormatPhoneLength9() {
+        Test.startTest();
+        List<String> phonesList = AccountLeadUtil.getVariantsPhones('600000000');
+        Test.stopTest();
+
+        Assert.areEqual(3, phonesList.size());
+    }
+
+    @IsTest
+    static void testFormatPhone34() {
+        Test.startTest();
+        List<String> phonesList = AccountLeadUtil.getVariantsPhones('34600000000');
+        Test.stopTest();
+
+        Assert.areEqual(3, phonesList.size());
+    }
+
+    @IsTest
+    static void testFormatPhonePlus34() {
+        Test.startTest();
+        List<String> phonesList = AccountLeadUtil.getVariantsPhones('+34600000000');
+        Test.stopTest();
+
+        Assert.areEqual(3, phonesList.size());
+    }
 }

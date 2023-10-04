@@ -180,7 +180,9 @@ public with sharing class AccountLeadUtil
             return acc;
         }
 
-        Map<Id,List<ContactPointPhone> > scopeByAccountId = getContactPointPhonesByLeadAccountId(phone);
+        // Del teléfono recibido calculo sus variantes con y sin código de país para consultarlo en los lead
+        List<String> phonesList = getVariantsPhones(phone);
+        Map<Id,List<ContactPointPhone> > scopeByAccountId = getContactPointPhonesByLeadAccountId(phonesList);
 
         // Si no hay contact point phones -> nulo
         if( scopeByAccountId.isEmpty() )
@@ -206,12 +208,12 @@ public with sharing class AccountLeadUtil
         return ( new AccountSelectorWithoutSharing() ).findAccountById(targetAccountId);
     }
 
-    private static Map<Id, List<ContactPointPhone> > getContactPointPhonesByLeadAccountId(String phone)
+    private static Map<Id, List<ContactPointPhone> > getContactPointPhonesByLeadAccountId(List<String> phonesList)
     {
         Map<Id,List<ContactPointPhone> > scopeByAccountId = new Map<Id,List<ContactPointPhone> >();
 
         AccountSelectorWithoutSharing cppSelector = new AccountSelectorWithoutSharing();
-        List<ContactPointPhone> scopesWithPhone = cppSelector.selectByAccountScopeLead(phone);
+        List<ContactPointPhone> scopesWithPhone = cppSelector.selectByAccountScopeLead(phonesList);
 
         // Ordenamos los scopes por cuenta para ver si hay varias cuentas con el mismo teléfono
         for(ContactPointPhone currentScope : scopesWithPhone)
@@ -354,6 +356,41 @@ public with sharing class AccountLeadUtil
                     result.add(nextAccount.Id);
                 }
             }
+        }
+
+        return result;
+    }
+
+    /**
+     * A partir de un telefono calculo sus 3 variantes +34600000000, 34600000000, 600000000
+     * @author dmunoz
+     * @date 04/10/2023
+     */
+    @TestVisible
+    private static List<String> getVariantsPhones(String phone) {
+        List<String> result = new List<String>();
+        result.add(phone);
+
+        String newFormat1 = '';
+        String newFormat2 = '';
+
+        // si llega un teléfono con tamaño 9 (600000000) añado a la lista 34600000000 y +34600000000
+        if (phone.length() == 9) {
+            newFormat1 = '+34' + phone;
+            newFormat2 = '34' + phone;
+
+        } else if (phone.startsWith('+')) { // si llega un teléfono que empieza por + (+34600000000) añado a la lista 34600000000 y 600000000
+            newFormat1 = phone.right(11);
+            newFormat2 = phone.right(9);
+
+        } else if (phone.startsWith('34')) {
+            newFormat1 = '+' + phone;
+            newFormat2 = phone.right(9);
+        }
+
+        if (String.isNotEmpty(newFormat1) && String.isNotEmpty(newFormat2)) {
+            result.add(newFormat1);
+            result.add(newFormat2);
         }
 
         return result;
