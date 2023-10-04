@@ -18,6 +18,11 @@
         <label></label>
         <name>Child_Campaign</name>
     </quickActions>
+    <quickActions>
+        <aspect>Master</aspect>
+        <label>Cerrar Ofertas de Venta Cruzada sin Miem. Camp.</label>
+        <name>CloseCrossSellingOffersWithoutCampMemb</name>
+    </quickActions>
     <recordTypes>
         <label></label>
         <name>Default</name>
