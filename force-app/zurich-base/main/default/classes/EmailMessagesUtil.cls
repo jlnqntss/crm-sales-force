@@ -212,7 +212,7 @@ public with sharing class EmailMessagesUtil
         }
 
         for(purecloud__PureCloud_Queue__c genesysQueue: [
-            SELECT Id, Name, CallCenter__c, GenesysFlowId__c, Industry__c 
+            SELECT Id, Name, CallCenter__c, GenesysFlowId__c, Industry__c, RecordTypeInfo__c
             FROM purecloud__PureCloud_Queue__c
             WHERE Industry__c != null
         ]) {
@@ -444,14 +444,19 @@ public with sharing class EmailMessagesUtil
                         }
 
                         if((listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue==null))
-                        {
+                        {   
                             industryDefault=em.Industry__c;
-                            System.debug('INDUSTRIA: '+industryDefault);
                             genesysQueue=this.findGenesysQueueByIndustry(industryDefault.trim().toLowerCase());
-                                if(genesysQueue==null)
-                                {  
-                                    genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
-                                }
+                           
+                            if((genesysQueue!=null) && (genesysQueue.RecordTypeInfo__c=='USPInquiry'))
+                            {   
+                                System.debug('He encontrado una cola y es de USP');
+
+                            }
+                            else
+                            {  
+                                genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                            }
                         }
 
                         
