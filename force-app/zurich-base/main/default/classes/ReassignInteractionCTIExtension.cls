@@ -216,7 +216,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id> { (Id) eventInteractionData.get('dialerContactId') })[0];
                 Integer maxCallRetries = (cm.Campaign.MaxCallRetries__c == null) ? 0 : cm.Campaign.MaxCallRetries__c.intValue();
 
-                if( (maxCallRetries > cm.CallRetries__c) && !dispositionCBErroneoTransf )
+                if( (maxCallRetries > cm.CallRetries__c + 1) && !dispositionCBErroneoTransf )
                 {
                     if(dispositionNoResponse)
                     {
