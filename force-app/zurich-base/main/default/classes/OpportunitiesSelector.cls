@@ -395,7 +395,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      */
     public String findCrossSellingCampaignNotClosedOffer() {
         return 'SELECT Id, StageName, Sales_Loss_Reason__c ' +
-                        'FROM Opportunity ' +
+                        'FROM  Opportunity ' +
                         'WHERE Campaign.Type = \'Cross Selling\' ' +
                         'AND Campaign.EndDate <= TODAY ' +
                         'AND StageName IN (\'Legit Lead\', \'App Submitted\', \'Quoted\') ' +

@@ -66,7 +66,6 @@ global with sharing class Batch_FinishCrossSellingCampaign implements Database.B
     global void execute(Database.BatchableContext bc, List<Opportunity> scope) {
         try {
 
-            Set<Opportunity> opportunitiesIdSet = new Set<Opportunity>();
             // Modificar los registros obtenidos por la query
             Map<Id, Opportunity> offersToUpdate = updateOffers(scope);
 
