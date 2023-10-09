@@ -74,4 +74,22 @@ public without sharing class ActivitySelector
 
         return [SELECT Id, WhoId, WhatId,IsVisibleInSelfService FROM Task WHERE Id IN : taskIds];
     }
+
+
+    /**
+     * Obtiene un listado de tareas no completas a través de un whatId 
+     * @param whatIds: Ids. de objetos relacionados a recuperar a buscar. Si null, devolver Lista vacía.
+     * @return Listado de tareas
+     * @author dmunoz
+     * @date 06/10/2023
+     */
+    public static List<Task> selectOpenTasksByWhatId(Set<Id> whatIds)
+    {
+        if(whatIds == null || whatIds.isEmpty() )
+        {
+            return new List<Task>();
+        }
+
+        return [SELECT Id, Status FROM Task WHERE WhatId IN : whatIds];
+    }
 }

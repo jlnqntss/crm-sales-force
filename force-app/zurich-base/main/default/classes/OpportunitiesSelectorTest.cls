@@ -384,4 +384,14 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(true, offerList == null, 'Debe ser nulo');
     }
 
+    @isTest
+    static void findCrossSellingCampaignNotClosedOfferTest() {
+
+        Test.startTest();
+        String offerList = (new OpportunitiesSelector()).findCrossSellingCampaignNotClosedOffer();
+        Test.stopTest();
+ 
+        System.assertEquals(true, offerList != null, 'No Debe ser nulo');
+    }
+
 }
