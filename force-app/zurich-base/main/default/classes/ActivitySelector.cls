@@ -83,13 +83,14 @@ public without sharing class ActivitySelector
      * @author dmunoz
      * @date 06/10/2023
      */
-    public static List<Task> selectOpenTasksByWhatId(Set<Id> whatIds)
-    {
-        if(whatIds == null || whatIds.isEmpty() )
-        {
-            return new List<Task>();
+    public static List<Task> selectOpenTasksByWhatId(Set<Id> whatIds) {
+
+        List<Task> result = new List<Task>();
+
+        if (whatIds != null || !whatIds.isEmpty()) {
+            result = new List<Task>([SELECT Id, Status FROM Task WHERE WhatId IN : whatIds]);
         }
 
-        return [SELECT Id, Status FROM Task WHERE WhatId IN : whatIds];
+        return result;
     }
 }
