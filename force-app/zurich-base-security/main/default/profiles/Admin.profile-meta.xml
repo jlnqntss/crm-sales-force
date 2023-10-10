@@ -6093,6 +6093,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.AgentOnVacation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.Anonymized__c</field>
         <readable>true</readable>
@@ -6510,6 +6515,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Requested__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ReturnDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13009,6 +13019,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>User.NotifyDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.OnVacation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.ReturnDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
