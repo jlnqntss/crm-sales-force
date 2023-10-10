@@ -25,7 +25,7 @@ public with sharing class Test_AccountLeadAssignment
      */
     private static void createCommnunityUsers()
     {
-        User adminUser = [SELECT Id FRom User WHERE Profile.Name = 'System Administrator' AND Id != : UserInfo.getUserId() AND isActive = true LIMIT 1];
+        User adminUser = [SELECT Id FROM User WHERE Profile.Name IN ('Administrador del sistema', 'System Administrator') AND Id != : UserInfo.getUserId() AND IsActive = true LIMIT 1];
 
         Map<String, User> communityAgents = prepareNewUsers();
 
@@ -225,7 +225,7 @@ public with sharing class Test_AccountLeadAssignment
 
         //PROVINCE ASSIGNMENT
         List<ProvinceAssignment__mdt> testProvinceAssignmentMetadata = new List<ProvinceAssignment__mdt>();
-        testProvinceAssignmentMetadata.add( new ProvinceAssignment__mdt(DeveloperName = 'Albacete',AssignTo__c='IDIOMA-FR',PostalCode__c='2',Province__c='Albacete') );
+        testProvinceAssignmentMetadata.add( new ProvinceAssignment__mdt(DeveloperName = 'Albacete',AssignTo__c='IDIOMA-FR',PostalCode__c='02',Province__c='Albacete') );
 
         AccountLeadAssignment.ProvinceAssignmentMetadata = testProvinceAssignmentMetadata;
     }

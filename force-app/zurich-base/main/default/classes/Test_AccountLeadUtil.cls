@@ -25,7 +25,7 @@ public with sharing class Test_AccountLeadUtil
      */
     private static void createCommnunityUsers()
     {
-        User adminUser = [SELECT Id FRom User WHERE Profile.Name = 'System Administrator' AND Id != : UserInfo.getUserId() AND isActive = true LIMIT 1];
+        User adminUser = [SELECT Id FROM User WHERE Profile.Name IN ('Administrador del sistema', 'System Administrator') AND Id != : UserInfo.getUserId() AND IsActive = true LIMIT 1];
 
         Map<String, User> communityAgents = prepareNewUsers();
 
