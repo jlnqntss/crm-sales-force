@@ -1055,6 +1055,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.AgentOnVacation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.Assigned_Center__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1431,6 +1436,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.RelatedPolicyOffer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ReturnDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3766,6 +3776,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.WhoId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.OnVacation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.ReturnDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
