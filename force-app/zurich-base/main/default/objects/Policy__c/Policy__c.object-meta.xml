@@ -162,7 +162,9 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Pólizas</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <searchResultsAdditionalFields>TrimmedPolicyNumber__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
