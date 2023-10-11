@@ -152,7 +152,7 @@ global with sharing class Batch_FinishCrossSellingCampaign implements Database.B
      */
     private static String setTimeExpression(String timeExpression) {
         if (String.isEmpty(timeExpression)){
-            timeExpression = '0 0 3 * * ?' ; 
+            timeExpression = '0 0 5 * * ?' ; 
         } 
         return timeExpression; 
     }
