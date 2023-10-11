@@ -144,8 +144,8 @@
     <assignments>
         <name>CaseEntitlementAssignment</name>
         <label>Asignar Entitlement Caso</label>
-        <locationX>3372</locationX>
-        <locationY>1169</locationY>
+        <locationX>4362</locationX>
+        <locationY>1361</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -305,8 +305,8 @@
     <decisions>
         <name>GotEntitlementResultsDecision</name>
         <label>Existen resultados USP</label>
-        <locationX>2822</locationX>
-        <locationY>719</locationY>
+        <locationX>3878</locationX>
+        <locationY>827</locationY>
         <defaultConnector>
             <targetReference>GetDefaultUSPAction</targetReference>
         </defaultConnector>
@@ -375,7 +375,7 @@
     <decisions>
         <name>GotUspPartnerEntitlementResultsDecision</name>
         <label>Existen resultados USP Partner</label>
-        <locationX>3570</locationX>
+        <locationX>4890</locationX>
         <locationY>719</locationY>
         <defaultConnector>
             <targetReference>GetDefaultUspPartnerAction</targetReference>
@@ -398,10 +398,150 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Mediador_panelizado</name>
+        <label>¿Mediador panelizado?</label>
+        <locationX>3482</locationX>
+        <locationY>611</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>GetDefaultUSPAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Venta</name>
+            <conditionLogic>1 AND ( (2 AND 3) OR (4 AND 5) OR (6 AND 7) )</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Industry__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Danos-RC Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.UWSaleRCDamage__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Industry__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Specialties</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.UWSaleSpecialties__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Industry__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Construccion</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.UWSaleBuilding__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_Default_Mediador_Panelizado_Venta</targetReference>
+            </connector>
+            <label>Venta</label>
+        </rules>
+        <rules>
+            <name>Cartera</name>
+            <conditionLogic>1 AND ( (2 AND 3) OR (4 AND 5) OR (6 AND 7) )</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Industry__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cartera</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.UWPortfolioRCDamage__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Industry__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Specialties</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.UWPortfolioSpecialties__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Industry__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Construccion</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.UWPorfolioBuilding__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Que_Entitlement_Asignar</targetReference>
+            </connector>
+            <label>Cartera</label>
+        </rules>
+        <rules>
+            <name>No_Mediador_Panelizado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Account.SMEsSegment__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetUSPEntitlementAction</targetReference>
+            </connector>
+            <label>No Mediador Panelizado</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Comprueba que el origen sea email y que alguno de los campos que se usan para definir el Entitlement hayan cambiado</description>
         <name>MeetsEntryCriteriaDecision</name>
         <label>¿Cumple criterios?</label>
-        <locationX>3779</locationX>
+        <locationX>4934</locationX>
         <locationY>395</locationY>
         <defaultConnectorLabel>No cumple criterios</defaultConnectorLabel>
         <rules>
@@ -470,9 +610,127 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Que_Entitlement_Asignar</name>
+        <label>¿Que Entitlement Asignar?</label>
+        <locationX>2954</locationX>
+        <locationY>719</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>GetDefaultUSPAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Asignar_16</name>
+            <conditionLogic>(1 AND 2) OR (3 AND 4 AND 5)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Gestión Cliente</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Información</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Gestión Servicios</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Modificación</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TypeN3__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_Mediador_Panelizado_Cartera_Cierre_16_h</targetReference>
+            </connector>
+            <label>Asignar 16</label>
+        </rules>
+        <rules>
+            <name>Asignar_30</name>
+            <conditionLogic>(1 AND 2 ) OR (3 AND (4 OR 5 OR (6 AND (7 OR 8) )))</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Gestión Mediador</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Reclamación</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Gestión Servicios</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Reemplazo</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Rehabilitación</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Modificación</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TypeN3__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Clausulado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TypeN3__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Infraseguro</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_Mediador_Panelizado_Cartera_cierre_30_h</targetReference>
+            </connector>
+            <label>Asignar 30</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>RecordTypeDecision</name>
         <label>¿Tipo de registro?</label>
-        <locationX>3116</locationX>
+        <locationX>3776</locationX>
         <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -510,7 +768,7 @@
         <description>Comprueba si tiene un mediador asociado y este cuenta con los datos necesarios informados o si es un partner. De lo contrario asocia el SLA por defecto</description>
         <name>RelatedAccountDecision</name>
         <label>¿Cuenta asociada?</label>
-        <locationX>3372</locationX>
+        <locationX>4362</locationX>
         <locationY>503</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -534,15 +792,8 @@
                     <stringValue>Intermediary</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.Account.SMEsSegment__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>GetUSPEntitlementAction</targetReference>
+                <targetReference>Mediador_panelizado</targetReference>
             </connector>
             <label>Mediador</label>
         </rules>
@@ -901,8 +1152,8 @@
     <recordLookups>
         <name>GetDefaultUSPAction</name>
         <label>Recuperar Entitlement Default USP</label>
-        <locationX>3218</locationX>
-        <locationY>827</locationY>
+        <locationX>4274</locationX>
+        <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <isGoTo>true</isGoTo>
@@ -936,8 +1187,8 @@
     <recordLookups>
         <name>GetDefaultUSPNotProductiveAction</name>
         <label>Recuperar Entitlement Default No Productivo USP</label>
-        <locationX>2954</locationX>
-        <locationY>827</locationY>
+        <locationX>4010</locationX>
+        <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CaseEntitlementAssignment</targetReference>
@@ -970,7 +1221,7 @@
     <recordLookups>
         <name>GetDefaultUspPartnerAction</name>
         <label>Recuperar Entitlement Default USP Partner</label>
-        <locationX>3658</locationX>
+        <locationX>4978</locationX>
         <locationY>827</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1004,8 +1255,8 @@
     <recordLookups>
         <name>GetDefaultUSPProductiveAction</name>
         <label>Recuperar Entitlement Default Productivo USP</label>
-        <locationX>2690</locationX>
-        <locationY>827</locationY>
+        <locationX>3746</locationX>
+        <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <isGoTo>true</isGoTo>
@@ -1039,8 +1290,8 @@
     <recordLookups>
         <name>GetUSPEntitlementAction</name>
         <label>Recuperar Entitlement USP</label>
-        <locationX>2822</locationX>
-        <locationY>611</locationY>
+        <locationX>3878</locationX>
+        <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GotEntitlementResultsDecision</targetReference>
@@ -1117,7 +1368,7 @@
     <recordLookups>
         <name>GetUspPartnerEntitlementAction</name>
         <label>Recuperar Entitlement USP Partner</label>
-        <locationX>3570</locationX>
+        <locationX>4890</locationX>
         <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1178,8 +1429,113 @@
         <sortField>ProductGroupCode__c</sortField>
         <sortOrder>Desc</sortOrder>
     </recordLookups>
+    <recordLookups>
+        <name>Recuperar_Entitlement_Default_Mediador_Panelizado_Venta</name>
+        <label>Recuperar Entitlement Default Mediador Panelizado Venta</label>
+        <locationX>2426</locationX>
+        <locationY>719</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CaseEntitlementAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Predeterminado USP -Mediador Panelizado Venta</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundUspEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Recuperar_Entitlement_Mediador_Panelizado_Cartera_Cierre_16_h</name>
+        <label>Recuperar Entitlement Mediador Panelizado Cartera Cierre 16 h</label>
+        <locationX>2690</locationX>
+        <locationY>827</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CaseEntitlementAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP -Mediador Panelizado Cartera Cierre 16h</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundUspEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Recuperar_Entitlement_Mediador_Panelizado_Cartera_cierre_30_h</name>
+        <label>Recuperar Entitlement Mediador Panelizado Cartera cierre 30 h</label>
+        <locationX>2954</locationX>
+        <locationY>827</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CaseEntitlementAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP -Mediador Panelizado Cartera Cierre 30h</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USP</stringValue>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundUspBusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundUspEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
     <start>
-        <locationX>2990</locationX>
+        <locationX>3650</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
