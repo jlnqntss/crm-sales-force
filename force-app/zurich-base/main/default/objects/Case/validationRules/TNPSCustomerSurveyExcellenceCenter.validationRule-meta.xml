@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TNPSCustomerSurveyExcellenceCenter</fullName>
+    <active>true</active>
+    <description>Sólo los usuarios del Centro de Excelencia deben poder guardar registros con el valor &apos;Encuesta TNPS Cliente&apos;.</description>
+    <errorConditionFormula>AND (ISPICKVAL(SourceArea__c, &quot;TNPS Customer Survey&quot;),
+NOT($Permission.Area_Origen_Centro_Excelencia))</errorConditionFormula>
+    <errorDisplayField>SourceArea__c</errorDisplayField>
+    <errorMessage>El valor &apos;Encuesta TNPS Cliente&apos; sólo es asignable por el Centro de Excelencia.</errorMessage>
+</ValidationRule>

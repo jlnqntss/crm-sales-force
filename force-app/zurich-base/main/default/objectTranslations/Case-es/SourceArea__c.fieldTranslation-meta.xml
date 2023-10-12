@@ -35,6 +35,10 @@
         <translation>SDC (Servicio Defensa del Cliente)</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>TNPS Customer Survey</masterLabel>
+        <translation>Encuesta TNPS Cliente</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Zurich Business Client</masterLabel>
         <translation>Cliente Zurich Empresas</translation>
     </picklistValues>
