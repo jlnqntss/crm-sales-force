@@ -213,5 +213,26 @@ public without sharing class ActivitySelectorTest
     }
 
 
-    //#endregion
+    /**
+     * Prueba la Query del selector con Ids. reales
+     * @author jmartinezpisson
+     * @date 17/11/2020
+     */
+    @isTest
+    static void selectOpenTasksByWhatIdTest()
+    {
+        // When
+        Set<Id> taskWhatIds = new Set<Id>();
+
+        // Test
+        Test.startTest();
+
+        List<Task> taskList = ActivitySelector.selectOpenTasksByWhatId(taskWhatIds);
+
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(true, taskList != null, 'Debe ser distinto a nulo');
+
+    }
 }

@@ -386,4 +386,20 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         return 'SELECT Accountid, Campaignid, Campaign.type, SalesProcess__c, Account.RecordType.DeveloperName FROM Opportunity WHERE (Campaign.Type = \'Cross Selling\') AND (IsClosed = false)';
     }
+
+    /**
+     * Método que recupera las ofertas que un mediador no ha podido finalizar asociadas a una campaña de VC
+     * *
+     * @author dmonuz | 06/10/2023
+     * @return  String query
+     */
+    public String findCrossSellingCampaignNotClosedOffer() {
+        return 'SELECT Id, StageName, Sales_Loss_Reason__c ' +
+                        'FROM  Opportunity ' +
+                        'WHERE Campaign.Type = \'Cross Selling\' ' +
+                        'AND Campaign.EndDate <= TODAY ' +
+                        'AND StageName IN (\'Legit Lead\', \'App Submitted\', \'Quoted\') ' +
+                        'AND Owner.Profile.Name = \'Agente Ventas\'';
+    }
+
 }

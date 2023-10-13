@@ -38,4 +38,27 @@ public with sharing class TaskUtil
             }
         }
     }
+
+    /**
+     * Método que cierra las tareas abiertas relacionadas con una oportunidad para ZRM
+     *
+     * @author aberuete
+     * @date 01/08/2023
+     *
+     * @param List<Task> newList : Lista de tareas a actualizar
+     */
+    public static List<Task> completeTaskByWhatId(Set<Id> opportuniesList) {
+
+        List<Task> result = new List<Task>();
+
+        if (opportuniesList != null && !opportuniesList.isEmpty()) {
+            result = ActivitySelector.selectOpenTasksByWhatId(opportuniesList);
+
+            for (Task t: result) {
+                t.Status = 'Cerrada';
+            }
+        }
+
+        return result;
+    }
 }

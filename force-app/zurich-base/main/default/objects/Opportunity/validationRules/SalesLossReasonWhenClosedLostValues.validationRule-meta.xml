@@ -13,7 +13,9 @@ ISPICKVAL(Sales_Loss_Reason__c,&quot;Maximum Attempts&quot;) ||
 ISPICKVAL(Sales_Loss_Reason__c,&quot;Robinson List&quot;) ||
 ISPICKVAL(Sales_Loss_Reason__c,&quot;No cooperation&quot;) ||
 ISPICKVAL(Sales_Loss_Reason__c,&quot;Interested contact agent&quot;) ||
-ISPICKVAL(Sales_Loss_Reason__c,&quot;Error&quot;)
+ISPICKVAL(Sales_Loss_Reason__c,&quot;Error&quot;) ||
+ISPICKVAL(Sales_Loss_Reason__c,&quot;Not managed by the Agent&quot;) ||
+ISPICKVAL(Sales_Loss_Reason__c,&quot;Campaign completed&quot;)
 )</errorConditionFormula>
     <errorDisplayField>Sales_Loss_Reason__c</errorDisplayField>
     <errorMessage>[VR Oferta] El valor de Motivo de Pérdida seleccionado no es válido</errorMessage>
