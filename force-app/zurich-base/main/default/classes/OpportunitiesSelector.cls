@@ -334,15 +334,15 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @author dmonuz | 18/9/2023
      * @return  List<Opportunity>
      */
-    public List<Opportunity> findOffersWithIncorrectVisibility() {
+    public String findOffersWithIncorrectVisibility() {
 
-        List<Opportunity> result = new List<Opportunity>([SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, 
-                                                        IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
-                                                        IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
-                                                        FROM Opportunity
-                                                        WHERE IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
-                                                        OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
-                                                        OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+        String result = 'SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c,  ' +
+                                                            'IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                                                            'FROM Opportunity ' +
+                                                            'WHERE  ((Account.Blocked__c = true AND Owner.Profile.Name = \'Agente Ventas\') ' +
+                                                            'OR ((IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null) AND (IntermediaryVisibilityForm__c = null ' +
+                                                            'OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                                                            'OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))))';
         return result;
     }
 
@@ -353,18 +353,18 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @author dmonuz | 18/9/2023
      * @return  List<Opportunity>
      */
-    public List<Opportunity> findOffersWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
+    public String findOffersWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
 
-        List<Opportunity> result = new List<Opportunity>();
+        String result;
 
         if (accountIds != null && !accountIds.isEmpty()) {
-            result = new List<Opportunity>([SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, 
-                                                            IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c, 
-                                                            IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c 
-                                                            FROM Opportunity
-                                                            WHERE AccountId IN :accountIds AND IntermediaryId__r.IntermediaryGroup__c != null AND (IntermediaryVisibilityForm__c = null
-                                                            OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
-                                                            OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+            result = 'SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, IntermediaryId__r.IsPartner,  ' +
+                                                        'IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                                                        'FROM Opportunity ' +
+                                                        'WHERE AccountId IN :accountIds  AND ((Account.Blocked__c = true AND Owner.Profile.Name = \'Agente Ventas\') ' +
+                                                        'OR ((IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null) AND (IntermediaryVisibilityForm__c = null ' +
+                                                        'OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                                                        'OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))))';
         }
 
         return result;

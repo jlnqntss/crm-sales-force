@@ -22,7 +22,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>clonedOpportunityInsert</targetReference>
+            <targetReference>originOpportunityUpdate</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -403,7 +403,7 @@
             <label>Si</label>
         </rules>
     </decisions>
-    <description>Cuando se le llama, clona una oferta reemplazando ciertos valores.</description>
+    <description>Se modifica el orden de ejecución de la actualización y la creación de registros y añade fault en caso de error generar eventos y guardar estos errores en la tabla Error Log</description>
     <environments>Default</environments>
     <formulas>
         <description>Fecha actual mas 10 días</description>
@@ -443,11 +443,77 @@
         <name>clonedOpportunityInsert</name>
         <label>Insertar registro clonado</label>
         <locationX>545</locationX>
-        <locationY>2258</locationY>
-        <connector>
-            <targetReference>originOpportunityUpdate</targetReference>
-        </connector>
+        <locationY>2366</locationY>
+        <faultConnector>
+            <targetReference>Create_Error_Event_Insert_Offer</targetReference>
+        </faultConnector>
         <inputReference>ClonedOffer</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <description>Añadir un evento de error en caso de que se de un DML exception</description>
+        <name>Create_Error_Event_Insert_Offer</name>
+        <label>Create Error Event Insert Offer</label>
+        <locationX>1370</locationX>
+        <locationY>2474</locationY>
+        <inputAssignments>
+            <field>Level__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Record_Object__c</field>
+            <value>
+                <elementReference>$Flow.CurrentRecord</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Clone Offer For Intermediary</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Error_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <description>Crear un registro de error en caso de fallo de DML</description>
+        <name>Create_Error_Event_Update_Offer</name>
+        <label>Create Error Event Update Offer</label>
+        <locationX>1634</locationX>
+        <locationY>2366</locationY>
+        <inputAssignments>
+            <field>Level__c</field>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Record_Object__c</field>
+            <value>
+                <elementReference>$Flow.CurrentRecord</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Clone Offer For Intermediary</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Error_Event__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
         <description>Recuperamos del custom setting el usuario por defecto.</description>
@@ -543,7 +609,13 @@
         <name>originOpportunityUpdate</name>
         <label>Actualizar registro original</label>
         <locationX>545</locationX>
-        <locationY>2366</locationY>
+        <locationY>2258</locationY>
+        <connector>
+            <targetReference>clonedOpportunityInsert</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_Error_Event_Update_Offer</targetReference>
+        </faultConnector>
         <inputReference>OriginOffer</inputReference>
     </recordUpdates>
     <runInMode>DefaultMode</runInMode>

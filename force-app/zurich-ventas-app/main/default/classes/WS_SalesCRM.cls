@@ -4,7 +4,7 @@
  *
  * @author            : amiranda
  * @date              : 22-09-2023
- * @last modified on  : 27-09-2023
+ * @last modified on  : 02-10-2023
  * @last modified by  : overes
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -96,8 +96,8 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
                     Account leadAccount = SalesCRMQuoteAndBuyService.manageLead(deserializedRequest);
                     Opportunity offer = SalesCRMQuoteAndBuyService.manageOpportunity(leadAccount, deserializedRequest);
                     Policy__c pol = SalesCRMQuoteAndBuyService.managePolicy(leadAccount,deserializedRequest);
-                    AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(leadAccount, offer, pol, deserializedRequest.cliente.contacto.codigoPostal, deserializedRequest.cliente.contacto.telefono);
                     SalesCRMQuoteAndBuyService.manageOfferStage(leadAccount, offer, deserializedRequest, leadAccount.Id);
+                    AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(leadAccount, offer, pol, deserializedRequest.cliente.contacto.codigoPostal, deserializedRequest.cliente.contacto.telefono);
 
                     response.responseBody = Blob.valueOf('{"status":"success", "message":"Success creating client"}');
                 }

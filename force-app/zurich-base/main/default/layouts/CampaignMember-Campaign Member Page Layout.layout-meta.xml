@@ -43,6 +43,10 @@
                 <behavior>Edit</behavior>
                 <field>OfferAssignedType__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CallRetries__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

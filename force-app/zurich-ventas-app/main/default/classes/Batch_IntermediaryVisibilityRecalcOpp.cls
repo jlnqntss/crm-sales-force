@@ -26,12 +26,12 @@ global with sharing class Batch_IntermediaryVisibilityRecalcOpp implements Datab
      * @author dmunoz
      * @date 18/09/2023
      */
-    global List<Opportunity> start(Database.BatchableContext bc) { 
+    global Database.QueryLocator start(Database.BatchableContext bc) { 
 
         if (accountIds != null && !accountIds.isEmpty()) {
-            return (new OpportunitiesSelector()).findOffersWithIncorrectVisibilityByAccountId(accountIds);
+            return Database.getQueryLocator(new OpportunitiesSelector().findOffersWithIncorrectVisibilityByAccountId(accountIds));
         } else {
-            return (new OpportunitiesSelector()).findOffersWithIncorrectVisibility(); 
+            return Database.getQueryLocator(new OpportunitiesSelector().findOffersWithIncorrectVisibility()); 
         }
     }
 
@@ -62,7 +62,9 @@ global with sharing class Batch_IntermediaryVisibilityRecalcOpp implements Datab
      * @date 18/09/2023
      */
     global void finish(Database.BatchableContext bc) {
-        // nothing
+        if (!Test.isRunningTest() && accountIds != null && !accountIds.isEmpty()) {            
+            Database.executeBatch(new Batch_IntermediaryVisibilityAccActivites(accountIds), 200); 
+        }
     }
     
     

@@ -943,16 +943,17 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 21/09/2023
      * @return List<Account> Listado de account a las que recalcular la visibilidad
      */
-    public List<Account> findAccountsWithIncorrectVisibility()
+    public String findAccountsWithIncorrectVisibility()
     {
 
-        List<Account> result = new List<Account>([SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c,
-                                                  Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c
-                                                  FROM Account
-                                                  WHERE RecordType.DeveloperName IN ('Customer','BusinessCustomer')
-                                                  AND Intermediary_Name__r.IntermediaryGroup__c != null AND ( IntermediaryVisibilityForm__c = null
-                                                                                                                                              OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
-                                                                                                                                              OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary') )]);
+        String result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, ' +
+                                                    'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                                                    'FROM Account ' +
+                                                    'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') ' +
+                                                    'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
+                                                    'AND (IntermediaryVisibilityForm__c = null ' +
+                                                    'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                                                    'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
 
         return result;
     }
@@ -964,25 +965,26 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 21/09/2023
      * @return List<Account> Listado de account a las que recalcular la visibilidad
      */
-    public List<Account> findAccountsWithIncorrectVisibilityByAccountId(Set<String> accountIds)
+    public String findAccountsWithIncorrectVisibilityByAccountId(Set<String> accountIds)
     {
 
-        List<Account> result = new List<Account>();
+        String result;
 
-        if ( accountIds != null && !accountIds.isEmpty() )
-        {
-            result = new List<Account>([SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c,
-                                        Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c
-                                        FROM Account
-                                        WHERE RecordType.DeveloperName IN ('Customer','BusinessCustomer') AND Id IN: accountIds
-                                        AND Intermediary_Name__r.IntermediaryGroup__c != null AND ( IntermediaryVisibilityForm__c = null
-                                                                                                                                    OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
-                                                                                                                                    OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary') )]);
+        if (accountIds != null && !accountIds.isEmpty()) {
+            result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c,  ' +
+                                            'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                                            'FROM Account ' +
+                                            'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') AND Id IN  :accountIds ' +
+                                            'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
+                                            'AND (IntermediaryVisibilityForm__c = null ' +
+                                            'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                                            'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
 
         }
 
         return result;
     }
+
 
     /**
      * Busca cuentas de MEDIADORES partir de un número de teléfono (No usan ContactPointPhone)
@@ -996,7 +998,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.selectFields
         (
             new List<Schema.SObjectField>
-        {
+            {
             Account.Id,
             Account.TerritorialDirectionCode__c,
             Account.ChannelZoneCode__c,
@@ -1010,7 +1012,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             Account.Channel__c,
             Account.Segment__c,
             Account.Association__c
-        }
+            }
         );
 
         this.baseQuery.addConditionEq(Account.NationalId__c, nifs);
@@ -1018,6 +1020,29 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.addConditionEq(Account.Status__c, '001');
 
         return (List<Account>) this.baseQuery.run();
+    }
+
+    /**
+     * Busca account a las cuales hay que quitar la visibilidad de sus tareas y eventos
+     *
+     * @author dmunoz
+     * @date 21/09/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public String findZRMBlockedAccountWithActivitiesFromIds(Set<String> accountIds) {
+
+        String result;
+
+        if (accountIds != null && !accountIds.isEmpty()) {
+            result = 'SELECT Id, (SELECT Id, OwnerId FROM Tasks WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
+                                        '(SELECT Id, OwnerId FROM PersonTasks WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
+                                        '(SELECT Id, OwnerId FROM Events WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
+                                        '(SELECT Id, OwnerId FROM PersonEvents WHERE Owner.Profile.Name = \'Agente Ventas\') ' +
+                                        'FROM Account WHERE Id IN :accountIds AND Blocked__c = true';
+
+        }
+
+        return result;
     }
 
 }
