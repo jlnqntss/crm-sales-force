@@ -599,6 +599,36 @@
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!$Record.Parent.AccountId}), &apos;&apos;, TEXT({!$Record.Parent.Account.SpecializationType__c}))</expression>
     </formulas>
+    <formulas>
+        <name>UWConstruccionCartera</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWPorfolioBuilding__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWConstruccionVenta</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWSaleBuilding__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWDanosRCCartera</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWPortfolioRCDamage__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWDanosRCVenta</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWSaleRCDamage__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWSpecialtiesCartera</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWPortfolioSpecialties__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWSpecialtiesVenta</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWSaleSpecialties__c})</expression>
+    </formulas>
     <interviewLabel>EmailMessage Trigger - After update - Route to Genesys {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After update - Route to Genesys</label>
     <processMetadataValues>
@@ -1040,6 +1070,18 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>NombreConstruccionCartera</name>
+            <value>
+                <elementReference>UWConstruccionCartera</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreConstruccionVenta</name>
+            <value>
+                <elementReference>UWConstruccionVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>NombreCSMAdminManager</name>
             <value>
                 <elementReference>CSMAdministrationManager</elementReference>
@@ -1052,9 +1094,45 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>NombreDanosRCCartera</name>
+            <value>
+                <elementReference>UWDanosRCCartera</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreDanosRCVenta</name>
+            <value>
+                <elementReference>UWDanosRCVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSpecialtiesCartera</name>
+            <value>
+                <elementReference>UWSpecialtiesCartera</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSpecialtiesVenta</name>
+            <value>
+                <elementReference>UWSpecialtiesVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>NumeroParentId</name>
             <value>
                 <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>TipoCaso</name>
+            <value>
+                <elementReference>$Record.Parent.Type</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>VerticalCaso</name>
+            <value>
+                <elementReference>$Record.Parent.Industry__c</elementReference>
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>

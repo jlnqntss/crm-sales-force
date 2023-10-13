@@ -151,8 +151,9 @@ public without sharing class AccountSelectorWithoutSharing
         return result;
     }
 
-    public List<ContactpointPhone> selectByAccountScopeLead(string phone)
+    public List<ContactpointPhone> selectByAccountScopeLead(List<String> phonesList)
     {
-        return [SELECT Scope__c,ScopeId__c, ScopeId__r.AccountId__c, ScopeId__r.AccountId__r.Createddate FROM ContactPointPhone WHERE TelephoneNumber = :phone AND ScopeId__r.AccountId__r.RecordType.DeveloperName = 'Lead'];
+        return [SELECT Scope__c, ScopeId__c, ScopeId__r.Scope__c, ScopeId__r.AccountId__c, ScopeId__r.AccountId__r.Createddate, ScopeId__r.AccountId__r.LastModifiedDate 
+            FROM ContactPointPhone WHERE TelephoneNumber IN :phonesList AND ScopeId__r.AccountId__r.RecordType.DeveloperName = 'Lead'];
     }
 }

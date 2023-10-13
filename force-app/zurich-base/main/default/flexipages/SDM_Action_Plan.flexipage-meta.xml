@@ -384,7 +384,12 @@
                 <fieldItem>Record.TargetKPINumber__c</fieldItem>
                 <identifier>RecordTargetKPINumber__cField</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 OR 2</booleanFilter>
+                    <booleanFilter>1 OR 2 OR 3</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.Indicator__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>PN</rightValue>
+                    </criteria>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
@@ -407,7 +412,7 @@
                 <fieldItem>Record.TargetKPICurrency__c</fieldItem>
                 <identifier>RecordTargetKPICurrency__cField</identifier>
                 <visibilityRule>
-                    <booleanFilter>1 OR 2 OR 3</booleanFilter>
+                    <booleanFilter>1 OR 2</booleanFilter>
                     <criteria>
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
@@ -417,11 +422,6 @@
                         <leftValue>{!Record.Indicator__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>APES</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Indicator__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>PN</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>
@@ -507,10 +507,6 @@
                     <value>Facet-c51fb083-a348-4df0-93c0-e268bdfe87a5</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>horizontalAlignment</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
                     <name>label</name>
                     <value>Información general</value>
                 </componentInstanceProperties>
@@ -525,10 +521,6 @@
                     <value>Facet-mgcr6f4dfwo</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>horizontalAlignment</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
                     <name>label</name>
                     <value>Periodo temporal</value>
                 </componentInstanceProperties>
@@ -541,10 +533,6 @@
                 <componentInstanceProperties>
                     <name>columns</name>
                     <value>Facet-32744b83-2eda-4c94-aa2f-95b5423c138d</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>horizontalAlignment</name>
-                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>

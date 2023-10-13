@@ -180,12 +180,12 @@ private with sharing class GenerateComercialPlanControllerTest
         Test.stopTest();
 
         List<PlanComercial__c> resultPlans = [
-            SELECT Id, TargetKPICurrency__c FROM PlanComercial__c WHERE Intermediary__c IN :intermediaryIds
+            SELECT Id, TargetKPINumber__c FROM PlanComercial__c WHERE Intermediary__c IN :intermediaryIds
         ];
         System.assertEquals(4, resultPlans.size(), 'Deberia haber 4 planes del RN para los mediadores');
         Decimal sumValue = 0;
         for(PlanComercial__c plan: resultPlans) {
-            sumValue += plan.TargetKPICurrency__c;
+            sumValue += plan.TargetKPINumber__c;
         }
         System.assertEquals(14, sumValue, 'La suma de target KPI number deberia ser 14');
     }

@@ -14,6 +14,10 @@ private class AccountSearchServiceTest
     static final String MESSAGE_LISTA_DEBERIA_ESTAR_VACIA = 'List shouldnt be empty';
     static final String MESSAGE_SET_DEBE_TENER_RECORD_ID = 'Set should contains the record Id';
 
+    public static final String INTERMEDIARY_NIF         =   '01234567A';
+    public static final String INTERMEDIARY_NIF_FIELD   =   'NationalId__c';
+    public static final String INTERMEDIARY_STATUS_FIELD   =   'Status__c';
+
     @TestSetup
     public static void createScenario()
     {
@@ -35,6 +39,8 @@ private class AccountSearchServiceTest
 
         //Intermediary-> NO tienen ContactPointPhones!!!
         List<Account> intermediaryAccounts = TestDataFactory.generateAccounts('001', 'Intermediary', 10);
+        intermediaryAccounts[0].put(INTERMEDIARY_STATUS_FIELD, '001');
+        intermediaryAccounts[0].put(INTERMEDIARY_NIF_FIELD, INTERMEDIARY_NIF);
         insert intermediaryAccounts;
     }
 
@@ -357,6 +363,49 @@ private class AccountSearchServiceTest
         // Test
         Test.startTest();
         List<Account> matchedRecords = AccountSearchService.findIntermediariesByCode(new List<String>());
+        Test.stopTest();
+
+        //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
+        System.assertEquals(true, matchedRecords.isEmpty(), MESSAGE_NO_DEVOLVER_NADA);
+    }
+
+    @isTest
+    static void test_findIntermediariesByNIF_ok()
+    {
+        //Recuperamos las cuentas Intermediary del TestSetUp
+        Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+        List<Account> accountsToSearch = [SELECT Id, NationalId__c, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
+        System.assertEquals(true, accountsToSearch.size() > 0, MESSAGE_DEBERIA_HABER_CUENTAS);
+        Set<Id> accountIds = new Set<Id>();
+        List<String> nifs = new List<String>();
+        for(Account account: accountsToSearch)
+        {
+            accountIds.add(account.Id);
+            nifs.add(account.NationalId__c);
+        }
+        Test.setFixedSearchResults( new List<Id>(accountIds) );
+
+        // Test
+        Test.startTest();
+        List<Account> matchedRecords = AccountSearchService.findIntermediariesByNIF(nifs);
+        Test.stopTest();
+
+        //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
+        System.assertEquals(false, matchedRecords.isEmpty(), MESSAGE_LISTA_DEBERIA_ESTAR_VACIA);
+
+        // Then
+        for(Account record : matchedRecords)
+        {
+            System.assertEquals(true, accountIds.contains(record.Id), MESSAGE_SET_DEBE_TENER_RECORD_ID);
+        }
+    }
+
+    @isTest
+    static void test_findIntermediariesByNIF_ko()
+    {
+        // Test
+        Test.startTest();
+        List<Account> matchedRecords = AccountSearchService.findIntermediariesByNIF(new List<String>());
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista

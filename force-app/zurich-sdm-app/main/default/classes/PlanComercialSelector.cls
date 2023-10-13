@@ -51,7 +51,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
     // Equivalencias entre la picklist PlanComercial__c.Indicator__c y el tipo de valor para el plan.
     // num = numerico / currency = moneda / percent = porcentaje
     public static Map<String, eIndicator> mapIndicatorType = new Map<String, eIndicator> {
-        'PN' => eIndicator.type_currency,
+        'PN' => eIndicator.type_number,
         'PoliciesPN' => eIndicator.type_number,
         'PoliciesInForce' => eIndicator.type_number,
         'Portfolio' => eIndicator.type_currency,

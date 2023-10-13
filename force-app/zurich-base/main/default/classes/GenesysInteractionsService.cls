@@ -608,13 +608,17 @@ public with sharing class GenesysInteractionsService
             {
                 accounts = AccountSearchService.findIntermediariesByCode( new List<String>{request.value} );
             }
+            when 'document'
+            {
+                accounts = AccountSearchService.findIntermediariesByNIF( new List<String>{request.value} );
+            }
             when else
             {
                 throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);
             }
         }
 
-        if(accounts.size() == 1)
+        if(accounts.size() == 1 || (accounts.size() > 1 && request.searchType == 'document' ))
         {
             Account intermediary = accounts.get(0);
 

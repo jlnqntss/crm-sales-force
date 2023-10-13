@@ -222,16 +222,16 @@ public with sharing class PoliciesSelector extends RecordsSelector
      * @date 19/09/2023
      * @return List<Policy__c> Listado de pólizas a las que recalcular la visibilidad
      */
-    public List<Policy__c> findPoliciesWithIncorrectVisibility() {
+    public String findPoliciesWithIncorrectVisibility() {
 
-        List<Policy__c> result = new List<Policy__c>([SELECT Id, PolicyHolder__r.Blocked__c, IntermediaryId__c, IntermediaryId__r.IsPartner, 
-                                                        IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, 
-                                                        IntermediaryVisibilityAcc__c, PolicyHolder__c 
-                                                        FROM Policy__c
-                                                        WHERE (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null)
-                                                        AND (IntermediaryVisibilityForm__c = null
-                                                        OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
-                                                        OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+        String result = 'SELECT Id, PolicyHolder__r.Blocked__c, IntermediaryId__c, IntermediaryId__r.IsPartner,  ' +
+                                                        'IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c,  ' +
+                                                        'IntermediaryVisibilityAcc__c, PolicyHolder__c  ' +
+                                                        'FROM Policy__c ' +
+                                                        'WHERE (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null) ' +
+                                                        'AND (IntermediaryVisibilityForm__c = null ' +
+                                                        'OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                                                        'OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
 
         return result;
     }
@@ -243,19 +243,19 @@ public with sharing class PoliciesSelector extends RecordsSelector
      * @date 19/09/2023
      * @return List<Policy__c> Listado de pólizas a las que recalcular la visibilidad
      */
-    public List<Policy__c> findPoliciesWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
+    public String findPoliciesWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
 
-        List<Policy__c> result = new List<Policy__c>();
+        String result;
 
         if (accountIds != null && !accountIds.isEmpty()) {
-            result = new List<Policy__c>([SELECT Id, PolicyHolder__r.Blocked__c, IntermediaryId__c, IntermediaryId__r.IsPartner, 
-                                                            IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, 
-                                                            IntermediaryVisibilityAcc__c, PolicyHolder__c 
-                                                            FROM Policy__c
-                                                            WHERE PolicyHolder__c IN :accountIds AND (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null)
-                                                            AND (IntermediaryVisibilityForm__c = null
-                                                            OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = 'MainIntermediary')
-                                                            OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = 'CurrentIntermediary'))]);
+            result = 'SELECT Id, PolicyHolder__r.Blocked__c, IntermediaryId__c, IntermediaryId__r.IsPartner,  ' +
+                                                            'IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c,  ' +
+                                                            'IntermediaryVisibilityAcc__c, PolicyHolder__c  ' +
+                                                            'FROM Policy__c ' +
+                                                            'WHERE PolicyHolder__c IN :accountIds AND (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null) ' +
+                                                            'AND (IntermediaryVisibilityForm__c = null ' +
+                                                            'OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                                                            'OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
 
         }
 

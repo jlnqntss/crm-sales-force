@@ -4,11 +4,11 @@
         <name>NotificacionCotizacionAutoservicio</name>
         <label>Notificación Cotización Autoservicio</label>
         <locationX>50</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <actionName>Case.Notificacion_Cotizacion_Autoservicio</actionName>
         <actionType>emailAlert</actionType>
         <connector>
-            <targetReference>CloseCaseAction</targetReference>
+            <targetReference>NewCommentAction</targetReference>
         </connector>
         <faultConnector>
             <targetReference>CreateErrorLogCaseEmailSend</targetReference>
@@ -26,7 +26,7 @@
         <name>CaseUSPSelfServiceQuotationDecision</name>
         <label>¿Caso USP y Cotizacion Autoservicio?</label>
         <locationX>314</locationX>
-        <locationY>335</locationY>
+        <locationY>323</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>YesOutcome</name>
@@ -84,7 +84,7 @@
         <name>CreateErrorLogCaseEmailSend</name>
         <label>Generar Error Log Envío Email Alert</label>
         <locationX>314</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -112,11 +112,40 @@
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>NewCommentAction</name>
+        <label>New Comment</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <connector>
+            <targetReference>CloseCaseAction</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>CommentBody</field>
+            <value>
+                <stringValue>Comunicado al mediador que este caso se debe gestionar en Zona Zurich por autoservicio</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IsPublished</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>CaseComment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordUpdates>
         <name>CloseCaseAction</name>
         <label>Cerrar Caso</label>
         <locationX>50</locationX>
-        <locationY>575</locationY>
+        <locationY>647</locationY>
         <inputAssignments>
             <field>CloseResult__c</field>
             <value>

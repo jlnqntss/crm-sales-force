@@ -552,7 +552,7 @@ public class TestDataFactorySDM
                 Product__c= 'Autos',
                 Segment__c= 'Particulares',
                 Zone__c = PlanComercialSelector.ZONE_11_BARCELONA,
-                TargetKPICurrency__c = 5,
+                TargetKPINumber__c = 5,
                 AccumulateType__c= PlanComercialSelector.ACCUMULATE_TYPE_MONTH
             );
 

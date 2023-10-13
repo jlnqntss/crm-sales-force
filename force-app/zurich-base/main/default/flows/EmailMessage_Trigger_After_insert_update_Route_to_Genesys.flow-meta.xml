@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Enrutar_a_Flow_Genesys</name>
         <label>Enrutar a Flow Genesys</label>
-        <locationX>3262</locationX>
+        <locationX>3350</locationX>
         <locationY>816</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
@@ -76,7 +76,7 @@
     <actionCalls>
         <name>FlowGenesysRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
-        <locationX>2470</locationX>
+        <locationX>2558</locationX>
         <locationY>1032</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
@@ -154,7 +154,7 @@
     <actionCalls>
         <name>QueueGenesysRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
-        <locationX>3790</locationX>
+        <locationX>3878</locationX>
         <locationY>708</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
@@ -245,7 +245,7 @@
     <assignments>
         <name>CallCenterReportedAssignment</name>
         <label>Asignar informar call center</label>
-        <locationX>930</locationX>
+        <locationX>1018</locationX>
         <locationY>1182</locationY>
         <assignmentItems>
             <assignToReference>CasoRelacionado.CallCenter__c</assignToReference>
@@ -268,7 +268,7 @@
     <assignments>
         <name>QueueReportedAssignment</name>
         <label>Asignar información cola</label>
-        <locationX>1018</locationX>
+        <locationX>1106</locationX>
         <locationY>1482</locationY>
         <assignmentItems>
             <assignToReference>CasoRelacionado.OwnerId</assignToReference>
@@ -291,7 +291,7 @@
     <assignments>
         <name>SourceAreaReportedAssignment</name>
         <label>Asignar informacion area origen</label>
-        <locationX>1018</locationX>
+        <locationX>1106</locationX>
         <locationY>1782</locationY>
         <assignmentItems>
             <assignToReference>CasoRelacionado.SourceArea__c</assignToReference>
@@ -314,7 +314,7 @@
     <decisions>
         <name>CaseClosedDecision</name>
         <label>Is Case Closed</label>
-        <locationX>2734</locationX>
+        <locationX>2822</locationX>
         <locationY>816</locationY>
         <defaultConnectorLabel>Closed</defaultConnectorLabel>
         <rules>
@@ -372,7 +372,7 @@
     <decisions>
         <name>Es_caso_hijo</name>
         <label>¿Es caso hijo?</label>
-        <locationX>732</locationX>
+        <locationX>776</locationX>
         <locationY>708</locationY>
         <defaultConnector>
             <targetReference>IsCallCenterReportedDecision</targetReference>
@@ -395,7 +395,7 @@
         <description>Comprobamos si el email que llega tiene ya un caso asociado porque en caso contrario, fallaría el cálculo de la prioridad</description>
         <name>hasParentCase</name>
         <label>¿Tenemos caso asociado?</label>
-        <locationX>2998</locationX>
+        <locationX>3086</locationX>
         <locationY>708</locationY>
         <defaultConnector>
             <targetReference>Enrutar_a_Flow_Genesys</targetReference>
@@ -420,7 +420,7 @@
     <decisions>
         <name>IsCallCenterReportedDecision</name>
         <label>¿Call Center informado?</label>
-        <locationX>1150</locationX>
+        <locationX>1238</locationX>
         <locationY>816</locationY>
         <defaultConnector>
             <targetReference>IsSalesforceQueueReportedDecision</targetReference>
@@ -442,7 +442,7 @@
     <decisions>
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
-        <locationX>3394</locationX>
+        <locationX>3482</locationX>
         <locationY>600</locationY>
         <defaultConnector>
             <targetReference>QueueGenesysRoutingInvocableAction</targetReference>
@@ -464,7 +464,7 @@
     <decisions>
         <name>IsRelatedCaseDecision</name>
         <label>¿Caso relacionado?</label>
-        <locationX>1469</locationX>
+        <locationX>1535</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -504,7 +504,7 @@
     <decisions>
         <name>IsSalesforceQueueReportedDecision</name>
         <label>¿Cola Salesforce informada?</label>
-        <locationX>1150</locationX>
+        <locationX>1238</locationX>
         <locationY>1374</locationY>
         <defaultConnector>
             <targetReference>IsSourceAreaReportedDecision</targetReference>
@@ -529,7 +529,7 @@
     <decisions>
         <name>IsSourceAreaReportedDecision</name>
         <label>¿Area Origen informada?</label>
-        <locationX>1150</locationX>
+        <locationX>1238</locationX>
         <locationY>1674</locationY>
         <defaultConnector>
             <targetReference>IsUpdatingNeccesaryDecision</targetReference>
@@ -561,7 +561,7 @@
     <decisions>
         <name>IsUpdatingNeccesaryDecision</name>
         <label>¿Aplica actualizar?</label>
-        <locationX>1150</locationX>
+        <locationX>1238</locationX>
         <locationY>1974</locationY>
         <defaultConnectorLabel>No aplica</defaultConnectorLabel>
         <rules>
@@ -580,7 +580,7 @@
     <decisions>
         <name>isValidCallCenter</name>
         <label>¿Call center válido?</label>
-        <locationX>930</locationX>
+        <locationX>1018</locationX>
         <locationY>924</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -697,6 +697,36 @@
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!$Record.Parent.AccountId}), &apos;&apos;, TEXT({!$Record.Parent.Account.SpecializationType__c}))</expression>
     </formulas>
+    <formulas>
+        <name>UWConstruccionCartera</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWPorfolioBuilding__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWConstruccionVenta</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWSaleBuilding__c })</expression>
+    </formulas>
+    <formulas>
+        <name>UWDanosRCCartera</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWPortfolioRCDamage__c })</expression>
+    </formulas>
+    <formulas>
+        <name>UWDanosRCVenta</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWSaleRCDamage__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWSpecialtiesCartera</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWPortfolioSpecialties__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWSpecialtiesVenta</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.UWSaleSpecialties__c})</expression>
+    </formulas>
     <interviewLabel>EmailMessage Trigger - After insert/update Route to Genesys {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After insert - Route to Genesys</label>
     <processMetadataValues>
@@ -721,7 +751,7 @@
     <recordCreates>
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
-        <locationX>2734</locationX>
+        <locationX>2822</locationX>
         <locationY>1140</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -759,7 +789,7 @@
     <recordCreates>
         <name>CreateSalesforceQueueErrorAction</name>
         <label>Generar error cola Salesforce</label>
-        <locationX>1942</locationX>
+        <locationX>2030</locationX>
         <locationY>600</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -797,7 +827,7 @@
     <recordCreates>
         <name>CreateUpdateCaseErrorAction</name>
         <label>Generar error actualizar caso</label>
-        <locationX>1150</locationX>
+        <locationX>1238</locationX>
         <locationY>2190</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -873,7 +903,7 @@
     <recordCreates>
         <name>Generar_error_caso_relacionado_Salesforce</name>
         <label>Generar error caso relacionado Salesforce</label>
-        <locationX>1678</locationX>
+        <locationX>1766</locationX>
         <locationY>708</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -911,7 +941,7 @@
     <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Obtener cola Genesys</label>
-        <locationX>1469</locationX>
+        <locationX>1535</locationX>
         <locationY>276</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -932,7 +962,7 @@
     <recordLookups>
         <name>GetGenesysQueueAsyncAction</name>
         <label>Obtener cola Genesys Async</label>
-        <locationX>3394</locationX>
+        <locationX>3482</locationX>
         <locationY>276</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -953,7 +983,7 @@
     <recordLookups>
         <name>getRelatedCase</name>
         <label>Obtener caso relacionado</label>
-        <locationX>732</locationX>
+        <locationX>776</locationX>
         <locationY>600</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -977,7 +1007,7 @@
     <recordLookups>
         <name>GetSalesforceQueueAction</name>
         <label>Obtener cola Salesforce</label>
-        <locationX>732</locationX>
+        <locationX>776</locationX>
         <locationY>492</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1018,7 +1048,7 @@
     <recordUpdates>
         <name>UpdateCaseAction</name>
         <label>Actualizar caso</label>
-        <locationX>886</locationX>
+        <locationX>974</locationX>
         <locationY>2082</locationY>
         <faultConnector>
             <targetReference>CreateUpdateCaseErrorAction</targetReference>
@@ -1026,7 +1056,7 @@
         <inputReference>CasoRelacionado</inputReference>
     </recordUpdates>
     <start>
-        <locationX>2305</locationX>
+        <locationX>2382</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetGenesysQueueAction</targetReference>
@@ -1075,7 +1105,7 @@
     <subflows>
         <name>Calculamos_prioridad</name>
         <label>Calculamos prioridad</label>
-        <locationX>2470</locationX>
+        <locationX>2558</locationX>
         <locationY>924</locationY>
         <connector>
             <targetReference>FlowGenesysRoutingInvocableAction</targetReference>
@@ -1098,7 +1128,7 @@
     <subflows>
         <name>GenerateScreenPopURLSubflow</name>
         <label>Generate Screen Pop URL</label>
-        <locationX>3394</locationX>
+        <locationX>3482</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>IsFlowOrQueueDecision</targetReference>
@@ -1127,7 +1157,7 @@
     <subflows>
         <name>GetGenesysQueueAndParentIdFromEmailSubflow</name>
         <label>Comprobar Cola Genesys y ParentID del Email</label>
-        <locationX>3394</locationX>
+        <locationX>3482</locationX>
         <locationY>384</locationY>
         <connector>
             <targetReference>GenerateScreenPopURLSubflow</targetReference>
@@ -1164,6 +1194,18 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>NombreConstruccionCartera</name>
+            <value>
+                <elementReference>UWConstruccionCartera</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreConstruccionVenta</name>
+            <value>
+                <elementReference>UWConstruccionVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>NombreCSMAdminManager</name>
             <value>
                 <elementReference>CSMAdministrationManager</elementReference>
@@ -1176,9 +1218,45 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>NombreDanosRCCartera</name>
+            <value>
+                <elementReference>UWDanosRCCartera</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreDanosRCVenta</name>
+            <value>
+                <elementReference>UWDanosRCVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSpecialtiesCartera</name>
+            <value>
+                <elementReference>UWSpecialtiesCartera</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSpecialtiesVenta</name>
+            <value>
+                <elementReference>UWSpecialtiesVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>NumeroParentId</name>
             <value>
                 <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>TipoCaso</name>
+            <value>
+                <elementReference>$Record.Parent.Type</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>VerticalCaso</name>
+            <value>
+                <elementReference>$Record.Parent.Industry__c</elementReference>
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>

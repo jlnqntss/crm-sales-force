@@ -350,7 +350,7 @@ private with sharing class PoliciesSelectorTest
     @isTest
     static void findPoliciesWithIncorrectVisibilityTest() {
         Test.startTest();
-        List<Policy__c> policyList = (new PoliciesSelector()).findPoliciesWithIncorrectVisibility();
+        String policyList = (new PoliciesSelector()).findPoliciesWithIncorrectVisibility();
         Test.stopTest();
 
         System.assertEquals(true, policyList != null, 'No debe ser nulo');
@@ -360,10 +360,10 @@ private with sharing class PoliciesSelectorTest
     static void findPoliciesWithIncorrectVisibilityByAccountIdTest() {
         Test.startTest();
         Set<String> accountIds = new Set<String>();
-        List<Policy__c> policyList = (new PoliciesSelector()).findPoliciesWithIncorrectVisibilityByAccountId(accountIds);
-        Test.stopTest();
+        String policyList = (new PoliciesSelector()).findPoliciesWithIncorrectVisibilityByAccountId(accountIds);
+        Test.stopTest(); 
 
-        System.assertEquals(true, policyList != null, 'No debe ser nulo');
+        System.assertEquals(true, policyList == null, 'Debe ser nulo');
     }
 
 }

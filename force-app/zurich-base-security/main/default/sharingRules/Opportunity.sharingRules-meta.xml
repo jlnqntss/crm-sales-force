@@ -81,4 +81,16 @@
             <group>Ventas_Agente_Mediador</group>
         </sharedFrom>
     </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Ventas_CC_Ofertas_Agente_Venta_Reasignadas</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Permite que una oferta creada desde ZRM y reasignada a un usuario de CC pueda ser modificada por cualquier usuario CC</description>
+        <label>Ventas_CC_Ofertas_Agente_Venta_Reasignadas</label>
+        <sharedTo>
+            <group>Write_Ventas_CC</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>Ventas_CC</group>
+        </sharedFrom>
+    </sharingOwnerRules>
 </SharingRules>
