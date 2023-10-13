@@ -390,7 +390,7 @@ public with sharing class EmailMessagesUtil
                 if(em.Incoming && String.isNotBlank(em.ParentId)) idCaso.add(em.ParentId); 
                 List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
 
-                if(listaCaso.get(0).RecordTypeId == ocsRecordTypeId && em.Industry__c != null && em.Industry__c.contains('@'))
+                if(!listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == ocsRecordTypeId && em.Industry__c != null && em.Industry__c.contains('@'))
                 {
                     genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());                          
                 }
@@ -443,19 +443,15 @@ public with sharing class EmailMessagesUtil
                             i++;
                         }
 
-                        if((listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue==null))
+                        if(!listaCaso.isEmpty() && (listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue==null))
                         {   
                             industryDefault=em.Industry__c;
                             genesysQueue=this.findGenesysQueueByIndustry(industryDefault.trim().toLowerCase());
                            
-                            if((genesysQueue!=null) && (genesysQueue.RecordTypeInfo__c=='USPInquiry'))
+                            if((genesysQueue==null) || (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
                             {   
-                                System.debug('He encontrado una cola y es de USP');
-
-                            }
-                            else
-                            {  
                                 genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+
                             }
                         }
 
