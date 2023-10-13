@@ -244,6 +244,17 @@ public with sharing class AccountSearchService
         return new AccountsSelector().findByIntermediaryCode(codes);
     }
 
+    /**
+     * Busca y encuentra mediadores a través del código del NIF, aplicando Scope de visibilidad dado.
+     * @param phones : String[] - Listado de teléfonos. Los teléfonos se esperan en formato E16
+     * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
+     * @return Devuelve el listado de mediadores encontrado
+     */
+    public static Account[] findIntermediariesByNIF(String[] nifs)
+    {
+        return new AccountsSelector().findIntermediariesByNIF(nifs);
+    }
+
     @TestVisible
     class AccountSearchServiceException extends Exception
     {}
