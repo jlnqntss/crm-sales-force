@@ -14,6 +14,7 @@ public with sharing class OpportunityUtil
     static final String FIELD_STAGE = 'StageName';
     private static List<String> nombresPerfilesVentas; // perfiles de la app ventas y zrm que muestra otro mensaje de error para la validación de cerrada ganada
     private static String userLoggedProfile; // query que obtiene el nombre del perfil del usuario logeado
+    private final static String CRM_VENTAS_PROFILE = 'Ventas User';
 
     /**
      * BULK BEFORE
@@ -47,19 +48,25 @@ public with sharing class OpportunityUtil
     {
         mapAccountRecordTypes = new Map<Id, String>();
 
-        if (newList != null && newList.size() > 0) {
+        if (newList != null && newList.size() > 0)
+        {
             Set<Id> accountIds = new Set<Id>();
 
-            for (Opportunity opp : newList) {
+            for (Opportunity opp : newList)
+            {
                 accountIds.add(opp.AccountId);
             }
-    
+
             List<Account> oppAccounts = new AccountsSelector().selectById(accountIds);
-    
-            if (oppAccounts != null && oppAccounts.size() > 0) {
-                for (Opportunity opp : newList) {
-                    for (Account acc : oppAccounts) {
-                        if (opp.AccountId == acc.Id) {
+
+            if (oppAccounts != null && oppAccounts.size() > 0)
+            {
+                for (Opportunity opp : newList)
+                {
+                    for (Account acc : oppAccounts)
+                    {
+                        if (opp.AccountId == acc.Id)
+                        {
                             mapAccountRecordTypes.put(acc.Id, acc.RecordType.DeveloperName);
                             break;
                         }
@@ -126,17 +133,21 @@ public with sharing class OpportunityUtil
      */
     public static void setSalesProcess(List<Opportunity> newList)
     {
-        for(Opportunity opp : newList) {
+        for(Opportunity opp : newList)
+        {
 
-            if (mapAccountRecordTypes.get(opp.AccountId) != null) {
-                
-                if(mapAccountRecordTypes.get(opp.AccountId) == 'Lead' ) {
+            if (mapAccountRecordTypes.get(opp.AccountId) != null)
+            {
+
+                if(mapAccountRecordTypes.get(opp.AccountId) == 'Lead' )
+                {
                     opp.SalesProcess__c = 'L';
                 }
                 else if (mapAccountRecordTypes.get(opp.AccountId) == 'BusinessCustomer' ||
-                         mapAccountRecordTypes.get(opp.AccountId) == 'Customer' ) {
+                         mapAccountRecordTypes.get(opp.AccountId) == 'Customer' )
+                {
                     opp.SalesProcess__c = 'VC';
-                } 
+                }
             }
         }
     }
@@ -218,6 +229,12 @@ public with sharing class OpportunityUtil
                 // ERROR  : Agregar el mensaje a nivel de campo
 
                 newOpty.addError(FIELD_STAGE, nombresPerfilesVentas.contains(userLoggedProfile) ? Label.OfferSalesStageValidationClosedWonMessage : Label.OfferStageValidationMessage);
+            }
+
+            // fpalomo - 10/10/2023 - CV-671
+            if ( oldOpty.StageName.equalsIgnoreCase('Legit Lead') && newOpty.StageName.equalsIgnoreCase('App Submitted') && userLoggedProfile.equalsIgnoreCase(CRM_VENTAS_PROFILE) )
+            {
+                newOpty.OwnerId = UserInfo.getUserId();
             }
         }
     }
