@@ -8,6 +8,6 @@
     </values>
     <values>
         <field>PostalCode__c</field>
-        <value xsi:type="xsd:string">13000</value>
+        <value xsi:type="xsd:int">13000</value>
     </values>
 </CustomMetadata>
