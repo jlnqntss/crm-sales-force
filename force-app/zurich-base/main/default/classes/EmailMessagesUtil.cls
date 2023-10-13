@@ -212,7 +212,7 @@ public with sharing class EmailMessagesUtil
         }
 
         for(purecloud__PureCloud_Queue__c genesysQueue: [
-            SELECT Id, Name, CallCenter__c, GenesysFlowId__c, Industry__c 
+            SELECT Id, Name, CallCenter__c, GenesysFlowId__c, Industry__c, RecordTypeInfo__c
             FROM purecloud__PureCloud_Queue__c
             WHERE Industry__c != null
         ]) {
@@ -381,6 +381,7 @@ public with sharing class EmailMessagesUtil
                 // List of emails to check
                 List<String> emailsToCheck = new List<String>();
                 String industryGeneric= 'Generico';
+                String industryDefault;
 
                 // list of related cases
                 Set<String> idCaso = new Set<String>();
@@ -389,7 +390,7 @@ public with sharing class EmailMessagesUtil
                 if(em.Incoming && String.isNotBlank(em.ParentId)) idCaso.add(em.ParentId); 
                 List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
 
-                if(listaCaso.get(0).RecordTypeId == ocsRecordTypeId && em.Industry__c != null && em.Industry__c.contains('@'))
+                if(!listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == ocsRecordTypeId && em.Industry__c != null && em.Industry__c.contains('@'))
                 {
                     genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());                          
                 }
@@ -441,6 +442,20 @@ public with sharing class EmailMessagesUtil
                             
                             i++;
                         }
+
+                        if(!listaCaso.isEmpty() && (listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue==null))
+                        {   
+                            industryDefault=em.Industry__c;
+                            genesysQueue=this.findGenesysQueueByIndustry(industryDefault.trim().toLowerCase());
+                           
+                            if((genesysQueue==null) || (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
+                            {   
+                                genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+
+                            }
+                        }
+
+                        
                     } 
                 }
             } catch (Exception e) {
