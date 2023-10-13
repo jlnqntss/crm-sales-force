@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <assignments>
+        <description>Asignación del número de póliza recortado desde la variable fórmula al registro.</description>
+        <name>TrimmedPolicyNumberAssignment</name>
+        <label>Trimmed Policy Number Assignment</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.TrimmedPolicyNumber__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>trimmedPolicyNumber</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <description>Informa un campo con el Número de Póliza sin los ceros a la izquierda, para facilitar la búsqueda a los agentes.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Cálculo del número de póliza sin los ceros a la izquierda.</description>
+        <name>trimmedPolicyNumber</name>
+        <dataType>String</dataType>
+        <expression>TEXT(VALUE({!$Record.Name}))</expression>
+    </formulas>
+    <interviewLabel>Policy Trigger - Before Insert/Update - Trimmed Policy Number {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Policy Trigger - Before Insert/Update - Trimmed Policy Number</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>TrimmedPolicyNumberAssignment</targetReference>
+        </connector>
+        <filterFormula>OR(ISNEW(), ISCHANGED({!$Record.Name}))</filterFormula>
+        <object>Policy__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+    <triggerOrder>300</triggerOrder>
+</Flow>

@@ -408,6 +408,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>TNPS Customer Survey</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Zurich Business Client</fullName>
             <default>false</default>
         </values>

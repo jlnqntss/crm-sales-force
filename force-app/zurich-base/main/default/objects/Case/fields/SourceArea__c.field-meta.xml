@@ -58,6 +58,11 @@
                 <default>false</default>
                 <label>Other third parties</label>
             </value>
+            <value>
+                <fullName>TNPS Customer Survey</fullName>
+                <default>false</default>
+                <label>TNPS Customer Survey</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
