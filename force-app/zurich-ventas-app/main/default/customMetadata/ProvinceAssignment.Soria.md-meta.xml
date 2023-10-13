@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>PostalCode__c</field>
-        <value xsi:type="xsd:int">42</value>
+        <value xsi:type="xsd:string">42</value>
     </values>
     <values>
         <field>Province__c</field>

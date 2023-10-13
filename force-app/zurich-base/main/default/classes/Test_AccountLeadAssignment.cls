@@ -4,7 +4,7 @@
  * @group             : Seidor
  * @last modified on  : 28/09/2023
  * @last modified by  : jgallaga
-**/
+ **/
 @isTest
 public with sharing class Test_AccountLeadAssignment
 {
@@ -25,11 +25,11 @@ public with sharing class Test_AccountLeadAssignment
      */
     private static void createCommnunityUsers()
     {
-        User adminUser = [SELECT Id FRom User WHERE Profile.Name = 'System Administrator' AND Id != :UserInfo.getUserId() AND isActive = true LIMIT 1];
+        User adminUser = [SELECT Id FROM User WHERE Profile.Name IN ('Administrador del sistema', 'System Administrator') AND Id != : UserInfo.getUserId() AND IsActive = true LIMIT 1];
 
         Map<String, User> communityAgents = prepareNewUsers();
 
-        Map<String, Account> communityAgentAccounts = insertAccounts(communityAgents.keySet());
+        Map<String, Account> communityAgentAccounts = insertAccounts( communityAgents.keySet() );
         Map<String, Contact> communitAgentContacts = insertContacts(communityAgents.keySet(), communityAgentAccounts); //Contact
 
         System.runAs(adminUser)
@@ -47,7 +47,7 @@ public with sharing class Test_AccountLeadAssignment
     {
         Profile zrmCommunityProfile = [Select Id from Profile where name = 'Agente Ventas']; // Perfil de comunidad de agentes de Mi Agencia
 
-        for(String currentUserName : communityAgents.keySet())
+        for( String currentUserName : communityAgents.keySet() )
         {
             User currentUser = communityAgents.get(currentUserName);
             currentUser.ContactId = communityAgentContacts.get(currentUserName).Id;
@@ -72,10 +72,10 @@ public with sharing class Test_AccountLeadAssignment
         for(String currentUserName : communityUserNames)
         {
             Account agentAccount = agentAccounts.get(currentUserName);
-            agentContactRecords.put(currentUserName, new Contact(
-                LastName = currentUserName,
-                AccountId = agentAccount.Id
-            ));
+            agentContactRecords.put( currentUserName, new Contact(
+                                         LastName = currentUserName,
+                                         AccountId = agentAccount.Id
+                                         ) );
         }
 
         insert agentContactRecords.values();
@@ -90,17 +90,17 @@ public with sharing class Test_AccountLeadAssignment
      */
     private static Map<String, Account> insertAccounts(Set<String> communityUserNames)
     {
-        Map<String ,Account> agentAccounts = new Map<String, Account>();
+        Map<String,Account> agentAccounts = new Map<String, Account>();
         RecordType agentAccountRecordType = [SELECT Id FROM RecordType WHERE Name = 'Parent Account' AND SobjectType = 'Account'];
         RecordType intermediaryAccountRecordType = [SELECT Id FROM RecordType WHERE Name = 'Intermediary' AND SobjectType = 'Account'];
 
 
         for(String currentCommunityName : communityUserNames)
         {
-            agentAccounts.put(currentCommunityName, new Account(
-                Name = currentCommunityName + 'a',
-                RecordTypeId = agentAccountRecordType.Id
-            ));
+            agentAccounts.put( currentCommunityName, new Account(
+                                   Name = currentCommunityName + 'a',
+                                   RecordTypeId = agentAccountRecordType.Id
+                                   ) );
         }
 
         insert agentAccounts.values();
@@ -108,11 +108,11 @@ public with sharing class Test_AccountLeadAssignment
         Map<String,Account> intermediaryGroup = new Map<String,Account>();
         for(String currentCommunityName : communityUserNames)
         {
-            intermediaryGroup.put(currentCommunityName,new Account(
-                Name = currentCommunityName + 'p',
-                RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('AgrupacionMediador').getRecordTypeId(),
-                IntermediaryWithUser__c = agentACcounts.get(currentCommunityName).Id
-            ));
+            intermediaryGroup.put( currentCommunityName,new Account(
+                                       Name = currentCommunityName + 'p',
+                                       RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('AgrupacionMediador').getRecordTypeId(),
+                                       IntermediaryWithUser__c = agentACcounts.get(currentCommunityName).Id
+                                       ) );
         }
 
         insert intermediaryGroup.values();
@@ -120,12 +120,12 @@ public with sharing class Test_AccountLeadAssignment
         Map<String,Account> intermediaryAccounts = new Map<String,Account>();
         for(String currentCommunityName : communityUserNames)
         {
-            intermediaryAccounts.put(currentCommunityName,new Account(
-                Name = currentCommunityName + 'i',
-                RecordTypeId = intermediaryAccountRecordType.Id,
-                INFOIntermediaryCode__c = currentCommunityName,
-                IntermediaryGroup__c = intermediaryGroup.get(currentCommunityName).Id
-            ));
+            intermediaryAccounts.put( currentCommunityName,new Account(
+                                          Name = currentCommunityName + 'i',
+                                          RecordTypeId = intermediaryAccountRecordType.Id,
+                                          INFOIntermediaryCode__c = currentCommunityName,
+                                          IntermediaryGroup__c = intermediaryGroup.get(currentCommunityName).Id
+                                          ) );
         }
 
         insert intermediaryAccounts.values();
@@ -144,53 +144,53 @@ public with sharing class Test_AccountLeadAssignment
     {
         Map<String, User> communityAgents = new Map<String, User>();
 
-        communityAgents.put('IDIOMA-ES', new User(
-            Username = 'testAssignmetZurich@zurich.com' + '1',
-            Alias = 'sfdc',
-            Email='testAssignmetZurich@zurich.com',
-            EmailEncodingKey='UTF-8',
-            Firstname='Test',
-            Lastname='IDIOMA-ES',
-            LanguageLocaleKey='es',
-            LocaleSidKey='es',
-            TimeZoneSidKey='Europe/Madrid'
-        ));
+        communityAgents.put( 'IDIOMA-ES', new User(
+                                 Username = 'testAssignmetZurich@zurich.com' + '1',
+                                 Alias = 'sfdc',
+                                 Email='testAssignmetZurich@zurich.com',
+                                 EmailEncodingKey='UTF-8',
+                                 Firstname='Test',
+                                 Lastname='IDIOMA-ES',
+                                 LanguageLocaleKey='es',
+                                 LocaleSidKey='es',
+                                 TimeZoneSidKey='Europe/Madrid'
+                                 ) );
 
-        communityAgents.put('IDIOMA-FR', new User(
-            Username = 'testAssignmetZurich@zurich.com' + '2',
-            Alias = 'sfdc',
-            Email='testAssignmetZurich@zurich.com',
-            EmailEncodingKey='UTF-8',
-            Firstname='Test',
-            Lastname='IDIOMA-FR',
-            LanguageLocaleKey='es',
-            LocaleSidKey='es',
-            TimeZoneSidKey='Europe/Madrid'
-        ));
+        communityAgents.put( 'IDIOMA-FR', new User(
+                                 Username = 'testAssignmetZurich@zurich.com' + '2',
+                                 Alias = 'sfdc',
+                                 Email='testAssignmetZurich@zurich.com',
+                                 EmailEncodingKey='UTF-8',
+                                 Firstname='Test',
+                                 Lastname='IDIOMA-FR',
+                                 LanguageLocaleKey='es',
+                                 LocaleSidKey='es',
+                                 TimeZoneSidKey='Europe/Madrid'
+                                 ) );
 
-        communityAgents.put('IDIOMA-QQ', new User(
-            Username = 'testAssignmetZurich@zurich.com' + '3',
-            Alias = 'sfdc',
-            Email='testAssignmetZurich@zurich.com',
-            EmailEncodingKey='UTF-8',
-            Firstname='Test',
-            Lastname='IDIOMA-QQ',
-            LanguageLocaleKey='es',
-            LocaleSidKey='es',
-            TimeZoneSidKey='Europe/Madrid'
-        ));
+        communityAgents.put( 'IDIOMA-QQ', new User(
+                                 Username = 'testAssignmetZurich@zurich.com' + '3',
+                                 Alias = 'sfdc',
+                                 Email='testAssignmetZurich@zurich.com',
+                                 EmailEncodingKey='UTF-8',
+                                 Firstname='Test',
+                                 Lastname='IDIOMA-QQ',
+                                 LanguageLocaleKey='es',
+                                 LocaleSidKey='es',
+                                 TimeZoneSidKey='Europe/Madrid'
+                                 ) );
 
-        communityAgents.put('IDIOMA-DE', new User(
-            Username = 'testAssignmetZurich@zurich.com' + '4',
-            Alias = 'sfdc',
-            Email='testAssignmetZurich@zurich.com',
-            EmailEncodingKey='UTF-8',
-            Firstname='Test',
-            Lastname='IDIOMA-DE',
-            LanguageLocaleKey='es',
-            LocaleSidKey='es',
-            TimeZoneSidKey='Europe/Madrid'
-        ));
+        communityAgents.put( 'IDIOMA-DE', new User(
+                                 Username = 'testAssignmetZurich@zurich.com' + '4',
+                                 Alias = 'sfdc',
+                                 Email='testAssignmetZurich@zurich.com',
+                                 EmailEncodingKey='UTF-8',
+                                 Firstname='Test',
+                                 Lastname='IDIOMA-DE',
+                                 LanguageLocaleKey='es',
+                                 LocaleSidKey='es',
+                                 TimeZoneSidKey='Europe/Madrid'
+                                 ) );
 
         return communityAgents;
     }
@@ -201,31 +201,31 @@ public with sharing class Test_AccountLeadAssignment
 
         //LANGUAGE
         List<LanguageAssignment__mdt> testLanguageAssignmentMetadata = new List<LanguageAssignment__mdt>();
-        testLanguageAssignmentMetadata.add(new LanguageAssignment__mdt(DeveloperName = 'Español', AssignTo__c = 'IDIOMA-ES', Language__c = 'ES'));
-        testLanguageAssignmentMetadata.add(new LanguageAssignment__mdt(DeveloperName = 'Frances', AssignTo__c = 'IDIOMA-FR', Language__c = 'FR'));
+        testLanguageAssignmentMetadata.add( new LanguageAssignment__mdt(DeveloperName = 'Español', AssignTo__c = 'IDIOMA-ES', Language__c = 'ES') );
+        testLanguageAssignmentMetadata.add( new LanguageAssignment__mdt(DeveloperName = 'Frances', AssignTo__c = 'IDIOMA-FR', Language__c = 'FR') );
 
         AccountLeadAssignment.languageAssignmentMetadata = testLanguageAssignmentMetadata;
 
         //FORUM ASSIGNMENT
         // Muchisimo cuidado en cambiar el Assignment type, puede romper un gran numero de tests.
         List<ForumOriginAssignment__mdt> testforumOriginAssignmentMetadata = new List<ForumOriginAssignment__mdt>();
-        testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_accidentes', AssignmentType__c = 'Direct',AssignTo__c='IDIOMA-ES',ForumOrigin__c = 'formulario accidentes'));
-        testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_automonos', AssignmentType__c = 'Province',AssignTo__c='IDIOMA-DE',ForumOrigin__c = 'formulario automonos'));
-        testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_pymes', AssignmentType__c = 'Province',AssignTo__c='IDIOMA-FR',ForumOrigin__c = 'formulario pymes'));
-        testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_embarcaciones', AssignmentType__c = 'Municipality',AssignTo__c='IDIOMA-QQ',ForumOrigin__c = 'formulario embarcaciones'));
-        testforumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt(DeveloperName = 'formulario_salud', AssignmentType__c = 'Municipality',AssignTo__c='IDIOMA-QQ',ForumOrigin__c = 'formulario salud'));
+        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_accidentes', AssignmentType__c = 'Direct',AssignTo__c='IDIOMA-ES',ForumOrigin__c = 'formulario accidentes') );
+        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_automonos', AssignmentType__c = 'Province',AssignTo__c='IDIOMA-DE',ForumOrigin__c = 'formulario automonos') );
+        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_pymes', AssignmentType__c = 'Province',AssignTo__c='IDIOMA-FR',ForumOrigin__c = 'formulario pymes') );
+        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_embarcaciones', AssignmentType__c = 'Municipality',AssignTo__c='IDIOMA-QQ',ForumOrigin__c = 'formulario embarcaciones') );
+        testforumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt(DeveloperName = 'formulario_salud', AssignmentType__c = 'Municipality',AssignTo__c='IDIOMA-QQ',ForumOrigin__c = 'formulario salud') );
 
         AccountLeadAssignment.forumOriginAssignmentMetadata = testforumOriginAssignmentMetadata;
 
         //MUNICIPALITY ASSIGNMENT
         List<MunicipalityAssignment__mdt> testMunicipalityAssignmentMetadata = new List<MunicipalityAssignment__mdt>();
-        testMunicipalityAssignmentMetadata.add(new MunicipalityAssignment__mdt(DeveloperName = 'X01520', AssignTo__c= 'IDIOMA-ES', PostalCode__c= 25000));
+        testMunicipalityAssignmentMetadata.add( new MunicipalityAssignment__mdt(DeveloperName = 'X01520', AssignTo__c= 'IDIOMA-ES', PostalCode__c='25000') );
 
         AccountLeadAssignment.MunicipalityAssignmentMetadata = testMunicipalityAssignmentMetadata;
 
         //PROVINCE ASSIGNMENT
         List<ProvinceAssignment__mdt> testProvinceAssignmentMetadata = new List<ProvinceAssignment__mdt>();
-        testProvinceAssignmentMetadata.add(new ProvinceAssignment__mdt(DeveloperName = 'Albacete',AssignTo__c='IDIOMA-FR',PostalCode__c=2,Province__c='Albacete'));
+        testProvinceAssignmentMetadata.add( new ProvinceAssignment__mdt(DeveloperName = 'Albacete',AssignTo__c='IDIOMA-FR',PostalCode__c='02',Province__c='Albacete') );
 
         AccountLeadAssignment.ProvinceAssignmentMetadata = testProvinceAssignmentMetadata;
     }
@@ -245,7 +245,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getIntermediaryUserId(contactCenter);
         Test.stopTest();
 
-        Assert.areEqual(contactCenter, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'Para el valor de CONTACT CENTER, no ha devuelto CONTACT_CENTER');
+        Assert.areEqual(contactCenter, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'Para el valor de CONTACT CENTER, no ha devuelto CONTACT_CENTER');
     }
 
     /**
@@ -258,13 +258,13 @@ public with sharing class Test_AccountLeadAssignment
     static void test_getAssignedUserIdByIntermediaryCode_OK()
     {
         String intermediaryCode = 'IDIOMA-QQ';
-        User intermediary = [SELECT Id FROM User WHERE LastName = :intermediaryCode];
+        User intermediary = [SELECT Id FROM User WHERE LastName = : intermediaryCode];
 
         Test.startTest();
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode);
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No es el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>( result.getAssignmentAsMap().keySet() ).get(0), 'No es el intermediario esperado');
     }
 
     /**
@@ -282,7 +282,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha duelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0), 'No ha duelto el usuario por defecto');
     }
 
     /**
@@ -300,7 +300,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByIntermediaryCode('FAKE INTERMEDIARY');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha duelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0), 'No ha duelto el usuario por defecto');
     }
 
     /**
@@ -320,7 +320,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByLanguage('FR');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No es el intermediario para este idioma');
+        Assert.areEqual(intermediary.Id, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No es el intermediario para este idioma');
     }
 
     /**
@@ -340,7 +340,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByLanguage(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0), 'No ha devuelto el usuario por defecto');
     }
 
     /**
@@ -361,7 +361,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByLanguage('IT');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0), 'No ha devuelto el usuario por defecto');
     }
 
     /**
@@ -381,7 +381,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByAssignmentType('formulario accidentes', null);
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>( result.getAssignmentAsMap().keySet() ).get(0), 'No ha devuelto el intermediario esperado');
     }
 
     /**
@@ -401,7 +401,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByAssignmentType(null, null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0), 'No ha devuelto el usuario por defecto');
     }
 
     /**
@@ -421,7 +421,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByAssignmentType('formulario automonos', '02000');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0), 'No ha devuelto el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>( result.getAssignmentAsMap().keySet() ).get(0), 'No ha devuelto el intermediario esperado');
     }
 
     /**
@@ -441,7 +441,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getAssignedUserIdByAssignmentType('formulario embarcaciones', '25000');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No ha devuelto el intermediario esperado');
     }
 
     /**
@@ -461,7 +461,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserDirectly('formulario accidentes');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha conseguido el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No se ha conseguido el intermediario esperado');
     }
 
     /**
@@ -482,7 +482,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserDirectly('formulario desconocido');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado al usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No se ha asignado al usuario por defecto');
     }
 
     /**
@@ -502,7 +502,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserDirectly(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado al usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No se ha asignado al usuario por defecto');
     }
 
     /**
@@ -520,17 +520,17 @@ public with sharing class Test_AccountLeadAssignment
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
         AccountLeadAssignment.forumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt
-        (
-            DeveloperName = 'formulario_asignacion',
-            AssignmentType__c = 'Direct',
-            ForumOrigin__c = 'formulario asignacion')
-        );
+                                                                (
+                                                                    DeveloperName = 'formulario_asignacion',
+                                                                    AssignmentType__c = 'Direct',
+                                                                    ForumOrigin__c = 'formulario asignacion')
+                                                                );
 
         Test.startTest();
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserDirectly('formulario asignacion');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No ha devuelto el usuario por defecto');
     }
 
     /**
@@ -551,7 +551,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByMunicipality('25000');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha conseguido el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No se ha conseguido el intermediario esperado');
     }
 
     /**
@@ -571,7 +571,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByMunicipality(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'Tendría que haber devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'Tendría que haber devuelto el usuario por defecto');
     }
 
     /**
@@ -591,7 +591,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByMunicipality('12639');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'Tendría que haber devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'Tendría que haber devuelto el usuario por defecto');
     }
 
     /**
@@ -605,7 +605,7 @@ public with sharing class Test_AccountLeadAssignment
     {
         setMetadataConfigurations();
 
-        AccountLeadAssignment.MunicipalityAssignmentMetadata.add(new MunicipalityAssignment__mdt(DeveloperName = 'X01520', PostalCode__c= 12639));
+        AccountLeadAssignment.MunicipalityAssignmentMetadata.add( new MunicipalityAssignment__mdt(DeveloperName = 'X01520', PostalCode__c='12639') );
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
@@ -613,7 +613,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByMunicipality('12639');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'Tendría que haber devuelto el usuario por defecto');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'Tendría que haber devuelto el usuario por defecto');
     }
 
     /**
@@ -633,7 +633,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByProvince('02365');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado el intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No se ha asignado el intermediario esperado');
     }
 
     /**
@@ -652,7 +652,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByProvince(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado el intermediario esperado');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No se ha asignado el intermediario esperado');
     }
 
     /**
@@ -672,7 +672,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByProvince('15000');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado el intermediario esperado');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No se ha asignado el intermediario esperado');
     }
 
     /**
@@ -689,14 +689,13 @@ public with sharing class Test_AccountLeadAssignment
 
         String defaultAgenteId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
 
-        AccountLeadAssignment.ProvinceAssignmentMetadata.add(new ProvinceAssignment__mdt(
-            DeveloperName = 'Albacete',PostalCode__c=17,Province__c='Albacete'));
+        AccountLeadAssignment.ProvinceAssignmentMetadata.add( new ProvinceAssignment__mdt(DeveloperName = 'Albacete',PostalCode__c='17',Province__c='Albacete') );
 
         Test.startTest();
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.assignedUserByProvince('17845');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha asignado el intermediario esperado');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No se ha asignado el intermediario esperado');
     }
 
     /**
@@ -749,11 +748,11 @@ public with sharing class Test_AccountLeadAssignment
     {
         setMetadataConfigurations();
 
-        AccountLeadAssignment.forumOriginAssignmentMetadata.add(new ForumOriginAssignment__mdt
-        (
-            DeveloperName = 'formulario_test',
-            AssignTo__c='IDIOMA-QQ',
-            ForumOrigin__c = 'formulario test'));
+        AccountLeadAssignment.forumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt
+                                                                 (
+                                                                     DeveloperName = 'formulario_test',
+                                                                     AssignTo__c='IDIOMA-QQ',
+                                                                     ForumOrigin__c = 'formulario test') );
 
         Test.startTest();
         String defaultResult = AccountLeadAssignment.getAssigmentType('formulario test');
@@ -777,7 +776,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getIntermediaryUserId('IDIOMA-FR');
         Test.stopTest();
 
-        Assert.areEqual(intermediary.Id, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No se ha encontrado al intermediario esperado');
+        Assert.areEqual(intermediary.Id, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No se ha encontrado al intermediario esperado');
     }
 
     /**
@@ -795,7 +794,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result = AccountLeadAssignment.getIntermediaryUserId(null);
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto al usuario por defecto.');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No ha devuelto al usuario por defecto.');
     }
 
     /**
@@ -813,7 +812,7 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result =  AccountLeadAssignment.getIntermediaryUserId('IDIOMA-FALSE');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto al usuario por defecto.');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No ha devuelto al usuario por defecto.');
     }
 
     /**
@@ -834,6 +833,6 @@ public with sharing class Test_AccountLeadAssignment
         AccountLeadAssignment.Assignment result =  AccountLeadAssignment.getIntermediaryUserId('IDIOMA-FALSE');
         Test.stopTest();
 
-        Assert.areEqual(defaultAgenteId, new List<String>(result.getAssignmentAsMap().keySet()).get(0),'No ha devuelto al usuario por defecto.');
+        Assert.areEqual(defaultAgenteId, new List<String>( result.getAssignmentAsMap().keySet() ).get(0),'No ha devuelto al usuario por defecto.');
     }
 }
