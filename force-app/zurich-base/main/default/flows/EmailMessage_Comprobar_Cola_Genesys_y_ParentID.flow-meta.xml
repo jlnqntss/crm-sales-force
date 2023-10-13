@@ -4,7 +4,7 @@
     <assignments>
         <name>CaseOwnerAssignment</name>
         <label>Asignar propietario caso</label>
-        <locationX>908</locationX>
+        <locationX>2668</locationX>
         <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -44,6 +44,32 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>ConstruccionCarteraAssignment</name>
+        <label>Asignar Construcción Cartera</label>
+        <locationX>4626</locationX>
+        <locationY>866</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>NombreConstruccionCartera</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>ConstruccionVentaAssignment</name>
+        <label>Asignar Construcción Venta</label>
+        <locationX>2602</locationX>
+        <locationY>866</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>NombreConstruccionVenta</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>CSMAdmManagerAssignment</name>
         <label>Asignar CSM Administración Manager</label>
         <locationX>578</locationX>
@@ -66,6 +92,58 @@
             <operator>Add</operator>
             <value>
                 <elementReference>NombreCSMIndivManager</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>DanosRCCarteraAssignment</name>
+        <label>Asignar Daños RC Cartera</label>
+        <locationX>3306</locationX>
+        <locationY>866</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>NombreDanosRCCartera</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>DanosRCVentaAssignment</name>
+        <label>Asignar Daños RC Venta</label>
+        <locationX>3394</locationX>
+        <locationY>1358</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>NombreDanosRCVenta</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>SpecialtiesCarteraAssignment</name>
+        <label>Asignar Specialties Cartera</label>
+        <locationX>4098</locationX>
+        <locationY>866</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>NombreSpecialtiesCartera</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>SpecialtiesVentaAssignment</name>
+        <label>Asignar Specialties Venta</label>
+        <locationX>2074</locationX>
+        <locationY>866</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>NombreSpecialtiesVenta</elementReference>
             </value>
         </assignmentItems>
     </assignments>
@@ -92,9 +170,141 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Agente_Construccion_Cartera_encontrado</name>
+        <label>¿Agente Construcción Cartera encontrado?</label>
+        <locationX>4758</locationX>
+        <locationY>758</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Construccion_Cartera_Encontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreConstruccionCartera</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ConstruccionCarteraAssignment</targetReference>
+            </connector>
+            <label>Construcción Cartera Encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Agente_Construccion_Venta_encontrado</name>
+        <label>¿Agente Construcción Venta encontrado?</label>
+        <locationX>2734</locationX>
+        <locationY>758</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Construccion_Venta_Encontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreConstruccionVenta</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ConstruccionVentaAssignment</targetReference>
+            </connector>
+            <label>Construcción Venta Encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Agente_Danos_RC_Cartera_encontrado</name>
+        <label>¿Agente Daños RC Cartera encontrado?</label>
+        <locationX>3438</locationX>
+        <locationY>758</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Danos_RC_Cartera_Encontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreDanosRCCartera</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DanosRCCarteraAssignment</targetReference>
+            </connector>
+            <label>Daños RC Cartera Encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Agente_Danos_RC_Venta_encontrado</name>
+        <label>¿Agente Daños RC Venta encontrado?</label>
+        <locationX>3526</locationX>
+        <locationY>1250</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Danos_RC_Venta_Encontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreDanosRCVenta</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DanosRCVentaAssignment</targetReference>
+            </connector>
+            <label>Daños RC Venta Encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Agente_Specialties_Cartera_encontrado</name>
+        <label>¿Agente Specialties Cartera encontrado?</label>
+        <locationX>4230</locationX>
+        <locationY>758</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Specialties_Cartera_Encontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreSpecialtiesCartera</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SpecialtiesCarteraAssignment</targetReference>
+            </connector>
+            <label>Specialties Cartera Encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Agente_Specialties_Venta_encontrado</name>
+        <label>¿Agente Specialties Venta encontrado?</label>
+        <locationX>2206</locationX>
+        <locationY>758</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Specialties_Venta_Encontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreSpecialtiesVenta</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SpecialtiesVentaAssignment</targetReference>
+            </connector>
+            <label>Specialties Venta Encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>CallCenterDecision</name>
         <label>¿Qué Call Center es?</label>
-        <locationX>1040</locationX>
+        <locationX>2800</locationX>
         <locationY>542</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -149,11 +359,26 @@
             </connector>
             <label>CC Service</label>
         </rules>
+        <rules>
+            <name>USPOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ColaGenesysCallCenter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USP</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Que_tipo_y_ramo_es</targetReference>
+            </connector>
+            <label>USP</label>
+        </rules>
     </decisions>
     <decisions>
         <name>CaseAssignedToUserDecision</name>
         <label>¿Caso asignado a usuario?</label>
-        <locationX>1040</locationX>
+        <locationX>2800</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>CallCenterDecision</targetReference>
@@ -178,7 +403,7 @@
     <decisions>
         <name>CaseOrOpportunityDecision</name>
         <label>¿Caso u oportunidad?</label>
-        <locationX>1733</locationX>
+        <locationX>4373</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -278,6 +503,176 @@
             <label>Casos abiertos encontrados</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Que_tipo_y_ramo_es</name>
+        <label>¿Que tipo y ramo es?</label>
+        <locationX>3526</locationX>
+        <locationY>650</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Venta_Danos_RC</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Danos-RC Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Agente_Danos_RC_Venta_encontrado</targetReference>
+            </connector>
+            <label>Venta Daños RC</label>
+        </rules>
+        <rules>
+            <name>Venta_Specialties</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Specialties</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>TipoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Agente_Specialties_Venta_encontrado</targetReference>
+            </connector>
+            <label>Venta Specialties</label>
+        </rules>
+        <rules>
+            <name>Venta_Construccion</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Construccion</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>TipoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Agente_Construccion_Venta_encontrado</targetReference>
+            </connector>
+            <label>Venta Construcción</label>
+        </rules>
+        <rules>
+            <name>Venta_Ramos_Particulares</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Generico</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>TipoCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Agente_Danos_RC_Venta_encontrado</targetReference>
+            </connector>
+            <label>Venta Ramos Particulares</label>
+        </rules>
+        <rules>
+            <name>Cartera_Danos_RC</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cartera</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Agente_Danos_RC_Cartera_encontrado</targetReference>
+            </connector>
+            <label>Cartera Daños RC</label>
+        </rules>
+        <rules>
+            <name>Cartera_Ramos_Particulares</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Generico</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>TipoCaso</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Agente_Danos_RC_Cartera_encontrado</targetReference>
+            </connector>
+            <label>Cartera Ramos Particulares</label>
+        </rules>
+        <rules>
+            <name>Cartera_Specialties</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Specialties</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>TipoCaso</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Agente_Specialties_Cartera_encontrado</targetReference>
+            </connector>
+            <label>Cartera Specialties</label>
+        </rules>
+        <rules>
+            <name>Cartera_Construccion</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Construccion</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>TipoCaso</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Agente_Construccion_Cartera_encontrado</targetReference>
+            </connector>
+            <label>Cartera Construccion</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>EmailMessage - Comprobar Cola Genesys y ParentID {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage - Búsqueda gestor preferente</label>
@@ -368,7 +763,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>1607</locationX>
+        <locationX>4247</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CaseOrOpportunityDecision</targetReference>
@@ -447,6 +842,20 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>NombreConstruccionCartera</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>NombreConstruccionVenta</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>NombreCSMAdminManager</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -455,6 +864,34 @@
     </variables>
     <variables>
         <name>NombreCSMIndivManager</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>NombreDanosRCCartera</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>NombreDanosRCVenta</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>NombreSpecialtiesCartera</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>NombreSpecialtiesVenta</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
@@ -472,6 +909,20 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>TipoCaso</name>
+        <dataType>Picklist</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>VerticalCaso</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
 </Flow>

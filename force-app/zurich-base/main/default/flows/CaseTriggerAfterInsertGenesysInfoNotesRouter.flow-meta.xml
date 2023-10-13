@@ -246,6 +246,36 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!$Record.AccountId}), &apos;&apos;, TEXT({!$Record.Account.SpecializationType__c}))</expression>
     </formulas>
+    <formulas>
+        <name>UWConstruccionCartera</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.AccountId}), null,{!$Record.Account.UWPorfolioBuilding__c} )</expression>
+    </formulas>
+    <formulas>
+        <name>UWConstruccionVenta</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.UWSaleBuilding__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWDanosRCCartera</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.UWPortfolioRCDamage__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWDanosRCVenta</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.UWSaleRCDamage__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWSpecialtiesCartera</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.UWPortfolioSpecialties__c})</expression>
+    </formulas>
+    <formulas>
+        <name>UWSpecialtiesVenta</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.UWSaleSpecialties__c})</expression>
+    </formulas>
     <interviewLabel>Case Trigger - After Insert - Enrutador de casos a Genesys  {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert - Enrutador de casos a Genesys</label>
     <processMetadataValues>
@@ -595,6 +625,18 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>NombreConstruccionCartera</name>
+            <value>
+                <elementReference>UWConstruccionCartera</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreConstruccionVenta</name>
+            <value>
+                <elementReference>UWConstruccionVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>NombreCSMAdminManager</name>
             <value>
                 <elementReference>CSMAdministrationManager</elementReference>
@@ -607,9 +649,45 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>NombreDanosRCCartera</name>
+            <value>
+                <elementReference>UWDanosRCCartera</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreDanosRCVenta</name>
+            <value>
+                <elementReference>UWDanosRCVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSpecialtiesCartera</name>
+            <value>
+                <elementReference>UWSpecialtiesCartera</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSpecialtiesVenta</name>
+            <value>
+                <elementReference>UWSpecialtiesVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>NumeroParentId</name>
             <value>
                 <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>TipoCaso</name>
+            <value>
+                <elementReference>$Record.Type</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>VerticalCaso</name>
+            <value>
+                <elementReference>$Record.Industry__c</elementReference>
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
