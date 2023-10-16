@@ -5,7 +5,7 @@
     <formula>CASE
 (
  Indicator__c , 
- &quot;PN&quot;,  TargetKPINumber__c, 
+ &quot;PN&quot;,  TargetKPICurrency__c, 
  &quot;PoliciesPN&quot;, TargetKPINumber__c,
  &quot;PoliciesInForce&quot;, TargetKPINumber__c,
  &quot;Portfolio&quot;,  TargetKPICurrency__c ,
