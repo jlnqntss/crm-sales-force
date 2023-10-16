@@ -2,6 +2,73 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>57.0</apiVersion>
     <assignments>
+        <description>Añadir los eventos a actualizar</description>
+        <name>Add_Events_To_Update</name>
+        <label>Add Events To Update</label>
+        <locationX>501</locationX>
+        <locationY>3530</locationY>
+        <assignmentItems>
+            <assignToReference>EventsToUpdate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Move_All_Offer_Events</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Move_All_Offer_Events</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Añadir la tarea a actualizar</description>
+        <name>Add_Tasks_To_Update</name>
+        <label>Add Tasks To Update</label>
+        <locationX>501</locationX>
+        <locationY>2906</locationY>
+        <assignmentItems>
+            <assignToReference>TasksToUpdate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Move_All_Offer_Tasks</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Move_All_Offer_Tasks</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Change_Event_What_Id_Value</name>
+        <label>Change Event What Id Value</label>
+        <locationX>501</locationX>
+        <locationY>3422</locationY>
+        <assignmentItems>
+            <assignToReference>Move_All_Offer_Events.WhatId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ClonedOffer.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Events_To_Update</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Cambiamos el valor de what id a la nueva oferta</description>
+        <name>Change_What_Id_Value</name>
+        <label>Change What Id Value</label>
+        <locationX>501</locationX>
+        <locationY>2798</locationY>
+        <assignmentItems>
+            <assignToReference>Move_All_Offer_Tasks.WhatId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ClonedOffer.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Tasks_To_Update</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Se marca el registro como clonado y se añade el sufijo #OLD a su nombre</description>
         <name>clonedOfferFieldsAssignment</name>
         <label>Actualizar registro clonado</label>
@@ -56,6 +123,13 @@
         <assignmentItems>
             <assignToReference>ClonedOffer.Sales_Loss_Reason__c</assignToReference>
             <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ClonedOffer.CampaignId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CampaignIdFormula</elementReference>
+            </value>
         </assignmentItems>
         <connector>
             <targetReference>isNotNullInfoQuoteNumberDecision</targetReference>
@@ -121,7 +195,7 @@
             <assignToReference>ClonedOffer.StageName</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Legit Lead</stringValue>
+                <elementReference>NotQuotedNumberStageValue</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -403,7 +477,30 @@
             <label>Si</label>
         </rules>
     </decisions>
-    <description>Se modifica el orden de ejecución de la actualización y la creación de registros y añade fault en caso de error generar eventos y guardar estos errores en la tabla Error Log</description>
+    <decisions>
+        <description>En caso de clonar desde ZRM se deben de mover todas las tareas relacionadas con la oferta a la nueva oferta</description>
+        <name>Move_Offer_Tasks_To_New_Opportunity</name>
+        <label>Move Offer Tasks To New Opportunity</label>
+        <locationX>545</locationX>
+        <locationY>2474</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LaunchFromZRM</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Opportunity_Tasks</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>Añadir lógica clonar Ofertas Cerradas desde ZRM</description>
     <environments>Default</environments>
     <formulas>
         <description>Fecha actual mas 10 días</description>
@@ -417,8 +514,50 @@
         <dataType>Date</dataType>
         <expression>TODAY()+30</expression>
     </formulas>
+    <formulas>
+        <description>En caso de haberse lanzado desde ZRM, se copia el valor de campaña, si no vacío</description>
+        <name>CampaignIdFormula</name>
+        <dataType>String</dataType>
+        <expression>IF({!LaunchFromZRM}, {!OriginOffer.CampaignId}, &apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <description>En caso de CC si no tiene informado el campo QuotedNumber, devuelve Legit Lead, si es ZRM devuelve App Submitted</description>
+        <name>NotQuotedNumberStageValue</name>
+        <dataType>String</dataType>
+        <expression>IF({!LaunchFromZRM}, &apos;App Submitted&apos;, &apos;Legit Lead&apos;)</expression>
+    </formulas>
     <interviewLabel>SourceOpportunity__c {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Clone Offer For Intermediary</label>
+    <loops>
+        <description>Recorrer todos los Eventos encontrados</description>
+        <name>Move_All_Offer_Events</name>
+        <label>Move All Offer Events</label>
+        <locationX>413</locationX>
+        <locationY>3314</locationY>
+        <collectionReference>Get_Opportunity_Events</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Change_Event_What_Id_Value</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Events</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Editar campo What Id a la oferta clonada</description>
+        <name>Move_All_Offer_Tasks</name>
+        <label>Move All Offer Tasks</label>
+        <locationX>413</locationX>
+        <locationY>2690</locationY>
+        <collectionReference>Get_Opportunity_Tasks</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Change_What_Id_Value</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Tasks</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -444,77 +583,53 @@
         <label>Insertar registro clonado</label>
         <locationX>545</locationX>
         <locationY>2366</locationY>
-        <faultConnector>
-            <targetReference>Create_Error_Event_Insert_Offer</targetReference>
-        </faultConnector>
+        <connector>
+            <targetReference>Move_Offer_Tasks_To_New_Opportunity</targetReference>
+        </connector>
         <inputReference>ClonedOffer</inputReference>
     </recordCreates>
-    <recordCreates>
-        <description>Añadir un evento de error en caso de que se de un DML exception</description>
-        <name>Create_Error_Event_Insert_Offer</name>
-        <label>Create Error Event Insert Offer</label>
-        <locationX>1370</locationX>
-        <locationY>2474</locationY>
-        <inputAssignments>
-            <field>Level__c</field>
+    <recordLookups>
+        <name>Get_Opportunity_Events</name>
+        <label>Get Opportunity Events</label>
+        <locationX>413</locationX>
+        <locationY>3206</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Move_All_Offer_Events</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
             <value>
-                <stringValue>Error</stringValue>
+                <elementReference>OriginOffer.Id</elementReference>
             </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Message__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Record_Object__c</field>
-            <value>
-                <elementReference>$Flow.CurrentRecord</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>Clone Offer For Intermediary</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Error_Event__e</object>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <description>Crear un registro de error en caso de fallo de DML</description>
-        <name>Create_Error_Event_Update_Offer</name>
-        <label>Create Error Event Update Offer</label>
-        <locationX>1634</locationX>
-        <locationY>2366</locationY>
-        <inputAssignments>
-            <field>Level__c</field>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Opportunity_Tasks</name>
+        <label>Get Opportunity Tasks</label>
+        <locationX>413</locationX>
+        <locationY>2582</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Move_All_Offer_Tasks</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WhatId</field>
+            <operator>EqualTo</operator>
             <value>
-                <stringValue>Error</stringValue>
+                <elementReference>OriginOffer.Id</elementReference>
             </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Message__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Record_Object__c</field>
-            <value>
-                <elementReference>$Flow.CurrentRecord</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>Clone Offer For Intermediary</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Error_Event__e</object>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
+    </recordLookups>
     <recordLookups>
         <description>Recuperamos del custom setting el usuario por defecto.</description>
         <name>getCrossSellingDefaultUser</name>
@@ -613,10 +728,25 @@
         <connector>
             <targetReference>clonedOpportunityInsert</targetReference>
         </connector>
-        <faultConnector>
-            <targetReference>Create_Error_Event_Update_Offer</targetReference>
-        </faultConnector>
         <inputReference>OriginOffer</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Actualizar relación eventos con la nueva oferta</description>
+        <name>Update_Events</name>
+        <label>Update Events</label>
+        <locationX>413</locationX>
+        <locationY>3722</locationY>
+        <inputReference>EventsToUpdate</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Tasks</name>
+        <label>Update Tasks</label>
+        <locationX>413</locationX>
+        <locationY>3098</locationY>
+        <connector>
+            <targetReference>Get_Opportunity_Events</targetReference>
+        </connector>
+        <inputReference>TasksToUpdate</inputReference>
     </recordUpdates>
     <runInMode>DefaultMode</runInMode>
     <start>
@@ -637,6 +767,26 @@
         <objectType>Opportunity</objectType>
     </variables>
     <variables>
+        <description>Registros de Evento a mover a la nueva oferta</description>
+        <name>EventsToUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Event</objectType>
+    </variables>
+    <variables>
+        <description>Indica si se ha ejecutado desde el botón Clonar Oferta de ZRM</description>
+        <name>LaunchFromZRM</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
         <description>Oferta recibida para ser clonada</description>
         <name>OriginOffer</name>
         <dataType>SObject</dataType>
@@ -644,5 +794,14 @@
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>Opportunity</objectType>
+    </variables>
+    <variables>
+        <description>Colección de registros de tarea a actualizar</description>
+        <name>TasksToUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Task</objectType>
     </variables>
 </Flow>
