@@ -68,7 +68,7 @@ public with sharing class PlanesComercialesMensualesUtilTest {
             Date endDate = Date.newInstance(ACTUAL_YEAR, 1, 31);
 
             // obtener el kpi del plan mensual antes de actualizar
-            List<PlanComercial__c> planMensualListBefore = new List<PlanComercial__c>([SELECT Id, TargetKPINumber__c FROM PlanComercial__c
+            List<PlanComercial__c> planMensualListBefore = new List<PlanComercial__c>([SELECT Id, TargetKPICurrency__c FROM PlanComercial__c
                                                                                 WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()
                                                                                 AND ParentPlan__c = :plan.Id
                                                                                 AND Indicator__c = 'PN'
@@ -77,7 +77,7 @@ public with sharing class PlanesComercialesMensualesUtilTest {
 
 
             // update target kpi
-            plan.TargetKPINumber__c = 200;
+            plan.TargetKPICurrency__c = 200;
             
             Test.startTest();
             update plan;
@@ -87,9 +87,9 @@ public with sharing class PlanesComercialesMensualesUtilTest {
             if (!planMensualListBefore.isEmpty()) {
                 PlanComercial__c planBeforeUpdate = planMensualListBefore.get(0);
                 
-                PlanComercial__c planAfterUpdate = [SELECT Id, TargetKPINumber__c FROM PlanComercial__c WHERE Id =:planBeforeUpdate.Id];
+                PlanComercial__c planAfterUpdate = [SELECT Id, TargetKPICurrency__c FROM PlanComercial__c WHERE Id =:planBeforeUpdate.Id];
 
-                System.assertEquals(true, planBeforeUpdate.TargetKPINumber__c != planAfterUpdate.TargetKPINumber__c);
+                System.assertEquals(true, planBeforeUpdate.TargetKPICurrency__c != planAfterUpdate.TargetKPICurrency__c);
             }
         }   
     }
@@ -110,7 +110,7 @@ public with sharing class PlanesComercialesMensualesUtilTest {
         if (!objList.isEmpty()) {
             Date endDate = Date.newInstance(ACTUAL_YEAR, 1, 31);
 
-            List<PlanComercial__c> planMensualListBefore = new List<PlanComercial__c>([SELECT Id, TargetKPINumber__c FROM PlanComercial__c
+            List<PlanComercial__c> planMensualListBefore = new List<PlanComercial__c>([SELECT Id, TargetKPICurrency__c FROM PlanComercial__c
                                                                                 WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('MensualPlan').getRecordTypeId()                                                                                
                                                                                 AND Indicator__c = 'PN'
                                                                                 AND EndDate__c =: endDate
@@ -127,9 +127,9 @@ public with sharing class PlanesComercialesMensualesUtilTest {
 
             if (!planMensualListBefore.isEmpty()) {
                 PlanComercial__c planBeforeUpdate = planMensualListBefore.get(0);
-                PlanComercial__c planAfterUpdate = [SELECT Id, TargetKPINumber__c FROM PlanComercial__c WHERE Id =:planBeforeUpdate.Id];
+                PlanComercial__c planAfterUpdate = [SELECT Id, TargetKPICurrency__c FROM PlanComercial__c WHERE Id =:planBeforeUpdate.Id];
     
-                System.assertEquals(true, planBeforeUpdate.TargetKPINumber__c != planAfterUpdate.TargetKPINumber__c);
+                System.assertEquals(true, planBeforeUpdate.TargetKPICurrency__c != planAfterUpdate.TargetKPICurrency__c);
             }
 
         }
