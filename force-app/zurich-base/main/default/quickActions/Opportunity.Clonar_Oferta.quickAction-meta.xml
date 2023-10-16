@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Clonar ofertas desde ZRM para aquellas en etapa etapa “Cerrada-Perdida” con Motivo de Pérdida venta “Campaña Finalizada” y pertenezcan a una Campaña de Venta Cruzada, quedando las actividades asociadas a la nueva Oferta y la nueva Oferta en la etapa ante</description>
+    <flowDefinition>ZRM_Clone_Offer</flowDefinition>
+    <label>Clonar Oferta</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>

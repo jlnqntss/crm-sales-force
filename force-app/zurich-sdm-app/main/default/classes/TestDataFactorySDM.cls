@@ -442,7 +442,7 @@ public class TestDataFactorySDM
         dtPlans[0].EndDate__c = Date.newInstance(actualYear, 12, 31);
         dtPlans[0].AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;
         dtPlans[0].AssignedTo__c = dtUser.Id;
-        dtPlans[0].TargetKPINumber__c = 5;
+        dtPlans[0].TargetKPICurrency__c = 5;
         dtPlans[0].RecordTypeId = rtPlanAnualId;
         System.runAs(dtUser) {
             insert dtPlans;
@@ -456,7 +456,7 @@ public class TestDataFactorySDM
         rnPlans[0].AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;
         rnPlans[0].AssignedTo__c = rnUser.Id;
         rnPlans[0].ParentPlan__c = dtPlans[0].Id;
-        rnPlans[0].TargetKPINumber__c = 5;
+        rnPlans[0].TargetKPICurrency__c = 5;
         rnPlans[0].RecordTypeId = rtPlanAnualId;
         System.runAs(dtUser) {
             insert rnPlans;
@@ -471,7 +471,7 @@ public class TestDataFactorySDM
             plan.AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;
             plan.AssignedTo__c = rnUser.Id;
             plan.ParentPlan__c = rnPlans[0].Id;
-            plan.TargetKPINumber__c = 1;
+            plan.TargetKPICurrency__c = 1;
             plan.RecordTypeId = rtPlanAnualId;
         }
         System.runAs(rnUser) {
@@ -552,7 +552,7 @@ public class TestDataFactorySDM
                 Product__c= 'Autos',
                 Segment__c= 'Particulares',
                 Zone__c = PlanComercialSelector.ZONE_11_BARCELONA,
-                TargetKPINumber__c = 5,
+                TargetKPICurrency__c = 5,
                 AccumulateType__c= PlanComercialSelector.ACCUMULATE_TYPE_MONTH
             );
 

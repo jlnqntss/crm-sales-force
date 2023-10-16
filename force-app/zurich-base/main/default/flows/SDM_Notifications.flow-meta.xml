@@ -4,7 +4,7 @@
         <name>NofityKPIEnded</name>
         <label>Nofity KPI Ended</label>
         <locationX>270</locationX>
-        <locationY>1151</locationY>
+        <locationY>1055</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -47,7 +47,7 @@
         <name>NofityKPIReached</name>
         <label>Nofity KPI Reached</label>
         <locationX>270</locationX>
-        <locationY>815</locationY>
+        <locationY>755</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -90,7 +90,7 @@
         <name>Notify_KPI_Changed</name>
         <label>Notify KPI Changed</label>
         <locationX>490</locationX>
-        <locationY>1943</locationY>
+        <locationY>1763</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -132,7 +132,7 @@
         <name>NotifyDaysLeft</name>
         <label>Notify Days Left</label>
         <locationX>50</locationX>
-        <locationY>1847</locationY>
+        <locationY>1679</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -174,7 +174,7 @@
         <name>NotifyWeekLeft</name>
         <label>Notify Week Left</label>
         <locationX>490</locationX>
-        <locationY>1607</locationY>
+        <locationY>1463</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -218,7 +218,7 @@
         <name>Assign_Notification</name>
         <label>Assign Notification</label>
         <locationX>402</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <assignmentItems>
             <assignToReference>RecipientId</assignToReference>
             <operator>Add</operator>
@@ -259,7 +259,7 @@
         <name>Anual_Plan_Target_KPI_Changed</name>
         <label>Anual Plan Target KPI Changed</label>
         <locationX>622</locationX>
-        <locationY>1823</locationY>
+        <locationY>1655</locationY>
         <defaultConnector>
             <targetReference>UpdateSentNotifications</targetReference>
         </defaultConnector>
@@ -320,7 +320,7 @@
         <name>End_Date_Reached</name>
         <label>End Date Reached</label>
         <locationX>402</locationX>
-        <locationY>1031</locationY>
+        <locationY>947</locationY>
         <defaultConnector>
             <targetReference>WhatTypeOfPLanIsDecision</targetReference>
         </defaultConnector>
@@ -353,7 +353,7 @@
         <name>IsMensualPlanKPINotReachedAndNotificationNotSentDecision</name>
         <label>Is Mensual Plan KPI Not Reached And Notification Not Sent?</label>
         <locationX>182</locationX>
-        <locationY>1727</locationY>
+        <locationY>1571</locationY>
         <defaultConnector>
             <targetReference>UpdateSentNotifications</targetReference>
         </defaultConnector>
@@ -435,7 +435,7 @@
         <name>KPIRreached</name>
         <label>KPI reached</label>
         <locationX>402</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>End_Date_Reached</targetReference>
         </defaultConnector>
@@ -468,7 +468,7 @@
         <name>SendAnynotification</name>
         <label>Send any notificaction?</label>
         <locationX>666</locationX>
-        <locationY>335</locationY>
+        <locationY>323</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
@@ -568,7 +568,7 @@
         <name>WeekLeft</name>
         <label>Week Left</label>
         <locationX>622</locationX>
-        <locationY>1487</locationY>
+        <locationY>1355</locationY>
         <defaultConnector>
             <targetReference>Anual_Plan_Target_KPI_Changed</targetReference>
         </defaultConnector>
@@ -601,7 +601,7 @@
         <name>WhatTypeOfPLanIsDecision</name>
         <label>What type of plan is it?</label>
         <locationX>402</locationX>
-        <locationY>1367</locationY>
+        <locationY>1247</locationY>
         <defaultConnector>
             <targetReference>WeekLeft</targetReference>
         </defaultConnector>
@@ -622,7 +622,7 @@
             <label>MensualPlan</label>
         </rules>
     </decisions>
-    <description>SDM: corregir calculo notificacion KPI Reached para Indicador APES y no notificar varias veces kpi inferior a objetivo N dias antes de fin de mes</description>
+    <description>SDM: cambiar Target KPI de Number a Currency para indicador PN</description>
     <environments>Default</environments>
     <formulas>
         <description>Selecciona el mensaje a utilizar en la notificación &apos;Days Left&apos; en función de si el plan mensual está relacionado con un intermediario o no.</description>
@@ -826,7 +826,7 @@ IF
         <expression>CASE
 (
   {!$Record.Indicator__c},
-  &quot;PN&quot;,  {!$Record.TargetKPINumber__c},
+  &quot;PN&quot;,  {!$Record.TargetKPICurrency__c},
   &quot;PoliciesPN&quot;,  {!$Record.TargetKPINumber__c},
   &quot;PoliciesInForce&quot;,  {!$Record.TargetKPINumber__c},
   &quot;Portfolio&quot;,  {!$Record.TargetKPICurrency__c},
@@ -901,7 +901,7 @@ IF
         <name>GetFrequencyNotificationsAction</name>
         <label>Get Frequency Notifications</label>
         <locationX>182</locationX>
-        <locationY>1607</locationY>
+        <locationY>1463</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsMensualPlanKPINotReachedAndNotificationNotSentDecision</targetReference>
@@ -925,7 +925,7 @@ IF
         <name>GetFrequencyNotificationsRecordTypeAction</name>
         <label>Get Frequency Notifications Record Type</label>
         <locationX>182</locationX>
-        <locationY>1487</locationY>
+        <locationY>1355</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetFrequencyNotificationsAction</targetReference>
@@ -948,7 +948,7 @@ IF
         <name>Notification_type</name>
         <label>Notification type</label>
         <locationX>402</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Notification</targetReference>
@@ -969,7 +969,7 @@ IF
         <name>UpdateSentNotifications</name>
         <label>Update Sent Notifications</label>
         <locationX>402</locationX>
-        <locationY>2279</locationY>
+        <locationY>2063</locationY>
         <inputAssignments>
             <field>SentNotifications__c</field>
             <value>
@@ -988,13 +988,13 @@ IF
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <subflows>
         <description>Crear tarea</description>
         <name>Create_Task</name>
         <label>Create Task</label>
         <locationX>50</locationX>
-        <locationY>1967</locationY>
+        <locationY>1787</locationY>
         <connector>
             <targetReference>UpdateSentNotifications</targetReference>
         </connector>

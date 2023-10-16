@@ -13,5 +13,6 @@
     <permissionSets>ZRM_Gestion_CS</permissionSets>
     <permissionSets>ZRM_Gestion_Captacion</permissionSets>
     <permissionSets>ZRM_Gestion_Informes</permissionSets>
+    <permissionSets>ZRM_Run_Flows</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

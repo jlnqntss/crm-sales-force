@@ -3,7 +3,8 @@
     <fullName>SalesLossReasonWhenClosedLostValues</fullName>
     <active>true</active>
     <description>[ZRM] Validación para mostrar un error al Agente Mediador si selecciona algún valor no permitido para ellos</description>
-    <errorConditionFormula>$Profile.Name = &apos;Agente Ventas&apos; &amp;&amp; 
+    <errorConditionFormula>$Profile.Name = &apos;Agente Ventas&apos; &amp;&amp;
+(ClonedOfferForIntermediary__c = false || (ClonedOfferForIntermediary__c = true &amp;&amp; ISCHANGED(Sales_Loss_Reason__c))) &amp;&amp;	
 (
 ISPICKVAL(Sales_Loss_Reason__c,&quot;Interested, managed by my agent&quot;) ||
 ISPICKVAL(Sales_Loss_Reason__c,&quot;Not Zurich customer&quot;) ||

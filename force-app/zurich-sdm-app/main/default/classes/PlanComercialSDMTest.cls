@@ -150,7 +150,7 @@ private class PlanComercialSDMTest
             plan.StartDate__c = Date.newInstance(2021, 1, 1);
             plan.EndDate__c = Date.newInstance(2021, 12, 31);
             plan.AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;    
-            plan.TargetKPINumber__c = 1;
+            plan.TargetKPICurrency__c = 1;
             plan.AssignedTo__c = rnUser.Id;
             plan.RecordTypeId = rtAnnualPlanId;
         }
@@ -222,7 +222,7 @@ private class PlanComercialSDMTest
         intermediaryPlans[0].StartDate__c = Date.newInstance(2021, 1, 1);
         intermediaryPlans[0].EndDate__c = Date.newInstance(2021, 12, 31);
         intermediaryPlans[0].AccumulateType__c = PlanComercialSelector.ACCUMULATE_TYPE_YRD;    
-        intermediaryPlans[0].TargetKPINumber__c = 1;
+        intermediaryPlans[0].TargetKPICurrency__c = 1;
         intermediaryPlans[0].AssignedTo__c = rnUser.Id;
         intermediaryPlans[0].RecordTypeId = rtAnnualPlanId;
         
