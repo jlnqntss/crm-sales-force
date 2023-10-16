@@ -263,7 +263,7 @@ public with sharing class AccountLeadAssignment
 
         for(MunicipalityAssignment__mdt currentMA : municipalityAssignmentMetadata)
         {
-            if(currentMA.PostalCode__c == Integer.valueOf(postalCode) && String.isNotBlank(currentMA.AssignTo__c))
+            if(currentMA.PostalCode__c == postalCode && String.isNotBlank(currentMA.AssignTo__c))
             {
                 return getIntermediaryUserId(currentMA.AssignTo__c);
             }
@@ -294,7 +294,7 @@ public with sharing class AccountLeadAssignment
             return defaultUser;
         }
 
-        Integer postalProvince = Integer.valueOf(postalCode.substring(0, 2));
+        String postalProvince = postalCode.substring(0, 2);
 
         for(ProvinceAssignment__mdt currentPA : provinceAssignmentMetadata)
         {
