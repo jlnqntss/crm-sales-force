@@ -144,6 +144,11 @@
                 <default>false</default>
                 <label>Campaña finalizada</label>
             </value>
+            <value>
+                <fullName>Agent removes from the campaign</fullName>
+                <default>false</default>
+                <label>Agent removes from the campaign</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
@@ -270,6 +275,10 @@
         <valueSettings>
             <controllingFieldValue>VC</controllingFieldValue>
             <valueName>Campaign completed</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Agent removes from the campaign</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
