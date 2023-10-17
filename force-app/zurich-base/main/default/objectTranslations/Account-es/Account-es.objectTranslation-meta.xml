@@ -454,6 +454,10 @@
         <name>Intermediary</name>
     </recordTypes>
     <recordTypes>
+        <label>Corredor Potencial</label>
+        <name>Potential_Broker</name>
+    </recordTypes>
+    <recordTypes>
         <label></label>
         <name>Master</name>
     </recordTypes>
