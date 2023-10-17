@@ -56,4 +56,40 @@ public with sharing class CampaignsSelector extends BaseSelector
 
         return result;
     }
+
+    /**
+     * Busca campaña a partir de un conjunto de external id
+     *
+     * @author arcortazar
+     * @date 11/10/2023
+     * @return          Listado de Campañas 
+     */
+    public List<Campaign> findCampaignById(List<String> listaIds) {
+
+        List<Campaign> result = new List<Campaign>();
+
+        if (!listaIds.isEmpty()) {
+            result = new List<Campaign>([SELECT Id, Type, IsActive, StartDate FROM Campaign WHERE Id IN :listaIds]);
+        }
+
+        return result;
+    }
+
+    /**
+     * Devuelve las campañas cuyo ID este en la lista que se pasa como parámetro y que sea de tipo Cross Seling, o esté activa, o haya comezado ya
+     * 
+     * @author arcortazar
+     * @date 11/10/2023
+     * @param   Lista de ID 
+     * @return  Listado de Campañas 
+     */
+    public List<Campaign> findZRMInitiatedCrossSellingCampaings(List<String> listaIds)
+    {
+        List<Campaign> result = new List<Campaign>();
+
+        if (!listaIds.isEmpty()) {
+            result = new List<Campaign>([SELECT Id FROM Campaign WHERE (Type != 'Cross Selling' OR IsActive = false OR StartDate <= TODAY) AND id IN :listaIds]);
+        }
+        return result;
+    }
 }
