@@ -8,6 +8,57 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>Agente ZRM</layout>
+        <layoutType>PersonAccount</layoutType>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Dirección de facturación</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>GDPR Status</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información del sistema</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Agente zrm</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Dirección de facturación</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>GDPR Status</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información de la compañía</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información del sistema</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>Business Customer</layout>
         <sections>
             <label>Información de compañia</label>
@@ -136,6 +187,37 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>Intermediary - Admin</layout>
+        <sections>
+            <label></label>
+            <section>Allocation</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Characteristics</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Indicators</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Intermediary Contact</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Main Section</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>Intermediary Group</layout>
         <sections>
             <label>Dirección</label>
@@ -183,6 +265,57 @@
         </sections>
         <sections>
             <label>Información del sistema</label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Intermediary Group - Admin</layout>
+        <sections>
+            <label></label>
+            <section>Address</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Association</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Commercial Development</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Connectivity</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Digitalisation</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Financial Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Info Zurich</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Main section</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Personal</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Structure</section>
+        </sections>
+        <sections>
+            <label></label>
             <section>System Information</section>
         </sections>
     </layouts>
@@ -383,6 +516,99 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>Ventas Business Customer</layout>
+        <sections>
+            <label></label>
+            <section>Company Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>GDPR</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Ventas Customer</layout>
+        <layoutType>PersonAccount</layoutType>
+        <sections>
+            <label></label>
+            <section>Additional information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>GDPR Status</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Ventas Intermediary</layout>
+        <sections>
+            <label></label>
+            <section>Address</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Allocation</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Indicators</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Intermediary Contact</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Main section</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Ventas Lead</layout>
+        <layoutType>PersonAccount</layoutType>
+        <sections>
+            <label></label>
+            <section>Telemarketing</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Ventas Partner</layout>
+        <sections>
+            <label></label>
+            <section>Contact</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System Information</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>ZE Customer</layout>
         <layoutType>PersonAccount</layoutType>
         <sections>
@@ -421,6 +647,18 @@
     </quickActions>
     <quickActions>
         <label></label>
+        <name>New_Task_Activity</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Nueva_Interaccion</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>RecalculateIntermediariesVisibility</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
         <name>Recordatorio2</name>
     </quickActions>
     <quickActions>
@@ -434,6 +672,10 @@
     <quickActions>
         <label></label>
         <name>UpdateIntermediary</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>UpdateIntermediaryEON</name>
     </quickActions>
     <quickActions>
         <label></label>
@@ -452,6 +694,10 @@
     <recordTypes>
         <label>Intermediario</label>
         <name>Intermediary</name>
+    </recordTypes>
+    <recordTypes>
+        <label>Corredor Potencial</label>
+        <name>Potential_Broker</name>
     </recordTypes>
     <recordTypes>
         <label></label>
@@ -477,11 +723,23 @@
     </validationRules>
     <validationRules>
         <errorMessage></errorMessage>
+        <name>USPAccountNotEditable</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
         <name>ValidateAdministrationManagerEmailFormat</name>
     </validationRules>
     <validationRules>
         <errorMessage></errorMessage>
         <name>ValidateIndividualsManagerEmailFormat</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>ZRMAccountNotEditable</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>ZRMRequiredFieldsForLead</name>
     </validationRules>
     <webLinks>
         <label></label>
