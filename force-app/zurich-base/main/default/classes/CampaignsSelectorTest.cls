@@ -114,7 +114,7 @@ private with sharing class CampaignsSelectorTest
 
     @isTest
     static void test_findZRMInitiatedCrossSellingCampaings_ok() {
-        List<Campaign> campanyas = [SELECT ID from Campaign WHERE Type = 'Cross Selling' OR IsActive = true];
+        List<Campaign> campanyas = [SELECT ID from Campaign WHERE Type = 'Cross Selling' OR IsActive = false];
         List<String> ids = new List<String>();
 
         for (Campaign c : campanyas)
