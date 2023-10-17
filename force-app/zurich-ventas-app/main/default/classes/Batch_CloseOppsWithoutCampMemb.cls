@@ -9,6 +9,16 @@
 global with sharing class Batch_CloseOppsWithoutCampMemb implements Database.Batchable<SObject>
 {
 
+    private String salesLossReason = '';
+
+    global Batch_CloseOppsWithoutCampMemb()
+    {}
+
+    global Batch_CloseOppsWithoutCampMemb(String salesLossReason)
+    {
+        this.salesLossReason = salesLossReason;
+    }
+
     /**
      * @description: Método invocable que inicia la ejecución del Batch.
      *               Este método puede ser llamado desde un flujo o proceso de Salesforce para iniciar el proceso de cierre de oportunidades.
@@ -52,7 +62,7 @@ global with sharing class Batch_CloseOppsWithoutCampMemb implements Database.Bat
         // Se recogen los miembros de campaña que también apuntan a esas campañas y cuentas
         List<CampaignMember> campaignMembers = getCampaignMembers(campaignData);
         // Se modifican y recogen las oportunidades que han perdido su miembro de campaña porque se ha borrado
-        List<Opportunity> opportunitiesToUpdate = getOpportunitiesToUpdate(scope, campaignMembers);
+        List<Opportunity> opportunitiesToUpdate = getOpportunitiesToUpdate(scope, campaignMembers, this.salesLossReason);
 
         update opportunitiesToUpdate;
     }
@@ -116,7 +126,7 @@ global with sharing class Batch_CloseOppsWithoutCampMemb implements Database.Bat
      * @Author: jgallaga
      * @Date: 12/09/2023
      **/
-    private List<Opportunity> getOpportunitiesToUpdate(List<Opportunity> scope, List<CampaignMember> campaignMembers)
+    private List<Opportunity> getOpportunitiesToUpdate(List<Opportunity> scope, List<CampaignMember> campaignMembers, String salesLossReason)
     {
         List<Opportunity> changedOpportunities = new List<Opportunity>();
 
@@ -136,6 +146,7 @@ global with sharing class Batch_CloseOppsWithoutCampMemb implements Database.Bat
 
             if(!hasMember)
             {
+                String sLossR = 'Agent removes from the campaign';
                 currentOpportunity.StageName = 'Closed Lost';
                 
                 if( currentOpportunity.Account.RecordType.DeveloperName == 'Lead' )
@@ -148,8 +159,15 @@ global with sharing class Batch_CloseOppsWithoutCampMemb implements Database.Bat
                     currentOpportunity.SalesProcess__c = 'VC';
                 }
                 
-                currentOpportunity.Sales_Loss_Reason__c = 'Not interested Policy - Revocation Consents';
-
+                if ( salesLossReason.contains(sLossR) )
+                {
+                    currentOpportunity.Sales_Loss_Reason__c = sLossR;
+                }
+                else
+                {
+                    currentOpportunity.Sales_Loss_Reason__c = 'Not interested Policy - Revocation Consents';
+                }
+                
                 changedOpportunities.add(currentOpportunity);
             }
         }
