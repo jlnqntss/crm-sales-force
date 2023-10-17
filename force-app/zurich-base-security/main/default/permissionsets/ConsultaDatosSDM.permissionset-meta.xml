@@ -206,6 +206,16 @@
         <field>PlanComercial__c.Zone__c</field>
         <readable>true</readable>
     </fieldPermissions>
+	<fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Segmento_Expats_Auto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Segmento_Expats_Hogar__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.ActiveParticipationInFocusGroups__c</field>

@@ -4193,6 +4193,44 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Segmento_Expats_Auto__c</picklist>
+        <values>
+            <fullName>Bronce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Plata</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Platinum</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Segmento_Expats_Hogar__c</picklist>
+        <values>
+            <fullName>Bronce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Plata</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Platinum</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>NationalIdType__c</picklist>
         <values>
             <fullName>C</fullName>
