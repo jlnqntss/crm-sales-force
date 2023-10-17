@@ -48,186 +48,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>ActiveReactiveSale__c</picklist>
-        <values>
-            <fullName>Active</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Reactive</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Association2__c</picklist>
-        <values>
-            <fullName>ACSV</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ADECOSE</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AMZ</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>APROCOR</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA Compromiso</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CENTERBROCK</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>COJEBRO</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NEWCORRED</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>WNETWORKS</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Association3__c</picklist>
-        <values>
-            <fullName>ACSV</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ADECOSE</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AMZ</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>APROCOR</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA Compromiso</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CENTERBROCK</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>COJEBRO</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NEWCORRED</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>WNETWORKS</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>BrokeragesGrouping__c</picklist>
-        <values>
-            <fullName>Alkora</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cicor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Club Català de Corredors</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Coinbroker</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Confide</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ERSM</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Ferrer i Ojeda</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>G InsurTech</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Grupo Aras</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Grupo Galilea</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Grupo Pacc y P%2ETrebol</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Howden-Artai-Assiteca</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Jori Armengol</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Kalibo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Materh</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Mediaria</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Medicorasse</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Otros</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Ruíz - Re</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Summa</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>CNAE__c</picklist>
         <values>
             <fullName>00100</fullName>
@@ -3287,29 +3107,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>Category__c</picklist>
-        <values>
-            <fullName>Básica %28PV2%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Esencial %28PV3%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Estándar %28PV1%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Plus %28PV0%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Premium %28PV-1%29</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Channel__c</picklist>
         <values>
             <fullName>Agents</fullName>
@@ -4043,72 +3840,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>CompaniesTheyWorkWith__c</picklist>
-        <values>
-            <fullName>AXA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Allianz</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>DKV</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fiatc</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generalli</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Lagun Aro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Liberty</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Mapfre</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Mutua Madrileña</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Mútua General</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Otros</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Reale</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Segur Caixa</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Conectivity__c</picklist>
-        <values>
-            <fullName>Alta Activos</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Alta No Activo</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>CustomerValue__c</picklist>
         <values>
             <fullName>1</fullName>
@@ -4226,45 +3957,6 @@
         </values>
         <values>
             <fullName>95</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>IRPFIntermediaryType__c</picklist>
-        <values>
-            <fullName>ANDORRA EN ANDORRA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ANDORRA EN ESPAÑA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CEUTA Y MELILLA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>EXTRANJEROS</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>INTERMEDIARIOS 2 PRIMEROS AÑOS PROF</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>INTERMEDIARIOS CON SUBAGENTES%2FCOLAB</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>INTERMEDIARIOS RENDIMIENTOS REDUCID</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NORMAL</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>SIN RETENCION</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -4400,17 +4092,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>IntermediaryStatus__c</picklist>
-        <values>
-            <fullName>Active</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Inactive</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Language__c</picklist>
         <values>
             <fullName>Catalan</fullName>
@@ -4489,55 +4170,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>LinkedExclusive__c</picklist>
-        <values>
-            <fullName>Exclusivo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Vinculado</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>ManagementProgram__c</picklist>
-        <values>
-            <fullName>Ebroker</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>MPM</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>QS</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>T-SIS</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>MiAgenciaUsage__c</picklist>
-        <values>
-            <fullName>High</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Low</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Medium</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Null</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Multitarifier__c</picklist>
         <values>
             <fullName>CODEOSCOPIC - Avant2</fullName>
@@ -4557,6 +4189,44 @@
         </values>
         <values>
             <fullName>WILLPLATINE</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Segmento_Expats_Auto__c</picklist>
+        <values>
+            <fullName>Bronce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Plata</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Platinum</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Segmento_Expats_Hogar__c</picklist>
+        <values>
+            <fullName>Bronce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Plata</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Platinum</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -4695,29 +4365,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>PerceptionLevelOfDigitization__c</picklist>
-        <values>
-            <fullName>1</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>2</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>3</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>4</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>5</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Rating</picklist>
         <values>
             <fullName>Cold</fullName>
@@ -4729,137 +4376,6 @@
         </values>
         <values>
             <fullName>Warm</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>RuralUrban__c</picklist>
-        <values>
-            <fullName>Rural</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Urban</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>SDMAssociation__c</picklist>
-        <values>
-            <fullName>ACSV</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ADECOSE</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AMZ</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>APROCOR</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA Compromiso</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CENTERBROCK</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>COJEBRO</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NEWCORRED</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>WNETWORKS</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Segment_sdm__c</picklist>
-        <values>
-            <fullName>Centralizados</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Global Brokers</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Next</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Oro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Plata</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Resto</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Start</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Top</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Top Broker</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Segmento_Expats_Auto__c</picklist>
-        <values>
-            <fullName>Bronce</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Oro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Plata</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Platinum</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Segmento_Expats_Hogar__c</picklist>
-        <values>
-            <fullName>Bronce</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Oro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Plata</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Platinum</fullName>
             <default>false</default>
         </values>
     </picklistValues>
