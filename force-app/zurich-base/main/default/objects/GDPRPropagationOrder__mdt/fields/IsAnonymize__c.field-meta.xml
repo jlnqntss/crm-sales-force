@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsAnonymize__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Campo que indica si el metadato es para propagar el anonimizado o no.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>When enabled this record will be used for the anonymize logic instead of blocking.</inlineHelpText>
+    <label>Is Anonymize</label>
+    <type>Checkbox</type>
+</CustomField>
