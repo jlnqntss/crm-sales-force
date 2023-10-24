@@ -261,4 +261,34 @@ public with sharing class PoliciesSelector extends RecordsSelector
 
         return result;
     }
+    
+     /**
+     * Busca pólizas activas a partir de PolicyHolder (tomador)
+     *
+     * @author arcortazar
+     * @date 03/08/2023
+     * @param Id policyHolder  Id de la cuenta a la que pertenece la póliza
+     * @param String groupDescription  Ramo al que pertenece la póliza
+     * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
+     * 
+     */
+    public List<Policy__c> selectByHolderAndGroupDescription(Id policyHolder, String groupDescription)
+    {
+        if (policyHolder == null)
+        {
+            return new List<Policy__c>();
+        }
+
+        this.baseQuery.selectReadableFields();
+        this.baseQuery.addConditionEq(Policy__c.PolicyHolder__c, policyHolder).addConditionEq(Policy__c.PolicyStatus__c, 'V');
+
+        if (!String.isBlank(groupDescription) && !String.isEmpty(groupDescription))
+        {
+            String busquedaField = 'Policy__c.ProductId__r.GroupDescription__c';
+            this.baseQuery.addConditionEq(busquedaField, groupDescription);
+
+        }
+        return (List<Policy__c>) this.baseQuery.run();
+    }
+    
 }

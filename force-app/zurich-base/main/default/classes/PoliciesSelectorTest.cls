@@ -15,6 +15,9 @@ private with sharing class PoliciesSelectorTest
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachOpportunity(opportunities, 10);
         insert policies;
+
+        List<Product2> products = TestDataFactory.generateProducts(10);
+        insert products;
     }
 
     @isTest
@@ -35,10 +38,10 @@ private with sharing class PoliciesSelectorTest
         policiesSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Policy__c.Id, 
-                Policy__c.PolicyHolder__c
-            }
+        {
+            Policy__c.Id,
+            Policy__c.PolicyHolder__c
+        }
         );
 
         List<Policy__c> matchedRecords = policiesSelector.selectByHolderAndNumber(policies.get(0).PolicyHolder__c, policyNumbers);
@@ -98,10 +101,10 @@ private with sharing class PoliciesSelectorTest
         policiesSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Policy__c.Id, 
-                Policy__c.OpportunityName__c
-            }
+        {
+            Policy__c.Id,
+            Policy__c.OpportunityName__c
+        }
         );
 
         List<Policy__c> matchedRecords = policiesSelector.selectByOpportunityName(opportunityIds);
@@ -129,12 +132,12 @@ private with sharing class PoliciesSelectorTest
         policiesSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Policy__c.Id, 
-                Policy__c.PolicyHolder__c,
-                Policy__c.EndDate__c,
-                Policy__c.InfoPolicyNumber__c
-            }
+        {
+            Policy__c.Id,
+            Policy__c.PolicyHolder__c,
+            Policy__c.EndDate__c,
+            Policy__c.InfoPolicyNumber__c
+        }
         );
 
         List<Policy__c> policies = policiesSelector.selectByHolder(customer.Id);
@@ -199,12 +202,12 @@ private with sharing class PoliciesSelectorTest
         policiesSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Policy__c.Id, 
-                Policy__c.PolicyHolder__c,
-                Policy__c.EndDate__c,
-                Policy__c.InfoPolicyNumber__c
-            }
+        {
+            Policy__c.Id,
+            Policy__c.PolicyHolder__c,
+            Policy__c.EndDate__c,
+            Policy__c.InfoPolicyNumber__c
+        }
         );
 
         List<Policy__c> policies = policiesSelector.selectByHolder(customer.Id);
@@ -240,12 +243,12 @@ private with sharing class PoliciesSelectorTest
         policiesSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Policy__c.Id, 
-                Policy__c.PolicyHolder__c,
-                Policy__c.EndDate__c,
-                Policy__c.InfoPolicyNumber__c
-            }
+        {
+            Policy__c.Id,
+            Policy__c.PolicyHolder__c,
+            Policy__c.EndDate__c,
+            Policy__c.InfoPolicyNumber__c
+        }
         );
 
         List<Policy__c> policies = policiesSelector.selectByHolder(customer.Id);
@@ -290,10 +293,10 @@ private with sharing class PoliciesSelectorTest
         policiesSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Policy__c.Id, 
-                Policy__c.PolicyHolder__c
-            }
+        {
+            Policy__c.Id,
+            Policy__c.PolicyHolder__c
+        }
         );
 
         List<Policy__c> matchedRecords = policiesSelector.selectByInfoPolicyNumberAndNationalId(nationalIds, policyNumbers);
@@ -301,7 +304,7 @@ private with sharing class PoliciesSelectorTest
         Test.stopTest();
 
         System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
-        for (integer i = 0; i<matchedRecords.size();i++)
+        for (integer i = 0; i < matchedRecords.size(); i++)
         {
             System.assertEquals(true, matchedRecords.get(i).PolicyHolder__c == policies.get(i).PolicyHolder__c, 'PolicyHolder should be the same');
         }
@@ -325,7 +328,7 @@ private with sharing class PoliciesSelectorTest
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-        
+
     }
 
     @isTest
@@ -333,7 +336,7 @@ private with sharing class PoliciesSelectorTest
     {
         List<Policy__c> policies = [SELECT Id, InfoPolicyNumber__c, PolicyHolder__c FROM Policy__c];
         System.assertEquals(false, policies.isEmpty(), 'List should NOT be empty');
-        
+
         List<String> policyNumbers = new List<String>();
         for(Policy__c policy: policies)
         {
@@ -344,24 +347,60 @@ private with sharing class PoliciesSelectorTest
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
-        
+
+    }
+
+    @IsTest
+    static void test_selectByHolderAndGroupDescription_ok()
+    {
+        List<Product2> lstProductos = [SELECT Id, GroupDescription__c FROM Product2];
+        lstProductos[0].GroupDescription__c = 'HOGAR';
+
+        List<Policy__c> policies = [SELECT Id, PolicyHolder__c, ProductId__c FROM Policy__c];
+        policies[0].ProductId__c = lstProductos[0].id;
+
+        update lstProductos;
+        update policies;
+
+        Id holderId = policies[0].PolicyHolder__c;
+        String ramo = 'HOGAR';
+
+        // Comprobar obtiene pólizas por tomador
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        List<Policy__c> encontradas = policiesSelector.selectByHolderAndGroupDescription(holderId, ramo);
+        System.assertEquals(true, !encontradas.isEmpty(), 'Policies should NOT be empty and greater than one');
+    }
+
+    @IsTest
+    static void test_selectByHolderAndGroupDescription_ko()
+    {
+        List<Policy__c> policies = [SELECT Id, PolicyHolder__c, ProductId__c FROM Policy__c];
+        Id holderId = policies[0].PolicyHolder__c;
+        String ramo = 'FAKE';
+
+        // Comprobar obtiene pólizas por tomador
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        List<Policy__c> encontradas = policiesSelector.selectByHolderAndGroupDescription(holderId, ramo);
+        System.assertEquals(true, encontradas.isEmpty(), 'Policies list should be empty');
     }
 
     @isTest
-    static void findPoliciesWithIncorrectVisibilityTest() {
+    static void findPoliciesWithIncorrectVisibilityTest()
+    {
         Test.startTest();
-        String policyList = (new PoliciesSelector()).findPoliciesWithIncorrectVisibility();
+        String policyList = ( new PoliciesSelector() ).findPoliciesWithIncorrectVisibility();
         Test.stopTest();
 
         System.assertEquals(true, policyList != null, 'No debe ser nulo');
     }
 
     @isTest
-    static void findPoliciesWithIncorrectVisibilityByAccountIdTest() {
+    static void findPoliciesWithIncorrectVisibilityByAccountIdTest()
+    {
         Test.startTest();
         Set<String> accountIds = new Set<String>();
-        String policyList = (new PoliciesSelector()).findPoliciesWithIncorrectVisibilityByAccountId(accountIds);
-        Test.stopTest(); 
+        String policyList = ( new PoliciesSelector() ).findPoliciesWithIncorrectVisibilityByAccountId(accountIds);
+        Test.stopTest();
 
         System.assertEquals(true, policyList == null, 'Debe ser nulo');
     }

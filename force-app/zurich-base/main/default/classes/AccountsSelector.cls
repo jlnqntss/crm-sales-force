@@ -947,13 +947,13 @@ public with sharing class AccountsSelector extends RecordsSelector
     {
 
         String result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, ' +
-                                                    'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
-                                                    'FROM Account ' +
-                                                    'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') ' +
-                                                    'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
-                                                    'AND (IntermediaryVisibilityForm__c = null ' +
-                                                    'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
-                                                    'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
+                        'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                        'FROM Account ' +
+                        'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') ' +
+                        'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
+                        'AND (IntermediaryVisibilityForm__c = null ' +
+                        'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                        'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
 
         return result;
     }
@@ -970,15 +970,16 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         String result;
 
-        if (accountIds != null && !accountIds.isEmpty()) {
+        if ( accountIds != null && !accountIds.isEmpty() )
+        {
             result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c,  ' +
-                                            'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
-                                            'FROM Account ' +
-                                            'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') AND Id IN  :accountIds ' +
-                                            'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
-                                            'AND (IntermediaryVisibilityForm__c = null ' +
-                                            'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
-                                            'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
+                     'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                     'FROM Account ' +
+                     'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') AND Id IN  :accountIds ' +
+                     'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
+                     'AND (IntermediaryVisibilityForm__c = null ' +
+                     'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                     'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
 
         }
 
@@ -988,7 +989,7 @@ public with sharing class AccountsSelector extends RecordsSelector
 
     /**
      * Busca cuentas de MEDIADORES partir de un número de teléfono (No usan ContactPointPhone)
-     * @param nifs 
+     * @param nifs
      * @return listado de cuentas
      */
     public List<Account> findIntermediariesByNIF(List<String> nifs)
@@ -998,7 +999,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         this.baseQuery.selectFields
         (
             new List<Schema.SObjectField>
-            {
+        {
             Account.Id,
             Account.TerritorialDirectionCode__c,
             Account.ChannelZoneCode__c,
@@ -1012,7 +1013,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             Account.Channel__c,
             Account.Segment__c,
             Account.Association__c
-            }
+        }
         );
 
         this.baseQuery.addConditionEq(Account.NationalId__c, nifs);
@@ -1029,20 +1030,74 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 21/09/2023
      * @return List<Account> Listado de account a las que recalcular la visibilidad
      */
-    public String findZRMBlockedAccountWithActivitiesFromIds(Set<String> accountIds) {
+    public String findZRMBlockedAccountWithActivitiesFromIds(Set<String> accountIds)
+    {
 
         String result;
 
-        if (accountIds != null && !accountIds.isEmpty()) {
+        if ( accountIds != null && !accountIds.isEmpty() )
+        {
             result = 'SELECT Id, (SELECT Id, OwnerId FROM Tasks WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
-                                        '(SELECT Id, OwnerId FROM PersonTasks WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
-                                        '(SELECT Id, OwnerId FROM Events WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
-                                        '(SELECT Id, OwnerId FROM PersonEvents WHERE Owner.Profile.Name = \'Agente Ventas\') ' +
-                                        'FROM Account WHERE Id IN :accountIds AND Blocked__c = true';
+                     '(SELECT Id, OwnerId FROM PersonTasks WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
+                     '(SELECT Id, OwnerId FROM Events WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
+                     '(SELECT Id, OwnerId FROM PersonEvents WHERE Owner.Profile.Name = \'Agente Ventas\') ' +
+                     'FROM Account WHERE Id IN :accountIds AND Blocked__c = true';
 
         }
 
         return result;
+    }
+
+
+    /**
+     * Busca cuentas a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
+     * maximizar resultados de búsqueda. Después, filtra por el DNI facilitado
+     * @author jfherrero
+     * @date 24/10/2023
+     * @param  nationalIds Listado de DNI/NIE
+     * @param  nationalIdType Tipo de documento de identificación que se envía, puede quedar vacío
+     * @param  phones Listado de teléfonos. Válido cualquier formato
+     * @return        Listado de cuentas sobre los que se ha realizado match
+     */
+    public List<Account> findByNationalIdAndPhoneNumber(List<String> nationalIds, String nationalIdType, List<String> phones)
+    {
+        if ( ( nationalIds == null || nationalIds.isEmpty() ) && ( phones == null || phones.isEmpty() ) )
+        {
+            return new List<Account>();
+        }
+
+        Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByPhoneNumber(phones, relatedRecordsScope);
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+        {
+            Account.Id,
+            Account.Name,
+            Account.PersonContactId,
+            Account.NationalId__c,
+            Account.NumPolicies__pc,
+            Account.NumQuotes__pc,
+            Account.MainMobilePhone__c,
+            Account.Phone,
+            Account.MainEmail__c,
+            Account.NationalId__c
+        }
+        );
+
+        if ( matchedRecordIds != null && !matchedRecordIds.isEmpty() )
+        {
+            this.baseQuery.byId( matchedRecordIds);
+
+            if ( nationalIds != null && !nationalIds.isEmpty() )
+            {
+                this.baseQuery.addConditionIn(Account.NationalId__c, nationalIds);
+                if( !String.isBlank(nationalIdType) )
+                {
+                    this.baseQuery.addConditionEq(Account.NationalIdType__c, nationalIdType);
+                }
+            }
+        }
+        return (List<Account>) this.baseQuery.run();
     }
 
 }

@@ -1,5 +1,6 @@
 @isTest
-public with sharing class AssetsSelectorTest {
+public with sharing class AssetsSelectorTest
+{
     @TestSetup
     public static void createScenario()
     {
@@ -26,8 +27,14 @@ public with sharing class AssetsSelectorTest {
         List<Policy__c> policies = [SELECT Id FROM Policy__c];
         System.assertEquals(false, policies.isEmpty(), 'Policies list should NOT be empty');
 
+        List<String> ids = new List<String>();
+        for (Policy__c p : policies)
+        {
+            ids.add(p.id);
+        }
+
         Test.startTest();
-        List<Asset> matchedRecords = new AssetsSelector().selectByPolicyID(policies[0].Id);
+        List<Asset> matchedRecords = new AssetsSelector().selectByPolicyID(ids);
         Test.stopTest();
 
         System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');

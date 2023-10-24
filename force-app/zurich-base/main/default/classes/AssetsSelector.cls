@@ -1,13 +1,14 @@
-public with sharing class AssetsSelector extends RecordsSelector {
-    
-     //#region Contructores
+public with sharing class AssetsSelector extends RecordsSelector
+{
 
-     public AssetsSelector()
-     {
-         super(Asset.getSObjectType());
-     }
-    
-     //#endregion
+    //#region Contructores
+
+    public AssetsSelector()
+    {
+        super( Asset.getSObjectType() );
+    }
+
+    //#endregion
 
 
     /**
@@ -18,12 +19,12 @@ public with sharing class AssetsSelector extends RecordsSelector {
      * @param   String       policyID   Identificador de la póliza a buscar
      * @return  List<Asset>  Listado de assets asociados a la póliza que estamos buscando
      */
-    public List<Asset> selectByPolicyID(String policyId)
+    public List<Asset> selectByPolicyID(List<String> policyId)
     {
-        if(String.isNotBlank(policyId))
+        if(!policyId.isEmpty() && policyId != null)
         {
             this.baseQuery.selectReadableFields();
-            this.baseQuery.addConditionEq(Asset.PolicyId__c, policyId);
+            this.baseQuery.addConditionIn(Asset.PolicyId__c, policyId);
 
             return (List<Asset>) this.baseQuery.run();
         }
