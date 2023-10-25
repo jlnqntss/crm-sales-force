@@ -1993,12 +1993,7 @@
         <editable>true</editable>
         <field>Account.Foreigners__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.IntermediaryGroupDescription__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
+    </fieldPermissions>    
 	<fieldPermissions>
         <editable>true</editable>
         <field>Account.IntermediaryGroupEndDate__c</field>

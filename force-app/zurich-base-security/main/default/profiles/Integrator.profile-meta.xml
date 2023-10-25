@@ -3895,11 +3895,6 @@
         <field>Account.FinancialScoring__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.IntermediaryGroupDescription__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Account.IntermediaryGroupEndDate__c</field>
