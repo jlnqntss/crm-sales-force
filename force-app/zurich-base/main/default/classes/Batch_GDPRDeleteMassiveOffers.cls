@@ -2,7 +2,7 @@
  * @description       :
  * @author            : mfernandezcarrera
  * @group             :
- * @last modified on  : 25/10/2023
+ * @last modified on  : 26/10/2023
  * @last modified by  : jgallaga
 **/
 public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject>
@@ -11,7 +11,8 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
     Creamos un primer mapa de String e Integer,que contiene todos los casos de Estructura.
     String --> EntidadLegal + Código Estructural + Tipo de Cuenta
     Integer --> Número de días
-     */
+    */
+    @TestVisible
     private static final Map<String,Integer> INTERNAL_ESTRUCTURE = new Map<String, Integer>
     {
         '0016100F' => 90,   '0016100J' => 1800, '0016200F' => 730,  '0016200J' => 730,  '0016250F' => 730,  '0016250J' => 730,  '0016300F' => 60,
@@ -25,7 +26,8 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
     Creamos un segundo mapa de String e Integer,que contiene todos los casos de por defecto.
     String --> EntidadLegal + Código Estructural + Tipo de Cuenta
     Integer --> Número de días
-     */
+    */
+    @TestVisible
     private static final Map<String,Integer> DEFAULT_ESTRUCTURE = new Map<String, Integer>
     {
         '001F' => 60,   '001J' => 730,  '005F' => 30,   '005J' => 30,   '008F' => 90,   '008J' => 730
