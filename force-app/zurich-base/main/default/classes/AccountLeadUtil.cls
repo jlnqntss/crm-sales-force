@@ -8,6 +8,8 @@
 public with sharing class AccountLeadUtil
 {
     public static final String LEAD = 'Lead';
+    public static final String CUSTOMER = 'Customer';
+    public static final String BUSINESS = 'BusinessCustomer';
 
     /**
      * Método que comprueba que se lance la validación sólo se lance desde los dos perfiles indicados
@@ -108,7 +110,7 @@ public with sharing class AccountLeadUtil
             return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
         }
 
-        if(acc != null)
+        if(acc != null && (acc.RecordType.DeveloperName.equals(CUSTOMER)|| acc.RecordType.DeveloperName.equals(BUSINESS)))
         {
             if( String.isNotBlank(acc.Intermediary_Name__c) )
             {
