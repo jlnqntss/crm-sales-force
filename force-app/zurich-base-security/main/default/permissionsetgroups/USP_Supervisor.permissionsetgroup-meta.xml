@@ -6,6 +6,7 @@
     <permissionSets>Consulta_Conocimiento</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_de_KPI</permissionSets>
+    <permissionSets>Delete_Intermediary_Contact_USP</permissionSets>
     <permissionSets>Gestion_Avisos_Acuerdos_USP</permissionSets>
     <permissionSets>Gestion_Suscripcion</permissionSets>
     <permissionSets>Informes_solo_lectura</permissionSets>
