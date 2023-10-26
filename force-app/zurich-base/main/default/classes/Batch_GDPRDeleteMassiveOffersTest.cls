@@ -2,8 +2,8 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 26/10/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 10-26-2023
+ * @last modified by  : mfernandezcarrera
 **/
 @isTest
 public class Batch_GDPRDeleteMassiveOffersTest
@@ -150,5 +150,84 @@ public class Batch_GDPRDeleteMassiveOffersTest
         System.debug(deletedOffers.size());
 
         Assert.isTrue(deletedOffers.isEmpty(), 'No se han borrado las ofertas esperadas');
+    }
+
+    @isTest
+    // Método del test en el que no se debe de borrar ninfuna oferta ya que no cumplen las condiciones
+    static void test_NoDeleteOffers()
+    {
+        List<Account> accountF = TestDataFactory.generateAccounts('999', 'Business Customer', 1);
+        
+        accountF[0].FirstName='Prueba';
+        accountF[0].Type='F';
+        insert accountF;
+
+       // create new 3 offers
+       List<Opportunity> newOffersFNoDelete = TestDataFactory.generateOpportunitiesForEachAccount(accountF, 'General', 'Open',System.today().addDays(10), 3);
+       
+       newOffersFNoDelete[0].CommercialStructureCode__c='5500';
+       newOffersFNoDelete[1].CommercialStructureCode__c='5501';
+       newOffersFNoDelete[2].CommercialStructureCode__c='1997';
+
+       insert newOffersFNoDelete;
+        
+        test.startTest();
+        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers();
+        Database.executeBatch(batchDeleteMassiveOfferGdpr);
+        test.stopTest();
+        List<Opportunity> oppListNew= [SELECT id FROM Opportunity];
+        System.assertEquals(3, oppListNew.size());
+    }
+    @isTest
+    // Método del test en el que no se debe de borrar ninfuna oferta ya que no cumplen las condiciones por las fechas
+    static void test_NoDeleteOffersByDate()
+    {
+        List<Account> accountJ = TestDataFactory.generateAccounts('001', 'Business Customer', 1);
+        
+        accountJ[0].FirstName='Prueba';
+        accountJ[0].Type='J';
+        insert accountJ;
+
+       // create new 3 offers
+       List<Opportunity> newOffersJNoDelete = TestDataFactory.generateOpportunitiesForEachAccount(accountJ, 'General', 'Open',System.today().addDays(10), 2);
+       
+       newOffersJNoDelete[0].CommercialStructureCode__c='6100';
+       newOffersJNoDelete[1].CommercialStructureCode__c='6300';
+
+       insert newOffersJNoDelete;
+        
+        test.startTest();
+        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers();
+        Database.executeBatch(batchDeleteMassiveOfferGdpr);
+        test.stopTest();
+        List<Opportunity> oppListNew= [SELECT id FROM Opportunity];
+        System.assertEquals(2, oppListNew.size());
+    }
+    @isTest
+    // Método del test en el que no se debe de borrar ninfuna oferta ya que no cumplen las condiciones por las fechas
+    static void test_NoDeleteOfferLegalEntity()
+    {
+        List<Account> accountJ = TestDataFactory.generateAccounts('999', 'Business Customer', 1);
+        
+        accountJ[0].FirstName='Prueba';
+        accountJ[0].Type='J';
+        insert accountJ;
+
+       // create new offer
+       List<Opportunity> newOffersJNoDelete = TestDataFactory.generateOpportunitiesForEachAccount(accountJ, 'General', 'Open',System.today().addDays(10), 1);
+       
+       newOffersJNoDelete[0].CommercialStructureCode__c='0000';
+
+       insert newOffersJNoDelete;
+       List<Opportunity> ofertas = [Select id,CreatedDate from Opportunity where id in: newOffersJNoDelete];
+       Datetime fecha = Datetime.now().addYears(-6);
+       Test.setCreatedDate(ofertas[0].Id, fecha);
+        
+        test.startTest();
+        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers();
+        Database.executeBatch(batchDeleteMassiveOfferGdpr);
+        test.stopTest();
+        List<Opportunity> oppListNew= [SELECT id FROM Opportunity];
+        System.assertEquals(1, oppListNew.size());
     }
 }
