@@ -755,6 +755,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FindGroupIdByEmailAndGroupNameAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FindGroupIdByEmailAndGroupNameActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>FlowSearchAccountsByEmailAction</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -952,6 +960,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>GestionarPlanesMensualesQueueableJobTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GroupMemberSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GroupMemberSelectorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
