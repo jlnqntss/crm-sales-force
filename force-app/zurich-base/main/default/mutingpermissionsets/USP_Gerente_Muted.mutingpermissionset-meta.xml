@@ -2,36 +2,6 @@
 <MutingPermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.UWPorfolioBuilding__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.UWPortfolioRCDamage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.UWPortfolioSpecialties__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.UWSaleBuilding__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.UWSaleRCDamage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.UWSaleSpecialties__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Policy__c.InfoQuoteNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
