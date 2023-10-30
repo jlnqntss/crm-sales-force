@@ -58,7 +58,7 @@ public without sharing class AccountSelectorWithoutSharing
             result = new List<Account>(
                 [
                     SELECT Id, FirstName, LastName, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c,
-                    NationalIdType__c, RecordType.DeveloperName, NationalId__c
+                    NationalIdType__c, RecordType.DeveloperName, NationalId__c, Phone
                     FROM Account
                     WHERE NationalId__c IN: documents
                     AND     (
@@ -97,7 +97,7 @@ public without sharing class AccountSelectorWithoutSharing
         {
             result = new List<Account>(
                 [
-                    SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c
+                    SELECT Id, FirstName, LastName, NationalIdType__c, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c, RecordType.DeveloperName, NationalId__c, Phone
                     FROM account
                     WHERE NationalId__c IN: documents
                     AND RecordTypeId = : rtLeadId
@@ -153,7 +153,7 @@ public without sharing class AccountSelectorWithoutSharing
 
     public List<ContactpointPhone> selectByAccountScopeLead(List<String> phonesList)
     {
-        return [SELECT Scope__c, ScopeId__c, ScopeId__r.Scope__c, ScopeId__r.AccountId__c, ScopeId__r.AccountId__r.Createddate, ScopeId__r.AccountId__r.LastModifiedDate 
-            FROM ContactPointPhone WHERE TelephoneNumber IN :phonesList AND ScopeId__r.AccountId__r.RecordType.DeveloperName = 'Lead'];
+        return [SELECT Scope__c, ScopeId__c, ScopeId__r.Scope__c, ScopeId__r.AccountId__c, ScopeId__r.AccountId__r.Createddate, ScopeId__r.AccountId__r.LastModifiedDate
+                FROM ContactPointPhone WHERE TelephoneNumber IN :phonesList AND ScopeId__r.AccountId__r.RecordType.DeveloperName = 'Lead'];
     }
 }
