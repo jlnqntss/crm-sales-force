@@ -2,10 +2,26 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>56.0</apiVersion>
     <assignments>
+        <name>AsignacionColeccionSegmentoCEN</name>
+        <label>Asignación Colección Segmento CEN</label>
+        <locationX>521</locationX>
+        <locationY>1487</locationY>
+        <assignmentItems>
+            <assignToReference>ColeccionFiltrada</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FiltroSegmentoCENAction</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>ProductNotNullDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>ColeccionProductoAssignment</name>
         <label>Asignación Colección Producto</label>
-        <locationX>620</locationX>
-        <locationY>1967</locationY>
+        <locationX>719</locationX>
+        <locationY>1979</locationY>
         <assignmentItems>
             <assignToReference>ColeccionFiltrada</assignToReference>
             <operator>Assign</operator>
@@ -20,8 +36,8 @@
     <assignments>
         <name>ColeccionSegmentoAssignment</name>
         <label>Asignación Colección Segmento</label>
-        <locationX>620</locationX>
-        <locationY>1511</locationY>
+        <locationX>785</locationX>
+        <locationY>1487</locationY>
         <assignmentItems>
             <assignToReference>ColeccionFiltrada</assignToReference>
             <operator>Assign</operator>
@@ -36,8 +52,8 @@
     <assignments>
         <name>ColeccionSegmentoUSPAssignment</name>
         <label>Asignación Colección Segmento USP</label>
-        <locationX>620</locationX>
-        <locationY>2423</locationY>
+        <locationX>719</locationX>
+        <locationY>2387</locationY>
         <assignmentItems>
             <assignToReference>ColeccionFiltrada</assignToReference>
             <operator>Assign</operator>
@@ -53,7 +69,7 @@
         <name>CountMetadataAssignment</name>
         <label>Cantidad Metadatos Recuperados</label>
         <locationX>578</locationX>
-        <locationY>695</locationY>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>TamaListaDeMetadatosRecuperados</assignToReference>
             <operator>AssignCount</operator>
@@ -68,8 +84,8 @@
     <assignments>
         <name>OnlyAssignment</name>
         <label>Asignación</label>
-        <locationX>840</locationX>
-        <locationY>2759</locationY>
+        <locationX>939</locationX>
+        <locationY>2687</locationY>
         <assignmentItems>
             <assignToReference>MetadatoEncontrado</assignToReference>
             <operator>Assign</operator>
@@ -84,8 +100,8 @@
     <assignments>
         <name>RecordMetadataAssigment</name>
         <label>Asignación Registro De Metadato</label>
-        <locationX>840</locationX>
-        <locationY>1055</locationY>
+        <locationX>939</locationX>
+        <locationY>971</locationY>
         <assignmentItems>
             <assignToReference>MetadatoEncontrado</assignToReference>
             <operator>Assign</operator>
@@ -107,8 +123,8 @@
     <assignments>
         <name>UniqueRecordAssigment</name>
         <label>Único Registro Asignación</label>
-        <locationX>492</locationX>
-        <locationY>1055</locationY>
+        <locationX>393</locationX>
+        <locationY>971</locationY>
         <assignmentItems>
             <assignToReference>MetadatoEncontrado</assignToReference>
             <operator>Assign</operator>
@@ -124,8 +140,8 @@
         <name>FilterBySegmentFilter</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filtro Por Segmento</label>
-        <locationX>620</locationX>
-        <locationY>1391</locationY>
+        <locationX>785</locationX>
+        <locationY>1379</locationY>
         <assignNextValueToReference>currentItem_FilterBySegmentFilter_0</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>ColeccionFiltrada</collectionReference>
@@ -145,8 +161,8 @@
         <name>FiltroPorSegmentoUSPFilter</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filtro Por Segmento USP</label>
-        <locationX>620</locationX>
-        <locationY>2303</locationY>
+        <locationX>719</locationX>
+        <locationY>2279</locationY>
         <assignNextValueToReference>currentItem_FiltroPorSegmentoUSPFilter</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>ColeccionFiltrada</collectionReference>
@@ -163,11 +179,32 @@
         </connector>
     </collectionProcessors>
     <collectionProcessors>
+        <name>FiltroSegmentoCENAction</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filtro Segmento CEN</label>
+        <locationX>521</locationX>
+        <locationY>1379</locationY>
+        <assignNextValueToReference>currentItem_FiltroSegmentoCENAction_0</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>ColeccionFiltrada</collectionReference>
+        <conditionLogic>and</conditionLogic>
+        <conditions>
+            <leftValueReference>currentItem_FiltroSegmentoCENAction_0.SegmentoMediacion__c</leftValueReference>
+            <operator>NotEqualTo</operator>
+            <rightValue>
+                <elementReference>$Record.Account.Segment__c</elementReference>
+            </rightValue>
+        </conditions>
+        <connector>
+            <targetReference>AsignacionColeccionSegmentoCEN</targetReference>
+        </connector>
+    </collectionProcessors>
+    <collectionProcessors>
         <name>ProductNotSegmentFilter</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filtro Por Producto Sin Segmento</label>
-        <locationX>620</locationX>
-        <locationY>1847</locationY>
+        <locationX>719</locationX>
+        <locationY>1871</locationY>
         <assignNextValueToReference>currentItem_FiltroPorSegmentoUSPFilter</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>ColeccionFiltrada</collectionReference>
@@ -187,7 +224,7 @@
         <name>CaseUSPDecision</name>
         <label>¿Caso USP?</label>
         <locationX>1436</locationX>
-        <locationY>335</locationY>
+        <locationY>323</locationY>
         <defaultConnectorLabel>Not USP</defaultConnectorLabel>
         <rules>
             <name>USPOutcome</name>
@@ -209,7 +246,7 @@
         <name>ConditionsDecision</name>
         <label>¿Cumple Condiciones?</label>
         <locationX>578</locationX>
-        <locationY>3071</locationY>
+        <locationY>2963</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>MetadataNotNullOutcome</name>
@@ -280,7 +317,7 @@
         <name>MetadataNullOrNotDecision</name>
         <label>Metadato Recuperado</label>
         <locationX>974</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>MetadatasNotNullOutcome</name>
@@ -301,8 +338,8 @@
     <decisions>
         <name>ProductNotNullDecision</name>
         <label>Producto Informado</label>
-        <locationX>752</locationX>
-        <locationY>1727</locationY>
+        <locationX>851</locationX>
+        <locationY>1763</locationY>
         <defaultConnector>
             <targetReference>SegmentoUSPInformado</targetReference>
         </defaultConnector>
@@ -333,8 +370,8 @@
     <decisions>
         <name>SegmentNotNullOutcome</name>
         <label>Segmento Informado</label>
-        <locationX>752</locationX>
-        <locationY>1271</locationY>
+        <locationX>851</locationX>
+        <locationY>1163</locationY>
         <defaultConnector>
             <targetReference>ProductNotNullDecision</targetReference>
         </defaultConnector>
@@ -350,16 +387,41 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>FilterBySegmentFilter</targetReference>
+                <targetReference>SegmentoCENDecision</targetReference>
             </connector>
             <label>Segmento</label>
         </rules>
     </decisions>
     <decisions>
+        <name>SegmentoCENDecision</name>
+        <label>Segmento CEN?</label>
+        <locationX>653</locationX>
+        <locationY>1271</locationY>
+        <defaultConnector>
+            <targetReference>FilterBySegmentFilter</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No CEN</defaultConnectorLabel>
+        <rules>
+            <name>CENOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MetadatoEncontrado.SegmentoMediacion__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CEN</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>FiltroSegmentoCENAction</targetReference>
+            </connector>
+            <label>CEN</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>SegmentoUSPInformado</name>
         <label>Segmento USP Informado</label>
-        <locationX>752</locationX>
-        <locationY>2183</locationY>
+        <locationX>851</locationX>
+        <locationY>2171</locationY>
         <defaultConnector>
             <targetReference>FinalAssigment</targetReference>
         </defaultConnector>
@@ -384,7 +446,7 @@
         <name>UniqueRecordDecision</name>
         <label>¿Unico Registro?</label>
         <locationX>578</locationX>
-        <locationY>815</locationY>
+        <locationY>755</locationY>
         <defaultConnector>
             <targetReference>SearchRecordMetadataLoop</targetReference>
         </defaultConnector>
@@ -421,8 +483,8 @@
     <loops>
         <name>AssignmentLoop</name>
         <label>Bucle Solo Asignación</label>
-        <locationX>404</locationX>
-        <locationY>935</locationY>
+        <locationX>305</locationX>
+        <locationY>863</locationY>
         <collectionReference>GetMetadataAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -435,8 +497,8 @@
     <loops>
         <name>FinalAssigment</name>
         <label>Asignación Final</label>
-        <locationX>752</locationX>
-        <locationY>2639</locationY>
+        <locationX>851</locationX>
+        <locationY>2579</locationY>
         <collectionReference>ColeccionFiltrada</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -449,8 +511,8 @@
     <loops>
         <name>SearchRecordMetadataLoop</name>
         <label>Buscar RegistroMetadato</label>
-        <locationX>752</locationX>
-        <locationY>935</locationY>
+        <locationX>851</locationX>
+        <locationY>863</locationY>
         <collectionReference>GetMetadataAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -483,7 +545,7 @@
         <name>CreateRecordsGetMetadataErrorAction</name>
         <label>Create Records Get Metadata Error Action</label>
         <locationX>1634</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -515,7 +577,7 @@
         <name>CreateTaskAction</name>
         <label>Crear Tarea</label>
         <locationX>50</locationX>
-        <locationY>3311</locationY>
+        <locationY>3179</locationY>
         <connector>
             <targetReference>UpdateDueDateAction</targetReference>
         </connector>
@@ -571,7 +633,7 @@
         <name>CreateTaskRecordsErrorAction</name>
         <label>Create Task Records  Error Action</label>
         <locationX>578</locationX>
-        <locationY>3431</locationY>
+        <locationY>3287</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -603,7 +665,7 @@
         <name>GetRecordTypeTaskErrorAction</name>
         <label>Get RecordType Task Error Action</label>
         <locationX>842</locationX>
-        <locationY>3311</locationY>
+        <locationY>3179</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -635,7 +697,7 @@
         <name>UpdateRecordsCaseDueDateErrorAction</name>
         <label>Update Records Case Due Date Error Action</label>
         <locationX>314</locationX>
-        <locationY>3551</locationY>
+        <locationY>3395</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -667,7 +729,7 @@
         <name>GetMetadataAction</name>
         <label>Recuperar Metadato</label>
         <locationX>974</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>MetadataNullOrNotDecision</targetReference>
@@ -698,7 +760,7 @@
         <name>GetRecordTypeIDTaskActivityUSP</name>
         <label>Recuperar RecordTypeID Tarea Actividad USP</label>
         <locationX>50</locationX>
-        <locationY>3191</locationY>
+        <locationY>3071</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CreateTaskAction</targetReference>
@@ -722,7 +784,7 @@
         <name>UpdateDueDateAction</name>
         <label>Actualizar Fecha Vencimiento Caso</label>
         <locationX>50</locationX>
-        <locationY>3431</locationY>
+        <locationY>3287</locationY>
         <faultConnector>
             <targetReference>UpdateRecordsCaseDueDateErrorAction</targetReference>
         </faultConnector>
@@ -819,6 +881,14 @@
     </variables>
     <variables>
         <name>currentItem_FiltroPorSegmentoUSPFilter</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>GenerateMonitoringCriteria__mdt</objectType>
+    </variables>
+    <variables>
+        <name>currentItem_FiltroSegmentoCENAction_0</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
