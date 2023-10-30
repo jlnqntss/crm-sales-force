@@ -45,3 +45,4 @@ IlluminatedCloud/
 *.listView-meta.xml
 
 .sf
+.pmdCache
