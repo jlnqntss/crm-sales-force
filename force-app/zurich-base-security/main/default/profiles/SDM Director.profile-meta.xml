@@ -2065,7 +2065,7 @@
         <recordType>Account.AgrupacionMediador</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-SDM Intermediary</layout>
+        <layout>Account-Intermediary Group</layout>
         <recordType>Account.Potential_Broker</recordType>
     </layoutAssignments>
     <layoutAssignments>
