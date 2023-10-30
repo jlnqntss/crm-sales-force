@@ -468,7 +468,9 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.IsPartner,
                 Account.Association__c
             }
-            ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c');
+            ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c')
+            .selectFields('Account.IntermediaryGroup__r.INFOIntermediaryGroupCode__c')
+            .selectFields('Account.IntermediaryGroup__r.IntermediaryGroupEndDate__c'); 
 
             this.baseQuery.addConditionEq(Account.INFOIntermediaryCode__c, paddedCodes);
             this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
