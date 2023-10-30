@@ -26,6 +26,8 @@ private class INFOHandlerTest
     private static final Integer NUM_ER_NOTE = 5;
     private static final Integer NUM_ER_SPECIAL_CONDITION = 5;
     private static final Integer NUM_ER_INTERMEDIARY_KPI = 5;
+    private static final Integer NUM_ER_INTERMEDIARY_GROUP = 1;
+    private static final Integer NUM_ER_INTERMEDIARY_HIERARCHY = 1;
 
     @TestSetup
     static void makeData()
@@ -126,6 +128,15 @@ private class INFOHandlerTest
         externalRequestList.addAll(
             TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY_KPI', NUM_ER_INTERMEDIARY_KPI)
             );
+        // INTERMEDIARY_GROUP
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY_GROUP', NUM_ER_INTERMEDIARY_GROUP)
+            );
+        // INTERMEDIARY_GROUP
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY_HIERARCHY', NUM_ER_INTERMEDIARY_HIERARCHY)
+            );
+
 
         insert externalRequestList;
     }
@@ -396,7 +407,7 @@ private class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY;
 
         System.assertEquals(
             totalExternalRequests,
@@ -410,14 +421,10 @@ private class INFOHandlerTest
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
-        List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
-                                                                                    { ExternalRequest__c.Entity__c,
-                                                                                      ExternalRequest__c.Action__c,
-                                                                                      ExternalRequest__c.Payload__c,
-                                                                                      ExternalRequest__c.ContentFormat__c,
-                                                                                      ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
+        List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>([SELECT Entity__c, Action__c, Payload__c, ContentFormat__c, NumRetry__c, CreatedDate, Origin__c
+                                                                                    FROM ExternalRequest__c
+                                                                                    WHERE Origin__c = :INFOHandler.HANDLER_ORIGIN
+                                                                                    AND Entity__c != 'INTERMEDIARY_HIERARCHY']); //
 
         for (ExternalRequest__c externalRequest : externalRequestList)
         {
@@ -432,7 +439,7 @@ private class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP;
                                         
         System.assertEquals(
             totalExternalRequests,
@@ -482,7 +489,7 @@ private class INFOHandlerTest
         List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
 
         System.assertEquals(
-            (NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT) * 2,
+            (NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY) * 2,
             accountList.size(),
             'No se han insertado todos los registros de cuenta'
             );
@@ -629,7 +636,7 @@ private class INFOHandlerTest
         List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
         List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
 
-        System.assertEquals((NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT) * 2, accountList.size(), 'No se han insertado todos los registros de cuenta');
+        System.assertEquals((NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY) * 2, accountList.size(), 'No se han insertado todos los registros de cuenta');
         System.assertEquals((NUM_ER_LEGAL_ACCOUNT) * 2, contactList.size(), 'No se han insertado todos los registros de contacto');
         System.assertEquals(NUM_ER_CONTACT_POINT_ADDRESS, cpaList.size(), 'No se han insertado todos los registros de contactPointAddress');
         System.assertEquals(NUM_ER_CONTACT_POINT_PHONE, cppList.size(), 'No se han insertado todos los registros de contactPointPhone');
@@ -690,7 +697,7 @@ private class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY;
 
         System.assertEquals(
             totalExternalRequests,
@@ -746,7 +753,7 @@ private class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY;
         
         System.assertEquals(
             totalExternalRequests,

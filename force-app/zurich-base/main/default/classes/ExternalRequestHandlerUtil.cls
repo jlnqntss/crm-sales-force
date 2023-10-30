@@ -628,15 +628,18 @@ global with sharing class ExternalRequestHandlerUtil
         if (!existeAltaAgrupacionEnMap) {
             // si la fecha de baja llega informado y si la agrupacion en bd apunta a la misma agrupacion que el mensaje indica se blanquea la relación entre el mediador y su agrupación
             if (record.IntermediaryEndDate__c != null && intermediary.IntermediaryGroup__r.INFOIntermediaryGroupCode__c.equals(record.IntermediaryGroup__r.INFOIntermediaryGroupCode__c)) {                    
-                record.IntermediaryGroup__c = null;
-                record.IntermediaryGroup__r = null; // seteamos el __r a nulo ya que en el transformer añade una referencia como se puede ver en el equals "record.IntermediaryGroup__r.INFOIntermediaryGroupCode__c"
+                blankIntermediaryGroup(record);
                 
-            } else if (intermediary.IntermediaryGroup__r.IntermediaryGroupEndDate__c != null) { // si no está informada se consulta si la agrupación está en baja para blanquearla                
-                record.IntermediaryGroup__c = null;
-                record.IntermediaryGroup__r = null;
+            } else if (intermediary.IntermediaryGroup__r.IntermediaryGroupEndDate__c != null) { // si no está informada se consulta si la agrupación está en baja para blanquearla           
+                blankIntermediaryGroup(record);
             } 
         } 
         return record; 
+    }
+
+    private static void blankIntermediaryGroup(Account record) {
+        record.IntermediaryGroup__c = null;
+        record.IntermediaryGroup__r = null; // seteamos el __r a nulo ya que en el transformer añade una referencia como se puede ver en el equals "record.IntermediaryGroup__r.INFOIntermediaryGroupCode__c"
     }
 
     /**

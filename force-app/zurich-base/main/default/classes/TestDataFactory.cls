@@ -1175,6 +1175,96 @@ public class TestDataFactory
 
     /**
      * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad INTERMEDIARY_GROUP
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author dmunoz
+     * @date 30/10/2023
+     */
+    public static List<Map<String, Object> > getINFOIntermediaryGroupJson(Integer totalItems)
+    {
+        // generar registros de mediador
+        List<Account> intermediaryAccounts = generateAccounts('001', 'Intermediary', totalItems);
+        insert intermediaryAccounts;
+        return buildINFOIntermediaryGroupJson(totalItems, intermediaryAccounts);
+    }
+
+    private static List<Map<String, Object> > buildINFOIntermediaryGroupJson(Integer totalItems, List<Account> intermediaryAccounts)
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO INTERMEDIARY_GROUP*/
+            jsonElementsList.add(
+                new Map<String, Object> {                    
+                    'grupo_mediador_id' => '00000' + i,
+                    'grupo_mediador_desc' => 'Group' + i,
+                    'grupo_mediador_fecha_alta' => '2023-10-28',
+                    'grupo_mediador_fecha_baja' => '',
+                    'grupo_mediador_tipo' => '004',
+                    'mediador_id' => intermediaryAccounts.get(i).INFOIntermediaryCode__c
+                }
+            );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad INTERMEDIARY_GROUP
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author dmunoz
+     * @date 30/10/2023
+     */
+    public static List<Map<String, Object> > getINFOIntermediaryHierarchyJson(Integer totalItems)
+    {
+        // generar registros de mediador
+        List<Account> intermediaryAccounts = generateAccounts('001', 'Intermediary', totalItems);
+        insert intermediaryAccounts;
+        // Crear grupo de intermediarios
+        List<Account> agrupaciones = generateAccounts(Label.GeneralInsurance,'AgrupacionMediador', totalItems);
+        insert agrupaciones;
+        return buildINFOIntermediaryHierarchyJson(totalItems, intermediaryAccounts, agrupaciones);
+    }
+
+    private static List<Map<String, Object> > buildINFOIntermediaryHierarchyJson(Integer totalItems, List<Account> intermediaryAccounts, List<Account> agrupaciones)
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO INTERMEDIARY_GROUP*/
+            jsonElementsList.add(
+                new Map<String, Object> {                    
+                    'mediador_id' => intermediaryAccounts.get(i).INFOIntermediaryCode__c,
+                    'grupo_mediador_id' => agrupaciones.get(i).INFOIntermediaryGroupCode__c,
+                    'mediador_sec_agrupado' => '001',
+                    'mediador_fecha_alta_agrupado' => '2023-10-28',
+                    'mediador_fecha_baja_agrupado' => ''
+                }
+            );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
+     * Obtener estructura json del sistema de origen INFO para registros
      * de entidad Opción oferta
      **
      * @param Integer numero de elementos a generar
@@ -1585,6 +1675,16 @@ public class TestDataFactory
             {
                 externalRequestList = addExternalRequestToList (getINFOSDMKPIJson(numRecords),externalRequestList, origin, 'INTERMEDIARY_KPI', infoRecordTypeId, 0);
             }
+            // INTERMEDIARY_GROUP
+            when 'INTERMEDIARY_GROUP'
+            {
+                externalRequestList = addExternalRequestToList (getINFOIntermediaryGroupJson(numRecords),externalRequestList, origin, 'INTERMEDIARY_GROUP', infoRecordTypeId, 0);
+            }
+            // INTERMEDIARY_HIERARCHY
+            when 'INTERMEDIARY_HIERARCHY'
+            {
+                externalRequestList = addExternalRequestToList (getINFOIntermediaryHierarchyJson(numRecords),externalRequestList, origin, 'INTERMEDIARY_HIERARCHY', infoRecordTypeId, 0);
+            }
             when else
             {
                 return externalRequestList;
@@ -1937,6 +2037,7 @@ public class TestDataFactory
                             NationalIdType__c = 'C',
                             NationalId__c = 'C',
                             RecordTypeId = recordTypeId,
+                            INFOIntermediaryGroupCode__c = '11111' + i,
                             Zone__c = PlanComercialSelector.ZONE_11_BARCELONA
                         )
                     );
