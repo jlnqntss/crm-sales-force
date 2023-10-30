@@ -2,8 +2,8 @@
  * @description       : Clase selectora del sobject User
  * @author            : aberuete
  * @group             :
- * @last modified on  : 23/08/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 10-24-2023
+ * @last modified by  : aberuete
  **/
 public with sharing class UsersSelector extends RecordsSelector
 {
@@ -36,6 +36,31 @@ public with sharing class UsersSelector extends RecordsSelector
         .selectFields('Profile.Name');
 
         return (List<User>) this.baseQuery.byId(userIds).run();
+    }
+
+     /**
+     * Recupera los Usuarios cuyo email coincida con un conjunto dado
+     *
+     * @author aberuete
+     * @date 24/10/2023
+     *
+     * @param {List<String> emails} Lista de emails de usuarios
+     * @return {List<User>} lista de Usuarios
+     */
+    public List<User> findByEmails (List<String> emails)
+    {
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+        {
+            User.Id,
+            User.Email
+        }
+        )
+        .addConditionIn(User.Email,emails)
+        .enforceSecurity(true);
+
+        return (List<User>) this.baseQuery.run();
     }
 
     /**

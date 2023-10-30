@@ -5,7 +5,7 @@
         <name>genesysCloudRouteMessageAction</name>
         <label>Enrutar mensaje a Genesys Cloud</label>
         <locationX>902</locationX>
-        <locationY>1116</locationY>
+        <locationY>1416</locationY>
         <actionName>GenesysCloudRouteMessageAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -13,15 +13,15 @@
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>queueIdAttribute</name>
+            <name>caseSla</name>
             <value>
-                <elementReference>genesysQueueName</elementReference>
+                <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>flowId</name>
             <value>
-                <elementReference>GetGenesysQueueAction.GenesysFlowId__c</elementReference>
+                <elementReference>genesysFlowId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -37,27 +37,27 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>industrySpecializationType</name>
+            <value>
+                <elementReference>SpecializationType</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>ownerId</name>
             <value>
                 <elementReference>GestorPreferenteSearchFromEmailSubflow.GestorPreferenteAsignado</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
+            <name>queueIdAttribute</name>
+            <value>
+                <elementReference>genesysQueueName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>screenPopRecordId</name>
             <value>
                 <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>caseSla</name>
-            <value>
-                <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>industrySpecializationType</name>
-            <value>
-                <elementReference>SpecializationType</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -91,6 +91,13 @@
                 <elementReference>GetGenesysCloudQueueAction.genesysQueueName</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysFlowId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Obtener_cola_de_Genesys_Cloud_desde_Intermediary.genesysFlowId</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>GetGenesysQueueAction</targetReference>
         </connector>
@@ -114,8 +121,45 @@
                 <elementReference>Obtener_cola_de_Genesys_Cloud_desde_Intermediary.genesysQueueName</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysFlowId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Obtener_cola_de_Genesys_Cloud_desde_Intermediary.genesysFlowId</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>GetGenesysQueueAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Modificar_variables_cola</name>
+        <label>Modificar variables cola</label>
+        <locationX>770</locationX>
+        <locationY>1116</locationY>
+        <assignmentItems>
+            <assignToReference>genesysFlowId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GestorPreferenteSearchFromEmailSubflow.genesysFlowId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysQueueName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GestorPreferenteSearchFromEmailSubflow.genesysQueueName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysQueueID</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GestorPreferenteSearchFromEmailSubflow.genesysQueueId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>PriorityCalculationSubflow</targetReference>
         </connector>
     </assignments>
     <constants>
@@ -127,10 +171,42 @@
         </value>
     </constants>
     <decisions>
+        <name>Cambia_de_cola_para_enrutar_a_genesys</name>
+        <label>¿Cambia de cola para enrutar a genesys?</label>
+        <locationX>902</locationX>
+        <locationY>1008</locationY>
+        <defaultConnector>
+            <targetReference>PriorityCalculationSubflow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NuevaCola</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GestorPreferenteSearchFromEmailSubflow.genesysFlowId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GestorPreferenteSearchFromEmailSubflow.genesysQueueName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Modificar_variables_cola</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_Origin</name>
         <label>Check Origin</label>
         <locationX>902</locationX>
-        <locationY>1332</locationY>
+        <locationY>1632</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Origin_NotaInfo</name>
@@ -302,7 +378,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>CreateErrorLogAction</name>
         <label>Registrar error</label>
         <locationX>1694</locationX>
-        <locationY>1332</locationY>
+        <locationY>1632</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -353,7 +429,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>CreateTaskAction</name>
         <label>Registrar tarea</label>
         <locationX>374</locationX>
-        <locationY>1656</locationY>
+        <locationY>1956</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -408,7 +484,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>CreateTaskWebMiZurichAction</name>
         <label>Registrar tarea Web MiZurich</label>
         <locationX>902</locationX>
-        <locationY>1440</locationY>
+        <locationY>1740</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -484,7 +560,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>GetInteractionRecordTypeIdAction</name>
         <label>Obetener tipo de registro Task: Interaction</label>
         <locationX>902</locationX>
-        <locationY>1224</locationY>
+        <locationY>1524</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Origin</targetReference>
@@ -508,7 +584,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>getSalesforceQueue</name>
         <label>Get Salesforce queue</label>
         <locationX>374</locationX>
-        <locationY>1440</locationY>
+        <locationY>1740</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_case_owner</targetReference>
@@ -529,7 +605,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>Update_case_owner</name>
         <label>Update case owner</label>
         <locationX>374</locationX>
-        <locationY>1548</locationY>
+        <locationY>1848</locationY>
         <connector>
             <targetReference>CreateTaskAction</targetReference>
         </connector>
@@ -591,7 +667,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <locationX>902</locationX>
         <locationY>900</locationY>
         <connector>
-            <targetReference>PriorityCalculationSubflow</targetReference>
+            <targetReference>Cambia_de_cola_para_enrutar_a_genesys</targetReference>
         </connector>
         <flowName>EmailMessage_Comprobar_Cola_Genesys_y_ParentID</flowName>
         <inputAssignments>
@@ -610,6 +686,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <name>EmailPropietarioCaso</name>
             <value>
                 <elementReference>$Record.Owner:User.Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>idCaso</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -676,6 +758,18 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <name>NumeroParentId</name>
             <value>
                 <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>PerfilPropietarioCaso</name>
+            <value>
+                <elementReference>$Record.Owner:User.Profile.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RamoCaso</name>
+            <value>
+                <elementReference>$Record.ProductGroupDescription__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -768,7 +862,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>PriorityCalculationSubflow</name>
         <label>Calcular Prioridad</label>
         <locationX>902</locationX>
-        <locationY>1008</locationY>
+        <locationY>1308</locationY>
         <connector>
             <targetReference>genesysCloudRouteMessageAction</targetReference>
         </connector>
@@ -793,6 +887,13 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
+    <variables>
+        <name>genesysFlowId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>genesysQueueID</name>
         <dataType>String</dataType>
