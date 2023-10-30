@@ -1,17 +1,19 @@
 /**
- * @description       :
+ * @description       : Batch para realizar el borrado masivo de ofertas a partir de un criterio que comprueba los
+ *                      días transcurridos desde la fecha de creación. La tabla desde la que se hace el criterio viene
+ *                      compuesto por el tipo de cuenta a la que se asocia una oferta y la estrucura comercial y entidad
+ *                      legal de la propia oferta.
+ *                      Existen dos tablas por las que filtrar, una inicial de estructura interna y una mas general.
+ *
  * @author            : mfernandezcarrera
- * @group             :
- * @last modified on  : 26/10/2023
+ * @group             : Seidor
+ * @last modified on  : 27/10/2023
  * @last modified by  : jgallaga
 **/
 public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject>
 {
-    /*
-    Creamos un primer mapa de String e Integer,que contiene todos los casos de Estructura.
-    String --> EntidadLegal + Código Estructural + Tipo de Cuenta
-    Integer --> Número de días
-    */
+    // La clave se sompone de la entidad legal, el código de estructura y el tipo de cuenta.
+    // El valor son los días a partir de los que se tienen que borrar.
     @TestVisible
     private static final Map<String,Integer> INTERNAL_ESTRUCTURE = new Map<String, Integer>
     {
@@ -22,17 +24,18 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
         '0011009F' => 1800, '0011009J' => 730
     };
 
-    /*
-    Creamos un segundo mapa de String e Integer,que contiene todos los casos de por defecto.
-    String --> EntidadLegal + Código Estructural + Tipo de Cuenta
-    Integer --> Número de días
-    */
+    // La clave se sompone de la entidad legal y el tipo de cuenta.
+    // El valor son los días a partir de los que se tienen que borrar.
     @TestVisible
     private static final Map<String,Integer> DEFAULT_ESTRUCTURE = new Map<String, Integer>
     {
         '001F' => 60,   '001J' => 730,  '005F' => 30,   '005J' => 30,   '008F' => 90,   '008J' => 730
     };
 
+    /**
+     * @description El proceso start prepara una query en la que se toman inicialmente todas las ofertas creadas hace 30 días o mas.
+     * @author      jgallaga | 27/10/2023
+     */
     public Database.QueryLocator start(Database.BatchableContext bc)
     {
         /*
@@ -44,17 +47,25 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
         return Database.getQueryLocator(query);
     }
 
+    /**
+     * @desciption  Por cada lote que se ejecute, el procedimiento mirará si la oferta entra dentro
+     *              de los criterios de las dos tablas definidas. Si la fecha de creación del registro
+     *              es superior en días a los que indica la tabla, se borrará.
+     * @author      jgallaga | 27/10/2023
+     * @param       List<SObject>
+     *              El scope de cada iteración serán ofertas creadas hace al menos 30 días
+     */
     public void execute(Database.BatchableContext bc, List<sObject> scope)
     {
         List<Opportunity> offersToDelete = new List<Opportunity>();
 
         for(Opportunity opp: (List<Opportunity>) scope)
         {
-            if(isOfferAnInternalEstructure(opp))
+            if(isOfferAnInternalEstructure(opp)) // La oferta es mas antigua segun la tabla INTERNAL_ESTRUCTURE?
             {
                 offersToDelete.add(opp);
             }
-            else if(isOfferDefaultEstructure(opp))
+            else if(isOfferDefaultEstructure(opp)) // La oferta es mas antigua segun la tabla DEFAULT_ESTRUCTURE?
             {
                 offersToDelete.add(opp);
             }
@@ -65,6 +76,16 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
 
     public void finish(Database.BatchableContext bc){}
 
+    /**
+     * @description Función para determinar si la oferta, a partir de la estructura comercial, entidad legal
+     *              y el tipo de cuenta a la que pertenece, su fecha de creación es mayor o menos a la necesaria
+     *              para que se considere para eliminar.
+     * @author      jgallaga | 27/10/2023
+     * @param       Opportunity
+     *              El registro de oferta que se desea comprobar.
+     * @return      Boolean
+     *              Si es true, la oferta deberá eliminar.
+     */
     private boolean isOfferAnInternalEstructure(Opportunity offer)
     {
         String estructureKey = offer.LegalEntity__c + offer.CommercialStructureCode__c + offer.Account.Type;
@@ -80,6 +101,16 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
         return offer.CreatedDate <= estructureDate;
     }
 
+        /**
+     * @description Función para determinar si la oferta, a partir de la entidad legal
+     *              y el tipo de cuenta a la que pertenece, su fecha de creación es mayor o menos a la necesaria
+     *              para que se considere para eliminar.
+     * @author      jgallaga | 27/10/2023
+     * @param       Opportunity
+     *              El registro de oferta que se desea comprobar.
+     * @return      Boolean
+     *              Si es true, la oferta deberá eliminar.
+     */
     private boolean isOfferDefaultEstructure(Opportunity offer)
     {
         String estructureKey = offer.LegalEntity__c + offer.Account.Type;
