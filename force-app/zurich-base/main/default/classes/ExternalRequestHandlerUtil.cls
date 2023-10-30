@@ -625,7 +625,7 @@ global with sharing class ExternalRequestHandlerUtil
      * @return void
      */
     private static Account processEndDate(Account record, Account intermediary, Boolean existeAltaAgrupacionEnMap) {
-        if (!existeAltaAgrupacionEnMap) {
+        if (!existeAltaAgrupacionEnMap && record.get('IntermediaryEndDate__c') != null) { // si llega el mensaje sin fecha de fin es que es un alta, saltamos el registro 
             // si la fecha de baja llega informado y si la agrupacion en bd apunta a la misma agrupacion que el mensaje indica se blanquea la relación entre el mediador y su agrupación
             if (record.IntermediaryEndDate__c != null && intermediary.IntermediaryGroup__r.INFOIntermediaryGroupCode__c.equals(record.IntermediaryGroup__r.INFOIntermediaryGroupCode__c)) {                    
                 blankIntermediaryGroup(record);
