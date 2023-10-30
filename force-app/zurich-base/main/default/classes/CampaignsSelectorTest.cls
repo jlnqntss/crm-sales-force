@@ -81,4 +81,51 @@ private with sharing class CampaignsSelectorTest
 
         System.assertEquals(true, !matchedRecords.isEmpty(), 'List should not be empty');
     }
+
+    @isTest
+    static void test_findCampaigId_ok() {
+        List<Campaign> campanyas = [SELECT ID from Campaign];
+        List<String> ids = new List<String>();
+
+        for (Campaign c : campanyas)
+        {
+            ids.add(c.id);
+        }
+
+        Test.startTest();
+        List<Campaign> matchedRecords = new CampaignsSelector().findCampaignById(ids);
+        Test.stopTest();
+
+        System.assertEquals(true, !matchedRecords.isEmpty(), 'List should not be empty');
+    }
+
+    @isTest
+    static void test_findCampaigId_ko() {
+        
+        List<String> ids = new List<String>();
+        ids.add('000AAAAAAAAA');
+
+        Test.startTest();
+        List<Campaign> matchedRecords = new CampaignsSelector().findCampaignById(ids);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
+    @isTest
+    static void test_findZRMInitiatedCrossSellingCampaings_ok() {
+        List<Campaign> campanyas = [SELECT ID from Campaign WHERE Type = 'Cross Selling' OR IsActive = false];
+        List<String> ids = new List<String>();
+
+        for (Campaign c : campanyas)
+        {
+            ids.add(c.id);
+        }
+
+        Test.startTest();
+        List<Campaign> matchedRecords = new CampaignsSelector().findZRMInitiatedCrossSellingCampaings(ids);
+        Test.stopTest();
+
+        System.assertEquals(true, !matchedRecords.isEmpty(), 'List should not be empty');
+    }
 }

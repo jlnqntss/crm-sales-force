@@ -2,8 +2,8 @@
  * @description       : Clase de test para la clase selectora del sobject User
  * @author            : aberuete
  * @group             :
- * @last modified on  : 18/08/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 10-24-2023
+ * @last modified by  : aberuete
  **/
 @isTest
 private with sharing class UsersSelectorTest
@@ -36,6 +36,30 @@ private with sharing class UsersSelectorTest
 
         // Comprobamos el resultado
         System.assertEquals(usersAfter.size(), usersBefore.size(), 'El número de usuarios antes y después debería ser el mismo');
+    }
+
+     /**
+     * Test del metodo que recupera los Usuarios por un conjunto de emails dado
+     */
+    @isTest
+    static void test_findByEmails ()
+    {
+        List<User> usersBefore = [Select id,email from User where name like '%testUser%' limit 2];
+
+        List<String> emailList = new List<String>();
+
+        for (User user:usersBefore )
+        {
+            emailList.add(user.email);
+        }
+
+        Test.startTest();
+        List<User> usersAfter = new UsersSelector().findByEmails(emailList);
+        Test.stopTest();
+
+        // Comprobamos el resultado
+        System.assertEquals(usersAfter.size(), usersBefore.size(), 'El número de usuarios antes y después no es el mismo');
+        System.assertEquals (2, usersAfter.size(), 'El número de usuarios devueltos no es correcto');
     }
 
     @isTest

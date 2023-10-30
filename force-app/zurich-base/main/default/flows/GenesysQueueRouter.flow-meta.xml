@@ -20,6 +20,13 @@
                 <elementReference>loopQueues.purecloud__PureCloud_Queue_ID__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysFlowId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>loopQueues.GenesysFlowId__c</elementReference>
+            </value>
+        </assignmentItems>
     </assignments>
     <assignments>
         <name>Asignamos_output_CSM_Part</name>
@@ -690,6 +697,13 @@ Valores de salida:
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>genesysFlowId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <description>Variable de retorno con el identificador de la cola en GenesysCloud.</description>

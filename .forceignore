@@ -91,3 +91,6 @@ force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredential
 
 # Ignore ListViews
 *.listView-meta.xml
+
+# Custom index
+**/Customindex/*.indx-meta.xml
