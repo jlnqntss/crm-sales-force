@@ -20,10 +20,6 @@
                 <field>ResultingPolicyNumber__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>QuoteLink__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Description</field>
             </layoutItems>
@@ -48,10 +44,6 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>CampaignId</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>TotalPremium__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
