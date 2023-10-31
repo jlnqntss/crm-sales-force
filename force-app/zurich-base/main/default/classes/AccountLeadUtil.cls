@@ -9,10 +9,7 @@ public with sharing class AccountLeadUtil
 {
     public static final String LEAD = 'Lead';
     public static final String CUSTOMER = 'Customer';
-    public static final String CUSTOMER_ES = 'Cliente';
     public static final String BUSINESS = 'BusinessCustomer';
-    public static final String BUSINESS_ES = 'Cliente Empresarial';
-
 
     /**
      * Método que comprueba que se lance la validación sólo se lance desde los dos perfiles indicados
