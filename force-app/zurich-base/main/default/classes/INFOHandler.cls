@@ -79,7 +79,7 @@ public class INFOHandler implements ISystem
     {   
 
         // 0 - Recorrer las external request para hacer la consulta de medidores en caso que lleguen mensajes de INTERMEDIARY_HIERARCHY
-        Map<String, Account> intermediaryQueryMap = ExternalRequestHandlerUtil.getIntermediaryData(externalRequestList);
+        Map<String, Map<String, Account>> intermediaryAndGroupQueryMap = ExternalRequestHandlerUtil.getIntermediaryData(externalRequestList); // keys: Intermediary, IntermediaryGroup
         // 1 - Recorrer todas las external request recibidas
         for (ExternalRequest__c externalRequest : externalRequestList)
         {
@@ -89,7 +89,7 @@ public class INFOHandler implements ISystem
                 if (externalRequest.ContentFormat__c == 'JSON' && String.isNotBlank(externalRequest.Payload__c))
                 {
                     // 1.1.1 - Realizar las transformaciones necesarias en base a la entidad de INFO
-                    processExternalRequestByEntity(externalRequest, intermediaryQueryMap);
+                    processExternalRequestByEntity(externalRequest, intermediaryAndGroupQueryMap);
                 }
                 else
                 {
@@ -149,7 +149,7 @@ public class INFOHandler implements ISystem
      * @change 15/05/2023 - aberuete - Refactorizar el método
      * @change 12/07/2023 - jonandersanjuan - Se agregan nuevas entidades ACCOUNT_KPI y POLICY_KPI
      */
-    private static void processExternalRequestByEntity(ExternalRequest__c externalRequest, Map<String, Account> intermediaryQueryMap)
+    private static void processExternalRequestByEntity(ExternalRequest__c externalRequest, Map<String, Map<String, Account>> intermediaryAndGroupQueryMap)
     {
         // 1 - Transformar el contenido del JSON a una estructura Map
         Map<String, Object> recordValuesMap = (Map<String, Object>) JSON.deserializeUntyped(externalRequest.Payload__c);
@@ -255,7 +255,7 @@ public class INFOHandler implements ISystem
             when 'INTERMEDIARY_HIERARCHY'
             {
                 Account intermediaryHierarchy = (Account) ExternalRequestHandlerUtil.tf.transform(INTERMEDIARY_HIERARCHY, 'Account', recordValuesMap);
-                ExternalRequestHandlerUtil.processIntermediaryHierarchy(externalRequest, INTERMEDIARY_HIERARCHY, intermediaryHierarchy, intermediaryQueryMap);                
+                ExternalRequestHandlerUtil.processIntermediaryHierarchy(externalRequest, INTERMEDIARY_HIERARCHY, intermediaryHierarchy, intermediaryAndGroupQueryMap);                
             }
             // Note
             when 'NOTE'

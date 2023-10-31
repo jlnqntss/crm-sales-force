@@ -1047,4 +1047,23 @@ public with sharing class AccountsSelector extends RecordsSelector
         return result;
     }
 
+    /**
+     * Consultar agrupaciones en base a sus códigos de agrupacion
+     *
+     * @author dmunoz
+     * @date 31/10/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public List<Account> findIntermediaryGroupByIntermediaryGroupCodes(Set<String> intermediaryGroupCode) {
+
+        List<Account> result = new List<Account>();
+
+        if (intermediaryGroupCode != null && !intermediaryGroupCode.isEmpty()) {
+            result = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c, IntermediaryGroupEndDate__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND INFOIntermediaryGroupCode__c IN :intermediaryGroupCode]);
+
+        }
+
+        return result;
+    }
+
 }

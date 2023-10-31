@@ -538,7 +538,7 @@ global with sharing class ExternalRequestHandlerUtil
     }
 
     /**
-     * Recorremos todas las external requests para consultar aquellos mediadores que llegan en los mensajes de INTERMEDIARY_HIERARCHY
+     * Recorremos todas las external requests para consultar aquellos mediadores y agrupaciones que llegan en los mensajes de INTERMEDIARY_HIERARCHY
      **
      * @author dmunoz
      * @date 27/10/2023
@@ -546,9 +546,14 @@ global with sharing class ExternalRequestHandlerUtil
      * @param Map account key codigo de mediador
      * @return List<Account>
      */
-    public static Map<String, Account> getIntermediaryData(List<ExternalRequest__c> externalRequestList) {
-        Map<String, Account> result = new Map<String, Account>();
+    public static Map<String, Map<String, Account>> getIntermediaryData(List<ExternalRequest__c> externalRequestList) {
+        Map<String, Map<String, Account>> result = new Map<String, Map<String, Account>>();
+        Map<String, Account> intermediaryMap = new Map<String, Account>(); // guarda los resultados de la consulta de mediador
+        Map<String, Account> intermediaryGroupMap = new Map<String, Account>(); // guarda los resultados de la consulta a la agrupación
+
+        // Listas auxiliares para guardar la lista de códigos de mediador y agrupacion de mediador a consultar
         List<String> intermediaryCodesList = new List<String>();
+        Set<String> intermedirayGroupCodesSet = new Set<String>();
 
         Map<String, Object> recordValuesMap;
         Account intermediaryHierarchy;
@@ -559,16 +564,29 @@ global with sharing class ExternalRequestHandlerUtil
                 recordValuesMap = (Map<String, Object>) JSON.deserializeUntyped(er.Payload__c);
                 intermediaryHierarchy = (Account) ExternalRequestHandlerUtil.tf.transform('INTERMEDIARY_HIERARCHY', 'Account', recordValuesMap);
                 intermediaryCodesList.add(intermediaryHierarchy.INFOIntermediaryCode__c);
+                intermedirayGroupCodesSet.add(intermediaryHierarchy.IntermediaryGroup__r.INFOIntermediaryGroupCode__c);
             }
         }
 
-        // una vez hemos obtenido la lista de codigos de mediador, lanzamos la consulta a bd
+        // una vez hemos obtenido la lista de codigos de mediador y agrupacion, lanzamos las consultas a bd
         List<Account> intermediaryList = (new AccountsSelector()).findByIntermediaryCode(intermediaryCodesList);
+        List<Account> intermediaryGroupList = (new AccountsSelector()).findIntermediaryGroupByIntermediaryGroupCodes(intermedirayGroupCodesSet);
+
 
         // Convertimos la lista en un map con clave código de mediador INFOIntermediaryCode__c
         for (Account acc: intermediaryList)  {
-            result.put(acc.INFOIntermediaryCode__c, acc);
+            intermediaryMap.put(acc.INFOIntermediaryCode__c, acc);
         }
+
+        // convertir la lista en un map con clave código grupo mediador
+        for (Account accGroup: intermediaryGroupList) {
+            intermediaryGroupMap.put(accGroup.INFOIntermediaryGroupCode__c, accGroup);
+        }
+
+
+        // añadimos los mapas a la salida con las claves Intermediary, IntermediaryGroup
+        result.put('Intermediary', intermediaryMap);
+        result.put('IntermediaryGroup', intermediaryGroupMap);
 
         return result;
     }
@@ -584,9 +602,12 @@ global with sharing class ExternalRequestHandlerUtil
      * @param record Registro generado
      * @return void
      */
-    public static void processIntermediaryHierarchy(ExternalRequest__c externalRequest, String entity, Account record, Map<String, Account> intermediaryQueryMap) {
+    public static void processIntermediaryHierarchy(ExternalRequest__c externalRequest, String entity, Account record, Map<String, Map<String, Account>> intermediaryAndGroupQueryMap) {
 
         // compruebo primero si el mediador existe en el sistema
+        Map<String, Account> intermediaryQueryMap = intermediaryAndGroupQueryMap.get('Intermediary');
+        Map<String, Account> intermediaryGroupQueryMap = intermediaryAndGroupQueryMap.get('IntermediaryGroup');
+
         if (!intermediaryQueryMap.isEmpty() && intermediaryQueryMap.containsKey(record.INFOIntermediaryCode__c)) {
 
             Account intermediary = intermediaryQueryMap.get(record.INFOIntermediaryCode__c);
@@ -604,7 +625,7 @@ global with sharing class ExternalRequestHandlerUtil
             }
 
             // si no existe alta en agrupacion se comprueba las bajas
-            record = processEndDate(record, intermediary, existeAltaAgrupacionEnMap);
+            record = processEndDate(record, intermediary, existeAltaAgrupacionEnMap, intermediaryGroupQueryMap);
             
             // guarda en el registro del mapa el registro válido teniendo en cuenta que si es alta se guarda siempre sin tener nada más en cuenta y si es una baja nos quedamos con el de fecha más reciente
             processRecord(record, accountFromKeyMap, externalRequest, existeAltaAgrupacionEnMap, entity);
@@ -624,13 +645,14 @@ global with sharing class ExternalRequestHandlerUtil
      * @param existeAltaAgrupacionEnMap existe un alta en el map
      * @return void
      */
-    private static Account processEndDate(Account record, Account intermediary, Boolean existeAltaAgrupacionEnMap) {
-        if (!existeAltaAgrupacionEnMap && record.get('IntermediaryEndDate__c') != null) { // si llega el mensaje sin fecha de fin es que es un alta, saltamos el registro 
+    private static Account processEndDate(Account record, Account intermediary, Boolean existeAltaAgrupacionEnMap, Map<String, Account> intermediaryGroupQueryMap) {
+        if (!existeAltaAgrupacionEnMap) { // si ya hay un alta en el mapa para un mediador no se procesan el resto de mensajes
             // si la fecha de baja llega informado y si la agrupacion en bd apunta a la misma agrupacion que el mensaje indica se blanquea la relación entre el mediador y su agrupación
-            if (record.IntermediaryEndDate__c != null && intermediary.IntermediaryGroup__r.INFOIntermediaryGroupCode__c.equals(record.IntermediaryGroup__r.INFOIntermediaryGroupCode__c)) {                    
+            String recordIntermediaryGroupCode = record.IntermediaryGroup__r.INFOIntermediaryGroupCode__c;
+            if (record.IntermediaryEndDate__c != null && intermediary.IntermediaryGroup__r.INFOIntermediaryGroupCode__c.equals(recordIntermediaryGroupCode)) {                    
                 blankIntermediaryGroup(record);
                 
-            } else if (intermediary.IntermediaryGroup__r.IntermediaryGroupEndDate__c != null) { // si no está informada se consulta si la agrupación está en baja para blanquearla           
+            } else if (intermediaryGroupQueryMap.get(recordIntermediaryGroupCode).IntermediaryGroupEndDate__c != null) { // si no está informada se consulta si la agrupación está en baja para blanquearla           
                 blankIntermediaryGroup(record);
             } 
         } 
