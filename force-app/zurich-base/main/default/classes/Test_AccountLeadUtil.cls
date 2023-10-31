@@ -317,10 +317,11 @@ public with sharing class Test_AccountLeadUtil
     {
         User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-QQ'];
         Account intermediaryAccount = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = 'IDIOMA-QQ'];
+        RecordType leadAccountRT = [SELECT Id FROM RecordType WHERE Name = 'Customer' AND SobjectType = 'Account'];
 
-        Account testAccount = new Account(Name = 'TestAccount', Intermediary_Name__c = intermediaryAccount.Id);
+        Account testAccount = new Account(Lastname = 'TestAccount', Intermediary_Name__c = intermediaryAccount.Id, RecordTypeId = leadAccountRT.Id);
         insert testAccount;
-        testAccount = [SELECT Intermediary_Name__r.INFOIntermediaryCode__c FROM Account Where Id = : testAccount.Id];
+        testAccount = [SELECT Intermediary_Name__r.INFOIntermediaryCode__c, RecordTypeId FROM Account Where Id = : testAccount.Id];
 
         Test.startTest();
         Map<String,Account> assignee = AccountLeadUtil.leadAssignment(testAccount, null, 'origin', 'language', 'postalCode');
@@ -343,7 +344,8 @@ public with sharing class Test_AccountLeadUtil
     static void test_AssignmentIntermadiaryAccount_NoRelatedIntermediaryAccount_KO()
     {
         String defaultUserId = AccountLeadAssignment.getDefaultZRMAccountLeadOwnerId();
-        Account testAccount = new Account(Name = 'TestAccount');
+        RecordType leadAccountRT = [SELECT Id FROM RecordType WHERE Name = 'Lead' AND SobjectType = 'Account'];
+        Account testAccount = new Account(Name = 'TestAccount', RecordtypeId = leadAccountRT.id);
 
         Test.startTest();
         Map<String,Account> assignee = AccountLeadUtil.leadAssignment(testAccount, null, 'origin', 'language', 'postalCode');
@@ -367,7 +369,7 @@ public with sharing class Test_AccountLeadUtil
         insert madeUpIntermediaryAccount;
         Account testAccount = new Account(Name = 'TestAccount', Intermediary_Name__c = madeUpIntermediaryAccount.Id);
         insert testAccount;
-        testAccount = [SELECT Intermediary_Name__r.INFOIntermediaryCode__c FROM Account Where Id = : testAccount.Id];
+        testAccount = [SELECT Intermediary_Name__r.INFOIntermediaryCode__c, RecordTypeId FROM Account Where Id = : testAccount.Id];
 
         Test.startTest();
         Map<String,Account> assignee = AccountLeadUtil.leadAssignment(testAccount, null, 'origin','language', 'postalcode');
