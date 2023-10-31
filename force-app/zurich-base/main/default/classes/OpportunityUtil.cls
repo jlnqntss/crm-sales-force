@@ -24,7 +24,7 @@ public with sharing class OpportunityUtil
     public static void initMapOfProfiles()
     {
         // perfiles
-        List<String> nombresPerfiles = new List<String> {'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
+        List<String> nombresPerfiles = new List<String> {'Administrador del sistema', 'System Administrator', 'Genesys Admin', 'Integrator', 'Automation'};
         listaPerfiles = ProfilesSelector.getProfilesByName(nombresPerfiles);
 
         // usuarios
@@ -47,19 +47,25 @@ public with sharing class OpportunityUtil
     {
         mapAccountRecordTypes = new Map<Id, String>();
 
-        if (newList != null && newList.size() > 0) {
+        if (newList != null && newList.size() > 0)
+        {
             Set<Id> accountIds = new Set<Id>();
 
-            for (Opportunity opp : newList) {
+            for (Opportunity opp : newList)
+            {
                 accountIds.add(opp.AccountId);
             }
-    
+
             List<Account> oppAccounts = new AccountsSelector().selectById(accountIds);
-    
-            if (oppAccounts != null && oppAccounts.size() > 0) {
-                for (Opportunity opp : newList) {
-                    for (Account acc : oppAccounts) {
-                        if (opp.AccountId == acc.Id) {
+
+            if (oppAccounts != null && oppAccounts.size() > 0)
+            {
+                for (Opportunity opp : newList)
+                {
+                    for (Account acc : oppAccounts)
+                    {
+                        if (opp.AccountId == acc.Id)
+                        {
                             mapAccountRecordTypes.put(acc.Id, acc.RecordType.DeveloperName);
                             break;
                         }
@@ -126,17 +132,21 @@ public with sharing class OpportunityUtil
      */
     public static void setSalesProcess(List<Opportunity> newList)
     {
-        for(Opportunity opp : newList) {
+        for(Opportunity opp : newList)
+        {
 
-            if (mapAccountRecordTypes.get(opp.AccountId) != null) {
-                
-                if(mapAccountRecordTypes.get(opp.AccountId) == 'Lead' ) {
+            if (mapAccountRecordTypes.get(opp.AccountId) != null)
+            {
+
+                if(mapAccountRecordTypes.get(opp.AccountId) == 'Lead' )
+                {
                     opp.SalesProcess__c = 'L';
                 }
                 else if (mapAccountRecordTypes.get(opp.AccountId) == 'BusinessCustomer' ||
-                         mapAccountRecordTypes.get(opp.AccountId) == 'Customer' ) {
+                         mapAccountRecordTypes.get(opp.AccountId) == 'Customer' )
+                {
                     opp.SalesProcess__c = 'VC';
-                } 
+                }
             }
         }
     }
