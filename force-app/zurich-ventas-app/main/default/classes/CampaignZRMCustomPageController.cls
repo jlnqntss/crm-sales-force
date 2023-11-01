@@ -3,8 +3,8 @@
  * con la página custom desarrollada para la ficha de campañas en la comunidad ZRM
  *
  * @author            : amiranda
- * @date              : 30-10-2023
- * @last modified on  : 30-10-2023
+ * @date              : 01-11-2023
+ * @last modified on  : 01-11-2023
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -29,7 +29,7 @@ public with sharing class CampaignZRMCustomPageController
     @AuraEnabled(cacheable=true)
     public static List<CampaignData> getCampaigns()
     {
-        List<CampaignData> campaigns;
+        List<CampaignData> campaigns = new List<CampaignData>();
 
         try
         {
@@ -37,8 +37,6 @@ public with sharing class CampaignZRMCustomPageController
 
             if ( !retrievedCampaigns.isEmpty() )
             {
-                campaigns = new List<CampaignData>();
-
                 for (Campaign retrievedCampaign : retrievedcampaigns)
                 {
                     CampaignData campaign = new CampaignData();

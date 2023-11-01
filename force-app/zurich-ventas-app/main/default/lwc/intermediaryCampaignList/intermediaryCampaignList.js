@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from "lwc";
+import { LightningElement, api, track, wire } from "lwc";
 import { publish, MessageContext } from "lightning/messageService";
 
 import getCampaigns from "@salesforce/apex/CampaignZRMCustomPageController.getCampaigns";
@@ -51,7 +51,7 @@ export default class IntermediaryCampaignList extends LightningElement {
   };
   comboboxStatusOptions = comboboxStatusOptions;
   comboboxValue = comboboxActiveValue;
-  campaignsData = {
+  @track campaignsData = {
     isLoading: true,
     [comboboxActiveValue]: undefined,
     [comboboxInactiveValue]: undefined,
@@ -78,8 +78,6 @@ export default class IntermediaryCampaignList extends LightningElement {
   messageContext;
 
   // #endregion
-
-  prueba = true;
 
   // #region Lifecyle Hooks
 
@@ -148,6 +146,7 @@ export default class IntermediaryCampaignList extends LightningElement {
    * @date 31/10/2023
    */
   handleStatusChange(event) {
+    this.showSpinner();
     this.comboboxValue = event.detail.value;
 
     if (this.sendMessage) {
@@ -155,6 +154,11 @@ export default class IntermediaryCampaignList extends LightningElement {
         statusRefreshed: true
       });
     }
+
+    // El cambio del filtro de estado es instantáneo. De esta forma emulamos la carga de datos
+    setTimeout(() => {
+      this.hideSpinner();
+    }, 800);
   }
 
   /**
@@ -180,7 +184,8 @@ export default class IntermediaryCampaignList extends LightningElement {
     publish(this.messageContext, INTERMEDIARY_CAMPAIGN_MEMBER_CHANNEL, message);
   };
 
-  // #endreg
+  // #endregion
+
   // #region Utility functions
 
   /**
@@ -197,6 +202,9 @@ export default class IntermediaryCampaignList extends LightningElement {
       previousSelectedRow.setAttribute("data-row-selected", "false");
     }
   }
+
+  showSpinner = () => (this.campaignsData.isLoading = true);
+  hideSpinner = () => (this.campaignsData.isLoading = false);
 
   // #endregion
 }
