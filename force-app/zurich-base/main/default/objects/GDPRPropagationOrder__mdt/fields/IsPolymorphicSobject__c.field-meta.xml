@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsPolymorphicSobject__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Marcar esta casilla si este SObject usa un Lookup polimorfico para relacionarse con otros registros que apliquen GDPR. El Batch de propagación los ignorará para que se lance la propagación mediante Flow,  pero el Batch de borrado los tendrá en cuenta para eliminarlos.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Specifies that this record should only be used during the deletion process and not in the propagation of the anonymize checkbox.</inlineHelpText>
+    <label>Is Polymorphic Sobject</label>
+    <type>Checkbox</type>
+</CustomField>

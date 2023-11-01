@@ -12,42 +12,17 @@
             <operation>equals</operation>
             <value>Zurich</value>
         </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>ZEO_GI_ES</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>ZEO_GI_ES</label>
-        <sharedTo>
-            <group>Write_ZEO_GI_ES</group>
-        </sharedTo>
         <criteriaItems>
-            <field>LegalEntity__c</field>
+            <field>Anonymized__c</field>
             <operation>equals</operation>
-            <value>Zurich</value>
+            <value>False</value>
         </criteriaItems>
         <criteriaItems>
-            <field>Scope__c</field>
+            <field>Blocked__c</field>
             <operation>equals</operation>
-            <value>Zurich Empresas Orange</value>
+            <value>False</value>
         </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>ZE_GI_ES</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>ZE_GI_ES</label>
-        <sharedTo>
-            <group>Write_ZE_GI_ES</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>LegalEntity__c</field>
-            <operation>equals</operation>
-            <value>Zurich</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Scope__c</field>
-            <operation>equals</operation>
-            <value>Zurich Empresas</value>
-        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Ventas_CC</fullName>
@@ -69,13 +44,51 @@
         </criteriaItems>
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
-    <sharingOwnerRules>
-        <fullName>Ventas_CC_Ofertas_Agente_Venta</fullName>
+    <sharingCriteriaRules>
+        <fullName>ZEO_GI_ES</fullName>
         <accessLevel>Edit</accessLevel>
-        <description>Un usuario de Venta CC puede editar las ofertas de un mediador ZRM</description>
-        <label>Ventas_CC_Ofertas_Agente_Venta</label>
+        <label>ZEO_GI_ES</label>
         <sharedTo>
-            <group>Write_Ventas_CC</group>
+            <group>Write_ZEO_GI_ES</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Zurich</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Scope__c</field>
+            <operation>equals</operation>
+            <value>Zurich Empresas Orange</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>ZE_GI_ES</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>ZE_GI_ES</label>
+        <sharedTo>
+            <group>Write_ZE_GI_ES</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Zurich</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Scope__c</field>
+            <operation>equals</operation>
+            <value>Zurich Empresas</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Ventas_CC_Ofertas_Agente_Venta_ReadOnly</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Un usuario de Venta CC puede ver las ofertas de un mediador ZRM</description>
+        <label>Ventas_CC_Ofertas_Agente_Venta_ReadOnly</label>
+        <sharedTo>
+            <group>Ventas_CC</group>
         </sharedTo>
         <sharedFrom>
             <group>Ventas_Agente_Mediador</group>

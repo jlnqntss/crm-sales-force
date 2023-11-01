@@ -3,9 +3,28 @@
     <fullName>EIACStatus__c</fullName>
     <externalId>false</externalId>
     <label>EIAC (Status)</label>
-    <length>80</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
-    <type>Text</type>
-    <unique>false</unique>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Activo</fullName>
+                <default>false</default>
+                <label>Activo</label>
+            </value>
+            <value>
+                <fullName>Inactivo</fullName>
+                <default>false</default>
+                <label>Inactivo</label>
+            </value>
+            <value>
+                <fullName>Traspasado</fullName>
+                <default>false</default>
+                <label>Traspasado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

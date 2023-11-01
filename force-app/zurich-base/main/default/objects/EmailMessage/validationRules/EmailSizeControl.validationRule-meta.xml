@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EmailSizeControl</fullName>
+    <active>true</active>
+    <errorConditionFormula>LEN(HtmlBody)&gt;=131072 &amp;&amp; $Permission.USPTriggerCaseValidationRules
+&amp;&amp;  Incoming=false</errorConditionFormula>
+    <errorMessage>[VR EmailMessage] Este email supera su tamaño máximo. Reduce contenido innecesario</errorMessage>
+</ValidationRule>

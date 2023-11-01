@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <assignments>
+        <description>Añadir Perfiles Válidos para este flujo</description>
+        <name>Set_Valid_Profiles</name>
+        <label>Set Valid Profiles</label>
+        <locationX>380</locationX>
+        <locationY>287</locationY>
+        <assignmentItems>
+            <assignToReference>Valid_Profiles</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Integrator</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Valid_Profiles</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>System Administrator</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Valid_Profiles</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Super User</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Loged_Profile</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Si llega información de producto se informa los campos de ramo</description>
+        <name>Record_has_product</name>
+        <label>Record has product?</label>
+        <locationX>182</locationX>
+        <locationY>611</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ProductId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Se ejecuta solo para los usuarios de Ventas ZRM, Admin, Super User e Integrator</description>
+        <name>Valid_Profile</name>
+        <label>Valid Profile</label>
+        <locationX>380</locationX>
+        <locationY>503</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Valid_Profile</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Loged_Profile</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Record_has_product</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>Informa el campo Ramo y Detalle Ramo a partir del producto para los perfiles permitidos</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Recortar los 100 primeros caracteres del campo Product.Description que se asocia a la oferta</description>
+        <name>ProductBranchDetailFormula</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Record.ProductId__r.Description}, 100)</expression>
+    </formulas>
+    <interviewLabel>Offer Trigger - After Insert/Update - Product Branch {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Offer Trigger - After Insert/Update - Product Branch</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Obtener el perfil de usuario logueado</description>
+        <name>Get_Loged_Profile</name>
+        <label>Get Loged Profile</label>
+        <locationX>380</locationX>
+        <locationY>395</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Valid_Profile</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>Valid_Profiles</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Profile</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Se actualiza los campos ramo con la información del producto</description>
+        <name>Update</name>
+        <label>Update Offer Ramo Values</label>
+        <locationX>50</locationX>
+        <locationY>719</locationY>
+        <inputAssignments>
+            <field>ProductBranchDetail__c</field>
+            <value>
+                <elementReference>ProductBranchDetailFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ProductBranch__c</field>
+            <value>
+                <elementReference>$Record.ProductId__r.GroupCode__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>254</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Set_Valid_Profiles</targetReference>
+        </connector>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Lista de Perfiles Válidos</description>
+        <name>Valid_Profiles</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

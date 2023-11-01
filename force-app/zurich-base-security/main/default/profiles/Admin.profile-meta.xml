@@ -516,6 +516,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FindGroupIdByEmailAndGroupNameAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FindGroupIdByEmailAndGroupNameActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>GenerateHashIdAction</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -585,6 +593,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>GenesysSurveysService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GroupMemberSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GroupMemberSelectorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -3803,6 +3819,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.SoW_2021__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Segmento_Expats_Auto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Segmento_Expats_Hogar__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -15948,6 +15974,10 @@
         <recordType>Account.Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Account-Intermediary Group</layout>
+        <recordType>Account.Potential_Broker</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>AccountContactRelation-Account Contact Relationship Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -18326,6 +18356,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.PartnerOCS</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Account.Potential_Broker</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

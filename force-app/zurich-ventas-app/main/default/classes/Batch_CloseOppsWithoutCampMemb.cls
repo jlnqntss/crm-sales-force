@@ -159,7 +159,7 @@ global with sharing class Batch_CloseOppsWithoutCampMemb implements Database.Bat
                     currentOpportunity.SalesProcess__c = 'VC';
                 }
                 
-                if ( salesLossReason.contains(sLossR) )
+                if ( salesLossReason.contains(sLossR) && currentOpportunity.SalesProcess__c == 'VC' )
                 {
                     currentOpportunity.Sales_Loss_Reason__c = sLossR;
                 }
