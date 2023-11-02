@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IsParentBlocked__c</fullName>
     <externalId>false</externalId>
-    <formula>Account.Blocked__c</formula>
+    <formula>OR(Account.Blocked__c,  MediatedCustomer__r.Blocked__c)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>IsParentBlocked</label>
     <trackHistory>false</trackHistory>
