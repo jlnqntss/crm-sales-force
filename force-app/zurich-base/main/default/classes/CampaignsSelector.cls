@@ -92,4 +92,26 @@ public with sharing class CampaignsSelector extends BaseSelector
         }
         return result;
     }
+
+    /**
+    * @description Método selector que devuelve todas las campañas a las que un
+    * usuario tiene acceso (Clausula 'WITH SECURITY_ENFORCE').
+    * 
+    * @author amiranda
+    * @date 30-10-2023 
+    * @return List<Campaign> Lista de campañas a las que tiene acceso un usuario
+    * @where Restringido a llamarse desde métodos donde se debe verificar el control
+    * de acceso a los objetos/campos.
+    **/
+    public List<Campaign> selectCampaigns()
+    {
+        List<Campaign> campaigns = new List<Campaign>();
+
+        campaigns = [SELECT Id, Name, StartDate, EndDate, Type, toLabel(ProductBranch__c),
+                     isActive, (SELECT Id, Status FROM CampaignMembers)
+                     FROM Campaign WITH SECURITY_ENFORCED ORDER BY Name];
+
+        return campaigns;
+    }
+
 }

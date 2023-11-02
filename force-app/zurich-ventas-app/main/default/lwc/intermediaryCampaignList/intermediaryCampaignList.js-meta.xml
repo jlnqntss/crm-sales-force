@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Lista de campañas para Mediadores en ZRM</masterLabel>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="sendMessage" type="Boolean"
+                default="false"
+                label="Publicar mensaje en el canal 'IntermediaryCampaignMembers'"
+                description="Permite comunicarse con otros componentes a través de la funcionalidad LMS. Se envía el Id de la campaña seleccionada y el valor del filtro de estado de las campañas si este ha sido modificado."></property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>IntermediaryCampaignMembers</masterLabel>
+    <isExposed>true</isExposed>
+    <description>Canal para pasar información entre la tabla de Campañas y Miembros de Campaña.</description>
+     <lightningMessageFields>
+        <fieldName>statusRefreshed</fieldName>
+        <description>Indica si se ha modificado el valor del filtro de estado de la tabla de Campañás</description>
+    </lightningMessageFields>
+    <lightningMessageFields>
+         <fieldName>campaignId</fieldName>
+        <description>Id de la Campaña seleccionada</description>
+     </lightningMessageFields>
+</LightningMessageChannel>
