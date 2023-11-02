@@ -147,7 +147,6 @@ export default class IntermediaryCampaignList extends LightningElement {
    */
   handleStatusChange(event) {
     this.showSpinner();
-    this.comboboxValue = event.detail.value;
 
     if (this.sendMessage) {
       publish(this.messageContext, INTERMEDIARY_CAMPAIGN_MEMBER_CHANNEL, {
@@ -157,6 +156,7 @@ export default class IntermediaryCampaignList extends LightningElement {
 
     // El cambio del filtro de estado es instantáneo. De esta forma emulamos la carga de datos
     setTimeout(() => {
+      this.comboboxValue = event.detail.value;
       this.hideSpinner();
     }, 800);
   }
@@ -203,6 +203,7 @@ export default class IntermediaryCampaignList extends LightningElement {
     }
   }
 
+  // Funciones para controlar la visualización del spinner de carga
   showSpinner = () => (this.campaignsData.isLoading = true);
   hideSpinner = () => (this.campaignsData.isLoading = false);
 
