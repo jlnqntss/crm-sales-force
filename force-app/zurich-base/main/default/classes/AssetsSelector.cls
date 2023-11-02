@@ -33,4 +33,27 @@ public with sharing class AssetsSelector extends RecordsSelector
             return new List<Asset>();
         }
     }
+
+    /**
+     * Busca assets a partir del número de matrícula
+     **
+     * @author jfherrero
+     * @date 24/10/2023
+     * @param   String       policyID   Identificador de la póliza a buscar
+     * @return  List<Asset>  Listado de assets asociados a la póliza que estamos buscando
+     */
+    public List<Asset> selectByRegistrationNumber(List<String> registrationNumbers)
+    {
+        if(!registrationNumbers.isEmpty() && registrationNumbers != null)
+        {
+            this.baseQuery.selectReadableFields();
+            this.baseQuery.addConditionIn(Asset.RegistrationNumber__c, registrationNumbers);
+
+            return (List<Asset>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<Asset>();
+        }
+    }
 }

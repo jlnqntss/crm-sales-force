@@ -20,6 +20,10 @@ public with sharing class ClientIdentificationService
             when 'findByPhone' {
                 return getByPhone(receivedData);
             }
+            //NUEVO
+            when 'findByRegistrationNumber' {
+                return getByRegistrationNumber(receivedData);
+            }
             when else {
                 return 'error';
             }
@@ -105,19 +109,24 @@ public with sharing class ClientIdentificationService
 
     }
 
-
+    /**
+     * Método para recuperar la información de una persona en base a un Número de Matrícula
+     *
+     * @author arcortazar
+     * @date
+     * @last modified on  : 30-10-2023
+     * @last modified by  : jfherrero
+     */
+    
     public static String getByPhone(Client receivedData)
     {
         SearchResultLong resultado = new SearchResultLong();
         List<InsuredObject> listaObjetos = new List<InsuredObject>();
         resultado.objects = listaObjetos;
-
+        
         // Comprobamos si los datos nos vienen rellenos
         if ( String.isBlank(receivedData.nationalID) || String.isBlank(receivedData.phoneNumber) || String.isBlank(receivedData.groupDescription) )
         {
-            System.debug('++++ :' + receivedData.nationalID);
-            System.debug('++++ :' + receivedData.phoneNumber);
-            System.debug('++++ :' + receivedData.groupDescription);
 
             throw new ClientIdentificationException(
                       EMPTY_FIELD_STATUSCODE,
@@ -125,6 +134,12 @@ public with sharing class ClientIdentificationService
                       );
         }
 
+        // Si hay un prefijo lo añadimos antes del teléfono
+        if (!String.isNotBlank(receivedData.phonePrefix))
+        {
+            receivedData.phoneNumber = receivedData.phoneNumber + receivedData.phonePrefix;
+        }
+        
         // Si todo bien, buscamos account por DNI + Telefono
 
         AccountsSelector accountsSelector = new AccountsSelector();
@@ -140,9 +155,9 @@ public with sharing class ClientIdentificationService
             resultado.phoneNumber = receivedData.phoneNumber;
 
             List<Policy__c> polizasEncontradas = policiesSelector.selectByHolderAndGroupDescription(cuentasEncontradas[0].id, receivedData.groupDescription);
+
             if(!polizasEncontradas.isEmpty())
             {
-                System.debug('++++ Entra en if');
                 Map<Id, Policy__c> mapaPolizas = new Map<Id, Policy__c>();
                 List<Id> listaPolIds = new List<Id>();
                 for(Policy__c pol : polizasEncontradas)
@@ -177,6 +192,99 @@ public with sharing class ClientIdentificationService
 
                 resultado.objects = listaObjetos;
             }
+        }
+        return resultado.toString();
+    }
+    
+    //NUEVO
+    /**
+     * Método para recuperar la información de una persona en base a un Número de Matrícula
+     *
+     * @author jfherrero
+     * @date 24/10/2023
+     */
+    
+    public static String getByRegistrationNumber(Client receivedData)
+    {
+        SearchResultLong resultado = new SearchResultLong();
+        List<InsuredObject> listaObjetos = new List<InsuredObject>();
+        resultado.objects = listaObjetos;
+
+        // Comprobamos si los datos nos vienen rellenos
+        if ( String.isBlank(receivedData.registrationNumber) )
+        {
+
+            throw new ClientIdentificationException(
+                      EMPTY_FIELD_STATUSCODE,
+                      'A required field is empty'
+                      );
+        }
+
+        List<String> listaRegNumbers = new List<String>{receivedData.registrationNumber};
+            
+		// Si todo bien, buscamos primero el Asset a través de su matrícula
+		AssetsSelector assetsSelector = new AssetsSelector();
+        List<Asset> listaAssets = assetsSelector.selectByRegistrationNumber(listaRegNumbers); //Necesitamos Modelo del vehículo, Marca del vehículo
+        
+        // Sacamos las pólizas asociadas a las matrículas
+        Map<String, Policy__c> policyMap = new Map<String, Policy__c>(); 
+        
+        // Si hay assets recuperamos las pólizas
+        if (listaAssets.size()>0)
+        {  	
+            PoliciesSelector policiesSelector = new PoliciesSelector();
+        	List<Policy__c> policyList = policiesSelector.selectByIdAndRecordType(policyMap.keySet(), new Set<String>{'Motor'}); //Necesitamos Name -> Número de Póliza
+        
+            for(Policy__c policy : policyList)
+            {
+                policyMap.put(policy.Id, policy);
+            }
+            
+            // Si los assets tienen pólizas, recuperamos los tomadores
+            if (policyList.size()>0)
+        	{
+                //Obtenemos los datos de los clientes
+            	Map<String, Account> accountMap = new Map<String, Account>(); 
+                Set<Id> holderIds = new Set<Id>();
+                
+                for (Policy__c pol : policyList)
+                {
+                    holderIds.add(pol.PolicyHolder__c);
+                }
+                
+                AccountsSelector accountsSelector = new AccountsSelector();
+                List<Account> accountList = accountsSelector.selectById(holderIds);	//Necesitamos Nombre del tomador, Apellidos del tomador               
+                
+                for(Account holder : accountList)
+                {
+                    accountMap.put(holder.Id, holder);
+                }
+                
+            	// Para cada asset recuperado vamos a generar un 
+                for(Asset a : listaAssets)
+                {
+                    InsuredObject obj = new InsuredObject();
+
+                    obj.model = a.Model__c;
+                    obj.brandName = a.BrandName__c;
+                    
+                    if(policyMap.get(a.PolicyId__c) !=null)
+                    {
+                        obj.policyName = policyMap.get(a.PolicyId__c).Name;
+                        obj.policyStatus = policyMap.get(a.PolicyId__c).PolicyStatus__c ;
+                        
+                        if (accountMap.get(policyMap.get(a.PolicyId__c).Id) != null)
+                        {
+                            obj.holderFirstName = accountMap.get(policyMap.get(a.PolicyId__c).PolicyHolder__c).FirstName;
+                            obj.holderLastName = accountMap.get(policyMap.get(a.PolicyId__c).PolicyHolder__c).LastName;
+                        }
+                    }
+
+                    listaObjetos.add(obj);
+                }
+                
+                resultado.objects = listaObjetos;
+            }        
         }
         return resultado.toString();
     }
@@ -265,11 +373,20 @@ public with sharing class ClientIdentificationService
                 nationalID = value;
             }
         }
+        
         public String policyNumber {
             get;
             set {
                 setCurrentFields('policyNumber');
                 policyNumber = value;
+            }
+        }
+        
+        public String phonePrefix {
+            get;
+            set {
+                setCurrentFields('phonePrefix');
+                phonePrefix = value;
             }
         }
         
@@ -289,6 +406,14 @@ public with sharing class ClientIdentificationService
             }
         }
 
+        public String registrationNumber {
+            get;
+            set {
+                setCurrentFields('registrationNumber');
+                registrationNumber = value;
+            }
+        }
+        
         public override String toString()
         {
             return JSON.serialize(this);
@@ -337,11 +462,15 @@ public with sharing class ClientIdentificationService
     {
         public Date policyEndDate;
         public Date policyStartDate;
+
+        public String policyName;
+        public String policyStatus;
         public String policyVersion;
         public String policyInfoInsuredObject;
         public String technicalCode;
 
         public String name;
+        public String brandName;
         public String registrationNumber;
         public String model;
         public String addressType;
@@ -349,6 +478,9 @@ public with sharing class ClientIdentificationService
         public String addressNumber;
         public String addressAdditionalInfo;
         public String city;
+        
+        public String holderFirstName;
+        public String holderLastName;
 
         public override String toString()
         {

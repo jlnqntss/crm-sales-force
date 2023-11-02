@@ -4,6 +4,6 @@
     <protected>false</protected>
     <values>
         <field>Identification__c</field>
-        <value xsi:type="xsd:string">All</value>
+        <value xsi:type="xsd:string">findByPhone;findByPolicyNumber</value>
     </values>
 </CustomMetadata>

@@ -291,4 +291,32 @@ public with sharing class PoliciesSelector extends RecordsSelector
         return (List<Policy__c>) this.baseQuery.run();
     }
     
+    /**
+     * Busca pólizas activas a partir de su Id de Salesforce
+     *
+     * @author jfherrero
+     * @date 26/10/2023
+     * @param Set<Id> policyIds  Ids de las pólizas a recuperar
+     * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
+     * 
+     */
+    public List<Policy__c> selectByIdAndRecordType(Set<String> policyIds, Set<String> recordTypes)
+    {
+        if (policyIds == null || policyIds.size() == 0)
+        {
+            return new List<Policy__c>();
+        }
+
+        this.baseQuery.selectReadableFields();
+        this.baseQuery.addConditionIn(Policy__c.Id, policyIds)
+            		  .addConditionEq(Policy__c.PolicyStatus__c, 'V');
+
+        if (recordTypes != null && recordTypes.size() > 0)
+        {
+            this.baseQuery.addConditionIn(Policy__c.RecordType.Name, recordTypes);
+        }
+        
+        return (List<Policy__c>) this.baseQuery.run();
+    }
+    
 }

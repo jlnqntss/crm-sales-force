@@ -69,6 +69,18 @@ global without sharing class WS_ClientIdentificationService extends WS_BaseAPISe
                         response.responseBody = Blob.valueOf(resultado);
                     }
                 }
+                when 'findByRegistrationNumber' {
+                    
+                    ClientIdentificationService.validateReceivedInformation(receivedClient, 'findByRegistrationNumber');
+                    String resultado = ClientIdentificationService.processData(receivedClient, 'findByRegistrationNumber');
+
+                    // Montamos la respuesta
+                    if(resultado != 'error')
+                    { 
+                        response.statusCode = 200;
+                        response.responseBody = Blob.valueOf(resultado);
+                    }
+                }
                 when else {
                     throw new IntegrationException( 
                         Label.ParseError + 'Unsupported entity type: ' + WS_BaseAPIService.resource
