@@ -8,6 +8,6 @@
     </values>
     <values>
         <field>Language__c</field>
-        <value xsi:type="xsd:string">ES</value>
+        <value xsi:type="xsd:string">Spanish</value>
     </values>
 </CustomMetadata>

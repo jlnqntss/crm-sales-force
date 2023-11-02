@@ -8,6 +8,8 @@
 public with sharing class AccountLeadUtil
 {
     public static final String LEAD = 'Lead';
+    public static final String CUSTOMER = 'Customer';
+    public static final String BUSINESS = 'BusinessCustomer';
 
     /**
      * Método que comprueba que se lance la validación sólo se lance desde los dos perfiles indicados
@@ -110,12 +112,16 @@ public with sharing class AccountLeadUtil
 
         if(acc != null)
         {
-            if( String.isNotBlank(acc.Intermediary_Name__c) )
+            String rtName = Schema.getGlobalDescribe().get('Account').getDescribe().getRecordTypeInfosById().get(acc.RecordTypeId).getDeveloperName();
+            if((rtName.equals(CUSTOMER)|| rtName.equals(BUSINESS)))
             {
-                intermediaryCode = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
-            }
+                if( String.isNotBlank(acc.Intermediary_Name__c) )
+                {
+                    intermediaryCode = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
+                }
 
-            return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
+                return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
+            }
         }
 
         if(String.isNotBlank(language) && language != 'ES')
