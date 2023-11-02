@@ -149,6 +149,11 @@
                 <default>false</default>
                 <label>Agent removes from the campaign</label>
             </value>
+            <value>
+                <fullName>Do not want Policy - Expired</fullName>
+                <default>false</default>
+                <label>No quiere Póliza - Supera Antigüedad</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
@@ -263,6 +268,11 @@
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
             <valueName>Insufficient/incorrect data</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Do not want Policy - Expired</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>VC</controllingFieldValue>
