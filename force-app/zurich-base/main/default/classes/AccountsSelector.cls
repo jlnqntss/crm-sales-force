@@ -468,7 +468,9 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.IsPartner,
                 Account.Association__c
             }
-            ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c');
+            ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c')
+            .selectFields('Account.IntermediaryGroup__r.INFOIntermediaryGroupCode__c')
+            .selectFields('Account.IntermediaryGroup__r.IntermediaryGroupEndDate__c'); 
 
             this.baseQuery.addConditionEq(Account.INFOIntermediaryCode__c, paddedCodes);
             this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
@@ -1039,6 +1041,25 @@ public with sharing class AccountsSelector extends RecordsSelector
                                         '(SELECT Id, OwnerId FROM Events WHERE Owner.Profile.Name = \'Agente Ventas\'), ' +
                                         '(SELECT Id, OwnerId FROM PersonEvents WHERE Owner.Profile.Name = \'Agente Ventas\') ' +
                                         'FROM Account WHERE Id IN :accountIds AND Blocked__c = true';
+
+        }
+
+        return result;
+    }
+
+    /**
+     * Consultar agrupaciones en base a sus códigos de agrupacion
+     *
+     * @author dmunoz
+     * @date 31/10/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public List<Account> findIntermediaryGroupByIntermediaryGroupCodes(Set<String> intermediaryGroupCode) {
+
+        List<Account> result = new List<Account>();
+
+        if (intermediaryGroupCode != null && !intermediaryGroupCode.isEmpty()) {
+            result = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c, IntermediaryGroupEndDate__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND INFOIntermediaryGroupCode__c IN :intermediaryGroupCode]);
 
         }
 
