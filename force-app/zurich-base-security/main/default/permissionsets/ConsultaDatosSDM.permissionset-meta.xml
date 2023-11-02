@@ -116,6 +116,11 @@
         <field>Acta__c.OtherInformation__c</field>
         <readable>true</readable>
     </fieldPermissions>
+	<fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.CompanyName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>PlanComercial__c.Intermediary__c</field>

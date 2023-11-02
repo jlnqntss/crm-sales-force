@@ -334,11 +334,11 @@
     <layouts>
         <layout>SDM Intermediary</layout>
         <sections>
-            <label></label>
+            <label>Dirección</label>
             <section>Address</section>
         </sections>
         <sections>
-            <label></label>
+            <label>Desarrollo comercial</label>
             <section>Allocation</section>
         </sections>
         <sections>
@@ -346,19 +346,19 @@
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label></label>
+            <label>Indicadores clave</label>
             <section>Indicators</section>
         </sections>
         <sections>
-            <label></label>
+            <label>Datos de contacto</label>
             <section>Intermediary Contact</section>
         </sections>
         <sections>
-            <label></label>
+            <label>Información general</label>
             <section>Main section</section>
         </sections>
         <sections>
-            <label></label>
+            <label>Información del sistema</label>
             <section>System Information</section>
         </sections>
     </layouts>
