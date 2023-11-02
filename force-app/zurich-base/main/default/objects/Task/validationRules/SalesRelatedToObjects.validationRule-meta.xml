@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SalesRelatedToObjects</fullName>
+    <active>true</active>
+    <description>Limita los objetos seleccionables para los mediadores y agentes cc</description>
+    <errorConditionFormula>AND(
+  RecordType.DeveloperName = &apos;Activity&apos;,
+  NOT(ISBLANK(WhatId)),
+  OR(
+    $Profile.Name = &apos;Ventas User&apos;,
+    $Profile.Name = &apos;Agente Ventas&apos;
+  ),
+  AND(
+    LEFT(WhatId, 3) &lt;&gt; &apos;001&apos;,
+    LEFT(WhatId, 3) &lt;&gt; &apos;006&apos;
+  )
+)</errorConditionFormula>
+    <errorDisplayField>WhatId</errorDisplayField>
+    <errorMessage>[VR Task] Las Tareas solo pueden estar asociadas a Cuenta (Cliente) y Ofertas. Por favor, selecciona el bloque relacionado con la tarea en el apartado de ‘Relacionado con’</errorMessage>
+</ValidationRule>
