@@ -749,7 +749,7 @@
             <targetReference>GetCaseAction</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>AvailableOptions</name>
         <dataType>SObject</dataType>
