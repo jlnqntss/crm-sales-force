@@ -1,0 +1,55 @@
+{
+  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName" : "siteforce:dynamicLayout",
+  "dataProviders" : [ ],
+  "id" : "f2a6c722-7793-4f1d-b943-16b3eb29fef1",
+  "label" : "Custom Campaign List",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "background" : "background: rgba(0,0,0,0)",
+        "backgroundOverlay" : "rgba(0,0,0,0.5)",
+        "contentAreaWidth" : 100,
+        "sectionConfig" : {
+          "UUID" : "2ee97288-1e25-4e9e-b4cf-8f34a69fef1c",
+          "columns" : [ {
+            "UUID" : "99c729b2-4597-459a-9b31-c5dcaafb5246",
+            "columnKey" : "1",
+            "columnName" : "Column 1",
+            "columnWidth" : "12",
+            "seedComponents" : [ ]
+          } ]
+        },
+        "sectionHeight" : 300
+      },
+      "componentName" : "forceCommunity:section",
+      "id" : "2ee97288-1e25-4e9e-b4cf-8f34a69fef1c",
+      "regions" : [ {
+        "components" : [ {
+          "componentAttributes" : {
+            "sendMessage" : true
+          },
+          "componentName" : "c:intermediaryCampaignList",
+          "id" : "c3786287-f4ce-4044-bfa9-ed1b2084df1a",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "99c729b2-4597-459a-9b31-c5dcaafb5246",
+        "regionLabel" : "Column 1",
+        "regionName" : "1",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "427cf606-4b97-403e-abb7-bbd7cc985734",
+    "regionName" : "content",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "list-701"
+}

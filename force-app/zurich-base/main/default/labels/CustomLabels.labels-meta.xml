@@ -121,6 +121,14 @@
         <value>CustomerGI</value>
     </labels>
     <labels>
+        <fullName>DataTable_NoRecords</fullName>
+        <categories>General</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DataTable_NoRecords</shortDescription>
+        <value>No items to display.</value>
+    </labels>
+    <labels>
         <fullName>DummyId</fullName>
         <categories>Values</categories>
         <language>en_US</language>
@@ -443,6 +451,14 @@
         <protected>false</protected>
         <shortDescription>LifeObjectIdNull</shortDescription>
         <value>Se ha detectado quote de vida con más de un objectId nulo</value>
+    </labels>
+    <labels>
+        <fullName>LightningSpinnerText</fullName>
+        <categories>General</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LightningSpinnerText</shortDescription>
+        <value>Loading</value>
     </labels>
     <labels>
         <fullName>Lead_Duplicates_Control_Error</fullName>
@@ -2411,5 +2427,109 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>OfferSalesStageValidationClosedWonMessage</shortDescription>
         <value>[VR Offer] A Closed Won Offer cannot be modified</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_CardIconText</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_CardIconText</shortDescription>
+        <value>Campaign</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_CardTitle</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_CardTitle</shortDescription>
+        <value>Campaign</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_ComboboxActiveLabel</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_ComboboxActiveLabel</shortDescription>
+        <value>Active</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_ComboboxInactiveLabel</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_ComboboxInactiveLabel</shortDescription>
+        <value>Inactive</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_ComboboxStatus</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_ComboboxStatus</shortDescription>
+        <value>Status</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_TableAriaLabel</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_TableAriaLabel</shortDescription>
+        <value>Table with the list of campaigns the user has access to</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_TableHeaderAssignedCustomers</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_TableHeaderAssignedCustomers</shortDescription>
+        <value>Assigned customers</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_TableHeaderAssignedCustomersCC</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_TableHeaderAssignedCustomersCC</shortDescription>
+        <value>Assigned customers CC</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_TableHeaderBranch</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_TableHeaderBranch</shortDescription>
+        <value>Product branch</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_TableHeaderCampaign</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_TableHeaderCampaign</shortDescription>
+        <value>Campaign</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_TableHeaderEndDate</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_TableHeaderEndDate</shortDescription>
+        <value>Campaign end date</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_TableHeaderStartDate</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_TableHeaderStartDate</shortDescription>
+        <value>Campaign start date and client review deadline</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignList_TableHeaderType</fullName>
+        <categories>ZRM_IntermediaryCampaignList</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignList_TableHeaderType</shortDescription>
+        <value>Type</value>
     </labels>
 </CustomLabels>

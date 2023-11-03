@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsParentAnonymized__c</fullName>
+    <externalId>false</externalId>
+    <formula>OR(Account.Anonymized__c,OfferId__r.Anonymized__c , PolicyId__r.Anonymized__c )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>IsParentAnonymized</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

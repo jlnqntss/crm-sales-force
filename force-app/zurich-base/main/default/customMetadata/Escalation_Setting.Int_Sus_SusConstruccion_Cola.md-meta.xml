@@ -24,6 +24,6 @@
     </values>
     <values>
         <field>queueApiName__c</field>
-        <value xsi:type="xsd:string">Suscripcion_Construccion</value>
+        <value xsi:type="xsd:string">Email_Suscripcion_Construccion</value>
     </values>
 </CustomMetadata>

@@ -755,6 +755,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FindGroupIdByEmailAndGroupNameAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FindGroupIdByEmailAndGroupNameActionTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>FlowSearchAccountsByEmailAction</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -952,6 +960,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>GestionarPlanesMensualesQueueableJobTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GroupMemberSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GroupMemberSelectorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1606,6 +1622,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Segmento_Expats_Auto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Segmento_Expats_Hogar__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>AccionesTratadasActa__c.Actions__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1992,6 +2018,36 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Foreigners__c</field>
+        <readable>true</readable>
+    </fieldPermissions>    
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryGroupEndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryGroupStartDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryGroupType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediarySequence__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryEndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IntermediaryStartDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4155,6 +4211,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.LastNameOwnerPrior__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.LegalEntity__c</field>
         <readable>true</readable>
@@ -4227,6 +4288,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Origin</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.OwnerIdPrior__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10922,6 +10988,10 @@
         <recordType>Account.Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Account-Intermediary Group</layout>
+        <recordType>Account.Potential_Broker</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>AccountContactRelation-Account Contact Relationship Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -12287,6 +12357,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.PartnerOCS</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Account.Potential_Broker</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

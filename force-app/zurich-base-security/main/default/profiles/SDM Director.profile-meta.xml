@@ -2065,6 +2065,10 @@
         <recordType>Account.AgrupacionMediador</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Account-Intermediary Group</layout>
+        <recordType>Account.Potential_Broker</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Alarma__c-Alarma KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>

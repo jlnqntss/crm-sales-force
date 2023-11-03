@@ -3,6 +3,10 @@
     <label>Gerente_USPSignature</label>
     <protected>false</protected>
     <values>
+        <field>IsCommunity__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>Order__c</field>
         <value xsi:type="xsd:double">1.0</value>
     </values>
@@ -12,7 +16,7 @@
     </values>
     <values>
         <field>Permission__c</field>
-        <value xsi:type="xsd:string">IAMUserSignature</value>
+        <value xsi:type="xsd:string">IAMUserUSPSignature</value>
     </values>
     <values>
         <field>Role_Name__c</field>

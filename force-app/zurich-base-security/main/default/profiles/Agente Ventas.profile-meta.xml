@@ -3312,7 +3312,15 @@
         <layout>AuthMapping__mdt-AuthMapping Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Campaign-Campaign Layout</layout>
+        <layout>Campaign-ZRM</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Campaign-ZRM</layout>
+        <recordType>Campaign.Default</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Campaign-ZRM</layout>
+        <recordType>Campaign.Telemarketing</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CampaignMember-Campaign Member Page Layout</layout>

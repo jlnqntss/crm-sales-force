@@ -3,8 +3,8 @@
     <actionCalls>
         <name>GenesysFlowRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
-        <locationX>2822</locationX>
-        <locationY>924</locationY>
+        <locationX>2954</locationX>
+        <locationY>1332</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -12,9 +12,9 @@
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>queueIdAttribute</name>
+            <name>caseSla</name>
             <value>
-                <elementReference>$Record.GenesysQueueName__c</elementReference>
+                <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -26,7 +26,7 @@
         <inputParameters>
             <name>flowId</name>
             <value>
-                <elementReference>$Record.GenesysFlowID__c</elementReference>
+                <elementReference>genesysFlowId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -42,27 +42,27 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>industrySpecializationType</name>
+            <value>
+                <elementReference>SpecializationType</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>ownerId</name>
             <value>
                 <elementReference>GetPreferredAgentSubflow.GestorPreferenteAsignado</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
+            <name>queueIdAttribute</name>
+            <value>
+                <elementReference>genesysQueueName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>screenPopRecordId</name>
             <value>
                 <elementReference>GenerateScreenPopURLSubflow.screenPopURL</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>caseSla</name>
-            <value>
-                <elementReference>PriorityCalculationSubflow.calculatedSla</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>industrySpecializationType</name>
-            <value>
-                <elementReference>SpecializationType</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -81,7 +81,7 @@
     <actionCalls>
         <name>GenesysQueueRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
-        <locationX>3350</locationX>
+        <locationX>3614</locationX>
         <locationY>708</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
@@ -135,6 +135,29 @@
     </actionCalls>
     <apiVersion>53.0</apiVersion>
     <assignments>
+        <name>Asignar_variables_del_registro</name>
+        <label>Asignar variables del registro</label>
+        <locationX>3086</locationX>
+        <locationY>924</locationY>
+        <assignmentItems>
+            <assignToReference>genesysFlowId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.GenesysFlowID__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysQueueName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.GenesysQueueName__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>PriorityCalculationSubflow</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Asignarcolasalesforce</name>
         <label>Asignar cola salesforce</label>
         <locationX>50</locationX>
@@ -178,6 +201,29 @@
         </assignmentItems>
         <connector>
             <targetReference>IsSalesforceQueueReportedDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Modificar_variables_cola</name>
+        <label>Modificar variables cola</label>
+        <locationX>2822</locationX>
+        <locationY>924</locationY>
+        <assignmentItems>
+            <assignToReference>genesysFlowId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetPreferredAgentSubflow.genesysFlowId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysQueueName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetPreferredAgentSubflow.genesysQueueName</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_case_owner</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -226,6 +272,38 @@
             <targetReference>IsUpdateNecessaryDecision</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>Cambia_de_cola_para_enrutar_a_genesys</name>
+        <label>¿Cambia de cola para enrutar a genesys?</label>
+        <locationX>2954</locationX>
+        <locationY>816</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_variables_del_registro</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NuevaCola</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetPreferredAgentSubflow.genesysFlowId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetPreferredAgentSubflow.genesysQueueName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Modificar_variables_cola</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Cola_Salesforce_informada1</name>
         <label>¿Cola Salesforce informada?</label>
@@ -295,7 +373,7 @@
     <decisions>
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
-        <locationX>3086</locationX>
+        <locationX>3284</locationX>
         <locationY>600</locationY>
         <defaultConnector>
             <targetReference>GenesysQueueRoutingInvocableAction</targetReference>
@@ -506,7 +584,7 @@
     <decisions>
         <name>IsZEOrClosedUSPDecision</name>
         <label>¿Es ZE o Caso USP Cerrado?</label>
-        <locationX>2822</locationX>
+        <locationX>2921</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <targetReference>GenerateScreenPopURLSubflow</targetReference>
@@ -574,7 +652,10 @@
         <description>Se marca a true si el caso es distinto de New (respuesta) y la tipificación del mismo es de Venta</description>
         <name>isQuoteResponse</name>
         <dataType>Boolean</dataType>
-        <expression>AND(NOT(ISPICKVAL({!$Record.Parent.Status}, &quot;Nuevo&quot;)), ISPICKVAL({!$Record.Parent.Type}, &quot;Venta&quot;))</expression>
+        <expression>AND(
+ISPICKVAL({!$Record.Parent.Type}, &quot;Venta&quot;),
+OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Parent.Status}, &quot;Asignado&quot;)))
+)</expression>
     </formulas>
     <formulas>
         <description>Si es de ZE o ZEO, se buscan oportunidades, si no, casos</description>
@@ -691,8 +772,8 @@
     <recordCreates>
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
-        <locationX>3086</locationX>
-        <locationY>1032</locationY>
+        <locationX>3350</locationX>
+        <locationY>1440</locationY>
         <inputAssignments>
             <field>Message__c</field>
         </inputAssignments>
@@ -861,7 +942,7 @@
     <recordLookups>
         <name>GetGenesysQueueAsyncAction</name>
         <label>Obtener cola Genesys Async</label>
-        <locationX>2822</locationX>
+        <locationX>2921</locationX>
         <locationY>276</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -915,7 +996,7 @@
         <faultConnector>
             <targetReference>CreateSalesforceQueueErrorAction</targetReference>
         </faultConnector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND (2 OR 3)</filterLogic>
         <filters>
             <field>Type</field>
             <operator>EqualTo</operator>
@@ -925,6 +1006,13 @@
         </filters>
         <filters>
             <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetGenesysQueueAction.Name</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>GetGenesysQueueAction.Name</elementReference>
@@ -945,6 +1033,30 @@
         <inputReference>CasoRelacionado</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_case_owner</name>
+        <label>Update case owner</label>
+        <locationX>2822</locationX>
+        <locationY>1032</locationY>
+        <connector>
+            <targetReference>PriorityCalculationSubflow</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>GetPreferredAgentSubflow.groupId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>UpdateCaseAction</name>
         <label>Actualiza caso</label>
         <locationX>974</locationX>
@@ -955,7 +1067,7 @@
         <inputReference>CasoRelacionado</inputReference>
     </recordUpdates>
     <start>
-        <locationX>2052</locationX>
+        <locationX>2102</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetGenesysQueueAction</targetReference>
@@ -1004,7 +1116,7 @@
     <subflows>
         <name>GenerateScreenPopURLSubflow</name>
         <label>Generate Screen Pop URL</label>
-        <locationX>3086</locationX>
+        <locationX>3284</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>IsFlowOrQueueDecision</targetReference>
@@ -1033,10 +1145,10 @@
     <subflows>
         <name>GetPreferredAgentSubflow</name>
         <label>Recuperar Agente Preferente</label>
-        <locationX>2822</locationX>
+        <locationX>2954</locationX>
         <locationY>708</locationY>
         <connector>
-            <targetReference>PriorityCalculationSubflow</targetReference>
+            <targetReference>Cambia_de_cola_para_enrutar_a_genesys</targetReference>
         </connector>
         <flowName>EmailMessage_Comprobar_Cola_Genesys_y_ParentID</flowName>
         <inputAssignments>
@@ -1055,6 +1167,12 @@
             <name>EmailPropietarioCaso</name>
             <value>
                 <elementReference>$Record.Parent.Owner:User.Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>idCaso</name>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1124,6 +1242,18 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>PerfilPropietarioCaso</name>
+            <value>
+                <elementReference>$Record.Parent.Owner:User.Profile.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RamoCaso</name>
+            <value>
+                <elementReference>$Record.Parent.ProductGroupDescription__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>TipoCaso</name>
             <value>
                 <elementReference>$Record.Parent.Type</elementReference>
@@ -1140,8 +1270,8 @@
     <subflows>
         <name>PriorityCalculationSubflow</name>
         <label>Calcular Prioridad</label>
-        <locationX>2822</locationX>
-        <locationY>816</locationY>
+        <locationX>2954</locationX>
+        <locationY>1224</locationY>
         <connector>
             <targetReference>GenesysFlowRoutingInvocableAction</targetReference>
         </connector>
@@ -1174,5 +1304,19 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>genesysFlowId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>genesysQueueName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

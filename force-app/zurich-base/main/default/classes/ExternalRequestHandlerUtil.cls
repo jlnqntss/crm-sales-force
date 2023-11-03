@@ -536,4 +536,160 @@ global with sharing class ExternalRequestHandlerUtil
             } 
         }
     }
+
+    /**
+     * Recorremos todas las external requests para consultar aquellos mediadores y agrupaciones que llegan en los mensajes de INTERMEDIARY_HIERARCHY
+     **
+     * @author dmunoz
+     * @date 27/10/2023
+     * @param externalRequest External request que debe ser añadida al mapa
+     * @param Map account key codigo de mediador
+     * @return List<Account>
+     */
+    public static Map<String, Map<String, Account>> getIntermediaryData(List<ExternalRequest__c> externalRequestList) {
+        Map<String, Map<String, Account>> result = new Map<String, Map<String, Account>>();
+        Map<String, Account> intermediaryMap = new Map<String, Account>(); // guarda los resultados de la consulta de mediador
+        Map<String, Account> intermediaryGroupMap = new Map<String, Account>(); // guarda los resultados de la consulta a la agrupación
+
+        // Listas auxiliares para guardar la lista de códigos de mediador y agrupacion de mediador a consultar
+        List<String> intermediaryCodesList = new List<String>();
+        Set<String> intermedirayGroupCodesSet = new Set<String>();
+
+        Map<String, Object> recordValuesMap;
+        Account intermediaryHierarchy;
+
+        // recorremos todas las external request para obtener la lista de códigos de mediador de los mensajes INTERMEDIARY_HIERARCHY
+        for (ExternalRequest__c er: externalRequestList) {
+            if ('INTERMEDIARY_HIERARCHY'.equals(er.Entity__c.toUpperCase())) {
+                recordValuesMap = (Map<String, Object>) JSON.deserializeUntyped(er.Payload__c);
+                intermediaryHierarchy = (Account) ExternalRequestHandlerUtil.tf.transform('INTERMEDIARY_HIERARCHY', 'Account', recordValuesMap);
+                intermediaryCodesList.add(intermediaryHierarchy.INFOIntermediaryCode__c);
+                intermedirayGroupCodesSet.add(intermediaryHierarchy.IntermediaryGroup__r.INFOIntermediaryGroupCode__c);
+            }
+        }
+
+        // una vez hemos obtenido la lista de codigos de mediador y agrupacion, lanzamos las consultas a bd
+        List<Account> intermediaryList = (new AccountsSelector()).findByIntermediaryCode(intermediaryCodesList);
+        List<Account> intermediaryGroupList = (new AccountsSelector()).findIntermediaryGroupByIntermediaryGroupCodes(intermedirayGroupCodesSet);
+
+
+        // Convertimos la lista en un map con clave código de mediador INFOIntermediaryCode__c
+        for (Account acc: intermediaryList)  {
+            intermediaryMap.put(acc.INFOIntermediaryCode__c, acc);
+        }
+
+        // convertir la lista en un map con clave código grupo mediador
+        for (Account accGroup: intermediaryGroupList) {
+            intermediaryGroupMap.put(accGroup.INFOIntermediaryGroupCode__c, accGroup);
+        }
+
+
+        // añadimos los mapas a la salida con las claves Intermediary, IntermediaryGroup
+        result.put('Intermediary', intermediaryMap);
+        result.put('IntermediaryGroup', intermediaryGroupMap);
+
+        return result;
+    }
+
+
+
+    /**
+     *Se procesa cada registro de los mensajes procedentes de INFO INTERMEDIARY_HIERARCHY para gestionar la fecha de baja de la relación así como la de la agrupación
+     **
+     * @author dmunoz
+     * @date 25/10/2023
+     * @param externalRequest External request que debe ser añadida al mapa
+     * @param record Registro generado
+     * @return void
+     */
+    public static void processIntermediaryHierarchy(ExternalRequest__c externalRequest, String entity, Account record, Map<String, Map<String, Account>> intermediaryAndGroupQueryMap) {
+
+        // compruebo primero si el mediador existe en el sistema
+        Map<String, Account> intermediaryQueryMap = intermediaryAndGroupQueryMap.get('Intermediary');
+        Map<String, Account> intermediaryGroupQueryMap = intermediaryAndGroupQueryMap.get('IntermediaryGroup');
+
+        if (!intermediaryQueryMap.isEmpty() && intermediaryQueryMap.containsKey(record.INFOIntermediaryCode__c)) {
+
+            Account intermediary = intermediaryQueryMap.get(record.INFOIntermediaryCode__c);
+
+            // compruebo primero si existe en el mapa un registro            
+            sObject accountFromKeyMap;
+            Boolean existeAltaAgrupacionEnMap = false;
+    
+            for (sObject acc: recordsToUpsertByEntity.get(entity).get('Account').keySet()) {
+                if (record.INFOIntermediaryCode__c.equals(acc.get('INFOIntermediaryCode__c'))) {
+                    accountFromKeyMap = acc;
+                    existeAltaAgrupacionEnMap = acc.get('IntermediaryEndDate__c') == null; // si es nulo true, si no false
+                    break;
+                }
+            }
+
+            // si no existe alta en agrupacion se comprueba las bajas
+            record = processEndDate(record, intermediary, existeAltaAgrupacionEnMap, intermediaryGroupQueryMap);
+            
+            // guarda en el registro del mapa el registro válido teniendo en cuenta que si es alta se guarda siempre sin tener nada más en cuenta y si es una baja nos quedamos con el de fecha más reciente
+            processRecord(record, accountFromKeyMap, externalRequest, existeAltaAgrupacionEnMap, entity);
+
+        } else {
+            setExternalRequest(externalRequest, true, 'KO', 'No se ha podido encontrar en BD el mediador con código ' + record.INFOIntermediaryCode__c, false);
+        }        
+    }
+
+    /**
+     * Si no existe alta en agrupacion se comprueba las bajas
+     **
+     * @author dmunoz
+     * @date 25/10/2023
+     * @param intermediary mediador buscado en base de datos
+     * @param record Registro generado
+     * @param existeAltaAgrupacionEnMap existe un alta en el map
+     * @return void
+     */
+    private static Account processEndDate(Account record, Account intermediary, Boolean existeAltaAgrupacionEnMap, Map<String, Account> intermediaryGroupQueryMap) {
+        if (!existeAltaAgrupacionEnMap) { // si ya hay un alta en el mapa para un mediador no se procesan el resto de mensajes
+            // si la fecha de baja llega informado y si la agrupacion en bd apunta a la misma agrupacion que el mensaje indica se blanquea la relación entre el mediador y su agrupación
+            String recordIntermediaryGroupCode = record.IntermediaryGroup__r.INFOIntermediaryGroupCode__c;
+            if (record.IntermediaryEndDate__c != null && intermediary.IntermediaryGroup__r.INFOIntermediaryGroupCode__c.equals(recordIntermediaryGroupCode)) {                    
+                blankIntermediaryGroup(record);
+                
+            } else if (intermediaryGroupQueryMap.get(recordIntermediaryGroupCode).IntermediaryGroupEndDate__c != null) { // si no está informada se consulta si la agrupación está en baja para blanquearla           
+                blankIntermediaryGroup(record);
+            } 
+        } 
+        return record; 
+    }
+
+    private static void blankIntermediaryGroup(Account record) {
+        record.IntermediaryGroup__c = null;
+        record.IntermediaryGroup__r = null; // seteamos el __r a nulo ya que en el transformer añade una referencia como se puede ver en el equals "record.IntermediaryGroup__r.INFOIntermediaryGroupCode__c"
+    }
+
+    /**
+     * Guarda en el registro del mapa el registro válido teniendo en cuenta que si es alta se guarda siempre sin tener nada más en cuenta y si es una baja nos quedamos con el de fecha más reciente
+     **
+     * @author dmunoz
+     * @date 25/10/2023
+     * @param intermediary mediador buscado en base de datos
+     * @param accountFromKeyMap sObject de account con el registro a procesar mas adelante en el batch para hacer el upsert
+     * @param record Registro generado
+     * @param existeAltaAgrupacionEnMap existe un alta en el map
+     * @return void
+     */
+    private static void processRecord(Account record, sObject accountFromKeyMap, ExternalRequest__c externalRequest, Boolean existeAltaAgrupacionEnMap, String entity) {
+        if (accountFromKeyMap == null) { // si no hay ningun registro en el mapa lo añado
+            addRecordToMap(externalRequest, entity, 'Account', record);
+
+        } else if (accountFromKeyMap != null && record.IntermediaryEndDate__c == null) { // si se trata de un alta reseteamos el registro del mapa, ojo si la agrupacion está en baja se ha reseteado la relación y se actualizará eliminando la relación
+            setExternalRequest(recordsToUpsertByEntity.get(entity).get('Account').get(accountFromKeyMap), true, 'OK', 'Se salta este registro por obsoleto', false);
+            recordsToUpsertByEntity.get(entity).get('Account').remove(accountFromKeyMap);
+            addRecordToMap(externalRequest, entity, 'Account', record);
+
+        } else if (accountFromKeyMap != null && !existeAltaAgrupacionEnMap && record.IntermediaryEndDate__c > Date.valueOf(accountFromKeyMap.get('IntermediaryEndDate__c'))) { // si existe ya un registro y no es un alta y la fecha de fin es anterior a la fecha de baja de la er a procesar se modifica
+            recordsToUpsertByEntity.get(entity).get('Account').remove(accountFromKeyMap);
+            addRecordToMap(externalRequest, entity, 'Account', record);
+
+        } else { // cualquier otro caso se marca la ER como obsoleta
+            setExternalRequest(externalRequest, true, 'OK', 'Se salta este registro por obsoleto', false);
+        }
+    }
 }

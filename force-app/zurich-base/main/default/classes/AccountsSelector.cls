@@ -468,7 +468,9 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.IsPartner,
                 Account.Association__c
             }
-            ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c');
+            ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c')
+            .selectFields('Account.IntermediaryGroup__r.INFOIntermediaryGroupCode__c')
+            .selectFields('Account.IntermediaryGroup__r.IntermediaryGroupEndDate__c'); 
 
             this.baseQuery.addConditionEq(Account.INFOIntermediaryCode__c, paddedCodes);
             this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
@@ -1050,7 +1052,6 @@ public with sharing class AccountsSelector extends RecordsSelector
         return result;
     }
 
-
     /**
      * Busca cuentas a partir de sus puntos de contacto utilizando una SOSL y una SOQL para
      * maximizar resultados de búsqueda. Después, filtra por el DNI facilitado
@@ -1100,6 +1101,25 @@ public with sharing class AccountsSelector extends RecordsSelector
             }
         }
         return (List<Account>) this.baseQuery.run();
+    }
+
+    /**
+     * Consultar agrupaciones en base a sus códigos de agrupacion
+     *
+     * @author dmunoz
+     * @date 31/10/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public List<Account> findIntermediaryGroupByIntermediaryGroupCodes(Set<String> intermediaryGroupCode) {
+
+        List<Account> result = new List<Account>();
+
+        if (intermediaryGroupCode != null && !intermediaryGroupCode.isEmpty()) {
+            result = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c, IntermediaryGroupEndDate__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND INFOIntermediaryGroupCode__c IN :intermediaryGroupCode]);
+
+        }
+
+        return result;
     }
 
 }

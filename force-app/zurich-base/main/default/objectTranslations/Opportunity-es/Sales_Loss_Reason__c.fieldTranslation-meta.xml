@@ -3,6 +3,10 @@
     <label>Motivo de pérdida venta</label>
     <name>Sales_Loss_Reason__c</name>
     <picklistValues>
+        <masterLabel>Agent removes from the campaign</masterLabel>
+        <translation>Agente elimina de la campaña</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Falta/limitación de coberturas</masterLabel>
         <translation></translation>
     </picklistValues>

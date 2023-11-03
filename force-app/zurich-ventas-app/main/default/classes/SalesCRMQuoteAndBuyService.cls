@@ -11,12 +11,20 @@ public with sharing class SalesCRMQuoteAndBuyService
         'ramo' => Opportunity.ProductBranch__c
     };
 
-    private static Map<String, Schema.SObjectField> notNullableFields = new Map<String, Schema.SObjectField> {
-        'cliente.idFiscal' => Account.NationalId__c,
-        'cliente.fechaNacimiento' => Account.Birthdate__c,
-        'cliente.contacto.email' => Account.PersonEmail,
-        'cliente.contacto.horaDesde' => Account.PreferedContactStart__c,
-        'cliente.contacto.horaHasta' => Account.PreferedContactEnd__c
+    private enum NonNullableFieldKey {
+        ACCOUNT_NATIONAL_ID,
+        ACCOUNT_BIRTHDATE,
+        ACCOUNT_PERSON_EMAIL,
+        ACCOUNT_PREFERED_CONTACT_START,
+        ACCOUNT_PREFERED_CONTACT_END
+    }
+
+    private static Map<NonNullableFieldKey, Schema.SObjectField> notNullableFields = new Map<NonNullableFieldKey, Schema.SObjectField> {
+        NonNullableFieldKey.ACCOUNT_NATIONAL_ID => Account.NationalId__c,
+        NonNullableFieldKey.ACCOUNT_BIRTHDATE => Account.Birthdate__c,
+        NonNullableFieldKey.ACCOUNT_PERSON_EMAIL => Account.PersonEmail,
+        NonNullableFieldKey.ACCOUNT_PREFERED_CONTACT_START => Account.PreferedContactStart__c,
+        NonNullableFieldKey.ACCOUNT_PREFERED_CONTACT_END => Account.PreferedContactEnd__c
     };
 
     private static AccountsSelector accountSelector = new AccountsSelector();
@@ -173,7 +181,7 @@ public with sharing class SalesCRMQuoteAndBuyService
         Opportunity offer = new Opportunity();
         offer.SessionId__c = requestData.sesion;
         // Es un campo reuerido para la inserción de Opportunity y se asigna un valor quererido en la request
-        offer.Name = requestData.cliente.nombre + requestData.cliente.contacto.telefono;
+        offer.Name = requestData.poliza.numeroOferta;
         offer.InfoQuoteNumber__c = requestData.poliza.numeroOferta;
         offer.ResultingPolicyNumber__c = requestData.poliza.numeroPoliza;
         offer.IntermediaryCode__c = requestData.poliza.codigoIntermediario;
@@ -208,8 +216,8 @@ public with sharing class SalesCRMQuoteAndBuyService
     {
         Policy__c pol = new Policy__c();
         pol.Name = requestData.poliza.numeroPoliza;
-        pol.InfoPolicyNumber__c = requestData.poliza.numeroOferta;
-        pol.InfoQuoteNumber__c = requestData.poliza.numeroPoliza;
+        pol.InfoPolicyNumber__c = requestData.poliza.numeroPoliza;
+        pol.InfoQuoteNumber__c = requestData.poliza.numeroOferta;
         pol.PolicyHolder__c = leadAccount.Id;
         pol.IssuedOnline__c = true;
         pol.InfoCreatedDate__c = Date.today();
@@ -351,18 +359,59 @@ public with sharing class SalesCRMQuoteAndBuyService
         // Si el Id no está informado se considera que no se ha encontrado una cuenta duplicada en el sistema
         if ( !acc.isSet(Account.Id) )
         {
-            acc.LastName = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido + ' ' + requestData.cliente.segundoApellido;
+            acc.LastName = requestData.cliente.nombre + ' ' + requestData.cliente.primerApellido;
+
+            // fpalomo - 17/10/2023 - CV-1159
+            if (String.isNotBlank(requestData.cliente.segundoApellido))
+            {
+                acc.LastName += ' ' + requestData.cliente.segundoApellido;
+            }
         }
 
         acc.Phone = requestData.cliente.contacto.telefono;
         acc.Description = setDesc(requestData);
-        setNationalIdType( acc, (String) requestData.get('documentId') );
+        setNationalIdType( acc, requestData.cliente.idFiscal );
 
-        for ( String notNullableField : notNullableFields.keySet() )
+        for ( NonNullableFieldKey notNullableField : notNullableFields.keySet() )
         {
-            if (requestData.get(notNullableField) != null)
+            Object nonNullableFieldValue = getNonNullableFieldValue(notNullableField, requestData);
+
+            if (nonNullableFieldValue != null)
             {
-                acc.put( notNullableFields.get(notNullableField), requestData.get(notNullableField) );
+                acc.put( notNullableFields.get(notNullableField), nonNullableFieldValue );
+            }
+        }
+    }
+
+    /**
+     * Devuelve un valor asociado a cada clave del enum NonNullableFieldKey
+     * *
+     * @param key clave del campo a devolver
+     * @param requestData contiene la configuración del Lead
+     **/
+    private static Object getNonNullableFieldValue(NonNullableFieldKey key, Lead requestData)
+    {
+        switch on key {
+            when ACCOUNT_NATIONAL_ID {
+                return requestData.cliente.idFiscal;
+            }
+            when ACCOUNT_BIRTHDATE {
+                Integer birthdate = requestData.cliente.fechaNacimiento;
+                return birthdate != null ? convertIntegerToDate(birthdate) : null;
+            }
+            when ACCOUNT_PERSON_EMAIL {
+                return requestData.cliente.contacto.email;
+            }
+            when ACCOUNT_PREFERED_CONTACT_START {
+                String contactStart = requestData.cliente.contacto.horaDesde;
+                return contactStart != null ? convertStringToDateTime(contactStart) : null;
+            }
+            when ACCOUNT_PREFERED_CONTACT_END {
+                String contactEnd = requestData.cliente.contacto.horaHasta;
+                return contactEnd != null ? convertStringToDateTime(contactEnd) : null;
+            }
+            when else {
+                return null;
             }
         }
     }

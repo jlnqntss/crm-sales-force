@@ -7,7 +7,7 @@
     <fieldManageability>DeveloperControlled</fieldManageability>
     <label>Province</label>
     <length>100</length>
-    <required>false</required>
+    <required>true</required>
     <type>Text</type>
     <unique>true</unique>
 </CustomField>

@@ -38,6 +38,8 @@ public class INFOHandler implements ISystem
     public static final String ACCOUNT_KPI = 'ACCOUNT_KPI';
     public static final String POLICY_KPI = 'POLICY_KPI';
     public static final String SOBJECT_CASE = 'Case';
+    public static final String INTERMEDIARY_HIERARCHY = 'INTERMEDIARY_HIERARCHY';
+    public static final String INTERMEDIARY_GROUP = 'INTERMEDIARY_GROUP';
 
     public static final List<String> PRIORITY_ENTITIES =  new List<String>{NOTE};
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
@@ -74,7 +76,10 @@ public class INFOHandler implements ISystem
      * @where ExternalJobQueueBatch
      */
     public static void process(List<ExternalRequest__c> externalRequestList)
-    {
+    {   
+
+        // 0 - Recorrer las external request para hacer la consulta de medidores en caso que lleguen mensajes de INTERMEDIARY_HIERARCHY
+        Map<String, Map<String, Account>> intermediaryAndGroupQueryMap = ExternalRequestHandlerUtil.getIntermediaryData(externalRequestList); // keys: Intermediary, IntermediaryGroup
         // 1 - Recorrer todas las external request recibidas
         for (ExternalRequest__c externalRequest : externalRequestList)
         {
@@ -84,7 +89,7 @@ public class INFOHandler implements ISystem
                 if (externalRequest.ContentFormat__c == 'JSON' && String.isNotBlank(externalRequest.Payload__c))
                 {
                     // 1.1.1 - Realizar las transformaciones necesarias en base a la entidad de INFO
-                    processExternalRequestByEntity(externalRequest);
+                    processExternalRequestByEntity(externalRequest, intermediaryAndGroupQueryMap);
                 }
                 else
                 {
@@ -144,7 +149,7 @@ public class INFOHandler implements ISystem
      * @change 15/05/2023 - aberuete - Refactorizar el método
      * @change 12/07/2023 - jonandersanjuan - Se agregan nuevas entidades ACCOUNT_KPI y POLICY_KPI
      */
-    private static void processExternalRequestByEntity(ExternalRequest__c externalRequest)
+    private static void processExternalRequestByEntity(ExternalRequest__c externalRequest, Map<String, Map<String, Account>> intermediaryAndGroupQueryMap)
     {
         // 1 - Transformar el contenido del JSON a una estructura Map
         Map<String, Object> recordValuesMap = (Map<String, Object>) JSON.deserializeUntyped(externalRequest.Payload__c);
@@ -239,6 +244,19 @@ public class INFOHandler implements ISystem
                 intermRecord.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
                 ExternalRequestHandlerUtil.addRecordToMap(externalRequest, INTERMEDIARY, 'Account', intermRecord);
             }
+            // INTERMEDIARY_GROUP
+            when 'INTERMEDIARY_GROUP'
+            {
+                Account intermediaryGroup = (Account) ExternalRequestHandlerUtil.tf.transform(INTERMEDIARY_GROUP, 'Account', recordValuesMap);
+                intermediaryGroup.RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('AgrupacionMediador').getRecordTypeId();
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, INTERMEDIARY_GROUP, 'Account', intermediaryGroup); 
+            }
+            // INTERMEDIARY_HIERARCHY
+            when 'INTERMEDIARY_HIERARCHY'
+            {
+                Account intermediaryHierarchy = (Account) ExternalRequestHandlerUtil.tf.transform(INTERMEDIARY_HIERARCHY, 'Account', recordValuesMap);
+                ExternalRequestHandlerUtil.processIntermediaryHierarchy(externalRequest, INTERMEDIARY_HIERARCHY, intermediaryHierarchy, intermediaryAndGroupQueryMap);                
+            }
             // Note
             when 'NOTE'
             {
@@ -265,7 +283,7 @@ public class INFOHandler implements ISystem
             {
                 Policy__c policyRecord = (Policy__c) ExternalRequestHandlerUtil.tf.transform(POLICY_KPI, 'Policy__c', recordValuesMap);
                 ExternalRequestHandlerUtil.addRecordToMap(externalRequest, POLICY_KPI, 'Policy__c', policyRecord);
-            }
+            }            
             when else
             {
                 ExternalRequestHandlerUtil.setExternalRequest(externalRequest, true, 'KO', 'No se ha encontrado la entidad indicada', false);

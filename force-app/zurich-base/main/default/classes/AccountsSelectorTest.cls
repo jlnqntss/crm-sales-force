@@ -874,7 +874,6 @@ private with sharing class AccountsSelectorTest
 
     }
 
-
     @isTest
     static void test_findByNationalIdAndPhoneNumber_ok()
     {
@@ -928,4 +927,21 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(true, matchedRecords.isEmpty(), NEMP_TEXT_MSG);
     }
 
+    @isTest
+    static void test_findIntermediaryGroupByIntermediaryGroupCodes()
+    {
+        List<Account> agrupacionesData = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c FROM Account WHERE RecordTypeId = :AccountsSelector.RT_NAME_AGRUPATION AND INFOIntermediaryGroupCode__c != NULL]);
+        Set<String> groupCodes = new Set<String>();
+
+        for (Account acc: agrupacionesData) {
+            groupCodes.add(acc.INFOIntermediaryGroupCode__c);
+        }
+
+        Test.startTest();
+        List<Account> accountListAfterQuery = new AccountsSelector().findIntermediaryGroupByIntermediaryGroupCodes(groupCodes);
+        Test.stopTest();
+
+        System.assertEquals(agrupacionesData.size(), accountListAfterQuery.size(), 'El número de cuentas recuperadas debería ser el mismo');
+
+    }
 }

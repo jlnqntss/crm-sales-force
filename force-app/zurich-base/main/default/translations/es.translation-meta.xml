@@ -92,6 +92,10 @@
         <label><!-- CustomerLife --></label>
         <name>CustomerLife</name>
     </customLabels>
+	<customLabels>
+        <label>No hay elementos para mostrar.</label>
+        <name>DataTable_NoRecords</name>
+    </customLabels>
     <customLabels>
         <label><!-- EmailIBAError --></label>
         <name>EmailIBAError</name>
@@ -223,6 +227,10 @@
     <customLabels>
         <label><!-- LifeObjectIdNull --></label>
         <name>LifeObjectIdNull</name>
+    </customLabels>
+    <customLabels>
+        <label>Cargando</label>
+        <name>LightningSpinnerText</name>
     </customLabels>
     <customLabels>
         <label><!-- LongitudTextoNoValida --></label>
@@ -6196,6 +6204,58 @@ Cree el acta y vuelva a intentarlo.</label>
     <customLabels>
         <label>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Ganada</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Campaña</label>
+        <name>ZRM_IntermediaryCampaignList_CardIconText</name>
+    </customLabels>
+    <customLabels>
+        <label>Campaña</label>
+        <name>ZRM_IntermediaryCampaignList_CardTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Activas</label>
+        <name>ZRM_IntermediaryCampaignList_ComboboxActiveLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>Inactivas</label>
+        <name>ZRM_IntermediaryCampaignList_ComboboxInactiveLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>Estado</label>
+        <name>ZRM_IntermediaryCampaignList_ComboboxStatus</name>
+    </customLabels>
+    <customLabels>
+        <label>Tabla con el listado de campañas a las que el usuario tiene acceso</label>
+        <name>ZRM_IntermediaryCampaignList_TableAriaLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>Clientes Asignados</label>
+        <name>ZRM_IntermediaryCampaignList_TableHeaderAssignedCustomers</name>
+    </customLabels>
+    <customLabels>
+        <label>Clientes Asignados CC</label>
+        <name>ZRM_IntermediaryCampaignList_TableHeaderAssignedCustomersCC</name>
+    </customLabels>
+    <customLabels>
+        <label>Ramo</label>
+        <name>ZRM_IntermediaryCampaignList_TableHeaderBranch</name>
+    </customLabels>
+    <customLabels>
+        <label>Campaña</label>
+        <name>ZRM_IntermediaryCampaignList_TableHeaderCampaign</name>
+    </customLabels>
+    <customLabels>
+        <label>Fecha fin campaña</label>
+        <name>ZRM_IntermediaryCampaignList_TableHeaderEndDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Fecha inicio Campaña y Fecha límite revisión clientes</label>
+        <name>ZRM_IntermediaryCampaignList_TableHeaderStartDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Tipo</label>
+        <name>ZRM_IntermediaryCampaignList_TableHeaderType</name>
     </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
