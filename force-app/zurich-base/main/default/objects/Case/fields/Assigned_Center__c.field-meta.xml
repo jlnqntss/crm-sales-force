@@ -9,6 +9,7 @@
 					&quot;Centro Excelencia&quot;, IMAGE(&quot;/resource/cdex&quot;, &quot;CSM&quot;, 40, 100),
 					&quot;USP&quot;, IMAGE(&quot;/resource/usp&quot;, &quot;CSM&quot;, 40, 100),
 					&quot;Zurich Empresas&quot;, IMAGE(&quot;/resource/zurichempresas&quot;, &quot;ZE&quot;, 40, 100),
+					&quot;TWW Retención&quot;, IMAGE(&quot;/resource/tww&quot;, &quot;TWW&quot;, 40, 100),
 					&quot;&quot;
 				)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
