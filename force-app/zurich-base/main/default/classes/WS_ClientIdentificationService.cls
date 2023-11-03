@@ -32,37 +32,54 @@ global without sharing class WS_ClientIdentificationService extends WS_BaseAPISe
 
         response.addHeader('Content-Type', 'application/json');
 
+
         try
         {
             WS_GenesysAPIService.validateRequest();
-            System.debug('++++ WS_GenesysAPIService.validateRequest();: ');
             
             String requestInformation = request.requestBody.toString();
-            System.debug('++++ requestInformation: ' + requestInformation);
+            ClientIdentificationService.Client receivedClient= (ClientIdentificationService.Client) JSON.deserializeStrict(
+                        requestInformation,
+                        ClientIdentificationService.Client.class
+                    );
 
             switch on WS_BaseAPIService.resource {
                 // 1 - POST /people: Procesa la búsqueda de clientes
                 when 'people' {
 
-                    // tendremos que validar que tengamos los campos necesarios
-                    ClientIdentificationService.Client receivedClient= (ClientIdentificationService.Client) JSON.deserializeStrict(
-                        requestInformation,
-                        ClientIdentificationService.Client.class
-                    );
-
-                    System.debug('++++ receivedClient: ' + receivedClient);
-                    
-                    ClientIdentificationService.validateReceivedInformation(receivedClient);
-                    System.debug('++++ hemos validado: ' + receivedClient);
-                    
-                    // si es OK, hacemos la identidicación
-                    ClientIdentificationService.SearchResult resultado = ClientIdentificationService.processData(receivedClient);
+                    ClientIdentificationService.validateReceivedInformation(receivedClient, 'findByPolicyNumber');
+                    String resultado = ClientIdentificationService.processData(receivedClient, 'findByPolicyNumber');
 
                     // Montamos la respuesta
-                    response.statusCode = 200;
-                    response.responseBody = Blob.valueOf(
-                        resultado.toString()
-                    );
+                    if(resultado != 'error')
+                    { 
+                        response.statusCode = 200;
+                        response.responseBody = Blob.valueOf(resultado);
+                    }
+                }
+                when 'findByPhone' {
+                    
+                    ClientIdentificationService.validateReceivedInformation(receivedClient, 'findByPhone');
+                    String resultado = ClientIdentificationService.processData(receivedClient, 'findByPhone');
+
+                    // Montamos la respuesta
+                    if(resultado != 'error')
+                    { 
+                        response.statusCode = 200;
+                        response.responseBody = Blob.valueOf(resultado);
+                    }
+                }
+                when 'findByRegistrationNumber' {
+                    
+                    ClientIdentificationService.validateReceivedInformation(receivedClient, 'findByRegistrationNumber');
+                    String resultado = ClientIdentificationService.processData(receivedClient, 'findByRegistrationNumber');
+
+                    // Montamos la respuesta
+                    if(resultado != 'error')
+                    { 
+                        response.statusCode = 200;
+                        response.responseBody = Blob.valueOf(resultado);
+                    }
                 }
                 when else {
                     throw new IntegrationException( 

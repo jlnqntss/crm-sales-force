@@ -7102,6 +7102,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Identification__mdt.Identification__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Codigo_Negocio_BancSabadell__mdt.Codigo_Negocio__c</field>
         <readable>true</readable>

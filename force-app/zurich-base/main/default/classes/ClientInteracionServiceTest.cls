@@ -1,6 +1,8 @@
 @isTest
-public with sharing class ClientInteracionServiceTest {
-    
+public with sharing class ClientInteracionServiceTest
+{
+    private static String GRUPO_MOTOR = 'Motor';
+
     @TestSetup
     public static void createScenario()
     {
@@ -8,19 +10,27 @@ public with sharing class ClientInteracionServiceTest {
         insert accounts;
 
         List<Account> tempList = new List<Account>();
-        tempList.add(accounts.get(0));
+        tempList.add( accounts.get(0) );
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(tempList, 10);
         insert policies;
+
+        List<Asset> assets = TestDataFactory.generateInsuredObjectsForEachPolicy('Motor', policies, 1);
+        insert assets;
+
+        List<Product2> productos = TestDataFactory.generateProducts(1);
+        productos[0].GroupDescription__c = GRUPO_MOTOR;
+        insert productos;
     }
 
     /**
      * Método de test que confirma que existe tanto el DNI que nos mandan, como el número de póliza, son correctas
      */
     @isTest
-    static void processData_foundClient(){
+    static void processData_foundClient()
+    {
         List<Policy__c> policies = [SELECT Id, InfoPolicyNumber__c, PolicyHolder__c, PolicyHolder__r.NationalId__c FROM Policy__c LIMIT 1];
-        List<Account> accounts = [SELECT Id, NationalId__c FROM Account WHERE NationalId__c = :policies[0].PolicyHolder__r.NationalId__c LIMIT 1];
+        List<Account> accounts = [SELECT Id, NationalId__c FROM Account WHERE NationalId__c = : policies[0].PolicyHolder__r.NationalId__c LIMIT 1];
 
         policies[0].MovementStartDate__c = date.today();
         policies[0].EndDate__c = date.today().addDays(10);
@@ -40,7 +50,11 @@ public with sharing class ClientInteracionServiceTest {
         Test.startTest();
         try
         {
-            resultado = ClientIdentificationService.processData(testClient);
+            String salida = ClientIdentificationService.processData(testClient, 'findByPolicyNumber');
+            resultado= (ClientIdentificationService.SearchResult) JSON.deserializeStrict(
+                salida,
+                ClientIdentificationService.SearchResult.class
+                );
         }
         catch(ClientIdentificationService.ClientIdentificationException error)
         {
@@ -54,7 +68,7 @@ public with sharing class ClientInteracionServiceTest {
         System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
         System.assertEquals(true, resultado.existsNationalID, 'Es un cliente del sistema');
         System.assertEquals(true, resultado.existsPolicy, 'La póliza existe y está asociada al cliente');
-        
+
         System.assertEquals(true, resultado.isValidPolicy, 'La póliza existe y es válida');
         System.assertNotEquals(null, resultado.policyStartDate, 'La póliza tiene una fecha de inicio');
         System.assertNotEquals(null, resultado.policyEndDate, 'La póliza tiene una fecha de fin');
@@ -65,9 +79,10 @@ public with sharing class ClientInteracionServiceTest {
      * Método de test que comprueba que el DNI que se le pasa se corresponde con un cliente existente en el sistema, pero la póliza no.
      */
     @isTest
-    static void processData_foundClient_noPolicy(){
+    static void processData_foundClient_noPolicy()
+    {
         List<Policy__c> policies = [SELECT Id, PolicyHolder__c, PolicyHolder__r.NationalId__c FROM Policy__c LIMIT 1];
-        List<Account> accounts = [SELECT Id, NationalId__c FROM Account WHERE NationalId__c != :policies[0].PolicyHolder__r.NationalId__c LIMIT 1];
+        List<Account> accounts = [SELECT Id, NationalId__c FROM Account WHERE NationalId__c != : policies[0].PolicyHolder__r.NationalId__c LIMIT 1];
 
         String policyNoExiste = '00000000000000';
 
@@ -83,7 +98,11 @@ public with sharing class ClientInteracionServiceTest {
         Test.startTest();
         try
         {
-            resultado = ClientIdentificationService.processData(testClient);
+            String salida = ClientIdentificationService.processData(testClient, 'findByPolicyNumber');
+            resultado= (ClientIdentificationService.SearchResult) JSON.deserializeStrict(
+                salida,
+                ClientIdentificationService.SearchResult.class
+                );
         }
         catch(ClientIdentificationService.ClientIdentificationException error)
         {
@@ -101,7 +120,8 @@ public with sharing class ClientInteracionServiceTest {
      * Método de test que confirma que existe tanto el DNI que nos mandan, como el número de póliza, son correctas
      */
     @isTest
-    static void processData_foundPolicyNotClient(){
+    static void processData_foundPolicyNotClient()
+    {
         List<Policy__c> policies = [SELECT Id, InfoPolicyNumber__c, PolicyHolder__c, PolicyHolder__r.NationalId__c FROM Policy__c LIMIT 1];
         String dniNoExiste = '00000000A';
 
@@ -117,7 +137,11 @@ public with sharing class ClientInteracionServiceTest {
         Test.startTest();
         try
         {
-            resultado = ClientIdentificationService.processData(testClient);
+            String salida = ClientIdentificationService.processData(testClient, 'findByPolicyNumber');
+            resultado= (ClientIdentificationService.SearchResult) JSON.deserializeStrict(
+                salida,
+                ClientIdentificationService.SearchResult.class
+                );
         }
         catch(ClientIdentificationService.ClientIdentificationException error)
         {
@@ -138,11 +162,12 @@ public with sharing class ClientInteracionServiceTest {
      * Método de test que comprueba el caso en el que ni el DNI ni la Póliza estan en el sistema
      */
     @isTest
-    static void processData_clientNotFound(){
+    static void processData_clientNotFound()
+    {
 
-        String dniNoExiste = '00000000A'; 
+        String dniNoExiste = '00000000A';
         String policyNoExiste = '00000000000000';
-        
+
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
         testClient.fullName = 'Nombre Apellido';
         testClient.nationalID = dniNoExiste;
@@ -155,7 +180,11 @@ public with sharing class ClientInteracionServiceTest {
         Test.startTest();
         try
         {
-            resultado = ClientIdentificationService.processData(testClient);
+            String salida = ClientIdentificationService.processData(testClient, 'findByPolicyNumber');
+            resultado= (ClientIdentificationService.SearchResult) JSON.deserializeStrict(
+                salida,
+                ClientIdentificationService.SearchResult.class
+                );
         }
         catch(ClientIdentificationService.ClientIdentificationException error)
         {
@@ -167,14 +196,15 @@ public with sharing class ClientInteracionServiceTest {
         System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
         System.assertEquals(false, resultado.existsNationalID, 'El cliente no está en el sistema');
         System.assertEquals(false, resultado.existsPolicy, 'No tiene policies asociadas');
-        
+
     }
 
     /**
      * Método de test que confirma que no se ha enviado el campo DNI. Ha de devolver una excepción del tipo INVALID_FIELD
      */
     @isTest
-    static void processData_noDNIexception(){
+    static void processData_noDNIexception()
+    {
 
         // When
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
@@ -187,7 +217,7 @@ public with sharing class ClientInteracionServiceTest {
         Test.startTest();
         try
         {
-            ClientIdentificationService.validateReceivedInformation(testClient);
+            ClientIdentificationService.validateReceivedInformation(testClient, 'findByPolicyNumber');
         }
         catch(ClientIdentificationService.ClientIdentificationException error)
         {
@@ -197,14 +227,15 @@ public with sharing class ClientInteracionServiceTest {
         Test.stopTest();
 
         System.assertEquals(ClientIdentificationService.INVALID_FIELD_STATUSCODE, expectedError.statusCode, 'No se ha lanzado la excepción correcta');
-        
+
     }
 
     /**
      * Método de test que confirma que el DNI se ha enviado vacío. Ha de devolver una excepción del tipo EMPTY_FIELD
      */
     @isTest
-    static void processData_blankDNIexception(){
+    static void processData_blankDNIexception()
+    {
         // When
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
 
@@ -218,7 +249,7 @@ public with sharing class ClientInteracionServiceTest {
         Test.startTest();
         try
         {
-            ClientIdentificationService.processData(testClient);
+            ClientIdentificationService.processData(testClient, 'findByPolicyNumber');
         }
         catch(ClientIdentificationService.ClientIdentificationException error)
         {
@@ -234,7 +265,8 @@ public with sharing class ClientInteracionServiceTest {
      * Método de test que confirma que la policy se ha enviado vacío. Ha de devolver una excepción del tipo EMPTY_FIELD
      */
     @isTest
-    static void processData_blankPolicyException(){
+    static void processData_blankPolicyException()
+    {
         // When
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
         testClient.fullName = 'Nombre Apellido';
@@ -247,7 +279,7 @@ public with sharing class ClientInteracionServiceTest {
         Test.startTest();
         try
         {
-            ClientIdentificationService.processData(testClient);
+            ClientIdentificationService.processData(testClient, 'findByPolicyNumber');
         }
         catch(ClientIdentificationService.ClientIdentificationException error)
         {
@@ -258,4 +290,128 @@ public with sharing class ClientInteracionServiceTest {
 
         System.assertEquals(ClientIdentificationService.EMPTY_FIELD_STATUSCODE, expectedError.statusCode, 'No se ha lanzado la excepción correcta');
     }
+
+    /**
+     * Método de test que confirma que existe tanto el teléfono que nos mandan, como el DNI, y el grupo del producto de la póliza
+     */
+    @isTest
+    static void processData_foundByPhone()
+    {
+
+        //String.isBlank(receivedData.nationalID) || String.isBlank(receivedData.phoneNumber) || String.isBlank(receivedData.groupDescription)
+
+        List<Asset> assets = [SELECT Id, Model__c, BrandName__c, PolicyId__c FROM Asset LIMIT 1];
+
+        List<Policy__c> policies = [SELECT Id, Name, InfoPolicyNumber__c, PolicyHolder__c, ProductId__c
+                                    FROM Policy__c WHERE Id = : assets[0].PolicyId__c LIMIT 1];
+
+        List<Account> accounts = [SELECT Id, FirstName, LastName FROM Account WHERE Id = : policies[0].PolicyHolder__c LIMIT 1];
+
+        List<Product2> products = [SELECT Id, GroupDescription__c FROM Product2 LIMIT 1];
+
+        accounts[0].Phone = '+35987654321';
+        accounts[0].NationalId__c = '11111111E';
+        upsert accounts[0];
+
+        policies[0].ProductId__c = products[0].Id;
+        upsert policies[0];
+
+        ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
+        testClient.nationalID = '11111111E';
+        testClient.phonePrefix = '';
+        testClient.phoneNumber = '987654321';
+        testClient.groupDescription = GRUPO_MOTOR;
+
+        // Test
+        ClientIdentificationService.ClientIdentificationException expectedError;
+        ClientIdentificationService.SearchResultLong resultado;
+
+        Test.startTest();
+        try
+        {
+            String salida = ClientIdentificationService.processData(testClient, 'findByPhone');
+            resultado = (ClientIdentificationService.SearchResultLong) JSON.deserializeStrict(
+                salida,
+                ClientIdentificationService.SearchResultLong.class
+                );
+        }
+        catch(ClientIdentificationService.ClientIdentificationException error)
+        {
+            expectedError = error;
+        }
+
+        Test.stopTest();
+
+        System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
+        System.assertEquals(testClient.nationalID, resultado.nationalID, 'Existe un cliente con ese Identificador');
+
+        System.assert ( (testClient.phonePrefix + testClient.phoneNumber == resultado.phoneNumber || testClient.phoneNumber == resultado.phoneNumber),
+                        'Existe un cliente con ese teléfono' );
+    }
+
+    /**
+     * Método de test que confirma que existe la matrícula introducida
+     */
+    @isTest
+    static void processData_foundByRegistrationNumber()
+    {
+
+        //String.isBlank(receivedData.nationalID) || String.isBlank(receivedData.phoneNumber) || String.isBlank(receivedData.groupDescription)
+
+        List<Asset> assets = [SELECT Id, Model__c, BrandName__c, PolicyId__c FROM Asset LIMIT 1];
+
+        List<Policy__c> policies = [SELECT Id, Name, InfoPolicyNumber__c, PolicyHolder__c FROM Policy__c WHERE Id = : assets[0].PolicyId__c LIMIT 1];
+
+        List<Account> accounts = [SELECT Id, FirstName, LastName FROM Account WHERE Id = : policies[0].PolicyHolder__c LIMIT 1];
+
+        assets[0].RegistrationNumber__c = '1111AAA';
+
+        upsert assets[0];
+
+        ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
+        testClient.registrationNumber = '1111AAA';
+
+        // Test
+        ClientIdentificationService.ClientIdentificationException expectedError;
+        ClientIdentificationService.SearchResultLong resultado;
+
+        Test.startTest();
+        try
+        {
+            String salida = ClientIdentificationService.processData(testClient, 'findByRegistrationNumber');
+            resultado = (ClientIdentificationService.SearchResultLong) JSON.deserializeStrict(
+                salida,
+                ClientIdentificationService.SearchResultLong.class
+                );
+        }
+        catch(ClientIdentificationService.ClientIdentificationException error)
+        {
+            expectedError = error;
+        }
+
+        Test.stopTest();
+
+        System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
+        System.assertEquals(true, resultado.existsRegistrationNumber, 'Existe un Objeto Asegurado con esa Matrícula');
+    }
+
+    /**
+     * Método de test que recorre el camino de error si no llega un selector correcto
+     */
+    @isTest
+    static void processData_foundError()
+    {
+        // Test
+
+        String salida;
+
+        Test.startTest();
+
+        salida = ClientIdentificationService.processData(null, 'find_error');
+
+        Test.stopTest();
+
+        System.assertEquals(salida, 'error', 'Ha de devolver *error*');
+    }
+
 }

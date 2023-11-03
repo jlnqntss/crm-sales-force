@@ -261,4 +261,70 @@ public with sharing class PoliciesSelector extends RecordsSelector
 
         return result;
     }
+    
+     /**
+     * Busca pólizas activas a partir de PolicyHolder (tomador)
+     *
+     * @author arcortazar
+     * @date 03/08/2023
+     * @param Id policyHolder  Id de la cuenta a la que pertenece la póliza
+     * @param String groupDescription  Ramo al que pertenece la póliza
+     * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
+     * 
+     */
+    public List<Policy__c> selectByHolderAndGroupDescription(Id policyHolder, String groupDescription)
+    {
+        if (policyHolder == null)
+        {
+            return new List<Policy__c>();
+        }
+
+        this.baseQuery.selectReadableFields();
+        this.baseQuery.addConditionEq(Policy__c.PolicyHolder__c, policyHolder).addConditionEq(Policy__c.PolicyStatus__c, 'V');
+
+        if (!String.isBlank(groupDescription) && !String.isEmpty(groupDescription))
+        {
+            String busquedaField = 'Policy__c.ProductId__r.GroupDescription__c';
+            this.baseQuery.addConditionEq(busquedaField, groupDescription);
+
+        }
+        return (List<Policy__c>) this.baseQuery.run();
+    }
+    
+    /**
+     * Busca pólizas activas a partir de su Id de Salesforce
+     *
+     * @author jfherrero
+     * @date 26/10/2023
+     * @param Set<Id> policyIds  Ids de las pólizas a recuperar
+     * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
+     * 
+     */
+    public List<Policy__c> selectByIdAndRecordType(Set<String> policyIds, Set<String> recordTypes)
+    {
+        if (policyIds == null || policyIds.size() == 0)
+        {
+            return new List<Policy__c>();
+        }
+
+        this.baseQuery.selectReadableFields();
+        this.baseQuery.addConditionIn(Policy__c.Id, policyIds)
+            		  .addConditionEq(Policy__c.PolicyStatus__c, 'V');
+
+        // Vamos añadir la condición si la lista es una, no está vacía o está poblada por valores no válidos
+        if (recordTypes != null && recordTypes.size() > 0)
+        {
+            for (string record : recordTypes)
+            {
+                if (String.IsNotBlank(record))
+                {
+                    this.baseQuery.addConditionIn(Policy__c.PolicyType__c, recordTypes);
+                	break;
+                }
+       		}
+        }
+        
+        return (List<Policy__c>) this.baseQuery.run();
+    }
+    
 }

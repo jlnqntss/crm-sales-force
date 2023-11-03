@@ -875,6 +875,59 @@ private with sharing class AccountsSelectorTest
     }
 
     @isTest
+    static void test_findByNationalIdAndPhoneNumber_ok()
+    {
+        // SOSL - Resultados de búsqueda
+        List<String> telephoneNumberToSearch = new List<String>();
+        Set<Id> recordIds = new Set<Id>();
+        for(ContactPointPhone contactPoint : [SELECT Id, ParentId, ContactId__c, TelephoneNumber FROM ContactPointPhone])
+        {
+            recordIds.add(contactPoint.ParentId);
+            recordIds.add(contactPoint.Id);
+            telephoneNumberToSearch.add(contactPoint.TelephoneNumber);
+        }
+        Test.setFixedSearchResults( new List<Id>(recordIds) );
+
+
+        ID idBuscado = null;
+        for (Id elementos : recordIds)
+        {
+            idBuscado = elementos;
+            break;
+        }
+
+        List<Account> cuenta = [SELECT Id, NationalID__c FROM Account WHERE Id = : idBuscado];
+        List<String> dnis = new List<String>();
+        dnis.add(cuenta[0].NationalId__c);
+
+        // Test
+        Test.startTest();
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByNationalIdAndPhoneNumber(dnis, '', telephoneNumberToSearch);
+
+        Test.stopTest();
+
+        //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
+        System.assertEquals(false, matchedRecords.isEmpty(), 'SOSL shouldnt be empty');
+    }
+
+    @isTest
+    static void test_findByNAtionalIdAndPhoneNumber_ko()
+    {
+        // Test
+        Test.startTest();
+        AccountsSelector accountsSelector = new AccountsSelector();
+        accountsSelector.setScope(RecordsSelector.Scope.ALL);
+        List<Account> matchedRecords = accountsSelector.findByNationalIdAndPhoneNumber( new List<String>(), '', new List<String>() );
+
+        Test.stopTest();
+
+        //Debe devolver una lista vacía de accounts porque se pasó vacía la lista de teléfonos
+        System.assertEquals(true, matchedRecords.isEmpty(), NEMP_TEXT_MSG);
+    }
+
+    @isTest
     static void test_findIntermediaryGroupByIntermediaryGroupCodes()
     {
         List<Account> agrupacionesData = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c FROM Account WHERE RecordTypeId = :AccountsSelector.RT_NAME_AGRUPATION AND INFOIntermediaryGroupCode__c != NULL]);
