@@ -20,7 +20,6 @@ public with sharing class ClientIdentificationService
             when 'findByPhone' {
                 return getByPhone(receivedData);
             }
-            //NUEVO
             when 'findByRegistrationNumber' {
                 return getByRegistrationNumber(receivedData);
             }
@@ -127,35 +126,30 @@ public with sharing class ClientIdentificationService
         // Comprobamos si los datos nos vienen rellenos
         if ( String.isBlank(receivedData.nationalID) || String.isBlank(receivedData.phoneNumber) || String.isBlank(receivedData.groupDescription) )
         {
-
             throw new ClientIdentificationException(
                       EMPTY_FIELD_STATUSCODE,
                       'A required field is empty'
                       );
         }
 
-        // Si hay un prefijo lo añadimos antes del teléfono
-        if (!String.isNotBlank(receivedData.phonePrefix))
-        {
-            receivedData.phoneNumber = receivedData.phoneNumber + receivedData.phonePrefix;
-        }
+        String composedPhoneNumber = String.join(new List<String>{receivedData.phonePrefix, receivedData.phoneNumber}, '');
+
         
         // Si todo bien, buscamos account por DNI + Telefono
-
         AccountsSelector accountsSelector = new AccountsSelector();
         PoliciesSelector policiesSelector = new PoliciesSelector();
         AssetsSelector assetsSelector = new AssetsSelector();
 
         // Con el ID del account conseguido, sacamos las pólizas
-        List<Account> cuentasEncontradas = accountsSelector.findByNationalIdAndPhoneNumber(new List<String> { receivedData.nationalID }, '', new List<String> { receivedData.phoneNumber });
-
+        List<Account> cuentasEncontradas = accountsSelector.findByNationalIdAndPhoneNumber(new List<String> { receivedData.nationalID }, '', new List<String> {composedPhoneNumber});
+        
         if(!cuentasEncontradas.isEmpty())
         {
             resultado.nationalID = receivedData.nationalID;
-            resultado.phoneNumber = receivedData.phoneNumber;
+            resultado.phoneNumber = composedPhoneNumber;
 
             List<Policy__c> polizasEncontradas = policiesSelector.selectByHolderAndGroupDescription(cuentasEncontradas[0].id, receivedData.groupDescription);
-
+            
             if(!polizasEncontradas.isEmpty())
             {
                 Map<Id, Policy__c> mapaPolizas = new Map<Id, Policy__c>();
@@ -213,7 +207,6 @@ public with sharing class ClientIdentificationService
         // Comprobamos si los datos nos vienen rellenos
         if ( String.isBlank(receivedData.registrationNumber) )
         {
-
             throw new ClientIdentificationException(
                       EMPTY_FIELD_STATUSCODE,
                       'A required field is empty'
@@ -225,6 +218,12 @@ public with sharing class ClientIdentificationService
 		// Si todo bien, buscamos primero el Asset a través de su matrícula
 		AssetsSelector assetsSelector = new AssetsSelector();
         List<Asset> listaAssets = assetsSelector.selectByRegistrationNumber(listaRegNumbers); //Necesitamos Modelo del vehículo, Marca del vehículo
+        Set<String> policyIds = new Set<String>();
+        
+        for(Asset asset : listaAssets)
+        {
+            policyIds.add(asset.PolicyId__c);
+        }
         
         // Sacamos las pólizas asociadas a las matrículas
         Map<String, Policy__c> policyMap = new Map<String, Policy__c>(); 
@@ -232,8 +231,11 @@ public with sharing class ClientIdentificationService
         // Si hay assets recuperamos las pólizas
         if (listaAssets.size()>0)
         {  	
+            resultado.existsRegistrationNumber = true;
+                
             PoliciesSelector policiesSelector = new PoliciesSelector();
-        	List<Policy__c> policyList = policiesSelector.selectByIdAndRecordType(policyMap.keySet(), new Set<String>{'Motor'}); //Necesitamos Name -> Número de Póliza
+            
+        	List<Policy__c> policyList = policiesSelector.selectByIdAndRecordType(policyIds, new Set<String>{receivedData.groupDescription}); //Necesitamos Name -> Número de Póliza
         
             for(Policy__c policy : policyList)
             {
@@ -265,15 +267,18 @@ public with sharing class ClientIdentificationService
                 {
                     InsuredObject obj = new InsuredObject();
 
+                    // Datos del asset
                     obj.model = a.Model__c;
                     obj.brandName = a.BrandName__c;
                     
+                    // Datos de la póliza
                     if(policyMap.get(a.PolicyId__c) !=null)
                     {
                         obj.policyName = policyMap.get(a.PolicyId__c).Name;
                         obj.policyStatus = policyMap.get(a.PolicyId__c).PolicyStatus__c ;
-                        
-                        if (accountMap.get(policyMap.get(a.PolicyId__c).Id) != null)
+
+                        // Datos del tomador de la póliza
+                        if (accountMap.get(policyMap.get(a.PolicyId__c).PolicyHolder__c) != null)
                         {
                             obj.holderFirstName = accountMap.get(policyMap.get(a.PolicyId__c).PolicyHolder__c).FirstName;
                             obj.holderLastName = accountMap.get(policyMap.get(a.PolicyId__c).PolicyHolder__c).LastName;
@@ -450,6 +455,8 @@ public with sharing class ClientIdentificationService
     {
         public String nationalID;
         public String phoneNumber;
+        public String existsPhoneNumber;
+        public Boolean existsRegistrationNumber;
         public List<InsuredObject> objects;
 
         public override String toString()

@@ -521,7 +521,9 @@ public with sharing class AccountsSelector extends RecordsSelector
             Account.MainEmail__c,
             Account.NationalId__c,
             Account.INFOIntermediaryCode__c,
-            Account.TerritorialDirection__c
+            Account.TerritorialDirection__c,
+            Account.FirstName,
+            Account.LastName
         }
             ).selectFields('Account.RecordType.DeveloperName');
 

@@ -405,4 +405,25 @@ private with sharing class PoliciesSelectorTest
         System.assertEquals(true, policyList == null, 'Debe ser nulo');
     }
 
+
+    @IsTest
+    static void test_selectByIdAndRecordType_ok()
+    {
+        List<Policy__c> policies = [SELECT Id, PolicyType__c FROM Policy__c];
+
+        Set<String> polIds = new Set<String>();
+        Set<String> polTypes = new Set<String>();
+
+        for (Policy__c policy : policies)
+        {
+            polIds.add(policy.Id);
+            polTypes.add(policy.PolicyType__c);
+        }
+
+        // Comprobar obtiene pólizas por tomador
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        List<Policy__c> encontradas = policiesSelector.selectByIdAndRecordType(polIds, polTypes);
+        System.assertEquals(policies.size(), encontradas.size(), 'The number of policies should match');
+    }
+
 }

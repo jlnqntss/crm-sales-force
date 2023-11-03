@@ -311,9 +311,18 @@ public with sharing class PoliciesSelector extends RecordsSelector
         this.baseQuery.addConditionIn(Policy__c.Id, policyIds)
             		  .addConditionEq(Policy__c.PolicyStatus__c, 'V');
 
+        // Vamos añadir la condición si la lista es una, no está vacía o está poblada por valores no válidos
         if (recordTypes != null && recordTypes.size() > 0)
         {
-            this.baseQuery.addConditionIn(Policy__c.RecordType.Name, recordTypes);
+            String firstElement;
+            for (string record : recordTypes)
+            {
+                if (String.IsNotBlank(record))
+                {
+                    this.baseQuery.addConditionIn(Policy__c.PolicyType__c, recordTypes);
+                	break;
+                }
+       		}
         }
         
         return (List<Policy__c>) this.baseQuery.run();
