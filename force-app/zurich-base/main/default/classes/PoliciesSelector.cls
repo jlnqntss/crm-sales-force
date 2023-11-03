@@ -314,7 +314,6 @@ public with sharing class PoliciesSelector extends RecordsSelector
         // Vamos añadir la condición si la lista es una, no está vacía o está poblada por valores no válidos
         if (recordTypes != null && recordTypes.size() > 0)
         {
-            String firstElement;
             for (string record : recordTypes)
             {
                 if (String.IsNotBlank(record))
