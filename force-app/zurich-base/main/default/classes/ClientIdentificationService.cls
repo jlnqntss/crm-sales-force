@@ -110,7 +110,7 @@ public with sharing class ClientIdentificationService
     }
 
     /**
-     * Método para recuperar la información de una persona en base a un Número de Matrícula
+     * Método para recuperar la información de una persona en base a un Teléfono
      *
      * @author arcortazar
      * @date
@@ -306,7 +306,12 @@ public with sharing class ClientIdentificationService
         }
     }
     
-    /**/
+    /**
+     * Método para generar el mapa de pólizas
+     *
+     * @author jfherrero
+     * @date 03/11/2023
+     */
     private static Map<String, Policy__c> getPolicyMap(Set<String> policyIds, String groupDescription)
     {
         Map<String, Policy__c> policyMap = new Map<String, Policy__c>(); 
@@ -323,7 +328,12 @@ public with sharing class ClientIdentificationService
         return policyMap;
     }
 
-    /**/
+    /**
+     * Método para generar el mapa de pólizas
+     *
+     * @author jfherrero
+     * @date 03/11/2023
+     */
     private static Map<String, Account> getAccountMap(Map<String, Policy__c> policyMap)
     {
         Map<String, Account> accountMap = new Map<String, Account>();
@@ -346,7 +356,12 @@ public with sharing class ClientIdentificationService
         return accountMap;
     }
     
-   /**/
+   /**
+     * Método para generar el mapa de pólizas
+     *
+     * @author jfherrero
+     * @date 03/11/2023
+     */
     private static InsuredObject setInsuredObjectByPhone(Asset asset, Map<String,Policy__c> policyMap, Map<String,Account> accountMap)
     {
         InsuredObject obj = new InsuredObject();
