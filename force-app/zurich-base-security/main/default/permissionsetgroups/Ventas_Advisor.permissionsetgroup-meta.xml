@@ -3,6 +3,7 @@
     <hasActivationRequired>false</hasActivationRequired>
     <label>Ventas Advisor</label>
     <permissionSets>Acceso_App_Ventas</permissionSets>
+    <permissionSets>Acceso_Opciones_de_Oferta</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_Captacion_Avanzada</permissionSets>
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
