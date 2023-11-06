@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AvailableFieldsForEditBySupervisors</fullName>
+    <active>true</active>
+    <description>Se le otorga a Supervisores (USP) permisos de edición a campos de usuario (Vacaciones o ausencias).
+Con esta VR evitamos que editen otros campos.</description>
+    <errorConditionFormula>AND(
+    OR(
+        ISCHANGED(FirstName),
+        ISCHANGED(LastName),
+        ISCHANGED(Title),
+        ISCHANGED(Email)
+				),
+    $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos;,
+    $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos;,
+    $Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;
+)</errorConditionFormula>
+    <errorMessage>No es posible la modificación manual del Nombre, Cargo o Email del usuario.</errorMessage>
+</ValidationRule>
