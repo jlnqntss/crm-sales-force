@@ -118,7 +118,7 @@ public with sharing class Batch_FinishCrossSellingCampaignTest {
     static void testScheduleByQuery() {
          // prueba batch
          Test.startTest();
-         String jobName = '';
+         String jobName = 'testScheduleByQuery';
          String cron = '';
  
          String jobId = Batch_FinishCrossSellingCampaign.createStandardSchedule(jobName, cron);
