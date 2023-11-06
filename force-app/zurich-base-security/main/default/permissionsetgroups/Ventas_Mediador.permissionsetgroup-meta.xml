@@ -2,6 +2,7 @@
 <PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
     <hasActivationRequired>false</hasActivationRequired>
     <label>Ventas Mediador</label>
+    <permissionSets>Acceso_Opciones_de_Oferta</permissionSets>
     <permissionSets>NoReasignarOferta</permissionSets>
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
     <permissionSets>Ventas_Edicion_AccountRetationship_Agente</permissionSets>

@@ -998,11 +998,6 @@
     </fieldPermissions> 
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.NetPremium__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.NextStep</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1104,11 +1099,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.TotalOpportunityQuantity</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.TotalPremium__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

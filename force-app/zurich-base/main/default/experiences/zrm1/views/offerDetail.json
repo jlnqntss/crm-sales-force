@@ -85,6 +85,17 @@
               "components": [
                 {
                   "componentAttributes": {
+                    "relatedListApiName": "Quotes",
+                    "relatedListComponentOverride": "GRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "c8809aec-bfb0-4ff5-b8d0-82fe7049365e",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
                     "relatedListApiName": "Histories",
                     "relatedListComponentOverride": "GRID",
                     "width": "MEDIUM"
