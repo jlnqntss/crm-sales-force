@@ -14,6 +14,7 @@ public with sharing class OpportunityUtil
     static final String FIELD_STAGE = 'StageName';
     private static List<String> nombresPerfilesVentas; // perfiles de la app ventas y zrm que muestra otro mensaje de error para la validación de cerrada ganada
     private static String userLoggedProfile; // query que obtiene el nombre del perfil del usuario logeado
+    private final static String CRM_VENTAS_PROFILE = 'Ventas User';
 
     /**
      * BULK BEFORE
@@ -228,6 +229,12 @@ public with sharing class OpportunityUtil
                 // ERROR  : Agregar el mensaje a nivel de campo
 
                 newOpty.addError(FIELD_STAGE, nombresPerfilesVentas.contains(userLoggedProfile) ? Label.OfferSalesStageValidationClosedWonMessage : Label.OfferStageValidationMessage);
+            }
+
+            // fpalomo - 10/10/2023 - CV-671
+            if ( oldOpty.StageName.equalsIgnoreCase('Legit Lead') && newOpty.StageName.equalsIgnoreCase('App Submitted') && userLoggedProfile.equalsIgnoreCase(CRM_VENTAS_PROFILE) )
+            {
+                newOpty.OwnerId = UserInfo.getUserId();
             }
         }
     }

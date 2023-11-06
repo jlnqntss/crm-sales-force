@@ -421,9 +421,11 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
                     //Si el Owner es el Integrador hay que cambiarlo
                     // arcortazar - 31/01/2022: Y si la oferta no es de test
+                    // fpalomo - 11/10/2023 - CV-671
+                    String currentUserProfileName = new UserSelector().getUserInfo( UserInfo.getUserId() ).Profile.Name;
                     for(Opportunity offer: totalOffers)
                     {
-                        if(offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && offer.IsTest__c == false)
+                        if( offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && offer.IsTest__c == false && !currentUserProfileName.equalsIgnoreCase(CRM_VENTAS_PROFILE) )
                         {
                             //Cambiar el propietario al usuario actual
                             offer.OwnerId = UserInfo.getUserId();
