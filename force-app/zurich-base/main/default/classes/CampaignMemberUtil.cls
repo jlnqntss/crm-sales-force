@@ -88,12 +88,42 @@ public with sharing class CampaignMemberUtil
      * @author arcortazar
      * @date 13/10/2023
      */
-    public static void executeBatchCloseOpps()
+    public static void closeRelatedOffer(Map<Id, CampaignMember> miembros)
     {
         Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'Agente Ventas'});
         if (listaPerfiles.keySet().contains(UserInfo.getProfileId()))
         {
-            Database.executeBatch( new Batch_CloseOppsWithoutCampMemb('Agent removes from the campaign') );
+            // Aqui buscamos la oferta relacionada y la cerramos
+            // Tiene que tener el 'Agent removes from the campaign'
+            Set<String> idCampaigns = new Set<String>();
+            Set<String> idAccounts = new Set<String>();
+            for(CampaignMember cm : miembros.values())
+            {
+                idCampaigns.add(cm.CampaignId);
+                idAccounts.add(cm.Contact.AccountId__c);
+            }
+
+            System.debug('++++ ID Campañas: ' + idCampaigns);
+            System.debug('++++ ID Accounts: ' + idAccounts);
+
+            // Llamamos al selector de ofertas (en base a la/s campaña/s y los miembros)
+
+            OpportunitiesSelector selector = new OpportunitiesSelector();
+            List<Opportunity> offersToClose = selector.findByCampaignAndCampaignMember(idCampaigns, idAccounts);
+
+            // Cambiamos el estado de las ofertas
+            for(Opportunity o : offersToClose)
+            {
+                o.StageName = 'Closed Lost';
+                if(o.SalesProcess__c == 'VC')
+                {
+                    o.Sales_Loss_Reason__c = 'Agent removes from the campaign';
+                }
+            }
+
+            System.debug('++++ Oportunidades: ' + offersToClose);
+            update offersToClose;
+
         }
     }
 

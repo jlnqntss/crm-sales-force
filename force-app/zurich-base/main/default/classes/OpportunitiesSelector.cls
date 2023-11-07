@@ -402,4 +402,38 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                         'AND Owner.Profile.Name = \'Agente Ventas\'';
     }
 
+
+    /**
+     * Método que obtiene
+     * @param Set<String> idsCampaign: listado de identificadores de campañas de las que se han eliminado miembros de campaña
+     * @param Set<String> idsCampaignMember: listado de identificadores de miembros de campañas que se han eliminado
+     * @return List<Opportunity>
+     * 
+     * @author arcortazar
+     * @createdDate 06/11/2023 
+     */
+    public List<Opportunity> findByCampaignAndCampaignMember(Set<String> idsCampaign, Set<String> idsCampaignMembers)
+    {
+        List<Opportunity> retrievedOffers = new List<Opportunity>();
+
+        if( idsCampaign != null && !idsCampaign.isEmpty() &&
+        idsCampaignMembers != null && !idsCampaignMembers.isEmpty())
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+                Opportunity.Id,
+                Opportunity.StageName,
+                Opportunity.SalesProcess__c,
+                Opportunity.Sales_Loss_Reason__c
+            })
+            .addConditionIn(Opportunity.CampaignId, idsCampaign)
+            .addConditionIn(Opportunity.AccountId, idsCampaignMembers)
+            .addConditionEq(Opportunity.IsClosed, false)
+            .addConditionEq(Opportunity.Campaign.Type, 'Cross Selling');
+    
+            System.debug('++++ Query: ' + this.baseQuery.toQueryString());
+            retrievedOffers =  (List<Opportunity>) this.baseQuery.run();
+        }
+        
+        return retrievedOffers;
+    }
 }

@@ -394,4 +394,68 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(true, offerList != null, 'No Debe ser nulo');
     }
 
+    @isTest
+    static void findByCampaignAndCampaignMember_OK()
+    {
+        // Creamos campañas y miembros de campañas. A las ofertas les asignaremos ambos valores
+
+        Cross_Selling__c ventaCruzada = new Cross_Selling__c();
+        ventaCruzada.ContactCenterUser__c = 'generico';
+        ventaCruzada.DefaultUser__c = 'adminkli';
+        insert ventaCruzada;
+
+        List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 1);
+        campaigns[0].Type = 'Cross Selling';
+        campaigns[0].StartDate = Date.today();
+        campaigns[0].EndDate = Date.today() + 7;
+        insert campaigns;
+
+
+        // hotfix: obtener cuentas de tipo personales con el campo PersonContactId relleno
+        List<Account> accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null]);
+        System.debug('++++ Account: ' + accounts);
+        List<Account> miembroCampanya = new List<Account>();
+        miembroCampanya.add(accounts[0]);
+        System.debug('++++ Miembro cmapaña: ' + miembroCampanya);
+
+        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(miembroCampanya, campaigns, 'Subscribed');
+        insert campaignMembers;
+
+        System.debug('++++ CM: ' + campaignMembers);
+        System.debug('++++ CM: ' + campaignMembers[0]);
+        System.debug('++++ CM: ' + campaignMembers[0].ContactId);
+
+        List<Contact> contacto = [SELECT Id, AccountId FROM Contact WHERE id =: campaignMembers[0].ContactId];
+        System.debug('++++ contacto: ' + contacto);
+
+
+        List<Opportunity> retrievedOpportunitites = [SELECT Id, Name, CampaignId, AccountId FROM Opportunity WHERE AccountId = :contacto[0].AccountId];
+        for(Opportunity o : retrievedOpportunitites)
+        {
+            System.debug('++++ O: ' + o);
+        }
+
+        // Obtenemos los miembros de 
+        /*List<Opportunity> retrievedOpportunitites = [SELECT Id, CampaignId, AccountId FROM Opportunity LIMIT 1];
+        retrievedOpportunitites[0].CampaignId = campaigns[0].id;
+        retrievedOpportunitites[0].AccountId = accounts[0].id;
+        update retrievedOpportunitites;
+
+        Set<String> idCampanya = new Set<String>();
+        idCampanya.add(campaigns[0].id);
+        Set<String> idMiembro = new Set<String>();
+        idMiembro.add(accounts[0].id);
+
+        Test.startTest();
+        retrievedOpportunitites = (new OpportunitiesSelector().findByCampaignAndCampaignMember(idCampanya, idMiembro));
+        Test.stopTest();*/
+
+        //System.debug('++++ Obtenidas: ' + retrievedOpportunitites);
+    }
+
+    @isTest
+    static void findByCampaignAndCampaignMember_KO()
+    {
+
+    }
 }
