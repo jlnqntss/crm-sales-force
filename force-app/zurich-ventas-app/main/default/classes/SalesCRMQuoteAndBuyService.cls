@@ -110,6 +110,11 @@ public with sharing class SalesCRMQuoteAndBuyService
             fillAccountFields(acc, requestData);
             upsert acc;
         }
+        else
+        {
+            acc.PreferedContactStart__c = (Datetime)getNonNullableFieldValue(NonNullableFieldKey.ACCOUNT_PREFERED_CONTACT_START, requestData);
+            acc.PreferedContactEnd__c = (Datetime)getNonNullableFieldValue(NonNullableFieldKey.ACCOUNT_PREFERED_CONTACT_END, requestData);
+        }
 
         return acc;
     }
@@ -195,12 +200,6 @@ public with sharing class SalesCRMQuoteAndBuyService
         offer.ProductBranch__c = requestData.poliza.ramo;
         offer.Description = setDesc(requestData);
 
-        if ( String.isNotBlank(requestData.poliza.numeroPoliza)  && String.isNotBlank(requestData.poliza.numeroOferta) )
-        {
-            offer.StageName = 'Cerrada-Ganada';
-            offer.CloseDate = Date.today();
-        }
-
         return offer;
     }
 
@@ -235,39 +234,50 @@ public with sharing class SalesCRMQuoteAndBuyService
         return pol;
     }
 
-    /**
-     * Método que llama a la clase AccountLeadOpportunityQueueJob con un delay de 30min
-     * en caso que el número de Póliza sea nulo pero el número de oferta no
-     * *
-     * @author overes | 09-25-2023
-     * @param acc
-     * @param offer
-     * @param postalCode
-     * @param phone
-     **/
-    public static void manageOfferStage(Account acc, Opportunity offer, Lead requestData, Id leadId)
+    public static void processData(Account acc, Opportunity offer, Lead requestData)
     {
-        if ( String.isBlank(requestData.poliza.numeroPoliza) )
+        if (!String.isBlank(requestData.poliza.numeroPoliza) && !String.isBlank(requestData.poliza.numeroOferta))
         {
-            if ( String.isBlank(requestData.poliza.numeroOferta) )
+            // Actualizamos los valores de la oferta
+            offer.StageName = 'Closed Won';
+            offer.CloseDate = Date.today();
+
+            // Creamos la póliza
+            Policy__c policy = managePolicy(acc, requestData);     
+            
+            // Llamamos al método de forma síncrona:
+            AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, policy, requestData.Cliente.Contacto.codigoPostal, requestData.Cliente.Contacto.telefono, false);
+
+        }
+        else if (String.isBlank(requestData.poliza.numeroPoliza) && !String.isBlank(requestData.poliza.numeroOferta))
+        {
+            // Actualizamos el estado de la oferta:
+            offer.StageName = 'Quoted';
+
+            // Llamamos al método de forma asíncrona:
+            //TODO: cambiar tiempo
+            System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.Cliente.Contacto.codigoPostal, requestData.Cliente.Contacto.telefono), 1);
+        }
+        else if (String.isBlank(requestData.poliza.numeroPoliza) && String.isBlank(requestData.poliza.numeroOferta))
+        {
+            // Si numeroPoliza == null && numeroOferta == null:
+
+            // Actualizamos los valores de la oferta:
+            offer.Name = ( 'OF' + Datetime.now().getTime() / 1000 + acc.Id.to15() ).left(120);
+            offer.StageName = 'App Submitted';
+
+            // Llamamos al método según si quiere llamada o no:
+            if (requestData.cliente.contacto.quiereLlamada == 'S')
             {
-                offer.Name = ( 'OF' + Datetime.now().getTime() / 1000 + leadId.to15() ).left(120);
-                offer.StageName = 'App Submitted';
-                if (requestData.cliente.contacto.quiereLlamada == 'S')
-                {
-                    AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone);
-                }
-                else
-                {
-                    System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 5);
-                }
+                // Si quiere llamada, lanzamos de forma síncrona
+                AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone, true);
             }
             else
             {
-                offer.StageName = 'Quoted';
-                System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 10);
+                // Si no quiere llamada, lanzamos Job con delat y de 60 minutos
+                //TODO: cambiar tiempo
+                System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 1);
             }
-
         }
     }
 

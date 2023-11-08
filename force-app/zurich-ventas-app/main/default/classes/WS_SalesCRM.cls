@@ -91,14 +91,16 @@ global with sharing class WS_SalesCRM extends WS_BaseAPIService
                 }
                 when 'quoteAndBuy'
                 {
+                    // Deserializamos la llamada y la validamos
                     SalesCRMQuoteAndBuyService.Lead deserializedRequest = (SalesCRMQuoteAndBuyService.Lead) JSON.deserializeStrict(requestInformation, SalesCRMQuoteAndBuyService.Lead.class);
                     SalesCRMQuoteAndBuyService.validateRequestData(deserializedRequest);
-                    Account leadAccount = SalesCRMQuoteAndBuyService.manageLead(deserializedRequest);
-                    Opportunity offer = SalesCRMQuoteAndBuyService.manageOpportunity(leadAccount, deserializedRequest);
-                    Policy__c pol = SalesCRMQuoteAndBuyService.managePolicy(leadAccount,deserializedRequest);
-                    SalesCRMQuoteAndBuyService.manageOfferStage(leadAccount, offer, deserializedRequest, leadAccount.Id);
-                    AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(leadAccount, offer, pol, deserializedRequest.cliente.contacto.codigoPostal, deserializedRequest.cliente.contacto.telefono);
 
+                    // Comprobamos la cuentay oferta recibidas por 
+                    Account acc = SalesCRMQuoteAndBuyService.manageLead(deserializedRequest);
+                    Opportunity offer = SalesCRMQuoteAndBuyService.manageOpportunity(acc, deserializedRequest);
+                    
+                    // Gestionamos los datos
+                    SalesCRMQuoteAndBuyService.processData(acc, offer, deserializedRequest);
                     response.responseBody = Blob.valueOf('{"status":"success", "message":"Success creating client"}');
                 }
                 when else
