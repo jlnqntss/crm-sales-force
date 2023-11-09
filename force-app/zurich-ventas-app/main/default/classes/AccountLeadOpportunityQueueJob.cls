@@ -27,6 +27,10 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * Teléfono
      **/
     private String phone;
+    /**
+     * Se requiere un CallMeBack o no
+     **/
+    private Boolean requiredCMB;
 
     private static final String CONTACT_CENTER = 'CONTACT_CENTER';
 
@@ -47,6 +51,17 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         this.policyRecord = policyRecord;
         this.postalCode = postalCode;
         this.phone = phone;
+        this.requiredCMB = false;
+    }
+
+    public AccountLeadOpportunityQueueJob(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode, String phone, Boolean requiredCMB)
+    {
+        this.accountRecord = accountRecord;
+        this.offerRecord = offerRecord;
+        this.policyRecord = policyRecord;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.requiredCMB = requiredCMB;
     }
 
     /**
@@ -57,7 +72,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      **/
     public void execute(QueueableContext context)
     {
-        processOpportunityAndPolicy(this.accountRecord, this.offerRecord, this.policyRecord, this.postalCode, this.phone);
+        processOpportunityAndPolicy(this.accountRecord, this.offerRecord, this.policyRecord, this.postalCode, this.phone, this.requiredCMB);
     }
 
     /**
@@ -69,7 +84,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param policyRecord
      * @param postalCode
      **/
-    public static void processOpportunityAndPolicy(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode, String phone)
+    public static void processOpportunityAndPolicy(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode, String phone, Boolean requiredCMB)
     {
         Opportunity offerToInsertUpdate = offerRecord;
         List<Opportunity> listOffer = new List<Opportunity>();
@@ -85,7 +100,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
 
         manageOfferRecord(offerRecord, offerToInsertUpdate, listOffer);
 
-        offerToInsertUpdate = manageOfferToInsertUpdate (offerToInsertUpdate, accountRecord, postalCode, phone);
+        offerToInsertUpdate = manageOfferToInsertUpdate (offerToInsertUpdate, accountRecord, postalCode, phone, requiredCMB);
 
         if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null)
         {
@@ -108,13 +123,13 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param phone
      * @return Opportunity
      **/
-    public static Opportunity manageOfferToInsertUpdate (Opportunity offerToInsertUpdate, Account accountRecord, String postalCode, String phone)
+    public static Opportunity manageOfferToInsertUpdate (Opportunity offerToInsertUpdate, Account accountRecord, String postalCode, String phone, Boolean requiredCMB)
     {
         Opportunity offerToUpdate = offerToInsertUpdate;
         if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null && offerToInsertUpdate.StageName != 'Cerrada-Ganada')   //Ejecutar Proceso de Asignación si la Oferta se debe insertar y no es el escenario de integración 3.
         {
             Map<String, Account> assign = AccountLeadUtil.leadAssignment(accountRecord, offerToInsertUpdate.IntermediaryCode__c, offerToInsertUpdate.IntermediaryCode__c, null, postalCode);
-            offerToUpdate = manageConstrainsKey(assign, accountRecord, offerToInsertUpdate,phone);
+            offerToUpdate = manageConstrainsKey(assign, accountRecord, offerToInsertUpdate, phone, requiredCMB);
         }
         return offerToUpdate;
     }
@@ -128,10 +143,10 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param phone
      * @return Opportunity
      **/
-    public static Opportunity manageConstrainsKey (Map<String,Account> assign, Account accountRecord, Opportunity offerToInsertUpdate, String phone)
+    public static Opportunity manageConstrainsKey (Map<String,Account> assign, Account accountRecord, Opportunity offerToInsertUpdate, String phone, Boolean requiredCMB)
     {
         Opportunity offerToUpdate = offerToInsertUpdate;
-        if ( assign.containsKey(CONTACT_CENTER) )
+        if ( requiredCMB )
         {
             Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
             manageCallMeBack(accountRecord, offerToInsertUpdate, leadOffersCS, phone);
@@ -168,7 +183,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
     public static void manageCallMeBack(Account accountRecord, Opportunity offerToInsertUpdate, Lead_Offers__c leadOffersCS, String phone)
     {
         CallMeBackUtil.CallMeBack callMeBack = new CallMeBackUtil.CallMeBack();
-        callMeBack.name = accountRecord.Name;
+        callMeBack.name = accountRecord.LastName;
         callMeBack.phone = phone;
         callMeBack.bestTimeFrom = accountRecord.PreferedContactStart__c;
         callMeBack.bestTimeUntil = accountRecord.PreferedContactEnd__c;

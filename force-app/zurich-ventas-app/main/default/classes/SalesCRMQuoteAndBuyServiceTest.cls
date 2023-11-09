@@ -103,7 +103,7 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
         Test.startTest();
         try
         {
-            SalesCRMQuoteAndBuyService.manageOfferStage(leadAccounts.get(0),offer,lead,leadAccounts.get(0).Id);
+            SalesCRMQuoteAndBuyService.processData(leadAccounts.get(0),offer,lead);
         }
         catch (Exception ex)
         {
