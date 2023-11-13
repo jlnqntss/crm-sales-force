@@ -14,13 +14,6 @@ private with sharing class ContactsSelectorTest
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
 
-        List<Account> businessAccounts = TestDataFactory.generateAccounts('Life insurance', 'BusinessCustomer', 1);
-        insert businessAccounts;
-
-        List<Contact> businessContact = TestDataFactory.generateContactsFromAccounts(businessAccounts, ContactsSelector.RT_NAME_CONTACT, 1);
-        businessContact.get(0).LastName = businessAccounts.get(0).Name;
-        insert businessContact;
-        
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
         insert contactPointPhones;
 
@@ -306,6 +299,13 @@ private with sharing class ContactsSelectorTest
     @IsTest
     static void test_findById()
     {
+        List<Account> businessAccounts = TestDataFactory.generateAccounts('Life insurance', 'BusinessCustomer', 1);
+        insert businessAccounts;
+
+        List<Contact> businessContact = TestDataFactory.generateContactsFromAccounts(businessAccounts, ContactsSelector.RT_NAME_CONTACT, 1);
+        businessContact.get(0).LastName = businessAccounts.get(0).Name;
+        insert businessContact;
+
         List<Contact> allContacsList = [Select id FROM Contact];
         Set<String> identificadores = new Set<String>();
         for(Contact c : allContacsList)
