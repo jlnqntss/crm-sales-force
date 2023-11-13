@@ -425,10 +425,12 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                 Opportunity.SalesProcess__c,
                 Opportunity.Sales_Loss_Reason__c
             })
+            .selectFields('Opportunity.CampaignId')
+            .selectFields('Opportunity.Campaign.Type')
+            .selectFields('Account.RecordType.DeveloperName')
             .addConditionIn(Opportunity.CampaignId, idsCampaign)
             .addConditionIn(Opportunity.AccountId, idsCampaignMembers)
-            .addConditionEq(Opportunity.IsClosed, false)
-            .addConditionEq(Opportunity.Campaign.Type, 'Cross Selling');
+            .addConditionEq(Opportunity.IsClosed, false);
     
             System.debug('++++ Query: ' + this.baseQuery.toQueryString());
             retrievedOffers =  (List<Opportunity>) this.baseQuery.run();
