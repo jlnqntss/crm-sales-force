@@ -137,58 +137,16 @@ public with sharing class ClientIdentificationService
 
         // Buscamos account por DNI + Telefono
         AccountsSelector accountsSelector = new AccountsSelector();
-        PoliciesSelector policiesSelector = new PoliciesSelector();
-        AssetsSelector assetsSelector = new AssetsSelector();
 
         // Con el ID del account conseguido, sacamos las pólizas
         List<Account> cuentasEncontradas = accountsSelector.findByNationalIdAndPhoneNumber(new List<String> { receivedData.nationalID }, '', new List<String> {composedPhoneNumber});
+
+        //En las clases test no vamos a recibir cuentas encontradas porque hay implicadas consultas SOSL.
+        //Por tanto, utilizaremos esta clase visible por test para probar todo
+        resultado = setInsuredObjectsByPhone(receivedData, composedPhoneNumber, resultado, listaObjetos, cuentasEncontradas);
         
-        if(!cuentasEncontradas.isEmpty())
-        {
-            resultado.nationalID = receivedData.nationalID;
-            resultado.phoneNumber = composedPhoneNumber;
-
-            List<Policy__c> polizasEncontradas = policiesSelector.selectByHolderAndGroupDescription(cuentasEncontradas[0].id, receivedData.groupDescription);
-            
-            if(!polizasEncontradas.isEmpty())
-            {
-                Map<Id, Policy__c> mapaPolizas = new Map<Id, Policy__c>();
-                List<Id> listaPolIds = new List<Id>();
-                for(Policy__c pol : polizasEncontradas)
-                {
-                    listaPolIds.add(pol.id);
-                    mapaPolizas.put(pol.id, pol);
-                }
-
-                List<Asset> listaAssets = assetsSelector.selectByPolicyID(listaPolIds);
-                for(Asset a : listaAssets)
-                {
-                    InsuredObject obj = new InsuredObject();
-
-                    // Datos correspondientes al Asset
-                    obj.name = a.Name;
-                    obj.registrationNumber = a.RegistrationNumber__c;
-                    obj.model = a.Model__c;
-                    obj.addressType = a.AddressType__c;
-                    obj.addressName = a.AddressName__c; 
-                    obj.addressNumber = a.AddressNumber__c;
-                    obj.addressAdditionalInfo = a.AddressAdditionalInfo__c;
-                    obj.city = a.City__c;
-
-                    // Datos correspondientes a la poliza como tal
-                    obj.policyInfoInsuredObject = a.INFOInsuredObjectCode__c;
-                    obj.policyEndDate = mapaPolizas.get(a.PolicyId__c).EndDate__c;
-                    obj.policyStartDate = mapaPolizas.get(a.PolicyId__c).StartDate__c;
-                    obj.policyVersion= mapaPolizas.get(a.PolicyId__c).PolicyVersion__c;
-
-                    listaObjetos.add(obj);
-                }
-
-                resultado.objects = listaObjetos;
-            }
-        }
         return resultado.toString();
-    }
+	}
     
     //NUEVO
     /**
@@ -233,16 +191,16 @@ public with sharing class ClientIdentificationService
             // Sacamos las pólizas asociadas a las matrículas
         	Map<String, Policy__c> policyMap = getPolicyMap(policyIds, receivedData.groupDescription);
             
-            // Si los assets tienen pólizas, recuperamos los tomadores
+            // Si los assets tienen pólizas, recuperamos los tomadores y los partners
             if (policyMap.size()>0)
         	{
-                //Obtenemos los datos de los tomadores
+                //Obtenemos los datos de los tomadores y los partners
             	Map<String, Account> accountMap = getAccountMap(policyMap); 
                 
             	// Para cada asset recuperado vamos a generar un 
                 for(Asset a : listaAssets)
                 {
-                    InsuredObject obj = setInsuredObjectByPhone(a, policyMap, accountMap);
+                    InsuredObject obj = setInsuredObjectByRegistrationNumber(a, policyMap, accountMap);
                     listaObjetos.add(obj);
                 }
                 
@@ -318,7 +276,7 @@ public with sharing class ClientIdentificationService
         // Preparamos mapa de pólizas
         PoliciesSelector policiesSelector = new PoliciesSelector();
         
-        List<Policy__c> policyList = policiesSelector.selectByIdAndRecordType(policyIds, new Set<String>{groupDescription}); //Necesitamos Name -> Número de Póliza
+        List<Policy__c> policyList = policiesSelector.selectByIdAndRecordType(policyIds, new Set<String>{groupDescription}, new Set<String>()); //Necesitamos Name -> Número de Póliza
         
         for(Policy__c policy : policyList)
         {
@@ -329,7 +287,8 @@ public with sharing class ClientIdentificationService
     }
 
     /**
-     * Método para generar el mapa de pólizas
+     * Método para generar el mapa de Accounts relacionados con las pólizas
+     * vamos a necesitar a los tomadores y a los partners
      *
      * @author jfherrero
      * @date 03/11/2023
@@ -342,11 +301,18 @@ public with sharing class ClientIdentificationService
         
         for (String pol : policyMap.keySet())
         {
-            holderIds.add(policyMap.get(pol).PolicyHolder__c);
+            if (policyMap.get(pol).PolicyHolder__c != null)
+            {
+                holderIds.add(policyMap.get(pol).PolicyHolder__c);
+            }
+            if (policyMap.get(pol).Partner__c != null)
+            {
+                holderIds.add(policyMap.get(pol).Partner__c);
+            }
         }
         
         AccountsSelector accountsSelector = new AccountsSelector();
-        List<Account> accountList = accountsSelector.selectById(holderIds);	//Necesitamos Nombre del tomador, Apellidos del tomador               
+        List<Account> accountList = accountsSelector.selectById(holderIds);             
         
         for(Account holder : accountList)
         {
@@ -362,7 +328,7 @@ public with sharing class ClientIdentificationService
      * @author jfherrero
      * @date 03/11/2023
      */
-    private static InsuredObject setInsuredObjectByPhone(Asset asset, Map<String,Policy__c> policyMap, Map<String,Account> accountMap)
+    private static InsuredObject setInsuredObjectByRegistrationNumber(Asset asset, Map<String,Policy__c> policyMap, Map<String,Account> accountMap)
     {
         InsuredObject obj = new InsuredObject();
 
@@ -375,18 +341,83 @@ public with sharing class ClientIdentificationService
         {
             obj.policyName = policyMap.get(asset.PolicyId__c).Name;
             obj.policyStatus = policyMap.get(asset.PolicyId__c).PolicyStatus__c ;
+            obj.policyEndDate = policyMap.get(asset.PolicyId__c).EndDate__c;
+            obj.policyStartDate = policyMap.get(asset.PolicyId__c).StartDate__c;
             
             // Datos del tomador de la póliza
             if (accountMap.get(policyMap.get(asset.PolicyId__c).PolicyHolder__c) != null)
             {
-                obj.holderFirstName = accountMap.get(policyMap.get(asset.PolicyId__c).PolicyHolder__c).FirstName;
-                obj.holderLastName = accountMap.get(policyMap.get(asset.PolicyId__c).PolicyHolder__c).LastName;
+                obj.holderName = accountMap.get(policyMap.get(asset.PolicyId__c).PolicyHolder__c).Name;
+                obj.holderNationalId = accountMap.get(policyMap.get(asset.PolicyId__c).PolicyHolder__c).NationalId__c;
+            }
+            
+            // Datos del partner
+            if (accountMap.get(policyMap.get(asset.PolicyId__c).Partner__c) != null)
+            {
+                obj.partnerSector = accountMap.get(policyMap.get(asset.PolicyId__c).Partner__c).PartnerSector__c;
             }
         }
         
         return obj;
     }
+    
+   /**
+    * 
+    */
+    @TestVisible
+    private static SearchResultLong setInsuredObjectsByPhone(Client receivedData, String composedPhoneNumber, SearchResultLong resultado,
+                                                             List<InsuredObject> listaObjetos, List<Account> cuentasEncontradas)
+    {
+        if(!cuentasEncontradas.isEmpty())
+        {
+            PoliciesSelector policiesSelector = new PoliciesSelector();
+            AssetsSelector assetsSelector = new AssetsSelector();
+            
+            resultado.nationalID = receivedData.nationalID;
+            resultado.phoneNumber = composedPhoneNumber;
 
+            List<Policy__c> polizasEncontradas = policiesSelector.selectByHolderAndGroupDescription(cuentasEncontradas[0].id, receivedData.groupDescription);
+            
+            if(!polizasEncontradas.isEmpty())
+            {
+                Map<Id, Policy__c> mapaPolizas = new Map<Id, Policy__c>();
+                List<Id> listaPolIds = new List<Id>();
+                for(Policy__c pol : polizasEncontradas)
+                {
+                    listaPolIds.add(pol.id);
+                    mapaPolizas.put(pol.id, pol);
+                }
+
+                List<Asset> listaAssets = assetsSelector.selectByPolicyID(listaPolIds);
+                for(Asset a : listaAssets)
+                {
+                    InsuredObject obj = new InsuredObject();
+
+                    // Datos correspondientes al Asset
+                    obj.name = a.Name;
+                    obj.registrationNumber = a.RegistrationNumber__c;
+                    obj.model = a.Model__c;
+                    obj.addressType = a.AddressType__c;
+                    obj.addressName = a.AddressName__c; 
+                    obj.addressNumber = a.AddressNumber__c;
+                    obj.addressAdditionalInfo = a.AddressAdditionalInfo__c;
+                    obj.city = a.City__c;
+
+                    // Datos correspondientes a la poliza como tal
+                    obj.policyInfoInsuredObject = a.INFOInsuredObjectCode__c;
+                    obj.policyEndDate = mapaPolizas.get(a.PolicyId__c).EndDate__c;
+                    obj.policyStartDate = mapaPolizas.get(a.PolicyId__c).StartDate__c;
+                    obj.policyVersion= mapaPolizas.get(a.PolicyId__c).PolicyVersion__c;
+
+                    listaObjetos.add(obj);
+                }
+
+                resultado.objects = listaObjetos;
+            }
+        }
+        return resultado;
+    }
+    
     //#endregion
 
 
@@ -506,15 +537,19 @@ public with sharing class ClientIdentificationService
 
     public class InsuredObject 
     {
-        public Date policyEndDate;
-        public Date policyStartDate;
-
+        //Policy info
         public String policyName;
-        public String policyStatus;
-        public String policyVersion;
-        public String policyInfoInsuredObject;
         public String technicalCode;
-
+        public String policyInfoInsuredObject;
+        public String policyStatus;
+        public Date policyStartDate;
+        public Date policyEndDate;
+        public String policyVersion;
+        public String partnerSector;
+        //Holder info
+        public String holderName;
+        public String holderNationalId;
+        //Object info
         public String name;
         public String brandName;
         public String registrationNumber;
@@ -524,9 +559,6 @@ public with sharing class ClientIdentificationService
         public String addressNumber;
         public String addressAdditionalInfo;
         public String city;
-        
-        public String holderFirstName;
-        public String holderLastName;
 
         public override String toString()
         {
