@@ -27,7 +27,7 @@ public with sharing class SurveyResponseUtil
 
         //2º Conseguir el listado de respuestas que ya tienen esas encuestas (como es After: la soql recupera también las que se acaban de insert/updatear)
         List<SurveyResponse__c> surveyresponses = new List<SurveyResponse__c>();
-        surveyresponses = [SELECT Id, SurveyId__c, QuestionId__c, QuestionType__c, Answer__c, LongAnswer__c FROM SurveyResponse__c WHERE SurveyId__c IN :surveyIds];
+        surveyresponses = [SELECT Id, SurveyId__c, QuestionId__c, QuestionType__c, Answer__c, LongAnswer__c FROM SurveyResponse__c WHERE SurveyId__c IN : surveyIds];
 
         //3º crear un mapa que agrupe las respuestas de cada encuesta padre
         Map<Integer, SurveyResponse__c> responsesMap = new Map<Integer,SurveyResponse__c>();
@@ -64,10 +64,20 @@ public with sharing class SurveyResponseUtil
      * la respuesta asr va en el Long text área
      *
      * @date 24/02/2021
+     * @last modified on  : 13/11/2023
+     * @last modified by  : jfherrero
      */
     public static void processAnswers()
     {
         Survey__c surveyToUpdate = new Survey__c();
+        Map<Integer, String> answerOptionMap = new Map<Integer, String>();
+
+        List<SurveyAnswerOption__mdt> surveyAnswerOptions = SurveyAnswerOption__mdt.getAll().values();
+
+        for (SurveyAnswerOption__mdt opt : surveyAnswerOptions)
+        {
+            answerOptionMap.put( (Integer) opt.QuestionPosition__c, opt.ValidOptions__c );
+        }
 
         //1º Por cada survey padre
         for( Id surveyId: allResponsesMap.keySet() )
@@ -85,16 +95,18 @@ public with sharing class SurveyResponseUtil
             positions.sort();
 
             //Por cada respuesta, procesarla según su tipo
-            for(Integer position: positions)
+            for(Integer i=0; i < positions.size(); i++)
             {
-                SurveyResponse__c response = responsesOfSurvey.get(position);
+                SurveyResponse__c response = responsesOfSurvey.get(positions[i]);
                 if(response.QuestionType__c == 'asr')
                 {
                     longAnswer = response.LongAnswer__c;
                 }
                 else if(response.QuestionType__c == 'ivr')
                 {
-                    if( String.isBlank(response.Answer__c) )
+                    // Si la quinta respuesta tiene un valor en un rando no válido se da como nula
+                    if( String.isBlank(response.Answer__c) ||
+                        ( (answerOptionMap.get(i) != null) && !( answerOptionMap.get(i).split(';').contains(response.Answer__c) ) ) )
                     {
                         shortAnswer = shortAnswer + 'NULL;';
                     }
@@ -121,7 +133,7 @@ public with sharing class SurveyResponseUtil
      */
     public static void updateParentSurveys()
     {
-        
+
         List<Survey__c> surveys = new List<Survey__c>();
         surveys = surveysToUpdate.values();
 

@@ -3467,6 +3467,9 @@
         <layout>Robot_Hegeo_Setting__mdt-Robot Hegeo Setting Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>SurveyAnswerOption__mdt-Survey Answer Option Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Task-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
