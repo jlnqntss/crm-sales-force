@@ -394,4 +394,49 @@ private with sharing class OpportunitiesSelectorTest
         System.assertEquals(true, offerList != null, 'No Debe ser nulo');
     }
 
+    @isTest
+    static void findZRMtoReassignTest() {
+
+        Test.startTest();
+        String offerList = (new OpportunitiesSelector()).findZRMtoReassign();
+        Test.stopTest();
+ 
+        System.assertEquals(true, offerList != null, 'No Debe ser nulo');
+    }
+
+    @isTest
+    static void test_findByAccountAndOwner_ok()
+    {
+        Set<Id> accountsIDs = new Set<Id>();
+        Set<Id> usersIDs = new Set<Id>();
+        List<Opportunity> optys = [SELECT id, AccountId, OwnerId FROM Opportunity WHERE AccountId != '' AND OwnerId != '' ];
+        for(Opportunity o : optys)
+        {
+            accountsIDs.add(o.AccountId);
+            usersIDs.add(o.OwnerId);
+        }
+
+        List<Opportunity> retrievedOpportunities = new List<Opportunity>();
+        Test.startTest();
+        retrievedOpportunities = (new OpportunitiesSelector()).findByAccountAndOwner(accountsIDs, usersIDs);
+        Test.stopTest();
+
+        System.assertEquals(false, retrievedOpportunities.isEmpty(), 'Ha debido encontrar oportunidades');
+        System.assertEquals(optys.size(), retrievedOpportunities.size(), 'Ha debido encontrar oportunidades');
+    }
+
+    
+    @isTest
+    static void test_findByAccountAndOwner_ko()
+    {
+        Set<Id> accountsIDs = new Set<Id>();
+        Set<Id> usersIDs = new Set<Id>();
+
+        List<Opportunity> retrievedOpportunities = new List<Opportunity>();
+        Test.startTest();
+        retrievedOpportunities = (new OpportunitiesSelector()).findByAccountAndOwner(accountsIDs, usersIDs);
+        Test.stopTest();
+
+        System.assertEquals(true, retrievedOpportunities.isEmpty(), 'Ha de devolver una lista vacia');
+    }
 }
