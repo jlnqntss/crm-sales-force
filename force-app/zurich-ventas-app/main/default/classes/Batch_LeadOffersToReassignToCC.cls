@@ -22,7 +22,7 @@ global with sharing class Batch_LeadOffersToReassignToCC implements Database.Bat
     {
         // 1.- Obtenemos el usuario generico
         String aliasCCUser = Lead_Offers__c.getinstance().ContactCenterUser__c;
-        f(String.isNotBlank(aliasCCUser))
+        if(String.isNotBlank(aliasCCUser))
         {
             UsersSelector userQuery = new UsersSelector();
             List<User> defaultUser = userQuery.findUsersByAlias(new List<String>{aliasCCUser});
@@ -46,18 +46,17 @@ global with sharing class Batch_LeadOffersToReassignToCC implements Database.Bat
             // Actualizamos la opp
             opp.OwnerId = defaultUserCC;
             opp.BusinessCode__c = Lead_Offers__c.getinstance().BusinessCode__c;
-            opp.CloseDate = Date.today() + Lead_Offers__c.getinstance().DaysToReassignOffer__c;
+            opp.CloseDate = Date.today() + (Integer)Lead_Offers__c.getinstance().DaysToReassignOffer__c;
 
 
             // Creamos CMB
-            CallMeBackUtil.CallMeBack cmb = new CallMeBackUtil.CallMeBack(
-                name = opp.Account.Name,
-                phone = opp.Account.Phone,
-                bestTimeFrom = DateTime.newInstance(Date.Today(), opp.Account.PreferedContactStart__c.time());
-                bestTimeUntil = DateTime.newInstance(Date.Today(), opp.Account.PreferedContactEnd__c.time());
-                webIdentifier = opp.Account.WebId__c,
-                businessCode = Lead_Offers__c.getinstance().BusinessCode__c
-            );
+            CallMeBackUtil.CallMeBack cmb = new CallMeBackUtil.CallMeBack();
+            cmb.name = opp.Account.Name;
+            cmb.phone = opp.Account.Phone;
+            cmb.bestTimeFrom = DateTime.newInstance(Date.Today(), opp.Account.PreferedContactStart__c.time());
+            cmb.bestTimeUntil = DateTime.newInstance(Date.Today(), opp.Account.PreferedContactEnd__c.time());
+            cmb.webIdentifier = opp.Account.WebId__c;
+            cmb.businessCode = Lead_Offers__c.getinstance().BusinessCode__c;
 
             // Completamos el objeto con el resto de la información
             CallMeBackUtil.CallMeBackFull cmbFull = new CallMeBackUtil.CallMeBackFull();
