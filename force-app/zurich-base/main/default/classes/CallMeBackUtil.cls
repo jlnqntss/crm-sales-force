@@ -24,32 +24,40 @@ public with sharing class CallMeBackUtil
      * @return String Id de SF del ContactRequest
      * @throws CallMeBackException
      **/
-    public static String insertCallMeBack(CallMeBack requestCallMeBack, String queueName, String businessHoursName)
+    public static List<String> insertCallMeBack(List<CallMeBackFull> lstRequests)
     {
-        if (queueName == null)
+        List<String> lstCallMeBackId = new List<String>();
+        List<ContactRequest> lstContactRequest = new List<ContactRequest>();
+ 
+        for(CallMeBackFull obj : lstRequests)
         {
-            throw new CallMeBackException('Genesys \'queueName\' can not be null');
-        }
+            CallMeBack requestCallMeBack = obj.request;
+            String queueName = obj.queueName;
+            String businessHoursName = obj.businessHoursName;
 
-        List<purecloud__PureCloud_Queue__c> genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c
-                                                            FROM purecloud__PureCloud_Queue__c
-                                                            WHERE Name = : queueName];
+            if (queueName == null)
+            {
+                throw new CallMeBackException('Genesys \'queueName\' can not be null');
+            }
 
-        if ( genesysQueue == null || genesysQueue.isEmpty() )
-        {
-            throw new CallMeBackException('Genesys ' + queueName + ' queue does not exist');
-        }
+            List<purecloud__PureCloud_Queue__c> genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c
+                                                                FROM purecloud__PureCloud_Queue__c
+                                                                WHERE Name = : queueName];
 
-        /*List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone},
-                                                                                  RecordsSelector.Scope.VENTAS,
-                                                                                  RecordsSelector.LegalEntity.ALL,
-                                                                                  null,
-                                                                                  null);*/
-        List<Account> customers = [SELECT Id FROM Account WHERE Phone =: requestCallMeBack.phone];
-        String contactRequestId;
+            if ( genesysQueue == null || genesysQueue.isEmpty() )
+            {
+                throw new CallMeBackException('Genesys ' + queueName + ' queue does not exist');
+            }
 
-        try
-        {
+            /*List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone},
+                                                                                    RecordsSelector.Scope.VENTAS,
+                                                                                    RecordsSelector.LegalEntity.ALL,
+                                                                                    null,
+                                                                                    null);*/
+            List<Account> customers = [SELECT Id FROM Account WHERE Phone =: requestCallMeBack.phone];
+            String contactRequestId;
+
+            
             ContactRequest contactRequest = new ContactRequest();
             contactRequest.PreferredContactDatetime__c = SystemUtil.getContactDatetime(requestCallMeBack.bestTimeFrom, businessHoursName);
             contactRequest.PreferredPhone = requestCallMeBack.phone;
@@ -63,16 +71,27 @@ public with sharing class CallMeBackUtil
                 contactRequest.WhatId = customers.get(0).Id;
             }
 
-            insert contactRequest;
-
-            contactRequestId = String.valueOf(contactRequest.Id);
+            lstContactRequest.add(contactRequest);        
         }
-        catch(Exception ex)
+        
+        if (!lstContactRequest.isEmpty())
         {
-            throw new CallMeBackException(ex);
+            try
+            {
+                insert lstContactRequest;
+            }
+            catch(Exception ex)
+            {
+                throw new CallMeBackException(ex);
+            }
+
+            for(ContactRequest cr : lstContactRequest)
+            {
+                lstCallMeBackId.add(cr.id);
+            }
         }
 
-        return contactRequestId;
+        return lstCallMeBackId;
     }
 
     /**
@@ -86,6 +105,16 @@ public with sharing class CallMeBackUtil
         public Datetime bestTimeUntil {get; set;}
         public String webIdentifier {get; set;}
         public String businessCode {get; set;}
+    }
+
+    /**
+     * Clase interna que representa una solicitud de Call Me Back junto con los datos asociados
+     */
+    public class CallMeBackFull
+    {
+        public CallMeBack request {get; set;}
+        public String queueName {get; set;}
+        public String businessHoursName {get; set;}
     }
 
     /**

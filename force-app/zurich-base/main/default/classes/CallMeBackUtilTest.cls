@@ -40,14 +40,22 @@ public with sharing class CallMeBackUtilTest
 
         CallMeBackUtil.CallMeBack requestedCallMeBack = generateCallMeBack();
 
+        CallMeBackUtil.CallMeBackFull fullObject = new CallMeBackUtil.CallMeBackFull();
+        fullObject.request = requestedCallMeBack;
+        fullObject.queueName = queueName;
+        fullObject.businessHoursName = businessHoursName;
+
+        List<CallMeBackUtil.CallMeBackFull> lstRequests = new List<CallMeBackUtil.CallMeBackFull>();
+        lstRequests.add(fullObject);
+
         Test.startTest();
-        String contactRequestId = CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName);
+        List<String> contactRequestIds = CallMeBackUtil.insertCallMeBack(lstRequests);
         Test.stopTest();
 
         ContactRequest cr = [SELECT Id FROM ContactRequest LIMIT 1];
 
         Assert.isNotNull(cr, 'Se debería haber creado un registro del objeto ContactRequest');
-        Assert.areEqual(contactRequestId,
+        Assert.areEqual(contactRequestIds.get(0),
                         cr.Id,
                         'El Id del ContactRequest debería coincidir por el devuelto por el método \'insertCallMeBack\'');
     }
@@ -70,10 +78,18 @@ public with sharing class CallMeBackUtilTest
 
         CallMeBackUtil.CallMeBack requestedCallMeBack = generateCallMeBack();
 
+        CallMeBackUtil.CallMeBackFull fullObject = new CallMeBackUtil.CallMeBackFull();
+        fullObject.request = requestedCallMeBack;
+        fullObject.queueName = queueName;
+        fullObject.businessHoursName = businessHoursName;
+
+        List<CallMeBackUtil.CallMeBackFull> lstRequests = new List<CallMeBackUtil.CallMeBackFull>();
+        lstRequests.add(fullObject);
+
         Test.startTest();
         try
         {
-            CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName);
+            CallMeBackUtil.insertCallMeBack(lstRequests);
         }
         catch (Exception ex)
         {
@@ -104,10 +120,18 @@ public with sharing class CallMeBackUtilTest
 
         CallMeBackUtil.CallMeBack requestedCallMeBack = generateCallMeBack();
 
+        CallMeBackUtil.CallMeBackFull fullObject = new CallMeBackUtil.CallMeBackFull();
+        fullObject.request = requestedCallMeBack;
+        fullObject.queueName = queueName;
+        fullObject.businessHoursName = businessHoursName;
+
+        List<CallMeBackUtil.CallMeBackFull> lstRequests = new List<CallMeBackUtil.CallMeBackFull>();
+        lstRequests.add(fullObject);
+
         Test.startTest();
         try
         {
-            CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName);
+            CallMeBackUtil.insertCallMeBack(lstRequests);
         }
         catch (Exception ex)
         {
