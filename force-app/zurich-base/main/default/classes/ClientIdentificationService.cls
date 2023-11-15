@@ -142,7 +142,7 @@ public with sharing class ClientIdentificationService
         List<Account> cuentasEncontradas = accountsSelector.findByNationalIdAndPhoneNumber(new List<String> { receivedData.nationalID }, '', new List<String> {composedPhoneNumber});
 
         //En las clases test no vamos a recibir cuentas encontradas porque hay implicadas consultas SOSL.
-        //Por tanto, utilizaremos esta clase visible por test para probar todo
+        //Por tanto, utilizaremos esta clase visible por test para cubrir el código
         resultado = setInsuredObjectsByPhone(receivedData, composedPhoneNumber, resultado, listaObjetos, cuentasEncontradas);
         
         return resultado.toString();
