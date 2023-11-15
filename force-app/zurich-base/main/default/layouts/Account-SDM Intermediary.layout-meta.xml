@@ -397,6 +397,8 @@
         <relatedList>RelatedContentNoteList</relatedList>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>AccountTeamMemberMultiAdd</excludeButtons>
+        <excludeButtons>AddAccTeamMember</excludeButtons>
         <excludeButtons>AddAccountDefaultTeam</excludeButtons>
         <excludeButtons>DeleteAllAccountTeamMembers</excludeButtons>
         <excludeButtons>DisplayAccountTeamEffectiveAccess</excludeButtons>
