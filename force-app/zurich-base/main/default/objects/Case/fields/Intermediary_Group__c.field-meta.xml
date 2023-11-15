@@ -4,15 +4,6 @@
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
     <label>Intermediary Group</label>
-    <lookupFilter>
-        <active>true</active>
-        <filterItems>
-            <field>Account.AGRNationalId__c</field>
-            <operation>notEqual</operation>
-            <value></value>
-        </filterItems>
-        <isOptional>false</isOptional>
-    </lookupFilter>
     <referenceTo>Account</referenceTo>
     <relationshipLabel>Cases (Intermediary Group)</relationshipLabel>
     <relationshipName>Cases_AGR</relationshipName>
