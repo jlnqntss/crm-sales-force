@@ -2160,7 +2160,7 @@
         <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Case Default OCS</layout>
+        <layout>Case-Case Default SDM</layout>
         <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
     <loginIpRanges>
