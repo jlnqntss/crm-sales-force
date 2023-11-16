@@ -220,7 +220,7 @@
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>UspOutcome</name>
-            <conditionLogic>(1 AND (2 OR 3)) OR (1 AND 4 AND 5 AND 6) OR (1 AND 7 AND 5 AND 8)</conditionLogic>
+            <conditionLogic>(1 AND (2 OR 3)) OR (1 AND 4 AND 5 AND 6 AND 9) OR (1 AND 7 AND 5 AND 8 AND 9)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -275,6 +275,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>USP</stringValue>
                 </rightValue>
             </conditions>
             <connector>
