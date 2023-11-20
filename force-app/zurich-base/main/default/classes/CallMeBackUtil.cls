@@ -2,15 +2,15 @@
  * @description       : Clase de utilidad para trabajar sobre CallMeBacks
  * @author            : amiranda
  * @date              : 29-09-2023
- * @last modified on  : 29-09-2023
- * @last modified by  : amiranda
+ * @last modified on  : 20-11-2023
+ * @last modified by  : arcortazar
  * Modifications Log
  * Ver   Date         Author     Modification
  * 1.0   20-09-2023   amiranda   Initial Version
+ * 2.0   20-11-2023   arcortazar   Bulkified Version
  **/
 public with sharing class CallMeBackUtil
 {
-
     /**
      * @description Método que se encarga de insertar un registro de ContactRequest.
      * Necesita una cola de Genesys.
@@ -26,37 +26,26 @@ public with sharing class CallMeBackUtil
      **/
     public static List<String> insertCallMeBack(List<CallMeBackFull> lstRequests)
     {
-        List<String> lstCallMeBackId = new List<String>();
-        List<ContactRequest> lstContactRequest = new List<ContactRequest>();
- 
+        List<String> returningCallMeBackId = new List<String>();
+        List<ContactRequest> contactRequestToInsert = new List<ContactRequest>();
+
+        List<String> lstPhones = new List<String>();
+        List<String> lstQueueNames = new List<String>();
+
+        for(CallMeBackFull cmbf : lstRequests) 
+        {
+            lstPhones.add(cmbf.request.phone);
+            lstQueueNames.add(cmbf.queueName);
+        }
+
+        Map<String, purecloud__PureCloud_Queue__c> mapGenesysQueue = obtainGenesysQueues(lstQueueNames);
+        Map<String, Account> mapAccounts = obtainAccountsByPhone(lstPhones);
+
         for(CallMeBackFull obj : lstRequests)
         {
             CallMeBack requestCallMeBack = obj.request;
             String queueName = obj.queueName;
             String businessHoursName = obj.businessHoursName;
-
-            if (queueName == null)
-            {
-                throw new CallMeBackException('Genesys \'queueName\' can not be null');
-            }
-
-            List<purecloud__PureCloud_Queue__c> genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c
-                                                                FROM purecloud__PureCloud_Queue__c
-                                                                WHERE Name = : queueName];
-
-            if ( genesysQueue == null || genesysQueue.isEmpty() )
-            {
-                throw new CallMeBackException('Genesys ' + queueName + ' queue does not exist');
-            }
-
-            /*List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone},
-                                                                                    RecordsSelector.Scope.VENTAS,
-                                                                                    RecordsSelector.LegalEntity.ALL,
-                                                                                    null,
-                                                                                    null);*/
-            List<Account> customers = [SELECT Id FROM Account WHERE Phone =: requestCallMeBack.phone];
-            String contactRequestId;
-
             
             ContactRequest contactRequest = new ContactRequest();
             contactRequest.PreferredContactDatetime__c = SystemUtil.getContactDatetime(requestCallMeBack.bestTimeFrom, businessHoursName);
@@ -64,34 +53,128 @@ public with sharing class CallMeBackUtil
             contactRequest.WebName__c = requestCallMeBack.name;
             contactRequest.WebIdentifier__c = requestCallMeBack.webIdentifier;
             contactRequest.BusinessCode__c = requestCallMeBack.businessCode;
-            contactRequest.GenesysCloudQueueId__c = genesysQueue[0].Id;
 
-            if( !customers.isEmpty() )
+            // Obtenemos la cola de genesys entre las buscadas
+            if(queueName != '' && mapGenesysQueue.keyset().contains(queueName))
             {
-                contactRequest.WhatId = customers.get(0).Id;
+                contactRequest.GenesysCloudQueueId__c = mapGenesysQueue.get(queueName).id;
+            }
+            else if (!mapGenesysQueue.keyset().contains(queueName))
+            {
+                throw new CallMeBackException('Genesys ' + queueName + ' queue does not exist');
             }
 
-            lstContactRequest.add(contactRequest);        
+            // Buscamos el contacto entre los obtenidos
+            if( mapAccounts.keyset().contains(requestCallMeBack.phone))
+            {
+                contactRequest.WhatId = mapAccounts.get(requestCallMeBack.phone).id;
+            }
+
+            contactRequestToInsert.add(contactRequest);        
         }
         
-        if (!lstContactRequest.isEmpty())
+        if (!contactRequestToInsert.isEmpty())
         {
-            try
+            Database.SaveResult[] srResults = Database.insert(contactRequestToInsert, false);
+            for (Database.SaveResult sr : srResults)
             {
-                insert lstContactRequest;
-            }
-            catch(Exception ex)
-            {
-                throw new CallMeBackException(ex);
+                if(!sr.isSuccess())
+                {
+                    ErrorLogUtil.commitError('ERROR', 'No se pudo insertar el CallMeBack: ' + sr.getErrors()[0].getMessage(), 'CallMeBackUtil');
+
+                }
             }
 
-            for(ContactRequest cr : lstContactRequest)
+            for(ContactRequest cr : contactRequestToInsert)
             {
-                lstCallMeBackId.add(cr.id);
+                returningCallMeBackId.add(cr.id);
             }
         }
 
-        return lstCallMeBackId;
+        return returningCallMeBackId;
+    }
+
+    /**
+     * @description Método que obtiene toda la información relativa a las colas que le indicamos
+     *
+     * @author arcortazar
+     * @date 20-11-2023
+     * @param lstQueueNames Lista de Strings con los nombres de las colas que se desean buscar 
+     * @return Map<String, purecloud__PureCloud_Queue__c> Mapa con las colas encontradas, identificadas por ID de la cola
+     * @throws CallMeBackException
+     **/
+    private static Map<String, purecloud__PureCloud_Queue__c> obtainGenesysQueues(List<String> lstQueueNames)
+    {
+        Map<String, purecloud__PureCloud_Queue__c> mapGenesysQueue = new Map<String, purecloud__PureCloud_Queue__c>();
+        // Comprobamos las colas
+        if (!lstQueueNames.isEmpty())
+        {
+            List<purecloud__PureCloud_Queue__c> genesysQueue = [SELECT Id, Name, purecloud__PureCloud_Queue_ID__c
+                                                                FROM purecloud__PureCloud_Queue__c
+                                                                WHERE Name IN : lstQueueNames];
+
+            if(genesysQueue.isEmpty())
+            {
+                throw new CallMeBackException('Genesys \'queueName\' can not be null');    
+            }
+            else
+            {
+                for(purecloud__PureCloud_Queue__c q : genesysQueue)
+                {
+                    mapGenesysQueue.put(q.Name, q);
+                }
+            }
+        }
+        else 
+        {
+            throw new CallMeBackException('Genesys \'queueName\' can not be null');    
+        }
+
+        return mapGenesysQueue;
+    }
+
+    /**
+     * @description Método que obtiene las cuentas en base al número de teléfono
+     *
+     * @author arcortazar
+     * @date 20-11-2023
+     * @param phones Lista de Strings con los números de teléfonos a buscar
+     * @return Map<String, Account> Mapa con cuentas encontradas, identificadas por el teléfono
+     **/
+    private static Map<String, Account> obtainAccountsByPhone(List<String> phones)
+    {
+        // Buscamos los teléfonos por el contact point phone
+        List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(phones, RecordsSelector.Scope.VENTAS, RecordsSelector.LegalEntity.ALL, null, null);
+        Map<String, Account> mapaAccount = new Map<String, Account>();
+        for(Account a : customers)
+        {
+            mapaAccount.put(a.phone, a);
+        }
+
+        // Comprobamos si hemos encontrado todos los teléfonos
+        List<String> notFound = new List<String>();
+        for(String p : phones)
+        {
+            if(!mapaAccount.keyset().contains(p))
+            {
+                notFound.add(p);
+            }
+        }
+
+        // Si hay teléfonos que no hayamos encontrado, los buscamos en 
+        if(!notFound.isEmpty())
+        {
+            List<Account> accounts = [SELECT Id, phone FROM Account WHERE Phone IN : notFound];
+            if(!accounts.isEmpty())
+            {
+                for(Account a : accounts)
+                {
+                    mapaAccount.put(a.phone, a);
+                }
+            }
+        }
+
+        return mapaAccount;
     }
 
     /**
