@@ -6206,6 +6206,70 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
     <customLabels>
+        <label>Añadir</label>
+        <name>ZRM_IntermAddCampMember_AddButton</name>
+    </customLabels>
+    <customLabels>
+        <label>Ha habido un problema al crear los Miembros de Campaña. Si el problema persiste póngase en contacto con el Administrador del Sistema.</label>
+        <name>ZRM_IntermAddCampMember_AddCampMemToastErrorMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Los registros seleccionados ya son miembros de</label>
+        <name>ZRM_IntermAddCampMember_AddCampMemToastSuccessMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>no se ha podido actualizar correctamente.</label>
+        <name>ZRM_IntermAddCampMember_AddMemCampToastErrorTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>se ha actualizado correctamente.</label>
+        <name>ZRM_IntermAddCampMember_AddMemCampToastSuccessTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Añadir Miembro</label>
+        <name>ZRM_IntermAddCampMember_AddMember</name>
+    </customLabels>
+    <customLabels>
+        <label>Cerrar</label>
+        <name>ZRM_IntermAddCampMember_ButtonClose</name>
+    </customLabels>
+    <customLabels>
+        <label>El Id de la Campañana no puede ser nulo o vacío.</label>
+        <name>ZRM_IntermAddCampMember_CampaignIdExceptionMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Cancelar</label>
+        <name>ZRM_IntermAddCampMember_CancelButton</name>
+    </customLabels>
+    <customLabels>
+        <label>Cargando</label>
+        <name>ZRM_IntermAddCampMember_Loading</name>
+    </customLabels>
+    <customLabels>
+        <label>Añadir Miembro</label>
+        <name>ZRM_IntermAddCampMember_ModalHeader</name>
+    </customLabels>
+    <customLabels>
+        <label>No hay elementos para mostrar.</label>
+        <name>ZRM_IntermAddCampMember_NoItemsToDisplay</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha producido un error inesperado. Si el problema persiste contacte con el Administrador del Sistema.</label>
+        <name>ZRM_IntermAddCampMember_ToastGenericErrorMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Error</label>
+        <name>ZRM_IntermAddCampMember_ToastGenericErrorTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Campaña no activa o no válida, no puede realizar está acción.</label>
+        <name>ZRM_IntermAddCampMember_ToastNotValidCampaign</name>
+    </customLabels>
+    <customLabels>
+        <label>Acción no permitida</label>
+        <name>ZRM_IntermAddCampMember_ToastTitleActionNotAllowed</name>
+    </customLabels>
+    <customLabels>
         <label>Campaña</label>
         <name>ZRM_IntermediaryCampaignList_CardIconText</name>
     </customLabels>
@@ -6256,6 +6320,74 @@ Cree el acta y vuelva a intentarlo.</label>
     <customLabels>
         <label>Tipo</label>
         <name>ZRM_IntermediaryCampaignList_TableHeaderType</name>
+    </customLabels>
+    <customLabels>
+        <label>Clientes</label>
+        <name>ZRM_IntermediaryCampaignMembers_CardText</name>
+    </customLabels>
+    <customLabels>
+        <label>Clientes</label>
+        <name>ZRM_IntermediaryCampaignMembers_CardTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>No hay ninguna campaña seleccionada.</label>
+        <name>ZRM_IntermediaryCampaignMembers_NoCampaignSelected</name>
+    </customLabels>
+    <customLabels>
+        <label>Quitar</label>
+        <name>ZRM_IntermediaryCampaignMembers_RowActionRemove</name>
+    </customLabels>
+    <customLabels>
+        <label>Código de Filiación</label>
+        <name>ZRM_IntermediaryCampaignMembers_TableHeaderAffiliationCode</name>
+    </customLabels>
+    <customLabels>
+        <label>Intermediario</label>
+        <name>ZRM_IntermediaryCampaignMembers_TableHeaderIntermediary</name>
+    </customLabels>
+    <customLabels>
+        <label>Motivo Pérdida</label>
+        <name>ZRM_IntermediaryCampaignMembers_TableHeaderLostReason</name>
+    </customLabels>
+    <customLabels>
+        <label>Nombre</label>
+        <name>ZRM_IntermediaryCampaignMembers_TableHeaderName</name>
+    </customLabels>
+    <customLabels>
+        <label>Oferta</label>
+        <name>ZRM_IntermediaryCampaignMembers_TableHeaderOffer</name>
+    </customLabels>
+    <customLabels>
+        <label>Etapa Oferta</label>
+        <name>ZRM_IntermediaryCampaignMembers_TableHeaderOfferStage</name>
+    </customLabels>
+    <customLabels>
+        <label>Estado</label>
+        <name>ZRM_IntermediaryCampaignMembers_TableHeaderStatus</name>
+    </customLabels>
+    <customLabels>
+        <label>Tipo</label>
+        <name>ZRM_IntermediaryCampaignMembers_TableHeaderType</name>
+    </customLabels>
+    <customLabels>
+        <label>se ha eliminado como miembro de campaña de la campaña</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Eliminación exitosa</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>No se ha podido ejecutar la operación solicitada. Si el problema persiste póngase en contacto con el Administrador del Sistema.</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Error</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastGenericErrorTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Campaña en curso, finalizada o no válida</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastOngoingCampaignErrorMessage</name>
     </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>

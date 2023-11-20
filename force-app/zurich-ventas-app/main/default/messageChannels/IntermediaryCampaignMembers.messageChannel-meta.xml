@@ -5,10 +5,22 @@
     <description>Canal para pasar información entre la tabla de Campañas y Miembros de Campaña.</description>
      <lightningMessageFields>
         <fieldName>statusRefreshed</fieldName>
-        <description>Indica si se ha modificado el valor del filtro de estado de la tabla de Campañás</description>
+        <description>Indica si se ha modificado el valor del filtro de estado de la tabla de Campañas</description>
+    </lightningMessageFields>
+    <lightningMessageFields>
+        <fieldName>campaignStatus</fieldName>
+        <description>Estado de la campaña seleccionada.</description>
     </lightningMessageFields>
     <lightningMessageFields>
          <fieldName>campaignId</fieldName>
         <description>Id de la Campaña seleccionada</description>
+     </lightningMessageFields>
+     <lightningMessageFields>
+        <fieldName>campaignStartDate</fieldName>
+        <description>Fecha de inicio de la campaña</description>
+     </lightningMessageFields>
+     <lightningMessageFields>
+        <fieldName>campaignType</fieldName>
+        <description>Tipo de campaña</description>
      </lightningMessageFields>
 </LightningMessageChannel>
