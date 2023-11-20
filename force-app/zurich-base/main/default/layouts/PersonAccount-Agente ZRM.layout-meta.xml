@@ -33,25 +33,33 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>RecordType__c</field>
+                <field>CustomerValue__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>LegalEntity__pc</field>
+                <behavior>Edit</behavior>
+                <field>ClientGroup__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Birthdate__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ExternalCollaborator__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>LinkINFO__c</field>
+                <field>RecordType__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>PreferredContactChannel__c</field>
+                <field>Comments__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>MiZurich__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -59,11 +67,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>CustomerValue__c</field>
+                <field>Age__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>MiZurich__c</field>
+                <field>PreferredContactChannel__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>LegalEntity__pc</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -72,7 +84,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Dirección de facturación</label>
+        <label>Dirección del Contacto</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -81,33 +93,6 @@
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>GDPR Status</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>ListaRobinson__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Restricted__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Blocked__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Anonymized__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -167,28 +152,14 @@
         </platformActionListItems>
     </platformActionList>
     <quickActionList/>
-    <relatedContent>
-        <relatedContentItems>
-            <layoutItem>
-                <component>runtime_sales_social:socialPanel</component>
-            </layoutItem>
-        </relatedContentItems>
-    </relatedContent>
-    <relatedLists>
-        <excludeButtons>New</excludeButtons>
-        <fields>OPPORTUNITY.NAME</fields>
-        <fields>ProductId__c</fields>
-        <fields>OPPORTUNITY.STAGE_NAME</fields>
-        <fields>OPPORTUNITY.CLOSE_DATE</fields>
-        <fields>CORE.USERS.ALIAS</fields>
-        <relatedList>RelatedOpportunityList</relatedList>
-    </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
         <fields>PolicyStatus__c</fields>
-        <fields>ProductId__c</fields>
+        <fields>ProductBranch__c</fields>
+        <fields>AssetIdentifier__c</fields>
+        <fields>EndDate__c</fields>
         <fields>TotalPremium__c</fields>
         <fields>IntermediaryNameForm__c</fields>
         <relatedList>Policy__c.PolicyHolder__c</relatedList>
@@ -197,19 +168,29 @@
         <excludeButtons>MassChangeOwner</excludeButtons>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
-        <fields>Product__c</fields>
-        <fields>DateOfOccurrence__c</fields>
         <fields>Status__c</fields>
+        <fields>GroupDescription__c</fields>
         <relatedList>Claim__c.PolicyHolder__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <excludeButtons>MassChangeOwner</excludeButtons>
-        <fields>NAME</fields>
+        <excludeButtons>New</excludeButtons>
+        <fields>OPPORTUNITY.NAME</fields>
         <fields>ProductBranch__c</fields>
-        <fields>OfferWon__c</fields>
-        <fields>ExpirationDate__c</fields>
-        <fields>Premium__c</fields>
-        <relatedList>Competitor__c.Account__c</relatedList>
+        <fields>OPPORTUNITY.STAGE_NAME</fields>
+        <fields>CreatedDate__c</fields>
+        <fields>OPPORTUNITY.CLOSE_DATE</fields>
+        <relatedList>RelatedOpportunityList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>AddCampaign</excludeButtons>
+        <fields>CAMPAIGN.NAME</fields>
+        <fields>ProductBranch__c</fields>
+        <fields>CAMPAIGN.START_DATE</fields>
+        <fields>CAMPAIGN.END_DATE</fields>
+        <fields>CAMPAIGN.CAMPAIGN_TYPE</fields>
+        <fields>CM.STATUS</fields>
+        <fields>CM.RESPONDED</fields>
+        <relatedList>RelatedCampaignList</relatedList>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
@@ -222,14 +203,13 @@
         <relatedList>Propensity__c.Account__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <excludeButtons>AddCampaign</excludeButtons>
-        <fields>CAMPAIGN.NAME</fields>
-        <fields>CAMPAIGN.START_DATE</fields>
-        <fields>CAMPAIGN.CAMPAIGN_TYPE</fields>
-        <fields>CM.STATUS</fields>
-        <fields>CM.RESPONDED</fields>
-        <fields>CM.LAST_UPDATE</fields>
-        <relatedList>RelatedCampaignList</relatedList>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
+        <fields>ProductBranch__c</fields>
+        <fields>OfferWon__c</fields>
+        <fields>ExpirationDate__c</fields>
+        <fields>Premium__c</fields>
+        <relatedList>Competitor__c.Account__c</relatedList>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
@@ -258,7 +238,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h68000000JxwR</masterLabel>
+        <masterLabel>00hMU000000IhvN</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
