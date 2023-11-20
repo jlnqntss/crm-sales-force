@@ -26,6 +26,10 @@
                 <behavior>Edit</behavior>
                 <field>IntermediaryGroup__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>EnableReassignmentLeadOffers__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -294,18 +298,6 @@
             <sortOrder>15</sortOrder>
         </platformActionListItems>
     </platformActionList>
-    <relatedContent>
-        <relatedContentItems>
-            <layoutItem>
-                <component>wits:newsPanel</component>
-            </layoutItem>
-        </relatedContentItems>
-        <relatedContentItems>
-            <layoutItem>
-                <component>runtime_sales_social:socialPanel</component>
-            </layoutItem>
-        </relatedContentItems>
-    </relatedContent>
     <relatedLists>
         <fields>CASES.CASE_NUMBER</fields>
         <fields>NAME</fields>
