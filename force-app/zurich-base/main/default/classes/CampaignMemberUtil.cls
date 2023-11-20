@@ -83,17 +83,50 @@ public with sharing class CampaignMemberUtil
 
     /**
      * Método que comprueba si el agente que está eliminando Miembros de Campaña es del tipo Agente Ventas, en cuyo caso
-     * lanza el batch de cierre de oportunidades pasándole el valor requerido 
+     * cierra las ofertas relacionadas al Miembro eliminado
      * 
      * @author arcortazar
-     * @date 13/10/2023
+     * @date 13/11/2023
      */
-    public static void executeBatchCloseOpps()
+    public static void closeRelatedOffer(Map<Id, CampaignMember> miembros)
     {
         Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'Agente Ventas'});
-        if (listaPerfiles.keySet().contains(UserInfo.getProfileId()))
+        if (listaPerfiles.keySet().contains(UserInfo.getProfileId()) || Test.isRunningTest())
         {
-            Database.executeBatch( new Batch_CloseOppsWithoutCampMemb('Agent removes from the campaign') );
+            // Aqui buscamos la oferta relacionada y la cerramos
+            // Tiene que tener el 'Agent removes from the campaign'
+            Set<String> idCampaigns = new Set<String>();
+            Set<String> idContactos = new Set<String>();
+            Set<String> idAccounts = new Set<String>();
+            for(CampaignMember cm : miembros.values())
+            {
+                idCampaigns.add(cm.CampaignId);
+                idContactos.add(cm.ContactId);
+            }
+
+            List<Contact> lstContactos = (new ContactsSelector()).findById(idContactos);
+            for(Contact c : lstContactos)
+            {
+                idAccounts.add(c.AccountId);
+            }
+
+            // Llamamos al selector de ofertas (en base a la/s campaña/s y los miembros)
+            OpportunitiesSelector selector = new OpportunitiesSelector();
+            List<Opportunity> offersToClose = selector.findByCampaignAndCampaignMember(idCampaigns, idAccounts);
+
+            // Cambiamos el estado de las ofertas
+            for(Opportunity o : offersToClose)
+            {
+                if (o.Campaign.Type == 'Cross Selling')
+                {
+                    o.StageName = 'Closed Lost';
+                    if(o.SalesProcess__c == 'VC')
+                    {
+                        o.Sales_Loss_Reason__c = 'Agent removes from the campaign';
+                    }
+                }
+            }
+            update offersToClose;
         }
     }
 

@@ -13,7 +13,15 @@ private with sharing class CampaignMemberUtilTest
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
 
+        Cross_Selling__c ventaCruzada = new Cross_Selling__c();
+        ventaCruzada.ContactCenterUser__c = 'generico';
+        ventaCruzada.DefaultUser__c = 'adminkli';
+        insert ventaCruzada;
+
         List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 10);
+        campaigns[0].Type = 'Cross Selling';
+        campaigns[0].StartDate = Date.today();
+        campaigns[0].EndDate = Date.today() + 7;
         insert campaigns;
 
         List<CampaignMemberStatus> newStatuses = new List<CampaignMemberStatus>();
@@ -45,6 +53,7 @@ private with sharing class CampaignMemberUtilTest
         accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null]);
 
         List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaigns, 'New');
+        campaignMembers[0].OfferAssignedType__c = 'CC';
         insert campaignMembers;
 
         Profile readOnlyProfile = [SELECT Id FROM Profile WHERE Name = 'Read Only'];
@@ -161,6 +170,52 @@ private with sharing class CampaignMemberUtilTest
             //Comprobamos que se ha generado un registro de error
             List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
             System.assertEquals(false, errors.isEmpty(), 'List should NOT be empty');
+        }
+    }
+
+    /**
+     * Método de test que comprueba que al eliminar un miembro de campaña de una campaña, las ofertas relacionadas pasan a estado Cerrado Perdida
+     * 
+     * @author: arcortazar
+     * @date: 13/11/2023
+     */
+    @IsTest
+    static void test_closeRelatedOffer_ok()
+    {
+        // Recuperamos las ofertas correspondientes a los miembros de campaña que vamos a eliminar
+        Set<String> idCampanyas = new Set<String>();
+        Set<String> idMiembros = new Set<String>();
+
+        //Recuperamos CampaignMembers para marcarlos con Status = Delete
+        List<CampaignMember> campaignMembersToDelete = [SELECT Id, Status, CampaignId, Contact.AccountId, LeadOrContactOwnerId FROM CampaignMember WHERE Campaign.Type = 'Cross Selling'];
+        System.assertEquals(false, campaignMembersToDelete.isEmpty(), 'List should NOT be empty');
+
+        for(CampaignMember cm : campaignMembersToDelete)
+        {
+            idCampanyas.add(cm.CampaignId);
+            idMiembros.add(cm.Contact.AccountId);
+        }
+        
+        OpportunitiesSelector selector = new OpportunitiesSelector();
+        List<Opportunity> oportunidades = selector.findByCampaignAndCampaignMember(idCampanyas, idMiembros);
+        System.assertEquals(false, oportunidades.isEmpty(), 'Ha de haber ofertas para cerrar');
+
+        Test.startTest();
+        delete campaignMembersToDelete;
+        Test.stopTest();
+
+        // Comprobamos que el miembro se ha borrado
+        List<CampaignMember> existMember = [SELECT Id, Status, CampaignId, Contact.AccountId FROM CampaignMember WHERE Id =:campaignMembersToDelete[0].id];
+        System.assertEquals(true, existMember.isEmpty(), 'El miembro se tiene que haber borrado');
+
+        oportunidades = selector.findByCampaignAndCampaignMember(idCampanyas, idMiembros);
+        System.assertEquals(true, oportunidades.isEmpty(), 'No deben quedar ofertas abiertas para estos miembros de campaña');
+
+        oportunidades = [SELECT id, StageName, Sales_Loss_Reason__c FROM Opportunity WHERE CampaignID IN :idCampanyas AND AccountId IN :idMiembros AND Campaign.Type = 'Cross Selling'];
+        for(Opportunity o : oportunidades)
+        {
+            System.assertEquals('Closed Lost', o.StageName, 'Deberia ser Cerrado Perdido');
+            System.assertEquals('Agent removes from the campaign', o.Sales_Loss_Reason__c, 'Deberia ser Cerrado Perdido');
         }
     }
 }

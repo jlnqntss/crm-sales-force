@@ -87,7 +87,7 @@ public with sharing class CampaignMemberHandler implements ITrigger
     public void afterDelete(Map<Id, SObject> oldMap)
     {
         // Lanzar el batch de borrado de ofertas
-        CampaignMemberUtil.executeBatchCloseOpps();
+        CampaignMemberUtil.closeRelatedOffer((Map<Id, CampaignMember>) oldMap);
     }
 
     /**
