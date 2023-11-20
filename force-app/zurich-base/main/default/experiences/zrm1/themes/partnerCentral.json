@@ -134,7 +134,7 @@
           "components": [
             {
               "componentAttributes": {
-                "NavigationMenuEditorRefresh": "Default_Navigation3",
+                "NavigationMenuEditorRefresh": "",
                 "hideAppLauncher": true,
                 "hideHomeText": false
               },
