@@ -48,7 +48,6 @@ global with sharing class Batch_LeadOffersToReassignToCC implements Database.Bat
             opp.BusinessCode__c = Lead_Offers__c.getinstance().BusinessCode__c;
             opp.CloseDate = Date.today() + (Integer)Lead_Offers__c.getinstance().DaysToReassignOffer__c;
 
-
             // Creamos CMB
             CallMeBackUtil.CallMeBack cmb = new CallMeBackUtil.CallMeBack();
             cmb.name = opp.Account.Name;
@@ -106,7 +105,7 @@ global with sharing class Batch_LeadOffersToReassignToCC implements Database.Bat
 
     global void execute(SchedulableContext sc)
     {
-        database.executeBatch(new Batch_LeadOffersToReassignToCC(), 10);
+        database.executeBatch(new Batch_LeadOffersToReassignToCC(), 200);
     }
 
     global void finish(Database.BatchableContext bc) 
