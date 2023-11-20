@@ -3,6 +3,7 @@
     <fullName>OCS_Monitoring</fullName>
     <label>OCS Monitoring</label>
     <permissionSets>Acceso_App_OCS</permissionSets>
+    <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
     <permissionSets>Acceso_API</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
