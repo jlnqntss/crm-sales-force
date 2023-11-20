@@ -3588,6 +3588,10 @@
         <enabled>true</enabled>
         <name>purecloud__PureCloud_Webhook__c</name>
     </customSettingAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>GDPR_Bloqueo_Visibilidad</name>
+    </customPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AccountNumber</field>

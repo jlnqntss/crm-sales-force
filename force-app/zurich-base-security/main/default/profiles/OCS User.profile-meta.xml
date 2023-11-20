@@ -3566,6 +3566,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>GDPR_Bloqueo_Visibilidad</name>
+    </customPermissions>
     <customSettingAccesses>
         <enabled>true</enabled>
         <name>purecloud__CallCenterCustomSettings__c</name>
