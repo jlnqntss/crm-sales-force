@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>56.0</apiVersion>
+    <assignments>
+        <description>Direcciones para las que, dadas las condiciones, se van a cerrar de forma automatizada los correos</description>
+        <name>Asignamos_buzones_a_cerrar</name>
+        <label>Asignamos buzones a cerrar</label>
+        <locationX>374</locationX>
+        <locationY>276</locationY>
+        <assignmentItems>
+            <assignToReference>Lista_Correos_Cierre</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>zurichsoporte@zurich.com</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lista_Correos_Cierre</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>zurichcliente@zurich.com</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lista_Correos_Cierre</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>cc.cambiovehiculo@zurich.com</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lista_Correos_Cierre</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>cc.db@zurich.com</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lista_Correos_Cierre</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>cc.movilidad@zurich.com</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lista_Correos_Cierre</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>cc.bancamarch@zurich.com</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Related_Emails</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Cerramos_el_caso</name>
         <label>¿Cerramos el caso?</label>
         <locationX>374</locationX>
-        <locationY>384</locationY>
+        <locationY>492</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Cerramos</name>
@@ -25,10 +77,10 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>Get_Related_Emails.ToAddress</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>Lista_Correos_Cierre</leftValueReference>
+                <operator>Contains</operator>
                 <rightValue>
-                    <stringValue>zurichsoporte@zurich.com</stringValue>
+                    <elementReference>Get_Related_Emails.ToAddress</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -77,7 +129,7 @@
         <name>Get_Related_Emails</name>
         <label>Get Related Emails</label>
         <locationX>374</locationX>
-        <locationY>276</locationY>
+        <locationY>384</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Cerramos_el_caso</targetReference>
@@ -103,7 +155,7 @@
         <name>Get_System_User</name>
         <label>Get System User</label>
         <locationX>242</locationX>
-        <locationY>492</locationY>
+        <locationY>600</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Actualizamos_valores</targetReference>
@@ -124,7 +176,7 @@
         <name>Actualizamos_valores</name>
         <label>Actualizamos valores</label>
         <locationX>242</locationX>
-        <locationY>600</locationY>
+        <locationY>708</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>IsClosed</field>
@@ -217,7 +269,7 @@
         <scheduledPaths>
             <name>Cierre12dias</name>
             <connector>
-                <targetReference>Get_Related_Emails</targetReference>
+                <targetReference>Asignamos_buzones_a_cerrar</targetReference>
             </connector>
             <label>Cierre 12 dias</label>
             <offsetNumber>12</offsetNumber>
@@ -228,4 +280,12 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <description>Lista de correos para cierre automático</description>
+        <name>Lista_Correos_Cierre</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
 </Flow>

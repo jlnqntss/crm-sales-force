@@ -1,62 +1,44 @@
+// Bare module imports
 import { LightningElement, api, track, wire } from "lwc";
 import { publish, MessageContext } from "lightning/messageService";
 
+// "@salesforce/*" imports grouped by type
 import getCampaigns from "@salesforce/apex/CampaignZRMCustomPageController.getCampaigns";
 
-import cardTitle from "@salesforce/label/c.ZRM_IntermediaryCampaignList_CardTitle";
-import cardIconText from "@salesforce/label/c.ZRM_IntermediaryCampaignList_CardIconText";
-import comboboxStatus from "@salesforce/label/c.ZRM_IntermediaryCampaignList_ComboboxStatus";
-import comboboxActiveLabel from "@salesforce/label/c.ZRM_IntermediaryCampaignList_ComboboxActiveLabel";
-import comboboxInactiveLabel from "@salesforce/label/c.ZRM_IntermediaryCampaignList_ComboboxInactiveLabel";
-import tableAriaLabel from "@salesforce/label/c.ZRM_IntermediaryCampaignList_TableAriaLabel";
-import thCampaign from "@salesforce/label/c.ZRM_IntermediaryCampaignList_TableHeaderCampaign";
-import thStartDate from "@salesforce/label/c.ZRM_IntermediaryCampaignList_TableHeaderStartDate";
-import thEndDate from "@salesforce/label/c.ZRM_IntermediaryCampaignList_TableHeaderEndDate";
-import thType from "@salesforce/label/c.ZRM_IntermediaryCampaignList_TableHeaderType";
-import thBranch from "@salesforce/label/c.ZRM_IntermediaryCampaignList_TableHeaderBranch";
-import thAssignedCustomers from "@salesforce/label/c.ZRM_IntermediaryCampaignList_TableHeaderAssignedCustomers";
-import thAssignedCustomersCC from "@salesforce/label/c.ZRM_IntermediaryCampaignList_TableHeaderAssignedCustomersCC";
-import notRecordsToDisplay from "@salesforce/label/c.DataTable_NoRecords";
-import loading from "@salesforce/label/c.LightningSpinnerText";
-
 import INTERMEDIARY_CAMPAIGN_MEMBER_CHANNEL from "@salesforce/messageChannel/IntermediaryCampaignMembers__c";
+
+// The rest of the relative imports
+import labels from "./labels";
 
 const comboboxActiveValue = "active";
 const comboboxInactiveValue = "inactive";
 const comboboxStatusOptions = [
-  { label: comboboxActiveLabel, value: comboboxActiveValue },
-  { label: comboboxInactiveLabel, value: comboboxInactiveValue }
+  { label: labels.comboboxActiveLabel, value: comboboxActiveValue },
+  { label: labels.comboboxInactiveLabel, value: comboboxInactiveValue }
 ];
 
 export default class IntermediaryCampaignList extends LightningElement {
-  // #region Properties
+  // #region Exposed properties using the @api decorator
 
   @api sendMessage;
-  labels = {
-    cardTitle,
-    cardIconText,
-    comboboxStatus,
-    comboboxActiveLabel,
-    comboboxInactiveLabel,
-    tableAriaLabel,
-    thCampaign,
-    thStartDate,
-    thEndDate,
-    thType,
-    thBranch,
-    thAssignedCustomers,
-    thAssignedCustomersCC,
-    notRecordsToDisplay,
-    loading
-  };
-  comboboxStatusOptions = comboboxStatusOptions;
-  comboboxValue = comboboxActiveValue;
+
+  // #endregion
+
+  // #region Reactive field using @track decorator
+
   @track campaignsData = {
     isLoading: true,
     [comboboxActiveValue]: undefined,
     [comboboxInactiveValue]: undefined,
     errorFetched: undefined
   };
+
+  // #endregion
+
+  // #region Other properties
+  labels = labels;
+  comboboxStatusOptions = comboboxStatusOptions;
+  comboboxValue = comboboxActiveValue;
 
   get campaigns() {
     return this.campaignsData[this.comboboxValue];
@@ -74,12 +56,9 @@ export default class IntermediaryCampaignList extends LightningElement {
     );
   }
 
-  @wire(MessageContext)
-  messageContext;
-
   // #endregion
 
-  // #region Lifecyle Hooks
+  // #region LWC lifecycle hooks
 
   /**
    * Añade los event listener a cada fila de la tabla si se requiere que el componente
@@ -116,7 +95,14 @@ export default class IntermediaryCampaignList extends LightningElement {
 
   // #endregion
 
-  // #region Wire methods
+  // #region Wire field
+
+  @wire(MessageContext)
+  messageContext;
+
+  // #endregion
+
+  // #region Wire functions
 
   @wire(getCampaigns)
   wiredCampaigns({ data, error }) {
@@ -155,6 +141,7 @@ export default class IntermediaryCampaignList extends LightningElement {
     }
 
     // El cambio del filtro de estado es instantáneo. De esta forma emulamos la carga de datos
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
     setTimeout(() => {
       this.comboboxValue = event.detail.value;
       this.hideSpinner();
