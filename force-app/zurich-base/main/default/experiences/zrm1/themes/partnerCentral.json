@@ -83,6 +83,10 @@
                   {
                     "isPublic": false,
                     "name": "Policy__c"
+                  },
+                  {
+                    "isPublic": true,
+                    "name": "Scope__c"
                   }
                 ]
               },
@@ -130,7 +134,7 @@
           "components": [
             {
               "componentAttributes": {
-                "NavigationMenuEditorRefresh": "",
+                "NavigationMenuEditorRefresh": "Default_Navigation3",
                 "hideAppLauncher": true,
                 "hideHomeText": false
               },

@@ -1,46 +1,164 @@
 {
-  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "componentName" : "siteforce:sldsOneColLayout",
-  "dataProviders" : [ ],
-  "id" : "811fa56c-6ff9-4110-8db8-c3bb31cf4a53",
-  "label" : "Policy List",
-  "regions" : [ {
-    "id" : "676761ec-2868-40e9-85f3-eb5f121ef0d3",
-    "regionName" : "header",
-    "type" : "region"
-  }, {
-    "components" : [ {
-      "componentAttributes" : {
-        "enableInlineEdit" : true,
-        "filterName" : "{!filterId}",
-        "layout" : "FULL",
-        "pageSize" : 25,
-        "scope" : "{!objectName}",
-        "showActionBar" : true,
-        "showChartsPanel" : true,
-        "showDisplay" : "showall",
-        "showFilterPanel" : true,
-        "showImageIcon" : true,
-        "showManualRefreshButton" : true,
-        "showObjectName" : true,
-        "showPinnedList" : true,
-        "showSearchBar" : true
-      },
-      "componentName" : "forceCommunity:objectHome",
-      "id" : "ab959e33-b58d-4ce6-a337-77d597cbdebb",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "832b3745-6461-4d78-8b77-7c6f1f66dda3",
-    "regionName" : "content",
-    "type" : "region"
-  }, {
-    "id" : "63ef62e7-387b-4ebe-9404-ea33d0cbc1d8",
-    "regionName" : "footer",
-    "type" : "region"
-  } ],
-  "themeLayoutType" : "Inner",
-  "type" : "view",
-  "viewType" : "list-a1B"
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "811fa56c-6ff9-4110-8db8-c3bb31cf4a53",
+  "label": "Policy List",
+  "regions": [
+    {
+      "id": "676761ec-2868-40e9-85f3-eb5f121ef0d3",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "tabsetConfig": {
+              "UUID": "01d0ec92-e83f-4e2b-a5c4-951415139deb",
+              "activeTab": "",
+              "tabs": [
+                {
+                  "UUID": "47726cc3-209c-44f7-a9e5-7e559c024248",
+                  "allowGuestUser": false,
+                  "locked": false,
+                  "seedComponents": [],
+                  "tabKey": "1",
+                  "tabName": "Total Pólizas"
+                },
+                {
+                  "UUID": "44699ab9-91dd-4947-9d3e-3032d04fd2ec",
+                  "allowGuestUser": false,
+                  "locked": false,
+                  "seedComponents": [],
+                  "tabKey": "2",
+                  "tabName": "Pólizas Vigor"
+                },
+                {
+                  "UUID": "98b5d0e0-9950-4803-b1f7-3f0a45b2f49e",
+                  "allowGuestUser": false,
+                  "locked": false,
+                  "seedComponents": [],
+                  "tabKey": "3",
+                  "tabName": "Pólizas Anuladas"
+                }
+              ],
+              "useOverflowMenu": false
+            }
+          },
+          "componentName": "forceCommunity:tabset",
+          "id": "01d0ec92-e83f-4e2b-a5c4-951415139deb",
+          "regions": [
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "enableInlineEdit": true,
+                    "filterName": "All",
+                    "layout": "FULL",
+                    "pageSize": 25,
+                    "scope": "Policy__c",
+                    "showActionBar": true,
+                    "showChartsPanel": true,
+                    "showDisplay": "showall",
+                    "showFilterPanel": true,
+                    "showImageIcon": true,
+                    "showManualRefreshButton": true,
+                    "showObjectName": true,
+                    "showPinnedList": true,
+                    "showSearchBar": true
+                  },
+                  "componentName": "forceCommunity:objectHome",
+                  "id": "ab959e33-b58d-4ce6-a337-77d597cbdebb",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "47726cc3-209c-44f7-a9e5-7e559c024248",
+              "regionLabel": "Total Pólizas",
+              "regionName": "1",
+              "renditionMap": {},
+              "type": "region"
+            },
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "enableInlineEdit": true,
+                    "filterName": "ZRM_P_lizas_en_Vigor",
+                    "layout": "FULL",
+                    "pageSize": 25,
+                    "scope": "Policy__c",
+                    "showActionBar": true,
+                    "showChartsPanel": true,
+                    "showDisplay": "showall",
+                    "showFilterPanel": true,
+                    "showImageIcon": true,
+                    "showManualRefreshButton": true,
+                    "showObjectName": true,
+                    "showPinnedList": true,
+                    "showSearchBar": true
+                  },
+                  "componentName": "forceCommunity:objectHome",
+                  "id": "dfd24e65-459f-4e9f-941a-49bdac8fa59d",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "44699ab9-91dd-4947-9d3e-3032d04fd2ec",
+              "regionLabel": "Pólizas Vigor",
+              "regionName": "2",
+              "renditionMap": {},
+              "type": "region"
+            },
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "enableInlineEdit": true,
+                    "filterName": "ZRM_P_lizas_anuladas",
+                    "layout": "FULL",
+                    "pageSize": 25,
+                    "scope": "Policy__c",
+                    "showActionBar": true,
+                    "showChartsPanel": true,
+                    "showDisplay": "showall",
+                    "showFilterPanel": true,
+                    "showImageIcon": true,
+                    "showManualRefreshButton": true,
+                    "showObjectName": true,
+                    "showPinnedList": true,
+                    "showSearchBar": true
+                  },
+                  "componentName": "forceCommunity:objectHome",
+                  "id": "17785fcf-ec39-404e-ad65-30fe17e0a073",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "98b5d0e0-9950-4803-b1f7-3f0a45b2f49e",
+              "regionLabel": "Pólizas Anuladas",
+              "regionName": "3",
+              "renditionMap": {},
+              "type": "region"
+            }
+          ],
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "832b3745-6461-4d78-8b77-7c6f1f66dda3",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "63ef62e7-387b-4ebe-9404-ea33d0cbc1d8",
+      "regionName": "footer",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "list-a1B"
 }
