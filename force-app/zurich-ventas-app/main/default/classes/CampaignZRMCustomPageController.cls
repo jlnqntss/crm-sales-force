@@ -197,6 +197,7 @@ public with sharing class CampaignZRMCustomPageController
      * del componente 'intermediaryCampaingMember'. Esta representación contiene
      * datos de registros de diferentes objetos como 'Account' u 'Opportunity'.
      */
+    @TestVisible
     private class CampaignMemberData
     {
         @AuraEnabled
