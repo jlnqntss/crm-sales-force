@@ -34,6 +34,13 @@
           "renderPriority" : "NEUTRAL",
           "renditionMap" : { },
           "type" : "component"
+        }, {
+          "componentAttributes" : { },
+          "componentName" : "c:intermediaryCampaignMembers",
+          "id" : "e9533389-33fe-4f6f-a15e-8f467a74539b",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
         } ],
         "id" : "99c729b2-4597-459a-9b31-c5dcaafb5246",
         "regionLabel" : "Column 1",
