@@ -6,25 +6,36 @@
   "label": "Record List",
   "regions": [
     {
-      "id": "3365fab7-961d-4c7c-88c0-7fd477e424fb",
-      "regionName": "header",
-      "type": "region"
-    },
-    {
       "components": [
         {
           "componentAttributes": {
-            "showCreateNewCalendar": false,
-            "showOtherCalendars": false,
-            "showSidebar": true
+            "enableInlineEdit": true,
+            "filterName": "{!filterId}",
+            "layout": "FULL",
+            "pageSize": 25,
+            "scope": "{!objectName}",
+            "showActionBar": true,
+            "showChartsPanel": true,
+            "showDisplay": "showall",
+            "showFilterPanel": true,
+            "showImageIcon": true,
+            "showManualRefreshButton": true,
+            "showObjectName": true,
+            "showPinnedList": true,
+            "showSearchBar": true
           },
-          "componentName": "forceCommunity:calendar",
-          "id": "b12a1087-dae6-478a-9b0a-6b742143b45d",
+          "componentName": "forceCommunity:objectHome",
+          "id": "9eca34d3-8b0f-4b6d-9df6-bb7b67432e42",
           "renderPriority": "NEUTRAL",
           "renditionMap": {},
           "type": "component"
         }
       ],
+      "id": "3365fab7-961d-4c7c-88c0-7fd477e424fb",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
       "id": "29744cba-de0a-4f7f-94da-fe27d9b11d8d",
       "regionName": "content",
       "type": "region"
