@@ -2,8 +2,8 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 19/09/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 17-11-2023
+ * @last modified by  : amiranda
  **/
 public with sharing class CampaignMembersSelector extends BaseSelector
 {
@@ -172,9 +172,9 @@ public with sharing class CampaignMembersSelector extends BaseSelector
         ];
     }
 
-    public class ProperCampaignMembersSelector extends RecordsSelector
+    public with sharing class ProperCampaignMembersSelector extends RecordsSelector
     {
-        ProperCampaignMembersSelector()
+        public ProperCampaignMembersSelector()
         {
             super( CampaignMember.getSObjectType() );
         }
@@ -187,6 +187,51 @@ public with sharing class CampaignMembersSelector extends BaseSelector
             .addConditionIn(CampaignMember.Contact.AccountId, accountIds);
 
             return this.baseQuery.run();
+        }
+
+        /**
+         * @description Método que recupera los miembros de campaña pertenecientes
+         * a una campaña concreta.
+         *
+         * @author amiranda
+         * @date 09-10-2023
+         * @param campaignId Id de la campaña sobre la que recuperar los miembros de campaña
+         * @return List<CampaignMember> Miembros de campañana relacionads con la campaña
+         * @where AuraEnabled method
+         **/
+        public List<CampaignMember> selectByCampaignId(Id campaignId)
+        {
+            List<CampaignMember> campaignMembers = new List<CampaignMember>();
+
+            /* 
+            * Se crea un conjunto de Strings porque algunos campos dan error al
+            * tratar de pasarlos como 'Schema.sObjectField'
+            * https://salesforce.stackexchange.com/questions/118597/schema-sobjectfield-inconsistency-with-relationship-fields
+            */
+            Set<String> fieldsToRetrieve = new Set<String>
+            {
+                'CampaignId',
+                'Name',
+                'OfferAssignedCode__c',
+                'Campaign.StartDate',
+                'Contact.AccountId',
+                'Contact.Account.Name',
+                'Contact.Account.INFOCustomerNumber__c'
+            };
+
+            if (campaignId != null)
+            {
+                campaignMembers = this.baseQuery
+                                  .selectFields(fieldsToRetrieve)
+                                  .toLabel('Contact.Account.RecordType.Name')
+                                  .toLabel('Status')
+                                  .addConditionEq(CampaignMember.CampaignId, campaignId)
+                                  .orderBy('Contact.Account.Name')
+                                  .enforceSecurity()
+                                  .run();
+            }
+
+            return campaignMembers;
         }
     }
 }

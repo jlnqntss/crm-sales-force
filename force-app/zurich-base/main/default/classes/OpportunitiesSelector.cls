@@ -2,8 +2,8 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 09-25-2023
- * @last modified by  : overes
+ * @last modified on  : 17-11-2023
+ * @last modified by  : amiranda
  **/
 public with sharing class OpportunitiesSelector extends RecordsSelector
 {
@@ -60,7 +60,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      *
      * @return                  Listado de opportunies sobre los que se ha realizado match
      *
-     * @last modified by  : overes
+     * @last modified by  : amiranda
      */
     public List<Opportunity> selectByAccountIdScopesAndOwnerProfile(Id accountId, Set<Id> scopeIds, Set<String> ownerProfileNames)
     {
@@ -401,5 +401,42 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                         'AND StageName IN (\'Legit Lead\', \'App Submitted\', \'Quoted\') ' +
                         'AND Owner.Profile.Name = \'Agente Ventas\'';
     }
+
+    /**
+    * @description Método selector que recupera aquellas ofertas que se encuentran
+    * relacionadas con la campaña y con alguna de las cuentas pasada por parámetro.
+    * 
+    * @author amiranda
+    * @date 14-11-2023 
+    * @param accountIds Ids de cuentas relacionadas con las ofertas
+    * @param campaignId Id de campañá sobre la que recuperar las ofertas
+    * @return List<Opportunity> 
+    **/
+    public List<Opportunity> selectByAccountIdsAndCampaignId(Set<Id> accountIds, Id campaignId)
+    {
+        List<Opportunity> opportunities = new List<Opportunity>();
+
+        if ( !accountIds.isEmpty() && String.isNotBlank(campaignId) )
+        {
+            Set<Schema.SObjectField> fields = new Set<Schema.SObjectField>
+            {
+                Opportunity.Name,
+                Opportunity.AccountId,
+                Opportunity.Sales_Loss_Reason__c
+            };
+
+            opportunities = this.baseQuery
+                            .selectFields(fields)
+                            .toLabel('Sales_Loss_Reason__c', 'salesLossReasonLabel')
+                            .toLabel('StageName')
+                            .addConditionIn(Opportunity.AccountId, accountIds)
+                            .addConditionEq(Opportunity.CampaignId, campaignId)
+                            .enforceSecurity()
+                            .run();
+        }
+
+        return opportunities;
+    }
+
 
 }
