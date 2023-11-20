@@ -196,7 +196,7 @@ export default class DatatableWithRowActions extends LightningElement {
     if (this.campaignId) this.showSpinner();
 
     let today = new Date();
-    let cols = this.columns;
+    let cols;
 
     if (this.campaignData.campaignFilter === campaignStatusFilterActiveValue) {
       // Se elimina la columna que no debe mostrarse para los miembros de campaña relacionados con campañas activas
