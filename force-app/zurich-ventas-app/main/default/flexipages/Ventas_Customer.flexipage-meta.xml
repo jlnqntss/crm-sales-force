@@ -47,67 +47,6 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>actionNames</name>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>maxRecordsToDisplay</name>
-                    <value>10</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>parentFieldApiName</name>
-                    <value>Account.Id</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListApiName</name>
-                    <value>Opportunities</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListDisplayType</name>
-                    <value>ADVGRID</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListFieldAliases</name>
-                    <valueList>
-                        <valueListItems>
-                            <value>OPPORTUNITY.NAME</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>ProductId__c</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>OPPORTUNITY.STAGE_NAME</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>OPPORTUNITY.CLOSE_DATE</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>CORE.USERS.ALIAS</value>
-                        </valueListItems>
-                    </valueList>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>relatedListLabel</name>
-                    <value>Ofertas</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>showActionBar</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>sortFieldAlias</name>
-                    <value>__DEFAULT__</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>sortFieldOrder</name>
-                    <value>Default</value>
-                </componentInstanceProperties>
-                <componentName>lst:dynamicRelatedList</componentName>
-                <identifier>lst_dynamicRelatedList5</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>actionNames</name>
                     <valueList>
                         <valueListItems>
                             <value>MassChangeOwner</value>
@@ -143,7 +82,13 @@
                             <value>PolicyStatus__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>ProductId__c</value>
+                            <value>ProductBranch__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>AssetIdentifier__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>EndDate__c</value>
                         </valueListItems>
                         <valueListItems>
                             <value>TotalPremium__c</value>
@@ -201,13 +146,13 @@
                             <value>NAME</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Product__c</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>DateOfOccurrence__c</value>
-                        </valueListItems>
-                        <valueListItems>
                             <value>Status__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>GroupDescription__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>AssetIdentifier__c</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
@@ -235,11 +180,6 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>actionNames</name>
-                    <valueList>
-                        <valueListItems>
-                            <value>New</value>
-                        </valueListItems>
-                    </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>maxRecordsToDisplay</name>
@@ -251,7 +191,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>relatedListApiName</name>
-                    <value>Competitors__r</value>
+                    <value>Opportunities</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>relatedListDisplayType</name>
@@ -261,25 +201,25 @@
                     <name>relatedListFieldAliases</name>
                     <valueList>
                         <valueListItems>
-                            <value>NAME</value>
+                            <value>OPPORTUNITY.NAME</value>
                         </valueListItems>
                         <valueListItems>
                             <value>ProductBranch__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>OfferWon__c</value>
+                            <value>OPPORTUNITY.STAGE_NAME</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>ExpirationDate__c</value>
+                            <value>CreatedDate__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Premium__c</value>
+                            <value>OPPORTUNITY.CLOSE_DATE</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>relatedListLabel</name>
-                    <value>Competencias</value>
+                    <value>Ofertas</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>showActionBar</name>
@@ -294,7 +234,33 @@
                     <value>Default</value>
                 </componentInstanceProperties>
                 <componentName>lst:dynamicRelatedList</componentName>
-                <identifier>lst_dynamicRelatedList</identifier>
+                <identifier>lst_dynamicRelatedList5</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>parentFieldApiName</name>
+                    <value>Account.Id</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListApiName</name>
+                    <value>PersonCampaignMembers</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListComponentOverride</name>
+                    <value>ADVGRID</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>rowsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showActionBar</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer4</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -361,27 +327,67 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>actionNames</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>New</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>maxRecordsToDisplay</name>
+                    <value>10</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>parentFieldApiName</name>
                     <value>Account.Id</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>relatedListApiName</name>
-                    <value>PersonCampaignMembers</value>
+                    <value>Competitors__r</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>relatedListComponentOverride</name>
+                    <name>relatedListDisplayType</name>
                     <value>ADVGRID</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
-                    <name>rowsToDisplay</name>
-                    <value>10</value>
+                    <name>relatedListFieldAliases</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>NAME</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>ProductBranch__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>OfferWon__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>ExpirationDate__c</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Premium__c</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>relatedListLabel</name>
+                    <value>Competencias</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>showActionBar</name>
                     <value>true</value>
                 </componentInstanceProperties>
-                <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer4</identifier>
+                <componentInstanceProperties>
+                    <name>sortFieldAlias</name>
+                    <value>__DEFAULT__</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sortFieldOrder</name>
+                    <value>Default</value>
+                </componentInstanceProperties>
+                <componentName>lst:dynamicRelatedList</componentName>
+                <identifier>lst_dynamicRelatedList</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
