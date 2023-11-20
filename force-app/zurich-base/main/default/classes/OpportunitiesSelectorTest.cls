@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : mfernandezcarrera
+ * @group             : 
+ * @last modified on  : 11-20-2023
+ * @last modified by  : mfernandezcarrera
+**/
 @isTest
 private with sharing class OpportunitiesSelectorTest
 {
@@ -392,6 +399,43 @@ private with sharing class OpportunitiesSelectorTest
         Test.stopTest();
  
         System.assertEquals(true, offerList != null, 'No Debe ser nulo');
+    }
+
+    /**
+    * Test del  Método selector que recupera aquellas ofertas que se encuentran
+    * relacionadas con la campaña y con alguna de las cuentas pasada por parámetro.
+    * @author mfernandezcarrera
+    * @date 20/11/2023
+    */
+    @IsTest
+    static void test_selectByAccountIdsAndCampaignId()
+    {
+        // create new account
+        List<Account> account = TestDataFactory.generateAccounts('001', 'Business Customer', 1);
+        account[0].FirstName='Prueba';
+        insert account;
+        
+        // create new campaign
+        List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 1);
+        insert campaigns;
+
+        // create new offer
+        List<Opportunity> newOffers = TestDataFactory.generateOpportunitiesForEachAccount(account, 'General', 'Open',System.today().addDays(10), 1);
+        newOffers[0].CampaignId=campaigns.get(0).Id;
+        insert newOffers;
+
+        Id campaignToSearch = campaigns.get(0).Id;
+       
+
+        List <Account> listacc = [Select Id,FirstName from Account where FirstName='Prueba'];
+        
+        Map<Id,Account> mapAccountsById = new Map<Id,Account> (listacc);
+
+        Test.startTest();
+        List<Opportunity> resultados = new OpportunitiesSelector().selectByAccountIdsAndCampaignId(mapAccountsById.keySet(),campaignToSearch);
+        Test.stopTest();
+
+        System.assertEquals(1, resultados.size(), 'No cumple las condiciones');
     }
 
 }

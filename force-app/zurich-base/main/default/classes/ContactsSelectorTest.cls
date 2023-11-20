@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
+ * @last modified on  : 11-20-2023
+ * @last modified by  : mfernandezcarrera
 **/
 @isTest
 private with sharing class ContactsSelectorTest
@@ -294,5 +294,29 @@ private with sharing class ContactsSelectorTest
         Test.stopTest();
 
         System.assertEquals(0, matchedRecords.size(), 'El número de contactos asociados a cuentas de tipo F o J no es correcto');
+    }
+
+     /**
+    * Test del  Método que recupera contactos cuyas cuentas relacionadas son 
+    * de uno de los tipos de registro que se pasan por parámetro y no están relacionados
+    * con ninguno de los Ids de las cuentas pasados por parámetro.
+    * @author mfernandezcarrera
+    * @date 20/11/2023
+    */
+    @IsTest
+    static void test_selectByRelatedAccountRecordTypeAndNotInAccountIds()
+    {
+        List <Account> listacc = [Select Id from Account];
+        List<Account> accountCustomer = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accountCustomer;
+        
+        Map<Id,Account> mapAccountsById = new Map<Id,Account> (listacc);
+
+        Test.startTest();
+        ContactsSelector contactsSelector = new ContactsSelector();
+        List<Contact> contactList = contactsSelector.selectByRelatedAccountRecordTypeAndNotInAccountIds(new List<String>{'Customer'},  mapAccountsById.keySet());
+        Test.stopTest();
+
+        System.assertEquals(1, contactList.size(), 'El número de contactos asociados a cuentas  no es correcto');
     }
 }
