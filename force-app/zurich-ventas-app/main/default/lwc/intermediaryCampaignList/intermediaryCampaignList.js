@@ -133,17 +133,18 @@ export default class IntermediaryCampaignList extends LightningElement {
    */
   handleStatusChange(event) {
     this.showSpinner();
+    this.comboboxValue = event.detail.value;
 
     if (this.sendMessage) {
       publish(this.messageContext, INTERMEDIARY_CAMPAIGN_MEMBER_CHANNEL, {
-        statusRefreshed: true
+        statusRefreshed: true,
+        campaignStatus: this.comboboxValue
       });
     }
 
     // El cambio del filtro de estado es instantáneo. De esta forma emulamos la carga de datos
     // eslint-disable-next-line @lwc/lwc/no-async-operation
     setTimeout(() => {
-      this.comboboxValue = event.detail.value;
       this.hideSpinner();
     }, 800);
   }
@@ -167,7 +168,19 @@ export default class IntermediaryCampaignList extends LightningElement {
      * de campaña de una campañá
      */
     let campaignId = event.currentTarget.getAttribute("data-id");
-    const message = { statusRefreshed: false, campaignId };
+    let campaignStartDate = event.currentTarget.querySelector(
+      `td[data-labels="${this.labels.thStartDate}"] > div`
+    ).textContent;
+    let campaignType = event.currentTarget.querySelector(
+      `td[data-labels="${this.labels.thType}"] > div`
+    ).textContent;
+    const message = {
+      statusRefreshed: false,
+      campaignStatus: this.comboboxValue,
+      campaignId,
+      campaignStartDate,
+      campaignType
+    };
     publish(this.messageContext, INTERMEDIARY_CAMPAIGN_MEMBER_CHANNEL, message);
   };
 

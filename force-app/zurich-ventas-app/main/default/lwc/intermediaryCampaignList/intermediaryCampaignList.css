@@ -1,6 +1,8 @@
 .fix-header {
     overflow-y: auto;
     height:355px;
+    display: flex; 
+    flex-direction: column
 }
 
 .fix-header table {

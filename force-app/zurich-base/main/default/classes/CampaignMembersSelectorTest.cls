@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : mfernandezcarrera
+ * @group             : 
+ * @last modified on  : 11-20-2023
+ * @last modified by  : mfernandezcarrera
+**/
 @isTest
 private with sharing class CampaignMembersSelectorTest
 {
@@ -259,4 +266,38 @@ private with sharing class CampaignMembersSelectorTest
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
+
+    @isTest
+    static void test_selectByCampaignId_matchedRecords()
+    {
+        List<Campaign> campaigns = [SELECT Id FROM Campaign];
+        System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
+
+        Id campaignToSearch = campaigns.get(0).Id;
+
+        List<CampaignMember> currentCampaignMembers = [SELECT ContactId FROM CampaignMember];
+        System.assertEquals(false, currentCampaignMembers.isEmpty(), 'List should NOT be empty');
+
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector.ProperCampaignMembersSelector().selectByCampaignId(campaignToSearch);
+        Test.stopTest();
+
+        System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
+
+        for(CampaignMember matched: matchedRecords)
+        {
+            System.assertEquals(true, matched.CampaignId == campaignToSearch, 'CampaignId should be the same');
+        }
+    }
+
+    @isTest
+    static void test_selectByCampaingId_null_matchedRecords()
+    {
+        Test.startTest();
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector.ProperCampaignMembersSelector().selectByCampaignId(null);
+        Test.stopTest();
+
+        System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
+    }
+
 }

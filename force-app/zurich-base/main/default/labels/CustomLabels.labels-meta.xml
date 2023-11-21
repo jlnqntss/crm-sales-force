@@ -2429,6 +2429,136 @@ Create the record and try again.</value>
         <value>[VR Offer] A Closed Won Offer cannot be modified</value>
     </labels>
     <labels>
+        <fullName>ZRM_IntermAddCampMember_AddButton</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_AddButton</shortDescription>
+        <value>Add</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_AddCampMemToastErrorMessage</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_AddCampMemToastErrorMessage</shortDescription>
+        <value>There has been a problem creating Campaign Members. If the problem persists, please
+            contact the System Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_AddCampMemToastSuccessMessage</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_AddCampMemToastSuccessMessage</shortDescription>
+        <value>The selected records are already members of</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_AddMemCampToastErrorTitle</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_AddMemCampToastErrorTitle</shortDescription>
+        <value>failed to update successfully.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_AddMemCampToastSuccessTitle</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_AddMemCampToastSuccessTitle</shortDescription>
+        <value>was successfully updated.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_AddMember</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_AddMember</shortDescription>
+        <value>Add Member</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_ButtonClose</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_ButtonClose</shortDescription>
+        <value>Close</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_CampaignIdExceptionMessage</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_CampaignIdExceptionMessage</shortDescription>
+        <value>The Id of the campaign cannot be null or void.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_CancelButton</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_CancelButton</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_Loading</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_ModalHeader</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_ModalHeader</shortDescription>
+        <value>Add Member</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_NoItemsToDisplay</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_NoItemsToDisplay</shortDescription>
+        <value>No items to display.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_ToastGenericErrorMessage</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_ToastGenericErrorMessage</shortDescription>
+        <value>An unexpected error has occurred. If the problem persists contact your System
+            Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_ToastGenericErrorTitle</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_ToastGenericErrorTitle</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_ToastNotValidCampaign</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_ToastNotValidCampaign</shortDescription>
+        <value>Campaign is not active or invalid, you cannot perform this action.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermAddCampMember_ToastTitleActionNotAllowed</fullName>
+        <categories>ZRM_IntermAddCampMember</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermAddCampMember_ToastTitleActionNotAllowed</shortDescription>
+        <value>Action not allowed</value>
+    </labels>
+    <labels>
         <fullName>ZRM_IntermediaryCampaignList_CardIconText</fullName>
         <categories>ZRM_IntermediaryCampaignList</categories>
         <language>en_US</language>
@@ -2531,5 +2661,142 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>ZRM_IntermediaryCampaignList_TableHeaderType</shortDescription>
         <value>Type</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_CardText</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_CardText</shortDescription>
+        <value>Customers</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_CardTitle</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_CardTitle</shortDescription>
+        <value>Customers</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_NoCampaignSelected</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers_NoCampaignSelected</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_NoCampaignSelected</shortDescription>
+        <value>No campaign has been selected.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_RowActionRemove</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_RowActionRemove</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_TableHeaderAffiliationCode</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_TableHeaderAffiliationCode</shortDescription>
+        <value>Affiliation Code</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_TableHeaderIntermediary</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_TableHeaderIntermediary</shortDescription>
+        <value>Intermediary</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_TableHeaderLostReason</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_TableHeaderLostReason</shortDescription>
+        <value>Lost Reason</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_TableHeaderName</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_TableHeaderName</shortDescription>
+        <value>Name</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_TableHeaderOffer</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_TableHeaderOffer</shortDescription>
+        <value>Offer</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_TableHeaderOfferStage</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_TableHeaderOfferStage</shortDescription>
+        <value>Offer Stage</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_TableHeaderStatus</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_TableHeaderStatus</shortDescription>
+        <value>Status</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_TableHeaderType</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_TableHeaderType</shortDescription>
+        <value>Type</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionMessage</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionMessage</shortDescription>
+        <value>has been removed as a campaign member of the campaign</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle</shortDescription>
+        <value>Successful removal</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage</shortDescription>
+        <value>The requested operation could not be executed. If the problem persists, contact the
+            System Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastGenericErrorTitle</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastGenericErrorTitle</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastOngoingCampaignErrorMessage</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastOngoingCampaignErrorMessage</shortDescription>
+        <value>Ongoing, terminated or invalid campaign</value>
     </labels>
 </CustomLabels>

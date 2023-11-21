@@ -1,0 +1,66 @@
+<template>
+  <div class="slds-card slds-card_boundary">
+    <!-- Combobox que permite seleccionar las campañás en función del estado de las mismas -->
+    <div class="slds-card__header">
+      <div class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <lightning-icon
+            icon-name="standard:account"
+            size="small"
+            alternative-text={labels.cardText}
+            title={labels.cardText}
+          ></lightning-icon>
+        </div>
+        <div class="slds-media__body">
+          <h2 class="slds-card__header-title">
+            <span>{labels.cardTitle}</span>
+          </h2>
+        </div>
+        <template lwc:if={showAddCampaignMemberButton}>
+          <div class="slds-no-flex">
+            <c-interm-add-campaign-member
+              campaign-id={campaignId}
+              onupdate={handleAddingCampaingMembers}
+            ></c-interm-add-campaign-member>
+          </div>
+        </template>
+      </div>
+    </div>
+    <div class="slds-card__body slds-card__body_inner">
+      <div style="height: 350px; display: flex; flex-direction: column; align-items: center;">
+        <c-custom-Datatable
+          resize-column-disabled
+          key-field="cmId"
+          data={campaignMembersData.data}
+          columns={columns}
+          hide-checkbox-column
+          onheaderaction={handleHeaderAction}
+          onrowaction={handleRowAction}
+        >
+        </c-custom-Datatable>
+        <lightning-spinner
+          if:true={campaignMembersData.isLoading}
+          alternative-text={labels.loading}
+          size="medium"
+          title={labels.loading}
+          aria-label={labels.loading}
+          vairant="brand"
+        ></lightning-spinner>
+        <template lwc:if={messageToDisplay}>
+          <div class="slds-align_absolute-center">
+            <p class="slds-text-color_weak">
+              <lightning-formatted-rich-text
+                lwc:if={noCampaignSelected}
+                value={labels.noCampaignSelected}
+              ></lightning-formatted-rich-text>
+              <lightning-formatted-rich-text
+                lwc:elseif={noRecordsToDisplay}
+                value={labels.noRecordsToDisplay}
+              ></lightning-formatted-rich-text>
+            </p>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</template>

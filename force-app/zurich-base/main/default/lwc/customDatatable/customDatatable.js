@@ -1,5 +1,6 @@
 import LightningDatatable from "lightning/datatable";
 import richTextColumnType from "./richTextColumnType.html";
+import hyperlinkedString from "./hyperlinkedString.html";
 
 /**
  * Custom component that extends LightningDatatable
@@ -11,6 +12,11 @@ export default class CustomDatatable extends LightningDatatable {
     richText: {
       template: richTextColumnType,
       standardCellLayout: true
+    },
+    hyperlinkedString: {
+      template: hyperlinkedString,
+      standardCellLayout: true,
+      typeAttributes: ['recordId', 'sObject']
     }
   };
 }

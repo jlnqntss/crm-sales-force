@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
+ * @last modified on  : 15-11-2023
+ * @last modified by  : amiranda
 **/
 public with sharing class ContactsSelector extends RecordsSelector
 {
@@ -355,6 +355,37 @@ public with sharing class ContactsSelector extends RecordsSelector
             ]);
         }
         return result;
+    }
+    
+    /**
+    * @description Método que recupera contactos cuyas cuentas relacionadas son 
+    * de uno de los tipos de registro que se pasan por parámetro y no están relacionados
+    * con ninguno de los Ids de las cuentas pasados por parámetro.
+    *
+    * @author amiranda
+    * @date 15-11-2023 
+    * @param recordTypeNames Lista con el nombre de los tipos de registros de cuentas a recupera
+    * @param accountIds Conjunto de Ids de cuentas sobre las que no considerar a la hora de recuperar los contactos
+    * @return List<Contact> Lista de contactos recuperados
+    **/
+    public List<Contact> selectByRelatedAccountRecordTypeAndNotInAccountIds(List<String> recordTypeNames, Set<Id> accountIds)
+    {
+        Set<String> fieldsToRetrieve = new Set<String>
+        {
+            'Id',
+            'AccountId',
+            'Account.Name',
+            'Account.INFOCustomerNumber__c',
+            'Account.NationalId__c',
+            'Account.RecordType__c'
+        };
+
+        return this.setRecordType(recordTypeNames).baseQuery
+               .selectfields(fieldsToRetrieve)
+               .addConditionNotIn(Contact.AccountId, accountIds)
+               .orderBy('Account.Name', 'ASC')
+               .enforceSecurity()
+               .run();
     }
 
     public List<Contact> findById(Set<String> ids)

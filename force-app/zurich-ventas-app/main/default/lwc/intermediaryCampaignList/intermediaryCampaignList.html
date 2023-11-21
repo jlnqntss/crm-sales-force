@@ -36,96 +36,97 @@
       </div>
     </div>
     <div class="slds-card__body slds-card__body_inner fix-header">
-        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout" role="grid" aria-label={labels.tableArialabels}>
-          <thead>
-            <tr class="slds-line-height_reset">
-              <th class="slds-cell-wrap" scope="col">
-                <div class="slds-line-clamp" title={labels.thCampaign}>
-                  {labels.thCampaign}
+      <table
+        class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout"
+        role="grid"
+        aria-label={labels.tableArialabels}
+      >
+        <thead>
+          <tr class="slds-line-height_reset">
+            <th class="slds-cell-wrap" scope="col">
+              <div class="slds-line-clamp" title={labels.thCampaign}>
+                {labels.thCampaign}
+              </div>
+            </th>
+            <th class="slds-cell-wrap" scope="col">
+              <div class="slds-line-clamp" title={labels.thStartDate}>
+                {labels.thStartDate}
+              </div>
+            </th>
+            <th class="slds-cell-wrap" scope="col">
+              <div class="slds-line-clamp" title={labels.thEndDate}>
+                {labels.thEndDate}
+              </div>
+            </th>
+            <th class="slds-cell-wrap" scope="col">
+              <div class="slds-line-clamp" title={labels.thType}>
+                {labels.thType}
+              </div>
+            </th>
+            <th class="slds-cell-wrap" scope="col">
+              <div class="slds-line-clamp" title={labels.thBranch}>
+                {labels.thBranch}
+              </div>
+            </th>
+            <th class="slds-cell-wrap" scope="col">
+              <div class="slds-line-clamp" title={labels.thAssignedCustomers}>
+                {labels.thAssignedCustomers}
+              </div>
+            </th>
+            <th class="slds-cell-wrap" scope="col">
+              <div class="slds-line-clamp" title={labels.thAssignedCustomersCC}>
+                {labels.thAssignedCustomersCC}
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={campaigns} for:item="campaign">
+            <tr
+              class="slds-hint-parent"
+              key={campaign.id}
+              data-id={campaign.id}
+              data-row-selected="false"
+            >
+              <th data-labels={labels.thCampaign} scope="row">
+                <div class="slds-truncate" title={campaign.name}>
+                  {campaign.name}
                 </div>
               </th>
-              <th class="slds-cell-wrap" scope="col">
-                <div class="slds-line-clamp" title={labels.thStartDate}>
-                  {labels.thStartDate}
+              <td data-labels={labels.thStartDate}>
+                <div class="slds-truncate" title={campaign.startDate}>
+                  {campaign.startDate}
                 </div>
-              </th>
-              <th class="slds-cell-wrap" scope="col">
-                <div class="slds-line-clamp" title={labels.thEndDate}>
-                  {labels.thEndDate}
+              </td>
+              <td data-labels={labels.thEndDate}>
+                <div class="slds-truncate" title={campaign.endDate}>
+                  {campaign.endDate}
                 </div>
-              </th>
-              <th class="slds-cell-wrap" scope="col">
-                <div class="slds-line-clamp" title={labels.thType}>
-                  {labels.thType}
+              </td>
+              <td data-labels={labels.thType}>
+                <div class="slds-truncate" title={campaign.type}>
+                  {campaign.type}
                 </div>
-              </th>
-              <th class="slds-cell-wrap" scope="col">
-                <div class="slds-line-clamp" title={labels.thBranch}>
-                  {labels.thBranch}
+              </td>
+              <td data-labels={labels.thBranch}>
+                <div class="slds-truncate" title={campaign.branch}>
+                  {campaign.branch}
                 </div>
-              </th>
-              <th class="slds-cell-wrap" scope="col">
-                <div  class="slds-line-clamp" title={labels.thAssignedCustomers}>
-                  {labels.thAssignedCustomers}
+              </td>
+              <td data-labels={labels.thAssignedCustomers}>
+                <div class="slds-truncate" title={campaign.assignedToCustomers}>
+                  {campaign.assignedToCustomers}
                 </div>
-              </th>
-              <th class="slds-cell-wrap" scope="col">
-                <div class="slds-line-clamp" title={labels.thAssignedCustomersCC}>
-                  {labels.thAssignedCustomersCC}
+              </td>
+              <td data-labels={labels.thAssignedCustomersCC}>
+                <div class="slds-truncate" title={campaign.assignedToCC}>
+                  {campaign.assignedToCC}
                 </div>
-              </th>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <template for:each={campaigns} for:item="campaign">
-              <tr
-                class="slds-hint-parent"
-                key={campaign.id}
-                data-id={campaign.id}
-                data-row-selected="false"
-              >
-                <th data-labels={labels.thCampaign} scope="row">
-                  <div class="slds-truncate" title={campaign.name}>
-                    {campaign.name}
-                  </div>
-                </th>
-                <td data-labels={labels.thStartDate}>
-                  <div class="slds-truncate" title={campaign.startDate}>
-                    {campaign.startDate}
-                  </div>
-                </td>
-                <td data-labels={labels.thEndDate}>
-                  <div class="slds-truncate" title={campaign.endDate}>
-                    {campaign.endDate}
-                  </div>
-                </td>
-                <td data-labels={labels.thType}>
-                  <div class="slds-truncate" title={campaign.type}>
-                    {campaign.type}
-                  </div>
-                </td>
-                <td data-labels={labels.thBranch}>
-                  <div class="slds-truncate" title={campaign.branch}>
-                    {campaign.branch}
-                  </div>
-                </td>
-                <td data-labels={labels.thAssignedCustomers}>
-                  <div
-                    class="slds-truncate"
-                    title={campaign.assignedToCustomers}
-                  >
-                    {campaign.assignedToCustomers}
-                  </div>
-                </td>
-                <td data-labels={labels.thAssignedCustomersCC}>
-                  <div class="slds-truncate" title={campaign.assignedToCC}>
-                    {campaign.assignedToCC}
-                  </div>
-                </td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
+          </template>
+        </tbody>
+      </table>
       <template lwc:if={notCampaignsToDisplay}>
         <div class="slds-align_absolute-center">
           <lightning-formatted-rich-text
@@ -133,6 +134,7 @@
           ></lightning-formatted-rich-text>
         </div>
       </template>
+      <!--Spinner que indica que hay un proceso en ejecución.-->
       <template lwc:if={isLoading}>
         <div class="slds-align_absolute-center">
           <lightning-spinner
@@ -145,7 +147,6 @@
           ></lightning-spinner>
         </div>
       </template>
-      <!--Spinner que indica que hay un proceso en ejecución.-->
     </div>
   </div>
 </template>
