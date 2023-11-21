@@ -540,15 +540,12 @@ public with sharing class EmailMessagesUtil
         String industryGeneric= 'Generico';
         String industryDefault;
 
-        if(!listaCaso.isEmpty() && (listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue==null))
+        if(!listaCaso.isEmpty() && (listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue==null) && em.Industry__c != null)
         {   
             industryDefault=em.Industry__c;
-
-            if (industryDefault != null)
-            {
-                genesysQueue=this.findGenesysQueueByIndustry(industryDefault.trim().toLowerCase());
-            }
-                
+            
+            genesysQueue=this.findGenesysQueueByIndustry(industryDefault.trim().toLowerCase());
+            
             if((genesysQueue==null) || (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
             {   
                 genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
