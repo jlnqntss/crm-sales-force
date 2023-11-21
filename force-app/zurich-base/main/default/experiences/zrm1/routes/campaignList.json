@@ -1,11 +1,11 @@
 {
-  "activeViewId" : "f2a6c722-7793-4f1d-b943-16b3eb29fef1",
-  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "configurationTags" : [ ],
-  "devName" : "Campaign_List",
-  "id" : "11efe18f-9757-4b4d-9df9-a7d9b836cb62",
-  "label" : "Campaign List",
-  "routeType" : "list-701",
-  "type" : "route",
-  "urlPrefix" : "campaign"
+  "activeViewId": "f2a6c722-7793-4f1d-b943-16b3eb29fef1",
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "configurationTags": [],
+  "devName": "Campaign_List",
+  "id": "11efe18f-9757-4b4d-9df9-a7d9b836cb62",
+  "label": "Campaign List",
+  "routeType": "list-701",
+  "type": "route",
+  "urlPrefix": "campaign"
 }
