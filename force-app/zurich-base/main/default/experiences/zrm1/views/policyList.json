@@ -54,7 +54,7 @@
                 {
                   "componentAttributes": {
                     "enableInlineEdit": true,
-                    "filterName": "All",
+                    "filterName": "ZRM_Todas_las_P_lizas",
                     "layout": "FULL",
                     "pageSize": 25,
                     "scope": "Policy__c",
