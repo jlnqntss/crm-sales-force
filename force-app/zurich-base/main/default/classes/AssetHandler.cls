@@ -10,7 +10,8 @@ public class AssetHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * bulkAfter
@@ -19,7 +20,8 @@ public class AssetHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * beforeInsert
@@ -28,7 +30,8 @@ public class AssetHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
-    {}
+    {
+    }
 
     /**
      * beforeUpdate
@@ -37,7 +40,8 @@ public class AssetHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * beforeDelete
@@ -46,7 +50,8 @@ public class AssetHandler implements ITrigger
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * afterInsert
@@ -58,6 +63,7 @@ public class AssetHandler implements ITrigger
     public void afterInsert(List<SObject> newList)
     {
         AssetUtil.generateScope(newList);
+        AssetUtil.updateLinkedPolicy(newList);
     }
 
     /**
@@ -69,6 +75,7 @@ public class AssetHandler implements ITrigger
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         AssetUtil.generateScope(newList);
+        AssetUtil.updateLinkedPolicy(newList);
     }
 
     /**
@@ -78,7 +85,8 @@ public class AssetHandler implements ITrigger
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * andFinally
@@ -87,5 +95,6 @@ public class AssetHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {}
+    {
+    }
 }
