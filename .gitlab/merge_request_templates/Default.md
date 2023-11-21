@@ -2,7 +2,7 @@
 
 _(Resume de forma concisa el bug/feature)_
 
-> ####  Pasos para reproducir el error
+> #### Pasos para reproducir el error
 >
 > _(Solo rellenar en caso de bug, borrar esta sección si no es necesaria)_
 >
@@ -39,8 +39,24 @@ _(Captura de pantalla de la validación contra staging)_
 * [ ] He enlazado la documentación en su US
 * [ ] No hay conflictos con la rama destino
 
+### Check Reviewer
+
+#### MR
+
+* [ ] Naming conventions commit y MR
+* [ ] Buenas prácticas de código aplicadas
+* [ ] Validación contra staging
+* [ ] SonarCloud sin conflictos
+
+### US
+
+* [ ] Evidencias 
+* [ ] Documentación
+* [ ] US ready for testing asignada a QA
+
 _Eliminar labels que no apliquen a continuación, debe quedar una en cada línea_
 
 /label ~Bug ~Feature
 /label ~OCS ~SDM ~USP ~ZRM ~ZE ~KLINC ~CROSS
 /assign @jonandersanjuan @o.iglesiasalcala
+/assign_reviewer @arcortazar @jgallaga1 

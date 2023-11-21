@@ -107,7 +107,7 @@ public with sharing class CampaignsSelector extends BaseSelector
     {
         List<Campaign> campaigns = new List<Campaign>();
 
-        campaigns = [SELECT Id, Name, StartDate, EndDate, Type, toLabel(ProductBranch__c),
+        campaigns = [SELECT Id, Name, StartDate, EndDate, toLabel(Type), toLabel(ProductBranch__c),
                      isActive, (SELECT Id, Status FROM CampaignMembers)
                      FROM Campaign WITH SECURITY_ENFORCED ORDER BY Name];
 

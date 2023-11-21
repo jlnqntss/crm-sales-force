@@ -3531,6 +3531,10 @@
         <name>purecloud__PureCloud_Webhook__c</name>
     </customSettingAccesses>
     <description>Used by all users of the marketing department who need access to Salesforce for lead, customer, quote and policy view. The users with this profile will not have access to cases and will be able to manage campaigns.</description>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>GDPR_Bloqueo_Visibilidad</name>
+    </customPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AccountNumber</field>

@@ -289,7 +289,7 @@
         <name>UpdateStatus_9</name>
     </quickActions>
     <recordTypes>
-        <label>Actividad</label>
+        <label>Actividad (Tarea)</label>
         <name>Activity</name>
     </recordTypes>
     <recordTypes>
@@ -301,7 +301,7 @@
         <name>Communication</name>
     </recordTypes>
     <recordTypes>
-        <label>Interacción</label>
+        <label>Interacción (Llamada/Email)</label>
         <name>Interaction</name>
     </recordTypes>
     <recordTypes>

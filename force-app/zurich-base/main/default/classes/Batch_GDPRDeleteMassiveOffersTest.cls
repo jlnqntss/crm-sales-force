@@ -2,8 +2,8 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 30/10/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 11-09-2023
+ * @last modified by  : mfernandezcarrera
 **/
 @isTest
 public class Batch_GDPRDeleteMassiveOffersTest
@@ -97,10 +97,19 @@ public class Batch_GDPRDeleteMassiveOffersTest
 
         insert offersForTestToDelete;
 
-        for(Opportunity testOpportunity : [SELECT Account.Type, CommercialStructureCode__c, LegalEntity__c FROM Opportunity])
+        List<Opportunity> createdOpportunities;
+        if(isNotDefaultEstructure)
+        {
+            createdOpportunities=[SELECT Account.Type, CommercialStructureCode__c, LegalEntity__c, CreatedDate FROM Opportunity WHERE CommercialStructureCode__c!='0000'];
+        }
+        else 
+        {
+            createdOpportunities=[SELECT Account.Type, CommercialStructureCode__c, LegalEntity__c, CreatedDate FROM Opportunity WHERE CommercialStructureCode__c ='0000'];
+        }
+
+        for(Opportunity testOpportunity : createdOpportunities)
         {
             String keyValue;
-
             if(isNotDefaultEstructure)
             {
                 keyValue = testOpportunity.LegalEntity__c + testOpportunity.CommercialStructureCode__c + testOpportunity.Account.Type;
@@ -226,7 +235,7 @@ public class Batch_GDPRDeleteMassiveOffersTest
         Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers();
         Database.executeBatch(batchDeleteMassiveOfferGdpr);
         test.stopTest();
-        List<Opportunity> oppListNew= [SELECT id FROM Opportunity];
+        List<Opportunity> oppListNew= [SELECT id,createdDate,LegalEntity__c,CommercialStructureCode__c,Account.Type FROM Opportunity];
         System.assertEquals(1, oppListNew.size());
     }
 }
