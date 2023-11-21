@@ -40,16 +40,69 @@ public with sharing class CallMeBackUtilTest
 
         CallMeBackUtil.CallMeBack requestedCallMeBack = generateCallMeBack();
 
+        CallMeBackUtil.CallMeBackFull fullObject = new CallMeBackUtil.CallMeBackFull();
+        fullObject.request = requestedCallMeBack;
+        fullObject.queueName = queueName;
+        fullObject.businessHoursName = businessHoursName;
+
+        List<CallMeBackUtil.CallMeBackFull> lstRequests = new List<CallMeBackUtil.CallMeBackFull>();
+        lstRequests.add(fullObject);
+
         Test.startTest();
-        String contactRequestId = CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName);
+        List<String> contactRequestIds = CallMeBackUtil.insertCallMeBack(lstRequests);
         Test.stopTest();
 
         ContactRequest cr = [SELECT Id FROM ContactRequest LIMIT 1];
 
         Assert.isNotNull(cr, 'Se debería haber creado un registro del objeto ContactRequest');
-        Assert.areEqual(contactRequestId,
+        Assert.areEqual(contactRequestIds.get(0),
                         cr.Id,
                         'El Id del ContactRequest debería coincidir por el devuelto por el método \'insertCallMeBack\'');
+    }
+
+     /**
+     * @description Método que comprueba el correcto funcionamiento del método
+     * 'insertCallMeBack' de la clase 'CallMeBackUtil' cuando pasamos múltiples requests.
+     *
+     * @author arcortazar
+     * @date 20-11-2023
+     **/
+    @isTest
+    static void test_insertCallMeBack_bulk_OK()
+    {
+        Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
+        String queueName = leadOffersCS.VoiceQueue__c;
+        String businessHoursName = leadOffersCS.BusinessHour__c;
+        String businessCode = leadOffersCS.BusinessCode__c;
+
+        CallMeBackUtil.CallMeBack requestedCallMeBack1 = generateCallMeBack();
+        CallMeBackUtil.CallMeBack requestedCallMeBack2 = generateCallMeBack();
+
+        CallMeBackUtil.CallMeBackFull fullObject1 = new CallMeBackUtil.CallMeBackFull();
+        fullObject1.request = requestedCallMeBack1;
+        fullObject1.queueName = queueName;
+        fullObject1.businessHoursName = businessHoursName;
+
+        CallMeBackUtil.CallMeBackFull fullObject2 = new CallMeBackUtil.CallMeBackFull();
+        fullObject2.request = requestedCallMeBack2;
+        fullObject2.queueName = queueName;
+        fullObject2.businessHoursName = businessHoursName;
+
+        List<CallMeBackUtil.CallMeBackFull> lstRequests = new List<CallMeBackUtil.CallMeBackFull>();
+        lstRequests.add(fullObject1);
+        lstRequests.add(fullObject2);
+
+        Test.startTest();
+        List<String> contactRequestIds = CallMeBackUtil.insertCallMeBack(lstRequests);
+        Test.stopTest();
+
+        List<ContactRequest> lstCR = [SELECT Id FROM ContactRequest];
+
+        Assert.areEqual(false, lstCR.isEmpty(), 'Se deberían haber creado registros del objeto ContactRequest');
+        for(ContactRequest cr : lstCR)
+        {
+            System.assertEquals(true, contactRequestIds.contains(cr.id), 'El Id del ContactRequest debería encontrarse entre los obtenidos mediante el método \'insertCallMeBack\'' );
+        }
     }
 
     /**
@@ -59,6 +112,9 @@ public with sharing class CallMeBackUtilTest
      *
      * @author amiranda
      * @date 21-09-2023
+     * 
+     * @last modified by arcortazar
+     * @date 20-11-2023
      **/
     @isTest
     static void test_insertCallMeBack_nullQueueName_KO()
@@ -70,10 +126,18 @@ public with sharing class CallMeBackUtilTest
 
         CallMeBackUtil.CallMeBack requestedCallMeBack = generateCallMeBack();
 
+        CallMeBackUtil.CallMeBackFull fullObject = new CallMeBackUtil.CallMeBackFull();
+        fullObject.request = requestedCallMeBack;
+        fullObject.queueName = queueName;
+        fullObject.businessHoursName = businessHoursName;
+
+        List<CallMeBackUtil.CallMeBackFull> lstRequests = new List<CallMeBackUtil.CallMeBackFull>();
+        lstRequests.add(fullObject);
+
         Test.startTest();
         try
         {
-            CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName);
+            CallMeBackUtil.insertCallMeBack(lstRequests);
         }
         catch (Exception ex)
         {
@@ -93,6 +157,9 @@ public with sharing class CallMeBackUtilTest
      *
      * @author amiranda
      * @date 21-09-2023
+     * 
+     * @modified by arcortazar
+     * @date 20-11-2023
      **/
     @isTest
     static void test_insertCallMeBack_nonExistentQueue_KO()
@@ -103,11 +170,26 @@ public with sharing class CallMeBackUtilTest
         String businessCode = leadOffersCS.BusinessCode__c;
 
         CallMeBackUtil.CallMeBack requestedCallMeBack = generateCallMeBack();
+        CallMeBackUtil.CallMeBack requestedCallMeBack2 = generateCallMeBack();
+
+        CallMeBackUtil.CallMeBackFull fullObject = new CallMeBackUtil.CallMeBackFull();
+        fullObject.request = requestedCallMeBack;
+        fullObject.queueName = queueName;
+        fullObject.businessHoursName = businessHoursName;
+
+        CallMeBackUtil.CallMeBackFull fullObject2 = new CallMeBackUtil.CallMeBackFull();
+        fullObject2.request = requestedCallMeBack2;
+        fullObject2.queueName = Lead_Offers__c.getInstance().VoiceQueue__c;
+        fullObject2.businessHoursName = businessHoursName;
+
+        List<CallMeBackUtil.CallMeBackFull> lstRequests = new List<CallMeBackUtil.CallMeBackFull>();
+        lstRequests.add(fullObject);
+        lstRequests.add(fullObject2);
 
         Test.startTest();
         try
         {
-            CallMeBackUtil.insertCallMeBack(requestedCallMeBack, queueName, businessHoursName);
+            CallMeBackUtil.insertCallMeBack(lstRequests);
         }
         catch (Exception ex)
         {

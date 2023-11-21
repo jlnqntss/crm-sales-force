@@ -206,4 +206,38 @@ private with sharing class AccountTeamMemberSelectorTest
         System.assertEquals(3, atmQuerySomeRoles.size(), 'Se esperan 3 resultados');
     }
 
+    @isTest
+    static void test_findByAccountAndUser_ok()
+    {
+        Set<id> idAccounts = new Set<Id>();
+        Set<id> idUsers = new Set<Id>();
+        List<AccountTeamMember> atms = [SELECT id, AccountId, UserId FROM AccountTeamMember WHERE AccountId != '' AND UserId != ''];
+        for(AccountTeamMember atm : atms)
+        {
+            idAccounts.add(atm.AccountId);
+            idUsers.add(atm.UserId);
+        }
+
+        List<AccountTeamMember> retrievedATMS;
+        Test.startTest();
+        retrievedATMS = (new AccountTeamMemberSelector()).findByAccountAndUser(idAccounts, idUsers);
+        Test.stopTest();
+
+        System.assertEquals(false, retrievedATMS.isEmpty(), 'Ha debido encontrar AccountTeamMembers');
+        System.assertEquals(atms.size(), retrievedATMS.size(), 'Ha debido encontrar los mismos miembros');
+    }
+
+    @isTest
+    static void test_findByAccountAndUser_ko()
+    {
+        Set<id> idAccounts = new Set<Id>();
+        Set<id> idUsers = new Set<Id>();
+
+        List<AccountTeamMember> retrievedATMS;
+        Test.startTest();
+        retrievedATMS = (new AccountTeamMemberSelector()).findByAccountAndUser(idAccounts, idUsers);
+        Test.stopTest();
+
+        System.assertEquals(true, retrievedATMS.isEmpty(), 'Ha de devolver una lista vacia');
+    }
 }

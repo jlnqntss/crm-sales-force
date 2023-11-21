@@ -402,6 +402,51 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                         'AND Owner.Profile.Name = \'Agente Ventas\'';
     }
 
+    /**
+     * Método que recupera las ofertas segun el Lead y el Owner
+     * *
+     * @author arcortazar
+     * @date 14/11/2023
+     * @param Set<String> lista de identificadores de cuentas
+     * @param Set<String> lista de identificadores de mediadores
+     * @return  List<Opportunity>
+     */
+    public String findZRMtoReassign()
+    {
+        return 'SELECT Id, AccountId, Account.Name, Account.Phone, Account.PreferedContactStart__c, ' + 
+                    'Account.PreferedContactEnd__c, Account.WebId__c, OwnerId FROM Opportunity ' +
+                    'WHERE Owner.Profile.Name = \'Agente Ventas\' AND ReassignToContactCenter__c = true';
+       
+    }
+
+    /**
+     * Método que recupera las ofertas segun el Lead y el Owner
+     * *
+     * @author arcortazar
+     * @date 14/11/2023
+     * @param Set<String> lista de identificadores de cuentas
+     * @param Set<String> lista de identificadores de mediadores
+     * @return  List<Opportunity>
+     */
+    public List<Opportunity> findByAccountAndOwner(Set<Id> accountsIDs, Set<Id> usersIDs)
+    {
+        List<Opportunity> retorno = new List<Opportunity>();
+        if (accountsIDs != null && !accountsIDs.isEmpty() 
+            && usersIDs != null && !usersIDs.isEmpty() )
+            {
+                this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+                    Opportunity.Id,
+                    Opportunity.AccountId,
+                    Opportunity.OwnerId
+                })
+                .addConditionIn(Opportunity.AccountId, accountsIDs)
+                .addConditionIn(Opportunity.OwnerId, usersIDs);
+
+                retorno = (List<Opportunity>) this.baseQuery.run();
+            }
+        
+        return retorno;
+    }
 
     /**
      * Método que obtiene
@@ -432,7 +477,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             .addConditionIn(Opportunity.AccountId, idsCampaignMembers)
             .addConditionEq(Opportunity.IsClosed, false);
     
-            System.debug('++++ Query: ' + this.baseQuery.toQueryString());
             retrievedOffers =  (List<Opportunity>) this.baseQuery.run();
         }
         

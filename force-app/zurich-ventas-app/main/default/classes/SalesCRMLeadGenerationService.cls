@@ -100,7 +100,15 @@ public with sharing class SalesCRMLeadGenerationService
         callMeBack.webIdentifier = requestData.webIdentifier;
         callMeBack.businessCode = businessCode;
 
-        CallMeBackUtil.insertCallMeBack(callMeBack, queueName, businessHoursName);
+        CallMeBackUtil.CallMeBackFull fullObj = new CallMeBackUtil.CallMeBackFull();
+        fullObj.request = callMeBack;
+        fullObj.queueName = leadOffersCS.VoiceQueue__c;
+        fullObj.businessHoursName = leadOffersCS.BusinessHour__c;
+
+        List<CallMeBackUtil.CallMeBackFull> lstCallMeBack = new List<CallMeBackUtil.CallMeBackFull>();
+        lstCallMeBack.add(fullObj);
+
+        CallMeBackUtil.insertCallMeBack(lstCallMeBack);
     }
 
     /**

@@ -189,7 +189,15 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         callMeBack.bestTimeUntil = accountRecord.PreferedContactEnd__c;
         callMeBack.businessCode = leadOffersCS.BusinessCode__c;
 
-        CallMeBackUtil.insertCallMeBack(callMeBack, leadOffersCS.VoiceQueue__c, leadOffersCS.BusinessHour__c);
+        CallMeBackUtil.CallMeBackFull fullObj = new CallMeBackUtil.CallMeBackFull();
+        fullObj.request = callMeBack;
+        fullObj.queueName = leadOffersCS.VoiceQueue__c;
+        fullObj.businessHoursName = leadOffersCS.BusinessHour__c;
+
+        List<CallMeBackUtil.CallMeBackFull> lstCallMeBack = new List<CallMeBackUtil.CallMeBackFull>();
+        lstCallMeBack.add(fullObj);
+
+        CallMeBackUtil.insertCallMeBack(lstCallMeBack);
     }
 
     /**
