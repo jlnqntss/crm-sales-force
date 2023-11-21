@@ -95,7 +95,7 @@
             <assignToReference>genesysFlowId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Obtener_cola_de_Genesys_Cloud_desde_Intermediary.genesysFlowId</elementReference>
+                <elementReference>GetGenesysCloudQueueAction.genesysFlowId</elementReference>
             </value>
         </assignmentItems>
         <connector>

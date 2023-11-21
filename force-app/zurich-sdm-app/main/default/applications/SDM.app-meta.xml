@@ -3,6 +3,24 @@
     <actionOverrides>
         <actionName>View</actionName>
         <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Agrupaci_n_Mediador</content>
+        <formFactor>Small</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Agrupaci_n_Mediador</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
         <content>Contact_Record_Page2</content>
         <formFactor>Small</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
@@ -20,21 +38,21 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
-        <content>Agrupaci_n_Mediador</content>
+        <comment>Action override updated by Lightning App Builder during activation.</comment>
+        <content>SDM_Case_Default</content>
         <formFactor>Small</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
-        <pageOrSobjectType>Account</pageOrSobjectType>
+        <pageOrSobjectType>Case</pageOrSobjectType>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <comment>Action override created by Lightning App Builder during activation.</comment>
-        <content>Agrupaci_n_Mediador</content>
+        <comment>Action override updated by Lightning App Builder during activation.</comment>
+        <content>SDM_Case_Default</content>
         <formFactor>Large</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
-        <pageOrSobjectType>Account</pageOrSobjectType>
+        <pageOrSobjectType>Case</pageOrSobjectType>
     </actionOverrides>
     <brand>
         <headerColor>#0070D2</headerColor>
@@ -47,30 +65,13 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>SDM</label>
     <navType>Console</navType>
     <profileActionOverrides>
         <actionName>View</actionName>
         <content>Mediador</content>
-        <formFactor>Small</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.Intermediary</recordType>
-        <type>Flexipage</type>
-        <profile>Admin</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Mediador</content>
         <formFactor>Large</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.Intermediary</recordType>
-        <type>Flexipage</type>
-        <profile>Admin</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Mediador</content>
-        <formFactor>Small</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Intermediary</recordType>
         <type>Flexipage</type>
@@ -79,7 +80,25 @@
     <profileActionOverrides>
         <actionName>View</actionName>
         <content>Mediador</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Mediador</content>
         <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Mediador</content>
+        <formFactor>Small</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Intermediary</recordType>
         <type>Flexipage</type>
@@ -176,6 +195,69 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Annual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.AnualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Mensual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Mensual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM Director</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Mensual_Plan</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SDM_Mensual_Plan</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
+        <recordType>PlanComercial__c.MensualPlan</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>Mediador</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Intermediary</recordType>
+        <type>Flexipage</type>
+        <profile>SDM RN</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
         <content>Agrupaci_n_Mediador</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
@@ -195,15 +277,6 @@
         <actionName>View</actionName>
         <content>Mediador</content>
         <formFactor>Small</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.Intermediary</recordType>
-        <type>Flexipage</type>
-        <profile>SDM RN</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Mediador</content>
-        <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Intermediary</recordType>
         <type>Flexipage</type>
@@ -243,60 +316,6 @@
         <type>Flexipage</type>
         <profile>SDM Director</profile>
     </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>SDM_Annual_Plan</content>
-        <formFactor>Small</formFactor>
-        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
-        <recordType>PlanComercial__c.AnualPlan</recordType>
-        <type>Flexipage</type>
-        <profile>SDM RN</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>SDM_Annual_Plan</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
-        <recordType>PlanComercial__c.AnualPlan</recordType>
-        <type>Flexipage</type>
-        <profile>SDM RN</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>SDM_Mensual_Plan</content>
-        <formFactor>Small</formFactor>
-        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
-        <recordType>PlanComercial__c.MensualPlan</recordType>
-        <type>Flexipage</type>
-        <profile>SDM Director</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>SDM_Mensual_Plan</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
-        <recordType>PlanComercial__c.MensualPlan</recordType>
-        <type>Flexipage</type>
-        <profile>SDM Director</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>SDM_Mensual_Plan</content>
-        <formFactor>Small</formFactor>
-        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
-        <recordType>PlanComercial__c.MensualPlan</recordType>
-        <type>Flexipage</type>
-        <profile>SDM RN</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>SDM_Mensual_Plan</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>PlanComercial__c</pageOrSobjectType>
-        <recordType>PlanComercial__c.MensualPlan</recordType>
-        <type>Flexipage</type>
-        <profile>SDM RN</profile>
-    </profileActionOverrides>
     <tabs>standard-home</tabs>
     <tabs>Seguimientos_Masivos</tabs>
     <tabs>Mobile_Home_SDM</tabs>
@@ -314,6 +333,7 @@
     <tabs>standard-Feed</tabs>
     <tabs>standard-ContentNote</tabs>
     <tabs>FollowUp__c</tabs>
+    <tabs>standard-Case</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>SDM_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -327,20 +347,23 @@
             <tab>GenerarPlan</tab>
         </mappings>
         <mappings>
-            <tab>PlanComercial__c</tab>
+            <tab>Mobile_Home_SDM</tab>
         </mappings>
         <mappings>
             <tab>Objetivos</tab>
         </mappings>
         <mappings>
-            <tab>Seguimientos_Masivos</tab>
+            <tab>PlanComercial__c</tab>
         </mappings>
         <mappings>
-            <tab>Mobile_Home_SDM</tab>
+            <tab>Seguimientos_Masivos</tab>
         </mappings>
         <mappings>
             <fieldName>ParentId</fieldName>
             <tab>standard-Account</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Case</tab>
         </mappings>
         <mappings>
             <fieldName>AccountId</fieldName>

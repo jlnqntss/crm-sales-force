@@ -1314,6 +1314,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>GDPR_Bloqueo_Visibilidad</name>
+    </customPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AccidentRate__c</field>
@@ -1414,7 +1418,7 @@
         <field>Account.ZZExclusiveManagement__c</field>
         <readable>false</readable>
     </fieldPermissions>
-    <fieldPermissions> 
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.AccountId</field>
         <readable>true</readable>

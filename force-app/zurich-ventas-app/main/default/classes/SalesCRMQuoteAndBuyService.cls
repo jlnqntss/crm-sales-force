@@ -255,8 +255,7 @@ public with sharing class SalesCRMQuoteAndBuyService
             offer.StageName = 'Quoted';
 
             // Llamamos al método de forma asíncrona:
-            //TODO: cambiar tiempo
-            System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.Cliente.Contacto.codigoPostal, requestData.Cliente.Contacto.telefono), 10);
+            AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.Cliente.Contacto.codigoPostal, requestData.Cliente.Contacto.telefono, false);
         }
         else if (String.isBlank(requestData.poliza.numeroPoliza) && String.isBlank(requestData.poliza.numeroOferta))
         {
@@ -275,8 +274,7 @@ public with sharing class SalesCRMQuoteAndBuyService
             else
             {
                 // Si no quiere llamada, lanzamos Job con delat y de 60 minutos
-                //TODO: cambiar tiempo
-                System.enqueueJob(new AccountLeadOpportunityQueueJob(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone), 5);
+                AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone, false);
             }
         }
     }

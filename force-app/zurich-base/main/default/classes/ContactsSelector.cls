@@ -356,4 +356,21 @@ public with sharing class ContactsSelector extends RecordsSelector
         }
         return result;
     }
+
+    public List<Contact> findById(Set<String> ids)
+    {
+        List<Contact> result = null;
+
+        if( ids != null && !ids.isEmpty() ) {
+            this.baseQuery.selectFields (
+                new Set<Schema.SObjectField> {
+                    Contact.Id, 
+                    Contact.AccountId
+                }
+            );
+            this.baseQuery.addConditionIn(Contact.Id, ids);
+            result = (List<Contact>) this.baseQuery.run();
+        }
+        return result;
+    }
 }

@@ -30,6 +30,28 @@ private with sharing class OpportunitiesSelectorTest
             a.PolicyId__c = null;
         }
         insert insuredObjects;
+
+        //--------------------------------------------------
+        // Creamos los elementos necesarios para crear ofertas al insertar un miembro de campaña
+
+        Cross_Selling__c ventaCruzada = new Cross_Selling__c();
+        ventaCruzada.ContactCenterUser__c = 'generico';
+        ventaCruzada.DefaultUser__c = 'adminkli';
+        insert ventaCruzada;
+
+        List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 1);
+        campaigns[0].Type = 'Cross Selling';
+        campaigns[0].StartDate = Date.today();
+        campaigns[0].EndDate = Date.today() + 7;
+        insert campaigns;
+
+        accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null]);
+        List<Account> miembroCampanya = new List<Account>();
+        miembroCampanya.add(accounts[0]);
+
+        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(miembroCampanya, campaigns, 'Subscribed');
+        campaignMembers[0].OfferAssignedType__c = 'CC';
+        insert campaignMembers;
     }
 
     @isTest
@@ -439,4 +461,24 @@ private with sharing class OpportunitiesSelectorTest
 
         System.assertEquals(true, retrievedOpportunities.isEmpty(), 'Ha de devolver una lista vacia');
     }
+
+
+    static void findByCampaignAndCampaignMember_OK()
+    {
+        // Obtenemos las campañas y los miembros
+        List<Campaign> listaCampanyas = [SELECT id FROM Campaign];
+        Set<String> idCampanya = new Set<String>{listaCampanyas[0].id};
+
+        List<CampaignMember> campaignMembers = [SELECT id, ContactId, CampaignId, Campaign.Type FROM CampaignMember WHERE CampaignId = : listaCampanyas[0].id];
+        List<Contact> contacto = [SELECT Id, AccountId FROM Contact WHERE id =: campaignMembers[0].ContactId];
+        Set<String> idMiembro = new Set<String>{contacto[0].AccountId}; 
+
+        List<Opportunity> retrievedOpportunitites = new List<Opportunity>();
+        Test.startTest();
+        retrievedOpportunitites = (new OpportunitiesSelector().findByCampaignAndCampaignMember(idCampanya, idMiembro));
+        Test.stopTest();
+
+        System.assertEquals(true, retrievedOpportunitites != null, 'No Debe ser nulo'); 
+    }
+
 }

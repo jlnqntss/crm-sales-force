@@ -23,6 +23,8 @@ public with sharing class IntermediarySDM {
     public static final String ATM_ACCOUNT_ACCESS_LEVEL = 'Read';
     public static final String ATM_ACCOUNT_ACCESS_LEVEL_EDIT = 'Edit';
     public static final String ATM_CONTACT_ACCESS_LEVEL = 'Read';
+    public static final String ATM_CASE_ACCESS_LEVEL = 'Edit';
+    public static final String ATM_OFFER_ACCESS_LEVEL = 'Read';
 
     public static final String INTERMEDIARY_FIELD_NATIONALID = 'NationalId__c';
     public static final String INTERMEDIARY_FIELD_PARENTID = 'ParentId';
@@ -1290,7 +1292,9 @@ public with sharing class IntermediarySDM {
                 userId= u.Id,
                 TeamMemberRole= roleLabel,
                 AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL,
-                ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
+                ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL,
+                CaseAccessLevel= ATM_CASE_ACCESS_LEVEL,
+                OpportunityAccessLevel= ATM_OFFER_ACCESS_LEVEL
             );
  
             atmsToUpsert.add(atm);
@@ -1385,7 +1389,9 @@ public with sharing class IntermediarySDM {
                             UserId= userId,
                             TeamMemberRole= intermediaryAtm.TeamMemberRole,
                             AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL_EDIT,
-                            ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL
+                            ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL,
+                            CaseAccessLevel= ATM_CASE_ACCESS_LEVEL,
+                            OpportunityAccessLevel= ATM_OFFER_ACCESS_LEVEL
                         );
                         this.atmsToCreate.add(newAtm);
                         // Añadimos el usuario para notificarlo al final del batch, aunque probablemente

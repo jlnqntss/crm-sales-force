@@ -470,7 +470,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             }
             ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c')
             .selectFields('Account.IntermediaryGroup__r.INFOIntermediaryGroupCode__c')
-            .selectFields('Account.IntermediaryGroup__r.IntermediaryGroupEndDate__c'); 
+            .selectFields('Account.IntermediaryGroup__r.IntermediaryGroupEndDate__c');
 
             this.baseQuery.addConditionEq(Account.INFOIntermediaryCode__c, paddedCodes);
             this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
@@ -525,7 +525,9 @@ public with sharing class AccountsSelector extends RecordsSelector
             Account.INFOIntermediaryCode__c,
             Account.TerritorialDirection__c,
             Account.FirstName,
-            Account.LastName
+            Account.LastName,
+            Account.Name,
+            Account.PartnerSector__c
         }
             ).selectFields('Account.RecordType.DeveloperName');
 
@@ -1070,6 +1072,7 @@ public with sharing class AccountsSelector extends RecordsSelector
         }
 
         Set<Id> matchedRecordIds = ContactsSelector.findInContactPointsByPhoneNumber(phones, relatedRecordsScope);
+
         this.baseQuery.selectFields
         (
             new List<Schema.SObjectField>
@@ -1099,8 +1102,14 @@ public with sharing class AccountsSelector extends RecordsSelector
                     this.baseQuery.addConditionEq(Account.NationalIdType__c, nationalIdType);
                 }
             }
+
+            return (List<Account>) this.baseQuery.run();
         }
-        return (List<Account>) this.baseQuery.run();
+        else
+        {
+            return new List<Account>();
+        }
+
     }
 
     /**
@@ -1110,12 +1119,14 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 31/10/2023
      * @return List<Account> Listado de account a las que recalcular la visibilidad
      */
-    public List<Account> findIntermediaryGroupByIntermediaryGroupCodes(Set<String> intermediaryGroupCode) {
+    public List<Account> findIntermediaryGroupByIntermediaryGroupCodes(Set<String> intermediaryGroupCode)
+    {
 
         List<Account> result = new List<Account>();
 
-        if (intermediaryGroupCode != null && !intermediaryGroupCode.isEmpty()) {
-            result = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c, IntermediaryGroupEndDate__c FROM Account WHERE RecordTypeId = :rtAgrupationId AND INFOIntermediaryGroupCode__c IN :intermediaryGroupCode]);
+        if ( intermediaryGroupCode != null && !intermediaryGroupCode.isEmpty() )
+        {
+            result = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c, IntermediaryGroupEndDate__c FROM Account WHERE RecordTypeId = : rtAgrupationId AND INFOIntermediaryGroupCode__c IN: intermediaryGroupCode]);
 
         }
 

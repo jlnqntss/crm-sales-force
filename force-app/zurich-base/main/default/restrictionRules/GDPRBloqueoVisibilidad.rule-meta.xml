@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RestrictionRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description>Regla para evitar que los registros bloqueados sean visibles para los perfiles que no tengan el custom permission de GDPR.</description>
+    <enforcementType>Restrict</enforcementType>
+    <masterLabel>GDPR Bloqueo Visibilidad</masterLabel>
+    <recordFilter>Blocked__c=false</recordFilter>
+    <targetEntity>Policy__c</targetEntity>
+    <userCriteria>$Permission.GDPR_Bloqueo_Visibilidad=true</userCriteria>
+    <version>1</version>
+</RestrictionRule>

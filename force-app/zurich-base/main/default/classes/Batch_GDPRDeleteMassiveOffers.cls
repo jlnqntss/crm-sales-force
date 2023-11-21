@@ -7,8 +7,8 @@
  *
  * @author            : mfernandezcarrera
  * @group             : Seidor
- * @last modified on  : 27/10/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 11-07-2023
+ * @last modified by  : mfernandezcarrera
 **/
 public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject>
 {
@@ -54,6 +54,14 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
      * @author      jgallaga | 27/10/2023
      * @param       List<SObject>
      *              El scope de cada iteración serán ofertas creadas hace al menos 30 días
+     ****
+     * @modification    
+     * @author      mfernandezcarrera | 07/11/2023
+     * @description Por cada lote que se ejecute, por un lado mirará si la oferta que está analizando se            
+     *              trata de una oferta que no se haya analizado en el método cuyas ofertas son de 
+     *              estructura interna. Y por otro lado, mirará si la oferta está dentro de la tabla de 
+     *              por defecto.
+     *              En caso de que cumpla las dos condiciones, se borrará
      */
     public void execute(Database.BatchableContext bc, List<sObject> scope)
     {
@@ -61,11 +69,7 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
 
         for(Opportunity opp: (List<Opportunity>) scope)
         {
-            if(isOfferAnInternalEstructure(opp)) // La oferta es mas antigua segun la tabla INTERNAL_ESTRUCTURE?
-            {
-                offersToDelete.add(opp);
-            }
-            else if(isOfferDefaultEstructure(opp)) // La oferta es mas antigua segun la tabla DEFAULT_ESTRUCTURE?
+            if(!addOfferAsInternalEstructureToDelete(opp,offersToDelete) && isOfferDefaultEstructure(opp))
             {
                 offersToDelete.add(opp);
             }
@@ -76,29 +80,46 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
 
     public void finish(Database.BatchableContext bc){}
 
-    /**
-     * @description Función para determinar si la oferta, a partir de la estructura comercial, entidad legal
-     *              y el tipo de cuenta a la que pertenece, su fecha de creación es mayor o menos a la necesaria
-     *              para que se considere para eliminar.
+   /**
+     * @description Función que busca, a partir de la estructura comercial, entidad legal
+     *              y el tipo de cuenta a la que pertenece, si su fecha de creación es mayor o menos a la necesaria
+     *              para que se considere para eliminar. Si se encuentra en el mapa, la función devolverá
+     *              verdadero para que ningun otra lógica considere la oferta para su eliminación, cumpla o no las
+     *              fechas indicadas en el mapa de estructra interna.
      * @author      jgallaga | 27/10/2023
      * @param       Opportunity
      *              El registro de oferta que se desea comprobar.
+     * @param       List<Opportunity>
+     *              La lista de ofertas que se borrarán.
      * @return      Boolean
-     *              Si es true, la oferta deberá eliminar.
+     *              Si es true, la oferta se ha encontrado en el mapa de estructura interna
+     ****
+     * @modification    
+     * @author      jgallaga | 07/11/2023
+     * @description El método ahora recibe también al lista de ofertas donde se guardan las ofertas a borrar.
+     *              Se comprueba si cumple o no la fecha indicada en el mapa para añadirlo a dicha lista.
+     *              Después el booleano que se devuelve cambia para indicar unicamente si la clave generada por
+     *              esa oferta se encuentra en el mapa o no. Ya que si existe, no debe volverse a considerar para
+     *              el resto de casos.
      */
-    private boolean isOfferAnInternalEstructure(Opportunity offer)
+    private boolean addOfferAsInternalEstructureToDelete(Opportunity offer, List<Opportunity> offersToDelete)
     {
         String estructureKey = offer.LegalEntity__c + offer.CommercialStructureCode__c + offer.Account.Type;
 
         if(! INTERNAL_ESTRUCTURE.containsKey(estructureKey))
         {
             return false;
-        }
+        }        
 
         Integer days = INTERNAL_ESTRUCTURE.get(estructureKey);
         Date estructureDate = Date.today().addDays(-days);
 
-        return offer.CreatedDate <= estructureDate;
+        if(offer.CreatedDate <= estructureDate)
+        {
+            offersToDelete.add(offer);
+        }
+
+        return true;
     }
 
         /**

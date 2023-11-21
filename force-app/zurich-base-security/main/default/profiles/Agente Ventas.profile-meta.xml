@@ -30,6 +30,10 @@
         <default>false</default>
         <visible>false</visible>
     </applicationVisibilities>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>GDPR_Bloqueo_Visibilidad</name>
+    </customPermissions>
     <classAccesses>
         <apexClass>AccountContactRelationSelector</apexClass>
         <enabled>false</enabled>

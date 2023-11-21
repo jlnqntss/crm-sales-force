@@ -3,10 +3,13 @@
     <hasActivationRequired>false</hasActivationRequired>
     <label>SDM Consultor</label>
     <permissionSets>ConsultaDatosSDM</permissionSets>
+    <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_de_KPI</permissionSets>
     <permissionSets>Crear_vistaslista</permissionSets>
     <permissionSets>GestionAsignacionMediador_SDM</permissionSets>
     <permissionSets>GestionCuentaContacto_SDM</permissionSets>
+    <permissionSets>Gestion_CS</permissionSets>
+    <permissionSets>Gestion_Suscripcion</permissionSets>
     <permissionSets>SDM_Plan_comercial</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
