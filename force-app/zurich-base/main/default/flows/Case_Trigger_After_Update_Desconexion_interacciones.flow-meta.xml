@@ -4,7 +4,7 @@
         <name>PatchInteractionInvocableAction</name>
         <label>Solicitud Patch Interacción</label>
         <locationX>446</locationX>
-        <locationY>2520</locationY>
+        <locationY>2280</locationY>
         <actionName>GenesysCloudPatchInteractionAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -23,7 +23,7 @@
         <name>StatusInteractionsInvocableAction</name>
         <label>Solicitud Status Interaciones</label>
         <locationX>446</locationX>
-        <locationY>1800</locationY>
+        <locationY>1632</locationY>
         <actionName>GenesysCloudStatusAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -48,7 +48,7 @@
         <name>StatusTaskApplicationInvocableAction</name>
         <label>Solicitud Status Task</label>
         <locationX>50</locationX>
-        <locationY>984</locationY>
+        <locationY>900</locationY>
         <actionName>GenesysCloudTaskAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -74,7 +74,7 @@
         <name>AddEmailListToCombinedListAssignment</name>
         <label>Añadir Lista Email A Lista Combinada</label>
         <locationX>446</locationX>
-        <locationY>1920</locationY>
+        <locationY>1740</locationY>
         <assignmentItems>
             <assignToReference>ListaCombinadaTaskYMails</assignToReference>
             <operator>Add</operator>
@@ -90,7 +90,7 @@
         <name>AddTaskListToCombinedListAssignment_0_0</name>
         <label>Añadir Lista de Tareas a Lista Combinada</label>
         <locationX>50</locationX>
-        <locationY>1104</locationY>
+        <locationY>1008</locationY>
         <assignmentItems>
             <assignToReference>ListaCombinadaTaskYMails</assignToReference>
             <operator>Add</operator>
@@ -106,7 +106,7 @@
         <name>CheckListaGetSize_0</name>
         <label>Comprobar Cantidad Lista Get</label>
         <locationX>710</locationX>
-        <locationY>2280</locationY>
+        <locationY>2064</locationY>
         <assignmentItems>
             <assignToReference>ListaGetConInteraccionSize</assignToReference>
             <operator>AssignCount</operator>
@@ -122,7 +122,7 @@
         <name>IsListEmptyDecision</name>
         <label>¿Lista no vacía?</label>
         <locationX>710</locationX>
-        <locationY>1680</locationY>
+        <locationY>1524</locationY>
         <defaultConnector>
             <targetReference>CheckListaGetSize_0</targetReference>
         </defaultConnector>
@@ -147,7 +147,7 @@
         <name>IsNoteINFODecision</name>
         <label>¿Es Nota INFO?</label>
         <locationX>710</locationX>
-        <locationY>624</locationY>
+        <locationY>576</locationY>
         <defaultConnector>
             <targetReference>GetEmailByCaseIdAction</targetReference>
         </defaultConnector>
@@ -172,7 +172,7 @@
         <name>IsStatusListEmptyDecision</name>
         <label>¿Lista estados no vacía?</label>
         <locationX>710</locationX>
-        <locationY>2400</locationY>
+        <locationY>2172</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>NoVaciaStatusOutcome</name>
@@ -194,7 +194,7 @@
         <name>IsTaskListEmptyDecision</name>
         <label>¿Lista Task Vacía?</label>
         <locationX>314</locationX>
-        <locationY>864</locationY>
+        <locationY>792</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>NoOutcome</name>
@@ -216,7 +216,7 @@
         <name>OCSOrUSPRegisterTypeDecision</name>
         <label>¿Tipo de registro OCS o USP?</label>
         <locationX>710</locationX>
-        <locationY>288</locationY>
+        <locationY>276</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>UspOutcome</name>
@@ -347,7 +347,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>Crear_Error_Log_Desconexion_Interaccion</name>
         <label>Crear Error Log Desconexión Interacción</label>
         <locationX>710</locationX>
-        <locationY>2640</locationY>
+        <locationY>2388</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -385,7 +385,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>CreateErrorLogEmailQueryAction</name>
         <label>Crear Error Log Consulta Emails</label>
         <locationX>1282</locationX>
-        <locationY>1680</locationY>
+        <locationY>1524</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -423,7 +423,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>CreateErrorLogStatusRequestAction</name>
         <label>Crear Error Log Solicitud Estado</label>
         <locationX>710</locationX>
-        <locationY>1920</locationY>
+        <locationY>1740</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -461,7 +461,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>CreateErrorLogTaskApplicationAction</name>
         <label>Crear Error Log Solicitud Tareas</label>
         <locationX>314</locationX>
-        <locationY>1104</locationY>
+        <locationY>1008</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -499,7 +499,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>CreateErrorLogTaskInquiryAction</name>
         <label>Crear Error Log Consulta Tareas</label>
         <locationX>842</locationX>
-        <locationY>864</locationY>
+        <locationY>792</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -538,7 +538,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>GetEmailByCaseIdAction</name>
         <label>Obtener Email Messages por Caso</label>
         <locationX>710</locationX>
-        <locationY>1560</locationY>
+        <locationY>1416</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsListEmptyDecision</targetReference>
@@ -576,7 +576,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>GetEmailMessageByTaskAction</name>
         <label>Obtener Email Messages por Tarea</label>
         <locationX>314</locationX>
-        <locationY>744</locationY>
+        <locationY>684</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsTaskListEmptyDecision</targetReference>
@@ -615,12 +615,61 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
     <start>
         <locationX>122</locationX>
         <locationY>0</locationY>
-        <filterLogic>and</filterLogic>
+        <filterLogic>(1) OR (2 AND 3 AND 4 AND 5) OR (6 AND 3 AND 4 AND 7 AND 8)</filterLogic>
         <filters>
             <field>Status</field>
             <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Asignado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OwnerId</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OwnerId</field>
+            <operator>StartsWith</operator>
+            <value>
+                <stringValue>005</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>OwnerIdPrior__c</field>
+            <operator>StartsWith</operator>
+            <value>
+                <stringValue>00G</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Nuevo</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>LastNameOwnerPrior__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Integrator</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Origin</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>NoteINFO</stringValue>
             </value>
         </filters>
         <object>Case</object>
