@@ -47,6 +47,8 @@ _(Captura de pantalla de la validación contra staging)_
 * [ ] Buenas prácticas de código aplicadas
 * [ ] Validación contra staging
 * [ ] SonarCloud sin conflictos
+* [ ] LWC con clase test
+* [ ] Check perfiles
 
 ### US
 
