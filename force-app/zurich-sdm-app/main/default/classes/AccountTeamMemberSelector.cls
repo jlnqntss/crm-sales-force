@@ -238,4 +238,33 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         }
         return (List<AccountTeamMember>)this.baseQuery.run();
     }
+
+    /**
+     * Método que recupera los AccountTeamMember según la cuenta y el usuario
+     * *
+     * @author arcortazar
+     * @date 14/11/2023
+     * @param Set<String> lista de identificadores de cuentas
+     * @param Set<String> lista de identificadores de mediadores
+     * @return  List<Opportunity>
+     */
+    public List<AccountTeamMember> findByAccountAndUser(Set<Id> accountsIds, Set<Id> usersIds)
+    {
+        List<AccountTeamMember> retorno = new List<AccountTeamMember>();
+        if (accountsIDs != null && !accountsIDs.isEmpty() 
+            && usersIDs != null && !usersIDs.isEmpty() )
+            {
+                this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+                    AccountTeamMember.Id,
+                    AccountTeamMember.AccountId,
+                    AccountTeamMember.UserId
+                })
+                .addConditionIn(AccountTeamMember.AccountId, accountsIDs)
+                .addConditionIn(AccountTeamMember.UserId, usersIDs);
+
+                System.debug('++++ Query: ' + this.baseQuery.toQueryString());
+                retorno = (List<AccountTeamMember>) this.baseQuery.run();
+            }
+        return retorno;
+    }
 }

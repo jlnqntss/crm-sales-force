@@ -130,6 +130,45 @@ private class EmailMessagesUtilTest
         System.assertEquals(NUM_EMAILS, emailsResult.size(), 'There should be ' + NUM_EMAILS + ' EmailMessages');
     }
 
+    /**
+     * Test que comprueba que se añade correctamente la cola de genesys al email por el campo industry cuando está informado un email
+     **
+     * @author aberuete
+     * @date 20/11/2023
+     */
+    @isTest
+    private static void assignGenesysRoutingFieldsByIndustryEmail ()
+    {
+        // Generamos los casos que necesitamos
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 5);
+        cases[0].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        cases[1].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        cases[2].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        cases[3].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        cases[4].RecordTypeId = EmailMessagesUtil.ocsRecordTypeId;
+        insert cases;
+
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
+        for(Integer i=0; i < emails.size(); i++)
+        {
+            emails[i].Industry__c = EMAIL_QUEUE;
+            emails[i].Incoming = true;
+            emails[i].ParentId = cases[i].Id;
+        }
+
+        Test.startTest();
+        insert emails;
+        Test.stopTest();
+
+        List<EmailMessage> emailsResult = [
+            SELECT Id FROM EmailMessage WHERE GenesysFlowID__c != null AND GenesysQueueName__c != null
+        ];
+        System.assertEquals(NUM_EMAILS, emailsResult.size(), 'There should be ' + NUM_EMAILS + ' EmailMessages');
+    }
+    
     @isTest
     static void assignGenesysRoutingFields_update_ok()
     {

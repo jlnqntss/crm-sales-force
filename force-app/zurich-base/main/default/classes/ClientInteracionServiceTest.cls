@@ -1,4 +1,4 @@
-@isTest
+@isTest(SeeAllData=false)
 public with sharing class ClientInteracionServiceTest
 {
     private static String GRUPO_MOTOR = 'Motor';
@@ -8,6 +8,12 @@ public with sharing class ClientInteracionServiceTest
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 2);
         insert accounts;
+
+        List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 1);
+        insert contactPointPhones;
+
+        List<Account> partners = TestDataFactory.generateAccounts('001', 'Partner', 1);
+        insert partners;
 
         List<Account> tempList = new List<Account>();
         tempList.add( accounts.get(0) );
@@ -62,8 +68,6 @@ public with sharing class ClientInteracionServiceTest
         }
 
         Test.stopTest();
-
-        System.debug('++++ resultado: ' + resultado);
 
         System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
         System.assertEquals(true, resultado.existsNationalID, 'Es un cliente del sistema');
@@ -155,8 +159,6 @@ public with sharing class ClientInteracionServiceTest
         System.assertEquals(true, resultado.existsPolicy, 'La póliza existe y está asociada al cliente');
 
     }
-
-
 
     /**
      * Método de test que comprueba el caso en el que ni el DNI ni la Póliza estan en el sistema
@@ -305,21 +307,25 @@ public with sharing class ClientInteracionServiceTest
         List<Policy__c> policies = [SELECT Id, Name, InfoPolicyNumber__c, PolicyHolder__c, ProductId__c
                                     FROM Policy__c WHERE Id = : assets[0].PolicyId__c LIMIT 1];
 
-        List<Account> accounts = [SELECT Id, FirstName, LastName FROM Account WHERE Id = : policies[0].PolicyHolder__c LIMIT 1];
+        List<Account> accounts = [SELECT Id, NationalId__c, Phone FROM Account WHERE Id = : policies[0].PolicyHolder__c LIMIT 1];
+
+        List<ContactPointPhone> contactPhones = [SELECT Id, ParentId, TelephoneNumber, ScopeId__c, Scope__c
+                                                 FROM ContactPointPhone WHERE ParentId = : accounts[0].Id LIMIT 1];
 
         List<Product2> products = [SELECT Id, GroupDescription__c FROM Product2 LIMIT 1];
 
-        accounts[0].Phone = '+35987654321';
         accounts[0].NationalId__c = '11111111E';
+        accounts[0].Phone = contactPhones[0].TelephoneNumber;
         upsert accounts[0];
 
         policies[0].ProductId__c = products[0].Id;
         upsert policies[0];
 
+
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
         testClient.nationalID = '11111111E';
         testClient.phonePrefix = '';
-        testClient.phoneNumber = '987654321';
+        testClient.phoneNumber = contactPhones[0].TelephoneNumber;
         testClient.groupDescription = GRUPO_MOTOR;
 
         // Test
@@ -340,12 +346,16 @@ public with sharing class ClientInteracionServiceTest
             expectedError = error;
         }
 
+        ClientIdentificationService.SearchResultLong resultado2 = ClientIdentificationService.setInsuredObjectsByPhone(testClient,
+                                                                                                                       contactPhones[0].TelephoneNumber, new ClientIdentificationService.SearchResultLong(),
+                                                                                                                       new List<ClientIdentificationService.InsuredObject>(), accounts);
+
         Test.stopTest();
 
         System.assertEquals(null, expectedError, 'Ha de encontrarse el cliente y no saltar ninguna excepción');
-        System.assertEquals(testClient.nationalID, resultado.nationalID, 'Existe un cliente con ese Identificador');
+        System.assertEquals(testClient.nationalID, resultado2.nationalID, 'Debe existir un cliente con ese Identificador');
 
-        System.assert ( (testClient.phonePrefix + testClient.phoneNumber == resultado.phoneNumber || testClient.phoneNumber == resultado.phoneNumber),
+        System.assert ( (testClient.phonePrefix + testClient.phoneNumber == resultado2.phoneNumber || testClient.phoneNumber == resultado2.phoneNumber),
                         'Existe un cliente con ese teléfono' );
     }
 
@@ -360,7 +370,7 @@ public with sharing class ClientInteracionServiceTest
 
         List<Asset> assets = [SELECT Id, Model__c, BrandName__c, PolicyId__c FROM Asset LIMIT 1];
 
-        List<Policy__c> policies = [SELECT Id, Name, InfoPolicyNumber__c, PolicyHolder__c FROM Policy__c WHERE Id = : assets[0].PolicyId__c LIMIT 1];
+        List<Policy__c> policies = [SELECT Id, Name, InfoPolicyNumber__c, PolicyHolder__c, Partner__c FROM Policy__c WHERE Id = : assets[0].PolicyId__c LIMIT 1];
 
         List<Account> accounts = [SELECT Id, FirstName, LastName FROM Account WHERE Id = : policies[0].PolicyHolder__c LIMIT 1];
 

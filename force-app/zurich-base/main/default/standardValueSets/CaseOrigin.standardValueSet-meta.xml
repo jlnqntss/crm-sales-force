@@ -26,4 +26,9 @@
         <default>false</default>
         <label>Massive tasks</label>
     </standardValue>
+    <standardValue>
+        <fullName>WhatsApp</fullName>
+        <default>false</default>
+        <label>WhatsApp</label>
+    </standardValue>
 </StandardValueSet>

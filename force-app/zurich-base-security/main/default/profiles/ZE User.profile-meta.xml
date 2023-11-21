@@ -3582,6 +3582,10 @@
         <enabled>true</enabled>
         <name>purecloud__PureCloud_Webhook__c</name>
     </customSettingAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>GDPR_Bloqueo_Visibilidad</name>
+    </customPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AccountNumber</field>
@@ -11408,8 +11412,8 @@
         <layout>Case-Case Default OCS</layout>
         <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
-    <layoutAssignments> 
-        <layout>Case-Case Default ZE</layout> 
+    <layoutAssignments>
+        <layout>Case-Case Default ZE</layout>
         <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>

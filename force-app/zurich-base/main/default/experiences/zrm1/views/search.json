@@ -38,6 +38,10 @@
               {
                 "isPublic": false,
                 "name": "ContentDocument"
+              },
+              {
+                "isPublic": true,
+                "name": "Scope__c"
               }
             ],
             "searchResultFiltering": true,

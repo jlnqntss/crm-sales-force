@@ -4086,6 +4086,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Days_Open__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.Description</field>
         <readable>true</readable>
@@ -4188,6 +4193,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.IntermediaryId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Intermediary_Group__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4328,6 +4338,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.PendingBy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PersonalizedManager__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7572,6 +7587,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.IntermediaryCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Intermediary_Group__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

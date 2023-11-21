@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClosedTaskBlocked</fullName>
+    <active>true</active>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;Interaction&quot; &amp;&amp;
+ 
+$Permission.OCSTriggerValidationRules &amp;&amp;
+
+ISPICKVAL(Status,&quot;Cerrada&quot;)      &amp;&amp;
+
+NOT(ISCHANGED(Status)) &amp;&amp;
+
+
+(OR( ISCHANGED(Subject),ISCHANGED(OwnerId),ISCHANGED(Priority),ISCHANGED(ActivityDate),ISCHANGED(Description),ISCHANGED(CallDisposition),ISCHANGED( GenesysCloudInteractionTranscript__c),ISCHANGED(Type),ISCHANGED( Subtype__c))) &amp;&amp;
+
+
+(OR((ISPICKVAL(Type,&apos;Call&apos;)&amp;&amp;ISPICKVAL(Subtype__c ,&apos;Call&apos;)&amp;&amp;ISPICKVAL(CallType,&apos;Inbound&apos;)),(ISPICKVAL(Type,&apos;Email&apos;)&amp;&amp;ISPICKVAL(Subtype__c ,&apos;Email&apos;) &amp;&amp;ISPICKVAL(CallType,&apos;Inbound&apos;)),(ISPICKVAL(Type,&apos;Message&apos;)&amp;&amp;ISPICKVAL(Subtype__c ,&apos;Whatsapp&apos;)),
+ ISCHANGED(Type),
+ISCHANGED(Subtype__c)) )</errorConditionFormula>
+    <errorMessage>[VR Tarea] En una tarea cerrada solo se puede modificar el caso relacionado o el contacto</errorMessage>
+</ValidationRule>

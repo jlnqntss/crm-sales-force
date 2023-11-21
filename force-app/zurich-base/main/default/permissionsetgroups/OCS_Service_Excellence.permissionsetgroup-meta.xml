@@ -4,6 +4,7 @@
     <label>OCS Service Excellence</label>
     <mutingPermissionSets>OCS_Service_Excellence_Muted</mutingPermissionSets>
     <permissionSets>Acceso_App_OCS</permissionSets>
+    <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_CS</permissionSets>

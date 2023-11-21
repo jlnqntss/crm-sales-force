@@ -300,7 +300,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
      * @return List<Policy__c> Listado de pólizas sobre los que se ha realizado match
      * 
      */
-    public List<Policy__c> selectByIdAndRecordType(Set<String> policyIds, Set<String> recordTypes)
+    public List<Policy__c> selectByIdAndRecordType(Set<String> policyIds, Set<String> recordTypes, Set<String> policyStatus)
     {
         if (policyIds == null || policyIds.size() == 0)
         {
@@ -308,8 +308,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
         }
 
         this.baseQuery.selectReadableFields();
-        this.baseQuery.addConditionIn(Policy__c.Id, policyIds)
-            		  .addConditionEq(Policy__c.PolicyStatus__c, 'V');
+        this.baseQuery.addConditionIn(Policy__c.Id, policyIds);
 
         // Vamos añadir la condición si la lista es una, no está vacía o está poblada por valores no válidos
         if (recordTypes != null && recordTypes.size() > 0)
@@ -322,6 +321,12 @@ public with sharing class PoliciesSelector extends RecordsSelector
                 	break;
                 }
        		}
+        }
+        
+        // Vamos añadir la condición si la lista es una, no está vacía o está poblada por valores no válidos
+        if (policyStatus != null && policyStatus.size() > 0)
+        {
+            this.baseQuery.addConditionIn(Policy__c.PolicyStatus__c, policyStatus);
         }
         
         return (List<Policy__c>) this.baseQuery.run();
