@@ -1700,6 +1700,11 @@
         <field>Account.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.EnableReassignmentLeadOffers__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Account.ExternalCollaborator__c</field>
@@ -7782,6 +7787,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.ResultingPolicyNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.ReassignToContactCenter__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
