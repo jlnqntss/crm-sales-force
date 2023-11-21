@@ -10320,6 +10320,11 @@
         <field>Opportunity.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.ReassignToContactCenter__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Anonymized__c</field>
