@@ -47,6 +47,13 @@
                 <elementReference>getQueueCSMPart.purecloud__PureCloud_Queue_ID__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysFlowId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getQueueCSMPart.GenesysFlowId__c</elementReference>
+            </value>
+        </assignmentItems>
     </assignments>
     <assignments>
         <name>Asignamos_output_CSMadmin</name>
@@ -65,6 +72,13 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>getQueueCSMAdmin.purecloud__PureCloud_Queue_ID__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysFlowId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getQueueCSMAdmin.GenesysFlowId__c</elementReference>
             </value>
         </assignmentItems>
     </assignments>

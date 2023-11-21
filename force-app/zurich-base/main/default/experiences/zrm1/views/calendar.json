@@ -1,0 +1,59 @@
+{
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "b88f6bd7-8ac5-4d3c-8864-5ecab02f5f55",
+  "label": "Calendar",
+  "regions": [
+    {
+      "id": "16f8c9c0-4abd-40aa-8d79-af8b3bcee842",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "showCreateNewCalendar": false,
+            "showOtherCalendars": false,
+            "showSidebar": true
+          },
+          "componentName": "forceCommunity:calendar",
+          "id": "d7d56d5f-29fa-428d-9ab9-5b9c5d048b51",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "f10487f2-1f4e-4c24-a4c9-e2489749d823",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "a4897c1d-23ec-43cc-9685-8581cff36b41",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "",
+            "title": "Calendar"
+          },
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "32395512-3f33-4ff9-8fd4-d44761f2338f",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "6c6389e1-1509-40d1-af8a-fe4e18831117",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "custom-calendar"
+}

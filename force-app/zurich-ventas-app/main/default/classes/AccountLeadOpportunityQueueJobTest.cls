@@ -77,12 +77,11 @@ private with sharing class AccountLeadOpportunityQueueJobTest
         Date closeDate = Date.newInstance(2023, 10, 10);
         List<Opportunity> opps = TestDataFactory.generateOpportunities(leadAccounts, 'ZRM', 'Quoted', closeDate, 1);
         Map<String, Account> assign = AccountLeadUtil.leadAssignment(leadAccounts.get(0), opps.get(0).IntermediaryCode__c, opps.get(0).IntermediaryCode__c, null, '44600');
-        assign.put( 'CONTACT_CENTER', leadAccounts.get(0) );
 
         Test.startTest();
         try
         {
-            AccountLeadOpportunityQueueJob.manageConstrainsKey(assign,leadAccounts.get(0), opps.get(0), '+346871425');
+            AccountLeadOpportunityQueueJob.manageConstrainsKey(assign,leadAccounts.get(0), opps.get(0), '+346871425', true);
         }
         catch (Exception ex)
         {

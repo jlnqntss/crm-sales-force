@@ -438,5 +438,84 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         return opportunities;
     }
 
+    /**
+     * Método que recupera las ofertas segun el Lead y el Owner
+     * *
+     * @author arcortazar
+     * @date 14/11/2023
+     * @param Set<String> lista de identificadores de cuentas
+     * @param Set<String> lista de identificadores de mediadores
+     * @return  List<Opportunity>
+     */
+    public String findZRMtoReassign()
+    {
+        return 'SELECT Id, AccountId, Account.Name, Account.Phone, Account.PreferedContactStart__c, ' + 
+                    'Account.PreferedContactEnd__c, Account.WebId__c, OwnerId FROM Opportunity ' +
+                    'WHERE Owner.Profile.Name = \'Agente Ventas\' AND ReassignToContactCenter__c = true';
+       
+    }
 
+    /**
+     * Método que recupera las ofertas segun el Lead y el Owner
+     * *
+     * @author arcortazar
+     * @date 14/11/2023
+     * @param Set<String> lista de identificadores de cuentas
+     * @param Set<String> lista de identificadores de mediadores
+     * @return  List<Opportunity>
+     */
+    public List<Opportunity> findByAccountAndOwner(Set<Id> accountsIDs, Set<Id> usersIDs)
+    {
+        List<Opportunity> retorno = new List<Opportunity>();
+        if (accountsIDs != null && !accountsIDs.isEmpty() 
+            && usersIDs != null && !usersIDs.isEmpty() )
+            {
+                this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+                    Opportunity.Id,
+                    Opportunity.AccountId,
+                    Opportunity.OwnerId
+                })
+                .addConditionIn(Opportunity.AccountId, accountsIDs)
+                .addConditionIn(Opportunity.OwnerId, usersIDs);
+
+                retorno = (List<Opportunity>) this.baseQuery.run();
+            }
+        
+        return retorno;
+    }
+
+    /**
+     * Método que obtiene
+     * @param Set<String> idsCampaign: listado de identificadores de campañas de las que se han eliminado miembros de campaña
+     * @param Set<String> idsCampaignMember: listado de identificadores de miembros de campañas que se han eliminado
+     * @return List<Opportunity>
+     * 
+     * @author arcortazar
+     * @createdDate 06/11/2023 
+     */
+    public List<Opportunity> findByCampaignAndCampaignMember(Set<String> idsCampaign, Set<String> idsCampaignMembers)
+    {
+        List<Opportunity> retrievedOffers = new List<Opportunity>();
+
+        if( idsCampaign != null && !idsCampaign.isEmpty() &&
+        idsCampaignMembers != null && !idsCampaignMembers.isEmpty())
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+                Opportunity.Id,
+                Opportunity.StageName,
+                Opportunity.SalesProcess__c,
+                Opportunity.Sales_Loss_Reason__c
+            })
+            .selectFields('Opportunity.CampaignId')
+            .selectFields('Opportunity.Campaign.Type')
+            .selectFields('Account.RecordType.DeveloperName')
+            .addConditionIn(Opportunity.CampaignId, idsCampaign)
+            .addConditionIn(Opportunity.AccountId, idsCampaignMembers)
+            .addConditionEq(Opportunity.IsClosed, false);
+    
+            retrievedOffers =  (List<Opportunity>) this.baseQuery.run();
+        }
+        
+        return retrievedOffers;
+    }
 }

@@ -356,7 +356,6 @@ public with sharing class ContactsSelector extends RecordsSelector
         }
         return result;
     }
-
     
     /**
     * @description Método que recupera contactos cuyas cuentas relacionadas son 
@@ -387,5 +386,22 @@ public with sharing class ContactsSelector extends RecordsSelector
                .orderBy('Account.Name', 'ASC')
                .enforceSecurity()
                .run();
+    }
+
+    public List<Contact> findById(Set<String> ids)
+    {
+        List<Contact> result = null;
+
+        if( ids != null && !ids.isEmpty() ) {
+            this.baseQuery.selectFields (
+                new Set<Schema.SObjectField> {
+                    Contact.Id, 
+                    Contact.AccountId
+                }
+            );
+            this.baseQuery.addConditionIn(Contact.Id, ids);
+            result = (List<Contact>) this.baseQuery.run();
+        }
+        return result;
     }
 }

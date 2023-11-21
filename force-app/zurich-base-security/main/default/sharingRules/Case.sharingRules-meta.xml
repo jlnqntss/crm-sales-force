@@ -322,6 +322,16 @@
             <operation>equals</operation>
             <value>OCS Inquiry</value>
         </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
@@ -354,6 +364,16 @@
             <field>RecordTypeId</field>
             <operation>equals</operation>
             <value>OCS Inquiry</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
         </criteriaItems>
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
@@ -393,6 +413,16 @@
             <operation>equals</operation>
             <value>USP Inquiry</value>
         </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
@@ -406,6 +436,16 @@
             <field>RecordTypeId</field>
             <operation>equals</operation>
             <value>USP Inquiry</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
         </criteriaItems>
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>

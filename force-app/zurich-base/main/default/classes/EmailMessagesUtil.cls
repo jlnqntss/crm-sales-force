@@ -232,13 +232,10 @@ public with sharing class EmailMessagesUtil
      * @date 04/08/2022
      */
 
-    public Map<String,String>  getEmailRouteTypeList(){
-
-        
+    public Map<String,String>  getEmailRouteTypeList()
+    {
         Map<String,String> mapRouteType= new Map<String,String>() ;
         emailRoutingTypeList = EmailRoutingType__mdt.getAll().values();
-      
-        
 
         if( !emailRoutingTypeList.isEmpty() )
         {
@@ -369,6 +366,11 @@ public with sharing class EmailMessagesUtil
      * @author arcortazar 
      * @date 03/11/2022 
      * @descripción Revertimos el cambio anterior, ya que se ha visto que el problema venia del EmailToOpportunityService, donde se concatenan las direcciones con comas
+     * 
+     * * * * modificaciones 
+     * @author aberuete 
+     * @date 20/11/2023 
+     * @descripción Refactorizar el método y añadir que los casos de tipo USP , si el campo industry viene un correo, buscar la cola de enrutar a genesys por email
      */
     private purecloud__PureCloud_Queue__c findGenesysQueue(EmailMessage em)
     {
@@ -379,9 +381,7 @@ public with sharing class EmailMessagesUtil
             try 
             {
                 // List of emails to check
-                List<String> emailsToCheck = new List<String>();
                 String industryGeneric= 'Generico';
-                String industryDefault;
 
                 // list of related cases
                 Set<String> idCaso = new Set<String>();
@@ -390,82 +390,172 @@ public with sharing class EmailMessagesUtil
                 if(em.Incoming && String.isNotBlank(em.ParentId)) idCaso.add(em.ParentId); 
                 List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
 
-                if(!listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == ocsRecordTypeId && em.Industry__c != null && em.Industry__c.contains('@'))
+                if(!listaCaso.isEmpty()  && em.Industry__c != null && em.Industry__c.contains('@'))
                 {
-                    genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());                          
+                    genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());  
+
+                    if (genesysQueue == null && listaCaso.get(0).RecordTypeId == uspRecordTypeId )
+                    {
+                        genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                    }
                 }
                 else
                 {
-                    // Add the emails from the ToAddress field
-                    if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
-                    // Add the emails from the CcAddress field
-                    if( String.isNotBlank(em.CcAddress) ) emailsToCheck.addAll(em.CcAddress.split(';'));
-                
-                    // if any...
-                    if( !emailsToCheck.isEmpty() ) {
-                        // Check each email in the list with the map of Genesys Queue data objects by email receipt
-                        Integer i = 0;
-                        
-                        while( genesysQueue == null && i < emailsToCheck.size()  ) {
-                            String routingType;
-                        
-                            routingType = getEmailRouteType(emailsToCheck[i]);
-                                                
-                            switch on routingType {
-                                when 'Industry' {
-                                    if(!listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == uspRecordTypeId)
-                                    {
-                                        if (em.Industry__c != null)
-                                        {
-                                            genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
-                                        }
-
-                                        if(em.Industry__c==null || genesysQueue==null)
-                                        {
-                                            genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
-                                        }
-                                    }
-                                }
-                                when else {
-                                    genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[i].trim().toLowerCase());
-
-                                    if((!listaCaso.isEmpty() && genesysQueue != null) && (listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
-                                    {
-                                        genesysQueue=null;
-                                    }
-                                    else if((!listaCaso.isEmpty() && genesysQueue != null) && (listaCaso.get(0).RecordTypeId == ocsRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='OCSInquiry'))
-                                    {
-                                        genesysQueue=null;
-                                    }
-                                }
-                            }    
-                            
-                            i++;
-                        }
-
-                        if(!listaCaso.isEmpty() && (listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue==null))
-                        {   
-                            industryDefault=em.Industry__c;
-                            genesysQueue=this.findGenesysQueueByIndustry(industryDefault.trim().toLowerCase());
-                           
-                            if((genesysQueue==null) || (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
-                            {   
-                                genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
-
-                            }
-                        }
-
-                        
-                    } 
+                    genesysQueue = getQueueWhenIndustryNotEmail(em, genesysQueue, listaCaso);
                 }
+                                
             } catch (Exception e) {
                     
                 ErrorLogUtil.commitError(e, 'Fallo');
-            }    
-               
+            }       
         }
 
         // Return the result, can be null (no match was found)
+        return genesysQueue;
+    }
+
+    /**
+     * Obtiene la cola de genesys cuando en el campo industry no viene informado un correo electrónico
+     * 
+     * @author aberuete
+     * @date 20/11/2023
+     * 
+     * @param {EmailMessage em} EmailMessage
+     * @param {purecloud__PureCloud_Queue__c genesysQueue} Cola de genesys
+     * @param {List<Case> listaCaso} Caso asociado al email message
+     */
+    private purecloud__PureCloud_Queue__c getQueueWhenIndustryNotEmail (EmailMessage em, purecloud__PureCloud_Queue__c genesysQueue, List<Case> listaCaso)
+    {
+        List<String> emailsToCheck = new List<String>();
+
+        // Add the emails from the ToAddress field
+        if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
+        // Add the emails from the CcAddress field
+        if( String.isNotBlank(em.CcAddress) ) emailsToCheck.addAll(em.CcAddress.split(';'));
+        
+        // if any...
+        if( !emailsToCheck.isEmpty() ) 
+        {
+            // Check each email in the list with the map of Genesys Queue data objects by email receipt
+            Integer i = 0;
+            
+            while( genesysQueue == null && i < emailsToCheck.size()  ) 
+            {
+                String routingType;
+            
+                routingType = getEmailRouteType(emailsToCheck[i]);
+                 
+                switch on routingType 
+                {
+                    when 'Industry' 
+                    {
+                        genesysQueue = getQueueWhenRoutingTypeIndustry (em, genesysQueue, listaCaso);
+                    }
+                    when else 
+                    {
+                        genesysQueue = getQueueWhenRoutingTypeNotIndustry (emailsToCheck,genesysQueue, listaCaso, i);
+                    }
+                }
+
+                i++;
+            }
+
+            genesysQueue = setGenesysQueueWhenIsNull (em, genesysQueue, listaCaso);
+        } 
+        
+        return genesysQueue;
+    }
+
+    /**
+     * Obtiene la cola de genesys cuando en el campo industry no viene informado un correo electrónico y el tipo de enrutado es industry
+     * 
+     * @author aberuete
+     * @date 20/11/2023
+     * 
+     * @param {EmailMessage em} EmailMessage
+     * @param {purecloud__PureCloud_Queue__c genesysQueue} Cola de genesys
+     * @param {List<Case> listaCaso} Caso asociado al email message
+     */
+    private purecloud__PureCloud_Queue__c getQueueWhenRoutingTypeIndustry (EmailMessage em, purecloud__PureCloud_Queue__c genesysQueue, List<Case> listaCaso)
+    {
+        String industryGeneric= 'Generico';
+
+        if(!listaCaso.isEmpty() && listaCaso.get(0).RecordTypeId == uspRecordTypeId)
+        {
+            if (em.Industry__c != null)
+            {
+                genesysQueue = this.findGenesysQueueByIndustry(em.Industry__c.trim().toLowerCase());
+            }
+            
+            if(em.Industry__c==null || genesysQueue==null)
+            {
+                genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+            }
+        }  
+        
+        return genesysQueue;
+    }
+
+    /**
+     * Obtiene la cola de genesys cuando en el campo industry no viene informado un correo electrónico y el tipo de enrutado no es industry
+     * 
+     * @author aberuete
+     * @date 20/11/2023
+     * 
+     * @param {List<String> emailsToCheck} Lista de emails que contiene el to y el cc del correo
+     * @param {purecloud__PureCloud_Queue__c genesysQueue} Cola de genesys
+     * @param {List<Case> listaCaso} Caso asociado al email message
+     * @param {Integer index} Indice de la lista de emails a chequear
+     */
+    private purecloud__PureCloud_Queue__c getQueueWhenRoutingTypeNotIndustry (List<String> emailsToCheck,purecloud__PureCloud_Queue__c genesysQueue, List<Case> listaCaso, Integer index)
+    {
+        genesysQueue = this.findGenesysQueueByEmail(emailsToCheck[index].trim().toLowerCase());
+
+        if((!listaCaso.isEmpty() && genesysQueue != null) && (listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
+        {
+            genesysQueue=null;
+        }
+        
+        else if((!listaCaso.isEmpty() && genesysQueue != null) && (listaCaso.get(0).RecordTypeId == ocsRecordTypeId) && (genesysQueue.RecordTypeInfo__c!='OCSInquiry'))
+        {
+            genesysQueue=null;
+        }
+        
+        return genesysQueue;
+    }
+
+    /**
+     * En caso de que la cola esté vacía y el tipo de caso sea USP,
+     * busca la cola de genesys por el campo industry en el caso que de que el campo esté informado, en caso contrario devuelve la cola genérica.
+     * 
+     * @author aberuete
+     * @date 20/11/2023
+     * 
+     * @param {EmailMessage em} EmailMessage
+     * @param {purecloud__PureCloud_Queue__c genesysQueue} Cola de genesys
+     * @param {List<Case> listaCaso} Caso asociado al email message
+     */
+    private purecloud__PureCloud_Queue__c setGenesysQueueWhenIsNull (EmailMessage em, purecloud__PureCloud_Queue__c genesysQueue, List<Case> listaCaso)
+    {
+        String industryGeneric= 'Generico';
+        String industryDefault;
+
+        if(!listaCaso.isEmpty() && (listaCaso.get(0).RecordTypeId == uspRecordTypeId) && (genesysQueue==null))
+        {   
+            industryDefault=em.Industry__c;
+
+            if (industryDefault != null)
+            {
+                genesysQueue=this.findGenesysQueueByIndustry(industryDefault.trim().toLowerCase());
+            }
+                
+            if((genesysQueue==null) || (genesysQueue.RecordTypeInfo__c!='USPInquiry'))
+            {   
+                genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+
+            }
+        } 
+
         return genesysQueue;
     }
     

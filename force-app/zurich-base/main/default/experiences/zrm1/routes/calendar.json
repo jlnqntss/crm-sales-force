@@ -1,0 +1,11 @@
+{
+  "activeViewId": "b88f6bd7-8ac5-4d3c-8864-5ecab02f5f55",
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "configurationTags": [],
+  "id": "e4852fa7-d408-4d21-b32b-8438f6aaffc7",
+  "label": "Calendar",
+  "pageAccess": "UseParent",
+  "routeType": "custom-calendar",
+  "type": "route",
+  "urlPrefix": "calendar"
+}

@@ -296,7 +296,7 @@ private with sharing class ContactsSelectorTest
         System.assertEquals(0, matchedRecords.size(), 'El número de contactos asociados a cuentas de tipo F o J no es correcto');
     }
 
-     /**
+    /**
     * Test del  Método que recupera contactos cuyas cuentas relacionadas son 
     * de uno de los tipos de registro que se pasan por parámetro y no están relacionados
     * con ninguno de los Ids de las cuentas pasados por parámetro.
@@ -318,5 +318,32 @@ private with sharing class ContactsSelectorTest
         Test.stopTest();
 
         System.assertEquals(1, contactList.size(), 'El número de contactos asociados a cuentas  no es correcto');
+    }
+
+    @IsTest
+    static void test_findById()
+    {
+        List<Account> businessAccounts = TestDataFactory.generateAccounts('Life insurance', 'BusinessCustomer', 1);
+        insert businessAccounts;
+
+        List<Contact> businessContact = TestDataFactory.generateContactsFromAccounts(businessAccounts, ContactsSelector.RT_NAME_CONTACT, 1);
+        businessContact.get(0).LastName = businessAccounts.get(0).Name;
+        insert businessContact;
+
+        List<Contact> allContacsList = [Select id FROM Contact];
+        Set<String> identificadores = new Set<String>();
+        for(Contact c : allContacsList)
+        {
+            identificadores.add(c.id);
+        } 
+
+        List<Contact> salida;
+
+        Test.startTest();
+        ContactsSelector contactsSelector = new ContactsSelector();
+        salida = contactsSelector.findById(identificadores);
+        Test.stopTest();
+
+        System.assertEquals(allContacsList.size(), salida.size(), 'Han de ser iguales');
     }
 }
