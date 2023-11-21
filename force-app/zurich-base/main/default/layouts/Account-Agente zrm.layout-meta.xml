@@ -269,17 +269,7 @@
         <relatedList>Scope__c.AccountId__c</relatedList>
         <sortField>NAME</sortField>
         <sortOrder>Asc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <fields>ASSET.NAME</fields>
-        <fields>ASSET.SERIAL_NUMBER</fields>
-        <fields>ASSET.INSTALL_DATE</fields>
-        <fields>ASSET.QUANTITY</fields>
-        <fields>CONTACT.NAME</fields>
-        <fields>ASSET.STATUS</fields>
-        <fields>ASSET.IS_COMPETITOR_PRODUCT</fields>
-        <relatedList>RelatedAssetList</relatedList>
-    </relatedLists>
+    </relatedLists>    
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
     </relatedLists>
