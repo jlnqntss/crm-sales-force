@@ -4,6 +4,7 @@
     <label>OCS Director</label>
     <mutingPermissionSets>OCS_Director_Muted</mutingPermissionSets>
     <permissionSets>Acceso_App_OCS</permissionSets>
+    <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_Whatsapp</permissionSets>
