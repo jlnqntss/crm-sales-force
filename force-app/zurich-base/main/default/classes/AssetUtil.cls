@@ -45,41 +45,37 @@ public class AssetUtil
 
         Map<Id, Policy__c> toUpdate = new Map<Id, Policy__c>();
 
-        Policy__c policy = new Policy__c();
-        for (Asset asset : newList)
+        Policy__c policy = null;
+        for ( Asset asset : newList )
         {
-            // Si no tiene póliza vinculada o ya hemos incluido la póliza a la lista de actualización, no hacemos nada
-            if ( asset.PolicyId__c != null && !toUpdate.keySet().contains(asset.PolicyId__c) )
+            // Si no tiene póliza vinculada, no hacemos nada
+            if ( asset.PolicyId__c != null && !toUpdate.containsKey(asset.PolicyId__c) )
             {
-                policy.Id = asset.PolicyId__c;
-            }
-            else
-            {
-                continue;
-            }
+                policy = new Policy__c(Id = asset.PolicyId__c);
 
-            // Si no es un asset de tipo dirección o motor, ponemos el identificador a "Varios"
-            if (asset.RecordTypeId != assetAddressRT && asset.RecordTypeId != assetMotorRT)
-            {
-                policy.AssetIdentifier__c = Label.ventasAssetIdentifierVarios;
-            }
-            else
-            {
-                policy.AssetIdentifier__c = asset.Identifier__c;
-            }
+                // Si no es un asset de tipo dirección o motor, ponemos el identificador a "Varios"
+                if ( asset.RecordTypeId != assetAddressRT && asset.RecordTypeId != assetMotorRT )
+                {
+                    policy.AssetIdentifier__c = Label.ventasAssetIdentifierVarios;
+                }
+                else
+                {
+                    policy.AssetIdentifier__c = asset.Identifier__c;
+                }
 
-            // Para insert -> actualizamos siempre la póliza
-            // Para update -> actualizamos si el identificador ha cambiado
-            if (Trigger.isInsert)
-            {
-                toUpdate.put(policy.Id, policy);
-            }
-            else if (Trigger.isUpdate)
-            {
-                Asset oldAsset = oldMap.get(asset.Id);
-                if (oldAsset.Identifier__c != asset.Identifier__c)
+                // Para insert -> actualizamos siempre la póliza
+                // Para update -> actualizamos si el identificador ha cambiado
+                if ( Trigger.isInsert )
                 {
                     toUpdate.put(policy.Id, policy);
+                }
+                else if ( Trigger.isUpdate )
+                {
+                    Asset oldAsset = oldMap.get(asset.Id);
+                    if ( oldAsset.Identifier__c != asset.Identifier__c )
+                    {
+                        toUpdate.put(policy.Id, policy);
+                    }
                 }
             }
         }

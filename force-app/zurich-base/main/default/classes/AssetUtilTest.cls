@@ -51,7 +51,7 @@ private class AssetUtilTest
     }
 
     @isTest
-    static void test_updateLinkedPolicy()
+    static void updateLinkedPolicyInsertTest()
     {
         // 1. Recuperamos una póliza
         List<Policy__c> policies = [SELECT AssetIdentifier__c, InfoPolicyNumber__c FROM Policy__c LIMIT 1];
@@ -76,6 +76,40 @@ private class AssetUtilTest
         Policy__c updatedPolicy = [SELECT AssetIdentifier__c FROM Policy__c WHERE Id = : policies[0].Id];
 
         // 3. Comprobamos que se haya actualizado el campo AssetIdentifier__c de la póliza
+        Assert.areNotEqual(insertedAsset.Identifier__c, null, 'El campo Identifier__c del asset no se ha calculado.');
+        Assert.areEqual(insertedAsset.Identifier__c, updatedPolicy.AssetIdentifier__c, 'El campo AssetIdentifier__c de la póliza no se ha actualizado correctamente');
+    }
+
+    @isTest
+    static void updateLinkedPolicyUpdateTest()
+    {
+        // 1. Recuperamos una póliza
+        List<Policy__c> policies = [SELECT AssetIdentifier__c, InfoPolicyNumber__c FROM Policy__c LIMIT 1];
+        Assert.areEqual(1, policies.size(), 'La query debería haber recuperado una póliza');
+
+        // 2. Creamos un asset sin vincularlo a la póliza
+        Asset newAsset = new Asset(
+            Name = 'Test update policy',
+            BrandName__c = 'Test',
+            Model__c = 'Test',
+            RegistrationNumber__c = 'Test',
+            INFOInsuredObjectCode__c = policies[0].InfoPolicyNumber__c,
+            RecordTypeId = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get('Motor').getRecordTypeId()
+            );
+
+        // 3. Insertamos el asset y lo vinculamos a la póliza en un update
+        Test.startTest();
+        insert newAsset;
+
+        newAsset.PolicyId__c = policies[0].Id;
+
+        update newAsset;
+        Test.stopTest();
+
+        // 4. Comprobamos que se haya actualizado el campo AssetIdentifier__c de la póliza
+        Asset insertedAsset = [SELECT Identifier__c FROM Asset WHERE Id = : newAsset.Id];
+        Policy__c updatedPolicy = [SELECT AssetIdentifier__c FROM Policy__c WHERE Id = : policies[0].Id];
+
         Assert.areNotEqual(insertedAsset.Identifier__c, null, 'El campo Identifier__c del asset no se ha calculado.');
         Assert.areEqual(insertedAsset.Identifier__c, updatedPolicy.AssetIdentifier__c, 'El campo AssetIdentifier__c de la póliza no se ha actualizado correctamente');
     }
