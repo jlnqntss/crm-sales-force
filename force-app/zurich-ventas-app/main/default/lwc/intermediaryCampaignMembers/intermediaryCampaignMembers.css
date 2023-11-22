@@ -1,0 +1,8 @@
+.table-size{
+    height: 350px;
+    
+}
+
+.table-empty:has(p){
+    display: flex; flex-direction: column; align-items: center;
+}
