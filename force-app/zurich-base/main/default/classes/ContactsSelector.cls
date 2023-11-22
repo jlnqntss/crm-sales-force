@@ -208,17 +208,21 @@ public with sharing class ContactsSelector extends RecordsSelector
     {
         Set<Id> recordIds = new Set<Id>();
 
-        List<String> formattedPhones = new List<String>();
+        List<String> alternativePhones = new List<String>();
 
         for (String phone : phones)
         {
             if (phone.contains('+'))
             {
-                formattedPhones.add(phone.remove('+'));
+                alternativePhones.add(phone.remove('+'));
+            }
+            else
+            {
+                alternativePhones.add('+' + phone);
             }
         }
 
-        String phonesToFind = String.join(phones, ' OR ').replace('+', '\\+') + ' OR ' + String.join(formattedPhones, ' OR ');
+        String phonesToFind = String.join(phones, ' OR ').replace('+', '\\+') + ' OR ' + String.join(alternativePhones, ' OR ');
 
         System.debug('[FIND ' + phonesToFind + ' IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, ContactId__c, Scope__c)]');
 
