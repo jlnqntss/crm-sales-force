@@ -2118,6 +2118,9 @@
         <layout>ReglaAlarma__c-Regla KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>SurveyAnswerOption__mdt-Survey Answer Option Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Task-Commercial action Layout</layout>
         <recordType>Task.CommercialAction</recordType>
     </layoutAssignments>
