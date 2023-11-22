@@ -139,7 +139,7 @@ public with sharing class ClientIdentificationService
         AccountsSelector accountsSelector = new AccountsSelector();
 
         // Con el ID del account conseguido, sacamos las pólizas
-        List<Account> cuentasEncontradas = accountsSelector.findByNationalIdAndPhoneNumber(new List<String> { receivedData.nationalID }, '', new List<String> {composedPhoneNumber});
+        List<Account> cuentasEncontradas = accountsSelector.findByNationalIdAndPhoneNumber(new List<String> { receivedData.nationalID }, '', new List<String> {composedPhoneNumber, receivedData.phoneNumber});
 
         //En las clases test no vamos a recibir cuentas encontradas porque hay implicadas consultas SOSL.
         //Por tanto, utilizaremos esta clase visible por test para cubrir el código
