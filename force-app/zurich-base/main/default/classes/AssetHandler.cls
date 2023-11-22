@@ -63,7 +63,7 @@ public class AssetHandler implements ITrigger
     public void afterInsert(List<SObject> newList)
     {
         AssetUtil.generateScope(newList);
-        AssetUtil.updateLinkedPolicy(newList);
+        AssetUtil.updateLinkedPolicy(newList, null);
     }
 
     /**
@@ -75,7 +75,7 @@ public class AssetHandler implements ITrigger
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         AssetUtil.generateScope(newList);
-        AssetUtil.updateLinkedPolicy(newList);
+        AssetUtil.updateLinkedPolicy(newList, (Map<Id, Asset>) oldMap);
     }
 
     /**

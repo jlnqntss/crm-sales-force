@@ -38,64 +38,55 @@ public class AssetUtil
      * @author fpalomo
      * @date 20/11/2023
      */
-    public static void updateLinkedPolicy(List<Asset> newList)
+    public static void updateLinkedPolicy(List<Asset> newList, Map<Id, Asset> oldMap)
     {
         Id assetAddressRT = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get('Address').getRecordTypeId();
         Id assetMotorRT = Schema.SObjectType.Asset.getRecordTypeInfosByDeveloperName().get('Motor').getRecordTypeId();
 
-        // 1. Obtenemos una lista con las pólizas de los assets
-        Set<String> severalAssetsPoliciesIdSet = new Set<String>();
-        Set<String> policyIdSet = new Set<String>();
+        Map<Id, Policy__c> toUpdate = new Map<Id, Policy__c>();
+
+        Policy__c policy = new Policy__c();
         for (Asset asset : newList)
         {
-            if ( asset.PolicyId__c != null)
+            // Si no tiene póliza vinculada o ya hemos incluido la póliza a la lista de actualización, no hacemos nada
+            if ( asset.PolicyId__c != null && !toUpdate.keySet().contains(asset.PolicyId__c) )
             {
-                policyIdSet.add(asset.PolicyId__c);
-                if (asset.RecordTypeId != assetAddressRT && asset.RecordTypeId != assetMotorRT)
-                {
-                    severalAssetsPoliciesIdSet.add(asset.PolicyId__c);
-                }
+                policy.Id = asset.PolicyId__c;
             }
-        }
+            else
+            {
+                continue;
+            }
 
-        // 2. Si no hay pólizas, salimos
-        if ( policyIdSet.isEmpty() )
-        {
-            return;
-        }
-
-        // 3. Obtenemos las pólizas
-        List<Policy__c> polizas = new PoliciesSelector().selectById(policyIdSet);
-
-        // 4 Si el número de pólizas es distinto al número de assets, obtenemos el último asset creado para cada póliza
-        List<Asset> assets = newList;
-        if ( newList.size() != policyIdSet.size() )
-        {
-            AssetsSelector assetSelector = new AssetsSelector();
-            assetSelector.baseQuery.orderBy('CreatedDate', 'DESC').setLimit(1);
-            assets = assetSelector.selectByPolicyID( new List<String>(policyIdSet) );
-        }
-
-        // 5. Mapeamos cada asset con su póliza
-        Map<Id, Asset> assetMap = new Map<Id, Asset>();
-        for (Asset asset : assets)
-        {
-            assetMap.put(asset.PolicyId__c, asset);
-        }
-
-        // 6. Actualizamos las pólizas
-        for(Policy__c policy : polizas)
-        {
-            if( severalAssetsPoliciesIdSet.contains(policy.Id) )
+            // Si no es un asset de tipo dirección o motor, ponemos el identificador a "Varios"
+            if (asset.RecordTypeId != assetAddressRT && asset.RecordTypeId != assetMotorRT)
             {
                 policy.AssetIdentifier__c = Label.ventasAssetIdentifierVarios;
             }
             else
             {
-                policy.AssetIdentifier__c = assetMap.get(policy.Id).Identifier__c;
+                policy.AssetIdentifier__c = asset.Identifier__c;
+            }
+
+            // Para insert -> actualizamos siempre la póliza
+            // Para update -> actualizamos si el identificador ha cambiado
+            if (Trigger.isInsert)
+            {
+                toUpdate.put(policy.Id, policy);
+            }
+            else if (Trigger.isUpdate)
+            {
+                Asset oldAsset = oldMap.get(asset.Id);
+                if (oldAsset.Identifier__c != asset.Identifier__c)
+                {
+                    toUpdate.put(policy.Id, policy);
+                }
             }
         }
 
-        update polizas;
+        if ( !toUpdate.isEmpty() )
+        {
+            update toUpdate.values();
+        }
     }
 }
