@@ -207,26 +207,9 @@ public with sharing class ContactsSelector extends RecordsSelector
     public static Set<Id> findInContactPointsByPhoneNumber(List<String> phones, RecordsSelector.Scope scope)
     {
         Set<Id> recordIds = new Set<Id>();
+        String phonesToFind = processPhoneList(phones);
 
-        List<String> alternativePhones = new List<String>();
-
-        for (String phone : phones)
-        {
-            if (phone.contains('+'))
-            {
-                alternativePhones.add(phone.remove('+'));
-            }
-            else
-            {
-                alternativePhones.add('+' + phone);
-            }
-        }
-
-        String phonesToFind = String.join(phones, ' OR ').replace('+', '\\+') + ' OR ' + String.join(alternativePhones, ' OR ');
-
-        System.debug('[FIND ' + phonesToFind + ' IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, ContactId__c, Scope__c)]');
-
-        for(List<SObject> records : [FIND :String.join(phones, ' OR ').replace('+', '\\+') IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, ContactId__c, Scope__c)])
+        for(List<SObject> records : [FIND :phonesToFind IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, ContactId__c, Scope__c)])
         {
             for(sObject record : records)
             {
@@ -422,4 +405,34 @@ public with sharing class ContactsSelector extends RecordsSelector
         }
         return result;
     }
+
+    /**
+     * Busca contactos que tengan los emails dados por parametro en el campo Email
+     *
+     * @author nts (jfherrero)
+     * @date 22/11/2023
+     * @param  phones Listado de teléfonos
+     * @return        String para la query de ContactPointPhone
+     */
+    private static String processPhoneList(List<String> phones)
+    {
+        List<String> alternativePhones = new List<String>();
+
+        for (String phone : phones)
+        {
+            if (phone.contains('+'))
+            {
+                alternativePhones.add(phone.remove('+'));
+            }
+            else
+            {
+                alternativePhones.add('+' + phone);
+            }
+        }
+
+        String phonesToFind = String.join(phones, ' OR ').replace('+', '\\+') + ' OR ' + String.join(alternativePhones, ' OR ');
+
+        return phonesToFind;
+    }
+
 }
