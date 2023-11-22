@@ -72,7 +72,7 @@ public class AssetUtil
                 else if ( Trigger.isUpdate )
                 {
                     Asset oldAsset = oldMap.get(asset.Id);
-                    if ( oldAsset.Identifier__c != asset.Identifier__c )
+                    if ( oldAsset.Identifier__c != asset.Identifier__c || oldAsset.PolicyId__c == asset.PolicyId__c )
                     {
                         toUpdate.put(policy.Id, policy);
                     }
