@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QuestionPosition__c</fullName>
+    <businessOwnerGroup>Administrators</businessOwnerGroup>
+    <businessStatus>Active</businessStatus>
+    <description>Posición de la pregunta dentro de la encuesta para la cual se restringen los valores. La primera posición es el cero.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <label>Question position</label>
+    <precision>2</precision>
+    <required>true</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

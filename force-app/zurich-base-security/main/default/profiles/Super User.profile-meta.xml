@@ -1700,6 +1700,11 @@
         <field>Account.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.EnableReassignmentLeadOffers__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Account.ExternalCollaborator__c</field>
@@ -7785,6 +7790,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.ReassignToContactCenter__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.ScopeId__c</field>
         <readable>true</readable>
@@ -11554,6 +11564,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Special_Condition__c-Special Condition Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>SurveyAnswerOption__mdt-Survey Answer Option Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>SurveyResponse__c-Survey Response Layout</layout>

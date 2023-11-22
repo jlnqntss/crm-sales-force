@@ -324,7 +324,7 @@ public with sharing class ClientInteracionServiceTest
 
         ClientIdentificationService.Client testClient = new ClientIdentificationService.Client();
         testClient.nationalID = '11111111E';
-        testClient.phonePrefix = '';
+        testClient.phonePrefix = '+34';
         testClient.phoneNumber = contactPhones[0].TelephoneNumber;
         testClient.groupDescription = GRUPO_MOTOR;
 

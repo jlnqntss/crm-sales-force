@@ -24,8 +24,12 @@
                 <field>ProductBranch__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>LinkINFO__c</field>
+                <behavior>Edit</behavior>
+                <field>ExternalCollaboratorPolicy__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LegalEntity__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -35,11 +39,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>OpportunityName__c</field>
+                <field>AssetIdentifier__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>LegalEntity__c</field>
+                <field>OpportunityName__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -63,6 +67,29 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>BusinessCode__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Último movimiento de póliza</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>MovementType__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>MovementStartDate__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>MovementReason__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -187,9 +214,9 @@
     </quickActionList>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Product__c</fields>
-        <fields>DateOfOccurrence__c</fields>
         <fields>Status__c</fields>
+        <fields>GroupDescription__c</fields>
+        <fields>AssetIdentifier__c</fields>
         <relatedList>Claim__c.Policy__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -210,7 +237,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hMU000000IhvQ</masterLabel>
+        <masterLabel>00h68000000JxwS</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

@@ -32,7 +32,7 @@
                   "locked": false,
                   "seedComponents": [],
                   "tabKey": "2",
-                  "tabName": "Pólizas Vigor"
+                  "tabName": "Pólizas en Vigor"
                 },
                 {
                   "UUID": "98b5d0e0-9950-4803-b1f7-3f0a45b2f49e",
@@ -106,7 +106,7 @@
                 }
               ],
               "id": "44699ab9-91dd-4947-9d3e-3032d04fd2ec",
-              "regionLabel": "Pólizas Vigor",
+              "regionLabel": "Pólizas en Vigor",
               "regionName": "2",
               "renditionMap": {},
               "type": "region"

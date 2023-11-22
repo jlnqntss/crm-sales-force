@@ -194,6 +194,17 @@
                   "id": "3686d0b8-34a0-4308-a29f-1e65b119928c",
                   "renditionMap": {},
                   "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "CampaignMembers",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "aeae180b-79ed-49d4-a9b3-3c8429e56157",
+                  "renditionMap": {},
+                  "type": "component"
                 }
               ],
               "id": "aa2f6871-ced0-4a45-9b6b-aedf3e06dc07",

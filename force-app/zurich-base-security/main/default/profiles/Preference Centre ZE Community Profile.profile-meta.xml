@@ -13363,6 +13363,9 @@
         <layout>Special_Condition__c-Special Condition Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>SurveyAnswerOption__mdt-Survey Answer Option Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>SurveyResponse__c-Survey Response Layout</layout>
     </layoutAssignments>
     <layoutAssignments>

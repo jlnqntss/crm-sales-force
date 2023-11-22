@@ -3,7 +3,7 @@
     <apiVersion>50.0</apiVersion>
     <decisions>
         <name>SubjectNullDecision</name>
-        <label>Subject Null?</label>
+        <label>¿Subject Null?</label>
         <locationX>182</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
@@ -68,7 +68,7 @@
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>textHTML</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>

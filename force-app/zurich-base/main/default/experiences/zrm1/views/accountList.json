@@ -46,7 +46,7 @@
                 {
                   "componentAttributes": {
                     "enableInlineEdit": true,
-                    "filterName": "ZRM_Todos_Los_Clientes",
+                    "filterName": "ZRM_Todos_los_Clientes",
                     "layout": "FULL",
                     "pageSize": 25,
                     "scope": "Account",
@@ -77,7 +77,7 @@
                 {
                   "componentAttributes": {
                     "enableInlineEdit": true,
-                    "filterName": "ZRM_Todos_Los_Leads",
+                    "filterName": "ZRM_Todos_los_Leads",
                     "layout": "FULL",
                     "pageSize": 25,
                     "scope": "Account",

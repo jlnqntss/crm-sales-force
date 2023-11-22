@@ -153,6 +153,13 @@
         <value>Error inserting Email IBA with subject:</value>
     </labels>
     <labels>
+        <fullName>ventasAssetIdentifierVarios</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Ventas AssetIdentifier__c varios</shortDescription>
+        <value>Several</value>
+    </labels>
+    <labels>
         <fullName>EmailNoValido</fullName>
         <categories>WebService Parser</categories>
         <language>en_US</language>
