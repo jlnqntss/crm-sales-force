@@ -3,6 +3,6 @@
     
 }
 
-.table-emtpy:has(p){
+.table-empty:has(p){
     display: flex; flex-direction: column; align-items: center;
 }

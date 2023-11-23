@@ -83,7 +83,7 @@ export default class IntermAddCampaignMember extends LightningElement {
       campaignEndDate = new Date(
         new Date(
           campaignEndDate.slice(0, 4),
-          campaignEndDate.slice(5, 7),
+          campaignEndDate.slice(5, 7) - 1,
           campaignEndDate.slice(8, 10)
         ).toDateString()
       );
