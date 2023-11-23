@@ -96,6 +96,9 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
         lead.poliza.numeroOferta = null;
         lead.poliza.numeroPoliza = null;
         List<Account> leadAccounts = TestDataFactory.generateAccounts(null, 'Lead', 1);
+        for (Account l: leadAccounts) {
+            l.Phone = '666666666'; 
+        }
         insert leadAccounts;
         Opportunity offer = SalesCRMQuoteAndBuyService.manageOpportunity(leadAccounts.get(0),lead);
 
