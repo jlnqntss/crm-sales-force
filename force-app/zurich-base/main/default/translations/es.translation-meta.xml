@@ -373,6 +373,10 @@
         <name>ValorListaNoValido</name>
     </customLabels>
     <customLabels>
+        <label>Varios</label>
+        <name>ventasAssetIdentifierVarios</name>
+    </customLabels>
+    <customLabels>
         <label>Iniciar grabación</label>
         <name>callRecordingButtonStart</name>
     </customLabels>
