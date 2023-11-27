@@ -8,6 +8,12 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
+        <object>Asset</object>
+        <objectField>PolicyId__c.IntermediaryVisibilityAcc__c</objectField>
+        <userField>Contact.Account</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
         <object>Claim__c</object>
         <objectField>PolicyHolder__c.IntermediaryVisibilityAcc__c</objectField>
         <userField>Contact.Account</userField>
