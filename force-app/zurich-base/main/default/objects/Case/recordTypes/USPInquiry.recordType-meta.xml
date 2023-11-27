@@ -528,6 +528,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Derivado - Otras Áreas</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Falta Respuesta Mediador</fullName>
             <default>false</default>
         </values>
