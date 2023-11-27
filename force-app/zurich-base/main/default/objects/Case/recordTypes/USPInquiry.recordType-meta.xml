@@ -576,6 +576,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Realizado</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Realizado - Impacto en prima</fullName>
             <default>false</default>
         </values>
