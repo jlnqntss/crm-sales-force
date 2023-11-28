@@ -190,13 +190,6 @@
             <operator>equals</operator>
             <value>Account.Intermediary</value>
         </criteriaItems>
-        <criteriaItems>
-            <column>BucketField_68388292</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value></value>
-        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
