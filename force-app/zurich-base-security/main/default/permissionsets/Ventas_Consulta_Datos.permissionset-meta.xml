@@ -1645,11 +1645,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Policy__c.ExternalCollaboratorPolicy__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Claim__c.AssetIdentifier__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3224,6 +3219,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.ExternalCollaboratorPolicy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.InfoCreatedDate__c</field>
         <readable>true</readable>
@@ -3241,11 +3241,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.InfoQuoteNumber__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Policy__c.ExternalCollaboratorPolicy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
