@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>AssetIdentifier__c</fullName>
     <externalId>false</externalId>
-    <formula>InsuredObject__r.Identifier__c</formula>
+    <formula>Policy__r.AssetIdentifier__c</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Asset Identifier</label>
     <required>false</required>
