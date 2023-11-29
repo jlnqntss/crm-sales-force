@@ -1650,6 +1650,10 @@
         <apexClass>checkRecursive</apexClass>
         <enabled>false</enabled>
     </classAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>GDPR_Bloqueo_Visibilidad</name>
+    </customPermissions>
     <custom>true</custom>
     <fieldPermissions>
         <editable>false</editable>
