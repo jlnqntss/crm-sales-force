@@ -59,9 +59,6 @@
                         <valueListItems>
                             <value>CASES.STATUS|NOT_EQUAL|[&quot;Cerrado&quot;,&quot;Combinado&quot;]</value>
                         </valueListItems>
-                        <valueListItems>
-                            <value>Subtype__c|EQUALS|[&quot;Gestión Competencias&quot;]</value>
-                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
