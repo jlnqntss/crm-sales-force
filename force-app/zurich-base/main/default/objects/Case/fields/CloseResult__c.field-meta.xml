@@ -376,6 +376,7 @@
             <valueName>Realizado</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
             <controllingFieldValue>Recobro indirecto</controllingFieldValue>
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>

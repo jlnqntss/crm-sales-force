@@ -163,6 +163,12 @@
     </nameField>
     <pluralLabel>Pólizas</pluralLabel>
     <searchLayouts>
+        <searchResultsAdditionalFields>PolicyHolder__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>TechnicalCode__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CommercialCode__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ProductId__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Intermediary_Code__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>IntermediaryNameForm__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>TrimmedPolicyNumber__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>

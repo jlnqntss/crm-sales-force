@@ -25,6 +25,20 @@
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Read_SDM</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Read SDM</label>
+        <sharedTo>
+            <group>Read_SDM</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Zurich</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Ventas_CC</fullName>
         <accessLevel>Edit</accessLevel>
         <description>Permisos de escritura para Oportunidades Zurich Ventas</description>

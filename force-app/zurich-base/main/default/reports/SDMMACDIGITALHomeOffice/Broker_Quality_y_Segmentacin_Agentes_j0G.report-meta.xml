@@ -1,7 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_75093557</developerName>
+        <masterLabel>Potencial Broker</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Account.RecordType__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Potential Broker</sourceValue>
+            </sourceValues>
+            <value>Potential Broker</value>
+        </values>
+    </buckets>
+    <buckets>
+        <bucketType>text</bucketType>
+        <developerName>BucketField_61725951</developerName>
+        <masterLabel>Potential Broker</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <sourceColumnName>Account.RecordType__c</sourceColumnName>
+        <useOther>false</useOther>
+        <values>
+            <sourceValues>
+                <sourceValue>Potential_Broker</sourceValue>
+            </sourceValues>
+            <value>Si</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Master</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Cliente Empresarial</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>AgrupacionMediador</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Cliente</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Intermediario</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Lead</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>Partner</sourceValue>
+            </sourceValues>
+            <sourceValues>
+                <sourceValue>PartnerOCS</sourceValue>
+            </sourceValues>
+            <value>No</value>
+        </values>
+    </buckets>
     <columns>
         <field>Account.NationalId__c</field>
+    </columns>
+    <columns>
+        <field>Account.INFOIntermediaryCode__c</field>
     </columns>
     <columns>
         <field>ACCOUNT.NAME</field>
@@ -238,6 +296,18 @@
     </columns>
     <columns>
         <field>Account.Segmento_Expats_Hogar__c</field>
+    </columns>
+    <columns>
+        <field>Account.TerritorialDirection__c</field>
+    </columns>
+    <columns>
+        <field>Account.Zone__c</field>
+    </columns>
+    <columns>
+        <field>ADDRESS1_STATE</field>
+    </columns>
+    <columns>
+        <field>BucketField_61725951</field>
     </columns>
     <crossFilters>
         <operation>with</operation>
