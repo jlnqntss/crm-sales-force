@@ -241,6 +241,10 @@
                 <behavior>Edit</behavior>
                 <field>PreferentialZRC__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ExceptionLetterRefuse__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
