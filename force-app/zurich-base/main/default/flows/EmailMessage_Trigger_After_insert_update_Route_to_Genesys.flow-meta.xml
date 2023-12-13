@@ -4,7 +4,7 @@
         <name>Enrutar_a_Flow_Genesys</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>3350</locationX>
-        <locationY>1224</locationY>
+        <locationY>1416</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -72,12 +72,14 @@
                 <elementReference>$Record.ToAddress</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>GenesysCloudRouteEmailAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>FlowGenesysRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>2558</locationX>
-        <locationY>1440</locationY>
+        <locationY>1632</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -150,12 +152,14 @@
                 <elementReference>$Record.ToAddress</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>GenesysCloudRouteEmailAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>QueueGenesysRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
         <locationX>3878</locationX>
-        <locationY>1116</locationY>
+        <locationY>1308</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -217,6 +221,8 @@
                 <elementReference>$Record.ToAddress</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>GenesysCloudRouteEmailAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>53.0</apiVersion>
     <assignments>
@@ -245,7 +251,7 @@
     <assignments>
         <name>Asignar_variables_del_registro</name>
         <label>Asignar variables del registro</label>
-        <locationX>3614</locationX>
+        <locationX>3636</locationX>
         <locationY>600</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
@@ -291,7 +297,7 @@
     <assignments>
         <name>Modificar_variables_cola</name>
         <label>Modificar variables cola</label>
-        <locationX>3350</locationX>
+        <locationX>3328</locationX>
         <locationY>600</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
@@ -308,7 +314,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_case_owner</targetReference>
+            <targetReference>Hay_que_actualizar_owner</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -393,7 +399,7 @@
         <name>CaseClosedDecision</name>
         <label>Is Case Closed</label>
         <locationX>2822</locationX>
-        <locationY>1224</locationY>
+        <locationY>1416</locationY>
         <defaultConnectorLabel>Closed</defaultConnectorLabel>
         <rules>
             <name>NotClosedOutcome</name>
@@ -474,7 +480,7 @@
         <name>hasParentCase</name>
         <label>¿Tenemos caso asociado?</label>
         <locationX>3086</locationX>
-        <locationY>1116</locationY>
+        <locationY>1308</locationY>
         <defaultConnector>
             <targetReference>Enrutar_a_Flow_Genesys</targetReference>
         </defaultConnector>
@@ -493,6 +499,52 @@
                 <targetReference>CaseClosedDecision</targetReference>
             </connector>
             <label>Tenemos caso asociado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Hay_que_actualizar_owner</name>
+        <label>¿Hay que actualizar owner?</label>
+        <locationX>3328</locationX>
+        <locationY>708</locationY>
+        <defaultConnector>
+            <targetReference>GenerateScreenPopURLSubflow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Actualizar</name>
+            <conditionLogic>1 OR ( (2 OR 3) AND 4)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Parent.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.Owner:User.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.Owner:User.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>005</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_case_owner</targetReference>
+            </connector>
+            <label>Actualizar</label>
         </rules>
     </decisions>
     <decisions>
@@ -521,7 +573,7 @@
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
         <locationX>3482</locationX>
-        <locationY>1008</locationY>
+        <locationY>1200</locationY>
         <defaultConnector>
             <targetReference>QueueGenesysRoutingInvocableAction</targetReference>
         </defaultConnector>
@@ -830,7 +882,7 @@
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
         <locationX>2822</locationX>
-        <locationY>1548</locationY>
+        <locationY>1740</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -1133,8 +1185,8 @@
     <recordUpdates>
         <name>Update_case_owner</name>
         <label>Update case owner</label>
-        <locationX>3350</locationX>
-        <locationY>708</locationY>
+        <locationX>3196</locationX>
+        <locationY>816</locationY>
         <connector>
             <targetReference>GenerateScreenPopURLSubflow</targetReference>
         </connector>
@@ -1215,7 +1267,7 @@
         <name>Calculamos_prioridad</name>
         <label>Calculamos prioridad</label>
         <locationX>2558</locationX>
-        <locationY>1332</locationY>
+        <locationY>1524</locationY>
         <connector>
             <targetReference>FlowGenesysRoutingInvocableAction</targetReference>
         </connector>
@@ -1238,7 +1290,7 @@
         <name>GenerateScreenPopURLSubflow</name>
         <label>Generate Screen Pop URL</label>
         <locationX>3482</locationX>
-        <locationY>900</locationY>
+        <locationY>1092</locationY>
         <connector>
             <targetReference>IsFlowOrQueueDecision</targetReference>
         </connector>
