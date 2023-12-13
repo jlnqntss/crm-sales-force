@@ -6,11 +6,11 @@
   "values": {
     "ActionColor": "rgb(35, 54, 111)",
     "BorderColor": "#D4D4D4",
-    "CardBackgroundColor": "rgba(218, 210, 189)",
+    "CardBackgroundColor": "rgba(255, 255, 255, 0)",
     "CompanyLogo": "/file-asset/Zurich_Logo_Horz_Blue_RGB?v=1&height=300&width=300",
     "DetailTextColor": "#5A5A5A",
     "ErrorFontColor": "#ff9e9e",
-    "HeaderBackgroundColor": "rgb(145, 191, 227)",
+    "HeaderBackgroundColor": "rgb(218, 210, 189)",
     "HeaderFonts": "Open Sans",
     "LinkColor": "rgb(145, 191, 227)",
     "LoginBackgroundColor": "#F4F4F4",
