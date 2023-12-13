@@ -4,43 +4,50 @@
     <containerType>Network</containerType>
     <label>Default Navigation</label>
     <navigationMenuItem>
-        <label>Clientes</label>
+        <label>Calendario</label>
         <position>1</position>
+        <publiclyAvailable>false</publiclyAvailable>
+        <target>/calendar</target>
+        <type>InternalLink</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Clientes</label>
+        <position>2</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>/recordlist/Account/Default</target>
         <type>InternalLink</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Pólizas</label>
-        <position>2</position>
+        <position>3</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>Policy__c</target>
         <type>SalesforceObject</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Tareas</label>
-        <position>3</position>
+        <position>4</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>Task</target>
         <type>SalesforceObject</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Ofertas</label>
-        <position>4</position>
+        <position>5</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>Opportunity</target>
         <type>SalesforceObject</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Campañas</label>
-        <position>5</position>
+        <position>6</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>Campaign</target>
         <type>SalesforceObject</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Informes</label>
-        <position>6</position>
+        <position>7</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>Report</target>
         <type>SalesforceObject</type>
