@@ -2,9 +2,9 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <decisions>
-        <name>SubjectNullDecision</name>
-        <label>¿Subject Null?</label>
-        <locationX>182</locationX>
+        <name>SubjectNullAllowedSizeDecision</name>
+        <label>¿Subject Null And Allowed Size?</label>
+        <locationX>314</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
@@ -17,6 +17,20 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>sizeHTML</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>sizeBody</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>DisplaySubjectAction</targetReference>
             </connector>
@@ -24,6 +38,16 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>sizeBody</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(LEN({!$Record.TextBody})&gt;=131072, true, false)</expression>
+    </formulas>
+    <formulas>
+        <name>sizeHTML</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(LEN({!textHTML})&gt;=131072, true, false)</expression>
+    </formulas>
     <interviewLabel>EmailMessage trigger - After Insert - Display Subject {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage trigger - After Insert - Display Subject</label>
     <processMetadataValues>
@@ -45,11 +69,46 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>CreateErrorLogDisplaySubject</name>
+        <label>Create Error Log Display Subject</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>EmailMessage trigger - After Insert - Display Subject</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Generar Error Log</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Stack_Trace__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordUpdates>
         <name>DisplaySubjectAction</name>
         <label>Display Subject</label>
         <locationX>50</locationX>
         <locationY>431</locationY>
+        <faultConnector>
+            <targetReference>CreateErrorLogDisplaySubject</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>HtmlBody</field>
             <value>
@@ -59,16 +118,16 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>SubjectNullDecision</targetReference>
+            <targetReference>SubjectNullAllowedSizeDecision</targetReference>
         </connector>
         <object>EmailMessage</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>textHTML</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
