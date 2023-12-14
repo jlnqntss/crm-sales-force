@@ -35,22 +35,6 @@
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <assignments>
-        <name>Asignar_Gestor_Preferente</name>
-        <label>Asignar Gestor Preferente</label>
-        <locationX>1502</locationX>
-        <locationY>1058</locationY>
-        <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>GestorPreferente</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>GetGroupId</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Asignar_Gestor_Preferente_Como_Usuario</name>
         <label>Asignar Gestor Preferente Como Usuario</label>
         <locationX>1370</locationX>
@@ -66,7 +50,7 @@
     <assignments>
         <name>Asignar_Gestor_Preferente_Usuario</name>
         <label>Asignar Gestor Preferente Usuario</label>
-        <locationX>1238</locationX>
+        <locationX>1502</locationX>
         <locationY>1058</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -112,6 +96,22 @@
                 <elementReference>GetGroupId.groupId</elementReference>
             </value>
         </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>AsignarGestorPreferente</name>
+        <label>Asignar Gestor Preferente</label>
+        <locationX>1238</locationX>
+        <locationY>1058</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>GestorPreferente</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetGroupId</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>CaseOwnerAssignment</name>
@@ -818,12 +818,40 @@
         <locationX>1370</locationX>
         <locationY>950</locationY>
         <defaultConnector>
-            <targetReference>Asignar_Gestor_Preferente</targetReference>
+            <targetReference>Asignar_Gestor_Preferente_Usuario</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Es_usuario</name>
-            <conditionLogic>and</conditionLogic>
+            <name>No_es_Usuario</name>
+            <conditionLogic>1 OR ( (2 OR 3 OR 4) AND 5)</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Administrador del sistema</stringValue>
+                </rightValue>
+            </conditions>
             <conditions>
                 <leftValueReference>IDPropietarioCaso</leftValueReference>
                 <operator>StartsWith</operator>
@@ -831,24 +859,10 @@
                     <stringValue>005</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Integrator</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>System Administrator</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>Asignar_Gestor_Preferente_Usuario</targetReference>
+                <targetReference>AsignarGestorPreferente</targetReference>
             </connector>
-            <label>Es usuario</label>
+            <label>No es Usuario</label>
         </rules>
     </decisions>
     <decisions>
