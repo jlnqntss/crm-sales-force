@@ -28,9 +28,13 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      **/
     private String phone;
     /**
-     * Se requiere un CallMeBack o no
+     * El cliente desea que le llamen o no
      **/
-    private Boolean requiredCMB;
+    private String quiereLlamada;
+    /**
+     * Código de intermediario recibido
+     **/
+    private String intermediary;
 
     private static final String CONTACT_CENTER = 'CONTACT_CENTER';
 
@@ -51,17 +55,19 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         this.policyRecord = policyRecord;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.requiredCMB = false;
+        this.quiereLlamada = '';
+        this.intermediary = '';
     }
 
-    public AccountLeadOpportunityQueueJob(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode, String phone, Boolean requiredCMB)
+    public AccountLeadOpportunityQueueJob(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode, String phone, String quiereLlamada, String intermediary)
     {
         this.accountRecord = accountRecord;
         this.offerRecord = offerRecord;
         this.policyRecord = policyRecord;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.requiredCMB = requiredCMB;
+        this.quiereLlamada = quiereLlamada;
+        this.intermediary = intermediary;
     }
 
     /**
@@ -72,7 +78,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      **/
     public void execute(QueueableContext context)
     {
-        processOpportunityAndPolicy(this.accountRecord, this.offerRecord, this.policyRecord, this.postalCode, this.phone, this.requiredCMB);
+        processOpportunityAndPolicy(this.accountRecord, this.offerRecord, this.policyRecord, this.postalCode, this.phone, this.quiereLlamada, this.intermediary);
     }
 
     /**
@@ -84,7 +90,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param policyRecord
      * @param postalCode
      **/
-    public static void processOpportunityAndPolicy(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode, String phone, Boolean requiredCMB)
+    public static void processOpportunityAndPolicy(Account accountRecord, Opportunity offerRecord, Policy__c policyRecord, String postalCode, String phone, String quiereLlamada, String intermediary)
     {
         Opportunity offerToInsertUpdate = offerRecord;
         List<Opportunity> listOffer = new List<Opportunity>();
@@ -100,18 +106,21 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
 
         manageOfferRecord(offerRecord, offerToInsertUpdate, listOffer);
 
-        offerToInsertUpdate = manageOfferToInsertUpdate (offerToInsertUpdate, accountRecord, postalCode, phone, requiredCMB);
+        offerToInsertUpdate = manageOfferToInsertUpdate (offerToInsertUpdate, accountRecord, postalCode, phone, quiereLlamada, intermediary);
 
-        if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null)
+        if (intermediary != 'CONTACT_CENTER')
         {
-            insert offerToInsertUpdate;
-        }
-        else if (offerToInsertUpdate != null && offerToInsertUpdate.Id != null)
-        {
-            update offerToInsertUpdate;
-        }
+            if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null)
+            {
+                insert offerToInsertUpdate;
+            }
+            else if (offerToInsertUpdate != null && offerToInsertUpdate.Id != null)
+            {
+                update offerToInsertUpdate;
+            }
 
-        managePolicyRecord(policyRecord, offerToInsertUpdate);
+            managePolicyRecord(policyRecord, offerToInsertUpdate);
+        }
     }
 
     /**
@@ -123,13 +132,13 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param phone
      * @return Opportunity
      **/
-    public static Opportunity manageOfferToInsertUpdate (Opportunity offerToInsertUpdate, Account accountRecord, String postalCode, String phone, Boolean requiredCMB)
+    public static Opportunity manageOfferToInsertUpdate (Opportunity offerToInsertUpdate, Account accountRecord, String postalCode, String phone, String quiereLlamada, String intermediary)
     {
         Opportunity offerToUpdate = offerToInsertUpdate;
         if (offerToInsertUpdate != null && offerToInsertUpdate.Id == null && offerToInsertUpdate.StageName != 'Cerrada-Ganada')   //Ejecutar Proceso de Asignación si la Oferta se debe insertar y no es el escenario de integración 3.
         {
             Map<String, Account> assign = AccountLeadUtil.leadAssignment(accountRecord, offerToInsertUpdate.IntermediaryCode__c, offerToInsertUpdate.IntermediaryCode__c, null, postalCode);
-            offerToUpdate = manageConstrainsKey(assign, accountRecord, offerToInsertUpdate, phone, requiredCMB);
+            offerToUpdate = manageConstrainsKey(assign, accountRecord, offerToInsertUpdate, phone, quiereLlamada, intermediary);
         }
         return offerToUpdate;
     }
@@ -143,10 +152,10 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param phone
      * @return Opportunity
      **/
-    public static Opportunity manageConstrainsKey (Map<String,Account> assign, Account accountRecord, Opportunity offerToInsertUpdate, String phone, Boolean requiredCMB)
+    public static Opportunity manageConstrainsKey (Map<String,Account> assign, Account accountRecord, Opportunity offerToInsertUpdate, String phone, String quiereLlamada, String intermediary)
     {
         Opportunity offerToUpdate = offerToInsertUpdate;
-        if ( requiredCMB )
+        if ( quiereLlamada == 'S' && intermediary == 'CONTACT_CENTER')
         {
             Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
             manageCallMeBack(accountRecord, offerToInsertUpdate, leadOffersCS, phone);

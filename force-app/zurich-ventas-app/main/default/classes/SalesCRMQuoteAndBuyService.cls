@@ -236,6 +236,9 @@ public with sharing class SalesCRMQuoteAndBuyService
 
     public static void processData(Account acc, Opportunity offer, Lead requestData)
     {
+        String quiereLlamada = requestData.cliente.contacto.quiereLlamada;
+        String codIntermediario = requestData.poliza.codigoIntermediario;
+
         if (!String.isBlank(requestData.poliza.numeroPoliza) && !String.isBlank(requestData.poliza.numeroOferta))
         {
             // Actualizamos los valores de la oferta
@@ -246,7 +249,7 @@ public with sharing class SalesCRMQuoteAndBuyService
             Policy__c policy = managePolicy(acc, requestData);     
             
             // Llamamos al método de forma síncrona:
-            AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, policy, requestData.Cliente.Contacto.codigoPostal, requestData.Cliente.Contacto.telefono, false);
+            AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, policy, requestData.Cliente.Contacto.codigoPostal, requestData.Cliente.Contacto.telefono, quiereLlamada, codIntermediario);
 
         }
         else if (String.isBlank(requestData.poliza.numeroPoliza) && !String.isBlank(requestData.poliza.numeroOferta))
@@ -255,27 +258,15 @@ public with sharing class SalesCRMQuoteAndBuyService
             offer.StageName = 'Quoted';
 
             // Llamamos al método de forma asíncrona:
-            AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.Cliente.Contacto.codigoPostal, requestData.Cliente.Contacto.telefono, false);
+            AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.Cliente.Contacto.codigoPostal, requestData.Cliente.Contacto.telefono, quiereLlamada, codIntermediario);
         }
         else if (String.isBlank(requestData.poliza.numeroPoliza) && String.isBlank(requestData.poliza.numeroOferta))
         {
-            // Si numeroPoliza == null && numeroOferta == null:
-
             // Actualizamos los valores de la oferta:
             offer.Name = ( 'OF' + Datetime.now().getTime() / 1000 + acc.Id.to15() ).left(120);
             offer.StageName = 'App Submitted';
 
-            // Llamamos al método según si quiere llamada o no:
-            if (requestData.cliente.contacto.quiereLlamada == 'S')
-            {
-                // Si quiere llamada, lanzamos de forma síncrona
-                AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone, true);
-            }
-            else
-            {
-                // Si no quiere llamada, lanzamos Job con delat y de 60 minutos
-                AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone, false);
-            }
+            AccountLeadOpportunityQueueJob.processOpportunityAndPolicy(acc, offer, null, requestData.cliente.contacto.codigoPostal, acc.Phone, quiereLlamada, codIntermediario);
         }
     }
 

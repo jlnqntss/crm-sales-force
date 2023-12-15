@@ -65,7 +65,7 @@ private with sharing class AccountLeadOpportunityQueueJobTest
         Test.startTest();
         try
         {
-            AccountLeadOpportunityQueueJob.manageConstrainsKey(assign,leadAccounts.get(0), opps.get(0), '+346871425', true);
+            AccountLeadOpportunityQueueJob.manageConstrainsKey(assign,leadAccounts.get(0), opps.get(0), '+346871425', 'S', 'CONTACT_CENTER');
         }
         catch (Exception ex)
         {
