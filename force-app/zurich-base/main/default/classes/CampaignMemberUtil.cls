@@ -129,24 +129,4 @@ public with sharing class CampaignMemberUtil
             update offersToClose;
         }
     }
-
-    /**
-     * Método que comprueba si el agente que está eliminando Miembros de Campaña es del tipo Agente Ventas, en cuyo caso
-     * lanzará un error y no permitirá la transacción
-     * 
-     * @author arcortazar
-     * @date 13/10/2023
-     */
-    public static void checkIntermediaryProfile(List<CampaignMember> listaMiembros)
-    {
-        Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'Agente Ventas'});
-        if (listaPerfiles.keySet().contains(UserInfo.getProfileId()))
-        {
-            for (CampaignMember c: listaMiembros)
-            {
-                c.addError(ERROR_PERMISOS);
-            }
-        }
-    }
-
 }
