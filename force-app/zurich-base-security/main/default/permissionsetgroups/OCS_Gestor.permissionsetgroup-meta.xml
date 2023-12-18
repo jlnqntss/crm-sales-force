@@ -8,6 +8,7 @@
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_CS</permissionSets>
+    <permissionSets>Gestion_Gestor_Personalizado</permissionSets>
     <permissionSets>Gestion_Whatsapp</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
