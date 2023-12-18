@@ -5,7 +5,7 @@
  * @date 27/04/2020
  */
 @isTest
-private class Test_Batch_DeleteQuotes
+private with sharing class Test_Batch_DeleteQuotes
 {
     static final string PRODUCT_NAME = 'Samsung Galaxy';
     /**
@@ -15,7 +15,7 @@ private class Test_Batch_DeleteQuotes
      * @date 27/04/2020
      */
     @TestSetup
-    static void test_CreateData()
+    private static void test_CreateData()
     {
         // Instantiate the Pricebook2 record first, setting the Id
         Pricebook2 standardPricebook = new Pricebook2(
@@ -114,7 +114,7 @@ private class Test_Batch_DeleteQuotes
      */
 
     @isTest
-    static void test_NoEliminarQuote()
+    private static void test_NoEliminarQuote()
     {
         Integer numQuotes = [SELECT COUNT() FROM Order];
 
@@ -141,7 +141,7 @@ private class Test_Batch_DeleteQuotes
      * @date 27/04/2020
      */
     @isTest
-    static void test_EliminarQuote()
+    private static void test_EliminarQuote()
     {
         Integer numQuotes = [SELECT COUNT() FROM Order];
         Integer numCases = [SELECT COUNT() FROM Case];
@@ -173,7 +173,7 @@ private class Test_Batch_DeleteQuotes
      * @date 19/04/2023
      */
     @isTest
-    static void testBatch_schedule()
+    private static void testBatch_schedule()
     {
         Test.startTest();
         String jobID = system.schedule( 'Delete Quotes Test', '20 30 8 10 2 ?', new Batch_DeleteQuotes() );

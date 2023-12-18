@@ -6,7 +6,7 @@
  * @date 27/04/2020
  */
 @isTest
-private class Test_Batch_DeleteExternalRequest
+private with sharing class Test_Batch_DeleteExternalRequest
 {
 
     /**
@@ -17,7 +17,7 @@ private class Test_Batch_DeleteExternalRequest
      * @date 27/04/2020
      */
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         
         List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
@@ -109,7 +109,7 @@ private class Test_Batch_DeleteExternalRequest
      * @date 13/11/2020
      */
     @isTest
-    static void test_EliminarRequestsProcesadas_INFO()
+    private static void test_EliminarRequestsProcesadas_INFO()
     {
         Integer numReqPreBatch = [SELECT COUNT() FROM ExternalRequest__c];
 
@@ -131,7 +131,7 @@ private class Test_Batch_DeleteExternalRequest
      * @date 13/11/2020
      */
     @isTest
-    static void test_EliminarRequestsProcesadas_IBA()
+    private static void test_EliminarRequestsProcesadas_IBA()
     {
         Integer numReqPreBatch = [SELECT COUNT() FROM ExternalRequest__c];
 
@@ -153,7 +153,7 @@ private class Test_Batch_DeleteExternalRequest
      * @date 13/11/2020
      */
     @isTest
-    static void test_EliminarRequestsProcesadas()
+    private static void test_EliminarRequestsProcesadas()
     {
         Integer numReqPreBatch = [SELECT COUNT() FROM ExternalRequest__c];
 
@@ -175,7 +175,7 @@ private class Test_Batch_DeleteExternalRequest
      * @date 13/11/2020
      */
     @isTest
-    static void test_EliminarRequests_Metadato()
+    private static void test_EliminarRequests_Metadato()
     {
 
         AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
@@ -205,7 +205,7 @@ private class Test_Batch_DeleteExternalRequest
      * @date 13/11/2020
      */
     @isTest
-    static void testBatch_schedule_noQuery()
+    private static void testBatch_schedule_noQuery()
     {
         Test.startTest();
         String jobID = system.schedule( 'Delete External Request Test', '20 30 8 10 2 ?', new Batch_DeleteExternalRequest() );
@@ -221,7 +221,7 @@ private class Test_Batch_DeleteExternalRequest
      * @date 13/11/2020
      */
     @isTest
-    static void testBatch_schedule_customQuery()
+    private static void testBatch_schedule_customQuery()
     {
         Test.startTest();
         String jobID = system.schedule( 'Delete External Request Test', '20 30 8 10 2 ?', new Batch_DeleteExternalRequest('SELECT Id FROM ExternalRequest__c WHERE Processed__c = true') );
@@ -237,7 +237,7 @@ private class Test_Batch_DeleteExternalRequest
      * @date 03/12/2020
      */
     @isTest
-    static void testBatch_scheduleExternalRequestClearOcs_Params()
+    private static void testBatch_scheduleExternalRequestClearOcs_Params()
     {
         Test.startTest();
         String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearOcs();
@@ -247,7 +247,7 @@ private class Test_Batch_DeleteExternalRequest
     }
 
     @isTest
-    static void testBatch_scheduleExternalRequestClearKlinc_Params()
+    private static void testBatch_scheduleExternalRequestClearKlinc_Params()
     {
         Test.startTest();
         String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearKlinc();
@@ -263,7 +263,7 @@ private class Test_Batch_DeleteExternalRequest
      * @date 03/12/2020
      */
     @isTest
-    static void testBatch_scheduleExternalRequestErrorClear_Params()
+    private static void testBatch_scheduleExternalRequestErrorClear_Params()
     {
         Test.startTest();
         String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestErrorClear();

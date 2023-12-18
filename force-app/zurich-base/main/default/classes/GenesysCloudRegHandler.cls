@@ -4,7 +4,7 @@ global boolean canCreateUser(Auth.UserData data) {
   return false;
 }
 
-global User createUser(Id portalId, Auth.UserData data){
+global with sharing User createUser(Id portalId, Auth.UserData data){
     
   if(!canCreateUser(data)) {
     //Returning null or throwing an exception fails the SSO flow

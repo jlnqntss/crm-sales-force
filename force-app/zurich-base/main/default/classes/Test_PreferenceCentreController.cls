@@ -9,11 +9,11 @@
  * 1.0   09-16-2020   Enara Etxaniz   Initial Version
  **/
 @isTest
-public class Test_PreferenceCentreController
+private with sharing class Test_PreferenceCentreController
 {
     //#Region testSetup
     @testSetup
-    static void makeData()
+    private static void makeData()
     {
         //Account
         Account account = new Account(Name = 'Account1', CustomerNum__c = '1234');
@@ -111,7 +111,7 @@ public class Test_PreferenceCentreController
     //#Region test_processRequest
 
     @isTest
-    static void processRequest_testGICampaignSuscription()
+    private static void processRequest_testGICampaignSuscription()
     {
         //When
         String hashedId;
@@ -178,7 +178,7 @@ public class Test_PreferenceCentreController
     }
 
     @isTest
-    static void processRequest_testLifeCampaignSuscription()
+    private static void processRequest_testLifeCampaignSuscription()
     {
         //When
         String hashedId;
@@ -250,7 +250,7 @@ public class Test_PreferenceCentreController
     }
 
     @isTest
-    static void processRequest_testGICampaignDesuscription()
+    private static void processRequest_testGICampaignDesuscription()
     {
         //When
         String hashedId;
@@ -311,7 +311,7 @@ public class Test_PreferenceCentreController
     }
 
     @isTest
-    static void processRequest_testLifeCampaignDesuscription()
+    private static void processRequest_testLifeCampaignDesuscription()
     {
         //When
         String hashedId;
@@ -375,7 +375,7 @@ public class Test_PreferenceCentreController
     }
 
     @isTest
-    static void processRequest_testGIHasOptedOutOfEmail()
+    private static void processRequest_testGIHasOptedOutOfEmail()
     {
         //When
         String hashedId;
@@ -451,7 +451,7 @@ public class Test_PreferenceCentreController
     }
 
     @isTest
-    static void processRequest_testLifeHasOptedOutOfEmail()
+    private static void processRequest_testLifeHasOptedOutOfEmail()
     {
         //When
         String hashedId;
@@ -530,7 +530,7 @@ public class Test_PreferenceCentreController
     }
 
     @isTest
-    static void getContactData_testgetContactDataNull()
+    private static void getContactData_testgetContactDataNull()
     {
         //When
         String hashedId = 'testing';
@@ -546,7 +546,7 @@ public class Test_PreferenceCentreController
     }
 
     @isTest
-    static void getContactData_testgetContactDataOK()
+    private static void getContactData_testgetContactDataOK()
     {
         //When
         String hashedId;
@@ -573,7 +573,7 @@ public class Test_PreferenceCentreController
     }
 
     @isTest
-    static void getAllCampaigns_testgetAllLifeCampaignsOK()
+    private static void getAllCampaigns_testgetAllLifeCampaignsOK()
     {
         //When
         String hashedId;
@@ -604,7 +604,7 @@ public class Test_PreferenceCentreController
     }
 
     @isTest
-    static void getAllCampaigns_testgetAllGICampaignsOK()
+    private static void getAllCampaigns_testgetAllGICampaignsOK()
     {
         //When
         String hashedId;
@@ -637,7 +637,7 @@ public class Test_PreferenceCentreController
      * @date 05/11/2020
      */
     @isTest
-    static void processRequest_testGIHasOptedOutOfEmail_Partner()
+    private static void processRequest_testGIHasOptedOutOfEmail_Partner()
     {
         //When
         Account account = new Account(Name = 'Account2', CustomerNum__c = '5678');
@@ -718,7 +718,7 @@ public class Test_PreferenceCentreController
      * @date 04/11/2020
      */
     @isTest
-    static void test_switchLanguage()
+    private static void test_switchLanguage()
     {
         //When
         String hashedId;
@@ -749,7 +749,7 @@ public class Test_PreferenceCentreController
      * @date 03/02/2021
      */
     @isTest
-    static void test_getLogoUrl()
+    private static void test_getLogoUrl()
     {
         List<Contact> contacts = [
             SELECT Id, HashedId__c, SourceCountry__c FROM Contact WHERE HashedId__c != null LIMIT 1
@@ -775,7 +775,7 @@ public class Test_PreferenceCentreController
      * @date 27/01/2021
      */
     @isTest
-    static void test_getLogoUrlCountry()
+    private static void test_getLogoUrlCountry()
     {
         List<Contact> contacts = [
             SELECT Id, HashedId__c, SourceCountry__c FROM Contact WHERE HashedId__c != null LIMIT 1
@@ -802,7 +802,7 @@ public class Test_PreferenceCentreController
      * @date 03/02/2021
      */
     @isTest
-    static void test_getLogoUrlPartner()
+    private static void test_getLogoUrlPartner()
     {
         List<Contact> contacts = [
             SELECT Id, HashedId__c, Partner__c FROM Contact WHERE HashedId__c != null LIMIT 1
@@ -830,7 +830,7 @@ public class Test_PreferenceCentreController
      * @date 27/01/2021
      */
     @isTest
-    static void test_getLabelTranslation()
+    private static void test_getLabelTranslation()
     {
         Test.startTest();
         PreferenceCentreController.getLabelTranslation('fr');

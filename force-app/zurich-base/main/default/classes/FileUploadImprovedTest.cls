@@ -6,9 +6,9 @@
  * @last modified by  : jjuaristi
 **/
 @isTest
-public class FileUploadImprovedTest {
+private with sharing class FileUploadImprovedTest {
 	@isTest
-    public static void encrypted_test(){
+    private static void encrypted_test(){
         Contact con = new Contact(
             LastName = 'Test'
         );
