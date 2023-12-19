@@ -657,6 +657,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+		<editable>false</editable>
+		<field>Account.IntermediaryGroupSDM__C</field>
+		<readable>true</readable>
+	</fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.Jigsaw</field>
         <readable>false</readable>
