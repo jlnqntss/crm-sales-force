@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Permission__c</field>
-        <value xsi:type="xsd:string">Grandes Pymes</value>
+        <value xsi:type="xsd:string">Suscripción RC &amp; Daños (Grandes Pymes)</value>
     </values>
     <values>
         <field>Role_Name__c</field>
