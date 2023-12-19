@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 17-11-2023
+ * @last modified on  : 12-12-2023
  * @last modified by  : amiranda
  **/
 public with sharing class OpportunitiesSelector extends RecordsSelector
@@ -422,7 +422,9 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             {
                 Opportunity.Name,
                 Opportunity.AccountId,
-                Opportunity.Sales_Loss_Reason__c
+                Opportunity.Sales_Loss_Reason__c,
+                Opportunity.PendingIntermediaryReview__c,
+                Opportunity.IsClosed
             };
 
             opportunities = this.baseQuery

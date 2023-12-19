@@ -12,11 +12,15 @@ import thOfferStage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_Ta
 import thLostReason from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_TableHeaderLostReason";
 import thIntermediary from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_TableHeaderIntermediary";
 import removeRowAction from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_RowActionRemove";
+import assignRowAction from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_RowActionAssign";
 import toastGenericErrorTitle from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastGenericErrorTitle";
 import toastGenericErrorMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage";
 import toastOngoingCampaignErrorMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastOngoingCampaignErrorMessage";
 import toastDeleteRowActionTitle from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle";
 import toastDeleteRowActionMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionMessage";
+import toastAssignButtonErrorMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastAssignButtonErrorMessage";
+import toastAssignmentRowActionTitle from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastAssignRowActionTitle";
+import toastAssignmentRowActionMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastAssignmentRowActionMessage";
 
 
 export default {
@@ -34,9 +38,13 @@ export default {
     thLostReason,
     thIntermediary,
     removeRowAction,
+    assignRowAction,
     toastGenericErrorTitle,
     toastGenericErrorMessage,
     toastOngoingCampaignErrorMessage,
     toastDeleteRowActionTitle,
-    toastDeleteRowActionMessage
+    toastDeleteRowActionMessage,
+    toastAssignmentRowActionTitle,
+    toastAssignmentRowActionMessage,
+    toastAssignButtonErrorMessage
 }
