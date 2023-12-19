@@ -426,10 +426,6 @@
                 </visibilityRule>
             </componentInstance>
         </itemInstances>
-        <name>Facet-bc2e76cf-bf89-4b5c-85aa-bcd9b8418962</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
@@ -506,10 +502,6 @@
                 </visibilityRule>
             </componentInstance>
         </itemInstances>
-        <name>Facet-c5422fa3-04b9-45a2-8dde-ac365822c714</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
@@ -586,10 +578,6 @@
                 </visibilityRule>
             </componentInstance>
         </itemInstances>
-        <name>Facet-f0887f36-f4fc-4ee0-8167-ef3fe1f867c6</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
@@ -668,7 +656,7 @@
                 </visibilityRule>
             </componentInstance>
         </itemInstances>
-        <name>Facet-86cee9ef-b7fe-4d7f-b24e-7d6817c6a1dc</name>
+        <name>Facet-bc2e76cf-bf89-4b5c-85aa-bcd9b8418962</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -936,52 +924,10 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
-                    <value>KPIs Mes</value>
+                    <value>KPIs</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>customTab</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-c5422fa3-04b9-45a2-8dde-ac365822c714</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>KPIs YTD</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-                <identifier>customTab2</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-f0887f36-f4fc-4ee0-8167-ef3fe1f867c6</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>Evolución mes a mes</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-                <identifier>customTab3</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-86cee9ef-b7fe-4d7f-b24e-7d6817c6a1dc</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>KPIs Históricos</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-                <identifier>customTab4</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
