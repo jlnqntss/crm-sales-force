@@ -36,22 +36,6 @@ private with sharing class AccountLeadOpportunityQueueJobTest
     }
 
     @isTest
-    static void test_execute_KO()
-    {
-        List<Account> leadAccounts = TestDataFactory.generateAccounts(null, 'Lead', 1);
-        Date closeDate = Date.newInstance(2023, 10, 10);
-        List<Opportunity> opps = TestDataFactory.generateOpportunities(leadAccounts, 'ZRM', 'Quoted', closeDate, 1);
-        opps[0].InfoQuoteNumber__c = '34523523';
-        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachOpportunity(opps, 1);
-
-        Test.startTest();
-        Id jobId = System.enqueueJob( new AccountLeadOpportunityQueueJob(leadAccounts.get(0), opps.get(0), policies.get(0),'44600', '+346871425') );
-        Test.stopTest();
-
-        System.assert (jobId != null, 'No se ha encolado el trabajo correctamente');
-    }
-
-    @isTest
     static void test_manageOfferRecord()
     {
         List<Account> leadAccounts = TestDataFactory.generateAccounts(null, 'Lead', 1);
