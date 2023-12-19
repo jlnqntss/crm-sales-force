@@ -177,6 +177,10 @@
         <name>FechaNovalida</name>
     </customLabels>
     <customLabels>
+        <label>Ha habido un problema en la ejecución del flujo asociado a la acción que está intentando ejecutar. Contacte con un Administrador del Sistema e indíquele el siguiente mensaje de error:</label>
+        <name>FlowApexExceptionMessage</name>
+    </customLabels>
+    <customLabels>
         <label><!-- GeneralInsurance --></label>
         <name>GeneralInsurance</name>
     </customLabels>
@@ -6278,7 +6282,7 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZRM_IntermediaryCampaignList_CardIconText</name>
     </customLabels>
     <customLabels>
-        <label>Campaña</label>
+        <label>Campañas</label>
         <name>ZRM_IntermediaryCampaignList_CardTitle</name>
     </customLabels>
     <customLabels>
@@ -6338,6 +6342,10 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZRM_IntermediaryCampaignMembers_NoCampaignSelected</name>
     </customLabels>
     <customLabels>
+        <label>Asignarme</label>
+        <name>ZRM_IntermediaryCampaignMembers_RowActionAssign</name>
+    </customLabels>
+    <customLabels>
         <label>Quitar</label>
         <name>ZRM_IntermediaryCampaignMembers_RowActionRemove</name>
     </customLabels>
@@ -6372,6 +6380,18 @@ Cree el acta y vuelva a intentarlo.</label>
     <customLabels>
         <label>Tipo</label>
         <name>ZRM_IntermediaryCampaignMembers_TableHeaderType</name>
+    </customLabels>
+    <customLabels>
+        <label>Operación no válida</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastAssignButtonErrorMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Reasignación completada con éxito.</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastAssignmentRowActionMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Reasignación completada</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastAssignRowActionTitle</name>
     </customLabels>
     <customLabels>
         <label>se ha eliminado como miembro de campaña de la campaña</label>
