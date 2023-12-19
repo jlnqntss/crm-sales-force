@@ -4,13 +4,10 @@ import { getRecord, getFieldValue } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 // "@salesforce/*" imports grouped by type
-import userId from "@salesforce/user/Id";
-
 import { refreshApex } from "@salesforce/apex";
 import getContacts from "@salesforce/apex/IntermAddCampaignMemberController.getContacts";
 import insertCampaignMembers from "@salesforce/apex/IntermAddCampaignMemberController.insertCampaignMembers";
 
-import USER_ACCOUNT_INTERMEDIARYCODE from "@salesforce/schema/User.Contact.Account.INFOIntermediaryCode__c";
 import CAMPAIGN_NAME from "@salesforce/schema/Campaign.Name";
 import CAMPAIGN_TYPE from "@salesforce/schema/Campaign.Type";
 import CAMPAIGN_ISACTIVE from "@salesforce/schema/Campaign.IsActive";
@@ -44,12 +41,12 @@ const columns = [
 export default class IntermAddCampaignMember extends LightningElement {
   // #region Exposed properties using the @api decorator
   @api campaignId;
+  @api intermediaryCode;
 
   // #endregion
 
   // #region Other properties
   label = labels;
-  userId = userId;
   columns = columns;
   campaign;
   userInfo;
@@ -92,10 +89,6 @@ export default class IntermAddCampaignMember extends LightningElement {
     return campaignEndDate;
   }
 
-  get userAccountIntermediaryCode() {
-    return getFieldValue(this.userInfo, USER_ACCOUNT_INTERMEDIARYCODE);
-  }
-
   get recordsToDisplay() {
     return !this.accounts?.length;
   }
@@ -117,16 +110,6 @@ export default class IntermAddCampaignMember extends LightningElement {
       this.campaign = data;
     } else if (error) {
       this.error = error;
-    }
-  }
-
-  @wire(getRecord, {
-    recordId: "$userId",
-    fields: [USER_ACCOUNT_INTERMEDIARYCODE]
-  })
-  wiredUser(result) {
-    if (result.data) {
-      this.userInfo = result.data;
     }
   }
 
@@ -208,7 +191,7 @@ export default class IntermAddCampaignMember extends LightningElement {
           ContactId: selectedRow.Id,
           Status: "Gestión Mediador",
           OfferAssignedType__c: "M",
-          OfferAssignedCode__c: this.userAccountIntermediaryCode
+          OfferAssignedCode__c: this.intermediaryCode
         };
 
         campaignMembers.push(campaignMember);
