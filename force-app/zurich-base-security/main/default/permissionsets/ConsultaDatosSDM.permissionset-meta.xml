@@ -658,7 +658,7 @@
     </fieldPermissions>
     <fieldPermissions>
 		<editable>false</editable>
-		<field>Account.IntermediaryGroupSDM__C</field>
+		<field>Account.IntermediaryGroupSDM__c</field>
 		<readable>true</readable>
 	</fieldPermissions>
     <fieldPermissions>
