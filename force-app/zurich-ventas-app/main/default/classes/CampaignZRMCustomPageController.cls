@@ -3,8 +3,8 @@
  * con la página custom desarrollada para la ficha de campañas en la comunidad ZRM
  *
  * @author            : amiranda
- * @date              : 17-11-2023
- * @last modified on  : 17-11-2023
+ * @date              : 18-12-2023
+ * @last modified on  : 18-12-2023
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -145,6 +145,8 @@ public with sharing class CampaignZRMCustomPageController
                     cmData.offerStage = offer.StageName;
                     cmData.offerSalesLossReason = offer.Sales_Loss_Reason__c;
                     cmData.offerSalesLossReasonLabel = (String) offer.get('salesLossReasonLabel');
+                    cmData.offerPendingIntermediaryReview = offer.PendingIntermediaryReview__c;
+                    cmData.offerIsClosed = offer.IsClosed;
                 }
 
                 campaignMembers.add(cmData);
@@ -156,6 +158,39 @@ public with sharing class CampaignZRMCustomPageController
         }
 
         return campaignMembers;
+    }
+
+    /**
+     * @description Método que se encarga de lanzar el flujo que se encarga de actualizar
+     * la oferta y el miembro de campaña con los Ids que se pasan por parámetro.
+     *
+     * @author amiranda
+     * @date 18-12-2023
+     * @param offerId Id de la oferta a actualizar
+     * @param campaignMemberId Id del miembro de campaña a actualizar
+     * @param userIntermediaryCode Código de intermediario que se asignará al miembro de campañá
+     * @param userId Id del usuario que pasará a ser el propietario de la oferta a actualizar
+     **/
+    @AuraEnabled
+    public static void updateOfferAndCampaignMember(Id offerId, Id campaignMemberId, String userIntermediaryCode, Id userId)
+    {
+        try
+        {
+            Map<String, Object> inputs = new Map<String, Object> {
+                'OfferId' => offerId,
+                'CampaignMemberId' => campaignMemberId,
+                'UserIntermediaryCode' => userIntermediaryCode,
+                'UserId' => userId
+            };
+
+            Flow.Interview.UpdateOfferAndCampaignMember flow = new Flow.Interview.UpdateOfferAndCampaignMember(inputs);
+            flow.start();
+        }
+        catch (Exception ex)
+        {
+            ErrorLogUtil.commitError(ex, CLASS_NAME);
+            throw new AuraHandledException( ex.getMessage() );
+        }
     }
 
 
@@ -226,5 +261,9 @@ public with sharing class CampaignZRMCustomPageController
         public String offerSalesLossReason {get; set;}
         @AuraEnabled
         public String offerSalesLossReasonLabel {get; set;}
+        @AuraEnabled
+        public Boolean offerPendingIntermediaryReview {get; set;}
+        @AuraEnabled
+        public Boolean offerIsClosed {get; set;}
     }
 }

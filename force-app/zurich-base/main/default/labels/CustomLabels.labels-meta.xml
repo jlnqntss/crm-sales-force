@@ -328,6 +328,14 @@
         <value>Fecha no válida</value>
     </labels>
     <labels>
+        <fullName>FlowApexExceptionMessage</fullName>
+        <categories>Apex Development</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Flow Apex Exception Message</shortDescription>
+        <value>There has been a problem in the execution of the flow associated with the action you are trying to execute. Contact a System Administrator and indicate the following error message:</value>
+    </labels>
+    <labels>
         <fullName>GeneralInsurance</fullName>
         <categories>Values</categories>
         <language>es</language>
@@ -2579,7 +2587,7 @@ Create the record and try again.</value>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ZRM_IntermediaryCampaignList_CardTitle</shortDescription>
-        <value>Campaign</value>
+        <value>Campaigns</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermediaryCampaignList_ComboboxActiveLabel</fullName>
@@ -2687,11 +2695,19 @@ Create the record and try again.</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermediaryCampaignMembers_NoCampaignSelected</fullName>
-        <categories>ZRM_IntermediaryCampaignMembers_NoCampaignSelected</categories>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ZRM_IntermediaryCampaignMembers_NoCampaignSelected</shortDescription>
         <value>No campaign has been selected.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_RowActionAssign</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_RowActionAssign</shortDescription>
+        <value>Assign to me</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermediaryCampaignMembers_RowActionRemove</fullName>
@@ -2766,6 +2782,30 @@ Create the record and try again.</value>
         <value>Type</value>
     </labels>
     <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastAssignButtonErrorMessage</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastAssignButtonErrorMessage</shortDescription>
+        <value>Invalid operation</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastAssignmentRowActionMessage</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastAssignmentRowActionMessage</shortDescription>
+        <value>Reassignment successfully completed</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastAssignRowActionTitle</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastAssignRowActionTitle</shortDescription>
+        <value>Successful reassignment</value>
+    </labels>
+    <labels>
         <fullName>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionMessage</fullName>
         <categories>ZRM_IntermediaryCampaignMembers</categories>
         <language>en_US</language>
@@ -2775,7 +2815,7 @@ Create the record and try again.</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle</fullName>
-        <categories>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle</categories>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle</shortDescription>
@@ -2783,7 +2823,7 @@ Create the record and try again.</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage</fullName>
-        <categories>ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage</categories>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage</shortDescription>

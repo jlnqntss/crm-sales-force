@@ -1,6 +1,6 @@
 // Bare module imports
 import { LightningElement, wire, track } from "lwc";
-import { deleteRecord } from "lightning/uiRecordApi";
+import { getFieldValue, getRecord, deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import {
   subscribe,
@@ -11,8 +11,13 @@ import {
 // "@salesforce/*" imports grouped by type
 import INTERMEDIARY_CAMPAIGN_MEMBER_CHANNEL from "@salesforce/messageChannel/IntermediaryCampaignMembers__c";
 
+import USER_ACCOUNT_INTERMEDIARYCODE from "@salesforce/schema/User.Contact.Account.INFOIntermediaryCode__c";
+
 import { refreshApex } from "@salesforce/apex";
 import getCampaignMembers from "@salesforce/apex/CampaignZRMCustomPageController.getCampaignMembers";
+import updateOfferAndCampaignMember from "@salesforce/apex/CampaignZRMCustomPageController.updateOfferAndCampaignMember";
+
+import userId from "@salesforce/user/Id";
 
 // The rest of the relative imports
 import labels from "./labels";
@@ -23,7 +28,8 @@ const SUCCESS_VARIANT = "success";
 const campaignStatusFilterActiveValue = "active";
 const filterDefaultValue = "all";
 const rowActions = {
-  remove: "remove"
+  remove: "remove",
+  assign: "assign"
 };
 
 export default class DatatableWithRowActions extends LightningElement {
@@ -46,6 +52,7 @@ export default class DatatableWithRowActions extends LightningElement {
   // #endregion
 
   // #region Other properties
+  userId = userId;
   labels = labels;
   subscription;
   campaignId;
@@ -55,6 +62,7 @@ export default class DatatableWithRowActions extends LightningElement {
     cmStatus: filterDefaultValue,
     offerStage: filterDefaultValue
   };
+  userInfo;
 
   get showAddCampaignMemberButton() {
     return (
@@ -78,7 +86,14 @@ export default class DatatableWithRowActions extends LightningElement {
     );
   }
 
-  // #endregion
+  get campaignNotInitialized() {
+    const today = new Date();
+    return today < new Date(this.campaignData.campaignStartDate);
+  }
+
+  get intermediaryCode() {
+    return getFieldValue(this.userInfo, USER_ACCOUNT_INTERMEDIARYCODE);
+  }
 
   // #region LWC lifecycle hooks
 
@@ -126,6 +141,16 @@ export default class DatatableWithRowActions extends LightningElement {
     }
   }
 
+  @wire(getRecord, {
+    recordId: "$userId",
+    fields: [USER_ACCOUNT_INTERMEDIARYCODE]
+  })
+  wiredUser(result) {
+    if (result.data) {
+      this.userInfo = result.data;
+    }
+  }
+
   // #endregion
 
   // #region Event handlers
@@ -142,8 +167,14 @@ export default class DatatableWithRowActions extends LightningElement {
     const actionName = event.detail.action.name;
     const row = event.detail.row;
 
-    if (actionName === rowActions.remove) {
-      this.deleteCampaignMember(row);
+    switch (actionName) {
+      case rowActions.remove:
+        this.deleteCampaignMember(row);
+        break;
+      case rowActions.assign:
+        this.assignOffer(row);
+        break;
+      // no default
     }
   }
 
@@ -181,7 +212,7 @@ export default class DatatableWithRowActions extends LightningElement {
    * @date 20/11/2023
    */
   handleAddingCampaingMembers() {
-    return refreshApex(this._wiredCampaignsMembers);
+    this.refreshCampaignMembersData();
   }
 
   // #endregion
@@ -195,7 +226,6 @@ export default class DatatableWithRowActions extends LightningElement {
     // Al seleccionar una campaña se debe mostrar el spinner
     if (this.campaignId) this.showSpinner();
 
-    let today = new Date();
     let cols;
 
     if (this.campaignData.campaignFilter === campaignStatusFilterActiveValue) {
@@ -205,7 +235,7 @@ export default class DatatableWithRowActions extends LightningElement {
           (col) => col.fieldName !== "offerSalesLossReasonLabel"
         )
       ];
-      if (today < new Date(this.campaignData.campaignStartDate)) {
+      if (this.campaignNotInitialized) {
         cols = [
           ...cols,
           {
@@ -318,9 +348,58 @@ export default class DatatableWithRowActions extends LightningElement {
     }
   }
 
+  /**
+   * Función que se encarga de gestionar la acción de 'Asignarme'. Esta acción
+   * actualiza el miembro de campaña y la oferta relacionada.
+   *
+   * @author amiranda
+   * @date 20/11/2023
+   */
+  async assignOffer(row) {
+    this.showSpinner();
+
+    const { cmId } = row;
+    const index = this.findRowIndexById(cmId);
+    const campaignMemberInfo = this.campaignMembersRawData.at(index);
+
+    try {
+      if (
+        !campaignMemberInfo.offerPendingIntermediaryReview &&
+        campaignMemberInfo.offerIsClosed
+      ) {
+        this.showError(
+          labels.toastGenericErrorTitle,
+          labels.toastAssignButtonErrorMessage
+        );
+      } else {
+        const offerId = campaignMemberInfo.offerId;
+        const campaignMemberId = campaignMemberInfo.cmId;
+
+        await updateOfferAndCampaignMember({
+          offerId,
+          campaignMemberId,
+          userIntermediaryCode: this.intermediaryCode,
+          userId
+        });
+        this.showSuccess(
+          labels.toastAssignmentRowActionTitle,
+          labels.toastAssignmentRowActionMessage
+        );
+        this.refreshCampaignMembersData();
+      }
+    } catch {
+      this.showError(
+        labels.toastGenericErrorTitle,
+        labels.toastGenericErrorMessage
+      );
+    } finally {
+      this.hideSpinner();
+    }
+  }
+
   deleteRow(row) {
-    const { id } = row;
-    const index = this.findRowIndexById(id);
+    const { cmId } = row;
+    const index = this.findRowIndexById(cmId);
     if (index !== -1) {
       this.campaignMembersRawData = this.campaignMembersRawData
         .slice(0, index)
@@ -334,10 +413,10 @@ export default class DatatableWithRowActions extends LightningElement {
     this.filterCampaignMembers();
   }
 
-  findRowIndexById(id) {
+  findRowIndexById(campaignMemberId) {
     let ret = -1;
-    this.campaignMembersRawData.some((row, index) => {
-      if (row.id === id) {
+    this.campaignMembersRawData.some((campaignmember, index) => {
+      if (campaignmember.cmId === campaignMemberId) {
         ret = index;
         return true;
       }
@@ -378,9 +457,15 @@ export default class DatatableWithRowActions extends LightningElement {
   }
 
   getRowActions = (row, doneCallBack) => {
-    const actions = [
-      { label: labels.removeRowAction, name: rowActions.remove }
-    ];
+    let actions = [{ label: labels.removeRowAction, name: rowActions.remove }];
+
+    if (
+      this.campaignData.campaignFilter === campaignStatusFilterActiveValue &&
+      this.campaignNotInitialized &&
+      row.cmStatus === "Pdtes. Revisión Mediador"
+    ) {
+      actions.push({ label: labels.assignRowAction, name: rowActions.assign });
+    }
 
     doneCallBack(actions);
   };
@@ -400,6 +485,8 @@ export default class DatatableWithRowActions extends LightningElement {
     unsubscribe(this.subscription);
     this.subscription = null;
   }
+
+  refreshCampaignMembersData = () => refreshApex(this._wiredCampaignsMembers);
 
   showSpinner = () => (this.campaignMembersData.isLoading = true);
 
