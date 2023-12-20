@@ -10,6 +10,9 @@ private with sharing class CasesSelectorTest
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         insert cases;
 
+        
+
+
     }
 
     @isTest
@@ -149,19 +152,73 @@ private with sharing class CasesSelectorTest
             cas.Type='Venta';
             cas.RecordTypeId=CaseUtil.rtUSPId;
             cas.Status='Cerrado';
+            cas.CloseResult__c='Perdida - Garantías';
+            cas.AutomaticNotifications__c=false;
         }
 
         update casos;
 
         // Test
         Test.startTest();
-        List<Case> matchedRecords = new CasesSelector().getQueryCasesConversionRatio(cuentasRatio,'Combinado','Venta',CaseUtil.rtUSPId,'365','Cerrado');
+        List<Case> matchedRecords = new CasesSelector().getQueryCasesConversionRatio(cuentasRatio,'Combinado','No Realizado','Venta',CaseUtil.rtUSPId,'365','Cerrado');
         Test.stopTest();
 
         System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');
 
     }
 
+
+    /**
+     * Test del método que devuelve la query de Cases para Batch_RatioConversionIntermediary
+     * @author lrodriguez6@seidor.es
+     * @date 08/12/2022
+     */
+    @isTest
+    static void test_getQueryChildCasesConversionRatio_matchedRecord()
+    {
+        List<Case> casos = [SELECT Id, CreatedOffer__c FROM Case];
+        List<Case> casosPadre= new List<Case>();
+        Case casoPadre1= casos[0];
+        casoPadre1.Subject='test';
+        casoPadre1.SourceArea__c='Mediator';
+        casoPadre1.Type='Venta';
+        casoPadre1.RecordTypeId=CaseUtil.rtUSPId;
+        casoPadre1.Status='Cerrado';
+        casoPadre1.CloseResult__c='Perdida - Garantías';
+        casoPadre1.AutomaticNotifications__c=false;
+
+        update casoPadre1;
+        casosPadre.add(casoPadre1);
+
+        List<Account> cuentasRatio= [SELECT Id FROM Account];
+    
+        
+        for (Integer i=5; i<casos.size();i++)
+        {
+            casos[i].Subject='test';
+            casos[i].SourceArea__c='Mediator';
+            casos[i].Type='Venta';
+            casos[i].RecordTypeId=CaseUtil.rtUSPId;
+            casos[i].Status='Cerrado';
+            casos[i].CloseResult__c='Ganada';
+            casos[i].AutomaticNotifications__c=false;
+            casos[i].ParentId=casoPadre1.Id;
+            casos[i].QuotationStage__c='Won';
+        }
+
+        update casos;
+
+        
+
+        // Test
+        Test.startTest();
+        Map <Id, Decimal> matchedRecords = new CasesSelector().getMapChildCasesConversionRatio(casosPadre,'Won','No Realizado','Combinado','Venta',CaseUtil.rtUSPId,'365','Cerrado');
+        Test.stopTest();
+
+
+        System.assertEquals(1, matchedRecords.size(), 'no devuelve el número de registros correcto');
+
+    }
 
     /**
      * Test del método que devuelve el queryString para RelateCasesToNewOffersBatch. En este test la query ha de volver completada
