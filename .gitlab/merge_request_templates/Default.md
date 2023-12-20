@@ -61,4 +61,4 @@ _Eliminar labels que no apliquen a continuación, debe quedar una en cada línea
 /label ~Bug ~Feature
 /label ~OCS ~SDM ~USP ~ZRM ~ZE ~KLINC ~CROSS
 /assign @jonandersanjuan @o.iglesiasalcala
-/assign_reviewer @arcortazar @jgallaga1 
+/assign_reviewer @arcortazar @amirlopez 
