@@ -41,10 +41,10 @@ export default [
         name: "Gestión Mediador"
       },
       {
-        label: "Pdtes. Revisión Mediador",
+        label: "Pdte. Revisión Mediador",
         checked: false,
         disabled: true,
-        name: "Pdtes. Revisión Mediador"
+        name: "Pdte. Revisión Mediador"
       }
     ]
   },

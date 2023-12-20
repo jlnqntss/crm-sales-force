@@ -3,8 +3,8 @@
     <actionCalls>
         <name>GetGroupId</name>
         <label>GetGroupId</label>
-        <locationX>1238</locationX>
-        <locationY>842</locationY>
+        <locationX>1370</locationX>
+        <locationY>1250</locationY>
         <actionName>FindGroupIdByEmailAndGroupNameAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -29,14 +29,45 @@
                 <elementReference>GestorPreferenteAsignado</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>FindGroupIdByEmailAndGroupNameAction</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <assignments>
+        <name>Asignar_Gestor_Preferente_Como_Usuario</name>
+        <label>Asignar Gestor Preferente Como Usuario</label>
+        <locationX>1370</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>EmailPropietarioCaso</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_Gestor_Preferente_Usuario</name>
+        <label>Asignar Gestor Preferente Usuario</label>
+        <locationX>1502</locationX>
+        <locationY>1058</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>EmailPropietarioCaso</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetGroupId</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Asignar_variables_cola</name>
         <label>Asignar variables cola</label>
-        <locationX>1106</locationX>
-        <locationY>1166</locationY>
+        <locationX>1238</locationX>
+        <locationY>1574</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
             <operator>Assign</operator>
@@ -67,9 +98,25 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>AsignarGestorPreferente</name>
+        <label>Asignar Gestor Preferente</label>
+        <locationX>1238</locationX>
+        <locationY>1058</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>GestorPreferente</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetGroupId</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>CaseOwnerAssignment</name>
         <label>Asignar propietario caso</label>
-        <locationX>2426</locationX>
+        <locationX>2690</locationX>
         <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -85,8 +132,8 @@
     <assignments>
         <name>CCServiceClosedCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Cerrado CCService</label>
-        <locationX>2294</locationX>
-        <locationY>2090</locationY>
+        <locationX>2492</locationX>
+        <locationY>2498</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -98,8 +145,8 @@
     <assignments>
         <name>CCServiceOpenCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Abierto CCService</label>
-        <locationX>2030</locationX>
-        <locationY>1874</locationY>
+        <locationX>2228</locationX>
+        <locationY>2282</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -111,11 +158,11 @@
     <assignments>
         <name>ConstruccionCarteraAssignment</name>
         <label>Asignar Construcción Cartera</label>
-        <locationX>1898</locationX>
+        <locationX>2162</locationX>
         <locationY>458</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>NombreConstruccionCartera</elementReference>
             </value>
@@ -128,7 +175,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>GetGroupId</targetReference>
+            <targetReference>Owner_usuario</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -137,8 +184,8 @@
         <locationX>1106</locationX>
         <locationY>458</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>NombreConstruccionVenta</elementReference>
             </value>
@@ -151,14 +198,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>GetGroupId</targetReference>
+            <targetReference>Owner_usuario</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>CSMAdmManagerAssignment</name>
         <label>Asignar CSM Administración Manager</label>
-        <locationX>1502</locationX>
-        <locationY>1766</locationY>
+        <locationX>1700</locationX>
+        <locationY>2174</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -170,8 +217,8 @@
     <assignments>
         <name>CSMIndividualManagerAssignment</name>
         <label>Asignar CSM Individual Manager</label>
-        <locationX>974</locationX>
-        <locationY>1766</locationY>
+        <locationX>1172</locationX>
+        <locationY>2174</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -183,8 +230,8 @@
     <assignments>
         <name>DanosRCCarteraAssignment</name>
         <label>Asignar Daños RC Cartera</label>
-        <locationX>1370</locationX>
-        <locationY>458</locationY>
+        <locationX>1634</locationX>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -199,8 +246,8 @@
         <locationX>50</locationX>
         <locationY>566</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>NombreDanosRCVenta</elementReference>
             </value>
@@ -213,7 +260,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>GetGroupId</targetReference>
+            <targetReference>Owner_usuario</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -222,8 +269,8 @@
         <locationX>314</locationX>
         <locationY>566</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>NombreDanosRCVenta</elementReference>
             </value>
@@ -236,17 +283,17 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>GetGroupId</targetReference>
+            <targetReference>Owner_usuario</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>SpecialtiesCarteraAssignment</name>
         <label>Asignar Specialties Cartera</label>
-        <locationX>1634</locationX>
+        <locationX>1898</locationX>
         <locationY>458</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>NombreSpecialtiesCartera</elementReference>
             </value>
@@ -259,7 +306,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>GetGroupId</targetReference>
+            <targetReference>Owner_usuario</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -268,8 +315,8 @@
         <locationX>842</locationX>
         <locationY>458</locationY>
         <assignmentItems>
-            <assignToReference>GestorPreferenteAsignado</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
             <value>
                 <elementReference>NombreSpecialtiesVenta</elementReference>
             </value>
@@ -282,14 +329,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>GetGroupId</targetReference>
+            <targetReference>Owner_usuario</targetReference>
         </connector>
     </assignments>
     <decisions>
         <name>Administration_manager_encontrado</name>
         <label>¿Administration manager encontrado?</label>
-        <locationX>1634</locationX>
-        <locationY>1658</locationY>
+        <locationX>1832</locationX>
+        <locationY>2066</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>AdminManagerEncontrado</name>
@@ -310,8 +357,8 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Qué Call Center es?</label>
-        <locationX>1964</locationX>
-        <locationY>1550</locationY>
+        <locationX>2162</locationX>
+        <locationY>1958</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>CSMParticularesOutcome</name>
@@ -369,15 +416,15 @@
     <decisions>
         <name>CaseAssignedToUserDecision</name>
         <label>¿Caso asignado a usuario?</label>
-        <locationX>1964</locationX>
+        <locationX>2162</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>CallCenterDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>No_Asignado_a_Usuario_y_USP</name>
-            <conditionLogic>1 AND (2 OR (3 AND 4))</conditionLogic>
+            <name>USP</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>ColaGenesysCallCenter</leftValueReference>
                 <operator>EqualTo</operator>
@@ -385,31 +432,10 @@
                     <stringValue>USP</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>IDPropietarioCaso</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>00G</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Integrator</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>System Administrator</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
                 <targetReference>Mediador_Panelizado</targetReference>
             </connector>
-            <label>No Asignado a Usuario y USP</label>
+            <label>USP</label>
         </rules>
         <rules>
             <name>AssignedToUserOutcome</name>
@@ -430,7 +456,7 @@
     <decisions>
         <name>CaseOrOpportunityDecision</name>
         <label>¿Caso u oportunidad?</label>
-        <locationX>2657</locationX>
+        <locationX>2855</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -464,8 +490,8 @@
     <decisions>
         <name>ClosedCasesFoundDecision</name>
         <label>¿Casos cerrados encontrados?</label>
-        <locationX>2426</locationX>
-        <locationY>1982</locationY>
+        <locationX>2624</locationX>
+        <locationY>2390</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>ClosedCasesFoundOutcome</name>
@@ -486,8 +512,8 @@
     <decisions>
         <name>El_mediador_panelizado_es_sucriptor_uno</name>
         <label>¿El mediador panelizado es sucriptor uno?</label>
-        <locationX>1238</locationX>
-        <locationY>950</locationY>
+        <locationX>1370</locationX>
+        <locationY>1358</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>SuscriptorUno</name>
@@ -506,10 +532,49 @@
         </rules>
     </decisions>
     <decisions>
+        <name>El_owner_es_un_usuario</name>
+        <label>¿El owner es un usuario?</label>
+        <locationX>1502</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>DanosRCCarteraAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>OwnerUsuario</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>005</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Gestor_Preferente_Como_Usuario</targetReference>
+            </connector>
+            <label>Es usuario</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Individual_manager_encontrado</name>
         <label>¿Individual manager encontrado?</label>
-        <locationX>1106</locationX>
-        <locationY>1658</locationY>
+        <locationX>1304</locationX>
+        <locationY>2066</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>IndividualManagerEncontrado</name>
@@ -530,7 +595,7 @@
     <decisions>
         <name>Mediador_Panelizado</name>
         <label>¿Mediador Panelizado?</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>350</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -659,7 +724,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>DanosRCCarteraAssignment</targetReference>
+                <targetReference>El_owner_es_un_usuario</targetReference>
             </connector>
             <label>Cartera Daños RC</label>
         </rules>
@@ -725,8 +790,8 @@
     <decisions>
         <name>OpenCasesFoundDecision</name>
         <label>¿Casos abiertos encontrados?</label>
-        <locationX>2228</locationX>
-        <locationY>1766</locationY>
+        <locationX>2426</locationX>
+        <locationY>2174</locationY>
         <defaultConnector>
             <targetReference>GetClosedCasesAction</targetReference>
         </defaultConnector>
@@ -745,6 +810,59 @@
                 <targetReference>CCServiceOpenCaseAgentAssignment</targetReference>
             </connector>
             <label>Casos abiertos encontrados</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Owner_usuario</name>
+        <label>¿Owner usuario?</label>
+        <locationX>1370</locationX>
+        <locationY>950</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_Gestor_Preferente_Usuario</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_es_Usuario</name>
+            <conditionLogic>1 OR ( (2 OR 3 OR 4) AND 5)</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Integrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Administrador del sistema</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>005</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AsignarGestorPreferente</targetReference>
+            </connector>
+            <label>No es Usuario</label>
         </rules>
     </decisions>
     <decisions>
@@ -837,8 +955,8 @@
     <recordLookups>
         <name>GetClosedCasesAction</name>
         <label>Obtener Casos Cerrados</label>
-        <locationX>2426</locationX>
-        <locationY>1874</locationY>
+        <locationX>2624</locationX>
+        <locationY>2282</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ClosedCasesFoundDecision</targetReference>
@@ -867,8 +985,8 @@
     <recordLookups>
         <name>GetOpenCasesAction</name>
         <label>Obtener Casos Abiertos</label>
-        <locationX>2228</locationX>
-        <locationY>1658</locationY>
+        <locationX>2426</locationX>
+        <locationY>2066</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>OpenCasesFoundDecision</targetReference>
@@ -904,8 +1022,8 @@
     <recordLookups>
         <name>Obtener_cola_Genesys</name>
         <label>Obtener cola Genesys</label>
-        <locationX>1106</locationX>
-        <locationY>1058</locationY>
+        <locationX>1238</locationX>
+        <locationY>1466</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Asignar_variables_cola</targetReference>
@@ -923,7 +1041,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>2531</locationX>
+        <locationX>2729</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CaseOrOpportunityDecision</targetReference>
@@ -1002,6 +1120,13 @@
         <value>
             <stringValue></stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>GestorPreferente</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>GestorPreferenteAsignado</name>

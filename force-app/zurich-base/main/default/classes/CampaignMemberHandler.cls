@@ -44,9 +44,7 @@ public with sharing class CampaignMemberHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-        CampaignMemberUtil.checkIntermediaryProfile((List<CampaignMember>) newList);
-    }
+    {} 
 
     /**
      * beforeDelete

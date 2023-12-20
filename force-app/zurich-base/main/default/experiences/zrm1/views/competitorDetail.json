@@ -1,15 +1,10 @@
 {
   "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "componentName": "siteforce:sldsOneColLayout",
+  "componentName": "siteforce:sldsTwoCol84Layout",
   "dataProviders": [],
   "id": "47404a3d-5c1e-46db-9bcc-0a2a4f85607f",
   "label": "Competitor Detail",
   "regions": [
-    {
-      "id": "808cbd9d-a0ea-4388-b90d-33ef85e8a889",
-      "regionName": "header",
-      "type": "region"
-    },
     {
       "components": [
         {
@@ -23,8 +18,8 @@
           "type": "component"
         }
       ],
-      "id": "4fdaaac9-a0fd-4fd6-8e8f-d6f1b9d180a7",
-      "regionName": "content",
+      "id": "808cbd9d-a0ea-4388-b90d-33ef85e8a889",
+      "regionName": "header",
       "type": "region"
     },
     {
@@ -80,11 +75,12 @@
               "components": [
                 {
                   "componentAttributes": {
-                    "recordId": "{!recordId}",
+                    "relatedListApiName": "Histories",
+                    "relatedListComponentOverride": "GRID",
                     "width": "MEDIUM"
                   },
-                  "componentName": "forceCommunity:relatedRecords",
-                  "id": "ec18c751-e838-44e6-8b28-81f6472f7ea9",
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "aa79f060-60b1-4677-9eae-798c031fdd58",
                   "renditionMap": {},
                   "type": "component"
                 }
@@ -101,6 +97,11 @@
           "type": "component"
         }
       ],
+      "id": "4fdaaac9-a0fd-4fd6-8e8f-d6f1b9d180a7",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
       "id": "9c8a87e4-03c3-46d6-854e-65f1972ba252",
       "regionName": "footer",
       "type": "region"
@@ -121,6 +122,25 @@
       ],
       "id": "ee96a28d-400f-4d16-92a1-b5a74b81b463",
       "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "relatedListApiName": "AttachedContentDocuments",
+            "relatedListComponentOverride": "GRID",
+            "width": "SMALL"
+          },
+          "componentName": "forceCommunity:responsiveRelatedListSingle",
+          "id": "6796d314-f942-4869-a830-10cabbac78cf",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "f68b16e8-d5a7-42d6-a964-e5b31e277d78",
+      "regionName": "sidebar",
       "type": "region"
     }
   ],

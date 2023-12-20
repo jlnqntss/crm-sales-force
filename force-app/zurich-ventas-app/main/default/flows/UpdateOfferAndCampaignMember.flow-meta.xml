@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>En caso de error en la actualización del miembro de campaña se lanza la excepción correspondiente. Se pasa por parámetro (exceptionMessage)  el mensaje de error que nos proporciona el propio flujo.</description>
+        <name>ThrowCampaignMemberUpdateException</name>
+        <label>Throw Campaign Member Update Exception</label>
+        <locationX>440</locationX>
+        <locationY>350</locationY>
+        <actionName>ExceptionUtil</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>exceptionMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ExceptionUtil</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <description>En caso de error en la actualización de la oferta se lanza la excepción correspondiente. Se pasa por parámetro (exceptionMessage)  el mensaje de error que nos proporciona el propio flujo.</description>
+        <name>ThrowOfferUpdateException</name>
+        <label>Throw Offer Update Exception</label>
+        <locationX>704</locationX>
+        <locationY>242</locationY>
+        <actionName>ExceptionUtil</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>exceptionMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ExceptionUtil</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>59.0</apiVersion>
+    <constants>
+        <description>Almacena el valor &apos;Error&apos; para el nivel de error del evento de plataforma &apos;Error_Event__e&apos;</description>
+        <name>ErrorEventErrorLevel</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Error</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <description>Almacena el valor &apos;Gestión Mediador&apos; del campo &apos;Status&apos; del miembro de campaña.</description>
+        <name>GetionMediadorStatusValue</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Gestión Mediador</stringValue>
+        </value>
+    </constants>
+    <description>Flujo invocado desde las clase controladora Apex &apos;CampaignZRMCustomPageController&apos; utilizada en el componente LWC &apos;IntermediaryCampaignMembers&apos; para actualizar Ofertas y Miembros de Campaña.</description>
+    <environments>Default</environments>
+    <interviewLabel>Update Offer And Campaign Member {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update Offer And Campaign Member</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Se actualiza el miembro de campaña relacionado con la oferta actualizada en el paso anterior. Se identifica al miembro de campaña a través de la variable &apos;CampaignMemberId&apos; que se pasa por parámetro.</description>
+        <name>UpdateCampaignMemberAction</name>
+        <label>Update Campaign Member</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <faultConnector>
+            <targetReference>ThrowCampaignMemberUpdateException</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CampaignMemberId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OfferAssignedCode__c</field>
+            <value>
+                <elementReference>UserIntermediaryCode</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <elementReference>GetionMediadorStatusValue</elementReference>
+            </value>
+        </inputAssignments>
+        <object>CampaignMember</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Se actualiza la oferta con el Id pasado por parámetro a través de la variable &apos;OfferId&apos;.</description>
+        <name>UpdateOfferAction</name>
+        <label>Update Offer</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <connector>
+            <targetReference>UpdateCampaignMemberAction</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>ThrowOfferUpdateException</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>OfferId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>BusinessCode__c</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>UserId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+    </recordUpdates>
+    <runInMode>DefaultMode</runInMode>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>UpdateOfferAction</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Id del miembro de campaña que se va a actualizar..</description>
+        <name>CampaignMemberId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Id de la oferta.</description>
+        <name>OfferId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Id del usuario que va a pasar a ser el propietario de la oferta a actualizar.</description>
+        <name>UserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Código de mediador del Agente Mediador que se asigna la oferta.</description>
+        <name>UserIntermediaryCode</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

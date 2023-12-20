@@ -19,7 +19,7 @@
         <field>Account.AccidentRate__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Account.Age__c</field>
         <readable>true</readable>
@@ -64,7 +64,7 @@
         <field>Account.AdministrationEmail__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Account.Alfil__c</field>
         <readable>true</readable>
@@ -154,7 +154,7 @@
         <field>Account.Class__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Account.Contact_Name__c</field>
         <readable>true</readable>
@@ -199,7 +199,7 @@
         <field>Account.Expert__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Account.Fax</field>
         <readable>true</readable>
@@ -464,7 +464,7 @@
         <field>Account.Rating</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Account.RegistryDGS__c</field>
         <readable>true</readable>
@@ -954,12 +954,12 @@
         <field>Asset.YearOfconstruction__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.Description</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.IsActive</field>
         <readable>true</readable>
@@ -969,12 +969,12 @@
         <field>Campaign.NumberOfContacts</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.Scope__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.Type</field>
         <readable>true</readable>
@@ -984,12 +984,12 @@
         <field>CampaignMember.AccountId__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>CampaignMember.EmailOptOutContact__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>CampaignMember.ScopeId__c</field>
         <readable>true</readable>
@@ -1644,7 +1644,7 @@
         <field>Claim__c.ClaimType__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Claim__c.DateOfOccurrence__c</field>
         <readable>true</readable>
@@ -1679,7 +1679,7 @@
         <field>Claim__c.LinkINFO__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Claim__c.PolicyHolder__c</field>
         <readable>true</readable>
@@ -1707,6 +1707,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Claim__c.OpenDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Competitor__c.ContactDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3059,7 +3064,7 @@
         <field>Opportunity.Activity__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Amount</field>
         <readable>false</readable>
@@ -3084,7 +3089,7 @@
         <field>Opportunity.Campaign__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.CommercialCode__c</field>
         <readable>true</readable>
@@ -3134,7 +3139,7 @@
         <field>Opportunity.Discount__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.ClonedOfferForIntermediary__c</field>
         <readable>true</readable>
@@ -3244,7 +3249,7 @@
         <field>Opportunity.PaymentType__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.PersonLeadSource__c</field>
         <readable>true</readable>
@@ -3284,7 +3289,7 @@
         <field>Opportunity.ResultingPolicyNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Sales_Loss_Reason_Date_Time__c</field>
         <readable>true</readable>
@@ -3390,7 +3395,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Policy__c.ExternalCollaboratorPolicy__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3999,7 +4004,7 @@
         <field>Task.WhoId</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>et4ae5__IndividualEmailResult__c.et4ae5__CampaignMemberId__c</field>
         <readable>true</readable>
@@ -4134,7 +4139,7 @@
         <field>purecloud__PureCloud_Queue__c.SalesforceQueueName__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Campaign.BusinessCode__c</field>
         <readable>true</readable>
@@ -4195,7 +4200,7 @@
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>ZRM Consulta Datos</label>
-    <objectPermissions>
+<objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
