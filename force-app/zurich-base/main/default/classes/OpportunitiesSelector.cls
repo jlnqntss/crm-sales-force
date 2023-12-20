@@ -450,7 +450,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     public String findZRMtoReassign()
     {
         return 'SELECT Id, AccountId, Account.Name, Account.Phone, Account.PreferedContactStart__c, ' + 
-                    'Account.PreferedContactEnd__c, Account.WebId__c, OwnerId FROM Opportunity ' +
+                    'Account.PreferedContactEnd__c, Account.WebId__c, OwnerId, CreatedDate FROM Opportunity ' +
                     'WHERE Owner.Profile.Name = \'Agente Ventas\' AND ReassignToContactCenter__c = true';
        
     }
