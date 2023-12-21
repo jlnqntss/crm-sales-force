@@ -4,7 +4,7 @@
  * @date 13/12/2023
  */
 
- public class GetCaseCloseInteractions {
+ public with sharing class GetCaseCloseInteractions {
     /*
      * Método que obtiene los registros de los casos de los que se quiere cerrar la interaccion
      * Una vez que los recupera, activa el check closeInteractions y actualiza estos registros con el nuevo valor
