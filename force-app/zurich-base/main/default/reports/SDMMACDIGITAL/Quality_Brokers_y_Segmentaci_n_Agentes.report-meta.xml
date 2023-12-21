@@ -51,6 +51,18 @@
         <field>ACCOUNT.NAME</field>
     </columns>
     <columns>
+        <field>Account.TerritorialDirection__c</field>
+    </columns>
+    <columns>
+        <field>Account.Zone__c</field>
+    </columns>
+    <columns>
+        <field>ADDRESS1_STATE</field>
+    </columns>
+    <columns>
+        <field>BucketField_20014024</field>
+    </columns>
+    <columns>
         <field>Account.SDMAssociation__c</field>
     </columns>
     <columns>
@@ -284,18 +296,6 @@
     </columns>
     <columns>
         <field>Account.Segmento_Expats_Hogar__c</field>
-    </columns>
-    <columns>
-        <field>Account.TerritorialDirection__c</field>
-    </columns>
-    <columns>
-        <field>Account.Zone__c</field>
-    </columns>
-    <columns>
-        <field>ADDRESS1_STATE</field>
-    </columns>
-    <columns>
-        <field>BucketField_20014024</field>
     </columns>
     <crossFilters>
         <operation>with</operation>
