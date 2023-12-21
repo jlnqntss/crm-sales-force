@@ -530,16 +530,25 @@ public class INFOHandler implements ISystem
      * @date 15/05/2023
      * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
      * @param ExternalRequest__c externalRequest : External request que debe ser procesada
+     * @change 21/12/2023 - aberuete - Añadir en el campo descripción el usuario creador de la nota
      */
     @testvisible
     private static void processNoteToCase (Map<String, Object> recordValuesMap, ExternalRequest__c externalRequest)
     {
+         
         // Normal transformation of fields
         Case caseRecord = (Case) ExternalRequestHandlerUtil.tf.transform(NOTE, SOBJECT_CASE, recordValuesMap);
         // Assign the Case Origin to "Nota INFO"
         caseRecord.Origin = NOTE_CASE_ORIGIN;
         // Assign the Case Source Area to "Mediator"
         caseRecord.SourceArea__c = NOTE_CASE_SOURCE_AREA;
+
+        String descriptionCase = getDescriptionForCase (recordValuesMap);
+
+        if (String.isNotBlank(descriptionCase))
+        {
+            caseRecord.Description = descriptionCase;
+        }
 
         //Tipo de NOTA INFO
         //Se utiliza el método getEquivalence para comprobar si el tipo de Nota INFO es RBCO/RBNW/SINO
@@ -570,5 +579,36 @@ public class INFOHandler implements ISystem
         caseRecord = ExternalRequestHandlerUtil.fillTypificationIntoCase (recordValuesMap, 'NOTE_DESC_TIPO_ENVIO', 'NOTE_DESC_SUBTIPO', caseRecord);
 
         ExternalRequestHandlerUtil.addRecordToMap(externalRequest, NOTE, SOBJECT_CASE, caseRecord);
+    }
+
+    /**
+     * Obtener la descripción del caso y añadir el usuario creador de la nota
+     **
+     * @author aberuete
+     * @date 21/12/2023
+     * @param Map<String, Object> recordValuesMap: Mapa que contiene el contenido del json de las external request
+     */
+    private static String getDescriptionForCase (Map<String, Object> recordValuesMap)
+    {
+        String descriptionCase; 
+
+        if (recordValuesMap.containsKey('note_texto'))
+        {
+            descriptionCase = recordValuesMap.get('note_texto') +'\n';  
+        }
+
+        if (recordValuesMap.containsKey('note_usuario') && String.isNotBlank((String)recordValuesMap.get('note_usuario')))
+        {
+            if (String.isNotBlank(descriptionCase))
+            {
+                descriptionCase = descriptionCase + 'USUARIO CREADOR: ' + recordValuesMap.get('note_usuario');
+            }
+            else 
+            {
+                descriptionCase = 'USUARIO CREADOR: ' + recordValuesMap.get('note_usuario');
+            }   
+        }
+
+        return descriptionCase;
     }
 }
