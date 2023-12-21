@@ -28,6 +28,9 @@ public with sharing class Batch_RatioConversionIntermediaryTest
         {
             c.RecordTypeId=caseRecordTypeId;
             c.Type='Venta';
+            c.Subject='test';
+            c.SourceArea__c='Mediator';
+            c.AutomaticNotifications__c=false;
         }
 
         //Casos de la primera cuenta
@@ -74,6 +77,8 @@ public with sharing class Batch_RatioConversionIntermediaryTest
         cases[4].QuotationStage__c='Won';
         cases[7].QuotationStage__c='Won';
         update cases;
+
+        
         
         Test.startTest();
         Database.executeBatch(batch);
@@ -86,6 +91,33 @@ public with sharing class Batch_RatioConversionIntermediaryTest
         
         //Segunda cuenta 1 caso ganado 2 combinados 1 asignado // Ratio debe ser 0.5
         System.assertEquals(100,allAccountsUpdate[1].USPConversionRatio__c);
+
+    }
+
+    @IsTest
+    static void test_RatioConversionChildIntermediaryTest_OK()
+    {
+        Batch_RatioConversionIntermediary batch= new Batch_RatioConversionIntermediary();
+        List<Case> cases = [SELECT Id, Status, QuotationStage__c,AccountId FROM Case];
+        List<Account> allAccountsUpdate= [SELECT USPConversionRatio__c FROM Account];
+
+        cases[0].QuotationStage__c='Won';
+        cases[4].QuotationStage__c='Won';
+        cases[4].AccountId=allAccountsUpdate[0].Id;
+        cases[4].ParentId=cases[2].Id;
+        update cases;
+
+
+        Test.startTest();
+        Database.executeBatch(batch);
+        Test.stopTest();
+
+        List<Account> allAccountsUpdate2= [SELECT USPConversionRatio__c FROM Account];
+       
+        //Primera cuenta 2 caso won de 4 // Ratio debe ser 0.25
+        System.assertEquals(100,allAccountsUpdate2[0].USPConversionRatio__c);
+        
+        
 
     }
 }

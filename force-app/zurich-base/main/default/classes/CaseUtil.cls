@@ -8,6 +8,8 @@ public with sharing class CaseUtil
 {
     //Constantes
     public static final String statusCombinado='Combinado';
+    public static final String closeResult='No Realizado';
+    public static final String statusWon='Won';
     public static final String typeVenta= 'Venta';
     public static final String rT_USP_CASES= 'USPInquiry';
     public static final String queryDays ='365';
@@ -690,17 +692,19 @@ public with sharing class CaseUtil
     public static List<Account> generateAccountRatio(List<Account> accountsIntermediary)
     {
         List<Case> cases= new List<Case>();
-        
+        List<Account> allIntermediaryToUpdate= new List<Account>();
+
+        Map <Id, Decimal> mapAllIntermediaryCases= new Map <Id,Decimal>();
+        Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
+        Map <Id, Decimal> mapWonChildCases= new Map <Id,Decimal>();
 
         Id rtCasesUSPId= Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rT_USP_CASES)?.getRecordTypeId();
     
-        cases= new CasesSelector().getQueryCasesConversionRatio(accountsIntermediary,statusCombinado,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
-       
-        Map <Id, Decimal> mapAllIntermediaryCases= new Map <Id,Decimal>();
-        Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
-        
-        List<Account> allIntermediaryToUpdate= new List<Account>();
+        cases= new CasesSelector().getQueryCasesConversionRatio(accountsIntermediary,statusCombinado,closeResult,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
 
+        mapWonChildCases= new CasesSelector().getMapChildCasesConversionRatio(cases,statusWon,closeResult,statusCombinado,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
+
+       
 
         for(Case currentCase:cases)
             {   
@@ -713,7 +717,7 @@ public with sharing class CaseUtil
                 
                 mapAllIntermediaryCases.put(currentCase.AccountId,(mapAllIntermediaryCases.get(currentCase.AccountId)+1));
                         
-                if(currentCase.QuotationStage__c=='Won')
+                if(currentCase.QuotationStage__c=='Won' || mapWonChildCases.get(currentCase.Id)>=1)
                 {       
                     mapWonIntermediaryCases.put(currentCase.AccountId,(mapWonIntermediaryCases.get(currentCase.AccountId)+1));
                 }

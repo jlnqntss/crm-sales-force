@@ -209,16 +209,19 @@ public with sharing class CasesSelector extends RecordsSelector
      * @param String days para filtrar la query
      * @return String query que se va a lanzar en el batch
      */
-    public List<Case> getQueryCasesConversionRatio(List<Account> accountsIntermediary,String statusCombinado, String typeVenta, String rtCasesUSPId, String queryDays, String cerrado)
+    public List<Case> getQueryCasesConversionRatio(List<Account> accountsIntermediary,String statusCombinado,String closeResult, String typeVenta, String rtCasesUSPId, String queryDays, String cerrado)
     {
-        if(accountsIntermediary != null && statusCombinado!=null && !String.isBlank(statusCombinado) && typeVenta!=null && !String.isBlank(typeVenta) && rtCasesUSPId!=null && !String.isBlank(rtCasesUSPId) )
+        if(accountsIntermediary != null && closeResult!=null && statusCombinado!=null && !String.isBlank(statusCombinado) && typeVenta!=null && !String.isBlank(typeVenta) && rtCasesUSPId!=null && !String.isBlank(rtCasesUSPId) )
         {
             this.baseQuery.selectFields(new Set<Schema.SObjectField>{
                 Case.AccountId,
                 Case.QuotationStage__c
             })
             .addConditionIn(Case.AccountId, accountsIntermediary)
+            .addConditionEq(Case.ParentId,null)
             .addConditionNotEq(Case.Status, statusCombinado)
+            .addConditionNotEq(Case.CloseResult__c, closeResult)
+            .addConditionNotEq(Case.AutomaticNotifications__c,true)
             .addConditionEq(Case.Type, typeVenta)
             .addConditionString(CASES_MODIFY_LAST_DATE+queryDays)
             .addConditionEq(Case.RecordTypeId,rtCasesUSPId )
@@ -231,6 +234,57 @@ public with sharing class CasesSelector extends RecordsSelector
             return new List<Case>() ;
         }
     }
+
+    /**
+     * Método utilizado por el batch Batch_RatioConversionIntermediary para obtener los casos hijos que se encuentran en estado ganado para 
+     * calcular el ratio sobre el mediador.
+     * @author lrodriguez6@seidor.es
+     * @date 18/12/2023
+     * @param List<Id> idsCasesFiltered, String statusWon
+     * @return Map Casos Padre que tienen Casos Hijos Ganados
+     */
+    public Map <Id, Decimal> getMapChildCasesConversionRatio(List<Case> parentCases,String statusWon,String closeResult,String statusCombinado, String typeVenta, String rtCasesUSPId, String queryDays, String cerrado)
+    {   
+        List<Case> childCases = new List<Case>();
+        Map <Id, Decimal> mapAllChildCases= new Map <Id,Decimal>();
+        if(parentCases != null && statusWon!=null && !String.isBlank(statusWon) && closeResult!=null && !String.isBlank(closeResult) && statusCombinado!=null && !String.isBlank(statusCombinado) && typeVenta!=null && !String.isBlank(typeVenta) && rtCasesUSPId!=null && !String.isBlank(rtCasesUSPId) )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.QuotationStage__c,
+                Case.ParentId
+            })
+            .addConditionIn(Case.ParentId, parentCases)
+            .addConditionEq(Case.QuotationStage__c,statusWon)
+            .addConditionNotEq(Case.Status, statusCombinado)
+            .addConditionNotEq(Case.CloseResult__c, closeResult)
+            .addConditionNotEq(Case.AutomaticNotifications__c,true)
+            .addConditionEq(Case.Type, typeVenta)
+            .addConditionString(CASES_MODIFY_LAST_DATE+queryDays)
+            .addConditionEq(Case.RecordTypeId,rtCasesUSPId )
+            .addConditionEq(Case.Status,cerrado);
+
+            childCases=this.baseQuery.run();
+
+            for (Case c:childCases)
+            {
+                if(mapAllChildCases.get(c.ParentId)==null)
+                {
+                    mapAllChildCases.put(c.ParentId,0);
+                }
+
+                mapAllChildCases.put(c.ParentId,(mapAllChildCases.get(c.ParentId)+1));
+
+            }
+
+            return mapAllChildCases;
+        }
+        else
+        {
+            return new Map <Id, Decimal>() ;
+        }
+    }
+
+
 
     /**
      * Método utilizado por el batch Batch_CompleteCases para obtener los casos de la última semana sin vinculación a Poliza u Oferta
