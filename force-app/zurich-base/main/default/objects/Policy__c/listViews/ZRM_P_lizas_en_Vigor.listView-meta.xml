@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRM_P_lizas_en_Vigor</fullName>
+    <columns>NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PolicyStatus__c</field>
+        <operation>equals</operation>
+        <value>V</value>
+    </filters>
+    <label>ZRM Pólizas en Vigor</label>
+    <sharedTo>
+        <group>Ventas_Agente_Mediador</group>
+    </sharedTo>
+</ListView>

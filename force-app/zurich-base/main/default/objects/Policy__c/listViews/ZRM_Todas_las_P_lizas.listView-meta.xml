@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRM_Todas_las_P_lizas</fullName>
+    <columns>NAME</columns>
+    <filterScope>Everything</filterScope>
+    <label>ZRM Todas las Pólizas</label>
+    <sharedTo>
+        <group>Ventas_Agente_Mediador</group>
+    </sharedTo>
+</ListView>
