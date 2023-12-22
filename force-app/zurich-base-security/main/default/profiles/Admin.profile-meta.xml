@@ -4256,6 +4256,11 @@
 		<field>Account.IntermediaryGroup__c</field>
 		<readable>true</readable>
 	</fieldPermissions>	
+    <fieldPermissions>
+		<editable>true</editable>
+		<field>Account.IntermediaryGroupSDM__c</field>
+		<readable>true</readable>
+	</fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Account.INFOIntermediaryGroupCode__c</field>
