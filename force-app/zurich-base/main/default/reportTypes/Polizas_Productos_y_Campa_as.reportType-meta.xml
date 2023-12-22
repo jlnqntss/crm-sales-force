@@ -218,11 +218,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Owner</field>
-            <table>Policy__c</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>InfoQuoteNumber__c</field>
             <table>Policy__c</table>
         </columns>
