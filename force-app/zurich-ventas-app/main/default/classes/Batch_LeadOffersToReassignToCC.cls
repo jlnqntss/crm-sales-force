@@ -52,10 +52,26 @@ global with sharing class Batch_LeadOffersToReassignToCC implements Database.Bat
             CallMeBackUtil.CallMeBack cmb = new CallMeBackUtil.CallMeBack();
             cmb.name = opp.Account.Name;
             cmb.phone = opp.Account.Phone;
-            cmb.bestTimeFrom = DateTime.newInstance(Date.Today(), opp.Account.PreferedContactStart__c.time());
-            cmb.bestTimeUntil = DateTime.newInstance(Date.Today(), opp.Account.PreferedContactEnd__c.time());
             cmb.webIdentifier = opp.Account.WebId__c;
             cmb.businessCode = Lead_Offers__c.getinstance().BusinessCode__c;
+
+            if (opp.Account.PreferedContactStart__c == null)
+            {
+                cmb.bestTimeFrom = DateTime.newInstance(Date.Today() + 1, opp.CreatedDate.time());
+            }
+            else 
+            {
+                cmb.bestTimeFrom = DateTime.newInstance(Date.Today() + 1, opp.Account.PreferedContactStart__c.time());
+            }
+            
+            if(opp.Account.PreferedContactEnd__c == null)
+            {
+                cmb.bestTimeUntil =  DateTime.newInstance(Date.Today() + 1, cmb.bestTimeFrom.addHours(2).time());
+            }
+            else
+            {
+                cmb.bestTimeUntil = DateTime.newInstance(Date.Today() + 1, opp.Account.PreferedContactEnd__c.time());
+            }
 
             // Completamos el objeto con el resto de la información
             CallMeBackUtil.CallMeBackFull cmbFull = new CallMeBackUtil.CallMeBackFull();
