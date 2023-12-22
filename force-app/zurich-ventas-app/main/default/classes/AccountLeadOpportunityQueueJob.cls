@@ -140,6 +140,14 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
             Map<String, Account> assign = AccountLeadUtil.leadAssignment(accountRecord, offerToInsertUpdate.IntermediaryCode__c, offerToInsertUpdate.IntermediaryCode__c, null, postalCode);
             offerToUpdate = manageConstrainsKey(assign, accountRecord, offerToInsertUpdate, phone, quiereLlamada, intermediary);
         }
+        else
+        {
+            if ( quiereLlamada == 'S' && intermediary == 'CONTACT_CENTER')
+            {
+                Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
+                manageCallMeBack(accountRecord, offerToInsertUpdate, leadOffersCS, phone);
+            }
+        }
         return offerToUpdate;
     }
 
@@ -155,8 +163,10 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
     public static Opportunity manageConstrainsKey (Map<String,Account> assign, Account accountRecord, Opportunity offerToInsertUpdate, String phone, String quiereLlamada, String intermediary)
     {
         Opportunity offerToUpdate = offerToInsertUpdate;
+        System.debug('++++ Antes del if');
         if ( quiereLlamada == 'S' && intermediary == 'CONTACT_CENTER')
         {
+            System.debug('++++ Entra del if');
             Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
             manageCallMeBack(accountRecord, offerToInsertUpdate, leadOffersCS, phone);
 
@@ -206,7 +216,9 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         List<CallMeBackUtil.CallMeBackFull> lstCallMeBack = new List<CallMeBackUtil.CallMeBackFull>();
         lstCallMeBack.add(fullObj);
 
+        System.debug('++++ insertamos CMB');
         CallMeBackUtil.insertCallMeBack(lstCallMeBack);
+        System.debug('++++ insertada CMB');
     }
 
     /**
