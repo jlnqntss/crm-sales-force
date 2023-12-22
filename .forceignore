@@ -89,8 +89,5 @@ force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredential
 # Entitlement Process. Fallan al redesplegar
 **/entitlementProcesses/**
 
-# Ignore ListViews
-*.listView-meta.xml
-
 # Custom index
 **/Customindex/*.indx-meta.xml

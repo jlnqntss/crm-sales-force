@@ -13,11 +13,11 @@
     <enableExperienceBundleBasedSnaOverrideEnabled>true</enableExperienceBundleBasedSnaOverrideEnabled>
     <enableGuestChatter>false</enableGuestChatter>
     <enableGuestFileAccess>false</enableGuestFileAccess>
-    <enableGuestMemberVisibility>false</enableGuestMemberVisibility>
+    <enableGuestMemberVisibility>true</enableGuestMemberVisibility>
     <enableImageOptimizationCDN>true</enableImageOptimizationCDN>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
-    <enableMemberVisibility>false</enableMemberVisibility>
+    <enableMemberVisibility>true</enableMemberVisibility>
     <enableNicknameDisplay>true</enableNicknameDisplay>
     <enablePrivateMessages>false</enablePrivateMessages>
     <enableReputation>false</enableReputation>
