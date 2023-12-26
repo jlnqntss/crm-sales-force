@@ -16,6 +16,8 @@ public class OpportunityHandler implements ITrigger
         OpportunityUtil.initMapOfProfiles();
         // jfherrero - 21/09/2023: CV-458, cargamos un mapa de Accounts con sus record types para informar un campo en las ofertas creadas
         OpportunityUtil.initMapOfAccountRecordTypes(newList);
+        // arcortazar - 22/12/2023: CV-1182, cargamos el mapa que relaciona los Business Code con los scopes
+        OpportunityUtil.fillMapBusinessCode();
     }
 
     /**

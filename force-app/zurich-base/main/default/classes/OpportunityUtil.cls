@@ -15,6 +15,8 @@ public with sharing class OpportunityUtil
     private static List<String> nombresPerfilesVentas; // perfiles de la app ventas y zrm que muestra otro mensaje de error para la validación de cerrada ganada
     private static String userLoggedProfile; // query que obtiene el nombre del perfil del usuario logeado
     private final static String CRM_VENTAS_PROFILE = 'Ventas User';
+    public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Ofertas
+
 
     /**
      * BULK BEFORE
@@ -73,6 +75,21 @@ public with sharing class OpportunityUtil
                     }
                 }
             }
+        }
+    }
+
+     /**
+     * Método que rellena el mapa que contiene la relación entre Business Code y Scopes
+     * 
+     * @author arcortazar
+     * @date 21/12/2023
+     */
+    public static void fillMapBusinessCode ()
+    {
+        List<Scope_Setting__mdt> scopeSettingsMapping = Scope_Setting__mdt.getAll().values();
+        for(Scope_Setting__mdt scope : scopeSettingsMapping)
+        {
+            mapBusinessCodes.put(scope.BusinessCode__c, scope.Scope__c);
         }
     }
 
@@ -162,7 +179,15 @@ public with sharing class OpportunityUtil
         {
             if( String.isBlank(opty.StageName) )
             {
-                opty.StageName = 'Open';
+                // Comprobamos las condiciones del Código de negocio
+                if(String.isBlank(opty.BusinessCode__c) || (!mapBusinessCodes.containsKey(opty.BusinessCode__c)) || (mapBusinessCodes.get(opty.BusinessCode__c) == 'Ventas'))
+                {
+                    opty.StageName = 'Quoted';
+                }
+                else
+                {
+                    opty.StageName = 'Open';
+                }
             }
         }
     }
