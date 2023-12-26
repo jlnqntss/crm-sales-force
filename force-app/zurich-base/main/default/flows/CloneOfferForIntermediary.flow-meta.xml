@@ -6,7 +6,7 @@
         <name>Add_Events_To_Update</name>
         <label>Add Events To Update</label>
         <locationX>501</locationX>
-        <locationY>3530</locationY>
+        <locationY>3938</locationY>
         <assignmentItems>
             <assignToReference>EventsToUpdate</assignToReference>
             <operator>Add</operator>
@@ -23,7 +23,7 @@
         <name>Add_Tasks_To_Update</name>
         <label>Add Tasks To Update</label>
         <locationX>501</locationX>
-        <locationY>2906</locationY>
+        <locationY>3314</locationY>
         <assignmentItems>
             <assignToReference>TasksToUpdate</assignToReference>
             <operator>Add</operator>
@@ -39,7 +39,7 @@
         <name>Change_Event_What_Id_Value</name>
         <label>Change Event What Id Value</label>
         <locationX>501</locationX>
-        <locationY>3422</locationY>
+        <locationY>3830</locationY>
         <assignmentItems>
             <assignToReference>Move_All_Offer_Events.WhatId</assignToReference>
             <operator>Assign</operator>
@@ -56,7 +56,7 @@
         <name>Change_What_Id_Value</name>
         <label>Change What Id Value</label>
         <locationX>501</locationX>
-        <locationY>2798</locationY>
+        <locationY>3206</locationY>
         <assignmentItems>
             <assignToReference>Move_All_Offer_Tasks.WhatId</assignToReference>
             <operator>Assign</operator>
@@ -73,7 +73,7 @@
         <name>clonedOfferFieldsAssignment</name>
         <label>Actualizar registro clonado</label>
         <locationX>545</locationX>
-        <locationY>2150</locationY>
+        <locationY>2558</locationY>
         <assignmentItems>
             <assignToReference>OriginOffer.Name</assignToReference>
             <operator>Add</operator>
@@ -97,7 +97,7 @@
         <name>cloneOfferAssignmet</name>
         <label>Clonar Oferta</label>
         <locationX>545</locationX>
-        <locationY>134</locationY>
+        <locationY>542</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer</assignToReference>
             <operator>Assign</operator>
@@ -140,7 +140,7 @@
         <name>ClosedDate10DaysAssignment</name>
         <label>Asignar cierra a 10 dias</label>
         <locationX>413</locationX>
-        <locationY>650</locationY>
+        <locationY>1058</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.CloseDate</assignToReference>
             <operator>Assign</operator>
@@ -157,7 +157,7 @@
         <name>ClosedDate30DaysAssignment</name>
         <label>Asignar cierra a 30 dias</label>
         <locationX>677</locationX>
-        <locationY>650</locationY>
+        <locationY>1058</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.CloseDate</assignToReference>
             <operator>Assign</operator>
@@ -173,7 +173,7 @@
         <name>DefaultOwnerIdAssignment</name>
         <label>Asignar propietario default</label>
         <locationX>314</locationX>
-        <locationY>1874</locationY>
+        <locationY>2282</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.OwnerId</assignToReference>
             <operator>Assign</operator>
@@ -190,7 +190,7 @@
         <name>Informar_si_InfoQuotedNumber_es_nulo</name>
         <label>Informar si InfoQuotedNumber es nulo</label>
         <locationX>677</locationX>
-        <locationY>350</locationY>
+        <locationY>758</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.StageName</assignToReference>
             <operator>Assign</operator>
@@ -207,7 +207,7 @@
         <name>Informar_si_InfoQuotedNumber_no_es_nulo</name>
         <label>Informar si InfoQuotedNumber no es nulo</label>
         <locationX>413</locationX>
-        <locationY>350</locationY>
+        <locationY>758</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.StageName</assignToReference>
             <operator>Assign</operator>
@@ -230,7 +230,7 @@
         <name>IntermediaryGroupOwnerIdAssignment</name>
         <label>Asignar propietario grupo mediador</label>
         <locationX>578</locationX>
-        <locationY>1766</locationY>
+        <locationY>2174</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.OwnerId</assignToReference>
             <operator>Assign</operator>
@@ -247,7 +247,7 @@
         <name>IntermediaryIdAssignment</name>
         <label>Mediador principal a Id Intermediario</label>
         <locationX>479</locationX>
-        <locationY>1058</locationY>
+        <locationY>1466</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.IntermediaryId__c</assignToReference>
             <operator>Assign</operator>
@@ -263,7 +263,7 @@
         <name>IntermediaryOwnerIdAssignment</name>
         <label>Asignar propietario mediador</label>
         <locationX>50</locationX>
-        <locationY>1658</locationY>
+        <locationY>2066</locationY>
         <assignmentItems>
             <assignToReference>ClonedOffer.OwnerId</assignToReference>
             <operator>Assign</operator>
@@ -275,11 +275,28 @@
             <targetReference>clonedOfferFieldsAssignment</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <description>Se asigna a la variable &apos;OriginOffer&apos; (variable utilizada durante el flujo) el registro recuperado en la acción &apos;GetOfferAction&apos;.</description>
+        <name>RetrievedOfferToOriginOfferAssignment</name>
+        <label>Asignar oferta recuperada a la oferta original</label>
+        <locationX>413</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>OriginOffer</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetOfferAction</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>cloneOfferAssignmet</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>AccountIntermediaryNameNullDecision</name>
         <label>Es Account.Intermediary_Name__c nulo?</label>
         <locationX>347</locationX>
-        <locationY>950</locationY>
+        <locationY>1358</locationY>
         <defaultConnector>
             <targetReference>IntermediaryIdAssignment</targetReference>
         </defaultConnector>
@@ -298,10 +315,36 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Verifica si es necesario recuperar el registro de oferta. En ciertos escenarios la variable de tipo input &apos;OriginOffer&apos; solo recibe el Id del registro a clonar. Por lo tanto es necesario obtener la oferta para que otras acciones que se ejecutan a lo largo del flujo puedan utilizar los campos de la oferta que necesitan.</description>
+        <name>GetOfferRecordDecision</name>
+        <label>¿Es necesario recuperar el registro de oferta?</label>
+        <locationX>545</locationX>
+        <locationY>134</locationY>
+        <defaultConnector>
+            <targetReference>cloneOfferAssignmet</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NeedGetOfferRecord</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetOfferRecord</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetOfferAction</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>groupIntermediaryUserNotFoundDecision</name>
         <label>Se ha recuperado el User de grupo?</label>
         <locationX>710</locationX>
-        <locationY>1658</locationY>
+        <locationY>2066</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>getCrossSellingDefaultUser</targetReference>
@@ -328,7 +371,7 @@
         <name>interestedManagedByMyAgentDecision</name>
         <label>Interesado prefiere que lo gestione mi Agente?</label>
         <locationX>545</locationX>
-        <locationY>542</locationY>
+        <locationY>950</locationY>
         <defaultConnector>
             <targetReference>ClosedDate30DaysAssignment</targetReference>
         </defaultConnector>
@@ -353,7 +396,7 @@
         <name>intermediaryGroupUserNullDecision</name>
         <label>Hay Intermediary Group User?</label>
         <locationX>908</locationX>
-        <locationY>1442</locationY>
+        <locationY>1850</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>getCrossSellingDefaultUser</targetReference>
@@ -379,7 +422,7 @@
         <name>intermediaryUserNotFoundDecision</name>
         <label>Se ha recuperado el User de mediador?</label>
         <locationX>182</locationX>
-        <locationY>1550</locationY>
+        <locationY>1958</locationY>
         <defaultConnector>
             <targetReference>getCrossSellingDefaultUser</targetReference>
         </defaultConnector>
@@ -405,7 +448,7 @@
         <name>isNotNullInfoQuoteNumberDecision</name>
         <label>Es InfoQuoteNumber no nulo?</label>
         <locationX>545</locationX>
-        <locationY>242</locationY>
+        <locationY>650</locationY>
         <defaultConnector>
             <targetReference>Informar_si_InfoQuotedNumber_es_nulo</targetReference>
         </defaultConnector>
@@ -431,7 +474,7 @@
         <name>IsNullIntermediaryIdDecision</name>
         <label>Es el IntermediaryId de la oferta clonada nulo?</label>
         <locationX>545</locationX>
-        <locationY>842</locationY>
+        <locationY>1250</locationY>
         <defaultConnector>
             <targetReference>isTheIntermediaryPartnerDecision</targetReference>
         </defaultConnector>
@@ -456,7 +499,7 @@
         <name>isTheIntermediaryPartnerDecision</name>
         <label>Es Partner el Mediador?</label>
         <locationX>545</locationX>
-        <locationY>1334</locationY>
+        <locationY>1742</locationY>
         <defaultConnector>
             <targetReference>intermediaryGroupUserNullDecision</targetReference>
         </defaultConnector>
@@ -482,7 +525,7 @@
         <name>Move_Offer_Tasks_To_New_Opportunity</name>
         <label>Move Offer Tasks To New Opportunity</label>
         <locationX>545</locationX>
-        <locationY>2474</locationY>
+        <locationY>2882</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
@@ -533,7 +576,7 @@
         <name>Move_All_Offer_Events</name>
         <label>Move All Offer Events</label>
         <locationX>413</locationX>
-        <locationY>3314</locationY>
+        <locationY>3722</locationY>
         <collectionReference>Get_Opportunity_Events</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -548,7 +591,7 @@
         <name>Move_All_Offer_Tasks</name>
         <label>Move All Offer Tasks</label>
         <locationX>413</locationX>
-        <locationY>2690</locationY>
+        <locationY>3098</locationY>
         <collectionReference>Get_Opportunity_Tasks</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -582,7 +625,7 @@
         <name>clonedOpportunityInsert</name>
         <label>Insertar registro clonado</label>
         <locationX>545</locationX>
-        <locationY>2366</locationY>
+        <locationY>2774</locationY>
         <connector>
             <targetReference>Move_Offer_Tasks_To_New_Opportunity</targetReference>
         </connector>
@@ -592,7 +635,7 @@
         <name>Get_Opportunity_Events</name>
         <label>Get Opportunity Events</label>
         <locationX>413</locationX>
-        <locationY>3206</locationY>
+        <locationY>3614</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Move_All_Offer_Events</targetReference>
@@ -613,7 +656,7 @@
         <name>Get_Opportunity_Tasks</name>
         <label>Get Opportunity Tasks</label>
         <locationX>413</locationX>
-        <locationY>2582</locationY>
+        <locationY>2990</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Move_All_Offer_Tasks</targetReference>
@@ -635,7 +678,7 @@
         <name>getCrossSellingDefaultUser</name>
         <label>Get Cross Selling Default User</label>
         <locationX>314</locationX>
-        <locationY>1658</locationY>
+        <locationY>2066</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>getDefaultUser</targetReference>
@@ -649,7 +692,7 @@
         <name>getDefaultUser</name>
         <label>getDefaultUser</label>
         <locationX>314</locationX>
-        <locationY>1766</locationY>
+        <locationY>2174</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>DefaultOwnerIdAssignment</targetReference>
@@ -674,7 +717,7 @@
         <name>getIntermediaryGroupUser</name>
         <label>getIntermediaryGroupUser</label>
         <locationX>710</locationX>
-        <locationY>1550</locationY>
+        <locationY>1958</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>groupIntermediaryUserNotFoundDecision</targetReference>
@@ -699,7 +742,7 @@
         <name>getIntermediaryUser</name>
         <label>getIntermediaryUser</label>
         <locationX>182</locationX>
-        <locationY>1442</locationY>
+        <locationY>1850</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>intermediaryUserNotFoundDecision</targetReference>
@@ -719,12 +762,33 @@
         <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>GetOfferAction</name>
+        <label>Obtener oferta</label>
+        <locationX>413</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>RetrievedOfferToOriginOfferAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>OriginOffer.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <description>Se actualiza el registro original</description>
         <name>originOpportunityUpdate</name>
         <label>Actualizar registro original</label>
         <locationX>545</locationX>
-        <locationY>2258</locationY>
+        <locationY>2666</locationY>
         <connector>
             <targetReference>clonedOpportunityInsert</targetReference>
         </connector>
@@ -735,14 +799,14 @@
         <name>Update_Events</name>
         <label>Update Events</label>
         <locationX>413</locationX>
-        <locationY>3722</locationY>
+        <locationY>4130</locationY>
         <inputReference>EventsToUpdate</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_Tasks</name>
         <label>Update Tasks</label>
         <locationX>413</locationX>
-        <locationY>3098</locationY>
+        <locationY>3506</locationY>
         <connector>
             <targetReference>Get_Opportunity_Events</targetReference>
         </connector>
@@ -753,7 +817,7 @@
         <locationX>419</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>cloneOfferAssignmet</targetReference>
+            <targetReference>GetOfferRecordDecision</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -774,6 +838,17 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Event</objectType>
+    </variables>
+    <variables>
+        <description>Indica si es necesario ejecutar la acción &apos;Get Record&apos; para obtener la oferta con todos sus campos. En ciertos escenarios la variable de tipo input &apos;OriginOffer&apos; solo recibe el Id del registro a clonar. Por lo tanto es necesario obtener la oferta para que otras acciones que se ejecutan a lo largo del flujo puedan utilizar los campos de la oferta que necesitan.</description>
+        <name>GetOfferRecord</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <description>Indica si se ha ejecutado desde el botón Clonar Oferta de ZRM</description>

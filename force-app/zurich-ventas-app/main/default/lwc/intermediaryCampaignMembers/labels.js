@@ -13,6 +13,7 @@ import thLostReason from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_Ta
 import thIntermediary from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_TableHeaderIntermediary";
 import removeRowAction from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_RowActionRemove";
 import assignRowAction from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_RowActionAssign";
+import duplicateRowAction from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_RowDuplicateRemove";
 import toastGenericErrorTitle from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastGenericErrorTitle";
 import toastGenericErrorMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage";
 import toastOngoingCampaignErrorMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastOngoingCampaignErrorMessage";
@@ -21,6 +22,9 @@ import toastDeleteRowActionMessage from "@salesforce/label/c.ZRM_IntermediaryCam
 import toastAssignButtonErrorMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastAssignButtonErrorMessage";
 import toastAssignmentRowActionTitle from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastAssignRowActionTitle";
 import toastAssignmentRowActionMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastAssignmentRowActionMessage";
+import toastDuplicateRowActionTitle from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionTitle";
+import toastDuplicateRowActionMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionMessage";
+import toastDuplicateRowActionErrorMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionErrorMessage";
 
 
 export default {
@@ -39,6 +43,7 @@ export default {
     thIntermediary,
     removeRowAction,
     assignRowAction,
+    duplicateRowAction,
     toastGenericErrorTitle,
     toastGenericErrorMessage,
     toastOngoingCampaignErrorMessage,
@@ -46,5 +51,8 @@ export default {
     toastDeleteRowActionMessage,
     toastAssignmentRowActionTitle,
     toastAssignmentRowActionMessage,
-    toastAssignButtonErrorMessage
+    toastAssignButtonErrorMessage,
+    toastDuplicateRowActionTitle,
+    toastDuplicateRowActionMessage,
+    toastDuplicateRowActionErrorMessage
 }

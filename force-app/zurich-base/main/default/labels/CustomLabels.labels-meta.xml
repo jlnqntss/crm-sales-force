@@ -2718,6 +2718,14 @@ Create the record and try again.</value>
         <value>Delete</value>
     </labels>
     <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_RowDuplicateRemove</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_RowDuplicateRemove</shortDescription>
+        <value>Duplicate</value>
+    </labels>
+    <labels>
         <fullName>ZRM_IntermediaryCampaignMembers_TableHeaderAffiliationCode</fullName>
         <categories>ZRM_IntermediaryCampaignMembers</categories>
         <language>en_US</language>
@@ -2820,6 +2828,30 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle</shortDescription>
         <value>Successful removal</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionErrorMessage</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionErrorMessage</shortDescription>
+        <value>This offer cannot be cloned because it does not meet the requirements.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionMessage</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionMessage</shortDescription>
+        <value>Offer for Intermediary successfully generated.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionTitle</fullName>
+        <categories>ZRM_IntermediaryCampaignMembers</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionTitle</shortDescription>
+        <value>Successful duplication</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage</fullName>

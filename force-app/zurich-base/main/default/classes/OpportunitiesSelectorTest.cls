@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : mfernandezcarrera
  * @group             : 
- * @last modified on  : 11-20-2023
- * @last modified by  : mfernandezcarrera
+ * @last modified on  : 22-12-2023
+ * @last modified by  : amiranda
 **/
 @isTest
 private with sharing class OpportunitiesSelectorTest
@@ -454,7 +454,7 @@ private with sharing class OpportunitiesSelectorTest
         Map<Id,Account> mapAccountsById = new Map<Id,Account> (listacc);
 
         Test.startTest();
-        List<Opportunity> resultados = new OpportunitiesSelector().selectByAccountIdsAndCampaignId(mapAccountsById.keySet(),campaignToSearch);
+        List<Opportunity> resultados = new OpportunitiesSelector().selectByAccountIdsAndCampaignId(mapAccountsById.keySet(),campaignToSearch, null);
         Test.stopTest();
 
         System.assertEquals(1, resultados.size(), 'No cumple las condiciones');
