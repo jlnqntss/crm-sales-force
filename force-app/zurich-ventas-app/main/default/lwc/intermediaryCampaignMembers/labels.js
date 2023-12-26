@@ -13,7 +13,7 @@ import thLostReason from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_Ta
 import thIntermediary from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_TableHeaderIntermediary";
 import removeRowAction from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_RowActionRemove";
 import assignRowAction from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_RowActionAssign";
-import duplicateRowAction from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_RowDuplicateRemove";
+import duplicateRowAction from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_RowActionDuplicate";
 import toastGenericErrorTitle from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastGenericErrorTitle";
 import toastGenericErrorMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastGenericErrorMessage";
 import toastOngoingCampaignErrorMessage from "@salesforce/label/c.ZRM_IntermediaryCampaignMembers_ToastOngoingCampaignErrorMessage";
