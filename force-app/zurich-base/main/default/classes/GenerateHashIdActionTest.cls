@@ -1,8 +1,8 @@
 @isTest
-private with sharing class GenerateHashIdActionTest
+public class GenerateHashIdActionTest
 {
     @TestSetup
-    private static void createScenario()
+    static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
@@ -15,7 +15,7 @@ private with sharing class GenerateHashIdActionTest
     }
 
     @isTest
-    private static void test_GenerateHashIdAction_execute_ok()
+    static void test_GenerateHashIdAction_execute_ok()
     {
         // Datos petición
         Case relatedCase = [SELECT Id FROM Case LIMIT 1];

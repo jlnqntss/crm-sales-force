@@ -15,7 +15,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/10/2020
      */
     @testSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
@@ -92,7 +92,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_initInteraction_noInteractionId()
+    static void test_initInteraction_noInteractionId()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -137,7 +137,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_initInteraction_outboundMatchedOpportunityPhoneInteraction()
+    static void test_initInteraction_outboundMatchedOpportunityPhoneInteraction()
     {
         //TODO: Mejora -> Sobrecargar método en TestDataFactory.generateOpportunitiesForEachAccount() con nuevo parámetro ownerID sin romper test antiguos
         //Controlar el email que tiene UserInfo:
@@ -189,7 +189,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 26/11/2020
      */
     @IsTest
-    private static void test_initInteraction_inboundMatchedIntermediary()
+    static void test_initInteraction_inboundMatchedIntermediary()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -241,7 +241,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findBestAgentFor_noRecordMatches()
+    static void test_findBestAgentFor_noRecordMatches()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -283,7 +283,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findBestAgentFor_ByPhone_inboundMatchedOpportunityInteraction()
+    static void test_findBestAgentFor_ByPhone_inboundMatchedOpportunityInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -325,7 +325,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findBestAgentFor_ByPhone_outboundMatchedOpportunityInteraction()
+    static void test_findBestAgentFor_ByPhone_outboundMatchedOpportunityInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -367,7 +367,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findBestAgentFor_ByPhone_inboundMatchedCaseInteraction()
+    static void test_findBestAgentFor_ByPhone_inboundMatchedCaseInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -408,7 +408,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findBestAgentFor_ByPhone_outboundMatchedCaseInteraction()
+    static void test_findBestAgentFor_ByPhone_outboundMatchedCaseInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -450,7 +450,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findBestAgentFor_ByEmailinboundMatchedOpportunityInteraction()
+    static void test_findBestAgentFor_ByEmailinboundMatchedOpportunityInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -492,7 +492,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findBestAgentFor_ByEmail_outboundMatchedOpportunityInteraction()
+    static void test_findBestAgentFor_ByEmail_outboundMatchedOpportunityInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -534,7 +534,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findBestAgentFor_ByEmail_inboundMatchedCaseInteraction()
+    static void test_findBestAgentFor_ByEmail_inboundMatchedCaseInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -576,7 +576,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findBestAgentFor_ByEmail_outboundMatchedCaseInteraction()
+    static void test_findBestAgentFor_ByEmail_outboundMatchedCaseInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -620,7 +620,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    private static void test_findPeopleBy_Customer_Phone_matchedPerson()
+    static void test_findPeopleBy_Customer_Phone_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -655,7 +655,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    private static void test_findPeopleBy_Customer_Email_matchedPerson()
+    static void test_findPeopleBy_Customer_Email_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -690,7 +690,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    private static void test_findPeopleBy_Customer_Document_matchedPerson()
+    static void test_findPeopleBy_Customer_Document_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -721,7 +721,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    private static void test_findPeopleBy_Customer_PolicyCode_matchedPerson()
+    static void test_findPeopleBy_Customer_PolicyCode_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -753,7 +753,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    private static void test_findPeopleBy_Intermediary_Phone_matchedPerson()
+    static void test_findPeopleBy_Intermediary_Phone_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -803,7 +803,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    private static void test_findPeopleBy_Intermediary_IntermediaryCode_matchedPerson()
+    static void test_findPeopleBy_Intermediary_IntermediaryCode_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -838,7 +838,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    private static void test_findPeopleBy_RequiredFieldsError()
+    static void test_findPeopleBy_RequiredFieldsError()
     {
         //When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -871,7 +871,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    private static void test_findPeopleBy_NoValidFilterBy()
+    static void test_findPeopleBy_NoValidFilterBy()
     {
         //When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -910,7 +910,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    private static void test_findCustomersBy_NoValidSearchType()
+    static void test_findCustomersBy_NoValidSearchType()
     {
         //When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -949,7 +949,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    private static void test_findIntermediariesBy_NoValidSearchType()
+    static void test_findIntermediariesBy_NoValidSearchType()
     {
         //When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -988,7 +988,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    private static void test_findBestAgents_Intermediary_noCasesOpen()
+    static void test_findBestAgents_Intermediary_noCasesOpen()
     {
         // When
         GenesysInteractionsService.Intermediary intermediary = new GenesysInteractionsService.Intermediary();
@@ -1016,7 +1016,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 21/01/2021
      */
     @IsTest
-    private static void test_findActivePolicies()
+    static void test_findActivePolicies()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
         Id partnerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PartnerOCS').getRecordTypeId();
@@ -1112,7 +1112,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 22/01/2021
      */
     @IsTest
-    private static void test_findOpenedClaims()
+    static void test_findOpenedClaims()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
@@ -1183,7 +1183,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 27/01/2021
      */
     @IsTest
-    private static void test_findActivePolicy()
+    static void test_findActivePolicy()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
@@ -1236,7 +1236,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 20/10/2021
      */
     @IsTest
-    private static void test_findActivePolicy_RequiredFieldsError()
+    static void test_findActivePolicy_RequiredFieldsError()
     {
         // Test
         Test.startTest();
@@ -1260,7 +1260,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 27/01/2021
      */
     @IsTest
-    private static void test_findOpenedClaim_correctNumber()
+    static void test_findOpenedClaim_correctNumber()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
@@ -1298,7 +1298,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 15/04/2021
      */
     @IsTest
-    private static void test_findOpenedClaim_claim_number_noPad()
+    static void test_findOpenedClaim_claim_number_noPad()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
@@ -1337,7 +1337,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 15/04/2021
      */
     @IsTest
-    private static void test_findOpenedClaim_claim_number_malformedNumber()
+    static void test_findOpenedClaim_claim_number_malformedNumber()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
@@ -1374,7 +1374,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 20/10/2021
      */
     @IsTest
-    private static void test_findOpenedClaim_RequiredFieldsError()
+    static void test_findOpenedClaim_RequiredFieldsError()
     {
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
 
@@ -1399,7 +1399,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 27/01/2021
      */
     @IsTest
-    private static void test_findOpenedClaim_car_registration()
+    static void test_findOpenedClaim_car_registration()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
@@ -1452,7 +1452,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 28/01/2021
      */
     @IsTest
-    private static void test_searchQueueTaskId_ok()
+    static void test_searchQueueTaskId_ok()
     {
         Test.startTest();
         //En el stopTest finaliza el future
@@ -1488,7 +1488,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 28/01/2021
      */
     @IsTest
-    private static void test_searchQueueTaskId_ko_NoSFQueue()
+    static void test_searchQueueTaskId_ko_NoSFQueue()
     {
         //Cola de Genesys
         List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
@@ -1521,7 +1521,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 28/01/2021
      */
     @IsTest
-    private static void test_searchQueueTaskId_ko_QueueNull()
+    static void test_searchQueueTaskId_ko_QueueNull()
     {
         QueueSobject missedCalls = [SELECT QueueId, Queue.Name, SobjectType FROM QueueSobject WHERE SobjectType = 'Task' AND Queue.Name = 'Missed Calls' LIMIT 1];
 
@@ -1542,7 +1542,7 @@ private without sharing class GenesysInteractionsServiceTest
     // #endregion
 
     @isTest
-    private static void test_findDigitalCustomer_ok()
+    static void test_findDigitalCustomer_ok()
     {
         //Creación de registros del modelo de datos de KLINC
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
@@ -1579,7 +1579,7 @@ private without sharing class GenesysInteractionsServiceTest
 
    
     @isTest
-    private static void test_findDigitalCustomer_ko()
+    static void test_findDigitalCustomer_ko()
     {
         GenesysInteractionsService.DigitalCustomer request = new GenesysInteractionsService.DigitalCustomer();
         request.searchType = 'document';
@@ -1601,7 +1601,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 20/10/2021
      */
     @isTest
-    private static void test_findDigitalCustomer_RequiredFieldsError()
+    static void test_findDigitalCustomer_RequiredFieldsError()
     {
         GenesysInteractionsService.DigitalCustomer request = new GenesysInteractionsService.DigitalCustomer();
         request.searchType = 'document';
@@ -1627,7 +1627,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 04/08/2021
      */
     @IsTest
-    private static void test_initInteraction_reportStatistics_noIdentified()
+    static void test_initInteraction_reportStatistics_noIdentified()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -1667,7 +1667,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 04/08/2021
      */
     @IsTest
-    private static void test_initInteraction_reportStatistics_identifiedByANI()
+    static void test_initInteraction_reportStatistics_identifiedByANI()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -1708,7 +1708,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 04/08/2021
      */
     @IsTest
-    private static void test_initInteraction_reportStatistics_multipleIdentifiedByANI()
+    static void test_initInteraction_reportStatistics_multipleIdentifiedByANI()
     {
         //Crear un 2º cliente con mismo teléfono para que haya multiple coincidencia
         List<Account> account = TestDataFactory.generateAccounts('001', 'Customer', 1);
@@ -1753,7 +1753,7 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     @IsTest
-    private static void test_findPartnersBy_MultiIdentifiedANI ()
+    static void test_findPartnersBy_MultiIdentifiedANI ()
     {
 
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PartnerOCS'];
@@ -1786,7 +1786,7 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     @IsTest
-    private static void test_findPartnersBy_NoIdentified ()
+    static void test_findPartnersBy_NoIdentified ()
     {
 
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PartnerOCS'];
@@ -1819,7 +1819,7 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     @IsTest
-    private static void test_findPartnersBy_SingleResult ()
+    static void test_findPartnersBy_SingleResult ()
     {
 
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PartnerOCS'];
