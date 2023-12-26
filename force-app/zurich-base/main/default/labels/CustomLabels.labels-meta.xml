@@ -2718,11 +2718,11 @@ Create the record and try again.</value>
         <value>Delete</value>
     </labels>
     <labels>
-        <fullName>ZRM_IntermediaryCampaignMembers_RowDuplicateRemove</fullName>
+        <fullName>ZRM_IntermediaryCampaignMembers_RowActionDuplicate</fullName>
         <categories>ZRM_IntermediaryCampaignMembers</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_IntermediaryCampaignMembers_RowDuplicateRemove</shortDescription>
+        <shortDescription>ZRM_IntermediaryCampaignMembers_RowActionDuplicate</shortDescription>
         <value>Duplicate</value>
     </labels>
     <labels>
