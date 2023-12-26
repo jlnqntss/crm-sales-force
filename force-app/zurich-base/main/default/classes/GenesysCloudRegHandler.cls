@@ -1,10 +1,10 @@
 
-global class GenesysCloudRegHandler implements Auth.RegistrationHandler{
+global with sharing class GenesysCloudRegHandler implements Auth.RegistrationHandler{
 global boolean canCreateUser(Auth.UserData data) {
   return false;
 }
 
-global with sharing User createUser(Id portalId, Auth.UserData data){
+global User createUser(Id portalId, Auth.UserData data){
     
   if(!canCreateUser(data)) {
     //Returning null or throwing an exception fails the SSO flow
