@@ -86,7 +86,9 @@ public with sharing class OpportunityUtil
      */
     public static void fillMapBusinessCode ()
     {
+        mapBusinessCodes = new Map<String, String>();
         List<Scope_Setting__mdt> scopeSettingsMapping = Scope_Setting__mdt.getAll().values();
+
         for(Scope_Setting__mdt scope : scopeSettingsMapping)
         {
             mapBusinessCodes.put(scope.BusinessCode__c, scope.Scope__c);
@@ -179,6 +181,7 @@ public with sharing class OpportunityUtil
         {
             if( String.isBlank(opty.StageName) )
             {
+               
                 // Comprobamos las condiciones del Código de negocio
                 if(String.isBlank(opty.BusinessCode__c) || (!mapBusinessCodes.containsKey(opty.BusinessCode__c)) || (mapBusinessCodes.get(opty.BusinessCode__c) == 'Ventas'))
                 {
