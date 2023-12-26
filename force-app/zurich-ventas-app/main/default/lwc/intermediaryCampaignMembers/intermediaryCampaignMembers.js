@@ -16,6 +16,7 @@ import USER_ACCOUNT_INTERMEDIARYCODE from "@salesforce/schema/User.Contact.Accou
 import { refreshApex } from "@salesforce/apex";
 import getCampaignMembers from "@salesforce/apex/CampaignZRMCustomPageController.getCampaignMembers";
 import updateOfferAndCampaignMember from "@salesforce/apex/CampaignZRMCustomPageController.updateOfferAndCampaignMember";
+import cloneOffer from "@salesforce/apex/CampaignZRMCustomPageController.cloneOffer";
 
 import userId from "@salesforce/user/Id";
 
@@ -25,11 +26,15 @@ import columns from "./columns";
 
 const ERROR_VARIANT = "error";
 const SUCCESS_VARIANT = "success";
-const campaignStatusFilterActiveValue = "active";
 const filterDefaultValue = "all";
+const campaignStatusFilterValue = {
+  active: "active",
+  inactive: "inactive"
+};
 const rowActions = {
   remove: "remove",
-  assign: "assign"
+  assign: "assign",
+  clone: "clone"
 };
 
 export default class DatatableWithRowActions extends LightningElement {
@@ -67,7 +72,7 @@ export default class DatatableWithRowActions extends LightningElement {
   get showAddCampaignMemberButton() {
     return (
       this.campaignId &&
-      this.campaignData.campaignFilter === campaignStatusFilterActiveValue
+      this.campaignData.campaignFilter === campaignStatusFilterValue.active
     );
   }
 
@@ -174,6 +179,9 @@ export default class DatatableWithRowActions extends LightningElement {
       case rowActions.assign:
         this.assignOffer(row);
         break;
+      case rowActions.clone:
+        this.cloneOffer(row);
+        break;
       // no default
     }
   }
@@ -215,20 +223,41 @@ export default class DatatableWithRowActions extends LightningElement {
     this.refreshCampaignMembersData();
   }
 
-  // #endregion
-
   handleMessage(message) {
+    /*
+     * Al seleccionar una campaña que sea diferente a la campaña previamente seleccionada
+     * se debe mostrar el spinner
+     */
+    if (message.campaignId && message.campaignId !== this.campaignId) {
+      this.showSpinner();
+    }
+
     this.campaignId = message.campaignId;
     this.campaignData.campaignFilter = message.campaignStatus;
     this.campaignData.campaignStartDate = message.campaignStartDate;
     this.campaignData.campaignType = message.campaignType;
 
-    // Al seleccionar una campaña se debe mostrar el spinner
-    if (this.campaignId) this.showSpinner();
+    this.reconfigureTableCols();
 
+    /* Si se ha cambiado el filtro de estado entra campañas activas/inactivas
+     * se vacía el contenido de la tabla para que no se muestre ningún dato
+     * hasta seleccionar una nueva campaña
+     */
+    if (message.statusRefreshed) this.emptyTableData();
+  }
+
+  // #endregion
+
+  /**
+   * Función que se encarga de añadir/eliminar columnas de la tabla.
+   *
+   * @author amiranda
+   * @date 20/11/2023
+   */
+  reconfigureTableCols() {
     let cols;
 
-    if (this.campaignData.campaignFilter === campaignStatusFilterActiveValue) {
+    if (this.campaignData.campaignFilter === campaignStatusFilterValue.active) {
       // Se elimina la columna que no debe mostrarse para los miembros de campaña relacionados con campañas activas
       cols = [
         ...columns.filter(
@@ -236,6 +265,7 @@ export default class DatatableWithRowActions extends LightningElement {
         )
       ];
       if (this.campaignNotInitialized) {
+        // Se añaden acciones a los miembros de campaña si la campaña seleccionada está activa y no se ha iniciado
         cols = [
           ...cols,
           {
@@ -245,85 +275,32 @@ export default class DatatableWithRowActions extends LightningElement {
         ];
       }
     } else {
-      cols = [...columns];
+      cols = [
+        ...columns,
+        {
+          type: "action",
+          typeAttributes: {
+            rowActions: { rowActions: this.getRowActions }
+          }
+        }
+      ];
     }
 
     this.columns = JSON.parse(JSON.stringify(cols));
-
-    /* Si se ha cambiado el filtro de estado entra campañas activas/inactivas
-     * se vacía el contenido de la tabla para que no se muestre ningún dato
-     * hasta seleccionar una nueva campaña
-     */
-    if (message.statusRefreshed) this.emptyTableData();
-  }
-
-  /**
-   * Función que se encarga de marcar visualmente en el encabezado que corresponda
-   * el filtro que se ha seleccionado.
-   *
-   * @author amiranda
-   * @date 20/11/2023
-   */
-  checkHeaderAction(selectedHeader, actionName) {
-    let cols = this.columns;
-    cols.forEach((col) => {
-      if (col.fieldName === selectedHeader) {
-        col.actions.forEach(
-          (action) => (action.checked = action.name === actionName)
-        );
-      }
-    });
-
-    this.reconfigureTableCols(cols);
-  }
-
-  /**
-   * Función que se encarga de habilitar las acciones (en este caso son filtros)
-   * a nivel de encabezados de la tabla.
-   *
-   * @author amiranda
-   * @date 20/11/2023
-   */
-  enableHeaderActions() {
-    let cols = this.columns;
-    cols.forEach((col) => {
-      col.actions?.forEach((action) => {
-        action.checked = action.name === "all";
-        action.disabled = false;
-      });
-    });
-
-    this.reconfigureTableCols(cols);
-  }
-
-  /**
-   * Función que se encarga de eliminar y volver a añadir la columna de acciones.
-   * Es necesario llevar a cabo este proceso por un problema que existe que se
-   * encuentra documentado en GitHub -> https://github.com/salesforce/lwc/issues/1616
-   *
-   * @author amiranda
-   * @date 20/11/2023
-   */
-  reconfigureTableCols(cols) {
-    if (cols.some((col) => col.type === "action")) {
-      cols = [
-        ...cols.filter((col) => col.type !== "action"),
-        {
-          type: "action",
-          typeAttributes: { rowActions: this.getRowActions }
-        }
-      ];
-
-      this.columns = cols;
-    } else {
-      this.columns = JSON.parse(JSON.stringify(cols));
-    }
   }
 
   // #region Utility functions
 
+  /**
+   * Función que se encarga de gestionar la acción de 'Quitar'. Esta acción elimna
+   * el miembro de campaña seleccionado.
+   *
+   * @author amiranda
+   * @date 20/11/2023
+   */
   async deleteCampaignMember(row) {
     this.showSpinner();
+
     try {
       if (this.campaignData.campaignType !== "Venta Cruzada") {
         this.showError(
@@ -358,32 +335,59 @@ export default class DatatableWithRowActions extends LightningElement {
   async assignOffer(row) {
     this.showSpinner();
 
-    const { cmId } = row;
-    const index = this.findRowIndexById(cmId);
-    const campaignMemberInfo = this.campaignMembersRawData.at(index);
-
     try {
-      if (
-        !campaignMemberInfo.offerPendingIntermediaryReview &&
-        campaignMemberInfo.offerIsClosed
-      ) {
+      if (!row.offerPendingIntermediaryReview && row.offerIsClosed) {
         this.showError(
           labels.toastGenericErrorTitle,
           labels.toastAssignButtonErrorMessage
         );
       } else {
-        const offerId = campaignMemberInfo.offerId;
-        const campaignMemberId = campaignMemberInfo.cmId;
-
         await updateOfferAndCampaignMember({
-          offerId,
-          campaignMemberId,
+          offerId: row.offerId,
+          campaignMemberId: row.cmId,
           userIntermediaryCode: this.intermediaryCode,
           userId
         });
         this.showSuccess(
           labels.toastAssignmentRowActionTitle,
           labels.toastAssignmentRowActionMessage
+        );
+        this.refreshCampaignMembersData();
+      }
+    } catch {
+      this.showError(
+        labels.toastGenericErrorTitle,
+        labels.toastGenericErrorMessage
+      );
+    } finally {
+      this.hideSpinner();
+    }
+  }
+
+  /**
+   * Función que se encarga de gestionar la acción de 'Duplicar'. Esta acción
+   * clona la oferta que está relacionada con el miembro de campaña seleccionado.
+   *
+   * @author amiranda
+   * @date 21/12/2023
+   */
+  async cloneOffer(row) {
+    this.showSpinner();
+
+    try {
+      if (
+        this.campaignData.campaignType !== "Venta Cruzada" ||
+        row.offerStage !== "Cerrada Perdida"
+      ) {
+        this.showError(
+          labels.toastGenericErrorTitle,
+          labels.toastDuplicateRowActionErrorMessage
+        );
+      } else {
+        await cloneOffer({ offerId: row.offerId });
+        this.showSuccess(
+          labels.toastDuplicateRowActionTitle,
+          labels.toastDuplicateRowActionMessage
         );
         this.refreshCampaignMembersData();
       }
@@ -447,6 +451,80 @@ export default class DatatableWithRowActions extends LightningElement {
   }
 
   /**
+   * Función que se encarga de marcar visualmente en el encabezado que corresponda
+   * el filtro que se ha seleccionado.
+   *
+   * @author amiranda
+   * @date 20/11/2023
+   */
+  checkHeaderAction(selectedHeader, actionName) {
+    let cols = this.columns;
+    cols.forEach((col) => {
+      if (col.fieldName === selectedHeader) {
+        col.actions.forEach(
+          (action) => (action.checked = action.name === actionName)
+        );
+      }
+    });
+
+    this.reconfigureActionCol(cols);
+  }
+
+  /**
+   * Función que se encarga de habilitar las acciones (en este caso son filtros)
+   * a nivel de encabezados de la tabla.
+   *
+   * @author amiranda
+   * @date 20/11/2023
+   */
+  enableHeaderActions() {
+    let cols = this.columns;
+    cols.forEach((col) => {
+      col.actions?.forEach((action) => {
+        action.checked = action.name === "all";
+        action.disabled = false;
+      });
+    });
+
+    this.reconfigureActionCol(cols);
+  }
+
+  /**
+   * Función que se encarga de eliminar y volver a añadir la columna de acciones.
+   * Es necesario llevar a cabo este proceso por un problema que existe que se
+   * encuentra documentado en GitHub -> https://github.com/salesforce/lwc/issues/1616
+   *
+   * @author amiranda
+   * @date 20/11/2023
+   */
+  reconfigureActionCol(cols) {
+    /*
+     * Para los miembros de campaña de campañas activas que muestre la columna
+     * de acciones, esta se elimina de las columnas y se vuelve a añadir
+     */
+    if (cols.some((col) => col.type === "action")) {
+      cols = [
+        ...cols.filter((col) => col.type !== "action"),
+        {
+          type: "action",
+          typeAttributes: { rowActions: this.getRowActions }
+        }
+      ];
+
+      this.columns = cols;
+    } else {
+      /*
+       * Para los casos en los que la tabla de miembros de campaña no tenía
+       * cargada la columna de acciones se ejecuta el siguiente código para crear
+       * una nueva estructura de datos para que el sistema de reactividad, que no
+       * es capaz de detectar los cambios que se producen directamente en a la
+       * propiedad 'columns' con la anotación '@track', pueda reaccionar a estos cambios.
+       */
+      this.columns = JSON.parse(JSON.stringify(cols));
+    }
+  }
+
+  /**
    * Función que vacía los datos de la tabla.
    *
    * @author amiranda
@@ -457,14 +535,37 @@ export default class DatatableWithRowActions extends LightningElement {
   }
 
   getRowActions = (row, doneCallBack) => {
-    let actions = [{ label: labels.removeRowAction, name: rowActions.remove }];
+    let actions = [];
 
-    if (
-      this.campaignData.campaignFilter === campaignStatusFilterActiveValue &&
-      this.campaignNotInitialized &&
-      row.cmStatus === "Pdtes. Revisión Mediador"
+    if (this.campaignData.campaignFilter === campaignStatusFilterValue.active) {
+      // Para las campañas activas se aplica la siguiente lógica para añadir las acciones correspondientes
+      actions.push({ label: labels.removeRowAction, name: rowActions.remove });
+
+      if (
+        this.campaignNotInitialized &&
+        row.cmStatus === "Pdte. Revisión Mediador"
+      ) {
+        actions.push({
+          label: labels.assignRowAction,
+          name: rowActions.assign
+        });
+      }
+    } else if (
+      this.campaignData.campaignFilter === campaignStatusFilterValue.inactive
     ) {
-      actions.push({ label: labels.assignRowAction, name: rowActions.assign });
+      if (row.offerSalesLossReason === "Campaign completed") {
+        actions.push({
+          label: labels.duplicateRowAction,
+          name: rowActions.clone
+        });
+      } else {
+        // Para los miembros de campaña que no cumplen con la condición el botón se encuentra deshabilitado
+        actions.push({
+          label: labels.duplicateRowAction,
+          name: rowActions.clone,
+          disabled: true
+        });
+      }
     }
 
     doneCallBack(actions);

@@ -3,8 +3,8 @@
  * con la página custom desarrollada para la ficha de campañas en la comunidad ZRM
  *
  * @author            : amiranda
- * @date              : 18-12-2023
- * @last modified on  : 18-12-2023
+ * @date              : 22-12-2023
+ * @last modified on  : 22-12-2023
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -113,8 +113,8 @@ public with sharing class CampaignZRMCustomPageController
                 }
             }
 
-            // Se obtienen todas las ofertas asociadas a las cuentas asociadas a los contactos que a su vez están asociados a los miembros de campaña
-            List<Opportunity> offersRelatedToCampaignMembers = new OpportunitiesSelector().selectByAccountIdsAndCampaignId(campaignMembersByAccountId.keySet(), campaignId);
+            // Se obtienen todas las ofertas que no han sido clonadas asociadas a las cuentas asociadas a los contactos que a su vez están asociados a los miembros de campaña
+            List<Opportunity> offersRelatedToCampaignMembers = new OpportunitiesSelector().selectByAccountIdsAndCampaignId(campaignMembersByAccountId.keySet(), campaignId, false);
 
             Map<Id, Opportunity> offersByAccountId = new Map<Id, Opportunity>();
             for (Opportunity offerRelatedToCampaignMember : offersRelatedToCampaignMembers)
@@ -170,6 +170,7 @@ public with sharing class CampaignZRMCustomPageController
      * @param campaignMemberId Id del miembro de campaña a actualizar
      * @param userIntermediaryCode Código de intermediario que se asignará al miembro de campañá
      * @param userId Id del usuario que pasará a ser el propietario de la oferta a actualizar
+     * @where LWC IntermediaryCampaignMember
      **/
     @AuraEnabled
     public static void updateOfferAndCampaignMember(Id offerId, Id campaignMemberId, String userIntermediaryCode, Id userId)
@@ -183,8 +184,38 @@ public with sharing class CampaignZRMCustomPageController
                 'UserId' => userId
             };
 
-            Flow.Interview.UpdateOfferAndCampaignMember flow = new Flow.Interview.UpdateOfferAndCampaignMember(inputs);
-            flow.start();
+            Flow.Interview.UpdateOfferAndCampaignMember updateOfferAndCampaignMember = new Flow.Interview.UpdateOfferAndCampaignMember(inputs);
+            updateOfferAndCampaignMember.start();
+        }
+        catch (Exception ex)
+        {
+            ErrorLogUtil.commitError(ex, CLASS_NAME);
+            throw new AuraHandledException( ex.getMessage() );
+        }
+    }
+
+    /**
+     * @description Método que se encarga de lanzar el flujo 'CloneOfferForIntermediary'
+     * que se encarga del clonado de ofertas.
+     *
+     * @author amiranda
+     * @date 21-12-2023
+     * @param offerId Id de la oferta a clonar
+     **/
+    @AuraEnabled
+    public static void cloneOffer(Id offerId)
+    {
+        try
+        {
+            Opportunity offerToClone = new Opportunity(Id = offerId);
+            Map<String, Object> inputs = new Map<String, Object> {
+                'OriginOffer' => offerToClone,
+                'LaunchFromZRM' => true,
+                'GetOfferRecord' => true
+            };
+
+            Flow.Interview.CloneOfferForIntermediary cloneOfferForIntermediary = new Flow.Interview.CloneOfferForIntermediary(inputs);
+            cloneOfferForIntermediary.start();
         }
         catch (Exception ex)
         {

@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 12-12-2023
+ * @last modified on  : 26-12-2023
  * @last modified by  : amiranda
  **/
 public with sharing class OpportunitiesSelector extends RecordsSelector
@@ -403,16 +403,18 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     }
 
     /**
-    * @description Método selector que recupera aquellas ofertas que se encuentran
-    * relacionadas con la campaña y con alguna de las cuentas pasada por parámetro.
-    * 
-    * @author amiranda
-    * @date 14-11-2023 
-    * @param accountIds Ids de cuentas relacionadas con las ofertas
-    * @param campaignId Id de campañá sobre la que recuperar las ofertas
-    * @return List<Opportunity> 
-    **/
-    public List<Opportunity> selectByAccountIdsAndCampaignId(Set<Id> accountIds, Id campaignId)
+     * @description Método selector que recupera aquellas ofertas que se encuentran
+     * relacionadas con la campaña y con alguna de las cuentas pasada por parámetro.
+     *
+     * @author amiranda
+     * @date 14-11-2023
+     * @param accountIds Ids de cuentas relacionadas con las ofertas
+     * @param campaignId Id de campañá sobre la que recuperar las ofertas
+     * @param offerCloned Indica si se quiere filtar por ofertas clonadas o no clonadas.
+     * En caso de que el valor sea 'null' no se aplica el filtro
+     * @return List<Opportunity> Lista de ofertas recuperadas
+     **/
+    public List<Opportunity> selectByAccountIdsAndCampaignId(Set<Id> accountIds, Id campaignId, Boolean offerCloned)
     {
         List<Opportunity> opportunities = new List<Opportunity>();
 
@@ -427,12 +429,19 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                 Opportunity.IsClosed
             };
 
+            this.baseQuery
+            .selectFields(fields)
+            .toLabel('Sales_Loss_Reason__c', 'salesLossReasonLabel')
+            .toLabel('StageName')
+            .addConditionIn(Opportunity.AccountId, accountIds)
+            .addConditionEq(Opportunity.CampaignId, campaignId);
+
+            if (offerCloned != null)
+            {
+                this.baseQuery.addConditionEq(Opportunity.ClonedOfferForIntermediary__c, offerCloned);
+            }
+
             opportunities = this.baseQuery
-                            .selectFields(fields)
-                            .toLabel('Sales_Loss_Reason__c', 'salesLossReasonLabel')
-                            .toLabel('StageName')
-                            .addConditionIn(Opportunity.AccountId, accountIds)
-                            .addConditionEq(Opportunity.CampaignId, campaignId)
                             .enforceSecurity()
                             .run();
         }
