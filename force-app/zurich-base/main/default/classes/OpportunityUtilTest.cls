@@ -486,6 +486,7 @@ private with sharing class OpportunityUtilTest
         for(Integer i = 0; i < optys.size(); i++)
         {
             optys[i].InfoQuoteNumber__c = String.valueOf(i);
+            optys[i].BusinessCode__c = '3200012491';
         }
 
         Test.startTest();
@@ -497,6 +498,32 @@ private with sharing class OpportunityUtilTest
         for(Opportunity opty : optysInserted)
         {
             System.assertEquals('Open', opty.StageName, 'Se debería haber cambiado el Stage de null a Open');
+        }
+    }
+
+    /**
+     * Comprueba si una oferta se inserta con Stage a null y es de ZRM, se cambia a Quoted
+     * @date 25/02/2021
+     */
+    @isTest
+    static void test_setStageNameQuoted_ok()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+        List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 2);
+        for(Integer i = 0; i < optys.size(); i++)
+        {
+            optys[i].InfoQuoteNumber__c = String.valueOf(i);
+        }
+
+        Test.startTest();
+        insert optys;
+        Test.stopTest();
+
+        List<Opportunity> optysInserted = [SELECT Id, StageName FROM Opportunity];
+
+        for(Opportunity opty : optysInserted)
+        {
+            System.assertEquals('Quoted', opty.StageName, 'Se debería haber cambiado el Stage de null a Quoted');
         }
     }
 
