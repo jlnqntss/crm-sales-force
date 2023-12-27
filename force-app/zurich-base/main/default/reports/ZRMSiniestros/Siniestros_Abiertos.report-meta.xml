@@ -1,47 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
-        <field>CUST_NAME</field>
-    </columns>
-    <columns>
         <field>Claim__c.Policy__c</field>
     </columns>
     <columns>
-        <field>Claim__c.PolicyHolder__c</field>
-    </columns>
-    <columns>
-        <field>Claim__c.InsuredObject__c</field>
+        <field>Claim__c.Status__c</field>
     </columns>
     <columns>
         <field>Claim__c.Product__c</field>
     </columns>
     <columns>
-        <field>Claim__c.FaultFactor__c</field>
-    </columns>
-    <columns>
-        <field>CUST_CREATED_DATE</field>
-    </columns>
-    <columns>
         <field>Claim__c.DateOfOccurrence__c</field>
     </columns>
-    <description>Siniestros pendientes de resolución.</description>
+    <columns>
+        <field>CUST_LAST_UPDATE</field>
+    </columns>
+    <description>Siniestros pendientes de resolución de este año.</description>
     <filter>
         <criteriaItems>
             <column>Claim__c.Status__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>T</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Claim__c.DateOfOccurrence__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>P,A</value>
+            <value>THIS_YEAR</value>
         </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Claim__c.Status__c</field>
+        <field>Claim__c.PolicyHolder__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Siniestros Abiertos</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>CUST_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Siniestros Abiertos Acumulado Año</name>
     <params>
         <name>co</name>
         <value>1</value>
