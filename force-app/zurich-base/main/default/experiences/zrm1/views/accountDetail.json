@@ -121,17 +121,6 @@
                   "id": "915fd2cf-a8ca-46af-93e8-d18ec8c226f6",
                   "renditionMap": {},
                   "type": "component"
-                },
-                {
-                  "componentAttributes": {
-                    "relatedListApiName": "Assets",
-                    "relatedListComponentOverride": "ADVGRID",
-                    "width": "MEDIUM"
-                  },
-                  "componentName": "forceCommunity:responsiveRelatedListSingle",
-                  "id": "1553bcd2-e287-469b-a877-950053e29ed3",
-                  "renditionMap": {},
-                  "type": "component"
                 }
               ],
               "id": "dc51a565-6ae0-43bd-b9c9-96d53114c5d8",

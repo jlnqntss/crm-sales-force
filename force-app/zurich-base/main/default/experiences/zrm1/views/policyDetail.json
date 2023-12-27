@@ -83,17 +83,6 @@
                   "id": "523d52c3-4b6b-495c-9d78-cda1d3facd2c",
                   "renditionMap": {},
                   "type": "component"
-                },
-                {
-                  "componentAttributes": {
-                    "relatedListApiName": "PolicyNumbers__r",
-                    "relatedListComponentOverride": "ADVGRID",
-                    "width": "MEDIUM"
-                  },
-                  "componentName": "forceCommunity:responsiveRelatedListSingle",
-                  "id": "3b9b61ec-6bfd-4eed-8c7d-f8131259e6a0",
-                  "renditionMap": {},
-                  "type": "component"
                 }
               ],
               "id": "d7b29ab1-ea02-4ae6-80da-9bedb19e19ed",
