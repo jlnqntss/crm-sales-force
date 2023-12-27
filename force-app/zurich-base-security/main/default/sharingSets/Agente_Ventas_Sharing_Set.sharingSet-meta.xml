@@ -24,6 +24,12 @@
         <objectField>IntermediaryVisibilityAcc__c</objectField>
         <userField>Contact.Account</userField>
     </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Policy__c</object>
+        <objectField>IntermediaryVisibilityAcc__c</objectField>
+        <userField>Contact.Account</userField>
+    </accessMappings>
     <description>Visibilidad para el Agente Mediador en la app de ZRM</description>
     <name>Agente Ventas Sharing Set</name>
     <profiles>agente ventas</profiles>
