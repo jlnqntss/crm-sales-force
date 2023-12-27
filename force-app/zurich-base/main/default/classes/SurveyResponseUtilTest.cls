@@ -1,8 +1,9 @@
 @isTest(SeeAllData = false)
-private with sharing class SurveyResponseUtilTest {
+private class SurveyResponseUtilTest
+{
 
     @testSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
@@ -20,7 +21,7 @@ private with sharing class SurveyResponseUtilTest {
      * Comprueba si al insertar respuestas se recalcula la cabecera
      */
     @isTest
-    private static void test_processAnswers_ok()
+    static void test_processAnswers_ok()
     {
         //Crear la cabecera
         Survey__c survey = new Survey__c(InteractionId__c = '01', NumberOfQuestions__c = 3);
@@ -31,40 +32,42 @@ private with sharing class SurveyResponseUtilTest {
         SurveyResponse__c response2 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-2', QuestionType__c = 'asr', LongAnswer__c = 'hola');
         SurveyResponse__c response3 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-3', QuestionType__c = 'ivr', Answer__c = '1');
         SurveyResponse__c response4 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-4', QuestionType__c = 'ivr');
+        SurveyResponse__c response5 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-5', QuestionType__c = 'ivr', Answer__c = '4');
         List<SurveyResponse__c> responses = new List<SurveyResponse__c>();
         responses.add(response1);
         responses.add(response2);
         responses.add(response3);
         responses.add(response4);
+        responses.add(response5);
         insert responses;
 
         //Comprobación Insert
-        Survey__c checkSurvey1 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = :survey.Id];
+        Survey__c checkSurvey1 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = : survey.Id];
         System.assertEquals('hola', checkSurvey1.LongAnswerProcessed__c, 'Debería rellenarse con el contenido de la asr');
-        System.assertEquals('10;1;NULL;', checkSurvey1.ShortAnswersProcessed__c, 'Debería rellenarse con el esquema de las ivr 10;1;NULL;');
+        System.assertEquals('10;1;NULL;4;', checkSurvey1.ShortAnswersProcessed__c, 'Debería rellenarse con el esquema de las ivr 10;1;NULL;');
 
         //Actualizar
         response2.QuestionType__c = 'ivr';
         update response2;
 
         //Comprobación Update
-        Survey__c checkSurvey2 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = :survey.Id];
+        Survey__c checkSurvey2 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = : survey.Id];
         System.assertEquals(null, checkSurvey2.LongAnswerProcessed__c, 'Debería haberse vaciado porque ya no hay asr');
-        System.assertEquals('10;NULL;1;NULL;', checkSurvey2.ShortAnswersProcessed__c, 'Debería rellenarse con el esquema de las ivr 10;NULL;1;NULL;');
+        System.assertEquals('10;NULL;1;NULL;4;', checkSurvey2.ShortAnswersProcessed__c, 'Debería rellenarse con el esquema de las ivr 10;NULL;1;NULL;');
 
         //Preparar una actualización y una insercción
         response1.QuestionType__c = 'asr';
         response1.LongAnswer__c = 'response1';
-        SurveyResponse__c response5 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-5', QuestionType__c = 'ivr', Answer__c = '5');
+        SurveyResponse__c response6 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-6', QuestionType__c = 'ivr', Answer__c = '5');
         List<SurveyResponse__c> responses2 = new List<SurveyResponse__c>();
-        responses2.add(response5);
+        responses2.add(response6);
         responses2.add(response1);
         upsert responses2;
 
         //Comprobación Upsert
-        Survey__c checkSurvey3 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = :survey.Id];
+        Survey__c checkSurvey3 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = : survey.Id];
         System.assertEquals('response1', checkSurvey3.LongAnswerProcessed__c, 'Debería haberse actualizado con la asr');
-        System.assertEquals('NULL;1;NULL;5;', checkSurvey3.ShortAnswersProcessed__c, 'Debería rellenarse con el esquema de las ivr NULL;1;NULL;5;');
+        System.assertEquals('NULL;1;NULL;4;5;', checkSurvey3.ShortAnswersProcessed__c, 'Debería rellenarse con el esquema de las ivr NULL;1;NULL;4;5;');
     }
 
 
@@ -72,7 +75,7 @@ private with sharing class SurveyResponseUtilTest {
      * Comprueba si se actualizan varias Surveys a la vez
      */
     @isTest
-    private static void test_processAnswers_surveys_ok()
+    static void test_processAnswers_surveys_ok()
     {
         //Crear la cabecera
         Survey__c survey = new Survey__c(InteractionId__c = '01', NumberOfQuestions__c = 1);
@@ -93,13 +96,53 @@ private with sharing class SurveyResponseUtilTest {
         insert responses;
 
         //Comprobación Survey1
-        Survey__c checkSurvey1 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = :survey.Id];
+        Survey__c checkSurvey1 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = : survey.Id];
         System.assertEquals('hola', checkSurvey1.LongAnswerProcessed__c, 'Debería rellenarse con el contenido de la asr');
         System.assertEquals('10;', checkSurvey1.ShortAnswersProcessed__c, 'Debería rellenarse con el esquema de las ivr 10;');
 
         //Comprobación Survey2
-        Survey__c checkSurvey2 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = :survey2.Id];
+        Survey__c checkSurvey2 = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = : survey2.Id];
         System.assertEquals(null, checkSurvey2.LongAnswerProcessed__c, 'Debería rellenarse con el contenido de la asr');
         System.assertEquals('1;NULL;', checkSurvey2.ShortAnswersProcessed__c, 'Debería rellenarse con el esquema de las ivr 1;NULL;');
     }
+
+
+    /**
+     * Comprueba si al insertar respuestas se recalcula la cabecera
+     */
+    @isTest
+    static void test_processAnswers_change_answer_ok()
+    {
+        //Crear la cabecera
+        Survey__c survey = new Survey__c(InteractionId__c = '01', NumberOfQuestions__c = 3);
+        insert survey;
+
+        //Crear respuestas
+        SurveyResponse__c response1 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-1', QuestionType__c = 'ivr', Answer__c = '10');
+        SurveyResponse__c response2 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-2', QuestionType__c = 'asr', LongAnswer__c = 'hola');
+        SurveyResponse__c response3 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-3', QuestionType__c = 'ivr', Answer__c = '1');
+        SurveyResponse__c response4 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-4', QuestionType__c = 'ivr', Answer__c = '5');
+        SurveyResponse__c response5 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-5', QuestionType__c = 'ivr', Answer__c = '4');
+        SurveyResponse__c response6 = new SurveyResponse__c(SurveyId__c = survey.Id, QuestionId__c = '01-6', QuestionType__c = 'ivr');
+        List<SurveyResponse__c> responses = new List<SurveyResponse__c>();
+        responses.add(response1);
+        responses.add(response2);
+        responses.add(response3);
+        responses.add(response4);
+        responses.add(response5);
+        responses.add(response6);
+        insert responses;
+
+        //Comprobación de que si la quinta respuesta está en rango se mantiene el resultado
+        Survey__c checkSurvey = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = : survey.Id];
+        System.assertEquals('10;1;5;4;NULL;', checkSurvey.ShortAnswersProcessed__c, 'Las respuestas cortas deberían ser: 10;1;5;4;NULL;');
+
+        //Comprobación del cambio de respuesta en la quinta posición por estar fuera de rango
+        response5.Answer__c = '5';
+        update response5;
+        checkSurvey = [SELECT Id, ShortAnswersProcessed__c, LongAnswerProcessed__c FROM Survey__c WHERE Id = : survey.Id];
+
+        System.assertEquals('10;1;5;NULL;NULL;', checkSurvey.ShortAnswersProcessed__c, 'Debería cambiar la respuesta fuera de rango 10;1;5;NULL;NULL;');
+    }
+
 }
