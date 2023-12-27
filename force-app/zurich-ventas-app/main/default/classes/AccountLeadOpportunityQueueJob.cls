@@ -237,7 +237,6 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
             List<Account> listAcc = accSelector.findByINFOIntermediaryCode(new List<String> {(String) offerToInsertUpdate.IntermediaryCode__c});
             policyToInsert.OpportunityName__c = offerToInsertUpdate.Id;
             policyToInsert.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
-            policyToInsert.PolicyHolder__c = offerToInsertUpdate.AccountId;
             if (listAcc.size() > 0)
             {
                 policyToInsert.IntermediaryId__c = listAcc.get(0).Id;
