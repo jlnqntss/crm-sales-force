@@ -6350,6 +6350,10 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZRM_IntermediaryCampaignMembers_RowActionRemove</name>
     </customLabels>
     <customLabels>
+        <label>Duplicar</label>
+        <name>ZRM_IntermediaryCampaignMembers_RowActionDuplicate</name>
+    </customLabels>
+    <customLabels>
         <label>Código de Filiación</label>
         <name>ZRM_IntermediaryCampaignMembers_TableHeaderAffiliationCode</name>
     </customLabels>
@@ -6400,6 +6404,18 @@ Cree el acta y vuelva a intentarlo.</label>
     <customLabels>
         <label>Eliminación exitosa</label>
         <name>ZRM_IntermediaryCampaignMembers_ToastDeleteRowActionTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>No se puede clonar esta oferta por no cumplir con los requisitos.</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionErrorMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Oferta para Mediador generada con éxito.</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Duplicación exitosa</label>
+        <name>ZRM_IntermediaryCampaignMembers_ToastDuplicateRowActionTitle</name>
     </customLabels>
     <customLabels>
         <label>No se ha podido ejecutar la operación solicitada. Si el problema persiste póngase en contacto con el Administrador del Sistema.</label>
