@@ -1,58 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
-        <field>CUST_NAME</field>
+        <field>Account.CustomerValue__c</field>
     </columns>
     <columns>
-        <field>Claim__c.Policy__c</field>
+        <field>Propensity__c.ProductBranch__c</field>
     </columns>
     <columns>
-        <field>Claim__c.PolicyHolder__c</field>
+        <field>Propensity__c.ProductBranchDetail__c</field>
     </columns>
     <columns>
-        <field>Claim__c.InsuredObject__c</field>
+        <field>Propensity__c.Propensity__c</field>
     </columns>
     <columns>
-        <field>Claim__c.Product__c</field>
+        <field>LAST_UPDATE</field>
     </columns>
-    <columns>
-        <field>Claim__c.FaultFactor__c</field>
-    </columns>
-    <columns>
-        <field>CUST_CREATED_DATE</field>
-    </columns>
-    <columns>
-        <field>Claim__c.DateOfOccurrence__c</field>
-    </columns>
-    <description>Siniestros pendientes de resolución.</description>
+    <description>Mis clientes con una propensión a la adquisición de una póliza Alta Plus y Alta.</description>
     <filter>
         <criteriaItems>
-            <column>Claim__c.Status__c</column>
+            <column>Propensity__c.Propensity__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>P,A</value>
+            <value>Alta Plus,Alta</value>
         </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Claim__c.Status__c</field>
+        <field>ACCOUNT.NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Siniestros Abiertos</name>
+    <name>Clientes con alta propensión a la compra</name>
     <params>
         <name>co</name>
         <value>1</value>
     </params>
-    <reportType>CustomEntity$Claim__c</reportType>
+    <reportType>AccountCustomEntity$Propensity__c</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
-        <dateColumn>Claim__c.OpenDate__c</dateColumn>
+        <dateColumn>DUE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

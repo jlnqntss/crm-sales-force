@@ -4,16 +4,22 @@
         <field>CUST_NAME</field>
     </columns>
     <columns>
-        <field>Policy__c.PolicyHolder__c</field>
+        <field>Policy__c.PolicyStatus__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c.ProductBranch__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c.ProductId__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c.OpportunityName__c</field>
     </columns>
     <columns>
         <field>Policy__c.InfoCreatedDate__c</field>
     </columns>
     <columns>
         <field>Policy__c.StartDate__c</field>
-    </columns>
-    <columns>
-        <field>Policy__c.MovementStartDate__c</field>
     </columns>
     <columns>
         <field>Policy__c.EndDate__c</field>
@@ -28,24 +34,28 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Policy__c.SurhargeDiscount__c</field>
+        <field>Policy__c.Bonus__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Policy__c.Bonus__c</field>
+        <field>Policy__c.SurhargeDiscount__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Policy__c.TotalPremium__c</field>
     </columns>
     <columns>
-        <field>Policy__c.PaymentType__c</field>
-    </columns>
-    <columns>
         <field>Policy__c.Intermediary_Code__c</field>
     </columns>
-    <description>Pólizas activas cuya fecha de vencimiento sea el mes actual.</description>
+    <description>Pólizas que su fecha de vencimiento es los próximos 3 meses.</description>
     <filter>
+        <criteriaItems>
+            <column>Policy__c.EndDate__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>lessOrEqual</operator>
+            <value>NEXT_90_DAYS</value>
+        </criteriaItems>
         <criteriaItems>
             <column>Policy__c.PolicyStatus__c</column>
             <columnToColumn>false</columnToColumn>
@@ -57,23 +67,18 @@
             <column>Policy__c.EndDate__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>THIS_MONTH</value>
+            <operator>greaterOrEqual</operator>
+            <value>TODAY</value>
         </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Policy__c.PolicyStatus__c</field>
+        <field>Policy__c.PolicyHolder__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <groupingsDown>
-        <dateGranularity>Day</dateGranularity>
-        <field>Policy__c.ProductBranch__c</field>
-        <sortOrder>Asc</sortOrder>
-    </groupingsDown>
-    <name>VTO Pólizas</name>
+    <name>Pólizas vencimiento en 3 meses</name>
     <params>
         <name>co</name>
         <value>1</value>
