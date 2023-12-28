@@ -1,8 +1,8 @@
 @isTest
-private with sharing class ContactPointAddressUtilTest
+private class ContactPointAddressUtilTest
 {
     @TestSetup
-    private static void makeData()
+    static void makeData()
     {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
         insert accounts;
@@ -15,7 +15,7 @@ private with sharing class ContactPointAddressUtilTest
      * @date 09/12/2020
      */
     @isTest
-    private static void test_generateScope()
+    static void test_generateScope()
     {
         List<Account> accounts = [SELECT Name FROM Account];
 

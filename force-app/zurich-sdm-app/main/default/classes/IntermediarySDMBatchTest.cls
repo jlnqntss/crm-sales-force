@@ -5,7 +5,7 @@
  * @date 05/07/2021
  */
 @isTest
-private with sharing class IntermediarySDMBatchTest
+private class IntermediarySDMBatchTest
 {
     /**
      * Metodo comun para todas los metodos de test. Inicializa los datos de prueba
@@ -14,7 +14,7 @@ private with sharing class IntermediarySDMBatchTest
      * @date 05/07/2021
      */
     @TestSetup
-    private static void makeData() 
+    static void makeData() 
     {
         TestDataFactorySDM.IntermediarySetupData();
     }
@@ -26,7 +26,7 @@ private with sharing class IntermediarySDMBatchTest
      * @date 05/07/2021
      */
     @isTest
-    private static void execute()
+    static void execute()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         List<Account> intermediaries = [SELECT Id FROM Account WHERE RecordTypeId = :rtIntermediaryId];
@@ -71,7 +71,7 @@ private with sharing class IntermediarySDMBatchTest
     }
 
     @isTest
-    private static void execute_ko()
+    static void execute_ko()
     {
         String query = 'SELECT Id FROM Account';
         IntermediarySDMBatch batch = new IntermediarySDMBatch(query); // para cobertura
@@ -86,7 +86,7 @@ private with sharing class IntermediarySDMBatchTest
     }
 
     @isTest
-    private static void execute_ko_finish()
+    static void execute_ko_finish()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         List<Account> intermediaries = [SELECT Id FROM Account WHERE RecordTypeId = :rtIntermediaryId];
@@ -108,7 +108,7 @@ private with sharing class IntermediarySDMBatchTest
 	 * Test of the batch scheduling
 	 */
 	@isTest 
-	private static void schedule() {
+	static void schedule() {
 		Test.startTest();
         IntermediarySDMBatch.createStandardSchedule(null, null, null);
 		Test.stopTest();

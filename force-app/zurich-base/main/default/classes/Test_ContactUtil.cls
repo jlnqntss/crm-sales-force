@@ -5,7 +5,7 @@
  * @date 03/04/2020
  **/
 @isTest
-private with sharing class Test_ContactUtil
+public class Test_ContactUtil
 {
     static final String ERROR_MESSAGE_CUSTOMER_NUM = 'Test_ContactUtil: No se ha creado correctamente el customer num';
     static final String EMAIL_CONTACT = 'nora@test.com' ;
@@ -14,11 +14,11 @@ private with sharing class Test_ContactUtil
     static final String CUSTOMER_NUM = 'LIFE-7897';
 
     @testSetup
-    private static void makeData()
+    static void makeData()
     {}
 
     @isTest
-    private static void test_adaptCustomerNum()
+    static void test_adaptCustomerNum()
     {
         String customerNum = '123456';
         String legalEntity = Label.GeneralInsurance;
@@ -59,7 +59,7 @@ private with sharing class Test_ContactUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_LeadUpdate()
+    static void test_LeadUpdate()
     {
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '7897');
         insert newMaster;
@@ -122,7 +122,7 @@ private with sharing class Test_ContactUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_CustomerUpdate()
+    static void test_CustomerUpdate()
     {
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '7897');
         insert newMaster;
@@ -187,7 +187,7 @@ private with sharing class Test_ContactUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_LeadUpdateMatchcode()
+    static void test_LeadUpdateMatchcode()
     {
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '7897');
         insert newMaster;
@@ -249,7 +249,7 @@ private with sharing class Test_ContactUtil
      *  @date 05/05/2020
      **/
     @isTest
-    private static void test_LeadCustomerExistsMatchcode()
+    static void test_LeadCustomerExistsMatchcode()
     {
         Account newMaster = new Account(
             Name = 'test',
@@ -318,7 +318,7 @@ private with sharing class Test_ContactUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_LeadCustomerExistsMatchcodeOppositeLE()
+    static void test_LeadCustomerExistsMatchcodeOppositeLE()
     {
         Account newMaster = new Account(
             Name = 'test',
@@ -388,7 +388,7 @@ private with sharing class Test_ContactUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_LeadDoesntExist()
+    static void test_LeadDoesntExist()
     {
         Pricebook2 pricebook = new Pricebook2(
             Id = Test.getStandardPricebookId(),
@@ -421,7 +421,7 @@ private with sharing class Test_ContactUtil
     }
 
     @isTest
-    private static void test_generateHashContactId()
+    static void test_generateHashContactId()
     {
         Test.startTest();
 
@@ -471,7 +471,7 @@ private with sharing class Test_ContactUtil
     }
 
     @isTest
-    private static void test_updateQuoteStep4and5()
+    static void test_updateQuoteStep4and5()
     {
         Contact c = new Contact(
             Email = 'edu@test.com',
@@ -525,7 +525,7 @@ private with sharing class Test_ContactUtil
      * @date 04/11/2020
      */
     @isTest
-    private static void test_updateAnddeleteContact()
+    static void test_updateAnddeleteContact()
     {
         Account newMaster = new Account(
             Name = 'test',
@@ -566,7 +566,7 @@ private with sharing class Test_ContactUtil
      * @date 18/11/2020
      */
     @isTest
-    private static void test_UpsertContactSubscriber()
+    static void test_UpsertContactSubscriber()
     {
         Account newMaster = new Account(
             Name = 'test',
@@ -637,7 +637,7 @@ private with sharing class Test_ContactUtil
      * @date 18/11/2020
      */
     @isTest
-    private static void test_UpsertContact_MasterSubscriber()
+    static void test_UpsertContact_MasterSubscriber()
     {
         Account newMaster = new Account(
             Name = 'test',
@@ -709,7 +709,7 @@ private with sharing class Test_ContactUtil
      * @date 10/03/2021
      */
     @isTest
-    private static void test_createMatchcode()
+    static void test_createMatchcode()
     {
         String matchcode;
         Contact contacto = new Contact(
@@ -755,7 +755,7 @@ private with sharing class Test_ContactUtil
      * @date 16/11/2022
      */
     @IsTest
-    private static void test_generateAccountIdSet_OK ()
+    static void test_generateAccountIdSet_OK ()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'PartnerOCS', 10);
         insert accounts;
@@ -783,7 +783,7 @@ private with sharing class Test_ContactUtil
      * @date 17/04/2023
      */
     @IsTest
-    private static void test_getAccountIdsFromContact ()
+    static void test_getAccountIdsFromContact ()
     {
         List<Account> accountsToInsert = TestDataFactory.generateAccounts(null, 'Intermediary', 2);
         insert accountsToInsert;
@@ -812,7 +812,7 @@ private with sharing class Test_ContactUtil
      * @date 17/04/2023
      */
     @IsTest
-    private static void test_updateQuotes ()
+    static void test_updateQuotes ()
     {
         List<Account> account = TestDataFactory.generateAccounts(null, 'Intermediary', 1);
         insert account;

@@ -1,8 +1,8 @@
 @isTest
-private with sharing class FlowSearchAccountsByEmailActionTest {
+private class FlowSearchAccountsByEmailActionTest {
 
     @TestSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         //Customers
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
@@ -20,7 +20,7 @@ private with sharing class FlowSearchAccountsByEmailActionTest {
      * Test para probar si se recibe la información de las cuentas a través de su email
      */
     @isTest
-    private static void test_execute_ok()
+    static void test_execute_ok()
     {
         // SOSL - Resultados de búsqueda
         List<String> emailsToSearch = new List<String>();
@@ -59,7 +59,7 @@ private with sharing class FlowSearchAccountsByEmailActionTest {
      * Comprueba que si se le pasa un email inventado, devuelve una lista de IDs vacía
      */
     @isTest
-    private static void test_execute_ko()
+    static void test_execute_ko()
     {
         // Test
         Test.startTest();

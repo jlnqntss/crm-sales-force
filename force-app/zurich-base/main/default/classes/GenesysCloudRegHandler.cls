@@ -1,5 +1,5 @@
 
-global with sharing class GenesysCloudRegHandler implements Auth.RegistrationHandler{
+global class GenesysCloudRegHandler implements Auth.RegistrationHandler{
 global boolean canCreateUser(Auth.UserData data) {
   return false;
 }

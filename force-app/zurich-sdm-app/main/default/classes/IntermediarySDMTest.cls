@@ -5,7 +5,7 @@
  * @date 29/06/2021
  */
 @isTest
-private with sharing class IntermediarySDMTest
+private class IntermediarySDMTest
 {
 
     public static String queryString='SELECT Id, {0}, {1}, {2} FROM Account WHERE RecordTypeId = :rtIntermediaryId LIMIT 1';
@@ -29,7 +29,7 @@ private with sharing class IntermediarySDMTest
      * @date 29/06/2021
      */
     @TestSetup
-    private static void makeData() 
+    static void makeData() 
     {
         TestDataFactorySDM.IntermediarySetupData();
     }
@@ -41,7 +41,7 @@ private with sharing class IntermediarySDMTest
      * @date 29/06/2021
      */
     @isTest
-    private static void testAssignIntermediaryAgrupation()
+    static void testAssignIntermediaryAgrupation()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         List<Account> intermediaries = [SELECT Id FROM Account WHERE RecordTypeId = :rtIntermediaryId];
@@ -64,7 +64,7 @@ private with sharing class IntermediarySDMTest
      * @date 17/08/2021
      */
     @isTest
-    private static void testAssignIntermediaryAgrupation_not_exist()
+    static void testAssignIntermediaryAgrupation_not_exist()
     {
         ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
         List<Account> agrupations = [SELECT Id FROM Account WHERE RecordTypeId = :rtAgrupationId];
@@ -115,7 +115,7 @@ private with sharing class IntermediarySDMTest
     * @date 30-01-2023 
     **/
     @isTest
-    private static void testAssignIntermediaryAgrupation_set_status_activated()
+    static void testAssignIntermediaryAgrupation_set_status_activated()
     {
         ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
         List<Account> agrupations = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = :rtAgrupationId LIMIT 1];
@@ -150,7 +150,7 @@ private with sharing class IntermediarySDMTest
     * @date 30-01-2023 
     **/
     @isTest
-    private static void testAssignIntermeidaryAgrupation_set_status_inactive()
+    static void testAssignIntermeidaryAgrupation_set_status_inactive()
     {
         ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
         List<Account> agrupations = [SELECT Id, NationalId__c FROM Account WHERE RecordTypeId = :rtAgrupationId LIMIT 1];
@@ -199,7 +199,7 @@ private with sharing class IntermediarySDMTest
      * @date 18/08/2021
      */
     @isTest
-    private static void testAssignAgrupationAccountTeam()
+    static void testAssignAgrupationAccountTeam()
     {
         ID rtAgrupationId = new AccountsSelector().rtAgrupationId;
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
@@ -282,7 +282,7 @@ private with sharing class IntermediarySDMTest
      * @date 29/06/2021
      */
      @isTest
-    private static void testAssignIntermediaryAccountTeam_Active()
+    static void testAssignIntermediaryAccountTeam_Active()
     { 
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         List<Account> intermediaries = [SELECT Id FROM Account WHERE RecordTypeId = :rtIntermediaryId];
@@ -314,7 +314,7 @@ private with sharing class IntermediarySDMTest
      * @date 22-12-2022
      **/
     @isTest
-    private static void testAssignAgrupationAccountTeam_InactiveUser()
+    static void testAssignAgrupationAccountTeam_InactiveUser()
     {
         // Se recupera el Id del RecordType de cuentas de tipo Mediador
         Id rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
@@ -406,7 +406,7 @@ private with sharing class IntermediarySDMTest
      * @date 22-12-2022
      **/
     @isTest
-    private static void testAssignAgrupationAccountTeam_NonExistentUser()
+    static void testAssignAgrupationAccountTeam_NonExistentUser()
     {
         String nonExistentUserEmail = 'nonexistentuser@invalid.com';
 
@@ -492,7 +492,7 @@ private with sharing class IntermediarySDMTest
      * @date 29/06/2021
      */
     @isTest
-    private static void testAssignIntermediaryAccountTeam_Inactive()
+    static void testAssignIntermediaryAccountTeam_Inactive()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         // Seleccionamos un mediador
@@ -575,7 +575,7 @@ private with sharing class IntermediarySDMTest
      * @date 07/07/2021
      */
     @isTest
-    private static void testAssignIntermediaryAccountTeam_RN_NO_ATM()
+    static void testAssignIntermediaryAccountTeam_RN_NO_ATM()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         // Seleccionamos un mediador
@@ -655,7 +655,7 @@ private with sharing class IntermediarySDMTest
      * @date 29/06/2021
      */
     @isTest
-    private static void testAssignIntermediaryAccountTeam_Vacant()
+    static void testAssignIntermediaryAccountTeam_Vacant()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         // Seleccionamos un mediador
@@ -724,7 +724,7 @@ private with sharing class IntermediarySDMTest
      * @date 01/07/2021
      */
     @isTest
-    private static void testAssignIntermediaryContactRelation_insert()
+    static void testAssignIntermediaryContactRelation_insert()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         String soql = 'SELECT Id, Name, ' + AccountsSelector.SDM_MAINEMAIL_FIELD + ' FROM Account WHERE RecordTypeId = :rtIntermediaryId';
@@ -758,7 +758,7 @@ private with sharing class IntermediarySDMTest
      * @date 01/07/2021
      */
     @isTest
-    private static void testAssignIntermediaryContactRelation_delete()
+    static void testAssignIntermediaryContactRelation_delete()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         // Recuperamos los Mediadores y les quitamos el campo de email para que se borren
@@ -814,7 +814,7 @@ private with sharing class IntermediarySDMTest
      * @date 07/11/2022
      */
     @isTest
-    private static void testAssignIntermediaryContactRelation_changeRole()
+    static void testAssignIntermediaryContactRelation_changeRole()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         String soql = 'SELECT Id, Name,ClaimsEmail__c, ' + AccountsSelector.SDM_MAINEMAIL_FIELD + ' FROM Account WHERE RecordTypeId = :rtIntermediaryId limit 1 ';
@@ -850,7 +850,7 @@ private with sharing class IntermediarySDMTest
      * Test del metodo que envia las notificaciones a los usuarios del cambio de visibilidad del mediador
      */
     @isTest
-    private static void testSendNotification()
+    static void testSendNotification()
     {
         Test.startTest();
         IntermediarySDM sdm = new IntermediarySDM();
@@ -865,7 +865,7 @@ private with sharing class IntermediarySDMTest
      * @date 29/06/2021
      */
     @isTest
-    private static void testRemoveATMsForInactiveRoles()
+    static void testRemoveATMsForInactiveRoles()
     {
         ID rtIntermediaryId = new AccountsSelector().rtIntermediaryId;
         // Seleccionamos un mediador
@@ -946,7 +946,7 @@ private with sharing class IntermediarySDMTest
      * @date 05/04/2023
      */
     @isTest
-    private static void testGenerateMapByATM()
+    static void testGenerateMapByATM()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         sdm.mapExistingAgrupationUsers = new Map <String, Set<Id>> ();
@@ -1021,7 +1021,7 @@ private with sharing class IntermediarySDMTest
      * @date 05/04/2023
      */
     @isTest
-    private static void testforUserIfAtmAGRNotExistAndExistAtmIntermediaryCreate()
+    static void testforUserIfAtmAGRNotExistAndExistAtmIntermediaryCreate()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         sdm.mapExistingAgrupationUsers = new Map <String, Set<Id>> ();
@@ -1072,7 +1072,7 @@ private with sharing class IntermediarySDMTest
      * @date 05/04/2023
      */
     @isTest
-    private static void testifUsersLeftInAtmAgrRemoveATM()
+    static void testifUsersLeftInAtmAgrRemoveATM()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         sdm.mapExistingAgrupationUsers = new Map <String, Set<Id>> ();
@@ -1113,7 +1113,7 @@ private with sharing class IntermediarySDMTest
      * @date 13/04/2023
      */
     @isTest
-    private static void testGetEmailsMediadores()
+    static void testGetEmailsMediadores()
     {
         IntermediarySDM sdm = new IntermediarySDM();
 
@@ -1139,7 +1139,7 @@ private with sharing class IntermediarySDMTest
      * @date 13/04/2023
      */
     @isTest
-    private static void testIfContactNotExistCreate()
+    static void testIfContactNotExistCreate()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         Contact contact = null; 
@@ -1176,7 +1176,7 @@ private with sharing class IntermediarySDMTest
      * @date 13/04/2023
      */
     @isTest
-    private static void testIfContactExistCheckRelationWithAccount()
+    static void testIfContactExistCheckRelationWithAccount()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         sdm.mapNewACRsByAccountAndContactIds = new Map<Id, Map<Id, AccountContactRelation>>();
@@ -1215,7 +1215,7 @@ private with sharing class IntermediarySDMTest
      * @date 13/04/2023
      */
     @isTest
-    private static void testCheckACRSToDelete()
+    static void testCheckACRSToDelete()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         sdm.acrsToDelete = new List<AccountContactRelation> ();
@@ -1263,7 +1263,7 @@ private with sharing class IntermediarySDMTest
      * @date 13/04/2023
      */
     @isTest
-    private static void testCheckACRSToDeleteDirectRelation()
+    static void testCheckACRSToDeleteDirectRelation()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         sdm.acrsToDelete = new List<AccountContactRelation> ();
@@ -1305,7 +1305,7 @@ private with sharing class IntermediarySDMTest
      * @date 13/04/2023
      */
     @isTest
-    private static void testCheckACRSToDeleteDirectRelationToAddListUpsert()
+    static void testCheckACRSToDeleteDirectRelationToAddListUpsert()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         sdm.acrsToDelete = new List<AccountContactRelation> ();
@@ -1347,7 +1347,7 @@ private with sharing class IntermediarySDMTest
      * @date 13/04/2023
      */
     @isTest
-    private static void testInsertContactsIfThereAreToInsertAndAssignRolToAcrToUpsert()
+    static void testInsertContactsIfThereAreToInsertAndAssignRolToAcrToUpsert()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         sdm.mapContactsToInsert = new Map<Integer, Contact>();
@@ -1386,7 +1386,7 @@ private with sharing class IntermediarySDMTest
      * @date 13/04/2023
      */
     @isTest
-    private static void testDeleteOrUpsertACRs()
+    static void testDeleteOrUpsertACRs()
     {
         IntermediarySDM sdm = new IntermediarySDM();
         sdm.acrsToDelete = new List<AccountContactRelation>();

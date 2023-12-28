@@ -19,7 +19,7 @@ private class AccountSearchServiceTest
     public static final String INTERMEDIARY_STATUS_FIELD   =   'Status__c';
 
     @TestSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         //Zurich Empresas
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
@@ -45,7 +45,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByPhoneNumber_ok()
+    static void test_findCustomersByPhoneNumber_ok()
     {
         // SOSL - Resultados de búsqueda
         List<String> telephoneNumberToSearch = new List<String>();
@@ -80,7 +80,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByPhoneNumber_ko()
+    static void test_findCustomersByPhoneNumber_ko()
     {
         // Test
         Test.startTest();
@@ -92,7 +92,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByEmail_ok()
+    static void test_findCustomersByEmail_ok()
     {
         // SOSL - Resultados de búsqueda
         List<String> emailsToSearch = new List<String>();
@@ -127,7 +127,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByEmail_ko()
+    static void test_findCustomersByEmail_ko()
     {
         // Test
         Test.startTest();
@@ -139,7 +139,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByDocumentId_ok()
+    static void test_findCustomersByDocumentId_ok()
     {
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
@@ -178,7 +178,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByDocumentId_ko()
+    static void test_findCustomersByDocumentId_ko()
     {
         // Test
         Test.startTest();
@@ -191,7 +191,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByPolicyNumber_ok()
+    static void test_findCustomersByPolicyNumber_ok()
     {
         //Recuperamos las cuentas que tienen polizas del TestSetUp
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
@@ -226,7 +226,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByPolicyNumber_ko()
+    static void test_findCustomersByPolicyNumber_ko()
     {
         // Test
         Test.startTest();
@@ -238,7 +238,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByQuoteNumber_ok()
+    static void test_findCustomersByQuoteNumber_ok()
     {
         //Recuperamos las cuentas que tienen ofertas del TestSetUp
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
@@ -273,7 +273,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findCustomersByQuoteNumber_ko()
+    static void test_findCustomersByQuoteNumber_ko()
     {
         // Test
         Test.startTest();
@@ -285,7 +285,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findIntermediariesByPhoneNumber_ok()
+    static void test_findIntermediariesByPhoneNumber_ok()
     {
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
@@ -316,7 +316,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findIntermediariesByPhoneNumber_ko()
+    static void test_findIntermediariesByPhoneNumber_ko()
     {
         // Test
         Test.startTest();
@@ -328,7 +328,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findIntermediariesByCode_ok()
+    static void test_findIntermediariesByCode_ok()
     {
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
@@ -358,7 +358,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findIntermediariesByCode_ko()
+    static void test_findIntermediariesByCode_ko()
     {
         // Test
         Test.startTest();
@@ -370,7 +370,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findIntermediariesByNIF_ok()
+    static void test_findIntermediariesByNIF_ok()
     {
         //Recuperamos las cuentas Intermediary del TestSetUp
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
@@ -401,7 +401,7 @@ private class AccountSearchServiceTest
     }
 
     @isTest
-    private static void test_findIntermediariesByNIF_ko()
+    static void test_findIntermediariesByNIF_ko()
     {
         // Test
         Test.startTest();

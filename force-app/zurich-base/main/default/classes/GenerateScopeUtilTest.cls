@@ -1,11 +1,11 @@
 @isTest
-private with sharing class GenerateScopeUtilTest
+private class GenerateScopeUtilTest
 {
     private static final String BUSINESS_CODE_1 = '320000001';
     private static final String BUSINESS_CODE_2 = '320000002';
 
     @TestSetup
-    private static void makeData()
+    static void makeData()
     {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 50);
         insert accounts;
@@ -24,7 +24,7 @@ private with sharing class GenerateScopeUtilTest
     }
 
     @isTest
-    private static void test_generateScopeEvents()
+    static void test_generateScopeEvents()
     {
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName != 'PartnerOCS'];
 
@@ -55,7 +55,7 @@ private with sharing class GenerateScopeUtilTest
      * @param events Eventos a procesar
      **/
     @isTest
-    private static void test_handleEvents_scopeExists()
+    static void test_handleEvents_scopeExists()
     {
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName != 'PartnerOCS'];
 
@@ -99,7 +99,7 @@ private with sharing class GenerateScopeUtilTest
      * @param events Eventos a procesar
      **/
     @isTest
-    private static void test_handleEvents_scopeNoExists()
+    static void test_handleEvents_scopeNoExists()
     {
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName != 'PartnerOCS'];
 
@@ -135,7 +135,7 @@ private with sharing class GenerateScopeUtilTest
      * 
      */
     @isTest
-    private static void test_handleEventsAlternativeSObjects()
+    static void test_handleEventsAlternativeSObjects()
     {   
         List<Policy__c> policies = [SELECT Id, Scope__c FROM Policy__c WHERE Scope__c != null];
         System.assertEquals(50, policies.size(), 'Deberia haber 50 polizas con scope');
@@ -165,7 +165,7 @@ private with sharing class GenerateScopeUtilTest
      * @date 19/02/2021
      */
     @isTest
-    private static void test_handleEventsAlternative_RefObject_ko()
+    static void test_handleEventsAlternative_RefObject_ko()
     {
         List<Policy__c> policies = [SELECT Id, Scope__c FROM Policy__c WHERE Scope__c != null LIMIT 1];
         System.assertEquals(1, policies.size(), 'Deberia haber 1 polizas con scope');
@@ -199,7 +199,7 @@ private with sharing class GenerateScopeUtilTest
      * @date 19/02/2021
      */
     @isTest
-    private static void test_handleEventsAlternative_RefObjectField_ko()
+    static void test_handleEventsAlternative_RefObjectField_ko()
     {
         List<Policy__c> policies = [SELECT Id, Scope__c FROM Policy__c WHERE Scope__c != null LIMIT 1];
         System.assertEquals(1, policies.size(), 'Deberia haber 1 polizas con scope');
@@ -232,7 +232,7 @@ private with sharing class GenerateScopeUtilTest
      * @date 19/02/2021
      */
     @isTest
-    private static void test_handleEventsAlternative_RelatedObject_ko()
+    static void test_handleEventsAlternative_RelatedObject_ko()
     {
         List<Policy__c> policies = [SELECT Id, Scope__c FROM Policy__c WHERE Scope__c != null LIMIT 1];
         System.assertEquals(1, policies.size(), 'Deberia haber 1 polizas con scope');
@@ -265,7 +265,7 @@ private with sharing class GenerateScopeUtilTest
      * @date 19/02/2021
      */
     @isTest
-    private static void test_handleEventsAlternative_RelatedObjectField_ko()
+    static void test_handleEventsAlternative_RelatedObjectField_ko()
     {
         List<Policy__c> policies = [SELECT Id, Scope__c FROM Policy__c WHERE Scope__c != null LIMIT 1];
         System.assertEquals(1, policies.size(), 'Deberia haber 1 polizas con scope');
@@ -299,7 +299,7 @@ private with sharing class GenerateScopeUtilTest
      * 
      */
     @isTest
-    private static void test_handleEventsPartner()
+    static void test_handleEventsPartner()
     {   
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName != 'PartnerOCS'];
 
@@ -323,7 +323,7 @@ private with sharing class GenerateScopeUtilTest
      * @date 10/05/2021
      */
     @isTest
-    private static void test_handleEventsPartner_RefObject_ko()
+    static void test_handleEventsPartner_RefObject_ko()
     {
         List<GenerateScopeEvent__e> events = new List<GenerateScopeEvent__e>();
         events.add(new GenerateScopeEvent__e(
@@ -352,7 +352,7 @@ private with sharing class GenerateScopeUtilTest
      * @date 10/05/2021
      */
     @isTest
-    private static void test_handleEventsPartner_RefObjectField_ko()
+    static void test_handleEventsPartner_RefObjectField_ko()
     {
         List<GenerateScopeEvent__e> events = new List<GenerateScopeEvent__e>();
         events.add(new GenerateScopeEvent__e(
@@ -380,7 +380,7 @@ private with sharing class GenerateScopeUtilTest
      * @date 19/02/2021
      */
     @isTest
-    private static void test_handleEventsPartner_RelatedObject_ko()
+    static void test_handleEventsPartner_RelatedObject_ko()
     {
         List<GenerateScopeEvent__e> events = new List<GenerateScopeEvent__e>();
         events.add(new GenerateScopeEvent__e(
@@ -407,7 +407,7 @@ private with sharing class GenerateScopeUtilTest
      * @date 19/02/2021
      */
     @isTest
-    private static void test_handleEventsPartner_RelatedObjectField_ko()
+    static void test_handleEventsPartner_RelatedObjectField_ko()
     {
         List<GenerateScopeEvent__e> events = new List<GenerateScopeEvent__e>();
         events.add(new GenerateScopeEvent__e(

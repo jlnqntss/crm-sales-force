@@ -14,7 +14,7 @@ private class AccountLeadUtilTest
      * @date 16/08/2023
      */
     @TestSetup
-    private static void makeData()
+    static void makeData()
     {
         List<Account> leadAccounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Lead', 2);
         leadAccounts.get(0).NationalId__c = '222';
@@ -36,7 +36,7 @@ private class AccountLeadUtilTest
      * @date 16/08/2023
      */
     @isTest
-    private static void testRecTypeLeadPhone()
+    static void testRecTypeLeadPhone()
     {
         List<Account> a = [SELECT Id,Phone FROM account WHERE Phone = '6666'];
 
@@ -54,7 +54,7 @@ private class AccountLeadUtilTest
      * @date 16/08/2023
      */
     @isTest
-    private static void testRecTypeLeadNationalId()
+    static void testRecTypeLeadNationalId()
     {
         List<Account> a = [SELECT Id,NationalId__c FROM account WHERE NationalId__c = '222'];
 
@@ -72,7 +72,7 @@ private class AccountLeadUtilTest
      * @date 16/08/2023
      */
     @isTest
-    private static void testRecTypeCustomerNationalId()
+    static void testRecTypeCustomerNationalId()
     {
         List<Account> a = [SELECT Id,NationalId__c FROM account WHERE NationalId__c = '333'];
 
@@ -90,7 +90,7 @@ private class AccountLeadUtilTest
      * @date 16/08/2023
      */
     @isTest
-    private static void testcheckLeads()
+    static void testcheckLeads()
     {
         List<Account> a = [SELECT Id,NationalId__c,Phone,RecordType.DeveloperName FROM account WHERE NationalId__c = '222'];
 
@@ -109,7 +109,7 @@ private class AccountLeadUtilTest
      * @date 16/08/2023
      */
     @isTest
-    private static void testNull()
+    static void testNull()
     {
         Test.startTest();
         Account acc = AccountLeadUtil.leadDuplicatesControl(null, null);
@@ -119,7 +119,7 @@ private class AccountLeadUtilTest
     }
 
     @isTest
-    private static void test_NewLeadVentasAccounts_CreateScope_OK()
+    static void test_NewLeadVentasAccounts_CreateScope_OK()
     {
         Id accountLeadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
 
@@ -146,7 +146,7 @@ private class AccountLeadUtilTest
     }
 
     @isTest
-    private static void test_UpdateLeadVentasPhone_CreateScope_OK()
+    static void test_UpdateLeadVentasPhone_CreateScope_OK()
     {
         Id accountLeadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Lead').getRecordTypeId();
 
@@ -178,7 +178,7 @@ private class AccountLeadUtilTest
     }
 
     @IsTest
-    private static void testFormatPhoneLength9() {
+    static void testFormatPhoneLength9() {
         Test.startTest();
         List<String> phonesList = AccountLeadUtil.getVariantsPhones('600000000');
         Test.stopTest();
@@ -187,7 +187,7 @@ private class AccountLeadUtilTest
     }
 
     @IsTest
-    private static void testFormatPhone34() {
+    static void testFormatPhone34() {
         Test.startTest();
         List<String> phonesList = AccountLeadUtil.getVariantsPhones('34600000000');
         Test.stopTest();
@@ -196,7 +196,7 @@ private class AccountLeadUtilTest
     }
 
     @IsTest
-    private static void testFormatPhonePlus34() {
+    static void testFormatPhonePlus34() {
         Test.startTest();
         List<String> phonesList = AccountLeadUtil.getVariantsPhones('+34600000000');
         Test.stopTest();

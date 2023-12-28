@@ -5,7 +5,7 @@
  * @date 30/11/2020
  */
 @isTest
-private with sharing class ScopeUtilTest 
+public class ScopeUtilTest 
 {
     private static final Boolean showDebug = false;
     static final String MESSAGE_TWO_ACCOUNTS = 'There should be 2 accounts';
@@ -14,7 +14,7 @@ private with sharing class ScopeUtilTest
     static final String MESSAGE_ACCOUNT_SYNC = 'The first account should be sync.';
 
     @TestSetup
-    private static void makeData() {
+    static void makeData() {
         
         // Create 2 personal accounts
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 2);
@@ -42,7 +42,7 @@ private with sharing class ScopeUtilTest
      * @change 15/12/2020 - nts (agonzalezisasi) - Add the test for the HashedId__c field
      */
     @isTest
-    private static void test_insertScopes_ok()
+    static void test_insertScopes_ok()
     {
         List<Account> accounts = [SELECT Id, SincronizarMC__pc FROM Account];
         System.assertEquals(2, accounts.size(), MESSAGE_TWO_ACCOUNTS);
@@ -97,7 +97,7 @@ private with sharing class ScopeUtilTest
      * @date 30/11/2020
      */
     @isTest
-    private static void test_updateScopes_ok()
+    static void test_updateScopes_ok()
     {
         List<Account> accounts = [SELECT Id, SincronizarMC__pc FROM Account ORDER BY Id ASC];
         System.assertEquals(2, accounts.size(), MESSAGE_TWO_ACCOUNTS);
@@ -166,7 +166,7 @@ private with sharing class ScopeUtilTest
      * @date 27/04/2023
      */
     @isTest
-    private static void test_ifAddScopeTrueAddToScopesToSetContatable()
+    static void test_ifAddScopeTrueAddToScopesToSetContatable()
     {
         ScopeUtil scopeContext = new ScopeUtil();
         scopeContext.scopesToSetContatable = new List<Scope__c>();
@@ -190,7 +190,7 @@ private with sharing class ScopeUtilTest
      * @date 27/04/2023
      */
     @isTest
-    private static void test_checkIfAccountHasToBeUpdated()
+    static void test_checkIfAccountHasToBeUpdated()
     {
         ScopeUtil scopeContext = new ScopeUtil();
         scopeContext.accountsToUpdate = new List<Account>();
@@ -217,7 +217,7 @@ private with sharing class ScopeUtilTest
      * @date 27/04/2023
      */
     @isTest
-    private static void test_generateHashForScopeMapNull()
+    static void test_generateHashForScopeMapNull()
     {
         ScopeUtil scopeContext = new ScopeUtil();
         scopeContext.scopesToUpdateAfter = new Map<ID, Scope__c>();
@@ -240,7 +240,7 @@ private with sharing class ScopeUtilTest
      * @date 27/04/2023
      */
     @isTest
-    private static void test_generateHashForScopeMapNotNull()
+    static void test_generateHashForScopeMapNotNull()
     {
         ScopeUtil scopeContext = new ScopeUtil();
         scopeContext.scopesToUpdateAfter = new Map<ID, Scope__c>();
@@ -264,7 +264,7 @@ private with sharing class ScopeUtilTest
      * @date 27/04/2023
      */
     @isTest
-    private static void test_checkIfThereAnyErrorInUpdate()
+    static void test_checkIfThereAnyErrorInUpdate()
     {
         ScopeUtil scopeContext = new ScopeUtil();
         List<Account> accounts = [SELECT Id, SincronizarMC__pc FROM Account limit 1];
@@ -287,7 +287,7 @@ private with sharing class ScopeUtilTest
      * @date 27/04/2023
      */
     @isTest
-    private static void test_doUpdateWithErrors()
+    static void test_doUpdateWithErrors()
     {
         ScopeUtil scopeContext = new ScopeUtil();
         List<Account> accounts = [SELECT Id, SincronizarMC__pc FROM Account limit 1];

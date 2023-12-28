@@ -6,10 +6,10 @@
  * @last modified by  : arcortazar
 **/
 @isTest
-private with sharing class CallMeBackListControllerTest {
+private class CallMeBackListControllerTest {
 
     @TestSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         //Creamos la cuenta            
         List<Account> accounts = TestDataFactory.generateAccounts('Life insurance', 'Customer', 1);
@@ -66,7 +66,7 @@ private with sharing class CallMeBackListControllerTest {
 
     
     @isTest
-    private static void test_getContactRequestsById_ok()
+    static void test_getContactRequestsById_ok()
     {
         //Obtenemos el whoId a enviar al controlador
         Account account = [SELECT Id, PersonContactId FROM Account LIMIT 1];
@@ -84,7 +84,7 @@ private with sharing class CallMeBackListControllerTest {
     }
 
     @isTest
-    private static void test_getContactRequestsById_ko()
+    static void test_getContactRequestsById_ko()
     {
         String name = '';
         // Test
@@ -102,7 +102,7 @@ private with sharing class CallMeBackListControllerTest {
     }
 
     @isTest
-    private static void test_getContactRequestsByName_ok()
+    static void test_getContactRequestsByName_ok()
     {
         // Obtenemos el ID del recordType de la Business Account
         Id recordTypeIdBusiness = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('BusinessCustomer').getRecordTypeId();
@@ -122,7 +122,7 @@ private with sharing class CallMeBackListControllerTest {
 
     
     @isTest
-    private static void test_getContactRequestsByName_ko()
+    static void test_getContactRequestsByName_ko()
     {
         String name = 'Nombre Test'; // Nombre de test que no existe
         // Test

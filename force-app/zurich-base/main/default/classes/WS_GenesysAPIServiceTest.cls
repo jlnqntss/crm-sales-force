@@ -6,7 +6,7 @@
  * @last modified by  : jjuaristi
 **/
 @isTest(SeeAllData = false)
-private with sharing class WS_GenesysAPIServiceTest
+private class WS_GenesysAPIServiceTest
 {
     /**
      * creación de registros necesarios
@@ -15,7 +15,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 23/10/2020
      */
     @testSetup
-    private static void createScenario()
+    static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
@@ -52,7 +52,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 26/10/2020
      */
     @isTest
-    private static void test_doPost()
+    static void test_doPost()
     {
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
 
@@ -98,7 +98,7 @@ private with sharing class WS_GenesysAPIServiceTest
 
 
     @isTest
-    private static void test_doPost_invalidInput_requiredFields()
+    static void test_doPost_invalidInput_requiredFields()
     {
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
 
@@ -129,7 +129,7 @@ private with sharing class WS_GenesysAPIServiceTest
     }
 
     @isTest
-    private static void test_doPost_invalidVersion()
+    static void test_doPost_invalidVersion()
     {
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
 
@@ -156,7 +156,7 @@ private with sharing class WS_GenesysAPIServiceTest
         System.assertEquals(400, RestContext.response.statusCode);
     }
     @isTest
-    private static void test_doPost_invalidContentType()
+    static void test_doPost_invalidContentType()
     {
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
 
@@ -192,7 +192,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 02/11/2020
      */
     @isTest
-    private static void test_doGet_noSearchString()
+    static void test_doGet_noSearchString()
     {
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -217,7 +217,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 18/10/2021
      */
     @isTest
-    private static void test_doGet_nullsInSearchString()
+    static void test_doGet_nullsInSearchString()
     {
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -247,7 +247,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 27/01/2021
      */
     @isTest
-    private static void test_doGet_people_OK()
+    static void test_doGet_people_OK()
     {
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -279,7 +279,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 20/10/2021
      */
     @isTest
-    private static void test_doGet_people_KO()
+    static void test_doGet_people_KO()
     {
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -309,7 +309,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 27/01/2021
      */
     @isTest
-    private static void test_doGet_policies_OK()
+    static void test_doGet_policies_OK()
     {
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -336,7 +336,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 20/10/2021
      */
     @isTest
-    private static void test_doGet_policies_KO()
+    static void test_doGet_policies_KO()
     {
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -364,7 +364,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 27/01/2021
      */
     @isTest
-    private static void test_doGet_claims_OK()
+    static void test_doGet_claims_OK()
     {
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -392,7 +392,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 20/10/2021
      */
     @isTest
-    private static void test_doGet_claims_KO()
+    static void test_doGet_claims_KO()
     {
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
@@ -417,7 +417,7 @@ private with sharing class WS_GenesysAPIServiceTest
     // #region Test POST Surveys
 
     @isTest
-    private static void test_doPost_surveys_ok()
+    static void test_doPost_surveys_ok()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -461,7 +461,7 @@ private with sharing class WS_GenesysAPIServiceTest
     }
 
     @isTest
-    private static void test_doPost_surveys_ko_invalidInput()
+    static void test_doPost_surveys_ko_invalidInput()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -498,7 +498,7 @@ private with sharing class WS_GenesysAPIServiceTest
     }
 
     @isTest
-    private static void test_doPost_surveys_ko_noExistTask()
+    static void test_doPost_surveys_ko_noExistTask()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -533,7 +533,7 @@ private with sharing class WS_GenesysAPIServiceTest
     // #endregion
 
     @isTest
-    private static void test_doGet_digitalcustomer_ok()
+    static void test_doGet_digitalcustomer_ok()
     {
         //Creación de registros del modelo de datos de KLINC
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
@@ -582,7 +582,7 @@ private with sharing class WS_GenesysAPIServiceTest
      * @date 20/10/2021
      */
     @isTest
-    private static void test_doGet_digitalcustomer_ko()
+    static void test_doGet_digitalcustomer_ko()
     {
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();

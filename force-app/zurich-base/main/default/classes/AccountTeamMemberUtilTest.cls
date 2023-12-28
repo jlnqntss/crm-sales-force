@@ -1,8 +1,8 @@
 @isTest
-private with sharing class AccountTeamMemberUtilTest
+private class AccountTeamMemberUtilTest
 {
     @TestSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         //Accounts Intermediary donde se actualizará el campo indicado
         Id accountIntermediaryRecordType = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
@@ -22,7 +22,7 @@ private with sharing class AccountTeamMemberUtilTest
     }
 
     @isTest
-    private static void updateAccount_OK()
+    public static void updateAccount_OK()
     {
         User usuario= [SELECT Id, Name, LastName FROM User LIMIT 1];
         List<Account> cuenta= [SELECT Id,BusinessManagerName__c FROM Account LIMIT 2];

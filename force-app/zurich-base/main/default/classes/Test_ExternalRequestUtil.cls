@@ -5,13 +5,13 @@
  * @date 26/04/2020
  **/
 @isTest
-private with sharing class Test_ExternalRequestUtil
+public class Test_ExternalRequestUtil
 {
     static final String PARTNER = 'Orange Seguros';
     static final String PARTNER_PREFIX = 'Orange';
 
     @testSetup
-    private static void makeData()
+    static void makeData()
     {
         AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
         String IBA_MULTI_PARTNER_ORIGIN = adminSetup.IBA_Multi_Partner_Origin__c;
@@ -156,7 +156,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_CustomerUpdate()
+    static void test_CustomerUpdate()
     {
         Contact existingCustomer = [
             SELECT id, FirstName
@@ -195,7 +195,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_CustomerCreate_NewAccount()
+    static void test_CustomerCreate_NewAccount()
     {
         //delete exsting contact and account
         List<Contact> existingCustomers = [SELECT id, FirstName FROM Contact];
@@ -229,7 +229,7 @@ private with sharing class Test_ExternalRequestUtil
     }
 
     @isTest
-    private static void test_CustomerCreate_NewAccount_EMEA()
+    static void test_CustomerCreate_NewAccount_EMEA()
     {
         //delete exsting contact and account
         List<Contact> existingCustomers = [SELECT id, FirstName FROM Contact];
@@ -266,7 +266,7 @@ private with sharing class Test_ExternalRequestUtil
     }
 
     @isTest
-    private static void test_CustomerCreate_NewAccount_MultiPartner()
+    static void test_CustomerCreate_NewAccount_MultiPartner()
     {
         //delete exsting contact and account
         List<Contact> existingCustomers = [SELECT id, FirstName FROM Contact];
@@ -309,7 +309,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_CustomerCreate_ExistingAccount()
+    static void test_CustomerCreate_ExistingAccount()
     {
         //Change legal entity of the existing customer
         // Contact existingCustomer = [
@@ -359,7 +359,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_QuoteAppError()
+    static void test_QuoteAppError()
     {
         ExternalRequest__c ExtReq = new ExternalRequest__c(
             Origin__c = 'IBA',
@@ -397,7 +397,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_QuoteWeb()
+    static void test_QuoteWeb()
     {
         ExternalRequest__c ExtReq = new ExternalRequest__c(
             Origin__c = 'IBA',
@@ -439,7 +439,7 @@ private with sharing class Test_ExternalRequestUtil
     }
 
     @isTest
-    private static void test_QuoteWeb_EMEA()
+    static void test_QuoteWeb_EMEA()
     {
         ExternalRequest__c ExtReq = new ExternalRequest__c(
             Origin__c = 'IBA',
@@ -481,7 +481,7 @@ private with sharing class Test_ExternalRequestUtil
     }
 
     @isTest
-    private static void test_QuoteWeb_MultiPartner()
+    static void test_QuoteWeb_MultiPartner()
     {
         AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
         String IBA_MULTI_PARTNER_ORIGIN = adminSetup.IBA_Multi_Partner_Origin__c;
@@ -534,7 +534,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 03/11/2020
      **/
     @isTest
-    private static void test_QuoteWebMatchCodeCountry()
+    static void test_QuoteWebMatchCodeCountry()
     {
         // TEST1: insert new quote with existing lead (matchcode, email+birthdate+Same LE)
 
@@ -589,7 +589,7 @@ private with sharing class Test_ExternalRequestUtil
  * @date 05/05/2020
  **/
     @isTest
-    private static void test_QuoteWebMatchCodeDifCountry()
+    static void test_QuoteWebMatchCodeDifCountry()
     {
         // TEST1: insert new quote with existing lead (matchcode, email + birthdate + Legal Entity + different country)
 
@@ -644,7 +644,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_QuoteWebMatchCodeOppositeLE()
+    static void test_QuoteWebMatchCodeOppositeLE()
     {
         Account newMaster = new Account(
             Name = 'test',
@@ -699,7 +699,7 @@ private with sharing class Test_ExternalRequestUtil
  * @date 05/05/2020
  **/
     @isTest
-    private static void test_QuoteWebMatchCodeDifCountry_EMEA()
+    static void test_QuoteWebMatchCodeDifCountry_EMEA()
     {
         // TEST1: insert new quote with existing lead (matchcode, email + birthdate + Legal Entity + different country)
 
@@ -754,7 +754,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_QuoteWebMatchCodeOppositeLE_EMEA()
+    static void test_QuoteWebMatchCodeOppositeLE_EMEA()
     {
         Account newMaster = new Account(
             Name = 'test',
@@ -809,7 +809,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 03/11/2020
      **/
     @isTest
-    private static void test_QuoteWebMatchCodeCountry_Partner()
+    static void test_QuoteWebMatchCodeCountry_Partner()
     {
         // TEST1: insert new quote with existing lead (matchcode, email+birthdate+Same LE)
 
@@ -871,7 +871,7 @@ private with sharing class Test_ExternalRequestUtil
  * @date 03/11/2020
  **/
     @isTest
-    private static void test_QuoteWebMatchCodeDifCountry_Partner()
+    static void test_QuoteWebMatchCodeDifCountry_Partner()
     {
         // TEST1: insert new quote with existing lead (matchcode, email + birthdate + Legal Entity + different country)
 
@@ -941,7 +941,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 03/11/2020
      **/
     @isTest
-    private static void test_QuoteWebMatchCodeOppositeLE_Partner()
+    static void test_QuoteWebMatchCodeOppositeLE_Partner()
     {
         Account newMaster = new Account(
             Name = 'test',
@@ -1002,7 +1002,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_PolicyUpdate()
+    static void test_PolicyUpdate()
     {
         Order quote = [SELECT id FROM Order WHERE QuoteEntry__c = '10000'];
         Order policy = new Order(
@@ -1052,7 +1052,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_PolicyCreateNew()
+    static void test_PolicyCreateNew()
     {
         Contact customer = [
             SELECT Id, (SELECT id FROM Pedidos__r WHERE PolicyNum__c != NULL)
@@ -1113,7 +1113,7 @@ private with sharing class Test_ExternalRequestUtil
     }
 
     @isTest
-    private static void test_PolicyCreateNew_EMEA()
+    static void test_PolicyCreateNew_EMEA()
     {
         Contact customer = [
             SELECT Id, (SELECT id, PolicyNum__c FROM Pedidos__r WHERE PolicyNum__c != NULL)
@@ -1171,7 +1171,7 @@ private with sharing class Test_ExternalRequestUtil
     }
 
     @isTest
-    private static void test_PolicyCreateNew_MultiPartner()
+    static void test_PolicyCreateNew_MultiPartner()
     {
         Contact customer = [
             SELECT Id, (SELECT id, PolicyNum__c FROM Pedidos__r WHERE PolicyNum__c != NULL)
@@ -1237,7 +1237,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_PolicyError()
+    static void test_PolicyError()
     {
         //delete existing customer
         Contact customer = [
@@ -1281,7 +1281,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_ClaimInsert()
+    static void test_ClaimInsert()
     {
         //delete the claim that already exists
         Case claim = [SELECT id FROM Case WHERE ClaimNumber__c = '797'];
@@ -1309,7 +1309,7 @@ private with sharing class Test_ExternalRequestUtil
     }
 
     @isTest
-    private static void test_ClaimInsert_EMEA()
+    static void test_ClaimInsert_EMEA()
     {
         //delete the claim that already exists
         List<Case> claims = [SELECT id FROM Case];
@@ -1341,7 +1341,7 @@ private with sharing class Test_ExternalRequestUtil
     }
 
     @isTest
-    private static void test_ClaimInsert_MultPartner()
+    static void test_ClaimInsert_MultPartner()
     {
         //delete the claim that already exists
         List<Case> claims = [SELECT id FROM Case];
@@ -1390,7 +1390,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      */
     @isTest
-    private static void test_ClaimErrorinsert()
+    static void test_ClaimErrorinsert()
     {
         //delete the claim that already exists
         Case claim = [SELECT id FROM Case WHERE ClaimNumber__c = '797'];
@@ -1444,7 +1444,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/05/2020
      **/
     @isTest
-    private static void test_ClaimUpdate()
+    static void test_ClaimUpdate()
     {
         Case existingClaim = [ SELECT id, DateReg__c FROM Case WHERE ClaimNumber__c = '797' ];
 
@@ -1475,7 +1475,7 @@ private with sharing class Test_ExternalRequestUtil
      * @date 05/11/2020
      */
     @isTest
-    private static void test_dataParseCheck()
+    static void test_dataParseCheck()
     {
         String json_customer = '[{"status":{"codeValue":"Lead","code":"6","enumName":"CUSTOMER_STATUS"},"masterPolicyDesc":"","masterPolicySerial":"","country":{"codeValue":"España","code":"ES","enumName":"COUNTRY"},"cityArea":"Bilbao","city":"Bilbao","postalCode":"48014","address1":"Mi casa","ZurichCompany":"Life Insurance","customerSerial":"234234233","surname":"","firstName":"Toni","birthdate":"1956-06-28","mobilePhone":"66666","primaryEmail":"test@test.com","ssn":"","partner":"Orange Seguros"}]';
 

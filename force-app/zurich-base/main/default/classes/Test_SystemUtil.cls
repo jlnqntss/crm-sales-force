@@ -5,10 +5,10 @@
  * @date 24/02/2020
  */
 @isTest(SeeAllData=false)
-private with sharing class Test_SystemUtil
+public class Test_SystemUtil
 {
     @testSetup
-    private static void makeData()
+    static void makeData()
     {
         // Instantiate the Pricebook2 record first, setting the Id
         Pricebook2 standardPricebook = new Pricebook2(
@@ -98,7 +98,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getSettings()
+    static void test_getSettings()
     {
         Test.startTest();
         ErrorManagementSetting__mdt setupErrors = SystemUtil.getErrorLogSettingsMetadata();
@@ -110,7 +110,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_maskEmail()
+    static void test_maskEmail()
     {
         String emailToMask = 'test@example.com';
         String code = '00001';
@@ -125,7 +125,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_isValidDate()
+    static void test_isValidDate()
     {
         Test.startTest();
         String validDate = '2012-01-12';
@@ -142,7 +142,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getExternalRequest()
+    static void test_getExternalRequest()
     {
         Test.startTest();
         System.assert (
@@ -153,7 +153,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getProcessedExternalRequests()
+    static void test_getProcessedExternalRequests()
     {
         Test.startTest();
         System.assert (
@@ -164,7 +164,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getOldExternalRequests()
+    static void test_getOldExternalRequests()
     {
         Test.startTest();
         System.assert (
@@ -175,7 +175,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getErrorLogs()
+    static void test_getErrorLogs()
     {
         Test.startTest();
         System.assert (
@@ -186,7 +186,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getQuotesToDelete()
+    static void test_getQuotesToDelete()
     {
         Test.startTest();
         System.assert (
@@ -197,7 +197,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getLeadsToDelete()
+    static void test_getLeadsToDelete()
     {
         Test.startTest();
         System.assert (
@@ -208,7 +208,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getMastersToDelete()
+    static void test_getMastersToDelete()
     {
         Test.startTest();
         System.assert (
@@ -218,7 +218,7 @@ private with sharing class Test_SystemUtil
         Test.stopTest();
     }
     @IsTest
-    private static void test_getContactRecordTypeIdByName()
+    static void test_getContactRecordTypeIdByName()
     {
         Test.startTest();
         String id = SystemUtil.getContactRecordTypeIdByName(Label.CustomerLife);
@@ -231,7 +231,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getAccountRecordTypeIdByName()
+    static void test_getAccountRecordTypeIdByName()
     {
         Test.startTest();
         String id = SystemUtil.getAccountRecordTypeIdByName(Label.Master);
@@ -244,7 +244,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getOrderRecordTypeIdByName()
+    static void test_getOrderRecordTypeIdByName()
     {
         Test.startTest();
         String id = SystemUtil.getOrderRecordTypeIdByName(Label.QuoteGI);
@@ -256,7 +256,7 @@ private with sharing class Test_SystemUtil
         Test.stopTest();
     }
 
-    private static void test_getClaimRecordTypeIdByName()
+    static void test_getClaimRecordTypeIdByName()
     {
         Test.startTest();
         String id = SystemUtil.getClaimRecordType();
@@ -269,7 +269,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_PartnerSelector()
+    static void test_PartnerSelector()
     {
         Account partner = new Account(
             Name = 'test',
@@ -292,7 +292,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_ContactsSelector()
+    static void test_ContactsSelector()
     {
         Map<String, Contact> mapa = new Map<String, Contact>();
         SET<String> keys = new Set<String>();
@@ -309,7 +309,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_ContactsSelectorEmail()
+    static void test_ContactsSelectorEmail()
     {
         Map<String, List<Contact> > mapa = new Map<String, List<Contact> >();
         SET<String> keys = new Set<String>();
@@ -326,7 +326,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_contactsSelectorSubscribers()
+    static void test_contactsSelectorSubscribers()
     {
         Contact subscriber = new Contact (
             Email = 'testexisting@test.com',
@@ -353,7 +353,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getQuoteSameProduct()
+    static void test_getQuoteSameProduct()
     {
 
         Map<String, List<Order> > mapa = new Map<String, List<Order> >();
@@ -373,7 +373,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getSubscribers()
+    static void test_getSubscribers()
     {
         Test.startTest();
         System.assert (
@@ -384,7 +384,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_ContactsSelectorEmailBirthDate()
+    static void test_ContactsSelectorEmailBirthDate()
     {
         Map<String, Contact> mapa1 = new Map<String, Contact>();
         Map<String, Contact> mapa2 = new Map<String, Contact>();
@@ -406,7 +406,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_PolicySelector()
+    static void test_PolicySelector()
     {
         Account master = new Account(CustomerNum__c = '454545', Name = 'Test');
         insert (master);
@@ -452,7 +452,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_QuoteSelector()
+    static void test_QuoteSelector()
     {
         Map<String, Order> mapa = new Map<String, Order>();
         SET<String> keys = new Set<String>();
@@ -468,7 +468,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_OrderItemSelector()
+    static void test_OrderItemSelector()
     {
         Order quoteRef = new Order(QuoteEntry__c = '333333');
         PricebookEntry testPbe = [
@@ -500,7 +500,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_ProductsSelector()
+    static void test_ProductsSelector()
     {
         Map<String, PricebookEntry> mapa = new Map<String, PricebookEntry>();
         SET<String> keys = new Set<String>();
@@ -516,7 +516,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getStandardPricebook()
+    static void test_getStandardPricebook()
     {
         Pricebook2 pb = new Pricebook2();
 
@@ -530,7 +530,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_CoversSelector()
+    static void test_CoversSelector()
     {
         Map<String, Cover__c> mapa = new Map<String, Cover__c>();
         Cover__c cover = new Cover__c(
@@ -556,7 +556,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_ClaimsSelector()
+    static void test_ClaimsSelector()
     {
         Case claim = new Case(
             ClaimNumber__c = '797',
@@ -583,7 +583,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_createJSON()
+    static void test_createJSON()
     {
         String json;
         ID identifier = 'a085E00000ARPh3QAH';
@@ -608,7 +608,7 @@ private with sharing class Test_SystemUtil
     }
 
     @IsTest
-    private static void test_getDependantPicklistValues()
+    static void test_getDependantPicklistValues()
     {
 
         Map<String, List<String> > resultados = new Map<String, List<String> >();
@@ -625,7 +625,7 @@ private with sharing class Test_SystemUtil
      * @date 15/02/2023
      */
     @IsTest
-    private static void test_getDependantPicklistValuesByRecordType()
+    static void test_getDependantPicklistValuesByRecordType()
     {
         Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
 
@@ -639,7 +639,7 @@ private with sharing class Test_SystemUtil
     }
 
     @isTest
-    private static void test_getSandboxName_OK()
+    static void test_getSandboxName_OK()
     {
         String instanceName;
         Boolean sandbox = [SELECT isSandbox FROM Organization LIMIT 1].isSandbox;
@@ -659,7 +659,7 @@ private with sharing class Test_SystemUtil
     }
 
     @isTest
-    private static void test_getInstanceURL_OK()
+    static void test_getInstanceURL_OK()
     {
         String instanceURL = URL.getSalesforceBaseUrl().toExternalForm();
         String testURL;
@@ -680,7 +680,7 @@ private with sharing class Test_SystemUtil
      * @date 20-09-2023
      **/
     @isTest
-    private static void test_getContactDatetime_OK()
+    static void test_getContactDatetime_OK()
     {
         // Solamente puede haber una BH por defecto en el sistema y no puede haber más de dos BH por defecto
         BusinessHours defaultBusinessHours = [SELECT Id, Name FROM BusinessHours WHERE IsDefault = true];
@@ -706,7 +706,7 @@ private with sharing class Test_SystemUtil
      * @date 20-09-2023
      **/
     @isTest
-    private static void test_getContactDatetime_null_requestDateTime_OK()
+    static void test_getContactDatetime_null_requestDateTime_OK()
     {
         // Solamente puede haber una BH por defecto en el sistema y no puede haber más de dos BH por defecto
         BusinessHours defaultBusinessHours = [SELECT Id, Name FROM BusinessHours WHERE IsDefault = true];
@@ -726,7 +726,7 @@ private with sharing class Test_SystemUtil
      * @date 20-09-2023
      **/
     @isTest
-    private static void test_getContactDatetime_null_businessHoursName_OK()
+    static void test_getContactDatetime_null_businessHoursName_OK()
     {
         Date today = Date.today();
         Datetime requestedDateTime = Datetime.newInstance(today.year(), today.month(), today.day(), 10, 0, 0);
