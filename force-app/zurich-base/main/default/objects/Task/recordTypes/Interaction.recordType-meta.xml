@@ -282,6 +282,10 @@
             <fullName>No Policy-Need higher discount</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>No Policy-Not real interest</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Priority</picklist>
