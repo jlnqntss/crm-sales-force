@@ -1,8 +1,8 @@
 @isTest
-public class GenesysCloudCreateCallbackActionTest
+private with sharing class GenesysCloudCreateCallbackActionTest
 {
     @isTest
-    static void test_GenesysCloudCreateCallbackAction_execute_ok()
+    private static void test_GenesysCloudCreateCallbackAction_execute_ok()
     {
         // When
         // ContactRequest - Se necesita un ContactRequest que no enrute a través de PB.
@@ -45,7 +45,7 @@ public class GenesysCloudCreateCallbackActionTest
     }
 
     @isTest
-    static void test_GenesysCloudCreateCallbackAction_execute_ko()
+    private static void test_GenesysCloudCreateCallbackAction_execute_ko()
     {
         String body = '';
         Integer code = 400; //Se va a probar un retorno malo

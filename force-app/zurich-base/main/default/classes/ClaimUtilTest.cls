@@ -1,8 +1,8 @@
 @isTest
-private class ClaimUtilTest
+private with sharing class ClaimUtilTest
 {
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
         insert accounts;
@@ -21,7 +21,7 @@ private class ClaimUtilTest
      * @date 18/02/2021
      */
     @isTest
-    static void test_generateScope()
+    private static void test_generateScope()
     {
         // Recuperamos las polizas
         List<Policy__c> policies = [SELECT Id, Scope__c FROM Policy__c WHERE Scope__c != null];

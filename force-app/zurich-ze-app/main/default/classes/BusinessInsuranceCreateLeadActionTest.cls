@@ -6,10 +6,10 @@
  * @last modified by  : aberuete
 **/
 @isTest
-public class BusinessInsuranceCreateLeadActionTest
+private class BusinessInsuranceCreateLeadActionTest
 {
     @isTest
-    static void test_businessInsuranceCreateLeadAction_createLead_ok()
+    private static void test_businessInsuranceCreateLeadAction_createLead_ok()
     {
         String businessCode = '3200012491';
 

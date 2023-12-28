@@ -6,10 +6,10 @@
  * @last modified by  : aberuete
 **/
 @isTest
-private class FindCustomersByCIFEmailPhoneActionTest 
+private with sharing class FindCustomersByCIFEmailPhoneActionTest 
 {
     @TestSetup
-    public static void createScenario()
+    private static void createScenario()
     {
         //Customers
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
@@ -37,7 +37,7 @@ private class FindCustomersByCIFEmailPhoneActionTest
      * @date 01/06/2023
      */
     @isTest
-    static void findAccountsByCif() 
+    private static void findAccountsByCif() 
     {
         List<Account> accounts = [Select id from Account where NationalId__c = '78432734C'];
         List<ContactPointEmail> contactPointEmails = [SELECT Id, ParentId, ContactId__c, EmailAddress FROM ContactPointEmail];
@@ -65,7 +65,7 @@ private class FindCustomersByCIFEmailPhoneActionTest
      * @date 01/06/2023
      */
     @isTest
-    static void findAccountsByEmail() 
+    private static void findAccountsByEmail() 
     {
         List<ContactPointPhone> contactPointPhones = [SELECT Id, ParentId, ContactId__c, TelephoneNumber FROM ContactPointPhone];
 
@@ -110,7 +110,7 @@ private class FindCustomersByCIFEmailPhoneActionTest
      * @date 01/06/2023
      */
     @isTest
-    static void findAccountsByPhone() 
+    private static void findAccountsByPhone() 
     {
         // SOSL - Resultados de búsqueda
         List<String> phonesToSearch = new List<String>();
