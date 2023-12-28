@@ -1,5 +1,5 @@
 @isTest
-private with sharing class GenesysFindBestAgentActionTest
+public class GenesysFindBestAgentActionTest
 {
 
     /**
@@ -8,7 +8,7 @@ private with sharing class GenesysFindBestAgentActionTest
      * @date 13/11/2020
      */
     @TestSetup
-    private static void makeData()
+    static void makeData()
     {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 10);
         insert accounts;
@@ -38,7 +38,7 @@ private with sharing class GenesysFindBestAgentActionTest
     }
 
     @isTest
-    private static void test_GenesysFindBestAgentAction_execute_ok()
+    static void test_GenesysFindBestAgentAction_execute_ok()
     {
 
         List<GenesysFindBestAgentAction.FindBestAgentRequest> requests = new List<GenesysFindBestAgentAction.FindBestAgentRequest>();
@@ -64,7 +64,7 @@ private with sharing class GenesysFindBestAgentActionTest
     }
 
     @isTest
-    private static void test_GenesysFindBestAgentAction_execute_ko()
+    static void test_GenesysFindBestAgentAction_execute_ko()
     {
 
         List<GenesysFindBestAgentAction.FindBestAgentRequest> requests = new List<GenesysFindBestAgentAction.FindBestAgentRequest>();

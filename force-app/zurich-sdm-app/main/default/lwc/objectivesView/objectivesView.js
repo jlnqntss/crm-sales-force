@@ -415,23 +415,23 @@ export default class ObjectivesView extends LightningElement {
    * siendo el id del registro la key del atributo "key-field" del datatable*/
   async handleSave(event) {
     const updatedFields = this.setMonthPercentValues(event.detail.draftValues);
+    console.log("updatedFields " + JSON.stringify(updatedFields));
 
     // Prepare the record IDs for getRecordNotifyChange()
     const notifyChangeIds = updatedFields.map((row) => {
       return { recordId: row.Id };
     });
 
-    try 
-    {
+    try {
       this.errors = ""; // reseteo la variable de error antes de guardar
 
       // Pass edited fields to the updateObjectives Apex controller
       const result = await updateObjectives({
         data: JSON.stringify(updatedFields)
       });
+      console.log("Apex update result: " + JSON.stringify(result));
 
-      if (result.variant !== "success") 
-      {
+      if (result.variant !== "success") {
         const idsErrorArray = result.errorIds.split(",");
         const messageErrorsUpdate = result.errorMessage.split("|");
 
@@ -446,6 +446,7 @@ export default class ObjectivesView extends LightningElement {
 
         // ... etc
         this.errors = errors;
+        console.log("errors " + JSON.stringify(errors));
       }
 
       const evt = new ShowToastEvent({
@@ -463,8 +464,8 @@ export default class ObjectivesView extends LightningElement {
 
       // Clear all draft values in the datatable
       this.draftValues = [];
-    } catch (error) 
-    {
+    } catch (error) {
+      console.log("error " + JSON.stringify(error));
       const evt = new ShowToastEvent({
         title: "Error",
         message: error.body.message,
@@ -588,9 +589,9 @@ export default class ObjectivesView extends LightningElement {
     const row = event.detail.row;
     let copyRow = JSON.parse(JSON.stringify(row)); // por alguna razon tengo que copiar el objeto para poder modificar los valores de porcentajes, parece que internamente es una constante
     let array = [];
-    switch (actionName) 
-    {
+    switch (actionName) {
       case "edit":
+        console.log(JSON.stringify(row.Id));
         this.recordIdSelected = row.Id;
         this.recordSelected = row;
         this.isShowModal = true;
@@ -600,6 +601,7 @@ export default class ObjectivesView extends LightningElement {
         this.cloneFormModal = false;
         break;
       case "clone":
+        console.log("row " + JSON.stringify(copyRow));
         array = [...array, copyRow];
         this.recordSelected = this.setMonthPercentValues(array)[0];
         this.setIndicatorApiName(); // dado que ahora traemos el label del campo indicador, para clonar
@@ -617,8 +619,7 @@ export default class ObjectivesView extends LightningElement {
   // no es la solución que me gustaría pero de momento queda así, al clonar un registro debido a que ahora traemos label en el campo indicador por ser este distinto al api name, este valor no está permitido al insertar de forma generica
   setIndicatorApiName() {
     let indicator = this.recordSelected.Indicator__c;
-    switch (indicator) 
-    {
+    switch (indicator) {
       // valores en español
       case "Producción nueva":
         this.recordSelected.Indicator__c = "PN";
@@ -639,16 +640,22 @@ export default class ObjectivesView extends LightningElement {
       case "% Sin Total":
         this.recordSelected.Indicator__c = "Ratio_Claim";
         break;
+      default:
+        console.log(
+          "No hay indicador identificado en el conversor de api name"
+        );
     }
   }
 
   /**Actualizar los valores introducidos en la tabla x100 ya que en el inline son valores menores a 1 debido al problema de alineamiento entre el tipo percent y el objeto datatable.
    * Se han dividido /100 previamente en el controlador apex para tener una visualización correcta*/
   setMonthPercentValues(draftValuesInput) {
-    for (let objetivo of draftValuesInput) 
-    {
-      for (let key in objetivo) 
-      {
+    console.log(
+      "setMonthPercentValues input: " + JSON.stringify(draftValuesInput)
+    );
+
+    for (let objetivo of draftValuesInput) {
+      for (let key in objetivo) {
         if (
           key !== "Id" &&
           key !== "Active__c" &&
@@ -658,8 +665,8 @@ export default class ObjectivesView extends LightningElement {
           key !== "Product__c" &&
           key !== "Zone__c" &&
           key !== "ExternalId__c"
-        ) 
-        {
+        ) {
+          console.log(key);
           let monthValue = objetivo[key];
           objetivo[key] = (monthValue * 100).toFixed(2);
         }
@@ -671,15 +678,13 @@ export default class ObjectivesView extends LightningElement {
 
   /************************************Selector ****************************************************************************/
   @wire(getSelectorYearList)
-  comboboxYearOptions({ error, data }) 
-  {
-    if (data) 
-    {
-      if (0 !== data.length) 
-      {
+  comboboxYearOptions({ error, data }) {
+    console.log("Data yearoptions" + JSON.stringify(data) + " Error " + error);
+    if (data) {
+      console.log("numero elementos selector " + data.length);
+      if (0 !== data.length) {
         // controlo que venga al menos uno
-        for (const list of data) 
-        {
+        for (const list of data) {
           const option = {
             label: list,
             value: list
@@ -687,14 +692,18 @@ export default class ObjectivesView extends LightningElement {
           this.yearSelectorValues = [...this.yearSelectorValues, option]; // añadir opciones a la lista
         }
         this.selectedYear = new Date().getFullYear();
+        console.log("selectedYear " + JSON.stringify(this.selectedYear));
       }
     } else if (error) {
+      console.log("Error wire comboboxYearOptions " + JSON.stringify(error));
     }
   }
 
   handleChangeYear(event) {
     this.selectedYear = event.detail.value;
     this.errors = "";
+    console.log("selectedYear handle change value: " + this.selectedYear);
+
     refreshApex(this.objectivesData);
   }
 
@@ -719,12 +728,12 @@ export default class ObjectivesView extends LightningElement {
 
   // se llama tanto para editar como para el new/clone
   async handleSuccess(event) {
+    console.log("asincronooooo");
     let messageToast;
     this.errors = [];
 
     // calculo el mensaje a mostrar según sea edición o nuevo registro
-    if (this.recordIdSelected === "") 
-    {
+    if (this.recordIdSelected === "") {
       // nuevo registro
       messageToast = this.labels.SDM_Objetivos_ToastNewRecord;
     } else {
@@ -746,11 +755,16 @@ export default class ObjectivesView extends LightningElement {
   }
 
   async refreshSelectedValue(year) {
+    console.log("entro en refreshSelectedValue");
     this.selectedYear = year;
+    console.log("async selected year: " + year);
   }
 
   /************************** Handle on Error New y Clone Form ***********************************************************/
   handleErrorForm(event) {
+    console.log("entro en handleErrorForm");
+    console.log("event " + JSON.stringify(event));
+
     let errorEvent = event.detail.output.errors[0];
     let toastMessage;
 

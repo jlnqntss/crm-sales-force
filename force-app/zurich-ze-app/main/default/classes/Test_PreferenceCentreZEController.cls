@@ -8,7 +8,7 @@
  * 
  */
 @isTest
-private with sharing class Test_PreferenceCentreZEController
+public class Test_PreferenceCentreZEController
 {
     /**
      * Test the update of the scope when the user opted out of email
@@ -17,7 +17,7 @@ private with sharing class Test_PreferenceCentreZEController
      * @date 17/12/2020
      */
     @isTest
-    private static void test_processRequest_ok()
+    static void test_processRequest_ok()
     {
         String hashid = '123456';
 
@@ -44,7 +44,7 @@ private with sharing class Test_PreferenceCentreZEController
      * @date 17/12/2020
      */
     @isTest
-    private static void test_processRequest_ko()
+    static void test_processRequest_ko()
     {
         test.startTest();
         PreferenceCentreZEController.processRequest('', true);
@@ -58,7 +58,7 @@ private with sharing class Test_PreferenceCentreZEController
      * @date 17/12/2020
      */
     @isTest
-    private static void test_getLabels()
+    static void test_getLabels()
     {
         Test.startTest();
         String labels = PreferenceCentreZEController.getLabels();
@@ -76,7 +76,7 @@ private with sharing class Test_PreferenceCentreZEController
      * @date 03/02/2021
      */
     @isTest
-    private static void test_getLogoUrl()
+    static void test_getLogoUrl()
     {
         string resource_url = null;
         Test.startTest();

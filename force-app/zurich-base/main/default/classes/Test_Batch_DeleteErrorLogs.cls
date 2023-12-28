@@ -5,7 +5,7 @@
  * @date 27/04/2020
  */
 @isTest
-private with sharing class Test_Batch_DeleteErrorLogs
+private class Test_Batch_DeleteErrorLogs
 {
     private static final Integer NUM_OF_ERRORS = 10;
 
@@ -16,7 +16,7 @@ private with sharing class Test_Batch_DeleteErrorLogs
      * @date 27/04/2020
      */
     @TestSetup
-    private static void test_CreateData()
+    static void test_CreateData()
     {
         Datetime fechaHora = Datetime.newInstance(1996, 10, 7, 18, 10, 7);
 
@@ -51,7 +51,7 @@ private with sharing class Test_Batch_DeleteErrorLogs
      */
 
     @isTest
-    private static void test_NoEliminarErrores()
+    static void test_NoEliminarErrores()
     {
         Integer numErrores = [SELECT COUNT() FROM Error_Log__c];
         System.assertEquals(NUM_OF_ERRORS, numErrores);
@@ -77,7 +77,7 @@ private with sharing class Test_Batch_DeleteErrorLogs
      */
 
     @isTest
-    private static void test_EliminarErrores()
+    static void test_EliminarErrores()
     {
         Integer numErrores = [SELECT COUNT() FROM Error_Log__c];
         System.assertEquals(NUM_OF_ERRORS, numErrores);

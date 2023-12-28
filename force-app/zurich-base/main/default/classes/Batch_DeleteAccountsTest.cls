@@ -5,7 +5,7 @@
  * @date 30/06/203
  */
 @isTest
- private with sharing class Batch_DeleteAccountsTest
+ public class Batch_DeleteAccountsTest
 {
     private static final string ACCOUNT_LEAD = 'Lead';
     private static final string ACCOUNT_CUSTOMER = 'Customer';
@@ -20,7 +20,7 @@
 
 
     @TestSetup
-    private static void makeData(){
+    static void makeData(){
         
         // create Lead accounts
         List<Account> leadAccounts = TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_LEAD, 2);
@@ -51,7 +51,7 @@
     }
 
     @isTest
-    private static void test_NoDeleteAccounts()
+    static void test_NoDeleteAccounts()
     {
         test.startTest();
         Batch_DeleteAccounts batchDeleteAcc=new Batch_DeleteAccounts();
@@ -62,7 +62,7 @@
     }
 
     @isTest
-    private static void test_DeleteLeadWithoutOffer()
+    static void test_DeleteLeadWithoutOffer()
     {
         Account acc= new Account();
         acc.FirstName='Prueba';
@@ -79,7 +79,7 @@
     }
 
     @isTest
-    private static void test_NoDeleteCustomerWithoutOffer()
+    static void test_NoDeleteCustomerWithoutOffer()
     {
         Account acc= new Account();
         acc.FirstName='Prueba';
@@ -97,7 +97,7 @@
 
 
     @isTest
-    private static void test_NoDeleteAccounts2()
+    static void test_NoDeleteAccounts2()
     {
         test.startTest();
 
@@ -109,7 +109,7 @@
     }
 
     @isTest
-    private static void test_DeleteLeadWithoutOffer2()
+    static void test_DeleteLeadWithoutOffer2()
     {
         Account acc= new Account();
         acc.FirstName='Prueba';
@@ -127,7 +127,7 @@
     }
 
     @isTest
-    private static void test_NoDeleteCustomerWithoutOffer2()
+    static void test_NoDeleteCustomerWithoutOffer2()
     {
         Account acc= new Account();
         acc.FirstName='Prueba';

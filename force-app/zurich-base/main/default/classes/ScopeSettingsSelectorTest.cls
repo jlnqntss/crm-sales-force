@@ -1,8 +1,8 @@
 @isTest
-private with sharing class ScopeSettingsSelectorTest
+private class ScopeSettingsSelectorTest
 {
     @isTest
-    private static void test_selectAll()
+    static void test_selectAll()
     {
         Test.startTest();
         List<Scope_Setting__mdt> scopeSettings = new ScopeSettingsSelector().selectAll();
@@ -12,7 +12,7 @@ private with sharing class ScopeSettingsSelectorTest
     }
 
     @isTest
-    private static void test_selectByBusinessCode_OK()
+    static void test_selectByBusinessCode_OK()
     {
         List<Scope_Setting__mdt> scopeSettingsList = [
             SELECT Id, BusinessCode__c, Scope__c, Scope_Name__c
@@ -28,7 +28,7 @@ private with sharing class ScopeSettingsSelectorTest
     }
 
     @isTest
-    private static void test_selectByBusinessCode_Empty()
+    static void test_selectByBusinessCode_Empty()
     {
         Test.startTest();
         List<Scope_Setting__mdt> scopeSettings = new ScopeSettingsSelector().selectByBusinessCode(null);

@@ -1,5 +1,5 @@
 @isTest
-private with sharing class Batch_GDPRPropagateBlocked_Test {
+private class Batch_GDPRPropagateBlocked_Test {
 
     private static final String ACCOUNT_CUSTOMER = 'Customer';
     private static final String ACCOUNT_BCUSTOMER = 'BusinessCustomer';
@@ -12,7 +12,7 @@ private with sharing class Batch_GDPRPropagateBlocked_Test {
 
 
     @TestSetup
-    private static void makeData(){
+    static void makeData(){
         List<Account> accs = TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_CUSTOMER, 1);
 
         for(Integer i = 0; accs.size() < i; i++){
@@ -83,7 +83,7 @@ private with sharing class Batch_GDPRPropagateBlocked_Test {
         
     }
     @isTest 
-    private static void comprobarPropagacionAccount()
+    static void comprobarPropagacionAccount()
     {
         //Actualizar los registros
         List<Account> acc = [SELECT Id, Blocked__c, Anonymized__c FROM Account WHERE Blocked__c=false AND Anonymized__c=false];
@@ -108,7 +108,7 @@ private with sharing class Batch_GDPRPropagateBlocked_Test {
     }
 
     @isTest 
-    private static void comprobarPropagacionOportunidad()
+    static void comprobarPropagacionOportunidad()
     {
         List<Opportunity> opp = [SELECT Id, Blocked__c, Anonymized__c FROM Opportunity WHERE Blocked__c=false AND Anonymized__c=false];
         for(Opportunity o: opp)
@@ -130,7 +130,7 @@ private with sharing class Batch_GDPRPropagateBlocked_Test {
     }
 
     @isTest
-    private static void comprobarBorrado(){
+    static void comprobarBorrado(){
         //Actualizar los registros a mano, cambiando el Anonymized a true
         anonimizarDatosManual();        
 
@@ -146,7 +146,7 @@ private with sharing class Batch_GDPRPropagateBlocked_Test {
     }
 
     @isTest 
-    private static void comprobarExceptionBloqueo(){
+    static void comprobarExceptionBloqueo(){
         Test.startTest();
 
         try{
@@ -160,7 +160,7 @@ private with sharing class Batch_GDPRPropagateBlocked_Test {
     }
 
     @isTest
-    private static void comprobarExceptionBorrado(){
+    static void comprobarExceptionBorrado(){
         Test.startTest();
 
         try{

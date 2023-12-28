@@ -1,7 +1,7 @@
 @isTest
-private with sharing class GenesysCloudSendSMSActionTest {
+public class GenesysCloudSendSMSActionTest {
   @TestSetup
-  private static void createScenario() {
+  static void createScenario() {
     List<Account> accounts = TestDataFactory.generateAccounts(
       '001',
       'Customer',
@@ -21,7 +21,7 @@ private with sharing class GenesysCloudSendSMSActionTest {
   }
 
   @isTest
-  private static void test_GenesysCloudSendSMSAction_execute_ok() {
+  static void test_GenesysCloudSendSMSAction_execute_ok() {
     // Datos petición
     Case relatedCase = [SELECT Id FROM Case LIMIT 1];
     System.assertEquals(true, relatedCase != null, 'Case exists');
@@ -54,7 +54,7 @@ private with sharing class GenesysCloudSendSMSActionTest {
   }
 
   @isTest
-  private static void test_GenesysCloudSendSMSAction_execute_ko() {
+  static void test_GenesysCloudSendSMSAction_execute_ko() {
     // Datos petición
     Case relatedCase = [SELECT Id FROM Case LIMIT 1];
     System.assertEquals(true, relatedCase != null, 'Case exists');

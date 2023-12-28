@@ -1,10 +1,10 @@
 @isTest
-private with sharing class GenesysCloudTest
+private class GenesysCloudTest
 {
     //#region RoutingService
 
     @isTest
-    private static void test_GenesysCloudRoutingService_route_email_ok()
+    static void test_GenesysCloudRoutingService_route_email_ok()
     {
 
         String body = '{"id":"1JB9ZmJnCCKXlerwxAOZXC"}';
@@ -31,7 +31,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_GenesysCloudRoutingService_route_email_ko()
+    static void test_GenesysCloudRoutingService_route_email_ko()
     {
 
         String body = '';
@@ -60,7 +60,7 @@ private with sharing class GenesysCloudTest
      * @date 17/11/2020
      */
     @isTest
-    private static void test_GenesysCloudRoutingService_route_emailList_ok()
+    static void test_GenesysCloudRoutingService_route_emailList_ok()
     {
         // When
         String body = '{"id":"1JB9ZmJnCCKXlerwxAOZXC"}';
@@ -102,7 +102,7 @@ private with sharing class GenesysCloudTest
      * @date 17/11/2020
      */
     @isTest
-    private static void test_GenesysCloudRoutingService_route_emailList_ko()
+    static void test_GenesysCloudRoutingService_route_emailList_ko()
     {
         // When
         String body = '{"id":"1JB9ZmJnCCKXlerwxAOZXC"}';
@@ -159,7 +159,7 @@ private with sharing class GenesysCloudTest
 
     //#region CallbacksService
     @isTest
-    private static void test_GenesysCloudCallbacksService_create_callback_ok()
+    static void test_GenesysCloudCallbacksService_create_callback_ok()
     {
         String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},' +
                       '"callbackIdentifiers":[{"type":"EXTERNAL","id":"4b005d83-8246-4eb5-a89c-3f948751632b"},{"type":"ACD","id":"9f359553-e45b-42c3-8420-99bb01582eb9"}]}';
@@ -193,7 +193,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_GenesysCloudCallbacksService_create_callback_ko()
+    static void test_GenesysCloudCallbacksService_create_callback_ko()
     {
 
         String body = '';
@@ -217,7 +217,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_GenesysCloudCallbacksService_create_callbackList_ok()
+    static void test_GenesysCloudCallbacksService_create_callbackList_ok()
     {
         // When
         String body = '{"conversation":{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75","selfUri":"/api/v2/conversations/7e131fcf-1639-45b2-89e5-9c3787b5dc75"},' +
@@ -254,7 +254,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_GenesysCloudCallbacksService_create_callbackList_ko()
+    static void test_GenesysCloudCallbacksService_create_callbackList_ko()
     {
         // When
         String body = '';
@@ -294,7 +294,7 @@ private with sharing class GenesysCloudTest
     }
     
     @isTest
-    private static void test_CallBacksService_cancel()
+    static void test_CallBacksService_cancel()
     {
         // Id de interaccion generado por Genesys
         String interactionId = '30136822-029b-4582-a171-25297a793326';
@@ -315,7 +315,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_CallBackService_cancelList()
+    static void test_CallBackService_cancelList()
     {
         // Id de interaccion generado por Genesys
         String interactionId = '30136822-029b-4582-a171-25297a793326';
@@ -395,7 +395,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_CallBackService_cancelList_ko()
+    static void test_CallBackService_cancelList_ko()
     {
         // Id de interaccion generado por Genesys
         String interactionId = '30136822-029b-4582-a171-25297a793326';
@@ -442,7 +442,7 @@ private with sharing class GenesysCloudTest
     //#region InteractionDisconnectService
 
     @isTest
-    private static void test_DisconnectionService_close()
+    static void test_DisconnectionService_close()
     {
         // Id de interaccion generado por Genesys
         String interactionId = '30136822-029b-4582-a171-25297a793326';
@@ -463,7 +463,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_DisconnectionService_cancelList()
+    static void test_DisconnectionService_cancelList()
     {
         // Id de interaccion generado por Genesys
         String interactionId = '30136822-029b-4582-a171-25297a793326';
@@ -549,7 +549,7 @@ private with sharing class GenesysCloudTest
     //#region SMSService
 
     @isTest
-    private static void test_GenesysCloudSMSService_send_ok()
+    static void test_GenesysCloudSMSService_send_ok()
     {
         String body = '{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75"}';
         Integer code = 202; //Se va a probar un retorno bueno
@@ -571,7 +571,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_GenesysCloudSMSService_send_ko()
+    static void test_GenesysCloudSMSService_send_ko()
     {
         String body = '';
         Integer code = 400; //Se va a probar un retorno malo
@@ -594,7 +594,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_GenesysCloudSMSService_sendList_ok()
+    static void test_GenesysCloudSMSService_sendList_ok()
     {
         String body = '{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75"}';
         Integer code = 202; //Se va a probar un retorno bueno
@@ -618,7 +618,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_GenesysCloudSMSService_sendList_ko()
+    static void test_GenesysCloudSMSService_sendList_ko()
     {
         // When
         String body = '';
@@ -665,7 +665,7 @@ private with sharing class GenesysCloudTest
     //#region CallsService
 
     @isTest
-    private static void test_CallsService_getActive_ok()
+    static void test_CallsService_getActive_ok()
     {
         // When
         GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
@@ -691,7 +691,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_CallsService_getActive_ko()
+    static void test_CallsService_getActive_ko()
     {
         // When
         GenesysCloudConversationsAPIMock responsesMock = new GenesysCloudConversationsAPIMock();
@@ -735,7 +735,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_CallsService_ConferenceTo()
+    static void test_CallsService_ConferenceTo()
     {
         // Respuesta al getActive
         String conversationId = '9d720887-910f-402d-b102-946c2c273992';
@@ -765,7 +765,7 @@ private with sharing class GenesysCloudTest
     }
 
     @isTest
-    private static void test_CallsService_getCall()
+    static void test_CallsService_getCall()
     {
         // Respuesta al getActive
         String interactionId = '30136822-029b-4582-a171-25297a793326';
@@ -794,7 +794,7 @@ private with sharing class GenesysCloudTest
     //#endregion
 
     @isTest
-    private static void test_GenesysCloudValidateResponse_ko()
+    static void test_GenesysCloudValidateResponse_ko()
     {
         Test.startTest();
         try

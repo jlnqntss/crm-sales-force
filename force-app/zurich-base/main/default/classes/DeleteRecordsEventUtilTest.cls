@@ -6,7 +6,7 @@
  * @last modified by  : aberuete
 **/
 @isTest
-private with sharing class DeleteRecordsEventUtilTest 
+private class DeleteRecordsEventUtilTest 
 {
     static final String CRITERIA_QUERY =  'CanBeRemoved__c = true';
     //IMPORTANTE: Se ha probado y validado con 18k de registros pero el test tarda 2min en ejecutar
@@ -15,7 +15,7 @@ private with sharing class DeleteRecordsEventUtilTest
     private static Integer numRecordsTotal = 18; //18000 
 
     @TestSetup
-    private static void makeData()
+    static void makeData()
     {
         List<Survey__c> surveys = new List<Survey__c>();
         for(Integer i = 0 ; i < numRecordsInsert; i++)
@@ -27,7 +27,7 @@ private with sharing class DeleteRecordsEventUtilTest
     }
 
     @isTest
-    private static void test_handleEvents_ok()
+    static void test_handleEvents_ok()
     {
         List<DeleteRecordsEvent__e> events = new List<DeleteRecordsEvent__e>();
         for(Integer j=0; j<2; j++)
@@ -60,7 +60,7 @@ private with sharing class DeleteRecordsEventUtilTest
     }
 
     @isTest
-    private static void test_handleEvents_ko()
+    static void test_handleEvents_ko()
     {
         List<DeleteRecordsEvent__e> events = new List<DeleteRecordsEvent__e>();
         for(Integer j=0; j<2; j++)
@@ -98,7 +98,7 @@ private with sharing class DeleteRecordsEventUtilTest
      * @date 03/04/2023
      */
     @isTest
-    private static void test_ifNumEventsGreaterThanOneRelaunchEvents()
+    static void test_ifNumEventsGreaterThanOneRelaunchEvents()
     {
         List<DeleteRecordsEvent__e> events = new List<DeleteRecordsEvent__e>();
         for(Integer j=0; j<2; j++)
@@ -125,7 +125,7 @@ private with sharing class DeleteRecordsEventUtilTest
      * @date 03/04/2023
      */
     @isTest
-    private static void test_getQueryToDeleteRecords()
+    static void test_getQueryToDeleteRecords()
     {
         List<DeleteRecordsEvent__e> events = new List<DeleteRecordsEvent__e>();
         for(Integer j=0; j<2; j++)

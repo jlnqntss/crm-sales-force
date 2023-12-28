@@ -2,7 +2,7 @@
 private without sharing class OrdersSelectorTest {
 
     @TestSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
         insert newMaster;
@@ -27,7 +27,7 @@ private without sharing class OrdersSelectorTest {
     }
 
     @IsTest
-    private static void test_selectByDNI_ok()
+    static void test_selectByDNI_ok()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -42,7 +42,7 @@ private without sharing class OrdersSelectorTest {
     }
 
     @IsTest
-    private static void test_selectByDNI_ko()
+    static void test_selectByDNI_ko()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -59,7 +59,7 @@ private without sharing class OrdersSelectorTest {
     }
 
     @IsTest
-    private static void test_selectByEmail_ok()
+    static void test_selectByEmail_ok()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -74,7 +74,7 @@ private without sharing class OrdersSelectorTest {
     }
 
     @IsTest
-    private static void test_selectByEmail_ko()
+    static void test_selectByEmail_ko()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -91,7 +91,7 @@ private without sharing class OrdersSelectorTest {
     }
 
     @IsTest
-    private static void test_selectByMobilePhone_ok()
+    static void test_selectByMobilePhone_ok()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -106,7 +106,7 @@ private without sharing class OrdersSelectorTest {
     }
 
     @IsTest
-    private static void test_selectByMobilePhone_ko()
+    static void test_selectByMobilePhone_ko()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];

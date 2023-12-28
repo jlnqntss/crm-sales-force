@@ -6,9 +6,9 @@
  */
 
 @isTest
-private with sharing class Test_Batch_PostProcessing
+private class Test_Batch_PostProcessing
 {
-    private static final String PRODUCT_NAME = 'Samsung Galaxy';
+    static final String PRODUCT_NAME = 'Samsung Galaxy';
     /**
      * Create test data: an order with a new timestamp and orderItem, discount and cover with old timestamp
      **
@@ -16,7 +16,7 @@ private with sharing class Test_Batch_PostProcessing
      * @date 18/06/2020
      */
     @TestSetup
-    private static void test_CreateData()
+    static void test_CreateData()
     {
         // Instantiate the Pricebook2 record first, setting the Id
         Pricebook2 standardPricebook = new Pricebook2(
@@ -108,7 +108,7 @@ private with sharing class Test_Batch_PostProcessing
      * @date 18/06/2020
      */
     @isTest
-    private static void test_DeleteOutdatedData()
+    static void test_DeleteOutdatedData()
     {
         Order policy = [
             SELECT After_Processing_Check__c
@@ -149,7 +149,7 @@ private with sharing class Test_Batch_PostProcessing
      * For testing Schedule
      */
     @isTest
-    private static void testBatch_schedule()
+    static void testBatch_schedule()
     {
         Batch_PostProcessing m = new Batch_PostProcessing();
         String sch = '20 30 8 10 2 ?';
@@ -166,7 +166,7 @@ private with sharing class Test_Batch_PostProcessing
      * @date 21/04/2023
      */
     @isTest
-    private static void testGetItemsToDelete()
+    static void testGetItemsToDelete()
     {
         Batch_PostProcessing batch = new Batch_PostProcessing();
 
@@ -188,7 +188,7 @@ private with sharing class Test_Batch_PostProcessing
      * @date 21/04/2023
      */
     @isTest
-    private static void testGetDiscountsToDelete()
+    static void testGetDiscountsToDelete()
     {
         Batch_PostProcessing batch = new Batch_PostProcessing();
 

@@ -5,7 +5,7 @@
  * @date 19/08/2021
  */
 @isTest
-private with sharing class NotificationTest
+private class NotificationTest
 {
     /**
      * Test del metodo que comprueba el envio correcto de una notificacion
@@ -14,7 +14,7 @@ private with sharing class NotificationTest
      * @date 19/08/2021
      */
     @isTest
-    private static void send_ok()
+    static void send_ok()
     {
         //String targetID = '000000000000000AAA'; //dummy
         // El usuario actual recibe la notificacion
@@ -35,7 +35,7 @@ private with sharing class NotificationTest
     }
 
     @isTest
-    private static void send_ko()
+    static void send_ko()
     {
         Notification notification = new Notification(Notification.NotificationType.SDMAlert);
         notification.testUknownError = true;
