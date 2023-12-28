@@ -56,6 +56,11 @@
                 <label>No quiero póliza-Incidencia actual no resuelta con alguna póliza en vigor</label>
             </value>
             <value>
+                <fullName>No Policy-Not real interest</fullName>
+                <default>false</default>
+                <label>No quiere Póliza - No interés Real</label>
+            </value>
+            <value>
                 <fullName>CARS-Uses/type of risk</fullName>
                 <default>false</default>
                 <label>AUTO-Usos/tipo de riesgo</label>
