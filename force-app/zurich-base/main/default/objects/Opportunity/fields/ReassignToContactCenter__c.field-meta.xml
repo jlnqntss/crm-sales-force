@@ -7,7 +7,10 @@ ISPICKVAL(StageName,&apos;Legit Lead&apos;),
 Account.RecordType.DeveloperName = &apos;Lead&apos;,
 IntermediaryId__r.EnableReassignmentLeadOffers__c,
 $Setup.Lead_Offers__c.DaysToReassignOffer__c &gt; 0, 
-TODAY() - DATEVALUE(CreatedDate) &gt; $Setup.Lead_Offers__c.DaysToReassignOffer__c
+TODAY() - DATEVALUE(CreatedDate) &gt; $Setup.Lead_Offers__c.DaysToReassignOffer__c,
+NOT(ISPICKVAL(Scope__c,&quot;ZE&quot;)),
+NOT(ISPICKVAL(Scope__c,&quot;ZEB&quot;)),
+NOT(ISPICKVAL(Scope__c,&quot;ZEO&quot;))
 )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Reassign To ContactCenter</label>
