@@ -12,8 +12,8 @@ private with sharing class SendSurveyButtonControllerTest
     @isTest
     private static void test_getTransferPollPhoneNumber_ok()
     {
-        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
-        User u = [SELECT Id FROM User WHERE Id = : usuarios.get(0).AssigneeId AND IsActive = true];
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos' and Assignee.isActive = TRUE];
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         String pollPhoneNumberResult;
         SendSurveyButtonController.testListPollPhoneNumber =
         new AdminSetupParameter__mdt(
