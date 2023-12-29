@@ -646,7 +646,7 @@ private class INFOHandlerTest
         System.assertEquals(NUM_ER_QUOTE_OPTION, quoteList.size(), 'No se han insertado todos los registros de opciones de oferta');
         System.assertEquals(0, policyList.size(), 'No se han borrado todos los registros de póliza');
         System.assertEquals(NUM_ER_INSURED_OBJECT, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
-        System.assertEquals(NUM_ER_CLAIM, claimList.size(), 'No se han insertado todos los registros de siniestro');
+        System.assertEquals(0, claimList.size(), 'No se han borrado todos los registros de siniestro'); 
         // FIXME: System.assertEquals(20, relaList.size(), 'No se han borrado todos los registros de relaciones');
         System.assertEquals(0, caseList.size(), 'No se han borrado todos los registros de Case');
         System.assertEquals(0, specialConditionList.size(), 'No se han borrado todos los registros de Special_Condition__c');

@@ -54,9 +54,10 @@ private class NoteInfoLookupBatchTest
 			INFOIntermediaryCode__c= String.valueOf(i).leftPad(9, '0')
 		);
 		insert a;
-	
+		
+		Policy__c p;
 		if( bCreatePolicy ) {
-			Policy__c p = new Policy__c(
+			p = new Policy__c(
 				Name= String.valueOf(i).leftPad(9, '0'),
 				InfoPolicyNumber__c = String.valueOf(i).leftPad(9, '0')
 			);
@@ -66,7 +67,8 @@ private class NoteInfoLookupBatchTest
 		if( bCreateClaim ) {
 			Claim__c c = new Claim__c(
 				Name= String.valueOf(i).leftPad(9, '0'),
-				InfoClaimNumber__c = String.valueOf(i).leftPad(9, '0')
+				InfoClaimNumber__c = String.valueOf(i).leftPad(9, '0'),
+				Policy__c = p.Id
 			);
 			insert c;
 		}
@@ -88,7 +90,7 @@ private class NoteInfoLookupBatchTest
 	 */
 	@isTest 
 	static void execute() {
-		generateNoteRelatedData(1, false, false, true);
+		generateNoteRelatedData(1, true, false, true);
 		generateNoteRelatedData(2, true, true, true);
 		
 		
