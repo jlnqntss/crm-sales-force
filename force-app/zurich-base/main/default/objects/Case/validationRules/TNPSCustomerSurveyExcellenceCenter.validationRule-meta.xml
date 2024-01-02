@@ -3,15 +3,13 @@
     <fullName>TNPSCustomerSurveyExcellenceCenter</fullName>
     <active>true</active>
     <description>Sólo los usuarios del Centro de Excelencia deben poder asignar el valor &apos;Encuesta TNPS Cliente&apos;.</description>
-    <errorConditionFormula>OR ( AND (ISCHANGED(SourceArea__c), PRIORVALUE(SourceArea__c)=&quot;TNPS Customer Survey&quot; ,
-           AND (NOT($Permission.Area_Origen_Centro_Excelencia), OR( $Profile.Name=&apos;System Administrator&apos;,
-                                                                    $Profile.Name=&apos;Super User&apos;,
-                                                                    $Profile.Name=&apos;Integrator&apos; ))),
-     
-     AND (ISPICKVAL(SourceArea__c, &quot;TNPS Customer Survey&quot;),
-           AND (NOT($Permission.Area_Origen_Centro_Excelencia), OR( $Profile.Name=&apos;System Administrator&apos;, 
-                                                                    $Profile.Name=&apos;Super User&apos;,
-                                                                    $Profile.Name=&apos;Integrator&apos; )))
+    <errorConditionFormula>AND (OR (AND (ISCHANGED(SourceArea__c), PRIORVALUE(SourceArea__c)=&quot;TNPS Customer Survey&quot;),
+        ISPICKVAL(SourceArea__c, &quot;TNPS Customer Survey&quot;)),
+	
+     AND (NOT($Permission.Area_Origen_Centro_Excelencia),
+          AND($Profile.Name&lt;&gt;&apos;System Administrator&apos;,
+              $Profile.Name&lt;&gt;&apos;Super User&apos;,
+              $Profile.Name&lt;&gt;&apos;Integrator&apos; ))	
 )</errorConditionFormula>
     <errorDisplayField>SourceArea__c</errorDisplayField>
     <errorMessage>El valor &apos;Encuesta TNPS Cliente&apos; sólo es asignable por el Centro de Excelencia.</errorMessage>
