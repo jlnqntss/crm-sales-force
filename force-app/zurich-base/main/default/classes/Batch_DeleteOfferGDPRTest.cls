@@ -5,7 +5,7 @@
  * @date 05/07/2023
  */
 @isTest
-public class Batch_DeleteOfferGDPRTest
+private with sharing class Batch_DeleteOfferGDPRTest
 {
     private static final string ACCOUNT_LEAD = 'Lead';
     private static final string LEGAL_ENTITY = '001';
@@ -13,7 +13,7 @@ public class Batch_DeleteOfferGDPRTest
     private static final Id LeadRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(ACCOUNT_LEAD).getRecordTypeId();
 
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         
         // create 5 accounts ZE
@@ -79,7 +79,7 @@ public class Batch_DeleteOfferGDPRTest
 
     // Métod del test en el que se deben de borrar 2 ofertas, ya que cumplen las condiciones
     @isTest
-    static void test_DeleteTwoOffersZE()
+    private static void test_DeleteTwoOffersZE()
     {
         List<Opportunity> ofertas = [Select id,CreatedDate,CommercialStructureCode__c, Name from Opportunity where Scope__c = 'ZE' and CommercialStructureCode__c='6200'];
         
@@ -119,7 +119,7 @@ public class Batch_DeleteOfferGDPRTest
 
     // Métod del test en el que no se debe de borrar ninguna cuenta, ya que no son de ZE
     @isTest
-    static void test_NoDeleteOffersGeneral()
+    private static void test_NoDeleteOffersGeneral()
     {
         List<Opportunity> ofertas = [Select id,CreatedDate, Scope__c from Opportunity where Scope__c = 'General'];
         Datetime fecha = Datetime.now().addYears(-1);
@@ -139,7 +139,7 @@ public class Batch_DeleteOfferGDPRTest
 
     // Métod del test en el que añadimos una cuenta fisica, con 6 ofertas que cumplan las condiciones. Se deberían de borrar las 6
     @isTest
-    static void test_DeleteAllOffersFisica()
+    private static void test_DeleteAllOffersFisica()
     {
         List<Account> newAccountF = TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_LEAD, 1);
         
@@ -196,7 +196,7 @@ public class Batch_DeleteOfferGDPRTest
     // Métod del test en el que añadimos una cuenta juridica, con 6 ofertas que cumplan las condiciones. Se deberían de borrar las 6
     @isTest
 
-    static void test_DeleteAllOffersJuridica()
+    private static void test_DeleteAllOffersJuridica()
     {
         List<Account> newAccountJ = TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_LEAD, 1);
         newAccountJ[0].FirstName='Prueba';
@@ -248,7 +248,7 @@ public class Batch_DeleteOfferGDPRTest
         }
     }
     @isTest
-    static void testBatch_schedule()
+    private static void testBatch_schedule()
     {
         Test.startTest();
         String jobID = system.schedule( 'Delete Offers', '20 30 8 10 2 ?', new Batch_DeleteOfferGDPR() );

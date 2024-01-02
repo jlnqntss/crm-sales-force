@@ -10,6 +10,10 @@ public without sharing class ActivitySelector
     {
         return ' Id, Status, OwnerId, CallObject, WhatId, WhoId ';
     }
+    private static String getNewFieldListString() 
+    {
+        return ' Id, WhoId, WhatId, IsVisibleInSelfService, CallObject ';
+    }
     private static String getSObjectName()
     {
         return ' Task ';
@@ -64,6 +68,7 @@ public without sharing class ActivitySelector
      * @author nescudero
      * @date 27/10/2020
      * @change aberuete - 26/07/2023 - Se añade un campo a devolver por la query
+     * @change nikola.cobian@seidor.com - 23/11/2023 - Se modulariza la consulta para evitar queries hardcodeadas
      */
     public static List<Task> selectTasksById(Set<Id> taskIds)
     {
@@ -72,7 +77,13 @@ public without sharing class ActivitySelector
             return new List<Task>();
         }
 
-        return [SELECT Id, WhoId, WhatId,IsVisibleInSelfService FROM Task WHERE Id IN : taskIds];
+        String query = String.format
+        (
+            'SELECT {0} FROM {1} WHERE CallObject IN :taskIds ORDER BY {2}',
+            new List<String>{getNewFieldListString(), getSObjectName(), getOrderBy()}
+        );
+        
+        return (List<Task>) Database.query(query);
     }
 
 
@@ -87,10 +98,19 @@ public without sharing class ActivitySelector
 
         List<Task> result = new List<Task>();
 
-        if (whatIds != null || !whatIds.isEmpty()) {
-            result = new List<Task>([SELECT Id, Status FROM Task WHERE WhatId IN : whatIds]);
+        if(whatIds != null || !whatIds.isEmpty())
+        {
+            String query = String.format
+            (
+                'SELECT {0} FROM {1} WHERE CallObject IN :whatIds',
+                new List<String>{getFieldListString(), getSObjectName()}
+            );
+
+            result = Database.query(query);
         }
 
         return result;
     }
+
+    //Crea un método selector
 }

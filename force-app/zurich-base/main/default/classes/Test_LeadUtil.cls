@@ -5,13 +5,13 @@
  * @date 17/11/2020
  **/
 @isTest
-public class Test_LeadUtil
+private with sharing class Test_LeadUtil
 {
     static final String EMAIL_CONTACTOS_TEST = 'testexisting@test.com';
     static final String CUSTOMER_NUM_TEST = 'Life-3123';
 
     @testSetup
-    static void makeData()
+    private static void makeData()
     {
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
         insert newMaster;
@@ -76,7 +76,7 @@ public class Test_LeadUtil
      * @date 17/11/2020
      **/
     @isTest
-    static void test_NewSubscriber()
+    private static void test_NewSubscriber()
     {
 
         List<Lead> subscribers = new List<Lead>();
@@ -107,7 +107,7 @@ public class Test_LeadUtil
      * @date 17/11/2020
      **/
     @isTest
-    static void test_ExistingSubscriber()
+    private static void test_ExistingSubscriber()
     {
 
         List<Lead> subscribers = new List<Lead>();
@@ -140,7 +140,7 @@ public class Test_LeadUtil
      * @date 17/11/2020
      **/
     @isTest
-    static void test_ExistingMaster1()
+    private static void test_ExistingMaster1()
     {
 
         List<Lead> subscribers = new List<Lead>();
@@ -171,7 +171,7 @@ public class Test_LeadUtil
      * @date 17/11/2020
      **/
     @isTest
-    static void test_ExistingMaster2()
+    private static void test_ExistingMaster2()
     {
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '1111');
         insert newMaster;
@@ -226,7 +226,7 @@ public class Test_LeadUtil
      * @date 03/04/2023
      **/
     @isTest
-    static void test_deleteContact()
+    private static void test_deleteContact()
     {
         List<Contact> leadsToDeleteBefore = [Select id,IsSubscriber__c,HasOptedOutOfEmail from Contact where recordtype.developerName =: Label.LeadGI and IsSubscriber__c = true and HasOptedOutOfEmail = true ];
         
@@ -246,7 +246,7 @@ public class Test_LeadUtil
      * @date 03/04/2023
      **/
     @isTest
-    static void test_updateContact()
+    private static void test_updateContact()
     {
         List<Contact> leadsToUpdateBefore = [Select id,IsSubscriber__c,HasOptedOutOfEmail,Balance__c,Birthdate,CNO__c,CreditCard__c,CustomerID__c,CustomerNum__c,DNI__c,EmailHash__c,Gender__c,Job__c,JobPosition__c,
         MailingCity,MailingCountry,MailingPostalCode,MailingState,MailingStreet,MasterPolicy__c,MasterPolicyDesc__c,MasterPolicyNum__c,MobilePhone,MonthExpiryDate__c,Nationality__c,YearExpiryDate__c,Abandoned_Lead__c
