@@ -40,7 +40,7 @@
         <field>Claim__c.Status__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Siniestros Abiertos V3</name>
+    <name>Siniestros Abiertos</name>
     <params>
         <name>co</name>
         <value>1</value>
