@@ -5,7 +5,7 @@
  * @date 28/04/2021
  */
 @isTest
-private with sharing class NoteInfoLookupBatchTest
+private class NoteInfoLookupBatchTest
 {
 
 	/**
@@ -23,7 +23,7 @@ private with sharing class NoteInfoLookupBatchTest
 	 * 		HegeoClaimId__c => ClaimId__c
 	 */
 	@testSetup 
-	private static void makedata()
+	static void makedata()
 	{
 		// PreOffer + Account
 		Case notePreOffer = new Case(Subject= 'note preoffer', Origin=NoteInfoLookupBatch.NOTE_CASE_ORIGIN);
@@ -87,7 +87,7 @@ private with sharing class NoteInfoLookupBatchTest
 	 * Test of the batch execution
 	 */
 	@isTest 
-	private static void execute() {
+	static void execute() {
 		generateNoteRelatedData(1, false, false, true);
 		generateNoteRelatedData(2, true, true, true);
 		
@@ -110,7 +110,7 @@ private with sharing class NoteInfoLookupBatchTest
 	}
 
 	@isTest
-	private static void execute_ko()
+	static void execute_ko()
 	{
 		generateNoteRelatedData(1, false, false, true);
 		
@@ -129,7 +129,7 @@ private with sharing class NoteInfoLookupBatchTest
 	 * Test of the batch scheduling
 	 */
 	@isTest 
-	private static void schedule() {
+	static void schedule() {
 		NoteInfoLookupBatch m = new NoteInfoLookupBatch();
 		String sch = '20 30 8 10 2 ?';
 

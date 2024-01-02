@@ -5,7 +5,7 @@
  * @date 15/10/2020
  */
 @isTest
-private with sharing class INFOHandlerTest
+private class INFOHandlerTest
 {
     private static final Integer NUM_ER_NATURAL_ACCOUNT = 5;
     private static final Integer NUM_ER_LEGAL_ACCOUNT = 5;
@@ -30,7 +30,7 @@ private with sharing class INFOHandlerTest
     private static final Integer NUM_ER_INTERMEDIARY_HIERARCHY = 1;
 
     @TestSetup
-    private static void makeData()
+    static void makeData()
     {
         List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
@@ -149,7 +149,7 @@ private with sharing class INFOHandlerTest
      *
      * @param {Map<String, Map<String, String>>} mapa de equivalencias por Entidad (debera estar inicializado)
      */
-    private static void createEquivalenceSettigs(Map<String, Map<String, String>> mapEquivalences)
+    static void createEquivalenceSettigs(Map<String, Map<String, String>> mapEquivalences)
     {
         // Ejemplo de equivalencia: INSURED_OBJECT => (0000000057 => Boat)
 
@@ -167,7 +167,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_prepare()
+    static void test_prepare()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -201,7 +201,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_process_upsert_OK()
+    static void test_process_upsert_OK()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -323,7 +323,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_process_delete_OK()
+    static void test_process_delete_OK()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -381,7 +381,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_process_ERROR_NoEntity()
+    static void test_process_ERROR_NoEntity()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -417,7 +417,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_process_ERROR_NoPayload()
+    static void test_process_ERROR_NoPayload()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -449,7 +449,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_persists_upsert_OK()
+    static void test_persists_upsert_OK()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -566,7 +566,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_persists_delete_OK()
+    static void test_persists_delete_OK()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -655,7 +655,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_manageResult_OK()
+    static void test_manageResult_OK()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -713,7 +713,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_manageResult_ERROR()
+    static void test_manageResult_ERROR()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -769,7 +769,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_getFirstAndLastName()
+    static void test_getFirstAndLastName()
     {
         List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NATURAL_ACCOUNT', 1);
         
@@ -790,7 +790,7 @@ private with sharing class INFOHandlerTest
     }
 
     @isTest
-    private static void test_getLegalEntity()
+    static void test_getLegalEntity()
     {
         List<ExternalRequest__c> externalRequestList = TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NATURAL_ACCOUNT', 1);
         

@@ -1,8 +1,8 @@
 @isTest
-private with sharing class LWCCaseSelectCustomerControllerTest {
+private class LWCCaseSelectCustomerControllerTest {
 
     @TestSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         //Customers
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
@@ -17,7 +17,7 @@ private with sharing class LWCCaseSelectCustomerControllerTest {
      * Prueba a pasar una lista vacía para ver que devuelve una lista vacía y no un error
      */
     @isTest
-    private static void test_getAccountsInfo_ko()
+    static void test_getAccountsInfo_ko()
     {
         Test.startTest();
 
@@ -32,7 +32,7 @@ private with sharing class LWCCaseSelectCustomerControllerTest {
      * Prueba a recibir la info de las cuentas que se han pedido
      */
     @isTest
-    private static void test_getAccountsInfo_ok()
+    static void test_getAccountsInfo_ok()
     {
         // When
         Set<Id> accountIds = new Map<Id, Account>( [SELECT Id FROM Account] ).keySet();

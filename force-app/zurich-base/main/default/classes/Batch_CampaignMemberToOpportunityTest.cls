@@ -5,11 +5,11 @@
  */
 
 @IsTest(SeeAllData=false)
-private with sharing class Batch_CampaignMemberToOpportunityTest
+public class Batch_CampaignMemberToOpportunityTest
 {
 
     @TestSetup
-    private static void makeData()
+    static void makeData()
     {
         /********************************  INTERMEDIARIOS  ********************************/
         // Crear cuentas de intermediarios
@@ -175,7 +175,7 @@ private with sharing class Batch_CampaignMemberToOpportunityTest
     }
 
     @IsTest
-    private static void test_CampaignMemberToOpportunityTest_OK()
+    static void test_CampaignMemberToOpportunityTest_OK()
     {
         // Primero se van a borrar las oportunidades que se pudiesen haber generado automáticamente por el flow
         // si, éste está activo, al insertar los miembros de Campaña

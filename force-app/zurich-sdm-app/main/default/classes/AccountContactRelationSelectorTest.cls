@@ -5,12 +5,12 @@
  * @date 09/11/2021
  */
 @isTest
-private with sharing class AccountContactRelationSelectorTest 
+public class AccountContactRelationSelectorTest 
 {
-    private static final Integer NUM_INTERMEDIARIES = 5;
+    public static final Integer NUM_INTERMEDIARIES = 5;
 
     @TestSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         List<Account> intermediaryAccounts = TestDataFactory.generateAccounts(
             '001', AccountsSelector.RT_NAME_INTERMEDIARY, NUM_INTERMEDIARIES
@@ -42,7 +42,7 @@ private with sharing class AccountContactRelationSelectorTest
      * Test del metodo que recupera los ATMs por los ids de usuario
      */
     @isTest
-    private static void findByIntermediary()
+    static void findByIntermediary()
     {
         List<Account> intermediaries = [SELECT Id FROM Account];
 

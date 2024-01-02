@@ -1,8 +1,8 @@
 @isTest
-private with sharing class CasesSelectorTest
+private class CasesSelectorTest
 {
     @TestSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Intermediary', 10);
         insert accounts;
@@ -13,7 +13,7 @@ private with sharing class CasesSelectorTest
     }
 
     @isTest
-    private static void test_findOpenByAccount_matchedRecords()
+    static void test_findOpenByAccount_matchedRecords()
     {
         Id intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
         List<Account> accountsToSearch = [SELECT Id, INFOIntermediaryCode__c, RecordTypeId FROM Account WHERE RecordTypeId =: intermediaryRecordTypeId];
@@ -35,7 +35,7 @@ private with sharing class CasesSelectorTest
     }
 
     @isTest
-    private static void test_findOpenByAccount_notFound()
+    static void test_findOpenByAccount_notFound()
     {
         // Test
         Test.startTest();
@@ -50,7 +50,7 @@ private with sharing class CasesSelectorTest
 
 
     @isTest
-    private static void test_findById_matchedRecord()
+    static void test_findById_matchedRecord()
     {
         List<Case> casos = [SELECT Id FROM Case];
         Set<String> casosIds = new Set<String>();
@@ -65,7 +65,7 @@ private with sharing class CasesSelectorTest
     }
 
     @isTest
-    private static void test_findById_notFound()
+    static void test_findById_notFound()
     {
         Set<String> casosIds = new Set<String>();
         casosIds.add('500AAAAAAAAAAAAAAA'); // ponemos un Id inventado
@@ -84,7 +84,7 @@ private with sharing class CasesSelectorTest
      * @date 20/10/2022
      */
     @isTest
-    private static void test_getQueryStringCasesToRelateToNewAccounts_matchedRecord()
+    static void test_getQueryStringCasesToRelateToNewAccounts_matchedRecord()
     {
         List<Case> casos = [SELECT Id, RobotDocumentId__c FROM Case];
         casos[0].RobotDocumentId__c = '2341341';
@@ -110,7 +110,7 @@ private with sharing class CasesSelectorTest
      * @date 14/11/2022
      */
     @isTest
-    private static void test_getQueryStringCasesToRelateToNewOffers_matchedRecord()
+    static void test_getQueryStringCasesToRelateToNewOffers_matchedRecord()
     {
         List<Case> casos = [SELECT Id, CreatedOffer__c FROM Case];
         casos[0].CreatedOffer__c = '11111';
@@ -137,7 +137,7 @@ private with sharing class CasesSelectorTest
      * @date 08/12/2022
      */
     @isTest
-    private static void test_getQueryCasesConversionRatio_matchedRecord()
+    static void test_getQueryCasesConversionRatio_matchedRecord()
     {
         List<Case> casos = [SELECT Id, CreatedOffer__c FROM Case];
         List<Account> cuentasRatio= [SELECT Id FROM Account];
@@ -169,7 +169,7 @@ private with sharing class CasesSelectorTest
      * @date 23/03/2022
      */
     @isTest
-    private static void test_getQueryStringCasesWithoutPolicyOffer_queryOK()
+    static void test_getQueryStringCasesWithoutPolicyOffer_queryOK()
     {
         List<String> origenes = new List<String>();
         origenes.add('Email');
@@ -190,7 +190,7 @@ private with sharing class CasesSelectorTest
      * @date 23/03/2022
      */
     @isTest
-    private static void test_getQueryStringCasesWithoutPolicyOffer_queryKO()
+    static void test_getQueryStringCasesWithoutPolicyOffer_queryKO()
     {
         Test.startTest();
         String query = new CasesSelector().getQueryStringCasesWithoutPolicyOffer('', new List<String>(), new List<String>());
@@ -205,7 +205,7 @@ private with sharing class CasesSelectorTest
      * @date 23/03/2022
      */
     @isTest
-    private static void test_getQueryStringCasesWithoutPolicyOffer_obtainedResults()
+    static void test_getQueryStringCasesWithoutPolicyOffer_obtainedResults()
     {
         List<String> origenes = new List<String>();
         List<String> recordTypes = new List<String>();

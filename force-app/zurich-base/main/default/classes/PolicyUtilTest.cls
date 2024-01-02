@@ -1,10 +1,10 @@
 @isTest
-private with sharing class PolicyUtilTest
+private class PolicyUtilTest
 {
     private static final String BUSINESS_CODE = '320000001';
 
     @TestSetup
-    private static void makeData()
+    static void makeData()
     {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
         insert accounts;
@@ -20,7 +20,7 @@ private with sharing class PolicyUtilTest
      * @date 08/01/2021
      */
     @isTest
-    private static void test_generateScope()
+    static void test_generateScope()
     {
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer'];
 
@@ -50,7 +50,7 @@ private with sharing class PolicyUtilTest
      * @date 10/05/2021
      */
     @isTest
-    private static void test_generatePartner()
+    static void test_generatePartner()
     {
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName != 'PartnerOCS'];
 

@@ -5,7 +5,7 @@
  * @date 27/04/2020
  */
 @isTest
-private with sharing class Test_Batch_DeleteMasters
+private class Test_Batch_DeleteMasters
 {
     /**
      * Create test data
@@ -14,7 +14,7 @@ private with sharing class Test_Batch_DeleteMasters
      * @date 27/04/2020
      */
     @TestSetup
-    private static void test_CreateData()
+    static void test_CreateData()
     {
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
         insert newMaster;
@@ -27,7 +27,7 @@ private with sharing class Test_Batch_DeleteMasters
      */
 
     @isTest
-    private static void test_EliminarMaster()
+    static void test_EliminarMaster()
     {
         Integer numMasters = [SELECT COUNT() FROM Account];
         System.assertEquals(1, numMasters);
@@ -50,7 +50,7 @@ private with sharing class Test_Batch_DeleteMasters
      */
 
     @isTest
-    private static void test_EliminarMasterQuery()
+    static void test_EliminarMasterQuery()
     {
         Integer numMasters = [SELECT COUNT() FROM Account];
         System.assertEquals(1, numMasters);
@@ -72,7 +72,7 @@ private with sharing class Test_Batch_DeleteMasters
      * For testing Schedule
      */
     @isTest
-    private static void testBatch_schedule()
+    static void testBatch_schedule()
     {
         Batch_DeleteMasters m = new Batch_DeleteMasters();
         String sch = '20 30 8 10 2 ?';

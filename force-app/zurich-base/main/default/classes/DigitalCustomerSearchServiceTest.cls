@@ -1,8 +1,8 @@
 @isTest
-private with sharing class DigitalCustomerSearchServiceTest {
+private class DigitalCustomerSearchServiceTest {
 
     @TestSetup
-    private static void createScenario()
+    public static void createScenario()
     {
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
         insert newMaster;
@@ -27,7 +27,7 @@ private with sharing class DigitalCustomerSearchServiceTest {
     }
 
     @IsTest
-    private static void test_findPoliciesByCustomerDocument_ok()
+    static void test_findPoliciesByCustomerDocument_ok()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -42,7 +42,7 @@ private with sharing class DigitalCustomerSearchServiceTest {
     }
 
     @IsTest
-    private static void test_findPoliciesByCustomerDocument_ko()
+    static void test_findPoliciesByCustomerDocument_ko()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -57,7 +57,7 @@ private with sharing class DigitalCustomerSearchServiceTest {
     }
 
     @IsTest
-    private static void test_findPoliciesByCustomerEmail_ok()
+    static void test_findPoliciesByCustomerEmail_ok()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -72,7 +72,7 @@ private with sharing class DigitalCustomerSearchServiceTest {
     }
 
     @IsTest
-    private static void test_findPoliciesByCustomerEmail_ko()
+    static void test_findPoliciesByCustomerEmail_ko()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -87,7 +87,7 @@ private with sharing class DigitalCustomerSearchServiceTest {
     }
 
     @IsTest
-    private static void test_findPoliciesByCustomerPhone_ok()
+    static void test_findPoliciesByCustomerPhone_ok()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];
@@ -102,7 +102,7 @@ private with sharing class DigitalCustomerSearchServiceTest {
     }
 
     @IsTest
-    private static void test_findPoliciesByCustomerPhone_ko()
+    static void test_findPoliciesByCustomerPhone_ko()
     {
         // Comprobaciones iniciales
         List<Order> orders = [SELECT Id FROM Order];

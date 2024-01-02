@@ -5,7 +5,7 @@
  * @date 27/07/2021
  */
 @isTest
-private with sharing class PlanComercialSDMTest
+private class PlanComercialSDMTest
 {
     static final String PLAN_NAME = 'Plan 1';
     /**
@@ -15,7 +15,7 @@ private with sharing class PlanComercialSDMTest
      * @date 29/06/2021
      */
     @TestSetup
-    private static void makeData() 
+    static void makeData() 
     {
         TestDataFactorySDM.PlanComercialSetupData();
     }
@@ -27,7 +27,7 @@ private with sharing class PlanComercialSDMTest
      * @date 27/07/2021
      */
     @isTest
-    private static void testCalculateRealKPI_ok()
+    static void testCalculateRealKPI_ok()
     {
         // Se recuperan las planes comerciales
         List<PlanComercial__c> plans = [
@@ -93,7 +93,7 @@ private with sharing class PlanComercialSDMTest
      * @date 27/07/2021
      */
     @isTest
-    private static void testCalculateRealKPI_no_settings()
+    static void testCalculateRealKPI_no_settings()
     {
         // Se recuperan las planes comerciales
         List<PlanComercial__c> plans = [
@@ -125,7 +125,7 @@ private with sharing class PlanComercialSDMTest
      * @date 13/10/2021
      */
     @isTest
-    private static void testRemoveAnnualPlans()
+    static void testRemoveAnnualPlans()
     {
         // Recuperamos un ATM
         List<AccountTeamMember> atms = [
@@ -198,7 +198,7 @@ private with sharing class PlanComercialSDMTest
      * @date 11/04/2023
      */
     @isTest
-    private static void testIfIntermediaryAndUserDeletedEliminatePlans()
+    static void testIfIntermediaryAndUserDeletedEliminatePlans()
     {
         // Recuperamos un ATM
         AccountTeamMember atm = [
@@ -256,8 +256,7 @@ private with sharing class PlanComercialSDMTest
      * @author aberuete
      * @date 11/04/2023
      */
-    @isTest
-    private static void testGenerateMapIntermediariesToCalculateKpi()
+    static void testGenerateMapIntermediariesToCalculateKpi()
     {
         PlanComercialSDM sdm = new PlanComercialSDM();
         sdm.mapIntermediariesByUserId = new Map<Id, Set<Id>>();
@@ -295,7 +294,7 @@ private with sharing class PlanComercialSDMTest
     * @date 11/04/2023
     */
     @isTest
-    private static void testIfKpisNotEmptyGenerateMapKpiIntermediary()
+    static void testIfKpisNotEmptyGenerateMapKpiIntermediary()
     {
         PlanComercialSDM sdm = new PlanComercialSDM();
         List<KPI__c> kpis = [Select id,Intermediary__c from Kpi__c where Intermediary__c != null limit 2];
@@ -317,7 +316,7 @@ private with sharing class PlanComercialSDMTest
      * @date 11/04/2023
      */
     @isTest
-    private static void testGetKpisAnualOfTheLastMonth()
+    static void testGetKpisAnualOfTheLastMonth()
     {
         PlanComercialSDM sdm = new PlanComercialSDM();
         Set<String> fields = new Set<String>();
@@ -350,7 +349,7 @@ private with sharing class PlanComercialSDMTest
      * @date 17/04/2023
      */
     @isTest
-    private static void testIfIndicatorSettingNotNUll()
+    static void testIfIndicatorSettingNotNUll()
     {
         PlanComercialSDM sdm = new PlanComercialSDM();
         sdm.containsMonths = false;
@@ -378,7 +377,7 @@ private with sharing class PlanComercialSDMTest
      * @date 17/04/2023
      */
     @isTest
-    private static void testGetIdsIntermediariesOfPlan()
+    static void testGetIdsIntermediariesOfPlan()
     {
         PlanComercialSDM sdm = new PlanComercialSDM();
         sdm.mapIntermediariesByUserId = new Map<Id, Set<Id>>();
@@ -407,7 +406,7 @@ private with sharing class PlanComercialSDMTest
      * @date 17/04/2023
      */
     @isTest
-    private static void testGetKpisToCalculate()
+    static void testGetKpisToCalculate()
     {
         PlanComercialSDM sdm = new PlanComercialSDM();
         sdm.mapKPIsByIntermediary = new Map<Id, List<KPI__c>>();
@@ -435,7 +434,7 @@ private with sharing class PlanComercialSDMTest
      * @date 17/04/2023
      */
     @isTest
-    private static void testUpdatePlanWithRealKpi()
+    static void testUpdatePlanWithRealKpi()
     {
         PlanComercialSDM sdm = new PlanComercialSDM();
         List<PlanComercial__c> plansToUpdate = new List<PlanComercial__c> ();
@@ -459,7 +458,7 @@ private with sharing class PlanComercialSDMTest
      * @date 17/04/2023
      */
     @isTest
-    private static void testCalculateRealKpiAndUpdatePlans()
+    static void testCalculateRealKpiAndUpdatePlans()
     {
         PlanComercialSDM sdm = new PlanComercialSDM();
         sdm.mapKPIsByIntermediary = new Map<Id, List<KPI__c>>();

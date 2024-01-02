@@ -5,7 +5,7 @@
  * @date 27/07/2021
  */
 @isTest
-private with sharing class PlanComercialSDMBatchTest
+private class PlanComercialSDMBatchTest
 {
     /**
      * Metodo comun para todas los metodos de test. Inicializa los datos de prueba
@@ -14,7 +14,7 @@ private with sharing class PlanComercialSDMBatchTest
      * @date 27/07/2021
      */
     @TestSetup
-    private static void makeData() 
+    static void makeData() 
     {
         TestDataFactorySDM.PlanComercialSetupData();
     }
@@ -26,7 +26,7 @@ private with sharing class PlanComercialSDMBatchTest
      * @date 27/07/2021
      */
     @isTest
-    private static void execute()
+    static void execute()
     {
         PlanComercialSDMBatch batch = new PlanComercialSDMBatch();
 
@@ -49,7 +49,7 @@ private with sharing class PlanComercialSDMBatchTest
      * @date 27/07/2021
      */
     @isTest
-    private static void execute_ko()
+    static void execute_ko()
     {
         String query = 'SELECT Id FROM Account';
         PlanComercialSDMBatch batch = new PlanComercialSDMBatch(query); // para cobertura
@@ -67,7 +67,7 @@ private with sharing class PlanComercialSDMBatchTest
 	 * Test of the batch scheduling
 	 */
 	@isTest 
-	private static void schedule() {
+	static void schedule() {
 		Test.startTest();
         PlanComercialSDMBatch.createStandardSchedule(null, null, null);
 		Test.stopTest();
