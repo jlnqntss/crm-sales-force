@@ -5,7 +5,7 @@
  * @date 27/04/2020
  */
 @isTest
-private class Test_Batch_DeleteLeads
+private with sharing class Test_Batch_DeleteLeads
 {
     /**
      * Create test data
@@ -14,7 +14,7 @@ private class Test_Batch_DeleteLeads
      * @date 27/04/2020
      */
     @TestSetup
-    static void test_CreateData()
+    private static void test_CreateData()
     {
         Contact lead = new Contact(
             Email = 'edu@test.com',
@@ -51,7 +51,7 @@ private class Test_Batch_DeleteLeads
      */
 
     @isTest
-    static void test_NoEliminarLead()
+    private static void test_NoEliminarLead()
     {
         Integer numContact = [SELECT COUNT() FROM Contact];
         System.assertEquals(2, numContact);
@@ -75,7 +75,7 @@ private class Test_Batch_DeleteLeads
      */
 
     @isTest
-    static void test_EliminarLead()
+    private static void test_EliminarLead()
     {
         Integer numContact = [SELECT COUNT() FROM Contact];
         System.assertEquals(2, numContact);
@@ -103,7 +103,7 @@ private class Test_Batch_DeleteLeads
      * @date 03/04/2023
      */
     @isTest
-    static void test_DeleteLeadCreated11daysAgo()
+    private static void test_DeleteLeadCreated11daysAgo()
     {
         List<Contact> leadsToDeleteBefore = [Select id,CreatedDate from Contact where recordtype.developerName =: Label.LeadGI and IsSubscriber__c = true AND CustomerNum__c !=null and HasOptedOutOfEmail = true ];
         Datetime elevenDaysAgo = Datetime.now().addDays(-11);
@@ -128,7 +128,7 @@ private class Test_Batch_DeleteLeads
      * @date 03/04/2023
      */
     @isTest
-    static void test_schedule () 
+    private static void test_schedule () 
     {
         Test.startTest();
         String jobID = system.schedule( 'Delete Leads Test', '20 30 8 10 2 ?', new Batch_DeleteLeads() );

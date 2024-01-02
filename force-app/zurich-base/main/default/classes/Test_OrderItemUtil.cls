@@ -1,8 +1,8 @@
 @isTest
-public class Test_OrderItemUtil
+private with sharing class Test_OrderItemUtil
 {
     @isTest
-    static void test_createOrderItem()
+    private static void test_createOrderItem()
     {
         Product2 newProduct = new Product2(
             ProductID__c = 'Samsung Galaxy',
@@ -152,7 +152,7 @@ public class Test_OrderItemUtil
      * @date 04/11/2020
      */
     @isTest
-    static void test_deactivateOldProduct()
+    private static void test_deactivateOldProduct()
     {
         Product2 newProduct = new Product2(
             ProductID__c = 'Samsung Galaxy',

@@ -5,7 +5,7 @@
  * @date 03/02/2021
  */
 @isTest
-public class Batch_MergeLeadsWithClientsTest
+private with sharing class Batch_MergeLeadsWithClientsTest
 {
     private static final string LEGAL_ENTITY = '001';
     private static final string SCOPE_GENERAL = 'General';
@@ -23,7 +23,7 @@ public class Batch_MergeLeadsWithClientsTest
 
 
     @TestSetup
-    static void makeData(){
+    private static void makeData(){
         
         // create 1 Lead accounts
         List<Account> leadAccounts = TestDataFactory.generateAccounts(LEGAL_ENTITY, Batch_MergeLeadsWithClients.LEAD_RECORDTYPE_DEVELOPERNAME, 1);
@@ -64,13 +64,13 @@ public class Batch_MergeLeadsWithClientsTest
     }
     
     @isTest
-    static void test_PersonAccount_ok()
+    private static void test_PersonAccount_ok()
     {
         personAccount();
     }
 
     @isTest
-    static void test_PersonAccountNoEmails_ok()
+    private static void test_PersonAccountNoEmails_ok()
     {
         //Se obtienen todos los ContactPointEmail y se borran
         List<ContactPointEmail> contactPointEmailList = [SELECT Id FROM ContactPointEmail];
@@ -80,7 +80,7 @@ public class Batch_MergeLeadsWithClientsTest
     }
 
     @isTest
-    static void test_PersonAccountNoEmailsNoPhones_ok()
+    private static void test_PersonAccountNoEmailsNoPhones_ok()
     {
         //Se obtienen todos los ContactPointEmail y se borran
         List<ContactPointEmail> contactPointEmailList = [SELECT Id FROM ContactPointEmail];
@@ -93,7 +93,7 @@ public class Batch_MergeLeadsWithClientsTest
     }
 
     @isTest
-    static void test_PersonAccountNoEmailsNoPhonesNoAddress_ok()
+    private static void test_PersonAccountNoEmailsNoPhonesNoAddress_ok()
     {
         //Se obtienen todos los contactPointAdress y se borran
         List<ContactPointAddress> contactPointAddressList = [SELECT Id FROM ContactPointAddress];
@@ -149,7 +149,7 @@ public class Batch_MergeLeadsWithClientsTest
 
     
     @isTest
-    static void test_PersonAccount_ko()
+    private static void test_PersonAccount_ko()
     {
         // Get the lead account
         List<Account> leadAccounts = [SELECT Id FROM Account WHERE RecordTypeId = :LeadRecordTypeId LIMIT 1];
@@ -182,7 +182,7 @@ public class Batch_MergeLeadsWithClientsTest
 
     
     @isTest
-    static void test_Account_ok()
+    private static void test_Account_ok()
     {
         // Get the lead account
         List<Account> leadAccounts = [SELECT Id FROM Account WHERE RecordTypeId = :LeadRecordTypeId LIMIT 1];
@@ -222,7 +222,7 @@ public class Batch_MergeLeadsWithClientsTest
     }
 
     @isTest
-    static void test_MoreThanOneScope()
+    private static void test_MoreThanOneScope()
     {
         String result;
         List<Opportunity> offers = [SELECT Id, AccountId FROM Opportunity];
@@ -248,7 +248,7 @@ public class Batch_MergeLeadsWithClientsTest
      * For testing Schedule
      */
     @isTest
-    static void test_schedule()
+    private static void test_schedule()
     {
         Batch_MergeLeadsWithClients m = new Batch_MergeLeadsWithClients();
         String sch = '20 30 8 10 2 ?';
@@ -265,7 +265,7 @@ public class Batch_MergeLeadsWithClientsTest
     * @date 21/04/2023
     */
     @isTest
-    static void test_getAccountFieldsToMergeForEachType()
+    private static void test_getAccountFieldsToMergeForEachType()
     {
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
 
@@ -284,7 +284,7 @@ public class Batch_MergeLeadsWithClientsTest
     * @date 21/04/2023
     */
     @isTest
-    static void test_ifNotPersonAccountConvertLeadAccountAndUpdateContacts()
+    private static void test_ifNotPersonAccountConvertLeadAccountAndUpdateContacts()
     {
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
 
@@ -317,7 +317,7 @@ public class Batch_MergeLeadsWithClientsTest
     * @date 21/04/2023
     */
     @isTest
-    static void test_updateContactPoints()
+    private static void test_updateContactPoints()
     {
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
 
@@ -357,7 +357,7 @@ public class Batch_MergeLeadsWithClientsTest
     * @date 21/04/2023
     */
     @isTest
-    static void test_mergeAllFieldsFromAccountToLeadAccount()
+    private static void test_mergeAllFieldsFromAccountToLeadAccount()
     {
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
 
@@ -385,7 +385,7 @@ public class Batch_MergeLeadsWithClientsTest
     * @date 21/04/2023
     */
     @isTest
-    static void test_getQueryAccountFromOfferAccount()
+    private static void test_getQueryAccountFromOfferAccount()
     {
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
 
@@ -406,7 +406,7 @@ public class Batch_MergeLeadsWithClientsTest
     * @date 21/04/2023
     */
     @isTest
-    static void test_iflistLeadAccountsNotEmptyMergeAccount()
+    private static void test_iflistLeadAccountsNotEmptyMergeAccount()
     {
         Batch_MergeLeadsWithClients batch = new Batch_MergeLeadsWithClients();
 

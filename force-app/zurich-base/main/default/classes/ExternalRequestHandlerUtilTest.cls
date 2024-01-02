@@ -6,13 +6,13 @@
  * @last modified by  : aberuete
 **/
 @isTest
-private class ExternalRequestHandlerUtilTest 
+private with sharing class ExternalRequestHandlerUtilTest 
 {
     private static final Integer NUM_ER_FORM_INC = 5;
     private static final Integer NUM_ER_NATURAL_ACCOUNT = 5;
 
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
@@ -32,7 +32,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_prepareExternalRequestToProcess()
+    private static void test_prepareExternalRequestToProcess()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -62,7 +62,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_persists_upsert_MiZurich_OK()
+    private static void test_persists_upsert_MiZurich_OK()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -94,7 +94,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_persists_upsert_INFO_OK()
+    private static void test_persists_upsert_INFO_OK()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -125,7 +125,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_persists_delete_OK()
+    private static void test_persists_delete_OK()
     {
         Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
 
@@ -180,7 +180,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_manageResult_OK()
+    private static void test_manageResult_OK()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -229,7 +229,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_manageResult_ERROR()
+    private static void test_manageResult_ERROR()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -275,7 +275,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_setExternalRequest()
+    private static void test_setExternalRequest()
     {
         ExternalRequestHandlerUtil.externalRequestResultList = new List<ExternalRequest__c>();
 
@@ -310,7 +310,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_fillEntitiesByPriorityMap()
+    private static void test_fillEntitiesByPriorityMap()
     {
         ExternalRequestHandlerUtil.entitiesByPrirority = new Map<Decimal, String>();
         ExternalRequestHandlerUtil.entityIndexes = new List<Decimal>();
@@ -330,7 +330,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_setERIndex()
+    private static void test_setERIndex()
     {
         ExternalRequestHandlerUtil.entitiesByPrirority = new Map<Decimal, String>();
         ExternalRequestHandlerUtil.entityIndexes = new List<Decimal>();
@@ -354,7 +354,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_fillMapRobotHegeoFieldsMapping()
+    private static void test_fillMapRobotHegeoFieldsMapping()
     {
         ExternalRequestHandlerUtil.mapRobotHegeoFieldsMapping = new Map<String, Map<String, Map<String,String>>> ();
 
@@ -372,7 +372,7 @@ private class ExternalRequestHandlerUtilTest
      * @date 17/05/2023
      */
     @isTest
-    static void test_fillTypificationIntoCase()
+    private static void test_fillTypificationIntoCase()
     {
         Case caseRecord = new Case ();
         ExternalRequestHandlerUtil.mapRobotHegeoFieldsMapping = new Map<String, Map<String, Map<String,String>>> ();

@@ -7,10 +7,10 @@
  * @update nts (agonzalezisasi) - 27/oct/2020 - Include Multi-Partner logic and some corrections
  */
 @isTest
-public class Test_Batch_ResponseExternalRequest
+private with sharing class Test_Batch_ResponseExternalRequest
 {
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         // Es nesecesario indicar que el standard pricebook está activo para que el procesamiento no falle
         Pricebook2 standardPricebook = new Pricebook2(
@@ -21,7 +21,7 @@ public class Test_Batch_ResponseExternalRequest
     }
 
     @isTest
-    static void testBatch()
+    private static void testBatch()
     {
         List<ExternalRequest__c> ers = new List<ExternalRequest__c>();
 
@@ -96,7 +96,7 @@ public class Test_Batch_ResponseExternalRequest
      * @change: nts (agonzalezisasi) - 11/dic/2020 - Include response error log 
      */
     @isTest
-    static void testBatch_nok()
+    private static void testBatch_nok()
     {
         ExternalRequest__c er = new ExternalRequest__c(
             Timestamp__c = DateTime.now(),
@@ -133,7 +133,7 @@ public class Test_Batch_ResponseExternalRequest
      * For testing Schedule
      */
     @isTest
-    static void testBatch_schedule()
+    private static void testBatch_schedule()
     {
         Batch_ResponseExternalRequest m = new Batch_ResponseExternalRequest();
         String sch = '20 30 8 10 2 ?';

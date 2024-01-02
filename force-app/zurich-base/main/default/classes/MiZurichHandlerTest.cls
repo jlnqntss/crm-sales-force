@@ -6,7 +6,7 @@
  * @last modified by  : aberuete
 **/
 @isTest
-private class MiZurichHandlerTest 
+private with sharing class MiZurichHandlerTest 
 {
     private static final Integer NUM_ER_FORM_INC = 5;
     private static final String MESSAGE_CAN_NOT_REGISTER = 'No puedo registrarme';
@@ -16,7 +16,7 @@ private class MiZurichHandlerTest
     private static final String LASTNAME_CASE = 'Ortega Carrasco';
 
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
@@ -33,7 +33,7 @@ private class MiZurichHandlerTest
      * @date 15/05/2023
      */
     @isTest
-    static void test_prepare()
+    private static void test_prepare()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -69,7 +69,7 @@ private class MiZurichHandlerTest
      * @date 15/05/2023
      */
     @isTest
-    static void test_process_upsert_OK()
+    private static void test_process_upsert_OK()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -96,7 +96,7 @@ private class MiZurichHandlerTest
      * @date 15/05/2023
      */
     @isTest
-    static void test_process_ERROR_NoEntity()
+    private static void test_process_ERROR_NoEntity()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -131,7 +131,7 @@ private class MiZurichHandlerTest
      * @date 15/05/2023
      */
     @isTest
-    static void test_process_ERROR_NoPayload()
+    private static void test_process_ERROR_NoPayload()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -166,7 +166,7 @@ private class MiZurichHandlerTest
      * @date 15/05/2023
      */
     @isTest
-    static void test_persists_upsert_OK()
+    private static void test_persists_upsert_OK()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -197,7 +197,7 @@ private class MiZurichHandlerTest
      * @date 15/05/2023
      */
     @isTest
-    static void test_manageResult_OK()
+    private static void test_manageResult_OK()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -246,7 +246,7 @@ private class MiZurichHandlerTest
      * @date 15/05/2023
      */
     @isTest
-    static void test_manageResult_ERROR()
+    private static void test_manageResult_ERROR()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -292,7 +292,7 @@ private class MiZurichHandlerTest
      * @date 22/05/2023
      */
     @isTest
-    static void test_processFormToCase()
+    private static void test_processFormToCase()
     {
         Transformer transformer = new Transformer(MiZurichHandler.HANDLER_ORIGIN);
 
@@ -339,7 +339,7 @@ private class MiZurichHandlerTest
      * @date 22/05/2023
      */
     @isTest
-    static void test_getDescription()
+    private static void test_getDescription()
     {
         Map<String, Object> recordValuesMap = new Map<String, Object> 
         {
