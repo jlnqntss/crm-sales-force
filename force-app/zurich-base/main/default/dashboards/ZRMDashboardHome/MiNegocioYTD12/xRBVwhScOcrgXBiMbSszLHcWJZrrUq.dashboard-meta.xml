@@ -77,7 +77,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>KPI__c.SegmentoCliente__c</groupingColumn>
+                <groupingColumn>KPI__c.EstructuraDetalle__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
@@ -86,7 +86,7 @@
                 </groupingSortProperties>
                 <header>PN</header>
                 <legendPosition>Right</legendPosition>
-                <maxValuesDisplayed>6</maxValuesDisplayed>
+                <maxValuesDisplayed>4</maxValuesDisplayed>
                 <report>ZRMKPIS/Mi_Negocio_YTD_12_mVF</report>
                 <showPercentage>false</showPercentage>
                 <showTotal>true</showTotal>
@@ -312,33 +312,31 @@
                     <axisBinding>y</axisBinding>
                     <column>RowCount</column>
                 </chartSummary>
-                <componentType>Donut</componentType>
+                <componentType>Bar</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>Policy__c.ProductBranch__c</groupingColumn>
+                <groupingColumn>Policy__c$ProductBranch__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Distribución Cartera - Ramo</header>
-                <legendPosition>Right</legendPosition>
-                <maxValuesDisplayed>6</maxValuesDisplayed>
-                <report>ZRMKPIS/Distribucin_Cartera_Ramo_zOB</report>
+                <header>Distribución Cartera - Ramo YTD</header>
+                <legendPosition>Bottom</legendPosition>
+                <report>ZRMKPIS/Distribucin_Cartera_Ramo_Mes_HXN</report>
                 <showPercentage>false</showPercentage>
-                <showTotal>true</showTotal>
+                <showPicturesOnCharts>false</showPicturesOnCharts>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
-                <title>YTD</title>
                 <useReportChart>false</useReportChart>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
-            <rowSpan>12</rowSpan>
+            <rowSpan>8</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -523,7 +521,7 @@
     </dashboardGridLayout>
     <dashboardType>LoggedInUser</dashboardType>
     <isGridLayout>true</isGridLayout>
-    <runningUser>adminklinc@zurich-es.com</runningUser>
+    <runningUser>fernando.palomo@zurich.com</runningUser>
     <textColor>#000000</textColor>
     <title>Mi Negocio YTD (1/2)</title>
     <titleColor>#000000</titleColor>
