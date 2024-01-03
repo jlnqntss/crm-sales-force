@@ -1,11 +1,16 @@
 // Bare module imports
 import { LightningElement, api, track, wire } from "lwc";
 import { publish, MessageContext } from "lightning/messageService";
+import { getFieldValue, getRecord } from "lightning/uiRecordApi";
 
 // "@salesforce/*" imports grouped by type
 import getCampaigns from "@salesforce/apex/CampaignZRMCustomPageController.getCampaigns";
 
+import USER_ACCOUNT_ID from "@salesforce/schema/User.Contact.AccountId";
+
 import INTERMEDIARY_CAMPAIGN_MEMBER_CHANNEL from "@salesforce/messageChannel/IntermediaryCampaignMembers__c";
+
+import userId from "@salesforce/user/Id";
 
 // The rest of the relative imports
 import labels from "./labels";
@@ -36,9 +41,11 @@ export default class IntermediaryCampaignList extends LightningElement {
   // #endregion
 
   // #region Other properties
+  userId = userId;
   labels = labels;
   comboboxStatusOptions = comboboxStatusOptions;
   comboboxValue = comboboxActiveValue;
+  accountId;
 
   get campaigns() {
     return this.campaignsData[this.comboboxValue];
@@ -103,8 +110,17 @@ export default class IntermediaryCampaignList extends LightningElement {
   // #endregion
 
   // #region Wire functions
+  @wire(getRecord, {
+    recordId: "$userId",
+    fields: [USER_ACCOUNT_ID]
+  })
+  wiredUser(result) {
+    if (result.data) {
+      this.accountId = getFieldValue(result.data, USER_ACCOUNT_ID);
+    }
+  }
 
-  @wire(getCampaigns)
+  @wire(getCampaigns, { intermediaryId: "$accountId" })
   wiredCampaigns({ data, error }) {
     if (data) {
       this.campaignsData = {

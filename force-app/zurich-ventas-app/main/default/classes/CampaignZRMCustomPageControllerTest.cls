@@ -3,19 +3,44 @@
  *                      de la clase 'CampaignZRMCustomPageController'
  *
  * @author            : amiranda
- * @date              : 30-10-2023
- * @last modified on  : 30-10-2023
+ * @date              : 03-01-2024
+ * @last modified on  : 03-01-2024
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
  * 1.0   30-10-2023   amiranda   Initial Version
  **/
 @isTest
-public with sharing class CampaignZRMCustomPageControllerTest
+private with sharing class CampaignZRMCustomPageControllerTest
 {
     @TestSetup
-    static void setup()
+    private static void setup()
     {
+        // Se crea una cuenta de tipo Mediador para preparar el usuario de la comunidad ZRM
+        List<Account> intermediaries = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary', 1);
+        insert intermediaries;
+
+        // Se crea el contacto relacionado con la cuenta anterior, necesario para el usuario de la comunidad ZRM
+        List<Contact> intermediaryContacts = TestDataFactory.generateContactsFromAccounts(intermediaries,
+                                                                                          ContactsSelector.RT_NAME_CONTACT,
+                                                                                          1);
+        insert intermediaryContacts;
+
+        // Obtener el rol para el usuario de la comunidad
+        UserRole portalRole = [SELECT Id FROM UserRole WHERE PortalType = 'None' LIMIT 1];
+
+        // Se crea el usuario de la comunidad
+        Id portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+        List<User> users = TestDataFactory.generateUsersByProfile(portalProfile, 1);
+
+        users.get(0).FirstName = 'Agente';
+        users.get(0).LastName = 'Mediador';
+        users.get(0).Alias = 'amedtest';
+        users.get(0).UserRole = portalRole;
+        users.get(0).ContactId = intermediaryContacts.get(0).Id;
+
+        insert users;
+
         // Se crea el custom setting que indica el usuario genérico
         Cross_Selling__c ventaCruzada = new Cross_Selling__c();
         ventaCruzada.ContactCenterUser__c = 'generico';
@@ -36,10 +61,14 @@ public with sharing class CampaignZRMCustomPageControllerTest
 
         // Se crean las cuentas personales para generar los miembros de campaña
         List<Account> accountsToInsert = TestDataFactory.generateAccounts('001', 'Customer', 10);
+        for (Account accountToInsert : accountsToInsert)
+        {
+            accountToInsert.IntermediaryVisibilityAcc__c = intermediaries.get(0).Id;
+        }
         insert accountsToInsert;
 
         // Se recuperan las cuentas personales generadas para recuperar el campo 'PersonContactId'
-        List<Account> personAccounts = [SELECT Id, PersonContactId FROM Account];
+        List<Account> personAccounts = [SELECT Id, PersonContactId FROM Account WHERE IsPersonAccount = true];
         Assert.areEqual(accountsToInsert.size(), personAccounts.size(), 'El número de cuentas personales no coincide.');
 
         // Se crean los miembros de campaña asociados a las campañas
@@ -57,10 +86,11 @@ public with sharing class CampaignZRMCustomPageControllerTest
      * @date 30-10-2023
      **/
     @IsTest
-    static void getCampaigns_assignedCustomers()
+    private static void getCampaigns_assignedCustomers()
     {
         Integer numberCampaignMemberToRetrieve = 5;
         String gestionMediadorStatus = 'Gestión Mediador';
+        User intermediary = [SELECT Contact.AccountId FROM User WHERE Alias = 'amedtest' LIMIT 1];
 
         /* Se recuperan las campañas a las que se les van a añadir nuevos miembros
          * de campaña y un número determinado de sus miembros de campaña a los que
@@ -92,7 +122,7 @@ public with sharing class CampaignZRMCustomPageControllerTest
         update campaignMembersToUpdate;
 
         Test.startTest();
-        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns();
+        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns(intermediary.Contact.AccountId);
         Test.stopTest();
 
         Assert.isFalse(campaignsToInsertNewStatus.isEmpty(), 'La lista de campañas no debería estar vacía.');
@@ -120,10 +150,11 @@ public with sharing class CampaignZRMCustomPageControllerTest
      * @date 30-10-2023
      **/
     @IsTest
-    static void getCampaigns_assignedCC()
+    private static void getCampaigns_assignedCC()
     {
         Integer numberCampaignMemberToRetrieve = 5;
-        List<String> gestionCCStatus = new List<String> {'Gestión CC', 'Pdtes. Revisión Mediador'};
+        List<String> gestionCCStatus = new List<String> {'Gestión CC', 'Pdte. Revisión Mediador'};
+        User intermediary = [SELECT Contact.AccountId FROM User WHERE Alias = 'amedtest' LIMIT 1];
 
         /* Se recuperan las campañas a las que se les van a añadir nuevos miembros
          * de campaña y un número determinado de sus miembros de campaña a los que
@@ -156,7 +187,7 @@ public with sharing class CampaignZRMCustomPageControllerTest
         update campaignMembersToUpdate;
 
         Test.startTest();
-        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns();
+        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns(intermediary.Contact.AccountId);
         Test.stopTest();
 
         Assert.isFalse(campaignsToInsertNewStatus.isEmpty(), 'La lista de campañas no debería estar vacía.');
@@ -179,14 +210,14 @@ public with sharing class CampaignZRMCustomPageControllerTest
 
     /**
      * @description Método de test que comprueba que el método 'getCampaignMembers' devuelve
-     * la información correspondiente a los miembros de campaña relacionados con una campaña completa, 
+     * la información correspondiente a los miembros de campaña relacionados con una campaña completa,
      * ampliada con los datos relativos a la oferta asociada
      *
      * @author arcortazar
      * @date 20-11-2023
      **/
     @isTest
-    static void getCampaignMembers_ok()
+    private static void getCampaignMembers_ok()
     {
         Campaign campanya = [SELECT id FROM Campaign LIMIT 1];
         List<CampaignMember> miembros = [SELECT id, Contact.AccountId FROM CampaignMember WHERE CampaignId = :campanya.id];
@@ -226,8 +257,8 @@ public with sharing class CampaignZRMCustomPageControllerTest
      * @author arcortazar
      * @date 20-11-2023
      **/
-    @isTest 
-    static void getCampaignMembers_ko()
+    @isTest
+    private static void getCampaignMembers_ko()
     {
         List<CampaignZRMCustomPageController.CampaignMemberData> retorno = new List<CampaignZRMCustomPageController.CampaignMemberData>();
 
