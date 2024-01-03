@@ -322,7 +322,6 @@ export default class ObjectivesView extends LightningElement {
 
   // variables tabla
   errors;
-  columns = this.columns;
   rowOffset = 0;
   draftValues = [];
   cloneValues = [];
@@ -639,6 +638,8 @@ export default class ObjectivesView extends LightningElement {
       case "% Sin Total":
         this.recordSelected.Indicator__c = "Ratio_Claim";
         break;
+      default:
+      // do nothing
     }
   }
 
@@ -671,7 +672,7 @@ export default class ObjectivesView extends LightningElement {
 
   /************************************Selector ****************************************************************************/
   @wire(getSelectorYearList)
-  comboboxYearOptions({ error, data }) 
+  comboboxYearOptions({ data })  
   {
     if (data) 
     {
@@ -688,7 +689,6 @@ export default class ObjectivesView extends LightningElement {
         }
         this.selectedYear = new Date().getFullYear();
       }
-    } else if (error) {
     }
   }
 
