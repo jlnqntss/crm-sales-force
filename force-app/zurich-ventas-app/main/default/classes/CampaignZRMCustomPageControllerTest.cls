@@ -140,6 +140,8 @@ private with sharing class CampaignZRMCustomPageControllerTest
         }
     }
 
+    // TODO Crear test unitarios para los métodos 'updateOfferAndCampaignMember' y 'cloneOffer'
+
     /**
      * @description Método de test que comprueba que el método 'getCampaigns' devuelve
      * el número de clientes asignados al CC de una campaña es correcto. Se considera como cliente
