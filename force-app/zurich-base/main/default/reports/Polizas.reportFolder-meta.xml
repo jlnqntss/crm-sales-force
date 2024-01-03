@@ -25,5 +25,5 @@
         <sharedTo>Ventas_Supervisor</sharedTo>
         <sharedToType>Group</sharedToType>
     </folderShares>
-    <name>Pólizas</name>
+    <name>ZRM Pólizas</name>
 </ReportFolder>
