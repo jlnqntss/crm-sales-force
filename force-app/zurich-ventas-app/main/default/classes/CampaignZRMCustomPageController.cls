@@ -3,8 +3,8 @@
  * con la página custom desarrollada para la ficha de campañas en la comunidad ZRM
  *
  * @author            : amiranda
- * @date              : 22-12-2023
- * @last modified on  : 22-12-2023
+ * @date              : 28-12-2023
+ * @last modified on  : 28-12-2023
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -14,7 +14,7 @@ public with sharing class CampaignZRMCustomPageController
 {
     private static final String CLASS_NAME = 'CampaignZRMCustomPageConroller';
     private static final Set<String> ASSIGNED_CUSTOMER_STATUS = new Set<String> {'Gestión Mediador'};
-    private static final Set<String> ASSIGNED_CC_STATUS = new Set<String> {'Gestión CC', 'Pdtes. Revisión Mediador'};
+    private static final Set<String> ASSIGNED_CC_STATUS = new Set<String> {'Gestión CC', 'Pdte. Revisión Mediador'};
 
     /**
      * @description Método que retorna las campañas con los datos a visualizar
@@ -23,17 +23,20 @@ public with sharing class CampaignZRMCustomPageController
      *
      * @author amiranda
      * @date 30-10-2023
+     * @param intermediaryId Id de la cuenta de tipo 'Intermediario'
      * @return List<CampaignData> Lista de campañas
      * @where LWC IntermediaryCampaignList
+     * 
+     * @change amiranda 28/12/2023 Se añade el parámetro 'intermediaryId' al método.
      **/
     @AuraEnabled(cacheable=true)
-    public static List<CampaignData> getCampaigns()
+    public static List<CampaignData> getCampaigns(Id intermediaryId)
     {
         List<CampaignData> campaigns = new List<CampaignData>();
 
         try
         {
-            List<Campaign> retrievedCampaigns = new CampaignsSelector().selectCampaigns();
+            List<Campaign> retrievedCampaigns = new CampaignsSelector().selectCampaigns(intermediaryId);
 
             if ( !retrievedCampaigns.isEmpty() )
             {
