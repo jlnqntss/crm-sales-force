@@ -1,59 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
-        <field>FK_NAME</field>
+        <field>Policy__c$Name</field>
     </columns>
     <columns>
-        <field>CUST_NAME</field>
+        <field>Policy__c$ProductId__c</field>
     </columns>
     <columns>
-        <field>Policy__c.ProductId__c</field>
+        <field>Policy__c$OpportunityName__c</field>
     </columns>
     <columns>
-        <field>Policy__c.OpportunityName__c</field>
+        <field>Policy__c$InfoCreatedDate__c</field>
     </columns>
     <columns>
-        <field>Policy__c.InfoCreatedDate__c</field>
+        <field>Policy__c$StartDate__c</field>
     </columns>
     <columns>
-        <field>Policy__c.StartDate__c</field>
-    </columns>
-    <columns>
-        <field>Policy__c.EndDate__c</field>
+        <field>Policy__c$EndDate__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Policy__c.NetPremium__c</field>
+        <field>Policy__c$NetPremium__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Policy__c.Tax__c</field>
+        <field>Policy__c$Tax__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Policy__c.Bonus__c</field>
+        <field>Policy__c$Bonus__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Policy__c.SurhargeDiscount__c</field>
+        <field>Policy__c$SurhargeDiscount__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Policy__c.TotalPremium__c</field>
+        <field>Policy__c$TotalPremium__c</field>
     </columns>
     <columns>
-        <field>Policy__c.Intermediary_Code__c</field>
+        <field>Policy__c$Intermediary_Code__c</field>
     </columns>
-    <description>Distribución de las pólizas por tipo de ramo (auto, hogar,..)</description>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Policy__c.ProductBranch__c</field>
+        <field>Policy__c$ProductBranch__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>FK_ACC_RECORDTYPE</field>
+        <field>Policy__c$PolicyHolder__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Composición de cartera por ramo</name>
@@ -61,13 +57,13 @@
         <name>co</name>
         <value>1</value>
     </params>
-    <reportType>CustomEntity$Policy__c@Policy__c.PolicyHolder__c</reportType>
+    <reportType>Polizas_Productos_y_Campa_as__c</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
-        <dateColumn>Policy__c.MovementStartDate__c</dateColumn>
+        <dateColumn>Policy__c$CreatedDate</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
-        <field>CUST_NAME</field>
+        <field>Policy__c$Name</field>
     </columns>
     <columns>
-        <field>CUST_OWNER_NAME</field>
+        <field>Policy__c$PolicyHolder__c</field>
     </columns>
     <columns>
-        <field>Policy__c.PolicyStatus__c</field>
+        <field>Policy__c$PolicyStatus__c</field>
     </columns>
     <columns>
-        <field>CUST_CREATED_DATE</field>
+        <field>Policy__c$CreatedDate</field>
     </columns>
     <columns>
-        <field>Policy__c.MovementStartDate__c</field>
+        <field>Policy__c$MovementStartDate__c</field>
     </columns>
     <columns>
-        <field>Policy__c.EndDate__c</field>
+        <field>Policy__c$EndDate__c</field>
     </columns>
     <filter>
         <criteriaItems>
-            <column>CUST_CREATED_DATE</column>
+            <column>Policy__c$CreatedDate</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>THIS_MONTH</value>
         </criteriaItems>
-        <language>es</language>
+        <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Policy__c.ProductBranch__c</field>
+        <field>Policy__c$ProductBranch__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Distribución Cartera - Ramo (Mes)</name>
@@ -39,13 +39,13 @@
         <name>co</name>
         <value>1</value>
     </params>
-    <reportType>CustomEntity$Policy__c</reportType>
+    <reportType>Polizas_Productos_y_Campa_as__c</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
-        <dateColumn>Policy__c.MovementStartDate__c</dateColumn>
+        <dateColumn>Policy__c$CreatedDate</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

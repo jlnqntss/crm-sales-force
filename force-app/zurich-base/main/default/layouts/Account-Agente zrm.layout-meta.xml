@@ -127,6 +127,25 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
+        <label>KPIs</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>NumNoLifePolicy__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>NoLifePremium__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
         <label>Información del sistema</label>
         <layoutColumns>
             <layoutItems>
@@ -269,7 +288,7 @@
         <relatedList>Scope__c.AccountId__c</relatedList>
         <sortField>NAME</sortField>
         <sortOrder>Asc</sortOrder>
-    </relatedLists>    
+    </relatedLists>
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
     </relatedLists>
