@@ -9192,11 +9192,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Policy__c.PolicyHolder__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Policy__c.PolicyLink__c</field>
         <readable>true</readable>
     </fieldPermissions>

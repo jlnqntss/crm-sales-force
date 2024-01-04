@@ -163,10 +163,8 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
     public static Opportunity manageConstrainsKey (Map<String,Account> assign, Account accountRecord, Opportunity offerToInsertUpdate, String phone, String quiereLlamada, String intermediary)
     {
         Opportunity offerToUpdate = offerToInsertUpdate;
-        System.debug('++++ Antes del if');
         if ( quiereLlamada == 'S' && intermediary == 'CONTACT_CENTER')
         {
-            System.debug('++++ Entra del if');
             Lead_Offers__c leadOffersCS = Lead_Offers__c.getInstance();
             manageCallMeBack(accountRecord, offerToInsertUpdate, leadOffersCS, phone);
 
@@ -216,9 +214,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         List<CallMeBackUtil.CallMeBackFull> lstCallMeBack = new List<CallMeBackUtil.CallMeBackFull>();
         lstCallMeBack.add(fullObj);
 
-        System.debug('++++ insertamos CMB');
         CallMeBackUtil.insertCallMeBack(lstCallMeBack);
-        System.debug('++++ insertada CMB');
     }
 
     /**
@@ -237,6 +233,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
             List<Account> listAcc = accSelector.findByINFOIntermediaryCode(new List<String> {(String) offerToInsertUpdate.IntermediaryCode__c});
             policyToInsert.OpportunityName__c = offerToInsertUpdate.Id;
             policyToInsert.InfoQuoteNumber__c = offerToInsertUpdate.InfoQuoteNumber__c;
+            policyToInsert.PolicyHolder__c = offerToInsertUpdate.AccountId;
             if (listAcc.size() > 0)
             {
                 policyToInsert.IntermediaryId__c = listAcc.get(0).Id;
