@@ -1,8 +1,8 @@
 @isTest
-private class OpportunityUtilTest
+private with sharing class OpportunityUtilTest
 {
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
         insert accounts;
@@ -15,7 +15,7 @@ private class OpportunityUtilTest
      * @date 09/12/2020
      */
     @isTest
-    static void test_generateScope()
+    private static void test_generateScope()
     {
         List<Account> accounts = [SELECT Name FROM Account];
 
@@ -49,7 +49,7 @@ private class OpportunityUtilTest
      * @date 10/03/2022
      */
     @isTest
-    static void test_isValidStageName_OK() 
+    private static void test_isValidStageName_OK() 
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -71,7 +71,7 @@ private class OpportunityUtilTest
      * @date 10/03/2022
      */
     @isTest
-    static void test_isValidStageName_NOK() 
+    private static void test_isValidStageName_NOK() 
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -93,7 +93,7 @@ private class OpportunityUtilTest
      * @date 10/03/2022
      */
     @isTest
-    static void test_skipStageNameValidation_byProfile_OK() 
+    private static void test_skipStageNameValidation_byProfile_OK() 
     {
 
         User u = [Select Id FROM User WHERE Name like 'Integrator'];
@@ -121,7 +121,7 @@ private class OpportunityUtilTest
      * @date 10/03/2022
      */
     @isTest
-    static void test_skipStageNameValidation_byCustomPermisson_OK() 
+    private static void test_skipStageNameValidation_byCustomPermisson_OK() 
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -150,7 +150,7 @@ private class OpportunityUtilTest
      * @date 10/03/2022
      */
     @isTest
-    static void test_skipStageNameValidation_byHasBeenReassigned_OK() 
+    private static void test_skipStageNameValidation_byHasBeenReassigned_OK() 
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -180,7 +180,7 @@ private class OpportunityUtilTest
      * @date 10/03/2022
      */
     @isTest
-    static void test_skipStageNameValidation_NOK() 
+    private static void test_skipStageNameValidation_NOK() 
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -210,7 +210,7 @@ private class OpportunityUtilTest
      * 
      */
     @isTest
-    static void test_runAsSysAdmin_OK() 
+    private static void test_runAsSysAdmin_OK() 
     {
         // Setup del test
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
@@ -241,7 +241,7 @@ private class OpportunityUtilTest
      * 
      */
     @isTest
-    static void test_runAsSupervisor_OK() 
+    private static void test_runAsSupervisor_OK() 
     {
         // Obtenemos los diferentes usuarios: supervisor y no supervisor
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
@@ -293,7 +293,7 @@ private class OpportunityUtilTest
      * 
      */
     @isTest
-    static void test_runNotAsSupervisor_OK() 
+    private static void test_runNotAsSupervisor_OK() 
     {
        // Obtenemos los diferentes usuarios: supervisor y no supervisor
        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
@@ -343,7 +343,7 @@ private class OpportunityUtilTest
      * 
      */
     @isTest
-    static void test_runNotAsSupervisor_ClosedWon_NOK() 
+    private static void test_runNotAsSupervisor_ClosedWon_NOK() 
     {
         // Obtenemos los diferentes usuarios: supervisor y no supervisor
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
@@ -395,7 +395,7 @@ private class OpportunityUtilTest
      * @date 09/03/2022
      */
     @isTest
-    static void test_runAsSupervisor_ClosedWon_OK() 
+    private static void test_runAsSupervisor_ClosedWon_OK() 
     {
        // Obtenemos los diferentes usuarios: supervisor y no supervisor
        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
@@ -446,7 +446,7 @@ private class OpportunityUtilTest
      * @date 04/02/2021
      */
     @isTest
-    static void test_detectOpportunityAccountChange_ok()
+    private static void test_detectOpportunityAccountChange_ok()
     {
         // Get 10 accounts
         List<Account> accounts = [SELECT Name FROM Account LIMIT 10];
@@ -479,7 +479,7 @@ private class OpportunityUtilTest
      * @date 25/02/2021
      */
     @isTest
-    static void test_setStageNameOpen_ok()
+    private static void test_setStageNameOpen_ok()
     {
         List<Account> accounts = [SELECT Name FROM Account];
         List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 2);
@@ -498,6 +498,33 @@ private class OpportunityUtilTest
         for(Opportunity opty : optysInserted)
         {
             System.assertEquals('Open', opty.StageName, 'Se debería haber cambiado el Stage de null a Open');
+        }
+    }
+
+    /**
+     * Comprueba si una oferta se inserta con Stage a null y es de ZRM, se cambia a Quoted
+     * @date 25/02/2021
+     */
+    @isTest
+    static void test_setStageNameQuoted_ok()
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+        List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 2);
+        for(Integer i = 0; i < optys.size(); i++)
+        {
+            optys[i].InfoQuoteNumber__c = String.valueOf(i);
+            optys[i].BusinessCode__c = '3200012491';
+        }
+
+        Test.startTest();
+        insert optys;
+        Test.stopTest();
+
+        List<Opportunity> optysInserted = [SELECT Id, StageName FROM Opportunity];
+
+        for(Opportunity opty : optysInserted)
+        {
+            System.assertEquals('Quoted', opty.StageName, 'Se debería haber cambiado el Stage de null a Quoted');
         }
     }
 
@@ -532,7 +559,7 @@ private class OpportunityUtilTest
      * @date 25/02/2021
      */
     @isTest
-    static void test_setStageNameOpen_ko()
+    private static void test_setStageNameOpen_ko()
     {
         List<Account> accounts = [SELECT Name FROM Account];
         List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Quoted', System.today().addDays(10), 2);
@@ -558,7 +585,7 @@ private class OpportunityUtilTest
      * @date 25/02/2021
      */
     @isTest
-    static void test_preventNullUpdates_ok()
+    private static void test_preventNullUpdates_ok()
     {
         List<Account> accounts = [SELECT Name FROM Account];
         List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Quoted', System.today().addDays(10), 2);
@@ -590,7 +617,7 @@ private class OpportunityUtilTest
      * @date 25/02/2021
      */
     @isTest
-    static void test_preventNullUpdates_ko()
+    private static void test_preventNullUpdates_ko()
     {
         List<Account> accounts = [SELECT Name FROM Account];
         List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Open', System.today().addDays(10), 2);
@@ -624,7 +651,7 @@ private class OpportunityUtilTest
      * @date 20/12/2022
      */
     @isTest
-    static void test_validateChangeOwner_KO() 
+    private static void test_validateChangeOwner_KO() 
     {
         Map<Id, Opportunity> oldOppsMap = new Map<Id, Opportunity>();
         List<Opportunity> newOppsList = new List<Opportunity>();
@@ -673,7 +700,7 @@ private class OpportunityUtilTest
      * @date 20/12/2022
      */
     @isTest
-    static void test_validateChangeOwner_OK() 
+    private static void test_validateChangeOwner_OK() 
     {
         Map<Id, Opportunity> oldOppsMap = new Map<Id, Opportunity>();
         List<Opportunity> newOppsList = new List<Opportunity>();

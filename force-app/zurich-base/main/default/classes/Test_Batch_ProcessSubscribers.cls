@@ -1,6 +1,6 @@
 @isTest
 
-public class Test_Batch_ProcessSubscribers
+private with sharing class Test_Batch_ProcessSubscribers
 {
 
     /**
@@ -9,7 +9,7 @@ public class Test_Batch_ProcessSubscribers
      * @date 17/11/2020
      */
     @isTest
-    static void testBatch()
+    private static void testBatch()
     {
 
         Lead subscriber = new Lead (
@@ -39,7 +39,7 @@ public class Test_Batch_ProcessSubscribers
      * @date 17/11/2020
      */
     @isTest
-    static void testBatch_schedule()
+    private static void testBatch_schedule()
     {
         Batch_ProcessSubscribers m = new Batch_ProcessSubscribers();
         String sch = '20 30 8 10 2 ?';

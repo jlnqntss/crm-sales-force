@@ -1,5 +1,5 @@
 @isTest(SeeAllData=false)
-public class BusinessInsuranceUtilTest
+private class BusinessInsuranceUtilTest
 {
     /**
      * Test que comprueba que si la fecha enviada está dentro
@@ -9,7 +9,7 @@ public class BusinessInsuranceUtilTest
      * @date 13/01/2020
      */
     @isTest
-    static void test_getPreferredContactDatetime_within_ok()
+    private static void test_getPreferredContactDatetime_within_ok()
     {
         List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name =: BusinessInsuranceUtil.ZE_BUSINESS_HOURS];
         System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
@@ -33,7 +33,7 @@ public class BusinessInsuranceUtilTest
      * @date 13/01/2020
      */
     @isTest
-    static void test_getPreferredContactDatetime_not_within_ok()
+    private static void test_getPreferredContactDatetime_not_within_ok()
     {
         List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name =: BusinessInsuranceUtil.ZE_BUSINESS_HOURS];
         System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
@@ -61,7 +61,7 @@ public class BusinessInsuranceUtilTest
      * @date 13/01/2020
      */
     @isTest
-    static void test_getPreferredContactDatetime_null_ok()
+    private static void test_getPreferredContactDatetime_null_ok()
     {
         List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name =: BusinessInsuranceUtil.ZE_BUSINESS_HOURS];
         System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');

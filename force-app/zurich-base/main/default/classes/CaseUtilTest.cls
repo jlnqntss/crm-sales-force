@@ -6,7 +6,7 @@
  * @last modified by  : aberuete
 **/
 @isTest
-private class CaseUtilTest
+private with sharing class CaseUtilTest
 {
     static final String MESSAGE_UN_CASO_CREADO = 'Se debe de haber creado como mínimo 1 caso!';
     static final String MESSAGE_ENTITLEMENTS = 'Deberían existir entitlements, al menos el Default';
@@ -21,7 +21,7 @@ private class CaseUtilTest
     static final String EMAIL_CASE = 'exampletocontactpointemail@gmail.com.invalid';
 
     @TestSetup
-    public static void createScenario()
+    private static void createScenario()
     {
         //Importante usar el RT Customer porque es personal account y se necesita que esté relleno PersonContactId
         List<Account> createdAccounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
@@ -50,7 +50,7 @@ private class CaseUtilTest
      * un cliente a través del ContactPointEmail
      */
     @isTest
-    static void test_assignAccountAndContactFromSuppliedEmail_ok()
+    private static void test_assignAccountAndContactFromSuppliedEmail_ok()
     {
         // SOSL - Resultados de búsqueda
         List<String> emailsToSearch = new List<String>();
@@ -90,7 +90,7 @@ private class CaseUtilTest
      * ya que no se puede decidir por uno o por otro
      */
     @isTest
-    static void test_assignAccountAndContactFromSuppliedEmail_ko_MoreThanOne()
+    private static void test_assignAccountAndContactFromSuppliedEmail_ko_MoreThanOne()
     {
         //Clonar cuenta para que no se pueda decidir cual de las dos es
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //El email se llamará igual para ambas: null@nts-solutions.com
@@ -135,7 +135,7 @@ private class CaseUtilTest
      * se quede sin rellenar los datos en el caso
      */
     @isTest
-    static void test_assignAccountAndContactFromSuppliedEmail_ko_NoExists()
+    private static void test_assignAccountAndContactFromSuppliedEmail_ko_NoExists()
     {
         Test.startTest();
         //Crear caso
@@ -166,7 +166,7 @@ private class CaseUtilTest
      * @date 03/03/2021
      */
     @isTest
-    static void test_markMilestonesCompletedWhenClose_ok()
+    private static void test_markMilestonesCompletedWhenClose_ok()
     {
         Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
 
@@ -224,7 +224,7 @@ private class CaseUtilTest
      * @date 03/03/2021
      */
     @isTest
-    static void test_markMilestonesCompletedWhenClose_ko()
+    private static void test_markMilestonesCompletedWhenClose_ko()
     {
         Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
 
@@ -275,7 +275,7 @@ private class CaseUtilTest
     * @date 24/10/2022
     */
     @isTest
-    static void test_completeUSPMilestonesWhenClosedOrPending_ok()
+    private static void test_completeUSPMilestonesWhenClosedOrPending_ok()
     {
         Id rtUSPId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
 
@@ -335,7 +335,7 @@ private class CaseUtilTest
     * @date 20/10/2022
     */
     @isTest
-    static void test_relateCasesToNewAccounts_OK()
+    private static void test_relateCasesToNewAccounts_OK()
     {
         // Se establece el recordtype para que el proceso relacione los casos con esta cuenta
         Account customer = [SELECT Id, NationalId__c FROM Account LIMIT 1];
@@ -372,7 +372,7 @@ private class CaseUtilTest
     * @date 14/11/2022
     */
     @isTest
-    static void test_relateCasesToNewOffers_OK()
+    private static void test_relateCasesToNewOffers_OK()
     {
         Account cuenta = [SELECT Id, NationalId__c FROM Account LIMIT 1];
         //oferta
@@ -415,7 +415,7 @@ private class CaseUtilTest
     * @date 18/11/2022
     */
     @IsTest
-    public static void test_checkTypification_OK()
+    private static void test_checkTypification_OK()
     {
 
         Map<String, List<String>> mapaT1 = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
@@ -447,7 +447,7 @@ private class CaseUtilTest
     * @date 18/11/2022
     */
     @IsTest
-    public static void test_checkTypification_KO()
+    private static void test_checkTypification_KO()
     {
         Map<String, List<String>> mapaT1 = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
 
@@ -476,7 +476,7 @@ private class CaseUtilTest
     * @date 15/02/2023
     */
     @IsTest
-    public static void test_checkTypificationByRecordType_OK()
+    private static void test_checkTypificationByRecordType_OK()
     {
         String recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
         
@@ -494,7 +494,7 @@ private class CaseUtilTest
     * @date 15/02/2023
     */
     @IsTest
-    public static void test_checkTypificationByRecordType_KO()
+    private static void test_checkTypificationByRecordType_KO()
     {
         String recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
         
@@ -515,7 +515,7 @@ private class CaseUtilTest
     * 'Case.generateAccountRatio' no devuelve una lista ordenada.
     */
     @IsTest
-    public static void test_generateAccountRatio_OK()
+    private static void test_generateAccountRatio_OK()
     {  
         // Crear cuentas intermediarios
         List<Account> createdAccountsIntermediary = TestDataFactory.generateAccounts('001', 'Intermediary', 2);
@@ -568,7 +568,7 @@ private class CaseUtilTest
     * @date 23/03/2023
     */
     @IsTest
-    public static void test_relateCasesToPolicyOffers_OK()
+    private static void test_relateCasesToPolicyOffers_OK()
     {   //Crear cuentas intermediarios
         List<Account> createdAccounts = [SELECT Id FROM Account LIMIT 1];
         //Crear casos relacionados con los intermediarios
@@ -603,7 +603,7 @@ private class CaseUtilTest
     * @date 18/04/2023
     */
     @IsTest
-    public static void test_getCasesToUpdateContactFromEmailToCase()
+    private static void test_getCasesToUpdateContactFromEmailToCase()
     {
         // Crear datos de prueba: Caso y Contacto relacionado
         Case caso = new Case(Origin = 'Email', SuppliedEmail = 'test@test.com', LegalEntity__c = LABEL_GENERAL_INSURANCE, 
@@ -635,7 +635,7 @@ private class CaseUtilTest
     * @date 18/04/2023
     */
     @IsTest
-    public static void test_getCasesToMarkMilestonesCompletedWhenClose()
+    private static void test_getCasesToMarkMilestonesCompletedWhenClose()
     {
         // Crea datos de prueba
         Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
@@ -661,7 +661,7 @@ private class CaseUtilTest
     * @date 18/04/2023
     */
     @IsTest
-    public static void test_updatePolicyToCaseifCaseDoesNotHavePolicy()
+    private static void test_updatePolicyToCaseifCaseDoesNotHavePolicy()
     {
         AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
         Id rtId = SystemUtil.getOrderRecordTypeIdByName('PolicyGI');
@@ -710,7 +710,7 @@ private class CaseUtilTest
     * @date 18/04/2023
     */
     @IsTest
-    public static void test_updateContactToCaseByEmail()
+    private static void test_updateContactToCaseByEmail()
     {
         // Crear registros de prueba necesarios
         // Crear objeto Case
@@ -747,7 +747,7 @@ private class CaseUtilTest
     * @date 18/04/2023
     */
     @IsTest
-    public static void test_updateContactToCaseByPhone()
+    private static void test_updateContactToCaseByPhone()
     {
         // Crear registros de prueba necesarios
         // Crear objeto Case
@@ -784,7 +784,7 @@ private class CaseUtilTest
     * @date 18/04/2023
     */
     @IsTest
-    public static void test_ifCaseFromWebFranceUpdateTranslationToCase()
+    private static void test_ifCaseFromWebFranceUpdateTranslationToCase()
     {
         // Crear registros de prueba necesarios
         // Crear objeto Case
@@ -810,7 +810,7 @@ private class CaseUtilTest
     * @date 22/06/2023
     */
     @IsTest
-    public static void test_updateTranscomCase()
+    private static void test_updateTranscomCase()
     {
         List<Group> queueRetencion = new GroupSelector().findByName('Email_TWW_Retencion');
         List<Group> queueAnulacion = new GroupSelector().findByName('Email_TWW_Anulacion');
@@ -856,7 +856,7 @@ private class CaseUtilTest
      * @date 16/08/2023
      */
     @isTest
-    static void test_linkAccountAndContactToCaseByCIF()
+    private static void test_linkAccountAndContactToCaseByCIF()
     {
         Case caseRecord = new Case ();
         caseRecord.Subject = LABEL_SUBJECT_ZURICH;
@@ -883,7 +883,7 @@ private class CaseUtilTest
      * @date 22/08/2023
      */
     @isTest
-    static void test_linkAccountAndContactToCaseByEmail()
+    private static void test_linkAccountAndContactToCaseByEmail()
     {
         Case caseRecord = new Case ();
         caseRecord.Subject = LABEL_SUBJECT_ZURICH;
@@ -924,7 +924,7 @@ private class CaseUtilTest
      * @date 22/08/2023
      */
     @isTest
-    static void test_linkAccountAndContactToCaseByPhone()
+    private static void test_linkAccountAndContactToCaseByPhone()
     {
         Case caseRecord = new Case ();
         caseRecord.Subject =  LABEL_SUBJECT_ZURICH;

@@ -5,7 +5,7 @@
  * @date 03/04/2020
  */
 @isTest
-public class Test_Batch_ProcessExternalRequest
+private with sharing class Test_Batch_ProcessExternalRequest
 {
     /**
      * Metodo test que comprueba que el batch marca la request como procesada.
@@ -14,7 +14,7 @@ public class Test_Batch_ProcessExternalRequest
      * @date 03/04/2020
      */
     @isTest
-    static void testBatch()
+    private static void testBatch()
     {
         // Es nesecesario indicar que el standard pricebook está activo para que el procesamiento no falle
         Pricebook2 standardPricebook = new Pricebook2(
@@ -50,7 +50,7 @@ public class Test_Batch_ProcessExternalRequest
      * @date 28/oct/2020
      */
     @isTest
-    static void testBatch_ko()
+    private static void testBatch_ko()
     {
         ExternalRequest__c request = new ExternalRequest__c(
             Origin__c = 'IBA',
@@ -76,7 +76,7 @@ public class Test_Batch_ProcessExternalRequest
      * For testing Schedule
      */
     @isTest
-    static void testBatch_schedule()
+    private static void testBatch_schedule()
     {
         Batch_ProcessExternalRequest m = new Batch_ProcessExternalRequest();
         String sch = '20 30 8 10 2 ?';

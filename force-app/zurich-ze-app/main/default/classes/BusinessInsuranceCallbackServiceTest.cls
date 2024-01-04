@@ -1,5 +1,5 @@
 @isTest(SeeAllData=false)
-public class BusinessInsuranceCallbackServiceTest
+private class BusinessInsuranceCallbackServiceTest
 {
     static final String COMPLETE_CALLBACK = '{"name":"Carles Sans","phone":"600666000","bestTimeFrom":"2020-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z", "webIdentifier":"ACB1234"}';
     static final String NO_COMPLETE_CALLBACK = '{"name":"Carles Sans","bestTimeFrom":"2020-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z"}';
@@ -9,7 +9,7 @@ public class BusinessInsuranceCallbackServiceTest
      * Prueba a validar un Call Me Back (que tenga los campos requeridos)
      */
     @isTest
-    static void test_validateRequiredFields_ok()
+    private static void test_validateRequiredFields_ok()
     {
         BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
             COMPLETE_CALLBACK,
@@ -36,7 +36,7 @@ public class BusinessInsuranceCallbackServiceTest
      * Prueba a validar un Call Me Back (que NO tenga los campos requeridos)
      */
     @isTest
-    static void test_validateRequiredFields_ko()
+    private static void test_validateRequiredFields_ko()
     {
         BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
             NO_COMPLETE_CALLBACK,
@@ -63,7 +63,7 @@ public class BusinessInsuranceCallbackServiceTest
      * Prueba a insertar un ContactRequest, debe devolver el ID
      */
     @isTest
-    static void test_insertCallMeBack_ok()
+    private static void test_insertCallMeBack_ok()
     {
         BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
             COMPLETE_CALLBACK,
@@ -85,7 +85,7 @@ public class BusinessInsuranceCallbackServiceTest
      * petará
      */
     @isTest
-    static void test_insertCallMeBack_ko()
+    private static void test_insertCallMeBack_ko()
     {
         BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
             CALLBACK_WITH_BADTIME,
@@ -118,7 +118,7 @@ public class BusinessInsuranceCallbackServiceTest
      * @date 14/01/2020
      */
     @isTest
-    static void test_insertCallMeBack_within_businessHours_ok()
+    private static void test_insertCallMeBack_within_businessHours_ok()
     {
         BusinessInsuranceCallbackService.CallMeBack deserializedRequest = (BusinessInsuranceCallbackService.CallMeBack) JSON.deserializeStrict(
             COMPLETE_CALLBACK,
