@@ -8,6 +8,7 @@ public with sharing class GenesysCloudPatchInteractionAction
         )
     public static List<List<String> > execute (List<List<String> > listaRetorno)
     {
+        System.debug('*listaRetorno*:'+listaRetorno);
         List<List<String> > responsePatch = new List<List<String> >();
         String getDataResponse;
 
@@ -25,7 +26,11 @@ public with sharing class GenesysCloudPatchInteractionAction
                     interaccionCasos.participants = interaccionToPatch.split('#').get(1);
                     interaccionCasos.purposeStatus = interaccionToPatch.split('#').get(2);
 
+                    System.debug('*interaccionCasos*: '+interaccionCasos);
+
                     getDataResponse = GenesysCloud.PatchService.patchForService(interaccionCasos);
+
+                    System.debug('*getDataResponse*: '+getDataResponse);
                     listaResponsePatch.add(getDataResponse);
 
                 }
@@ -37,6 +42,7 @@ public with sharing class GenesysCloudPatchInteractionAction
             }
             responsePatch.add(listaResponsePatch);
         }
+        System.debug('*responsePatch*: '+responsePatch);
         return responsePatch;
     }
 }
