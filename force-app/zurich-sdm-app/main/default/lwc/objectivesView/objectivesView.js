@@ -322,7 +322,6 @@ export default class ObjectivesView extends LightningElement {
 
   // variables tabla
   errors;
-  columns = this.columns;
   rowOffset = 0;
   draftValues = [];
   cloneValues = [];
@@ -641,9 +640,7 @@ export default class ObjectivesView extends LightningElement {
         this.recordSelected.Indicator__c = "Ratio_Claim";
         break;
       default:
-        console.log(
-          "No hay indicador identificado en el conversor de api name"
-        );
+      // do nothing
     }
   }
 
@@ -678,11 +675,12 @@ export default class ObjectivesView extends LightningElement {
 
   /************************************Selector ****************************************************************************/
   @wire(getSelectorYearList)
-  comboboxYearOptions({ error, data }) {
-    console.log("Data yearoptions" + JSON.stringify(data) + " Error " + error);
-    if (data) {
-      console.log("numero elementos selector " + data.length);
-      if (0 !== data.length) {
+  comboboxYearOptions({ data })  
+  {
+    if (data) 
+    {
+      if (0 !== data.length) 
+      {
         // controlo que venga al menos uno
         for (const list of data) {
           const option = {
@@ -694,8 +692,6 @@ export default class ObjectivesView extends LightningElement {
         this.selectedYear = new Date().getFullYear();
         console.log("selectedYear " + JSON.stringify(this.selectedYear));
       }
-    } else if (error) {
-      console.log("Error wire comboboxYearOptions " + JSON.stringify(error));
     }
   }
 
