@@ -6,7 +6,7 @@
  * @last modified by  : jgallaga
 **/
 @isTest
-public class Batch_CloseOppsWithoutCampMembTest
+private with sharing class Batch_CloseOppsWithoutCampMembTest
 {
 
     /**
@@ -22,7 +22,7 @@ public class Batch_CloseOppsWithoutCampMembTest
     private static Integer NUM_CAMPAIGNS = 5;
 
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         // Se inserta el usuario por defecto en la custom settings (Crear miemrbos de campaña de ventas genera oportunidades adicionales)
         TestDataFactory.insertCrossSellingCustomSetting();
@@ -81,7 +81,7 @@ public class Batch_CloseOppsWithoutCampMembTest
     }
 
     @isTest
-    static void test_DontRemoveCampaignMembers_OK()
+    private static void test_DontRemoveCampaignMembers_OK()
     {
         List<Opportunity> beforeOpportunitues = [SELECT StageName, Sales_Loss_Reason__c FROM Opportunity];
 
@@ -116,7 +116,7 @@ public class Batch_CloseOppsWithoutCampMembTest
 
     // Este test tiene que cerrar todas las oportunidades de las campañas de ventas, pero no las otras, se borren o no sus miembros de campaña
     @isTest
-    static void test_RemoveAllCampaignMembers_OK()
+    private static void test_RemoveAllCampaignMembers_OK()
     {
         delete [SELECT Id FROM CampaignMember];
 
@@ -140,7 +140,7 @@ public class Batch_CloseOppsWithoutCampMembTest
     }
 
     @isTest
-    static void test_RemoveAllMembersOneCampaign_OK()
+    private static void test_RemoveAllMembersOneCampaign_OK()
     {
         List<Opportunity> campaignOpps = [SELECT CampaignId, AccountId FROM Opportunity WHERE Campaign.Type = :TYPE_CROSS_CAMPAIGN];
 
@@ -207,7 +207,7 @@ public class Batch_CloseOppsWithoutCampMembTest
     }
 
     @isTest
-    static void test_RemoveSomeMembersOneCampaign_OK()
+    private static void test_RemoveSomeMembersOneCampaign_OK()
     {
         List<Opportunity> campaignOpps = [SELECT CampaignId, AccountId FROM Opportunity WHERE Campaign.Type = :TYPE_CROSS_CAMPAIGN];
 
@@ -278,7 +278,7 @@ public class Batch_CloseOppsWithoutCampMembTest
     }
 
     @isTest
-    static void test_RemoveSomeMembersAllCampaigns_OK()
+    private static void test_RemoveSomeMembersAllCampaigns_OK()
     {
         List<Opportunity> campaignOpps = [SELECT CampaignId, AccountId FROM Opportunity WHERE Campaign.Type = :TYPE_CROSS_CAMPAIGN];
 

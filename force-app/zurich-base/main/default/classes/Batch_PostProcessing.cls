@@ -7,7 +7,7 @@
  * @change aberuete - 21/04/2023 - Refactorizar método execute
  */
 
-global class Batch_PostProcessing implements Database.Batchable<sObject>, Database.Stateful, Schedulable
+global with sharing class Batch_PostProcessing implements Database.Batchable<sObject>, Database.Stateful, Schedulable
 {
     global String query;
 

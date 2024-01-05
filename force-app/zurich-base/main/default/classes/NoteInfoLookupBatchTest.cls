@@ -5,31 +5,31 @@
  * @date 28/04/2021
  */
 @isTest
-private class NoteInfoLookupBatchTest
+private with sharing class NoteInfoLookupBatchTest
 {
 
-    /**
-     * Offer
-     *      Opportunity -> InfoQuoteNumber__c
-     *      HegeoPrePolicyId__c, HegeoOfferId__c => OfferId__c
-     * Account
-     *      Account -> INFOIntermediaryCode__c
-     *      HegeoIntermediaryId__c => AccountId
-     * Policy
-     *      Policy__c -> InfoPolicyNumber__c
-     *      HegeoPolicyId__c => PolicyId__c
-     * Claim
-     *      Claim__c -> INFOClaimNumber__c
-     *      HegeoClaimId__c => ClaimId__c
-     */
-    @testSetup
-    static void makedata()
-    {
-        // PreOffer + Account
-        Case notePreOffer = new Case(Subject= 'note preoffer', Origin=NoteInfoLookupBatch.NOTE_CASE_ORIGIN);
-        notePreOffer.HegeoPrePolicyId__c = String.valueOf(1).leftPad(9, '0');
-        notePreOffer.HegeoIntermediaryId__c = String.valueOf(1).leftPad(9, '0');
-        insert notePreOffer;
+	/**
+	 * Offer
+	 *      Opportunity -> InfoQuoteNumber__c
+	 *      HegeoPrePolicyId__c, HegeoOfferId__c => OfferId__c
+	 * Account
+	 * 		Account -> INFOIntermediaryCode__c
+	 * 		HegeoIntermediaryId__c => AccountId
+	 * Policy
+	 * 		Policy__c -> InfoPolicyNumber__c
+	 * 		HegeoPolicyId__c => PolicyId__c
+	 * Claim
+	 * 		Claim__c -> INFOClaimNumber__c
+	 * 		HegeoClaimId__c => ClaimId__c
+	 */
+	@testSetup 
+	private static void makedata()
+	{
+		// PreOffer + Account
+		Case notePreOffer = new Case(Subject= 'note preoffer', Origin=NoteInfoLookupBatch.NOTE_CASE_ORIGIN);
+		notePreOffer.HegeoPrePolicyId__c = String.valueOf(1).leftPad(9, '0');
+		notePreOffer.HegeoIntermediaryId__c = String.valueOf(1).leftPad(9, '0');
+		insert notePreOffer;
 
         // Offer + Account + Policy + Claim
         Case noteOffer = new Case(Subject= 'note offer', Origin=NoteInfoLookupBatch.NOTE_CASE_ORIGIN);
@@ -88,17 +88,16 @@ private class NoteInfoLookupBatchTest
         }
     }
 
-    /**
-     * Test of the batch execution
-     */
-    @isTest
-    static void execute()
-    {
-        generateNoteRelatedData(1, false, false, true);
-        generateNoteRelatedData(2, true, true, true);
-
-
-
+	/**
+	 * Test of the batch execution
+	 */
+	@isTest 
+	private static void execute() {
+		generateNoteRelatedData(1, false, false, true);
+		generateNoteRelatedData(2, true, true, true);
+		
+		
+		
 
         Test.startTest();
         NoteInfoLookupBatch m = new NoteInfoLookupBatch();
@@ -115,30 +114,29 @@ private class NoteInfoLookupBatchTest
         System.assertNotEquals(null, noteOffer.ClaimId__c, 'For Offer, the ClaimId should not be null');
     }
 
-    @isTest
-    static void execute_ko()
-    {
-        generateNoteRelatedData(1, false, false, true);
-
-        Test.startTest();
-        NoteInfoLookupBatch m = new NoteInfoLookupBatch('Select'); // for coverage
-        m = new NoteInfoLookupBatch();
-        m.listHegeoExternal[0].parentSObjectName = 'invalid';
-        Id batchId = Database.executeBatch(m);
-        Test.stopTest();
+	@isTest
+	private static void execute_ko()
+	{
+		generateNoteRelatedData(1, false, false, true);
+		
+		Test.startTest();
+		NoteInfoLookupBatch m = new NoteInfoLookupBatch('Select'); // for coverage
+		m = new NoteInfoLookupBatch();
+		m.listHegeoExternal[0].parentSObjectName = 'invalid';
+		Id batchId = Database.executeBatch(m);
+		Test.stopTest();
 
         List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c];
         System.assertEquals(true, errors.size() > 0, 'There should be errors');
     }
 
-    /**
-     * Test of the batch scheduling
-     */
-    @isTest
-    static void schedule()
-    {
-        NoteInfoLookupBatch m = new NoteInfoLookupBatch();
-        String sch = '20 30 8 10 2 ?';
+	/**
+	 * Test of the batch scheduling
+	 */
+	@isTest 
+	private static void schedule() {
+		NoteInfoLookupBatch m = new NoteInfoLookupBatch();
+		String sch = '20 30 8 10 2 ?';
 
         Test.startTest();
         String jobID = system.schedule('Test Note Info Lookup batch', sch, m);

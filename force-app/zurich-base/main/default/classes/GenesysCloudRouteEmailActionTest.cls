@@ -1,8 +1,8 @@
 @isTest
-public class GenesysCloudRouteEmailActionTest
+private with sharing class GenesysCloudRouteEmailActionTest
 {
     @isTest
-    static void test_GenesysCloudRouteEmailAction_execute_ok()
+    private static void test_GenesysCloudRouteEmailAction_execute_ok()
     {
         List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
         queues = TestDataFactory.generateGenesysQueues(1);
@@ -53,7 +53,7 @@ public class GenesysCloudRouteEmailActionTest
     }
 
     @isTest
-    static void test_GenesysCloudRouteEmailAction_execute_ko()
+    private static void test_GenesysCloudRouteEmailAction_execute_ko()
     {
         String body = '';
         Integer code = 400; //Se va a probar un retorno malo

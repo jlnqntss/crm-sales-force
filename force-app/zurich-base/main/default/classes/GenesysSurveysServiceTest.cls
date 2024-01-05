@@ -2,7 +2,7 @@
 private without sharing class GenesysSurveysServiceTest {
 
     @testSetup
-    public static void createScenario()
+    private static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
@@ -17,7 +17,7 @@ private without sharing class GenesysSurveysServiceTest {
     }
 
     @isTest
-    static void test_initSurvey_ok()
+    private static void test_initSurvey_ok()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -50,7 +50,7 @@ private without sharing class GenesysSurveysServiceTest {
     }
 
     @isTest
-    static void test_initSurvey_ko()
+    private static void test_initSurvey_ko()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -78,7 +78,7 @@ private without sharing class GenesysSurveysServiceTest {
     }
 
     @isTest
-    static void test_checkMissingFields_ok()
+    private static void test_checkMissingFields_ok()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -109,7 +109,7 @@ private without sharing class GenesysSurveysServiceTest {
     }
 
     @isTest
-    static void test_checkMissingFields_ko()
+    private static void test_checkMissingFields_ko()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -137,7 +137,7 @@ private without sharing class GenesysSurveysServiceTest {
     }
 
     @isTest
-    static void test_searchInteractionTask_ok()
+    private static void test_searchInteractionTask_ok()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -158,7 +158,7 @@ private without sharing class GenesysSurveysServiceTest {
     }
 
     @isTest
-    static void test_searchInteractionTask_ko()
+    private static void test_searchInteractionTask_ko()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -188,7 +188,7 @@ private without sharing class GenesysSurveysServiceTest {
     }
 
     @isTest
-    static void test_createSurveyResponse_ok()
+    private static void test_createSurveyResponse_ok()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -212,7 +212,7 @@ private without sharing class GenesysSurveysServiceTest {
     }
 
     @isTest
-    static void test_createSurvey_ok()
+    private static void test_createSurvey_ok()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 
@@ -229,7 +229,7 @@ private without sharing class GenesysSurveysServiceTest {
     }
 
     @isTest
-    static void test_firstInsertOfSurvey_ok()
+    private static void test_firstInsertOfSurvey_ok()
     {
         GenesysSurveysService.Survey survey = new GenesysSurveysService.Survey();
 

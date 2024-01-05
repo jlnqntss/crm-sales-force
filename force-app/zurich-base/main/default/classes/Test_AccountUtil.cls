@@ -5,14 +5,14 @@
  * @date 26/04/2020
  */
 @isTest(SeeAllData = false)
-public class Test_AccountUtil
+private with sharing class Test_AccountUtil
 {
     @testSetup
-    static void makeData()
+    private static void makeData()
     {}
 
     @IsTest
-    static void test_associatePartner()
+    private static void test_associatePartner()
     {
         Contact customer = new Contact(
             DNI__c = '443485723A',
@@ -77,7 +77,7 @@ public class Test_AccountUtil
     }
 
     @IsTest
-    static void test_associatePartnerToOrder()
+    private static void test_associatePartnerToOrder()
     {
         Order policy = new Order(
             EffectiveDate = Date.valueOf('1990-01-02'),
@@ -146,7 +146,7 @@ public class Test_AccountUtil
      * @date 09/12/2020
      */
     @isTest
-    static void test_generateScope()
+    private static void test_generateScope()
     {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 20);
 
@@ -170,7 +170,7 @@ public class Test_AccountUtil
      * @date 30/7/2021
      */
     @isTest
-    static void test_generateScope_Telemarketing()
+    private static void test_generateScope_Telemarketing()
     {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Lead', 20);
 
