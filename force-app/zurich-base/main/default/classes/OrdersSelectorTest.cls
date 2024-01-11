@@ -1,5 +1,5 @@
 @isTest
-private without sharing class OrdersSelectorTest {
+private with sharing class OrdersSelectorTest {
 
     @TestSetup
     private static void createScenario()

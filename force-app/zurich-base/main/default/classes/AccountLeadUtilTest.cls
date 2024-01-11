@@ -5,7 +5,7 @@
  * @created           : 16-08-2023
 **/
 @isTest
-private class AccountLeadUtilTest
+private with sharing class AccountLeadUtilTest
 {
     /**
      * Se inicialian los datos necesarios para el test

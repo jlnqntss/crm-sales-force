@@ -1,5 +1,5 @@
 @isTest(SeeAllData = false)
-private without sharing class GenesysSurveysServiceTest {
+private with sharing class GenesysSurveysServiceTest {
 
     @testSetup
     private static void createScenario()

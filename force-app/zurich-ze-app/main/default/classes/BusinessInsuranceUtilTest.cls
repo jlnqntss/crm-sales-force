@@ -1,5 +1,5 @@
 @isTest(SeeAllData=false)
-private class BusinessInsuranceUtilTest
+private with sharing class BusinessInsuranceUtilTest
 {
     /**
      * Test que comprueba que si la fecha enviada está dentro

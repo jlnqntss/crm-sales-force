@@ -6,7 +6,7 @@
  * @last modified by  : aberuete
 **/
 @isTest
-private class AccountSearchServiceTest
+private with sharing class AccountSearchServiceTest
 {
     static final string MESSAGE_LISTAS_IGUALES = 'Las dos listas deberían ser iguales';
     static final String MESSAGE_NO_DEVOLVER_NADA = 'no debe devolver nada';

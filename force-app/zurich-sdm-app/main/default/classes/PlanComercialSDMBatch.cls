@@ -5,7 +5,7 @@
  * @date 05/07/2021
  *
  */
-global class PlanComercialSDMBatch implements Database.Batchable<sObject>, Database.Stateful, Schedulable
+global with sharing class PlanComercialSDMBatch implements Database.Batchable<sObject>, Database.Stateful, Schedulable
 {
     private static final String CLASS_NAME = 'PlanComercialSDMBatch';
     private String query;

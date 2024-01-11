@@ -6,7 +6,7 @@
  * @last modified by  : aberuete
 **/
 @isTest
-private class BusinessInsuranceCreateLeadActionTest
+private with sharing class BusinessInsuranceCreateLeadActionTest
 {
     @isTest
     private static void test_businessInsuranceCreateLeadAction_createLead_ok()
