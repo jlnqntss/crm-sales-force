@@ -1,6 +1,6 @@
 /**
- * Batch que se encarga de relizar los siguientes automatismos para los Mediadores del proyecto SDM (Sales Digital 
- * 
+ * Batch que se encarga de relizar los siguientes automatismos para los Mediadores del proyecto SDM (Sales Digital
+ *
  * @author nts (agonzalezisasi)
  * @date 05/07/2021
  *
@@ -9,7 +9,7 @@ global with sharing class PlanComercialSDMBatch implements Database.Batchable<sO
 {
     private static final String CLASS_NAME = 'PlanComercialSDMBatch';
     private String query;
-    
+
     @TestVisible
     private Boolean testUnknownError;
 
@@ -23,7 +23,7 @@ global with sharing class PlanComercialSDMBatch implements Database.Batchable<sO
         sdm = new PlanComercialSDM();
     }
 
-    
+
     /**
      * Constructor. Use a custom query
      */
@@ -41,22 +41,26 @@ global with sharing class PlanComercialSDMBatch implements Database.Batchable<sO
      */
     global Database.QueryLocator start(Database.BatchableContext bc)
     {
-        if( String.isBlank(query) ) {
+        if( String.isBlank(query) )
+        {
             Date todayValue = System.today();
             Integer thisMonth = todayValue.month();
-            
-            if( Test.isRunningTest() ) todayValue = Date.newInstance(2021, 9, 10);
 
-            // SDM-729 - Añadimos la ordenacion por tipo acumulado (YTD, Mensual) para que, en la medida de lo posible, 
+            if( Test.isRunningTest() )
+                todayValue = Date.newInstance(2021, 9, 10);
+
+            // SDM-729 - Añadimos la ordenacion por tipo acumulado (YTD, Mensual) para que, en la medida de lo posible,
             // los lotes sean solo de planes mensuales o anuales. Para minimizar el numero de KPIs recuperados
             return Database.getQueryLocator([
-                SELECT Id, name, CreatedById, AssignedTo__c, StartDate__c, EndDate__c, IsOwnedByHomeOffice__c,
-                       Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c, Zone__c, AssignedTo__r.name, Owner.name
-                FROM PlanComercial__c
-                WHERE ((RecordType.DeveloperName IN ('ActionPlan', 'AnualPlan') AND StartDate__c <= :todayValue AND EndDate__c >= :todayValue AND IsOwnedByHomeOffice__c = false) OR (RecordType.developerName = 'MensualPlan' and Calendar_Month(EndDate__c) = :thisMonth))
-                ORDER BY AccumulateType__c
-            ]);
-        } else {
+                                                SELECT Id, name, CreatedById, AssignedTo__c, StartDate__c, EndDate__c, IsOwnedByHomeOffice__c,
+                                                Indicator__c, Intermediary__c, Product__c, Segment__c, AccumulateType__c, Zone__c, AssignedTo__r.name, Owner.name
+                                                FROM PlanComercial__c
+                                                WHERE ( (RecordType.DeveloperName IN ('ActionPlan', 'AnualPlan') AND StartDate__c <= : todayValue AND EndDate__c >= : todayValue AND IsOwnedByHomeOffice__c = false)OR (RecordType.developerName = 'MensualPlan' and Calendar_Month(EndDate__c) = : thisMonth) )
+                                                ORDER BY AccumulateType__c
+                                            ]);
+        }
+        else
+        {
             return Database.getQueryLocator(query);
         }
     }
@@ -66,19 +70,23 @@ global with sharing class PlanComercialSDMBatch implements Database.Batchable<sO
      */
     global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
-        if ( scope != null && !scope.isEmpty() ) {
-            try {
-                
+        if ( scope != null && !scope.isEmpty() )
+        {
+            try
+            {
 
-                if( Test.isRunningTest() && testUnknownError != null && testUnknownError ) 
-                    throw new PlanComercialSDMBatchException('Unknown Error');                    
 
-                List<PlanComercial__c> plans = (List<PlanComercial__c>)scope;
+                if( Test.isRunningTest() && testUnknownError != null && testUnknownError )
+                    throw new PlanComercialSDMBatchException('Unknown Error');
+
+                List<PlanComercial__c> plans = (List<PlanComercial__c>) scope;
 
                 sdm.calculateRealKPI(plans);
 
-                
-            } catch (Exception e) {
+
+            }
+            catch (Exception e)
+            {
                 ErrorLogUtil.commitError(e, CLASS_NAME);
             }
         }
@@ -90,17 +98,20 @@ global with sharing class PlanComercialSDMBatch implements Database.Batchable<sO
     global void finish(Database.BatchableContext bc)
     {}
 
-    
+
     //------------------------------------------------------------------------- schedulable methods
 
     public static String createStandardSchedule(String jobName, String timeExpression, String query)
     {
-        if( String.isBlank(jobName) ) jobName = 'SDM Automatismos Plan Comercial';
-        if( Test.isRunningTest() ) jobName = 'Test ' + jobName;
+        if( String.isBlank(jobName) )
+            jobName = 'SDM Automatismos Plan Comercial';
+        if( Test.isRunningTest() )
+            jobName = 'Test ' + jobName;
 
-        if( String.isBlank(timeExpression) ) timeExpression = '0 0 07 * * ?';
-        
-        return System.schedule(jobName, timeExpression, new PlanComercialSDMBatch(query));
+        if( String.isBlank(timeExpression) )
+            timeExpression = '0 0 07 * * ?';
+
+        return System.schedule( jobName, timeExpression, new PlanComercialSDMBatch(query) );
     }
 
     /**
@@ -113,5 +124,6 @@ global with sharing class PlanComercialSDMBatch implements Database.Batchable<sO
         Database.executeBatch(new PlanComercialSDMBatch(query), 20);
     }
 
-    private class PlanComercialSDMBatchException extends Exception {}
+    private class PlanComercialSDMBatchException extends Exception
+    {}
 }

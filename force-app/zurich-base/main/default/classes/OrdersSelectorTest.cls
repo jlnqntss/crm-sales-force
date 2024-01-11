@@ -1,5 +1,6 @@
 @isTest
-private with sharing class OrdersSelectorTest {
+private with sharing class OrdersSelectorTest
+{
 
     @TestSetup
     private static void createScenario()
@@ -50,7 +51,7 @@ private with sharing class OrdersSelectorTest {
 
         Test.startTest();
         OrdersSelector ordersSelector = new OrdersSelector();
-        ordersSelector.setFields(new List<Schema.SobjectField>{Order.Id});
+        ordersSelector.setFields(new List<Schema.SobjectField> {Order.Id});
         List<Order> matchedRecords = ordersSelector.selectByDNI('noExisteEsteDNI'); //El DNI NO es el del TestSetup
         Test.stopTest();
 
@@ -82,7 +83,7 @@ private with sharing class OrdersSelectorTest {
 
         Test.startTest();
         OrdersSelector ordersSelector = new OrdersSelector();
-        ordersSelector.setFields(new List<Schema.SobjectField>{Order.Id});
+        ordersSelector.setFields(new List<Schema.SobjectField> {Order.Id});
         List<Order> matchedRecords = ordersSelector.selectByEmail('no@existe.com'); //El Email NO es el del TestSetup
         Test.stopTest();
 
@@ -114,7 +115,7 @@ private with sharing class OrdersSelectorTest {
 
         Test.startTest();
         OrdersSelector ordersSelector = new OrdersSelector();
-        ordersSelector.setFields(new List<Schema.SobjectField>{Order.Id});
+        ordersSelector.setFields(new List<Schema.SobjectField> {Order.Id});
         List<Order> matchedRecords = ordersSelector.selectByMobilePhone('666778899'); //El MobilePhone NO es el del TestSetup
         Test.stopTest();
 

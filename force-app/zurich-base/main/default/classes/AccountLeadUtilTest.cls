@@ -3,7 +3,7 @@
  * @author            : overes
  * @group             :
  * @created           : 16-08-2023
-**/
+ **/
 @isTest
 private with sharing class AccountLeadUtilTest
 {
@@ -127,11 +127,11 @@ private with sharing class AccountLeadUtilTest
 
         for(Integer i = 0; i < 4 ; i++)
         {
-            newAccounts.add(new account(
-                LastName = 'Test'+i,
-                RecordTypeId = accountLeadRecordTypeId,
-                Phone = '1111'+i
-            ));
+            newAccounts.add( new account(
+                                 LastName = 'Test' + i,
+                                 RecordTypeId = accountLeadRecordTypeId,
+                                 Phone = '1111' + i
+                                 ) );
         }
 
         Test.startTest();
@@ -142,7 +142,7 @@ private with sharing class AccountLeadUtilTest
 
         List<Scope__c> scopes = [SELECT Scope__c From Scope__c WHERE AccountId__c IN : newAccounts];
 
-        Assert.areEqual(insertedAccount.size(), scopes.size());
+        Assert.areEqual( insertedAccount.size(), scopes.size() );
     }
 
     @isTest
@@ -154,10 +154,10 @@ private with sharing class AccountLeadUtilTest
 
         for(Integer i = 0; i < 4; i++)
         {
-            oldAccounts.add(new Account(
-                LastName = 'Test'+i,
-                RecordTypeId = accountLeadRecordTypeId
-            ));
+            oldAccounts.add( new Account(
+                                 LastName = 'Test' + i,
+                                 RecordTypeId = accountLeadRecordTypeId
+                                 ) );
         }
 
         insert oldAccounts;
@@ -173,34 +173,37 @@ private with sharing class AccountLeadUtilTest
 
         List<Scope__c> scopes = [SELECT Scope__c FROM Scope__c WHERE AccountId__c IN : oldAccounts];
 
-        Assert.areEqual(oldAccounts.size(), scopes.size());
+        Assert.areEqual( oldAccounts.size(), scopes.size() );
 
     }
 
     @IsTest
-    private static void testFormatPhoneLength9() {
+    private static void testFormatPhoneLength9()
+    {
         Test.startTest();
         List<String> phonesList = AccountLeadUtil.getVariantsPhones('600000000');
         Test.stopTest();
 
-        Assert.areEqual(3, phonesList.size());
+        Assert.areEqual( 3, phonesList.size() );
     }
 
     @IsTest
-    private static void testFormatPhone34() {
+    private static void testFormatPhone34()
+    {
         Test.startTest();
         List<String> phonesList = AccountLeadUtil.getVariantsPhones('34600000000');
         Test.stopTest();
 
-        Assert.areEqual(3, phonesList.size());
+        Assert.areEqual( 3, phonesList.size() );
     }
 
     @IsTest
-    private static void testFormatPhonePlus34() {
+    private static void testFormatPhonePlus34()
+    {
         Test.startTest();
         List<String> phonesList = AccountLeadUtil.getVariantsPhones('+34600000000');
         Test.stopTest();
 
-        Assert.areEqual(3, phonesList.size());
+        Assert.areEqual( 3, phonesList.size() );
     }
 }

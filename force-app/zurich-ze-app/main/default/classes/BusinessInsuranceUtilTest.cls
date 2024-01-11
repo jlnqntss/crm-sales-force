@@ -14,7 +14,7 @@ private with sharing class BusinessInsuranceUtilTest
         List<BusinessHours> businessHoursList = [SELECT Id FROM BusinessHours WHERE Name =: BusinessInsuranceUtil.ZE_BUSINESS_HOURS];
         System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
 
-        Datetime withinDatetime = BusinessHours.nextStartDate(businessHoursList.get(0).Id, System.now() );
+        Datetime withinDatetime = BusinessHours.nextStartDate( businessHoursList.get(0).Id, System.now() );
 
         Test.startTest();
         Datetime result = BusinessInsuranceUtil.getPreferredContactDatetime(withinDatetime);
@@ -39,7 +39,7 @@ private with sharing class BusinessInsuranceUtilTest
         System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
 
         Datetime notWithinDatetime = System.now();
-        while(BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime) )
+        while( BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime) )
         {
             notWithinDatetime = notWithinDatetime.addDays(1);
         }

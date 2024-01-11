@@ -130,7 +130,7 @@ private with sharing class BusinessInsuranceCallbackServiceTest
         System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
 
         Datetime notWithinDatetime = System.now();
-        while(BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime) )
+        while( BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime) )
         {
             notWithinDatetime = notWithinDatetime.addDays(1);
         }
