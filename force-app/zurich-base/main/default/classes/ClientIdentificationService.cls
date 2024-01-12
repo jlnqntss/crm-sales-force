@@ -30,6 +30,16 @@ public with sharing class ClientIdentificationService
         }
     }
 
+    
+    /**
+     * Método para recuperar la información de una persona en base a un Teléfono
+     *
+     * @author arcortazar
+     * @date
+     * @last modified on  : 11-01-2024
+     * @last modified by  : jfherrero
+     */
+    
     public static String getByPolicyNumber(Client receivedData)
     {
         if ( String.isBlank(receivedData.nationalID) || String.isBlank(receivedData.policyNumber) )
@@ -54,23 +64,23 @@ public with sharing class ClientIdentificationService
         // Comprobamos si existe una poliza asignada al DNI que nos envían:
         // 1.- Obtenemos el ID del Account
         List<Account> cuentasEncontradas = accountsSelector.findByNationalId(new List<String> { receivedData.nationalID }, '');
-        List<Policy__c> polizaEncontrada = new List<Policy__c>();
+        List<Policy__c> polizasEncontradas = new List<Policy__c>();
 
         if( !cuentasEncontradas.isEmpty() )
         {
             resultado.existsNationalID = true;
-            polizaEncontrada = policiesSelector.selectByInfoPolicyNumberAndNationalId(new List<String> { receivedData.nationalID },new List<String> { receivedData.policyNumber });
+            polizasEncontradas = policiesSelector.selectByInfoPolicyNumberAndNationalId(new List<String> { receivedData.nationalID },new List<String> { receivedData.policyNumber });
         }
         else
         {
             resultado.existsNationalID = false;
-            polizaEncontrada = policiesSelector.selectByNumber(receivedData.policyNumber);
+            polizasEncontradas = policiesSelector.selectByNumber(receivedData.policyNumber);
         }
 
-        if( !polizaEncontrada.isEmpty() )
+        if( !polizasEncontradas.isEmpty() )
         {
             resultado.existsPolicy = true;
-            if(polizaEncontrada[0].PolicyStatus__c == 'V')
+            if(polizasEncontradas[0].PolicyStatus__c == 'V')
             {
                 resultado.isValidPolicy = true;
             }
@@ -79,12 +89,12 @@ public with sharing class ClientIdentificationService
         // Tan solo si los tres flags son true les vamos a pasar los valores
         if (resultado.existsNationalID && resultado.existsPolicy && resultado.isValidPolicy)
         {
-            resultado.policyEndDate = polizaEncontrada[0].EndDate__c;
-            resultado.policyStartDate = polizaEncontrada[0].MovementStartDate__c;
-            resultado.policyVersion = polizaEncontrada[0].policyVersion__c;
+            resultado.policyEndDate = polizasEncontradas[0].EndDate__c;
+            resultado.policyStartDate = polizasEncontradas[0].MovementStartDate__c;
+            resultado.policyVersion = polizasEncontradas[0].policyVersion__c;
             
             List<String> listaPolizas = new List<String>();
-            for (Policy__c p : polizaEncontrada)
+            for (Policy__c p : polizasEncontradas)
             {
                 listaPolizas.add(p.id);
             }
@@ -95,14 +105,15 @@ public with sharing class ClientIdentificationService
                 resultado.policyInfoInsuredObject = obtainedAssets[0].INFOInsuredObjectCode__c;
             }
 
-            List<Product2> obtainedProduct = new ProductsSelector(
-                    new Set<String> {'Id', 'Name', 'CommercialCode__c', 'TechnicalCode__c'}
-                    ).selectByID(polizaEncontrada[0].ProductId__c);
-            if(!obtainedProduct.isEmpty())
+            System.debug('AAA');
+            Map<Id, Product2> obtainedProductsMap = getPolicyProductsMap(polizasEncontradas);
+                
+            if(obtainedProductsMap?.size() > 0)
             {
-                resultado.technicalCode = obtainedProduct[0].TechnicalCode__c;
+                resultado.technicalCode =  obtainedProductsMap.get(polizasEncontradas[0].ProductId__c).TechnicalCode__c;
+                System.debug('BBB');
             }
-
+			System.debug('CCC');
         } 
 
         return resultado.toString();
@@ -138,7 +149,6 @@ public with sharing class ClientIdentificationService
         // Buscamos account por DNI + Telefono
         AccountsSelector accountsSelector = new AccountsSelector();
 
-        // Con el ID del account conseguido, sacamos las pólizas
         List<Account> cuentasEncontradas = accountsSelector.findByNationalIdAndPhoneNumber(new List<String> { receivedData.nationalID }, '', new List<String> {composedPhoneNumber, receivedData.phoneNumber});
 
         //En las clases test no vamos a recibir cuentas encontradas porque hay implicadas consultas SOSL.
@@ -191,6 +201,11 @@ public with sharing class ClientIdentificationService
             // Sacamos las pólizas asociadas a las matrículas
         	Map<String, Policy__c> policyMap = getPolicyMap(policyIds, receivedData.groupDescription);
             
+            // Sacamos los productos asociados a esas pólizas
+            System.debug('111');
+            Map<Id, Product2> obtainedProductsMap = getPolicyProductsMap(policyMap.values());
+            System.debug('222');
+            
             // Si los assets tienen pólizas, recuperamos los tomadores y los partners
             if (policyMap.size()>0)
         	{
@@ -200,7 +215,7 @@ public with sharing class ClientIdentificationService
             	// Para cada asset recuperado vamos a generar un 
                 for(Asset a : listaAssets)
                 {
-                    InsuredObject obj = setInsuredObjectByRegistrationNumber(a, policyMap, accountMap);
+                    InsuredObject obj = setInsuredObjectByRegistrationNumber(a, policyMap, accountMap, obtainedProductsMap);
                     listaObjetos.add(obj);
                 }
                 
@@ -285,6 +300,43 @@ public with sharing class ClientIdentificationService
         
         return policyMap;
     }
+    
+    /**
+     * Método para recuperar información de productos asociados a las pólizas
+     *
+     * @author jfherrero
+     * @date 11/01/2024
+     */
+    @TestVisible
+    private static Map<Id, Product2> getPolicyProductsMap(List<Policy__c> polizasEncontradas)
+    {                
+        List<String> productIds = new List<String>();
+        
+        for (Policy__c pol : polizasEncontradas)
+        {
+            System.debug('POLIZA');
+            System.debug(pol.Id);
+            System.debug(pol.ProductId__c);
+                
+            if (pol.ProductId__c != null)
+            {
+                productIds.add(pol.ProductId__c);
+            }
+        }
+        
+        List<Product2> obtainedProducts = new ProductsSelector(
+            							new Set<String> {'Id', 'Name', 'CommercialCode__c', 'TechnicalCode__c'}
+                        				).selectByID(productIds);
+        
+        Map<Id, Product2> obtainedProductsMap = new Map<Id, Product2>();
+        
+        for (Product2 prod : obtainedProducts)
+        {
+            obtainedProductsMap.put (prod.Id, prod);
+        }
+        
+        return obtainedProductsMap;
+    }
 
     /**
      * Método para generar el mapa de Accounts relacionados con las pólizas
@@ -328,7 +380,8 @@ public with sharing class ClientIdentificationService
      * @author jfherrero
      * @date 03/11/2023
      */
-    private static InsuredObject setInsuredObjectByRegistrationNumber(Asset asset, Map<String,Policy__c> policyMap, Map<String,Account> accountMap)
+    private static InsuredObject setInsuredObjectByRegistrationNumber(Asset asset, Map<String, Policy__c> policyMap,
+                                                                      Map<String, Account> accountMap, Map<Id, Product2> obtainedProductsMap)
     {
         InsuredObject obj = new InsuredObject();
 
@@ -337,12 +390,18 @@ public with sharing class ClientIdentificationService
         obj.brandName = asset.BrandName__c;
         
         // Datos de la póliza
-        if(policyMap.get(asset.PolicyId__c) !=null)
+        if(policyMap.get(asset.PolicyId__c) != null)
         {
             obj.policyName = policyMap.get(asset.PolicyId__c).Name;
             obj.policyStatus = policyMap.get(asset.PolicyId__c).PolicyStatus__c ;
             obj.policyEndDate = policyMap.get(asset.PolicyId__c).EndDate__c;
             obj.policyStartDate = policyMap.get(asset.PolicyId__c).StartDate__c;
+            
+            if(obtainedProductsMap.get(policyMap.get(asset.PolicyId__c).ProductId__c) != null)   
+            {
+                obj.technicalCode = obtainedProductsMap.get(policyMap.get(asset.PolicyId__c).ProductId__c).TechnicalCode__c;
+            }
+            
             
             // Datos del tomador de la póliza
             if (accountMap.get(policyMap.get(asset.PolicyId__c).PolicyHolder__c) != null)
@@ -380,6 +439,10 @@ public with sharing class ClientIdentificationService
             
             if(!polizasEncontradas.isEmpty())
             {
+                System.debug('@@@');
+                Map<Id, Product2> obtainedProductsMap = getPolicyProductsMap(polizasEncontradas);
+                System.debug('###');
+                
                 Map<Id, Policy__c> mapaPolizas = new Map<Id, Policy__c>();
                 List<Id> listaPolIds = new List<Id>();
                 for(Policy__c pol : polizasEncontradas)
@@ -401,13 +464,18 @@ public with sharing class ClientIdentificationService
                     obj.addressName = a.AddressName__c; 
                     obj.addressNumber = a.AddressNumber__c;
                     obj.addressAdditionalInfo = a.AddressAdditionalInfo__c;
-                    obj.city = a.City__c;
+                    obj.city = a.City__c; 
 
                     // Datos correspondientes a la poliza como tal
                     obj.policyInfoInsuredObject = a.INFOInsuredObjectCode__c;
                     obj.policyEndDate = mapaPolizas.get(a.PolicyId__c).EndDate__c;
                     obj.policyStartDate = mapaPolizas.get(a.PolicyId__c).StartDate__c;
-                    obj.policyVersion= mapaPolizas.get(a.PolicyId__c).PolicyVersion__c;
+                    obj.policyVersion = mapaPolizas.get(a.PolicyId__c).PolicyVersion__c;
+                    
+                    if(obtainedProductsMap.get(mapaPolizas.get(a.PolicyId__c).ProductId__c) != null)
+                    {
+                        obj.technicalCode = obtainedProductsMap.get(mapaPolizas.get(a.PolicyId__c).ProductId__c).TechnicalCode__c;
+                    }
 
                     listaObjetos.add(obj);
                 }
