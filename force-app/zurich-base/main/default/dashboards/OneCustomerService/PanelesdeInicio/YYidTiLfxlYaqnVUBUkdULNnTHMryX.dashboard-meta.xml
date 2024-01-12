@@ -638,7 +638,7 @@
     </dashboardGridLayout>
     <dashboardType>LoggedInUser</dashboardType>
     <isGridLayout>true</isGridLayout>
-    <runningUser>o.iglesiasalcala@zurich.com</runningUser>
+    <runningUser>o.iglesiasalcala@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
     <title>Panel Inicio Supervisores</title>
     <titleColor>#000000</titleColor>
