@@ -24,8 +24,8 @@
     <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
     <selfRegPage>CommunitiesSelfReg</selfRegPage>
     <serverIsDown>SNA_OCS_Service_Portal1_sf_default_cdn_yJzor</serverIsDown>
-    <siteAdmin>o.iglesiasalcala@zurich.com</siteAdmin>
-    <siteGuestRecordDefaultOwner>o.iglesiasalcala@zurich.com</siteGuestRecordDefaultOwner>
+    <siteAdmin>o.iglesiasalcala@zurich-es.com</siteAdmin>
+    <siteGuestRecordDefaultOwner>o.iglesiasalcala@zurich-es.com</siteGuestRecordDefaultOwner>
     <siteType>ChatterNetwork</siteType>
     <subdomain>zurich-es</subdomain>
     <urlPathPrefix>OCSServicePortal</urlPathPrefix>
