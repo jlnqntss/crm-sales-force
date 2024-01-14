@@ -50,13 +50,13 @@ public with sharing class ProductsSelector extends BaseSelector
      * @param String productID identificador del producto a buscar
      * @return List<Product2> Listado de productos sobre los que se ha realizado match
      */
-    public List<Product2> selectByID(String productId)
+    public List<Product2> selectByID(List<String> productIds)
     {
-        if(String.isNotBlank(productId))
+        if(productIds?.size() > 0)
         {
             String query = String.format(
                 'SELECT {0} FROM Product2 ' +
-                'WHERE Id = : productId',
+                'WHERE Id IN : productIds',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
             }

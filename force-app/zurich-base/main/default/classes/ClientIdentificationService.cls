@@ -105,15 +105,12 @@ public with sharing class ClientIdentificationService
                 resultado.policyInfoInsuredObject = obtainedAssets[0].INFOInsuredObjectCode__c;
             }
 
-            System.debug('AAA');
             Map<Id, Product2> obtainedProductsMap = getPolicyProductsMap(polizasEncontradas);
                 
             if(obtainedProductsMap?.size() > 0)
             {
                 resultado.technicalCode =  obtainedProductsMap.get(polizasEncontradas[0].ProductId__c).TechnicalCode__c;
-                System.debug('BBB');
             }
-			System.debug('CCC');
         } 
 
         return resultado.toString();
@@ -151,6 +148,11 @@ public with sharing class ClientIdentificationService
 
         List<Account> cuentasEncontradas = accountsSelector.findByNationalIdAndPhoneNumber(new List<String> { receivedData.nationalID }, '', new List<String> {composedPhoneNumber, receivedData.phoneNumber});
 
+        if (cuentasEncontradas?.size() > 0)
+        {
+            resultado.existsPhoneNumber = true;
+        }
+        
         //En las clases test no vamos a recibir cuentas encontradas porque hay implicadas consultas SOSL.
         //Por tanto, utilizaremos esta clase visible por test para cubrir el código
         resultado = setInsuredObjectsByPhone(receivedData, composedPhoneNumber, resultado, listaObjetos, cuentasEncontradas);
@@ -202,9 +204,7 @@ public with sharing class ClientIdentificationService
         	Map<String, Policy__c> policyMap = getPolicyMap(policyIds, receivedData.groupDescription);
             
             // Sacamos los productos asociados a esas pólizas
-            System.debug('111');
             Map<Id, Product2> obtainedProductsMap = getPolicyProductsMap(policyMap.values());
-            System.debug('222');
             
             // Si los assets tienen pólizas, recuperamos los tomadores y los partners
             if (policyMap.size()>0)
@@ -313,11 +313,7 @@ public with sharing class ClientIdentificationService
         List<String> productIds = new List<String>();
         
         for (Policy__c pol : polizasEncontradas)
-        {
-            System.debug('POLIZA');
-            System.debug(pol.Id);
-            System.debug(pol.ProductId__c);
-                
+        {     
             if (pol.ProductId__c != null)
             {
                 productIds.add(pol.ProductId__c);
@@ -439,9 +435,7 @@ public with sharing class ClientIdentificationService
             
             if(!polizasEncontradas.isEmpty())
             {
-                System.debug('@@@');
                 Map<Id, Product2> obtainedProductsMap = getPolicyProductsMap(polizasEncontradas);
-                System.debug('###');
                 
                 Map<Id, Policy__c> mapaPolizas = new Map<Id, Policy__c>();
                 List<Id> listaPolIds = new List<Id>();
@@ -468,6 +462,7 @@ public with sharing class ClientIdentificationService
 
                     // Datos correspondientes a la poliza como tal
                     obj.policyInfoInsuredObject = a.INFOInsuredObjectCode__c;
+                    obj.policyName = mapaPolizas.get(a.PolicyId__c).Name;
                     obj.policyEndDate = mapaPolizas.get(a.PolicyId__c).EndDate__c;
                     obj.policyStartDate = mapaPolizas.get(a.PolicyId__c).StartDate__c;
                     obj.policyVersion = mapaPolizas.get(a.PolicyId__c).PolicyVersion__c;
@@ -593,7 +588,7 @@ public with sharing class ClientIdentificationService
     {
         public String nationalID;
         public String phoneNumber;
-        public String existsPhoneNumber;
+        public Boolean existsPhoneNumber;
         public Boolean existsRegistrationNumber;
         public List<InsuredObject> objects;
 
