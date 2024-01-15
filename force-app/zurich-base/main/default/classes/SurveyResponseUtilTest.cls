@@ -1,9 +1,9 @@
 @isTest(SeeAllData = false)
-private class SurveyResponseUtilTest
+private with sharing class SurveyResponseUtilTest
 {
 
     @testSetup
-    public static void createScenario()
+    private static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
@@ -21,7 +21,7 @@ private class SurveyResponseUtilTest
      * Comprueba si al insertar respuestas se recalcula la cabecera
      */
     @isTest
-    static void test_processAnswers_ok()
+    private static void test_processAnswers_ok()
     {
         //Crear la cabecera
         Survey__c survey = new Survey__c(InteractionId__c = '01', NumberOfQuestions__c = 3);
@@ -75,7 +75,7 @@ private class SurveyResponseUtilTest
      * Comprueba si se actualizan varias Surveys a la vez
      */
     @isTest
-    static void test_processAnswers_surveys_ok()
+    private static void test_processAnswers_surveys_ok()
     {
         //Crear la cabecera
         Survey__c survey = new Survey__c(InteractionId__c = '01', NumberOfQuestions__c = 1);
@@ -111,7 +111,7 @@ private class SurveyResponseUtilTest
      * Comprueba si al insertar respuestas se recalcula la cabecera
      */
     @isTest
-    static void test_processAnswers_change_answer_ok()
+    private static void test_processAnswers_change_answer_ok()
     {
         //Crear la cabecera
         Survey__c survey = new Survey__c(InteractionId__c = '01', NumberOfQuestions__c = 3);

@@ -5,7 +5,7 @@
  * @date 12/04/2021
  */
 @isTest
-public class CallRecordingControllerTest
+private with sharing class CallRecordingControllerTest
 {
     /**
      * Test the recovering of the recording number from the configuration
@@ -14,7 +14,7 @@ public class CallRecordingControllerTest
      * @date 12/04/2021
      */
     @isTest
-    static void test_getRecordingPhoneNumber_ok()
+    private static void test_getRecordingPhoneNumber_ok()
     {
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
         User u = [SELECT Id FROM User WHERE Id = : usuarios.get(0).AssigneeId AND IsActive = true];
@@ -44,7 +44,7 @@ public class CallRecordingControllerTest
      * @date 12/04/2021
      */
     @isTest
-    static void test_getRecordingPhoneNumber_ko()
+    private static void test_getRecordingPhoneNumber_ko()
     {
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
         User u = [SELECT Id FROM User WHERE Id = : usuarios.get(0).AssigneeId AND IsActive = true];
