@@ -24,6 +24,7 @@
     <columns>
         <field>Claim__c.DateOfOccurrence__c</field>
     </columns>
+    <description>Siniestros pendientes de resolución.</description>
     <filter>
         <criteriaItems>
             <column>Claim__c.Status__c</column>

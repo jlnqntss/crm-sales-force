@@ -19,14 +19,21 @@ public with sharing class ClientInteracionServiceTest
         tempList.add( accounts.get(0) );
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(tempList, 10);
+
+        List<Product2> productos = TestDataFactory.generateProducts(1);
+        productos[0].GroupDescription__c = GRUPO_MOTOR;
+        productos[0].TechnicalCode__c = '0123456';
+        insert productos;
+
+        for (Policy__c pol : policies)
+        {
+            pol.ProductId__c = productos[0].Id;
+        }
+
         insert policies;
 
         List<Asset> assets = TestDataFactory.generateInsuredObjectsForEachPolicy('Motor', policies, 1);
         insert assets;
-
-        List<Product2> productos = TestDataFactory.generateProducts(1);
-        productos[0].GroupDescription__c = GRUPO_MOTOR;
-        insert productos;
     }
 
     /**

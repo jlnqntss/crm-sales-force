@@ -1,5 +1,5 @@
 @isTest
-private class Batch_GDPRPropagateBlocked_Test {
+private with sharing class Batch_GDPRPropagateBlocked_Test {
 
     private static final String ACCOUNT_CUSTOMER = 'Customer';
     private static final String ACCOUNT_BCUSTOMER = 'BusinessCustomer';
@@ -12,7 +12,7 @@ private class Batch_GDPRPropagateBlocked_Test {
 
 
     @TestSetup
-    static void makeData(){
+    private static void makeData(){
         List<Account> accs = TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_CUSTOMER, 1);
 
         for(Integer i = 0; accs.size() < i; i++){
@@ -83,7 +83,7 @@ private class Batch_GDPRPropagateBlocked_Test {
         
     }
     @isTest 
-    static void comprobarPropagacionAccount()
+    private static void comprobarPropagacionAccount()
     {
         //Actualizar los registros
         List<Account> acc = [SELECT Id, Blocked__c, Anonymized__c FROM Account WHERE Blocked__c=false AND Anonymized__c=false];
@@ -108,7 +108,7 @@ private class Batch_GDPRPropagateBlocked_Test {
     }
 
     @isTest 
-    static void comprobarPropagacionOportunidad()
+    private static void comprobarPropagacionOportunidad()
     {
         List<Opportunity> opp = [SELECT Id, Blocked__c, Anonymized__c FROM Opportunity WHERE Blocked__c=false AND Anonymized__c=false];
         for(Opportunity o: opp)
@@ -130,7 +130,7 @@ private class Batch_GDPRPropagateBlocked_Test {
     }
 
     @isTest
-    static void comprobarBorrado(){
+    private static void comprobarBorrado(){
         //Actualizar los registros a mano, cambiando el Anonymized a true
         anonimizarDatosManual();        
 
@@ -146,7 +146,7 @@ private class Batch_GDPRPropagateBlocked_Test {
     }
 
     @isTest 
-    static void comprobarExceptionBloqueo(){
+    private static void comprobarExceptionBloqueo(){
         Test.startTest();
 
         try{
@@ -160,7 +160,7 @@ private class Batch_GDPRPropagateBlocked_Test {
     }
 
     @isTest
-    static void comprobarExceptionBorrado(){
+    private static void comprobarExceptionBorrado(){
         Test.startTest();
 
         try{

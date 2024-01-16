@@ -2,16 +2,13 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>TNPSCustomerSurveyExcellenceCenter</fullName>
     <active>true</active>
-    <description>Sólo los usuarios del Centro de Excelencia deben poder asignar el valor &apos;Encuesta TNPS Cliente&apos;.</description>
-    <errorConditionFormula>OR ( AND (ISCHANGED(SourceArea__c), PRIORVALUE(SourceArea__c)=&quot;TNPS Customer Survey&quot; ,
-           AND (NOT($Permission.Area_Origen_Centro_Excelencia), OR( $Profile.Name=&apos;System Administrator&apos;,
-                                                                    $Profile.Name=&apos;Super User&apos;,
-                                                                    $Profile.Name=&apos;Integrator&apos; ))),
-     
-     AND (ISPICKVAL(SourceArea__c, &quot;TNPS Customer Survey&quot;),
-           AND (NOT($Permission.Area_Origen_Centro_Excelencia), OR( $Profile.Name=&apos;System Administrator&apos;, 
-                                                                    $Profile.Name=&apos;Super User&apos;,
-                                                                    $Profile.Name=&apos;Integrator&apos; )))
+    <description>Sólo los usuarios del Centro de Excelencia y administradores deben poder asignar el valor &apos;Encuesta TNPS Cliente&apos;.</description>
+    <errorConditionFormula>AND (OR (AND (ISCHANGED(SourceArea__c), PRIORVALUE(SourceArea__c)=&quot;TNPS Customer Survey&quot;),
+         ISPICKVAL(SourceArea__c, &quot;TNPS Customer Survey&quot;)),
+    (NOT($Permission.Area_Origen_Centro_Excelencia)),
+    $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos;,
+    $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos;,
+    $Profile.Id &lt;&gt; &apos;00e68000000p7H4&apos;
 )</errorConditionFormula>
     <errorDisplayField>SourceArea__c</errorDisplayField>
     <errorMessage>El valor &apos;Encuesta TNPS Cliente&apos; sólo es asignable por el Centro de Excelencia.</errorMessage>

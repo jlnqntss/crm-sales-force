@@ -73,9 +73,15 @@ private with sharing class ProductsSelectorTest
         List<Product2> existingProducts = [SELECT Id FROM Product2];
         System.assertEquals(false, existingProducts.isEmpty(), 'List should NOT be empty');
 
+        List<String> productIds = new List<String>();
+        for (Product2 prod : existingProducts)
+        {
+            productIds.add(prod.Id);
+        }
+
         Test.startTest();
         List<Product2> matchedRecords = new ProductsSelector(
-            new Set<String> {'Id'}).selectByID(existingProducts[0].id);
+            new Set<String> {'Id'}).selectByID(productIds);
         Test.stopTest();
 
         System.assertEquals(false, matchedRecords.isEmpty(), 'List should NOT be empty');
@@ -85,10 +91,10 @@ private with sharing class ProductsSelectorTest
     @isTest
     static void test_selectByID_KO()
     {
-       
+
         Test.startTest();
         List<Product2> matchedRecords = new ProductsSelector(
-            new Set<String> {'Id'}).selectByID('invent');
+            new Set<String> {'Id'}).selectByID(new List<String> {'invent', 'invent2'});
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');

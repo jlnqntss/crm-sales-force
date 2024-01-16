@@ -181,27 +181,6 @@
             <operator>notEqual</operator>
             <value></value>
         </criteriaItems>
-        <criteriaItems>
-            <column>Account.INFOIntermediaryCode__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>0000081101</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>KPI__c.CalcYear__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>2021</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>KPI__c.CalcMonth__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>9</value>
-        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>

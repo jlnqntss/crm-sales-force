@@ -5,14 +5,14 @@
  * @date 24/02/2020
  */
 @isTest(SeeAllData = false)
-public class Test_ErrorLogUtil
+private with sharing class Test_ErrorLogUtil
 {
     @testSetup
-    static void makeData()
+    private static void makeData()
     {}
 
     @isTest
-    static void testCommitErrors()
+    private static void testCommitErrors()
     {
         Test.startTest();
         try
@@ -42,7 +42,7 @@ public class Test_ErrorLogUtil
     }
 
     @isTest
-    static void testHandleErrors()
+    private static void testHandleErrors()
     {
         //List<Error_Event__e> errorEvents = TestDataFactory.getErrorEvents(5);
         List<Error_Event__e> errorEvents = new List<Error_Event__e>();
@@ -70,7 +70,7 @@ public class Test_ErrorLogUtil
     }
 
     @IsTest
-    static void test_ErrorLogHandlerMethods()
+    private static void test_ErrorLogHandlerMethods()
     {
         /* Cobertura para el handler que implementa la interfaz ITigger */
 
@@ -108,7 +108,7 @@ public class Test_ErrorLogUtil
     }
 
     @isTest
-    static void testHandleExternalRequestErrors()
+    private static void testHandleExternalRequestErrors()
     {
         List<ExternalRequestErrorEvent__e> errorEvents = new List<ExternalRequestErrorEvent__e> {
             new ExternalRequestErrorEvent__e(
@@ -140,7 +140,7 @@ public class Test_ErrorLogUtil
     }
 
     @isTest
-    static void testCommitExternalRequestErrors()
+    private static void testCommitExternalRequestErrors()
     {
         // Insertar un external request
         ExternalRequest__c request = TestDataFactory.generateExternalRequest('INFO', 'NATURAL_ACCOUNT', 1).get(0);
@@ -173,7 +173,7 @@ public class Test_ErrorLogUtil
     }
 
     @isTest
-    static void testCommitError_newWebFormRequest()
+    private static void testCommitError_newWebFormRequest()
     {
         String emailFromJSON = 'newemail@fakeemail.com.invalid';
         String phoneFromJSON = '123456789';

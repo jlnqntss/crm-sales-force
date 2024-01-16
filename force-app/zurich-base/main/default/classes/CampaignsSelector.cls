@@ -94,22 +94,41 @@ public with sharing class CampaignsSelector extends BaseSelector
     }
 
     /**
-    * @description Método selector que devuelve todas las campañas a las que un
-    * usuario tiene acceso (Clausula 'WITH SECURITY_ENFORCE').
-    * 
-    * @author amiranda
-    * @date 30-10-2023 
-    * @return List<Campaign> Lista de campañas a las que tiene acceso un usuario
-    * @where Restringido a llamarse desde métodos donde se debe verificar el control
-    * de acceso a los objetos/campos.
-    **/
-    public List<Campaign> selectCampaigns()
+     * @description Método selector que devuelve todas las campañas y sus respectivos
+     * miembros de campaña. Se aplica un filtro para que devuelva exclusivamente
+     * aquellas campañas que contienen al menos un miembro de campaña cuya cuenta relacionada
+     * con el miembro de campaña es visible por el mediador con el Id pasado por parámetro.
+     *
+     * @author amiranda
+     * @date 30-10-2023
+     * @param intermediaryId Id de la cuenta de tipo Intermediario que tiene visibilidad
+     * sobre la cuenta relacionada con el miembro de campaña. En caso de null se retorna
+     * una lista vacía de campañas.
+     * @return List<Campaign> Lista de campañas y sus respectivos miembros de campañaa
+     * @where Restringido a llamarse desde métodos donde se debe verificar el control
+     * de acceso a los objetos/campos.
+     *
+     * @change amiranda 28/12/2023 Se añade el parámetro 'intermediaryId' al método
+     **/
+    public List<Campaign> selectCampaigns(Id intermediaryId)
     {
         List<Campaign> campaigns = new List<Campaign>();
 
-        campaigns = [SELECT Id, Name, StartDate, EndDate, toLabel(Type), toLabel(ProductBranch__c),
-                     isActive, (SELECT Id, Status FROM CampaignMembers)
-                     FROM Campaign WITH SECURITY_ENFORCED ORDER BY Name];
+        if ( String.isNotBlank(intermediaryId) )
+        {
+            campaigns = [SELECT Id, Name, StartDate, EndDate, toLabel(Type),
+                         toLabel(ProductBranch__c), isActive,
+                         (SELECT Id, Status
+                          FROM CampaignMembers
+                          WHERE Contact.Account.IntermediaryVisibilityAcc__c = :intermediaryId
+                                                                               OR Contact.Account.Owner.Contact.AccountId = :intermediaryId)
+                         FROM Campaign
+                         WHERE Id IN (SELECT CampaignId
+                                      FROM CampaignMember
+                                      WHERE Contact.Account.IntermediaryVisibilityAcc__c = :intermediaryId
+                                                                                           OR Contact.Account.Owner.Contact.AccountId = :intermediaryId)
+                         WITH USER_MODE ORDER BY Name ];
+        }
 
         return campaigns;
     }

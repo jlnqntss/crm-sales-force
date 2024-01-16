@@ -7808,11 +7808,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Policy__c.PolicyHolder__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Policy__c.PolicyLink__c</field>
         <readable>false</readable>
     </fieldPermissions>

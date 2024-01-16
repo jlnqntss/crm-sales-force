@@ -5,7 +5,7 @@
  * @date 28/07/2021
  */
 @isTest
-private class KPIsSelectorTest 
+private with sharing class KPIsSelectorTest 
 {
     /**
      * Metodo comun para todas los metodos de test. Inicializa los datos de prueba
@@ -14,7 +14,7 @@ private class KPIsSelectorTest
      * @date 29/06/2021
      */
     @TestSetup
-    static void makeData() 
+    private static void makeData() 
     {
         // Creacion de los Mediadores (3)
         List<Account> intermediaries = TestDataFactory.generateAccounts(
@@ -34,7 +34,7 @@ private class KPIsSelectorTest
      * @date 28/07/2021
      */
     @isTest
-    static void findByIntermediaryIds()
+    private static void findByIntermediaryIds()
     {
         List<Account> intermediaries = [SELECT Id FROM Account];
         System.assertEquals(3, intermediaries.size(), 'Deberia haber 3 mediadores');
@@ -60,7 +60,7 @@ private class KPIsSelectorTest
      * @date 28/10/2021
      */
     @isTest
-    static void findThisYearsLastMonth()
+    private static void findThisYearsLastMonth()
     {
         List<Account> intermediaries = [SELECT Id FROM Account];
         System.assertEquals(3, intermediaries.size(), 'Deberia haber 3 mediadores');

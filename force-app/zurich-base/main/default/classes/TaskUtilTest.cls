@@ -6,10 +6,10 @@
  * @last modified by  : aberuete
  **/
 @isTest
-private class TaskUtilTest
+private with sharing class TaskUtilTest
 {
     @testSetup
-    public static void createScenario()
+    private static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
         Account portalAccount = new Account();
@@ -43,7 +43,7 @@ private class TaskUtilTest
      * @date 01/08/2023
      */
     @isTest
-    static void test_createTaskOwnerCommunity()
+    private static void test_createTaskOwnerCommunity()
     {
         User userCommunity = [Select id from User where profile.name = 'OCS Community User' and isActive = true limit 1 ];
         Task taskToCreate = new Task();
@@ -65,7 +65,7 @@ private class TaskUtilTest
      * @date 01/08/2023
      */
     @isTest
-    static void test_updateTaskOwnerCommunity()
+    private static void test_updateTaskOwnerCommunity()
     {
         User userCommunity = [Select id from User where profile.name = 'OCS Community User' and isActive = true limit 1 ];
 
@@ -92,7 +92,7 @@ private class TaskUtilTest
      * @date 01/08/2023
      */
     @isTest
-    static void test_deleteTask()
+    private static void test_deleteTask()
     {
         Task taskToCreate = new Task();
         taskToCreate.Status = 'Asignada';

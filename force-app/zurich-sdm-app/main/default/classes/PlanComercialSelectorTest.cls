@@ -5,9 +5,9 @@
  * @date 04/10/2021
  */
 @isTest
-private class PlanComercialSelectorTest
+private with sharing class PlanComercialSelectorTest
 {
-    public static final Integer ACTUAL_YEAR = 2021;
+    private static final Integer ACTUAL_YEAR = 2021;
 
     /**
      * Metodo comun para todas los metodos de test. Inicializa los datos de prueba
@@ -16,7 +16,7 @@ private class PlanComercialSelectorTest
      * @date 04/10/2021
      */
     @TestSetup
-    static void makeData() 
+    private static void makeData() 
     {
         TestDataFactorySDM.AnualPlanSetupData(ACTUAL_YEAR, AccountsSelector.SDM_DT_EMAIL_FIELD);
     }
@@ -28,7 +28,7 @@ private class PlanComercialSelectorTest
      * @date 04/10/2021
      */
     @isTest
-    static void testIndicatorType()
+    private static void testIndicatorType()
     {
         Test.startTest();
         PlanComercialSelector.eIndicator indicatorType = PlanComercialSelector.getIndicatorType(PlanComercialSelector.INDICATOR_PN);
@@ -50,7 +50,7 @@ private class PlanComercialSelectorTest
      * @date 04/10/2021
      */
     @isTest
-    static void findAnualPlansByAssignedUserAndYear()
+    private static void findAnualPlansByAssignedUserAndYear()
     {
         // Recuperamos el usuario DT
         String dtEmail = String.format(TestDataFactorySDM.TERRITORY_EMAIL, new List<String>{String.valueOf(0)});
@@ -76,7 +76,7 @@ private class PlanComercialSelectorTest
      * @date 04/10/2021
      */
     @isTest
-    static void findAnnualPlanDescendants()
+    private static void findAnnualPlanDescendants()
     {
         // Recuperamos el usuario DT
         String dtEmail = String.format(TestDataFactorySDM.TERRITORY_EMAIL, new List<String>{String.valueOf(0)});
@@ -104,7 +104,7 @@ private class PlanComercialSelectorTest
      * @date 11/10/2021
      */
     @isTest
-    static void findAnnualPlansByIntermediariesAndUsers()
+    private static void findAnnualPlansByIntermediariesAndUsers()
     {
         String rnEmail = String.format(TestDataFactorySDM.BUSINESS_EMAIL, new List<String>{String.valueOf(0)});
         List<User> users = [SELECT Id FROM User WHERE Email = :rnEmail];
@@ -131,7 +131,7 @@ private class PlanComercialSelectorTest
      * @date 29/07/2022
      */
     @isTest
-    static void findMensualPlans() {
+    private static void findMensualPlans() {
 
         List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
@@ -156,7 +156,7 @@ private class PlanComercialSelectorTest
      * @date 29/07/2022
      */
     @isTest
-    static void findAnualPlanByObjectiveIndicators() {
+    private static void findAnualPlanByObjectiveIndicators() {
 
         List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
@@ -199,7 +199,7 @@ private class PlanComercialSelectorTest
      * @date 29/07/2022
      */
     @isTest
-    static void findMensualPlanByObjectiveIndicators() {
+    private static void findMensualPlanByObjectiveIndicators() {
 
         List<PlanComercial__c> planesAnuales = new List<PlanComercial__c>([SELECT ID, Name, SendNotifications__c, AccumulateType__c, Startdate__c, EndDate__c, Indicator__c, Segment__c, Product__c, TargetKPINumber__c, Zone__c FROM PlanComercial__c 
                                                         WHERE RecordTypeId = :Schema.SObjectType.PlanComercial__c.getRecordTypeInfosByDeveloperName().get('AnualPlan').getRecordTypeId()
@@ -245,7 +245,7 @@ private class PlanComercialSelectorTest
      * @date 23/08/2022
      */
     @isTest
-    static void findAssignedToEmailFromPC() {
+    private static void findAssignedToEmailFromPC() {
         List<PlanComercial__c> planesComerciales = new List<PlanComercial__c>([SELECT ID FROM PlanComercial__c LIMIT 1]);
 
         PlanComercialSelector planSel = new PlanComercialSelector();
@@ -265,7 +265,7 @@ private class PlanComercialSelectorTest
      * @date 23/08/2022
      */
     @isTest
-    static void findAssignedToEmailFromPC_Null() {
+    private static void findAssignedToEmailFromPC_Null() {
 
         PlanComercialSelector planSel = new PlanComercialSelector();
         Test.startTest();
@@ -283,7 +283,7 @@ private class PlanComercialSelectorTest
      * @date 23/08/2022
      */
     @isTest
-    static void findMensualPlanToDeleteByMaxDate() {
+    private static void findMensualPlanToDeleteByMaxDate() {
 
         Date d = Date.today();
 
@@ -302,7 +302,7 @@ private class PlanComercialSelectorTest
      * @date 23/08/2022
      */
     @isTest
-    static void findMensualPlanToDeleteByMaxDate_Null() {
+    private static void findMensualPlanToDeleteByMaxDate_Null() {
 
         PlanComercialSelector planSel = new PlanComercialSelector();
         Test.startTest();
@@ -320,7 +320,7 @@ private class PlanComercialSelectorTest
      * @date 23/08/2022
      */
     @isTest
-    static void getParentOwnerId() {
+    private static void getParentOwnerId() {
 
         List<PlanComercial__c> planesComercialesQuery = new List<PlanComercial__c>([SELECT Id FROM PlanComercial__c LIMIT 1]);
 
@@ -339,7 +339,7 @@ private class PlanComercialSelectorTest
      * @date 23/08/2022
      */
     @isTest
-    static void getParentOwnerId_Null() {
+    private static void getParentOwnerId_Null() {
 
         PlanComercialSelector planSel = new PlanComercialSelector();
         Test.startTest();
