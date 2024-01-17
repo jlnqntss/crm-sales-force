@@ -77,7 +77,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>KPI__c.EstructuraDetalle__c</groupingColumn>
+                <groupingColumn>BucketField_68388292</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
@@ -86,7 +86,7 @@
                 </groupingSortProperties>
                 <header>PN</header>
                 <legendPosition>Right</legendPosition>
-                <maxValuesDisplayed>9</maxValuesDisplayed>
+                <maxValuesDisplayed>6</maxValuesDisplayed>
                 <report>ZRMKPIS/Mi_Negocio_Mes_Actual_12_1f9</report>
                 <showPercentage>false</showPercentage>
                 <showTotal>true</showTotal>
@@ -319,7 +319,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>false</expandOthers>
-                <groupingColumn>Policy__c$ProductBranch__c</groupingColumn>
+                <groupingColumn>Policy__c.ProductBranch__c</groupingColumn>
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
@@ -329,7 +329,7 @@
                 <header>Distribución Cartera - Ramo</header>
                 <legendPosition>Right</legendPosition>
                 <maxValuesDisplayed>6</maxValuesDisplayed>
-                <report>ZRMKPIS/Distribucin_Cartera_Ramo_zOB</report>
+                <report>ZRMKPIS/Distribucin_Cartera_Ramo_Mes_HXN</report>
                 <showPercentage>false</showPercentage>
                 <showTotal>true</showTotal>
                 <showValues>true</showValues>
@@ -338,7 +338,7 @@
                 <useReportChart>false</useReportChart>
             </dashboardComponent>
             <rowIndex>8</rowIndex>
-            <rowSpan>8</rowSpan>
+            <rowSpan>12</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -523,6 +523,10 @@
     </dashboardGridLayout>
     <dashboardType>LoggedInUser</dashboardType>
     <isGridLayout>true</isGridLayout>
+<<<<<<< HEAD
+=======
+    <runningUser>adminklinc@zurich-es.com</runningUser>
+>>>>>>> parent of 2a520bc5c (feat: CV-1315 Dashboards y reports)
     <textColor>#000000</textColor>
     <title>Mi Negocio Mes Actual (1/2)</title>
     <titleColor>#000000</titleColor>
