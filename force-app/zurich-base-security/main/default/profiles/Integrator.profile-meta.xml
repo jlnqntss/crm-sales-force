@@ -4032,16 +4032,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.NoLifePremium__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.NumNoLifePolicy__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Account.TerAdvisoryCouncil__c</field>
         <readable>true</readable>
@@ -11093,6 +11083,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.PaymentType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.PolicyHolder__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

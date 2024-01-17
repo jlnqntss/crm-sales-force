@@ -6,7 +6,7 @@
         <objectField>IntermediaryVisibilityAcc__c</objectField>
         <userField>Contact.Account</userField>
     </accessMappings>
-    <accessMappings>
+        <accessMappings>
         <accessLevel>Read</accessLevel>
         <object>Claim__c</object>
         <objectField>PolicyHolder__c.IntermediaryVisibilityAcc__c</objectField>
@@ -21,6 +21,12 @@
     <accessMappings>
         <accessLevel>Read</accessLevel>
         <object>Opportunity</object>
+        <objectField>IntermediaryVisibilityAcc__c</objectField>
+        <userField>Contact.Account</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Policy__c</object>
         <objectField>IntermediaryVisibilityAcc__c</objectField>
         <userField>Contact.Account</userField>
     </accessMappings>
