@@ -608,31 +608,36 @@ global with sharing class ExternalRequestHandlerUtil
         Map<String, Account> intermediaryQueryMap = intermediaryAndGroupQueryMap.get('Intermediary');
         Map<String, Account> intermediaryGroupQueryMap = intermediaryAndGroupQueryMap.get('IntermediaryGroup');
 
-        if (!intermediaryQueryMap.isEmpty() && intermediaryQueryMap.containsKey(record.INFOIntermediaryCode__c)) {
+        if (record.IntermediaryGroup__r != null && !intermediaryGroupQueryMap.isEmpty() && intermediaryGroupQueryMap.containsKey(record.IntermediaryGroup__r.INFOIntermediaryGroupCode__c)) {
+            if (!intermediaryQueryMap.isEmpty() && intermediaryQueryMap.containsKey(record.INFOIntermediaryCode__c)) {
 
-            Account intermediary = intermediaryQueryMap.get(record.INFOIntermediaryCode__c);
+                Account intermediary = intermediaryQueryMap.get(record.INFOIntermediaryCode__c);
 
-            // compruebo primero si existe en el mapa un registro            
-            sObject accountFromKeyMap;
-            Boolean existeAltaAgrupacionEnMap = false;
-    
-            for (sObject acc: recordsToUpsertByEntity.get(entity).get('Account').keySet()) {
-                if (record.INFOIntermediaryCode__c.equals(acc.get('INFOIntermediaryCode__c'))) {
-                    accountFromKeyMap = acc;
-                    existeAltaAgrupacionEnMap = acc.get('IntermediaryEndDate__c') == null; // si es nulo true, si no false
-                    break;
+                // compruebo primero si existe en el mapa un registro            
+                sObject accountFromKeyMap;
+                Boolean existeAltaAgrupacionEnMap = false;
+        
+                for (sObject acc: recordsToUpsertByEntity.get(entity).get('Account').keySet()) {
+                    if (record.INFOIntermediaryCode__c.equals(acc.get('INFOIntermediaryCode__c'))) {
+                        accountFromKeyMap = acc;
+                        existeAltaAgrupacionEnMap = acc.get('IntermediaryEndDate__c') == null; // si es nulo true, si no false
+                        break;
+                    }
                 }
-            }
 
-            // si no existe alta en agrupacion se comprueba las bajas
-            record = processEndDate(record, intermediary, existeAltaAgrupacionEnMap, intermediaryGroupQueryMap);
+                // si no existe alta en agrupacion se comprueba las bajas
+                record = processEndDate(record, intermediary, existeAltaAgrupacionEnMap, intermediaryGroupQueryMap);
+                
+                // guarda en el registro del mapa el registro válido teniendo en cuenta que si es alta se guarda siempre sin tener nada más en cuenta y si es una baja nos quedamos con el de fecha más reciente
+                processRecord(record, accountFromKeyMap, externalRequest, existeAltaAgrupacionEnMap, entity);
+
+            } else {
+                setExternalRequest(externalRequest, true, 'KO', 'No se ha podido encontrar en BD el mediador con código ' + record.INFOIntermediaryCode__c, false);
+            }  
             
-            // guarda en el registro del mapa el registro válido teniendo en cuenta que si es alta se guarda siempre sin tener nada más en cuenta y si es una baja nos quedamos con el de fecha más reciente
-            processRecord(record, accountFromKeyMap, externalRequest, existeAltaAgrupacionEnMap, entity);
-
-        } else {
-            setExternalRequest(externalRequest, true, 'KO', 'No se ha podido encontrar en BD el mediador con código ' + record.INFOIntermediaryCode__c, false);
-        }        
+        }else {
+            setExternalRequest(externalRequest, true, 'KO', 'No se ha podido encontrar en BD el codigo de agrupación', false);
+        }
     }
 
     /**
