@@ -523,10 +523,6 @@
     </dashboardGridLayout>
     <dashboardType>LoggedInUser</dashboardType>
     <isGridLayout>true</isGridLayout>
-<<<<<<< HEAD
-=======
-    <runningUser>adminklinc@zurich-es.com</runningUser>
->>>>>>> parent of 2a520bc5c (feat: CV-1315 Dashboards y reports)
     <textColor>#000000</textColor>
     <title>Mi Negocio Mes Actual (1/2)</title>
     <titleColor>#000000</titleColor>
