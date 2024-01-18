@@ -7,7 +7,7 @@
  * @last modified on  : 05/09/2023
  * @last modified by  : jgallaga
 **/
-global without sharing class DeleteRecordsByFieldBatch implements Database.Batchable<SObject>
+global with sharing class DeleteRecordsByFieldBatch implements Database.Batchable<SObject>
 {
     private String staticResourceName;
     private String sObjectName;

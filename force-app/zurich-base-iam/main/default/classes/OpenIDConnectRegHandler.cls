@@ -9,13 +9,13 @@
 
  * @See ./authprovider/
  */
-global class OpenIDConnectRegHandler implements Auth.RegistrationHandler {
+global with sharing class OpenIDConnectRegHandler implements Auth.RegistrationHandler {
 
     @testvisible
     private List<AuthMapping__mdt> testListAuthMappings;
 
     @testvisible
-    private static final string AUTH_DATA_MAP_NAME = 'roles';    
+    private static final string AUTH_DATA_MAP_NAME = 'roles';
 
     private static final string CLASS_NAME = 'OpenIDConnectRegHandler';
 

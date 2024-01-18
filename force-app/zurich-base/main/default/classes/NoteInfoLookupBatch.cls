@@ -6,7 +6,7 @@
  * @date 27/04/2021
  *
  */
-global class NoteInfoLookupBatch implements Database.Batchable<sObject>, Database.Stateful, Schedulable, Database.AllowsCallouts
+global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObject>, Database.Stateful, Schedulable, Database.AllowsCallouts
 {
     @testvisible
     private static final String NOTE_CASE_ORIGIN = 'NoteINFO';

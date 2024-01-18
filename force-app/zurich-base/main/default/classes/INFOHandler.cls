@@ -5,7 +5,7 @@
  * @author adelgado
  * @date 13/10/2020
  */
-public class INFOHandler implements ISystem
+public with sharing class INFOHandler implements ISystem
 {
     // Si se da un Insured Object, guardara los valores del picklist ObjectType__c que representan las equivalencias
     // entre el codigo de objeto (INFO) y el campo Name en Salesforce

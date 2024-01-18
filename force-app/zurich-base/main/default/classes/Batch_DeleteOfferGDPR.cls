@@ -4,7 +4,7 @@
  * @date 26/06/2023
  */
 
- global class Batch_DeleteOfferGDPR implements Database.Batchable<sObject>, Database.Stateful, Schedulable
+ global with sharing class Batch_DeleteOfferGDPR implements Database.Batchable<sObject>, Database.Stateful, Schedulable
  {
     private static final List<GDPR_OfferDeletion__mdt>  borradoOfertas = SystemUtil.getOfferDeletionMetadata();
     private static List<String> ramos=new List<String>();
