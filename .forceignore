@@ -94,3 +94,4 @@ force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredential
 
 # Clase Test provisional
 force-app/zurich-base/main/default/classes/ReassignInteractionCTIExtensionTest.cls
+force-app/zurich-base/main/default/classes/ReassignInteractionCTIExtensionTest.cls-meta.xml
