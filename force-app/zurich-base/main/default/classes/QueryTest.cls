@@ -34,13 +34,13 @@ private with sharing class QueryTest
                    selectAllFields().
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
-        accounts = new Query(Account.getSObjectType() ).
+        accounts = new Query( Account.getSObjectType() ).
                    selectAllFields().
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
     }
 
     @isTest
@@ -53,19 +53,19 @@ private with sharing class QueryTest
                    selectReadableFields().
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
-        accounts = new Query(Account.getSObjectType() ).
+        accounts = new Query( Account.getSObjectType() ).
                    selectEditableFields().
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
-        accounts = new Query(Account.getSObjectType() ).
+        accounts = new Query( Account.getSObjectType() ).
                    selectCreatableFields().
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
     }
 
     @isTest
@@ -78,19 +78,19 @@ private with sharing class QueryTest
                    selectAllFields().
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
-        accounts = new Query(Account.getSObjectType() ).
+        accounts = new Query( Account.getSObjectType() ).
                    selectEditableFields().
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
-        accounts = new Query(Account.getSObjectType() ).
+        accounts = new Query( Account.getSObjectType() ).
                    selectCreatableFields().
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
     }
 
     @isTest
@@ -191,7 +191,7 @@ private with sharing class QueryTest
                                  selectAllFields().
                                  run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
     }
 
     @isTest
@@ -210,7 +210,7 @@ private with sharing class QueryTest
                         selectFields(new List<String> {'Owner.FirstName', 'Owner.LastName'}).
                         run();
 
-        assertOpportunity(opportunities.get(0) );
+        assertOpportunity( opportunities.get(0) );
 
         System.assertNotEquals(opportunities.get(0).CreatedBy.FirstName, null);
         System.assertNotEquals(opportunities.get(0).Account.CreatedBy.FirstName, null);
@@ -237,7 +237,7 @@ private with sharing class QueryTest
                         selectFields(new List<String> {'Owner.FirstName', 'Owner.LastName'}).
                         run();
 
-        assertOpportunity(opportunities.get(0) );
+        assertOpportunity( opportunities.get(0) );
 
         System.assertNotEquals(opportunities.get(0).CreatedBy.FirstName, null);
         System.assertNotEquals(opportunities.get(0).Account.CreatedBy.FirstName, null);
@@ -262,21 +262,21 @@ private with sharing class QueryTest
                    byId(accId).
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    byId(new Set<Id> {accId}).
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    byId(new List<Id> {accId}).
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         // negative cases
         final Id wrongId = 'a0EO000000DjJeJMAV';
@@ -285,7 +285,7 @@ private with sharing class QueryTest
                    byId(wrongId).
                    run();
 
-        System.assert (accounts.isEmpty() );
+        System.assert ( accounts.isEmpty() );
     }
 
     @isTest
@@ -303,7 +303,7 @@ private with sharing class QueryTest
             lookup('AccountId', account.Id).
             run();
 
-        assertOpportunity(opportunities.get(0) );
+        assertOpportunity( opportunities.get(0) );
 
         opportunities =
             new Query('Opportunity').
@@ -311,7 +311,7 @@ private with sharing class QueryTest
             lookup('AccountId', new List<Id> {account.Id}).
             run();
 
-        assertOpportunity(opportunities.get(0) );
+        assertOpportunity( opportunities.get(0) );
 
         opportunities =
             new Query('Opportunity').
@@ -319,7 +319,7 @@ private with sharing class QueryTest
             lookup('AccountId', account).
             run();
 
-        assertOpportunity(opportunities.get(0) );
+        assertOpportunity( opportunities.get(0) );
     }
 
     @isTest
@@ -335,7 +335,7 @@ private with sharing class QueryTest
                    addConditionNull('AccountNumber').
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         // negative cases
         accounts = new Query('Account').
@@ -344,7 +344,7 @@ private with sharing class QueryTest
                    addConditionEq('Phone', '+61 410 111 111').
                    run();
 
-        System.assert (accounts.isEmpty() );
+        System.assert ( accounts.isEmpty() );
     }
 
     @isTest
@@ -359,70 +359,70 @@ private with sharing class QueryTest
                    addConditionEq('Name', 'ABC Ltd').
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    addConditionNotEq('Name', 'CDE Ltd').
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    addConditionIn('Name', new Set<String> {'ABC Ltd'}).
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    addConditionNotIn('Name', new Set<String> {'CDE Ltd'}).
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    addConditionLt('NumberOfEmployees', 15).
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    addConditionLe('NumberOfEmployees', 10).
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    addConditionGt('NumberOfEmployees', 5).
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    addConditionGe('NumberOfEmployees', 10).
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    addConditionLike('Name', '%ABC%').
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         accounts = new Query('Account').
                    selectAllFields().
                    addConditionNotLike('Name', '%CBA%').
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
     }
 
     @isTest
@@ -439,7 +439,7 @@ private with sharing class QueryTest
                    addConditionEq('Phone', '+61 410 111 111').
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
 
         // negative cases
 
@@ -451,7 +451,7 @@ private with sharing class QueryTest
                    switchToConjunction().
                    run();
 
-        System.assert (accounts.isEmpty() );
+        System.assert ( accounts.isEmpty() );
     }
 
     @isTest
@@ -461,10 +461,10 @@ private with sharing class QueryTest
 
         List<Account> accounts = new Query('Account').
                                  selectAllFields().
-                                 addCondition(Query.conditionEq('Name', 'ABC Ltd') ).
+                                 addCondition( Query.conditionEq('Name', 'ABC Ltd') ).
                                  run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
     }
 
     @isTest
@@ -547,7 +547,7 @@ private with sharing class QueryTest
                 ).
             run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
     }
 
     @isTest
@@ -563,7 +563,7 @@ private with sharing class QueryTest
                                  run();
 
         System.assertEquals(accounts.size(), 1);
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
     }
 
     @isTest
@@ -710,16 +710,16 @@ private with sharing class QueryTest
                    addSubquery('Opportunities').
                    run();
 
-        assertAccount(accounts.get(0) );
+        assertAccount( accounts.get(0) );
         System.assert (accounts.get(0).Opportunities.get(0).Id != null);
 
         accounts = new Query('Account').
                    selectAllFields().
-                   addSubquery(Query.subquery('Opportunities').selectAllFields() ).
+                   addSubquery( Query.subquery('Opportunities').selectAllFields() ).
                    run();
 
-        assertAccount(accounts.get(0) );
-        assertOpportunity(accounts.get(0).Opportunities.get(0) );
+        assertAccount( accounts.get(0) );
+        assertOpportunity( accounts.get(0).Opportunities.get(0) );
     }
 
     @isTest
@@ -743,9 +743,9 @@ private with sharing class QueryTest
             ).
                    run();
 
-        assertAccount(accounts.get(0) );
-        assertOpportunity(accounts.get(0).Opportunities.get(0) );
-        assertTask(accounts.get(0).Tasks.get(0) );
+        assertAccount( accounts.get(0) );
+        assertOpportunity( accounts.get(0).Opportunities.get(0) );
+        assertTask( accounts.get(0).Tasks.get(0) );
 
     }
 
@@ -773,12 +773,12 @@ private with sharing class QueryTest
                                       new Set<Integer> {10}),
                     Query.conditionEq('Name', 'N/A'),
                     Query.doAnd(
-                        Query.conditionEq('CloseDate', Date.today().addDays(1) ),
+                        Query.conditionEq( 'CloseDate', Date.today().addDays(1) ),
                         Query.conditionEq('Name', 'N/A'),
                         Query.conditionEq('Name', 'N/A')
                         ),
                     Query.doOr(
-                        Query.conditionEq('CloseDate', Date.today().addDays(1) ),
+                        Query.conditionEq( 'CloseDate', Date.today().addDays(1) ),
                         Query.conditionEq('Name', 'N/A'),
                         Query.conditionEq('Name', 'N/A')
                         )
@@ -787,8 +787,8 @@ private with sharing class QueryTest
             ).
                    run();
 
-        assertAccount(accounts.get(0) );
-        assertOpportunity(accounts.get(0).Opportunities.get(0) );
+        assertAccount( accounts.get(0) );
+        assertOpportunity( accounts.get(0).Opportunities.get(0) );
 
     }
 
@@ -814,7 +814,7 @@ private with sharing class QueryTest
                                       new Set<Integer> {10}),
                     Query.conditionEq('Name', 'N/A'),
                     Query.doAnd(
-                        Query.conditionEq('CloseDate', Date.today().addDays(1) ),
+                        Query.conditionEq( 'CloseDate', Date.today().addDays(1) ),
                         Query.conditionEq('Name', 'N/A'),
                         Query.conditionEq('Name', 'N/A')
                         ),
@@ -830,8 +830,8 @@ private with sharing class QueryTest
 
         List<Account> accounts = Database.query(queryString);
 
-        assertAccount(accounts.get(0) );
-        assertOpportunity(accounts.get(0).Opportunities.get(0) );
+        assertAccount( accounts.get(0) );
+        assertOpportunity( accounts.get(0).Opportunities.get(0) );
 
     }
 
@@ -948,98 +948,98 @@ private with sharing class QueryTest
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionEq('CloseDate', Query.NEXT_N_DAYS(4) ).
+              addConditionEq( 'CloseDate', Query.NEXT_N_DAYS(4) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionGe('CloseDate', Query.LAST_N_DAYS(10) ).
+              addConditionGe( 'CloseDate', Query.LAST_N_DAYS(10) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionLe('CreatedDate', Query.NEXT_N_WEEKS(2) ).
+              addConditionLe( 'CreatedDate', Query.NEXT_N_WEEKS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionGe('CreatedDate', Query.LAST_N_WEEKS(2) ).
+              addConditionGe( 'CreatedDate', Query.LAST_N_WEEKS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionLe('CreatedDate', Query.NEXT_N_MONTHS(2) ).
+              addConditionLe( 'CreatedDate', Query.NEXT_N_MONTHS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionGe('CreatedDate', Query.LAST_N_MONTHS(2) ).
+              addConditionGe( 'CreatedDate', Query.LAST_N_MONTHS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionLe('CreatedDate', Query.NEXT_N_QUARTERS(2) ).
+              addConditionLe( 'CreatedDate', Query.NEXT_N_QUARTERS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionGe('CreatedDate', Query.LAST_N_QUARTERS(2) ).
+              addConditionGe( 'CreatedDate', Query.LAST_N_QUARTERS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionLe('CreatedDate', Query.NEXT_N_YEARS(2) ).
+              addConditionLe( 'CreatedDate', Query.NEXT_N_YEARS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionGe('CreatedDate', Query.LAST_N_YEARS(2) ).
+              addConditionGe( 'CreatedDate', Query.LAST_N_YEARS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionLe('CreatedDate', Query.NEXT_N_FISCAL_QUARTERS(2) ).
+              addConditionLe( 'CreatedDate', Query.NEXT_N_FISCAL_QUARTERS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionGe('CreatedDate', Query.LAST_N_FISCAL_QUARTERS(2) ).
+              addConditionGe( 'CreatedDate', Query.LAST_N_FISCAL_QUARTERS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionLe('CreatedDate', Query.NEXT_N_FISCAL_YEARS(2) ).
+              addConditionLe( 'CreatedDate', Query.NEXT_N_FISCAL_YEARS(2) ).
               fetch();
 
         assertOpportunity(opp);
 
         opp = (Opportunity) new Query('Opportunity').
               selectAllFields().
-              addConditionGe('CreatedDate', Query.LAST_N_FISCAL_YEARS(2) ).
+              addConditionGe( 'CreatedDate', Query.LAST_N_FISCAL_YEARS(2) ).
               fetch();
 
         assertOpportunity(opp);
@@ -1124,8 +1124,8 @@ private with sharing class QueryTest
 
         insert new List<Account> {acc1, acc2, acc3, acc4};
 
-        System.assertEquals(4, new Query('Account').countQuery() );
-        System.assertEquals(2, new Query('Account').addConditionEq('Rating', '1').countQuery() );
+        System.assertEquals( 4, new Query('Account').countQuery() );
+        System.assertEquals( 2, new Query('Account').addConditionEq('Rating', '1').countQuery() );
     }
 
     @isTest
@@ -1184,10 +1184,10 @@ private with sharing class QueryTest
             count('Name', 'countName').
             addConditionGe('NumberOfEmployees', 1).
             groupBy('Rating').
-            addHaving(Query.doAnd(
-                          Query.conditionGe('Count(Name)', 2),
-                          Query.conditionNotEq('Rating', null)
-                          ) ).
+            addHaving( Query.doAnd(
+                           Query.conditionGe('Count(Name)', 2),
+                           Query.conditionNotEq('Rating', null)
+                           ) ).
             aggregate();
 
         Map<String, AggregateResult> resultMap = new Map<String, AggregateResult>();
@@ -1217,7 +1217,7 @@ private with sharing class QueryTest
                               .allRows()
                               .run();
 
-        System.assertEquals(3, allTasks.size() );
+        System.assertEquals( 3, allTasks.size() );
     }
 
     @isTest
@@ -1236,27 +1236,27 @@ private with sharing class QueryTest
         insert opp;
 
         Account acc2 = (Account) new Query('Account').
-                       addConditionIn('Id', new Query('Opportunity').
-                                      selectField('AccountId').
-                                      byId(opp.Id) ).
+                       addConditionIn( 'Id', new Query('Opportunity').
+                                       selectField('AccountId').
+                                       byId(opp.Id) ).
                        fetch();
 
         System.assertEquals(acc.Id, acc2.Id);
 
         Account acc3 = (Account) new Query('Account').
-                       lookup('Id', new Query('Opportunity').
-                              selectField('AccountId').
-                              addConditionEq('StageName', 'New').
-                              byId(opp.Id) ).
+                       lookup( 'Id', new Query('Opportunity').
+                               selectField('AccountId').
+                               addConditionEq('StageName', 'New').
+                               byId(opp.Id) ).
                        addConditionEq('Name', 'New Account').
                        fetch();
 
         System.assertEquals(acc.Id, acc3.Id);
 
         Opportunity opp2 = (Opportunity) new Query('Opportunity').
-                           lookup('AccountId', new Query('Account').
-                                  selectField('Id').
-                                  byId(acc.Id) ).
+                           lookup( 'AccountId', new Query('Account').
+                                   selectField('Id').
+                                   byId(acc.Id) ).
                            fetch();
 
         System.assertEquals(opp.Id, opp2.Id);
@@ -1279,9 +1279,9 @@ private with sharing class QueryTest
         insert opp;
 
         Account acc3 = (Account) new Query('Account').
-                       addConditionNotIn('Id', new Query('Opportunity').
-                                         selectField('AccountId').
-                                         byId(opp.Id) ).
+                       addConditionNotIn( 'Id', new Query('Opportunity').
+                                          selectField('AccountId').
+                                          byId(opp.Id) ).
                        fetch();
 
         System.assertEquals(acc2, acc3);
@@ -1389,7 +1389,7 @@ private with sharing class QueryTest
     private static void assertOpportunity(Opportunity opp)
     {
         System.assertEquals(opp.Name, 'New Opportunity');
-        System.assertEquals(opp.CloseDate, Date.today().addDays(3) );
+        System.assertEquals( opp.CloseDate, Date.today().addDays(3) );
         System.assertEquals(opp.TotalOpportunityQuantity, 10);
     }
 

@@ -1,7 +1,7 @@
 /**
  * Batch that calculates the lookup fields of Notes (Case of origin equal to NoteInfo) for when the parents comes
  * after the Note has been inserted in Salesforce
- * 
+ *
  * @author nts (agonzalezisasi)
  * @date 27/04/2021
  *
@@ -24,12 +24,12 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
     global NoteInfoLookupBatch()
     {
         // Get the Last N days from the metadata configuration
-        List<AdminSetupParameter__mdt> settings = [SELECT Id, Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = :SETTINGS_LAST_N_DAYS];
+        List<AdminSetupParameter__mdt> settings = [SELECT Id, Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = : SETTINGS_LAST_N_DAYS];
         last_n_days = (!settings.isEmpty() ? Integer.valueOf(settings[0].Value__c) : DEFAULT_LAST_N_DAYS);
 
         // Configure the Hegeo fields in the Note with the equivalences with the Parents
         // Offer
-        //      Opportunity -> InfoQuoteNumber__c 
+        //      Opportunity -> InfoQuoteNumber__c
         //      HegeoPrePolicyId__c, HegeoOfferId__c => OfferId__c
         // Policy
         //      Policy__c -> InfoPolicyNumber__c
@@ -41,12 +41,12 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
         //      Account -> INFOIntermediaryCode__c
         //      HegeoIntermediaryId__c => AccountId
         listHegeoExternal = new List<HegeoExternal>();
-        
-        listHegeoExternal.add(new HegeoExternal('HegeoPrePolicyId__c', 'OfferId__c', 'Opportunity', 'InfoQuoteNumber__c'));
-        listHegeoExternal.add(new HegeoExternal('HegeoOfferId__c', 'OfferId__c', 'Opportunity', 'InfoQuoteNumber__c'));
-        listHegeoExternal.add(new HegeoExternal('HegeoPolicyId__c', 'PolicyId__c', 'Policy__c', 'InfoPolicyNumber__c'));
-        listHegeoExternal.add(new HegeoExternal('HegeoClaimId__c', 'ClaimId__c', 'Claim__c', 'INFOClaimNumber__c'));
-        listHegeoExternal.add(new HegeoExternal('HegeoIntermediaryId__c', 'AccountId', 'Account', 'INFOIntermediaryCode__c'));
+
+        listHegeoExternal.add( new HegeoExternal('HegeoPrePolicyId__c', 'OfferId__c', 'Opportunity', 'InfoQuoteNumber__c') );
+        listHegeoExternal.add( new HegeoExternal('HegeoOfferId__c', 'OfferId__c', 'Opportunity', 'InfoQuoteNumber__c') );
+        listHegeoExternal.add( new HegeoExternal('HegeoPolicyId__c', 'PolicyId__c', 'Policy__c', 'InfoPolicyNumber__c') );
+        listHegeoExternal.add( new HegeoExternal('HegeoClaimId__c', 'ClaimId__c', 'Claim__c', 'INFOClaimNumber__c') );
+        listHegeoExternal.add( new HegeoExternal('HegeoIntermediaryId__c', 'AccountId', 'Account', 'INFOIntermediaryCode__c') );
     }
 
     /**
@@ -56,7 +56,8 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
     {
         this();
 
-        if ( !String.isBlank(p_query) ) {
+        if ( !String.isBlank(p_query) )
+        {
             query = p_query;
         }
     }
@@ -66,23 +67,25 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
      */
     global Database.QueryLocator start(Database.BatchableContext bc)
     {
-        if( String.isBlank(query) ) {
+        if( String.isBlank(query) )
+        {
             // Get the configured fields for the query
             List<String> conditions = new List<String>();
             Set<String> fields = new Set<String>();
-            for(HegeoExternal hegeo: listHegeoExternal) {
+            for(HegeoExternal hegeo: listHegeoExternal)
+            {
                 // Select fields
                 fields.add(hegeo.noteHegeoFieldName);
                 fields.add(hegeo.noteParentIdFieldName);
                 // where conditions
                 conditions.add(hegeo.condition);
             }
-            
+
             // Format the soql query for the Notes
             query = 'SELECT Id, ' + String.join(new List<String>(fields), ',') +
-                 ' FROM Case WHERE Origin = \''+ NOTE_CASE_ORIGIN + '\'' + 
-                 ' AND CreatedDate >= LAST_N_DAYS:' + last_n_days +
-                 ' AND (' + String.join(conditions, ' OR ') + ')';
+                    ' FROM Case WHERE Origin = \'' + NOTE_CASE_ORIGIN + '\'' +
+                    ' AND CreatedDate >= LAST_N_DAYS:' + last_n_days +
+                    ' AND (' + String.join(conditions, ' OR ') + ')';
         }
 
         return Database.getQueryLocator(query);
@@ -101,50 +104,63 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
      */
     global void execute(Database.BatchableContext bc, List<sObject> scope)
     {
-        if ( scope != null && !scope.isEmpty() ) {
-            try {
-                List<Case> notesScope = (List<Case>)scope;
+        if ( scope != null && !scope.isEmpty() )
+        {
+            try
+            {
+                List<Case> notesScope = (List<Case>) scope;
                 List<Case> notesToUpdate = new List<Case>();
 
                 // 0. Clear the list of external Ids and map of external ids and SF ids for each hegeo field
-                for(HegeoExternal hegeo: listHegeoExternal) {
+                for(HegeoExternal hegeo: listHegeoExternal)
+                {
                     hegeo.clear();
                 }
 
                 // 1. Get the list of external ids for each hegeo field
-                for (Case note : notesScope) {
-                    for(HegeoExternal hegeo: listHegeoExternal) {
+                for (Case note : notesScope)
+                {
+                    for(HegeoExternal hegeo: listHegeoExternal)
+                    {
                         // Check that has Hegeo external id but not the look up field
                         hegeo.checkNote(note);
                     }
                 }
 
                 // 2. Get the SF ids of the parents (soql parent sobjects)
-                for(HegeoExternal hegeo: listHegeoExternal) {
+                for(HegeoExternal hegeo: listHegeoExternal)
+                {
                     hegeo.searchParents();
                 }
 
                 // 3. Assign the parent ids, if found, to the Note (case)
-                for (Case note: notesScope ) {
+                for (Case note: notesScope )
+                {
                     Boolean isParentFound = false;
                     Case noteToUpdate = new Case(Id= note.Id);
 
                     // for each hegeo field
-                    for(HegeoExternal hegeo: listHegeoExternal) {
-                        if( hegeo.checkParent(note, noteToUpdate) ) {
+                    for(HegeoExternal hegeo: listHegeoExternal)
+                    {
+                        if( hegeo.checkParent(note, noteToUpdate) )
+                        {
                             isParentFound = true;
                         }
                     }
 
                     // if any parent found
-                    if( isParentFound ) {
+                    if( isParentFound )
+                    {
                         notesToUpdate.add(noteToUpdate);
                     }
                 }
 
                 // Updates the notes
-                if( !notesToUpdate.isEmpty() ) update notesToUpdate;
-            } catch (Exception e) {
+                if( !notesToUpdate.isEmpty() )
+                    update notesToUpdate;
+            }
+            catch (Exception e)
+            {
                 ErrorLogUtil.commitError(e, 'NoteInfoLookupBatch');
             }
         }
@@ -162,7 +178,8 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
      * Helper Class. Represents each hegeo field in the Note SObject (case) and its relation with the parent SObject
      * (Offer, Policy, Claim, Account)
      */
-    private class HegeoExternal {
+    private class HegeoExternal
+    {
         String noteHegeoFieldName;
         String noteParentIdFieldName;
 
@@ -182,7 +199,8 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
         /**
          * Constructor
          */
-        public HegeoExternal(String noteHegeoFieldName, String noteIdFieldName, String sObjectName, String idFieldName) {
+        public HegeoExternal(String noteHegeoFieldName, String noteIdFieldName, String sObjectName, String idFieldName)
+        {
             this.noteHegeoFieldName = noteHegeoFieldName;
             this.noteParentIdFieldName = noteIdFieldName;
             this.parentSObjectName = sObjectName;
@@ -194,18 +212,19 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
 
         /**
          * Get the list of hegeo external ids if the note have the external id but not the lookup parent id
-         * 
+         *
          * @author nts (agonzalezisasi)
          * @date 28/04/2021
-         * 
+         *
          * @param {Case note}  the note
          */
-        public void checkNote(Case note) 
+        public void checkNote(Case note)
         {
-            String noteHegeoValue = (String)note?.get(this.noteHegeoFieldName);
-            ID noteIdValue = (ID)note?.get(this.noteParentIdFieldName);
+            String noteHegeoValue = (String) note?.get(this.noteHegeoFieldName);
+            ID noteIdValue = (ID) note?.get(this.noteParentIdFieldName);
 
-            if( String.isNotBlank(noteHegeoValue) && noteIdValue == null ) {
+            if( String.isNotBlank(noteHegeoValue) && noteIdValue == null )
+            {
                 externalIds.add(noteHegeoValue);
             }
         }
@@ -213,10 +232,10 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
         /**
          * Check if the note has external id, not look up and the parent id is found. If so, fill the ID into a cloned
          * Note to update it
-         * 
+         *
          * @author nts (agonzalezisasi)
          * @date 28/04/2021
-         * 
+         *
          * @param {Case note} the original note
          * @param {Case noteToUpdate} the sobject to update if the parent is found (same id as the original note)
          * @return {Boolean} if the parent is found (true) or not (false)
@@ -224,13 +243,14 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
         public Boolean checkParent(Case note, Case noteToUpdate)
         {
             Boolean isParentFound = false;
-            String noteHegeoValue = (String)note?.get(this.noteHegeoFieldName);
-            ID noteIdValue = (ID)note?.get(this.noteParentIdFieldName);
+            String noteHegeoValue = (String) note?.get(this.noteHegeoFieldName);
+            ID noteIdValue = (ID) note?.get(this.noteParentIdFieldName);
 
-            if( String.isNotBlank(noteHegeoValue) && noteIdValue == null && mapParentIds.containsKey(noteHegeoValue) ) {
+            if( String.isNotBlank(noteHegeoValue) && noteIdValue == null && mapParentIds.containsKey(noteHegeoValue) )
+            {
                 this.mapParentIds.get(noteHegeoValue);
                 if( noteToUpdate != null )
-                    noteToUpdate.put(this.noteParentIdFieldName, this.mapParentIds.get(noteHegeoValue));
+                    noteToUpdate.put( this.noteParentIdFieldName, this.mapParentIds.get(noteHegeoValue) );
                 isParentFound = true;
             }
 
@@ -239,7 +259,7 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
 
         /**
          * Get a map of hegeo external id with look up parent id
-         * 
+         *
          * @author nts (agonzalezisasi)
          * @date 28/04/2021
          */
@@ -250,7 +270,7 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
 
         /**
          * Clear the list of hegeo external ids
-         * 
+         *
          * @author nts (agonzalezisasi)
          * @date 28/04/2021
          */
@@ -262,10 +282,10 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
 
         /**
          * Get the IDs of the parent object from the list of given hegeo external ids
-         * 
+         *
          * @author nts (agonzalezisasi)
          * @date 28/04/2021
-         * 
+         *
          * @param {List<String infoNumbers}  the list of external ids
          * @param {String sobjectName} the name of the SObject in SF to search for the lookup id
          * @param {String infoExtfieldName}  the name of the external id field in the parent SObject
@@ -275,11 +295,13 @@ global with sharing class NoteInfoLookupBatch implements Database.Batchable<sObj
         {
             Map<String, ID> result = new Map<String, ID>();
 
-            if( infoNumbers != null && !infoNumbers.isEmpty() ) {
-                String soql = String.format('SELECT Id, {0} FROM {1} WHERE {0} IN :infoNumbers', new List<String>{infoExtFieldName, sobjectName});
+            if( infoNumbers != null && !infoNumbers.isEmpty() )
+            {
+                String soql = String.format('SELECT Id, {0} FROM {1} WHERE {0} IN :infoNumbers', new List<String> {infoExtFieldName, sobjectName});
                 List<SObject> results = Database.query(soql);
-                for(SObject o: results) {
-                    result.put((String)o.get(infoExtFieldName), (ID)o.get('Id'));
+                for(SObject o: results)
+                {
+                    result.put( (String) o.get(infoExtFieldName), (ID) o.get('Id') );
                 }
             }
 

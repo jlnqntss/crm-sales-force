@@ -37,7 +37,7 @@ public with sharing class UploadCaseDocumentationController
     }
 
 
-        /**
+    /**
      * Method to delete ContentDocument using ContentVersionId
      * @author jjuaristi
      * @date 26/05/2020
@@ -47,12 +47,14 @@ public with sharing class UploadCaseDocumentationController
     @AuraEnabled
     public static void deleteDocumentWithVersion (String id)
     {
-        try{
-            ContentVersion version = [SELECT ContentDocumentId from ContentVersion where Id = :id LIMIT 1];
+        try
+        {
+            ContentVersion version = [SELECT ContentDocumentId from ContentVersion where Id = : id LIMIT 1];
             ContentDocument record = new ContentDocument();
             record.Id = version.ContentDocumentId;
             delete record;
-        }catch(Exception e)
+        }
+        catch(Exception e)
         {
             throw new AuraHandledException('Unable to delete');
         }
