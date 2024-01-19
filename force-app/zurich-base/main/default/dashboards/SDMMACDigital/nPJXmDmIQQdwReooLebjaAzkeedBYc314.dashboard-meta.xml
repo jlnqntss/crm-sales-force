@@ -82,6 +82,10 @@
             <operator>contains</operator>
             <values>m</values>
         </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>Particulares,Pymes</values>
+        </dashboardFilterOptions>
         <name>Segmento / Ramo</name>
     </dashboardFilters>
     <dashboardGridLayout>
