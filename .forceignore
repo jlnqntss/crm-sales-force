@@ -91,7 +91,3 @@ force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredential
 
 # Custom index
 **/Customindex/*.indx-meta.xml
-
-# Clase Test provisional
-force-app/zurich-base/main/default/classes/ReassignInteractionCTIExtensionTest.cls
-force-app/zurich-base/main/default/classes/ReassignInteractionCTIExtensionTest.cls-meta.xml

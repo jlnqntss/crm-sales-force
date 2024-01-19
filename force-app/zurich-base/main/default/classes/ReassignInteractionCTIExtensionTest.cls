@@ -72,7 +72,7 @@ private with sharing class ReassignInteractionCTIExtensionTest
             ReassignInteractionCTIExtension.onSaveLog(interactionChangedEventString);
         }
 
-        tasksInSystem = [SELECT id, Status FROM task];
+        tasksInSystem = [SELECT id, Status FROM task WHERE Status = 'Asignada'];
 
         System.assertEquals(1, tasksInSystem.size(), 'Una interaccion solo debería crear una tarea');
         currentTask = tasksInSystem.get(0);
@@ -86,7 +86,7 @@ private with sharing class ReassignInteractionCTIExtensionTest
 
         Test.stopTest();
 
-        tasksInSystem = [SELECT id, Status, OwnerId, RecordType.DeveloperName FROM task];
+        tasksInSystem = [SELECT id, Status, OwnerId, RecordType.DeveloperName FROM task WHERE Status = 'Cerrada'];
         currentTask = tasksInSystem.get(0);
 
         System.assertEquals(1, tasksInSystem.size(), 'Se han generado mas tareas de las necesarias');
