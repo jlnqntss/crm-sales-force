@@ -3896,6 +3896,11 @@
         <field>Account.Age__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Alta_CIMA__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Account.ClientGroup__c</field>
