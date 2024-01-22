@@ -4,7 +4,7 @@
         <description>Se procede con el envío de la Nota INFO a Genesys Cloud.</description>
         <name>genesysCloudRouteMessageAction</name>
         <label>Enrutar mensaje a Genesys Cloud</label>
-        <locationX>902</locationX>
+        <locationX>1001</locationX>
         <locationY>1416</locationY>
         <actionName>GenesysCloudRouteMessageAction</actionName>
         <actionType>apex</actionType>
@@ -66,16 +66,18 @@
                 <elementReference>$Record.Subject</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>GenesysCloudRouteMessageAction</nameSegment>
         <outputParameters>
             <assignToReference>interactionId</assignToReference>
             <name>interactionId</name>
         </outputParameters>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>53.0</apiVersion>
     <assignments>
         <name>Asignamos_variables_generico</name>
         <label>Asignamos variables generico</label>
-        <locationX>1034</locationX>
+        <locationX>1133</locationX>
         <locationY>600</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueID</assignToReference>
@@ -105,7 +107,7 @@
     <assignments>
         <name>Asignamos_variables_Intermediary</name>
         <label>Asignamos variables Intermediary</label>
-        <locationX>770</locationX>
+        <locationX>869</locationX>
         <locationY>600</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueID</assignToReference>
@@ -135,7 +137,7 @@
     <assignments>
         <name>Modificar_variables_cola</name>
         <label>Modificar variables cola</label>
-        <locationX>770</locationX>
+        <locationX>869</locationX>
         <locationY>1116</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
@@ -173,7 +175,7 @@
     <decisions>
         <name>Cambia_de_cola_para_enrutar_a_genesys</name>
         <label>¿Cambia de cola para enrutar a genesys?</label>
-        <locationX>902</locationX>
+        <locationX>1001</locationX>
         <locationY>1008</locationY>
         <defaultConnector>
             <targetReference>PriorityCalculationSubflow</targetReference>
@@ -205,7 +207,7 @@
     <decisions>
         <name>Check_Origin</name>
         <label>Check Origin</label>
-        <locationX>902</locationX>
+        <locationX>1001</locationX>
         <locationY>1632</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -240,10 +242,42 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Es_caso_hijo_USP</name>
+        <label>¿Es caso hijo USP?</label>
+        <locationX>429</locationX>
+        <locationY>1848</locationY>
+        <defaultConnector>
+            <targetReference>Update_case_owner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Caso_hijo_USP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CreateTaskAction</targetReference>
+            </connector>
+            <label>Caso hijo USP</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Comprobamos si la cuenta asociada al caso es de tipo intermediario, ya que en caso afirmativo habrá que enviar más información al sistema de enrutado</description>
         <name>Is_Intermediary_Account</name>
         <label>Is Intermediary Account?</label>
-        <locationX>902</locationX>
+        <locationX>1001</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <targetReference>GetGenesysCloudQueueAction</targetReference>
@@ -275,7 +309,7 @@
     <decisions>
         <name>IsUSPAndClosedDecision</name>
         <label>Is USP and Closed?</label>
-        <locationX>506</locationX>
+        <locationX>539</locationX>
         <locationY>276</locationY>
         <defaultConnector>
             <targetReference>Is_Intermediary_Account</targetReference>
@@ -377,7 +411,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se registra el error en Salesforce con el detalle del mismo.</description>
         <name>CreateErrorLogAction</name>
         <label>Registrar error</label>
-        <locationX>1694</locationX>
+        <locationX>1837</locationX>
         <locationY>1632</locationY>
         <inputAssignments>
             <field>Level__c</field>
@@ -428,8 +462,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
         <name>CreateTaskAction</name>
         <label>Registrar tarea</label>
-        <locationX>374</locationX>
-        <locationY>1956</locationY>
+        <locationX>429</locationX>
+        <locationY>2148</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
@@ -483,7 +517,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
         <name>CreateTaskWebMiZurichAction</name>
         <label>Registrar tarea Web MiZurich</label>
-        <locationX>902</locationX>
+        <locationX>1045</locationX>
         <locationY>1740</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -537,7 +571,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Get Genesys Queue</label>
-        <locationX>902</locationX>
+        <locationX>1001</locationX>
         <locationY>792</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -559,7 +593,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera el identificador del tipo de registro Task: Interaction para registrar la siguiente tarea.</description>
         <name>GetInteractionRecordTypeIdAction</name>
         <label>Obetener tipo de registro Task: Interaction</label>
-        <locationX>902</locationX>
+        <locationX>1001</locationX>
         <locationY>1524</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -583,11 +617,11 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <recordLookups>
         <name>getSalesforceQueue</name>
         <label>Get Salesforce queue</label>
-        <locationX>374</locationX>
+        <locationX>429</locationX>
         <locationY>1740</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Update_case_owner</targetReference>
+            <targetReference>Es_caso_hijo_USP</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -604,8 +638,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <recordUpdates>
         <name>Update_case_owner</name>
         <label>Update case owner</label>
-        <locationX>374</locationX>
-        <locationY>1848</locationY>
+        <locationX>517</locationX>
+        <locationY>1956</locationY>
         <connector>
             <targetReference>CreateTaskAction</targetReference>
         </connector>
@@ -664,7 +698,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <subflows>
         <name>GestorPreferenteSearchFromEmailSubflow</name>
         <label>Buscar Gestor Preferente</label>
-        <locationX>902</locationX>
+        <locationX>1001</locationX>
         <locationY>900</locationY>
         <connector>
             <targetReference>Cambia_de_cola_para_enrutar_a_genesys</targetReference>
@@ -790,7 +824,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados sin los datos de las DTs a las que enrutar</description>
         <name>GetGenesysCloudQueueAction</name>
         <label>Obtener cola de Genesys Cloud</label>
-        <locationX>1034</locationX>
+        <locationX>1133</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Asignamos_variables_generico</targetReference>
@@ -820,7 +854,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados. En los casos en los que la cuenta asociada al caso sea de tipo Intermediario, se les pasará los valores contenidos en los campos &quot;Email Particulares&quot; e &quot;Email Administración&quot;</description>
         <name>Obtener_cola_de_Genesys_Cloud_desde_Intermediary</name>
         <label>Obtener cola de Genesys Cloud desde Intermediary</label>
-        <locationX>770</locationX>
+        <locationX>869</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Asignamos_variables_Intermediary</targetReference>
@@ -861,7 +895,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <subflows>
         <name>PriorityCalculationSubflow</name>
         <label>Calcular Prioridad</label>
-        <locationX>902</locationX>
+        <locationX>1001</locationX>
         <locationY>1308</locationY>
         <connector>
             <targetReference>genesysCloudRouteMessageAction</targetReference>
