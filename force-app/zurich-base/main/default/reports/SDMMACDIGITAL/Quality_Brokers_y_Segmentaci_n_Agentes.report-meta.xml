@@ -63,6 +63,9 @@
         <field>BucketField_20014024</field>
     </columns>
     <columns>
+        <field>Account.Email_Recertificador__c</field>
+    </columns>
+    <columns>
         <field>Account.SDMAssociation__c</field>
     </columns>
     <columns>
