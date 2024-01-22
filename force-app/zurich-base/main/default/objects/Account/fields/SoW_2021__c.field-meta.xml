@@ -2,7 +2,8 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>SoW_2021__c</fullName>
     <externalId>false</externalId>
-    <formula>IF((Cartera_2021__c / Income2014__c * 0.15) &lt; 0 || (Cartera_2021__c / Income2014__c * 0.15) &gt; 100, 0, (Cartera_2021__c / Income2014__c * 0.15))</formula>
+    <formula>IF(ISNULL(Income2014__c) || Income2014__c = 0, NULL, 
+IF((Cartera_2021__c / Income2014__c * 0.15) &lt; 0 || (Cartera_2021__c / Income2014__c * 0.15) &gt; 100, 0, (Cartera_2021__c / Income2014__c * 0.15)))</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>SoW (2021)</label>
     <precision>18</precision>
