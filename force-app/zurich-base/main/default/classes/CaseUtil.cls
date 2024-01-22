@@ -16,8 +16,8 @@ public with sharing class CaseUtil
     public static final String estadoCerrado= 'Cerrado';
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
 
-     // Recupera el Id del RecordType de casos USP
-     public static final ID rtUSPId {
+    // Recupera el Id del RecordType de casos USP
+    public static final ID rtUSPId {
         get {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
         }
@@ -30,7 +30,7 @@ public with sharing class CaseUtil
      **/
     public static void upsertClaim(Case claim)
     {
-        
+
         Case claimSF = ExternalRequestUtil.mapClaims.get(claim.ClaimNumber__c);
 
         if ( claimSF != null ) //claim exists
@@ -40,7 +40,7 @@ public with sharing class CaseUtil
         }
         else //claim doesn't exist
         {
-            
+
             Order policySF = ExternalRequestUtil.mapPolicies.get(claim.PolicyNum__c);
             if ( policySF != null ) //policy exists
             {
@@ -52,9 +52,9 @@ public with sharing class CaseUtil
                 // we get this from the policy too
                 claim.CustomerNum__c = policySF.CustomerNum__c;
                 // nts (agonzalezisasi) - 18/dic/2020 - fix: when claim is IBA Spain add LegalEntity to the search if needed
-                if( !ExternalRequestUtil.isIBAMultiPartner && !ExternalRequestUtil.isEMEA &&(!claim.CustomerNum__c.contains('GI') && !claim.CustomerNum__c.contains('LIFE')))
+                if( !ExternalRequestUtil.isIBAMultiPartner && !ExternalRequestUtil.isEMEA && ( !claim.CustomerNum__c.contains('GI') && !claim.CustomerNum__c.contains('LIFE') ) )
                 {
-                    claim.CustomerNum__c = ContactUtil.adaptCustomerNum(claim.CustomerNum__c, policySF.LegalEntity__c);                    
+                    claim.CustomerNum__c = ContactUtil.adaptCustomerNum(claim.CustomerNum__c, policySF.LegalEntity__c);
                 }
 
                 if (claim.InsuredObjectId__c != null)
@@ -66,7 +66,7 @@ public with sharing class CaseUtil
                     }
                 }
 
-                
+
                 Contact contactSF = ExternalRequestUtil.mapContacts.get( claim.CustomerNum__c );
                 if ( contactSF != null ) //contact exists
                 {
@@ -75,7 +75,7 @@ public with sharing class CaseUtil
                 }
                 else
                 {
-                    
+
                     throw new IntegrationException(
                               Label.ClaimError + ' ' + claim.ClaimNumber__c + '. ' + Label.CustomerError + ' ' + claim.CustomerNum__c
                               );
@@ -83,7 +83,7 @@ public with sharing class CaseUtil
             }
             else // policy doesnt exist
             {
-                
+
                 throw new IntegrationException(
                           Label.ClaimError + ' ' + claim.ClaimNumber__c + '. ' + Label.PolicyNotExisting + ' ' + claim.PolicyNum__c
                           );
@@ -172,7 +172,7 @@ public with sharing class CaseUtil
                     mapMultiPartner.put( values.get(0), values.get(1) );
                 }
             }
-            
+
             for (Case caso : newList)
             {   // Solo para casos de web, email to case no tiene rellenos los campos entidad legal y país hasta el afterinsert ( relleno por Workflows)
                 // se podría filtrar por tipo de registro si se añade el campo al formulario
@@ -183,7 +183,7 @@ public with sharing class CaseUtil
 
                     // nts (nbizkarra) - 25/Ene/2021 - Buscar por email, entidad legal, pais cuando Poliza nula o no encontrada
                     caso = updateContactToCaseByEmail(caso);
-                    
+
                     // nts (nbizkarra) - 25/Ene/2021 - Buscar cliente por teléfono si no se ha encontrado por póliza o email (solo si encuentra 1)
                     caso = updateContactToCaseByPhone(caso);
 
@@ -245,7 +245,7 @@ public with sharing class CaseUtil
 
                     //Utilizar el scope del caso
                     //AccountSearchService.Scope scope = new AccountSearchService.Scope();
-                    
+
                     //Utilizar el AccountSearchService
                     List<Account> matchedAccounts = new List<Account>();
                     matchedAccounts = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null, null);
@@ -276,9 +276,9 @@ public with sharing class CaseUtil
         List<String> emails = new List<String>();
         List<String> phones = new List<String>();
 
-        Map<String,List<Account>> mapAccountsByNatinalId = new Map<String,List<Account>> ();
-        Map<String,List<Account>> mapAccountsByEmails = new Map<String,List<Account>> ();
-        Map<String,List<Account>> mapAccountsByPhones = new Map<String,List<Account>> ();
+        Map<String,List<Account> > mapAccountsByNatinalId = new Map<String,List<Account> > ();
+        Map<String,List<Account> > mapAccountsByEmails = new Map<String,List<Account> > ();
+        Map<String,List<Account> > mapAccountsByPhones = new Map<String,List<Account> > ();
 
         for (Case newCase : newList)
         {
@@ -300,11 +300,11 @@ public with sharing class CaseUtil
         mapAccountsByNatinalId = getMapOfAccountRelatedByNatinalId (nationalIds);
         mapAccountsByEmails = getMapOfAccountRelatedByEmail (emails);
         mapAccountsByPhones = getMapOfAccountRelatedByPhone (phones);
-        
+
         for (Case caseToUpdate : newList)
         {
             caseToUpdate = getAccountAndContactToAssign (caseToUpdate, mapAccountsByNatinalId, mapAccountsByEmails, mapAccountsByPhones);
-        }   
+        }
     }
 
     /**BEFOREUPDATE
@@ -326,7 +326,7 @@ public with sharing class CaseUtil
         if( !updatedCases.isEmpty() )
         {
             //Recoger los milestones del tipo requerido
-            caseMilestoneList = [SELECT Id, CaseId, CompletionDate FROM CaseMilestone WHERE CaseId IN :updatedCases AND MilestoneType.Name = 'Cierre Caso'];
+            caseMilestoneList = [SELECT Id, CaseId, CompletionDate FROM CaseMilestone WHERE CaseId IN : updatedCases AND MilestoneType.Name = 'Cierre Caso'];
 
             if( !caseMilestoneList.isEmpty() )
             {
@@ -351,13 +351,13 @@ public with sharing class CaseUtil
         }
     }
 
-     /**
-     * Similar a markMilestonesCompletedWhenClose pero cuando los casos son usp. 
+    /**
+     * Similar a markMilestonesCompletedWhenClose pero cuando los casos son usp.
      * Completa milestones al poner un caso a cerrado o pendiente
      * @author jjuaristi@seidor.es
      * @date 24/10/2022
-     * @param 
-     * @return 
+     * @param
+     * @return
      */
     public static void completeUSPMilestonesWhenClosedOrPending(List<Case> newList, Map<Id,Case> oldMap)
     {
@@ -372,15 +372,15 @@ public with sharing class CaseUtil
             oldCase =  oldMap.get(caso.Id);
             //Solo se hace algo la actualización es a cerrado o pendiente de client/Intermediary
             if(oldCase.Status != caso.Status &&
-                (
-                    caso.Status == 'Cerrado' || caso.Status == 'Merged' || caso.Status == 'Combinado'
-                    || 
-                    caso.Status == 'Pendiente' && 
-                    (
-                        caso.PendingBy__c == 'Client' || caso.PendingBy__c == 'Intermediary'
-                    ) 
-                )
-            )
+               (
+                   caso.Status == 'Cerrado' || caso.Status == 'Merged' || caso.Status == 'Combinado'
+                   ||
+                   caso.Status == 'Pendiente' &&
+                   (
+                       caso.PendingBy__c == 'Client' || caso.PendingBy__c == 'Intermediary'
+                   )
+               )
+               )
             {
                 updatedCases.add(caso);
             }
@@ -393,7 +393,7 @@ public with sharing class CaseUtil
         List<CaseMilestone> caseMilestoneList = new List<CaseMilestone>();
         List<CaseMilestone> caseMilestoneListToUpdate = new List<CaseMilestone>();
         // Lanzar query para recuperar los milestones
-        caseMilestoneList = [SELECT Id, CaseId, CompletionDate FROM CaseMilestone WHERE CaseId IN :updatedCases AND MilestoneType.Name =:milestoneName];
+        caseMilestoneList = [SELECT Id, CaseId, CompletionDate FROM CaseMilestone WHERE CaseId IN : updatedCases AND MilestoneType.Name =: milestoneName];
         if( !caseMilestoneList.isEmpty() )
         {
             for(CaseMilestone cm : caseMilestoneList)
@@ -438,7 +438,7 @@ public with sharing class CaseUtil
         }
         return uspCases;
     }
-    
+
     /**
      * Método utilizado por RelateCasesToNewAccountsBatch para relacionar casos con cuentas
      * @author jjuaristi@seidor.es
@@ -452,17 +452,17 @@ public with sharing class CaseUtil
         List<Case> casesToUpdate = new List<Case>();
 
         // La lógica solo se recorre si la lista no es nula, para evitar excepciones
-        if(casesToRelate != null && !casesToRelate.isEmpty())
+        if( casesToRelate != null && !casesToRelate.isEmpty() )
         {
             // Se obtiene la lista de cifs
             List<String> cifs = generateCifList(casesToRelate);
-            
+
             // Query a Account para recuperar los clientes creados en las últimas 24 horas
             // y con cif contenido por los casos recogidos en el batch
             List<Account> accountsToRelate = new AccountsSelector().findByCIFAndCreationDate(cifs, daysToRetrieve);
 
             // Si no hay cuentas no recorremos la lista para evitar excepciones
-            if(accountsToRelate != null && !accountsToRelate.isEmpty())
+            if( accountsToRelate != null && !accountsToRelate.isEmpty() )
             {
                 //Mapa para identificar cada cuenta con su cif
                 Map<String, Account> mapAccountsToRelateByCIF = AccountUtil.generateMapByCif(accountsToRelate);
@@ -471,7 +471,7 @@ public with sharing class CaseUtil
                 for(Case currentCase : casesToRelate)
                 {
                     // Si alguna cuenta tiene el mismo cif que el caso, se tienen que relacionar
-                    if(mapAccountsToRelateByCIF.get(currentCase.RobotDocumentId__c)!=null)
+                    if(mapAccountsToRelateByCIF.get(currentCase.RobotDocumentId__c) != null)
                     {
                         // Se hace la relación
                         currentCase.MediatedCustomer__c = mapAccountsToRelateByCIF.get(currentCase.RobotDocumentId__c).Id;
@@ -494,9 +494,9 @@ public with sharing class CaseUtil
     private static List<String> generateCifList(List<Case> cases)
     {
         List<String> cifs = new List<String>();
-        if(cases != null && !cases.isEmpty())
+        if( cases != null && !cases.isEmpty() )
         {
-            // Se recorre la lista de casos para generar la lista de CIFs 
+            // Se recorre la lista de casos para generar la lista de CIFs
             for(Case currentCase : cases)
             {
                 cifs.add(currentCase.RobotDocumentId__c);
@@ -512,24 +512,24 @@ public with sharing class CaseUtil
      * @param {Case padre} caso que se va a copiar
      * @param {EmailMessage email} email del que vamos a obtener el subject y la descripción
      * @param {Boolean setTypification} indica si vamos a mantener la tipificación del caso padre (true) o no (false)
-     * @return Case 
+     * @return Case
      */
     public static Case createCaseFromParent(Case padre, EmailMessage email, Boolean setTypification)
     {
         Case casoHijo = new Case(
-                        Status='Asignado',
-                        Origin = padre?.Origin,
-                        SourceArea__c = padre?.SourceArea__c,
-                        ParentId=padre?.Id,
-                        AccountId=padre?.AccountId,
-                        RecordTypeId=padre?.RecordTypeId, 
-                        PolicyId__c = padre?.PolicyId__c,
-                        OfferId__c = padre?.OfferId__c,
-                        ClaimId__c = padre?.ClaimId__c,
-                        MediatedCustomer__c = padre?.MediatedCustomer__c
-                    );
+            Status='Asignado',
+            Origin = padre?.Origin,
+            SourceArea__c = padre?.SourceArea__c,
+            ParentId=padre?.Id,
+            AccountId=padre?.AccountId,
+            RecordTypeId=padre?.RecordTypeId,
+            PolicyId__c = padre?.PolicyId__c,
+            OfferId__c = padre?.OfferId__c,
+            ClaimId__c = padre?.ClaimId__c,
+            MediatedCustomer__c = padre?.MediatedCustomer__c
+            );
 
-        Id rtOCSId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();         
+        Id rtOCSId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
         if (padre.RecordTypeId == rtOCSId)
         {
             casoHijo.CallCenter__c = padre?.CallCenter__c;
@@ -554,21 +554,22 @@ public with sharing class CaseUtil
      * @date 18/11/2022
      * @param {Case caso} caso que se va a copiar
      * @param {Boolean setTypification} indica si la tipificación sigue existiendo en el sistema (true) o no (false)
-     * @return Case 
+     * @return Case
      */
     public static Boolean checkTypification(Case caso)
     {
-        Map<String, List<String>> mapaT1 = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
-        Map<String, List<String>> mapaT2 = SystemUtil.getDependantPicklistValues('Case', 'Subtype__c', 'TypeN3__c');
+        Map<String, List<String> > mapaT1 = SystemUtil.getDependantPicklistValues('Case', 'Type', 'Subtype__c');
+        Map<String, List<String> > mapaT2 = SystemUtil.getDependantPicklistValues('Case', 'Subtype__c', 'TypeN3__c');
 
-        if (mapaT1.containsKey(caso.Type) && mapaT1.get(caso.Type).contains(caso.Subtype__c) &&
-            mapaT2.containsKey(caso.Subtype__c) && mapaT2.get(caso.Subtype__c).contains(caso.TypeN3__c))
+        if ( mapaT1.containsKey(caso.Type) && mapaT1.get(caso.Type).contains(caso.Subtype__c) &&
+             mapaT2.containsKey(caso.Subtype__c) && mapaT2.get(caso.Subtype__c).contains(caso.TypeN3__c) )
         {
             return true;
         }
-        else {
-            return false;        
-        } 
+        else
+        {
+            return false;
+        }
     }
 
     /**
@@ -580,14 +581,14 @@ public with sharing class CaseUtil
      * @param {String typeN3} String que contiene el tipoN3 del caso a comprobar
      * @param {Id RecordType} RecordType que queremos comprobar
      * @param {Boolean setTypification} indica si la tipificación sigue existiendo en el sistema (true) o no (false)
-     * @return Case 
+     * @return Case
      */
     public static Boolean checkTypificationByRecordType(String typeN1, String typeN2, String typeN3, Id recordTypeId)
     {
-        Map<String, List<String>> mapaT1 = new Map<String, List<String>>();
-        Map<String, List<String>> mapaT2 = new Map<String, List<String>>();
+        Map<String, List<String> > mapaT1 = new Map<String, List<String> >();
+        Map<String, List<String> > mapaT2 = new Map<String, List<String> >();
 
-        if(Test.isRunningTest())
+        if( Test.isRunningTest() )
         {
             List<String> lstA1 = new List<String>();
             lstA1.add('A1');
@@ -596,26 +597,28 @@ public with sharing class CaseUtil
             List<String> lstA12 = new List<String>();
             lstA12.add('A11');
             mapaT2.put('A1', lstA12);
-            
+
         }
-        else {
+        else
+        {
             mapaT1 = SystemUtil.getDependantPicklistValuesByRecordType('Case', 'Subtype__c', recordTypeId);
-            mapaT2 = SystemUtil.getDependantPicklistValuesByRecordType('Case', 'TypeN3__c', recordTypeId); 
+            mapaT2 = SystemUtil.getDependantPicklistValuesByRecordType('Case', 'TypeN3__c', recordTypeId);
         }
 
-        if (mapaT1.containsKey(typeN1) && mapaT1.get(typeN1).contains(typeN2) &&
-            mapaT2.containsKey(typeN2) && mapaT2.get(typeN2).contains(typeN3))
+        if ( mapaT1.containsKey(typeN1) && mapaT1.get(typeN1).contains(typeN2) &&
+             mapaT2.containsKey(typeN2) && mapaT2.get(typeN2).contains(typeN3) )
         {
             return true;
         }
-        else {
-            return false;        
+        else
+        {
+            return false;
         }
 
     }
 
 
-     /**
+    /**
      * Método utilizado por RelateCasesToNewOffersBatch para relacionar casos con ofertas
      * @author lrodriguez6@seidor.es
      * @date 11/11/2022
@@ -628,17 +631,17 @@ public with sharing class CaseUtil
         List<Case> casesToUpdate = new List<Case>();
 
         // La lógica solo se recorre si la lista no es nula, para evitar excepciones
-        if(casesToRelate != null && !casesToRelate.isEmpty())
+        if( casesToRelate != null && !casesToRelate.isEmpty() )
         {
             // Se obtiene la lista de ofertas generadas
             List<String> ofertasGeneradas = generateCreateOfferList(casesToRelate);
-            
+
             // Query a Opportunity para recuperar las ofertas creados en las últimas 24 horas
             // y con oferta generada contenido por los casos recogidos en el batch
             List<Opportunity> offersToRelate = new OpportunitiesSelector().findByCreatedOfferAndCreationDate(ofertasGeneradas, daysToRetrieve);
 
             // Si no hay ofertas no recorremos la lista para evitar excepciones
-            if(offersToRelate != null && !offersToRelate.isEmpty())
+            if( offersToRelate != null && !offersToRelate.isEmpty() )
             {
                 //Mapa para identificar cada oferta con su oferta generada
                 Map<String, Opportunity> mapOffersToRelateByCreatedOffer = OpportunityUtil.generateMapByCreatedOffer(offersToRelate);
@@ -647,9 +650,9 @@ public with sharing class CaseUtil
                 for(Case currentCase : casesToRelate)
                 {
                     // Si alguna oferta tiene la misma oferta generada que el caso, se tienen que relacionar
-                    if(mapOffersToRelateByCreatedOffer.get(currentCase.CreatedOffer__c)!=null)
+                    if(mapOffersToRelateByCreatedOffer.get(currentCase.CreatedOffer__c) != null)
                     {
-                        // Se hace la relación  
+                        // Se hace la relación
                         currentCase.OfferId__c = mapOffersToRelateByCreatedOffer.get(currentCase.CreatedOffer__c).Id;
                         // Se añade el caso a la lista de casos a actualizar
                         casesToUpdate.add(currentCase);
@@ -670,9 +673,9 @@ public with sharing class CaseUtil
     private static List<String> generateCreateOfferList(List<Case> cases)
     {
         List<String> createOffers = new List<String>();
-        if(cases != null && !cases.isEmpty())
+        if( cases != null && !cases.isEmpty() )
         {
-            // Se recorre la lista de casos para generar la lista de ofertas generadas 
+            // Se recorre la lista de casos para generar la lista de ofertas generadas
             for(Case currentCase : cases)
             {
                 createOffers.add(currentCase.CreatedOffer__c);
@@ -680,15 +683,15 @@ public with sharing class CaseUtil
         }
         return createOffers;
     }
-    
+
     /**
-     * Método que devuelve una lista de cuentas para el calculo de conversion ratio 
+     * Método que devuelve una lista de cuentas para el calculo de conversion ratio
      * @author lrodriguez6@seidor.es
      * @date 07/02/2023
      * @param Lista de cuentas
      * @return Lista de cuentas
      */
-    
+
     public static List<Account> generateAccountRatio(List<Account> accountsIntermediary)
     {
         List<Case> cases= new List<Case>();
@@ -699,40 +702,40 @@ public with sharing class CaseUtil
         Map <Id, Decimal> mapWonChildCases= new Map <Id,Decimal>();
 
         Id rtCasesUSPId= Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rT_USP_CASES)?.getRecordTypeId();
-    
+
         cases= new CasesSelector().getQueryCasesConversionRatio(accountsIntermediary,statusCombinado,closeResult,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
 
         mapWonChildCases= new CasesSelector().getMapChildCasesConversionRatio(cases,statusWon,closeResult,statusCombinado,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
 
-       
+
 
         for(Case currentCase:cases)
-            {   
-                if(mapAllIntermediaryCases.get(currentCase.AccountId)==null && mapWonIntermediaryCases.get(currentCase.Id)==null)
-                {
-                    mapAllIntermediaryCases.put(currentCase.AccountId,0);
-                    mapWonIntermediaryCases.put(currentCase.AccountId,0);
+        {
+            if(mapAllIntermediaryCases.get(currentCase.AccountId) == null && mapWonIntermediaryCases.get(currentCase.Id) == null)
+            {
+                mapAllIntermediaryCases.put(currentCase.AccountId,0);
+                mapWonIntermediaryCases.put(currentCase.AccountId,0);
 
-                }
-                
-                mapAllIntermediaryCases.put(currentCase.AccountId,(mapAllIntermediaryCases.get(currentCase.AccountId)+1));
-                        
-                if(currentCase.QuotationStage__c=='Won' || mapWonChildCases.get(currentCase.Id)>=1)
-                {       
-                    mapWonIntermediaryCases.put(currentCase.AccountId,(mapWonIntermediaryCases.get(currentCase.AccountId)+1));
-                }
             }
 
+            mapAllIntermediaryCases.put( currentCase.AccountId,(mapAllIntermediaryCases.get(currentCase.AccountId) + 1) );
 
-                for(Id idCuenta: mapAllIntermediaryCases.keySet())
-                {
-                    Account acc=new Account();
-                    acc.Id=idCuenta;
-                    acc.USPConversionRatio__c=(mapWonIntermediaryCases.get(acc.Id)/mapAllIntermediaryCases.get(acc.Id))*100; 
-                    allIntermediaryToUpdate.add(acc);    
-                }
+            if(currentCase.QuotationStage__c == 'Won' || mapWonChildCases.get(currentCase.Id) >= 1)
+            {
+                mapWonIntermediaryCases.put( currentCase.AccountId,(mapWonIntermediaryCases.get(currentCase.AccountId) + 1) );
+            }
+        }
 
-    return allIntermediaryToUpdate;
+
+        for( Id idCuenta: mapAllIntermediaryCases.keySet() )
+        {
+            Account acc=new Account();
+            acc.Id=idCuenta;
+            acc.USPConversionRatio__c=( mapWonIntermediaryCases.get(acc.Id) / mapAllIntermediaryCases.get(acc.Id) ) * 100;
+            allIntermediaryToUpdate.add(acc);
+        }
+
+        return allIntermediaryToUpdate;
 
     }
 
@@ -750,14 +753,14 @@ public with sharing class CaseUtil
         List<Case> casesToUpdate = new List<Case>();
 
         // La lógica solo se recorre si la lista no es nula, para evitar excepciones
-        if(casesToRelate != null && !casesToRelate.isEmpty())
+        if( casesToRelate != null && !casesToRelate.isEmpty() )
         {
             // Mapas para almacenar la información relacionada
             Map<String, Opportunity> mapRetrievedOffers= new Map<String, Opportunity>();
             Map<String, Policy__c> mapRetrievedPolicies= new Map<String, Policy__c>();
 
-            getRelatedPoliciesOffers(casesToRelate, mapRetrievedOffers, mapRetrievedPolicies);            
-            casesToUpdate = comprobarCasos(casesToRelate, mapRetrievedOffers, mapRetrievedPolicies); 
+            getRelatedPoliciesOffers(casesToRelate, mapRetrievedOffers, mapRetrievedPolicies);
+            casesToUpdate = comprobarCasos(casesToRelate, mapRetrievedOffers, mapRetrievedPolicies);
         }
         return casesToUpdate;
     }
@@ -774,9 +777,12 @@ public with sharing class CaseUtil
 
         for(Case c : listaCasos)
         {
-            if(!String.isBlank(c.HegeoOfferId__c)) lstOffers.add(c.HegeoOfferId__c);
-            if(!String.isBlank(c.HegeoPolicyId__c)) lstPolicies.add(c.HegeoPolicyId__c);
-            if(!String.isBlank(c.HegeoPrePolicyId__c)) lstOffers.add(c.HegeoPrePolicyId__c);
+            if( !String.isBlank(c.HegeoOfferId__c) )
+                lstOffers.add(c.HegeoOfferId__c);
+            if( !String.isBlank(c.HegeoPolicyId__c) )
+                lstPolicies.add(c.HegeoPolicyId__c);
+            if( !String.isBlank(c.HegeoPrePolicyId__c) )
+                lstOffers.add(c.HegeoPrePolicyId__c);
         }
 
         // Obtenemos las Polizas y Ofertas relacionadas con los casos
@@ -809,12 +815,12 @@ public with sharing class CaseUtil
             {
                 c.PolicyId__c = mapRetrievedPolicies.get(c.HegeoPolicyId__c).Id;
             }
-            
+
             // Comprobamos si hemos de informar la oferta (siendo la información que viene en el campo HegeoOfferId__c prioritario)
-            if(!String.isBlank(c.HegeoOfferId__c) && mapRetrievedOffers.get(c.HegeoOfferId__c) != null) 
+            if(!String.isBlank(c.HegeoOfferId__c) && mapRetrievedOffers.get(c.HegeoOfferId__c) != null)
             {
                 c.OfferId__c = mapRetrievedOffers.get(c.HegeoOfferId__c).Id;
-            } 
+            }
             else if(!String.isBlank(c.HegeoPrePolicyId__c) && mapRetrievedOffers.get(c.HegeoPrePolicyId__c) != null)
             {
                 c.OfferId__c = mapRetrievedOffers.get(c.HegeoPrePolicyId__c).Id;
@@ -826,8 +832,8 @@ public with sharing class CaseUtil
 
     }
 
-     /**
-     * Método que actualiza el contacto asociado al caso si proviene de email to case y encuentra un unico contacto que cumpla las condiciones. 
+    /**
+     * Método que actualiza el contacto asociado al caso si proviene de email to case y encuentra un unico contacto que cumpla las condiciones.
      * @author: aberuete
      * @date: 18/04/2023
      * @param List<Case> updateCases : lista de casos a actualizar
@@ -839,18 +845,18 @@ public with sharing class CaseUtil
         if ( !checkRecursive.SetOfIDs.contains(caso.ID) )
         {
             checkRecursive.SetOfIDs.add(caso.ID);
-            
+
             if ( !String.isBlank(caso.Origin) &&  caso.Origin.equals('Email') && String.isBlank(caso.CustomerFoundBy__c) &&
-                String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
-                && caso.RecordTypeId ==  Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Enquiry').getRecordTypeId() )
+                 String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  &&  String.isNotBlank(caso.SourceCountry__c)
+                 && caso.RecordTypeId ==  Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('Enquiry').getRecordTypeId() )
             {
                 List<Contact> contactoSF = [
                     SELECT id FROM Contact
-                    WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
-                    AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
-                    AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
-                    OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
-                    ];
+                    WHERE Email = : caso.SuppliedEmail AND LegalEntity__c = : caso.LegalEntity__c
+                                                                            AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                                                                                                                                           AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
+                                                                                                                                                                                                                           OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
+                ];
                 //Asignar contacto solo si encuentra 1
                 if (contactoSF != null && contactoSF.size() == 1)
                 {
@@ -862,11 +868,11 @@ public with sharing class CaseUtil
                 }
             }
 
-        } 
+        }
         return updateCases;
     }
 
-     /**
+    /**
      * Método que obtiene los casos para que sea marcado el campo CaseMilestone a completado
      * @author: aberuete
      * @date: 18/04/2023
@@ -893,19 +899,19 @@ public with sharing class CaseUtil
                     updatedCases.add(caso);
                 }
             }
-        }  
+        }
 
         return updatedCases;
     }
 
     /**
-     * Método que en caso de que exista una póliza con el número del caso y el caso no tenga asociada la póliza, asocia la póliza al caso, 
+     * Método que en caso de que exista una póliza con el número del caso y el caso no tenga asociada la póliza, asocia la póliza al caso,
      * así como el contacto asociado a la póliza.
      * @author: aberuete
      * @date: 18/04/2023
-     * @param AdminSetup__mdt adminSetup : Metadata AdminSetup__mdt 
+     * @param AdminSetup__mdt adminSetup : Metadata AdminSetup__mdt
      * @param Case caso
-     * @param Map<String, String> mapMultiPartner : Mapa que contiene el campo Multi_Partners__c del metadata AdminSetup__mdt  
+     * @param Map<String, String> mapMultiPartner : Mapa que contiene el campo Multi_Partners__c del metadata AdminSetup__mdt
      */
     @testvisible
     private static Case updatePolicyToCaseifCaseDoesNotHavePolicy (AdminSetup__mdt adminSetup, Case caso, Map<String, String> mapMultiPartner)
@@ -938,8 +944,8 @@ public with sharing class CaseUtil
             policies = [
                 SELECT ID, ContactId__c, LegalEntity__c
                 FROM Order
-                WHERE (RecordType.DeveloperName = :Label.PolicyGI OR RecordType.DeveloperName = :Label.PolicyLife)
-                AND PolicyNum__c = :caso.PolicyNum__c
+                WHERE (RecordType.DeveloperName = : Label.PolicyGI OR RecordType.DeveloperName = : Label.PolicyLife)
+                AND PolicyNum__c = : caso.PolicyNum__c
             ];
 
             if (policies != null && policies.size() > 0)
@@ -949,7 +955,7 @@ public with sharing class CaseUtil
                 caso.LegalEntity__c = policies[0].LegalEntity__c;
                 caso.CustomerFoundBy__c = 'Policy Number';
             }
-        }  
+        }
 
         return caso;
     }
@@ -963,18 +969,18 @@ public with sharing class CaseUtil
     @testvisible
     private static Case updateContactToCaseByEmail(Case caso)
     {
-        if ( String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)  
-            &&  String.isNotBlank(caso.SourceCountry__c) && caso.Policy__c == null)
+        if ( String.isNotBlank(caso.SuppliedEmail) &&  String.isNotBlank(caso.LegalEntity__c)
+             &&  String.isNotBlank(caso.SourceCountry__c) && caso.Policy__c == null)
         {
             //Si no se ha informado el número de poliza asignar cliente por mail y entidad legal (Solo si hay 1 cliente con ese mail)
             List<Contact> contactoSF = [
                 SELECT id FROM Contact
-                WHERE Email = :caso.SuppliedEmail AND LegalEntity__c = :caso.LegalEntity__c
-                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
-                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
-                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
-                ];
-                
+                WHERE Email = : caso.SuppliedEmail AND LegalEntity__c = : caso.LegalEntity__c
+                                                                        AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                                                                                                                                       AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
+                                                                                                                                                                                                                       OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
+            ];
+
             if (contactoSF != null && contactoSF.size() == 1)
             {
                 caso.ContactId = contactoSF.get(0).id;
@@ -986,7 +992,7 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Método que en caso de que el caso no tenga una póliza asociada, ni un contacto intenta asociar el contacto por télefono, 
+     * Método que en caso de que el caso no tenga una póliza asociada, ni un contacto intenta asociar el contacto por télefono,
      * si existe un unico contacto para ese número
      * @author: aberuete
      * @date: 18/04/2023
@@ -995,17 +1001,17 @@ public with sharing class CaseUtil
     @testvisible
     private static Case updateContactToCaseByPhone(Case caso)
     {
-        if ( String.isNotBlank(caso.SuppliedPhone) && String.isNotBlank(caso.LegalEntity__c)  
-            && String.isNotBlank(caso.SourceCountry__c) && caso.Policy__c == null && caso.ContactId == null)
+        if ( String.isNotBlank(caso.SuppliedPhone) && String.isNotBlank(caso.LegalEntity__c)
+             && String.isNotBlank(caso.SourceCountry__c) && caso.Policy__c == null && caso.ContactId == null)
         {
             List<Contact> contactoSF = [
                 SELECT id FROM Contact
-                WHERE MobilePhone = :caso.SuppliedPhone AND LegalEntity__c = :caso.LegalEntity__c
-                AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
-                AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
-                OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
+                WHERE MobilePhone = : caso.SuppliedPhone AND LegalEntity__c = : caso.LegalEntity__c
+                                                                              AND SourceCountry__c =: caso.SourceCountry__c AND Partner__c =: caso.Partner__c
+                                                                                                                                             AND (RecordType.DeveloperName =: Label.CustomerGI OR RecordType.DeveloperName =: Label.CustomerLife
+                                                                                                                                                                                                                             OR RecordType.DeveloperName =: Label.LeadGI OR RecordType.DeveloperName =: Label.LeadLife)
             ];
-            
+
             if (contactoSF != null && contactoSF.size() == 1)
             {
                 caso.ContactId = contactoSF.get(0).id;
@@ -1024,7 +1030,7 @@ public with sharing class CaseUtil
     @testvisible
     private static Case ifCaseFromWebFranceUpdateTranslationToCase (Case caso)
     {
-        if ( caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c) &&(mapCountryTranslationField.containsKey(caso.SourceCountry__c)) )
+        if ( caso.Origin.equals('Web') && !String.isBlank(caso.SourceCountry__c) && ( mapCountryTranslationField.containsKey(caso.SourceCountry__c) ) )
         {
             String fieldName = mapCountryTranslationField.get(caso.SourceCountry__c);
             String queryType = 'SELECT ' + fieldName + ' FROM Label_Translations__mdt WHERE label = \'' + caso.Type + '\'';
@@ -1032,7 +1038,7 @@ public with sharing class CaseUtil
 
             List<Label_Translations__mdt> typeTranslaton = Database.query(queryType);
             List<Label_Translations__mdt> subTypeTranslation = Database.query(querySubtype);
-            
+
             if ( typeTranslaton != null && !typeTranslaton.isEmpty() )
             {
                 caso.Type_translation__c = (String) typeTranslaton[0].get(fieldName);
@@ -1042,7 +1048,7 @@ public with sharing class CaseUtil
             {
                 caso.Subtype_translation__c = (String) subTypeTranslation[0].get(fieldName);
             }
-        }  
+        }
 
         return caso;
     }
@@ -1053,20 +1059,18 @@ public with sharing class CaseUtil
      * @date: 21/06/2023
      * @param List<Case> newList : Lista de casos nuevos
      * @change aberuete - 28/07/2023 Actualizar campo source area en función de la cola
+     * @change jfherrero - 16/01/2024 Eliminar tipificación automática como 'Gestión Servicios'/'Anulación'/'Anulación'
      */
     public static void updateTranscomCase (List<Case> newList)
     {
         List<Group> queueRetencion = new GroupSelector().findByName('Email_TWW_Retencion');
         List<Group> queueAnulacion = new GroupSelector().findByName('Email_TWW_Anulacion');
-        
+
         for (Case caseNew : newList)
         {
             if (caseNew.OwnerId == queueRetencion[0].Id || caseNew.OwnerId == queueAnulacion[0].Id )
             {
                 caseNew.CallCenter__c = 'TWW Retención';
-                caseNew.Type = 'Gestión Servicios';
-                caseNew.Subtype__c = 'Anulación';
-                caseNew.TypeN3__c = 'Anulación';
 
                 if ( caseNew.OwnerId == queueRetencion[0].Id)
                 {
@@ -1081,54 +1085,54 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Método que genera un mapa de lista de cuentas por dni. 
+     * Método que genera un mapa de lista de cuentas por dni.
      **
      * @author aberuete
      * @date 22/08/2023
      * @param List<String> nationalIds : Lista de dnis
      */
-    private static Map<String,List<Account>> getMapOfAccountRelatedByNatinalId (List<String> nationalIds)
+    private static Map<String,List<Account> > getMapOfAccountRelatedByNatinalId (List<String> nationalIds)
     {
-        Map<String,List<Account>> mapAccountsByNatinalId = new Map<String,List<Account>> ();
-        List<Account> accountsByNationalId = AccountSearchService.findCustomersByDocumentId(nationalIds, '',null,null, new List<String> {'Customer'}, new List<String>{'F','J'});
+        Map<String,List<Account> > mapAccountsByNatinalId = new Map<String,List<Account> > ();
+        List<Account> accountsByNationalId = AccountSearchService.findCustomersByDocumentId(nationalIds, '',null,null, new List<String> {'Customer'}, new List<String> {'F','J'});
 
         for (Account account :accountsByNationalId)
         {
             List<Account> accountList = mapAccountsByNatinalId.get(account.NationalId__c);
-            if( accountList == null ) 
+            if( accountList == null )
             {
                 accountList = new List<Account>();
                 mapAccountsByNatinalId.put(account.NationalId__c, accountList);
             }
             accountList.add(account);
         }
-        
+
         return mapAccountsByNatinalId;
     }
 
     /**
-     * Método que genera un mapa de lista de cuentas por email. 
+     * Método que genera un mapa de lista de cuentas por email.
      **
      * @author aberuete
      * @date 22/08/2023
      * @param List<String> emails : Lista de emails
      */
-    private static Map<String, List<Account>> getMapOfAccountRelatedByEmail (List<String> emails)
+    private static Map<String, List<Account> > getMapOfAccountRelatedByEmail (List<String> emails)
     {
-        Map<Id,List<String>> mapIdAccountByEmails = new Map <Id, List<String>> ();
-        Map<String,List<Account>> mapAccountsByEmails = new Map<String,List<Account>> ();
+        Map<Id,List<String> > mapIdAccountByEmails = new Map <Id, List<String> > ();
+        Map<String,List<Account> > mapAccountsByEmails = new Map<String,List<Account> > ();
         List<ContactPointEmail> contactPointsEmail = new List<ContactPointEmail> ();
 
         if ( !emails.isEmpty() && emails != null)
         {
-            contactPointsEmail = [FIND :String.join(emails, ' OR ') IN EMAIL FIELDS RETURNING ContactPointEmail(Id, ParentId,EmailAddress )][0];
+            contactPointsEmail = [FIND : String.join(emails, ' OR ') IN EMAIL FIELDS RETURNING ContactPointEmail(Id, ParentId,EmailAddress )][0];
         }
 
         for (ContactPointEmail contactPointEmail :contactPointsEmail)
         {
             List<String> accountIdListByEmails = mapIdAccountByEmails.get(contactPointEmail.ParentId);
 
-            if (accountIdListByEmails == null) 
+            if (accountIdListByEmails == null)
             {
                 accountIdListByEmails = new List<String>();
                 mapIdAccountByEmails.put(contactPointEmail.ParentId, accountIdListByEmails);
@@ -1136,139 +1140,139 @@ public with sharing class CaseUtil
             accountIdListByEmails.add(contactPointEmail.EmailAddress);
         }
 
-        if (!mapIdAccountByEmails.isEmpty())
+        if ( !mapIdAccountByEmails.isEmpty() )
         {
-            List<Account> accountsToRelate = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(mapIdAccountByEmails.keySet(), new List<String> {'Customer'}, new List<String>{'F','J'});
-            
+            List<Account> accountsToRelate = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(mapIdAccountByEmails.keySet(), new List<String> {'Customer'}, new List<String> {'F','J'});
+
             for (Account accountToRelate : accountsToRelate)
             {
                 List<String> emailsList = mapIdAccountByEmails.get(accountToRelate.id);
-                
-                for (String email : emailsList) 
+
+                for (String email : emailsList)
                 {
                     List<Account> accountListByEmails = mapAccountsByEmails.get(email);
-                    
-                    if( accountListByEmails == null ) 
+
+                    if( accountListByEmails == null )
                     {
                         accountListByEmails = new List<Account>();
                         mapAccountsByEmails.put(email, accountListByEmails);
                     }
-                    accountListByEmails.add(accountToRelate);  
-                } 
-            }  
+                    accountListByEmails.add(accountToRelate);
+                }
+            }
         }
         return mapAccountsByEmails;
     }
 
     /**
-     * Método que genera un mapa de lista de cuentas por teléfono. 
+     * Método que genera un mapa de lista de cuentas por teléfono.
      **
      * @author aberuete
      * @date 16/08/2023
      * @param List<String> phones : Lista de teléfonos
      */
-    private static Map<String, List<Account>> getMapOfAccountRelatedByPhone (List<String> phones)
+    private static Map<String, List<Account> > getMapOfAccountRelatedByPhone (List<String> phones)
     {
-        Map<Id,List<String>> mapIdAccountByPhones = new Map <Id, List<String>> ();
-        Map<String,List<Account>> mapAccountsByPhones = new Map<String,List<Account>> ();
+        Map<Id,List<String> > mapIdAccountByPhones = new Map <Id, List<String> > ();
+        Map<String,List<Account> > mapAccountsByPhones = new Map<String,List<Account> > ();
         List<ContactPointPhone> contactPointsPhone = new List<ContactPointPhone> ();
-        
+
         if ( !phones.isEmpty() && phones != null)
         {
-            contactPointsPhone = [FIND :String.join(phones, ' OR ') IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, TelephoneNumber)][0];
+            contactPointsPhone = [FIND : String.join(phones, ' OR ') IN PHONE FIELDS RETURNING ContactPointPhone(Id, ParentId, TelephoneNumber)][0];
         }
 
         for (ContactPointPhone contactPointPhone :contactPointsPhone)
         {
             List<String> accountIdListByPhones = mapIdAccountByPhones.get(contactPointPhone.ParentId);
 
-            if (accountIdListByPhones == null) 
+            if (accountIdListByPhones == null)
             {
                 accountIdListByPhones = new List<String>();
                 mapIdAccountByPhones.put(contactPointPhone.ParentId, accountIdListByPhones);
             }
             accountIdListByPhones.add(contactPointPhone.TelephoneNumber);
         }
-        
-        if (!mapIdAccountByPhones.isEmpty())
+
+        if ( !mapIdAccountByPhones.isEmpty() )
         {
-            List<Account> accountsToRelate = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(mapIdAccountByPhones.keySet(), new List<String> {'Customer'}, new List<String>{'F','J'});
+            List<Account> accountsToRelate = new AccountsSelector().findByAccountIdsRecordTypeNameAndType(mapIdAccountByPhones.keySet(), new List<String> {'Customer'}, new List<String> {'F','J'});
 
             for (Account accountToRelate : accountsToRelate)
             {
                 List<String> phonesList = mapIdAccountByPhones.get(accountToRelate.id);
-                
-                for (String phone : phonesList) 
+
+                for (String phone : phonesList)
                 {
                     List<Account> accountListByPhones = mapAccountsByPhones.get(phone);
-                    if( accountListByPhones == null ) 
+                    if( accountListByPhones == null )
                     {
                         accountListByPhones = new List<Account>();
                         mapAccountsByPhones.put(phone, accountListByPhones);
                     }
-                    accountListByPhones.add(accountToRelate);  
-                }    
-            } 
+                    accountListByPhones.add(accountToRelate);
+                }
+            }
         }
         return mapAccountsByPhones;
     }
 
     /**
-     * Método que obtiene el número de cuentas asociadas a un dni. 
+     * Método que obtiene el número de cuentas asociadas a un dni.
      **
      * @author aberuete
      * @date 16/08/2023
      * @param Case caseToUpdate : caso
      * @param Map<String,List<Account>> mapAccountsByNatinalId : Mapa de lista de cuentas por dni
      */
-    private static Integer numAccountsByNationalId (Case caseToUpdate, Map<String,List<Account>> mapAccountsByNatinalId )
+    private static Integer numAccountsByNationalId (Case caseToUpdate, Map<String,List<Account> > mapAccountsByNatinalId )
     {
         Integer numAccounts = 0;
         if (caseToUpdate.RobotNif__c != null && !String.isBlank(caseToUpdate.RobotNif__c) && !mapAccountsByNatinalId.isEmpty() && mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c) != null )
         {
             numAccounts = mapAccountsByNatinalId.get(caseToUpdate.RobotNif__c).size();
-        } 
+        }
         return numAccounts;
     }
 
     /**
-     * Método que obtiene el número de cuentas asociadas a un email. 
+     * Método que obtiene el número de cuentas asociadas a un email.
      **
      * @author aberuete
      * @date 16/08/2023
      * @param Case caseToUpdate : caso
      * @param Map<String,List<Account>> mapAccountsByEmails : Mapa de lista de cuentas por email
      */
-    private static Integer numAccountsByEmail (Case caseToUpdate, Map<String,List<Account>> mapAccountsByEmails )
+    private static Integer numAccountsByEmail (Case caseToUpdate, Map<String,List<Account> > mapAccountsByEmails )
     {
         Integer numAccounts = 0;
         if ( caseToUpdate.SuppliedEmail != null && !String.isBlank(caseToUpdate.SuppliedEmail) && !mapAccountsByEmails.isEmpty() && mapAccountsByEmails.get(caseToUpdate.SuppliedEmail) != null )
         {
             numAccounts = mapAccountsByEmails.get(caseToUpdate.SuppliedEmail).size();
-        } 
+        }
         return numAccounts;
     }
 
     /**
-     * Método que obtiene el número de cuentas asociadas a un teléfono. 
+     * Método que obtiene el número de cuentas asociadas a un teléfono.
      **
      * @author aberuete
      * @date 16/08/2023
      * @param Case caseToUpdate : caso
      * @param Map<String,List<Account>> mapAccountsByPhones : Mapa de lista de cuentas por teléfono
      */
-    private static Integer numAccountsByPhone (Case caseToUpdate, Map<String,List<Account>> mapAccountsByPhones )
+    private static Integer numAccountsByPhone (Case caseToUpdate, Map<String,List<Account> > mapAccountsByPhones )
     {
         Integer numAccounts = 0;
         if ( caseToUpdate.SuppliedPhone != null && !String.isBlank(caseToUpdate.SuppliedPhone) && !mapAccountsByPhones.isEmpty() && mapAccountsByPhones.get(caseToUpdate.SuppliedPhone) != null )
         {
             numAccounts = mapAccountsByPhones.get(caseToUpdate.SuppliedPhone).size();
-        } 
+        }
         return numAccounts;
     }
 
     /**
-     * Método que asigna una cuenta y contacto a un caso en caso de que haya una unica cuenta a asignar por dni,email y teléfono. 
+     * Método que asigna una cuenta y contacto a un caso en caso de que haya una unica cuenta a asignar por dni,email y teléfono.
      **
      * @author aberuete
      * @date 23/08/2023
@@ -1277,7 +1281,7 @@ public with sharing class CaseUtil
      * @param Map<String,List<Account>> mapAccountsByEmails : Mapa de lista de cuentas por email
      * @param Map<String,List<Account>> mapAccountsByPhones : Mapa de lista de cuentas por teléfono
      */
-    private static Case getAccountAndContactToAssign (Case caseToUpdate, Map<String,List<Account>> mapAccountsByNatinalId, Map<String,List<Account>> mapAccountsByEmails, Map<String,List<Account>> mapAccountsByPhones)
+    private static Case getAccountAndContactToAssign (Case caseToUpdate, Map<String,List<Account> > mapAccountsByNatinalId, Map<String,List<Account> > mapAccountsByEmails, Map<String,List<Account> > mapAccountsByPhones)
     {
         Integer numAccount = numAccountsByNationalId (caseToUpdate, mapAccountsByNatinalId );
 
