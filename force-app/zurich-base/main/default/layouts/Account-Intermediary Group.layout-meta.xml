@@ -83,6 +83,10 @@
                 <field>EIACStatus__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Alta_CIMA__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>NumberCompetingCompanies__c</field>
             </layoutItems>
