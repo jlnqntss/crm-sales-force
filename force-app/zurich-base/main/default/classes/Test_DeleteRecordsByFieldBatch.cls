@@ -6,10 +6,10 @@
  * @last modified by  : jgallaga
 **/
 @isTest
-public class Test_DeleteRecordsByFieldBatch
+private with sharing class Test_DeleteRecordsByFieldBatch
 {
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         // Se crea una cuenta para vincularla con las Ofertas
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 1);
@@ -28,7 +28,7 @@ public class Test_DeleteRecordsByFieldBatch
     }
 
     @IsTest
-    static void test_DeleteFields_OK()
+    private static void test_DeleteFields_OK()
     {
         // Se comprueba que existían 200 Ofertas
         List<Opportunity> opps = [SELECT Id FROM Opportunity];
@@ -46,7 +46,7 @@ public class Test_DeleteRecordsByFieldBatch
     }
 
     @isTest
-    static void test_parameterNull_KO()
+    private static void test_parameterNull_KO()
     {
         String mensajeParametroNulo = 'El Batch debe crear una excepción si recibe parametros nulos';
         String mensajeError = 'La excepción recibida no es la esperada';
