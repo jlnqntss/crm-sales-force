@@ -767,14 +767,11 @@ public with sharing class EmailMessagesUtil
 
         for (EmailMessage emailMessage : emailList)
         {
-            if (emailMessage.ParentId != null && emailMessage.CcAddress != null && emailMessage.ToAddress != null)
+            if (emailMessage.ParentId != null && emailMessage.CcAddress != null && emailMessage.ToAddress != null
+                && checkIfMailboxesInCc(emailMessage, mailboxes) && checkIfMailboxesInTo(emailMessage, mailboxes))
             {
-                // Recorremos los buzones buscando si alguno está como 'CC' y no como 'Para'
-                if (checkIfMailboxesInCc(emailMessage, mailboxes) && checkIfMailboxesInTo(emailMessage, mailboxes))
-                {
-                    // Si se dan ambos, opta para cierre
-                    selectedMails.add(emailMessage);
-                }
+                // Opta para cierre
+                selectedMails.add(emailMessage);
             }
         }
 
