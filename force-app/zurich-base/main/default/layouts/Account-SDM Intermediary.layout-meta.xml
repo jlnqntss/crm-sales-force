@@ -220,6 +220,10 @@
                 <behavior>Edit</behavior>
                 <field>IntermediaryAdministrationEmail__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Email_Recertificador__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>

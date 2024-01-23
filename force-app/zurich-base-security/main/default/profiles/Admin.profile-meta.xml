@@ -4118,6 +4118,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Email_Recertificador__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Family__c</field>
         <readable>true</readable>
     </fieldPermissions>
