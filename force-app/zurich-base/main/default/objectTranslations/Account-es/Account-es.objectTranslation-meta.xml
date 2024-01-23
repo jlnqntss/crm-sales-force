@@ -346,12 +346,20 @@
             <section>Custom Links</section>
         </sections>
         <sections>
+            <label>Indicadores clave</label>
+            <section>Indicators</section>
+        </sections>
+        <sections>
             <label>Datos de contacto</label>
             <section>Intermediary Contact</section>
         </sections>
         <sections>
             <label>Información general</label>
             <section>Main section</section>
+        </sections>
+        <sections>
+            <label>Información del sistema</label>
+            <section>System Information</section>
         </sections>
     </layouts>
     <layouts>
