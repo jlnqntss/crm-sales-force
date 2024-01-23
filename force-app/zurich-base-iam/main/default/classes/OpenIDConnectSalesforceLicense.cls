@@ -45,6 +45,8 @@ public with sharing class OpenIDConnectSalesforceLicense {
     @testvisible
     private static final string GROUP_MEMBER_QUEUE = 'Queue';
     @testvisible
+    private static final string PERMISSION_TYPE_LICENSE_GROUP = 'LicenseGroup';
+    @testvisible
     private static final string CLASS_NAME = 'OpenIDConnectSalesforceLicense';
     private static final string ERROR_PARSE_ROLES = 'Error al parsear el usuario. Para más ayuda, póngase en contacto con su administrador.';
     private static final string ERROR_NO_PROFILE = 'No PROFILE found in the configuration for the given list of rols: ';
@@ -103,6 +105,7 @@ public with sharing class OpenIDConnectSalesforceLicense {
         mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
         mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
         mapAuthData.put(PERMISSION_TYPE_TITLE, null);
+        mapAuthData.put(PERMISSION_TYPE_LICENSE_GROUP, null);
         // fill the map with the configuration
         getAuthData( roleNameList, mapAuthData, userPermissionMap ); 
         // GET PROFILE ID
@@ -116,6 +119,8 @@ public with sharing class OpenIDConnectSalesforceLicense {
         String department = getDepartmentFromRoles(mapAuthData.get(PERMISSION_TYPE_DEPARTMENT));
         // GET Title
         String title = getTitleFromRoles(mapAuthData.get(PERMISSION_TYPE_TITLE));
+        // GET LicenseGroup
+        String licenseGroup = getLicenseGroupFromRoles(mapAuthData.get(PERMISSION_TYPE_LICENSE_GROUP));
         // GET Manager
         Id managerId = getManagerIdFromNickname(data);
         // NEW USER
@@ -146,6 +151,9 @@ public with sharing class OpenIDConnectSalesforceLicense {
         }
         if( String.isNotBlank(title) ) {
             u.Title = title;
+        }
+        if( String.isNotBlank(licenseGroup) ) {
+            u.License_Group__c = licenseGroup;
         }
         if( ManagerId != null ) {
             u.ManagerId = ManagerId;
@@ -209,6 +217,7 @@ public with sharing class OpenIDConnectSalesforceLicense {
         mapAuthData.put(PERMISSION_TYPE_DEPARTMENT, null);
         mapAuthData.put(PERMISSION_TYPE_SIGNATURE, null);
         mapAuthData.put(PERMISSION_TYPE_TITLE, null);
+        mapAuthData.put(PERMISSION_TYPE_LICENSE_GROUP, null);
         getAuthData( roleNameList, mapAuthData, userPermissionMap);
         // Get PROFILE ID
         Id profileId = getProfileIdFromRoles(mapAuthData.get(PERMISSION_TYPE_PROFILE), roleNameList);
@@ -222,11 +231,13 @@ public with sharing class OpenIDConnectSalesforceLicense {
         String signature = getSignature(userId, mapAuthData.get(PERMISSION_TYPE_SIGNATURE));
         // GET Title
         String title = getTitleFromRoles(mapAuthData.get(PERMISSION_TYPE_TITLE));
+        // GET LicenseGroup
+        String licenseGroup = getLicenseGroupFromRoles(mapAuthData.get(PERMISSION_TYPE_LICENSE_GROUP));
         // GET Manager
         Id managerId = getManagerIdFromNickname(data);
         // UPDATE USER
         User u = [
-            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title, ManagerId
+            SELECT Id, firstName, lastName, email, userName, profileId, alias, CommunityNickname, CallCenterId, UserRoleId, Department, Signature, Title, ManagerId, License_Group__c
             FROM User WHERE Id =: userId LIMIT 1
         ];
         // Se comprueban los valores, se determina si ha habido cambios
@@ -234,7 +245,8 @@ public with sharing class OpenIDConnectSalesforceLicense {
                     u.userName != data.username + USERNAME_SERVER || u.profileId != profileId || u.CallCenterId != callcenterId ||
                     u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email ||
                     (String.isNotBlank(signature) && signature != u.Signature) ||
-                    u.Title != title || (ManagerId != null && u.ManagerId != ManagerId)
+                    u.Title != title || (ManagerId != null && u.ManagerId != ManagerId) || 
+                    (String.isNotBlank(licenseGroup) && licenseGroup != u.License_Group__c)
                 );
         if (modified)
         {
@@ -266,6 +278,9 @@ public with sharing class OpenIDConnectSalesforceLicense {
             }
             if( u.Title != title ) {
                 u.Title= title;
+            }
+            if( String.isNotBlank(licenseGroup) ) {
+                u.License_Group__c = licenseGroup;
             }
             if( ManagerId != null ) {
                 u.ManagerId = ManagerId;
@@ -455,6 +470,23 @@ public with sharing class OpenIDConnectSalesforceLicense {
         if( titleNames != null && !titleNames.isEmpty() ) {
             // because of the order in the query, the first one should be the best one
             result = titleNames[0];
+        }
+        return result;
+    }
+    /**
+     * Get the licenseGroup configured for the given list of roles.
+     * 
+     * @author zurih (jonander.sanjuanlago)
+     * @date 18/01/2024
+     * @param {List<String> licenseGroupNames} A list of licenseGroup
+     * @return {string}: The licenseGroup
+     */
+    private String getLicenseGroupFromRoles(List<String> licenseGroupNames ) 
+    {
+        String result = null;
+        if( licenseGroupNames != null && !licenseGroupNames.isEmpty() ) {
+            // because of the order in the query, the first one should be the best one
+            result = licenseGroupNames[0];
         }
         return result;
     }
