@@ -46,6 +46,10 @@
                 <behavior>Edit</behavior>
                 <field>MobilePhone</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>InactiveContact__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
