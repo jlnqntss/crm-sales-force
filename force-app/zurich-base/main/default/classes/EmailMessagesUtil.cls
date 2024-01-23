@@ -767,36 +767,65 @@ public with sharing class EmailMessagesUtil
 
         for (EmailMessage emailMessage : emailList)
         {
-            if (emailMessage.ParentId != null)
+            if (emailMessage.ParentId != null && emailMessage.CcAddress != null && emailMessage.ToAddress != null)
             {
-                // Recorremos los buzones buscando si alguno está como 'CC' y el caso asociado opta a cierre
-            	for (String mailboxCc : mailboxes)
+                // Recorremos los buzones buscando si alguno está como 'CC' y no como 'Para'
+                if (checkIfMailboxesInCc(emailMessage, mailboxes) && checkIfMailboxesInTo(emailMessage, mailboxes))
                 {
-                    if (emailMessage.CcAddress.contains(mailboxCc))
-                    {
-                        // Si hay un buzón en 'CC' revisamos si hay algún buzón en el 'Para'. Sólo si hay ninguno en
-                        // el el 'Para' el caso cualifica finalmente para cierre
-                        Boolean closeThisCase = true;
-                        
-                        for (String mailboxTo : mailboxes)
-                        {
-                            if (emailMessage.ToAddress.contains(mailboxTo))
-                            {
-                                closeThisCase = false;
-                                break;
-                            }
-                        }
-                        
-                        if (closeThisCase)
-                        {
-                            selectedMails.add(emailMessage);
-                        }
-                    }
+                    // Si se dan ambos, opta para cierre
+                    selectedMails.add(emailMessage);
                 }
             }
         }
 
         return selectedMails;
+    }
+
+    /**
+     * Si el alguno de los buzones está en CcAddress pasa a buscar en ToAddress
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * @param EmailMessage emailMessage : correo a verificar si está en CcAddress
+     * @param List<Email> mailboxes : Mapa de id del caso padre y el caso padre 
+    */
+    private Boolean checkIfMailboxesInCc (EmailMessage emailMessage, List<String> mailboxes) 
+    {
+        Boolean closeThisCase = false;
+        
+        for (String mailboxCc : mailboxes)
+        {             
+            if (emailMessage.CcAddress.contains(mailboxCc))
+            {
+                closeThisCase = true;
+                break;
+            }
+        }
+        return closeThisCase;
+    }
+    
+    /**
+     * Devuelve true si alguno de los buzones está en ToAddress
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * @param EmailMessage emailMessage : correo a verificar si está en ToAddress
+     * @param List<Email> mailboxes : Mapa de id del caso padre y el caso padre 
+    */
+    private Boolean checkIfMailboxesInTo (EmailMessage emailMessage, List<String> mailboxes) 
+    {
+        Boolean closeThisCase = true;
+        
+        for (String mailboxTo : mailboxes)
+        {
+            if (emailMessage.ToAddress.contains(mailboxTo))
+            {
+                closeThisCase = false;
+                break;
+            }
+        }
+        
+        return closeThisCase;
     }
 
     /**
