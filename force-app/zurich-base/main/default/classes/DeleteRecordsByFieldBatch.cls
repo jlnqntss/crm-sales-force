@@ -6,8 +6,8 @@
  * @group             : Seidor
  * @last modified on  : 05/09/2023
  * @last modified by  : jgallaga
-**/
-global without sharing class DeleteRecordsByFieldBatch implements Database.Batchable<SObject>
+ **/
+global with sharing class DeleteRecordsByFieldBatch implements Database.Batchable<SObject>
 {
     private String staticResourceName;
     private String sObjectName;
@@ -18,7 +18,7 @@ global without sharing class DeleteRecordsByFieldBatch implements Database.Batch
 
     global DeleteRecordsByFieldBatch(String staticResource, Schema.SObjectField sObjectField)
     {
-        if(String.isBlank(staticResource))
+        if( String.isBlank(staticResource) )
         {
             throw new IllegalArgumentException(NULL_PARAMETER_EXCEPTION_MSG + ' -> [0:String] staticResourceName');
         }
@@ -38,7 +38,7 @@ global without sharing class DeleteRecordsByFieldBatch implements Database.Batch
         String querySR = 'SELECT Id, Name, Body FROM StaticResource WHERE Name =\'' + staticResourceName + '\'';
         List<StaticResource> docs = Database.query(querySR);
 
-        if (docs.isEmpty())
+        if ( docs.isEmpty() )
         {
             throw new QueryException('There are no Static Resources with the provided name');
         }
@@ -49,7 +49,7 @@ global without sharing class DeleteRecordsByFieldBatch implements Database.Batch
 
         //Read these names and from them, retrieve the ids of the offers
         List<String> idsToDelete = new List<String>();
-        for (Integer i=0; i<filelines.size(); i++)
+        for (Integer i=0; i < filelines.size(); i++)
         {
             List<String> inputvalues = new List<String>();
             inputvalues = filelines[i].split(',');
@@ -60,7 +60,7 @@ global without sharing class DeleteRecordsByFieldBatch implements Database.Batch
             idsToDelete.add(auxiliar);
         }
 
-        String queryObject = 'SELECT Id FROM ' + sObjectName + ' WHERE '+ sObjectFieldName + ' = :idsToDelete';
+        String queryObject = 'SELECT Id FROM ' + sObjectName + ' WHERE ' + sObjectFieldName + ' = :idsToDelete';
         return Database.getQueryLocator(queryObject);
     }
 
@@ -72,18 +72,18 @@ global without sharing class DeleteRecordsByFieldBatch implements Database.Batch
 
         for(Database.DeleteResult dr : resultadoBorrado)
         {
-            if (!dr.isSuccess())
+            if ( !dr.isSuccess() )
             {
                 errors.add(
-                new Error_Log__c(
-                    Message__c = dr.getErrors().get(0).getMessage()+dr.getErrors().get(0).getFields(),
-                    Source_Class__c = 'Batch_DeleteFields',
-                    Source_Method__c = 'Execute',
-                    Level__c = 'Error',
-                    Record_External_ID__c = dr.getId(),
-                    Record_Object__c = sObjectName
-                    )
-                );
+                    new Error_Log__c(
+                        Message__c = dr.getErrors().get(0).getMessage() + dr.getErrors().get(0).getFields(),
+                        Source_Class__c = 'Batch_DeleteFields',
+                        Source_Method__c = 'Execute',
+                        Level__c = 'Error',
+                        Record_External_ID__c = dr.getId(),
+                        Record_Object__c = sObjectName
+                        )
+                    );
             }
         }
 
@@ -95,7 +95,7 @@ global without sharing class DeleteRecordsByFieldBatch implements Database.Batch
 
     global void finish(Database.BatchableContext context)
     {
-        AsyncApexJob ejecucionBatchBorrado = [Select Id, Status, CreatedBy.Email from AsyncApexJob where Id =:context.getJobId()];
+        AsyncApexJob ejecucionBatchBorrado = [Select Id, Status, CreatedBy.Email from AsyncApexJob where Id =: context.getJobId()];
 
         // Enviamos un mail informando de que se ha completado el batch
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();

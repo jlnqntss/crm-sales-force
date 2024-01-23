@@ -5,7 +5,7 @@
  * @date 01/12/2021
  */
 @isTest
-private class EmailMessagesUtilTest
+private with sharing class EmailMessagesUtilTest
 {
     public static final Integer NUM_EMAILS = 5;
     public static final String EMAIL_FORMAT_TO = 'toaddress{0}@zurich.com.invalid';
@@ -25,7 +25,7 @@ private class EmailMessagesUtilTest
      * @date 01/12/2021
      */
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         List<purecloud__PureCloud_Queue__c> queues = TestDataFactory.generateGenesysQueues(1);
         queues[0].SalesforceRecipientEmail__c = EMAIL_QUEUE;
@@ -37,7 +37,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void checkEmailMessageForGenesysRouting_hegeo_ok()
+    private static void checkEmailMessageForGenesysRouting_hegeo_ok()
     {
         // Prepare the emails message to be inserted.
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
@@ -82,7 +82,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void assignGenesysRoutingFields_insert_ok()
+    private static void assignGenesysRoutingFields_insert_ok()
     {
         // Generamos los casos que necesitamos
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
@@ -170,7 +170,7 @@ private class EmailMessagesUtilTest
     }
     
     @isTest
-    static void assignGenesysRoutingFields_update_ok()
+    private static void assignGenesysRoutingFields_update_ok()
     {
         // Generamos los casos que necesitamos
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
@@ -230,7 +230,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void assignGenesysRoutingIndustry_insert_ok()
+    private static void assignGenesysRoutingIndustry_insert_ok()
     {
 
         Case relatedCase = new Case();
@@ -277,7 +277,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void assignGenesysRoutingFieldsIndustry_update_ok()
+    private static void assignGenesysRoutingFieldsIndustry_update_ok()
     {
         Case relatedCase = new Case();
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
@@ -332,7 +332,7 @@ private class EmailMessagesUtilTest
 
 
     @isTest
-    static void assignGenesysRoutingFields_insert_ko()
+    private static void assignGenesysRoutingFields_insert_ko()
     {
         EmailMessagesUtil emUtil = new EmailMessagesUtil();
         emUtil.isTestUnknownError = true;
@@ -345,7 +345,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void delete_ok()
+    private static void delete_ok()
     {
         // For EmailMessagesHandler coverage
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
@@ -357,7 +357,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void generateChildCases_OK()
+    private static void generateChildCases_OK()
     {
         // Generamos los casos que necesitamos
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
@@ -406,7 +406,7 @@ private class EmailMessagesUtilTest
      * @date 26/06/2023
      */
     @isTest
-    static void generateChildCasesFromTranscom_OK()
+    private static void generateChildCasesFromTranscom_OK()
     {
         Group queue = new Group (Name = 'Grupo_De_Prueba',Type = 'Queue' );
         insert queue;
@@ -460,7 +460,7 @@ private class EmailMessagesUtilTest
      * @date 26/07/2023
      */
     @isTest
-    static void test_markPublicActivity()
+    private static void test_markPublicActivity()
     {
         Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email');
         insert casoToEmailMessage;

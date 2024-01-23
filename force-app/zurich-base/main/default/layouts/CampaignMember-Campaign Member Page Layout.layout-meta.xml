@@ -29,6 +29,10 @@
                 <behavior>Edit</behavior>
                 <field>OfferAssignedCode__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Origen_BBDD__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

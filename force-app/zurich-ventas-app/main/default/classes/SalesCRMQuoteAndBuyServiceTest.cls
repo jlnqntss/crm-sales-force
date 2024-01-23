@@ -3,8 +3,8 @@
  *                      de la clase 'SalesCRMQuoteAndBuyService'
  * @author            : overes
  * @group             :
- * @last modified on  : 27-09-2023
- * @last modified by  : overes
+ * @last modified on  : 17-01-2024
+ * @last modified by  : amiranda
  **/
 @isTest
 private with sharing class SalesCRMQuoteAndBuyServiceTest
@@ -236,22 +236,32 @@ private with sharing class SalesCRMQuoteAndBuyServiceTest
     }
 
     /**
-     * @description Método de test que comprueba que la conversión de string a DateTime
-     * se hace correctamente
+     * @description Método de test que comprueba que la conversión de fecha y hora
+     * a DateTime se hace correctamente
      *
      * @author overes | 26-09-2023
+     * 
+     * @change Se tiene en cuenta que además de convertir la hora debe convertir la fecha también
      **/
     @isTest
     static void test_convertStringToDateTime_OK()
     {
-        String stringToConvert = '10:45';
-        DateTime today = DateTime.now();
-        DateTime expectedDateTime = DateTime.newInstance(today.year(), today.month(), today.day(), 10, 45, 0);
+        String dateToConvert = '20240117';
+        String timeToConvert = '10:45';
+
+        DateTime expectedDateTime = DateTime.newInstance(Integer.valueOf(dateToConvert.substring(0, 4)),
+                                                         Integer.valueOf(dateToConvert.substring(4, 6)),
+                                                         Integer.valueOf(dateToConvert.substring(6, 8)),
+                                                         Integer.valueOf(timeToConvert.substring(0, 2)),
+                                                         Integer.valueOf(timeToConvert.substring(3, 5)),
+                                                         0);
 
         Test.startTest();
-        DateTime returnDateTime = SalesCRMQuoteAndBuyService.convertStringToDateTime(stringToConvert);
+        DateTime returnDateTime = SalesCRMQuoteAndBuyService.convertStringToDateTime(dateToConvert, timeToConvert);
         Test.stopTest();
-        Assert.areEqual(expectedDateTime, returnDateTime, 'La cadena \'10:45\' debería haberse convertido a tipo DateTime');
+
+        Assert.isNotNull(returnDateTime, 'Ha habido un error procesando la fecha y hora');
+        Assert.areEqual(expectedDateTime, returnDateTime, 'El objeto DateTime convertido no ha devuelto un valor correcto');
     }
 
     /**

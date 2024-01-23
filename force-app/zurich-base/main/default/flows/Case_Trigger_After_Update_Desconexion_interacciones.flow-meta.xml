@@ -124,7 +124,7 @@
         <locationX>710</locationX>
         <locationY>1524</locationY>
         <defaultConnector>
-            <targetReference>CheckListaGetSize_0</targetReference>
+            <targetReference>CrearLogListaNoVaciaAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Vacía</defaultConnectorLabel>
         <rules>
@@ -173,6 +173,9 @@
         <label>¿Lista estados no vacía?</label>
         <locationX>710</locationX>
         <locationY>2172</locationY>
+        <defaultConnector>
+            <targetReference>CrearLogListaEstadosNoVaciaAction</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>NoVaciaStatusOutcome</name>
@@ -335,6 +338,61 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
             <field>Stack_Trace__c</field>
             <value>
                 <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CrearLogListaEstadosNoVaciaAction</name>
+        <label>Crear Log Lista Estados No Vacia</label>
+        <locationX>974</locationX>
+        <locationY>2280</locationY>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <stringValue>La lista estados está vacía</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Case Trigger - After Update - Desconexión interacciones</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CrearLogListaNoVaciaAction</name>
+        <label>Crear Log Lista No Vacia</label>
+        <locationX>974</locationX>
+        <locationY>1632</locationY>
+        <connector>
+            <targetReference>CheckListaGetSize_0</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <stringValue>La lista está vacía</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Case Trigger - After Update - Desconexión interacciones</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>

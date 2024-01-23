@@ -1,5 +1,6 @@
 @isTest(SeeAllData = false)
-private without sharing class GenesysSurveysServiceTest {
+private with sharing class GenesysSurveysServiceTest
+{
 
     @testSetup
     private static void createScenario()
@@ -28,11 +29,11 @@ private without sharing class GenesysSurveysServiceTest {
         survey.numberOfQuestions = 5;
         survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
-        survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
-        'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
-        'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate'+
-        'velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim'+
-        'qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi';
+        survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt' +
+                        'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper' +
+                        'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate' +
+                        'velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim' +
+                        'qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi';
 
         Test.startTest();
         GenesysSurveysService.initSurvey(survey);
@@ -148,7 +149,7 @@ private without sharing class GenesysSurveysServiceTest {
         survey.answer = '10';
 
         Test.startTest();
-            Task interactionTask = GenesysSurveysService.searchInteractionTask(survey);
+        Task interactionTask = GenesysSurveysService.searchInteractionTask(survey);
         Test.stopTest();
 
         // Then
@@ -196,14 +197,14 @@ private without sharing class GenesysSurveysServiceTest {
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
         survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
-        survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
-        'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
-        'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate'+
-        'velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim'+
-        'qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi';
+        survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt' +
+                        'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper' +
+                        'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate' +
+                        'velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim' +
+                        'qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi';
 
         Test.startTest();
-            SurveyResponse__c surveyResponse = GenesysSurveysService.createSurveyResponse(survey);
+        SurveyResponse__c surveyResponse = GenesysSurveysService.createSurveyResponse(survey);
         Test.stopTest();
 
         // Then
@@ -220,8 +221,8 @@ private without sharing class GenesysSurveysServiceTest {
         survey.interactionId = 'ucid0';//tiene que tener lo mismo que Task.CallObject
 
         Test.startTest();
-            Task interactionTask = GenesysSurveysService.searchInteractionTask(survey);
-            Survey__c surveySF = GenesysSurveysService.createSurvey(survey, interactionTask);
+        Task interactionTask = GenesysSurveysService.searchInteractionTask(survey);
+        Survey__c surveySF = GenesysSurveysService.createSurvey(survey, interactionTask);
         Test.stopTest();
 
         // Then

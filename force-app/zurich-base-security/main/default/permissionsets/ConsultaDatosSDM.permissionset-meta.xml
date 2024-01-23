@@ -218,6 +218,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Segmento_Imagen__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Segmento_Expats_Hogar__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -274,6 +279,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.EMail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Email_Recertificador__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -389,6 +399,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Alfil__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Alta_CIMA__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -737,7 +752,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Account.MiAgencia__c</field>
         <readable>true</readable>
     </fieldPermissions>

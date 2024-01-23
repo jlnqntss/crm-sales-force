@@ -1,12 +1,12 @@
 /**
- * @description       : 
- * @author            : 
- * @group             : 
+ * @description       :
+ * @author            :
+ * @group             :
  * @last modified on  : 06-06-2023
  * @last modified by  : aberuete
-**/
+ **/
 @isTest
-private class AccountSearchServiceTest
+private with sharing class AccountSearchServiceTest
 {
     static final string MESSAGE_LISTAS_IGUALES = 'Las dos listas deberían ser iguales';
     static final String MESSAGE_NO_DEVOLVER_NADA = 'no debe devolver nada';
@@ -61,8 +61,8 @@ private class AccountSearchServiceTest
         // Test
         Test.startTest();
         List<Account> matchedRecords = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null, null);
-        List<Account> matchedRecordsByRecordType = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String>{'Customer'}, null);
-        List<Account> matchedRecordsByRecordTypeAndType = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String>{'Customer'}, new List<String>{'F','J'});
+        List<Account> matchedRecordsByRecordType = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, null);
+        List<Account> matchedRecordsByRecordTypeAndType = AccountSearchService.findCustomersByPhoneNumber(telephoneNumberToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String> {'F','J'});
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -71,7 +71,7 @@ private class AccountSearchServiceTest
         System.assertEquals(0, matchedRecordsByRecordTypeAndType.size(), 'No debería devolver ninguna cuenta');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(recordIds) );
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>( new AccountsSelector().selectById(recordIds) );
 
         for(Account record : matchedRecords)
         {
@@ -109,7 +109,7 @@ private class AccountSearchServiceTest
         Test.startTest();
         List<Account> matchedRecords = AccountSearchService.findCustomersByEmail(emailsToSearch, RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null, null);
         List<Account> matchedRecordsByRecordType = AccountSearchService.findCustomersByEmail(emailsToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, null);
-        List<Account> matchedRecordsByRecordTypeAndType = AccountSearchService.findCustomersByEmail(emailsToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String>{'F','J'});
+        List<Account> matchedRecordsByRecordTypeAndType = AccountSearchService.findCustomersByEmail(emailsToSearch, null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String> {'F','J'});
         Test.stopTest();
 
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
@@ -118,7 +118,7 @@ private class AccountSearchServiceTest
         System.assertEquals(0, matchedRecordsByRecordTypeAndType.size(), 'No debería devolver ninguna cuenta');
 
         // Then
-        Map<Id, Account> expectedAccountsById = new Map<Id, Account>(new AccountsSelector().selectById(recordIds) );
+        Map<Id, Account> expectedAccountsById = new Map<Id, Account>( new AccountsSelector().selectById(recordIds) );
 
         for(Account record : matchedRecords)
         {
@@ -157,14 +157,14 @@ private class AccountSearchServiceTest
         Test.startTest();
         List<Account> matchedRecords = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', RecordsSelector.Scope.ALL, RecordsSelector.LegalEntity.ALL, null, null);
         Map <Id,Account> mapMatchedRecords = new Map<Id,Account>(matchedRecords);
-        List<Account> matchedRecordsByRecordType = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', null, RecordsSelector.LegalEntity.ALL, new List<String>{'Customer'}, null);
+        List<Account> matchedRecordsByRecordType = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, null);
         Map<Id,Account> mapMatchedRecordsByRecordType = new Map<Id,Account>(matchedRecordsByRecordType);
-        List<Account> matchedRecordsByRecordTypeAndType = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', null, RecordsSelector.LegalEntity.ALL, new List<String>{'Customer'}, new List<String>{'F','J'});
-        
+        List<Account> matchedRecordsByRecordTypeAndType = AccountSearchService.findCustomersByDocumentId(nationalIds, 'N', null, RecordsSelector.LegalEntity.ALL, new List<String> {'Customer'}, new List<String> {'F','J'});
+
         //La 'N' es porque se crean así las cuentas en TestDataFactory
         Test.stopTest();
-        List<Id> listIdsMatchedRecords = new List<Id>(mapMatchedRecords.keySet());
-        List<Id> listIdsMatchedRecordsByRecordType = new List<Id> (mapMatchedRecordsByRecordType.keySet());
+        List<Id> listIdsMatchedRecords = new List<Id>( mapMatchedRecords.keySet() );
+        List<Id> listIdsMatchedRecordsByRecordType = new List<Id> ( mapMatchedRecordsByRecordType.keySet() );
         //Comprobamos que la búsqueda ha funcionado y no tenemos una lista vacia
         System.assertEquals(false, matchedRecords.isEmpty(), MESSAGE_LISTA_DEBERIA_ESTAR_VACIA);
         System.assertEquals(true, listIdsMatchedRecords.equals(listIdsMatchedRecordsByRecordType), MESSAGE_LISTAS_IGUALES);
@@ -204,7 +204,7 @@ private class AccountSearchServiceTest
         }
         //recuperar las pólizas que hay
         List<String> policyNumbers = new List<String>();
-        List<Policy__c> policiesSelected = [SELECT Id, InfoPolicyNumber__c FROM Policy__c WHERE PolicyHolder__c IN :accountIds];
+        List<Policy__c> policiesSelected = [SELECT Id, InfoPolicyNumber__c FROM Policy__c WHERE PolicyHolder__c IN : accountIds];
         for(Policy__c policy: policiesSelected)
         {
             policyNumbers.add(policy.InfoPolicyNumber__c);
@@ -251,7 +251,7 @@ private class AccountSearchServiceTest
         }
         //recuperar las ofertas que hay
         List<String> quoteNumbers = new List<String>();
-        List<Opportunity> quotesSelected = [SELECT Id, InfoQuoteNumber__c FROM Opportunity WHERE AccountId IN :accountIds];
+        List<Opportunity> quotesSelected = [SELECT Id, InfoQuoteNumber__c FROM Opportunity WHERE AccountId IN : accountIds];
         for(Opportunity quote: quotesSelected)
         {
             quoteNumbers.add(quote.InfoQuoteNumber__c);
@@ -320,7 +320,7 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = AccountSearchService.findIntermediariesByPhoneNumber(new List<String>());
+        List<Account> matchedRecords = AccountSearchService.findIntermediariesByPhoneNumber( new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -362,7 +362,7 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = AccountSearchService.findIntermediariesByCode(new List<String>());
+        List<Account> matchedRecords = AccountSearchService.findIntermediariesByCode( new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista
@@ -405,7 +405,7 @@ private class AccountSearchServiceTest
     {
         // Test
         Test.startTest();
-        List<Account> matchedRecords = AccountSearchService.findIntermediariesByNIF(new List<String>());
+        List<Account> matchedRecords = AccountSearchService.findIntermediariesByNIF( new List<String>() );
         Test.stopTest();
 
         //Debe devolver una lista vacía de accounts porque se pasó vacía la lista

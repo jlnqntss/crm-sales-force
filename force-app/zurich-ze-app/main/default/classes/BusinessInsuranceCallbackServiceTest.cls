@@ -1,5 +1,5 @@
 @isTest(SeeAllData=false)
-private class BusinessInsuranceCallbackServiceTest
+private with sharing class BusinessInsuranceCallbackServiceTest
 {
     static final String COMPLETE_CALLBACK = '{"name":"Carles Sans","phone":"600666000","bestTimeFrom":"2020-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z", "webIdentifier":"ACB1234"}';
     static final String NO_COMPLETE_CALLBACK = '{"name":"Carles Sans","bestTimeFrom":"2020-09-28T06:00:00.000Z","bestTimeUntil":"2020-09-28T09:00:00.000Z"}';
@@ -130,7 +130,7 @@ private class BusinessInsuranceCallbackServiceTest
         System.assertEquals(false, businessHoursList.isEmpty(), 'List should NOT be empty');
 
         Datetime notWithinDatetime = System.now();
-        while(BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime) )
+        while( BusinessHours.isWithin(businessHoursList.get(0).Id, notWithinDatetime) )
         {
             notWithinDatetime = notWithinDatetime.addDays(1);
         }

@@ -3838,6 +3838,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Segmento_Imagen__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>AccionesTratadasActa__c.Actions__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3894,6 +3899,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Age__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Alta_CIMA__c</field>
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
@@ -4109,6 +4119,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.EmailCommunications__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Email_Recertificador__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4347,6 +4362,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.AssetIdentifier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.ExternalCollaboratorPolicy__c</field>
         <readable>true</readable>
@@ -4384,16 +4404,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.NationalId__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.NoLifePremium__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.NumNoLifePolicy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7374,6 +7384,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.HomePhone</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.InactiveContact__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11608,6 +11623,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.PaymentType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.PolicyHolder__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
