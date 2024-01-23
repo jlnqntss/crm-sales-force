@@ -13032,6 +13032,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Task.Origen_BBDD__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Task.PhoneNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>

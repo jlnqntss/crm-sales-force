@@ -211,7 +211,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
             if(isCampaignMember)
             {
-                Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c', 'CallRetries__c', 'CampaignId', 'ContactId', 'Status', 'LeadPhone__c'};
+                Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c', 'CallRetries__c', 'CampaignId', 'ContactId', 'Status', 'LeadPhone__c', 'Origen_BBDD__c'};
 
                 CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id> { (Id) eventInteractionData.get('dialerContactId') })[0];
                 Integer maxCallRetries = (cm.Campaign.MaxCallRetries__c == null) ? 0 : cm.Campaign.MaxCallRetries__c.intValue();
@@ -235,6 +235,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                         update cm;
                     }
                 }
+                interactionTask.Origen_BBDD__c = cm.Origen_BBDD__c;
                 interactionTask.Campaign__c = cm.CampaignId;
             }
         }
