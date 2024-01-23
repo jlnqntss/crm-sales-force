@@ -218,6 +218,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Segmento_Imagen__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Segmento_Expats_Hogar__c</field>
         <readable>true</readable>
     </fieldPermissions>

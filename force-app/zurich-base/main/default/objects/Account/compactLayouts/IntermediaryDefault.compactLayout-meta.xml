@@ -2,13 +2,11 @@
 <CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IntermediaryDefault</fullName>
     <fields>Name</fields>
+    <fields>Segmento_Imagen__c</fields>
     <fields>INFOIntermediaryCode__c</fields>
     <fields>IntermediaryDescription__c</fields>
-    <fields>SegmentDescription__c</fields>
     <fields>TerritorialDirection__c</fields>
     <fields>Association__c</fields>
-    <fields>Foreigners__c</fields>
-    <fields>Class__c</fields>
     <fields>BusinessManagerName__c</fields>
     <label>Intermediary Default</label>
 </CompactLayout>

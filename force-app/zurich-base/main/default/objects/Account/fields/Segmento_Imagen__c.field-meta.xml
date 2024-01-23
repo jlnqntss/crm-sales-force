@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Segmento_Imagen__c</fullName>
+    <externalId>false</externalId>
+    <formula>IMAGE(
+    CASE(
+         UPPER(SegmentDescription__c),
+        &quot;GLOBAL BROKERS&quot;,&quot;/resource/GB_logo&quot;,
+       &quot;TOP&quot;,&quot;/resource/TOP_logo&quot;,
+        &quot;TOP BROKERS&quot;, &quot;/resource/TB_logo&quot;,
+        &quot;ORO&quot;, &quot;/resource/Oro_logo&quot;,
+       &quot;PLATA&quot;, &quot;/resource/Plata_logo&quot;,
+        &quot;RESTO&quot;, &quot;/resource/RESTO_logo&quot;,
+       &quot;NEXT&quot;, &quot;/resource/NEXT_logo&quot;,
+       &quot;START&quot;, &quot;/resource/START_logo&quot;,
+       &quot;/resource/RESTO_logo&quot;
+    ),
+   &quot;Sin descripción&quot;
+)</formula>
+    <label>Segmento</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
