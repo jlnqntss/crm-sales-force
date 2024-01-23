@@ -2,6 +2,22 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <assignments>
+        <name>Add_Case_To_Collection</name>
+        <label>Add Case To Collection</label>
+        <locationX>402</locationX>
+        <locationY>1895</locationY>
+        <assignmentItems>
+            <assignToReference>CasesToUpdate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>casesLoop</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>casesLoop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>policyAssignment</name>
         <label>Policy Assignment</label>
         <locationX>402</locationX>
@@ -30,7 +46,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>updateCaseAction</targetReference>
+            <targetReference>Add_Case_To_Collection</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -67,13 +83,13 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>updateCaseAction</targetReference>
+            <targetReference>Add_Case_To_Collection</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>updateCustomerOffer</name>
         <label>Update Customer Offer</label>
-        <locationX>114</locationX>
+        <locationX>182</locationX>
         <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>getRelatedOfferAction.AccountId</assignToReference>
@@ -118,7 +134,7 @@
         <description>Se asigna a Opportunity.StageName el valor Closed won y se copia el Name (Policy number) de la póliza a Oppotuniy.ResultingPolicyNumber__c.</description>
         <name>updateOfferClosedWonAssignment</name>
         <label>Update Offer Closed Won</label>
-        <locationX>246</locationX>
+        <locationX>314</locationX>
         <locationY>431</locationY>
         <assignmentItems>
             <assignToReference>getRelatedOfferAction.StageName</assignToReference>
@@ -148,7 +164,7 @@
     <decisions>
         <name>nullCasesDecision</name>
         <label>Null Cases</label>
-        <locationX>246</locationX>
+        <locationX>314</locationX>
         <locationY>1271</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
@@ -170,7 +186,7 @@
     <decisions>
         <name>updateCustomerDecision</name>
         <label>Update Customer</label>
-        <locationX>246</locationX>
+        <locationX>314</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>updateOfferAction</targetReference>
@@ -205,7 +221,7 @@
         <locationX>402</locationX>
         <locationY>1595</locationY>
         <defaultConnector>
-            <targetReference>updateCaseAction</targetReference>
+            <targetReference>Add_Case_To_Collection</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -272,6 +288,9 @@
         <nextValueConnector>
             <targetReference>policyAssignment</targetReference>
         </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>updateCaseAction</targetReference>
+        </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -295,7 +314,7 @@
     <recordCreates>
         <name>createRecordGetCasesErrorAction</name>
         <label>Create Record Get Cases Error Action</label>
-        <locationX>706</locationX>
+        <locationX>842</locationX>
         <locationY>1271</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -327,7 +346,7 @@
     <recordCreates>
         <name>createRecordGetMetadataErrorAction</name>
         <label>Create Record Get Metadata Error Action</label>
-        <locationX>970</locationX>
+        <locationX>1106</locationX>
         <locationY>1163</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -359,8 +378,8 @@
     <recordCreates>
         <name>createRecordUpdateCasesErrorAction</name>
         <label>Create Record Update Cases Error Action</label>
-        <locationX>842</locationX>
-        <locationY>2003</locationY>
+        <locationX>314</locationX>
+        <locationY>2195</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -392,7 +411,7 @@
         <description>Deja un registro con el error producido</description>
         <name>createRecordUpdateOfferErrorAction</name>
         <label>Create Record Update Offer Error Action</label>
-        <locationX>1234</locationX>
+        <locationX>1370</locationX>
         <locationY>947</locationY>
         <inputAssignments>
             <field>Level__c</field>
@@ -425,7 +444,7 @@
         <description>Este metadato se usa para establecer los dias sobre los que se tienen en cuenta los casos</description>
         <name>getMetadataDaysAction</name>
         <label>Get Metadata Days</label>
-        <locationX>246</locationX>
+        <locationX>314</locationX>
         <locationY>1055</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -450,7 +469,7 @@
         <description>Ofertas cuyo Opportunity.Id sea igual al Policy__c.OpportunityName__c y cuyo Opportunity.StageName NO sea Closed Won</description>
         <name>getRelatedOfferAction</name>
         <label>Get Related Offer</label>
-        <locationX>246</locationX>
+        <locationX>314</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -475,7 +494,7 @@
     <recordLookups>
         <name>getUSPSalesCasesLast30DaysAction</name>
         <label>Get USP Sales Cases Last 30 Days</label>
-        <locationX>246</locationX>
+        <locationX>314</locationX>
         <locationY>1163</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -507,7 +526,7 @@
         <description>Actualiza el campo Intermediary_Name__c de Account para vincularlo con el ultimo que ha vendido una póliza a este cliente</description>
         <name>Update_Intermediary_Name</name>
         <label>Update Intermediary Name</label>
-        <locationX>246</locationX>
+        <locationX>314</locationX>
         <locationY>947</locationY>
         <connector>
             <targetReference>getMetadataDaysAction</targetReference>
@@ -531,21 +550,18 @@
     <recordUpdates>
         <name>updateCaseAction</name>
         <label>Update Case</label>
-        <locationX>402</locationX>
-        <locationY>1895</locationY>
-        <connector>
-            <targetReference>casesLoop</targetReference>
-        </connector>
+        <locationX>50</locationX>
+        <locationY>2087</locationY>
         <faultConnector>
             <targetReference>createRecordUpdateCasesErrorAction</targetReference>
         </faultConnector>
-        <inputReference>casesLoop</inputReference>
+        <inputReference>CasesToUpdate</inputReference>
     </recordUpdates>
     <recordUpdates>
         <description>Actualiza los registros de ofertas con su nuevo Stage</description>
         <name>updateOfferAction</name>
         <label>Update Offer</label>
-        <locationX>246</locationX>
+        <locationX>314</locationX>
         <locationY>839</locationY>
         <connector>
             <targetReference>Update_Intermediary_Name</targetReference>
@@ -556,23 +572,30 @@
         <inputReference>getRelatedOfferAction</inputReference>
     </recordUpdates>
     <start>
-        <locationX>120</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getRelatedOfferAction</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>OpportunityName__c</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
+        <filterFormula>AND(
+NOT(ISBLANK({!$Record.OpportunityName__c})),
+OR(
+ISNEW(),
+ISCHANGED({!$Record.OpportunityName__c})
+)
+)</filterFormula>
         <object>Policy__c</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
     <triggerOrder>1500</triggerOrder>
+    <variables>
+        <name>CasesToUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
 </Flow>
