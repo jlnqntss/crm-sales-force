@@ -156,6 +156,13 @@
             <operator>equals</operator>
             <value>Account.Intermediary</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>CDF1</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>THIS_MONTH</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
