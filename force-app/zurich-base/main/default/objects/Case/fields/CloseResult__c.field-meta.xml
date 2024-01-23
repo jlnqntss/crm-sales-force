@@ -473,6 +473,7 @@
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
@@ -490,6 +491,7 @@
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>

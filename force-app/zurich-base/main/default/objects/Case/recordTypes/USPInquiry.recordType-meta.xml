@@ -540,10 +540,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>No Realizado</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>No Realizado - Otros motivos</fullName>
             <default>false</default>
         </values>
@@ -577,10 +573,6 @@
         </values>
         <values>
             <fullName>Perdida - Tiempo respuesta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado</fullName>
             <default>false</default>
         </values>
         <values>
