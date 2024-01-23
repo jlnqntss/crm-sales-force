@@ -713,5 +713,120 @@ public with sharing class EmailMessagesUtil
         return mapaCasosHijos;
     }
 
+    /**
+     * Determina si el email tiene buzones de apertura de caso sólo en CcAddress y no en ToAddress
+     * Para aquellos en los que así sea habrá que cerrar el caso creado
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * @param List<EmailMessage> emailList : Lista de email message
+    */
+    public void checkIfMailOnlyInCc (List<EmailMessage> emailList)
+    {
+        // Rescatamos los buzones
+        List<CloseOnCcMailboxList__mdt> closeOnCcMailboxList = CloseOnCcMailboxList__mdt.getAll().values();
+        List<String> mailboxes = new List<String>();
+        
+        if (!closeOnCcMailboxList.isEmpty())
+        {
+            // Si la lista de buzones a cerrar no está vacía, obtenemos los emails
+            for (CloseOnCcMailboxList__mdt mailbox : closeOnCcMailboxList)
+            {
+                mailboxes.add(mailbox.Email__c);
+            }
+
+            // Vemos si los buzones están en el CC pero no en ToAddress y los guardamos
+            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailList, mailboxes);//new List<EmailMessage>();
+
+            Set<String> caseIds = new Set<String>();
+
+            for (EmailMessage mailToClose: mailsToCloseRelatedCase)
+            {
+                caseIds.add(mailToClose.ParentId);
+            }
+
+            // Seleccionamos todos los casos que cumplen el criterio
+            List<Case> casesForAutoClose = new CasesSelector().findAllDataById(caseIds);
+            
+            //Cierre de los casos que cumplen el criterio
+        	this.closeCasesOnlyInCc(casesForAutoClose);
+        }
+    }
+
+    /**
+     * Devuelve los emails que tienen las los buzones indicados en CcAddress pero no en ToAddress
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * @param List<EmailMessage> emailList : Lista de email message
+     * @param List<Email> mailboxes : Mapa de id del caso padre y el caso padre 
+    */
+    private List<EmailMessage> checkIfMailboxesOnlyInCc (List<EmailMessage> emailList, List<String> mailboxes) 
+    {
+        List<EmailMessage> selectedMails = new List<EmailMessage>();
+
+        for (EmailMessage emailMessage : emailList)
+        {
+            if (emailMessage.ParentId != null)
+            {
+                // Recorremos los buzones buscando si alguno está como 'CC' y el caso asociado opta a cierre
+            	for (String mailboxCc : mailboxes)
+                {
+                    if (emailMessage.CcAddress.contains(mailboxCc))
+                    {
+                        // Si hay un buzón en 'CC' revisamos si hay algún buzón en el 'Para'. Sólo si hay ninguno en
+                        // el el 'Para' el caso cualifica finalmente para cierre
+                        Boolean closeThisCase = true;
+                        
+                        for (String mailboxTo : mailboxes)
+                        {
+                            if (emailMessage.ToAddress.contains(mailboxTo))
+                            {
+                                closeThisCase = false;
+                                break;
+                            }
+                        }
+                        
+                        if (closeThisCase)
+                        {
+                            selectedMails.add(emailMessage);
+                        }
+                    }
+                }
+            }
+        }
+
+        return selectedMails;
+    }
+
+    /**
+     * Pasa los casos selecionados al estado 'Closed'
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * @param List<Case> casesToClose : Lista de casos para cerrar
+    */
+    private void closeCasesOnlyInCc (List<Case> casesToClose) 
+    {
+        List<Case> openCases = new List<Case>();
+        
+        for (Case caseToClose : casesToClose)
+        {
+            if(caseToClose.Status != 'Closed')
+            {
+                caseToClose.Status = 'Closed';
+                caseToClose.CloseDetail__c = 'Buzón centro en copia';
+                caseToClose.CloseResult__c = 'No Realizado';
+                caseToClose.PendingBy__c = null;
+                openCases.add(caseToClose);
+            }
+        }
+        
+        if(!openCases.isEmpty())
+        {
+            update openCases;
+        }
+    }
+
     private class EmailMessagesUtilException extends Exception {}
 }

@@ -16014,6 +16014,11 @@
         <field>Account.RecordType__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CloseOnCcMailboxList__mdt.Email__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <flowAccesses>
         <enabled>true</enabled>
         <flow>Campaign_Member_Status</flow>
@@ -16842,6 +16847,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>AccountRelationship__c-Account Relationship Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>CloseOnCcMailboxList__mdt-CloseOnCcMailboxList Layout</layout>
     </layoutAssignments>
     <loginIpRanges>
         <endAddress>255.255.255.254</endAddress>

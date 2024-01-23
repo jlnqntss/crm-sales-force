@@ -168,7 +168,7 @@ private class EmailMessagesUtilTest
         ];
         System.assertEquals(NUM_EMAILS, emailsResult.size(), 'There should be ' + NUM_EMAILS + ' EmailMessages');
     }
-    
+
     @isTest
     static void assignGenesysRoutingFields_update_ok()
     {
@@ -476,5 +476,49 @@ private class EmailMessagesUtilTest
 
         List<Task> tasksList = ActivitySelector.selectTasksById (new Set<Id> {taskToEmailMessage.id});
         System.assertEquals(true, tasksList[0].IsVisibleInSelfService, 'La tarea no se ha actualizado correctamente');
+    }
+
+    /**
+     * Test para cerrar casos creados para buzones que están sólo en CCC
+     * @author jfherrero
+     * @date 22/01/2024
+     */
+    @isTest
+    static void test_closeCaseOnlyInCc_Cerrar()
+    {
+        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email');
+        insert casoToEmailMessage;
+
+        List<CloseOnCcMailboxList__mdt> closeOnCcMailboxList = CloseOnCcMailboxList__mdt.getAll().values();
+        String mailToCloseIfOnlyCc = closeOnCcMailboxList[0].Email__c;
+
+        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
+        emailList[0].RelatedToId = casoToEmailMessage.id;
+        emailList[0].ToAddress = 'mail@ficticio.es';
+        emailList[0].CcAddress = mailToCloseIfOnlyCc;
+
+        insert emailList;
+    }
+
+    /**
+     * Test para cerrar casos creados para buzones que están sólo en CCC
+     * @author jfherrero
+     * @date 22/01/2024
+     */
+    @isTest
+    static void test_closeCaseOnlyInCc_No_Cerrar()
+    {
+        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email');
+        insert casoToEmailMessage;
+
+        List<CloseOnCcMailboxList__mdt> closeOnCcMailboxList = CloseOnCcMailboxList__mdt.getAll().values();
+        String mailToCloseIfOnlyCc = closeOnCcMailboxList[0].Email__c;
+
+        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
+        emailList[0].RelatedToId = casoToEmailMessage.id;
+        emailList[0].ToAddress = mailToCloseIfOnlyCc;
+        emailList[0].CcAddress = 'mail@ficticio.es';
+
+        insert emailList;
     }
 }
