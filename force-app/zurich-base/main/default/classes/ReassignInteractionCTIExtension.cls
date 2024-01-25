@@ -229,6 +229,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                         cmClone.CampaignId = cm.CampaignId;
                         cmClone.ContactId = cm.ContactId;
                         cmClone.LeadPhone__c = cm.LeadPhone__c;
+                        cmClone.Origen_BBDD__c = cm.Origen_BBDD__c;
                         cmClone.Status = '';
                         delete cm;
                         insert cmClone;

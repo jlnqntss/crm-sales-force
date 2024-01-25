@@ -162,6 +162,7 @@ private with sharing class ReassignInteractionCTIExtensionTest
             /* --------------------------- MIEMBROS DE CAMPAÑA -------------------------- */
             CampaignMember campaignMember = TestDataFactory.generateCampaignMembersForEachCampaign(new List<Contact> {customerContact}, new List<Campaign> {campaign}, 'New')[0];
             campaignMember.CallRetries__c = 0;
+            campaignMember.Origen_BBDD__c = 'Prueba Origen BBDD';
             insert campaignMember;
 
             String originalCampaignMemberId = campaignMember.Id;
@@ -172,7 +173,7 @@ private with sharing class ReassignInteractionCTIExtensionTest
             String interactionChangedEventString = '{"eventName": "interactionChanged", "interaction" : { "id": "ucid0"},  "callLog": {"CallObject": "ucid0"}}';
             ReassignInteractionCTIExtension.onSaveLog(interactionChangedEventString);
 
-            List<Task> tasksInSystem = [SELECT Id FROM Task];
+            List<Task> tasksInSystem = [SELECT Id, Origen_BBDD__c FROM Task];
             Assert.areEqual(1, tasksInSystem.size(), 'La interaccion solo debería crear una tarea');
 
             Map<String, String> genesysWrapUpMapping = new Map<String, String>();
@@ -188,11 +189,14 @@ private with sharing class ReassignInteractionCTIExtensionTest
             Test.stopTest();
 
             /* --------------------------------- ASSERTS -------------------------------- */
-            List<CampaignMember> clonedCampaignMemberList = [SELECT Id, ContactId, CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId AND CampaignId = : campaignMember.CampaignId];
+            List<CampaignMember> clonedCampaignMemberList = [SELECT Id, Origen_BBDD__c, ContactId, CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId AND CampaignId = : campaignMember.CampaignId];
+            List<Task> assertTaskList = [SELECT Id, Origen_BBDD__c FROM Task WHERE Id = : tasksInSystem[0].Id];
 
             Assert.isFalse(clonedCampaignMemberList.isEmpty(), 'No se ha encontrado el CampaignMember clonado.');
+            Assert.isFalse(assertTaskList.isEmpty(), 'No se ha recuperado la tarea de la interacción.');
             Assert.areNotEqual(0, clonedCampaignMemberList[0].CallRetries__c, 'El número de reintentos no se ha actualizado.');
             Assert.areNotEqual(originalCampaignMemberId, clonedCampaignMemberList[0].Id, 'El campaign member clonado no ha cambiado de ID, puede que no se haya borrado el antiguo.');
+            Assert.areEqual(assertTaskList[0].Origen_BBDD__c, clonedCampaignMemberList[0].Origen_BBDD__c, 'El campo Origen_BBDD__c no se ha rellenado correctamente.');
         }
     }
 
