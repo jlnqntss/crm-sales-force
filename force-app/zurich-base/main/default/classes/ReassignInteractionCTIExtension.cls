@@ -193,6 +193,10 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * @description
      *          CV-684: Se añade el campo CampaignMemberID__c para poder relacionar la tarea con el CampaignMember, se comprueba que el contacto sea un
      *                  CampaignMember y que el motivo de cierre sea "No contesta / Contestador Automático"
+     * @date    25/01/2024
+     * @author  fpalomo
+     * @description
+     *          CV-1467: Rellenamos el campo Activity.Origen_BBDD__c con el valor de CampaignMember.Origen_BBDD__c cuando el contacto sea un CampaignMember
      */
     private static void eventOnInteractionDisconnected(Task interactionTask, Map<String, Object> eventInteractionData)
     {
