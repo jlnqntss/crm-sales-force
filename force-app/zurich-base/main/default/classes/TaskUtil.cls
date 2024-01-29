@@ -32,12 +32,9 @@ public with sharing class TaskUtil
         {
             User ownerTask = mapIdByUser.get(taskToUpdate.OwnerId);
 
-            if ( ownerTask != null && ownerTask.Profile.Name != null && !String.isBlank(ownerTask.Profile.Name) && taskToUpdate.IsVisibleInSelfService != true )
+            if ( ownerTask != null && ownerTask.Profile.Name != null && !String.isBlank(ownerTask.Profile.Name) && ownerTask.Profile.name == 'OCS Community User' && taskToUpdate.IsVisibleInSelfService != true )
             {
-                if (ownerTask.Profile.name == 'OCS Community User' || ownerTask.Profile.name.containsIgnoreCase('Ventas') )
-                {
-                    taskToUpdate.IsVisibleInSelfService = true;
-                }
+                taskToUpdate.IsVisibleInSelfService = true;
             }
         }
     }
