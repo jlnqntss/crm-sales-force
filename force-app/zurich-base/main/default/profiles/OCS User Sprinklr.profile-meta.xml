@@ -3891,7 +3891,7 @@
         <field>Case.ClosedDate</field>
         <readable>false</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Case.ClosedOnCreate</field>
         <readable>false</readable>
@@ -4166,7 +4166,7 @@
         <field>Case.MilestoneStatus</field>
         <readable>false</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Case.MilestoneStatusIcon</field>
         <readable>false</readable>
@@ -7226,7 +7226,7 @@
         <recordType>Case.OCSInquiry</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
-    <recordTypeVisibilities>
+<recordTypeVisibilities>
         <default>false</default>
         <recordType>Case.OCS_Sprinklr</recordType>
         <visible>false</visible>
