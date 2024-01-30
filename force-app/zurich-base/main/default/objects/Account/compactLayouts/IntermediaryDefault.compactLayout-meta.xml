@@ -8,5 +8,6 @@
     <fields>TerritorialDirection__c</fields>
     <fields>Association__c</fields>
     <fields>BusinessManagerName__c</fields>
+    <fields>Foreigners__c</fields>
     <label>Intermediary Default</label>
 </CompactLayout>
