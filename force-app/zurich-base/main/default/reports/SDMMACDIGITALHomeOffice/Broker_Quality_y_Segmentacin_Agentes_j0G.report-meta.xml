@@ -75,7 +75,7 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.PotentialBroker__c</field>
+        <field>Account.Potential_Broker__c</field>
     </columns>
     <columns>
         <field>Account.SDMAssociation__c</field>
