@@ -3,8 +3,8 @@
  *                      de las cuentas de tipo Lead que llegan a Salesforce.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 28/09/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 31-01-2024
+ * @last modified by  : amiranda
 **/
 public with sharing class AccountLeadAssignment
 {
@@ -252,6 +252,11 @@ public with sharing class AccountLeadAssignment
      *              Valor del código postal
      * @return      String
      *              Id de usuario.
+     * 
+     * @change amiranda 29/01/2024 Se modifica el 'Custom Metadata' que recoge las
+     * asignaciones municipales. Una misma provincia puede tener varios mediadores,
+     * lo que implica disponer de rangos de códigos postales que serán asignados 
+     * a difernetes mediadores.
      */
     @TestVisible
     private static Assignment assignedUserByMunicipality(String postalCode)
@@ -261,11 +266,23 @@ public with sharing class AccountLeadAssignment
             return defaultUser;
         }
 
+        String provinceCode = postalCode.substring(0, 2);
+
         for(MunicipalityAssignment__mdt currentMA : municipalityAssignmentMetadata)
         {
-            if(currentMA.PostalCode__c == postalCode && String.isNotBlank(currentMA.AssignTo__c))
+            if(currentMA.ProvinceCode__c == provinceCode && String.isNotBlank(currentMA.ZIPRanges__c))
             {
-                return getIntermediaryUserId(currentMA.AssignTo__c);
+                // Rangos postales para el código de provincipa que coincide con el código postal recibido por parámetro
+                Map<Integer, String> assignedIntermediaryByLastPostalCode = (Map<Integer, String>) JSON.deserialize(currentMA.ZIPRanges__c, Map<Integer, String>.class);
+
+                // Se busca el mediador a asignar
+                for (Integer lastPostalCode : assignedIntermediaryByLastPostalCode.keySet())
+                {
+                    if (Integer.valueOf(postalCode) <= lastPostalCode)
+                    {
+                        return getIntermediaryUserId(assignedIntermediaryByLastPostalCode.get(lastPostalCode));
+                    }
+                }
             }
         }
 
