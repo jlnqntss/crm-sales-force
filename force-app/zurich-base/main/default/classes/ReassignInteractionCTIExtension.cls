@@ -193,6 +193,10 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      * @description
      *          CV-684: Se añade el campo CampaignMemberID__c para poder relacionar la tarea con el CampaignMember, se comprueba que el contacto sea un
      *                  CampaignMember y que el motivo de cierre sea "No contesta / Contestador Automático"
+     * @date    25/01/2024
+     * @author  fpalomo
+     * @description
+     *          CV-1467: Rellenamos el campo Activity.Origen_BBDD__c con el valor de CampaignMember.Origen_BBDD__c cuando el contacto sea un CampaignMember
      */
     private static void eventOnInteractionDisconnected(Task interactionTask, Map<String, Object> eventInteractionData)
     {
@@ -211,7 +215,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
             if(isCampaignMember)
             {
-                Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c', 'CallRetries__c', 'CampaignId', 'ContactId', 'Status', 'LeadPhone__c'};
+                Set<String> cmFields = new Set<String> {'Campaign.MaxCallRetries__c', 'CallRetries__c', 'CampaignId', 'ContactId', 'Status', 'LeadPhone__c', 'Origen_BBDD__c'};
 
                 CampaignMember cm = new CampaignMembersSelector(cmFields).selectById(new Set<Id> { (Id) eventInteractionData.get('dialerContactId') })[0];
                 Integer maxCallRetries = (cm.Campaign.MaxCallRetries__c == null) ? 0 : cm.Campaign.MaxCallRetries__c.intValue();
@@ -225,6 +229,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                         cmClone.CampaignId = cm.CampaignId;
                         cmClone.ContactId = cm.ContactId;
                         cmClone.LeadPhone__c = cm.LeadPhone__c;
+                        cmClone.Origen_BBDD__c = cm.Origen_BBDD__c;
                         cmClone.Status = '';
                         delete cm;
                         insert cmClone;
@@ -235,6 +240,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                         update cm;
                     }
                 }
+                interactionTask.Origen_BBDD__c = cm.Origen_BBDD__c;
                 interactionTask.Campaign__c = cm.CampaignId;
             }
         }

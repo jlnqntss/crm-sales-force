@@ -3,7 +3,8 @@
     <fullName>MiAgencia__c</fullName>
     <defaultValue>false</defaultValue>
     <externalId>false</externalId>
-    <label>Mi Agencia</label>
+    <label>ZRM</label>
     <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
     <type>Checkbox</type>
 </CustomField>
