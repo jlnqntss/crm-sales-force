@@ -16154,12 +16154,10 @@
         <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
-    <!--
     <flowAccesses>
         <enabled>true</enabled>
         <flow>ZEEmailRoute</flow>
     </flowAccesses>
-    -->
     <flowAccesses>
         <enabled>true</enabled>
         <flow>ZESearchAndScreenPop</flow>
@@ -16926,11 +16924,9 @@
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
     </layoutAssignments>
-    <!--
     <layoutAssignments>
         <layout>AccountRelationship__c-Account Relationship Layout</layout>
     </layoutAssignments>
-    -->
     <layoutAssignments>
         <layout>CloseOnCcMailboxList__mdt-CloseOnCcMailboxList Layout</layout>
     </layoutAssignments>
@@ -19226,12 +19222,10 @@
         <tab>standard-Macro</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
-    <!--
     <tabVisibilities>
         <tab>standard-News</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
-    -->
     <tabVisibilities>
         <tab>standard-Opportunity</tab>
         <visibility>DefaultOn</visibility>
