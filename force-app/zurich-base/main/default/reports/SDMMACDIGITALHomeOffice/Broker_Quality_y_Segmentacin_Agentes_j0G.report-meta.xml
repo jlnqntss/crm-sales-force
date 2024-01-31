@@ -324,6 +324,13 @@
             <operator>equals</operator>
             <value>Account.Intermediary,Account.Potential_Broker</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Account.StatusIntermediary__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Active</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Tabular</format>
