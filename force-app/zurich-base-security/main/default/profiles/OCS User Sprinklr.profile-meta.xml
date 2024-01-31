@@ -3891,6 +3891,11 @@
         <field>Case.ClosedDate</field>
         <readable>false</readable>
     </fieldPermissions>
+<fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ClosedOnCreate</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.Commercial_Code__c</field>
@@ -4159,6 +4164,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.MilestoneStatus</field>
+        <readable>false</readable>
+    </fieldPermissions>
+<fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MilestoneStatusIcon</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4528,41 +4538,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.SprinklrFinalSentiment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.SprinklrInitialCaseSentiment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.SprinklrManagedBy__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.SprinklrPostType__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.SprinklrProduct__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.SprinklrRequestType__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.SprinklrSocialMediaChannel__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Case.StatusDateTPA__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4647,7 +4622,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Case.spr_sf__Sprinklr_Case_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6964,10 +6939,6 @@
         <layout>CampaignMember-Campaign Member Page Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Case Default Sprinklr</layout>
-        <recordType>Case.OCSSprinklr</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>CaseInteraction-Case Feed Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -7251,14 +7222,14 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Case.OCSInquiry</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
         <default>true</default>
-        <recordType>Case.OCSSprinklr</recordType>
+        <recordType>Case.OCSInquiry</recordType>
         <visible>true</visible>
+    </recordTypeVisibilities>
+<recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.OCS_Sprinklr</recordType>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
