@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
-        <actionOverrides>
+    <actionOverrides>
         <actionName>View</actionName>
         <comment>Action override created by Lightning App Builder during activation.</comment>
         <content>OCS_Offer_Defaut</content>
@@ -36,7 +36,7 @@
         <type>Flexipage</type>
         <pageOrSobjectType>Quote</pageOrSobjectType>
     </actionOverrides>
-<actionOverrides>
+    <actionOverrides>
         <actionName>View</actionName>
         <comment>Action override created by Lightning App Builder during activation.</comment>
         <content>OCS_Contact_Default</content>
@@ -90,7 +90,7 @@
         <type>Flexipage</type>
         <pageOrSobjectType>Case</pageOrSobjectType>
     </actionOverrides>
-        <brand>
+    <brand>
         <headerColor>#003398</headerColor>
         <logo>logo_2</logo>
         <logoVersion>1</logoVersion>
@@ -286,7 +286,7 @@
         <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
-        <profileActionOverrides>
+    <profileActionOverrides>
         <actionName>View</actionName>
         <content>Scope_Record_Page</content>
         <formFactor>Small</formFactor>
@@ -294,7 +294,7 @@
         <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
-        <profileActionOverrides>
+    <profileActionOverrides>
         <actionName>View</actionName>
         <content>OCS_Customer_Default</content>
         <formFactor>Small</formFactor>
@@ -366,7 +366,7 @@
         <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
-        <profileActionOverrides>
+    <profileActionOverrides>
         <actionName>View</actionName>
         <content>OCS_Partner_Default</content>
         <formFactor>Small</formFactor>
@@ -402,7 +402,7 @@
         <type>Flexipage</type>
         <profile>OCS User</profile>
     </profileActionOverrides>
-<profileActionOverrides>
+    <profileActionOverrides>
         <actionName>View</actionName>
         <content>OCS_Intermediary_Default</content>
         <formFactor>Small</formFactor>
