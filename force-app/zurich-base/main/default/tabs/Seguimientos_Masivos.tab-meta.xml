@@ -2,6 +2,6 @@
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Created by Lightning App Builder</description>
     <flexiPage>SDM_Seguimientos_Masivos</flexiPage>
-    <label>Seguimientos Masivos</label>
+    <label>Subidas masivas</label>
     <motif>Custom33: Desk</motif>
 </CustomTab>
