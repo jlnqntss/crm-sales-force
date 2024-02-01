@@ -45,6 +45,11 @@
         <default>false</default>
         <label>TWW Retención</label>
     </customValue>
+    <customValue>
+        <fullName>Sprinklr</fullName>
+        <default>false</default>
+        <label>Sprinklr</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
