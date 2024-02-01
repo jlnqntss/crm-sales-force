@@ -32,8 +32,8 @@
                 <field>CallCenter__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Assigned_Center__c</field>
+                <behavior>Edit</behavior>
+                <field>ScopeId__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -60,10 +60,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>AutomaticNotifications__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ScopeId__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
