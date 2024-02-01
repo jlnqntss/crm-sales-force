@@ -94,7 +94,7 @@
                             <value>TotalPremium__c</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>IntermediaryName__c</value>
+                            <value>IntermediaryNameForm__c</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
