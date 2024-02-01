@@ -51,6 +51,34 @@
                 <identifier>pw_si_CuratedImport3</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>buttonText</name>
+                    <value>Importar tareas</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentMessage</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>componentTitle</name>
+                    <value>Tareas masivas</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>hasRecordId</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>mappingId</name>
+                    <value>57797</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>sourceRecordId</name>
+                </componentInstanceProperties>
+                <componentName>pw_si:CuratedImport</componentName>
+                <identifier>pw_si_CuratedImport5</identifier>
+            </componentInstance>
+        </itemInstances>
         <name>column1</name>
         <type>Region</type>
     </flexiPageRegions>
@@ -114,7 +142,7 @@
         <name>column2</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>Seguimientos Masivos</masterLabel>
+    <masterLabel>Subidas masivas</masterLabel>
     <template>
         <name>flexipage:appHomeTemplateTwoColumns</name>
     </template>
