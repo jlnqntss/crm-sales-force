@@ -632,9 +632,9 @@
                 <identifier>console_relatedRecord3</identifier>
                 <visibilityRule>
                     <criteria>
-                        <leftValue>{!Record.SprinklrSocialPersona__r.RecordType.DeveloperName}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Sprinklr</rightValue>
+                        <leftValue>{!Record.spr_sf__Sprinklr_Case_Number__c}</leftValue>
+                        <operator>GT</operator>
+                        <rightValue>0</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
