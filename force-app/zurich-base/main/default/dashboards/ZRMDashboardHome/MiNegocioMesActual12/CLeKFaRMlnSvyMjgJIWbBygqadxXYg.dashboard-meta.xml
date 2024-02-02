@@ -454,14 +454,14 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>Ratio Retención vs PY</header>
+                <header>Ratio Retención</header>
                 <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
                 <indicatorHighColor>#23366F</indicatorHighColor>
                 <indicatorLowColor>#23366F</indicatorLowColor>
                 <indicatorMiddleColor>#23366F</indicatorMiddleColor>
                 <metricLabel>Mes Actual</metricLabel>
-                <report>MiNegocioMesActual/Variacin_Mi_Negocio_Mes12Bloque2_2ok</report>
+                <report>ZRMKPIS/Variacin_Mi_Negocio_Mes12Bloque2_2ok</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>12</rowIndex>
