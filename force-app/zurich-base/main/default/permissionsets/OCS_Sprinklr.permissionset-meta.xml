@@ -50,6 +50,11 @@
         <field>Case.spr_sf__Sprinklr_Case_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrSocialPersona__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>OCS Sprinklr</label>
     <objectPermissions>
