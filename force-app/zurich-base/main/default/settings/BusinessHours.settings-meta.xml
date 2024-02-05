@@ -71,6 +71,22 @@
     <businessHours>
         <active>true</active>
         <default>false</default>
+        <fridayEndTime>15:00:00.000Z</fridayEndTime>
+        <fridayStartTime>08:00:00.000Z</fridayStartTime>
+        <mondayEndTime>18:00:00.000Z</mondayEndTime>
+        <mondayStartTime>09:00:00.000Z</mondayStartTime>
+        <name>RRSS (Sprinklr)</name>
+        <thursdayEndTime>18:00:00.000Z</thursdayEndTime>
+        <thursdayStartTime>09:00:00.000Z</thursdayStartTime>
+        <timeZoneId>Europe/Paris</timeZoneId>
+        <tuesdayEndTime>18:00:00.000Z</tuesdayEndTime>
+        <tuesdayStartTime>09:00:00.000Z</tuesdayStartTime>
+        <wednesdayEndTime>18:00:00.000Z</wednesdayEndTime>
+        <wednesdayStartTime>09:00:00.000Z</wednesdayStartTime>
+    </businessHours>
+    <businessHours>
+        <active>true</active>
+        <default>false</default>
         <fridayEndTime>14:30:00.000Z</fridayEndTime>
         <fridayStartTime>08:30:00.000Z</fridayStartTime>
         <mondayEndTime>18:00:00.000Z</mondayEndTime>
@@ -119,6 +135,23 @@
         <wednesdayStartTime>09:00:00.000Z</wednesdayStartTime>
     </businessHours>
     <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>01/01 - Año nuevo</name>
+        <recurrenceDayOfMonth>1</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-01-01</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <isRecurring>true</isRecurring>
+        <name>01/01 - Año nuevo</name>
+        <recurrenceDayOfMonth>1</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
+        <recurrenceStartDate>2025-01-01</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
@@ -163,6 +196,32 @@
         <recurrenceMonthOfYear>March</recurrenceMonthOfYear>
         <recurrenceStartDate>2023-03-20</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <activityDate>2024-03-27</activityDate>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <endTime>15:00:00.000Z</endTime>
+        <isRecurring>false</isRecurring>
+        <name>03/27 - Jornada Intensiva RRSS Víspera S.S.</name>
+        <startTime>08:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <activityDate>2024-03-28</activityDate>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>false</isRecurring>
+        <name>03/28 - Jueves Santo</name>
+    </holidays>
+    <holidays>
+        <activityDate>2024-03-29</activityDate>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>false</isRecurring>
+        <name>03/29 - Viernes Santo</name>
+    </holidays>
+    <holidays>
+        <activityDate>2024-04-01</activityDate>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>false</isRecurring>
+        <name>04/01 - Lunes de Pascua</name>
     </holidays>
     <holidays>
         <businessHours>CCS Default</businessHours>
@@ -252,6 +311,7 @@
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
+        <businessHours>RRSS (Sprinklr)</businessHours>
         <businessHours>USP Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>05/01 - Primero de mayo</name>
@@ -262,6 +322,7 @@
     </holidays>
     <holidays>
         <businessHours>Centro Excelencia Default</businessHours>
+        <businessHours>RRSS (Sprinklr)</businessHours>
         <isRecurring>true</isRecurring>
         <name>05/02 - Día Comunidad de Madrid</name>
         <recurrenceDayOfMonth>2</recurrenceDayOfMonth>
@@ -271,12 +332,19 @@
     </holidays>
     <holidays>
         <businessHours>Centro Excelencia Default</businessHours>
+        <businessHours>RRSS (Sprinklr)</businessHours>
         <isRecurring>true</isRecurring>
         <name>05/15 - Fiesta San Isidro</name>
         <recurrenceDayOfMonth>15</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>May</recurrenceMonthOfYear>
         <recurrenceStartDate>2023-05-15</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <activityDate>2024-05-20</activityDate>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>false</isRecurring>
+        <name>05/20 - Segunda Pascua</name>
     </holidays>
     <holidays>
         <businessHours>Centro Excelencia Default</businessHours>
@@ -312,6 +380,24 @@
         <startTime>14:30:00.000Z</startTime>
     </holidays>
     <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>06/24 - Sant Joan</name>
+        <recurrenceDayOfMonth>24</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>June</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-06-24</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>07/25 - Festivo Apóstol Santiago</name>
+        <recurrenceDayOfMonth>25</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>July</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-07-25</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>ZE Business Hours</businessHours>
         <endTime>20:00:00.000Z</endTime>
@@ -332,12 +418,22 @@
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
+        <businessHours>RRSS (Sprinklr)</businessHours>
         <businessHours>USP Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>08/15 - Asunción de la Virgen</name>
         <recurrenceDayOfMonth>15</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>August</recurrenceMonthOfYear>
         <recurrenceStartDate>2022-08-15</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>09/24 - La Mercè</name>
+        <recurrenceDayOfMonth>24</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>September</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-09-24</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
@@ -361,9 +457,21 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <endTime>15:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>10/31 - Jornada Intensiva Víspera Todos los Santos</name>
+        <recurrenceDayOfMonth>31</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>October</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-10-31</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>08:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
+        <businessHours>RRSS (Sprinklr)</businessHours>
         <businessHours>USP Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>11/01 - Todos los Santos</name>
@@ -373,7 +481,17 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>11/09 - Almudena</name>
+        <recurrenceDayOfMonth>9</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>November</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-11-09</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
         <businessHours>Centro Excelencia Default</businessHours>
+        <businessHours>RRSS (Sprinklr)</businessHours>
         <isRecurring>true</isRecurring>
         <name>11/09 - Fiesta La Almudena</name>
         <recurrenceDayOfMonth>9</recurrenceDayOfMonth>
@@ -385,6 +503,7 @@
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
+        <businessHours>RRSS (Sprinklr)</businessHours>
         <businessHours>USP Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>12/06 - Día de la Constitución</name>
@@ -429,9 +548,21 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <endTime>15:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>12/24 - Jornada Intensiva Víspera Navidad</name>
+        <recurrenceDayOfMonth>24</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-12-24</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>08:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
+        <businessHours>RRSS (Sprinklr)</businessHours>
         <businessHours>USP Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>12/25 - Navidad</name>
@@ -449,6 +580,26 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>12/26 - Sant Esteve</name>
+        <recurrenceDayOfMonth>26</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-12-26</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <endTime>15:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>12/31 - Jornada Intensiva Víspera Año Nuevo</name>
+        <recurrenceDayOfMonth>31</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-12-31</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>08:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>USP Default</businessHours>
         <description>Hora de la comida para el equipo de USP (hasta jornada intensiva)</description>
         <endTime>15:30:00.000Z</endTime>
@@ -463,6 +614,22 @@
         <recurrenceStartDate>2023-01-02</recurrenceStartDate>
         <recurrenceType>RecursWeekly</recurrenceType>
         <startTime>14:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <businessHours>RRSS (Sprinklr)</businessHours>
+        <endTime>15:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>Jornada Intensiva Verano Sprinklr</name>
+        <recurrenceDayOfWeek>Monday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Tuesday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Wednesday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Thursday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Friday</recurrenceDayOfWeek>
+        <recurrenceEndDate>2024-09-15</recurrenceEndDate>
+        <recurrenceInterval>1</recurrenceInterval>
+        <recurrenceStartDate>2024-06-17</recurrenceStartDate>
+        <recurrenceType>RecursWeekly</recurrenceType>
+        <startTime>08:00:00.000Z</startTime>
     </holidays>
     <holidays>
         <businessHours>ZRM Ventas</businessHours>

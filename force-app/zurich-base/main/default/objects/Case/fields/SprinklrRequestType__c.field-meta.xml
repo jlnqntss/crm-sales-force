@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SprinklrRequestType__c</fullName>
+    <externalId>false</externalId>
+    <label>Type of Request</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>false</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>General Query</fullName>
+                <default>false</default>
+                <label>General Query</label>
+            </value>
+            <value>
+                <fullName>Complaint/Escalation</fullName>
+                <default>false</default>
+                <label>Complaint/Escalation</label>
+            </value>
+            <value>
+                <fullName>Compliment</fullName>
+                <default>false</default>
+                <label>Compliment</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

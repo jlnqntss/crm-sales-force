@@ -31,4 +31,9 @@
         <default>false</default>
         <label>WhatsApp</label>
     </standardValue>
+    <standardValue>
+        <fullName>Social media</fullName>
+        <default>false</default>
+        <label>Social media</label>
+    </standardValue>
 </StandardValueSet>
