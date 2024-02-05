@@ -2,11 +2,11 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>Municipality Assignment</value>
+        <value>Asignación Municipal</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Municipalities Assignments</value>
+        <value>Asignaciones Municipales</value>
     </caseValues>
     <gender>Feminine</gender>
 </CustomObjectTranslation>

@@ -2,8 +2,8 @@
  * @description       : Test funcionales de la asignación de Leads a Agentes.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 28/09/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 31-01-2024
+ * @last modified by  : amiranda
  **/
 @isTest
 public with sharing class Test_AccountLeadUtil
@@ -217,7 +217,7 @@ public with sharing class Test_AccountLeadUtil
 
         //MUNICIPALITY ASSIGNMENT
         List<MunicipalityAssignment__mdt> testMunicipalityAssignmentMetadata = new List<MunicipalityAssignment__mdt>();
-        testMunicipalityAssignmentMetadata.add( new MunicipalityAssignment__mdt(DeveloperName = 'X01520', AssignTo__c= 'IDIOMA-ES', PostalCode__c='25000') );
+        testMunicipalityAssignmentMetadata.add( new MunicipalityAssignment__mdt(DeveloperName = 'Lleida', ZIPRanges__c= '{"25999": "IDIOMA-ES"}', ProvinceCode__c='25') );
 
         AccountLeadAssignment.MunicipalityAssignmentMetadata = testMunicipalityAssignmentMetadata;
 

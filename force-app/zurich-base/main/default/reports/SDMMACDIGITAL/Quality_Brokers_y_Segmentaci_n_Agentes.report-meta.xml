@@ -62,7 +62,7 @@
     <columns>
         <field>BucketField_20014024</field>
     </columns>
-    <columns>
+<columns>
         <field>Account.Email_Recertificador__c</field>
     </columns>
     <columns>
@@ -312,7 +312,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Account.AgrupacionMediador</value>
+            <value>Account.Intermediary,Account.Potential_Broker</value>
         </criteriaItems>
         <language>es</language>
     </filter>

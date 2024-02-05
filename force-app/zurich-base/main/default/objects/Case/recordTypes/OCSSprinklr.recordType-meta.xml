@@ -3,10 +3,15 @@
     <fullName>OCSSprinklr</fullName>
     <active>true</active>
     <businessProcess>OCS</businessProcess>
+    <compactLayoutAssignment>OCS_Sprinklr_Default</compactLayoutAssignment>
     <description>Tipo de registro para los casos creados por Sprinklr</description>
     <label>OCS Sprinklr</label>
     <picklistValues>
         <picklist>CallCenter__c</picklist>
+        <values>
+            <fullName>Sprinklr</fullName>
+            <default>false</default>
+        </values>
         <values>
             <fullName>CC Service</fullName>
             <default>false</default>
@@ -948,27 +953,7 @@
     <picklistValues>
         <picklist>Origin</picklist>
         <values>
-            <fullName>Email</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>MassiveTasks</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NoteINFO</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Phone</fullName>
-            <default>true</default>
-        </values>
-        <values>
-            <fullName>Web</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>WhatsApp</fullName>
+            <fullName>Social media</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1196,7 +1181,7 @@
         </values>
         <values>
             <fullName>Generic end customer</fullName>
-            <default>false</default>
+            <default>true</default>
         </values>
         <values>
             <fullName>INFO note</fullName>
@@ -1224,6 +1209,160 @@
         </values>
         <values>
             <fullName>Zurich Business Client</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrFinalSentiment__c</picklist>
+        <values>
+            <fullName>Negative</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Neutral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Positive</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrInitialCaseSentiment__c</picklist>
+        <values>
+            <fullName>Negative</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Neutral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Positive</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrManagedBy__c</picklist>
+        <values>
+            <fullName>Assigned Group Comm%E2%80%99s</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assigned Via Sprinklr to BU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Flagged via email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Global team</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Local Team</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrPostType__c</picklist>
+        <values>
+            <fullName>Alert %28brand Reputation Related%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Career</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Community%2FDialog</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Company Mention</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complaint%2FEscalation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Compliment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Request</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>General Query</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Spam</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrProduct__c</picklist>
+        <values>
+            <fullName>App</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Electronics</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Health</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Home%2FProperty</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Life</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Motor%2FFleet</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No info provided</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pension%2FInvestment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pets</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Travel</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SprinklrRequestType__c</picklist>
+        <values>
+            <fullName>Complaint%2FEscalation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Compliment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>General Query</fullName>
             <default>false</default>
         </values>
     </picklistValues>

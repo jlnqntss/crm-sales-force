@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SprinklrManagedBy__c</fullName>
+    <externalId>false</externalId>
+    <label>Managed By</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>false</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Local Team</fullName>
+                <default>true</default>
+                <label>Local Team</label>
+            </value>
+            <value>
+                <fullName>Assigned Group Comm’s</fullName>
+                <default>false</default>
+                <label>Assigned Group Comm’s</label>
+            </value>
+            <value>
+                <fullName>Assigned Via Sprinklr to BU</fullName>
+                <default>false</default>
+                <label>Assigned Via Sprinklr to BU</label>
+            </value>
+            <value>
+                <fullName>Flagged via email</fullName>
+                <default>false</default>
+                <label>Flagged via email</label>
+            </value>
+            <value>
+                <fullName>Global team</fullName>
+                <default>false</default>
+                <label>Global team</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
