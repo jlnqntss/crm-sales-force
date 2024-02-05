@@ -4772,6 +4772,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.SprinklrSocialPersona__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.spr_sf__Sprinklr_Case_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>

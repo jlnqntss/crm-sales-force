@@ -6942,6 +6942,10 @@
         <layout>CaseInteraction-Case Feed Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Default Sprinklr</layout>
+        <recordType>Case.OCSSprinklr</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Codigo_Negocio_BancSabadell__mdt-Codigo Negocio BancSabadell Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -7228,7 +7232,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <recordType>Case.OCS_Sprinklr</recordType>
+        <recordType>Case.OCSSprinklr</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
