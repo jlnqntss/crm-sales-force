@@ -3567,12 +3567,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.IntermediaryVisibilityAcc__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.NetPremium__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.PendingBy__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.PendingIntermediaryReview__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3593,6 +3603,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.TransferredAgentName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.ZRM__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

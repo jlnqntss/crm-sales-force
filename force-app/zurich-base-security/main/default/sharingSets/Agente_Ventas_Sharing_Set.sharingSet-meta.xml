@@ -19,7 +19,7 @@
         <userField>Contact.Account</userField>
     </accessMappings>
     <accessMappings>
-        <accessLevel>Read</accessLevel>
+        <accessLevel>Edit</accessLevel>
         <object>Opportunity</object>
         <objectField>IntermediaryVisibilityAcc__c</objectField>
         <userField>Contact.Account</userField>
@@ -32,5 +32,5 @@
     </accessMappings>
     <description>Visibilidad para el Agente Mediador en la app de ZRM</description>
     <name>Agente Ventas Sharing Set</name>
-    <profiles>agente ventas</profiles>
+    <profiles>Agente Ventas</profiles>
 </SharingSet>

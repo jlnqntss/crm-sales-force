@@ -8,5 +8,5 @@
     </accessMappings>
     <description>Visibilidad para el Agente Mediador - AGR en la app de ZRM</description>
     <name>Agente Ventas - AGR Sharing Set</name>
-    <profiles>agente ventas - agr</profiles>
+    <profiles>Agente Ventas - AGR</profiles>
 </SharingSet>
