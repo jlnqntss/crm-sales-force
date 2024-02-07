@@ -521,4 +521,43 @@ private with sharing class EmailMessagesUtilTest
 
         insert emailList;
     }
+
+    /**
+     * Test para cerrar casos creados para buzones que están sólo en CCC
+     * @author jfherrero
+     * @date 06/02/2024
+     */
+    @isTest
+    static void test_getEmailGenesisQueueId()
+    {
+        // Generar mail
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(3);
+        Group queueGroup = new Group (Name='Cola_Test', DeveloperName='Cola_Test', Type='Queue');
+        insert queueGroup;
+
+        emails[0].GenesysQueueName__c = 'Cola_Test';
+        emails[1].GenesysQueueName__c = 'Cola_Test_fallo';
+
+        Id integratorUserId;
+        Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'OCS Community User'});
+
+        if ( UserInfo.getProfileId() != listaPerfiles.keySet().iterator().next() )
+        {
+            integratorUserId = [Select Id FROM User WHERE Profile.Name like : Label.IntegratorUser].get(0).Id;
+        }
+
+        Test.startTest();
+
+        EmailMessagesUtil emailMessagesUtil =new EmailMessagesUtil();
+
+        Id test01 = emailMessagesUtil.getEmailGenesisQueueId(emails[0], integratorUserId);
+        Id test02 = emailMessagesUtil.getEmailGenesisQueueId(emails[1], integratorUserId);
+        Id test03 = emailMessagesUtil.getEmailGenesisQueueId(emails[2], integratorUserId);
+
+        Test.stopTest();
+
+        System.assertEquals(test01, queueGroup.Id, 'Ambas ids deben ser iguales');
+        System.assertEquals(test02, integratorUserId, 'Debe ser el fallback por no encontrar grupos');
+        System.assertEquals(test03, integratorUserId, 'Debe ser el fallback venir el grupo vacío');
+    }
 }

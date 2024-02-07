@@ -98,15 +98,28 @@ public with sharing class EmailMessagesUtil
             Case casoHijo = mapaCasosHijos.get(posicion);
             Case casoPadre = mapaCasosPadre.get(casoHijo.ParentId);
 
-            // Creamos las referencias de los casos padre e hiijo
-            String caseThreadIDpadre = getCaseReference(casoPadre.Id);            
-            if(email.HtmlBody.contains('ref:'+caseThreadIDpadre + ':ref'))
+            // Creamos las referencias de los casos padre e hijo
+            String caseThreadIDpadreOld = getCaseReference(casoPadre.Id, true); 
+            String caseThreadIDpadreNew = getCaseReference(casoPadre.Id, false);
+            
+            if(email.HtmlBody.contains(caseThreadIDpadreOld))
             {
-                String caseThreadIDhijo = getCaseReference(casoHijo.id);
+                String caseThreadIDhijo = getCaseReference(casoHijo.id, false);
 
                 // Actualizamos las referencias en el email
-                email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadre, caseThreadIDhijo);
-                email.TextBody = email.TextBody.replace(caseThreadIDpadre, caseThreadIDhijo);
+                email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadreOld, caseThreadIDhijo);
+                email.TextBody = email.TextBody.replace(caseThreadIDpadreOld, caseThreadIDhijo);
+
+                email.ThreadIdentifier = '';
+            }
+
+            else if(email.HtmlBody.contains(caseThreadIDpadreNew))
+            {
+                String caseThreadIDhijo = getCaseReference(casoHijo.id, false);
+
+                // Actualizamos las referencias en el email
+                email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadreNew, caseThreadIDhijo);
+                email.TextBody = email.TextBody.replace(caseThreadIDpadreNew, caseThreadIDhijo);
 
                 email.ThreadIdentifier = '';
             }
@@ -597,13 +610,22 @@ public with sharing class EmailMessagesUtil
      * @param String el ID del caso
      * @return String 
      */
-    private String getCaseReference(String caseId)
+    private String getCaseReference(String caseId, Boolean oldFormat)
     {
         String threadID;
+
         if(caseId != null)
         {
-            threadID = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseId.left(5)  + caseId.mid(10,5) +'';
+            if(oldFormat)
+            {
+                threadID = 'ref:_' + UserInfo.getOrganizationId().left(5) + UserInfo.getOrganizationId().mid(11,4) + '._' + caseId.left(5) + caseId.mid(10,5) + ':ref';
+            }
+            else
+            {
+                threadID = 'ref:!' + UserInfo.getOrganizationId().left(6) + UserInfo.getOrganizationId().mid(11,4) + '.!' + caseId.left(6) + caseId.mid(10,5) + ':ref';
+            }
         }
+
         return threadID;
     }
 
@@ -614,8 +636,13 @@ public with sharing class EmailMessagesUtil
      * @date 26/06/2023
      * @param Case padre : caso padre
      * @param Case casoHijo : caso hijo
+     * 
+     * modificaciones
+     * @author nts - jfherrero
+     * @date 31/01/2024
+     * @descripción Verificar que el propietario del caso padre esté activo. Si no, intentar asignar la cola de Genesys
     */
-    private Case getOwnerOfChildCase (Case padre, Case casoHijo)
+    private Case getOwnerOfChildCase (Case padre, Case casoHijo, EmailMessage email)
     {
         Id integratorUserId;
         Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'OCS Community User'});
@@ -631,7 +658,14 @@ public with sharing class EmailMessagesUtil
         }
         else if(padre.RecordTypeId==uspRecordTypeId && padre.OwnerId!=null)
         { 
-            casoHijo.OwnerId=padre.OwnerId; //Asignamos como propietario del caso Hijo el mismo que el caso Padre
+            if (CaseUtil.validCaseOwner(padre.OwnerId))
+            {
+                casoHijo.OwnerId = padre.OwnerId; //Asignamos como propietario del caso Hijo el mismo que el caso Padre
+            }
+            else
+            {
+                casohijo.OwnerId = getEmailGenesisQueueId(email, integratorUserId);
+            }
         }
         else
         {
@@ -704,7 +738,7 @@ public with sharing class EmailMessagesUtil
                 Boolean heredamosTipificacion = (padre?.RecordTypeId == ocsRecordTypeId && (padre?.CallCenter__c == 'CC Service' || padre?.CallCenter__c == 'TWW Retención') ); // Corregimos para que solo herede la tipificación en los casos que corresponde
                 
                 Case casoHijo = CaseUtil.createCaseFromParent(padre, email, (tipificacionCorrecta && heredamosTipificacion)); 
-                casoHijo = getOwnerOfChildCase (padre, casoHijo); // Asignamos el owner del caso
+                casoHijo = getOwnerOfChildCase (padre, casoHijo, email); // Asignamos el owner del caso
                 casoHijo.SuppliedEmail = email.FromAddress; // Asignamos el from del email que general el caso hijo como SuppliedEmail
                 mapaCasosHijos.put(posicion, casoHijo);
             }
@@ -851,6 +885,37 @@ public with sharing class EmailMessagesUtil
         if(!openCases.isEmpty())
         {
             update openCases;
+        }
+    }
+
+    /**
+     * Obtener la cola a la que está asignada un correo para devolver su Id. Si no, devuelve el usuario
+     * o cola indicado como fallback.
+     * 
+     * @author aberuete
+     * @date 31/01/2024
+     * @param EmailMessage email : email para el cual vamos a buscaer la cola
+     * @param Id defaultOwnerOnFallback : usuario por defecto en caso de no encontrar la cola
+    */
+    @TestVisible
+    private Id getEmailGenesisQueueId (EmailMessage email, Id defaultOwnerOnFallback)
+    {
+        if (String.isNotBlank(email?.GenesysQueueName__c))
+        {
+            List<Group> myQueue = [SELECT Id FROM Group WHERE Type='Queue' AND DeveloperName = : email.GenesysQueueName__c];
+
+            if (myQueue.size()>0)
+            {
+                return myQueue[0].Id;
+            }
+            else
+            {
+                return defaultOwnerOnFallback;
+            }
+        }
+        else
+        {
+            return defaultOwnerOnFallback;
         }
     }
 

@@ -1313,4 +1313,45 @@ public with sharing class CaseUtil
         return caseToUpdate;
     }
 
+    /**
+     * Método que comprueba si el propietario del caso es válido
+     * @param String ownerId - Id de propietario a verificar
+     * @return Boolean - true si es apto para ser propietario de un caso nuevo
+     *
+     * @author nts - jfherrero
+     * @date 29/01/2024
+     */
+    public static Boolean validCaseOwner(Id ownerId)
+    {
+        if ( ( (String) ownerId ).startsWith('00G') )
+        {
+            return true;
+        }
+
+        else if ( ( (String) ownerId ).startsWith('005') )
+        {
+            UsersSelector usersSelector = new UsersSelector();
+            usersSelector.baseQuery.selectFields(new List<Schema.SObjectField> {User.IsActive});
+
+            Set<Id> listId = new Set<Id>();
+            listId.add(ownerId);
+
+            List<User> users = usersSelector.findById(listId);
+
+            if (users[0]?.IsActive)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
 }
