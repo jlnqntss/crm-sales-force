@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Custom_Compact_Layout</fullName>
+    <fields>Name</fields>
+    <fields>Number__c</fields>
+    <fields>PolicyNumber__c</fields>
+    <fields>PolicyVersion__c</fields>
+    <fields>FiliationCode__c</fields>
+    <fields>Company__c</fields>
+    <fields>PayIndicator__c</fields>
+    <fields>PayerFiliationCode__c</fields>
+    <fields>PolicyHolderFiliationCode__c</fields>
+    <fields>CollectionMethod__c</fields>
+    <label>Custom Compact Layout</label>
+</CompactLayout>
