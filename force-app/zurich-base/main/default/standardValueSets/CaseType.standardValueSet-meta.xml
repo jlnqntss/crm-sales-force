@@ -2,6 +2,11 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>true</sorted>
     <standardValue>
+        <fullName>Asistencia (Information/ Contact)</fullName>
+        <default>false</default>
+        <label>Asistencia (Information/ Contact)</label>
+    </standardValue>
+    <standardValue>
         <fullName>Campañas</fullName>
         <default>false</default>
         <label>Campañas</label>
@@ -37,6 +42,16 @@
         <label>Incidencia</label>
     </standardValue>
     <standardValue>
+        <fullName>Marca (No info provided)</fullName>
+        <default>false</default>
+        <label>Marca (No info provided)</label>
+    </standardValue>
+    <standardValue>
+        <fullName>MiZurich (Use)</fullName>
+        <default>false</default>
+        <label>MiZurich (Use)</label>
+    </standardValue>
+    <standardValue>
         <fullName>Modificar mi seguro</fullName>
         <default>false</default>
         <label>Modificar mi seguro</label>
@@ -52,14 +67,29 @@
         <label>Pago de mi seguro</label>
     </standardValue>
     <standardValue>
+        <fullName>Postventa (Local Customer Service)</fullName>
+        <default>false</default>
+        <label>Postventa (Local Customer Service)</label>
+    </standardValue>
+    <standardValue>
         <fullName>Renovar mi seguro</fullName>
         <default>false</default>
         <label>Renovar mi seguro</label>
     </standardValue>
     <standardValue>
+        <fullName>Retención (Renew/ Cancel)</fullName>
+        <default>false</default>
+        <label>Retención (Renew/ Cancel)</label>
+    </standardValue>
+    <standardValue>
         <fullName>Siniestro</fullName>
         <default>false</default>
         <label>Siniestro</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Siniestros (Claims)</fullName>
+        <default>false</default>
+        <label>Siniestros (Claims)</label>
     </standardValue>
     <standardValue>
         <fullName>Tareas</fullName>
@@ -75,5 +105,10 @@
         <fullName>Venta</fullName>
         <default>false</default>
         <label>Venta</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Venta (Quote/Purchase)</fullName>
+        <default>false</default>
+        <label>Venta (Quote/Purchase)</label>
     </standardValue>
 </StandardValueSet>

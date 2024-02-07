@@ -58,6 +58,11 @@
                 <label>Coberturas</label>
             </value>
             <value>
+                <fullName>Comentario</fullName>
+                <default>false</default>
+                <label>Comentario</label>
+            </value>
+            <value>
                 <fullName>Como abro un siniestro</fullName>
                 <default>false</default>
                 <label>Como abro un siniestro</label>
@@ -96,6 +101,11 @@
                 <fullName>Como valido mi seguro</fullName>
                 <default>false</default>
                 <label>Como valido mi seguro</label>
+            </value>
+            <value>
+                <fullName>Consulta</fullName>
+                <default>false</default>
+                <label>Consulta</label>
             </value>
             <value>
                 <fullName>Contraseña App</fullName>
@@ -248,6 +258,11 @@
                 <label>Documentación Otros Vida</label>
             </value>
             <value>
+                <fullName>Dorsales</fullName>
+                <default>false</default>
+                <label>Dorsales</label>
+            </value>
+            <value>
                 <fullName>Dudas sobre recogida/entrega</fullName>
                 <default>false</default>
                 <label>Dudas sobre recogida/entrega</label>
@@ -306,6 +321,11 @@
                 <fullName>Franquicia</fullName>
                 <default>false</default>
                 <label>Franquicia</label>
+            </value>
+            <value>
+                <fullName>Gestión</fullName>
+                <default>false</default>
+                <label>Gestión</label>
             </value>
             <value>
                 <fullName>Gestión Competencias</fullName>

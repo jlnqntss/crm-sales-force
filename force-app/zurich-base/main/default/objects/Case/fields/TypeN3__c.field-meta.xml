@@ -171,6 +171,11 @@
                 <label>Clausulado</label>
             </value>
             <value>
+                <fullName>Comentario</fullName>
+                <default>false</default>
+                <label>Comentario</label>
+            </value>
+            <value>
                 <fullName>Comisiones</fullName>
                 <default>false</default>
                 <label>Comisiones</label>
@@ -197,6 +202,16 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Con Oferta</label>
+            </value>
+            <value>
+                <fullName>Consulta</fullName>
+                <default>false</default>
+                <label>Consulta</label>
+            </value>
+            <value>
+                <fullName>Contratación</fullName>
+                <default>false</default>
+                <label>Contratación</label>
             </value>
             <value>
                 <fullName>Cotización</fullName>
@@ -282,6 +297,11 @@
                 <fullName>Documentación</fullName>
                 <default>false</default>
                 <label>Documentación</label>
+            </value>
+            <value>
+                <fullName>Dorsales</fullName>
+                <default>false</default>
+                <label>Dorsales</label>
             </value>
             <value>
                 <fullName>Emisión</fullName>
@@ -383,6 +403,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>General information</label>
+            </value>
+            <value>
+                <fullName>Gestión</fullName>
+                <default>false</default>
+                <label>Gestión</label>
             </value>
             <value>
                 <fullName>Gestión competencias</fullName>
@@ -1148,8 +1173,12 @@
             <valueName>Campaña</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Transferencia</controllingFieldValue>
-            <valueName>Otras áreas</valueName>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <valueName>Seguimiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Campaña</controllingFieldValue>
+            <valueName>Campaña</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
