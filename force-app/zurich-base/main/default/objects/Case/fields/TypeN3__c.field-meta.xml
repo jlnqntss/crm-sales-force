@@ -1173,12 +1173,8 @@
             <valueName>Campaña</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Seguimiento</controllingFieldValue>
-            <valueName>Seguimiento</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Campaña</controllingFieldValue>
-            <valueName>Campaña</valueName>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
+            <valueName>Otras áreas</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
