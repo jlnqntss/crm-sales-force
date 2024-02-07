@@ -3,6 +3,7 @@
     <description>Usuarios de Sprinklr</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>OCS User Sprinklr</label>
+    <mutingPermissionSets>OCS_User_Sprinklr_Muted</mutingPermissionSets>
     <permissionSets>Acceso_App_OCS</permissionSets>
     <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
