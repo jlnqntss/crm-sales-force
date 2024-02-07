@@ -90,7 +90,7 @@ public with sharing class ClientIdentificationService
         if (resultado.existsNationalID && resultado.existsPolicy && resultado.isValidPolicy)
         {
             resultado.policyEndDate = polizasEncontradas[0].EndDate__c;
-            resultado.policyStartDate = polizasEncontradas[0].MovementStartDate__c;
+            resultado.policyStartDate = polizasEncontradas[0].StartDate__c;
             resultado.policyVersion = polizasEncontradas[0].policyVersion__c;
             
             List<String> listaPolizas = new List<String>();
