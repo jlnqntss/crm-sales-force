@@ -11503,6 +11503,10 @@
         <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Summary Sprinklr</layout>
+        <recordType>Case.OCSSprinklr</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Summary USP</layout>
         <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>
