@@ -58,8 +58,8 @@
     <hasActivationRequired>false</hasActivationRequired>
     <label>OCS Sprinklr</label>
     <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
@@ -67,7 +67,7 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
-        <allowCreate>true</allowCreate>
+        <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
@@ -77,6 +77,6 @@
     </objectPermissions>
     <recordTypeVisibilities>
         <recordType>Case.OCSSprinklr</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
 </PermissionSet>
