@@ -45,7 +45,7 @@ public with sharing class ClientInteracionServiceTest
         List<Policy__c> policies = [SELECT Id, InfoPolicyNumber__c, PolicyHolder__c, PolicyHolder__r.NationalId__c FROM Policy__c LIMIT 1];
         List<Account> accounts = [SELECT Id, NationalId__c FROM Account WHERE NationalId__c = : policies[0].PolicyHolder__r.NationalId__c LIMIT 1];
 
-        policies[0].MovementStartDate__c = date.today();
+        policies[0].StartDate__c = date.today();
         policies[0].EndDate__c = date.today().addDays(10);
         policies[0].PolicyVersion__c = '2';
 
