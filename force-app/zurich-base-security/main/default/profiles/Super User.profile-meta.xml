@@ -3976,6 +3976,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.AutomaticClosing__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.AutomaticNotifications__c</field>
         <readable>true</readable>
@@ -4048,6 +4053,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.CloseDetail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.CloseInteractionBatch__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4233,6 +4243,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.InsuredObjectId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.InteractionStatus__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
