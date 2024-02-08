@@ -8293,6 +8293,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.ActaLink__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.ANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8389,6 +8394,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.Response__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Event.SubjectLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

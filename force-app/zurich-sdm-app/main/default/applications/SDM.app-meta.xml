@@ -334,9 +334,13 @@
     <tabs>standard-ContentNote</tabs>
     <tabs>FollowUp__c</tabs>
     <tabs>standard-Case</tabs>
+    <tabs>Acta__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>SDM_UtilityBar</utilityBar>
     <workspaceConfig>
+        <mappings>
+            <tab>Acta__c</tab>
+        </mappings>
         <mappings>
             <tab>Alertas_por_Mediador</tab>
         </mappings>
