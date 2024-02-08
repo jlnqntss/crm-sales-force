@@ -568,7 +568,7 @@
         <field>Account.TDChannel__c</field>
         <readable>true</readable>
     </fieldPermissions>
-        <fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.TOPAgent__c</field>
         <readable>true</readable>
@@ -673,7 +673,7 @@
         <field>AccountTeamMember.Phone__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Activity.NLUTypificationFailed__c</field>
         <readable>true</readable>
@@ -693,7 +693,7 @@
         <field>Asset.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Asset.Blocked__c</field>
         <readable>true</readable>
@@ -728,7 +728,7 @@
         <field>Asset.AddressType__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Asset.Area__c</field>
         <readable>true</readable>
@@ -743,7 +743,7 @@
         <field>Asset.Birthdate__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Asset.BoatName__c</field>
         <readable>true</readable>
@@ -1143,7 +1143,7 @@
         <field>Case.AutomaticTaskCreated__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Case.BusinessHoursId</field>
         <readable>true</readable>
@@ -1493,7 +1493,7 @@
         <field>Case.RelatedPolicyOffer__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Case.ReturnDate__c</field>
         <readable>true</readable>
@@ -1638,7 +1638,7 @@
         <field>Case.RobotNif__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Case.SlaExitDate</field>
         <readable>true</readable>
@@ -1666,6 +1666,56 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.SoyManager__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrCustomerJourney__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrFinalSentiment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrInitialCaseSentiment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrManagedBy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrPostType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrProduct__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrRequestType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrSocialMediaChannel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrSocialPersona__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.spr_sf__Sprinklr_Case_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1738,7 +1788,7 @@
         <field>Claim__c.AssistanceCompany__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Claim__c.ClaimOwnerFirstname__c</field>
         <readable>true</readable>
@@ -1843,7 +1893,7 @@
         <field>Claim__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Codigo_Negocio_BancSabadell__mdt.Codigo_Negocio__c</field>
         <readable>true</readable>
@@ -2148,7 +2198,7 @@
         <field>ContactPointPhone.Anonymized__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>ContactPointPhone.Blocked__c</field>
         <readable>true</readable>
@@ -2173,7 +2223,7 @@
         <field>ContactPointPhone.BestTimeToContactTimezone</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>ContactPointPhone.ContactId__c</field>
         <readable>true</readable>
@@ -2348,12 +2398,12 @@
         <field>Event.ANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Event.BestAgent__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Event.CallRecording__c</field>
         <readable>true</readable>
@@ -2428,7 +2478,7 @@
         <field>Event.MultiIdentifiedByNIF__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Event.NationalId__c</field>
         <readable>true</readable>
@@ -2438,7 +2488,7 @@
         <field>Event.NoIdentified__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Event.QueueTime__c</field>
         <readable>true</readable>
@@ -3048,7 +3098,7 @@
         <field>Opportunity.IntermediaryCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Intermediary_Group__c</field>
         <readable>true</readable>
@@ -3728,12 +3778,12 @@
         <field>Task.ActivityDate</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Task.BestAgent__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Task.CallRecording__c</field>
         <readable>true</readable>
