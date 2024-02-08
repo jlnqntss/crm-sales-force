@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Account</object>
+        <objectField>IntermediaryGroup__c</objectField>
+        <userField>Account.IntermediaryGroup__c</userField>
+    </accessMappings>
+    <accessMappings>
         <accessLevel>Edit</accessLevel>
         <object>Opportunity</object>
         <objectField>IntermediaryVisibilityAcc__c.IntermediaryGroup__c</objectField>
