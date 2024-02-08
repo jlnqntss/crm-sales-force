@@ -1184,7 +1184,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Case.CloseInteractionBatch__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1324,7 +1324,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Case.InteractionStatus__c</field>
         <readable>true</readable>
     </fieldPermissions>
