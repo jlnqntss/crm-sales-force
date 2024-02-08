@@ -239,7 +239,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>21 LEVANTE</fullName>
+            <fullName>21 LEVANTE NORTE</fullName>
             <default>false</default>
         </values>
         <values>
@@ -248,6 +248,10 @@
         </values>
         <values>
             <fullName>23 CENTRO ARAGÓN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>24 LEVANTE SUR</fullName>
             <default>false</default>
         </values>
         <values>

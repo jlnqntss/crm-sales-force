@@ -16,9 +16,9 @@
         <label>13 BARCELONA GRANDES BROKERS</label>
     </customValue>
     <customValue>
-        <fullName>21 LEVANTE</fullName>
+        <fullName>21 LEVANTE NORTE</fullName>
         <default>false</default>
-        <label>21 LEVANTE</label>
+        <label>21 LEVANTE NORTE</label>
     </customValue>
     <customValue>
         <fullName>22 BALEARES</fullName>
@@ -29,6 +29,11 @@
         <fullName>23 CENTRO ARAGÓN</fullName>
         <default>false</default>
         <label>23 CENTRO ARAGÓN</label>
+    </customValue>
+    <customValue>
+        <fullName>24 LEVANTE SUR</fullName>
+        <default>false</default>
+        <label>24 LEVANTE SUR</label>
     </customValue>
     <customValue>
         <fullName>31 MADRID</fullName>
