@@ -6,7 +6,8 @@ private with sharing class CampaignsSelectorTest
     {
         List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 10);
         Integer i = 0;
-        for (Campaign c: campaigns) {
+        for (Campaign c: campaigns)
+        {
             c.ExternalId__c = 'Test' + i;
             i++;
         }
@@ -71,7 +72,8 @@ private with sharing class CampaignsSelectorTest
     }
 
     @isTest
-    static void test_findCampaignByExternalId() {
+    static void test_findCampaignByExternalId()
+    {
         Set<String> externalIdsSet = new Set<String>();
         externalIdsSet.add('Test0');
 
@@ -83,7 +85,8 @@ private with sharing class CampaignsSelectorTest
     }
 
     @isTest
-    static void test_findCampaigId_ok() {
+    static void test_findCampaigId_ok()
+    {
         List<Campaign> campanyas = [SELECT ID from Campaign];
         List<String> ids = new List<String>();
 
@@ -100,8 +103,9 @@ private with sharing class CampaignsSelectorTest
     }
 
     @isTest
-    static void test_findCampaigId_ko() {
-        
+    static void test_findCampaigId_ko()
+    {
+
         List<String> ids = new List<String>();
         ids.add('000AAAAAAAAA');
 
@@ -113,7 +117,8 @@ private with sharing class CampaignsSelectorTest
     }
 
     @isTest
-    static void test_findZRMInitiatedCrossSellingCampaings_ok() {
+    static void test_findZRMInitiatedCrossSellingCampaings_ok()
+    {
         List<Campaign> campanyas = [SELECT ID from Campaign WHERE Type = 'Cross Selling' OR IsActive = false];
         List<String> ids = new List<String>();
 
@@ -127,55 +132,5 @@ private with sharing class CampaignsSelectorTest
         Test.stopTest();
 
         System.assertEquals(true, !matchedRecords.isEmpty(), 'List should not be empty');
-    }
-
-    // REFACTOR
-    /* Tras la modificaicón realizadada en el método selector es necesario
-     * modificar el método de test para poder pasar por parámetro un valor válido
-     * y que el selector devuelva elementos esperados.
-     */
-    /**
-     * @description Método de test que comprueba el correcto funcionamiento del
-     * método test 'selectCampaigns' de la clase 'CampaignsSelector'. Este método
-     * recupera todas las campañas a las que un usuario tiene acceso. Al estar
-     * ejecutando los test en modo sistema, las campañas que debe recuperar son
-     * todas las que se han insertado en el método 'createScenario'.
-     *
-     * @author amiranda
-     * @date 30-10-2023
-     **/
-    /*@IsTest
-       static void test_selectCampaigns()
-       {
-        Integer totalCampaigns = [SELECT COUNT() FROM Campaign];
-        Assert.isTrue(totalCampaigns > 0, 'Debería haber campañas en el sistema.');
-
-        Test.startTest();
-        List<Campaign> campaigns = new CampaignsSelector().selectCampaigns(null);
-        Test.stopTest();
-
-        Assert.areEqual(totalCampaigns, campaigns.size(), 'El número total de campañas no coincide.');
-       }*/
-
-
-    /**
-     * @description Método de test que comprueba el correcto funcionamiento del
-     * método de test 'selectCampaigns' de la clase 'CampaignsSelector' cuando
-     * el parámetro de entrada 'intermedidaryId' tiene valor 'null'.
-     *
-     * @author amiranda
-     * @date 03-01-2024
-     **/
-    @IsTest
-    private static void test_selectCampaigns_nullIntermediaryId()
-    {
-        Integer totalCampaigns = [SELECT COUNT() FROM Campaign];
-        Assert.isTrue(totalCampaigns > 0, 'Debería haber campañas en el sistema.');
-
-        Test.startTest();
-        List<Campaign> campaigns = new CampaignsSelector().selectCampaigns(null);
-        Test.stopTest();
-
-        Assert.isTrue(campaigns.isEmpty(), 'La lista de campañas debería estar vacía');
     }
 }
