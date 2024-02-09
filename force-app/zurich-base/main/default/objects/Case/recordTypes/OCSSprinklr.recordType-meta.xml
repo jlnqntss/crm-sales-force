@@ -1419,6 +1419,10 @@
             <fullName>Reclamación</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Spam</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
@@ -1483,6 +1487,10 @@
         </values>
         <values>
             <fullName>Reclamación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Spam</fullName>
             <default>false</default>
         </values>
     </picklistValues>

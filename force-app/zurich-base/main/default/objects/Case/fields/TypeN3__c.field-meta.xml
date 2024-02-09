@@ -786,6 +786,11 @@
                 <label>Sin Oferta</label>
             </value>
             <value>
+                <fullName>Spam</fullName>
+                <default>false</default>
+                <label>Spam</label>
+            </value>
+            <value>
                 <fullName>Sugerencia</fullName>
                 <default>false</default>
                 <label>Sugerencia</label>
@@ -948,6 +953,14 @@
             <valueName>Resolución SDC</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Contratacion</controllingFieldValue>
+            <valueName>Contratación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <valueName>Queja</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
             <valueName>Bloqueo usuario/contraseña</valueName>
         </valueSettings>
@@ -1000,6 +1013,26 @@
         <valueSettings>
             <controllingFieldValue>Partnership</controllingFieldValue>
             <valueName>No definido</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consulta</controllingFieldValue>
+            <valueName>Consulta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión</controllingFieldValue>
+            <valueName>Gestión</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dorsales</controllingFieldValue>
+            <valueName>Dorsales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comentario</controllingFieldValue>
+            <valueName>Comentario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Spam</controllingFieldValue>
+            <valueName>Spam</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Apoyo Captación</controllingFieldValue>
