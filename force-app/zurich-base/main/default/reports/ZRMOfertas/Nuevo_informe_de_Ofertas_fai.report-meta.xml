@@ -58,11 +58,11 @@
             <value></value>
         </criteriaItems>
         <criteriaItems>
-            <column>OWNER_PROFILE</column>
+            <column>STAGE_NAME</column>
             <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>Agente Ventas</value>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Closed Lost,Closed Won</value>
         </criteriaItems>
         <language>es</language>
     </filter>
