@@ -9602,11 +9602,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Receipt__c.Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Receipt__c.PayerFiliationCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
