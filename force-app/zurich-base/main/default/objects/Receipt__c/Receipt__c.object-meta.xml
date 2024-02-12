@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -153,14 +153,25 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
+    <gender>Masculine</gender>
     <label>Receipt</label>
     <nameField>
-        <label>Receipt</label>
+        <label>Receipt Number</label>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Receipts</pluralLabel>
-    <searchLayouts></searchLayouts>
+    <searchLayouts>
+        <searchResultsAdditionalFields xsi:nil="true"></searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PolicyNumber__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PolicyVersion__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>FiliationCode__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Company__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PayIndicator__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PayerFiliationCode__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PolicyHolderFiliationCode__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CollectionMethod__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
