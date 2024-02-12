@@ -7,10 +7,10 @@
         <userField>Contact.Account</userField>
     </accessMappings>
     <accessMappings>
-        <accessLevel>Read</accessLevel>
-        <object>Claim__c</object>
-        <objectField>PolicyHolder__c.IntermediaryVisibilityAcc__c</objectField>
-        <userField>Contact.Account</userField>
+        <accessLevel>Edit</accessLevel>
+        <object>AccountRelationship__c</object>
+        <objectField>IntermediaryId__c.IntermediaryGroup__c</objectField>
+        <userField>Account.IntermediaryGroup__c</userField>
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
