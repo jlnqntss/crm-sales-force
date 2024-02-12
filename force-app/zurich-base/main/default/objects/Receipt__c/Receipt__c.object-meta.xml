@@ -161,17 +161,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Receipts</pluralLabel>
-    <searchLayouts>
-        <searchResultsAdditionalFields xsi:nil="true"></searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>PolicyNumber__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>PolicyVersion__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>FiliationCode__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Company__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>PayIndicator__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>PayerFiliationCode__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>PolicyHolderFiliationCode__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CollectionMethod__c</searchResultsAdditionalFields>
-    </searchLayouts>
+    <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
