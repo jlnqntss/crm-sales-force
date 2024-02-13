@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConsentStatus__c</fullName>
+    <description>Campo que es informado a través del campo CONSENT_STATUS recibido en la entidad ‘CONSENT’ de la External Request.</description>
+    <externalId>false</externalId>
+    <label>Consent Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>01</fullName>
+                <default>false</default>
+                <label>Not sent</label>
+            </value>
+            <value>
+                <fullName>02</fullName>
+                <default>false</default>
+                <label>Sent - awaiting response</label>
+            </value>
+            <value>
+                <fullName>03</fullName>
+                <default>false</default>
+                <label>Sent - no response</label>
+            </value>
+            <value>
+                <fullName>04</fullName>
+                <default>false</default>
+                <label>Accepted - signature pending</label>
+            </value>
+            <value>
+                <fullName>05</fullName>
+                <default>false</default>
+                <label>Not accepted - signature pending</label>
+            </value>
+            <value>
+                <fullName>06</fullName>
+                <default>false</default>
+                <label>Accepted - pending attach doc.</label>
+            </value>
+            <value>
+                <fullName>07</fullName>
+                <default>false</default>
+                <label>Not accepted - pending attach doc.</label>
+            </value>
+            <value>
+                <fullName>08</fullName>
+                <default>false</default>
+                <label>Accepted</label>
+            </value>
+            <value>
+                <fullName>09</fullName>
+                <default>false</default>
+                <label>Not accepted</label>
+            </value>
+            <value>
+                <fullName>10</fullName>
+                <default>false</default>
+                <label>Implicit accepted</label>
+            </value>
+            <value>
+                <fullName>11</fullName>
+                <default>false</default>
+                <label>Revoked</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
