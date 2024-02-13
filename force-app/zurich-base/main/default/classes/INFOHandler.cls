@@ -40,6 +40,7 @@ public with sharing class INFOHandler implements ISystem
     public static final String SOBJECT_CASE = 'Case';
     public static final String INTERMEDIARY_HIERARCHY = 'INTERMEDIARY_HIERARCHY';
     public static final String INTERMEDIARY_GROUP = 'INTERMEDIARY_GROUP';
+    public static final String CONSENT = 'CONSENT';
 
     public static final List<String> PRIORITY_ENTITIES =  new List<String>{NOTE};
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
@@ -148,6 +149,7 @@ public with sharing class INFOHandler implements ISystem
      * @where ExternalJobQueueBatch
      * @change 15/05/2023 - aberuete - Refactorizar el método
      * @change 12/07/2023 - jonandersanjuan - Se agregan nuevas entidades ACCOUNT_KPI y POLICY_KPI
+     * @change 07/02/2024 - amiranda - Se añade la entidad 'CONSENT'
      */
     private static void processExternalRequestByEntity(ExternalRequest__c externalRequest, Map<String, Map<String, Account>> intermediaryAndGroupQueryMap)
     {
@@ -283,7 +285,13 @@ public with sharing class INFOHandler implements ISystem
             {
                 Policy__c policyRecord = (Policy__c) ExternalRequestHandlerUtil.tf.transform(POLICY_KPI, 'Policy__c', recordValuesMap);
                 ExternalRequestHandlerUtil.addRecordToMap(externalRequest, POLICY_KPI, 'Policy__c', policyRecord);
-            }            
+            }       
+            when 'CONSENT'     
+            {
+                Consent__c consentRecord = (Consent__c) ExternalRequestHandlerUtil.tf.transform(CONSENT, 'Consent__c', recordValuesMap);
+                consentRecord.ConsentUniqueId__c = consentRecord.ConsentClientRel__c + '-' + consentRecord.ConsentId__c;
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, CONSENT, 'Consent__c', consentRecord);
+            }
             when else
             {
                 ExternalRequestHandlerUtil.setExternalRequest(externalRequest, true, 'KO', 'No se ha encontrado la entidad indicada', false);
