@@ -9376,7 +9376,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Receipt__c.PreviousSubStatus __c</field>
+        <field>Receipt__c.PreviousSubStatus__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
