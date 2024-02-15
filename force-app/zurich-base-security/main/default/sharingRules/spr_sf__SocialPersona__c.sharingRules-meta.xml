@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingOwnerRules>
+        <fullName>OCSSprinklr_Write</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>OCSSprinklr_Write</label>
+        <sharedTo>
+            <group>Write_Sprinklr</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>Write_Sprinklr</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

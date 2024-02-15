@@ -378,6 +378,54 @@
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>OCSSprinklr</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>OCSSprinklr</label>
+        <sharedTo>
+            <group>Read_GI</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>OCS Sprinklr</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>OCSSprinklr_Write</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>OCSSprinklr_Write</label>
+        <sharedTo>
+            <group>Write_Sprinklr</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>OCS Sprinklr</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>OCS_Inquiry_Read_2</fullName>
         <accessLevel>Edit</accessLevel>
         <label>OCS Inquiry Read 2</label>
