@@ -171,6 +171,11 @@
                 <label>Clausulado</label>
             </value>
             <value>
+                <fullName>Comentario</fullName>
+                <default>false</default>
+                <label>Comentario</label>
+            </value>
+            <value>
                 <fullName>Comisiones</fullName>
                 <default>false</default>
                 <label>Comisiones</label>
@@ -197,6 +202,16 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Con Oferta</label>
+            </value>
+            <value>
+                <fullName>Consulta</fullName>
+                <default>false</default>
+                <label>Consulta</label>
+            </value>
+            <value>
+                <fullName>Contratación</fullName>
+                <default>false</default>
+                <label>Contratación</label>
             </value>
             <value>
                 <fullName>Cotización</fullName>
@@ -282,6 +297,11 @@
                 <fullName>Documentación</fullName>
                 <default>false</default>
                 <label>Documentación</label>
+            </value>
+            <value>
+                <fullName>Dorsales</fullName>
+                <default>false</default>
+                <label>Dorsales</label>
             </value>
             <value>
                 <fullName>Emisión</fullName>
@@ -383,6 +403,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>General information</label>
+            </value>
+            <value>
+                <fullName>Gestión</fullName>
+                <default>false</default>
+                <label>Gestión</label>
             </value>
             <value>
                 <fullName>Gestión competencias</fullName>
@@ -761,6 +786,11 @@
                 <label>Sin Oferta</label>
             </value>
             <value>
+                <fullName>Spam</fullName>
+                <default>false</default>
+                <label>Spam</label>
+            </value>
+            <value>
                 <fullName>Sugerencia</fullName>
                 <default>false</default>
                 <label>Sugerencia</label>
@@ -923,6 +953,14 @@
             <valueName>Resolución SDC</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Contratacion</controllingFieldValue>
+            <valueName>Contratación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Queja</controllingFieldValue>
+            <valueName>Queja</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
             <valueName>Bloqueo usuario/contraseña</valueName>
         </valueSettings>
@@ -975,6 +1013,26 @@
         <valueSettings>
             <controllingFieldValue>Partnership</controllingFieldValue>
             <valueName>No definido</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consulta</controllingFieldValue>
+            <valueName>Consulta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión</controllingFieldValue>
+            <valueName>Gestión</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dorsales</controllingFieldValue>
+            <valueName>Dorsales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comentario</controllingFieldValue>
+            <valueName>Comentario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Spam</controllingFieldValue>
+            <valueName>Spam</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Apoyo Captación</controllingFieldValue>
