@@ -30,8 +30,8 @@
             <column>Claim__c.Status__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>P,A</value>
+            <operator>notEqual</operator>
+            <value>T</value>
         </criteriaItems>
         <language>es</language>
     </filter>
