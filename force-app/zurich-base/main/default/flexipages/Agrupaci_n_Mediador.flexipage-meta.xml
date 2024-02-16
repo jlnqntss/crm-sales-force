@@ -132,7 +132,7 @@
                     <name>adminFilters</name>
                     <valueList>
                         <valueListItems>
-                            <value>OPPORTUNITY.STAGE_NAME|NOT_EQUAL|[&quot;Closed Won&quot;]</value>
+                            <value>OPPORTUNITY.STAGE_NAME|NOT_EQUAL|[&quot;Closed Won&quot;,&quot;Closed Lost&quot;]</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
