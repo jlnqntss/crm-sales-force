@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 02-14-2024
- * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @last modified on  : 02-19-2024
+ * @last modified by  : jchavez
 **/
 public without sharing class CaseHandler implements ITrigger
 {
@@ -59,7 +59,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.updateTranscomCase(newList);
         CaseUtil.mappingSprinklrCases(newList);
     }
-
+    
     /**
      * beforeUpdate
      *

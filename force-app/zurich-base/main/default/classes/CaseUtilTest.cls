@@ -3,7 +3,7 @@
  * @author            :
  * @group             :
  * @last modified on  : 02-19-2024
- * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @last modified by  : jchavez
  **/
 @isTest
 private with sharing class CaseUtilTest
