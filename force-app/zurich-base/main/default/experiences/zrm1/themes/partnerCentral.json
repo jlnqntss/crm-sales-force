@@ -1,6 +1,6 @@
 {
   "activeBrandingSetId": "a7c0152c-eafc-4eb2-93cb-8fb88df8529d",
-  "customCSS": "div[class=\"slds-page-header slds-page-header_record-home forceHighlightsStencilDesktop forceRecordLayout\"] div[role=\"group\"] button:first-of-type {display: none;}",
+  "customCSS": "div[data-target-selection-name*='.Follow'] {display: none;}",
   "developerName": "prm",
   "id": "0052ccff-9f0a-4c2e-b249-57d2e7409b36",
   "label": "Partner Central",
