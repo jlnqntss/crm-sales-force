@@ -236,7 +236,6 @@ public with sharing class CaseUtil
         List<Group> marcaCola = new GroupSelector().findByName('Marca Redes Sociales');
         List<Group> siniestrosCola = new GroupSelector().findByName('Siniestros Redes Sociales');
         List<Group> postventaCola = new GroupSelector().findByName('Postventa Redes Sociales');
-        System.debug('La cola es ' + marcaCola);
 
         for (Robot_Hegeo_Field_Mapping__mdt fieldMapping : robotHegeoFieldsMappingList)
         {
