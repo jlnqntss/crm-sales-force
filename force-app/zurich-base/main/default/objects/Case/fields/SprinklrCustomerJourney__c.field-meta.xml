@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>SprinklrCustomerJourney__c</fullName>
     <externalId>false</externalId>
-    <formula>TEXT(Type)</formula>
+    <formula>MID(TEXT(Type) ,FIND(&quot;(&quot;, TEXT(Type)) + 1,FIND(&quot;)&quot;, TEXT(Type)) - FIND(&quot;(&quot;, TEXT(Type)) - 1)</formula>
     <label>Customer Journey</label>
     <required>false</required>
     <trackHistory>false</trackHistory>

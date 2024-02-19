@@ -58,6 +58,11 @@
                 <label>Coberturas</label>
             </value>
             <value>
+                <fullName>Comentario</fullName>
+                <default>false</default>
+                <label>Comentario</label>
+            </value>
+            <value>
                 <fullName>Como abro un siniestro</fullName>
                 <default>false</default>
                 <label>Como abro un siniestro</label>
@@ -96,6 +101,11 @@
                 <fullName>Como valido mi seguro</fullName>
                 <default>false</default>
                 <label>Como valido mi seguro</label>
+            </value>
+            <value>
+                <fullName>Consulta</fullName>
+                <default>false</default>
+                <label>Consulta</label>
             </value>
             <value>
                 <fullName>Contraseña App</fullName>
@@ -248,6 +258,11 @@
                 <label>Documentación Otros Vida</label>
             </value>
             <value>
+                <fullName>Dorsales</fullName>
+                <default>false</default>
+                <label>Dorsales</label>
+            </value>
+            <value>
                 <fullName>Dudas sobre recogida/entrega</fullName>
                 <default>false</default>
                 <label>Dudas sobre recogida/entrega</label>
@@ -306,6 +321,11 @@
                 <fullName>Franquicia</fullName>
                 <default>false</default>
                 <label>Franquicia</label>
+            </value>
+            <value>
+                <fullName>Gestión</fullName>
+                <default>false</default>
+                <label>Gestión</label>
             </value>
             <value>
                 <fullName>Gestión Competencias</fullName>
@@ -588,6 +608,11 @@
                 <label>Solicitud factura</label>
             </value>
             <value>
+                <fullName>Spam</fullName>
+                <default>false</default>
+                <label>Spam</label>
+            </value>
+            <value>
                 <fullName>Sugerencia</fullName>
                 <default>false</default>
                 <label>Sugerencia</label>
@@ -623,25 +648,10 @@
             <valueName>Tareas administrativas</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <valueName>Como renuevo mi seguro</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <valueName>El precio de mi renovacion</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
-            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
-            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
-            <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Otros</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <valueName>Cuando me avisan</valueName>
+            <controllingFieldValue>Siniestros (Claims)</controllingFieldValue>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Reclamación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
@@ -670,6 +680,15 @@
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
             <valueName>Modificar el beneficiario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <controllingFieldValue>Validar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
+            <valueName>Otros</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
@@ -708,6 +727,7 @@
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <controllingFieldValue>Asistencia (Information/ Contact)</controllingFieldValue>
             <valueName>Información</valueName>
         </valueSettings>
         <valueSettings>
@@ -718,17 +738,16 @@
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Reclamación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Reclamación Siniestros</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Sugerencia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta (Quote/Purchase)</controllingFieldValue>
+            <valueName>Contratacion</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
@@ -759,6 +778,11 @@
             <valueName>Partnership</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Retención (Renew/ Cancel)</controllingFieldValue>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Anulación</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
             <valueName>Como renuevo mi seguro</valueName>
         </valueSettings>
@@ -771,16 +795,24 @@
             <valueName>Cuando me avisan</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
+            <valueName>Comentario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
+            <valueName>Dorsales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
+            <valueName>Spam</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Incidencia</controllingFieldValue>
             <valueName>App</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencia</controllingFieldValue>
             <valueName>Pago</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Contratacion</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencia</controllingFieldValue>
@@ -806,10 +838,6 @@
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
             <valueName>Modificación oferta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Anulación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>
@@ -1046,6 +1074,10 @@
         <valueSettings>
             <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
             <valueName>Solicitud factura</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Postventa (Local Customer Service)</controllingFieldValue>
+            <valueName>Consulta</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Económica</controllingFieldValue>
