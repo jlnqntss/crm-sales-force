@@ -233,6 +233,10 @@ public with sharing class CaseUtil
         String type;
         Map<String, String> subtypeAndtype3; 
         Map<String, Map<String,String>> mapTipification;
+        List<Group> marcaCola = new GroupSelector().findByName('Marca Redes Sociales');
+        List<Group> siniestrosCola = new GroupSelector().findByName('Siniestros Redes Sociales');
+        List<Group> postventaCola = new GroupSelector().findByName('Postventa Redes Sociales');
+        System.debug('La cola es ' + marcaCola);
 
         for (Robot_Hegeo_Field_Mapping__mdt fieldMapping : robotHegeoFieldsMappingList)
         {
@@ -247,9 +251,7 @@ public with sharing class CaseUtil
                 mapTipification.put (fieldMapping.Type__c, subtypeAndtype3);
                 mapRobotHegeoFieldsMapping.put(sourceType,mapTipification);
             }
-        }  
-
-        List<Case> casesToMap = new List<Case>();
+        }
 
         for(Case caso : newList)
         {
@@ -259,8 +261,41 @@ public with sharing class CaseUtil
                 caso.Type = types.keySet().iterator().next();
                 caso.SubType__c = types.values()[0].keySet().iterator().next();
                 caso.TypeN3__c = types.values()[0].values()[0];
-                casesToMap.add(caso);
+                queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
             }
+        }
+    }
+
+        /**
+     * Método que asigna Queue y Call Center a los casos creados desde Sprinklr
+     * Ejecutado despues de las tipificaciones para evitar errores.
+     * @author jchavez
+     * @date 19/02/2024
+     **/
+
+    public static void queuesAndGroupsSprinklr(Case caso, List<Group> marcaCola,List<Group> siniestrosCola,List<Group> postventaCola)
+    {
+        if(caso.Type.contains('Marca'))
+        {
+            caso.CallCenter__c = 'RRSS Marca';
+        }
+        else
+        {
+            caso.CallCenter__c = 'RRSS Postventa-Siniestros';
+        }
+
+        if(caso.Type.equals('Marca (No info provided)'))
+        {
+            caso.OwnerId = marcaCola[0].Id;
+
+        }
+        else if(caso.Type.equals('Asistencia') || caso.Type.equals('Siniestros (Claims)'))
+        {
+            caso.OwnerId = siniestrosCola[0].Id;
+        }
+        else
+        {
+            caso.OwnerId = postventaCola[0].Id;
         }
     }
 
