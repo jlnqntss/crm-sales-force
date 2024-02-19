@@ -17,7 +17,9 @@
                 <elementReference>ListaCombinadaTaskYMails</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>GenesysCloudPatchInteractionAction</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>StatusInteractionsInvocableAction</name>
@@ -39,10 +41,12 @@
                 <elementReference>GetEmailByCaseIdAction</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>GenesysCloudStatusAction</nameSegment>
         <outputParameters>
             <assignToReference>ListaGetConInteraccion</assignToReference>
             <name>output</name>
         </outputParameters>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>StatusTaskApplicationInvocableAction</name>
@@ -61,13 +65,15 @@
         <inputParameters>
             <name>estadoTasks</name>
             <value>
-                <elementReference>GetEmailMessageByTaskAction</elementReference>
+                <elementReference>GetTaskByCaseId</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>GenesysCloudTaskAction</nameSegment>
         <outputParameters>
             <assignToReference>ListaGetConInteraccion</assignToReference>
             <name>output</name>
         </outputParameters>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <assignments>
@@ -144,8 +150,8 @@
         </rules>
     </decisions>
     <decisions>
-        <name>IsNoteINFODecision</name>
-        <label>¿Es Nota INFO?</label>
+        <name>IsNoteINFOorWebDecision</name>
+        <label>¿Es Nota INFO o Web?</label>
         <locationX>710</locationX>
         <locationY>576</locationY>
         <defaultConnector>
@@ -154,7 +160,7 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>SiOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Origin</leftValueReference>
                 <operator>EqualTo</operator>
@@ -162,8 +168,15 @@
                     <stringValue>NoteINFO</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Web</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>GetEmailMessageByTaskAction</targetReference>
+                <targetReference>GetTaskByCaseId</targetReference>
             </connector>
             <label>Si</label>
         </rules>
@@ -203,7 +216,7 @@
             <name>NoOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>GetEmailMessageByTaskAction</leftValueReference>
+                <leftValueReference>GetTaskByCaseId</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -253,7 +266,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IsNoteINFODecision</targetReference>
+                <targetReference>IsNoteINFOorWebDecision</targetReference>
             </connector>
             <label>USP</label>
         </rules>
@@ -282,7 +295,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>IsNoteINFODecision</targetReference>
+                <targetReference>IsNoteINFOorWebDecision</targetReference>
             </connector>
             <label>OCS</label>
         </rules>
@@ -596,8 +609,8 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>GetEmailMessageByTaskAction</name>
-        <label>Obtener Email Messages por Tarea</label>
+        <name>GetTaskByCaseId</name>
+        <label>Obtener tareas por CaseId</label>
         <locationX>314</locationX>
         <locationY>684</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -607,7 +620,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <faultConnector>
             <targetReference>CreateErrorLogTaskInquiryAction</targetReference>
         </faultConnector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND ((2 AND 3) OR (4 AND 5))</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -627,6 +640,20 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Note Info</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Forms</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subtype__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Incidences Record MiZurich</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
