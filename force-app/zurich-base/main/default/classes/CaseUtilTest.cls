@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 08-22-2023
- * @last modified by  : aberuete
+ * @last modified on  : 02-16-2024
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
  **/
 @isTest
 private with sharing class CaseUtilTest
@@ -214,6 +214,32 @@ private with sharing class CaseUtilTest
         {
             System.assertEquals(true, cmilestone.isCompleted, 'el milestone debería estar completado ya');
         }
+    }
+    
+    /**
+     * Test para la tipificación de casos Spriklr. Se prueba que se rellenen correctamente
+     * los campos Type, Subtype__c y TypeN3__c para casos con RecordType OCS Sprinkrl
+     */
+    @isTest
+    private static void test_mappingSprinklrCases()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+
+        Case caseRecord = new Case ();
+        caseRecord.RecordTypeId = rtOCSSprinklrId;
+        caseRecord.RobotTypeN1__c ='Contratación';
+        caseRecord.Subject = 'Test';
+        caseRecord.SuppliedEmail='no@existe.com';
+
+        List<Case> newList = new List<Case>();
+        newList.add(caseRecord);
+ 		
+        insert newList;
+        
+        Case caseToCompare = [SELECT id,Type,SubType__c,TypeN3__c FROM Case where id =: caseRecord.id];
+        System.assertEquals('Venta (Quote/Purchase)', caseToCompare.Type, 'El tipo de la tipificación es correcto');
+        System.assertEquals('Contratacion', caseToCompare.SubType__c, 'El subtipo de la tipificación es correcto');
+        System.assertEquals('Contratación', caseToCompare.TypeN3__c, 'El tipo 3 de la tipificación es correcto');     
     }
 
     /**
