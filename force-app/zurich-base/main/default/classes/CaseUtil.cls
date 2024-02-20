@@ -227,40 +227,40 @@ public with sharing class CaseUtil
      **/
     public static void mappingSprinklrCases(List<Case> newList)
     {
-        Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping = new Map<String, Map<String, Map<String,String>>> ();
-        List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMappingList = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
-        String sourceType;
-        String type;
-        Map<String, String> subtypeAndtype3; 
-        Map<String, Map<String,String>> mapTipification;
-        List<Group> marcaCola = new GroupSelector().findByName('Marca Redes Sociales');
-        List<Group> siniestrosCola = new GroupSelector().findByName('Siniestros Redes Sociales');
-        List<Group> postventaCola = new GroupSelector().findByName('Postventa Redes Sociales');
+    for(Case caso : newList)
+        {
+        if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
+            {
+            Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping = new Map<String, Map<String, Map<String,String>>> ();
+            List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMappingList = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
+            String sourceType;
+            String type;
+            Map<String, String> subtypeAndtype3; 
+            Map<String, Map<String,String>> mapTipification;
+            List<Group> marcaCola = new GroupSelector().findByName('Marca Redes Sociales');
+            List<Group> siniestrosCola = new GroupSelector().findByName('Siniestros Redes Sociales');
+            List<Group> postventaCola = new GroupSelector().findByName('Postventa Redes Sociales');
         
-        for (Robot_Hegeo_Field_Mapping__mdt fieldMapping : robotHegeoFieldsMappingList)
-        {
-            sourceType = fieldMapping.SourceType__c; 
-            type = fieldMapping.Type__c;
-
-            if (sourceType != null || type != null)
+            for (Robot_Hegeo_Field_Mapping__mdt fieldMapping : robotHegeoFieldsMappingList)
             {
-                subtypeAndtype3 = new Map<String,String>();
-                mapTipification = new Map<String, Map<String,String>> ();
-                subtypeAndtype3.put(fieldMapping.Subtype__c,fieldMapping.TypeN3__c);
-                mapTipification.put (fieldMapping.Type__c, subtypeAndtype3);
-                mapRobotHegeoFieldsMapping.put(sourceType,mapTipification);
+                sourceType = fieldMapping.SourceType__c; 
+                type = fieldMapping.Type__c;
+
+                if (sourceType != null || type != null)
+                {
+                    subtypeAndtype3 = new Map<String,String>();
+                    mapTipification = new Map<String, Map<String,String>> ();
+                    subtypeAndtype3.put(fieldMapping.Subtype__c,fieldMapping.TypeN3__c);
+                    mapTipification.put (fieldMapping.Type__c, subtypeAndtype3);
+                    mapRobotHegeoFieldsMapping.put(sourceType,mapTipification);
+                }
             }
-        }
 
-        for(Case caso : newList)
-        {
-            if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
-            {
-                Map<String,Map<String,String>> types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
-                caso.Type = types.keySet().iterator().next();
-                caso.SubType__c = types.values()[0].keySet().iterator().next();
-                caso.TypeN3__c = types.values()[0].values()[0];
-                queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
+            Map<String,Map<String,String>> types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
+            caso.Type = types.keySet().iterator().next();
+            caso.SubType__c = types.values()[0].keySet().iterator().next();
+            caso.TypeN3__c = types.values()[0].values()[0];
+            queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
             }
         }
     }
