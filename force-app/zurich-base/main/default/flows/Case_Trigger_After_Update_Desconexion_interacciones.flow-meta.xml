@@ -130,7 +130,7 @@
         <locationX>710</locationX>
         <locationY>1524</locationY>
         <defaultConnector>
-            <targetReference>CrearLogListaNoVaciaAction</targetReference>
+            <targetReference>CrearLogListaVaciaAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Vacía</defaultConnectorLabel>
         <rules>
@@ -187,7 +187,7 @@
         <locationX>710</locationX>
         <locationY>2172</locationY>
         <defaultConnector>
-            <targetReference>CrearLogListaEstadosNoVaciaAction</targetReference>
+            <targetReference>CrearLogListaEstadosVaciaAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -363,14 +363,14 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>CrearLogListaEstadosNoVaciaAction</name>
-        <label>Crear Log Lista Estados No Vacia</label>
+        <name>CrearLogListaEstadosVaciaAction</name>
+        <label>Crear Log Lista Estados Vacía</label>
         <locationX>974</locationX>
         <locationY>2280</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
-                <stringValue>La lista estados está vacía</stringValue>
+                <stringValue>La lista de estados está vacía</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -389,8 +389,8 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>CrearLogListaNoVaciaAction</name>
-        <label>Crear Log Lista No Vacia</label>
+        <name>CrearLogListaVaciaAction</name>
+        <label>Crear Log Lista Vacía</label>
         <locationX>974</locationX>
         <locationY>1632</locationY>
         <connector>
@@ -399,7 +399,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <inputAssignments>
             <field>Message__c</field>
             <value>
-                <stringValue>La lista está vacía</stringValue>
+                <stringValue>La lista de emails está vacía</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
