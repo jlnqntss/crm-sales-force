@@ -2,11 +2,11 @@
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ZRM_Todos_los_Leads</fullName>
     <columns>ACCOUNT.NAME</columns>
-    <columns>ACCOUNT.SITE</columns>
-    <columns>ACCOUNT.ADDRESS1_STATE</columns>
+    <columns>ACCOUNT.CREATED_DATE</columns>
+    <columns>PersonLeadSource__c</columns>
     <columns>ACCOUNT.PHONE1</columns>
-    <columns>ACCOUNT.TYPE</columns>
-    <columns>CORE.USERS.ALIAS</columns>
+    <columns>PC_EMAIL</columns>
+    <columns>NationalId__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>ACCOUNT.RECORDTYPE</field>
@@ -15,6 +15,9 @@
     </filters>
     <label>ZRM Todos los Leads</label>
     <sharedTo>
+        <group>Ventas_Advisor</group>
         <group>Ventas_Agente_Mediador</group>
+        <group>Ventas_Director</group>
+        <group>Ventas_Supervisor</group>
     </sharedTo>
 </ListView>
