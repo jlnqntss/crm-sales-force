@@ -378,9 +378,9 @@
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>OCSSprinklr</fullName>
+        <fullName>OCSSprinklr_Read</fullName>
         <accessLevel>Read</accessLevel>
-        <label>OCSSprinklr</label>
+        <label>OCSSprinklr_Read</label>
         <sharedTo>
             <group>Read_GI</group>
         </sharedTo>
