@@ -25,6 +25,14 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>RRSS Marca</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RRSS Postventa-Siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Sprinklr</fullName>
             <default>false</default>
         </values>

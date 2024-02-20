@@ -50,6 +50,16 @@
         <default>false</default>
         <label>Sprinklr</label>
     </customValue>
+    <customValue>
+        <fullName>RRSS Postventa-Siniestros</fullName>
+        <default>false</default>
+        <label>RRSS Postventa-Siniestros</label>
+    </customValue>
+    <customValue>
+        <fullName>RRSS Marca</fullName>
+        <default>false</default>
+        <label>RRSS Marca</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
