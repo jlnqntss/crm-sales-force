@@ -56,6 +56,7 @@
     </actionOverrides>
     <brand>
         <headerColor>#0070D2</headerColor>
+        <logo>Zurich_logo_diversidad_inclusin</logo>
         <logoVersion>1</logoVersion>
         <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
@@ -467,5 +468,5 @@
             <tab>standard-report</tab>
         </mappings>
     </workspaceConfig>
-    
+
 </CustomApplication>
