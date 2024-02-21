@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Código de Consentimiento</label>
+    <name>ConsentId__c</name>
+    <picklistValues>
+        <masterLabel>Profiles with own and third party data</masterLabel>
+        <translation>Perfiles con datos propios y de terceros</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Profiles with own and usage data</masterLabel>
+        <translation>Perfiles con datos propios y de uso</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Profiles with own data</masterLabel>
+        <translation>Perfiles con datos propios</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Sale by letter or call between companies</masterLabel>
+        <translation>Venta por carta o llamada entre Cías.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Sales by email/SMS between companies</masterLabel>
+        <translation>Venta por email/SMS entre Cías.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Sales by email/SMS only within companies</masterLabel>
+        <translation>Venta por email/SMS solo intra Cías.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Transfer of data and profiles between companies</masterLabel>
+        <translation>Cesión de datos y perfiles entre Cías.</translation>
+    </picklistValues>
+</CustomFieldTranslation>

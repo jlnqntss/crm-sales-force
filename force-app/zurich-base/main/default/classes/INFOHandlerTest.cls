@@ -28,6 +28,7 @@ private with sharing class INFOHandlerTest
     private static final Integer NUM_ER_INTERMEDIARY_KPI = 5;
     private static final Integer NUM_ER_INTERMEDIARY_GROUP = 1;
     private static final Integer NUM_ER_INTERMEDIARY_HIERARCHY = 1;
+    private static final Integer NUM_ER_CONSENT = 5;
 
     @TestSetup
     private static void makeData()
@@ -136,7 +137,10 @@ private with sharing class INFOHandlerTest
         externalRequestList.addAll(
             TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'INTERMEDIARY_HIERARCHY', NUM_ER_INTERMEDIARY_HIERARCHY)
             );
-
+        // CONSENT
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONSENT', NUM_ER_CONSENT)
+        );
 
         insert externalRequestList;
     }
@@ -320,6 +324,10 @@ private with sharing class INFOHandlerTest
             ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(),
             'No se ha generado correctamente el mapa de registros de KPI__c'
             );
+        Assert.areEqual(
+            NUM_ER_CONSENT,
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONSENT).get('Consent__c').size(), 
+            'No se ha generado correctamente el mapa de registros de Consent__c');
     }
 
     @isTest
@@ -378,6 +386,8 @@ private with sharing class INFOHandlerTest
         System.assertEquals(NUM_ER_NOTE, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.NOTE).get('Case').size(), 'No se ha generado correctamente el mapa de registros de Case');
         System.assertEquals(NUM_ER_SPECIAL_CONDITION, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(), 'No se ha generado correctamente el mapa de registros de Special_Condition__c');
         System.assertEquals(NUM_ER_INTERMEDIARY_KPI, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(), 'No se ha generado correctamente el mapa de registros de KPI__c');
+        Assert.areEqual(NUM_ER_CONSENT, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONSENT).get('Consent__c').size(), 'No se ha generado correctamente el mapa de registros de Consent__c');
+        
     }
 
     @isTest
@@ -407,7 +417,7 @@ private with sharing class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY + NUM_ER_CONSENT;
 
         System.assertEquals(
             totalExternalRequests,
@@ -439,7 +449,7 @@ private with sharing class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_CONSENT;
                                         
         System.assertEquals(
             totalExternalRequests,
@@ -487,6 +497,7 @@ private with sharing class INFOHandlerTest
         List<Case> caseList = [SELECT Id FROM Case];
         List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
         List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
+        List<Consent__c> consents = [SELECT Id FROM Consent__c];
 
         System.assertEquals(
             (NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY) * 2,
@@ -563,6 +574,10 @@ private with sharing class INFOHandlerTest
             kpiList.size(),
             'No se han insertado todos los registros de KPI__c'
             );
+        Assert.areEqual(NUM_ER_CONSENT,
+                        consents.size(),
+                        'No se han insertado todos los registros de Consent__c');
+        
     }
 
     @isTest
@@ -601,7 +616,8 @@ private with sharing class INFOHandlerTest
                 externalRequest.Entity__c == INFOHandler.POLICY_RELATIONSHIP ||
                 externalRequest.Entity__c == INFOHandler.NOTE ||
                 externalRequest.Entity__c == INFOHandler.SPECIAL_CONDITION ||
-                externalRequest.Entity__c == INFOHandler.INTERMEDIARY_KPI)
+                externalRequest.Entity__c == INFOHandler.INTERMEDIARY_KPI ||
+                externalRequest.Entity__c == INFOHandler.CONSENT)
             {
                 externalRequest.Processed__C = false;
                 externalRequest.Action__C = 'DELETE';
@@ -635,6 +651,7 @@ private with sharing class INFOHandlerTest
         List<Case> caseList = [SELECT Id FROM Case];
         List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
         List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
+        List<Consent__c> consents = [SELECT Id FROM Consent__c];
 
         System.assertEquals((NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY) * 2, accountList.size(), 'No se han insertado todos los registros de cuenta');
         System.assertEquals((NUM_ER_LEGAL_ACCOUNT) * 2, contactList.size(), 'No se han insertado todos los registros de contacto');
@@ -651,6 +668,7 @@ private with sharing class INFOHandlerTest
         System.assertEquals(0, caseList.size(), 'No se han borrado todos los registros de Case');
         System.assertEquals(0, specialConditionList.size(), 'No se han borrado todos los registros de Special_Condition__c');
         System.assertEquals(0, kpiList.size(), 'No se han borrado todos los registros de KPI__c');
+        Assert.isTrue(consents.isEmpty(), 'No se han borrado todos los registros de Consent__c');
 
     }
 
@@ -697,7 +715,7 @@ private with sharing class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY + NUM_ER_CONSENT;
 
         System.assertEquals(
             totalExternalRequests,
@@ -753,7 +771,7 @@ private with sharing class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY + NUM_ER_CONSENT;
         
         System.assertEquals(
             totalExternalRequests,

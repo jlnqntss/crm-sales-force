@@ -90,6 +90,11 @@
                 <default>false</default>
                 <label>KPI</label>
             </value>
+            <value>
+                <fullName>Consent__c</fullName>
+                <default>false</default>
+                <label>Consent</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
