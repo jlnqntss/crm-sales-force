@@ -46,14 +46,9 @@
         <label>TWW Retención</label>
     </customValue>
     <customValue>
-        <fullName>RRSS Postventa-Siniestros</fullName>
+        <fullName>Sprinklr</fullName>
         <default>false</default>
-        <label>RRSS Postventa-Siniestros</label>
-    </customValue>
-    <customValue>
-        <fullName>RRSS Marca</fullName>
-        <default>false</default>
-        <label>RRSS Marca</label>
+        <label>Sprinklr</label>
     </customValue>
     <customValue>
         <fullName>RRSS Postventa-Siniestros</fullName>
