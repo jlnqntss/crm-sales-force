@@ -143,7 +143,7 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>WhatId</field>
+            <field>AccountId</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>recordId</elementReference>
@@ -164,7 +164,7 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>WhatId</field>
+            <field>AccountId</field>
             <operator>In</operator>
             <value>
                 <elementReference>IntermediariesIds</elementReference>
