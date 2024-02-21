@@ -3795,6 +3795,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.NameLink__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Cartera_2021_agrupaciones__c</field>
         <readable>true</readable>
     </fieldPermissions>

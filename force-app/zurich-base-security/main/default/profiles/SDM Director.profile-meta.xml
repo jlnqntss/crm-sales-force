@@ -2188,6 +2188,14 @@
         <recordType>Account.Potential_Broker</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Account-Agente zrm</layout>
+        <recordType>Account.BusinessCustomer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PersonAccount-Agente ZRM</layout>
+        <recordType>PersonAccount.Customer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Alarma__c-Alarma KPI Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -2745,7 +2753,7 @@
         <name>CreateCustomizeReports</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
         <name>EditEvent</name>
     </userPermissions>
     <userPermissions>
