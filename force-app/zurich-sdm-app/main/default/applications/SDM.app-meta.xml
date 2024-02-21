@@ -56,7 +56,7 @@
     </actionOverrides>
     <brand>
         <headerColor>#0070D2</headerColor>
-        <logo>Zurich_logo_diversidad_inclusin</logo>
+<logo>Zurich_logo_diversidad_inclusin</logo>
         <logoVersion>1</logoVersion>
         <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
@@ -68,7 +68,7 @@
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>SDM</label>
     <navType>Console</navType>
-    <profileActionOverrides>
+        <profileActionOverrides>
         <actionName>View</actionName>
         <content>Mediador</content>
         <formFactor>Large</formFactor>
@@ -131,7 +131,7 @@
         <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
-    <profileActionOverrides>
+<profileActionOverrides>
         <actionName>View</actionName>
         <content>Agrupaci_n_Mediador</content>
         <formFactor>Large</formFactor>
@@ -334,13 +334,9 @@
     <tabs>standard-ContentNote</tabs>
     <tabs>FollowUp__c</tabs>
     <tabs>standard-Case</tabs>
-    <tabs>Acta__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>SDM_UtilityBar</utilityBar>
     <workspaceConfig>
-        <mappings>
-            <tab>Acta__c</tab>
-        </mappings>
         <mappings>
             <tab>Alertas_por_Mediador</tab>
         </mappings>
