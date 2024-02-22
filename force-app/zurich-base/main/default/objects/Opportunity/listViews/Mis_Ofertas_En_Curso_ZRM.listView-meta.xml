@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ZRM_P_lizas_Anuladas</fullName>
-    <columns>NAME</columns>
-    <columns>PolicyStatus__c</columns>
-    <columns>MovementStartDate__c</columns>
-    <columns>MovementReason__c</columns>
-    <columns>PolicyHolder__c</columns>
+    <fullName>Mis_Ofertas_En_Curso_ZRM</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>InfoQuoteNumber__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>CreatedDate__c</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
     <columns>ProductBranch__c</columns>
-    <columns>TotalPremium__c</columns>
+    <columns>Campaign__c</columns>
     <columns>IntermediaryId__c</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
     <filterScope>Everything</filterScope>
     <filters>
-        <field>PolicyStatus__c</field>
+        <field>OPPORTUNITY.CLOSED</field>
         <operation>equals</operation>
-        <value>A</value>
+        <value>0</value>
     </filters>
-    <label>ZRM Pólizas Anuladas</label>
+    <label>ZRM Ofertas En Curso</label>
     <sharedTo>
         <group>Ventas_Advisor</group>
         <group>Ventas_Agente_Mediador</group>

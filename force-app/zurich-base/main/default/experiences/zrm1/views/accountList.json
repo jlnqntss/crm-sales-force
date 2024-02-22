@@ -1,125 +1,109 @@
 {
-  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "componentName": "siteforce:sldsOneColLayout",
-  "dataProviders": [],
-  "id": "25f04d70-cd26-4d53-a4b1-a7395b0ce4c3",
-  "label": "Account List",
-  "regions": [
-    {
-      "id": "41d0bc24-ebbc-4d78-aa25-a756cad2b2fe",
-      "regionName": "header",
-      "type": "region"
-    },
-    {
-      "components": [
-        {
-          "componentAttributes": {
-            "tabsetConfig": {
-              "UUID": "18bbd2b1-fe44-4aa4-a4d9-adc3dc5eb33a",
-              "activeTab": "",
-              "tabs": [
-                {
-                  "UUID": "f8b76d4e-90d4-41aa-af8b-14ac11de8e86",
-                  "allowGuestUser": false,
-                  "locked": false,
-                  "seedComponents": [],
-                  "tabKey": "1",
-                  "tabName": "Cliente"
-                },
-                {
-                  "UUID": "1e7efbe0-7842-4ad2-8ed0-ac97b26b1b63",
-                  "allowGuestUser": false,
-                  "locked": false,
-                  "seedComponents": [],
-                  "tabKey": "2",
-                  "tabName": "Lead"
-                }
-              ],
-              "useOverflowMenu": false
-            }
-          },
-          "componentName": "forceCommunity:tabset",
-          "id": "18bbd2b1-fe44-4aa4-a4d9-adc3dc5eb33a",
-          "regions": [
-            {
-              "components": [
-                {
-                  "componentAttributes": {
-                    "enableInlineEdit": true,
-                    "filterName": "ZRM_Todos_los_Clientes",
-                    "layout": "FULL",
-                    "pageSize": 25,
-                    "scope": "Account",
-                    "showActionBar": true,
-                    "showChartsPanel": true,
-                    "showDisplay": "showall",
-                    "showFilterPanel": true,
-                    "showImageIcon": true,
-                    "showManualRefreshButton": true,
-                    "showObjectName": true,
-                    "showPinnedList": true,
-                    "showSearchBar": true
-                  },
-                  "componentName": "forceCommunity:objectHome",
-                  "id": "228d6e2e-264c-43e6-bf2b-23fd218f19ad",
-                  "renditionMap": {},
-                  "type": "component"
-                }
-              ],
-              "id": "f8b76d4e-90d4-41aa-af8b-14ac11de8e86",
-              "regionLabel": "Cliente",
-              "regionName": "1",
-              "renditionMap": {},
-              "type": "region"
-            },
-            {
-              "components": [
-                {
-                  "componentAttributes": {
-                    "enableInlineEdit": true,
-                    "filterName": "ZRM_Todos_los_Leads",
-                    "layout": "FULL",
-                    "pageSize": 25,
-                    "scope": "Account",
-                    "showActionBar": true,
-                    "showChartsPanel": true,
-                    "showDisplay": "showall",
-                    "showFilterPanel": true,
-                    "showImageIcon": true,
-                    "showManualRefreshButton": true,
-                    "showObjectName": true,
-                    "showPinnedList": true,
-                    "showSearchBar": true
-                  },
-                  "componentName": "forceCommunity:objectHome",
-                  "id": "03ead64f-83cd-4b1a-8683-b9236ba760ac",
-                  "renditionMap": {},
-                  "type": "component"
-                }
-              ],
-              "id": "1e7efbe0-7842-4ad2-8ed0-ac97b26b1b63",
-              "regionLabel": "Lead",
-              "regionName": "2",
-              "renditionMap": {},
-              "type": "region"
-            }
-          ],
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
+  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "25f04d70-cd26-4d53-a4b1-a7395b0ce4c3",
+  "label" : "Account List",
+  "regions" : [ {
+    "id" : "41d0bc24-ebbc-4d78-aa25-a756cad2b2fe",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "tabsetConfig" : {
+          "UUID" : "18bbd2b1-fe44-4aa4-a4d9-adc3dc5eb33a",
+          "activeTab" : "",
+          "tabs" : [ {
+            "UUID" : "f8b76d4e-90d4-41aa-af8b-14ac11de8e86",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "1",
+            "tabName" : "Cliente"
+          }, {
+            "UUID" : "1e7efbe0-7842-4ad2-8ed0-ac97b26b1b63",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "2",
+            "tabName" : "Lead"
+          } ],
+          "useOverflowMenu" : false
         }
-      ],
-      "id": "d1df4300-e0b3-4531-bb5f-ab489462d1ac",
-      "regionName": "content",
-      "type": "region"
-    },
-    {
-      "id": "3fad354a-5c29-464a-a427-a86e8da8704f",
-      "regionName": "footer",
-      "type": "region"
-    }
-  ],
-  "themeLayoutType": "Inner",
-  "type": "view",
-  "viewType": "list-001"
+      },
+      "componentName" : "forceCommunity:tabset",
+      "id" : "18bbd2b1-fe44-4aa4-a4d9-adc3dc5eb33a",
+      "regions" : [ {
+        "components" : [ {
+          "componentAttributes" : {
+            "enableInlineEdit" : true,
+            "filterName" : "ZRM_Todos_Los_Clientes",
+            "layout" : "FULL",
+            "pageSize" : 25,
+            "scope" : "Account",
+            "showActionBar" : true,
+            "showChartsPanel" : true,
+            "showDisplay" : "showall",
+            "showFilterPanel" : true,
+            "showImageIcon" : true,
+            "showManualRefreshButton" : true,
+            "showObjectName" : true,
+            "showPinnedList" : true,
+            "showSearchBar" : true
+          },
+          "componentName" : "forceCommunity:objectHome",
+          "id" : "228d6e2e-264c-43e6-bf2b-23fd218f19ad",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "f8b76d4e-90d4-41aa-af8b-14ac11de8e86",
+        "regionLabel" : "Cliente",
+        "regionName" : "1",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "enableInlineEdit" : true,
+            "filterName" : "ZRM_Todos_los_Leads",
+            "layout" : "FULL",
+            "pageSize" : 25,
+            "scope" : "Account",
+            "showActionBar" : true,
+            "showChartsPanel" : true,
+            "showDisplay" : "showall",
+            "showFilterPanel" : true,
+            "showImageIcon" : true,
+            "showManualRefreshButton" : true,
+            "showObjectName" : true,
+            "showPinnedList" : true,
+            "showSearchBar" : true
+          },
+          "componentName" : "forceCommunity:objectHome",
+          "id" : "03ead64f-83cd-4b1a-8683-b9236ba760ac",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "1e7efbe0-7842-4ad2-8ed0-ac97b26b1b63",
+        "regionLabel" : "Lead",
+        "regionName" : "2",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "d1df4300-e0b3-4531-bb5f-ab489462d1ac",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "3fad354a-5c29-464a-a427-a86e8da8704f",
+    "regionName" : "footer",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "list-001"
 }
