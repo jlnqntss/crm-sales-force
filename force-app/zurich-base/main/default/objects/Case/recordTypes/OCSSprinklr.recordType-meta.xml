@@ -1240,6 +1240,10 @@
     <picklistValues>
         <picklist>Subtype__c</picklist>
         <values>
+            <fullName>-</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Anulación</fullName>
             <default>false</default>
         </values>
@@ -1309,6 +1313,10 @@
     </picklistValues>
     <picklistValues>
         <picklist>TypeN3__c</picklist>
+        <values>
+            <fullName>-</fullName>
+            <default>false</default>
+        </values>
         <values>
             <fullName>Anulación</fullName>
             <default>false</default>

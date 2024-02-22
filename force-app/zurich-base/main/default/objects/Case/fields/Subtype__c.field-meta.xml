@@ -13,6 +13,11 @@
         <valueSetDefinition>
             <sorted>true</sorted>
             <value>
+                <fullName>-</fullName>
+                <default>false</default>
+                <label>-</label>
+            </value>
+            <value>
                 <fullName>Anulación</fullName>
                 <default>false</default>
                 <label>Anulación</label>
@@ -1106,6 +1111,10 @@
         <valueSettings>
             <controllingFieldValue>Campañas</controllingFieldValue>
             <valueName>Seguimiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>MiZurich (Use)</controllingFieldValue>
+            <valueName>-</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

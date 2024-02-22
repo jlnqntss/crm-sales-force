@@ -15,6 +15,11 @@
         <valueSetDefinition>
             <sorted>true</sorted>
             <value>
+                <fullName>-</fullName>
+                <default>false</default>
+                <label>-</label>
+            </value>
+            <value>
                 <fullName>Activation failure</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -1065,6 +1070,10 @@
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <valueName>Anulación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>-</controllingFieldValue>
+            <valueName>-</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
