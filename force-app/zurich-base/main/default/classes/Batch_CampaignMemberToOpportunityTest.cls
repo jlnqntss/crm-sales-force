@@ -180,35 +180,56 @@ private with sharing class Batch_CampaignMemberToOpportunityTest
         // Primero se van a borrar las oportunidades que se pudiesen haber generado automáticamente por el flow
         // si, éste está activo, al insertar los miembros de Campaña
 
-        List<Opportunity> opportunitiesGenerated = [SELECT Id, CampaignId, OwnerId, IntermediaryId__c, IntermediaryCode__c, CreatedDate, CreatedBy.Name FROM Opportunity];
-
+        List<Opportunity> opportunitiesGenerated = [SELECT Id FROM Opportunity];
         delete opportunitiesGenerated;
 
         // Recuperamos los miembros de campaña para lanzar el batch
 
-        List<CampaignMember> campaignMembers = [SELECT Id, ContactId, CampaignId, OfferAssignedCode__c
-                                                FROM CampaignMember];
+        List<CampaignMember> campaignMembers = [SELECT Id, ContactId, CampaignId, OfferAssignedCode__c FROM CampaignMember];
 
-        Set<Id> campaignMembersIdSet = ( new Map<Id,CampaignMember>(campaignMembers) ).keySet();
+        Set<Id> campaignMembersIdSet = (new Map<Id, CampaignMember>(campaignMembers)).keySet();
 
         Batch_CampaignMemberToOpportunity batch = new Batch_CampaignMemberToOpportunity(campaignMembersIdSet);
 
-        // Ejecución del test
-
+        /* ---------------------------------- TEST ---------------------------------- */
         Test.startTest();
         Database.executeBatch(batch);
         Test.stopTest();
 
-        // Obtención de los datos para hacer la comprobación de las inserciones
-        // Hay que tener en cuenta que sólo se crean ofertas para campañas de venta cruzada
+        /* --------------------------------- ASSERTS -------------------------------- */
+        opportunitiesGenerated = [SELECT Id FROM Opportunity];
+        campaignMembers = [SELECT Id FROM CampaignMember WHERE Campaign.Type = 'Cross Selling'];
 
-        opportunitiesGenerated = [SELECT Id, CampaignId, OwnerId, IntermediaryId__c, IntermediaryCode__c, CreatedDate, CreatedBy.Name FROM Opportunity];
+        Assert.areEqual(campaignMembers.size(), opportunitiesGenerated.size(), 'Deberían haberse creado el mismo numero de oportunidades que de miembros de campaña');
+    }
 
-        campaignMembers = [SELECT Id, ContactId, CampaignId, OfferAssignedCode__c
-                           FROM CampaignMember
-                           WHERE Campaign.Type = 'Cross Selling'];
+    @IsTest
+    private static void test_CampaignMemberToOpportunityTest_KO()
+    {
+        // Primero se van a borrar las oportunidades que se pudiesen haber generado automáticamente por el flow
+        // si, éste está activo, al insertar los miembros de Campaña
 
-        System.assertEquals( campaignMembers.size(), opportunitiesGenerated.size() );
+        List<Opportunity> opportunitiesGenerated = [SELECT Id FROM Opportunity];
+        delete opportunitiesGenerated;
+
+        // Recuperamos los miembros de campaña para lanzar el batch
+
+        List<CampaignMember> campaignMembers = [SELECT Id, ContactId, CampaignId, OfferAssignedCode__c FROM CampaignMember];
+
+        Set<Id> campaignMembersIdSet = (new Map<Id, CampaignMember>(campaignMembers)).keySet();
+
+        Batch_CampaignMemberToOpportunity batch = new Batch_CampaignMemberToOpportunity(campaignMembersIdSet);
+
+        /* ---------------------------------- TEST ---------------------------------- */
+        Test.startTest();
+        Database.executeBatch(batch);
+        Test.stopTest();
+
+        /* --------------------------------- ASSERTS -------------------------------- */
+        opportunitiesGenerated = [SELECT Id FROM Opportunity];
+        campaignMembers = [SELECT Id FROM CampaignMember WHERE Campaign.Type = 'Cross Selling'];
+
+        Assert.areNotEqual(campaignMembers.size(), opportunitiesGenerated.size(), 'No deberían haberse creado el mismo numero de oportunidades que de miembros de campaña');
     }
 
 }

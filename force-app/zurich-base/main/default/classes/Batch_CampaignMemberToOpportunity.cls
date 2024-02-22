@@ -34,7 +34,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     {
         List<String> crossSellingCampaigns = new List<String> {'Cross Selling', 'Venta Cruzada'};
 
-
         CampaignMembersSelector campaignMembersSelector = new CampaignMembersSelector(new Set<String> {
             'Id', 'CampaignMember.CampaignId', 'CampaignMember.OfferAssignedCode__c', 'CampaignMember.OfferAssignedType__c',
             'CampaignMember.Contact.AccountId', 'CampaignMember.Contact.Account.INFOCustomerNumber__c',
@@ -52,22 +51,36 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
         obtainDefaultUserOnError(); // Recupera el usuario por defecto, al no ser Stateful, hay que recuperar en cada lote
 
-        List<CampaignMember> campaignMembers = new List<CampaignMember>();
+        Map<Id, CampaignMember> campaignMembersAccountMap = new Map<Id, CampaignMember>();
+        Set<String> intermediaryCodes = new Set<String>();
+
         for(sObject record : records)
         {
-            campaignMembers.add( (CampaignMember) record );
+            campaignMembersAccountMap.put(((CampaignMember) record).Contact.AccountId, (CampaignMember) record);
+            intermediaryCodes.add(((CampaignMember) record).OfferAssignedCode__c);
         }
 
         // 1. Inicializa el mapa accountByIntermCode a partir del campo OfferAssignedCode__c (Código de Mediador) y el campo
         // Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c de todos los registros de CampaignMember del scope
-        Map<String, Account> accountByIntermCode = getAccountByIntermCode(campaignMembers);
+        Map<String, Account> accountByIntermCode = getAccountByIntermCode(campaignMembersAccountMap.values());
 
         // 2. Inicializa el mapa userIdByAccountId a partir del mapa accountByIntermCode
         Map<Id, Id> userIdByAccountId = getUserIdByAccountId(accountByIntermCode);
 
-        // 3. Recorre los registros de CampaignMember del scope (consulta ejecutada en el método start) y para cada uno cm
+        // 3. Filtra los miembros de campaña para solo generar oportunidades sobre los que tengan un cliente con una póliza asociada en estado "Vigor" o "Anulada" y cuyo check de GDPR esté a true
+        List<CampaignMember> filteredCampaignMembers = filterCampaignMembersByCustomerVisibility(campaignMembersAccountMap, intermediaryCodes);
+
+        // 4. Actualiza el campo Status de los registros de CampaignMember del scope con el valor "Mediador Sin Visibilidad" si no cumplen con el filtro
+        List<CampaignMember> updatedCampaignMembers = getUpdatedCampaignMembersNoVisibility(campaignMembersAccountMap, filteredCampaignMembers);
+
+        if (updatedCampaignMembers.size() > 0)
+        {
+            update updatedCampaignMembers;
+        }
+
+        // 5. Recorre los registros de CampaignMember del scope (consulta ejecutada en el método start) y para cada uno cm
         // crea un nuevo registro opp de Opportunity con los siguientes campos informados:
-        generateOpportunities(campaignMembers, accountByIntermCode, userIdByAccountId);
+        generateOpportunities(filteredCampaignMembers, accountByIntermCode, userIdByAccountId);
 
         insert oppsToInsert;
     }
@@ -140,6 +153,46 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         return userIdByAccountId;
     }
 
+    /**
+     * Devuelve la lista de miembros de campaña que recibe como parámetro, filtrada sin los miembros de campaña para cuyos clientes el agente no tiene visibilidad
+     *
+     * @author fpalomo
+     * @param campaignMembersAccountMap Map<Id, CampaignMember>
+     * @param intermediaryIds Set<Id>
+     * @return List<CampaignMember>
+     */
+    private List<CampaignMember> filterCampaignMembersByCustomerVisibility(Map<Id, CampaignMember> campaignMembersAccountMap, Set<String> intermediaryCodes)
+    {
+        List<Policy__c> campaignMembersPolicies = new PoliciesSelector().findPoliciesByAccountId(campaignMembersAccountMap.keySet(), intermediaryCodes);
+        Map<Id, CampaignMember> filteredCampaignMembers = new Map<Id, CampaignMember>();
+
+        for (Policy__c policy : campaignMembersPolicies)
+        {
+            if (campaignMembersAccountMap.containsKey(policy.PolicyHolder__c) && !filteredCampaignMembers.containsKey(campaignMembersAccountMap.get(policy.PolicyHolder__c).Id))
+            {
+                CampaignMember cm = campaignMembersAccountMap.get(policy.PolicyHolder__c);
+                filteredCampaignMembers.put(cm.Id, cm);
+            }
+        }
+
+        return filteredCampaignMembers.values();
+    }
+
+    private List<CampaignMember> getUpdatedCampaignMembersNoVisibility(Map<Id, CampaignMember> campaignMembersAccountMap, List<CampaignMember> filteredCampaignMembers)
+    {
+        Map<Id, CampaignMember> updatedCampaignMembers = new Map<Id, CampaignMember>();
+        for (CampaignMember cm : campaignMembersAccountMap.values())
+        {
+            if (!filteredCampaignMembers.contains(cm) && !updatedCampaignMembers.containsKey(cm.Id))
+            {
+                cm.Status = 'Mediador Sin Visibilidad';
+                updatedCampaignMembers.put(cm.Id, cm);
+            }
+        }
+
+        return updatedCampaignMembers.values();
+    }
+
     /* Método para generar las oportunidades a partir de los miembros de campaña y los mapas generados.
      * @author jfherrero
      * @date 03/08/2023
@@ -159,6 +212,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             opp.AccountId = cm.Contact.AccountId;
             opp.ProductBranch__c = cm.Campaign.ProductBranch__c;
             opp.CampaignId = cm.CampaignId;
+            opp.ZRM__c = true;
 
             // M se corresponde con miembros de campaña para Agentes Mediador
             if (cm.OfferAssignedType__c == 'M')
@@ -192,28 +246,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         }
 
         opp.IntermediaryCode__c = cm.OfferAssignedCode__c;
-
-        // No hay Cuenta Mediador para el código de mediador del miembro de campaña
-        if ( accountByIntermCode.get(cm.OfferAssignedCode__c) == null ||
-             !accountByIntermCode.containsKey(cm.OfferAssignedCode__c) )
-        {
-            opp.OwnerId = defaultUserOnError;
-        }
-
-        // La Cuenta Mediador no tiene usuario propio y existe una Cuenta Mediador padre con usuario con licencia compartida
-        else if (!accountByIntermCode.get(cm.OfferAssignedCode__c).IsPartner &&
-                 accountByIntermCode.get(cm.OfferAssignedCode__c).IntermediaryGroup__c != null &&
-                 accountByIntermCode.get(cm.OfferAssignedCode__c).IntermediaryGroup__r.IntermediaryWithUser__c != null)
-        {
-            opp.OwnerId = userIdByAccountId.containsKey(accountByIntermCode.get(cm.OfferAssignedCode__c).IntermediaryGroup__r.IntermediaryWithUser__c)
-            ? userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).IntermediaryGroup__r.IntermediaryWithUser__c) : defaultUserOnError;
-        }
-
-        else
-        {
-            opp.OwnerId = userIdByAccountId.containsKey(accountByIntermCode.get(cm.OfferAssignedCode__c).Id)
-            ? userIdByAccountId.get(accountByIntermCode.get(cm.OfferAssignedCode__c).Id) : defaultUserOnError;
-        }
 
         return opp;
     }
