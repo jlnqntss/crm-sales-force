@@ -374,5 +374,28 @@ public with sharing class PoliciesSelector extends RecordsSelector
         
         return (List<Policy__c>) this.baseQuery.run();
     }
+
+    /**
+     * Busca pólizas no bloqueadas a partir de una lista de agrupaciones
+     *
+     * @author dmunoz
+     * @date 15/02/2024
+     * 
+     * 
+     */
+    public List<Policy__c> selectByIntermediaryGroupId(Set<String> intermediaryGroupIdSet, Set<String> intermediaryIdsSet) {
+
+        List<Policy__c> result = new List<Policy__c>();
+        
+        result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c FROM Policy__c
+                                    WHERE (IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdSet 
+                                    OR IntermediaryId__C IN: intermediaryIdsSet)
+                                    AND PolicyStatus__c IN ('V', 'A') 
+                                    AND Blocked__c = FALSE
+                                    AND Anonymized__c = FALSE]);
+          
+
+        return result;
+    }
     
 }
