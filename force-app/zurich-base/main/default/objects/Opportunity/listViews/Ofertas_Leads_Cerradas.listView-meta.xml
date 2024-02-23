@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ofertas_Leads_Cerradas</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>InfoQuoteNumber__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>CreatedDate__c</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>ProductBranch__c</columns>
+    <columns>Campaign__c</columns>
+    <columns>IntermediaryId__c</columns>
+    <columns>Sales_Loss_Reason__c</columns>
+    <columns>Sales_Loss_Reason_Date_Time__c</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>SalesProcess__c</field>
+        <operation>equals</operation>
+        <value>L</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.CLOSED</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>ZRM Ofertas Leads Cerradas</label>
+    <sharedTo>
+        <group>Ventas_Advisor</group>
+        <group>Ventas_Agente_Mediador</group>
+        <group>Ventas_Director</group>
+        <group>Ventas_Supervisor</group>
+    </sharedTo>
+</ListView>

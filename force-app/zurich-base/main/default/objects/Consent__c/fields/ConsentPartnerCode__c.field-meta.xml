@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConsentPartnerCode__c</fullName>
+    <description>Campo que es informado a través del campo CONSENT_PARTNER_CODE recibido en la entidad ‘CONSENT’ de la External Request.</description>
+    <externalId>false</externalId>
+    <label>External Partner Code</label>
+    <length>3</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

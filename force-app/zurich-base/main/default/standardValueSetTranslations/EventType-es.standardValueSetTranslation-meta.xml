@@ -16,4 +16,8 @@
         <masterLabel>Other</masterLabel>
         <translation>Otros</translation>
     </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Training</masterLabel>
+        <translation>Formación</translation>
+    </valueTranslation>
 </StandardValueSetTranslation>

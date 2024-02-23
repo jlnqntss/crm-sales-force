@@ -2,8 +2,8 @@
  * @description       : Clase Util que contiene los métodos necesarios para procesar las external request de tipo INFO
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 05-23-2023
- * @last modified by  : aberuete
+ * @last modified on  : 07-02-2024
+ * @last modified by  : amiranda
 **/
 global with sharing class ExternalRequestHandlerUtil 
 {
@@ -37,6 +37,7 @@ global with sharing class ExternalRequestHandlerUtil
     public static final String SOBJECT_CASE = 'Case';
     public static final String SOBJECT_SPECIAL_CONDITION = 'Special_Condition__c';
     public static final String SOBJECT_KPI = 'KPI__c';
+    public static final String SOBJECT_CONSENT = 'Consent__c';
 
     // Orden de DML sobre SObjects
     private static List<String> sObjectOrder = new List<String>
@@ -55,7 +56,8 @@ global with sharing class ExternalRequestHandlerUtil
         SOBJECT_CLAIM,
         SOBJECT_RELATIONSHIP,
         SOBJECT_CASE,
-        SOBJECT_SPECIAL_CONDITION
+        SOBJECT_SPECIAL_CONDITION,
+        SOBJECT_CONSENT
     };
 
     /**
