@@ -252,4 +252,80 @@ public with sharing class UsersSelector extends RecordsSelector
 
         return (List<User>) this.baseQuery.run();
     }
+
+    /**
+     * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
+     * @author      dmunoz
+     * @date        16/08/2023
+     */
+    public List<User> findZRMActiveUsersByIntermediaryId(Set<String> intermediariesSet, List<String> intermediaryGroupIdList) {
+        List<User> result = new List<User>();
+
+        if (intermediariesSet != null && !intermediariesSet.isEmpty()) {
+            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+                                    FROM User 
+                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
+                                    AND (Contact.AccountId IN :intermediariesSet OR Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList) 
+                                    AND IsActive = TRUE]);
+        }
+
+        return result;
+    }
+
+    /**
+     * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
+     * @author      dmunoz
+     * @date        16/08/2023
+     */
+    public List<User> findZRMActiveUsersByIntermediaryGroupId(Set<String> intermediaryGroupIdList) {
+        List<User> result = new List<User>();
+
+        if (intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty()) {
+            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+                                    FROM User 
+                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
+                                    AND Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList
+                                    AND IsActive = TRUE]);
+        }
+
+        return result;
+    }
+
+    /**
+     * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
+     * @author      dmunoz
+     * @date        16/08/2023
+     */
+    public List<User> findZRMActiveUsersByIntermediaryId(List<String> intermediaryIdList) {
+        List<User> result = new List<User>();
+
+        if (intermediaryIdList != null && !intermediaryIdList.isEmpty()) {
+            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+                                    FROM User 
+                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
+                                    AND Contact.AccountId IN :intermediaryIdList
+                                    AND IsActive = TRUE]);
+        }
+
+        return result;
+    }
+
+    /**
+     * @description Selector que obtiene los usuarios de un mediador y los agrupación de la agrupación a la que pertenecen (si hay)
+     * @author      dmunoz
+     * @date        16/08/2023
+     */
+    public List<User> findZRMActiveUsersFromIntermediaryAndAGRFromGroup(Set<String> intermediariesSet, List<String> intermediaryGroupIdList) {
+        List<User> result = new List<User>();
+
+        result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
+                                WHERE(
+                                    (Contact.AccountId IN :intermediariesSet AND Profile.Name IN ('Agente Ventas - AGR', 'Agente Ventas')) 
+                                    OR (Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList AND Profile.Name = 'Agente Ventas - AGR')
+                                    )
+                                AND IsActive = TRUE]);        
+
+        return result;
+    }
+
 }

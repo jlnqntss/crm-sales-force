@@ -263,6 +263,27 @@ public with sharing class PoliciesSelector extends RecordsSelector
     }
     
      /**
+* Busca pólizas a partirm de ids de cuenta
+     *
+     * @author fpalomo
+     * @param accountIds
+     * @return List<Policy__c>
+     * @return List<Policy__c>
+     */
+    public List<Policy__c> findPoliciesByAccountId(Set<Id> accountIds, Set<String> intermediaryCodes)
+    {
+        return new List<Policy__c>([
+            SELECT PolicyHolder__c
+            FROM Policy__c
+            WHERE PolicyHolder__c IN :accountIds
+                AND IntermediaryId__r.INFOIntermediaryCode__c IN :intermediaryCodes
+                AND PolicyStatus__c IN ('V', 'A')
+                AND Blocked__c = false
+                AND Anonymized__c = false
+        ]);
+    }
+    
+     /**
      * Busca pólizas activas a partir de PolicyHolder (tomador)
      *
      * @author arcortazar
@@ -353,5 +374,28 @@ public with sharing class PoliciesSelector extends RecordsSelector
         
         return (List<Policy__c>) this.baseQuery.run();
     }
+
+    /**
+     * Busca pólizas no bloqueadas a partir de una lista de agrupaciones
+     *
+     * @author dmunoz
+     * @date 15/02/2024
+     * 
+     * 
+     */
+    public List<Policy__c> selectByIntermediaryGroupId(Set<String> intermediaryGroupIdSet, Set<String> intermediaryIdsSet) {
+
+        List<Policy__c> result = new List<Policy__c>();
+        
+        result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c FROM Policy__c
+                                    WHERE (IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdSet 
+                                    OR IntermediaryId__C IN: intermediaryIdsSet)
+                                    AND PolicyStatus__c IN ('V', 'A') 
+                                    AND Blocked__c = FALSE
+                                    AND Anonymized__c = FALSE]);
+          
+
+        return result;
+    } 
     
 }

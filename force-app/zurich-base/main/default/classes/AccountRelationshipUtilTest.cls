@@ -1,6 +1,5 @@
 @isTest
-public with sharing class AccountRelationshipUtilTest
-{
+public with sharing class AccountRelationshipUtilTest {
     @TestSetup
     static void makeData()
     {
@@ -59,7 +58,7 @@ public with sharing class AccountRelationshipUtilTest
 
         /* ---------------------------------- TEST ---------------------------------- */
         Test.startTest();
-        AccountRelationshipUtil.onBeforeInsertChangeOwner(new List<AccountRelationship__c> {ar});
+        AccountRelationshipUtil.onBeforeInsertChangeOwner(new List<AccountRelationship__c>{ar});
         Test.stopTest();
 
         /* --------------------------------- ASSERTS -------------------------------- */
@@ -82,11 +81,47 @@ public with sharing class AccountRelationshipUtilTest
         Test.startTest();
         System.runAs(agenteVentas)
         {
-            AccountRelationshipUtil.updateIntermediaryId(new List<AccountRelationship__c> {ar}, null);
+            AccountRelationshipUtil.updateIntermediaryId(new List<AccountRelationship__c>{ar}, null);
         }
         Test.stopTest();
 
         /* --------------------------------- ASSERTS -------------------------------- */
         Assert.areEqual(agenteVentas.Account.IntermediaryGroup__c, ar.IntermediaryId__c, 'IntermediaryId should be the same as the Agente Ventas Account.IntermediaryGroup__c');
     }
+
+    @isTest
+    static void testRecalculateVisibilityAccountRelationshipSetVisibility()
+    {
+        /* -------------------------------- TEST DATA ------------------------------- */
+        List<Account> customerAccounts = [SELECT Id, OwnerId FROM Account WHERE Name LIKE 'testlastname%'];
+        User agenteVentas = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' LIMIT 1];
+
+        List<String> accountIdList = new List<String>();
+        accountIdList.add(customerAccounts[0].Id);
+
+        Set<String> intermediaryIdList = new Set<String>();
+        intermediaryIdList.add(agenteVentas.Contact.AccountId);
+
+        AccountRelationship__c ar = new AccountRelationship__c();
+        ar.Account__c = customerAccounts[0].Id;
+        ar.RelatedAccount__c = customerAccounts[1].Id;
+        ar.IntermediaryId__c = null;
+        ar.IntermediaryIdOld__c = agenteVentas.Contact.AccountId;
+        ar.RelationshipType__c = 'Otros';
+        
+        insert ar;
+
+        /* ---------------------------------- TEST ---------------------------------- */
+        Test.startTest();       
+        AccountRelationshipUtil.recalculateVisibilityAccountRelationshipSetVisibility(accountIdList, intermediaryIdList);        
+        Test.stopTest();
+        
+
+        /* --------------------------------- ASSERTS -------------------------------- */
+        AccountRelationship__c arAfter = [SELECT Id, IntermediaryId__c FROM AccountRelationship__c WHERE Id = :ar.Id];
+        
+        Assert.isNotNull(arAfter, 'IntermediaryId debe estar informado');
+
+    }
+
 }

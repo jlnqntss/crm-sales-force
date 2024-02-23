@@ -1133,4 +1133,58 @@ public with sharing class AccountsSelector extends RecordsSelector
         return result;
     }
 
+
+    /**
+     * Consultar agrupaciones para una lista de ids de mediadores
+     *
+     * @author dmunoz
+     * @date 12/2/2024
+     * @return List<Account> Listado de mediadores con su agrupación
+     */
+    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesPolicySet) {
+        List<Account> result = new List<Account>();
+
+        if (intermediariesPolicySet != null && !intermediariesPolicySet.isEmpty()) {
+            result = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE Id IN :intermediariesPolicySet]);
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Consultar agrupaciones para una lista de ids de mediadores
+     *
+     * @author dmunoz
+     * @date 12/2/2024
+     * 
+     */
+    public String findIntermediariesWithGroupChanges() {
+
+        String result = 'SELECT Id, IntermediaryGroup__c, LastIntermediaryGroup__c ' +
+                        'FROM Account ' +
+                        'WHERE RecordType.DeveloperName = \'Intermediary\'' +
+                        'AND LastIntermediaryGroupChange__c = YESTERDAY';
+
+        return result;
+    }
+
+
+    /**
+     * Consultar agrupaciones para una lista de ids de mediadores
+     *
+     * @author dmunoz
+     * @date 12/2/2024
+     * @return List<Account> Listado de mediadores con su agrupación
+     */
+    public List<Account> findAllIntermediarysFromIntermediaryGroups(Set<String> intermediariesSet) {
+        List<Account> result = new List<Account>();
+
+        if (intermediariesSet != null && !intermediariesSet.isEmpty()) {
+            result = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE IntermediaryGroup__c IN :intermediariesSet]);
+        }
+
+        return result;
+    }
+
 }
