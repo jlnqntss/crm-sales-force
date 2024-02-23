@@ -265,6 +265,62 @@ public with sharing class CaseUtil
         }
     }
 
+    /**
+     * Método que da valor a los campos Description y ShortDescription__c del objeto Case 
+     * Ejecutado en beforInsert porque vienen casos desde Sprinklr con la descripción rellena por un mensaje del cliente
+     * @author jchavez
+     * @date 23/02/2024
+     **/
+
+    public static void shortDescriptionNeeded(List<Case> newList)
+    {
+        for(Case caso : newList)
+        {
+        if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
+            {
+                string newDescription;
+                integer stringLength; 
+                integer stringLimit = 254;
+                boolean firstEntry = false;
+                if(caso.Description != null)
+                {
+                    stringLength = caso.Description.length(); 
+                }
+                else
+                {
+                    stringLength = 0;
+                }
+                
+                if (stringLength>=255)
+                {
+                    for (integer i=0; i < stringLimit; i++)
+                    {
+                        if(firstEntry == false)
+                        {
+                            newDescription= caso.Description.substring(i, i+1);
+                            firstEntry= true;
+                        } 
+                        else
+                        {
+                            newDescription= newDescription + caso.Description.substring(i, i+1);              
+                        }
+                    }
+                    caso.ShortDescription__c = newDescription; 
+                }
+                else if(caso.Description == null)
+                {
+                    caso.Description = '';
+                    caso.ShortDescription__c = caso.Description;
+                }else {
+                    {
+                        caso.ShortDescription__c = caso.Description;
+                    }
+                }
+            }
+        }
+    }
+
+
         /**
      * Método que asigna Queue y Call Center a los casos creados desde Sprinklr
      * Ejecutado despues de las tipificaciones para evitar errores.

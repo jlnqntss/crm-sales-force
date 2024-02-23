@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 02-19-2024
+ * @last modified on  : 02-23-2024
  * @last modified by  : jchavez
  **/
 @isTest
@@ -244,6 +244,45 @@ private with sharing class CaseUtilTest
         System.assertEquals('RRSS Marca', caseToCompare.CallCenter__c, 'El Call Center de la tipificación es correcto');
         System.assertEquals('Marca Redes Sociales', cola.Name, 'La Cola de la tipificación es correcto');
     }
+
+    @isTest
+    private static void test_shortDescriptionNeeded()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+        List<Case> newList = new List<Case>();
+
+        Case caseShortDescription = new Case();
+        caseShortDescription.RecordTypeId = rtOCSSprinklrId;
+        caseShortDescription.RobotTypeN1__c ='Dorsales';
+        caseShortDescription.SuppliedEmail='no@existe.com';
+        caseShortDescription.Description='test';
+
+        Case caseLongDescription = new Case();
+        caseLongDescription.RecordTypeId = rtOCSSprinklrId;
+        caseLongDescription.RobotTypeN1__c ='Dorsales';
+        caseLongDescription.SuppliedEmail='no@existe.com';
+        caseLongDescription.Description = 'Se diferencia clientes empresas de clientes personas. Se detecta que las empresas no usan el campo Firstname o le colocan un punto. También es posible filtrar los Contactos que no están activos.  De esta manera que extraen los datos por medio de la fecha de creación. Consiguiendo finalizar la operación en 3 ficheros';
+        
+        Case caseNullDescription = new Case();
+        caseNullDescription.RecordTypeId = rtOCSSprinklrId;
+        caseNullDescription.RobotTypeN1__c ='Dorsales';
+        caseNullDescription.SuppliedEmail='no@existe.com';
+
+        newList.add(caseShortDescription);
+        newList.add(caseLongDescription);
+        newList.add(caseNullDescription);
+
+        insert newList;
+       
+        Case caseToCompareShort = [SELECT id,Description, ShortDescription__c FROM Case where id =: caseShortDescription.id];
+        Case caseToCompareLong = [SELECT id,Description, ShortDescription__c FROM Case where id =: caseLongDescription.id] ;
+        Case caseToCompareNull = [SELECT id,Description, ShortDescription__c FROM Case where id =: caseNullDescription.id];
+
+        System.assertEquals(caseToCompareShort.Description.length() == caseToCompareShort.ShortDescription__c.length(), true, 'Se ha asignado bien el campo ShortDescription__c');
+        System.assertEquals(caseToCompareLong.ShortDescription__c.length()  < 256, true,'El campo ShortDescription__c no supera el límite de caracteres');
+        System.assertEquals(caseToCompareNull.ShortDescription__c == null, true,'Description era nulo y ha sido correctamente insertado el caso');
+    }
+
 
     /**
      * IMPORTANTE: este test depende de que esté activo el flow CaseTriggerBeforeEntitlement
