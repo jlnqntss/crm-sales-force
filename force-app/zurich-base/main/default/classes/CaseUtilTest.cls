@@ -244,7 +244,6 @@ private with sharing class CaseUtilTest
         System.assertEquals('RRSS Marca', caseToCompare.CallCenter__c, 'El Call Center de la tipificación es correcto');
         System.assertEquals('Marca Redes Sociales', cola.Name, 'La Cola de la tipificación es correcto');
     }
-
     @isTest
     private static void test_shortDescriptionNeeded()
     {
@@ -274,15 +273,14 @@ private with sharing class CaseUtilTest
 
         insert newList;
        
-        Case caseToCompareShort = [SELECT id,Description, ShortDescription__c FROM Case where id =: caseShortDescription.id];
-        Case caseToCompareLong = [SELECT id,Description, ShortDescription__c FROM Case where id =: caseLongDescription.id] ;
-        Case caseToCompareNull = [SELECT id,Description, ShortDescription__c FROM Case where id =: caseNullDescription.id];
+        Case caseToCompareShort = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseShortDescription.id];
+        Case caseToCompareLong = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseLongDescription.id] ;
+        Case caseToCompareNull = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseNullDescription.id];
 
-        System.assertEquals(caseToCompareShort.Description.length() == caseToCompareShort.ShortDescription__c.length(), true, 'Se ha asignado bien el campo ShortDescription__c');
-        System.assertEquals(caseToCompareLong.ShortDescription__c.length()  < 256, true,'El campo ShortDescription__c no supera el límite de caracteres');
-        System.assertEquals(caseToCompareNull.ShortDescription__c == null, true,'Description era nulo y ha sido correctamente insertado el caso');
+        System.assertEquals(caseToCompareShort.Description.length() == caseToCompareShort.PrimerMensaje__c.length(), true, 'Se ha asignado bien el campo PrimerMensaje__c');
+        System.assertEquals(caseToCompareLong.PrimerMensaje__c.length()  < 256, true,'El campo PrimerMensaje__c no supera el límite de caracteres');
+        System.assertEquals(caseToCompareNull.PrimerMensaje__c == null, true,'Description era nulo y ha sido correctamente insertado el caso');
     }
-
 
     /**
      * IMPORTANTE: este test depende de que esté activo el flow CaseTriggerBeforeEntitlement

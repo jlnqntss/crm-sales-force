@@ -266,7 +266,7 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Método que da valor a los campos Description y ShortDescription__c del objeto Case 
+     * Método que da valor a los campos Description y PrimerMensaje__c del objeto Case 
      * Ejecutado en beforInsert porque vienen casos desde Sprinklr con la descripción rellena por un mensaje del cliente
      * @author jchavez
      * @date 23/02/2024
@@ -305,15 +305,15 @@ public with sharing class CaseUtil
                             newDescription= newDescription + caso.Description.substring(i, i+1);              
                         }
                     }
-                    caso.ShortDescription__c = newDescription; 
+                    caso.PrimerMensaje__c = newDescription; 
                 }
                 else if(caso.Description == null)
                 {
                     caso.Description = '';
-                    caso.ShortDescription__c = caso.Description;
+                    caso.PrimerMensaje__c = caso.Description;
                 }else {
                     {
-                        caso.ShortDescription__c = caso.Description;
+                        caso.PrimerMensaje__c = caso.Description;
                     }
                 }
             }

@@ -4694,7 +4694,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.ShortDescription__c</field>
+        <field>Case.PrimerMensaje__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
