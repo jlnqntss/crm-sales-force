@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NationalId__c</fullName>
+    <description>Campo que es informado a través del campo CONSENT_CDPASEXT recibido en la entidad ‘CONSENT’ de la External Request. El campo referencia al identificador nacional del cliente.</description>
+    <externalId>false</externalId>
+    <label>National Id</label>
+    <length>80</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

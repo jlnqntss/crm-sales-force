@@ -2,14 +2,23 @@
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ZRM_P_lizas_en_Vigor</fullName>
     <columns>NAME</columns>
+    <columns>PolicyStatus__c</columns>
+    <columns>EndDate__c</columns>
+    <columns>PolicyHolder__c</columns>
+    <columns>ProductBranch__c</columns>
+    <columns>TotalPremium__c</columns>
+    <columns>IntermediaryId__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>PolicyStatus__c</field>
         <operation>equals</operation>
         <value>V</value>
     </filters>
-    <label>ZRM Pólizas en Vigor</label>
+    <label>ZRM Pólizas en vigor</label>
     <sharedTo>
+        <group>Ventas_Advisor</group>
         <group>Ventas_Agente_Mediador</group>
+        <group>Ventas_Director</group>
+        <group>Ventas_Supervisor</group>
     </sharedTo>
 </ListView>

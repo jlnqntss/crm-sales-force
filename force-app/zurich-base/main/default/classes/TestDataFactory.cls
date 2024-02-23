@@ -1560,6 +1560,73 @@ public class TestDataFactory
     }
 
     /**
+    * @description 
+    *
+    * @author amiranda
+    * @date 20-02-2024 
+    * @param totalItems Número total de elementos a generar
+    * @return List<Map<String, Object>> Listado de elementos simulando un JSON
+    **/
+    public static List<Map<String, Object> > getINFOConsentJson(Integer totalItems)
+    {
+        return buildINFOConsentJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOConsentJson(Integer totalItems)
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<Schema.PicklistEntry> consentIdValues = Consent__c.ConsentId__c.getDescribe().getPicklistValues();
+        List<Schema.PicklistEntry> consentStatusValues = Consent__c.ConsentStatus__c.getDescribe().getPicklistValues();
+        List<String> letters = new List<String> {
+            'X',
+            'S',
+            'P',
+            'L',
+            'A',
+            'T',
+            'J',
+            'E',
+            'B',
+            'D',
+            'W',
+            'N',
+            'V',
+            'Y',
+            'R',
+            'Q',
+            'M'
+        };
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer index = 0; index < totalItems; index++)
+        {
+            jsonElementsList.add(
+                new Map<String, Object> {
+                'consent_rel_id' => String.valueOf(index + 1).leftPad(12, '0'),
+                'consent_partner_code' => '001',
+                'consent_id' => consentIdValues.get(Integer.valueof( (Math.random() * consentIdValues.size() - 1) )
+                                                    ).getValue(),
+                'consent_status' => consentStatusValues.get(
+                    Integer.valueof( (Math.random() * consentStatusValues.size() - 1) )
+                    ).getValue(),
+                'consent_cdpasext' => String.valueOf(
+                    Integer.valueof( (Math.random() * 99999999) )
+                    ) + letters[Integer.valueof( (Math.random() * letters.size() - 1) )],
+                'consent_cdfiliac' => 'F' +
+                                     String.valueOf(index + 1).leftPad(9, '0')
+            }
+                );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
      * Generar registros de ExternalRequest__c a partir de los JSON de prueba
      **
      * @param String Origen
@@ -1684,6 +1751,11 @@ public class TestDataFactory
             when 'INTERMEDIARY_HIERARCHY'
             {
                 externalRequestList = addExternalRequestToList (getINFOIntermediaryHierarchyJson(numRecords),externalRequestList, origin, 'INTERMEDIARY_HIERARCHY', infoRecordTypeId, 0);
+            }
+            // Consentimientos
+            when 'CONSENT'
+            {
+                externalRequestList = addExternalRequestToList(getINFOConsentJson(numRecords), externalRequestList, origin, 'CONSENT', infoRecordTypeId, 0);
             }
             when else
             {
