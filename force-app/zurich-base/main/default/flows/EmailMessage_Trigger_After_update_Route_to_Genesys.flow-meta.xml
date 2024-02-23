@@ -7,6 +7,9 @@
         <locationY>1632</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>DesactivarCampoEstadoInteraccion</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>CreateRoutingErrorAction</targetReference>
         </faultConnector>
@@ -87,6 +90,9 @@
         <locationY>708</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>DesactivarCampoEstadoInteraccionQueue</targetReference>
+        </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>CreateRoutingErrorAction</targetReference>
@@ -1118,6 +1124,48 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
             <targetReference>Generar_error_actualizar_caso</targetReference>
         </faultConnector>
         <inputReference>CasoRelacionado</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>DesactivarCampoEstadoInteraccion</name>
+        <label>Desactivar Campo Estado Interaccion</label>
+        <locationX>3372</locationX>
+        <locationY>1740</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>InteractionStatus__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>DesactivarCampoEstadoInteraccionQueue</name>
+        <label>Desactivar Campo Estado Interaccion Queue</label>
+        <locationX>4054</locationX>
+        <locationY>816</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>InteractionStatus__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
     </recordUpdates>
     <recordUpdates>
         <name>Update_case_owner</name>
