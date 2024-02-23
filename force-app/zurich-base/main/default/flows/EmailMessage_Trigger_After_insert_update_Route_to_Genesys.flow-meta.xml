@@ -4,7 +4,7 @@
         <name>Enrutar_a_Flow_Genesys</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>3614</locationX>
-        <locationY>1524</locationY>
+        <locationY>1632</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -79,7 +79,7 @@
         <name>FlowGenesysRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>2822</locationX>
-        <locationY>1740</locationY>
+        <locationY>1848</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -162,7 +162,7 @@
         <name>QueueGenesysRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
         <locationX>4142</locationX>
-        <locationY>1416</locationY>
+        <locationY>1524</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -405,7 +405,7 @@
         <name>CaseClosedDecision</name>
         <label>Is Case Closed</label>
         <locationX>3086</locationX>
-        <locationY>1524</locationY>
+        <locationY>1632</locationY>
         <defaultConnectorLabel>Closed</defaultConnectorLabel>
         <rules>
             <name>NotClosedOutcome</name>
@@ -486,7 +486,7 @@
         <name>hasParentCase</name>
         <label>¿Tenemos caso asociado?</label>
         <locationX>3350</locationX>
-        <locationY>1416</locationY>
+        <locationY>1524</locationY>
         <defaultConnector>
             <targetReference>Enrutar_a_Flow_Genesys</targetReference>
         </defaultConnector>
@@ -579,7 +579,7 @@
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
         <locationX>3746</locationX>
-        <locationY>1308</locationY>
+        <locationY>1416</locationY>
         <defaultConnector>
             <targetReference>QueueGenesysRoutingInvocableAction</targetReference>
         </defaultConnector>
@@ -975,7 +975,7 @@
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
         <locationX>3086</locationX>
-        <locationY>1848</locationY>
+        <locationY>1956</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -1204,6 +1204,27 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>GetRecordTypeUSPAction</name>
+        <label>Get RecordType USP</label>
+        <locationX>3746</locationX>
+        <locationY>1308</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IsFlowOrQueueDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>USPInquiry</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getRelatedCase</name>
         <label>Obtener caso relacionado</label>
         <locationX>776</locationX>
@@ -1300,13 +1321,20 @@
         <name>DesactivarCampoEstadoInteraccion</name>
         <label>Desactivar Campo Estado Interaccion</label>
         <locationX>2822</locationX>
-        <locationY>1848</locationY>
+        <locationY>1956</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetRecordTypeUSPAction.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -1321,13 +1349,20 @@
         <name>DesactivarCampoEstadoInteraccionQueue</name>
         <label>Desactivar Campo Estado Interaccion Queue</label>
         <locationX>4142</locationX>
-        <locationY>1524</locationY>
+        <locationY>1632</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetRecordTypeUSPAction.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -1473,7 +1508,7 @@
         <name>Calculamos_prioridad</name>
         <label>Calculamos prioridad</label>
         <locationX>2822</locationX>
-        <locationY>1632</locationY>
+        <locationY>1740</locationY>
         <connector>
             <targetReference>FlowGenesysRoutingInvocableAction</targetReference>
         </connector>
@@ -1498,7 +1533,7 @@
         <locationX>3746</locationX>
         <locationY>1200</locationY>
         <connector>
-            <targetReference>IsFlowOrQueueDecision</targetReference>
+            <targetReference>GetRecordTypeUSPAction</targetReference>
         </connector>
         <flowName>GenerateScreenPopURL</flowName>
         <inputAssignments>
