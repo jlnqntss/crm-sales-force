@@ -263,13 +263,13 @@ public with sharing class PoliciesSelector extends RecordsSelector
     }
     
      /**
-* Busca pólizas a partirm de ids de cuenta
-     *
-     * @author fpalomo
-     * @param accountIds
-     * @return List<Policy__c>
-     * @return List<Policy__c>
-     */
+      * Busca pólizas a partirm de ids de cuenta
+      *
+      * @author fpalomo
+      * @param accountIds
+      * @return List<Policy__c>
+      * @return List<Policy__c>
+      */
     public List<Policy__c> findPoliciesByAccountId(Set<Id> accountIds, Set<String> intermediaryCodes)
     {
         return new List<Policy__c>([
@@ -396,6 +396,6 @@ public with sharing class PoliciesSelector extends RecordsSelector
           
 
         return result;
-    } 
+    }
     
 }
