@@ -278,10 +278,8 @@ public with sharing class CaseUtil
         {
         if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
             {
-                string newDescription;
+                
                 integer stringLength = 0; 
-                integer stringLimit = 254;
-                boolean firstEntry = false;
 
                 if(caso.Description != null)
                 {
@@ -289,20 +287,8 @@ public with sharing class CaseUtil
                 }
 
                 if (stringLength>=255)
-                {
-                    for (integer i=0; i < stringLimit; i++)
-                    {
-                        if(firstEntry == false)
-                        {
-                            newDescription= caso.Description.substring(i, i+1);
-                            firstEntry= true;
-                        } 
-                        else
-                        {
-                            newDescription= newDescription + caso.Description.substring(i, i+1);              
-                        }
-                    }
-                    caso.PrimerMensaje__c = newDescription; 
+                {   
+                    caso.PrimerMensaje__c =  longCaseDescription(caso); 
                 }
                 else if(caso.Description == null)
                 {
@@ -315,7 +301,31 @@ public with sharing class CaseUtil
             }
         }
     }
+        /**
+     * Método que, en caso de que el caso venga con una descripción superior o igual a 255
+     * @author jchavez
+     * @date 26/02/2024
+     **/
+        public static String longCaseDescription(Case caso)
+        {
+            string longDescription ='';
+            boolean firstEntry = false;
+            integer stringLimit = 254;
 
+            for (integer i=0; i < stringLimit; i++)
+            {
+                if(firstEntry == false)
+                {
+                    longDescription= caso.Description.substring(i, i+1);
+                    firstEntry= true;
+                } 
+                else
+                {
+                    longDescription = longDescription + caso.Description.substring(i, i+1);              
+                }
+            }
+            return longDescription;
+        }
 
         /**
      * Método que asigna Queue y Call Center a los casos creados desde Sprinklr
