@@ -5,8 +5,8 @@
         <description>Establece el valor del campo IntermediaryVisibilityAcc__c a nulo</description>
         <name>Blank_IntermediaryVisibilityAcc</name>
         <label>Blank IntermediaryVisibilityAcc__c</label>
-        <locationX>50</locationX>
-        <locationY>2069</locationY>
+        <locationX>391</locationX>
+        <locationY>2261</locationY>
         <assignmentItems>
             <assignToReference>$Record.IntermediaryVisibilityAcc__c</assignToReference>
             <operator>Assign</operator>
@@ -22,8 +22,8 @@
         <description>Rellena el valor del campo IntermediaryId__c con el valor de User.Contact.AccountId</description>
         <name>Set_IntermediaryId_c</name>
         <label>Set IntermediaryId__c</label>
-        <locationX>50</locationX>
-        <locationY>1769</locationY>
+        <locationX>391</locationX>
+        <locationY>1961</locationY>
         <assignmentItems>
             <assignToReference>$Record.IntermediaryId__c</assignToReference>
             <operator>Assign</operator>
@@ -39,8 +39,8 @@
         <description>Rellena el campo IntermediaryVisibilityAcc__c con el valor del campo Intermediary__c</description>
         <name>Set_IntermediaryVisibilityAcc</name>
         <label>Set IntermediaryVisibilityAcc__c</label>
-        <locationX>314</locationX>
-        <locationY>2069</locationY>
+        <locationX>655</locationX>
+        <locationY>2261</locationY>
         <assignmentItems>
             <assignToReference>$Record.IntermediaryVisibilityAcc__c</assignToReference>
             <operator>Assign</operator>
@@ -56,8 +56,8 @@
         <description>Cambia el propietario de la oferta a un usuario por defecto</description>
         <name>Set_OwnerId_to_default_user</name>
         <label>Set OwnerId to default user</label>
-        <locationX>50</locationX>
-        <locationY>1469</locationY>
+        <locationX>391</locationX>
+        <locationY>1661</locationY>
         <assignmentItems>
             <assignToReference>$Record.OwnerId</assignToReference>
             <operator>Assign</operator>
@@ -70,11 +70,27 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Set_ZRM_false</name>
+        <label>Set ZRM false</label>
+        <locationX>50</locationX>
+        <locationY>827</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ZRM__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Owner_is_Agente_Ventas</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Establece el valor del campo ZRM__c a true</description>
         <name>Set_ZRM_true</name>
         <label>Set ZRM__c true</label>
-        <locationX>347</locationX>
-        <locationY>953</locationY>
+        <locationX>1084</locationX>
+        <locationY>1061</locationY>
         <assignmentItems>
             <assignToReference>$Record.ZRM__c</assignToReference>
             <operator>Assign</operator>
@@ -87,10 +103,36 @@
         </connector>
     </assignments>
     <decisions>
+        <name>check_Campaign_Member_type</name>
+        <label>check Campaign Member type</label>
+        <locationX>182</locationX>
+        <locationY>719</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Is_ZRM_already_true</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>M</defaultConnectorLabel>
+        <rules>
+            <name>check_Campaign_Member_type_CC</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Campaign_Member.OfferAssignedType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CC</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_ZRM_false</targetReference>
+            </connector>
+            <label>CC</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Debe_informar_IntermediaryId_c</name>
         <label>¿Debe informar IntermediaryId__c?</label>
-        <locationX>182</locationX>
-        <locationY>1661</locationY>
+        <locationX>523</locationX>
+        <locationY>1853</locationY>
         <defaultConnector>
             <targetReference>Is_offer_blocked</targetReference>
         </defaultConnector>
@@ -126,11 +168,36 @@
         </rules>
     </decisions>
     <decisions>
+        <name>has_Campaign_Member</name>
+        <label>has Campaign Member?</label>
+        <locationX>380</locationX>
+        <locationY>611</locationY>
+        <defaultConnector>
+            <targetReference>Owner_is_Agente_Ventas</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>has_Campaign_Member_si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Campaign_Member</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>check_Campaign_Member_type</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Si se cumple la condición se marca a true el campo ZRM__c</description>
         <name>Is_Business_Code_Null</name>
         <label>Is Business Code Null?</label>
-        <locationX>347</locationX>
-        <locationY>395</locationY>
+        <locationX>1084</locationX>
+        <locationY>503</locationY>
         <defaultConnector>
             <targetReference>Get_Scope_Metadata</targetReference>
         </defaultConnector>
@@ -155,8 +222,8 @@
         <description>Si la oferta está bloqueada debemos blanquear el campo IntermediaryVisibilityAcc__c para que los usuarios que la tienen compartida por medio del mismo dejen de verla en cumplimiento con GDPR</description>
         <name>Is_offer_blocked</name>
         <label>Is offer blocked?</label>
-        <locationX>182</locationX>
-        <locationY>1961</locationY>
+        <locationX>523</locationX>
+        <locationY>2153</locationY>
         <defaultConnector>
             <targetReference>Set_IntermediaryVisibilityAcc</targetReference>
         </defaultConnector>
@@ -178,16 +245,66 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Is_ZRM_c_already_true</name>
-        <label>Is ZRM__c already true?</label>
-        <locationX>182</locationX>
+        <name>Is_Offer_from_Campaign</name>
+        <label>Is Offer from Campaign</label>
+        <locationX>523</locationX>
         <locationY>287</locationY>
+        <defaultConnector>
+            <targetReference>Is_ZRM_already_true</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Is_Offer_from_Campaign_Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CampaignId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_ZRM_already_false</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_ZRM_already_false</name>
+        <label>Is ZRM already false?</label>
+        <locationX>127</locationX>
+        <locationY>395</locationY>
+        <defaultConnector>
+            <targetReference>Get_Campaign_Member</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Is_ZRM_already_false_si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ZRM__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Owner_is_Agente_Ventas</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_ZRM_already_true</name>
+        <label>Is ZRM already true?</label>
+        <locationX>919</locationX>
+        <locationY>395</locationY>
         <defaultConnector>
             <targetReference>Is_Business_Code_Null</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
-            <name>Is_ZRM_c_already_true_Si</name>
+            <name>Is_ZRM_already_true_si</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.ZRM__c</leftValueReference>
@@ -206,8 +323,8 @@
         <description>Si hay registros de scope no seteamos el nuevo campo</description>
         <name>Metadata_Contains_Scope</name>
         <label>Metadata Contains Scope?</label>
-        <locationX>501</locationX>
-        <locationY>611</locationY>
+        <locationX>1238</locationX>
+        <locationY>719</locationY>
         <defaultConnector>
             <targetReference>Set_ZRM_true</targetReference>
         </defaultConnector>
@@ -232,8 +349,8 @@
     <decisions>
         <name>Owner_is_Agente_Ventas</name>
         <label>Owner is Agente Ventas</label>
-        <locationX>182</locationX>
-        <locationY>1145</locationY>
+        <locationX>523</locationX>
+        <locationY>1337</locationY>
         <defaultConnector>
             <targetReference>Debe_informar_IntermediaryId_c</targetReference>
         </defaultConnector>
@@ -289,10 +406,45 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <name>Get_Campaign_Member</name>
+        <label>Get Campaign Member</label>
+        <locationX>380</locationX>
+        <locationY>503</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>has_Campaign_Member</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CampaignId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.CampaignId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pdte. Revisión Mediador</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CampaignMember</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Default_User</name>
         <label>Get Default User</label>
-        <locationX>50</locationX>
-        <locationY>1361</locationY>
+        <locationX>391</locationX>
+        <locationY>1553</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Set_OwnerId_to_default_user</targetReference>
@@ -312,8 +464,8 @@
     <recordLookups>
         <name>Get_Scope_Metadata</name>
         <label>Get Scope Metadata</label>
-        <locationX>501</locationX>
-        <locationY>503</locationY>
+        <locationX>1238</locationX>
+        <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Metadata_Contains_Scope</targetReference>
@@ -333,8 +485,8 @@
     <recordLookups>
         <name>Get_Venta_Cruzada_c_setting</name>
         <label>Get Venta_Cruzada__c setting</label>
-        <locationX>50</locationX>
-        <locationY>1253</locationY>
+        <locationX>391</locationX>
+        <locationY>1445</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Default_User</targetReference>
@@ -347,8 +499,8 @@
         <description>Actualiza los valores de la oferta</description>
         <name>Update_Offer</name>
         <label>Update Offer</label>
-        <locationX>182</locationX>
-        <locationY>2261</locationY>
+        <locationX>523</locationX>
+        <locationY>2453</locationY>
         <filterLogic>or</filterLogic>
         <filters>
             <field>IntermediaryId__c</field>
@@ -405,10 +557,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>397</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Is_ZRM_c_already_true</targetReference>
+            <targetReference>Is_Offer_from_Campaign</targetReference>
         </connector>
         <object>Opportunity</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
