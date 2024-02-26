@@ -220,7 +220,7 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Método que da valor a los campos Type, Subtype__c y TypeN3__c del objeto Case 
+     * Método que recoge los valores del Metadato Robot Hegeo Field Mapping para tipificar casos Sprinklr
      * Ejecutado en beforInsert porque vienen tipificados desde Sprinklr por el campo RoboTypeN1__c
      * @author jchavez
      * @date 15/02/2024
@@ -255,13 +255,38 @@ public with sharing class CaseUtil
                     mapRobotHegeoFieldsMapping.put(sourceType,mapTipification);
                 }
             }
+            
+            caseTipification(caso,mapRobotHegeoFieldsMapping.containsKey(caso.RobotTypeN1__c),mapRobotHegeoFieldsMapping);
+            queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
 
-            Map<String,Map<String,String>> types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
+            }
+        }
+    }
+       /**
+     * Método que da valor a los campos Type, Subtype__c y TypeN3__c del objeto Case 
+     * Ejecutado en beforInsert porque vienen tipificados desde Sprinklr por el campo RoboTypeN1__c
+     * @param Case caso : Caso a tipificar
+     * @param boolean key : True si el campo RobotTypeN1__c se encuentra en la tificacion de Robot Hegeo Field Mapping
+     * @param Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping : valores de Robot Hegeo Field Mapping
+     * @author jchavez
+     * @date 26/02/2024
+     **/
+    public static void caseTipification(Case caso, boolean key, Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping)
+    {
+        Map<String,Map<String,String>> types = new Map<String,Map<String,String>>();
+        if(key)
+        {
+            types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
             caso.Type = types.keySet().iterator().next();
             caso.SubType__c = types.values()[0].keySet().iterator().next();
             caso.TypeN3__c = types.values()[0].values()[0];
-            queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
-            }
+
+        }else{
+            
+            types = mapRobotHegeoFieldsMapping.get(null);
+            caso.Type = types.keySet().iterator().next();
+            caso.SubType__c = types.values()[0].keySet().iterator().next();
+            caso.TypeN3__c = types.values()[0].values()[0];
         }
     }
 

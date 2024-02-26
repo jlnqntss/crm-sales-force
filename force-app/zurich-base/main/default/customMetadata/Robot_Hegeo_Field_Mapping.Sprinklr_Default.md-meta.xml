@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>SourceType__c</field>
-        <value xsi:type="xsd:string">Sprinklr Default</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>SourceValue__c</field>
