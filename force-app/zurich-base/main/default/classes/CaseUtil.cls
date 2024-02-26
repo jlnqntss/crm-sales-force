@@ -279,18 +279,15 @@ public with sharing class CaseUtil
         if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
             {
                 string newDescription;
-                integer stringLength; 
+                integer stringLength = 0; 
                 integer stringLimit = 254;
                 boolean firstEntry = false;
+
                 if(caso.Description != null)
                 {
                     stringLength = caso.Description.length(); 
                 }
-                else
-                {
-                    stringLength = 0;
-                }
-                
+
                 if (stringLength>=255)
                 {
                     for (integer i=0; i < stringLimit; i++)
@@ -311,10 +308,9 @@ public with sharing class CaseUtil
                 {
                     caso.Description = '';
                     caso.PrimerMensaje__c = caso.Description;
-                }else {
-                    {
-                        caso.PrimerMensaje__c = caso.Description;
-                    }
+                }else
+                {
+                    caso.PrimerMensaje__c = caso.Description;
                 }
             }
         }
