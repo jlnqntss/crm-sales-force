@@ -3,7 +3,7 @@
     <fullName>SpecialConditions__c</fullName>
     <description>Alerta al usuario si el mediador dispone de condiciones especiales.</description>
     <externalId>false</externalId>
-    <formula>IF(  OR(ActiveAgreements__c, CONTAINS(Association__c, &apos;AUNNA&apos;), CONTAINS(Association__c, &apos;COJEBRO&apos;), CONTAINS(Association__c, &apos;WTW NETWORKS&apos;)),  IMAGE(&quot;/resource/WarningIcon&quot;, &quot;ALERTA Condiciones Especiales&quot;,25, 25), &apos;&apos;)</formula>
+    <formula>IF( OR(ISPICKVAL(AgenteOlimpia__c,&apos;Sprinter&apos;),ISPICKVAL(AgenteOlimpia__c,&apos;Atleta&apos;),ISPICKVAL(AgenteOlimpia__c,&apos;Maratón&apos;),ActiveAgreements__c, CONTAINS(Association__c, &apos;AUNNA&apos;), CONTAINS(Association__c, &apos;COJEBRO&apos;), CONTAINS(Association__c, &apos;WTW NETWORKS&apos;)),  IMAGE(&quot;/resource/WarningIcon&quot;, &quot;ALERTA Condiciones Especiales&quot;,25, 25), &apos;&apos;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Special Conditions</label>
     <required>false</required>
