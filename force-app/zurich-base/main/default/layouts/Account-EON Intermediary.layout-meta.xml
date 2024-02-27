@@ -109,7 +109,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>TOPAgent__c</field>
+                <field>AgenteOlimpia__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
