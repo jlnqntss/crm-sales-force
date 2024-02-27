@@ -376,7 +376,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
     }
 
     /**
-     * Busca pólizas no bloqueadas a partir de una lista de agrupaciones
+     * Busca pólizas no bloqueadas a partir de una lista de agrupaciones y mediadores
      *
      * @author dmunoz
      * @date 15/02/2024
@@ -394,6 +394,85 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                     AND Blocked__c = FALSE
                                     AND Anonymized__c = FALSE]);
           
+
+        return result;
+    }
+
+
+    /**
+     * Obtiene las polizas no bloqueadas de un mediador
+     *
+     * @author dmunoz
+     * @date 15/02/2024
+     * 
+     * 
+     */
+    public List<Policy__c> selectByIntermediaryId(Set<String> intermediaryIdsSet) {
+
+        List<Policy__c> result = new List<Policy__c>();
+
+        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty()) {
+            result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c 
+                                        FROM Policy__c
+                                        WHERE IntermediaryId__C IN: intermediaryIdsSet
+                                        AND PolicyStatus__c IN ('V', 'A') 
+                                        AND Blocked__c = FALSE
+                                        AND Anonymized__c = FALSE]);
+
+        }
+
+        return result;
+    }
+
+    /**
+     * Obtiene las polizas no bloqueadas de una agrupacion completa
+     *
+     * @author dmunoz
+     * @date 15/02/2024
+     * 
+     * 
+     */
+    public List<Policy__c> selectByIntermediaryGroupId(Set<String> intermediaryGroupIdsSet) {
+
+        List<Policy__c> result = new List<Policy__c>();
+
+        if (intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty()) {
+            result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c 
+                                        FROM Policy__c
+                                        WHERE IntermediaryId__r.IntermediaryGroup__c IN: intermediaryGroupIdsSet
+                                        AND PolicyStatus__c IN ('V', 'A') 
+                                        AND Blocked__c = FALSE
+                                        AND Anonymized__c = FALSE]);
+
+        }
+
+        return result;
+    }
+
+    /**
+     * Obtenemos las polizas de un mediador y las de una agrupacion con excepcion de un conjunto de polizas (necesario para el calculo de )
+     *
+     * @author dmunoz
+     * @date 21/02/2024
+     * 
+     * 
+     */
+    public List<Policy__c> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> policyHolderOldIdSet, List<Policy__c> policiesToExclude) {
+
+        List<Policy__c> result = new List<Policy__c>();
+
+        result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
+                                        FROM Policy__c 
+                                        WHERE
+                                        ID NOT IN: policiesToExclude
+                                        AND PolicyHolder__c IN :policyHolderOldIdSet
+                                        AND (
+                                            IntermediaryId__c IN :intermediaryIdsSet OR
+                                            IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdsSet
+                                            )
+                                        AND PolicyStatus__c IN ('V', 'A') 
+                                        AND Blocked__c = FALSE
+                                        AND Anonymized__c = FALSE]);        
 
         return result;
     }

@@ -275,7 +275,6 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
      * @date 14/02/2024
      * @param Set<String> lista de identificadores de cuentas
      * @param Set<String> lista de identificadores de mediadores
-     * @return  List<Opportunity>
      */
     public List<AccountTeamMember> findZRMATMsByUser(List<User> userList) {
         List<AccountTeamMember> result = new List<AccountTeamMember>();
@@ -283,6 +282,30 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         if (userList != null && !userList.isEmpty()) {
             result = new List<AccountTeamMember>([SELECT Id, AccountId FROM AccountTeamMember WHERE UserId = :userList AND TeamMemberRole = 'MediadorZRM']);
         }
+
+        return result;
+    }
+
+
+    /**
+     * Método que recupera los AccountTeamMember de un cliente para un mediador y agrupaciones
+     * *
+     * @author dmunoz
+     * @date 26/02/2024
+     */
+    public List<AccountTeamMember> findZRMATMsByAccountIdAndIntermediaryOrIntermediaryGroup(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountId) {
+        List<AccountTeamMember> result = new List<AccountTeamMember>();
+
+        result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
+                                                FROM AccountTeamMember 
+                                                WHERE TeamMemberRole = 'MediadorZRM' 
+                                                AND AccountId IN : accountId 
+                                                AND (
+                                                    User.Contact.AccountId IN: intermediaryIdsSet OR 
+                                                    User.Contact.Account.IntermediaryGroup__c IN: intermediaryGroupIdsSet
+                                                    )
+                                                ]);
+        
 
         return result;
     }
