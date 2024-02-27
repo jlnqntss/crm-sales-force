@@ -256,7 +256,7 @@ public with sharing class UsersSelector extends RecordsSelector
     /**
      * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
      * @author      dmunoz
-     * @date        16/08/2023
+     * @date        16/02/2024
      */
     public List<User> findZRMActiveUsersByIntermediaryId(Set<String> intermediariesSet, List<String> intermediaryGroupIdList) {
         List<User> result = new List<User>();
@@ -275,7 +275,7 @@ public with sharing class UsersSelector extends RecordsSelector
     /**
      * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
      * @author      dmunoz
-     * @date        16/08/2023
+     * @date        16/02/2024
      */
     public List<User> findZRMActiveUsersByIntermediaryGroupId(Set<String> intermediaryGroupIdList) {
         List<User> result = new List<User>();
@@ -294,7 +294,7 @@ public with sharing class UsersSelector extends RecordsSelector
     /**
      * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
      * @author      dmunoz
-     * @date        16/08/2023
+     * @date        16/02/2024
      */
     public List<User> findZRMActiveUsersByIntermediaryId(List<String> intermediaryIdList) {
         List<User> result = new List<User>();
@@ -311,9 +311,48 @@ public with sharing class UsersSelector extends RecordsSelector
     }
 
     /**
+     * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
+     * @author      dmunoz
+     * @date        16/02/2024
+     */
+    public List<User> findZRMAgenteVentaActiveUsersByIntermediaryId(User user) {
+        List<User> result = new List<User>();
+
+        if (user != null && String.isNotEmpty(user.Contact.AccountId)) {
+            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+                                    FROM User 
+                                    WHERE Profile.Name IN ('Agente Ventas') 
+                                    AND Contact.AccountId = :user.Contact.AccountId
+                                    AND IsActive = TRUE LIMIT 1]);
+        }
+
+        return result;
+    }
+
+    /**
+     * @description Selector obtener a partir de un mediador y una agrupacion 
+     * @author      dmunoz
+     * @date        16/02/2024
+     */
+    public List<User> findZRMAgenteVentaAGRActiveUsersByIntermediaryId(User user) {
+        List<User> result = new List<User>();
+
+        if (user != null && (String.isNotEmpty(user.Contact.AccountId) ||String.isNotEmpty(user.Contact.Account.IntermediaryGroup__c))) {
+            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+                                    FROM User 
+                                    WHERE Profile.Name IN ('Agente Ventas - AGR') 
+                                    AND (Contact.AccountId = :user.Contact.AccountId OR Contact.Account.IntermediaryGroup__c = :user.Contact.Account.IntermediaryGroup__c)
+                                    AND IsActive = TRUE LIMIT 1]);
+        }
+
+        return result;
+    }
+
+
+    /**
      * @description Selector que obtiene los usuarios de un mediador y los agrupación de la agrupación a la que pertenecen (si hay)
      * @author      dmunoz
-     * @date        16/08/2023
+     * @date        16/02/2024
      */
     public List<User> findZRMActiveUsersFromIntermediaryAndAGRFromGroup(Set<String> intermediariesSet, List<String> intermediaryGroupIdList) {
         List<User> result = new List<User>();
@@ -327,5 +366,24 @@ public with sharing class UsersSelector extends RecordsSelector
 
         return result;
     }
+
+
+    /**
+     * @description Selector que obtiene los usuarios de un mediador y los agrupación de la agrupación a la que pertenecen (si hay)
+     * @author      dmunoz
+     * @date        16/02/2024
+     */
+    public User findUserIntermediaryByUserId(String userId) {
+        User result;
+        if (String.isNotEmpty(userId)) {
+            result = [SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name 
+                                    FROM User 
+                                    WHERE Id = :userId
+                                    AND IsActive = TRUE];        
+
+        }
+
+        return result; 
+    } 
 
 }

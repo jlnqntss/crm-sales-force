@@ -204,6 +204,10 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         // añadir configuración restante
         addUserRelated(u.Id, metadataInfoMap);
 
+        // ZRM ATMs (generamos los AccountTeamsMember solo para el primer login)
+        Map<String, List<String>> authMap = (Map<String, List<String>>) metadataInfoMap.get('AuthMap');
+        generateZRMATMs(u.Id, authMap.get(PERMISSION_TYPE_PROFILE));
+
         return u;
 
     }
@@ -457,7 +461,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         assignPublicGroups(userId, publicGroupIdList);
         // PERMISSION SETS
         List<Id> permissionSetGroupIdList = getPermissionSetGroupsFromRoles(authMap.get(PERMISSION_TYPE_PERMISSION_SET_GROUP));
-        assignPermissionSetGroup(userId, permissionSetGroupIdList);
+        assignPermissionSetGroup(userId, permissionSetGroupIdList);       
     }
 
 
@@ -916,6 +920,127 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         if( managerId != null ) {
             u.ManagerId = ManagerId;
         }
+    }
+
+    /**
+     * @Description Generar los account team member en caso que se esté 
+     * @date 03/06/2020
+     * @author rpolvera
+     */
+    @Future
+    @TestVisible
+    private static void generateZRMATMs(String userId, List<String> profileList) {
+
+        String profile = profileList.get(0);
+
+        if ('Agente Ventas'.equals(profile)) {
+            // 1º Obtengo el Mediador del usuario
+            UsersSelector usersSelector = new UsersSelector();
+            User userInserted = usersSelector.findUserIntermediaryByUserId(userId);
+            generateATMsAgenteVentas(userInserted, userId);
+            
+
+        } else if ('Agente Ventas - AGR'.equals(profile)) {
+            // 1º Obtengo el Mediador del usuario y agrupacion
+            UsersSelector usersSelector = new UsersSelector();
+            User userInserted = usersSelector.findUserIntermediaryByUserId(userId); 
+            generateATMsAgenteVentasAGR(userInserted, userId);
+        }        
+    }
+
+    /**
+     * @Description Generar los account team member para un usuario con perfil Agente Ventas
+     * @date 24/2/2024
+     * @author dmunoz
+     */
+    private static void generateATMsAgenteVentas(User userInserted, String userId) {
+        // 2º Si existe algun otro usuario agr del mediador o de la agrupacion a la que pertenezca para dicho mediador clonamos los atm
+        List<User> intermediariesUsers = (new UsersSelector()).findZRMAgenteVentaAGRActiveUsersByIntermediaryId(userInserted);
+
+        if (intermediariesUsers != null && !intermediariesUsers.isEmpty()) {
+            List<AccountTeamMember> accountTeamsToClone = (new AccountTeamMemberSelector()).findZRMATMsByUser(new List<User> {intermediariesUsers.get(0)});
+            List<AccountTeamMember> clonedATMsList = AccountTeamMemberUtil.cloneUserATMZRMRecordList(accountTeamsToClone, userId);
+
+            if (!clonedATMsList.isEmpty()) {
+                insert clonedATMsList;
+            }
+
+        } else { // 3º Si no existe otro usuario obtenemos los tomadores de todas las polizas de la agrupacion y generamos los atm
+            List<Policy__c> intermediaryPolicies = (new PoliciesSelector()).selectByIntermediaryGroupId(new Set<String> {userInserted.contact.Account.IntermediaryGroup__c});
+            List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
+            AccountTeamMember atm;
+
+            for (Policy__c policy: intermediaryPolicies) {
+                atm = AccountTeamMemberUtil.createATMZRMRecord(policy.PolicyHolder__c, userId);
+                atmsToInsert.add(atm);
+            }
+
+            if (!atmsToInsert.isEmpty()) {
+                insert atmsToInsert;
+
+                // 4º Activar competencias y cuentas relacionadas, solo lo hago aqui porque si se ha clonado los atm doy por hecho que ya están activos para ese mediador
+                enableCompetitorAndAccountRelationships(intermediaryPolicies, userInserted.contact.AccountId);
+            }
+        }
+    }
+
+
+    /**
+     * @Description Generar los account team member para un usuario con perfil Agente Ventas
+     * @date 24/2/2024
+     * @author dmunoz
+     */
+    private static void generateATMsAgenteVentasAGR(User userInserted, String userId) {
+        // 2º Si existe algun otro usuario nominal para dicho mediador clonamos los atm
+        List<User> intermediariesUsers = (new UsersSelector()).findZRMAgenteVentaActiveUsersByIntermediaryId(userInserted);
+
+        if (intermediariesUsers != null && !intermediariesUsers.isEmpty()) {
+            List<AccountTeamMember> accountTeamsToClone = (new AccountTeamMemberSelector()).findZRMATMsByUser(new List<User> {intermediariesUsers.get(0)});
+            List<AccountTeamMember> clonedATMsList = AccountTeamMemberUtil.cloneUserATMZRMRecordList(accountTeamsToClone, userId);
+
+            if (!clonedATMsList.isEmpty()) {
+                insert clonedATMsList;
+            }
+
+        } else { // 3º Si no existe otro usuario obtenemos los tomadores de polizas de dicho mediador e insertamos los atm
+            List<Policy__c> intermediaryPolicies = (new PoliciesSelector()).selectByIntermediaryId(new Set<String> {userInserted.contact.AccountId});
+            List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
+            AccountTeamMember atm;
+
+            for (Policy__c policy: intermediaryPolicies) {
+                atm = AccountTeamMemberUtil.createATMZRMRecord(policy.PolicyHolder__c, userId);
+                atmsToInsert.add(atm);
+            }
+
+            if (!atmsToInsert.isEmpty()) {
+                insert atmsToInsert;
+
+                // 4º Activar competencias y cuentas relacionadas, solo lo hago aqui porque si se ha clonado los atm doy por hecho que ya están activos para ese mediador
+                enableCompetitorAndAccountRelationships(intermediaryPolicies, userInserted.contact.AccountId);
+            }
+        }
+    }
+
+    /**
+     * @Description buscar y activar la visibilidad para competencias y cuentas relacionadas
+     * @date 24/2/2024
+     * @author dmunoz
+     */
+    private static void enableCompetitorAndAccountRelationships(List<Policy__c> intermediaryPolicies, String intermediaryId) {
+
+        // Obtenemos la lista de clientes
+        List<String> accountIdList = new List<String>();
+
+        for (Policy__c policy: intermediaryPolicies) {
+            accountIdList.add(policy.PolicyHolder__c);
+        }
+
+        // Obtener el conjunto de mediadores
+        Set<String> intermediaryIdList = new Set<String>();
+        intermediaryIdList.add(intermediaryId);
+
+        CompetitorUtil.recalculateVisibilityCompetitorSetVisibility(accountIdList, intermediaryIdList);
+        AccountRelationshipUtil.recalculateVisibilityAccountRelationshipSetVisibility(accountIdList, intermediaryIdList);
     }
 
     /**
