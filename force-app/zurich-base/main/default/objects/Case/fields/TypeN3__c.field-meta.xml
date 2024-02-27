@@ -1067,6 +1067,10 @@
             <valueName>Anulación</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>-</controllingFieldValue>
+            <valueName>-</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>Cambio datos Riesgo</valueName>
         </valueSettings>
