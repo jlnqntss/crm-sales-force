@@ -56,7 +56,7 @@ public with sharing class ZRMPolicyVisibilityUtil {
             // 6º Eliminamos los registros de atm que ya no deben existir y recalculamos la visiblidad de competencia y cuentas relacionadas
             deleteATMs(atmsToDelete, mediadoresIdsYAgrupacionesIdMap.keySet());            
 
-            // 7º Obtener usuarios mediadores de las polizas
+            // 7º Obtener usuarios mediadores de las polizas <IntermediaryId, <UsuarioId>
             Map<String, List<String>> intermediariesWithUsers = getIntermediariesUsers(mediadoresIdsYAgrupacionesIdMap.keySet(), mediadoresIdsYAgrupacionesIdMap);
             System.debug('DMM intermediariesWithUsers' + intermediariesWithUsers);
 
@@ -324,7 +324,7 @@ public with sharing class ZRMPolicyVisibilityUtil {
             }
 
             CompetitorUtil.recalculateVisibilityCompetitorDenyVisibility(accountIdList, intermediaryIdList);
-            AccountRelationshipUtil.recalculateVisibilityDenyAccountRelationshipSetVisibility(accountIdList, intermediaryIdList);
+            AccountRelationshipUtil.recalculateVisibilityDenyAccountRelationshipVisibility(accountIdList, intermediaryIdList);
         }
     }
 
@@ -364,8 +364,8 @@ public with sharing class ZRMPolicyVisibilityUtil {
                 accountIdList.add(atm.AccountId);
             }
 
-            CompetitorUtil.recalculateVisibilityCompetitorDenyVisibility(accountIdList, intermediaryIdList);
-            AccountRelationshipUtil.recalculateVisibilityDenyAccountRelationshipSetVisibility(accountIdList, intermediaryIdList);
+            CompetitorUtil.recalculateVisibilityCompetitorSetVisibility(accountIdList, intermediaryIdList);
+            AccountRelationshipUtil.recalculateVisibilityAccountRelationshipSetVisibility(accountIdList, intermediaryIdList);
         }
     }
 

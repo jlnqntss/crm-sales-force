@@ -433,7 +433,7 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
         CompetitorUtil.recalculateVisibilityCompetitorDenyVisibility(clientIds, intermediariesSet);
 
         // Activar posibles registros de AccountRelationship__c
-        AccountRelationshipUtil.recalculateVisibilityDenyAccountRelationshipSetVisibility(clientIds, intermediariesSet);
+        AccountRelationshipUtil.recalculateVisibilityDenyAccountRelationshipVisibility(clientIds, intermediariesSet);
     }
 
 

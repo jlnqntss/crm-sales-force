@@ -98,11 +98,11 @@ public with sharing class AccountRelationshipUtil {
      * @author dmunoz
      * @date 12/02/2024 
      */
-    public static void recalculateVisibilityDenyAccountRelationshipSetVisibility(List<String> accountIdList, Set<String> intermediaryIdList) {
+    public static void recalculateVisibilityDenyAccountRelationshipVisibility(List<String> accountIdList, Set<String> intermediaryIdList) {
         AccountRelationshipSelector selector = new AccountRelationshipSelector();
         List<AccountRelationship__c> accountsRelationshipToUpdate = new List<AccountRelationship__c>();
         
-        List<AccountRelationship__c> accountRelationshipsToActivate = selector.findAccountRelationshipToGiveVisibility(accountIdList, intermediaryIdList);        
+        List<AccountRelationship__c> accountRelationshipsToActivate = selector.findAccountRelationshipToDenyVisibility(accountIdList, intermediaryIdList);        
 
         AccountRelationship__c aux;
         for (AccountRelationship__c accountRelationship: accountRelationshipsToActivate) {
