@@ -212,18 +212,19 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             opp.AccountId = cm.Contact.AccountId;
             opp.ProductBranch__c = cm.Campaign.ProductBranch__c;
             opp.CampaignId = cm.CampaignId;
-            opp.ZRM__c = true;
 
             // M se corresponde con miembros de campaña para Agentes Mediador
             if (cm.OfferAssignedType__c == 'M')
             {
                 opp = fillMediatorData(opp, cm, accountByIntermCode, userIdByAccountId);
+                opp.ZRM__c = true;
             }
 
             // CC se corresponde con miembros de campaña para el Contact Center, que se asignarán a un usuario genérico
             else if  (cm.OfferAssignedType__c == 'CC')
             {
                 opp = fillCCData(opp, cm);
+                opp.ZRM__c = false;
             }
 
             oppsToInsert.add(opp);
@@ -272,7 +273,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
      **/
     public class FlowInputs
     {
-
         @InvocableVariable public List<Id> campMemberIds;
 
     }
