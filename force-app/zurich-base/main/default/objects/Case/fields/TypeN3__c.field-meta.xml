@@ -15,11 +15,6 @@
         <valueSetDefinition>
             <sorted>true</sorted>
             <value>
-                <fullName>-</fullName>
-                <default>false</default>
-                <label>-</label>
-            </value>
-            <value>
                 <fullName>Activation failure</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
