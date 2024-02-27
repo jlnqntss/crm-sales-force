@@ -24,11 +24,11 @@
     </values>
     <values>
         <field>Subtype__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">-</value>
     </values>
     <values>
         <field>TypeN3__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">-</value>
     </values>
     <values>
         <field>Type__c</field>

@@ -1264,10 +1264,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Incidencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Información</fullName>
             <default>false</default>
         </values>
@@ -1335,10 +1331,6 @@
         </values>
         <values>
             <fullName>Gestión</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencia</fullName>
             <default>false</default>
         </values>
         <values>
