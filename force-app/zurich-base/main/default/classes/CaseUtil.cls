@@ -278,16 +278,16 @@ public with sharing class CaseUtil
 
         for(Case caso : newList)
         {
-        if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
+            if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
             {
-            if(!String.isBlank(caso.Description) && caso.Description.length() > stringLimit)
-            {
-                caso.PrimerMensaje__c =  caso.Description.left(stringLimit);
-            }
-            else
-            {   
-                caso.PrimerMensaje__c = caso.Description;
-            }
+                if(!String.isBlank(caso.Description) && caso.Description.length() > stringLimit)
+                {
+                    caso.PrimerMensaje__c =  caso.Description.left(stringLimit);
+                }
+                else
+                {   
+                    caso.PrimerMensaje__c = caso.Description;
+                }
             }
         }
     }

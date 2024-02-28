@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 02-27-2024
+ * @last modified on  : 02-28-2024
  * @last modified by  : jchavez
  **/
 @isTest
@@ -249,6 +249,11 @@ private with sharing class CaseUtilTest
         System.assertEquals('RRSS Marca', caseToCompare.CallCenter__c, 'El Call Center de la tipificación es correcto');
         System.assertEquals('Marca Redes Sociales', cola.Name, 'La Cola de la tipificación es correcto');
     }
+    
+    /**
+     * Test que comprueba la correcta inserción de caso tipo Sprinklr con una descripcion menor a 255 caracteres
+     * El caso debe ser insertado con el mismo valor para Description que para PrimerMensaje__c
+     */
     @isTest
     private static void test_descriptionCaseShort()
     {
@@ -269,6 +274,10 @@ private with sharing class CaseUtilTest
         System.assertEquals(caseToCompareShort.Description.length() == caseToCompareShort.PrimerMensaje__c.length(), true, 'Se ha asignado bien el campo PrimerMensaje__c');
     }
 
+    /**
+     * Test que comprueba la correcta inserción de caso tipo Sprinklr con una descripcion superior a 255 caracteres
+     * El caso debe ser insertado con el campo PrimerMensaje__c acotado a 255 caracteres.
+     */
     @isTest
     private static void test_descriptionCaseLong()
     {
@@ -287,7 +296,10 @@ private with sharing class CaseUtilTest
         Case caseToCompareLong = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseLongDescription.id];
         System.assertEquals(caseToCompareLong.PrimerMensaje__c.length()  < 256, true,'El campo PrimerMensaje__c no supera el límite de caracteres');
     } 
-
+     /**
+     * Test que comprueba la correcta inserción de caso tipo Sprinklr con una descripcion nula
+     * El caso debe ser insertado sin problemas
+     */
     @isTest
     private static void test_descriptionCaseNull()
     {
