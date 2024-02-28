@@ -17,9 +17,10 @@ private with sharing class PolicyUtilTest
         List<Account> agrupaciones = TestDataFactory.generateAccounts(Label.GeneralInsurance,'AgrupacionMediador', 1);
         insert agrupaciones;
         // Crear cuentas de mediadores
-        List<Account> intermediaryAccounts = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary', 1);
+        List<Account> intermediaryAccounts = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary', 2);
         intermediaryAccounts.get(0).IntermediaryGroup__c = agrupaciones.get(0).Id;
         intermediaryAccounts.get(0).Name = 'MediadorTest';
+        intermediaryAccounts.get(1).Name = 'MediadorTest2';
         insert intermediaryAccounts;
 
         // Crear contactos de mediadores
@@ -117,6 +118,64 @@ private with sharing class PolicyUtilTest
 
         Test.startTest();
         insert policies;
+        Test.stopTest();
+
+
+        List<AccountTeamMember> atmAfter = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
+
+        System.assertNotEquals(atmBefore.size(), atmAfter.size(), 'Deben de haberse insertado nuevos registros de ATM');
+    }
+
+
+    @isTest
+    private static void test_visibilityUpdatePolicyHolderZRM() {
+
+        // Insertamos una poliza
+        List<AccountTeamMember> atmBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
+
+        List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);        
+        policies[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
+
+        insert policies;
+
+        // actualizamos el el cliente de la poliza
+        List<Account> otherAccount = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' AND Id != :accounts.get(0).Id LIMIT 1];
+        policies[0].PolicyHolder__c = otherAccount.get(0).Id;
+
+        Test.startTest();
+        update policies;
+        Test.stopTest();
+
+
+        List<AccountTeamMember> atmAfter = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
+
+        System.assertNotEquals(atmBefore.size(), atmAfter.size(), 'Deben de haberse insertado nuevos registros de ATM');
+    }
+
+
+    @isTest
+    private static void test_visibilityUpdateIntermediaryZRM() {
+
+        // Insertamos una poliza
+        List<AccountTeamMember> atmBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
+
+        List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);        
+        policies[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
+
+        insert policies;
+
+        // actualizamos el el cliente de la poliza
+        List<Account> otherIntermediary = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Intermediary' AND Name = 'MediadorTest2' LIMIT 1];
+        policies[0].IntermediaryId__c = otherIntermediary.get(0).Id;
+
+        Test.startTest();
+        update policies;
         Test.stopTest();
 
 

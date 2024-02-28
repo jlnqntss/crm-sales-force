@@ -8,6 +8,108 @@ public with sharing class ZRMPolicyVisibilityUtil {
 
 
     /**
+     * Método que recalcula la visibilidad en caso de un cambio de mediador de una poliza
+     * 
+     *
+     * @author dmunoz
+     * @date 27/02/2024 
+     */    
+    public static void atmsIntermediaryChangeToProcess(Map<String, List<Policy__c>> policiesToProcess, Map<Id, Policy__c> oldMap) {
+
+        List<Policy__c> policiesWithIntermediaryChanges = policiesToProcess.get('PoliciesWithIntermediariesChanges');
+
+        // procesamos si hay registros
+        if (policiesWithIntermediaryChanges != null && !policiesWithIntermediaryChanges.isEmpty()) {
+
+            // Recalcular visibilidad mediadores old
+
+            // Obtener mediador y clientes <IntermediaryId, Set<PolicyHolderOldId>>
+            Map<String, Set<String>> policyHoldersTriggerByIntermediaryMap = getPolicyHoldersOldByIntermediaryChangeMap(policiesWithIntermediaryChanges, oldMap);
+            System.debug('DMM policyHoldersTriggerByIntermediaryMap' + policyHoldersTriggerByIntermediaryMap);
+
+            // 1º Obtener datos
+            // Obtener Set<IntermediaryOldTriggerId>
+            // Obtener Set<PolicyHolderTriggerId>
+            Map<String, Set<String>> datosPolicyTrigger = getPolicyTriggerData(policiesWithIntermediaryChanges, oldMap);
+            System.debug('DMM datosPolicyTrigger' + datosPolicyTrigger);
+
+            // Obtener el conjunto de mediadores old Set<IntermediaryOldTriggerId>
+            Set<String> intermediaryIdTriggerOldSet = datosPolicyTrigger.get('IntermediariesTriggerOldSet');
+            Set<String> intermediaryIdTriggerNewSet = datosPolicyTrigger.get('IntermediariesTriggerNewSet');
+            Set<String> policyHolderTriggerOldSet = datosPolicyTrigger.get('PolicyHolderTriggerOldSet');
+
+            // Obtener el conjunto de clientes de las polizas
+
+            // 2º Obtener las agrupaciones de mediadores old <IntermediaryIdTriggerOld, IntermediaryGroupIdDeIntermediaryIdOld>
+            Map<String, String> mediadoresIdsOldYAgrupacionesIdMap = getIntermediaryGroupIdMap(intermediaryIdTriggerOldSet); // <IntermediaryId, IntermediaryGroupId>
+            Map<String, String> mediadoresIdsNewYAgrupacionesIdMap = getIntermediaryGroupIdMap(intermediaryIdTriggerNewSet); // <IntermediaryId, IntermediaryGroupId>
+
+            // Obtener el conjunto de agrupaciones de los mediadores old del trigger
+            Set<String> intermediaryGroupIdSet = new Set<String>(mediadoresIdsOldYAgrupacionesIdMap.values());
+            intermediaryGroupIdSet.remove(null);
+            System.debug('DMM intermediaryGroupIdSet' + intermediaryGroupIdSet);
+
+            // 3º Obtener las polizas que apuntan a mediador old (excluyendo las polizas del trigger) (2 mapas) <IntermediaryOldId/IntermediaryGroupIdDeIntermediaryIdOld, Set<PolicyHolderId>>
+            Map<String, Map<String, Set<String>>> intermediaryOldBDPoliciesMap = getPolicyHolderOldPolicies(mediadoresIdsOldYAgrupacionesIdMap, intermediaryGroupIdSet, policyHolderTriggerOldSet, policiesWithIntermediaryChanges);
+            System.debug('DMM intermediaryOldBDPoliciesMap' + intermediaryOldBDPoliciesMap);
+
+            // 4º Obtener los atm de todos los clientes que apuntan a intermediaryOld (2 mapas) <IntermediaryOldId/IntermediaryGroupIdDeIntermediaryIdOld, <PolicyHolderId, List<ATM>>>
+            Map<String, Map<String, Map<String, List<AccountTeamMember>>>> atmsToProcess = atmsToProcess(intermediaryIdTriggerOldSet, intermediaryGroupIdSet, policyHolderTriggerOldSet);
+            System.debug('DMM atmsToProcess' + atmsToProcess);
+
+            // 5º Recorrer los atm obtenidos y devolvemos aquellos que vamos a eliminar (nos quedamos con los atm si existe alguna otra poliza para ese cliente que apunte a intermediaryIdOld)
+            List<AccountTeamMember> atmsToDelete = getATMsToDelete(mediadoresIdsOldYAgrupacionesIdMap, intermediaryOldBDPoliciesMap, atmsToProcess, policyHoldersTriggerByIntermediaryMap);
+            System.debug('DMM atmsToDelete' + atmsToDelete); 
+
+            // 6º Eliminamos los registros de atm que ya no deben existir y recalculamos la visiblidad de competencia y cuentas relacionadas
+            deleteATMs(atmsToDelete, intermediaryIdTriggerOldSet);  
+
+            // Crear nuevos atm mediadoresNew -----------------------------------------------------------------
+            // 7º Obtener usuarios mediadores de las polizas <IntermediaryId, <UsuarioId>
+            Map<String, List<String>> intermediariesWithUsers = getIntermediariesUsers(intermediaryIdTriggerNewSet, mediadoresIdsNewYAgrupacionesIdMap);
+            System.debug('DMM intermediariesWithUsers' + intermediariesWithUsers);
+
+            // 8º Obtener registros de atm para los usuarios de los mediadores de las polizas del trigger y clientesNew
+            List<AccountTeamMember> atmsToInsert = getATMsToInsert(policiesWithIntermediaryChanges, intermediariesWithUsers);
+            System.debug('DMM atmsToInsert ' + atmsToInsert);
+
+            // 9º Insertar registros atm y recalcular visibilidad competencia y cuenta relacionada
+            insertATMs(atmsToInsert, intermediaryIdTriggerNewSet);
+        }
+    }
+
+    /**
+     * Método que obtiene datos a partir de las polizas de entrada del trigger
+     * 
+     *
+     * @author dmunoz
+     * @date 27/02/2024 
+     */   
+    private static Map<String, Set<String>> getPolicyTriggerData(List<Policy__c> policiesToProcess, Map<Id, Policy__c> oldMap) {
+
+        Map<String, Set<String>> result = new Map<String, Set<String>>();
+        Set<String> intermediaryIdTriggerOldSet = new Set<String>();
+        Set<String> intermediaryIdTriggerNewSet = new Set<String>();
+        Set<String> policyHolderTriggerOldSet = new Set<String>();
+        
+        for (Policy__c policy: policiesToProcess) {
+            intermediaryIdTriggerOldSet.add(oldMap.get(policy.Id).IntermediaryId__c);
+            policyHolderTriggerOldSet.add(oldMap.get(policy.Id).policyHolder__c);
+            intermediaryIdTriggerNewSet.add(policy.IntermediaryId__c);
+        }
+
+        result.put('IntermediariesTriggerOldSet', intermediaryIdTriggerOldSet);
+        result.put('IntermediariesTriggerNewSet', intermediaryIdTriggerNewSet);
+        result.put('PolicyHolderTriggerOldSet', policyHolderTriggerOldSet);
+
+        return result;
+
+    }
+
+
+    /******************************************************************************** Cambio Tomador de poliza ************************************************************************************************/
+
+    /**
      * Método que recalcula la visibilidad en caso de un cambio de tomador de una poliza
      * 
      *
@@ -77,6 +179,21 @@ public with sharing class ZRMPolicyVisibilityUtil {
 
         for (Policy__c policy: policyList) {
             result = generateSetMap(result, policy.IntermediaryId__c, oldMap.get(policy.Id).policyHolder__c); 
+        }
+
+        return result;
+    }
+
+
+    //Obtener mediador y clientes <IntermediaryOldId, Set<PolicyHolderOldId>> de las polizas old del trigger
+    private static Map<String, Set<String>> getPolicyHoldersOldByIntermediaryChangeMap(List<Policy__c> policyList, Map<Id, Policy__c> oldMap) {
+
+        Map<String, Set<String>> result = new Map<String, Set<String>>();
+
+        Policy__c policyOld;
+        for (Policy__c policy: policyList) {
+            policyOld = oldMap.get(policy.Id);
+            result = generateSetMap(result, policyOld.IntermediaryId__c, policyOld.policyHolder__c); 
         }
 
         return result;
@@ -233,7 +350,7 @@ public with sharing class ZRMPolicyVisibilityUtil {
         //recorro de cada mediador los clientesold de policyHoldersTriggerByIntermediaryMap
         Set<String> clientsToKeepVisibility;
         for (String intermediaryId: mediadoresIdsYAgrupacionesIdMap.keySet()) {	
-
+            
             // por cada cliente old de las polizas del trigger compruebo si para dicho mediador existe alguna otra poliza para ese cliente
             for (String clientIdOld: policyHoldersTriggerByIntermediaryMap.get(intermediaryId)) {    
                 clientsToKeepVisibility = intermediaryClientOldBDMap.get(intermediaryId);
@@ -244,7 +361,6 @@ public with sharing class ZRMPolicyVisibilityUtil {
                 } 
             }
         }
-
         
         return result;
     }    

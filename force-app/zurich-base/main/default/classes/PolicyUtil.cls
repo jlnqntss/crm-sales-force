@@ -89,7 +89,7 @@ public class PolicyUtil
         Map<String, List<Policy__c>> policiesToProcess = getPoliciesToProcessAfterUpdate(newList, oldMap);
 
         // 2º Proceso recalculo mediador
-        //Map<String, List<AccountTeamMember>> atmsIntermediaryChangeToProcessMap = ZRMPolicyVisibilityUtil.atmsIntermediaryChangeToProcess(policiesToProcess, oldMap);
+        ZRMPolicyVisibilityUtil.atmsIntermediaryChangeToProcess(policiesToProcess, oldMap); 
 
         // 3º Proceso recalculo tomador, borra e inserta atm y recalcula competencias y cuentas relacionadas
         ZRMPolicyVisibilityUtil.atmsPolicyHolderChangeToProcess(policiesToProcess, oldMap);
@@ -137,7 +137,7 @@ public class PolicyUtil
     private static Boolean isPolicyHolderChanged(Policy__c policy, Map<Id, Policy__c> oldMap) {
         Boolean result = false;
 
-        if (!policy.PolicyHolder__c.equals(oldMap.get(policy.Id).PolicyHolder__c)) {
+        if (policy.PolicyHolder__c != null && !policy.PolicyHolder__c.equals(oldMap.get(policy.Id).PolicyHolder__c)) {
             result = true;
         }
 
@@ -154,7 +154,7 @@ public class PolicyUtil
     private static Boolean isIntermediaryChanged(Policy__c policy, Map<Id, Policy__c> oldMap) {
         Boolean result = false;
 
-        if (!policy.IntermediaryId__c.equals(oldMap.get(policy.Id).IntermediaryId__c)) {
+        if (policy.IntermediaryId__c != null && !policy.IntermediaryId__c.equals(oldMap.get(policy.Id).IntermediaryId__c)) {
             result = true;
         }
 

@@ -457,7 +457,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
      * 
      * 
      */
-    public List<Policy__c> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> policyHolderOldIdSet, List<Policy__c> policiesToExclude) {
+    public List<Policy__c> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> policyHolderIdSet, List<Policy__c> policiesToExclude) {
 
         List<Policy__c> result = new List<Policy__c>();
 
@@ -465,7 +465,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                         FROM Policy__c 
                                         WHERE
                                         ID NOT IN: policiesToExclude
-                                        AND PolicyHolder__c IN :policyHolderOldIdSet
+                                        AND PolicyHolder__c IN :policyHolderIdSet
                                         AND (
                                             IntermediaryId__c IN :intermediaryIdsSet OR
                                             IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdsSet
