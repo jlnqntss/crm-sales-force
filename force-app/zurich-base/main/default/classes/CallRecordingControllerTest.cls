@@ -16,8 +16,8 @@ private with sharing class CallRecordingControllerTest
     @isTest
     private static void test_getRecordingPhoneNumber_ok()
     {
-        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
-        User u = [SELECT Id FROM User WHERE Id = : usuarios.get(0).AssigneeId AND IsActive = true];
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos' and Assignee.isActive = TRUE];
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         String recordingPhoneNumberResult;
         CallRecordingController.testListRecordingPhoneNumber =
             new AdminSetupParameter__mdt(
@@ -46,8 +46,8 @@ private with sharing class CallRecordingControllerTest
     @isTest
     private static void test_getRecordingPhoneNumber_ko()
     {
-        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
-        User u = [SELECT Id FROM User WHERE Id = : usuarios.get(0).AssigneeId AND IsActive = true];
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos' and Assignee.isActive = TRUE];
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         String recordingPhoneNumberResult;
         CallRecordingController.testListRecordingPhoneNumber = new AdminSetupParameter__mdt();
 

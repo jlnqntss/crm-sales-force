@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
-        <field>Claim__c.Policy__c</field>
+        <field>CUST_NAME</field>
     </columns>
     <columns>
         <field>Claim__c.Status__c</field>
     </columns>
     <columns>
-        <field>Claim__c.Product__c</field>
+        <field>Policy__c.ProductId__c</field>
     </columns>
     <columns>
         <field>Claim__c.DateOfOccurrence__c</field>
     </columns>
     <columns>
-        <field>CUST_LAST_UPDATE</field>
+        <field>CHILD_LAST_UPDATE</field>
     </columns>
-    <description>Siniestros abiertos este mes.</description>
     <filter>
         <criteriaItems>
             <column>Claim__c.Status__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
+            <operator>equals</operator>
             <value>T</value>
         </criteriaItems>
         <criteriaItems>
@@ -29,33 +28,33 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>THIS_MONTH</value>
+            <value>THIS_YEAR</value>
         </criteriaItems>
-        <language>es</language>
+        <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Claim__c.PolicyHolder__c</field>
+        <field>Policy__c.PolicyHolder__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>CUST_NAME</field>
+        <field>CHILD_NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Siniestros Recientes</name>
+    <name>Siniestros Abiertos Acumulado Año</name>
     <params>
         <name>co</name>
         <value>1</value>
     </params>
-    <reportType>CustomEntity$Claim__c</reportType>
+    <reportType>CustomEntityCustomEntity$Policy__c$Claim__c</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
-        <dateColumn>Claim__c.OpenDate__c</dateColumn>
+        <dateColumn>Policy__c.EndDate__c</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>
