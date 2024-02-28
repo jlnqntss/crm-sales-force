@@ -235,7 +235,6 @@ public with sharing class CaseUtil
      **/
     public static void mappingSprinklrCases(List<Case> newList)
     {
-        ID sprinklrRTId = rtOCSid;
         for(Case caso : newList)
         {
             if(caso.RecordTypeId == rtOCSid)
