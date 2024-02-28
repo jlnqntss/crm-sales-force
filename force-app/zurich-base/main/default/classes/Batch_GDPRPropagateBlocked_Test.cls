@@ -43,7 +43,7 @@ private with sharing class Batch_GDPRPropagateBlocked_Test {
         List<Policy__c> poliza2 = TestDataFactory.generatePoliciesForEachOpportunity(opp, 1);
         insert poliza2;
 
-        Claim__c cl = new Claim__c(Name='000049', PolicyHolder__c=accs[0].Id, Policy__c = poliza1[0].Id);
+        Claim__c cl = new Claim__c(Name='000049', PolicyHolder__c=accs[0].Id);
         insert cl;
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accs, 3);

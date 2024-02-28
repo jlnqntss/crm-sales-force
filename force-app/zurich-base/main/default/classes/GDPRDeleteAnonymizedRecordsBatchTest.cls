@@ -51,7 +51,7 @@ public with sharing class GDPRDeleteAnonymizedRecordsBatchTest
         }
         insert poliza2;
 
-        Claim__c cl = new Claim__c(Name='000049', PolicyHolder__c=accs[0].Id, Policy__c = poliza1[0].Id);
+        Claim__c cl = new Claim__c(Name='000049', PolicyHolder__c=accs[0].Id);
         cl.Anonymized__c = true;
         insert cl;
 

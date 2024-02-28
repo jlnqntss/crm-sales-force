@@ -40,57 +40,60 @@ private with sharing class NoteInfoLookupBatchTest
         insert noteOffer;
     }
 
-	/**
-	 * Creates the parents sobject to be found by the batch for the Note (case)
-	 * 
-	 * @param {Integer i} numeric secuence to create differnt test cases
-	 * @param {Boolean bCreatePolicy} if insert a policy (true) or not (false)
-	 * @param {Boolean bCreateClaim} if insert a claim (true) or not (false)
-	 * @param {Boolean bCreateOffer} if insert an Offer-Opportunity (true) or not (false)
-	 */
-	private static void generateNoteRelatedData(Integer i, Boolean bCreatePolicy, Boolean bCreateClaim, Boolean bCreateOffer) {
-		Account a = new Account(
-			LastName= 'acc test note ' + i,
-			INFOIntermediaryCode__c= String.valueOf(i).leftPad(9, '0')
-		);
-		insert a;
-		
-		Policy__c p;
-		if( bCreatePolicy ) {
-			p = new Policy__c(
-				Name= String.valueOf(i).leftPad(9, '0'),
-				InfoPolicyNumber__c = String.valueOf(i).leftPad(9, '0')
-			);
-			insert p;
-		}
-	
-		if( bCreateClaim ) {
-			Claim__c c = new Claim__c(
-				Name= String.valueOf(i).leftPad(9, '0'),
-				InfoClaimNumber__c = String.valueOf(i).leftPad(9, '0'),
-				Policy__c = p.Id
-			);
-			insert c;
-		}
-	
-		if( bCreateOffer ) {
-			Date d = Date.today().addDays(10);
-			Opportunity o = new Opportunity(
-				Name= String.valueOf(i).leftPad(9, '0'),
-				CloseDate= d,
-				StageName= 'Legit Lead',
-				InfoQuoteNumber__c= String.valueOf(i).leftPad(9, '0')
-			);
-			insert o;
-		}
-	}
+    /**
+     * Creates the parents sobject to be found by the batch for the Note (case)
+     *
+     * @param {Integer i} numeric secuence to create differnt test cases
+     * @param {Boolean bCreatePolicy} if insert a policy (true) or not (false)
+     * @param {Boolean bCreateClaim} if insert a claim (true) or not (false)
+     * @param {Boolean bCreateOffer} if insert an Offer-Opportunity (true) or not (false)
+     */
+    private static void generateNoteRelatedData(Integer i, Boolean bCreatePolicy, Boolean bCreateClaim, Boolean bCreateOffer)
+    {
+        Account a = new Account(
+            LastName= 'acc test note ' + i,
+            INFOIntermediaryCode__c= String.valueOf(i).leftPad(9, '0')
+            );
+        insert a;
+
+        if( bCreatePolicy )
+        {
+            Policy__c p = new Policy__c(
+                Name= String.valueOf(i).leftPad(9, '0'),
+                InfoPolicyNumber__c = String.valueOf(i).leftPad(9, '0'),
+                PolicyHolder__c = a.Id
+                );
+            insert p;
+        }
+
+        if( bCreateClaim )
+        {
+            Claim__c c = new Claim__c(
+                Name= String.valueOf(i).leftPad(9, '0'),
+                InfoClaimNumber__c = String.valueOf(i).leftPad(9, '0')
+                );
+            insert c;
+        }
+
+        if( bCreateOffer )
+        {
+            Date d = Date.today().addDays(10);
+            Opportunity o = new Opportunity(
+                Name= String.valueOf(i).leftPad(9, '0'),
+                CloseDate= d,
+                StageName= 'Legit Lead',
+                InfoQuoteNumber__c= String.valueOf(i).leftPad(9, '0')
+                );
+            insert o;
+        }
+    }
 
 	/**
 	 * Test of the batch execution
 	 */
 	@isTest 
-	static void execute() {
-		generateNoteRelatedData(1, true, false, true);
+	private static void execute() {
+		generateNoteRelatedData(1, false, false, true);
 		generateNoteRelatedData(2, true, true, true);
 		
 		
