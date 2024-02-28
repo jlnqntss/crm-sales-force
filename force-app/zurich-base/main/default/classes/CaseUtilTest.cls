@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 02-27-2024
+ * @last modified on  : 02-28-2024
  * @last modified by  : jchavez
  **/
 @isTest
@@ -249,6 +249,32 @@ private with sharing class CaseUtilTest
         System.assertEquals('RRSS Marca', caseToCompare.CallCenter__c, 'El Call Center de la tipificación es correcto');
         System.assertEquals('Marca Redes Sociales', cola.Name, 'La Cola de la tipificación es correcto');
     }
+
+    @isTest
+    private static void test_mappingSprinklrCasesNullTag()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+
+        Case caseRecord = new Case ();
+        caseRecord.RecordTypeId = rtOCSSprinklrId;
+        caseRecord.RobotTypeN1__c = null;
+        caseRecord.Subject = 'Test';
+        caseRecord.SuppliedEmail='no@existe.com';
+
+        List<Case> newList = new List<Case>();
+        newList.add(caseRecord);
+ 		
+        insert newList;
+        
+        Case caseToCompare = [SELECT id,Type,SubType__c,TypeN3__c,CallCenter__c,OwnerId FROM Case where id =: caseRecord.id];
+        Group cola = [SELECT Name From Group WHERE id =: caseToCompare.OwnerId ];
+        System.assertEquals('Marca (No info provided)', caseToCompare.Type, 'El tipo de la tipificación es correcto');
+        System.assertEquals('Comentario', caseToCompare.SubType__c, 'El subtipo de la tipificación es correcto');
+        System.assertEquals('Comentario', caseToCompare.TypeN3__c, 'El tipo 3 de la tipificación es correcto');
+        System.assertEquals('RRSS Marca', caseToCompare.CallCenter__c, 'El Call Center de la tipificación es correcto');
+        System.assertEquals('Marca Redes Sociales', cola.Name, 'La Cola de la tipificación es correcto');
+    }
+
     @isTest
     private static void test_descriptionCaseShort()
     {

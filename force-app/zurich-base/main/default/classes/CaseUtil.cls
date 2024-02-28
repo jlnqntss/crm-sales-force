@@ -15,11 +15,19 @@ public with sharing class CaseUtil
     public static final String queryDays ='365';
     public static final String estadoCerrado= 'Cerrado';
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+    public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
 
     // Recupera el Id del RecordType de casos USP
     public static final ID rtUSPId {
         get {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
+        }
+    }
+
+    // Recupera el Id del RecordType de casos Sprinklr
+    public static final ID rtOCSid{
+        get{
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR).getRecordTypeId();
         }
     }
 
@@ -227,38 +235,37 @@ public with sharing class CaseUtil
      **/
     public static void mappingSprinklrCases(List<Case> newList)
     {
-    for(Case caso : newList)
+        ID sprinklrRTId = rtOCSid;
+        for(Case caso : newList)
         {
-        if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
+            if(caso.RecordTypeId == rtOCSid)
             {
-            Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping = new Map<String, Map<String, Map<String,String>>> ();
-            List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMappingList = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
-            String sourceType;
-            String type;
-            Map<String, String> subtypeAndtype3; 
-            Map<String, Map<String,String>> mapTipification;
-            List<Group> marcaCola = new GroupSelector().findByName('Marca Redes Sociales');
-            List<Group> siniestrosCola = new GroupSelector().findByName('Siniestros Redes Sociales');
-            List<Group> postventaCola = new GroupSelector().findByName('Postventa Redes Sociales');
+                Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping = new Map<String, Map<String, Map<String,String>>> ();
+                List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMappingList = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
+                String sourceType;
+                String type;
+                Map<String, String> subtypeAndtype3; 
+                Map<String, Map<String,String>> mapTipification;
+                List<Group> marcaCola = new GroupSelector().findByName('Marca Redes Sociales');
+                List<Group> siniestrosCola = new GroupSelector().findByName('Siniestros Redes Sociales');
+                List<Group> postventaCola = new GroupSelector().findByName('Postventa Redes Sociales');
         
-            for (Robot_Hegeo_Field_Mapping__mdt fieldMapping : robotHegeoFieldsMappingList)
-            {
-                sourceType = fieldMapping.SourceType__c; 
-                type = fieldMapping.Type__c;
-
-                if (sourceType != null || type != null)
+                for (Robot_Hegeo_Field_Mapping__mdt fieldMapping : robotHegeoFieldsMappingList)
                 {
-                    subtypeAndtype3 = new Map<String,String>();
-                    mapTipification = new Map<String, Map<String,String>> ();
-                    subtypeAndtype3.put(fieldMapping.Subtype__c,fieldMapping.TypeN3__c);
-                    mapTipification.put (fieldMapping.Type__c, subtypeAndtype3);
-                    mapRobotHegeoFieldsMapping.put(sourceType,mapTipification);
-                }
-            }
-            
-            caseTipification(caso,mapRobotHegeoFieldsMapping.containsKey(caso.RobotTypeN1__c),mapRobotHegeoFieldsMapping);
-            queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
+                    sourceType = fieldMapping.SourceType__c; 
+                    type = fieldMapping.Type__c;
 
+                    if (sourceType != null || type != null)
+                    {
+                        subtypeAndtype3 = new Map<String,String>();
+                        mapTipification = new Map<String, Map<String,String>> ();
+                        subtypeAndtype3.put(fieldMapping.Subtype__c,fieldMapping.TypeN3__c);
+                        mapTipification.put (fieldMapping.Type__c, subtypeAndtype3);
+                        mapRobotHegeoFieldsMapping.put(sourceType,mapTipification);
+                    }
+                }
+                caseTipification(caso,mapRobotHegeoFieldsMapping.containsKey(caso.RobotTypeN1__c),mapRobotHegeoFieldsMapping);
+                queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
             }
         }
     }
