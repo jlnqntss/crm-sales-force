@@ -259,6 +259,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
      **/
     private Opportunity fillCCData(Opportunity opp, CampaignMember cm)
     {
+        opp.LegalEntity__c = '001'; // añadimos entidad legal Zurich
         opp.IntermediaryId__c = cm.Contact.Account.Intermediary_Name__c;
         opp.IntermediaryCode__c = cm.Contact.Account.Intermediary_Name__r.INFOIntermediaryCode__c;
         opp.BusinessCode__c = cm.Campaign.BusinessCode__c;
