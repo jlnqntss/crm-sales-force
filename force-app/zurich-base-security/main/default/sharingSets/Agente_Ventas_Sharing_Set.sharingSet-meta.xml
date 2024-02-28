@@ -2,12 +2,6 @@
 <SharingSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <accessMappings>
         <accessLevel>Edit</accessLevel>
-        <object>Account</object>
-        <objectField>IntermediaryVisibilityAcc__c</objectField>
-        <userField>Contact.Account</userField>
-    </accessMappings>
-    <accessMappings>
-        <accessLevel>Edit</accessLevel>
         <object>AccountRelationship__c</object>
         <objectField>IntermediaryId__c</objectField>
         <userField>Contact.Account</userField>
@@ -16,12 +10,6 @@
         <accessLevel>Edit</accessLevel>
         <object>Competitor__c</object>
         <objectField>IntermediaryId__c</objectField>
-        <userField>Contact.Account</userField>
-    </accessMappings>
-    <accessMappings>
-        <accessLevel>Read</accessLevel>
-        <object>Contact</object>
-        <objectField>Account.IntermediaryVisibilityAcc__c</objectField>
         <userField>Contact.Account</userField>
     </accessMappings>
     <accessMappings>
