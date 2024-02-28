@@ -266,7 +266,7 @@
                 <indicatorHighColor>#23366F</indicatorHighColor>
                 <indicatorLowColor>#23366F</indicatorLowColor>
                 <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMSiniestros/Siniestros_Abiertos_V3_w97</report>
+                <report>ZRMSiniestros/Siniestros_Abiertos_apk</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>10</rowIndex>
