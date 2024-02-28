@@ -42,7 +42,7 @@
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
+                <behavior>Required</behavior>
                 <field>Policy__c</field>
             </layoutItems>
             <layoutItems>
