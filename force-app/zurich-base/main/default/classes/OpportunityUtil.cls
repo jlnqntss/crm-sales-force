@@ -106,18 +106,18 @@ public with sharing class OpportunityUtil
     {
         List<Opportunity> optysToGenerateScope = new List<Opportunity>();
 
-        for(Opportunity opty : newList)
-        {
-            if( String.isNotBlank(opty.InfoQuoteNumber__c) && opty.ScopeId__c == null
-                && opty.AccountId != null)
+        for(Opportunity opty : newList) {
+
+            if( (String.isNotBlank(opty.InfoQuoteNumber__c) && opty.ScopeId__c == null && opty.AccountId != null)
+             || ( opty.Scope__c == 'Ventas' && opty.ScopeId__c == null && String.isNotBlank(opty.BusinessCode__c) ))
             {
                 optysToGenerateScope.add(opty);
             }
-        }
 
-        if( !optysToGenerateScope.isEmpty() )
-        {
-            GenerateScopeUtil.generateScopeEvents('AccountId', 'BusinessCode__c', optysToGenerateScope);
+            if( !optysToGenerateScope.isEmpty() )
+            {
+                GenerateScopeUtil.generateScopeEvents('AccountId', 'BusinessCode__c', optysToGenerateScope);
+            }
         }
     }
 
