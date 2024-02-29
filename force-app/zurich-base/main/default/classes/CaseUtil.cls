@@ -263,7 +263,7 @@ public with sharing class CaseUtil
                         mapRobotHegeoFieldsMapping.put(sourceType,mapTipification);
                     }
                 }
-                caseTipification(caso,mapRobotHegeoFieldsMapping.containsKey(caso.RobotTypeN1__c),mapRobotHegeoFieldsMapping);
+                caseTipification(caso,mapRobotHegeoFieldsMapping);
                 queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
             }
         }
@@ -277,23 +277,14 @@ public with sharing class CaseUtil
      * @author jchavez
      * @date 26/02/2024
      **/
-    public static void caseTipification(Case caso, boolean key, Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping)
+    public static void caseTipification(Case caso, Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping)
     {
         Map<String,Map<String,String>> types = new Map<String,Map<String,String>>();
-        if(key)
-        {
-            types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
-            caso.Type = types.keySet().iterator().next();
-            caso.SubType__c = types.values()[0].keySet().iterator().next();
-            caso.TypeN3__c = types.values()[0].values()[0];
-
-        }else{
-            
-            types = mapRobotHegeoFieldsMapping.get(null);
-            caso.Type = types.keySet().iterator().next();
-            caso.SubType__c = types.values()[0].keySet().iterator().next();
-            caso.TypeN3__c = types.values()[0].values()[0];
-        }
+        types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
+        caso.Type = types.keySet().iterator().next();
+        caso.SubType__c = types.values()[0].keySet().iterator().next();
+        caso.TypeN3__c = types.values()[0].values()[0];
+        
     }
 
     /**
