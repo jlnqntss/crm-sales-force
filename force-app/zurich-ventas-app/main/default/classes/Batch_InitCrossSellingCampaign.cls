@@ -76,8 +76,6 @@ global with sharing class Batch_InitCrossSellingCampaign implements Database.Bat
             updateCampaignMemberToGestionCC(scope);
             // insert cm
             insertCampaignMemberToCC(campaignIdByExtId, scope);
-            // update cm after batch main processes
-            updateRelatedOpportunities(scope);
         } catch (Exception e) {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
@@ -139,29 +137,6 @@ global with sharing class Batch_InitCrossSellingCampaign implements Database.Bat
             cm.Status = 'Gestión CC';
         }
         update scope;
-    }
-
-    
-    /**
-     * Método que actualiza las ofertas relacionadas de los miembros de campaña almacenados en el scope del 'start' del batch
-     * El atributo ZRM__c pasa a false para que los agentes de la comunidad ZRM no puedan modificar estas ofertas cuando se traspasen de campaña
-     * @author nikola.cobian@seidor.com
-     * @date 19/02/2024
-     * @param List<CampaignMember> campaignMembers
-     */
-    private void updateRelatedOpportunities(List<CampaignMember> campaignMembers)
-    {
-        List<Opportunity> relatedOffers = new OpportunitiesSelector().findZRMOpportunityByCampaignMembers(campaignMembers);
-
-        if(!campaignMembers.isEmpty())
-        {
-            for(Opportunity oferta : relatedOffers)
-            {
-                oferta.ZRM__c = false;
-            }
-            
-            update relatedOffers;
-        }
     }
 
     /**
