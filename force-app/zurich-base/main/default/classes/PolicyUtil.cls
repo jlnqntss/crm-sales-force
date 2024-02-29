@@ -61,13 +61,13 @@ public class PolicyUtil
 
         // 1º obtener los mediadores y clientes de las polizas en vigor <IntermdiaryId__c, List<PolicyHolder__c>>
         Map<String, Set<String>> policyHoldersByIntermediaryMap = ZRMPolicyVisibilityUtil.getPolicyHoldersByIntermediaryMap(newList);
-        
+
         // 2º Obtener las agrupaciones de los mediadores para obtener los usuarios agr de esos mediadores <IntermdiaryId__c, IntermediaryGroup__c>
         Map<String, String> intermediaryWithIntermediariesGroupsIdMap = ZRMPolicyVisibilityUtil.getIntermediaryGroupIdMap(policyHoldersByIntermediaryMap.keySet());
-        
+
         // 3º Obtener los usuarios de los mediadores <IntermediaryId, List<UserId>
         Map<String, List<String>> intermediariesWithUsers = ZRMPolicyVisibilityUtil.getIntermediariesUsers(policyHoldersByIntermediaryMap.keySet(), intermediaryWithIntermediariesGroupsIdMap);
-        
+
         // 4º Insertar atm y activar registros de competencia y cuentas relacionadas
         ZRMPolicyVisibilityUtil.newPolicyInsertATMs(policyHoldersByIntermediaryMap, intermediariesWithUsers);       
     }

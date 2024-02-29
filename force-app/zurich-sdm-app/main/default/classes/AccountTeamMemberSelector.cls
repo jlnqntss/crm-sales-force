@@ -262,7 +262,6 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
                 .addConditionIn(AccountTeamMember.AccountId, accountsIDs)
                 .addConditionIn(AccountTeamMember.UserId, usersIDs);
 
-                System.debug('++++ Query: ' + this.baseQuery.toQueryString());
                 retorno = (List<AccountTeamMember>) this.baseQuery.run();
             }
         return retorno;
@@ -280,7 +279,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         List<AccountTeamMember> result = new List<AccountTeamMember>();
 
         if (userList != null && !userList.isEmpty()) {
-            result = new List<AccountTeamMember>([SELECT Id, AccountId FROM AccountTeamMember WHERE UserId = :userList AND TeamMemberRole = 'MediadorZRM']);
+            result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId, User.Profile.Name FROM AccountTeamMember WHERE UserId = :userList AND TeamMemberRole = 'MediadorZRM']);
         }
 
         return result;
