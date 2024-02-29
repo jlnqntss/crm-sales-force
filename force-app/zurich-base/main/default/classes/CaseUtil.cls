@@ -263,7 +263,7 @@ public with sharing class CaseUtil
                         mapRobotHegeoFieldsMapping.put(sourceType,mapTipification);
                     }
                 }
-                caseTipification(caso,mapRobotHegeoFieldsMapping);
+                caseTipification(caso,mapRobotHegeoFieldsMapping.containsKey(caso.RobotTypeN1__c),mapRobotHegeoFieldsMapping);
                 queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
             }
         }
@@ -277,14 +277,25 @@ public with sharing class CaseUtil
      * @author jchavez
      * @date 26/02/2024
      **/
-    public static void caseTipification(Case caso, Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping)
+    public static void caseTipification(Case caso,Boolean key ,Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping)
     {
-        Map<String,Map<String,String>> types = new Map<String,Map<String,String>>();
-        types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
-        caso.Type = types.keySet().iterator().next();
-        caso.SubType__c = types.values()[0].keySet().iterator().next();
-        caso.TypeN3__c = types.values()[0].values()[0];
-        
+        if(key)
+        {
+            Map<String,Map<String,String>> types = new Map<String,Map<String,String>>();
+            types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
+            caso.Type = types.keySet().iterator().next();
+            caso.SubType__c = types.values()[0].keySet().iterator().next();
+            caso.TypeN3__c = types.values()[0].values()[0];    
+        }
+        else 
+        {
+            Map<String,Map<String,String>> types = new Map<String,Map<String,String>>();
+            types = mapRobotHegeoFieldsMapping.get(null);
+            caso.Type = types.keySet().iterator().next();
+            caso.SubType__c = types.values()[0].keySet().iterator().next();
+            caso.TypeN3__c = types.values()[0].values()[0]; 
+        }
+
     }
 
     /**
@@ -323,26 +334,19 @@ public with sharing class CaseUtil
 
     public static void queuesAndGroupsSprinklr(Case caso, List<Group> marcaCola,List<Group> siniestrosCola,List<Group> postventaCola)
     {
-        if(caso.Type.contains('Marca'))
-        {
-            caso.CallCenter__c = 'RRSS Marca';
-        }
-        else
-        {
-            caso.CallCenter__c = 'RRSS Postventa-Siniestros';
-        }
-
         if(caso.Type.equals('Marca (No info provided)'))
         {
+            caso.CallCenter__c = 'RRSS Marca';
             caso.OwnerId = marcaCola[0].Id;
-
         }
-        else if(caso.Type.equals('Asistencia') || caso.Type.equals('Siniestros (Claims)'))
+        else if(caso.Type.contains('Asistencia') || caso.Type.contains('Siniestros'))
         {
+            caso.CallCenter__c = 'RRSS Postventa-Siniestros';
             caso.OwnerId = siniestrosCola[0].Id;
         }
         else
         {
+            caso.CallCenter__c = 'RRSS Postventa-Siniestros';
             caso.OwnerId = postventaCola[0].Id;
         }
     }
