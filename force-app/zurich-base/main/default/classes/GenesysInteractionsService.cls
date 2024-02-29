@@ -811,8 +811,7 @@ public with sharing class GenesysInteractionsService
             {
                 Claim__c.Id,
                 Claim__c.Name,
-                Claim__c.Status__c,
-                Claim__c.OwnerId,
+                Claim__c.Status__c,               
                 Claim__c.ClaimType__c,
                 Claim__c.ClaimOwnerTeamCode__c,
                 Claim__c.ClaimOwnerNationalId__c,

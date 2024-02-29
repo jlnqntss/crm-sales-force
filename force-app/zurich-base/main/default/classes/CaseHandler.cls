@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 08-16-2023
- * @last modified by  : aberuete
+ * @last modified on  : 02-19-2024
+ * @last modified by  : jchavez
 **/
 public without sharing class CaseHandler implements ITrigger
 {
@@ -57,8 +57,9 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.assignContactToCase(newList);
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
         CaseUtil.updateTranscomCase(newList);
+        CaseUtil.mappingSprinklrCases(newList);
     }
-
+    
     /**
      * beforeUpdate
      *

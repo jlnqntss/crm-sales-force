@@ -12,13 +12,18 @@
         <label>Meeting</label>
     </standardValue>
     <standardValue>
-        <fullName>Other</fullName>
-        <default>false</default>
-        <label>Other</label>
-    </standardValue>
-    <standardValue>
         <fullName>Call</fullName>
         <default>false</default>
         <label>Call</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Training</fullName>
+        <default>false</default>
+        <label>Training</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
     </standardValue>
 </StandardValueSet>

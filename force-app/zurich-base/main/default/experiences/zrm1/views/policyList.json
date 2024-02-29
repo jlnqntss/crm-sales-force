@@ -116,7 +116,7 @@
                 {
                   "componentAttributes": {
                     "enableInlineEdit": true,
-                    "filterName": "ZRM_P_lizas_anuladas",
+                    "filterName": "ZRM_P_lizas_Anuladas",
                     "layout": "FULL",
                     "pageSize": 25,
                     "scope": "Policy__c",

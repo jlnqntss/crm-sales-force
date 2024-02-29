@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Estado de Consentimiento</label>
+    <name>ConsentStatus__c</name>
+    <picklistValues>
+        <masterLabel>Accepted</masterLabel>
+        <translation>Aceptado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Accepted - pending attach doc.</masterLabel>
+        <translation>Aceptado - pendiente anexar doc.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Accepted - signature pending</masterLabel>
+        <translation>Aceptado - pendiente firma</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Implicit accepted</masterLabel>
+        <translation>Implicito aceptado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Not accepted</masterLabel>
+        <translation>No aceptado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Not accepted - pending attach doc.</masterLabel>
+        <translation>No aceptado - pendiente anexar doc.</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Not accepted - signature pending</masterLabel>
+        <translation>No aceptado - pendiente firma</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Not sent</masterLabel>
+        <translation>No enviado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Revoked</masterLabel>
+        <translation>Revocado</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Sent - awaiting response</masterLabel>
+        <translation>Enviado - esperando respuesta</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Sent - no response</masterLabel>
+        <translation>Enviado - sin respuesta</translation>
+    </picklistValues>
+</CustomFieldTranslation>

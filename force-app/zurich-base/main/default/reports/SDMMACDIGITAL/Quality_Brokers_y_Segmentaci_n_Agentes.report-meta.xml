@@ -60,10 +60,8 @@
         <field>ADDRESS1_STATE</field>
     </columns>
     <columns>
-        <field>BucketField_20014024</field>
-    </columns>
-<columns>
-        <field>Account.Email_Recertificador__c</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Potential_Broker__c</field>
     </columns>
     <columns>
         <field>Account.SDMAssociation__c</field>
@@ -313,6 +311,13 @@
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>Account.Intermediary,Account.Potential_Broker</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.StatusIntermediary__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Active</value>
         </criteriaItems>
         <language>es</language>
     </filter>

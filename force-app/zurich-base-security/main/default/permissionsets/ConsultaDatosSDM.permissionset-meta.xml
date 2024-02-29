@@ -273,6 +273,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Potential_Broker__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Category__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -350,6 +355,11 @@
         <editable>false</editable>
         <field>Account.Multitarifier__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.NameLink__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -1122,6 +1132,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Event.ActaLink__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Event.CommercialActionType__c</field>
         <readable>true</readable>
@@ -1169,6 +1184,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.Reference_number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Event.SubjectLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

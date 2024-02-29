@@ -4,55 +4,57 @@
         <field>CUST_NAME</field>
     </columns>
     <columns>
-        <field>Claim__c.Policy__c</field>
+        <field>Claim__c.Status__c</field>
     </columns>
     <columns>
-        <field>Claim__c.PolicyHolder__c</field>
-    </columns>
-    <columns>
-        <field>Claim__c.InsuredObject__c</field>
-    </columns>
-    <columns>
-        <field>Claim__c.Product__c</field>
-    </columns>
-    <columns>
-        <field>Claim__c.FaultFactor__c</field>
-    </columns>
-    <columns>
-        <field>CUST_CREATED_DATE</field>
+        <field>Policy__c.ProductId__c</field>
     </columns>
     <columns>
         <field>Claim__c.DateOfOccurrence__c</field>
     </columns>
-    <description>Siniestros pendientes de resolución.</description>
+    <columns>
+        <field>CHILD_LAST_UPDATE</field>
+    </columns>
     <filter>
         <criteriaItems>
             <column>Claim__c.Status__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>P,A</value>
+            <value>T</value>
         </criteriaItems>
-        <language>es</language>
+        <criteriaItems>
+            <column>Claim__c.DateOfOccurrence__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>THIS_YEAR</value>
+        </criteriaItems>
+        <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Claim__c.Status__c</field>
+        <field>Policy__c.PolicyHolder__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Siniestros Abiertos</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>CHILD_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Siniestros Abiertos Acumulado Año</name>
     <params>
         <name>co</name>
         <value>1</value>
     </params>
-    <reportType>CustomEntity$Claim__c</reportType>
+    <reportType>CustomEntityCustomEntity$Policy__c$Claim__c</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
-        <dateColumn>Claim__c.OpenDate__c</dateColumn>
+        <dateColumn>Policy__c.EndDate__c</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

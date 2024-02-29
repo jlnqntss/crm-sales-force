@@ -46,7 +46,7 @@
                 {
                   "componentAttributes": {
                     "enableInlineEdit": true,
-                    "filterName": "ZRM_Todos_los_Clientes",
+                    "filterName": "ZRM_Todos_Los_Clientes",
                     "layout": "FULL",
                     "pageSize": 25,
                     "scope": "Account",

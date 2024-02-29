@@ -10,10 +10,10 @@
         {
           "componentAttributes": {
             "enableInlineEdit": true,
-            "filterName": "{!filterId}",
+            "filterName": "Mis_Tareas_ZRM",
             "layout": "FULL",
             "pageSize": 25,
-            "scope": "{!objectName}",
+            "scope": "Task",
             "showActionBar": true,
             "showChartsPanel": true,
             "showDisplay": "showall",

@@ -3,12 +3,12 @@
     <description>Usuarios de Sprinklr</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>OCS User Sprinklr</label>
+    <mutingPermissionSets>OCS_User_Sprinklr_Muted</mutingPermissionSets>
     <permissionSets>Acceso_App_OCS</permissionSets>
     <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
     <permissionSets>Consulta_Datos</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_CS</permissionSets>
-    <permissionSets>Gestion_Gestor_Personalizado</permissionSets>
     <permissionSets>Gestion_Whatsapp</permissionSets>
     <permissionSets>OCS_Sprinklr</permissionSets>
     <permissionSets>spr_sf__Sprinklr_User</permissionSets>

@@ -6543,6 +6543,121 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Bio__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Channel__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__FollowerCount__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__FollowingCount__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Image__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__ImageURL__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__ProfileUrl__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__ScreenName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__SnId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Social_Image_Url__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Social_Profile_Url__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__AutoResponse__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__BrandPost__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__Case__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__Channel__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__ChannelCreatedTime__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__Message__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__PermaLink__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__SnId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__Social_Permalink__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__SocialPersona__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__UMId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>SurveyResponse__c.QuestionType__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -6942,6 +7057,10 @@
         <layout>CaseInteraction-Case Feed Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Default Sprinklr</layout>
+        <recordType>Case.OCSSprinklr</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Codigo_Negocio_BancSabadell__mdt-Codigo Negocio BancSabadell Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -7052,6 +7171,15 @@
     <layoutAssignments>
         <layout>ZRM_Genesys_WrapUp_mapping__mdt-Genesys WrapUp mapping Layout</layout>
     </layoutAssignments>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Case</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
         <enabled>false</enabled>
@@ -7227,9 +7355,9 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
-        <recordType>Case.OCS_Sprinklr</recordType>
-        <visible>true</visible>
+        <default>false</default>
+        <recordType>Case.OCSSprinklr</recordType>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>

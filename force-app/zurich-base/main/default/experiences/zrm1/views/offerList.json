@@ -15,10 +15,10 @@
         {
           "componentAttributes": {
             "enableInlineEdit": true,
-            "filterName": "{!filterId}",
+            "filterName": "Todas_las_Ofertas_ZRM",
             "layout": "FULL",
             "pageSize": 25,
-            "scope": "{!objectName}",
+            "scope": "Opportunity",
             "showActionBar": true,
             "showChartsPanel": true,
             "showDisplay": "showall",

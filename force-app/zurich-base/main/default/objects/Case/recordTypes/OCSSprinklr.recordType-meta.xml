@@ -9,27 +9,11 @@
     <picklistValues>
         <picklist>CallCenter__c</picklist>
         <values>
-            <fullName>Sprinklr</fullName>
+            <fullName>RRSS Marca</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>CC Service</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CSM Administración</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CSM Particulares</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Centro Excelencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>TWW Retención</fullName>
+            <fullName>RRSS Postventa-Siniestros</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1392,71 +1376,23 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Apoyo Captación</fullName>
+            <fullName>Comentario</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cambio de intermediario</fullName>
+            <fullName>Consulta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Campaña</fullName>
+            <fullName>Contratacion</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cotización</fullName>
+            <fullName>Dorsales</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Devolución de recibo liquidado mediador</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Embargo Cliente</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Embargo Mediador</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Emisión</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Envíos %28Cliente%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Envíos %28Mediador%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Felicitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión Competencias</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión de recibos</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencias %28Cliente%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencias %28Mediador%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencias Mi Zurich</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencias-Consultas Siniestros</fullName>
+            <fullName>Gestión</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1464,273 +1400,69 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Modificación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Modificación oferta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Queja</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Reclamación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Reclamación Siniestros</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recobro indirecto</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recobro proactivo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recobro reactivo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Reemplazo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Rehabilitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Retención</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Revocación Saneamiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Saneamiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Sugerencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Tareas administrativas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Transferencia</fullName>
+            <fullName>Spam</fullName>
             <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
         <values>
-            <fullName>Campañas</fullName>
+            <fullName>Asistencia %28Information%2F Contact%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Cliente</fullName>
+            <fullName>Marca %28No info provided%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Económica</fullName>
+            <fullName>MiZurich %28Use%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Mediador</fullName>
+            <fullName>Postventa %28Local Customer Service%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Servicios</fullName>
+            <fullName>Retención %28Renew%2F Cancel%29</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Venta</fullName>
+            <fullName>Siniestros %28Claims%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Venta %28Quote%2FPurchase%29</fullName>
             <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
         <picklist>TypeN3__c</picklist>
         <values>
-            <fullName>Anotación Embargo</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Anulación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Atención deficiente tramitador</fullName>
+            <fullName>Comentario</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Bloqueo %2F Desbloqueo</fullName>
+            <fullName>Consulta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Bloqueo usuario%2Fcontraseña</fullName>
+            <fullName>Contratación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cambio Idioma en póliza</fullName>
+            <fullName>Dorsales</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cambio Tomador</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio datos Riesgo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio de Actividad</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio de Riesgo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio de Roles</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio de intermediario</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Campaña</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Capitales</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Certificados</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Clausulado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Comisiones</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Conductor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cotización</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cumplimiento resolución</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cumplimiento resolución SDC</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Datos Bancarios</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Datos Personales</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Devolución</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Disconformidad con indemnización</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Disconformidad con peritación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Disconformidad con rehuse</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Disconformidad con resolución</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Documentación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Emisión</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Emisión de Factura Electrónica</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Envíos %28Mediador%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fallo activación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fallo registro NO identificado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fallo registro identificado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Falta de información</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fechas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Felicitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Firma digital</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Forma de Pago</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Garantías</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>General</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión competencias</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Inconsistencia</fullName>
+            <fullName>Gestión</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1738,139 +1470,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Infraseguro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Levantamiento de Embargo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Modificación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Modificación oferta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Multas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Navegación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Oferta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Otras áreas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Pago Graciable</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Pagos</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Petición Alegaciones SDC</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Procesos y herramientas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Queja</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recibo</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Reclamación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Recobro indirecto</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recobro proactivo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recobro reactivo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Reemplazo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Regularización</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Rehabilitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Renovación póliza</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Replica</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Resolución SDC</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Retención</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Retraso Indemnización</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Retraso Peritación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Retraso Tramitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Revocación saneamiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Saneamiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Seguimiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Sin Oferta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Sugerencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Zona Zurich</fullName>
+            <fullName>Spam</fullName>
             <default>false</default>
         </values>
     </picklistValues>

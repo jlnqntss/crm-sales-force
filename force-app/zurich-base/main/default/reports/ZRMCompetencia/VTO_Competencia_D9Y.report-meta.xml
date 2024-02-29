@@ -58,6 +58,6 @@
     <sortOrder>Desc</sortOrder>
     <timeFrameFilter>
         <dateColumn>Competitor__c.ExpirationDate__c</dateColumn>
-        <interval>INTERVAL_NEXT90</interval>
+        <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

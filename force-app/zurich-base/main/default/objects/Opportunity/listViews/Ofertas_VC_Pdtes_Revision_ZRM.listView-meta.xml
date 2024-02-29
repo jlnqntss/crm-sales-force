@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ofertas_VC_Pdtes_Revision_ZRM</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>InfoQuoteNumber__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>CreatedDate__c</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>ProductBranch__c</columns>
+    <columns>Campaign__c</columns>
+    <columns>IntermediaryId__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PendingIntermediaryReview__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>ZRM Ofertas VC Pdtes. Revisión</label>
+    <sharedTo>
+        <group>Ventas_Agente_Mediador</group>
+    </sharedTo>
+</ListView>

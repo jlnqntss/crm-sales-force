@@ -568,7 +568,7 @@
         <field>Account.TDChannel__c</field>
         <readable>true</readable>
     </fieldPermissions>
-        <fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.TOPAgent__c</field>
         <readable>true</readable>
@@ -673,7 +673,7 @@
         <field>AccountTeamMember.Phone__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Activity.NLUTypificationFailed__c</field>
         <readable>true</readable>
@@ -693,7 +693,7 @@
         <field>Asset.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Asset.Blocked__c</field>
         <readable>true</readable>
@@ -728,7 +728,7 @@
         <field>Asset.AddressType__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Asset.Area__c</field>
         <readable>true</readable>
@@ -743,7 +743,7 @@
         <field>Asset.Birthdate__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Asset.BoatName__c</field>
         <readable>true</readable>
@@ -1139,11 +1139,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.AutomaticClosing__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.AutomaticTaskCreated__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Case.BusinessHoursId</field>
         <readable>true</readable>
@@ -1176,6 +1181,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.CloseDetail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.CloseInteractionBatch__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1311,6 +1321,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.InsuredObjectId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.InteractionStatus__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1493,7 +1508,7 @@
         <field>Case.RelatedPolicyOffer__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Case.ReturnDate__c</field>
         <readable>true</readable>
@@ -1638,7 +1653,7 @@
         <field>Case.RobotNif__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Case.SlaExitDate</field>
         <readable>true</readable>
@@ -1666,6 +1681,56 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.SoyManager__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrCustomerJourney__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrFinalSentiment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrInitialCaseSentiment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrManagedBy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrPostType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrProduct__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrRequestType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrSocialMediaChannel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SprinklrSocialPersona__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.spr_sf__Sprinklr_Case_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1738,7 +1803,7 @@
         <field>Claim__c.AssistanceCompany__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Claim__c.ClaimOwnerFirstname__c</field>
         <readable>true</readable>
@@ -1825,11 +1890,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Claim__c.Policy__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Claim__c.ProductName__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1843,7 +1903,7 @@
         <field>Claim__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Codigo_Negocio_BancSabadell__mdt.Codigo_Negocio__c</field>
         <readable>true</readable>
@@ -2148,7 +2208,7 @@
         <field>ContactPointPhone.Anonymized__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>ContactPointPhone.Blocked__c</field>
         <readable>true</readable>
@@ -2173,7 +2233,7 @@
         <field>ContactPointPhone.BestTimeToContactTimezone</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>ContactPointPhone.ContactId__c</field>
         <readable>true</readable>
@@ -2348,12 +2408,12 @@
         <field>Event.ANI__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Event.BestAgent__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Event.CallRecording__c</field>
         <readable>true</readable>
@@ -2428,7 +2488,7 @@
         <field>Event.MultiIdentifiedByNIF__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Event.NationalId__c</field>
         <readable>true</readable>
@@ -2438,7 +2498,7 @@
         <field>Event.NoIdentified__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Event.QueueTime__c</field>
         <readable>true</readable>
@@ -3048,7 +3108,7 @@
         <field>Opportunity.IntermediaryCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+<fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Intermediary_Group__c</field>
         <readable>true</readable>
@@ -3620,6 +3680,121 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Bio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Channel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Contact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__FollowerCount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__FollowingCount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Image__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__ImageURL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__ProfileUrl__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__ScreenName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__SnId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Social_Image_Url__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPersona__c.spr_sf__Social_Profile_Url__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__AutoResponse__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__BrandPost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__Case__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__Channel__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__ChannelCreatedTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__Message__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__PermaLink__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__SnId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__Social_Permalink__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__SocialPersona__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>spr_sf__SocialPost__c.spr_sf__UMId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>SurveyResponse__c.Answer__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3728,12 +3903,12 @@
         <field>Task.ActivityDate</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Task.BestAgent__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
+        <fieldPermissions>
         <editable>false</editable>
         <field>Task.CallRecording__c</field>
         <readable>true</readable>
@@ -4188,6 +4363,24 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Special_Condition__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>spr_sf__SocialPersona__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>spr_sf__SocialPost__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
