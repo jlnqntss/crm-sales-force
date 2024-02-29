@@ -25,38 +25,6 @@ public with sharing class Batch_FinishCrossSellingCampaignTest {
 
         insert campaigns;
 
-        // Insertar un usuario Agente Ventas
-
-        // Crear cuentas de intermediarios
-        List<Account> intermediaries = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary', 1);
-
-        insert intermediaries;
-
-        // Crear contactos de intermediarios
-        List<Contact> intermediaryContacts = TestDataFactory.generateContactsFromAccounts(intermediaries, ContactsSelector.RT_NAME_CONTACT, 1);
-
-        insert intermediaryContacts;
-
-        // Crear los usuarios
-        List<String> adminProfiles = new List<String> {'Administrador del sistema', 'System Administrator'};
-        List<Boolean> activeStatus = new List<Boolean> {true};
-        User adminUser = ( new UsersSelector() ).findByProfileName(adminProfiles, activeStatus, 1)[0];
-
-        // Create portal account owner
-
-        // Partners
-        String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
-        List<User> listUser = TestDataFactory.generateUsersByProfile(portalProfile, 1);
-
-        listUser[0].FirstName='Agente';
-        listUser[0].LastName='Mediador 1';
-        listUser[0].Alias='test1Med';
-        listUser[0].ContactId = intermediaryContacts[0].Id;
-
-        System.runAs (adminUser) {
-            insert listUser;
-        }
-
         // Insertar oportunidades
         List<Opportunity> offerList = new List<Opportunity>();
 
@@ -65,7 +33,7 @@ public with sharing class Batch_FinishCrossSellingCampaignTest {
         for (Opportunity o: legitLeadOfferList) {
             o.InfoQuoteNumber__c = '';              
             o.CampaignId = campaigns.get(0).Id;
-            o.ownerId = listUser.get(0).Id;
+            o.ZRM__c = true;
         }
 
         i = 50;
@@ -73,7 +41,7 @@ public with sharing class Batch_FinishCrossSellingCampaignTest {
         for (Opportunity o: appSubmittedOferList) {
             o.InfoQuoteNumber__c = o.InfoQuoteNumber__c + i;            
             o.CampaignId = campaigns.get(0).Id;
-            o.ownerId = listUser.get(0).Id;
+            o.ZRM__c = true;
             i++;
         }
 
@@ -82,7 +50,7 @@ public with sharing class Batch_FinishCrossSellingCampaignTest {
         for (Opportunity o: quotedOfferList) {
             o.InfoQuoteNumber__c = o.InfoQuoteNumber__c + i;            
             o.CampaignId = campaigns.get(0).Id;
-            o.ownerId = listUser.get(0).Id;
+            o.ZRM__c = true;
             i++;
         }
 
