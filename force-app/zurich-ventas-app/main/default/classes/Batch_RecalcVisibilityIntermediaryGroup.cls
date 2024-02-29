@@ -405,27 +405,6 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
         return result;
     }
 
-    /**
-     * Añado todos los mediadores a los que se ha calculado atm
-     * 
-     * 
-     * @author nts (dmunoz)
-     * @date 15/02/2024
-     */
-    private Set<String> getIntermediariesSet(Map<String, List<String>> intermediaryGroupWithIntermediaries, List<String> intermediariesWithNoGroups) {
-        Set<String> result = new Set<String>();
-
-        // añado los mediadores de las agrupaciones
-        for (String intermediaryGroup: intermediaryGroupWithIntermediaries.keySet()) {
-            result.addAll(intermediaryGroupWithIntermediaries.get(intermediaryGroup));
-        }
-
-        // añado los mediadores sin agrupacion
-        result.addAll(intermediariesWithNoGroups);
-
-        return result;
-    }
-
 
     /******************************************************************************************* Métodos auxiliares Schedule****************************************************************************************/
     /**

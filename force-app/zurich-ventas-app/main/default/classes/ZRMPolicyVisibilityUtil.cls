@@ -607,23 +607,6 @@ public with sharing class ZRMPolicyVisibilityUtil {
         return result;
     }
 
-    /**
-     * Método que devuelve una lista de todos los clientes de las polizas que han llegado de info
-     * 
-     *
-     * @author dmunoz
-     * @date 12/02/2024 
-     */
-    private static List<String> getClientsIds(List<Set<String>> policyHolderList) {
-        List<String> result = new List<String>();
-
-        for (Set<String> policyHolderSet: policyHolderList) {
-            result.addAll(policyHolderSet);
-        }
-
-        return result;
-    }
-
 
     /**
      * Método que añade un valor a un Map<String, List<String>>

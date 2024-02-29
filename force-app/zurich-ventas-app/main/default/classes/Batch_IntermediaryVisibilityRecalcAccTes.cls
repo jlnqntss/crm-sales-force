@@ -126,8 +126,6 @@ public with sharing class Batch_IntermediaryVisibilityRecalcAccTes
         Id intermediaryId = communityUsers.get(0).Contact.AccountId;
         
         Test.startTest();
-        //Batch_IntermediaryVisibilityRecalcAcc batch = new Batch_IntermediaryVisibilityRecalcAcc(new Set<String>{intermediaryId}); 
-        //Database.executeBatch(batch, 200);
         List<Batch_IntermediaryVisibilityRecalcAcc.Requests> requests = new List<Batch_IntermediaryVisibilityRecalcAcc.Requests>();
         Batch_IntermediaryVisibilityRecalcAcc.Requests request = new Batch_IntermediaryVisibilityRecalcAcc.Requests();
         request.intermediaryId = intermediaryId;
