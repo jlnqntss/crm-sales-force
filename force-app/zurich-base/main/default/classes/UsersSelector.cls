@@ -323,7 +323,9 @@ public with sharing class UsersSelector extends RecordsSelector
                                     FROM User 
                                     WHERE Profile.Name IN ('Agente Ventas') 
                                     AND Contact.AccountId = :user.Contact.AccountId
-                                    AND IsActive = TRUE LIMIT 1]);
+                                    AND IsActive = TRUE 
+                                    AND Id != :user.Id
+                                    LIMIT 1]);
         }
 
         return result;
@@ -342,7 +344,9 @@ public with sharing class UsersSelector extends RecordsSelector
                                     FROM User 
                                     WHERE Profile.Name IN ('Agente Ventas - AGR') 
                                     AND (Contact.AccountId = :user.Contact.AccountId OR Contact.Account.IntermediaryGroup__c = :user.Contact.Account.IntermediaryGroup__c)
-                                    AND IsActive = TRUE LIMIT 1]);
+                                    AND IsActive = TRUE 
+                                    AND Id != :user.Id
+                                    LIMIT 1]);
         }
 
         return result;

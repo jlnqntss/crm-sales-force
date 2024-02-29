@@ -949,11 +949,11 @@ public with sharing class OpenIDConnectSalesforceCommunity {
     }
 
     /**
-     * @Description Generar los account team member para un usuario con perfil Agente Ventas
+     * @Description Generar los account team member para un usuario con perfil Agente Ventas AGR
      * @date 24/2/2024
      * @author dmunoz
      */
-    private static void generateATMsAgenteVentas(User userInserted, String userId) {
+    private static void generateATMsAgenteVentasAGR(User userInserted, String userId) {
         // 2º Si existe algun otro usuario agr del mediador o de la agrupacion a la que pertenezca para dicho mediador clonamos los atm
         List<User> intermediariesUsers = (new UsersSelector()).findZRMAgenteVentaAGRActiveUsersByIntermediaryId(userInserted);
 
@@ -976,7 +976,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
             }
 
             if (!atmsToInsert.isEmpty()) {
-                insert atmsToInsert;
+                insert atmsToInsert; 
             }
         }
     }
@@ -987,7 +987,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
      * @date 24/2/2024
      * @author dmunoz
      */
-    private static void generateATMsAgenteVentasAGR(User userInserted, String userId) {
+    private static void generateATMsAgenteVentas(User userInserted, String userId) {
         // 2º Si existe algun otro usuario nominal para dicho mediador clonamos los atm
         List<User> intermediariesUsers = (new UsersSelector()).findZRMAgenteVentaActiveUsersByIntermediaryId(userInserted);
 
