@@ -942,56 +942,6 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
 
-    /**
-     * Busca account a las cuales se recalculará la visibilidad de ZRM para esos registros
-     *
-     * @author dmunoz
-     * @date 21/09/2023
-     * @return List<Account> Listado de account a las que recalcular la visibilidad
-     */
-    public String findAccountsWithIncorrectVisibility()
-    {
-
-        String result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, ' +
-                        'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
-                        'FROM Account ' +
-                        'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') ' +
-                        'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
-                        'AND (IntermediaryVisibilityForm__c = null ' +
-                        'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
-                        'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
-
-        return result;
-    }
-
-    /**
-     * Busca account a las cuales se recalculará la visibilidad de ZRM para esos registros a partir de unos ids de clientes
-     *
-     * @author dmunoz
-     * @date 21/09/2023
-     * @return List<Account> Listado de account a las que recalcular la visibilidad
-     */
-    public String findAccountsWithIncorrectVisibilityByAccountId(Set<String> accountIds)
-    {
-
-        String result;
-
-        if ( accountIds != null && !accountIds.isEmpty() )
-        {
-            result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c,  ' +
-                     'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
-                     'FROM Account ' +
-                     'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') AND Id IN  :accountIds ' +
-                     'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
-                     'AND (IntermediaryVisibilityForm__c = null ' +
-                     'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
-                     'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
-
-        }
-
-        return result;
-    }
-
 
     /**
      * Busca cuentas de MEDIADORES partir de un número de teléfono (No usan ContactPointPhone)

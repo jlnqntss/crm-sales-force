@@ -68,34 +68,27 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
 
             // 1º Obtener los mediadores que no tienen agrupaciones ya que en caso que haya registros de este tipo hay que recalcular toda 
             List<Account> intermediariesWithNoGroup = getIntermediariesWithNoGroup(scope);
-            System.debug('DMM 1 intermediariesWithNoGroup ' + intermediariesWithNoGroup);
+
             // 1º B Obtengo la lista de ids de mediadores baja
             List<String> intermediariesIdsWithNoGroupList = getIntermediariesIdsWithNoGroupList(intermediariesWithNoGroup);
-            System.debug('DMM 1B intermediariesIdsWithNoGroupList ' + intermediariesIdsWithNoGroupList);
 
             // 2º Ordenar los datos para obtener la relación entre Agrupación y Mediadores <IntermediaryGroup, List<IntermediaryId>
             Set<String> intermediaryGroupsSet = getIntermediaryGroupsFromIntermediaries(scope);
-            System.debug('DMM 2 intermediaryGroupsSet ' + intermediaryGroupsSet);       
             
             // 3º A partir de todas las agrupaciones a recalcular montamos el mapa de agrupaciones con todos sus mediadores <IntermediaryGroupId, List<IntermediaryId>>
             Map<String, List<String>> intermediaryGroupsWithIntermediaries = calculateIntermediaryGroupsWithIntermediaries(intermediaryGroupsSet, intermediariesWithNoGroup);
-            System.debug('DMM 3 intermediaryGroupsWithIntermediaries ' + intermediaryGroupsWithIntermediaries);
 
             // 4º Consultamos los usuarios de las agrupaciones
             List<User> usersFromIntermediariesWithGroup = (new UsersSelector()).findZRMActiveUsersByIntermediaryGroupId(intermediaryGroupsWithIntermediaries.keySet());
-            System.debug('DMM 4 usersFromIntermediariesWithGroup ' + usersFromIntermediariesWithGroup);
             
             // 5º Obtenemos los usuarios de los mediadores que no tienen agrupación
             List<User> usersFromIntermediariesWithNoGroup = (new UsersSelector()).findZRMActiveUsersByIntermediaryId(intermediariesIdsWithNoGroupList);     
-            System.debug('DMM 5 usersFromIntermediariesWithNoGroup ' + usersFromIntermediariesWithNoGroup);
 
             // 6º Obtener la lista de usuarios de cada agrupación <IntermediaryId, List<User>>, en caso que un mediador pertenezca a una agrupación donde exista algún usuario AGR lo añadimos a la lista de usuarios para generar la visibilidad completa de estos usuarios
             Map<String, List<User>> intermediaryUserMap = getZRMActiveUsersByIntermediaryId(usersFromIntermediariesWithGroup, usersFromIntermediariesWithNoGroup, intermediaryGroupsWithIntermediaries);
-            System.debug('DMM 6 intermediaryUserMap ' + intermediaryUserMap);
 
             // 7º Obtener polizas para cada mediador <IntermediaryId, List<PolicyHolder__c>>
             Map<String, Set<String>> intermediaryPolicies = getIntermediaryPolicies(intermediaryGroupsWithIntermediaries.keySet(), intermediariesIdsWithNoGroupList);
-            System.debug('DMM 7 intermediaryPolicies ' + intermediaryPolicies);
 
             // 8º Eliminar atm, desactivar competencias y cuentas relacionadas
             deleteATM(usersFromIntermediariesWithGroup, usersFromIntermediariesWithNoGroup);
@@ -309,7 +302,6 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
 
         List<AccountTeamMember> atmsToDelete = selector.findZRMATMsByUser(allUser);
 
-        System.debug('DMM 8 atmsToDelete ' + atmsToDelete);
 
         if (!atmsToDelete.isEmpty()) {
             delete atmsToDelete;
@@ -373,7 +365,6 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
 
         // recorremos los mediadores sin agrupacion
         atmsToInsert.addAll(generateATMs(intermediariesWithNoGroups, intermediaryPolicies, intermediaryUserMap));
-        System.debug('DMM 9 ' + atmsToInsert);
         
         if (!atmsToInsert.isEmpty()) {
             insert atmsToInsert;
@@ -410,27 +401,6 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
                 }
             }
         }
-
-        return result;
-    }
-
-    /**
-     * Añado todos los mediadores a los que se ha calculado atm
-     * 
-     * 
-     * @author nts (dmunoz)
-     * @date 15/02/2024
-     */
-    private Set<String> getIntermediariesSet(Map<String, List<String>> intermediaryGroupWithIntermediaries, List<String> intermediariesWithNoGroups) {
-        Set<String> result = new Set<String>();
-
-        // añado los mediadores de las agrupaciones
-        for (String intermediaryGroup: intermediaryGroupWithIntermediaries.keySet()) {
-            result.addAll(intermediaryGroupWithIntermediaries.get(intermediaryGroup));
-        }
-
-        // añado los mediadores sin agrupacion
-        result.addAll(intermediariesWithNoGroups);
 
         return result;
     }
