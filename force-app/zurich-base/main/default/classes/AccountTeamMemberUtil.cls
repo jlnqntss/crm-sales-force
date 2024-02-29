@@ -99,14 +99,7 @@ public with sharing class AccountTeamMemberUtil
 
         if (atmToClone != null && !atmToClone.isEmpty() && String.isEmpty(userId)) {
             for (AccountTeamMember atm: atmToClone) {
-                atmCloned = new AccountTeamMember();
-                atmCloned.AccountId = atm.AccountId;
-                atmCloned.UserId = userId;
-                atmCloned.TeamMemberRole = 'MediadorZRM';
-                atmCloned.AccountAccessLevel = 'Edit';
-                atmCloned.ContactAccessLevel = 'Read';
-                atmCloned.OpportunityAccessLevel = 'None';
-                atmCloned.CaseAccessLevel = 'None';
+                atmCloned = createATMZRMRecord(atm.AccountId, userId);
                 result.add(atmCloned);    
             }
         }
