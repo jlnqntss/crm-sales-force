@@ -25,14 +25,12 @@ public with sharing class ZRMPolicyVisibilityUtil {
 
             // Obtener mediador y clientes <IntermediaryId, Set<PolicyHolderOldId>>
             Map<String, Set<String>> policyHoldersTriggerByIntermediaryMap = getPolicyHoldersOldByIntermediaryChangeMap(policiesWithIntermediaryChanges, oldMap);
-            System.debug('DMM policyHoldersTriggerByIntermediaryMap' + policyHoldersTriggerByIntermediaryMap);
-
+            
             // 1º Obtener datos
             // Obtener Set<IntermediaryOldTriggerId>
             // Obtener Set<PolicyHolderTriggerId>
             Map<String, Set<String>> datosPolicyTrigger = getPolicyTriggerData(policiesWithIntermediaryChanges, oldMap);
-            System.debug('DMM datosPolicyTrigger' + datosPolicyTrigger);
-
+            
             // Obtener el conjunto de mediadores old Set<IntermediaryOldTriggerId>
             Set<String> intermediaryIdTriggerOldSet = datosPolicyTrigger.get('IntermediariesTriggerOldSet');
             Set<String> intermediaryIdTriggerNewSet = datosPolicyTrigger.get('IntermediariesTriggerNewSet');
@@ -47,34 +45,28 @@ public with sharing class ZRMPolicyVisibilityUtil {
             // Obtener el conjunto de agrupaciones de los mediadores old del trigger
             Set<String> intermediaryGroupIdSet = new Set<String>(mediadoresIdsOldYAgrupacionesIdMap.values());
             intermediaryGroupIdSet.remove(null);
-            System.debug('DMM intermediaryGroupIdSet' + intermediaryGroupIdSet);
-
+            
             // 3º Obtener las polizas que apuntan a mediador old (excluyendo las polizas del trigger) (2 mapas) <IntermediaryOldId/IntermediaryGroupIdDeIntermediaryIdOld, Set<PolicyHolderId>>
             Map<String, Map<String, Set<String>>> intermediaryOldBDPoliciesMap = getPolicyHolderOldPolicies(mediadoresIdsOldYAgrupacionesIdMap, intermediaryGroupIdSet, policyHolderTriggerOldSet, policiesWithIntermediaryChanges);
-            System.debug('DMM intermediaryOldBDPoliciesMap' + intermediaryOldBDPoliciesMap);
-
+            
             // 4º Obtener los atm de todos los clientes que apuntan a intermediaryOld (2 mapas) <IntermediaryOldId/IntermediaryGroupIdDeIntermediaryIdOld, <PolicyHolderId, List<ATM>>>
             Map<String, Map<String, Map<String, List<AccountTeamMember>>>> atmsToProcess = atmsToProcess(intermediaryIdTriggerOldSet, intermediaryGroupIdSet, policyHolderTriggerOldSet);
-            System.debug('DMM atmsToProcess' + atmsToProcess);
-
+            
             // 5º Recorrer los atm obtenidos y devolvemos aquellos que vamos a eliminar (nos quedamos con los atm si existe alguna otra poliza para ese cliente que apunte a intermediaryIdOld)
             List<AccountTeamMember> atmsToDelete = getATMsToDelete(mediadoresIdsOldYAgrupacionesIdMap, intermediaryOldBDPoliciesMap, atmsToProcess, policyHoldersTriggerByIntermediaryMap);
-            System.debug('DMM atmsToDelete' + atmsToDelete); 
-
+            
             // 6º Eliminamos los registros de atm que ya no deben existir y recalculamos la visiblidad de competencia y cuentas relacionadas
-            deleteATMs(atmsToDelete, intermediaryIdTriggerOldSet);  
+            deleteATMs(atmsToDelete);  
 
             // Crear nuevos atm mediadoresNew -----------------------------------------------------------------
             // 7º Obtener usuarios mediadores de las polizas <IntermediaryId, <UsuarioId>
             Map<String, List<String>> intermediariesWithUsers = getIntermediariesUsers(intermediaryIdTriggerNewSet, mediadoresIdsNewYAgrupacionesIdMap);
-            System.debug('DMM intermediariesWithUsers' + intermediariesWithUsers);
-
+            
             // 8º Obtener registros de atm para los usuarios de los mediadores de las polizas del trigger y clientesNew
-            List<AccountTeamMember> atmsToInsert = getATMsToInsert(policiesWithIntermediaryChanges, intermediariesWithUsers);
-            System.debug('DMM atmsToInsert ' + atmsToInsert);
+            List<AccountTeamMember> atmsToInsert = getATMsToInsert(policiesWithIntermediaryChanges, intermediariesWithUsers);            
 
             // 9º Insertar registros atm y recalcular visibilidad competencia y cuenta relacionada
-            insertATMs(atmsToInsert, intermediaryIdTriggerNewSet);
+            insertATMs(atmsToInsert);
         }
     }
 
@@ -124,50 +116,41 @@ public with sharing class ZRMPolicyVisibilityUtil {
         if (policiesWithPolicyHolderChanges != null && !policiesWithPolicyHolderChanges.isEmpty()) {
             // Obtener mediador y clientes <IntermediaryId, Set<PolicyHolderOldId>>
             Map<String, Set<String>> policyHoldersTriggerByIntermediaryMap = getPolicyHoldersOldByIntermediaryMap(policiesWithPolicyHolderChanges, oldMap);
-            System.debug('DMM policyHoldersTriggerByIntermediaryMap' + policyHoldersTriggerByIntermediaryMap);
-
+            
             // 1º Query las agrupaciones de los mediadores de las polizas <IntermediaryId, IntermediaryGroupId>
             // Preparo datos
             Map<String, Set<String>> intermediaryAndPolicyHolderOldSet = getIntermediaryAndPolicyHolderOldFromPolicies(policiesWithPolicyHolderChanges, oldMap);
             // Consulto y construyo el mapa <IntermediaryId, IntermediaryGroupId>
             Map<String, String> mediadoresIdsYAgrupacionesIdMap = getIntermediaryGroupIdMap(intermediaryAndPolicyHolderOldSet.get('IntermediariesSet')); // <IntermediaryId, IntermediaryGroupId>
-            System.debug('DMM mediadoresIdsYAgrupacionesIdMap' + mediadoresIdsYAgrupacionesIdMap);
-
+            
             // Obtener conjunto de ids de agrupaciones de mediador Set<IntermediaryGroupId>
             // obtengo el conjunto de id de agrupacion (elimino nulos)
             Set<String> intermediaryGroupIdSet = new Set<String>(mediadoresIdsYAgrupacionesIdMap.values());
             intermediaryGroupIdSet.remove(null);
-            System.debug('DMM intermediaryGroupIdSet' + intermediaryGroupIdSet);
-
+            
             // 2º Obtengo de oldMap los policyHolderOldId del trigger Set<policyHolderOldIdTriggerSet>
             Set<String> policyHolderOldIdTriggerSet = intermediaryAndPolicyHolderOldSet.get('ClientsOldSet');
-            System.debug('DMM policyHolderOldIdTriggerSet' + policyHolderOldIdTriggerSet);
-
+            
             // 3º Query polizas que apunten a ese cliente y mediador/agrupacion sea el de la poliza (quitamos las polizas del trigger).  <IntermediaryId/IntermediaryGroupId, Set<PolicyHolderId>>
             Map<String, Map<String, Set<String>>> intermediaryPoliciesWithPolicyHolderOldBDMap = getPolicyHolderOldPolicies(mediadoresIdsYAgrupacionesIdMap, intermediaryGroupIdSet, policyHolderOldIdTriggerSet, policiesWithPolicyHolderChanges);
-            System.debug('DMM intermediaryPoliciesWithPolicyHolderOldBDMap' + intermediaryPoliciesWithPolicyHolderOldBDMap);
-
+            
             // 4º Obtener los atm de policyHolderOldIdTriggerSet, usuarios mediadores/agrupacion
             Map<String, Map<String, Map<String, List<AccountTeamMember>>>> atmsToProcess = atmsToProcess(mediadoresIdsYAgrupacionesIdMap.keySet(), intermediaryGroupIdSet, policyHolderOldIdTriggerSet);
-            System.debug('DMM atmsToProcess' + atmsToProcess);
-
+            
             // 5º Recorrer los atm obtenidos y devolvemos aquellos que vamos a eliminar
             List<AccountTeamMember> atmsToDelete = getATMsToDelete(mediadoresIdsYAgrupacionesIdMap, intermediaryPoliciesWithPolicyHolderOldBDMap, atmsToProcess, policyHoldersTriggerByIntermediaryMap);
-            System.debug('DMM atmsToDelete' + atmsToDelete);
-
+            
             // 6º Eliminamos los registros de atm que ya no deben existir y recalculamos la visiblidad de competencia y cuentas relacionadas
-            deleteATMs(atmsToDelete, mediadoresIdsYAgrupacionesIdMap.keySet());            
+            deleteATMs(atmsToDelete);            
 
             // 7º Obtener usuarios mediadores de las polizas <IntermediaryId, <UsuarioId>
             Map<String, List<String>> intermediariesWithUsers = getIntermediariesUsers(mediadoresIdsYAgrupacionesIdMap.keySet(), mediadoresIdsYAgrupacionesIdMap);
-            System.debug('DMM intermediariesWithUsers' + intermediariesWithUsers);
-
+            
             // 8º Obtener registros de atm para los usuarios de los mediadores de las polizas del trigger y clientesNew
             List<AccountTeamMember> atmsToInsert = getATMsToInsert(policiesWithPolicyHolderChanges, intermediariesWithUsers);
-            System.debug('DMM atmsToInsert ' + atmsToInsert);
-
+            
             // 9º Insertar registros atm y recalcular visibilidad competencia y cuenta relacionada
-            insertATMs(atmsToInsert, mediadoresIdsYAgrupacionesIdMap.keySet());            
+            insertATMs(atmsToInsert);            
         }
 
     }
@@ -427,20 +410,11 @@ public with sharing class ZRMPolicyVisibilityUtil {
      * @author dmunoz
      * @date 26/02/2024 
      */
-    private static void deleteATMs(List<AccountTeamMember> atmsToDelete, Set<String> intermediaryIdList) {
+    public static void deleteATMs(List<AccountTeamMember> atmsToDelete) {
 
 
         if (!atmsToDelete.isEmpty()) {
             delete atmsToDelete;
-
-            List<String> accountIdList = new List<String>();
-            // Obtener la lista de clientes a partir de los atm
-            for (AccountTeamMember atm: atmsToDelete) {
-                accountIdList.add(atm.AccountId);
-            }
-
-            CompetitorUtil.recalculateVisibilityCompetitorDenyVisibility(accountIdList, intermediaryIdList);
-            AccountRelationshipUtil.recalculateVisibilityDenyAccountRelationshipVisibility(accountIdList, intermediaryIdList);
         }
     }
 
@@ -468,20 +442,11 @@ public with sharing class ZRMPolicyVisibilityUtil {
      * @author dmunoz
      * @date 26/02/2024 
      */
-    private static void insertATMs(List<AccountTeamMember> atmsToInsert, Set<String> intermediaryIdList) {
+    public static void insertATMs(List<AccountTeamMember> atmsToInsert) {
 
 
         if (!atmsToInsert.isEmpty()) {
-            insert atmsToInsert;
-
-            List<String> accountIdList = new List<String>();
-            // Obtener la lista de clientes a partir de los atm
-            for (AccountTeamMember atm: atmsToInsert) {
-                accountIdList.add(atm.AccountId);
-            }
-
-            CompetitorUtil.recalculateVisibilityCompetitorSetVisibility(accountIdList, intermediaryIdList);
-            AccountRelationshipUtil.recalculateVisibilityAccountRelationshipSetVisibility(accountIdList, intermediaryIdList);
+            insert atmsToInsert;            
         }
     }
 
@@ -590,21 +555,9 @@ public with sharing class ZRMPolicyVisibilityUtil {
             }
         }
 
-        System.debug('DMM 4 atms To Insert ' + result);
-
         // insertamos los atm
         if (!result.isEmpty()) {
-
             insert result;
-
-            // si se insertan atm comprobamos si hay que activar registros de competencias y cuentas relacionadas
-            // Activar posibles registros de competencia para los clientes y mediadores
-            List<String> clientIds = getClientsIds(policyHoldersTriggerByIntermediaryMap.values());
-            CompetitorUtil.recalculateVisibilityCompetitorSetVisibility(clientIds, policyHoldersTriggerByIntermediaryMap.keySet());
-
-            // Activar posibles registros de AccountRelationship__c
-            AccountRelationshipUtil.recalculateVisibilityAccountRelationshipSetVisibility(clientIds, policyHoldersTriggerByIntermediaryMap.keySet());
-
         }
     }
 

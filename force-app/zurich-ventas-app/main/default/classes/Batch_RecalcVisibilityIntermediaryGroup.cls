@@ -98,13 +98,10 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
             System.debug('DMM 7 intermediaryPolicies ' + intermediaryPolicies);
 
             // 8º Eliminar atm, desactivar competencias y cuentas relacionadas
-            List<AccountTeamMember> atmsDeleted = deleteATM(usersFromIntermediariesWithGroup, usersFromIntermediariesWithNoGroup);
-            Set<String> intermediariesSet = getIntermediariesSet(intermediaryGroupsWithIntermediaries, intermediariesIdsWithNoGroupList);
-            deactivateCompetitorAndAccountRelationships(intermediariesSet, atmsDeleted);
+            deleteATM(usersFromIntermediariesWithGroup, usersFromIntermediariesWithNoGroup);
 
             // 9º Insertar atm, activar competencias y cuentas relacionadas        
-            List<AccountTeamMember> atmsInserted = insertATM(intermediaryGroupsWithIntermediaries, intermediariesIdsWithNoGroupList, intermediaryPolicies, intermediaryUserMap);
-            activateCompetitorAndAccountRelationships(intermediariesSet, atmsInserted);
+           insertATM(intermediaryGroupsWithIntermediaries, intermediariesIdsWithNoGroupList, intermediaryPolicies, intermediaryUserMap);
                                  
             
         } catch (Exception e) {
@@ -412,63 +409,6 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
                     result.addAll(atmsGenerated);
                 }
             }
-        }
-
-        return result;
-    }
-
-    /**
-     * Desactivar los registros de competencia y cuentas relacionadas para los clientes que ve cada mediador al eliminar los atm
-     * 
-     * @param intermediaryGroupWithIntermediaries <IntermediaryGroup, List<IntermediaryId>  
-     * @param intermediariesWithNoGroup <IntermediaryId>
-     * @param 
-     * 
-     * @author nts (dmunoz)
-     * @date 15/02/2024
-     */
-    private void deactivateCompetitorAndAccountRelationships(Set<String> intermediariesSet, List<AccountTeamMember> atmsList) {
-        // Activar posibles registros de competencia para los clientes y mediadores
-        List<String> clientIds = getClientsIds(atmsList);
-        CompetitorUtil.recalculateVisibilityCompetitorDenyVisibility(clientIds, intermediariesSet);
-
-        // Activar posibles registros de AccountRelationship__c
-        AccountRelationshipUtil.recalculateVisibilityDenyAccountRelationshipVisibility(clientIds, intermediariesSet);
-    }
-
-
-
-    /**
-     * Activar los registros de competencia y cuentas relacionadas para los clientes que ve cada mediador
-     * 
-     * @param intermediaryGroupWithIntermediaries <IntermediaryGroup, List<IntermediaryId>  
-     * @param intermediariesWithNoGroup <IntermediaryId>
-     * @param 
-     * 
-     * @author nts (dmunoz)
-     * @date 15/02/2024
-     */
-    private void activateCompetitorAndAccountRelationships(Set<String> intermediariesSet, List<AccountTeamMember> atmsInsertedList) {
-        // Activar posibles registros de competencia para los clientes y mediadores
-        List<String> clientIds = getClientsIds(atmsInsertedList);        
-        CompetitorUtil.recalculateVisibilityCompetitorSetVisibility(clientIds, intermediariesSet);
-
-        // Activar posibles registros de AccountRelationship__c
-        AccountRelationshipUtil.recalculateVisibilityAccountRelationshipSetVisibility(clientIds, intermediariesSet);
-    }
-
-    /**
-     * Obtengo los accountid de los registros de atm insertados ya que estos han gando visibilidad
-     * 
-     * 
-     * @author nts (dmunoz)
-     * @date 15/02/2024
-     */
-    private List<String> getClientsIds(List<AccountTeamMember> atmsList) {
-        List<String> result = new List<String>();
-
-        for (AccountTeamMember atm: atmsList) {
-            result.add(atm.AccountId);
         }
 
         return result;

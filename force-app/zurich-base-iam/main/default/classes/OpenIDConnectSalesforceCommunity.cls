@@ -977,9 +977,6 @@ public with sharing class OpenIDConnectSalesforceCommunity {
 
             if (!atmsToInsert.isEmpty()) {
                 insert atmsToInsert;
-
-                // 4º Activar competencias y cuentas relacionadas, solo lo hago aqui porque si se ha clonado los atm doy por hecho que ya están activos para ese mediador
-                enableCompetitorAndAccountRelationships(intermediaryPolicies, userInserted.contact.AccountId);
             }
         }
     }
@@ -1014,33 +1011,8 @@ public with sharing class OpenIDConnectSalesforceCommunity {
 
             if (!atmsToInsert.isEmpty()) {
                 insert atmsToInsert;
-
-                // 4º Activar competencias y cuentas relacionadas, solo lo hago aqui porque si se ha clonado los atm doy por hecho que ya están activos para ese mediador
-                enableCompetitorAndAccountRelationships(intermediaryPolicies, userInserted.contact.AccountId);
             }
         }
-    }
-
-    /**
-     * @Description buscar y activar la visibilidad para competencias y cuentas relacionadas
-     * @date 24/2/2024
-     * @author dmunoz
-     */
-    private static void enableCompetitorAndAccountRelationships(List<Policy__c> intermediaryPolicies, String intermediaryId) {
-
-        // Obtenemos la lista de clientes
-        List<String> accountIdList = new List<String>();
-
-        for (Policy__c policy: intermediaryPolicies) {
-            accountIdList.add(policy.PolicyHolder__c);
-        }
-
-        // Obtener el conjunto de mediadores
-        Set<String> intermediaryIdList = new Set<String>();
-        intermediaryIdList.add(intermediaryId);
-
-        CompetitorUtil.recalculateVisibilityCompetitorSetVisibility(accountIdList, intermediaryIdList);
-        AccountRelationshipUtil.recalculateVisibilityAccountRelationshipSetVisibility(accountIdList, intermediaryIdList);
     }
 
     /**
