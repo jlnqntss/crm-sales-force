@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 02-28-2024
+ * @last modified on  : 02-29-2024
  * @last modified by  : jchavez
  **/
 @isTest
@@ -298,7 +298,7 @@ private with sharing class CaseUtilTest
     } 
      /**
      * Test que comprueba la correcta inserción de caso tipo Sprinklr con una descripcion nula
-     * El caso debe ser insertado sin problemas
+     * El caso debe ser insertado correctamente.
      */
     @isTest
     private static void test_descriptionCaseNull()
