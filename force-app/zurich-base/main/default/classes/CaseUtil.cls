@@ -15,6 +15,7 @@ public with sharing class CaseUtil
     public static final String queryDays ='365';
     public static final String estadoCerrado= 'Cerrado';
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+    public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
 
     // Recupera el Id del RecordType de casos USP
     public static final ID rtUSPId {
@@ -275,10 +276,11 @@ public with sharing class CaseUtil
     public static void shortDescriptionNeeded(List<Case> newList)
     {
         integer stringLimit = 255;
+        Id ocsSprinklrRecordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR).getRecordTypeId();
 
         for(Case caso : newList)
         {
-            if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
+            if(caso.RecordTypeId == ocsSprinklrRecordType)
             {
                 if(!String.isBlank(caso.Description) && caso.Description.length() > stringLimit)
                 {
