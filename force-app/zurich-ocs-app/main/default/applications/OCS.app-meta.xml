@@ -105,6 +105,14 @@
     <label>One Customer Service</label>
     <navType>Console</navType>
     <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Sprinklr_Home_Default</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>OCS User Sprinklr</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
         <actionName>View</actionName>
         <content>Sprinklr_Case_Default</content>
         <formFactor>Small</formFactor>
