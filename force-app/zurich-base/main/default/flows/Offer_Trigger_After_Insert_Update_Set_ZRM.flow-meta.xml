@@ -156,9 +156,9 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record.IntermediaryId__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue></stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
