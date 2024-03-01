@@ -364,6 +364,7 @@
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
@@ -399,7 +400,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
-            <valueName>Traslado a gestión centro tramitador</valueName>
+<valueName>Traslado a gestión centro tramitador</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Transferencia</controllingFieldValue>
