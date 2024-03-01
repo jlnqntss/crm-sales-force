@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 02-19-2024
+ * @last modified on  : 02-28-2024
  * @last modified by  : jchavez
  **/
 @isTest
@@ -19,6 +19,11 @@ private with sharing class CaseUtilTest
     static final String MESSAGE_CUENTA_NO_ASIGNADA = 'La cuenta no se ha asignado correctamente';
     static final String LABEL_SUBJECT_ZURICH = 'Solicitud de ayuda al registro de MiZurich';
     static final String EMAIL_CASE = 'exampletocontactpointemail@gmail.com.invalid';
+   
+    static final String ROBOT_TYPE_N1 = 'Dorsales';
+
+    static final String SHORT_DESCRIPTION = 'test';
+    static final String LONG_DESCRIPTION = 'Se diferencia clientes empresas de clientes personas. Se detecta que las empresas no usan el campo Firstname o le colocan un punto. También es posible filtrar los Contactos que no están activos.  De esta manera que extraen los datos por medio de la fecha de creación. Consiguiendo finalizar la operación en 3 ficheros';
 
     @TestSetup
     private static void createScenario()
@@ -243,6 +248,88 @@ private with sharing class CaseUtilTest
         System.assertEquals('Dorsales', caseToCompare.TypeN3__c, 'El tipo 3 de la tipificación es correcto');
         System.assertEquals('RRSS Marca', caseToCompare.CallCenter__c, 'El Call Center de la tipificación es correcto');
         System.assertEquals('Marca Redes Sociales', cola.Name, 'La Cola de la tipificación es correcto');
+    }
+
+    @isTest
+    private static void test_mappingSprinklrCasesNullTag()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+
+        Case caseRecord = new Case ();
+        caseRecord.RecordTypeId = rtOCSSprinklrId;
+        caseRecord.RobotTypeN1__c = null;
+        caseRecord.Subject = 'Test';
+        caseRecord.SuppliedEmail='no@existe.com';
+
+        List<Case> newList = new List<Case>();
+        newList.add(caseRecord);
+ 		
+        insert newList;
+        
+        Case caseToCompare = [SELECT id,Type,SubType__c,TypeN3__c,CallCenter__c,OwnerId FROM Case where id =: caseRecord.id];
+        Group cola = [SELECT Name From Group WHERE id =: caseToCompare.OwnerId ];
+        System.assertEquals('Marca (No info provided)', caseToCompare.Type, 'El tipo de la tipificación es correcto');
+        System.assertEquals('Comentario', caseToCompare.SubType__c, 'El subtipo de la tipificación es correcto');
+        System.assertEquals('Comentario', caseToCompare.TypeN3__c, 'El tipo 3 de la tipificación es correcto');
+        System.assertEquals('RRSS Marca', caseToCompare.CallCenter__c, 'El Call Center de la tipificación es correcto');
+        System.assertEquals('Marca Redes Sociales', cola.Name, 'La Cola de la tipificación es correcto');
+    }
+
+    @isTest
+    private static void test_descriptionCaseShort()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+        List<Case> newList = new List<Case>();
+
+        Case caseShortDescription = new Case();
+        caseShortDescription.RecordTypeId = rtOCSSprinklrId;
+        caseShortDescription.RobotTypeN1__c = ROBOT_TYPE_N1;
+        caseShortDescription.Description = SHORT_DESCRIPTION;
+
+        newList.add(caseShortDescription);
+
+        insert newList;
+       
+        Case caseToCompareShort = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseShortDescription.id];
+
+        System.assertEquals(caseToCompareShort.Description.length() == caseToCompareShort.PrimerMensaje__c.length(), true, 'Se ha asignado bien el campo PrimerMensaje__c');
+    }
+
+    @isTest
+    private static void test_descriptionCaseLong()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+        List<Case> newList = new List<Case>();
+
+        Case caseLongDescription = new Case();
+        caseLongDescription.RecordTypeId = rtOCSSprinklrId;
+        caseLongDescription.RobotTypeN1__c = ROBOT_TYPE_N1;
+        caseLongDescription.Description = LONG_DESCRIPTION;
+
+        newList.add(caseLongDescription);
+
+        insert newList;
+       
+        Case caseToCompareLong = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseLongDescription.id];
+        System.assertEquals(caseToCompareLong.PrimerMensaje__c.length()  < 256, true,'El campo PrimerMensaje__c no supera el límite de caracteres');
+    } 
+
+    @isTest
+    private static void test_descriptionCaseNull()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+        List<Case> newList = new List<Case>();
+        Case caseNullDescription = new Case();
+
+        caseNullDescription.RecordTypeId = rtOCSSprinklrId;
+        caseNullDescription.RobotTypeN1__c = ROBOT_TYPE_N1;
+
+        newList.add(caseNullDescription);
+
+        insert newList;
+
+        Case caseToCompareNull = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseNullDescription.id];
+        System.assertEquals(caseToCompareNull.PrimerMensaje__c == null, true,'Description era nulo y ha sido correctamente insertado el caso');
     }
 
     /**
