@@ -427,6 +427,11 @@
                 <label>Green card</label>
             </value>
             <value>
+                <fullName>Incidencia</fullName>
+                <default>false</default>
+                <label>Incidencia</label>
+            </value>
+            <value>
                 <fullName>Incidencias cartera</fullName>
                 <default>false</default>
                 <label>Incidencias cartera</label>
@@ -881,7 +886,7 @@
         <valueSettings>
             <controllingFieldValue>Queja</controllingFieldValue>
             <valueName>Queja</valueName>
-        </valueSettings>
+                </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
             <valueName>Atención deficiente tramitador</valueName>
@@ -1065,6 +1070,10 @@
             <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <valueName>Anulación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Incidencia</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>

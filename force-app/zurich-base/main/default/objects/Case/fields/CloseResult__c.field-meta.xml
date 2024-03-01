@@ -347,13 +347,19 @@
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
             <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <controllingFieldValue>Contratacion</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
             <controllingFieldValue>Embargo Cliente</controllingFieldValue>
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Consulta</controllingFieldValue>
+            <controllingFieldValue>Gestión</controllingFieldValue>
+            <controllingFieldValue>Dorsales</controllingFieldValue>
+            <controllingFieldValue>Comentario</controllingFieldValue>
+            <controllingFieldValue>Spam</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>s
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
