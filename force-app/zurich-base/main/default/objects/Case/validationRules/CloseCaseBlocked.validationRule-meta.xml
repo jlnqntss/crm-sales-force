@@ -29,6 +29,9 @@ IsClosed &amp;&amp;
 
 NOT ISCHANGED(Status) &amp;&amp; $Permission.USPTriggerCaseValidationRules
 
+,
+$RecordType.Name == "OCS Sprinklr" && ( NOT( OR(ISCHANGED(AccountId),ISCHANGED(PolicyId__c),ISCHANGED(OfferId__c),ISCHANGED(ClaimId__c)))) && IsClosed && $Profile.Name == 'OCS User Sprinklr'
+
 )</errorConditionFormula>
     <errorMessage>[VR Caso] No se pueden editar los casos cerrados o combinados</errorMessage>
 </ValidationRule>
