@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 02-28-2024
+ * @last modified on  : 03-01-2024
  * @last modified by  : jchavez
  **/
 @isTest
@@ -250,6 +250,10 @@ private with sharing class CaseUtilTest
         System.assertEquals('Marca Redes Sociales', cola.Name, 'La Cola de la tipificación es correcto');
     }
 
+     /**
+     * Test para la tipificación de casos Spriklr. Se prueba que se rellenen correctamente
+     * los campos Type, Subtype__c y TypeN3__c para casos con RecordType OCS Sprinkrl y TAGSprinklr Null
+     */
     @isTest
     private static void test_mappingSprinklrCasesNullTag()
     {

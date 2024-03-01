@@ -25,7 +25,7 @@ public with sharing class CaseUtil
     }
 
     // Recupera el Id del RecordType de casos Sprinklr
-    public static final ID rtOCSid{
+    public static final ID getSprinklrRecordTypeId{
         get{
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR).getRecordTypeId();
         }
@@ -237,7 +237,7 @@ public with sharing class CaseUtil
     {
         for(Case caso : newList)
         {
-            if(caso.RecordTypeId == rtOCSid)
+            if(caso.RecordTypeId == getSprinklrRecordTypeId)
             {
                 Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping = new Map<String, Map<String, Map<String,String>>> ();
                 List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMappingList = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
