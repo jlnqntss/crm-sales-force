@@ -16,9 +16,7 @@ public with sharing class CaseUtil
     public static final String estadoCerrado= 'Cerrado';
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
-    public static final String SPRINKLR_SINIESTRO = 'OCSSprinklr';
-    public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
-    public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
+    public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
 
     // Recupera el Id del RecordType de casos USP
     public static final ID rtUSPId {
@@ -28,11 +26,35 @@ public with sharing class CaseUtil
     }
 
     // Recupera el Id del RecordType de casos Sprinklr
-    public static final ID sprinklrRecordTypeId {
-        get{
+    public static final ID RT_ID_OCSSPRINKLR
+    {
+        get
+        {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR).getRecordTypeId();
         }
     }
+
+    public static final Map<String, Robot_Hegeo_Field_Mapping__mdt> CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE
+    {
+        get
+        {
+            if(CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE == null)
+            {
+                CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE = sortCaseMappingSettingsBy(Schema.Robot_Hegeo_Field_Mapping__mdt.field.SourceType__c);
+            }
+
+            return CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE;
+        }
+
+        private set;
+    }
+
+    /**
+     * Excepción para controlar anomalías durante el proceso de tipificación a medida del caso.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
+     */
+    private class CaseCustomTipificationException extends Exception {} 
 
     /**
      * Método que inserta o actualiza un siniestro
@@ -231,64 +253,41 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Método que recoge los valores del Metadato Robot Hegeo Field Mapping para tipificar casos Sprinklr
-     * Ejecutado en beforInsert porque vienen tipificados desde Sprinklr por el campo RoboTypeN1__c
-     * @author jchavez
-     * @date 15/02/2024
-     **/
-    public static void mappingSprinklrCases(List<Case> newList)
+     * Asigna valor a la propiedad N1, N2 y N3 del caso que permiten clasificar la consulta de los clientes.
+     * La tipificación condicionará la operativa del caso y el enrutamiento del caso.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void setSprinklrCaseTipification(List<Case> insertedCases)
     {
-        for(Case caso : newList)
+        for(Case customerRequest : insertedCases)
         {
-            if(caso.RecordTypeId == sprinklrRecordTypeId)
+            if(customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR)
             {
-                List<Robot_Hegeo_Field_Mapping__mdt> sprinklrMappingCofiguration = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
+                Robot_Hegeo_Field_Mapping__mdt caseTipificationMetadata;
 
-                if (String.isBlank(Case.RobotTypeN1__c))
+                if (String.isBlank(customerRequest.RobotTypeN1__c))
                 {
-                    // Itera y recupera el metadato con SourceType = SprinklrDefault
-                } // Cuando es vacío
+                    caseTipificationMetadata = CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE?.get(DEFAULT_SPRINKLR_CASE_TIPIFICATION);
+                }
                 else
                 {
-                    // Itera hasta encontrar un metadato SourceType = RobotTypeN1
+                    caseTipificationMetadata = CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE?.get(customerRequest.RobotTypeN1__c);    
                 }
-   
-                // Mientra el no sea SprinklrConfiguration.size()
-                
-
-                // TAG: 
-
+     
+                if (caseTipificationMetadata == null)
+                {
+                    ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, 'Error durante la tipificación del Sprinklr N: ' + customerRequest.spr_sf__Sprinklr_Case_Number__c, CaseUtil.class.getName());
+                }
+                else
+                {
+                    customerRequest.Type = caseTipificationMetadata.Type__c;
+                    customerRequest.SubType__c = caseTipificationMetadata.Subtype__c;
+                    customerRequest.TypeN3__c = caseTipificationMetadata.TypeN3__c;
+                }
             }
         }
-    }
-       /**
-     * Método que da valor a los campos Type, Subtype__c y TypeN3__c del objeto Case 
-     * Ejecutado en beforInsert porque vienen tipificados desde Sprinklr por el campo RoboTypeN1__c
-     * @param Case caso : Caso a tipificar
-     * @param boolean key : True si el campo RobotTypeN1__c se encuentra en la tificacion de Robot Hegeo Field Mapping
-     * @param Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping : valores de Robot Hegeo Field Mapping
-     * @author jchavez
-     * @date 26/02/2024
-     **/
-    public static void caseTipification(Case caso, Boolean key ,Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping)
-    {
-        if(key)
-        {
-            Map<String,Map<String,String>> types = new Map<String,Map<String,String>>();
-            types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
-            caso.Type = types.keySet().iterator().next();
-            caso.SubType__c = types.values()[0].keySet().iterator().next();
-            caso.TypeN3__c = types.values()[0].values()[0];    
-        }
-        else 
-        {
-            Map<String,Map<String,String>> types = new Map<String,Map<String,String>>();
-            types = mapRobotHegeoFieldsMapping.get(null);
-            caso.Type = types.keySet().iterator().next();
-            caso.SubType__c = types.values()[0].keySet().iterator().next();
-            caso.TypeN3__c = types.values()[0].values()[0]; 
-        }
-
     }
 
     /**
@@ -1425,4 +1424,30 @@ public with sharing class CaseUtil
         }
     }
 
+    /**
+     * Construye y devuelve una colección de elementos Robot_Hegeo_Field_Mapping__mdt ordenada por un atributo de esta configuración.
+     * Robot_Hegeo_Field_Mapping__mdt contiene la relación entre la categorización de casos realizada por herramientas externas y la categorización del caso en Salesforce.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
+     * @param fieldToSort Propiedad de Robot_Hegeo_Field_Mapping__mdt que permite ordenar la configuración en un mapa.
+     * @return Colección de configuración Robot_Hegeo_Field_Mapping__mdt odernada.
+     */
+    public static Map<String, Robot_Hegeo_Field_Mapping__mdt> sortCaseMappingSettingsBy(Schema.SObjectField fieldToSort)
+    {
+        Map<String, Robot_Hegeo_Field_Mapping__mdt> mappingConfiguration = new Map<String, Robot_Hegeo_Field_Mapping__mdt>();
+        List<Robot_Hegeo_Field_Mapping__mdt> hegeoMetadataMappingConfiguration = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
+        String fieldAPINameInLowerCase = fieldToSort.getDescribe().getName().toLowerCase();
+
+        if (!Robot_Hegeo_Field_Mapping__mdt.getSobjectType().getDescribe().fields.getMap().keySet().contains(fieldAPINameInLowerCase))
+        {
+            throw new CaseCustomTipificationException('La configuración para ' + Robot_Hegeo_Field_Mapping__mdt.getSobjectType().getDescribe().getName() + ' no soporta el atributo ' + fieldAPINameInLowerCase);
+        }
+
+        for (Robot_Hegeo_Field_Mapping__mdt configuration : hegeoMetadataMappingConfiguration)
+        {
+            mappingConfiguration.put(configuration.SourceType__c, configuration);
+        }
+
+        return mappingConfiguration;
+    }
 }
