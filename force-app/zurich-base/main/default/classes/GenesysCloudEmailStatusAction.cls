@@ -13,6 +13,13 @@ public with sharing class GenesysCloudEmailStatusAction
 
         System.debug('*Lista Entrada GenesysCloudEmailStatusAction*: '+estadoInteracciones);
 
+        listaRetorno=forEmails(estadoInteracciones,listaRetorno);
+
+        return listaRetorno;
+    }
+
+    public static List<List<String>> forEmails(List<List<EmailMessage> > estadoInteracciones,List<List<String>> listaRetorno)
+    {
         for (List<EmailMessage> listaParaEstadoEmailMessages : estadoInteracciones)
         {
             List<String> listaValores = new List<String>();
@@ -21,7 +28,16 @@ public with sharing class GenesysCloudEmailStatusAction
             {
                 String valores = '';
 
-                try
+                listaValores=tryInteractions(email,listaValores,valores);
+            }
+            listaRetorno.add(listaValores); 
+        }
+        return listaRetorno;
+    }
+
+    public static List<String> tryInteractions(EmailMessage email,List<String> listaValores, String valores)
+    {
+        try
                 {
                     //generamos una nueva interacción de Genesys Cloud
                     GenesysCloud.InteractionStatusId statusInteract = new GenesysCloud.InteractionStatusId();
@@ -54,17 +70,15 @@ public with sharing class GenesysCloudEmailStatusAction
                     {
                         listaValores.add(valores);
                         System.debug('Tamaño salida lita valores:'+listaValores.size());
-                    }
-
+                    }   
+                    
                 }
                 catch (Exception e)
                 {
                     ErrorLogUtil.commitError(e, 'GenesysCloudEmailStatusAction->'+e.getMessage());
-
                 }
-            }
-            listaRetorno.add(listaValores);
-        }
-        return listaRetorno;
+                return listaValores;
     }
+
+    
 }

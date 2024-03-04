@@ -139,17 +139,17 @@ public without sharing class EmailMessagesSelector
      *
      * @author lrodriguez
      * @date 12/02/2024
-     * @param  Listcases   Listado de casos 
+     * @param  listcases   Listado de casos 
      * @return            Listado de emails sobre los que se ha realizado match
      */
-    public List<EmailMessage> selectByCaseBatch(List<Case> Listcases)
+    public List<EmailMessage> selectByCaseBatch(List<Case> listcases)
     {
-        if(Listcases != null)
+        if(listcases != null)
         {
             this.sObjectToQuery = 'EmailMessage';
             String query = String.format(
                 QUERY_SELECT +
-                'WHERE ParentId IN : Listcases AND Incoming=true AND GenesysInteractionId__c!=null ',
+                'WHERE ParentId IN : listcases AND Incoming=true AND GenesysInteractionId__c!=null ',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
             }
