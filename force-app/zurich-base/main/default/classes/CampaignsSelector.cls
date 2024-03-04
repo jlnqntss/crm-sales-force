@@ -44,16 +44,14 @@ public with sharing class CampaignsSelector extends BaseSelector
      *
      * @author dmunoz
      * @date 11/08/2023
-     * @return          Listado de CampaignMembers
+     * @return          Listado de CampaignMembers 
      */
-    public List<Campaign> findCampaignByExternalId(Set<String> externalIdSet)
-    {
+    public List<Campaign> findCampaignByExternalId(Set<String> externalIdSet) {
 
         List<Campaign> result = new List<Campaign>();
 
-        if ( !externalIdSet.isEmpty() )
-        {
-            result = new List<Campaign>([SELECT Id, ExternalId__c FROM Campaign WHERE ExternalId__c IN: externalIdSet]);
+        if (!externalIdSet.isEmpty()) {
+            result = new List<Campaign>([SELECT Id, ExternalId__c FROM Campaign WHERE ExternalId__c IN :externalIdSet]);
         }
 
         return result;
@@ -64,16 +62,14 @@ public with sharing class CampaignsSelector extends BaseSelector
      *
      * @author arcortazar
      * @date 11/10/2023
-     * @return          Listado de Campañas
+     * @return          Listado de Campañas 
      */
-    public List<Campaign> findCampaignById(List<String> listaIds)
-    {
+    public List<Campaign> findCampaignById(List<String> listaIds) {
 
         List<Campaign> result = new List<Campaign>();
 
-        if ( !listaIds.isEmpty() )
-        {
-            result = new List<Campaign>([SELECT Id, Type, IsActive, StartDate FROM Campaign WHERE Id IN: listaIds]);
+        if (!listaIds.isEmpty()) {
+            result = new List<Campaign>([SELECT Id, Type, IsActive, StartDate FROM Campaign WHERE Id IN :listaIds]);
         }
 
         return result;
@@ -81,19 +77,18 @@ public with sharing class CampaignsSelector extends BaseSelector
 
     /**
      * Devuelve las campañas cuyo ID este en la lista que se pasa como parámetro y que sea de tipo Cross Seling, o esté activa, o haya comezado ya
-     *
+     * 
      * @author arcortazar
      * @date 11/10/2023
-     * @param   Lista de ID
-     * @return  Listado de Campañas
+     * @param   Lista de ID 
+     * @return  Listado de Campañas 
      */
     public List<Campaign> findZRMInitiatedCrossSellingCampaings(List<String> listaIds)
     {
         List<Campaign> result = new List<Campaign>();
 
-        if ( !listaIds.isEmpty() )
-        {
-            result = new List<Campaign>([SELECT Id FROM Campaign WHERE (Type != 'Cross Selling' OR IsActive = false OR StartDate <= TODAY) AND id IN: listaIds]);
+        if (!listaIds.isEmpty()) {
+            result = new List<Campaign>([SELECT Id FROM Campaign WHERE (Type != 'Cross Selling' OR IsActive = false OR StartDate <= TODAY) AND id IN :listaIds]);
         }
         return result;
     }
@@ -115,19 +110,25 @@ public with sharing class CampaignsSelector extends BaseSelector
      *
      * @change amiranda 28/12/2023 Se añade el parámetro 'intermediaryId' al método
      **/
-    public List<Campaign> selectCampaigns()
+    public List<Campaign> selectCampaigns(Id intermediaryId)
     {
         List<Campaign> campaigns = new List<Campaign>();
 
-
-        campaigns = [SELECT Id, Name, StartDate, EndDate, toLabel(Type),
-                     toLabel(ProductBranch__c), isActive,
-                     (SELECT Id, Status
-                      FROM CampaignMembers)
-                     FROM Campaign
-                     WHERE Id IN (SELECT CampaignId
-                                  FROM CampaignMember)
-                     WITH USER_MODE ORDER BY Name ];
+        if ( String.isNotBlank(intermediaryId) )
+        {
+            campaigns = [SELECT Id, Name, StartDate, EndDate, toLabel(Type),
+                         toLabel(ProductBranch__c), isActive,
+                         (SELECT Id, Status
+                          FROM CampaignMembers
+                          WHERE Contact.Account.IntermediaryVisibilityAcc__c = :intermediaryId
+                                                                               OR Contact.Account.Owner.Contact.AccountId = :intermediaryId)
+                         FROM Campaign
+                         WHERE Id IN (SELECT CampaignId
+                                      FROM CampaignMember
+                                      WHERE Contact.Account.IntermediaryVisibilityAcc__c = :intermediaryId
+                                                                                           OR Contact.Account.Owner.Contact.AccountId = :intermediaryId)
+                         WITH USER_MODE ORDER BY Name ];
+        }
 
         return campaigns;
     }

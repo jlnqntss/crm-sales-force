@@ -105,6 +105,8 @@ global with sharing class Batch_IntermediaryVisibilityAccActivites implements Da
         result.put('Tasks', tasksMap);
         result.put('Events', eventsMap);
 
+        System.debug('Tasks map  ' + tasksMap);
+        System.debug('Events map  ' + eventsMap);
         return result;
     }
     

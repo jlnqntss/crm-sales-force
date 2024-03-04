@@ -10,7 +10,6 @@
     RecordType.DeveloperName = &apos;Customer&apos;),
   OR(
     $Profile.Name = &apos;Agente Ventas&apos;,
-				$Profile.Name = &apos;Agente Ventas - AGR&apos;,
     $Profile.Name = &apos;Ventas User&apos;))</errorConditionFormula>
     <errorDisplayField>Name</errorDisplayField>
     <errorMessage>[VR Cuenta] No tienes permisos para modificar el nombre de la cuenta</errorMessage>
