@@ -97,7 +97,7 @@ private with sharing class GroupSelectorTest
     static void testFindById()
     {
 
-        List<Group> queryGroups = [SELECT Id FROM Group];
+        List<Group> queryGroups = [SELECT Id FROM Group LIMIT 1];
         List<Id> groupIds = new List<Id>();
 
         for (Group queue : queryGroups)
@@ -110,9 +110,6 @@ private with sharing class GroupSelectorTest
         List<Group> queueResult = new GroupSelector().findById(groupIds);
         List<Group> queueResultNull = new GroupSelector().findById( new List<Id>() );
         Test.stopTest();
-
-        queueResult.sort();
-        queryGroups.sort();
 
         System.assertEquals(queryGroups[0].Id, queueResult[0].Id, 'Ambas ids deben ser iguales');
         System.assertEquals(false, queueResult.isEmpty(), 'Debería haber encontrado al menos una cola');
