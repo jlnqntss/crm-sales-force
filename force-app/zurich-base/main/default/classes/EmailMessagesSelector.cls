@@ -135,6 +135,35 @@ public without sharing class EmailMessagesSelector
     }
 
     /**
+     * Busca emails a partir de los casos Batch_CloseInteractions
+     *
+     * @author lrodriguez
+     * @date 12/02/2024
+     * @param  Listcases   Listado de casos 
+     * @return            Listado de emails sobre los que se ha realizado match
+     */
+    public List<EmailMessage> selectByCaseBatch(List<Case> Listcases)
+    {
+        if(Listcases != null)
+        {
+            this.sObjectToQuery = 'EmailMessage';
+            String query = String.format(
+                QUERY_SELECT +
+                'WHERE ParentId IN : Listcases AND Incoming=true AND GenesysInteractionId__c!=null ',
+                new List<String> {
+                String.join(new List<String> (this.fieldsToQuery), ',')
+            }
+                );
+
+            return (List<EmailMessage>) Database.query(query);
+        }
+        else
+        {
+            return new List<EmailMessage>();
+        }
+    }
+
+    /**
      * Busca emails a partir del Id del objeto relacionado
      *
      * @author rlopez

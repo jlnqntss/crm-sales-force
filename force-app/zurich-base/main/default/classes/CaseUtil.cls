@@ -495,6 +495,29 @@ public with sharing class CaseUtil
 
     }
 
+     /**
+     * Método utilizado por Batch_CLoseInteractions para activar el campo CloseByBatch__c
+     * @author lrodriguez6@seidor.es
+     * @date 21/02/2024
+     * @param [List<Case> casesToCheck] casos que ha recuperado el batch
+     * @return List<Case> casos a actualizar
+     */
+    public static List<Case> checkCasesCloseInteractions (List<Case> casesToRelate)
+    {
+        List<Case> casesToUpdate = new List<Case>();
+
+        if( casesToRelate != null && !casesToRelate.isEmpty() )
+        {
+            for(Case currentCase : casesToRelate)
+            {
+                currentCase.CloseByBatch__c = true;
+                casesToUpdate.add(currentCase);   
+            }  
+        }
+        return casesToUpdate;
+    }
+
+
     /**
      * Método que a partir de una lista de casos devuelve la lista de casos con RecordType USPInquiry
      * @author jjuaristi@seidor.es
