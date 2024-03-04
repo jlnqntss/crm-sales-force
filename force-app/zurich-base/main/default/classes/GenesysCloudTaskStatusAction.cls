@@ -18,7 +18,15 @@ public with sharing class GenesysCloudTaskStatusAction {
     public static List<List<String>> execute (List<List<Task>> estadoTasks)
     { 
         List<List<String>> listaTareasDevueltas = new List<List<String>>();
+        System.debug('*Lista Entrada GenesysCloudTaskStatusAction*: '+estadoTasks);
+
+        listaTareasDevueltas= forTask(estadoTasks,listaTareasDevueltas);
         
+        return listaTareasDevueltas;
+    }
+
+    public static List<List<String>> forTask(List<List<Task>> estadoTasks,List<List<String>> listaTareasDevueltas)
+    {
         for (List<Task> listaParaEstadoTareas : estadoTasks)
         {
             List<String> listaEstadosTasks = new List<String>();
@@ -26,8 +34,17 @@ public with sharing class GenesysCloudTaskStatusAction {
             for(Task tasks : listaParaEstadoTareas)
             {
                 String valores = '';
+                listaEstadosTasks= tryInteractionTask(tasks,listaEstadosTasks,valores);  
+            }
 
-                try 
+            listaTareasDevueltas.add(listaEstadosTasks);
+        }
+        return listaTareasDevueltas;
+    }
+
+    public static List<String> tryInteractionTask(Task tasks,List<String> listaEstadosTasks,String valores)
+    {
+        try 
                 {
                     //generamos una nueva interacción de Genesys Cloud
                     GenesysCloud.InteractionStatusId statusInteract = new GenesysCloud.InteractionStatusId();
@@ -69,10 +86,7 @@ public with sharing class GenesysCloudTaskStatusAction {
                 {
                     ErrorLogUtil.commitError(e, 'GenesysCloudTaskStatusAction->'+e.getMessage());
                 }
-            }
 
-            listaTareasDevueltas.add(listaEstadosTasks);
-        }
-        return listaTareasDevueltas;
+                return listaEstadosTasks;
     }
 }
