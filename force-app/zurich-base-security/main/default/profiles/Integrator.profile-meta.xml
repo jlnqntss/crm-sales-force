@@ -6070,6 +6070,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.CloseByBatch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.CloseDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6171,6 +6176,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.EconomicImpact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ExpectedClosingDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
