@@ -25,6 +25,9 @@ public with sharing class CaseUtil
     public static final String SPRINKLR_TYPE_MARCA = 'Marca (No info provided)';
     public static final String SPRINKLR_TYPE_ASISTENCIA = 'Asistencia (Information/ Contact)';
     public static final String SPRINKLR_TYPE_SINIESTROS = 'Siniestros (Claims)';
+    public static List<Group> queueMarcaRRSS = new List<Group>();
+    public static List<Group> queuePostventaRRSS = new List<Group>();
+    public static List<Group> queueSiniestrosRRSS = new List<Group>();
 
     // Recupera el Id del RecordType de casos USP
     public static final ID rtUSPId {
@@ -298,7 +301,20 @@ public with sharing class CaseUtil
         }
     }
 
-        /**
+    /**
+     * Llamado en BulkBefore
+     * Recoge los valores de Queues necesarios para casos Sprinklr
+     * @author jchavez
+     * @date 04/03/2024
+     */
+    public static void getQueuesSprinklr()
+    {
+        queueMarcaRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_MARCA);
+        queuePostventaRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_POSTVENTA);
+        queueSiniestrosRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_SINIESTROS);
+    }
+
+    /**
      * Asigna Call Center y Owner a los casos tipo Sprinklr
      * @author jchavez
      * @date 04/03/2024
@@ -310,10 +326,6 @@ public with sharing class CaseUtil
         {
             if(customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR)
             {
-                List<Group> queueMarcaRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_MARCA);
-                List<Group> queuePostventaRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_POSTVENTA);
-                List<Group> queueSiniestrosRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_SINIESTROS);
-
                 if(customerRequest.Type.equals(SPRINKLR_TYPE_MARCA))
                 {
                     customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_MARCA;

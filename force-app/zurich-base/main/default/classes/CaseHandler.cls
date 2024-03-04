@@ -34,6 +34,7 @@ public without sharing class CaseHandler implements ITrigger
                 CaseUtil.assignAccountAndContactFromDniSuppliedEmailAndPhone(listCasesFromZurich);
             }
             
+            CaseUtil.getQueuesSprinklr();
         }
     }
 
