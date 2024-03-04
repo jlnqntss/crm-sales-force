@@ -7154,6 +7154,12 @@
         <layout>Robot_Hegeo_Setting__mdt-Robot Hegeo Setting Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>spr_sf__SocialPersona__c-Sprinklr Social Persona Default</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>spr_sf__SocialPost__c-Sprinklr Social Post Default</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>SurveyAnswerOption__mdt-Survey Answer Option Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
