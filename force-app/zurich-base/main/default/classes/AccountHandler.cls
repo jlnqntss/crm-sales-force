@@ -46,12 +46,7 @@ public with sharing class AccountHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {
-        // marcamos los mediadores que han sufrido cambios de agrupación zrm para procesarlos posteriormente con el batch Batch_RecalcVisibilityIntermediaryGroup
-        if (!Test.isRunningTest()) {
-            AccountUtil.zrmVisibility(newList, (Map<Id,Account>) oldMap);
-        }
-    }
+    {}
 
     /**
      * beforeDelete
@@ -84,7 +79,6 @@ public with sharing class AccountHandler implements ITrigger
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         AccountLeadUtil.createScopesForVentaLeads(newList,(Map<Id,Account>)oldMap);
-         
     }
 
     /**

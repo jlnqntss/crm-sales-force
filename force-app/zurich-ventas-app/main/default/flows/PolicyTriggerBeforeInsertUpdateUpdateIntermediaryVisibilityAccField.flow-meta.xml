@@ -192,7 +192,7 @@ ISCHANGED({!$Record.IntermediaryId__c})
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>IntermediaryVisibilityAccount</name>
         <dataType>String</dataType>
