@@ -17,6 +17,14 @@ public with sharing class CaseUtil
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
+    public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
+    public static final String SPRINKLR_QUEUE_POSTVENTA = 'Postventa Redes Sociales';
+    public static final String SPRINKLR_QUEUE_SINIESTROS = 'Siniestros Redes Sociales';
+    public static final String SPRINKLR_CALLCENTER_MARCA = 'RRSS Marca';
+    public static final String SPRINKLR_CALLCENTER_SINIESTROS = 'RRSS Postventa-Siniestros';
+    public static final String SPRINKLR_TYPE_MARCA = 'Marca (No info provided)';
+    public static final String SPRINKLR_TYPE_ASISTENCIA = 'Asistencia (Information/ Contact)';
+    public static final String SPRINKLR_TYPE_SINIESTROS = 'Siniestros (Claims)';
 
     // Recupera el Id del RecordType de casos USP
     public static final ID rtUSPId {
@@ -285,6 +293,42 @@ public with sharing class CaseUtil
                     customerRequest.Type = caseTipificationMetadata.Type__c;
                     customerRequest.SubType__c = caseTipificationMetadata.Subtype__c;
                     customerRequest.TypeN3__c = caseTipificationMetadata.TypeN3__c;
+                }
+            }
+        }
+    }
+
+        /**
+     * Asigna Call Center y Owner a los casos tipo Sprinklr
+     * @author jchavez
+     * @date 04/03/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void setSprinklrCaseCallCenterAndGroup(List<Case> insertedCases)
+    {
+        for(Case customerRequest : insertedCases)
+        {
+            if(customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR)
+            {
+                List<Group> queueMarcaRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_MARCA);
+                List<Group> queuePostventaRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_POSTVENTA);
+                List<Group> queueSiniestrosRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_SINIESTROS);
+
+                if(customerRequest.Type.equals(SPRINKLR_TYPE_MARCA))
+                {
+                    customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_MARCA;
+                    customerRequest.OwnerId = queueMarcaRRSS[0].Id;
+        
+                }
+                else if(customerRequest.Type.equals(SPRINKLR_TYPE_ASISTENCIA) || customerRequest.Type.equals(SPRINKLR_TYPE_SINIESTROS))
+                {
+                    customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_SINIESTROS;
+                    customerRequest.OwnerId = queueSiniestrosRRSS[0].Id;
+                }
+                else
+                {
+                    customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_SINIESTROS;
+                    customerRequest.OwnerId = queuePostventaRRSS[0].Id;
                 }
             }
         }
