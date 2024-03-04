@@ -1,6 +1,6 @@
 @isTest
-public with sharing class Batch_IntermediaryVisibilityRecalcAccTes {
-
+public with sharing class Batch_IntermediaryVisibilityRecalcPolTes {
+    
     @TestSetup
     static void makeData() {
         
@@ -94,17 +94,19 @@ public with sharing class Batch_IntermediaryVisibilityRecalcAccTes {
         update accountToUpdate;
 
 
-        // Crear clientes y asociarlos a 
+        // Crear una oferta póliza a los mediadores de la agrupacion 1 (2 en total)
         List<Account> customers = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 2);
-        
-        List<Account> mediadoresAgrupacion1 = new List<Account>([SELECT Id FROM Account WHERE IntermediaryGroup__c = :agrupacion1.Id]);
-        customers[0].Intermediary_Name__c = mediadoresAgrupacion1[0].Id;
-        customers[1].Intermediary_Name__c = mediadoresAgrupacion1[1].Id;         
-        
         insert customers;
 
+        List<Account> mediadoresAgrupacion1 = new List<Account>([SELECT Id FROM Account WHERE IntermediaryGroup__c = :agrupacion1.Id]);
+        List<Policy__c> policyList = TestDataFactory.generatePoliciesForEachAccount(customers, 1);
+        policyList[0].IntermediaryId__c = mediadoresAgrupacion1[0].Id;
+        policyList[1].IntermediaryId__c = mediadoresAgrupacion1[1].Id; 
+
+        insert policyList;
+
     }
-    
+
 
     /**
      * Test que comprueba que un mediador sin usuario nominal cambia de agrupación, sus registros de policy se deben de trasladar al nuevo usuario principal de la nueva agrupación
@@ -113,29 +115,30 @@ public with sharing class Batch_IntermediaryVisibilityRecalcAccTes {
      */
     @isTest
     static void testCambioAgrupacionMedidadorNotPartnerOK() {
-        Account accBefore = [SELECT Id, IntermediaryVisibilityAcc__c,Intermediary_Name__r.IntermediaryGroup__c FROM Account WHERE RecordType.DeveloperName = 'Customer' AND Intermediary_Name__r.IsPartner = false LIMIT 1];
+        Policy__c polBefore = [SELECT Id, IntermediaryVisibilityAcc__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c FROM Policy__c WHERE IntermediaryId__r.IsPartner = false];
 
         // cambio el mediador de agrupacion para que el batch recalcule la visibilidad, para ello obtengo el id de la otra agrupación primero
-        List<Account> agrupacionMediadorList = new List<Account>([SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'AgrupacionMediador' AND Id != :accBefore.Intermediary_Name__r.IntermediaryGroup__c LIMIT 1]);
+        List<Account> agrupacionMediadorList = new List<Account>([SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'AgrupacionMediador' AND Id != :polBefore.IntermediaryId__r.IntermediaryGroup__c]);
 
         if (!agrupacionMediadorList.isEmpty()) {
 
             // actualizo el mediador
             Account mediatorNotPartner = new Account();
-            mediatorNotPartner.Id = accBefore.Id;
+            mediatorNotPartner.Id = polBefore.IntermediaryId__c;
             mediatorNotPartner.IntermediaryGroup__c = agrupacionMediadorList.get(0).Id;
             update mediatorNotPartner;
 
 
             Test.startTest();
-            Batch_IntermediaryVisibilityRecalcAcc batch = new Batch_IntermediaryVisibilityRecalcAcc(); 
+            Batch_IntermediaryVisibilityRecalcPol batch = new Batch_IntermediaryVisibilityRecalcPol();
             Database.executeBatch(batch, 200);
             Test.stopTest();
     
-            Account accAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Account WHERE Id = :accBefore.Id];
-            System.assertNotEquals(accBefore.IntermediaryVisibilityAcc__c, accAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad a la nueva cuenta');
+            Policy__c polAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Policy__c WHERE Id = :polBefore.Id];
+            System.assertNotEquals(polBefore.IntermediaryVisibilityAcc__c, polAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad a la nueva cuenta');
         }
     }
+
 
     /**
      * Test que blanquea la visibilidad para un cliente que se ha bloqueado por gdpr
@@ -144,18 +147,28 @@ public with sharing class Batch_IntermediaryVisibilityRecalcAccTes {
      */
     @isTest
     static void testGDPRBlankVisibilityOK() {
-        Account accBefore = [SELECT Id, IntermediaryVisibilityAcc__c, Intermediary_Name__c, Blocked__c FROM Account WHERE Recordtype.DeveloperName = 'Customer' LIMIT 1];
+        Policy__c polBefore = [SELECT Id, IntermediaryVisibilityAcc__c, PolicyHolder__c FROM Policy__c WHERE IntermediaryId__r.IsPartner = false];
 
-        accBefore.Blocked__c = true;
-        update accBefore;
+        // consulto el cliente de la póliza
+        List<Account> agrupacionMediadorList = new List<Account>([SELECT Id FROM Account WHERE Id = :polBefore.PolicyHolder__c]);
 
-        Test.startTest();
-        Batch_IntermediaryVisibilityRecalcAcc batch = new Batch_IntermediaryVisibilityRecalcAcc();
-        Database.executeBatch(batch, 200);
-        Test.stopTest();
+        if (!agrupacionMediadorList.isEmpty()) {
 
-        Account accAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Account WHERE Id = :accBefore.Id];
-        System.assertEquals(null, accAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad a nulo');
+            // actualizo el cliente
+            Account customer = new Account();
+            customer.Id = agrupacionMediadorList.get(0).Id;
+            customer.Blocked__c = true;
+            update customer;
+
+
+            Test.startTest();
+            Batch_IntermediaryVisibilityRecalcPol batch = new Batch_IntermediaryVisibilityRecalcPol();
+            Database.executeBatch(batch, 200);
+            Test.stopTest();
+    
+            Policy__c polAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Policy__c WHERE Id = :polBefore.Id];
+            System.assertEquals(null, polAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad');
+        }
     }
 
 
@@ -166,34 +179,32 @@ public with sharing class Batch_IntermediaryVisibilityRecalcAccTes {
      */
     @isTest
     static void testRecalculateVisibilityGivenAccountListOK() {
+        Policy__c polBefore = [SELECT Id, IntermediaryVisibilityAcc__c, PolicyHolder__c FROM Policy__c WHERE IntermediaryId__r.IsPartner = true];
+        System.debug('Valor antes ' + polBefore.IntermediaryVisibilityAcc__c);
 
-        Set<String> customerIds = new Set<String>();
-        List<Account> customerToUpdate = new List<Account>();
-        List<Account> accBeforeList = new List<Account>([SELECT Id, IntermediaryVisibilityAcc__c, Intermediary_Name__c, Blocked__c, IntermediaryVisibilityForm__c, recordtype.DeveloperName, Intermediary_Name__r.IntermediaryGroup__c FROM Account WHERE Recordtype.DeveloperName = 'Customer']);
+        // cambio el mediador de agrupacion para que el batch recalcule la visibilidad, para ello obtengo el id de la otra agrupación primero
+        List<Account> agrupacionMediadorList = new List<Account>([SELECT Id,Blocked__c FROM Account LIMIT 50]);
 
-        if (!accBeforeList.isEmpty()) {
-            for (Account customer: accBeforeList) {
-                
+        if (!agrupacionMediadorList.isEmpty()) {
+            List<Account> customerToUpdate = new List<Account>();
+            Set<String> customerIds = new Set<String>();
+            for (Account customer: agrupacionMediadorList) {
                 customer.Blocked__c = true;
                 customerToUpdate.add(customer);
-                customerIds.add(customer.Id);
+                customerIds.add(Customer.Id);
             }
-    
-            update customerToUpdate;
 
-            for (Account customer2: customerToUpdate) {
-                System.debug('customer update RT ' + customer2.recordtype.DeveloperName + ' Campo formula ' + customer2.IntermediaryVisibilityForm__c + ' mediador agrupacion ' + customer2.Intermediary_Name__r.IntermediaryGroup__c);
-            }
-    
+            update customerToUpdate;
+            
+
             Test.startTest();
-            Batch_IntermediaryVisibilityRecalcAcc batch = new Batch_IntermediaryVisibilityRecalcAcc(customerIds);
+            Batch_IntermediaryVisibilityRecalcPol batch = new Batch_IntermediaryVisibilityRecalcPol(customerIds);
             Database.executeBatch(batch, 200);
             Test.stopTest();
     
-            Account accAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Account WHERE Id = :accBeforeList.get(0).Id];
-            System.assertEquals(null, accAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad a nulo');
-
+            Policy__c polAfter = [SELECT Id, IntermediaryVisibilityAcc__c FROM Policy__c WHERE Id = :polBefore.Id];
+            System.debug('Valor despues ' + polAfter.IntermediaryVisibilityAcc__c);
+            System.assertNotEquals(polBefore.IntermediaryVisibilityAcc__c, polAfter.IntermediaryVisibilityAcc__c, 'Debe haberse modificado el valor del campo de visibilidad');
         }
-
     }
 }
