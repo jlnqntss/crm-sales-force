@@ -57,7 +57,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.assignContactToCase(newList);
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
         CaseUtil.updateTranscomCase(newList);
-        CaseUtil.mappingSprinklrCases(newList);
+        CaseUtil.setSprinklrCaseTipification(newList);
     }
     
     /**
