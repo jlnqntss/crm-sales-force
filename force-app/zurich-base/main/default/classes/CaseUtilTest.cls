@@ -228,9 +228,9 @@ private with sharing class CaseUtilTest
     {
         Case newSprinklrCase = new Case ();
         newSprinklrCase.RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR;
-        newSprinklrCase.RobotTypeN1__c ='Dorsales';
+        newSprinklrCase.RobotTypeN1__c = 'Dorsales';
         newSprinklrCase.Subject = 'test_setSprinklrCaseTipification';
-        newSprinklrCase.SuppliedEmail='sprinklrCase@zurich.com';
+        newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
  		
         Test.startTest();
         insert newSprinklrCase;
@@ -256,7 +256,7 @@ private with sharing class CaseUtilTest
         Case newSprinklrCase = new Case ();
         newSprinklrCase.RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR;
         newSprinklrCase.Subject = 'test_setSprinklrCaseTipificationWithInvalidConfiguration';
-        newSprinklrCase.SuppliedEmail='sprinklrCase@zurich.com';
+        newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
  		
         Test.startTest();
         insert newSprinklrCase;
@@ -266,7 +266,33 @@ private with sharing class CaseUtilTest
         Robot_Hegeo_Field_Mapping__mdt expectedValues = [SELECT Type__c, SubType__c, TypeN3__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c =: CaseUtil.DEFAULT_SPRINKLR_CASE_TIPIFICATION];
         Assert.areEqual(expectedValues.Type__c, caseToCompare.Type);
         Assert.areEqual(expectedValues.SubType__c, caseToCompare.Subtype__c);
-        Assert.areEqual(expectedValues.TypeN3__c, caseToCompare.TypeN3__c);
+        Assert.areEqual(expectedValues.TypeN3__c, caseToCompare.TypeN3__c);    }
+
+    /**
+     * Se comprueba que los procesos que asignan los atributos para la clasificación del caso no restringen el alta del caso.
+     * En este escenario se inserta un caso con una clasificación o TAG incorrecta, es decir, las clasificación del caso no coincide con la configuración de Salesforce.
+     * Esta clasificación se realiza fuera de Salesforce.
+     * El caso no se clasifica pero este se guarda.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
+     */
+    @isTest
+    private static void test_setSprinklrCaseTipificationBadTag()
+    {
+        Case newSprinklrCase = new Case ();
+        newSprinklrCase.RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR;
+        newSprinklrCase.RobotTypeN1__c = 'NO EXISTE';
+        newSprinklrCase.Subject = 'test_setSprinklrCaseTipificationWithInvalidConfiguration';
+        newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
+ 		
+        Test.startTest();
+        insert newSprinklrCase;
+        Test.stopTest();
+
+        Case caseToCompare = [SELECT Id, RobotTypeN1__c, Type, SubType__c, TypeN3__c, CallCenter__c, OwnerId FROM Case WHERE id =: newSprinklrCase.id];
+        Assert.isNull(caseToCompare.Type);
+        Assert.isNull(caseToCompare.SubType__c);
+        Assert.isNull(caseToCompare.TypeN3__c);
     }
 
     /**
