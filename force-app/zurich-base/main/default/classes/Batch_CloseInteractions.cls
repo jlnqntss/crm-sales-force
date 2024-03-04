@@ -68,8 +68,8 @@ global class Batch_CloseInteractions implements Database.Batchable<case>,Databas
             List<List<Task>> listaTareas= new List<List<Task>>();
             //String
             List<List<String>> listafinal = new List<List<String>>();
-            List<List<String>> SalidaStatus = new List<List<String>>();
-            List<List<String>> SalidaStatusEmail = new List<List<String>>();
+            List<List<String>> salidaStatus = new List<List<String>>();
+            List<List<String>> salidaStatusEmail = new List<List<String>>();
             //EmailMessage
             List<EmailMessage> listaEmailMessage= new List<EmailMessage>();
             List<List<EmailMessage>> listaEmail= new List<List<EmailMessage>>();
@@ -88,10 +88,10 @@ global class Batch_CloseInteractions implements Database.Batchable<case>,Databas
                 listaTareas.add(listaTareasNotaINFO);
 
                 //Se obtienen los id de interacción a partir de las tareas
-                SalidaStatus = GenesysCloudTaskStatusAction.execute(listaTareas);
+                salidaStatus = GenesysCloudTaskStatusAction.execute(listaTareas);
 
-                System.debug('Id a partir de tareas: '+SalidaStatus);
-                System.debug('Tamaño id a partir de tareas: '+SalidaStatus.size());
+                System.debug('Id a partir de tareas: '+salidaStatus);
+                System.debug('Tamaño id a partir de tareas: '+salidaStatus.size());
 
                 //Se recuperan los EmailMessage relacionados con los casos
                 listaEmailMessage= new EmailMessagesSelector().selectByCaseBatch(casesInteractions);
@@ -103,19 +103,19 @@ global class Batch_CloseInteractions implements Database.Batchable<case>,Databas
                 listaEmail.add(listaEmailMessage);
 
                 //Se recuperan los id de la interacción a partir de los email
-                SalidaStatusEmail = GenesysCloudEmailStatusAction.execute(listaEmail);
+                salidaStatusEmail = GenesysCloudEmailStatusAction.execute(listaEmail);
 
-                System.debug('Id a partir de los Email: '+SalidaStatusEmail);
-                System.debug('Tamaño id a partir de los Email: '+SalidaStatusEmail.size());
+                System.debug('Id a partir de los Email: '+salidaStatusEmail);
+                System.debug('Tamaño id a partir de los Email: '+salidaStatusEmail.size());
 
                 //Se añaden estos Id de interacciones a los Id de las interacciones de las Tareas
-                SalidaStatus.addAll(SalidaStatusEmail);
+                salidaStatus.addAll(salidaStatusEmail);
                 
-                System.debug('Conjunto de interacciones(Email+Task):'+SalidaStatus);
-                System.debug('Tamaño del conjunto de interacciones: '+SalidaStatus.size());
+                System.debug('Conjunto de interacciones(Email+Task):'+salidaStatus);
+                System.debug('Tamaño del conjunto de interacciones: '+salidaStatus.size());
 
                 //Se solicita el cierre de las interacciones
-                listafinal= GenesysCloudBatchPatchInteractionAction.execute(SalidaStatus);
+                listafinal= GenesysCloudBatchPatchInteractionAction.execute(salidaStatus);
 
                 System.debug('lista final: '+listafinal);
                 System.debug('tamaño lista final: '+listafinal.size());
