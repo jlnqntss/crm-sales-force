@@ -167,6 +167,46 @@ private with sharing class EmailMessagesSelectorTest
     }
 
     @isTest
+    static void test_selectByCaseBatch_matchedRecords()
+    {
+
+        //Se crea un caso 
+        Case caseEmail= new Case();
+        caseEmail.Subject='test';
+        caseEmail.status='New';
+        caseEmail.Origin='Email';
+        caseEmail.SourceArea__c='Mediator';
+        caseEmail.Type='Venta';
+        caseEmail.Subtype__c='Emisión';
+        //caseEMail.TypeN3__c='Emisión';
+
+        insert caseEmail;
+
+        List<Case> listaCase = new List<Case> ();
+        listaCase.add(caseEmail);
+
+        //Recuperamos un email aleatorio
+        EmailMessage randomEmail= new EmailMessage();
+        randomEmail.Subject = 'testsubject';
+        randomEmail.FromAddress = 'fromaddress@nts-solutions.com.invalid';
+        randomEmail.ToAddress = 'toaddress@nts-solutions.com.invalid';
+        randomEmail.Incoming = true;
+        randomEmail.GenesysInteractionId__c='1788029f-ad65-41ea-bc5f-ce41673fe109';
+        randomEmail.RelatedToId=caseEmail.Id;
+
+        insert randomEmail;
+        
+        Test.startTest();
+        EmailMessagesSelector emailMessagesSelectorObj = new EmailMessagesSelector();
+        emailMessagesSelectorObj.fieldsToQuery = new Set<String> {'Id', 'ParentId','Incoming','GenesysInteractionId__c'};
+        List<EmailMessage> matchedRecords = emailMessagesSelectorObj.selectByCaseBatch(listaCase);
+        Test.stopTest();
+
+        System.assertEquals(false, matchedRecords.isEmpty(), 'The list shouldnt be empty');
+        System.assertEquals(1,matchedRecords.size());
+    }
+
+    @isTest
     static void test_selectBySubject_emptySubjects()
     {
         //Utilizamos el selector pasando como parámetro un Set vacio

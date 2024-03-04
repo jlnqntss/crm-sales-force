@@ -985,4 +985,30 @@ private with sharing class CaseUtilTest
 
         System.assertEquals(accountFromCase[0].id, caseAfterInsert.AccountId, MESSAGE_CUENTA_NO_ASIGNADA);
     }
+
+    /**
+     * Test que comprueba que se activa el campo closeByBatch en el proceso de cierre de interacciones
+     **
+     * @author lrodriguez
+     * @date 01/03/2024
+     */
+    @isTest
+    private static void test_checkCasesCloseInteractions()
+    {
+        Case caseRecord = new Case ();
+        List<Case> listaEntrada= new List<Case>();
+        List<Case> listaSalida= new List<Case>();
+        caseRecord.subject='test campo closeByBatch';
+        
+        insert caseRecord;
+
+        listaEntrada.add(caseRecord);
+        Test.startTest();
+        listaSalida= CaseUtil.checkCasesCloseInteractions(listaEntrada);
+        Test.stopTest();
+
+        System.assertEquals(true, listaSalida[0].CloseByBatch__c, 'no devuelve el valor esperado');
+
+
+    }
 }
