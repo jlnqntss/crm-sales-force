@@ -6,14 +6,14 @@
         <label>Buscar Gestor Preferente</label>
         <locationX>455</locationX>
         <locationY>206</locationY>
-        <actionName>GenesysFindBestAgentAction</actionName>
-        <actionType>apex</actionType>
+        <actionName>01p1x000002oOcKNotFound</actionName>
         <connector>
             <targetReference>RouteEmailAction</targetReference>
         </connector>
         <faultConnector>
             <targetReference>LogError</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>fromId</name>
             <value>
@@ -51,6 +51,7 @@
         <faultConnector>
             <targetReference>LogError</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>emailMessageId</name>
             <value>
@@ -99,6 +100,8 @@
                 <elementReference>EmailMessage.ToAddress</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>GenesysCloudRouteEmailAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
     <description>Realiza el enrutamiento de correos electrónicos del buzón de Zurich Empresas</description>
@@ -172,7 +175,7 @@
             <targetReference>FindOwnerIdAction</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>EmailMessage</name>
         <dataType>SObject</dataType>
