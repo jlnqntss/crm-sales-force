@@ -15,6 +15,9 @@ public with sharing class CaseUtil
     public static final String queryDays ='365';
     public static final String estadoCerrado= 'Cerrado';
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+    public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
+
+    public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
 
     // Recupera el Id del RecordType de casos USP
     public static final ID rtUSPId {
@@ -1432,4 +1435,73 @@ public with sharing class CaseUtil
         }
     }
 
+    public static void getSprinklrSocialPersonaToLinkContact(List<Case> casesUpdated)
+    {
+        Map<Id,spr_sf__SocialPersona__c> sprSocialPersonasToLinkContact = new Map<Id,spr_sf__SocialPersona__c>();
+        Set<String> sprSocialPersonaIds = new Set<String>();
+        List<Case> casesToUpdateSprSocialPersona = new List<Case>();
+        Id sprinklrRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR)?.getRecordTypeId();
+        
+        if (Trigger.isAfter && Trigger.isUpdate)
+        {
+            for (Case caseUpdated : casesUpdated)
+            {
+                System.debug ('recordtype ' + caseUpdated.recordTypeId);
+                System.debug ('accountid' + caseUpdated.AccountId);
+                System.debug ('account id developer name ' + caseUpdated.Account.RecordType.DeveloperName);
+                System.debug ('sprinklr social persona' + caseUpdated.SprinklrSocialPersona__c);
+
+                if (caseUpdated.recordTypeId == sprinklrRecordTypeId && caseUpdated.AccountId != null && caseUpdated.SprinklrSocialPersona__c != null )
+                {
+                    sprSocialPersonaIds.add(caseUpdated.SprinklrSocialPersona__c);
+                    casesToUpdateSprSocialPersona.add(caseUpdated);
+                }  
+            }
+        }
+
+        sprSocialPersonasToLinkContact = new Map<Id,spr_sf__SocialPersona__c>(new SprinklrSocialPersonaSelector().findAllDataById(sprSocialPersonaIds));
+
+        for (Case caseToUpdateSprSocialPersona : casesToUpdateSprSocialPersona)
+        {
+            spr_sf__SocialPersona__c sprSocialPersonaToUpdate = sprSocialPersonasToLinkContact.get(caseToUpdateSprSocialPersona.SprinklrSocialPersona__c);
+            //DUDA
+            if (caseUpdated.Account.RecordType.DeveloperName == 'Customer' && (sprSocialPersonaToUpdate.spr_sf__Contact__c == null || (sprSocialPersonaToUpdate.spr_sf__Contact__c != null && sprSocialPersonaToUpdate.spr_sf__Contact__c != caseToUpdateSprSocialPersona.AccountId  )) )
+            {
+                sprSocialPersonaToUpdate.spr_sf__Contact__c = caseToUpdateSprSocialPersona.AccountId;
+                sprinklrSocialPersonaToUpdate.add(sprSocialPersonaToUpdate);
+            } 
+        }
+    }
+
+    public static void updateSprSocialPersonaToLinkContact()
+    {
+        List<String> msgErrores = new List<String>();
+
+        if( !sprinklrSocialPersonaToUpdate.isEmpty() )
+        {
+            try
+            {
+                Database.SaveResult [] resultList = Database.update(sprinklrSocialPersonaToUpdate, false);
+                
+                for (Database.SaveResult result: resultList )
+                {
+                    if(!result.isSuccess())
+                    {
+                        for (Database.Error error :result.getErrors())
+                        {
+                            msgErrores.add(error.getStatusCode() + ': ' + error.getMessage());
+                        }
+                    }
+                }   
+                if (!msgErrores.isEmpty())
+                {
+                    ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando los perfiles sociales relacionados con los casos',CaseUtil.class.getName(),(String.join(msgErrores,'\n')));
+                } 
+            }
+            catch (Exception e)
+            {
+                ErrorLogUtil.commitError(e, CaseUtil.class.getName());
+            }
+        }
+    }
 }
