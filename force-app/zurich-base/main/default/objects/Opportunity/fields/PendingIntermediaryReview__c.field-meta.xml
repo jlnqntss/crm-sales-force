@@ -4,15 +4,12 @@
     <description>Indica si el mediador debe revisar la oferta</description>
     <externalId>false</externalId>
     <formula>AND(
-	OR (
-		$Profile.Name = &apos;Agente Ventas&apos;, 
-		$Profile.Name = &apos;Agente Ventas - AGR&apos;
-	),				
-	ZRM__c = false,				
-	ISPICKVAL(Campaign.Type,&apos;Cross Selling&apos;),   
-	Campaign.IsActive, 
-	NOT(ISBLANK(Campaign.StartDate)), 
-	TODAY() &lt; Campaign.StartDate
+				$Profile.Name = &apos;Agente Ventas&apos;, 
+				Owner.Profile.Name &lt;&gt; &apos;Agente Ventas&apos;, 
+				ISPICKVAL(Campaign.Type, &apos;Cross Selling&apos;), 
+				Campaign.IsActive, 
+				NOT(ISBLANK(Campaign.StartDate)), 
+				TODAY() &lt; Campaign.StartDate
 )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Pending Intermediary Review</label>

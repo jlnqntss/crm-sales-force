@@ -3,11 +3,8 @@
     <fullName>RestrictClosedLostStage</fullName>
     <active>true</active>
     <description>[Ventas] no permite modificar la etapa de una oferta a Cerrada perdida una vez informado el campo Número de póliza resultante</description>
-    <errorConditionFormula>(
-  $Profile.Name = &quot;Ventas User&quot; ||
-  $Profile.Name = &quot;Agente Ventas&quot; ||
-  $Profile.Name = &quot;Agente Ventas - AGR&quot;
-) &amp;&amp;
+    <errorConditionFormula>($Profile.Name = &apos;Ventas User&apos; ||
+$Profile.Name = &apos;Agente Ventas&apos;) &amp;&amp;
 ISPICKVAL(StageName, &quot;Closed Lost&quot;) &amp;&amp;
 NOT(ISBLANK(ResultingPolicyNumber__c))</errorConditionFormula>
     <errorMessage>[VR Oferta] No se puede modificar una oferta a Cerrada Perdida cuando el campo Número de póliza resultante está informado</errorMessage>

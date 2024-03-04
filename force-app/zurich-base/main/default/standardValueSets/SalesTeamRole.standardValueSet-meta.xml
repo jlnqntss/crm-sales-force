@@ -61,9 +61,4 @@
         <default>false</default>
         <label>Mediador</label>
     </standardValue>
-    <standardValue>
-        <fullName>MediadorZRM</fullName>
-        <default>false</default>
-        <label>MediadorZRM</label>
-    </standardValue>
 </StandardValueSet>
