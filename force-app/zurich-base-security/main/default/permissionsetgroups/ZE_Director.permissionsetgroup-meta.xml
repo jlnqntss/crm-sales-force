@@ -8,6 +8,7 @@
     <permissionSets>Gestion_CS</permissionSets>
     <permissionSets>Gestion_Captacion</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

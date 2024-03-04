@@ -111,6 +111,9 @@ private with sharing class GroupSelectorTest
         List<Group> queueResultNull = new GroupSelector().findById( new List<Id>() );
         Test.stopTest();
 
+        queueResult.sort();
+        queryGroups.sort();
+
         System.assertEquals(queryGroups[0].Id, queueResult[0].Id, 'Ambas ids deben ser iguales');
         System.assertEquals(false, queueResult.isEmpty(), 'Debería haber encontrado al menos una cola');
         System.assertEquals(true, queueResultNull.isEmpty(), 'Debería ser una lista vacía');
