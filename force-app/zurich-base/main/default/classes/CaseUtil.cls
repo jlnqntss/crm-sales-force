@@ -326,7 +326,7 @@ public with sharing class CaseUtil
         {
             if(customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR)
             {
-                if(customerRequest.Type.equals(SPRINKLR_TYPE_MARCA))
+                if(String.isBlank(customerRequest.Type) || customerRequest.Type.equals(SPRINKLR_TYPE_MARCA))
                 {
                     customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_MARCA;
                     customerRequest.OwnerId = queueMarcaRRSS[0].Id;
