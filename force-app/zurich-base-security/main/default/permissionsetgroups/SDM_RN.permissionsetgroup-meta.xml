@@ -12,6 +12,7 @@
     <permissionSets>Gestion_CS</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>Gestion_Suscripcion</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <permissionSets>SDM_Chatter</permissionSets>
     <permissionSets>SDM_Plan_comercial</permissionSets>
     <status>Updated</status>

@@ -5,5 +5,6 @@
     <permissionSets>Acceso_App_OCS</permissionSets>
     <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
     <permissionSets>Acceso_API</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
