@@ -34,6 +34,7 @@ public without sharing class CaseHandler implements ITrigger
                 CaseUtil.assignAccountAndContactFromDniSuppliedEmailAndPhone(listCasesFromZurich);
             }
             
+            CaseUtil.getQueuesSprinklr();
         }
     }
 
@@ -59,6 +60,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.updateTranscomCase(newList);
         CaseUtil.setSprinklrCaseTipification(newList);
         CaseUtil.shortDescriptionNeeded(newList);
+        CaseUtil.setSprinklrCaseCallCenterAndGroup(newList);
     }
     
     /**

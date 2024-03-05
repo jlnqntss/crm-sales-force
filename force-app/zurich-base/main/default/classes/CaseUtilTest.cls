@@ -371,6 +371,33 @@ private with sharing class CaseUtilTest
     }
     
 
+    
+    /**
+     * Se comprueba la correcta asignación de CallCenter__c y Queue para casos tipo Sprinklr que vengan con una TAGSprinklr
+     * reconocida por Salesforce. Esta TAG viene establecida desde fuera del sistema.
+     * @author jchavez
+     * @date 04/03/2024
+     */
+    @isTest
+    private static void test_setSprinklrCaseCallCenterAndGroup()
+    {
+        Case newSprinklrCase = new Case ();
+        newSprinklrCase.RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR;
+        newSprinklrCase.RobotTypeN1__c = 'Asistencia';
+        newSprinklrCase.Subject = 'test_setSprinklrCaseCallCenterAndGroup';
+        newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
+        List<Group> queueSiniestrosRRSS = new GroupSelector().findByName(CaseUtil.SPRINKLR_QUEUE_SINIESTROS);
+ 		
+        Test.startTest();
+        insert newSprinklrCase;
+        Test.stopTest();
+
+        Case caseToCompare = [SELECT Id, CallCenter__c, OwnerId FROM Case WHERE id =: newSprinklrCase.id];
+        Assert.areEqual(CaseUtil.SPRINKLR_CALLCENTER_SINIESTROS, caseToCompare.CallCenter__c);
+        Assert.areEqual(queueSiniestrosRRSS[0].id, caseToCompare.OwnerId);
+
+    }
+
     /**
      * IMPORTANTE: este test depende de que esté activo el flow CaseTriggerBeforeEntitlement
      * porque es el encargado de asignar al caso un entitlement, y debido a eso se generan
