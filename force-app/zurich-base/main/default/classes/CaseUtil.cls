@@ -15,6 +15,19 @@ public with sharing class CaseUtil
     public static final String queryDays ='365';
     public static final String estadoCerrado= 'Cerrado';
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+    public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
+    public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
+    public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
+    public static final String SPRINKLR_QUEUE_POSTVENTA = 'Postventa Redes Sociales';
+    public static final String SPRINKLR_QUEUE_SINIESTROS = 'Siniestros Redes Sociales';
+    public static final String SPRINKLR_CALLCENTER_MARCA = 'RRSS Marca';
+    public static final String SPRINKLR_CALLCENTER_SINIESTROS = 'RRSS Postventa-Siniestros';
+    public static final String SPRINKLR_TYPE_MARCA = 'Marca (No info provided)';
+    public static final String SPRINKLR_TYPE_ASISTENCIA = 'Asistencia (Information/ Contact)';
+    public static final String SPRINKLR_TYPE_SINIESTROS = 'Siniestros (Claims)';
+    public static List<Group> queueMarcaRRSS = new List<Group>();
+    public static List<Group> queuePostventaRRSS = new List<Group>();
+    public static List<Group> queueSiniestrosRRSS = new List<Group>();
 
     // Recupera el Id del RecordType de casos USP
     public static final ID rtUSPId {
@@ -22,6 +35,37 @@ public with sharing class CaseUtil
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
         }
     }
+
+    // Recupera el Id del RecordType de casos Sprinklr
+    public static final ID RT_ID_OCSSPRINKLR
+    {
+        get
+        {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR).getRecordTypeId();
+        }
+    }
+
+    public static final Map<String, Robot_Hegeo_Field_Mapping__mdt> CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE
+    {
+        get
+        {
+            if(CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE == null)
+            {
+                CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE = sortCaseMappingSettingsBy(Schema.Robot_Hegeo_Field_Mapping__mdt.field.SourceType__c);
+            }
+
+            return CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE;
+        }
+
+        private set;
+    }
+
+    /**
+     * Excepción para controlar anomalías durante el proceso de tipificación a medida del caso.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
+     */
+    private class CaseCustomTipificationException extends Exception {} 
 
     /**
      * Método que inserta o actualiza un siniestro
@@ -220,81 +264,85 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Método que da valor a los campos Type, Subtype__c y TypeN3__c del objeto Case 
-     * Ejecutado en beforInsert porque vienen tipificados desde Sprinklr por el campo RoboTypeN1__c
-     * @author jchavez
-     * @date 15/02/2024
-     **/
-    public static void mappingSprinklrCases(List<Case> newList)
+     * Asigna valor a la propiedad N1, N2 y N3 del caso que permiten clasificar la consulta de los clientes.
+     * La tipificación condicionará la operativa del caso y el enrutamiento del caso.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void setSprinklrCaseTipification(List<Case> insertedCases)
     {
-    for(Case caso : newList)
+        for(Case customerRequest : insertedCases)
         {
-        if(caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId())
+            if(customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR)
             {
-            Map<String, Map<String, Map<String,String>>> mapRobotHegeoFieldsMapping = new Map<String, Map<String, Map<String,String>>> ();
-            List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMappingList = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
-            String sourceType;
-            String type;
-            Map<String, String> subtypeAndtype3; 
-            Map<String, Map<String,String>> mapTipification;
-            List<Group> marcaCola = new GroupSelector().findByName('Marca Redes Sociales');
-            List<Group> siniestrosCola = new GroupSelector().findByName('Siniestros Redes Sociales');
-            List<Group> postventaCola = new GroupSelector().findByName('Postventa Redes Sociales');
-        
-            for (Robot_Hegeo_Field_Mapping__mdt fieldMapping : robotHegeoFieldsMappingList)
-            {
-                sourceType = fieldMapping.SourceType__c; 
-                type = fieldMapping.Type__c;
+                Robot_Hegeo_Field_Mapping__mdt caseTipificationMetadata;
 
-                if (sourceType != null || type != null)
+                if (String.isBlank(customerRequest.RobotTypeN1__c))
                 {
-                    subtypeAndtype3 = new Map<String,String>();
-                    mapTipification = new Map<String, Map<String,String>> ();
-                    subtypeAndtype3.put(fieldMapping.Subtype__c,fieldMapping.TypeN3__c);
-                    mapTipification.put (fieldMapping.Type__c, subtypeAndtype3);
-                    mapRobotHegeoFieldsMapping.put(sourceType,mapTipification);
+                    caseTipificationMetadata = CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE?.get(DEFAULT_SPRINKLR_CASE_TIPIFICATION);
                 }
-            }
-
-            Map<String,Map<String,String>> types = mapRobotHegeoFieldsMapping.get(caso.RobotTypeN1__c);
-            caso.Type = types.keySet().iterator().next();
-            caso.SubType__c = types.values()[0].keySet().iterator().next();
-            caso.TypeN3__c = types.values()[0].values()[0];
-            queuesAndGroupsSprinklr(caso,marcaCola,siniestrosCola,postventaCola);
+                else
+                {
+                    caseTipificationMetadata = CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE?.get(customerRequest.RobotTypeN1__c);    
+                }
+     
+                if (caseTipificationMetadata == null)
+                {
+                    ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, 'Error durante la tipificación del Sprinklr N: ' + customerRequest.spr_sf__Sprinklr_Case_Number__c, CaseUtil.class.getName());
+                }
+                else
+                {
+                    customerRequest.Type = caseTipificationMetadata.Type__c;
+                    customerRequest.SubType__c = caseTipificationMetadata.Subtype__c;
+                    customerRequest.TypeN3__c = caseTipificationMetadata.TypeN3__c;
+                }
             }
         }
     }
 
-        /**
-     * Método que asigna Queue y Call Center a los casos creados desde Sprinklr
-     * Ejecutado despues de las tipificaciones para evitar errores.
+    /**
+     * Llamado en BulkBefore
+     * Recoge los valores de Queues necesarios para casos Sprinklr
      * @author jchavez
-     * @date 19/02/2024
-     **/
-
-    public static void queuesAndGroupsSprinklr(Case caso, List<Group> marcaCola,List<Group> siniestrosCola,List<Group> postventaCola)
+     * @date 04/03/2024
+     */
+    public static void getQueuesSprinklr()
     {
-        if(caso.Type.contains('Marca'))
-        {
-            caso.CallCenter__c = 'RRSS Marca';
-        }
-        else
-        {
-            caso.CallCenter__c = 'RRSS Postventa-Siniestros';
-        }
+        queueMarcaRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_MARCA);
+        queuePostventaRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_POSTVENTA);
+        queueSiniestrosRRSS = new GroupSelector().findByName(SPRINKLR_QUEUE_SINIESTROS);
+    }
 
-        if(caso.Type.equals('Marca (No info provided)'))
+    /**
+     * Asigna Call Center y Owner a los casos tipo Sprinklr
+     * @author jchavez
+     * @date 04/03/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void setSprinklrCaseCallCenterAndGroup(List<Case> insertedCases)
+    {
+        for(Case customerRequest : insertedCases)
         {
-            caso.OwnerId = marcaCola[0].Id;
-
-        }
-        else if(caso.Type.equals('Asistencia') || caso.Type.equals('Siniestros (Claims)'))
-        {
-            caso.OwnerId = siniestrosCola[0].Id;
-        }
-        else
-        {
-            caso.OwnerId = postventaCola[0].Id;
+            if(customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR)
+            {
+                if(String.isBlank(customerRequest.Type) || customerRequest.Type.equals(SPRINKLR_TYPE_MARCA))
+                {
+                    customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_MARCA;
+                    customerRequest.OwnerId = queueMarcaRRSS[0].Id;
+        
+                }
+                else if(customerRequest.Type.equals(SPRINKLR_TYPE_ASISTENCIA) || customerRequest.Type.equals(SPRINKLR_TYPE_SINIESTROS))
+                {
+                    customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_SINIESTROS;
+                    customerRequest.OwnerId = queueSiniestrosRRSS[0].Id;
+                }
+                else
+                {
+                    customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_SINIESTROS;
+                    customerRequest.OwnerId = queuePostventaRRSS[0].Id;
+                }
+            }
         }
     }
 
@@ -1432,4 +1480,30 @@ public with sharing class CaseUtil
         }
     }
 
+    /**
+     * Construye y devuelve una colección de elementos Robot_Hegeo_Field_Mapping__mdt ordenada por un atributo de esta configuración.
+     * Robot_Hegeo_Field_Mapping__mdt contiene la relación entre la categorización de casos realizada por herramientas externas y la categorización del caso en Salesforce.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
+     * @param fieldToSort Propiedad de Robot_Hegeo_Field_Mapping__mdt que permite ordenar la configuración en un mapa.
+     * @return Colección de configuración Robot_Hegeo_Field_Mapping__mdt odernada.
+     */
+    public static Map<String, Robot_Hegeo_Field_Mapping__mdt> sortCaseMappingSettingsBy(Schema.SObjectField fieldToSort)
+    {
+        Map<String, Robot_Hegeo_Field_Mapping__mdt> mappingConfiguration = new Map<String, Robot_Hegeo_Field_Mapping__mdt>();
+        List<Robot_Hegeo_Field_Mapping__mdt> hegeoMetadataMappingConfiguration = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
+        String fieldAPINameInLowerCase = fieldToSort.getDescribe().getName().toLowerCase();
+
+        if (!Robot_Hegeo_Field_Mapping__mdt.getSobjectType().getDescribe().fields.getMap().keySet().contains(fieldAPINameInLowerCase))
+        {
+            throw new CaseCustomTipificationException('La configuración para ' + Robot_Hegeo_Field_Mapping__mdt.getSobjectType().getDescribe().getName() + ' no soporta el atributo ' + fieldAPINameInLowerCase);
+        }
+
+        for (Robot_Hegeo_Field_Mapping__mdt configuration : hegeoMetadataMappingConfiguration)
+        {
+            mappingConfiguration.put(configuration.SourceType__c, configuration);
+        }
+
+        return mappingConfiguration;
+    }
 }

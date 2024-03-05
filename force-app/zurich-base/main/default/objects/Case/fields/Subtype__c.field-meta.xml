@@ -343,6 +343,11 @@
                 <label>Gestión de recibos</label>
             </value>
             <value>
+                <fullName>Incidencia</fullName>
+                <default>false</default>
+                <label>Incidencia</label>
+            </value>
+            <value>
                 <fullName>Incidencias (Cliente)</fullName>
                 <default>false</default>
                 <label>Incidencias (Cliente)</label>
@@ -649,6 +654,10 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Siniestros (Claims)</controllingFieldValue>
+            <valueName>Gestión</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestros (Claims)</controllingFieldValue>
             <controllingFieldValue>Gestión Mediador</controllingFieldValue>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>
             <valueName>Reclamación</valueName>
@@ -796,6 +805,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
+            <controllingFieldValue>MiZurich (Use)</controllingFieldValue>
             <valueName>Comentario</valueName>
         </valueSettings>
         <valueSettings>
@@ -1106,6 +1116,10 @@
         <valueSettings>
             <controllingFieldValue>Campañas</controllingFieldValue>
             <valueName>Seguimiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>MiZurich (Use)</controllingFieldValue>
+            <valueName>Incidencia</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

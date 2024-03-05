@@ -942,6 +942,56 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
 
+    /**
+     * Busca account a las cuales se recalculará la visibilidad de ZRM para esos registros
+     *
+     * @author dmunoz
+     * @date 21/09/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public String findAccountsWithIncorrectVisibility()
+    {
+
+        String result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c, ' +
+                        'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                        'FROM Account ' +
+                        'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') ' +
+                        'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
+                        'AND (IntermediaryVisibilityForm__c = null ' +
+                        'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                        'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
+
+        return result;
+    }
+
+    /**
+     * Busca account a las cuales se recalculará la visibilidad de ZRM para esos registros a partir de unos ids de clientes
+     *
+     * @author dmunoz
+     * @date 21/09/2023
+     * @return List<Account> Listado de account a las que recalcular la visibilidad
+     */
+    public String findAccountsWithIncorrectVisibilityByAccountId(Set<String> accountIds)
+    {
+
+        String result;
+
+        if ( accountIds != null && !accountIds.isEmpty() )
+        {
+            result = 'SELECT Id, Blocked__c, Intermediary_Name__c, Intermediary_Name__r.IsPartner, Intermediary_Name__r.IntermediaryGroup__c,  ' +
+                     'Intermediary_Name__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
+                     'FROM Account ' +
+                     'WHERE RecordType.DeveloperName IN (\'Customer\',\'BusinessCustomer\') AND Id IN  :accountIds ' +
+                     'AND (IntermediaryVisibilityAcc__c != null OR Intermediary_Name__r.IntermediaryGroup__c != null) ' +
+                     'AND (IntermediaryVisibilityForm__c = null ' +
+                     'OR (Intermediary_Name__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
+                     'OR (Intermediary_Name__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
+
+        }
+
+        return result;
+    }
+
 
     /**
      * Busca cuentas de MEDIADORES partir de un número de teléfono (No usan ContactPointPhone)
@@ -1078,60 +1128,6 @@ public with sharing class AccountsSelector extends RecordsSelector
         {
             result = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c, IntermediaryGroupEndDate__c FROM Account WHERE RecordTypeId = : rtAgrupationId AND INFOIntermediaryGroupCode__c IN: intermediaryGroupCode]);
 
-        }
-
-        return result;
-    }
-
-
-    /**
-     * Consultar agrupaciones para una lista de ids de mediadores
-     *
-     * @author dmunoz
-     * @date 12/2/2024
-     * @return List<Account> Listado de mediadores con su agrupación
-     */
-    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesPolicySet) {
-        List<Account> result = new List<Account>();
-
-        if (intermediariesPolicySet != null && !intermediariesPolicySet.isEmpty()) {
-            result = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE Id IN :intermediariesPolicySet]);
-        }
-
-        return result;
-    }
-
-
-    /**
-     * Consultar agrupaciones para una lista de ids de mediadores
-     *
-     * @author dmunoz
-     * @date 12/2/2024
-     * 
-     */
-    public String findIntermediariesWithGroupChanges() {
-
-        String result = 'SELECT Id, IntermediaryGroup__c, LastIntermediaryGroup__c ' +
-                        'FROM Account ' +
-                        'WHERE RecordType.DeveloperName = \'Intermediary\'' +
-                        'AND LastIntermediaryGroupChange__c = YESTERDAY';
-
-        return result;
-    }
-
-
-    /**
-     * Consultar agrupaciones para una lista de ids de mediadores
-     *
-     * @author dmunoz
-     * @date 12/2/2024
-     * @return List<Account> Listado de mediadores con su agrupación
-     */
-    public List<Account> findAllIntermediarysFromIntermediaryGroups(Set<String> intermediariesSet) {
-        List<Account> result = new List<Account>();
-
-        if (intermediariesSet != null && !intermediariesSet.isEmpty()) {
-            result = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE IntermediaryGroup__c IN :intermediariesSet]);
         }
 
         return result;

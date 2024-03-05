@@ -8,8 +8,8 @@ ISBLANK(TEXT(Loss_Reason__c)) &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos; &amp;&amp;
-$Profile.Name &lt;&gt; &apos;Agente Ventas&apos; &amp;&amp;
-$Profile.Name &lt;&gt; &apos;Agente Ventas - AGR&apos;</errorConditionFormula>
+$Profile.Name &lt;&gt; &apos;Ventas User&apos; &amp;&amp;
+$Profile.Name &lt;&gt; &apos;Agente Ventas&apos;</errorConditionFormula>
     <errorDisplayField>Loss_Reason__c</errorDisplayField>
     <errorMessage>[VR Oferta] Motivo de Pérdida es obligatorio cuando es Cerrada Perdida</errorMessage>
 </ValidationRule>

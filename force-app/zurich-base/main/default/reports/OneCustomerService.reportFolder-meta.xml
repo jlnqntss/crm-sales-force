@@ -62,6 +62,11 @@
     </folderShares>
     <folderShares>
         <accessLevel>View</accessLevel>
+        <sharedTo>RRSS_Gestor</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
         <sharedTo>Transcom_Retenciones</sharedTo>
         <sharedToType>Group</sharedToType>
     </folderShares>

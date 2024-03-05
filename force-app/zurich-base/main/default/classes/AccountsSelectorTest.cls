@@ -944,16 +944,4 @@ private with sharing class AccountsSelectorTest
         System.assertEquals(agrupacionesData.size(), accountListAfterQuery.size(), 'El número de cuentas recuperadas debería ser el mismo');
 
     }
-
-    @isTest
-    static void test_findIntermediaryGroupByIntermediaries()
-    {
-        
-        Test.startTest();
-        List<Account> accountListAfterQuery = new AccountsSelector().findIntermediaryGroupByIntermediaries(new Set<String>());
-        Test.stopTest();
-
-        System.assertEquals(true, accountListAfterQuery != null, 'No puede ser nulo el resultado de la query');
-
-    }
 }

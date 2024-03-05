@@ -89,6 +89,11 @@
                 <default>false</default>
                 <label>Consultant</label>
             </value>
+            <value>
+                <fullName>Interno RRSS</fullName>
+                <default>false</default>
+                <label>Interno RRSS</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
@@ -149,6 +154,10 @@
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
             <valueName>Consultant</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Interno RRSS</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

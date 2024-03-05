@@ -2,7 +2,7 @@
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>OCSSprinklr</fullName>
     <active>true</active>
-    <businessProcess>OCS</businessProcess>
+    <businessProcess>Sprinklr</businessProcess>
     <compactLayoutAssignment>OCS_Sprinklr_Default</compactLayoutAssignment>
     <description>Tipo de registro para los casos creados por Sprinklr</description>
     <label>OCS Sprinklr</label>
@@ -587,127 +587,7 @@
     <picklistValues>
         <picklist>CloseResult__c</picklist>
         <values>
-            <fullName>Derivado - Norma 57%2FAJ</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Derivado - Otras Áreas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No Realizado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No Realizado -Pol%2E Seguridad</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No Retenido</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Caída Sistema</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Cliente no interesa</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Derivado otras áreas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - No procede</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Otros</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>No realizado - Rechazo técnico</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Realizado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Cambio criterio centro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Con extorno</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Confirmación criterio centro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Impacto en prima</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Nueva Póliza</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Pago Tarjeta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Pago Transferencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Reenvío Recibo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Rehabilitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Retroactividad</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Sin extorno</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Realizado - Sin impacto en prima</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Resolución SDC Desestimada</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Resolución SDC Estimada</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Resolución SDC Inadmitida</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Resolución SDC Parcialmente estimada</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Resolución SDC estimada centro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Retenido</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Traslado a gestión centro tramitador</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -948,23 +828,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Competency Management</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Other areas Third parties</fullName>
+            <fullName>Interno RRSS</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Other areas Zurich</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Supervisor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Systems Incidence</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1396,6 +1264,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Incidencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Información</fullName>
             <default>false</default>
         </values>
@@ -1463,6 +1335,10 @@
         </values>
         <values>
             <fullName>Gestión</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencia</fullName>
             <default>false</default>
         </values>
         <values>
