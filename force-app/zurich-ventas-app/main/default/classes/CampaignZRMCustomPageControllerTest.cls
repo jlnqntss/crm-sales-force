@@ -97,7 +97,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
          * se les asignará alguno de estos estados.
          */
         List<Campaign> campaignsToInsertNewStatus = [SELECT Id,
-                                                     (SELECT Id, Status FROM CampaignMembers LIMIT :numberCampaignMemberToRetrieve)
+                                                     (SELECT Id, Status FROM CampaignMembers LIMIT : numberCampaignMemberToRetrieve)
                                                      FROM Campaign LIMIT 2];
 
         // Se crean los estados para las diferentes campañas y se actualizan los estados de los miembros de campaña
@@ -122,7 +122,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
         update campaignMembersToUpdate;
 
         Test.startTest();
-        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns(intermediary.Contact.AccountId);
+        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns();
         Test.stopTest();
 
         Assert.isFalse(campaignsToInsertNewStatus.isEmpty(), 'La lista de campañas no debería estar vacía.');
@@ -163,7 +163,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
          * se les asignará alguno de estos estados.
          */
         List<Campaign> campaignsToInsertNewStatus = [SELECT Id,
-                                                     (SELECT Id, Status FROM CampaignMembers LIMIT :numberCampaignMemberToRetrieve)
+                                                     (SELECT Id, Status FROM CampaignMembers LIMIT : numberCampaignMemberToRetrieve)
                                                      FROM Campaign LIMIT 2];
 
         // Se crean los estados para las diferentes campañas y se actualizan los estados de los miembros de campaña
@@ -189,7 +189,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
         update campaignMembersToUpdate;
 
         Test.startTest();
-        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns(intermediary.Contact.AccountId);
+        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns();
         Test.stopTest();
 
         Assert.isFalse(campaignsToInsertNewStatus.isEmpty(), 'La lista de campañas no debería estar vacía.');

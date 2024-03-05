@@ -2,18 +2,18 @@
 <SharingSet xmlns="http://soap.sforce.com/2006/04/metadata">        
     <accessMappings>
         <accessLevel>Edit</accessLevel>
-        <object>Account</object>
-        <objectField>IntermediaryVisibilityAcc__c</objectField>
+        <object>AccountRelationship__c</object>
+        <objectField>IntermediaryId__c</objectField>
         <userField>Contact.Account</userField>
     </accessMappings>
     <accessMappings>
-        <accessLevel>Read</accessLevel>
-        <object>Contact</object>
-        <objectField>Account.IntermediaryVisibilityAcc__c</objectField>
+        <accessLevel>Edit</accessLevel>
+        <object>Competitor__c</object>
+        <objectField>IntermediaryId__c</objectField>
         <userField>Contact.Account</userField>
     </accessMappings>
     <accessMappings>
-        <accessLevel>Read</accessLevel>
+        <accessLevel>Edit</accessLevel>
         <object>Opportunity</object>
         <objectField>IntermediaryVisibilityAcc__c</objectField>
         <userField>Contact.Account</userField>
@@ -21,10 +21,10 @@
     <accessMappings>
         <accessLevel>Read</accessLevel>
         <object>Policy__c</object>
-        <objectField>IntermediaryVisibilityAcc__c</objectField>
+        <objectField>IntermediaryId__c</objectField>
         <userField>Contact.Account</userField>
     </accessMappings>
     <description>Visibilidad para el Agente Mediador en la app de ZRM</description>
     <name>Agente Ventas Sharing Set</name>
-    <profiles>agente ventas</profiles>
+    <profiles>Agente Ventas</profiles>
 </SharingSet>

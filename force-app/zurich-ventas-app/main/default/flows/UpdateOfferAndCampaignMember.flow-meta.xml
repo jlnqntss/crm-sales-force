@@ -133,12 +133,6 @@
                 <stringValue></stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>OwnerId</field>
-            <value>
-                <elementReference>UserId</elementReference>
-            </value>
-        </inputAssignments>
         <object>Opportunity</object>
     </recordUpdates>
     <runInMode>DefaultMode</runInMode>

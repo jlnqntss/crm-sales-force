@@ -3,8 +3,11 @@
     <fullName>NoFinalPolicyNumberInformedAgent</fullName>
     <active>true</active>
     <description>[Ventas] no permite pasar a a la etapa cerrada-ganada sin que este informado el campo Número de póliza resultante</description>
-    <errorConditionFormula>($Profile.Name = &apos;Ventas User&apos; ||
-$Profile.Name = &apos;Agente Ventas&apos;) &amp;&amp;
+    <errorConditionFormula>(
+  $Profile.Name = &quot;Ventas User&quot; ||
+  $Profile.Name = &quot;Agente Ventas&quot; ||
+  $Profile.Name = &quot;Agente Ventas - AGR&quot;
+) &amp;&amp;
 ISPICKVAL(StageName,&quot;Closed Won&quot;) &amp;&amp;
 ISBLANK(ResultingPolicyNumber__c)</errorConditionFormula>
     <errorMessage>[VR Oferta] Número de póliza resultante no informado</errorMessage>
