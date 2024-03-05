@@ -7,7 +7,9 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
     static final string IAM_ROLE_A_NAME = 'TestRoleA';
     
     @TestSetup
-    static void makeData() {      
+    static void makeData() {     
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 1);
+        insert accounts; 
         
         TestDataFactorySDM.intermediarySetupData();        
     }
@@ -46,7 +48,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
      * @return {Auth.UserData} the auth user data structure
      *
      */
-    static Auth.UserData mockAuthData(OpenIDConnectSalesforceCommunity handler, string roles, String email, String affiliationCode) {
+    private static Auth.UserData mockAuthData(OpenIDConnectSalesforceCommunity handler, string roles, String email, String affiliationCode) {
         if (String.isBlank(roles)) {
             throw new OpenIDConnectSalesforceCommunity.RegHandlerException('No role specified for the test');
         }
@@ -262,7 +264,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
      * @param {string role_names} a list of roles separated by coma
      * @return {Auth.UserData} the auth user data structure
      */
-    static Auth.UserData getSampleDataIAM(string role_names, String email, String accountCode) {
+    private static Auth.UserData getSampleDataIAM(string role_names, String email, String accountCode) {
 
 
         String emailValue = String.isNotEmpty(email) ? email : 'testuser@example.org';
@@ -299,7 +301,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
 
     // test de login para mediador, existiendo un contacto al cual crear un usuario de comunidad
     @isTest
-    static void testCreateUserIntermediaryExistingContact() {
+    private static void testCreateUserIntermediaryExistingContact() {
 
         List<Contact> contacts = new List<Contact>([SELECT Id, Account.Name, Email, Account.INFOIntermediaryCode__c FROM Contact]);
         
@@ -325,7 +327,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
 
     // test de login para mediador, NO existiendo un contacto al cual crear un usuario de comunidad
     @isTest
-    static void testCreateUserIntermediaryNoExistingContact() {
+    private static void testCreateUserIntermediaryNoExistingContact() {
 
         Map<Id, Contact> existingContactsMap = new Map<Id, Contact>([SELECT AccountId FROM Contact]);
 
@@ -353,7 +355,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
     // Test create user dummy account //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // test de login para mediador, existiendo un contacto al cual crear un usuario de comunidad
     @isTest
-    static void testCreateUserExistingContactToDummy() {
+    private static void testCreateUserExistingContactToDummy() {
 
         List<Contact> contacts = new List<Contact>([SELECT Id, Account.Name, Email, AccountId, Account.INFOIntermediaryCode__c FROM Contact]);
         
@@ -387,7 +389,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
 
     // test de login para mediador, NO existiendo un contacto al cual crear un usuario de comunidad
     @isTest
-    static void testCreateUserNoExistingContactToDummy() {
+    private static void testCreateUserNoExistingContactToDummy() {
 
         Map<Id, Contact> existingContactsMap = new Map<Id, Contact>([SELECT AccountId FROM Contact]);
 
@@ -423,7 +425,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
     //////////////////// Test Update Permission Set y Public Group /////////////////////////////////////
 
     @isTest
-    static void updateUserGroupAndPermissionSetGroup() {
+    private static void updateUserGroupAndPermissionSetGroup() {
         List<Contact> contacts = new List<Contact>([SELECT Id, Account.Name, Email, Account.INFOIntermediaryCode__c FROM Contact]);
         
 
@@ -466,5 +468,79 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
             // POR ALGUNA RAZÓN al validar el método futuro  que el permission set group asignado al usuario la consulta devuelve vacío, se ha comprobado que funciona correctamente con pruebas sobre la plataforma
             
         }
+    }
+
+    @isTest
+    private static void testZRMAccountTeamMemberAgenteVentas() {
+
+        List<User> userZRM = new List<User>([SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND IsActive = true]);
+
+        List<String> profileList = new List<String>();
+        profileList.add('Agente Ventas');
+        
+        if (!userZRM.isEmpty()) {
+            // inserto una poliza al medidador del usuario encontrado
+            List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
+
+            List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);        
+            policies[0].IntermediaryId__c = userZRM.get(0).Contact.AccountId;
+            insert policies;
+
+            // Elimino los atm que se hayan podido generar
+            List<AccountTeamMember> atmsToDelete = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
+            if (!atmsToDelete.isEmpty()) {
+                delete atmsToDelete;
+            }
+
+
+            Test.startTest();
+            OpenIDConnectSalesforceCommunity.generateZRMATMs(userZRM.get(0).Id, profileList);
+            Test.stopTest();   
+
+
+            List<AccountTeamMember> atmsAfterProcess = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember LIMIT 1]);
+
+            System.assert(atmsAfterProcess.size() > 0, 'Debe haber al menos 1 atm');
+            
+            
+        }
+    }
+
+
+    @isTest
+    private static void testZRMAccountTeamMemberAgenteVentasAGR() {
+
+        List<User> userZRM = new List<User>([SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND IsActive = true]);
+
+        List<String> profileList = new List<String>();
+        profileList.add('Agente Ventas - AGR');
+        
+        if (!userZRM.isEmpty()) {
+            // inserto una poliza al medidador del usuario encontrado
+            List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
+
+            List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);        
+            policies[0].IntermediaryId__c = userZRM.get(0).Contact.AccountId;
+            insert policies;
+
+            // Elimino los atm que se hayan podido generar
+            List<AccountTeamMember> atmsToDelete = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
+            if (!atmsToDelete.isEmpty()) {
+                delete atmsToDelete;
+            }
+
+
+            Test.startTest();
+            OpenIDConnectSalesforceCommunity.generateZRMATMs(userZRM.get(0).Id, profileList);
+            Test.stopTest();   
+
+
+            List<AccountTeamMember> atmsAfterProcess = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember LIMIT 1]);
+
+            System.assert(atmsAfterProcess.size() > 0, 'Debe haber al menos 1 atm');
+            
+            
+        }
+
     }
 }

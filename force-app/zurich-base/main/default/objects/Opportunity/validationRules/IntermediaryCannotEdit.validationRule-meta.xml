@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IntermediaryCannotEdit</fullName>
+    <active>true</active>
+    <description>El mediador no tiene permisos para editar la oferta</description>
+    <errorConditionFormula>AND(
+	NOT(ISNEW()),
+	$User.Id != OwnerId,
+	OR(
+		$Profile.Name = &apos;Agente Ventas&apos;,
+		$Profile.Name = &apos;Agente Ventas - AGR&apos;
+	),
+	ZRM__c = false		 
+)</errorConditionFormula>
+    <errorMessage>[VR Oferta] No tiene permisos para modificar el registro</errorMessage>
+</ValidationRule>

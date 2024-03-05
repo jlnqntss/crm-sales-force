@@ -33,6 +33,7 @@
     <networkMemberGroups>
         <profile>admin</profile>
         <profile>agente ventas</profile>
+        <profile>agente ventas - agr</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
