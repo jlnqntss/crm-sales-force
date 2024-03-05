@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 02-19-2024
+ * @last modified on  : 03-04-2024
  * @last modified by  : jchavez
 **/
 public without sharing class CaseHandler implements ITrigger
@@ -34,6 +34,7 @@ public without sharing class CaseHandler implements ITrigger
                 CaseUtil.assignAccountAndContactFromDniSuppliedEmailAndPhone(listCasesFromZurich);
             }
             
+            CaseUtil.getQueuesSprinklr();
         }
     }
 
@@ -58,6 +59,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
         CaseUtil.updateTranscomCase(newList);
         CaseUtil.setSprinklrCaseTipification(newList);
+        CaseUtil.setSprinklrCaseCallCenterAndGroup(newList);
     }
     
     /**
