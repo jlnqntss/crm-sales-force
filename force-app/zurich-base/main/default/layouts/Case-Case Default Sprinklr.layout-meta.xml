@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <excludeButtons>MergeCase</excludeButtons>
+<excludeButtons>MergeCase</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -107,15 +107,15 @@
                 <field>spr_sf__Sprinklr_Case_Number__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>SprinklrManagedBy__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>SprinklrPostType__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>SprinklrRequestType__c</field>
             </layoutItems>
             <layoutItems>
@@ -129,7 +129,7 @@
                 <field>SprinklrInitialCaseSentiment__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>SprinklrFinalSentiment__c</field>
             </layoutItems>
             <layoutItems>
@@ -137,7 +137,7 @@
                 <field>SprinklrCustomerJourney__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>SprinklrProduct__c</field>
             </layoutItems>
         </layoutColumns>
