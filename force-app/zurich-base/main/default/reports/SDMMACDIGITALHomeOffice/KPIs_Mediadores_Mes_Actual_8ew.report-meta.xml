@@ -11,7 +11,8 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>KPI__c.TotalLoad__c:SUM/KPI__c.Income__c:SUM</calculatedFormula>
+        <calculatedFormula>IF(KPI__c.Income__c:SUM == 0, null,
+KPI__c.TotalLoad__c:SUM/KPI__c.Income__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Siniestralidad Total</description>
         <developerName>FORMULA2</developerName>
@@ -31,7 +32,8 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>KPI__c.CAYLoad__c:SUM/KPI__c.Income__c:SUM</calculatedFormula>
+        <calculatedFormula>IF(KPI__c.Income__c:SUM == 0, null,
+KPI__c.CAYLoad__c:SUM/KPI__c.Income__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Siniestralidad CAY</description>
         <developerName>FORMULA4</developerName>
