@@ -300,11 +300,10 @@ public with sharing class CaseUtil
      public static void shortDescriptionNeeded(List<Case> newList)
      {
          integer stringLimit = 255;
-         Id ocsSprinklrRecordType = Schema.SObjectType.ExternalRequest__c.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR).getRecordTypeId();
- 
+
          for(Case caso : newList)
          {
-             if(caso.RecordTypeId == ocsSprinklrRecordType)
+             if(caso.RecordTypeId == RT_ID_OCSSPRINKLR)
              {
                  if(!String.isBlank(caso.Description) && caso.Description.length() > stringLimit)
                  {
