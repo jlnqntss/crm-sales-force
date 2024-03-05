@@ -41,6 +41,19 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>AsignarCallCenterSprinklr</name>
+        <label>Asignar Call Center del Owner</label>
+        <locationX>2162</locationX>
+        <locationY>503</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CallCenter__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CallCenterByOwnerFormulaSprinklr</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>AssignCCSAssignment</name>
         <label>Asignar CCS</label>
         <locationX>1370</locationX>
@@ -100,6 +113,57 @@
             <stringValue>OCSInquiry</stringValue>
         </value>
     </constants>
+    <constants>
+        <description>Nombre API del tipo de registro de Caso: OCS Sprinklr</description>
+        <name>RECORDTYPE_OCS_SPRINKLR</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>OCSSprinklr</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <name>Cambio_de_owner</name>
+        <label>¿Cambio de owner?</label>
+        <locationX>2294</locationX>
+        <locationY>395</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CambioDeOwner</name>
+            <conditionLogic>1 AND (2 OR (3 AND 4))</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>005</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Owner:User.Title</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AsignarCallCenterSprinklr</targetReference>
+            </connector>
+            <label>Cambio de owner</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>CDEXorCSMOrCCSDecision</name>
         <label>¿Es CDEX, CSM o CCS?</label>
@@ -239,7 +303,7 @@
     <decisions>
         <name>IsOCSDecision</name>
         <label>¿Es OCS?</label>
-        <locationX>1568</locationX>
+        <locationX>1832</locationX>
         <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -256,6 +320,21 @@
                 <targetReference>UserTypeAndDepartmentDecision</targetReference>
             </connector>
             <label>OCS</label>
+        </rules>
+        <rules>
+            <name>SprinklrOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>RECORDTYPE_OCS_SPRINKLR</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Cambio_de_owner</targetReference>
+            </connector>
+            <label>Sprinklr</label>
         </rules>
     </decisions>
     <decisions>
@@ -414,6 +493,25 @@
 )</expression>
     </formulas>
     <formulas>
+        <name>CallCenterByOwnerFormulaSprinklr</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    BEGINS({!$Record.OwnerId},&apos;00G&apos;),
+    IF( 
+         OR( 
+                CONTAINS({!$Record.Owner:Group.Name},&apos;Postventa&apos;),CONTAINS({!$Record.Owner:Group.Name},&apos;Siniestros&apos;)), 
+                &apos;RRSS Postventa-Siniestros&apos;, 
+                 IF(  
+                     CONTAINS({!$Record.Owner:Group.Name},&apos;Marca&apos;), 
+                     &apos;RRSS Marca&apos;, &apos;&apos;)), 
+IF(
+    {!$Record.Owner:User.Title} = &apos;RRSS_Marca&apos;, 
+    &apos;RRSS Marca&apos;, 
+     IF( 
+         {!$Record.Owner:User.Title} = &apos;RRSS_PostventaSiniestros&apos;, 
+         &apos;RRSS Postventa-Siniestros&apos;, &apos;&apos;)))</expression>
+    </formulas>
+    <formulas>
         <name>CallCenterFormula</name>
         <dataType>String</dataType>
         <expression>IF
@@ -444,7 +542,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>1442</locationX>
+        <locationX>1706</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsOCSDecision</targetReference>
