@@ -5,21 +5,22 @@
     <description>Validación para restringir los cambios de etapa: Quoted&gt;App Submitted, Quoted&gt;Legit Lead y App Submitted&gt;Legit Lead</description>
     <errorConditionFormula>AND(
     OR( 
-        $Profile.Name = &apos;Ventas User&apos;,
-        $Profile.Name = &apos;Agente Ventas&apos;
+        $Profile.Name = &quot;Ventas User&quot;,
+        $Profile.Name = &quot;Agente Ventas - AGR&quot;,
+        $Profile.Name = &quot;Agente Ventas&quot; 
     ),
     OR(
        AND(
-          ISPICKVAL(PRIORVALUE(StageName), &apos;Quoted&apos;),
-          ISPICKVAL(StageName, &apos;App Submitted&apos;)
+          ISPICKVAL(PRIORVALUE(StageName), &quot;Quoted&quot;),
+          ISPICKVAL(StageName, &quot;App Submitted&quot;)
        ),
        AND(
-          ISPICKVAL(PRIORVALUE(StageName), &apos;Quoted&apos;),
-          ISPICKVAL(StageName, &apos;Legit Lead&apos;)
+          ISPICKVAL(PRIORVALUE(StageName), &quot;Quoted&quot;),
+          ISPICKVAL(StageName, &quot;Legit Lead&quot;)
        ),
        AND(
-          ISPICKVAL(PRIORVALUE(StageName), &apos;App Submitted&apos;),
-          ISPICKVAL(StageName, &apos;Legit Lead&apos;)
+          ISPICKVAL(PRIORVALUE(StageName), &quot;App Submitted&quot;),
+          ISPICKVAL(StageName, &quot;Legit Lead&quot;)
        )
     ),
     ISCHANGED(StageName)

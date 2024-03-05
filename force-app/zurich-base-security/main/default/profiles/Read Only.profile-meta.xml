@@ -3864,6 +3864,16 @@
         <recordType>PersonAccount.Customer</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.LastIntermediaryGroupChange__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.LastIntermediaryGroup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>PersonAccount.Lead</recordType>

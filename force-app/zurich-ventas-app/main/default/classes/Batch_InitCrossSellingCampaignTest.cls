@@ -51,19 +51,25 @@ public with sharing class Batch_InitCrossSellingCampaignTest
 
         List<CampaignMemberStatus> cmsList = TestDataFactory.generateCampaignStatus(newStatusList, campaignTest.get(0).Id);
         insert cmsList;
-
-        // generate campaign member
-        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaignTest, 'Pdte. Revisión Mediador');
-        for (CampaignMember cm: campaignMembers) {
-            cm.LeadPhone__c = '600000000';
-        }
-        insert campaignMembers;
-
+        
+        // Generamos los campagin member a nivel de test porque al consultarlos por alguna razon les pone el estado sent
 
     }
 
     @isTest
-    static void executeBatch_ok() {
+    static void executeBatch_ok() {        
+        
+        List<Campaign> campaignTest = new List<Campaign>([SELECT Id FROM Campaign WHERE ExternalId__c = 'TestCampaign']);
+        List<Account> accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null]);
+        
+        // generate campaign member
+        List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaignTest, 'Pdte. Revisión Mediador');
+        for (CampaignMember cm: campaignMembers) {
+            cm.LeadPhone__c = '600000000';
+            cm.Status = 'Pdte. Revisión Mediador';
+        }
+        insert campaignMembers;       
+        
 
         List<CampaignMember> ccCampaignMemberListBefore = new List<CampaignMember>([SELECT Id FROM CampaignMember WHERE Campaign.ExternalId__c = 'TestCampaign#CC']);
 
@@ -74,7 +80,6 @@ public with sharing class Batch_InitCrossSellingCampaignTest
         Test.stopTest();
 
         List<CampaignMember> ccCampaignMemberListAfter = new List<CampaignMember>([SELECT Id FROM CampaignMember WHERE Campaign.ExternalId__c = 'TestCampaign#CC']);
-
         System.assertEquals(true, ccCampaignMemberListBefore.size() != ccCampaignMemberListAfter.size(), 'El tamaño no debe coincidir en la campaña de CC, tras ejecutar debe tener los registros clonados');
 
     }

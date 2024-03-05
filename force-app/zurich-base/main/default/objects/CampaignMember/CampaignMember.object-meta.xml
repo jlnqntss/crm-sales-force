@@ -128,5 +128,5 @@
     </actionOverrides>
     <compactLayoutAssignment>Default</compactLayoutAssignment>
     <enableFeeds>false</enableFeeds>
-    <sharingModel>ControlledByCampaign</sharingModel>
+    <sharingModel>ControlledByLeadOrContact</sharingModel>
 </CustomObject>
