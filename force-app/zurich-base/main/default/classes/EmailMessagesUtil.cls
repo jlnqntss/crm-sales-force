@@ -769,8 +769,18 @@ public with sharing class EmailMessagesUtil
                 mailboxes.add(mailbox.Email__c);
             }
 
+            List<EmailMessage> emailListRecentlyOpened = new List<EmailMessage>();
+
+            for (EmailMessage em : emailList)
+            {
+                if (em.CreatedDate >= Datetime.now().addMinutes(-1))
+                {
+                    emailListRecentlyOpened.add(em);
+                }
+            }
+
             // Vemos si los buzones están en el CC pero no en ToAddress y los guardamos
-            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailList, mailboxes);//new List<EmailMessage>();
+            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailListRecentlyOpened, mailboxes);//new List<EmailMessage>();
 
             Set<String> caseIds = new Set<String>();
 
