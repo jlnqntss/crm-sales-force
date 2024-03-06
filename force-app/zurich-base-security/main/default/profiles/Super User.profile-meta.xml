@@ -10838,6 +10838,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Competitor__c.IntermediaryId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Competitor__c.IntermediaryIdOld__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10894,6 +10899,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>AccountRelationship__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.IntermediaryId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
