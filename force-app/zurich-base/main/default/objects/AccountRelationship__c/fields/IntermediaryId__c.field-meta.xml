@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IntermediaryId__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Identifica el intermediario</description>
+    <externalId>false</externalId>
+    <label>Intermediary</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Cuentas Relacionadas (Intermediary)</relationshipLabel>
+    <relationshipName>Cuentas_Relacionadas</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

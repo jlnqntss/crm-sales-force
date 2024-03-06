@@ -18,7 +18,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Borrar_Corredor_Potencial</targetReference>
+                <targetReference>Trasladar_Casos</targetReference>
             </connector>
             <label>Si</label>
         </rules>
@@ -50,7 +50,7 @@
         <name>Borrar_Corredor_Potencial</name>
         <label>Borrar Corredor Potencial</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>863</locationY>
         <inputReference>Get_Corredor_Potencial</inputReference>
     </recordDeletes>
     <recordLookups>
@@ -102,6 +102,54 @@
         <object>RecordType</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>Trasladar_Casos</name>
+        <label>Trasladar Casos</label>
+        <locationX>50</locationX>
+        <locationY>647</locationY>
+        <connector>
+            <targetReference>Trasladar_Ofertas</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Corredor_Potencial.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Trasladar_Ofertas</name>
+        <label>Trasladar Ofertas</label>
+        <locationX>50</locationX>
+        <locationY>755</locationY>
+        <connector>
+            <targetReference>Borrar_Corredor_Potencial</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IntermediaryId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Corredor_Potencial.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>IntermediaryId__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+    </recordUpdates>
     <start>
         <locationX>56</locationX>
         <locationY>0</locationY>

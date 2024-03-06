@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>PersonalizedManager__c</fullName>
     <externalId>false</externalId>
-    <formula>IF( (Industry__c=&apos;Danos-RC Venta&apos; || (Industry__c=&apos;Generico&apos; &amp;&amp; ISPICKVAL(Type , &apos;Venta&apos;))),  Account.UWSaleRCDamage__c , 
+    <formula>IF( (Industry__c=&apos;Danos-RC Venta&apos; || ((Industry__c=&apos;Generico&apos; || Industry__c=&apos;Cartera&apos;) &amp;&amp; ISPICKVAL(Type , &apos;Venta&apos;))), Account.UWSaleRCDamage__c ,
 
    IF(Industry__c=&apos;Specialties&apos; &amp;&amp; ISPICKVAL( Type , &apos;Venta&apos;),   Account.UWSaleSpecialties__c ,  
       

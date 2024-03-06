@@ -8,5 +8,6 @@
     <permissionSets>Consulta_de_KPI</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>Gestion_Suscripcion</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

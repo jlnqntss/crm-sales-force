@@ -63,7 +63,7 @@
                 <booleanValue>true</booleanValue>
             </value>
         </filters>
-        <object>Case</object>
+        <object>Account</object>
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
