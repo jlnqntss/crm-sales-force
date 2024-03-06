@@ -90,7 +90,7 @@ public with sharing class CampaignMemberUtil
      */
     public static void closeRelatedOffer(Map<Id, CampaignMember> miembros)
     {
-        Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'Agente Ventas'});
+        Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'Agente Ventas', 'Agente Ventas - AGR'});
         if (listaPerfiles.keySet().contains(UserInfo.getProfileId()) || Test.isRunningTest())
         {
             // Aqui buscamos la oferta relacionada y la cerramos

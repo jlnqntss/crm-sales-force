@@ -5,6 +5,7 @@
     <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
     <permissionSets>Consulta_Datos_Partner_OCS</permissionSets>
     <permissionSets>Gestion_Partner_OCS</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <permissionSets>Restringir_Tareas</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

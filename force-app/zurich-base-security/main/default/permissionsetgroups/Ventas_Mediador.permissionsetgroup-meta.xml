@@ -3,6 +3,7 @@
     <hasActivationRequired>false</hasActivationRequired>
     <label>Ventas Mediador</label>
     <permissionSets>Acceso_Opciones_de_Oferta</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <permissionSets>NoReasignarOferta</permissionSets>
     <permissionSets>No_Editar_Asunto_Tarea</permissionSets>
     <permissionSets>Ventas_Edicion_AccountRetationship_Agente</permissionSets>
