@@ -9505,6 +9505,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Related_to_Intermediary_Group__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
