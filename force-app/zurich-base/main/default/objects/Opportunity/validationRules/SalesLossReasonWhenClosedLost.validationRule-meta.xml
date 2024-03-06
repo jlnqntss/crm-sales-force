@@ -5,8 +5,11 @@
     <description>[VR Oferta] Motivo de Pérdida es obligatorio cuando es Cerrada Perdida</description>
     <errorConditionFormula>ISPICKVAL(StageName,&quot;Closed Lost&quot;) &amp;&amp;
 ISBLANK(TEXT(Sales_Loss_Reason__c)) &amp;&amp; 
-($Profile.Name = &apos;Ventas User&apos; || 
-	$Profile.Name = &apos;Agente Ventas&apos;)</errorConditionFormula>
+(
+	$Profile.Name = &quot;Ventas User&quot; || 
+	$Profile.Name = &quot;Agente Ventas&quot; ||
+ 	$Profile.Name = &quot;Agente Ventas - AGR&quot;
+)</errorConditionFormula>
     <errorDisplayField>Sales_Loss_Reason__c</errorDisplayField>
     <errorMessage>[VR Oferta] Motivo de Pérdida venta es obligatorio cuando es Cerrada Perdida</errorMessage>
 </ValidationRule>

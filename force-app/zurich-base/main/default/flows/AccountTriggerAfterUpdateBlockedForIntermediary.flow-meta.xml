@@ -15,6 +15,8 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>Batch_IntermediaryVisibilityRecalcAcc</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <description>Recalcular la visibilidad de ZRM en caso de que por GDPR se bloquee un cliente, los mediadores no deben de poder ver su información de account, policy y offer</description>
@@ -58,5 +60,5 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
 </Flow>

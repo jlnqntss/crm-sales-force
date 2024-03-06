@@ -4,5 +4,6 @@
     <label>OCS Centro Excelencia</label>
     <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
     <permissionSets>Centro_Excelencia</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

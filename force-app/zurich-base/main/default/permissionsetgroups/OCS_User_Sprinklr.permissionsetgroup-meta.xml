@@ -9,6 +9,7 @@
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_CS</permissionSets>
     <permissionSets>Gestion_Whatsapp</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <permissionSets>OCS_Sprinklr</permissionSets>
     <permissionSets>spr_sf__Sprinklr_User</permissionSets>
     <status>Updated</status>

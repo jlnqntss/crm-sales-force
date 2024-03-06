@@ -23,20 +23,19 @@ public with sharing class CampaignZRMCustomPageController
      *
      * @author amiranda
      * @date 30-10-2023
-     * @param intermediaryId Id de la cuenta de tipo 'Intermediario'
      * @return List<CampaignData> Lista de campañas
      * @where LWC IntermediaryCampaignList
-     * 
+     *
      * @change amiranda 28/12/2023 Se añade el parámetro 'intermediaryId' al método.
      **/
     @AuraEnabled(cacheable=true)
-    public static List<CampaignData> getCampaigns(Id intermediaryId)
+    public static List<CampaignData> getCampaigns()
     {
         List<CampaignData> campaigns = new List<CampaignData>();
 
         try
         {
-            List<Campaign> retrievedCampaigns = new CampaignsSelector().selectCampaigns(intermediaryId);
+            List<Campaign> retrievedCampaigns = new CampaignsSelector().selectCampaigns();
 
             if ( !retrievedCampaigns.isEmpty() )
             {
@@ -62,8 +61,10 @@ public with sharing class CampaignZRMCustomPageController
                             campaign.assignedToCC++;
                         }
                     }
-
-                    campaigns.add(campaign);
+                    if(retrievedCampaign.CampaignMembers.size() > 0)
+                    {
+                        campaigns.add(campaign);
+                    }
                 }
             }
         }

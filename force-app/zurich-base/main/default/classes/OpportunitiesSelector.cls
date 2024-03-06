@@ -399,7 +399,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                         'WHERE Campaign.Type = \'Cross Selling\' ' +
                         'AND Campaign.EndDate <= TODAY ' +
                         'AND StageName IN (\'Legit Lead\', \'App Submitted\', \'Quoted\') ' +
-                        'AND Owner.Profile.Name = \'Agente Ventas\'';
+                        'AND ZRM__c = true';
     }
 
     /**
@@ -462,7 +462,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     {
         return 'SELECT Id, AccountId, Account.Name, Account.Phone, Account.PreferedContactStart__c, ' + 
                     'Account.PreferedContactEnd__c, Account.WebId__c, OwnerId, CreatedDate FROM Opportunity ' +
-                    'WHERE Owner.Profile.Name = \'Agente Ventas\' AND ReassignToContactCenter__c = true';
+                    'WHERE ZRM__c = true AND ReassignToContactCenter__c = true';
        
     }
 
@@ -524,6 +524,43 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             .addConditionIn(Opportunity.AccountId, idsCampaignMembers)
             .addConditionEq(Opportunity.IsClosed, false);
     
+            retrievedOffers =  (List<Opportunity>) this.baseQuery.run();
+        }
+        
+        return retrievedOffers;
+    }
+    
+    /**
+     * Método que saca las ofertas relacionadas con las cuentas y campañas 
+     * que pertencen a los miembros de campaña pasados por parámetro
+     * @author nikola.cobian@seidor.com
+     * @date 19/02/2024
+     * @param List<CampaignMember> campaignMembers
+     * @return List<Opportunities>
+     */
+    public List<Opportunity> findZRMOpportunityByCampaignMembers(List<CampaignMember> campaignMembers)
+    {
+        List<Id> campaignMembersAccountsIds = new List<Id>();
+        Set<Id> campaignIds = new Set<Id>();
+        
+        for(CampaignMember cm : campaignMembers)
+        {
+            campaignMembersAccountsIds.add(cm.Contact.AccountId);
+            campaignIds.add(cm.CampaignId);
+        }
+
+        List<Opportunity> retrievedOffers = new List<Opportunity>();
+        if(!campaignMembers.isEmpty())
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> 
+            {
+                Opportunity.AccountId,
+                Opportunity.CampaignId,
+                Opportunity.ZRM__c
+            })
+            .addConditionIn(Opportunity.AccountId, campaignMembersAccountsIds)
+            .addConditionIn(Opportunity.CampaignId, campaignIds);
+
             retrievedOffers =  (List<Opportunity>) this.baseQuery.run();
         }
         

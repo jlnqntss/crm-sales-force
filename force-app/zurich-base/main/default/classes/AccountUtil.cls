@@ -177,4 +177,97 @@ public class AccountUtil
         }
         return mapAccountsToRelateByCIF;
     }
+
+
+    /**
+     * Método que resuelve la visibilidad para los cambios de mediador de agrupación, alta a una agrupacion o baja de una agrupación
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    public static void zrmVisibility(List<Account> accountsTrigger, Map<Id,Account> oldMap) {         
+        Date todayDate = Date.today();
+
+        for (Account account: accountsTrigger) {
+            if (esMediador(account)) {
+                if (esAltaAgrupacion(account, oldMap)) {
+                    account.LastIntermediaryGroupChange__c = todayDate;
+                    account.LastIntermediaryGroup__c = '';
+                } else if (esBajaAgrupacion(account, oldMap) || esCambioAgrupacion(account, oldMap)) {
+                    account.LastIntermediaryGroupChange__c = todayDate;
+                    account.LastIntermediaryGroup__c = oldMap.get(account.Id).IntermediaryGroup__c;
+                }
+            }
+        }
+    }
+
+
+    /****************** Metodos Visibilidad ****************************************/
+    /**
+     * Comprobamos si el registro es un mediador, no se procesa otro tipo de registro
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    private static Boolean esMediador(Account account) {
+        Boolean result = false;
+
+        System.debug('DMM ' + new AccountsSelector().rtIntermediaryId);
+        System.debug('DMM 2 ' + account.RecordTypeId);
+
+        if (new AccountsSelector().rtIntermediaryId.equals(account.RecordTypeId)) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Comprobamos si el movimiento es de un mediador haciendo un alta a una agrupación (no cambio)
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    private static Boolean esAltaAgrupacion(Account account, Map<Id,Account> oldMap) {
+        Boolean result = false;
+        String oldIntermediaryGroup = oldMap.get(account.Id).IntermediaryGroup__c;
+
+        // si la relacion de agrupación pasa de vacio a un valor, lo añadimos a la lista de alta
+        if (oldIntermediaryGroup == null && account.IntermediaryGroup__c != null) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Comprobamos si el movimiento es de un mediador haciendo un cambio de agrupación 
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    private static Boolean esCambioAgrupacion(Account account, Map<Id,Account> oldMap) {
+        Boolean result = false;
+        String oldIntermediaryGroup = oldMap.get(account.Id).IntermediaryGroup__c;
+
+        // si la relacion de agrupación cambia, lo añadimos a la lista de cambio
+        if (oldIntermediaryGroup != null && account.IntermediaryGroup__c != null && !account.IntermediaryGroup__c.equals(oldIntermediaryGroup)) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Comprobamos si el movimiento es de un mediador haciendo una baja a una agrupación (no cambio)
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    private static Boolean esBajaAgrupacion(Account account, Map<Id,Account> oldMap) {
+        Boolean result = false;
+        String oldIntermediaryGroup = oldMap.get(account.Id).IntermediaryGroup__c;
+
+        // si la relacion de agrupación pasa de un valor a vacio, lo añadimos a la lista de baja
+        if (oldIntermediaryGroup != null && account.IntermediaryGroup__c == null) {
+            result = true;
+        }
+
+        return result;
+    }
 }

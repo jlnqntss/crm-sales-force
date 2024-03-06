@@ -10,5 +10,6 @@
     <permissionSets>Gestion_CS</permissionSets>
     <permissionSets>Gestion_Gestor_Personalizado</permissionSets>
     <permissionSets>Gestion_Whatsapp</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

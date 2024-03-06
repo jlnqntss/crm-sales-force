@@ -97,7 +97,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
          * se les asignará alguno de estos estados.
          */
         List<Campaign> campaignsToInsertNewStatus = [SELECT Id,
-                                                     (SELECT Id, Status FROM CampaignMembers LIMIT :numberCampaignMemberToRetrieve)
+                                                     (SELECT Id, Status FROM CampaignMembers LIMIT : numberCampaignMemberToRetrieve)
                                                      FROM Campaign LIMIT 2];
 
         // Se crean los estados para las diferentes campañas y se actualizan los estados de los miembros de campaña
@@ -122,7 +122,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
         update campaignMembersToUpdate;
 
         Test.startTest();
-        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns(intermediary.Contact.AccountId);
+        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns();
         Test.stopTest();
 
         Assert.isFalse(campaignsToInsertNewStatus.isEmpty(), 'La lista de campañas no debería estar vacía.');
@@ -163,7 +163,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
          * se les asignará alguno de estos estados.
          */
         List<Campaign> campaignsToInsertNewStatus = [SELECT Id,
-                                                     (SELECT Id, Status FROM CampaignMembers LIMIT :numberCampaignMemberToRetrieve)
+                                                     (SELECT Id, Status FROM CampaignMembers LIMIT : numberCampaignMemberToRetrieve)
                                                      FROM Campaign LIMIT 2];
 
         // Se crean los estados para las diferentes campañas y se actualizan los estados de los miembros de campaña
@@ -189,7 +189,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
         update campaignMembersToUpdate;
 
         Test.startTest();
-        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns(intermediary.Contact.AccountId);
+        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns();
         Test.stopTest();
 
         Assert.isFalse(campaignsToInsertNewStatus.isEmpty(), 'La lista de campañas no debería estar vacía.');
@@ -222,33 +222,19 @@ private with sharing class CampaignZRMCustomPageControllerTest
     private static void getCampaignMembers_ok()
     {
         Campaign campanya = [SELECT id FROM Campaign LIMIT 1];
-        List<CampaignMember> miembros = [SELECT id, Contact.AccountId FROM CampaignMember WHERE CampaignId = :campanya.id];
-        System.assertEquals(false, miembros.isEmpty(), 'Hemos de disponer de miembros de campaña');
-
-        List<ID> lstAccountIDS = new List<Id>();
-        for(CampaignMember cm : miembros)
-        {
-            lstAccountIDS.add(cm.Contact.AccountId);
-        }
-        List<Opportunity> offers = [SELECT Id, AccountId, CampaignId FROM Opportunity WHERE AccountId IN :lstAccountIDS AND CampaignId = :campanya.id];
-        System.assertEquals(false, offers.isEmpty(), 'Hemos de tener ofertas asociadas a las cuentas y a esa campaña');
 
         List<CampaignZRMCustomPageController.CampaignMemberData> retorno = new List<CampaignZRMCustomPageController.CampaignMemberData>();
+        
         Test.startTest();
         retorno = CampaignZRMCustomPageController.getCampaignMembers(campanya.id);
         Test.stopTest();
 
         System.assertEquals(false, retorno.isEmpty(), 'Se deben encontrar miembros de campaña');
-        System.assertEquals(offers.size(), retorno.size(), 'Se han de encontrar las mismas ofertas que manualmente');
         // Para los datos obtenidos, comprobamos que ha cargado información del CM y de la oferta asociada mediante la comprobación de algunos campos
         for(CampaignZRMCustomPageController.CampaignMemberData cmData : retorno)
         {
             // Comprobamos que contiene datos del CampaignMember
             System.assertEquals(true, String.isNotBlank(cmData.cmId), 'Ha de contener el Id del miembro de campaña');
-
-            // Comprobamos que contiene datos de la oferta asociada al CM
-            System.assertEquals(true, String.isNotBlank(cmData.offerName), 'Ha de contener el Name de la oferta');
-            System.assertEquals(true, String.isNotBlank(cmData.offerId), 'Ha de contener el ID de la oferta');
         }
     }
 

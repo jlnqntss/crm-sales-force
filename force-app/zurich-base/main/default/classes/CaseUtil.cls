@@ -301,6 +301,33 @@ public with sharing class CaseUtil
         }
     }
 
+     /**
+     * Método que da valor a los campos Description y PrimerMensaje__c del objeto Case 
+     * Ejecutado en beforInsert porque vienen casos desde Sprinklr con la descripción rellena por un mensaje del cliente
+     * @author jchavez
+     * @date 23/02/2024
+     **/
+
+     public static void shortDescriptionNeeded(List<Case> newList)
+     {
+         integer stringLimit = 255;
+
+         for(Case caso : newList)
+         {
+             if(caso.RecordTypeId == RT_ID_OCSSPRINKLR)
+             {
+                 if(!String.isBlank(caso.Description) && caso.Description.length() > stringLimit)
+                 {
+                     caso.PrimerMensaje__c =  caso.Description.left(stringLimit);
+                 }
+                 else
+                 {   
+                     caso.PrimerMensaje__c = caso.Description;
+                 }
+             }
+         }
+     }
+
     /**
      * Llamado en BulkBefore
      * Recoge los valores de Queues necesarios para casos Sprinklr
