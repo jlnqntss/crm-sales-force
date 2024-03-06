@@ -14,7 +14,7 @@
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.IntermediaryId__r.RecordType__c</leftValueReference>
+                <leftValueReference>$Record.IntermediaryId__r.RecordTypeId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>Get_Intermediary_Record_Type_Id.Id</elementReference>
