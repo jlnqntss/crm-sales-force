@@ -29,6 +29,8 @@ public with sharing class EmailMessagesUtil
     private Map<String, purecloud__PureCloud_Queue__c> mapGenesysQueueByEmail;
     // Map of Genesys Queues by Industry
     private Map<String, purecloud__PureCloud_Queue__c> mapGenesysQueueByIndustry;
+    // Map of Genesys Queues by Typology
+    private Map<CaseUtil.CaseTypology, purecloud__PureCloud_Queue__c> mapGenesysQueueByTypology;
     // List of email message to be considered
     @testvisible
     private List<EmailMessage> emailMessageToCheck;
@@ -237,6 +239,50 @@ public with sharing class EmailMessagesUtil
         }
     }
 
+    /**
+     * Get from the Genesys configuration de data for the Genesys Queues and flows bases on the Case Types
+     * 
+     * @author nts (jfherrero)
+     * @date 22/02/2024
+     */
+    public void getGenesysQueuesByTypology()
+    {
+        if( mapGenesysQueueByTypology == null ) {
+            mapGenesysQueueByTypology = new Map<CaseUtil.CaseTypology, purecloud__PureCloud_Queue__c>();
+        }
+
+        //Necesitamos obtener los nombres de las colas a través del metadato.
+        List<Case_Queue_override_by_type__mdt> caseQueueOverrideByType = Case_Queue_override_by_type__mdt.getAll().values();
+        
+        Map<CaseUtil.CaseTypology, String> mapGenesysQueueNamesByTypology = new Map<CaseUtil.CaseTypology, String>();
+        List<String> genesysQueueNames = new List<String>();
+
+        if (caseQueueOverrideByType?.size()>0)
+        {
+            for (Case_Queue_override_by_type__mdt queueOverride : caseQueueOverrideByType)
+            {
+                genesysQueueNames.add(queueOverride.Destino__c.trim().toLowerCase());
+                mapGenesysQueueNamesByTypology.put(new CaseUtil.CaseTypology(queueOverride.Type__c.trim().toLowerCase(),
+                                                                        queueOverride.Subtype__c.trim().toLowerCase(),
+                                                                        queueOverride.TypeN3__c.trim().toLowerCase()),
+                                              			queueOverride.Destino__c);
+            }
+        }
+        
+        GenesysQueueSelector genesysQueueSelector = new GenesysQueueSelector();
+        Map<String, purecloud__PureCloud_Queue__c> queuesMapByName = new Map<String, purecloud__PureCloud_Queue__c>();
+        
+        for(purecloud__PureCloud_Queue__c queue : genesysQueueSelector.getQueuesByName(genesysQueueNames))
+        {
+            queuesMapByName.put(queue.Name, queue);
+        }
+        
+        for (CaseUtil.CaseTypology typology : mapGenesysQueueNamesByTypology.keyset())
+        {
+            mapGenesysQueueByTypology.put(typology, queuesMapByName.get(mapGenesysQueueNamesByTypology.get(typology)));
+        }
+        
+    }
     
     /**
      * Devuelve un listado con los registros de los tipos de enrutado para cada dirección de email
@@ -384,6 +430,11 @@ public with sharing class EmailMessagesUtil
      * @author aberuete 
      * @date 20/11/2023 
      * @descripción Refactorizar el método y añadir que los casos de tipo USP , si el campo industry viene un correo, buscar la cola de enrutar a genesys por email
+     * 
+     * * * * modificaciones 
+     * @author jfherrero 
+     * @date 27/02/2024 
+     * @descripción Buscar si la cola se tiene que asignar por tipología a otros centros (inicialmente para GSS)
      */
     private purecloud__PureCloud_Queue__c findGenesysQueue(EmailMessage em)
     {
@@ -403,13 +454,31 @@ public with sharing class EmailMessagesUtil
                 if(em.Incoming && String.isNotBlank(em.ParentId)) idCaso.add(em.ParentId); 
                 List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
 
-                if(!listaCaso.isEmpty()  && em.Industry__c != null && em.Industry__c.contains('@'))
+                if (!listaCaso.isEmpty())
                 {
-                    genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());  
-
-                    if (genesysQueue == null && listaCaso.get(0).RecordTypeId == uspRecordTypeId )
+                    if(listaCaso[0].Type != null && listaCaso[0].Subtype__c != null && listaCaso[0].TypeN3__c != null)
                     {
-                        genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                        //Recuperamos un mapa de colas por tipología
+                        this.getGenesysQueuesByTypology();
+                        
+                        //Y buscamos si la tipología del caso coincide con alguna de las del mapa
+                        CaseUtil.CaseTypology myCaseTyplogy = new CaseUtil.CaseTypology(listaCaso[0].Type.trim().toLowerCase(),
+                                                                        				listaCaso[0].Subtype__c.trim().toLowerCase(),
+                                                                        				listaCaso[0].TypeN3__c.trim().toLowerCase());
+                        if (mapGenesysQueueByTypology.containsKey(myCaseTyplogy))
+                        {
+                            genesysQueue = this.mapGenesysQueueByTypology.get(myCaseTyplogy);
+                        } 
+                    }
+
+                    else if(em.Industry__c != null && em.Industry__c.contains('@'))
+                    {
+                        genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());  
+
+                        if (genesysQueue == null && listaCaso.get(0).RecordTypeId == uspRecordTypeId )
+                        {
+                            genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                        }
                     }
                 }
                 else
