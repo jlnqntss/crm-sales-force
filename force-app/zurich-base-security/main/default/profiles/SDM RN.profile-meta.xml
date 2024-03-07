@@ -2214,7 +2214,7 @@
         <recordType>AsignacionPlan__c.AsignacionRN</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Event-Event Layout</layout>
+        <layout>Event-SDM Event Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Event-SDM Event Layout</layout>
