@@ -1183,6 +1183,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Related_to_Intermediary_Group__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Reference_number__c</field>
         <readable>true</readable>
     </fieldPermissions>
