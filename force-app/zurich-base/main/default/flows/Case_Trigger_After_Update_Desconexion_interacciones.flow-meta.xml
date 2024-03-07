@@ -110,7 +110,7 @@
         </connector>
     </assignments>
     <assignments>
-        <name>CheckListaGetSize_0</name>
+        <name>ComprobarCantidadListaGetAssignment</name>
         <label>Comprobar Cantidad Lista Get</label>
         <locationX>710</locationX>
         <locationY>2184</locationY>
@@ -131,7 +131,7 @@
         <locationX>710</locationX>
         <locationY>1584</locationY>
         <defaultConnector>
-            <targetReference>CrearLogListaVaciaAction</targetReference>
+            <targetReference>ComprobarCantidadListaGetAssignment</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Si</defaultConnectorLabel>
         <rules>
@@ -317,7 +317,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
             <targetReference>AddEmailToCombinedListAssignment</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>CheckListaGetSize_0</targetReference>
+            <targetReference>ComprobarCantidadListaGetAssignment</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -438,35 +438,6 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
             <field>Message__c</field>
             <value>
                 <stringValue>La lista de estados está vacía</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>Case Trigger - After Update - Desconexión interacciones</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>CrearLogListaVaciaAction</name>
-        <label>Crear Log Lista Vacía</label>
-        <locationX>974</locationX>
-        <locationY>1692</locationY>
-        <connector>
-            <targetReference>CheckListaGetSize_0</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Message__c</field>
-            <value>
-                <stringValue>La lista de emails está vacía</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
