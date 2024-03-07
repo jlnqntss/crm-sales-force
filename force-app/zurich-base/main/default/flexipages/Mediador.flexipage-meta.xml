@@ -157,7 +157,7 @@
                             <value>OPPORTUNITY.NAME</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>ProductId__c</value>
+                            <value>Product_Text__c</value>
                         </valueListItems>
                         <valueListItems>
                             <value>OPPORTUNITY.CREATED_DATE</value>
