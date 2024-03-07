@@ -8,19 +8,29 @@ public with sharing class GenerateZRMLeadATMUtil {
     
     public static void handleEventAfterInsert(List<ZRMLeadATM__e> eventListTrigger) {
 
-        List<String> leadsIds = new List<String>();
-        List<String> eventUsersIdList = new List<String>();
+        try
+        {
+            
+            List<String> leadsIds = new List<String>();
+            List<String> eventUsersIdList = new List<String>();
+    
+            for (ZRMLeadATM__e event: eventListTrigger) {
+                eventUsersIdList.add(event.ZRMUserId__c);
+                leadsIds.add(event.AccountId__c);
+            }
+    
+            // Update owner
+            updateZRMLeadsOwner(leadsIds);
+    
+            // Generate ATMs
+            generateZRMLeadsATM(leadsIds, eventUsersIdList);
 
-        for (ZRMLeadATM__e event: eventListTrigger) {
-            eventUsersIdList.add(event.ZRMUserId__c);
-            leadsIds.add(event.AccountId__c);
+        }
+        catch (Exception e)
+        {            
+            ErrorLogUtil.commitError(e, 'GenerateZRMLeadATMTrigger', 'handleEventAfterInsert');            
         }
 
-        // Update owner
-        updateZRMLeadsOwner(leadsIds);
-
-        // Generate ATMs
-        generateZRMLeadsATM(leadsIds, eventUsersIdList);
 
     }
 

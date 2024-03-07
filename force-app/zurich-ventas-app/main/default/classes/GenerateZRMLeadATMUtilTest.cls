@@ -80,4 +80,30 @@ public with sharing class GenerateZRMLeadATMUtilTest {
         System.assert(atmAfter.size() > 0, 'Debe haber un account team');
     }
 
+    @isTest
+    private static void testInsertEvent() {
+
+        User u = [SELECT Id FROM User WHERE  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+
+        Account lead = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Lead' LIMIT 1];
+
+        List<ZRMLeadATM__e> eventListTrigger = new List<ZRMLeadATM__e>();
+
+        ZRMLeadATM__e event = new ZRMLeadATM__e();
+        event.accountId__c = lead.Id;
+        event.ZRMUserId__c = U.Id;
+        eventListTrigger.add(event);
+
+        Test.startTest();
+
+        Eventbus.publish(event);
+
+        Test.stopTest();
+
+        List<AccountTeamMember> atmAfter = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
+        System.assert(atmAfter.size() > 0, 'Debe haber un account team');
+
+
+    }
+
 }
