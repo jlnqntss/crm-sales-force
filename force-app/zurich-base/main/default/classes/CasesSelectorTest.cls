@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : aberuete
+ * @group             : 
+ * @last modified on  : 06-03-2024
+ * @last modified by  : aberuete
+**/
 @isTest
 private with sharing class CasesSelectorTest
 {
@@ -9,10 +16,6 @@ private with sharing class CasesSelectorTest
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         insert cases;
-
-        
-
-
     }
 
     @isTest
@@ -273,5 +276,30 @@ private with sharing class CasesSelectorTest
         Test.stopTest();
 
         System.assertNotEquals(0, matchedRecords.size(), 'Ha de devolver casos');
+    }
+
+    /**
+     * Test del método que devuelve una lista de casos filtada por el tipo de cuenta que tiene asociado el caso
+     * @author aberuete
+     * @date 06/03/2024
+     */
+    @isTest
+    private static void test_getCasesFilterByRecordTypeNamesAccount()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 2);
+        insert accounts;
+
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        insert cases;  
+
+        List<Case> allCases = [Select id from Case];
+        System.assertEquals (12, allCases.size(), 'El número de casos totales no es correcto');
+
+        Test.startTest();
+        List<Case> casesReturned = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (allCases, new List<String>{'Customer'});
+        Test.stopTest();
+
+        System.assertEquals (2, casesReturned.size(),'El número de casos devuelto no es correcto');
+        
     }
 }

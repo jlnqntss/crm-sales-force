@@ -1509,6 +1509,15 @@ public with sharing class CaseUtil
         }
     }
 
+    /**
+     * Método que obtiene una lista de los perfiles sociales ,relacionados al caso, para actualizar el contacto. 
+     * Dicho contacto será la person account relacionada al caso.
+     * 
+     * @author aberuete
+     * @date 06/03/2024
+     * 
+     * @param List<Case> casesUpdated : Lista de casos 
+     */
     public static void getSprinklrSocialPersonaToLinkContact(List<Case> casesUpdated)
     {
         Map<Id,spr_sf__SocialPersona__c> sprSocialPersonasToLinkContact = new Map<Id,spr_sf__SocialPersona__c>();
@@ -1520,11 +1529,6 @@ public with sharing class CaseUtil
         {
             for (Case caseUpdated : casesUpdated)
             {
-                System.debug ('recordtype ' + caseUpdated.recordTypeId);
-                System.debug ('accountid' + caseUpdated.AccountId);
-                System.debug ('account id developer name ' + caseUpdated.Account.RecordType.DeveloperName);
-                System.debug ('sprinklr social persona' + caseUpdated.SprinklrSocialPersona__c);
-
                 if (caseUpdated.recordTypeId == sprinklrRecordTypeId && caseUpdated.AccountId != null && caseUpdated.SprinklrSocialPersona__c != null )
                 {
                     sprSocialPersonaIds.add(caseUpdated.SprinklrSocialPersona__c);
@@ -1534,19 +1538,28 @@ public with sharing class CaseUtil
         }
 
         sprSocialPersonasToLinkContact = new Map<Id,spr_sf__SocialPersona__c>(new SprinklrSocialPersonaSelector().findAllDataById(sprSocialPersonaIds));
+        List<Case> casesToLinkSprinklrSocialPersonaToContact = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (casesToUpdateSprSocialPersona, new List<String>{'Customer'});
 
-        for (Case caseToUpdateSprSocialPersona : casesToUpdateSprSocialPersona)
+        for (Case caseToLinkSprinklrSocialPersonaToContact : casesToLinkSprinklrSocialPersonaToContact)
         {
-            spr_sf__SocialPersona__c sprSocialPersonaToUpdate = sprSocialPersonasToLinkContact.get(caseToUpdateSprSocialPersona.SprinklrSocialPersona__c);
-            //DUDA
-            if (caseUpdated.Account.RecordType.DeveloperName == 'Customer' && (sprSocialPersonaToUpdate.spr_sf__Contact__c == null || (sprSocialPersonaToUpdate.spr_sf__Contact__c != null && sprSocialPersonaToUpdate.spr_sf__Contact__c != caseToUpdateSprSocialPersona.AccountId  )) )
+            spr_sf__SocialPersona__c sprSocialPersonaToUpdate = sprSocialPersonasToLinkContact.get(caseToLinkSprinklrSocialPersonaToContact.SprinklrSocialPersona__c);
+
+            if ( sprSocialPersonaToUpdate != null && (sprSocialPersonaToUpdate.spr_sf__Contact__c == null || (sprSocialPersonaToUpdate.spr_sf__Contact__c != null && sprSocialPersonaToUpdate.spr_sf__Contact__c != caseToLinkSprinklrSocialPersonaToContact.Account.PersonContactId)) )
             {
-                sprSocialPersonaToUpdate.spr_sf__Contact__c = caseToUpdateSprSocialPersona.AccountId;
+                sprSocialPersonaToUpdate.spr_sf__Contact__c = caseToLinkSprinklrSocialPersonaToContact.Account.PersonContactId;
                 sprinklrSocialPersonaToUpdate.add(sprSocialPersonaToUpdate);
             } 
         }
     }
 
+    /**
+     * Método que actualiza los perfiles sociales relacionados con los casos para enlazar el contacto. 
+     * 
+     * @author aberuete
+     * @date 06/03/2024
+     * 
+     * @param List<Case> casesUpdated : Lista de casos 
+     */
     public static void updateSprSocialPersonaToLinkContact()
     {
         List<String> msgErrores = new List<String>();
@@ -1578,7 +1591,7 @@ public with sharing class CaseUtil
             }
         }
     }
-    
+
     /**
      * Construye y devuelve una colección de elementos Robot_Hegeo_Field_Mapping__mdt ordenada por un atributo de esta configuración.
      * Robot_Hegeo_Field_Mapping__mdt contiene la relación entre la categorización de casos realizada por herramientas externas y la categorización del caso en Salesforce.

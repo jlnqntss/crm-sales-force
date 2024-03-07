@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : aberuete
+ * @group             : 
+ * @last modified on  : 06-03-2024
+ * @last modified by  : aberuete
+**/
 public with sharing class CasesSelector extends RecordsSelector
 {
     //#region Contructores
@@ -12,8 +19,9 @@ public with sharing class CasesSelector extends RecordsSelector
    
 
     public static final String CASES_LAST_DATE = 'Case.CreatedDate = LAST_N_DAYS:';
-
     public static final String CASES_MODIFY_LAST_DATE = 'Case.LastModifiedDate = LAST_N_DAYS:';
+    public static final String ACCOUNT_RT_NAME_FIELD = 'Case.Account.RecordType.DeveloperName';
+    public static final String CONTACT_PERSON_ACCOUNT_FIELD = 'Case.Account.PersonContactId';
 
 
    
@@ -334,5 +342,31 @@ public with sharing class CasesSelector extends RecordsSelector
             return '';
         }
     }
-    
+
+    /**
+     * Método que obtiene una lista de casos filtrados por el record type name de la cuenta asociada al caso
+     * @author aberuete
+     * @date 06/03/2024
+     * @param List<Case> caseList : lista de casos a filtrar
+     * @param List<String> recordTypeNamesAccount : lista de nombres de record types de cuenta a filtrar
+    */
+    public List<Case> getCasesFilterByRecordTypeNamesAccount (List<Case> caseList, List<String> recordTypeNamesAccount)
+    {
+        if (recordTypeNamesAccount != null && !recordTypeNamesAccount.isEmpty() && caseList != null && !caseList.isEmpty() )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>
+            {
+                Case.Id,
+                Case.AccountId,
+                Case.SprinklrSocialPersona__c
+            })
+            .selectFields(CONTACT_PERSON_ACCOUNT_FIELD)
+            .addConditionIn(Case.Id, caseList)
+            .addConditionIn(ACCOUNT_RT_NAME_FIELD, recordTypeNamesAccount);
+
+            return (List<Case>) this.baseQuery.run();
+        }
+        
+        return new List<Case>();
+    }
 }
