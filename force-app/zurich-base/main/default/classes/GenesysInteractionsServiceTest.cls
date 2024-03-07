@@ -142,8 +142,8 @@ private with sharing class GenesysInteractionsServiceTest
         //TODO: Mejora -> Sobrecargar método en TestDataFactory.generateOpportunitiesForEachAccount() con nuevo parámetro ownerID sin romper test antiguos
         //Controlar el email que tiene UserInfo:
         Id testUserId = UserInfo.getUserId();
-        User testUser = new User(Id = testUserId, Email = 'emailfortesting@nts-solutions.com');
-        update testUser;
+        // User testUser = new User(Id = testUserId, Email = 'emailfortesting@nts-solutions.com');
+        // update testUser;
 
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
