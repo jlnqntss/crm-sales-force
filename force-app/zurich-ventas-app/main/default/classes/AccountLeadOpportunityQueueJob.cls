@@ -184,8 +184,11 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         {
             Id ownerId = new List<String>( assign.keySet() ).get(0);
 
-            offerToUpdate.IntermediaryId__c = assign.get(ownerId)?.Id;
-            offerToUpdate.IntermediaryCode__c = assign.get(ownerId)?.Id;
+            if (assign.get(ownerId) != null) 
+            {
+                offerToUpdate.IntermediaryId__c = assign.get(ownerId).Id;
+                offerToUpdate.IntermediaryCode__c = assign.get(ownerId).Id;
+            }
         }
         return offerToUpdate;
     }
