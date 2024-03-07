@@ -48,6 +48,21 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>AgenteOlimpia__c</picklist>
+        <values>
+            <fullName>Atleta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Maratón</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sprinter</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>CNAE__c</picklist>
         <values>
             <fullName>00100</fullName>

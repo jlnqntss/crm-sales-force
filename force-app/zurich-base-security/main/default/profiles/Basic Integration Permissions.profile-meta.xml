@@ -2380,7 +2380,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.TOPAgent__c</field>
+        <field>Account.AgenteOlimpia__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
