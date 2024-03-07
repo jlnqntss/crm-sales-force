@@ -40,6 +40,13 @@
                     <stringValue>USPInquiry</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>GetCaseRelatedAction.InteractionStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>StatusAssignment</targetReference>
             </connector>

@@ -3,10 +3,13 @@
     <actionCalls>
         <name>PatchInteractionInvocableAction</name>
         <label>Solicitud Patch Interacción</label>
-        <locationX>446</locationX>
+        <locationX>424</locationX>
         <locationY>2280</locationY>
         <actionName>GenesysCloudPatchInteractionAction</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>CasoUspInteractionDecision</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Crear_Error_Log_Desconexion_Interaccion</targetReference>
         </faultConnector>
@@ -124,6 +127,28 @@
             <targetReference>IsStatusListEmptyDecision</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>CasoUspInteractionDecision</name>
+        <label>¿El caso es Usp?</label>
+        <locationX>424</locationX>
+        <locationY>2388</locationY>
+        <defaultConnectorLabel>No Caso USP</defaultConnectorLabel>
+        <rules>
+            <name>USPInteractionOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActualizarCampoInteraccionCerrada</targetReference>
+            </connector>
+            <label>USP</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>IsListEmptyDecision</name>
         <label>¿Lista no vacía?</label>
@@ -327,7 +352,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
     <recordCreates>
         <name>Crear_Error_Log_Desconexion_Interaccion</name>
         <label>Crear Error Log Desconexión Interacción</label>
-        <locationX>710</locationX>
+        <locationX>732</locationX>
         <locationY>2388</locationY>
         <inputAssignments>
             <field>Level__c</field>
@@ -365,7 +390,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
     <recordCreates>
         <name>CrearLogListaEstadosVaciaAction</name>
         <label>Crear Log Lista Estados Vacía</label>
-        <locationX>974</locationX>
+        <locationX>996</locationX>
         <locationY>2280</locationY>
         <inputAssignments>
             <field>Message__c</field>
@@ -662,6 +687,19 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <queriedFields>CallObject</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>ActualizarCampoInteraccionCerrada</name>
+        <label>Actualizar Campo Interaccion Cerrada</label>
+        <locationX>292</locationX>
+        <locationY>2496</locationY>
+        <inputAssignments>
+            <field>InteractionStatus__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
         <locationX>122</locationX>
         <locationY>0</locationY>
