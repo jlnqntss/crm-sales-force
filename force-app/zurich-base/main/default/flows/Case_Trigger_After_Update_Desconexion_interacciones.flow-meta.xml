@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>PatchInteractionInvocableAction</name>
+        <description>Desconecta las interacciones recibidas</description>
+        <name>GenesysCloudBatchPatchInteractionAction</name>
         <label>Solicitud Patch Interacción</label>
         <locationX>424</locationX>
         <locationY>2280</locationY>
@@ -20,19 +21,19 @@
                 <elementReference>ListaCombinadaTaskYMails</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>GenesysCloudPatchInteractionAction</nameSegment>
+        <nameSegment>GenesysCloudBatchPatchInteractionAction</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
-        <name>StatusInteractionsInvocableAction</name>
-        <label>Solicitud Status Interaciones</label>
+        <name>GenesysCloudEmailStatusAction</name>
+        <label>Solicitud Status Email</label>
         <locationX>446</locationX>
-        <locationY>1632</locationY>
-        <actionName>GenesysCloudStatusAction</actionName>
+        <locationY>1692</locationY>
+        <actionName>GenesysCloudEmailStatusAction</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>AddEmailListToCombinedListAssignment</targetReference>
+            <targetReference>IncluirEmailsRelacionadosLoop</targetReference>
         </connector>
         <faultConnector>
             <targetReference>CreateErrorLogStatusRequestAction</targetReference>
@@ -44,25 +45,25 @@
                 <elementReference>GetEmailByCaseIdAction</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>GenesysCloudStatusAction</nameSegment>
+        <nameSegment>GenesysCloudEmailStatusAction</nameSegment>
         <outputParameters>
-            <assignToReference>ListaGetConInteraccion</assignToReference>
+            <assignToReference>ListaGetConInteraccionEmail</assignToReference>
             <name>output</name>
         </outputParameters>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
-        <name>StatusTaskApplicationInvocableAction</name>
+        <name>GenesysCloudTaskStatusAction</name>
         <label>Solicitud Status Task</label>
         <locationX>50</locationX>
         <locationY>900</locationY>
-        <actionName>GenesysCloudTaskAction</actionName>
+        <actionName>GenesysCloudTaskStatusAction</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>AddTaskListToCombinedListAssignment_0_0</targetReference>
+            <targetReference>IncluirTaskRelacionadasLoop</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>CreateErrorLogTaskApplicationAction</targetReference>
+            <targetReference>Crear_Error_Log_Solicitud_Tareas</targetReference>
         </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -71,51 +72,51 @@
                 <elementReference>GetTaskByCaseId</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>GenesysCloudTaskAction</nameSegment>
+        <nameSegment>GenesysCloudTaskStatusAction</nameSegment>
         <outputParameters>
-            <assignToReference>ListaGetConInteraccion</assignToReference>
+            <assignToReference>ListaGetConInteraccionTask</assignToReference>
             <name>output</name>
         </outputParameters>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <assignments>
-        <name>AddEmailListToCombinedListAssignment</name>
-        <label>Añadir Lista Email A Lista Combinada</label>
-        <locationX>446</locationX>
-        <locationY>1740</locationY>
+        <name>AddEmailToCombinedListAssignment</name>
+        <label>Añadir Email a Lista Combinada</label>
+        <locationX>534</locationX>
+        <locationY>1908</locationY>
         <assignmentItems>
             <assignToReference>ListaCombinadaTaskYMails</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>ListaGetConInteraccion</elementReference>
+                <elementReference>IncluirEmailsRelacionadosLoop</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>CheckListaGetSize_0</targetReference>
+            <targetReference>IncluirEmailsRelacionadosLoop</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>AddTaskListToCombinedListAssignment_0_0</name>
-        <label>Añadir Lista de Tareas a Lista Combinada</label>
-        <locationX>50</locationX>
-        <locationY>1008</locationY>
+        <name>AddTaskToCombinedListAssignment</name>
+        <label>Añadir Tarea a Lista Combinada</label>
+        <locationX>138</locationX>
+        <locationY>1116</locationY>
         <assignmentItems>
             <assignToReference>ListaCombinadaTaskYMails</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>ListaGetConInteraccion</elementReference>
+                <elementReference>IncluirTaskRelacionadasLoop</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>GetEmailByCaseIdAction</targetReference>
+            <targetReference>IncluirTaskRelacionadasLoop</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>CheckListaGetSize_0</name>
+        <name>ComprobarCantidadListaGetAssignment</name>
         <label>Comprobar Cantidad Lista Get</label>
         <locationX>710</locationX>
-        <locationY>2064</locationY>
+        <locationY>2184</locationY>
         <assignmentItems>
             <assignToReference>ListaGetConInteraccionSize</assignToReference>
             <operator>AssignCount</operator>
@@ -151,13 +152,13 @@
     </decisions>
     <decisions>
         <name>IsListEmptyDecision</name>
-        <label>¿Lista no vacía?</label>
+        <label>¿Lista Email vacía?</label>
         <locationX>710</locationX>
-        <locationY>1524</locationY>
+        <locationY>1584</locationY>
         <defaultConnector>
-            <targetReference>CrearLogListaVaciaAction</targetReference>
+            <targetReference>ComprobarCantidadListaGetAssignment</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Vacía</defaultConnectorLabel>
+        <defaultConnectorLabel>Si</defaultConnectorLabel>
         <rules>
             <name>NoVaciaOutcome</name>
             <conditionLogic>or</conditionLogic>
@@ -169,9 +170,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>StatusInteractionsInvocableAction</targetReference>
+                <targetReference>GenesysCloudEmailStatusAction</targetReference>
             </connector>
-            <label>No vacía</label>
+            <label>No</label>
         </rules>
     </decisions>
     <decisions>
@@ -208,15 +209,15 @@
     </decisions>
     <decisions>
         <name>IsStatusListEmptyDecision</name>
-        <label>¿Lista estados no vacía?</label>
+        <label>¿Lista estados vacía?</label>
         <locationX>710</locationX>
-        <locationY>2172</locationY>
+        <locationY>2292</locationY>
         <defaultConnector>
             <targetReference>CrearLogListaEstadosVaciaAction</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>Si</defaultConnectorLabel>
         <rules>
-            <name>NoVaciaStatusOutcome</name>
+            <name>OneResultOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>ListaGetConInteraccionSize</leftValueReference>
@@ -226,9 +227,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>PatchInteractionInvocableAction</targetReference>
+                <targetReference>GenesysCloudBatchPatchInteractionAction</targetReference>
             </connector>
-            <label>No vacía</label>
+            <label>No</label>
         </rules>
     </decisions>
     <decisions>
@@ -236,10 +237,10 @@
         <label>¿Lista Task Vacía?</label>
         <locationX>314</locationX>
         <locationY>792</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>Si</defaultConnectorLabel>
         <rules>
             <name>NoOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>GetTaskByCaseId</leftValueReference>
                 <operator>IsNull</operator>
@@ -248,7 +249,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>StatusTaskApplicationInvocableAction</targetReference>
+                <targetReference>GenesysCloudTaskStatusAction</targetReference>
             </connector>
             <label>No</label>
         </rules>
@@ -330,6 +331,34 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
     <environments>Default</environments>
     <interviewLabel>Case Trigger - After Update - Desconexión interacciones {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Desconexión interacciones</label>
+    <loops>
+        <name>IncluirEmailsRelacionadosLoop</name>
+        <label>Incluir Emails Relacionados</label>
+        <locationX>446</locationX>
+        <locationY>1800</locationY>
+        <collectionReference>ListaGetConInteraccionEmail</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>AddEmailToCombinedListAssignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>ComprobarCantidadListaGetAssignment</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>IncluirTaskRelacionadasLoop</name>
+        <label>Incluir Task Relacionadas</label>
+        <locationX>50</locationX>
+        <locationY>1008</locationY>
+        <collectionReference>ListaGetConInteraccionTask</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>AddTaskToCombinedListAssignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>GetEmailByCaseIdAction</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -388,6 +417,44 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <name>Crear_Error_Log_Solicitud_Tareas</name>
+        <label>Crear Error Log Solicitud Tareas</label>
+        <locationX>314</locationX>
+        <locationY>1008</locationY>
+        <inputAssignments>
+            <field>Level__c</field>
+            <value>
+                <stringValue>error</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Case Trigger - After Update - Desconexión interracciones CSM</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Accion solicitud para Tareas</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Stack_Trace__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>CrearLogListaEstadosVaciaAction</name>
         <label>Crear Log Lista Estados Vacía</label>
         <locationX>996</locationX>
@@ -414,39 +481,10 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>CrearLogListaVaciaAction</name>
-        <label>Crear Log Lista Vacía</label>
-        <locationX>974</locationX>
-        <locationY>1632</locationY>
-        <connector>
-            <targetReference>CheckListaGetSize_0</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Message__c</field>
-            <value>
-                <stringValue>La lista de emails está vacía</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>Case Trigger - After Update - Desconexión interacciones</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>CreateErrorLogEmailQueryAction</name>
         <label>Crear Error Log Consulta Emails</label>
         <locationX>1282</locationX>
-        <locationY>1524</locationY>
+        <locationY>1584</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -484,7 +522,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>CreateErrorLogStatusRequestAction</name>
         <label>Crear Error Log Solicitud Estado</label>
         <locationX>710</locationX>
-        <locationY>1740</locationY>
+        <locationY>1800</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -501,44 +539,6 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
             <field>Source_Method__c</field>
             <value>
                 <stringValue>StatusRequestInvocableAction</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Stack_Trace__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>CreateErrorLogTaskApplicationAction</name>
-        <label>Crear Error Log Solicitud Tareas</label>
-        <locationX>314</locationX>
-        <locationY>1008</locationY>
-        <inputAssignments>
-            <field>Level__c</field>
-            <value>
-                <stringValue>error</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>Case Trigger - After Update - Desconexión interracciones CSM</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Method__c</field>
-            <value>
-                <stringValue>Accion solicitud para Tareas</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -599,7 +599,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <name>GetEmailByCaseIdAction</name>
         <label>Obtener Email Messages por Caso</label>
         <locationX>710</locationX>
-        <locationY>1416</locationY>
+        <locationY>1476</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsListEmptyDecision</targetReference>
@@ -701,7 +701,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>122</locationX>
+        <locationX>78</locationX>
         <locationY>0</locationY>
         <filterLogic>or</filterLogic>
         <filters>
@@ -737,7 +737,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <isOutput>true</isOutput>
     </variables>
     <variables>
-        <name>ListaGetConInteraccion</name>
+        <name>ListaGetConInteraccionEmail</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>true</isInput>
@@ -755,14 +755,11 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         </value>
     </variables>
     <variables>
-        <name>ListaGetConInteraccionV2</name>
+        <name>ListaGetConInteraccionTask</name>
         <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>StatusInteractionsInvocableAction</elementReference>
-        </value>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>ListaGetPrueba</name>
