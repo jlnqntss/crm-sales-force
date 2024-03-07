@@ -16448,7 +16448,7 @@
         <layout>Contact-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contact-Ventas Agent Mediator</layout>
+        <layout>Contact-OCS Contact</layout>
         <recordType>Contact.CommunityUser</recordType>
     </layoutAssignments>
     <layoutAssignments>
