@@ -11,8 +11,16 @@
                 <field>Subject</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>EventType__c</field>
+                <behavior>Readonly</behavior>
+                <field>Acta__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Type</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Modalidad__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -55,10 +63,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>OrderOfTheDay__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Acta__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -114,6 +118,11 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
+            <actionName>Event.NuevoActa</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>Event.Generar_Acta_PDF</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
@@ -122,11 +131,6 @@
             <actionName>Edit</actionName>
             <actionType>StandardButton</actionType>
             <sortOrder>2</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Event.NuevoActa</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>Delete</actionName>
