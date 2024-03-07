@@ -8,6 +8,7 @@
     <permissionSets>Editar_Ofertas_Cerradas</permissionSets>
     <permissionSets>Gestion_Captacion_Avanzada</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <permissionSets>VentasGestionDatos</permissionSets>
     <permissionSets>Ventas_Campa_a_de_la_Actividad</permissionSets>
     <permissionSets>Ventas_Consulta_Datos</permissionSets>

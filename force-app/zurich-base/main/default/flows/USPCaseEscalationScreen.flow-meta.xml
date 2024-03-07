@@ -3,8 +3,8 @@
     <actionCalls>
         <name>caseEscalationAction</name>
         <label>CaseEscalationAction</label>
-        <locationX>248</locationX>
-        <locationY>2966</locationY>
+        <locationX>314</locationX>
+        <locationY>4202</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <faultConnector>
@@ -41,23 +41,25 @@
                 <elementReference>taskId</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>removeDuplicatesAction</name>
         <label>removeDuplicates</label>
-        <locationX>248</locationX>
-        <locationY>638</locationY>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
         <actionName>RemoveDuplicatesAction</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>AreaTypeScreen</targetReference>
         </connector>
         <dataTypeMappings>
-            <typeName>T__listToRemove</typeName>
+            <typeName>U__output</typeName>
             <typeValue>Escalation_Setting__mdt</typeValue>
         </dataTypeMappings>
         <dataTypeMappings>
-            <typeName>U__output</typeName>
+            <typeName>T__listToRemove</typeName>
             <typeValue>Escalation_Setting__mdt</typeValue>
         </dataTypeMappings>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -73,14 +75,32 @@
                 <elementReference>GetSccaledTypeAction</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>RemoveDuplicatesAction</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
+        <name>AssignContentDocumentsIds</name>
+        <label>AssignContentDocumentsIds</label>
+        <locationX>138</locationX>
+        <locationY>2654</locationY>
+        <assignmentItems>
+            <assignToReference>IdsContentDocuments</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>contentDocumentLinks.ContentDocumentId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>contentDocumentLinks</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>idQueueAssignment</name>
         <label>idQueueAssignment</label>
-        <locationX>50</locationX>
-        <locationY>1358</locationY>
+        <locationX>116</locationX>
+        <locationY>1214</locationY>
         <assignmentItems>
             <assignToReference>IdsOwner</assignToReference>
             <operator>Add</operator>
@@ -95,8 +115,8 @@
     <assignments>
         <name>idUserAssignment</name>
         <label>idUserAssignment</label>
-        <locationX>314</locationX>
-        <locationY>2174</locationY>
+        <locationX>380</locationX>
+        <locationY>1946</locationY>
         <assignmentItems>
             <assignToReference>IdsOwner</assignToReference>
             <operator>Add</operator>
@@ -118,8 +138,8 @@
     <assignments>
         <name>IdUserGroupAssignment</name>
         <label>Id User Assignment</label>
-        <locationX>534</locationX>
-        <locationY>1598</locationY>
+        <locationX>600</locationX>
+        <locationY>1430</locationY>
         <assignmentItems>
             <assignToReference>idUserToChoose</assignToReference>
             <operator>Add</operator>
@@ -134,8 +154,8 @@
     <assignments>
         <name>ownerQueueIdAssigment</name>
         <label>Owner Queue Owner</label>
-        <locationX>50</locationX>
-        <locationY>1238</locationY>
+        <locationX>116</locationX>
+        <locationY>1106</locationY>
         <assignmentItems>
             <assignToReference>ownerId</assignToReference>
             <operator>Assign</operator>
@@ -150,8 +170,8 @@
     <assignments>
         <name>ownerQueueIdUserAssigment</name>
         <label>Owner Queue Owner User</label>
-        <locationX>446</locationX>
-        <locationY>1238</locationY>
+        <locationX>512</locationX>
+        <locationY>1106</locationY>
         <assignmentItems>
             <assignToReference>ownerId</assignToReference>
             <operator>Assign</operator>
@@ -180,10 +200,60 @@
         </value>
     </choices>
     <decisions>
+        <name>ContentDocumentIdsFoundDecision</name>
+        <label>Content Document Ids Found?</label>
+        <locationX>314</locationX>
+        <locationY>2438</locationY>
+        <defaultConnector>
+            <targetReference>createTaskAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Found</defaultConnectorLabel>
+        <rules>
+            <name>FoundOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getContentDocumentIds</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>contentDocumentLinks</targetReference>
+            </connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>contentDocumentSelectionNull</name>
+        <label>content Document Selection Null?</label>
+        <locationX>314</locationX>
+        <locationY>3602</locationY>
+        <defaultConnector>
+            <targetReference>getCustomNotificationAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Null</defaultConnectorLabel>
+        <rules>
+            <name>NotNullOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>contentDocumentsSelection.selectedRows</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>createContentDocumentLinks</targetReference>
+            </connector>
+            <label>Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>EmptyQueue</name>
         <label>EmptyQueue</label>
-        <locationX>446</locationX>
-        <locationY>1934</locationY>
+        <locationX>512</locationX>
+        <locationY>1730</locationY>
         <defaultConnector>
             <targetReference>Screen_Error_Empty_Queue</targetReference>
         </defaultConnector>
@@ -207,8 +277,8 @@
     <decisions>
         <name>internalOrExternalDecision</name>
         <label>Internal or External</label>
-        <locationX>1073</locationX>
-        <locationY>398</locationY>
+        <locationX>1271</locationX>
+        <locationY>350</locationY>
         <defaultConnector>
             <targetReference>updateRecordExternalAction</targetReference>
         </defaultConnector>
@@ -232,8 +302,8 @@
     <decisions>
         <name>queueOrUserValueDecision</name>
         <label>QueueOrUserValue</label>
-        <locationX>248</locationX>
-        <locationY>1118</locationY>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
         <defaultConnector>
             <targetReference>ownerQueueIdUserAssigment</targetReference>
         </defaultConnector>
@@ -357,25 +427,41 @@
         <dataType>String</dataType>
         <expression>{!principioBody} + {!caseRecordAction.CaseNumber}</expression>
     </formulas>
-    <formulas>
-        <description>Fórmula que devuelve el nombre del cliente mediado. Debido a un bug identificado por parte de Salesforce es necesario utilizar diferentes campos en función de si la cuenta es de tipo &apos;person account&apos; o no.
-
-Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-accountname-field-shows-blank-for-person-account-type-records-in-lightning-and-api</description>
-        <name>MediatedCustomer</name>
-        <dataType>String</dataType>
-        <expression>IF(
-  {!caseRecordAction.MediatedCustomer__r.IsPersonAccount},
-  {!caseRecordAction.MediatedCustomer__r.FirstName} &amp; &apos; &apos; &amp; {!caseRecordAction.MediatedCustomer__r.LastName},
-  {!caseRecordAction.MediatedCustomer__r.Name}
-)</expression>
-    </formulas>
     <interviewLabel>USP Case Escalation Screen {!$Flow.CurrentDateTime}</interviewLabel>
     <label>USP Case Escalation Screen</label>
     <loops>
+        <name>contentDocumentLinks</name>
+        <label>contentDocumentLinks</label>
+        <locationX>50</locationX>
+        <locationY>2546</locationY>
+        <collectionReference>getContentDocumentIds</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>AssignContentDocumentsIds</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>getContentDocuments</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>createContentDocumentLinks</name>
+        <label>createContentDocumentLinks</label>
+        <locationX>206</locationX>
+        <locationY>3710</locationY>
+        <collectionReference>contentDocumentsSelection.selectedRows</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>createContentDocumentLink</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>getCustomNotificationAction</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>nameUserLoop</name>
         <label>Name User Loop</label>
-        <locationX>446</locationX>
-        <locationY>1478</locationY>
+        <locationX>512</locationX>
+        <locationY>1322</locationY>
         <collectionReference>getUsersAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -405,10 +491,115 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
+        <name>createContentDocumentLink</name>
+        <label>createContentDocumentLink</label>
+        <locationX>294</locationX>
+        <locationY>3818</locationY>
+        <connector>
+            <targetReference>createContentDocumentLinks</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ContentDocumentId</field>
+            <value>
+                <elementReference>createContentDocumentLinks.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LinkedEntityId</field>
+            <value>
+                <elementReference>taskId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ShareType</field>
+            <value>
+                <stringValue>V</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Visibility</field>
+            <value>
+                <stringValue>AllUsers</stringValue>
+            </value>
+        </inputAssignments>
+        <object>ContentDocumentLink</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateErrorLogGetContentDocument</name>
+        <label>Create Error Log Get Content Document</label>
+        <locationX>314</locationX>
+        <locationY>2954</locationY>
+        <connector>
+            <targetReference>ScreenErrorTaskContentDocument</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>USP Case Escalation Screen</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>getContentDocumen</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateErrorLogGetContentDocumentIDs</name>
+        <label>Create Error Log Get Content Document IDs</label>
+        <locationX>1964</locationX>
+        <locationY>2438</locationY>
+        <connector>
+            <targetReference>ScreenErrorTaskContentDocumentIds</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>USP Case Escalation Screen</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>getContentDocumentIds</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>CreateRecordsGetNotificationErrorAction</name>
         <label>Create Records Get Notification Error Action</label>
-        <locationX>1106</locationX>
-        <locationY>2966</locationY>
+        <locationX>1172</locationX>
+        <locationY>4202</locationY>
         <connector>
             <targetReference>ScreenErrorGetNotification</targetReference>
         </connector>
@@ -442,8 +633,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordCreates>
         <name>CreateRecordsSendNotificacionErrorAction</name>
         <label>Create Records Send Notificacion Error Action</label>
-        <locationX>842</locationX>
-        <locationY>3086</locationY>
+        <locationX>908</locationX>
+        <locationY>4310</locationY>
         <connector>
             <targetReference>ScreenErrorNotficationAction</targetReference>
         </connector>
@@ -477,8 +668,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordCreates>
         <name>CreateRecordsUpdateRecordErrorAction</name>
         <label>Create Records Update Record Error Action</label>
-        <locationX>1370</locationX>
-        <locationY>2846</locationY>
+        <locationX>1436</locationX>
+        <locationY>3602</locationY>
         <connector>
             <targetReference>ErrorScreen</targetReference>
         </connector>
@@ -512,8 +703,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordCreates>
         <name>createTaskAction</name>
         <label>Create Task</label>
-        <locationX>248</locationX>
-        <locationY>2606</locationY>
+        <locationX>314</locationX>
+        <locationY>3386</locationY>
         <assignRecordIdToReference>taskId</assignRecordIdToReference>
         <connector>
             <targetReference>updateRecordAction</targetReference>
@@ -528,21 +719,9 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>CaseMediator__c</field>
-            <value>
-                <elementReference>InfoMediador</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Description</field>
             <value>
                 <elementReference>comments</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>MediatedCustomer__c</field>
-            <value>
-                <elementReference>MediatedCustomer</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -555,12 +734,6 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
             <field>Priority</field>
             <value>
                 <stringValue>Normal</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>SegmentMediatorCase__c</field>
-            <value>
-                <elementReference>InfoSegmento</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -598,8 +771,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordCreates>
         <name>CreateTaskErrorAction</name>
         <label>Create Task Erro rAction</label>
-        <locationX>1634</locationX>
-        <locationY>2726</locationY>
+        <locationX>1700</locationX>
+        <locationY>3494</locationY>
         <connector>
             <targetReference>ScreenErrorTask</targetReference>
         </connector>
@@ -633,8 +806,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordLookups>
         <name>caseRecordAction</name>
         <label>Get case record</label>
-        <locationX>1073</locationX>
-        <locationY>158</locationY>
+        <locationX>1271</locationX>
+        <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ScaledTypeScreen</targetReference>
@@ -652,10 +825,60 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>getContentDocumentIds</name>
+        <label>getContentDocumentIds</label>
+        <locationX>314</locationX>
+        <locationY>2330</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ContentDocumentIdsFoundDecision</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>CreateErrorLogGetContentDocumentIDs</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>LinkedEntityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>caseRecordAction.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ContentDocumentLink</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ContentDocumentId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getContentDocuments</name>
+        <label>getContentDocuments</label>
+        <locationX>50</locationX>
+        <locationY>2846</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Content_Document_Selection_Screen</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>CreateErrorLogGetContentDocument</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>IdsContentDocuments</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ContentDocument</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getCustomNotificationAction</name>
         <label>Get Custom Notification</label>
-        <locationX>248</locationX>
-        <locationY>2846</locationY>
+        <locationX>314</locationX>
+        <locationY>4094</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>caseEscalationAction</targetReference>
@@ -678,8 +901,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordLookups>
         <name>getIdQueueAction</name>
         <label>Get Id Queue</label>
-        <locationX>248</locationX>
-        <locationY>998</locationY>
+        <locationX>314</locationX>
+        <locationY>890</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>queueOrUserValueDecision</targetReference>
@@ -706,8 +929,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordLookups>
         <name>GetSccaledTypeAction</name>
         <label>Get scaled type</label>
-        <locationX>248</locationX>
-        <locationY>518</locationY>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>removeDuplicatesAction</targetReference>
@@ -727,8 +950,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordLookups>
         <name>getUsersAction</name>
         <label>GetUsersAction</label>
-        <locationX>446</locationX>
-        <locationY>1358</locationY>
+        <locationX>512</locationX>
+        <locationY>1214</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>nameUserLoop</targetReference>
@@ -748,8 +971,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordLookups>
         <name>getUsersNamesActions</name>
         <label>GetUsersNamesActions</label>
-        <locationX>446</locationX>
-        <locationY>1814</locationY>
+        <locationX>512</locationX>
+        <locationY>1622</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>EmptyQueue</targetReference>
@@ -769,10 +992,10 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordUpdates>
         <name>updateRecordAction</name>
         <label>Update Record</label>
-        <locationX>248</locationX>
-        <locationY>2726</locationY>
+        <locationX>314</locationX>
+        <locationY>3494</locationY>
         <connector>
-            <targetReference>getCustomNotificationAction</targetReference>
+            <targetReference>contentDocumentSelectionNull</targetReference>
         </connector>
         <faultConnector>
             <targetReference>CreateRecordsUpdateRecordErrorAction</targetReference>
@@ -802,8 +1025,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <recordUpdates>
         <name>updateRecordExternalAction</name>
         <label>Update Record External</label>
-        <locationX>1898</locationX>
-        <locationY>518</locationY>
+        <locationX>2228</locationX>
+        <locationY>458</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -830,8 +1053,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <screens>
         <name>AreaTypeScreen</name>
         <label>AreaTypeScreen</label>
-        <locationX>248</locationX>
-        <locationY>758</locationY>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -850,15 +1073,83 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>dataInputScreen</name>
-        <label>Data Input</label>
-        <locationX>248</locationX>
-        <locationY>2486</locationY>
+        <name>Content_Document_Selection_Screen</name>
+        <label>Content Document Selection Screen</label>
+        <locationX>50</locationX>
+        <locationY>2954</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
             <targetReference>createTaskAction</targetReference>
+        </connector>
+        <fields>
+            <name>contentDocumentsSelection</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>ContentDocument</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Adjuntos</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>MULTI_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>getContentDocuments</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;Title&quot;,&quot;guid&quot;:&quot;column-cb38&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Title&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;CreatedDate&quot;,&quot;guid&quot;:&quot;column-45b8&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Created&quot;,&quot;type&quot;:&quot;customDateTime&quot;},{&quot;apiName&quot;:&quot;FileExtension&quot;,&quot;guid&quot;:&quot;column-c4cd&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;File Extension&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isShowSearchBar</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>dataInputScreen</name>
+        <label>Data Input</label>
+        <locationX>314</locationX>
+        <locationY>2222</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>getContentDocumentIds</targetReference>
         </connector>
         <fields>
             <name>dueDate</name>
@@ -869,9 +1160,6 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
         </fields>
         <fields>
             <name>comments</name>
-            <defaultValue>
-                <stringValue>{!caseRecordAction.RelatedPolicyOffer__c}</stringValue>
-            </defaultValue>
             <fieldText>Comentarios</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>false</isRequired>
@@ -882,8 +1170,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <screens>
         <name>ErrorScreen</name>
         <label>Screen Error</label>
-        <locationX>1370</locationX>
-        <locationY>2966</locationY>
+        <locationX>1436</locationX>
+        <locationY>3710</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -898,8 +1186,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <screens>
         <name>queueTypeAction</name>
         <label>Queue Type</label>
-        <locationX>248</locationX>
-        <locationY>878</locationY>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -920,8 +1208,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <screens>
         <name>ScaledTypeScreen</name>
         <label>Tipo Escalado</label>
-        <locationX>1073</locationX>
-        <locationY>278</locationY>
+        <locationX>1271</locationX>
+        <locationY>242</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -943,8 +1231,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <screens>
         <name>Screen_Error_Empty_Queue</name>
         <label>Screen Error Empty Queue</label>
-        <locationX>578</locationX>
-        <locationY>2054</locationY>
+        <locationX>644</locationX>
+        <locationY>1838</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -959,8 +1247,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <screens>
         <name>ScreenErrorGetNotification</name>
         <label>Screen Error Get Notification</label>
-        <locationX>1106</locationX>
-        <locationY>3086</locationY>
+        <locationX>1172</locationX>
+        <locationY>4310</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -975,8 +1263,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <screens>
         <name>ScreenErrorNotficationAction</name>
         <label>Screen Error Notfication Action</label>
-        <locationX>842</locationX>
-        <locationY>3206</locationY>
+        <locationX>908</locationX>
+        <locationY>4418</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -991,8 +1279,8 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
     <screens>
         <name>ScreenErrorTask</name>
         <label>Screen Error Task</label>
-        <locationX>1634</locationX>
-        <locationY>2846</locationY>
+        <locationX>1700</locationX>
+        <locationY>3602</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1005,10 +1293,42 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>ScreenErrorTaskContentDocument</name>
+        <label>Screen Error Task Content Document</label>
+        <locationX>314</locationX>
+        <locationY>3062</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Copy_1_of_Copy_1_of_Error</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>ScreenErrorTaskContentDocumentIds</name>
+        <label>Screen Error Task Content Document Ids</label>
+        <locationX>1964</locationX>
+        <locationY>2546</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Copy_1_of_Copy_1_of_Copy_1_of_Error</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>userScreen</name>
         <label>User Screen</label>
-        <locationX>314</locationX>
-        <locationY>2054</locationY>
+        <locationX>380</locationX>
+        <locationY>1838</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1027,7 +1347,7 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>947</locationX>
+        <locationX>1145</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>caseRecordAction</targetReference>
@@ -1121,6 +1441,13 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
         <objectType>Escalation_Setting__mdt</objectType>
     </variables>
     <variables>
+        <name>IdsContentDocuments</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>IdsOwner</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
@@ -1133,26 +1460,6 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>InfoMediador</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>{!caseRecordAction.Account.Name} </stringValue>
-        </value>
-    </variables>
-    <variables>
-        <name>InfoSegmento</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>caseRecordAction.Account.Segment__c</elementReference>
-        </value>
     </variables>
     <variables>
         <name>IntExtInput</name>
@@ -1232,6 +1539,29 @@ Referencia: https://issues.salesforce.com/issue/a028c00000gAwGGAA0/formula-on-ac
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedDocs</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ContentDocument</objectType>
+    </variables>
+    <variables>
+        <name>selectedDocuments</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedDocumentsInTable</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ContentDocument</objectType>
     </variables>
     <variables>
         <name>taskId</name>

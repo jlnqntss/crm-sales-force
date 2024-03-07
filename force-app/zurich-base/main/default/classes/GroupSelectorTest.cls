@@ -97,7 +97,7 @@ private with sharing class GroupSelectorTest
     static void testFindById()
     {
 
-        List<Group> queryGroups = [SELECT Id FROM Group];
+        List<Group> queryGroups = [SELECT Id FROM Group LIMIT 1];
         List<Id> groupIds = new List<Id>();
 
         for (Group queue : queryGroups)

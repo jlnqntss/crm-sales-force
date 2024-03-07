@@ -399,7 +399,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                         'WHERE Campaign.Type = \'Cross Selling\' ' +
                         'AND Campaign.EndDate <= TODAY ' +
                         'AND StageName IN (\'Legit Lead\', \'App Submitted\', \'Quoted\') ' +
-                        'AND Owner.Profile.Name = \'Agente Ventas\'';
+                        'AND ZRM__c = true';
     }
 
     /**
@@ -462,7 +462,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     {
         return 'SELECT Id, AccountId, Account.Name, Account.Phone, Account.PreferedContactStart__c, ' + 
                     'Account.PreferedContactEnd__c, Account.WebId__c, OwnerId, CreatedDate FROM Opportunity ' +
-                    'WHERE Owner.Profile.Name = \'Agente Ventas\' AND ReassignToContactCenter__c = true';
+                    'WHERE ZRM__c = true AND ReassignToContactCenter__c = true';
        
     }
 

@@ -9,5 +9,6 @@
     <permissionSets>Gestion_Captacion</permissionSets>
     <permissionSets>Gestion_Captacion_Avanzada</permissionSets>
     <permissionSets>Gestion_Informes</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

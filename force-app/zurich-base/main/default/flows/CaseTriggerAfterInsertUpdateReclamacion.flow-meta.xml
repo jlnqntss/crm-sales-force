@@ -3,8 +3,8 @@
     <actionCalls>
         <name>SendNotificacionReclamacionAction</name>
         <label>Send Notificación Reclamación</label>
-        <locationX>176</locationX>
-        <locationY>575</locationY>
+        <locationX>50</locationX>
+        <locationY>647</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -38,13 +38,15 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <assignments>
         <name>OwnerAssignment</name>
         <label>Owner Assignment</label>
-        <locationX>176</locationX>
-        <locationY>455</locationY>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
         <assignmentItems>
             <assignToReference>IdsOwner</assignToReference>
             <operator>Add</operator>
@@ -56,6 +58,35 @@
             <targetReference>SendNotificacionReclamacionAction</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>Es_OCS_o_USP</name>
+        <label>¿Es OCS o USP?</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetCustomNotifcacionAction</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <formulas>
         <name>FormulaCuerpo</name>
@@ -86,8 +117,8 @@
     <recordLookups>
         <name>GetCustomNotifcacionAction</name>
         <label>Get Custom Notifcación</label>
-        <locationX>176</locationX>
-        <locationY>335</locationY>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>OwnerAssignment</targetReference>
@@ -105,10 +136,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>GetCustomNotifcacionAction</targetReference>
+            <targetReference>Es_OCS_o_USP</targetReference>
         </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>and</filterLogic>

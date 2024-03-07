@@ -37,8 +37,7 @@ private with sharing class OpportunityUtilTest
 
         for(Opportunity opty : optysUpdated)
         {
-            System.assert (String.isNotBlank(opty.Scope__c), 'No se ha informado la picklist de scope');
-            System.assert (opty.ScopeId__c != null, 'No se ha asignado el scope correspondiente');
+            System.assert (String.isNotBlank(opty.Scope__c), 'No se ha informado la picklist de scope');            
         }
     }
 

@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 02-19-2024
- * @last modified by  : jchavez
+ * @last modified on  : 04-03-2024
+ * @last modified by  : aberuete
  **/
 @isTest
 private with sharing class CaseUtilTest
@@ -19,6 +19,11 @@ private with sharing class CaseUtilTest
     static final String MESSAGE_CUENTA_NO_ASIGNADA = 'La cuenta no se ha asignado correctamente';
     static final String LABEL_SUBJECT_ZURICH = 'Solicitud de ayuda al registro de MiZurich';
     static final String EMAIL_CASE = 'exampletocontactpointemail@gmail.com.invalid';
+   
+    static final String ROBOT_TYPE_N1 = 'Dorsales';
+
+    static final String SHORT_DESCRIPTION = 'test';
+    static final String LONG_DESCRIPTION = 'Se diferencia clientes empresas de clientes personas. Se detecta que las empresas no usan el campo Firstname o le colocan un punto. También es posible filtrar los Contactos que no están activos.  De esta manera que extraen los datos por medio de la fecha de creación. Consiguiendo finalizar la operación en 3 ficheros';
 
     @TestSetup
     private static void createScenario()
@@ -217,32 +222,180 @@ private with sharing class CaseUtilTest
     }
     
     /**
-     * Test para la tipificación de casos Spriklr. Se prueba que se rellenen correctamente
-     * los campos Type, Subtype__c y TypeN3__c para casos con RecordType OCS Sprinkrl
+     * Se comprueba que los procesos que asignan los atributos para la clasificación del caso operan correctamente.
+     * En este escenario se inserta un caso con una clasificación o TAG previa, esta clasificación se realiza fuera de Salesforce.
+     * Con la clasificación previa, Salesforce inluye el resto de atributos del caso.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
      */
     @isTest
-    private static void test_mappingSprinklrCases()
+    private static void test_setSprinklrCaseTipification()
+    {
+        Case newSprinklrCase = new Case ();
+        newSprinklrCase.RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR;
+        newSprinklrCase.RobotTypeN1__c = 'Dorsales';
+        newSprinklrCase.Subject = 'test_setSprinklrCaseTipification';
+        newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
+ 		
+        Test.startTest();
+        insert newSprinklrCase;
+        Test.stopTest();
+        
+        Case caseToCompare = [SELECT Id, RobotTypeN1__c, Type, SubType__c, TypeN3__c, CallCenter__c, OwnerId FROM Case WHERE id =: newSprinklrCase.id];
+        Robot_Hegeo_Field_Mapping__mdt expectedValues = [SELECT Type__c, SubType__c, TypeN3__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c =: newSprinklrCase.RobotTypeN1__c LIMIT 1];
+        Assert.areEqual(expectedValues.Type__c, caseToCompare.Type);
+        Assert.areEqual(expectedValues.SubType__c, caseToCompare.Subtype__c);
+        Assert.areEqual(expectedValues.TypeN3__c, caseToCompare.TypeN3__c);
+    }
+
+    /**
+     * Test que comprueba la correcta inserción de caso tipo Sprinklr con una descripcion menor a 255 caracteres
+     * El caso debe ser insertado con el mismo valor para Description que para PrimerMensaje__c
+    */
+    @isTest
+    private static void test_descriptionCaseShort()
     {
         Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
-
-        Case caseRecord = new Case ();
-        caseRecord.RecordTypeId = rtOCSSprinklrId;
-        caseRecord.RobotTypeN1__c ='Dorsales';
-        caseRecord.Subject = 'Test';
-        caseRecord.SuppliedEmail='no@existe.com';
-
         List<Case> newList = new List<Case>();
-        newList.add(caseRecord);
- 		
+
+        Case caseShortDescription = new Case();
+        caseShortDescription.RecordTypeId = rtOCSSprinklrId;
+        caseShortDescription.RobotTypeN1__c = ROBOT_TYPE_N1;
+        caseShortDescription.Description = SHORT_DESCRIPTION;
+
+        newList.add(caseShortDescription);
+
         insert newList;
-        
-        Case caseToCompare = [SELECT id,Type,SubType__c,TypeN3__c,CallCenter__c,OwnerId FROM Case where id =: caseRecord.id];
-        Group cola = [SELECT Name From Group WHERE id =: caseToCompare.OwnerId ];
-        System.assertEquals('Marca (No info provided)', caseToCompare.Type, 'El tipo de la tipificación es correcto');
-        System.assertEquals('Dorsales', caseToCompare.SubType__c, 'El subtipo de la tipificación es correcto');
-        System.assertEquals('Dorsales', caseToCompare.TypeN3__c, 'El tipo 3 de la tipificación es correcto');
-        System.assertEquals('RRSS Marca', caseToCompare.CallCenter__c, 'El Call Center de la tipificación es correcto');
-        System.assertEquals('Marca Redes Sociales', cola.Name, 'La Cola de la tipificación es correcto');
+       
+        Case caseToCompareShort = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseShortDescription.id];
+
+        System.assertEquals(caseToCompareShort.Description.length() == caseToCompareShort.PrimerMensaje__c.length(), true, 'Se ha asignado bien el campo PrimerMensaje__c');
+    }
+
+    /**
+     * Test que comprueba la correcta inserción de caso tipo Sprinklr con una descripcion superior a 255 caracteres
+     * El caso debe ser insertado con el campo PrimerMensaje__c acotado a 255 caracteres.
+     */
+    @isTest
+    private static void test_descriptionCaseLong()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+        List<Case> newList = new List<Case>();
+
+        Case caseLongDescription = new Case();
+        caseLongDescription.RecordTypeId = rtOCSSprinklrId;
+        caseLongDescription.RobotTypeN1__c = ROBOT_TYPE_N1;
+        caseLongDescription.Description = LONG_DESCRIPTION;
+
+        newList.add(caseLongDescription);
+
+        insert newList;
+       
+        Case caseToCompareLong = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseLongDescription.id];
+        System.assertEquals(caseToCompareLong.PrimerMensaje__c.length()  < 256, true,'El campo PrimerMensaje__c no supera el límite de caracteres');
+    }
+
+    /**
+     * Test que comprueba la correcta inserción de caso tipo Sprinklr con una descripcion nula
+     * El caso debe ser insertado correctamente.
+    */
+    @isTest
+    private static void test_descriptionCaseNull()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+        List<Case> newList = new List<Case>();
+        Case caseNullDescription = new Case();
+
+        caseNullDescription.RecordTypeId = rtOCSSprinklrId;
+        caseNullDescription.RobotTypeN1__c = ROBOT_TYPE_N1;
+
+        newList.add(caseNullDescription);
+
+        insert newList;
+
+        Case caseToCompareNull = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseNullDescription.id];
+        System.assertEquals(caseToCompareNull.PrimerMensaje__c == null, true,'Description era nulo y ha sido correctamente insertado el caso');
+    }
+
+    /**
+     * Se comprueba que los procesos que asignan los atributos para la clasificación del caso operan correctamente.
+     * En este escenario se inserta un caso SIN una clasificación o TAG previa, esta clasificación se realiza fuera de Salesforce.
+     * El caso se clasifica utilizando la configuración por defecto.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
+     */
+    @isTest
+    private static void test_setSprinklrCaseTipificationWithInvalidConfiguration()
+    {
+        Case newSprinklrCase = new Case ();
+        newSprinklrCase.RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR;
+        newSprinklrCase.Subject = 'test_setSprinklrCaseTipificationWithInvalidConfiguration';
+        newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
+ 		
+        Test.startTest();
+        insert newSprinklrCase;
+        Test.stopTest();
+
+        Case caseToCompare = [SELECT Id, RobotTypeN1__c, Type, SubType__c, TypeN3__c, CallCenter__c, OwnerId FROM Case WHERE id =: newSprinklrCase.id];
+        Robot_Hegeo_Field_Mapping__mdt expectedValues = [SELECT Type__c, SubType__c, TypeN3__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c =: CaseUtil.DEFAULT_SPRINKLR_CASE_TIPIFICATION];
+        Assert.areEqual(expectedValues.Type__c, caseToCompare.Type);
+        Assert.areEqual(expectedValues.SubType__c, caseToCompare.Subtype__c);
+        Assert.areEqual(expectedValues.TypeN3__c, caseToCompare.TypeN3__c);    
+    }
+
+    /**
+     * Se comprueba que los procesos que asignan los atributos para la clasificación del caso no restringen el alta del caso.
+     * En este escenario se inserta un caso con una clasificación o TAG incorrecta, es decir, las clasificación del caso no coincide con la configuración de Salesforce.
+     * Esta clasificación se realiza fuera de Salesforce.
+     * El caso no se clasifica pero este se guarda.
+     * @author pitt.olvera@seidor.com
+     * @date 03/03/2024
+     */
+    @isTest
+    private static void test_setSprinklrCaseTipificationBadTag()
+    {
+        Case newSprinklrCase = new Case ();
+        newSprinklrCase.RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR;
+        newSprinklrCase.RobotTypeN1__c = 'NO EXISTE';
+        newSprinklrCase.Subject = 'test_setSprinklrCaseTipificationWithInvalidConfiguration';
+        newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
+ 		
+        Test.startTest();
+        insert newSprinklrCase;
+        Test.stopTest();
+
+        Case caseToCompare = [SELECT Id, RobotTypeN1__c, Type, SubType__c, TypeN3__c, CallCenter__c, OwnerId FROM Case WHERE id =: newSprinklrCase.id];
+        Assert.isNull(caseToCompare.Type);
+        Assert.isNull(caseToCompare.SubType__c);
+        Assert.isNull(caseToCompare.TypeN3__c);
+    }
+    
+
+    
+    /**
+     * Se comprueba la correcta asignación de CallCenter__c y Queue para casos tipo Sprinklr que vengan con una TAGSprinklr
+     * reconocida por Salesforce. Esta TAG viene establecida desde fuera del sistema.
+     * @author jchavez
+     * @date 04/03/2024
+     */
+    @isTest
+    private static void test_setSprinklrCaseCallCenterAndGroup()
+    {
+        Case newSprinklrCase = new Case ();
+        newSprinklrCase.RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR;
+        newSprinklrCase.RobotTypeN1__c = 'Asistencia';
+        newSprinklrCase.Subject = 'test_setSprinklrCaseCallCenterAndGroup';
+        newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
+        List<Group> queueSiniestrosRRSS = new GroupSelector().findByName(CaseUtil.SPRINKLR_QUEUE_SINIESTROS);
+ 		
+        Test.startTest();
+        insert newSprinklrCase;
+        Test.stopTest();
+
+        Case caseToCompare = [SELECT Id, CallCenter__c, OwnerId FROM Case WHERE id =: newSprinklrCase.id];
+        Assert.areEqual(CaseUtil.SPRINKLR_CALLCENTER_SINIESTROS, caseToCompare.CallCenter__c);
+        Assert.areEqual(queueSiniestrosRRSS[0].id, caseToCompare.OwnerId);
+
     }
 
     /**

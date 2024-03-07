@@ -45,7 +45,25 @@ public with sharing class AccountRelationshipUtilTest {
     }
 
     @isTest
-    static void testOnBeforeInsertChangeOwner()
+    private static void testInsert() {
+        List<Account> customerAccounts = new List<Account>([SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Customer' LIMIT 2]);
+
+        AccountRelationship__c ar = new AccountRelationship__c();
+        ar.Account__c = customerAccounts.get(0).Id;
+        ar.RelatedAccount__c = customerAccounts.get(1).Id;
+        ar.RelationshipType__c = 'Otros';
+
+        Test.startTest();
+        insert ar;
+        Test.stopTest();
+
+        List<AccountRelationship__c> afterInsertList = new List<AccountRelationship__c>([SELECT Id FROM AccountRelationship__c LIMIT 1]);
+
+        System.assert(afterInsertList.size() > 0, 'Debe de haberse insertado un registro de cuenta relacionada');
+    }
+
+    @isTest
+    private static void testOnBeforeInsertChangeOwner()
     {
         /* -------------------------------- TEST DATA ------------------------------- */
         List<Account> customerAccounts = [SELECT Id, OwnerId FROM Account WHERE Name LIKE 'testlastname%'];
@@ -66,15 +84,15 @@ public with sharing class AccountRelationshipUtilTest {
     }
 
     @isTest
-    static void testUpdateIntermediaryId()
+    private static void testUpdateIntermediaryId()
     {
         /* -------------------------------- TEST DATA ------------------------------- */
         List<Account> customerAccounts = [SELECT Id, OwnerId FROM Account WHERE Name LIKE 'testlastname%'];
-        User agenteVentas = [SELECT Id, Account.IntermediaryGroup__c FROM User WHERE Profile.Name = 'Agente Ventas' LIMIT 1];
+        User agenteVentas = [SELECT Id, Account.IntermediaryGroup__c FROM User WHERE Profile.Name = 'Agente Ventas' and isactive = true LIMIT 1];
 
         AccountRelationship__c ar = new AccountRelationship__c();
         ar.Account__c = customerAccounts[0].Id;
-        ar.RelatedAccount__c = customerAccounts[1].Id;
+        ar.RelatedAccount__c = customerAccounts[1].Id; 
         ar.RelationshipType__c = 'Otros';
 
         /* ---------------------------------- TEST ---------------------------------- */

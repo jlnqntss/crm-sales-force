@@ -9,6 +9,14 @@
         <actionName>Batch_IntermediaryVisibilityRecalcAcc</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>intermediaryId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Batch_IntermediaryVisibilityRecalcAcc</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <description>Flujo que lanza el batch de recálculo de visibilidad &quot;Batch_IntermediaryVisibilityRecalcAcc&quot;</description>
@@ -62,5 +70,12 @@
             <targetReference>Recalculate_Intermediaries_Visibility_Start_Screen</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>
