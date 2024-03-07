@@ -201,6 +201,45 @@ public class AccountUtil
     }
 
 
+    /**
+     * Se ha de insertar atm para lead si los está insertando un usuario ZRM desde el boton nuevo de la comunidad 
+     * @author dmunoz
+     * @date 06/03/2024
+     */
+    
+     public static void zrmNewLeadVisibility(List<Account> newList) {
+
+        String leadRT = (new AccountsSelector()).rtLeadId;
+
+        // Recorremos los leads que no esten ni bloqueados ni anonimizados
+        List<Account> leadsToProcessList = new List<Account>();
+        for (Account account: newList) {
+            if (account.RecordTypeId.equals(leadRT) && !account.Blocked__c && !account.Anonymized__c) {
+                leadsToProcessList.add(account);
+            }
+        }
+
+        if (!leadsToProcessList.isEmpty()) {
+            // 1º informacion del usuario logueado - solo ejecutamos este codigo si es usuario ZRM
+            User loggedUser = (new UsersSelector()).findUserIntermediaryByUserId(UserInfo.getUserId());
+            
+            if ('Agente Ventas'.equals(loggedUser.Profile.Name) || 'Agente Ventas - AGR'.equals(loggedUser.Profile.Name)) {  
+
+                // genero los eventos y los publico
+                for (Account lead: leadsToProcessList) {
+                    Eventbus.publish(
+                        new ZRMLeadATM__e(
+                            AccountId__c = lead.Id,
+                            ZRMUserId__c = loggedUser.Id                    
+                        )
+                    );
+                }
+
+            }
+        }
+    }
+
+
     /****************** Metodos Visibilidad ****************************************/
     /**
      * Comprobamos si el registro es un mediador, no se procesa otro tipo de registro

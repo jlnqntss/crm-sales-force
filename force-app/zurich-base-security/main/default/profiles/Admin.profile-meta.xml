@@ -4645,7 +4645,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.TOPAgent__c</field>
+        <field>Account.AgenteOlimpia__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6340,6 +6340,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.CloseByBatch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.CloseDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6441,6 +6446,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.EntitlementId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ExpectedClosingDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16109,6 +16119,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Competitor__c.IntermediaryId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Competitor__c.IntermediaryIdOld__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -16165,6 +16180,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>AccountRelationship__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AccountRelationship__c.IntermediaryId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16446,6 +16466,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-OCS Contact</layout>
+        <recordType>Contact.CommunityUser</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Copy of Customer Layout_prod</layout>
@@ -18830,6 +18854,11 @@
         <default>false</default>
         <recordType>Contact.AgentMediator</recordType>
         <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.CommunityUser</recordType>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>

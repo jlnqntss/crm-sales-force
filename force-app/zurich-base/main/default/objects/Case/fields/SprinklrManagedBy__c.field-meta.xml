@@ -9,13 +9,13 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        <restricted>false</restricted>
+    <restricted>false</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Local Team</fullName>
+                <fullName>Local team</fullName>
                 <default>true</default>
-                <label>Local Team</label>
+                <label>Local team</label>
             </value>
             <value>
                 <fullName>Assigned Group Comm’s</fullName>

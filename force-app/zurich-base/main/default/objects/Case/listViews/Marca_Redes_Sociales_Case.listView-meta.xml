@@ -15,6 +15,11 @@
     <columns>CORE.USERS.ALIAS</columns>
     <columns>ACCOUNT.NAME</columns>
     <filterScope>Queue</filterScope>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>Asignado</value>
+    </filters>
     <label>Marca Redes Sociales</label>
     <queue>Marca_Redes_Sociales</queue>
     <sharedTo>

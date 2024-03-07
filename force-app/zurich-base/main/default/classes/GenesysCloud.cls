@@ -928,6 +928,62 @@ public with sharing class GenesysCloud
     }
 
     /**
+     * lrodriguez6@seidor.es
+     * StatusService ofrece el método de consulta de estado para integrar con cierre de interacciones 
+     * programadas dentro de los flujos de
+     * Genesys Cloud a través de una configuración de enrutamiento especificada antes de enrutar.
+     */ 
+
+    public class StatusServiceId 
+    {
+        public HttpCalloutMock mock = null;
+
+        /**
+         * Metodo publico que realiza una solicitud de tipo GET a Genesys para 
+         * recuperar el estado de las interacciones
+         * 
+         * @author lrodriguez6@seidor.es)
+         * @date 12/02/2024
+         * @param {InteractionStatus} objeto con el id de Genesys de la interacción a comprobar
+         * @return Devuelve la interaccion
+         */
+
+         public HttpResponse status(InteractionStatusId interaction)
+         {
+             HttpResponse response = null;
+
+             if(Test.isRunningTest())
+             {
+                String body = '{"id": "1788029f-ad65-41ea-bc5f-ce41673fe109",'
+                      + '"participants": [{"id": "20714c8e-9a60-4efd-9e75-0efb4b95267f","name": "Javier García Martínez", "purpose": "customer", "state": "disconnected"},'
+                      + '{"id": "25fcb71d-9ff3-4c45-8a07-091831376cdd", "name": "Email_CCS_Soporte", "purpose": "acd", "state": "connected"},'
+                      + '{"id": "77f648d0-354f-4d07-8540-14604b87bffc", "name": "Agente1","purpose": "agent","state": "connected"}]}';
+                Integer code = 200;
+                GenesysCloud.StatusService.mock = new GenesysCloudMocks(body, code);
+                HttpRequest req = new HttpRequest();
+                req.setMethod('GET');
+                req.setEndpoint(CONVERSATION_EMAIL_ENDPOINT + interaction.conversationId);
+                req.setBody(interaction.toJSON());
+                response = GenesysCloud.StatusService.mock.respond(req);
+             }
+             else 
+             {
+                response = purecloud.SDK.Rest.get(CONVERSATION_EMAIL_ENDPOINT + interaction.conversationId);
+                System.debug('StatusServiceId response: '+response);
+            }
+            
+             return response;
+             
+         }
+
+         public void status(InteractionStatusId[] interactions, IAPICallback apexCallback)
+         {
+             asynchronousCallout(ASYNC_METHOD_DISCONNECTION, interactions, apexCallback);
+         }
+
+    }
+
+    /**
      * PatchService ofrece el método de desconexión de estado para poder cerrar correctamente
      * las interacciones. Para ello, necesitamos el conversationId así como el participantId
      * (ya sea acd o agent)
@@ -1002,6 +1058,79 @@ public with sharing class GenesysCloud
              return result;
          }
     }
+
+    /**
+     * PatchService ofrece el método de desconexión de estado para poder cerrar correctamente
+     * las interacciones. Para ello, necesitamos el conversationId así como el participantId
+     * 
+     * Metodo publico que realiza una solicitud de tipo PATCH a Genesys para 
+     * desconectar la interacción en caso de Agent.
+     * 
+     * @author lrodriguez6@seidor.es
+     * @date 12/02/2024
+     * @param {InteractionStatus} string concatenado con conversationId, participantId
+     * @return Devuelve el resultado de la interacción como ok o nok
+     */ 
+    public with sharing class PatchServiceId
+    {
+        public HttpCalloutMock mock = null;
+
+        public String patchForServiceId(InteractionStatusId interaction)
+        {
+            String retorno = '';
+            AdminSetupParameter__mdt codigoWrapup = [SELECT KeyName__c, Value__c FROM AdminSetupParameter__mdt WHERE KeyName__c = 'WrapupValid' LIMIT 1];
+            HttpResponse response = null;
+
+            if(Test.isRunningTest() && mock != null)
+            {
+                HttpRequest req = new HttpRequest();
+                req.setMethod('PATCH');
+                req.setEndpoint(CONVERSATION_EMAIL_ENDPOINT + interaction.conversationId + CONVERSATION_EMAIL_PARTICIPANTS + interaction.participants);
+                req.setBody(interaction.toJSON());
+                response = mock.respond(req);
+                retorno = interaction.conversationId;
+            }
+            else 
+            {
+                Map<String, Object> bodyPatch = new Map<String, Object>();
+                bodyPatch.put('state', 'disconnected');
+
+                Map<String, Object> bodyPatchWrapup = new Map<String,Object>();
+                bodyPatchWrapup.put('code', codigoWrapup.Value__c);
+                bodyPatchWrapup.put('name', 'válida');
+                bodyPatch.put('wrapup', bodyPatchWrapup);
+                
+                response = purecloud.sdk.rest.patch(CONVERSATION_EMAIL_ENDPOINT 
+                                                    + interaction.conversationId + CONVERSATION_EMAIL_PARTICIPANTS 
+                                                    + interaction.participants, 
+                                                    JSON.serialize(bodyPatch));
+
+                System.debug('PatchServiceId RESPONSE: '+response);
+                System.debug('PatchServiceId RESPONSE GETBODY: '+response.getBody());
+            }
+            return response.getBody();
+        }
+
+        public void agentPatch(InteractionStatusId[] interactions, IAPICallback apexCallback)
+         {
+             asynchronousCallout(ASYNC_METHOD_DISCONNECTION, interactions, apexCallback);
+         }
+
+         public String getFieldFromPatch(HttpResponse response, string field)
+         {
+             String result = '';
+             String responseBody = response.getBody();
+             if(responseBody != null && responseBody.contains('\"' + field + '\"'))
+             {
+                 Map<String, Object> deserializedBody = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
+                 if(deserializedBody.containsKey(field))
+                 {
+                     result = (String) deserializedBody.get(field);
+                 }
+             }
+             return result;
+         }
+    }
     
 
     /**
@@ -1028,6 +1157,19 @@ public with sharing class GenesysCloud
 
         //jgarciamartinez - 16/03/2022 - se añade este campo para poder leer el purpose
         public String purposeStatus;
+
+        public String toJSON()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    //lrodriguez6@seidor.es
+    //fecha: 12/02/2024
+    public class InteractionStatusId implements IAPIRequest
+    {
+        public String conversationId;
+        public String participants;
 
         public String toJSON()
         {

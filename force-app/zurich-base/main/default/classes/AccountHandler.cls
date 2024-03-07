@@ -73,6 +73,7 @@ public with sharing class AccountHandler implements ITrigger
     {
         AccountUtil.generateScope(newList);
         AccountLeadUtil.createScopesForVentaLeads(newList,null);
+        AccountUtil.zrmNewLeadVisibility(newList);
     }
 
     /**
