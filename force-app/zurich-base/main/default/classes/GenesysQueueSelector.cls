@@ -41,7 +41,8 @@ public with sharing class GenesysQueueSelector extends RecordsSelector
             purecloud__PureCloud_Queue__c.fields.IsSurveyable__c,
             purecloud__PureCloud_Queue__c.fields.CallCenter__c,
             purecloud__PureCloud_Queue__c.purecloud__PureCloud_Division_ID__c,
-            purecloud__PureCloud_Queue__c.purecloud__PureCloud_Queue_ID__c
+            purecloud__PureCloud_Queue__c.purecloud__PureCloud_Queue_ID__c,
+            purecloud__PureCloud_Queue__c.GenesysFlowId__c
         })
         .addConditionIn(purecloud__PureCloud_Queue__c.fields.Name, queueNames)
         .orderBy(purecloud__PureCloud_Queue__c.fields.Name.getDescribe().getName(), 'DESC');

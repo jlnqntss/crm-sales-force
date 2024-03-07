@@ -144,7 +144,7 @@ public with sharing class EmailMessagesUtil
      */
     public void checkEmailMessageForGenesysRouting(List<EmailMessage> emailMessages, Boolean checkHegeoEmails)
     {
-        
+
         if( emailMessages != null && !emailMessages.isEmpty() ) {
             if( this.emailMessageToCheck == null ) this.emailMessageToCheck = new List<EmailMessage>();
 
@@ -339,6 +339,7 @@ public with sharing class EmailMessagesUtil
     public void assignGenesysRoutingFields()
     {
         try {
+            
             if( Test.isRunningTest() && isTestUnknownError )
                 throw new EmailMessagesUtilException('Unknown Error');
 
@@ -347,17 +348,25 @@ public with sharing class EmailMessagesUtil
                 // Map of Genesys Queues by email receipt
                 this.getGenesysQueuesByEmails();
                 this.getGenesysQueuesByIndustry();
+                // Incluímos la búsqueda por tipología
+                this.getGenesysQueuesByTypology();
 
-                if( mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty() ) {
+                if( (mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty()) ||
+                    (mapGenesysQueueByTypology != null && !mapGenesysQueueByTypology.isEmpty()))
+                {
                     this.getEmailRouteTypeList();
                     // For each EmailMessage...
                     for(EmailMessage em: this.emailMessageToCheck) {
                         // Find the Genesys queue data from the emails of the EmailMessage object
                         purecloud__PureCloud_Queue__c genesysQueue = findGenesysQueue(em);
                         
-                        if( genesysQueue != null ) {
+                        if( genesysQueue != null )
+                        {
                             // copy the following data to the EmailMessage
-                            em.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+                            if (genesysQueue.GenesysFlowId__c != null)
+                            {
+                                em.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+                            }
                             em.GenesysQueueName__c = genesysQueue.Name;
                         }
                     }
@@ -440,9 +449,9 @@ public with sharing class EmailMessagesUtil
     {
         purecloud__PureCloud_Queue__c genesysQueue;
                     
-        if( em != null ) 
+        if( em != null )
         {
-            try 
+            try
             {
                 // List of emails to check
                 String industryGeneric= 'Generico';
@@ -455,33 +464,40 @@ public with sharing class EmailMessagesUtil
                 List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
 
                 if (!listaCaso.isEmpty())
-                {
-                    if(listaCaso[0].Type != null && listaCaso[0].Subtype__c != null && listaCaso[0].TypeN3__c != null)
+                {      
+                    if( (mapGenesysQueueByTypology != null && !mapGenesysQueueByTypology.isEmpty()) &&
+                        listaCaso[0].Type != null && listaCaso[0].Subtype__c != null && listaCaso[0].TypeN3__c != null)
                     {
-                        //Recuperamos un mapa de colas por tipología
-                        this.getGenesysQueuesByTypology();
-                        
-                        //Y buscamos si la tipología del caso coincide con alguna de las del mapa
+                        // Buscamos si la tipología del caso coincide con alguna de las del mapa
                         CaseUtil.CaseTypology myCaseTyplogy = new CaseUtil.CaseTypology(listaCaso[0].Type.trim().toLowerCase(),
                                                                         				listaCaso[0].Subtype__c.trim().toLowerCase(),
                                                                         				listaCaso[0].TypeN3__c.trim().toLowerCase());
-                        if (mapGenesysQueueByTypology.containsKey(myCaseTyplogy))
+                        
+                        for(CaseUtil.CaseTypology tipologia: mapGenesysQueueByTypology.keyset())
                         {
-                            genesysQueue = this.mapGenesysQueueByTypology.get(myCaseTyplogy);
-                        } 
+                            if (tipologia.type == myCaseTyplogy.type && tipologia.subtype == myCaseTyplogy.subtype &&
+                                tipologia.typeN3 == myCaseTyplogy.typeN3)
+                            {
+                                genesysQueue = this.mapGenesysQueueByTypology.get(tipologia);
+                                return genesysQueue;
+                            }
+                        }
                     }
-
-                    else if(em.Industry__c != null && em.Industry__c.contains('@'))
+                    
+                    if(em.Industry__c != null && em.Industry__c.contains('@') &&
+                           (mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty()))
                     {
                         genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());  
-
+    
                         if (genesysQueue == null && listaCaso.get(0).RecordTypeId == uspRecordTypeId )
                         {
                             genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                            return genesysQueue;
                         }
                     }
-                }
-                else
+                }       
+                
+                if ((mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty()))
                 {
                     genesysQueue = getQueueWhenIndustryNotEmail(em, genesysQueue, listaCaso);
                 }
