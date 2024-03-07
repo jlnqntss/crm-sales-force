@@ -2653,6 +2653,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.Product_Text__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>ContactPointEmail.Anonymized__c</field>
         <readable>false</readable>
     </fieldPermissions>

@@ -10864,6 +10864,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Product_Text__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.QuoteLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
