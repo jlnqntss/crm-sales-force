@@ -390,4 +390,23 @@ public with sharing class UsersSelector extends RecordsSelector
         return result; 
     } 
 
+    /**
+     * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
+     * @author      dmunoz
+     * @date        16/02/2024
+     */
+    public List<User> findZRMActiveUsersByIntermediaryId(String intermediaryId, String idIntermediaryGroupId) {
+        List<User> result = new List<User>();
+
+        if (String.isNotEmpty(intermediaryId)) {
+            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+                                    FROM User 
+                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
+                                    AND (Contact.AccountId = :intermediaryId OR Contact.Account.IntermediaryGroup__c = :idIntermediaryGroupId) 
+                                    AND IsActive = TRUE]);
+        }
+
+        return result;
+    }
+
 }

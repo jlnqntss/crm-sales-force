@@ -383,4 +383,26 @@ public with sharing class OpportunityUtil
             }
         }
     }
+
+    /**
+     * Metodo para dar visibilidad ZRM sobre clientes y leads en caso de insertar una nueva oferta
+     * 
+     * @author dmunoz
+     * @created date 05/03/2024
+     */
+    public static void zrmVisibilityNewOffer(List<Opportunity> newList) {
+
+        // 1º obtener los mediadores y clientes de las polizas en vigor <IntermdiaryId__c, List<AccountId>>
+        Map<String, Set<String>> accountIdByIntermediaryMap = ZRMOfferVisibilityUtil.getAccountIdByIntermediaryMap(newList);
+
+        // 2º Obtener las agrupaciones de los mediadores para obtener los usuarios agr de esos mediadores <IntermdiaryId__c, IntermediaryGroup__c>
+        Map<String, String> intermediaryWithIntermediariesGroupsIdMap = ZRMOfferVisibilityUtil.getIntermediaryGroupIdMap(accountIdByIntermediaryMap.keySet());
+
+        // 3º Obtener los usuarios de los mediadores <IntermediaryId, List<UserId>
+        Map<String, List<String>> intermediariesWithUsers = ZRMOfferVisibilityUtil.getIntermediariesUsers(accountIdByIntermediaryMap.keySet(), intermediaryWithIntermediariesGroupsIdMap);
+
+        // 4º Insertar atm y activar registros de competencia y cuentas relacionadas
+        ZRMOfferVisibilityUtil.newOfferInsertATMs(accountIdByIntermediaryMap, intermediariesWithUsers);
+
+    }
 }
