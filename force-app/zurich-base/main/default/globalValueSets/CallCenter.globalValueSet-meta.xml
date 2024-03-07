@@ -55,6 +55,11 @@
         <default>false</default>
         <label>RRSS Marca</label>
     </customValue>
+    <customValue>
+        <fullName>GSS CSM</fullName>
+        <default>false</default>
+        <label>GSS CSM</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

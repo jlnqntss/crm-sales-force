@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Destino__c</fullName>
+    <description>Centro o cola a la que asignar el caso en función de la tipología.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Destino</label>
+    <required>true</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Email_GSS_Administracion</fullName>
+                <default>true</default>
+                <label>Email_GSS_Administracion</label>
+            </value>
+            <value>
+                <fullName>Email_GSS_Particulares</fullName>
+                <default>false</default>
+                <label>Email_GSS_Particulares</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
