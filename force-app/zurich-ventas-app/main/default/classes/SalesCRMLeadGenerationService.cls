@@ -3,9 +3,9 @@
  * 'leadGeneration' del web service 'WS_SalesCRM'.
  *
  * @author            : amiranda
- * @date              : 22-09-2023
- * @last modified on  : 02-10-2023
- * @last modified by  : overes
+ * @date              : 07-03-2024
+ * @last modified on  : 07-03-2024
+ * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
  * 1.0   21-09-2023   amiranda   Initial Version
@@ -121,6 +121,8 @@ public with sharing class SalesCRMLeadGenerationService
      * @param Id leadId Id de la cuenta de tipo 'Lead' insertada en SF
      * @param Lead requestData con la inforamción del Lead
      * @return Opportunity recuperada/generada
+     * 
+     * @change amiranda 06/03/2024 Se elimina la asignación de 'Owner'
      **/
     public static Opportunity manageOffer(Map<String, Account> accountByRelatedUser, Id leadId, Lead requestData)
     {
@@ -141,7 +143,6 @@ public with sharing class SalesCRMLeadGenerationService
             offerToInsert.StageName = 'Legit Lead';
             offerToInsert.CloseDate = Date.today().addDays(10);
             offerToInsert.AccountId = leadId;
-            offerToInsert.OwnerId = offerOwnerId;
             offerToInsert.IntermediaryId__c = account != null ? account.Id : null;
             offerToInsert.IntermediaryCode__c = account != null ? account.INFOIntermediaryCode__c : null;
             offerToInsert.PersonLeadSource__c = requestData.origin;

@@ -173,6 +173,27 @@ public with sharing class CasesSelector extends RecordsSelector
     }
 
     /**
+     * Método utilizado por Batch_CloseInteractions para definir el scope
+     * @author lrodriguez6@seidor.es
+     * @date 12/02/2024
+     * @return List<Case> que se va a lanzar en el batch
+     */
+    public List<Case> getCasesToCloseInteractions()
+    {
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.Id
+        })
+        .addConditionEq(Case.RecordTypeId, CaseUtil.rtUSPId)
+        .addConditionEq(Case.CloseInteractionBatch__c,true)
+        .addConditionEq(Case.ExpectedClosingDate__c,System.TODAY())
+        .addConditionEq(Case.CloseByBatch__c,false);
+
+        System.debug('Casos recuperados desde Selector: '+(List<Case>)this.baseQuery.run());
+        return (List<Case>) this.baseQuery.run();
+        
+    }
+
+    /**
      * Método utilizado por el batch RelateCasesToNewOffersBatch para definir el scope
      * @author lrodriguez6@seidor.es
      * @date 11/11/2022

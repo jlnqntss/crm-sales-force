@@ -4084,6 +4084,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.CloseByBatch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.CloseDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4205,6 +4210,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.EntitlementId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ExpectedClosingDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6614,6 +6624,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Event.Related_to_Intermediary_Group__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Event.Response__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7964,6 +7979,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Product_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Product_Text__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -4,9 +4,6 @@
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>CreateCallList</excludeButtons>
     <excludeButtons>CreateSurveyInvitation</excludeButtons>
-<excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
-    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -268,29 +265,24 @@
             <sortOrder>3</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>NewSDMEvent</actionName>
+            <actionName>Account.ActividadComercial</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>4</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Account.ActividadComercial</actionName>
+            <actionName>Recordatorio_SDM</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>5</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Recordatorio_SDM</actionName>
+            <actionName>Account.Comunicacion</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>6</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Account.Comunicacion</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>7</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>Account.SeguimientoOfertaPoliza</actionName>
             <actionType>QuickAction</actionType>
-            <sortOrder>8</sortOrder>
+            <sortOrder>7</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <quickActionList>
@@ -378,7 +370,6 @@
         <relatedList>RelatedContentNoteList</relatedList>
     </relatedLists>
     <relatedLists>
-        <excludeButtons>AccountTeamMemberMultiAdd</excludeButtons>
         <excludeButtons>AddAccTeamMember</excludeButtons>
         <excludeButtons>AddAccountDefaultTeam</excludeButtons>
         <excludeButtons>DeleteAllAccountTeamMembers</excludeButtons>

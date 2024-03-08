@@ -13,6 +13,7 @@
 &quot;Sprinklr&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
                                         &quot;RRSS Postventa-Siniestros&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
 &quot;RRSS Marca&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
+&quot;GSS CSM&quot;, IMAGE(&quot;/resource/gss&quot;, &quot;GSS&quot;, 40, 100),
 					&quot;&quot;
 				)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>

@@ -77,6 +77,7 @@ public class OpportunityHandler implements ITrigger
     public void afterInsert(List<SObject> newList)
     {
         OpportunityUtil.generateScope(newList);
+        OpportunityUtil.zrmVisibilityNewOffer(newList); 
     }
 
     /**
