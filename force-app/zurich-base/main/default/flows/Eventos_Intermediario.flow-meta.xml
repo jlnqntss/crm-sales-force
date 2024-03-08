@@ -5,7 +5,7 @@
         <name>Assign_Intermediary_Id</name>
         <label>Assign Intermediary Id</label>
         <locationX>138</locationX>
-        <locationY>566</locationY>
+        <locationY>782</locationY>
         <assignmentItems>
             <assignToReference>IntermediariesIds</assignToReference>
             <operator>Add</operator>
@@ -21,7 +21,7 @@
         <name>Group_Events_Assignment</name>
         <label>Group Events Assignment</label>
         <locationX>50</locationX>
-        <locationY>866</locationY>
+        <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>ListadeEventos</assignToReference>
             <operator>Add</operator>
@@ -30,7 +30,23 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Eventos</targetReference>
+            <targetReference>Get_Intermediaries</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Intermediaries_Events_Assignment</name>
+        <label>Intermediaries Events Assignment</label>
+        <locationX>50</locationX>
+        <locationY>1082</locationY>
+        <assignmentItems>
+            <assignToReference>ListadeEventos</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Get_Intermediaries_Events</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Order_by_date</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -49,6 +65,23 @@
             <targetReference>Eventos</targetReference>
         </connector>
     </assignments>
+    <collectionProcessors>
+        <name>Order_by_date</name>
+        <elementSubtype>SortCollectionProcessor</elementSubtype>
+        <label>Order by date</label>
+        <locationX>50</locationX>
+        <locationY>1190</locationY>
+        <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
+        <collectionReference>ListadeEventos</collectionReference>
+        <connector>
+            <targetReference>Eventos</targetReference>
+        </connector>
+        <sortOptions>
+            <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
+            <sortField>StartDateTime</sortField>
+            <sortOrder>Desc</sortOrder>
+        </sortOptions>
+    </collectionProcessors>
     <decisions>
         <name>Es_Agrupaci_n</name>
         <label>Es Agrupación</label>
@@ -69,27 +102,37 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Intermediaries</targetReference>
+                <targetReference>Get_Group_Events</targetReference>
             </connector>
             <label>Sí</label>
         </rules>
     </decisions>
     <description>Eventos relacionados con un intermediario</description>
     <environments>Default</environments>
+    <formulas>
+        <name>CurrentYearEnd</name>
+        <dataType>Date</dataType>
+        <expression>DATE(YEAR({!$Flow.CurrentDate}),12,31)</expression>
+    </formulas>
+    <formulas>
+        <name>CurrentYearStart</name>
+        <dataType>Date</dataType>
+        <expression>DATE(YEAR({!$Flow.CurrentDate}),1,1)</expression>
+    </formulas>
     <interviewLabel>Eventos Intermediario {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Eventos Intermediario</label>
     <loops>
         <name>Intermediaries_Loop</name>
         <label>Intermediaries Loop</label>
         <locationX>50</locationX>
-        <locationY>458</locationY>
+        <locationY>674</locationY>
         <collectionReference>Get_Intermediaries</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>Assign_Intermediary_Id</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Get_Group_Events</targetReference>
+            <targetReference>Get_Intermediaries_Events</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -149,6 +192,20 @@
                 <elementReference>recordId</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>StartDateTime</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>CurrentYearStart</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDateTime</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <elementReference>CurrentYearEnd</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -157,7 +214,7 @@
         <name>Get_Group_Events</name>
         <label>Get Group Events</label>
         <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Group_Events_Assignment</targetReference>
@@ -165,9 +222,23 @@
         <filterLogic>and</filterLogic>
         <filters>
             <field>AccountId</field>
-            <operator>In</operator>
+            <operator>EqualTo</operator>
             <value>
-                <elementReference>IntermediariesIds</elementReference>
+                <elementReference>Get_Account.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDateTime</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>CurrentYearStart</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDateTime</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <elementReference>CurrentYearEnd</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -178,7 +249,7 @@
         <name>Get_Intermediaries</name>
         <label>Get Intermediaries</label>
         <locationX>50</locationX>
-        <locationY>350</locationY>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Intermediaries_Loop</targetReference>
@@ -195,14 +266,50 @@
         <object>Account</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Get_Intermediaries_Events</name>
+        <label>Get Intermediaries Events</label>
+        <locationX>50</locationX>
+        <locationY>974</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Intermediaries_Events_Assignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>IntermediariesIds</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDateTime</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>CurrentYearStart</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDateTime</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <elementReference>CurrentYearEnd</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Event</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <screens>
         <name>Eventos</name>
         <label>Eventos</label>
         <locationX>182</locationX>
-        <locationY>1058</locationY>
+        <locationY>1382</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
+        <backButtonLabel>Atrás</backButtonLabel>
         <fields>
             <name>ListaEventos</name>
             <dataTypeMappings>
@@ -214,7 +321,7 @@
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <stringValue>Eventos</stringValue>
+                    <stringValue>Eventos año en curso</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -244,7 +351,7 @@
             <inputParameters>
                 <name>columns</name>
                 <value>
-                    <stringValue>[{&quot;apiName&quot;:&quot;SubjectLink__c&quot;,&quot;guid&quot;:&quot;column-9d5b&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Subject&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;ActaLink__c&quot;,&quot;guid&quot;:&quot;column-eda2&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Acta&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;WhoId&quot;,&quot;guid&quot;:&quot;column-ecae&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Name ID&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;Attendees&quot;,&quot;guid&quot;:&quot;column-100b&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Attendees&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                    <stringValue>[{&quot;apiName&quot;:&quot;SubjectLink__c&quot;,&quot;guid&quot;:&quot;column-9d5b&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Asunto&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Subject&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;ActaLink__c&quot;,&quot;guid&quot;:&quot;column-eda2&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Acta&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;Type&quot;,&quot;guid&quot;:&quot;column-44fa&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Tipo&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Type&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;StartDateTime&quot;,&quot;guid&quot;:&quot;column-b700&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Fecha de reunión&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Start Date Time&quot;,&quot;type&quot;:&quot;customDateTime&quot;}]</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -253,10 +360,11 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
+        <nextOrFinishButtonLabel>Ver todos</nextOrFinishButtonLabel>
         <showFooter>false</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -268,6 +376,14 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>currentItemFromSourceCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Event</objectType>
+    </variables>
     <variables>
         <name>IntermediariesIds</name>
         <dataType>String</dataType>
