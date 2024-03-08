@@ -1113,7 +1113,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Local Team</fullName>
+            <fullName>Local team</fullName>
             <default>true</default>
         </values>
     </picklistValues>
@@ -1175,7 +1175,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Home%2FProperty</fullName>
+            <fullName>Home%2Fproperty</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1183,7 +1183,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Motor%2FFleet</fullName>
+            <fullName>Moto%2Ffleet</fullName>
             <default>false</default>
         </values>
         <values>

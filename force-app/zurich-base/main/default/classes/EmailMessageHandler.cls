@@ -80,7 +80,6 @@ public class EmailMessageHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
-        emailMessagesUtil.checkIfMailOnlyInCc( (List<EmailMessage>) newList );
     }
 
     /**
@@ -91,6 +90,7 @@ public class EmailMessageHandler implements ITrigger
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        emailMessagesUtil.checkIfMailOnlyInCc( (List<EmailMessage>) newList );
     }
 
     /**

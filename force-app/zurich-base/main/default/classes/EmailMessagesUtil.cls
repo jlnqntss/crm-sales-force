@@ -29,6 +29,8 @@ public with sharing class EmailMessagesUtil
     private Map<String, purecloud__PureCloud_Queue__c> mapGenesysQueueByEmail;
     // Map of Genesys Queues by Industry
     private Map<String, purecloud__PureCloud_Queue__c> mapGenesysQueueByIndustry;
+    // Map of Genesys Queues by Typology
+    private Map<CaseUtil.CaseTypology, purecloud__PureCloud_Queue__c> mapGenesysQueueByTypology;
     // List of email message to be considered
     @testvisible
     private List<EmailMessage> emailMessageToCheck;
@@ -142,7 +144,7 @@ public with sharing class EmailMessagesUtil
      */
     public void checkEmailMessageForGenesysRouting(List<EmailMessage> emailMessages, Boolean checkHegeoEmails)
     {
-        
+
         if( emailMessages != null && !emailMessages.isEmpty() ) {
             if( this.emailMessageToCheck == null ) this.emailMessageToCheck = new List<EmailMessage>();
 
@@ -237,6 +239,50 @@ public with sharing class EmailMessagesUtil
         }
     }
 
+    /**
+     * Get from the Genesys configuration de data for the Genesys Queues and flows bases on the Case Types
+     * 
+     * @author nts (jfherrero)
+     * @date 22/02/2024
+     */
+    public void getGenesysQueuesByTypology()
+    {
+        if( mapGenesysQueueByTypology == null ) {
+            mapGenesysQueueByTypology = new Map<CaseUtil.CaseTypology, purecloud__PureCloud_Queue__c>();
+        }
+
+        //Necesitamos obtener los nombres de las colas a través del metadato.
+        List<Case_Queue_override_by_type__mdt> caseQueueOverrideByType = Case_Queue_override_by_type__mdt.getAll().values();
+        
+        Map<CaseUtil.CaseTypology, String> mapGenesysQueueNamesByTypology = new Map<CaseUtil.CaseTypology, String>();
+        List<String> genesysQueueNames = new List<String>();
+
+        if (caseQueueOverrideByType?.size()>0)
+        {
+            for (Case_Queue_override_by_type__mdt queueOverride : caseQueueOverrideByType)
+            {
+                genesysQueueNames.add(queueOverride.Destino__c.trim().toLowerCase());
+                mapGenesysQueueNamesByTypology.put(new CaseUtil.CaseTypology(queueOverride.Type__c.trim().toLowerCase(),
+                                                                        queueOverride.Subtype__c.trim().toLowerCase(),
+                                                                        queueOverride.TypeN3__c.trim().toLowerCase()),
+                                              			queueOverride.Destino__c);
+            }
+        }
+        
+        GenesysQueueSelector genesysQueueSelector = new GenesysQueueSelector();
+        Map<String, purecloud__PureCloud_Queue__c> queuesMapByName = new Map<String, purecloud__PureCloud_Queue__c>();
+        
+        for(purecloud__PureCloud_Queue__c queue : genesysQueueSelector.getQueuesByName(genesysQueueNames))
+        {
+            queuesMapByName.put(queue.Name, queue);
+        }
+        
+        for (CaseUtil.CaseTypology typology : mapGenesysQueueNamesByTypology.keyset())
+        {
+            mapGenesysQueueByTypology.put(typology, queuesMapByName.get(mapGenesysQueueNamesByTypology.get(typology)));
+        }
+        
+    }
     
     /**
      * Devuelve un listado con los registros de los tipos de enrutado para cada dirección de email
@@ -293,6 +339,7 @@ public with sharing class EmailMessagesUtil
     public void assignGenesysRoutingFields()
     {
         try {
+            
             if( Test.isRunningTest() && isTestUnknownError )
                 throw new EmailMessagesUtilException('Unknown Error');
 
@@ -301,17 +348,25 @@ public with sharing class EmailMessagesUtil
                 // Map of Genesys Queues by email receipt
                 this.getGenesysQueuesByEmails();
                 this.getGenesysQueuesByIndustry();
+                // Incluímos la búsqueda por tipología
+                this.getGenesysQueuesByTypology();
 
-                if( mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty() ) {
+                if( (mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty()) ||
+                    (mapGenesysQueueByTypology != null && !mapGenesysQueueByTypology.isEmpty()))
+                {
                     this.getEmailRouteTypeList();
                     // For each EmailMessage...
                     for(EmailMessage em: this.emailMessageToCheck) {
                         // Find the Genesys queue data from the emails of the EmailMessage object
                         purecloud__PureCloud_Queue__c genesysQueue = findGenesysQueue(em);
                         
-                        if( genesysQueue != null ) {
+                        if( genesysQueue != null )
+                        {
                             // copy the following data to the EmailMessage
-                            em.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+                            if (genesysQueue.GenesysFlowId__c != null)
+                            {
+                                em.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+                            }
                             em.GenesysQueueName__c = genesysQueue.Name;
                         }
                     }
@@ -384,14 +439,19 @@ public with sharing class EmailMessagesUtil
      * @author aberuete 
      * @date 20/11/2023 
      * @descripción Refactorizar el método y añadir que los casos de tipo USP , si el campo industry viene un correo, buscar la cola de enrutar a genesys por email
+     * 
+     * * * * modificaciones 
+     * @author jfherrero 
+     * @date 27/02/2024 
+     * @descripción Buscar si la cola se tiene que asignar por tipología a otros centros (inicialmente para GSS)
      */
     private purecloud__PureCloud_Queue__c findGenesysQueue(EmailMessage em)
     {
         purecloud__PureCloud_Queue__c genesysQueue;
                     
-        if( em != null ) 
+        if( em != null )
         {
-            try 
+            try
             {
                 // List of emails to check
                 String industryGeneric= 'Generico';
@@ -403,16 +463,41 @@ public with sharing class EmailMessagesUtil
                 if(em.Incoming && String.isNotBlank(em.ParentId)) idCaso.add(em.ParentId); 
                 List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
 
-                if(!listaCaso.isEmpty()  && em.Industry__c != null && em.Industry__c.contains('@'))
-                {
-                    genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());  
-
-                    if (genesysQueue == null && listaCaso.get(0).RecordTypeId == uspRecordTypeId )
+                if (!listaCaso.isEmpty())
+                {      
+                    if( (mapGenesysQueueByTypology != null && !mapGenesysQueueByTypology.isEmpty()) &&
+                        listaCaso[0].Type != null && listaCaso[0].Subtype__c != null && listaCaso[0].TypeN3__c != null)
                     {
-                        genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                        // Buscamos si la tipología del caso coincide con alguna de las del mapa
+                        CaseUtil.CaseTypology myCaseTyplogy = new CaseUtil.CaseTypology(listaCaso[0].Type.trim().toLowerCase(),
+                                                                        				listaCaso[0].Subtype__c.trim().toLowerCase(),
+                                                                        				listaCaso[0].TypeN3__c.trim().toLowerCase());
+                        
+                        for(CaseUtil.CaseTypology tipologia: mapGenesysQueueByTypology.keyset())
+                        {
+                            if (tipologia.type == myCaseTyplogy.type && tipologia.subtype == myCaseTyplogy.subtype &&
+                                tipologia.typeN3 == myCaseTyplogy.typeN3)
+                            {
+                                genesysQueue = this.mapGenesysQueueByTypology.get(tipologia);
+                                return genesysQueue;
+                            }
+                        }
                     }
-                }
-                else
+                    
+                    if(em.Industry__c != null && em.Industry__c.contains('@') &&
+                           (mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty()))
+                    {
+                        genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());  
+    
+                        if (genesysQueue == null && listaCaso.get(0).RecordTypeId == uspRecordTypeId )
+                        {
+                            genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
+                            return genesysQueue;
+                        }
+                    }
+                }       
+                
+                if ((mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty()))
                 {
                     genesysQueue = getQueueWhenIndustryNotEmail(em, genesysQueue, listaCaso);
                 }
@@ -769,8 +854,18 @@ public with sharing class EmailMessagesUtil
                 mailboxes.add(mailbox.Email__c);
             }
 
+            List<EmailMessage> emailListRecentlyOpened = new List<EmailMessage>();
+
+            for (EmailMessage em : emailList)
+            {
+                if (em.CreatedDate >= Datetime.now().addMinutes(-1))
+                {
+                    emailListRecentlyOpened.add(em);
+                }
+            }
+
             // Vemos si los buzones están en el CC pero no en ToAddress y los guardamos
-            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailList, mailboxes);//new List<EmailMessage>();
+            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailListRecentlyOpened, mailboxes);//new List<EmailMessage>();
 
             Set<String> caseIds = new Set<String>();
 

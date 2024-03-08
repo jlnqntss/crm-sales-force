@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-03-2024
+ * @last modified on  : 08-03-2024
  * @last modified by  : aberuete
 **/
 @isTest
@@ -301,5 +301,28 @@ private with sharing class CasesSelectorTest
 
         System.assertEquals (2, casesReturned.size(),'El número de casos devuelto no es correcto');
         
+    }
+     * Test del método que devuelve casos para el Batch_CloseInteractions
+     * @author lrodriguez6@seidor.es
+     * @date 01/03/2024
+     */
+    @isTest
+    private static void test_casesBatchCloseInteractions_matchedRecord()
+    {
+        List<Case> casos = [SELECT Id, CreatedOffer__c FROM Case LIMIT 1];
+        
+        casos[0].RecordTypeId = CaseUtil.rtUSPId;
+        casos[0].CloseInteractionBatch__c= true;
+        casos[0].ExpectedClosingDate__c= System.TODAY();
+        casos[0].CloseByBatch__c= false;
+
+        update casos;
+
+        
+        Test.startTest();
+        casos = new CasesSelector().getCasesToCloseInteractions();
+        Test.stopTest();
+
+        System.assertEquals(1, casos.size(), 'no devuelve el número de registros correcto');
     }
 }

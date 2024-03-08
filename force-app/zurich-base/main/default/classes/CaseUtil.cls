@@ -67,7 +67,8 @@ public with sharing class CaseUtil
      * @author pitt.olvera@seidor.com
      * @date 03/03/2024
      */
-    private class CaseCustomTipificationException extends Exception {} 
+    private class CaseCustomTipificationException extends Exception
+    {}
 
     /**
      * Método que inserta o actualiza un siniestro
@@ -280,18 +281,18 @@ public with sharing class CaseUtil
             {
                 Robot_Hegeo_Field_Mapping__mdt caseTipificationMetadata;
 
-                if (String.isBlank(customerRequest.RobotTypeN1__c))
+                if ( String.isBlank(customerRequest.RobotTypeN1__c) )
                 {
                     caseTipificationMetadata = CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE?.get(DEFAULT_SPRINKLR_CASE_TIPIFICATION);
                 }
                 else
                 {
-                    caseTipificationMetadata = CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE?.get(customerRequest.RobotTypeN1__c);    
+                    caseTipificationMetadata = CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE?.get(customerRequest.RobotTypeN1__c);
                 }
-     
+
                 if (caseTipificationMetadata == null)
                 {
-                    ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR, 'Error durante la tipificación del Sprinklr N: ' + customerRequest.spr_sf__Sprinklr_Case_Number__c, CaseUtil.class.getName());
+                    ErrorLogUtil.commitError( ErrorLogUtil.ERROR_LEVEL_ERROR, 'Error durante la tipificación del Sprinklr N: ' + customerRequest.spr_sf__Sprinklr_Case_Number__c, CaseUtil.class.getName() );
                 }
                 else
                 {
@@ -303,32 +304,32 @@ public with sharing class CaseUtil
         }
     }
 
-     /**
-     * Método que da valor a los campos Description y PrimerMensaje__c del objeto Case 
+    /**
+     * Método que da valor a los campos Description y PrimerMensaje__c del objeto Case
      * Ejecutado en beforInsert porque vienen casos desde Sprinklr con la descripción rellena por un mensaje del cliente
      * @author jchavez
      * @date 23/02/2024
      **/
 
-     public static void shortDescriptionNeeded(List<Case> newList)
-     {
-         integer stringLimit = 255;
+    public static void shortDescriptionNeeded(List<Case> newList)
+    {
+        integer stringLimit = 255;
 
-         for(Case caso : newList)
-         {
-             if(caso.RecordTypeId == RT_ID_OCSSPRINKLR)
-             {
-                 if(!String.isBlank(caso.Description) && caso.Description.length() > stringLimit)
-                 {
-                     caso.PrimerMensaje__c =  caso.Description.left(stringLimit);
-                 }
-                 else
-                 {   
-                     caso.PrimerMensaje__c = caso.Description;
-                 }
-             }
-         }
-     }
+        for(Case caso : newList)
+        {
+            if(caso.RecordTypeId == RT_ID_OCSSPRINKLR)
+            {
+                if(!String.isBlank(caso.Description) && caso.Description.length() > stringLimit)
+                {
+                    caso.PrimerMensaje__c =  caso.Description.left(stringLimit);
+                }
+                else
+                {
+                    caso.PrimerMensaje__c = caso.Description;
+                }
+            }
+        }
+    }
 
     /**
      * Llamado en BulkBefore
@@ -355,13 +356,13 @@ public with sharing class CaseUtil
         {
             if(customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR)
             {
-                if(String.isBlank(customerRequest.Type) || customerRequest.Type.equals(SPRINKLR_TYPE_MARCA))
+                if( String.isBlank(customerRequest.Type) || customerRequest.Type.equals(SPRINKLR_TYPE_MARCA) )
                 {
                     customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_MARCA;
                     customerRequest.OwnerId = queueMarcaRRSS[0].Id;
-        
+
                 }
-                else if(customerRequest.Type.equals(SPRINKLR_TYPE_ASISTENCIA) || customerRequest.Type.equals(SPRINKLR_TYPE_SINIESTROS))
+                else if( customerRequest.Type.equals(SPRINKLR_TYPE_ASISTENCIA) || customerRequest.Type.equals(SPRINKLR_TYPE_SINIESTROS) )
                 {
                     customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_SINIESTROS;
                     customerRequest.OwnerId = queueSiniestrosRRSS[0].Id;
@@ -571,6 +572,29 @@ public with sharing class CaseUtil
         }
 
     }
+
+     /**
+     * Método utilizado por Batch_CLoseInteractions para activar el campo CloseByBatch__c
+     * @author lrodriguez6@seidor.es
+     * @date 21/02/2024
+     * @param [List<Case> casesToCheck] casos que ha recuperado el batch
+     * @return List<Case> casos a actualizar
+     */
+    public static List<Case> checkCasesCloseInteractions (List<Case> casesToRelate)
+    {
+        List<Case> casesToUpdate = new List<Case>();
+
+        if( casesToRelate != null && !casesToRelate.isEmpty() )
+        {
+            for(Case currentCase : casesToRelate)
+            {
+                currentCase.CloseByBatch__c = true;
+                casesToUpdate.add(currentCase);   
+            }  
+        }
+        return casesToUpdate;
+    }
+
 
     /**
      * Método que a partir de una lista de casos devuelve la lista de casos con RecordType USPInquiry
@@ -1630,7 +1654,7 @@ public with sharing class CaseUtil
         List<Robot_Hegeo_Field_Mapping__mdt> hegeoMetadataMappingConfiguration = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
         String fieldAPINameInLowerCase = fieldToSort.getDescribe().getName().toLowerCase();
 
-        if (!Robot_Hegeo_Field_Mapping__mdt.getSobjectType().getDescribe().fields.getMap().keySet().contains(fieldAPINameInLowerCase))
+        if ( !Robot_Hegeo_Field_Mapping__mdt.getSobjectType().getDescribe().fields.getMap().keySet().contains(fieldAPINameInLowerCase) )
         {
             throw new CaseCustomTipificationException('La configuración para ' + Robot_Hegeo_Field_Mapping__mdt.getSobjectType().getDescribe().getName() + ' no soporta el atributo ' + fieldAPINameInLowerCase);
         }
@@ -1641,5 +1665,31 @@ public with sharing class CaseUtil
         }
 
         return mappingConfiguration;
+    }
+
+    /**
+     * Representa la configuración de tipologías de un caso.
+     * @author jfherrero
+     * @created date: 22/02/2024
+     */
+
+    @TestVisible
+    public class CaseTypology
+    {
+        public String type;
+        public String subtype;
+        public String typeN3;
+
+        /**
+         * Constructor por defecto
+         * @author jfherrero
+         * @created date: 22/02/2024
+         */
+        public caseTypology(String type, String subtype, String typeN3)
+        {
+            this.type = type;
+            this.subtype = subtype;
+            this.typeN3 = typeN3;
+        }
     }
 }

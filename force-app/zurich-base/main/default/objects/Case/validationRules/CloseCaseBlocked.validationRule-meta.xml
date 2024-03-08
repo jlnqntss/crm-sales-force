@@ -25,7 +25,7 @@ RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
 
 IsClosed &amp;&amp;
 
-( NOT( OR(ISCHANGED(AccountId),ISCHANGED(PolicyId__c),ISCHANGED(MediatedCustomer__c),ISCHANGED(OfferId__c)))) &amp;&amp;
+( NOT( OR(ISCHANGED(InteractionStatus__c),ISCHANGED(AccountId),ISCHANGED(PolicyId__c),ISCHANGED(MediatedCustomer__c),ISCHANGED(OfferId__c)))) &amp;&amp;
 
 NOT ISCHANGED(Status) &amp;&amp; $Permission.USPTriggerCaseValidationRules
 
