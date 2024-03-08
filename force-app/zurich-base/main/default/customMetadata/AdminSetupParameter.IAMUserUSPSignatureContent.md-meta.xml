@@ -12,6 +12,6 @@
     </values>
     <values>
         <field>Value__c</field>
-        <value xsi:type="xsd:string">&lt;div style=&quot;font-family: Verdana; font-size: 11px;&quot;&gt;&lt;b&gt;Para agilizar la gestión de este caso responda sobre este email si es necesario&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;{0} {1} &lt;/b&gt;&lt;br/&gt;{2} &lt;/b&gt;&lt;br/&gt;{3} &lt;br/&gt;&lt;span style=&quot;color: #003399&quot;&gt;&lt;b&gt;Zurich Seguros&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;</value>
+        <value xsi:type="xsd:string">&lt;div style=&quot;font-family: Verdana; font-size: 11px;&quot;&gt;&lt;b&gt;Para agilizar la gestión de este caso responda sobre este email si es necesario&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;{0} {1} &lt;/b&gt;&lt;br/&gt;{2} &lt;/b&gt;&lt;br/&gt;932027914&lt;br/&gt;&lt;span style=&quot;color: #003399&quot;&gt;&lt;b&gt;Zurich Seguros&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;</value>
     </values>
 </CustomMetadata>
