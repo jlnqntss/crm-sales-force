@@ -302,6 +302,7 @@ private with sharing class CasesSelectorTest
         System.assertEquals (2, casesReturned.size(),'El número de casos devuelto no es correcto');
         
     }
+    /*
      * Test del método que devuelve casos para el Batch_CloseInteractions
      * @author lrodriguez6@seidor.es
      * @date 01/03/2024

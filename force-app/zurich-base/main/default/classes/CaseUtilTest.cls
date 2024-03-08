@@ -1162,4 +1162,96 @@ private with sharing class CaseUtilTest
 
         System.assertEquals(true, listaSalida[0].CloseByBatch__c, 'no devuelve el valor esperado');
     }
+
+    /**
+     * Test que comprueba que al actualizar un caso de tipo Sprinklr enlazando una cuenta de tipo customer, 
+     * se actualiza el contacto asociado al perfil social del caso.
+     **
+     * @author aberuete
+     * @date 08/03/2024
+     */
+    @isTest
+    private static void test_getSprinklrSocialPersonaToLinkContact()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+        List<Account> accountTiLinkCase = [Select id,PersonContactId from Account where RecordType.DeveloperName = 'Customer' limit 1 ];
+
+        spr_sf__SocialPersona__c sprSocialPersona = new spr_sf__SocialPersona__c ( Name = 'sprSocialPersonaTest');
+        insert sprSocialPersona;
+
+        Case caseToLinkAccount = new Case();
+        caseToLinkAccount.RecordTypeId = rtOCSSprinklrId;
+        caseToLinkAccount.SprinklrSocialPersona__c = sprSocialPersona.Id;
+        insert caseToLinkAccount;
+
+        Test.startTest();
+        caseToLinkAccount.AccountId = accountTiLinkCase[0].Id;
+        update caseToLinkAccount;
+        Test.stopTest();
+
+        spr_sf__SocialPersona__c sprSocialPersonaReturned = [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=:sprSocialPersona.id];
+        System.assertEquals (accountTiLinkCase[0].PersonContactId, sprSocialPersonaReturned.spr_sf__Contact__c, 'No se ha actualizado correctamente el perfil social');
+    }
+
+    /**
+     * Test que comprueba que al actualizar un caso de tipo Sprinklr enlazando una cuenta de un tipo distinto a customer, 
+     * no se actualiza el contacto asociado al perfil social del caso.
+     **
+     * @author aberuete
+     * @date 08/03/2024
+     */
+    @isTest
+    private static void test_getSprinklrSocialPersonaToNotLinkContact()
+    {
+        List<Account> accountTiLinkCase = TestDataFactory.generateAccounts('001', 'BusinessCustomer', 1);
+        insert accountTiLinkCase;
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+
+        spr_sf__SocialPersona__c sprSocialPersona = new spr_sf__SocialPersona__c ( Name = 'sprSocialPersonaTest');
+        insert sprSocialPersona;
+
+        Case caseToLinkAccount = new Case();
+        caseToLinkAccount.RecordTypeId = rtOCSSprinklrId;
+        caseToLinkAccount.SprinklrSocialPersona__c = sprSocialPersona.Id;
+        insert caseToLinkAccount;
+
+        Test.startTest();
+        caseToLinkAccount.AccountId = accountTiLinkCase[0].Id;
+        update caseToLinkAccount;
+        Test.stopTest();
+
+        spr_sf__SocialPersona__c sprSocialPersonaReturned = [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=:sprSocialPersona.id];
+        System.assertEquals (null, sprSocialPersonaReturned.spr_sf__Contact__c, 'El perfil social no debería tener un contacto asociado');
+    }
+
+    /**
+     * Test que comprueba que al actualizar un caso de tipo Sprinklr eliminado su cuenta asociada, 
+     * se elimina el contacto del perfil social del caso.
+     **
+     * @author aberuete
+     * @date 08/03/2024
+     */
+    @isTest
+    private static void test_getSprinklrSocialPersonaToDeleteContactRelated()
+    {
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+        List<Account> accountTiLinkCase = [Select id, PersonContactId from Account where RecordType.DeveloperName = 'Customer' limit 1 ];
+
+        spr_sf__SocialPersona__c sprSocialPersona = new spr_sf__SocialPersona__c ( Name = 'sprSocialPersonaTest', spr_sf__Contact__c = accountTiLinkCase[0].PersonContactId);
+        insert sprSocialPersona;
+
+        Case caseToLinkAccount = new Case();
+        caseToLinkAccount.RecordTypeId = rtOCSSprinklrId;
+        caseToLinkAccount.SprinklrSocialPersona__c = sprSocialPersona.Id;
+        caseToLinkAccount.AccountId = accountTiLinkCase[0].Id;
+        insert caseToLinkAccount;
+
+        Test.startTest();
+        caseToLinkAccount.AccountId = null;
+        update caseToLinkAccount;
+        Test.stopTest();
+
+        spr_sf__SocialPersona__c sprSocialPersonaAfterDeleted= [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=:sprSocialPersona.id];
+        System.assertEquals (null, sprSocialPersonaAfterDeleted.spr_sf__Contact__c, 'El contacto se debería haber borrado');
+    }
 }
