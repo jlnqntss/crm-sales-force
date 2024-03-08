@@ -3753,6 +3753,10 @@
         <recordType>Account.AgrupacionMediador</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Account-Agente zrm</layout>
+        <recordType>Account.BusinessCustomer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Account-Account Layout</layout>
         <recordType>Account.ParentAccount</recordType>
     </layoutAssignments>
@@ -3783,6 +3787,15 @@
         <layout>CaseInteraction-Case Feed Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Competitor__c-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Propensity__c-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Claim__c-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Codigo_Negocio_BancSabadell__mdt-Codigo Negocio BancSabadell Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -3806,6 +3819,13 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>EntityOrderMapping__mdt-Entity Order Mapping Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Event-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Event-Agente zrm</layout>
+        <recordType>Event.SDM_Event</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ExcludedMailboxList__mdt-ExcludedMailboxList Layout</layout>
@@ -3849,6 +3869,9 @@
         <recordType>Objective__c.Objectives</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Opportunity-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Order-Policy life</layout>
         <recordType>Order.PolicyLife</recordType>
     </layoutAssignments>
@@ -3860,8 +3883,18 @@
         <layout>OtherProduct__mdt-Other Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>PersonAccount-Ventas Customer</layout>
-        <recordType>PersonAccount.PersonAccount</recordType>
+        <layout>PersonAccount-Agente ZRM</layout>
+        <recordType>PersonAccount.Customer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PersonAccount-ZRM Lead</layout>
+        <recordType>PersonAccount.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Policy__c-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Quote-Agente ZRM</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ProvinceAssignment__mdt-Province Assignment Layout</layout>
@@ -3876,6 +3909,37 @@
         <layout>SurveyAnswerOption__mdt-Survey Answer Option Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Task-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Agente zrm</layout>
+        <recordType>Task.Activity</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Agente zrm</layout>
+        <recordType>Task.Activity_USP</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Agente zrm</layout>
+        <recordType>Task.CommercialAction</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Agente zrm</layout>
+        <recordType>Task.Communication</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Agente zrm</layout>
+        <recordType>Task.Interaction</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Agente zrm</layout>
+        <recordType>Task.Offer_Policy_Follow_up</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Agente zrm</layout>
+        <recordType>Task.Reminder</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>TransformerEquivalences__mdt-TransformerEquivalence Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -3883,6 +3947,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>User-User Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Product2-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZRM_Genesys_WrapUp_mapping__mdt-Genesys WrapUp mapping Layout</layout>
