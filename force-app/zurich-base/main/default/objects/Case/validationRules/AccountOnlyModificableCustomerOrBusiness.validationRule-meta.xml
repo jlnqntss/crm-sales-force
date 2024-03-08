@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AccountOnlyModificableCustomerOrBusiness</fullName>
+    <active>true</active>
+    <description>Regla de validación para evitar que los usuarios de Sprinklr puedan añadir cuentas de tipos distintos a clientes físicos y jurídicos ya que pertecen a casos de redes sociales</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;OCSSprinklr&quot; &amp;&amp; 
+$Profile.Name == &apos;OCS User Sprinklr&apos; &amp;&amp;  
+ISCHANGED( AccountId ) &amp;&amp;  
+( NOT( OR(Account.RecordType.DeveloperName = &apos;Customer&apos;, Account.RecordType.DeveloperName = &apos;BusinessCustomer&apos;,
+AccountId = null) ))</errorConditionFormula>
+    <errorMessage>[VR Caso] No puede añadir una cuenta que no sea de tipo cliente</errorMessage>
+</ValidationRule>
