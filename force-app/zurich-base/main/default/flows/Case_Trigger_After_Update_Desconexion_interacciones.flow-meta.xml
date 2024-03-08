@@ -6,7 +6,7 @@
         <label>Solicitud Patch Interacción</label>
         <locationX>424</locationX>
         <locationY>2280</locationY>
-        <actionName>GenesysCloudPatchInteractionAction</actionName>
+        <actionName>GenesysCloudBatchPatchInteractionAction</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>CasoUspInteractionDecision</targetReference>
