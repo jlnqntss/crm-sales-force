@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 06-03-2024
+ * @last modified on  : 08-03-2024
  * @last modified by  : aberuete
 **/
 public without sharing class CaseHandler implements ITrigger
@@ -46,7 +46,8 @@ public without sharing class CaseHandler implements ITrigger
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        CaseUtil.getSprinklrSocialPersonaToLinkContact((List<Case>) newList);
+        CaseUtil.getSprinklrSocialPersonaToLinkContact((List<Case>) newList, (Map<Id,Case>) oldMap);
+        CaseUtil.getSprinklrSocialPersonaToDeleteContactRelated ((List<Case>) newList, (Map<Id,Case>) oldMap);
     }
 
     /**

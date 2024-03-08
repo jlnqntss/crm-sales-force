@@ -1510,50 +1510,74 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Método que obtiene una lista de los perfiles sociales ,relacionados al caso, para actualizar el contacto. 
-     * Dicho contacto será la person account relacionada al caso.
+     * Método que obtiene una lista de los perfiles sociales ,relacionados a los casos de tipo Sprinklr en los que se ha actualizado la cuenta a una de tipo Customer,
+     * para actualizar el contacto. Dicho contacto será la person account relacionada al caso.
      * 
      * @author aberuete
-     * @date 06/03/2024
+     * @date 08/03/2024
      * 
-     * @param List<Case> casesUpdated : Lista de casos 
+     * @param List<Case> casesUpdated : Lista de casos
+     * @param Map<Id,Case> oldCaseMap : Mapa de casos con los valores antiguos
      */
-    public static void getSprinklrSocialPersonaToLinkContact(List<Case> casesUpdated)
+    public static void getSprinklrSocialPersonaToLinkContact(List<Case> casesUpdated, Map<Id,Case> oldCaseMap)
     {
-        Map<Id,spr_sf__SocialPersona__c> sprSocialPersonasToLinkContact = new Map<Id,spr_sf__SocialPersona__c>();
-        Set<String> sprSocialPersonaIds = new Set<String>();
         List<Case> casesToUpdateSprSocialPersona = new List<Case>();
-        Id sprinklrRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR)?.getRecordTypeId();
-        
+
         if (Trigger.isAfter && Trigger.isUpdate)
         {
             for (Case caseUpdated : casesUpdated)
             {
-                if (caseUpdated.recordTypeId == sprinklrRecordTypeId && caseUpdated.AccountId != null && caseUpdated.SprinklrSocialPersona__c != null )
+                Case caseOld = oldCaseMap.get(caseUpdated.id);
+
+                if (caseUpdated.recordTypeId == RT_ID_OCSSPRINKLR && caseUpdated.AccountId != null && caseOld.AccountId != caseUpdated.AccountId && caseUpdated.SprinklrSocialPersona__c != null )
                 {
-                    sprSocialPersonaIds.add(caseUpdated.SprinklrSocialPersona__c);
                     casesToUpdateSprSocialPersona.add(caseUpdated);
                 }  
             }
         }
 
-        sprSocialPersonasToLinkContact = new Map<Id,spr_sf__SocialPersona__c>(new SprinklrSocialPersonaSelector().findAllDataById(sprSocialPersonaIds));
         List<Case> casesToLinkSprinklrSocialPersonaToContact = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (casesToUpdateSprSocialPersona, new List<String>{'Customer'});
 
         for (Case caseToLinkSprinklrSocialPersonaToContact : casesToLinkSprinklrSocialPersonaToContact)
         {
-            spr_sf__SocialPersona__c sprSocialPersonaToUpdate = sprSocialPersonasToLinkContact.get(caseToLinkSprinklrSocialPersonaToContact.SprinklrSocialPersona__c);
-
-            if ( sprSocialPersonaToUpdate != null && (sprSocialPersonaToUpdate.spr_sf__Contact__c == null || (sprSocialPersonaToUpdate.spr_sf__Contact__c != null && sprSocialPersonaToUpdate.spr_sf__Contact__c != caseToLinkSprinklrSocialPersonaToContact.Account.PersonContactId)) )
-            {
-                sprSocialPersonaToUpdate.spr_sf__Contact__c = caseToLinkSprinklrSocialPersonaToContact.Account.PersonContactId;
-                sprinklrSocialPersonaToUpdate.add(sprSocialPersonaToUpdate);
-            } 
+            sprinklrSocialPersonaToUpdate.add(new spr_sf__SocialPersona__c (Id = caseToLinkSprinklrSocialPersonaToContact.SprinklrSocialPersona__c, spr_sf__Contact__c = caseToLinkSprinklrSocialPersonaToContact.Account.PersonContactId) );    
         }
     }
 
     /**
-     * Método que actualiza los perfiles sociales relacionados con los casos para enlazar el contacto. 
+     * Método que obtiene una lista de los perfiles sociales ,relacionados a los casos de Sprinklr en los que se ha eliminado la cuenta, para borrar el contacto. 
+     * 
+     * @author aberuete
+     * @date 08/03/2024
+     * 
+     * @param List<Case> casesUpdated : Lista de casos 
+     * @param Map<Id,Case> oldCaseMap : Mapa de casos con los valores antiguos
+     */
+    public static void getSprinklrSocialPersonaToDeleteContactRelated (List<Case> casesUpdated, Map<Id,Case> oldCaseMap)
+    {
+        List<Case> casesToUpdateSprSocialPersona = new List<Case>();
+
+        if (Trigger.isAfter && Trigger.isUpdate)
+        {
+            for (Case caseUpdated : casesUpdated)
+            {
+                Case caseOld = oldCaseMap.get(caseUpdated.id);
+
+                if ( caseUpdated.recordTypeId == RT_ID_OCSSPRINKLR && caseUpdated.AccountId == null && caseOld.AccountId != null && caseUpdated.SprinklrSocialPersona__c != null)
+                {
+                    casesToUpdateSprSocialPersona.add(caseUpdated);
+                }
+            }
+        }
+
+        for (Case caseToUpdateSprSocialPersona : casesToUpdateSprSocialPersona)
+        {
+            sprinklrSocialPersonaToUpdate.add(new spr_sf__SocialPersona__c (Id = caseToUpdateSprSocialPersona.SprinklrSocialPersona__c, spr_sf__Contact__c = null) );
+        }
+    }
+
+    /**
+     * Método que actualiza los perfiles sociales relacionados con los casos. 
      * 
      * @author aberuete
      * @date 06/03/2024
