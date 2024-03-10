@@ -14,4 +14,8 @@
         <masterLabel>Teams</masterLabel>
         <translation>Teams</translation>
     </picklistValues>
+    <picklistValues>
+        <masterLabel>Training</masterLabel>
+        <translation>Formación</translation>
+    </picklistValues>
 </CustomFieldTranslation>
