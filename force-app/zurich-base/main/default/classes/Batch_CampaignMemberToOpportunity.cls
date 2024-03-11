@@ -106,19 +106,20 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
      */
     private List<CampaignMember> filterCampaignMembersByCustomerVisibility(Map<Id, CampaignMember> campaignMembersAccountMap, Set<String> intermediaryCodes)
     {
+        List<CampaignMember> result = new List<CampaignMember>();
         List<Policy__c> campaignMembersPolicies = new PoliciesSelector().findPoliciesByAccountId(campaignMembersAccountMap.keySet(), intermediaryCodes);
-        Map<Id, CampaignMember> filteredCampaignMembers = new Map<Id, CampaignMember>();
 
-        for (Policy__c policy : campaignMembersPolicies)
-        {
-            if (campaignMembersAccountMap.containsKey(policy.PolicyHolder__c) && !filteredCampaignMembers.containsKey(campaignMembersAccountMap.get(policy.PolicyHolder__c).Id))
-            {
-                CampaignMember cm = campaignMembersAccountMap.get(policy.PolicyHolder__c);
-                filteredCampaignMembers.put(cm.Id, cm);
+        // Ordeno las polizas encontradas en un mapa por mediador <IntermediaryCode, Set<PolicyHolderId>
+        Map<String, Set<String>> intermediaryPolicyHoldersMap = getIntermediaryPolicyHoldersMap(campaignMembersPolicies);
+
+        // Recorro cada miembro de campaña que llega al batch y si cumple que el cliente y mediador de ese miembro de campaña no tiene una poliza lo marcamos para "Mediador sin visibilidad"
+        for (CampaignMember campaignMember: campaignMembersAccountMap.values()) {
+            if (intermediaryPolicyHoldersMap.containsKey(campaignMember.OfferAssignedCode__c) && !!intermediaryPolicyHoldersMap.get(campaignMember.OfferAssignedCode__c).contains(campaignMember.Contact.AccountId)) {
+                result.add(campaignMember);
             }
         }
 
-        return filteredCampaignMembers.values();
+        return result;
     }
 
     private List<CampaignMember> getUpdatedCampaignMembersNoVisibility(Map<Id, CampaignMember> campaignMembersAccountMap, List<CampaignMember> filteredCampaignMembers)
@@ -293,6 +294,44 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         defaultUserId = defaultUsers.get(0).Id;
 
         return defaultUserId;
+    }
+
+
+    /**
+     * Metodo que ordena las polizas encontradas en bd en formato <CodigoMediador, Set<PolicyHolderId>>
+     * 
+     * @author dmunoz
+     * @date 11/3/2024
+     */
+    private static Map<String, Set<String>> getIntermediaryPolicyHoldersMap(List<Policy__c> campaignMembersPolicies) {
+
+        Map<String, Set<String>> result = new Map<String, Set<String>>();
+        for (Policy__c policy: campaignMembersPolicies) {
+            result = generateSetMap(result, policy.IntermediaryId__r.INFOIntermediaryCode__c, policy.PolicyHolder__c);
+        }
+
+        return result;
+    }
+
+    /**
+     * Método que añade un valor a un Map<String, Set<String>>
+     *
+     * @author dmunoz
+     * @date 05/03/2024 
+     */
+    private static Map<String, Set<String>> generateSetMap(Map<String, Set<String>> mapToInsert, String key, String valueToAdd) {
+        Set<String> aux;
+        if (mapToInsert.containsKey(key)) {
+            aux = mapToInsert.get(key);
+            aux.add(valueToAdd);
+            mapToInsert.put(key, aux);
+        } else {
+            aux = new Set<String>();
+            aux.add(valueToAdd);
+            mapToInsert.put(key, aux);
+        }
+
+        return mapToInsert;
     }
 
     // ##endregion Resto métodos
