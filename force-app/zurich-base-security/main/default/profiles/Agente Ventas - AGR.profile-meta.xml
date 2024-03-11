@@ -3784,7 +3784,7 @@
         <layout>AdminSetupParameter__mdt-AdminSetupParameter Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>CaseInteraction-Case Feed Layout</layout>
+        <layout>AccountRelationship__c-Ventas Account Relationship Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Competitor__c-Agente zrm</layout>
