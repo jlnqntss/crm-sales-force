@@ -273,7 +273,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
     public List<Policy__c> findPoliciesByAccountId(Set<Id> accountIds, Set<String> intermediaryCodes)
     {
         return new List<Policy__c>([
-            SELECT PolicyHolder__c
+            SELECT PolicyHolder__c, IntermediaryId__r.INFOIntermediaryCode__c 
             FROM Policy__c
             WHERE PolicyHolder__c IN :accountIds
                 AND IntermediaryId__r.INFOIntermediaryCode__c IN :intermediaryCodes
