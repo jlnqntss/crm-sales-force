@@ -70,7 +70,7 @@
             <targetReference>Recalculate_Intermediaries_Visibility_Start_Screen</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
