@@ -308,4 +308,24 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
 
         return result;
     }
+
+
+    /**
+     * Método que recupera los AccountTeamMember de un lead para el batch de merge. Este batch elimina los atm del lead por lo que tenemos que consultarlos antes
+     * *
+     * @author dmunoz
+     * @date 12/03/2024
+     */
+    public List<AccountTeamMember> getLeadZRMAccountTeamsMember(Account leadAccount) {
+
+        List<AccountTeamMember> result = new List<AccountTeamMember>();
+        if (leadAccount != null) {
+            result = new List<AccountTeamMember>([SELECT AccountId, UserId, TeamMemberRole, AccountAccessLevel, OpportunityAccessLevel, CaseAccessLevel, ContactAccessLevel 
+                                                    FROM AccountTeamMember 
+                                                    WHERE AccountId =: leadAccount.Id
+                                                    AND TeamMemberRole = 'MediadorZRM']); 
+        }
+        return result;
+
+    }
 }
