@@ -5,12 +5,12 @@
     <description>El mediador no tiene permisos para editar la oferta</description>
     <errorConditionFormula>AND(
 	NOT(ISNEW()),
-	$User.Id != OwnerId,
 	OR(
 		$Profile.Name = &apos;Agente Ventas&apos;,
 		$Profile.Name = &apos;Agente Ventas - AGR&apos;
 	),
-	ZRM__c = false		 
+	BusinessCode__c != null,
+	ZRM__c = false
 )</errorConditionFormula>
     <errorMessage>[VR Oferta] No tiene permisos para modificar el registro</errorMessage>
 </ValidationRule>
