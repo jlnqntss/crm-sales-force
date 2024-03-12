@@ -371,7 +371,7 @@
                  merge leadAccount account; //! 1 DML 
  
                  // Insertamos de nuevo los account team de zrm para el lead convertido
-                 insertCustomerZRMAccountTeamsMember(leadZRMAccountTeamsMember, leadAccount); 
+                 insertCustomerZRMAccountTeamsMember(leadZRMAccountTeamsMember); 
  
              }
          }  
