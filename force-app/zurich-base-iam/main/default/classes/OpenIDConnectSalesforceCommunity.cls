@@ -937,14 +937,18 @@ public with sharing class OpenIDConnectSalesforceCommunity {
             // 1º Obtengo el Mediador del usuario
             UsersSelector usersSelector = new UsersSelector();
             User userInserted = usersSelector.findUserIntermediaryByUserId(userId);
-            generateATMsAgenteVentas(userInserted, userId);
+
+            List<Policy__c> intermediaryPolicies = (new PoliciesSelector()).selectByIntermediaryId(new Set<String> {userInserted.contact.AccountId});
+            generateZRMATMs(intermediaryPolicies, userInserted.Id);
             
 
         } else if ('Agente Ventas - AGR'.equals(profile)) {
             // 1º Obtengo el Mediador del usuario y agrupacion
             UsersSelector usersSelector = new UsersSelector();
             User userInserted = usersSelector.findUserIntermediaryByUserId(userId); 
-            generateATMsAgenteVentasAGR(userInserted, userId);
+
+            List<Policy__c> intermediaryPolicies = (new PoliciesSelector()).selectByIntermediaryGroupId(new Set<String> {userInserted.contact.Account.IntermediaryGroup__c});
+            generateZRMATMs(intermediaryPolicies, userInserted.Id);
         }        
     }
 
@@ -953,66 +957,18 @@ public with sharing class OpenIDConnectSalesforceCommunity {
      * @date 24/2/2024
      * @author dmunoz
      */
-    private static void generateATMsAgenteVentasAGR(User userInserted, String userId) {
-        // 2º Si existe algun otro usuario agr del mediador o de la agrupacion a la que pertenezca para dicho mediador clonamos los atm
-        List<User> intermediariesUsers = (new UsersSelector()).findZRMAgenteVentaAGRActiveUsersByIntermediaryId(userInserted);
+    private static void generateZRMATMs(List<Policy__c>  intermediaryPolicies, String userId) {
+        List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
+        AccountTeamMember atm;
 
-        if (intermediariesUsers != null && !intermediariesUsers.isEmpty()) {
-            List<AccountTeamMember> accountTeamsToClone = (new AccountTeamMemberSelector()).findZRMATMsByUser(new List<User> {intermediariesUsers.get(0)});
-            List<AccountTeamMember> clonedATMsList = AccountTeamMemberUtil.cloneUserATMZRMRecordList(accountTeamsToClone, userId);
-
-            if (!clonedATMsList.isEmpty()) {
-                insert clonedATMsList;
-            }
-
-        } else { // 3º Si no existe otro usuario obtenemos los tomadores de todas las polizas de la agrupacion y generamos los atm
-            List<Policy__c> intermediaryPolicies = (new PoliciesSelector()).selectByIntermediaryGroupId(new Set<String> {userInserted.contact.Account.IntermediaryGroup__c});
-            List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
-            AccountTeamMember atm;
-
-            for (Policy__c policy: intermediaryPolicies) {
-                atm = AccountTeamMemberUtil.createATMZRMRecord(policy.PolicyHolder__c, userId);
-                atmsToInsert.add(atm);
-            }
-
-            if (!atmsToInsert.isEmpty()) {
-                insert atmsToInsert; 
-            }
+        for (Policy__c policy: intermediaryPolicies) {
+            atm = AccountTeamMemberUtil.createATMZRMRecord(policy.PolicyHolder__c, userId);
+            atmsToInsert.add(atm);
         }
-    }
 
-
-    /**
-     * @Description Generar los account team member para un usuario con perfil Agente Ventas
-     * @date 24/2/2024
-     * @author dmunoz
-     */
-    private static void generateATMsAgenteVentas(User userInserted, String userId) {
-        // 2º Si existe algun otro usuario nominal para dicho mediador clonamos los atm
-        List<User> intermediariesUsers = (new UsersSelector()).findZRMAgenteVentaActiveUsersByIntermediaryId(userInserted);
-
-        if (intermediariesUsers != null && !intermediariesUsers.isEmpty()) {
-            List<AccountTeamMember> accountTeamsToClone = (new AccountTeamMemberSelector()).findZRMATMsByUser(new List<User> {intermediariesUsers.get(0)});
-            List<AccountTeamMember> clonedATMsList = AccountTeamMemberUtil.cloneUserATMZRMRecordList(accountTeamsToClone, userId);
-
-            if (!clonedATMsList.isEmpty()) {
-                insert clonedATMsList;
-            }
-
-        } else { // 3º Si no existe otro usuario obtenemos los tomadores de polizas de dicho mediador e insertamos los atm
-            List<Policy__c> intermediaryPolicies = (new PoliciesSelector()).selectByIntermediaryId(new Set<String> {userInserted.contact.AccountId});
-            List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
-            AccountTeamMember atm;
-
-            for (Policy__c policy: intermediaryPolicies) {
-                atm = AccountTeamMemberUtil.createATMZRMRecord(policy.PolicyHolder__c, userId);
-                atmsToInsert.add(atm);
-            }
-
-            if (!atmsToInsert.isEmpty()) {
-                insert atmsToInsert;
-            }
-        }
+        if (!atmsToInsert.isEmpty()) {
+            insert atmsToInsert; 
+        }        
     }
 
     /**
