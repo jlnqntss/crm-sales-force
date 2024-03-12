@@ -9,7 +9,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-    <restricted>false</restricted>
+<restricted>false</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
@@ -43,11 +43,6 @@
                 <label>Life</label>
             </value>
             <value>
-                <fullName>Moto/fleet</fullName>
-                <default>false</default>
-                <label>Moto/fleet</label>
-            </value>
-            <value>
                 <fullName>No info provided</fullName>
                 <default>false</default>
                 <label>No info provided</label>
@@ -66,6 +61,11 @@
                 <fullName>Travel</fullName>
                 <default>false</default>
                 <label>Travel</label>
+            </value>
+            <value>
+                <fullName>Motor/fleet</fullName>
+                <default>false</default>
+                <label>Motor/fleet</label>
             </value>
         </valueSetDefinition>
     </valueSet>
