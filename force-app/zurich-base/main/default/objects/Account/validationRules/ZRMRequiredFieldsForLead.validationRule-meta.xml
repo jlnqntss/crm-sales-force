@@ -7,8 +7,9 @@
     RecordType.Name = &quot;Lead&quot;,
     OR(
         $Profile.Name = &quot;Ventas User&quot;,
+		$Profile.Name = &apos;Agente Ventas - AGR&apos;,
         $Profile.Name = &quot;Agente Ventas&quot;
-    ),
+    ), 
     AND(
         ISBLANK(NationalId__c),
         ISBLANK(Phone)
