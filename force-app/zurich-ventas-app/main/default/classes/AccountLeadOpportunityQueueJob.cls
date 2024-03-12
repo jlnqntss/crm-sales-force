@@ -187,7 +187,7 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
             if (assign.get(ownerId) != null) 
             {
                 offerToUpdate.IntermediaryId__c = assign.get(ownerId).Id;
-                offerToUpdate.IntermediaryCode__c = assign.get(ownerId).Id;
+                offerToUpdate.IntermediaryCode__c = assign.get(ownerId).INFOIntermediaryCode__c;
             }
         }
         return offerToUpdate;
