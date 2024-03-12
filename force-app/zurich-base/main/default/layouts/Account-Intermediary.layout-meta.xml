@@ -115,6 +115,14 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Segmento_Expats_Auto__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Segmento_Expats_Hogar__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>TrainerName__c</field>
             </layoutItems>
             <layoutItems>
