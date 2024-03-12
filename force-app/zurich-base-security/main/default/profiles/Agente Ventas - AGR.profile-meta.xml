@@ -3557,6 +3557,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.Amount</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.BusinessName__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3572,6 +3577,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.LossSubReason__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Loss_Reason__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.NetPremium__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3583,6 +3598,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.PendingIntermediaryReview__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Probability</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
