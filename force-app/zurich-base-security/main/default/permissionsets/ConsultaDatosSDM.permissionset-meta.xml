@@ -1367,6 +1367,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.ActaLink__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Task.CommercialActionType__c</field>
         <readable>true</readable>
@@ -1399,6 +1404,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Ramo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.SubjectLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
