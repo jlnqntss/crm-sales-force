@@ -29,7 +29,7 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>Segmento_Expats_Auto__c</field>
-                <uiBehavior>Edit</uiBehavior>
+                <uiBehavior>Readonly</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
         <quickActionLayoutColumns>
@@ -56,7 +56,7 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>Segmento_Expats_Hogar__c</field>
-                <uiBehavior>Edit</uiBehavior>
+                <uiBehavior>Readonly</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
     </quickActionLayout>
