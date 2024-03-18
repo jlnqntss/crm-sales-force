@@ -59,6 +59,6 @@ _(Captura de pantalla de la validación contra staging)_
 _Eliminar labels que no apliquen a continuación, debe quedar una en cada línea_
 
 /label ~Bug ~Feature
-/label ~OCS ~SDM ~USP ~ZRM ~ZE ~KLINC ~CROSS
+/label ~OCS ~SDM ~USP ~ZRM ~ZE ~KLINC ~CROSS ~ZDA ~SAM
 /assign @jonandersanjuan @o.iglesiasalcala
 /assign_reviewer @arcortazar @amirlopez 
