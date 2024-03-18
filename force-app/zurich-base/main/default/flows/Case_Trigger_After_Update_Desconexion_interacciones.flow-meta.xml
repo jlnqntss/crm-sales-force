@@ -4,8 +4,8 @@
         <description>Desconecta las interacciones recibidas</description>
         <name>GenesysCloudBatchPatchInteractionAction</name>
         <label>Solicitud Patch Interacción</label>
-        <locationX>424</locationX>
-        <locationY>2280</locationY>
+        <locationX>380</locationX>
+        <locationY>2400</locationY>
         <actionName>GenesysCloudBatchPatchInteractionAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -131,8 +131,8 @@
     <decisions>
         <name>CasoUspInteractionDecision</name>
         <label>¿El caso es Usp?</label>
-        <locationX>424</locationX>
-        <locationY>2388</locationY>
+        <locationX>380</locationX>
+        <locationY>2508</locationY>
         <defaultConnectorLabel>No Caso USP</defaultConnectorLabel>
         <rules>
             <name>USPInteractionOutcome</name>
@@ -142,6 +142,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.InteractionStatus__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -381,8 +388,8 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
     <recordCreates>
         <name>Crear_Error_Log_Desconexion_Interaccion</name>
         <label>Crear Error Log Desconexión Interacción</label>
-        <locationX>732</locationX>
-        <locationY>2388</locationY>
+        <locationX>776</locationX>
+        <locationY>2508</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -457,8 +464,8 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
     <recordCreates>
         <name>CrearLogListaEstadosVaciaAction</name>
         <label>Crear Log Lista Estados Vacía</label>
-        <locationX>996</locationX>
-        <locationY>2280</locationY>
+        <locationX>1040</locationX>
+        <locationY>2400</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -483,7 +490,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
     <recordCreates>
         <name>CreateErrorLogEmailQueryAction</name>
         <label>Crear Error Log Consulta Emails</label>
-        <locationX>1282</locationX>
+        <locationX>1304</locationX>
         <locationY>1584</locationY>
         <inputAssignments>
             <field>Level__c</field>
@@ -690,8 +697,8 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
     <recordUpdates>
         <name>ActualizarCampoInteraccionCerrada</name>
         <label>Actualizar Campo Interaccion Cerrada</label>
-        <locationX>292</locationX>
-        <locationY>2496</locationY>
+        <locationX>248</locationX>
+        <locationY>2616</locationY>
         <inputAssignments>
             <field>InteractionStatus__c</field>
             <value>
