@@ -52,16 +52,35 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             oppsToInsert.clear();           
     
             Map<Id, CampaignMember> campaignMembersAccountMap = new Map<Id, CampaignMember>();
+            Set<String> intermediaryGroupIdSet = new Set<String>();
             Set<String> intermediaryCodes = new Set<String>();
     
             for(sObject record : records)
             {
                 campaignMembersAccountMap.put(((CampaignMember) record).Contact.AccountId, (CampaignMember) record);
-                intermediaryCodes.add(((CampaignMember) record).OfferAssignedCode__c); 
-            }        
+                intermediaryCodes.add(((CampaignMember) record).OfferAssignedCode__c);
+            }
+
+            // Los usuarios AGR deben gestionarse distinto a los mediadores
+            User loggedUser = (new UsersSelector()).findUserIntermediaryByUserId(UserInfo.getUserId());
+            Account intermediaryAccount = loggedUser.Contact.Account;
+            if (loggedUser.Profile.Name.equals('Agente Ventas - AGR'))
+            {
+                if (intermediaryAccount.INFOIntermediaryCode__c != null)
+                {
+                    intermediaryCodes.add(intermediaryAccount.INFOIntermediaryCode__c);
+                }
+                if (intermediaryAccount.IntermediaryGroup__c != null)
+                {
+                    intermediaryGroupIdSet.add(intermediaryAccount.IntermediaryGroup__c);
+                }
+            }
     
+            // Eliminamos los nulos del mapa en caso de que hubiese
+            intermediaryCodes.remove(null);
+
             // 1. Filtra los miembros de campaña para solo generar oportunidades sobre los que tengan un cliente con una póliza asociada en estado "Vigor" o "Anulada" y cuyo check de GDPR esté a true
-            List<CampaignMember> filteredCampaignMembers = filterCampaignMembersByCustomerVisibility(campaignMembersAccountMap, intermediaryCodes);
+            List<CampaignMember> filteredCampaignMembers = filterCampaignMembersByCustomerVisibility(campaignMembersAccountMap, intermediaryCodes, intermediaryGroupIdSet);
     
             // 2. Actualiza el campo Status de los registros de CampaignMember del scope con el valor "Mediador Sin Visibilidad" si no cumplen con el filtro
             List<CampaignMember> updatedCampaignMembers = getUpdatedCampaignMembersNoVisibility(campaignMembersAccountMap, filteredCampaignMembers);
@@ -104,10 +123,10 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
      * @param intermediaryIds Set<Id>
      * @return List<CampaignMember>
      */
-    private List<CampaignMember> filterCampaignMembersByCustomerVisibility(Map<Id, CampaignMember> campaignMembersAccountMap, Set<String> intermediaryCodes)
+    private List<CampaignMember> filterCampaignMembersByCustomerVisibility(Map<Id, CampaignMember> campaignMembersAccountMap, Set<String> intermediaryCodes, Set<String> intermediaryGroupIdSet)
     {
         List<CampaignMember> result = new List<CampaignMember>();
-        List<Policy__c> campaignMembersPolicies = new PoliciesSelector().findPoliciesByAccountId(campaignMembersAccountMap.keySet(), intermediaryCodes);
+        List<Policy__c> campaignMembersPolicies = new PoliciesSelector().findPoliciesByAccountId(campaignMembersAccountMap.keySet(), intermediaryCodes, intermediaryGroupIdSet);
 
         // Ordeno las polizas encontradas en un mapa por mediador <IntermediaryCode, Set<PolicyHolderId>
         Map<String, Set<String>> intermediaryPolicyHoldersMap = getIntermediaryPolicyHoldersMap(campaignMembersPolicies);
@@ -115,7 +134,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         // Recorro cada miembro de campaña que llega al batch y si cumple que el cliente y mediador de ese miembro de campaña no tiene una poliza lo marcamos para "Mediador sin visibilidad"
         for (CampaignMember campaignMember: campaignMembersAccountMap.values()) {
             if (intermediaryPolicyHoldersMap.containsKey(campaignMember.OfferAssignedCode__c) && !!intermediaryPolicyHoldersMap.get(campaignMember.OfferAssignedCode__c).contains(campaignMember.Contact.AccountId)) {
-                result.add(campaignMember);
+                result.add(campaignMember); 
             }
         }
 

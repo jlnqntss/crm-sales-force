@@ -380,7 +380,7 @@ public with sharing class UsersSelector extends RecordsSelector
     public User findUserIntermediaryByUserId(String userId) {
         User result;
         if (String.isNotEmpty(userId)) {
-            result = [SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name 
+            result = [SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Contact.Account.INFOIntermediaryCode__c, Profile.Name 
                                     FROM User 
                                     WHERE Id = :userId
                                     AND IsActive = TRUE];        
