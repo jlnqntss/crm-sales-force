@@ -310,48 +310,6 @@ public with sharing class UsersSelector extends RecordsSelector
         return result;
     }
 
-    /**
-     * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
-     * @author      dmunoz
-     * @date        16/02/2024
-     */
-    public List<User> findZRMAgenteVentaActiveUsersByIntermediaryId(User user) {
-        List<User> result = new List<User>();
-
-        if (user != null && String.isNotEmpty(user.Contact.AccountId)) {
-            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
-                                    FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas') 
-                                    AND Contact.AccountId = :user.Contact.AccountId
-                                    AND IsActive = TRUE 
-                                    AND Id != :user.Id
-                                    LIMIT 1]);
-        }
-
-        return result;
-    }
-
-    /**
-     * @description Selector obtener a partir de un mediador y una agrupacion 
-     * @author      dmunoz
-     * @date        16/02/2024
-     */
-    public List<User> findZRMAgenteVentaAGRActiveUsersByIntermediaryId(User user) {
-        List<User> result = new List<User>();
-
-        if (user != null && (String.isNotEmpty(user.Contact.AccountId) ||String.isNotEmpty(user.Contact.Account.IntermediaryGroup__c))) {
-            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
-                                    FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas - AGR') 
-                                    AND (Contact.AccountId = :user.Contact.AccountId OR Contact.Account.IntermediaryGroup__c = :user.Contact.Account.IntermediaryGroup__c)
-                                    AND IsActive = TRUE 
-                                    AND Id != :user.Id
-                                    LIMIT 1]);
-        }
-
-        return result;
-    }
-
 
     /**
      * @description Selector que obtiene los usuarios de un mediador y los agrupación de la agrupación a la que pertenecen (si hay)
@@ -360,16 +318,23 @@ public with sharing class UsersSelector extends RecordsSelector
      */
     public List<User> findZRMActiveUsersFromIntermediaryAndAGRFromGroup(Set<String> intermediariesSet, List<String> intermediaryGroupIdList) {
         List<User> result = new List<User>();
-
-        result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
+        
+        if (intermediariesSet != null && !intermediariesSet.isEmpty() && intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty()) {
+            result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
                                 WHERE(
                                     (Contact.AccountId IN :intermediariesSet AND Profile.Name IN ('Agente Ventas - AGR', 'Agente Ventas')) 
                                     OR (Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList AND Profile.Name = 'Agente Ventas - AGR')
                                     )
-                                AND IsActive = TRUE]);        
+                                AND IsActive = TRUE]);  
+        } else if (intermediariesSet != null && !intermediariesSet.isEmpty()) { // Si no hay agrupaciones buscamos solo los usuarios del conjunto de mediadores
+            result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
+                                WHERE Contact.AccountId IN :intermediariesSet AND Profile.Name IN ('Agente Ventas - AGR', 'Agente Ventas')
+                                AND IsActive = TRUE]);
+        }           
 
-        return result;
+        return result; 
     }
+
 
 
     /**
@@ -403,6 +368,45 @@ public with sharing class UsersSelector extends RecordsSelector
                                     FROM User 
                                     WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
                                     AND (Contact.AccountId = :intermediaryId OR Contact.Account.IntermediaryGroup__c = :idIntermediaryGroupId) 
+                                    AND IsActive = TRUE]);
+        }
+
+        return result;
+    }
+
+    /**
+     * @description Selector para obtener los usuarios agr de un mediador
+     * @author      dmunoz
+     * @date        16/02/2024
+     */
+    public List<User> getIntermediaryZRMAGRUsers(String intermediaryId) {
+        List<User> result = new List<User>();
+
+        if (intermediaryId != null && String.isNotEmpty(intermediaryId)) {
+            result = new List<User>([SELECT Id 
+                                    FROM User 
+                                    WHERE Profile.Name = 'Agente Ventas - AGR'
+                                    AND Contact.AccountId = :intermediaryId 
+                                    AND IsActive = TRUE]);
+        }
+
+        return result;
+    }
+
+    /**
+     * @description Selector para obtener los usuarios agr de la agrupación de un mediador sin tener en cuenta los usuarios ZRM que cuelgan de dicho mediador 
+     * @author      dmunoz
+     * @date        16/02/2024
+     */
+    public List<User> getOtherZRMAGRUsers(String intermediaryId, String intermediaryGroupId) {
+        List<User> result = new List<User>();
+
+        if (intermediaryId != null && String.isNotEmpty(intermediaryId) && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
+            result = new List<User>([SELECT Id 
+                                    FROM User 
+                                    WHERE Profile.Name = 'Agente Ventas - AGR'
+                                    AND Contact.Account.IntermediaryGroup__c = :intermediaryGroupId 
+                                    AND Contact.AccountId != :intermediaryId 
                                     AND IsActive = TRUE]);
         }
 

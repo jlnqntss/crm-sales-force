@@ -329,49 +329,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     }
 
     /**
-     * Método que recupera las ofertas que necesitan recalcular la visibilidad para zrm
-     * *
-     * @author dmonuz | 18/9/2023
-     * @return  List<Opportunity>
-     */
-    public String findOffersWithIncorrectVisibility() {
-
-        String result = 'SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, IntermediaryId__r.IsPartner, IntermediaryId__r.IntermediaryGroup__c,  ' +
-                                                            'IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
-                                                            'FROM Opportunity ' +
-                                                            'WHERE  ((Account.Blocked__c = true AND Owner.Profile.Name = \'Agente Ventas\') ' +
-                                                            'OR ((IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null) AND (IntermediaryVisibilityForm__c = null ' +
-                                                            'OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
-                                                            'OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))))';
-        return result;
-    }
-
-
-    /**
-     * Método que recupera las ofertas que necesitan recalcular la visibilidad para zrm a partir de una lista de ids
-     * *
-     * @author dmonuz | 18/9/2023
-     * @return  List<Opportunity>
-     */
-    public String findOffersWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
-
-        String result;
-
-        if (accountIds != null && !accountIds.isEmpty()) {
-            result = 'SELECT Id, Account.Blocked__c, Owner.Profile.Name, IntermediaryId__c, IntermediaryId__r.IsPartner,  ' +
-                                                        'IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c, IntermediaryVisibilityAcc__c  ' +
-                                                        'FROM Opportunity ' +
-                                                        'WHERE AccountId IN :accountIds  AND ((Account.Blocked__c = true AND Owner.Profile.Name = \'Agente Ventas\') ' +
-                                                        'OR ((IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null) AND (IntermediaryVisibilityForm__c = null ' +
-                                                        'OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
-                                                        'OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))))';
-        }
-
-        return result;
-
-    }
-
-    /**
      * Devuelve un String con la query para conseguir oportunidades de campaña de Venta Cruzada que no esten cerradas
      * *
      * @author  jgallaga | 07-09-2023
@@ -565,5 +522,99 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         }
         
         return retrievedOffers;
+    }
+
+
+    /**
+     * Método que devuelve las ofertas de un mediador obviando o no una lista de clientes (uso en recálculo de visibilidad zrm)
+     * 
+     * @author dmunoz
+     * @date 18/03/2024
+     * 
+     * @return List<Opportunities>
+     */
+    public List<Opportunity> getIntermediaryOtherOffers(Set<String> accountIdsNotToQuery, Account intermediary) {
+        List<Opportunity> result = new List<Opportunity>();
+
+        // Si no el mediador no tiene lista de clientes que obviar obtengo todas las ofertas
+        if (intermediary != null && accountIdsNotToQuery != null && !accountIdsNotToQuery.isEmpty()) {
+
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
+                                            WHERE IntermediaryId__c = :intermediary.Id
+                                            AND AccountId NOT IN :accountIdsNotToQuery
+                                            AND Blocked__c = FALSE
+                                            AND Anonymized__c = FALSE]);
+
+        } else if (intermediary != null && accountIdsNotToQuery != null && accountIdsNotToQuery.isEmpty()) {
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
+                                            WHERE IntermediaryId__c = :intermediary.Id
+                                            AND Blocked__c = FALSE
+                                            AND Anonymized__c = FALSE]);
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Método que devuelve las ofertas de una agrupacion obviando o no una lista de clientes (uso en recálculo de visibilidad zrm)
+     * 
+     * @author dmunoz
+     * @date 18/03/2024
+     * 
+     * @return List<Opportunities>
+     */
+    public List<Opportunity> offersClientsFromIntermediaryGroup(Set<String> accountIdsToQuery, String intermediaryGroupId) {
+
+        List<Opportunity> result = new List<Opportunity>();
+
+        if (accountIdsToQuery != null && !accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
+
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
+                                            WHERE IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
+                                            AND AccountId IN :accountIdsToQuery
+                                            AND Account.Blocked__c = FALSE
+                                            AND Account.Anonymized__c = FALSE
+                                            AND Blocked__c = FALSE
+                                            AND Anonymized__c = FALSE]);
+
+        } else if (accountIdsToQuery != null && accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) { // en caso que no haya elementos en accountIdsToQuery traemos todo
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
+                                            WHERE IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
+                                            AND Account.Blocked__c = FALSE
+                                            AND Account.Anonymized__c = FALSE
+                                            AND Blocked__c = FALSE
+                                            AND Anonymized__c = FALSE]);
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Método que devuelve las ofertas de una agrupacion obviando o no una lista de clientes (uso en recálculo de visibilidad zrm)
+     * 
+     * @author dmunoz
+     * @date 18/03/2024
+     * 
+     * @return List<Opportunities>
+     */
+    public List<Opportunity> offersClientsFromIntermediaryGroupExcludeAccountIds(Set<String> accountIdsToQuery, String intermediaryGroupId) {
+
+        List<Opportunity> result = new List<Opportunity>();
+
+        if (accountIdsToQuery != null && !accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
+
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
+                                            WHERE IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
+                                            AND AccountId NOT IN :accountIdsToQuery
+                                            AND Account.Blocked__c = FALSE
+                                            AND Account.Anonymized__c = FALSE
+                                            AND Blocked__c = FALSE
+                                            AND Anonymized__c = FALSE]);
+
+        }
+
+        return result;
     }
 }
