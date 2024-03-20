@@ -3895,7 +3895,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Task.Modalidad__c</field>
+        <field>Acta__c.NumberOfActions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
