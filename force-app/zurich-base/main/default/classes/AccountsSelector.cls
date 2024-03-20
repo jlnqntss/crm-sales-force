@@ -1109,12 +1109,12 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 12/2/2024
      * 
      */
-    public String findIntermediariesWithGroupChanges() {
+    public List<Account> findIntermediariesWithGroupChanges() {
 
-        String result = 'SELECT Id, IntermediaryGroup__c, LastIntermediaryGroup__c ' +
-                        'FROM Account ' +
-                        'WHERE RecordType.DeveloperName = \'Intermediary\'' +
-                        'AND LastIntermediaryGroupChange__c = YESTERDAY';
+        List<Account> result = new List<Account>([SELECT Id, IntermediaryGroup__c, LastIntermediaryGroup__c 
+                        FROM Account 
+                        WHERE RecordType.DeveloperName = 'Intermediary' 
+                        AND LastIntermediaryGroupChange__c = YESTERDAY]);
 
         return result;
     }

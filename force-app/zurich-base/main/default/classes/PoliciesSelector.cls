@@ -213,54 +213,6 @@ public with sharing class PoliciesSelector extends RecordsSelector
             return new List<Policy__c>();
         }
     }
-
-
-    /**
-     * Busca pólizas a las cuales se recalculará la visibilidad de ZRM para esos registros
-     *
-     * @author dmunoz
-     * @date 19/09/2023
-     * @return List<Policy__c> Listado de pólizas a las que recalcular la visibilidad
-     */
-    public String findPoliciesWithIncorrectVisibility() {
-
-        String result = 'SELECT Id, PolicyHolder__r.Blocked__c, IntermediaryId__c, IntermediaryId__r.IsPartner,  ' +
-                                                        'IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c,  ' +
-                                                        'IntermediaryVisibilityAcc__c, PolicyHolder__c  ' +
-                                                        'FROM Policy__c ' +
-                                                        'WHERE (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null) ' +
-                                                        'AND (IntermediaryVisibilityForm__c = null ' +
-                                                        'OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
-                                                        'OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
-
-        return result;
-    }
-
-    /**
-     * Busca pólizas a las cuales se recalculará la visibilidad de ZRM para esos registros a partir de unos ids de clientes
-     *
-     * @author dmunoz
-     * @date 19/09/2023
-     * @return List<Policy__c> Listado de pólizas a las que recalcular la visibilidad
-     */
-    public String findPoliciesWithIncorrectVisibilityByAccountId(Set<String> accountIds) {
-
-        String result;
-
-        if (accountIds != null && !accountIds.isEmpty()) {
-            result = 'SELECT Id, PolicyHolder__r.Blocked__c, IntermediaryId__c, IntermediaryId__r.IsPartner,  ' +
-                                                            'IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.IntermediaryGroup__r.IntermediaryWithUser__c,  ' +
-                                                            'IntermediaryVisibilityAcc__c, PolicyHolder__c  ' +
-                                                            'FROM Policy__c ' +
-                                                            'WHERE PolicyHolder__c IN :accountIds AND (IntermediaryVisibilityAcc__c != null OR IntermediaryId__r.IntermediaryGroup__c != null) ' +
-                                                            'AND (IntermediaryVisibilityForm__c = null ' +
-                                                            'OR (IntermediaryId__r.IsPartner = true AND IntermediaryVisibilityForm__c = \'MainIntermediary\') ' +
-                                                            'OR (IntermediaryId__r.IsPartner = false AND IntermediaryVisibilityForm__c = \'CurrentIntermediary\'))';
-
-        }
-
-        return result;
-    }
     
      /**
       * Busca pólizas a partirm de ids de cuenta
@@ -390,6 +342,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
         result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c FROM Policy__c
                                     WHERE (IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdSet 
                                     OR IntermediaryId__C IN: intermediaryIdsSet)
+                                    AND PolicyHolder__r.Blocked__c = FALSE
+                                    AND PolicyHolder__r.Anonymized__c = FALSE
                                     AND PolicyStatus__c IN ('V', 'A') 
                                     AND Blocked__c = FALSE
                                     AND Anonymized__c = FALSE]);
@@ -415,6 +369,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
             result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c 
                                         FROM Policy__c
                                         WHERE IntermediaryId__C IN: intermediaryIdsSet
+                                        AND PolicyHolder__r.Blocked__c = FALSE
+                                        AND PolicyHolder__r.Anonymized__c = FALSE
                                         AND PolicyStatus__c IN ('V', 'A') 
                                         AND Blocked__c = FALSE
                                         AND Anonymized__c = FALSE]);
@@ -440,6 +396,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
             result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c 
                                         FROM Policy__c
                                         WHERE IntermediaryId__r.IntermediaryGroup__c IN: intermediaryGroupIdsSet
+                                        AND PolicyHolder__r.Blocked__c = FALSE
+                                        AND PolicyHolder__r.Anonymized__c = FALSE
                                         AND PolicyStatus__c IN ('V', 'A') 
                                         AND Blocked__c = FALSE
                                         AND Anonymized__c = FALSE]);
@@ -466,6 +424,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                         WHERE
                                         ID NOT IN: policiesToExclude
                                         AND PolicyHolder__c IN :policyHolderIdSet
+                                        AND PolicyHolder__r.Blocked__c = FALSE
+                                        AND PolicyHolder__r.Anonymized__c = FALSE
                                         AND (
                                             IntermediaryId__c IN :intermediaryIdsSet OR
                                             IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdsSet
@@ -475,6 +435,80 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                         AND Anonymized__c = FALSE]);        
 
         return result;
+    }
+
+    /**
+     * Obtenemos las polizas de un conjunto de clientes y una agrupación para el recalculo de visibilidad de zrm
+     *
+     * @author dmunoz
+     * @date 19/03/2024
+     * 
+     */
+    public List<Policy__c> policiesHoldersFromIntermediaryGroup(Set<String> policyHolderIdSet, String intermediaryGroupId) {
+
+        List<Policy__c> result = new List<Policy__c>();
+
+        if (policyHolderIdSet != null && !policyHolderIdSet.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
+            result = new List<Policy__c>([SELECT Id, PolicyHolder__c
+                                        FROM Policy__c 
+                                        WHERE PolicyHolder__c IN :policyHolderIdSet
+                                        AND IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
+                                        AND PolicyHolder__r.Blocked__c = FALSE
+                                        AND PolicyHolder__r.Anonymized__c = FALSE
+                                        AND PolicyStatus__c IN ('V', 'A') 
+                                        AND Blocked__c = FALSE
+                                        AND Anonymized__c = FALSE]);
+        }
+
+        return result;
+    }
+
+    /**
+     * Obtenemos las polizas de un conjunto de clientes y una agrupación para el recalculo de visibilidad de zrm (Batch_RecalcVisibilityIntermediaryDMLs)
+     *
+     * @author dmunoz
+     * @date 19/03/2024
+     * 
+     */
+    public List<Policy__c> policiesHoldersFromIntermediaryGroupExcludePolicyHolders(Set<String> policyHolderIdSet, String intermediaryGroupId) {
+
+        List<Policy__c> result = new List<Policy__c>();
+
+        if (policyHolderIdSet != null && !policyHolderIdSet.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
+            result = new List<Policy__c>([SELECT Id, PolicyHolder__c
+                                        FROM Policy__c 
+                                        WHERE PolicyHolder__c NOT IN :policyHolderIdSet
+                                        AND IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
+                                        AND PolicyHolder__r.Blocked__c = FALSE
+                                        AND PolicyHolder__r.Anonymized__c = FALSE
+                                        AND PolicyStatus__c IN ('V', 'A') 
+                                        AND Blocked__c = FALSE
+                                        AND Anonymized__c = FALSE]);
+        }
+
+        return result;
+    }
+
+    /**
+     * Devuelve un query locator para obtener las polizas de los mediadores a tener en cuenta para el batch de recalculo de visibilidad de mediador Batch_RecalcVisibilityIntermediary
+     *
+     * @author dmunoz
+     * @date 19/03/2024
+     * 
+     */
+    public String getIntermediaryPoliciesToRecalculateZRMVisibility(List<Account> intermediariesToProcess) {
+        if (intermediariesToProcess != null && !intermediariesToProcess.isEmpty()) {
+            return Database.getQueryLocator([SELECT Id, PolicyHolder__c 
+                                        FROM Policy__c 
+                                        WHERE IntermediaryId__c = :intermediariesToProcess.get(0).Id
+                                        AND PolicyHolder__r.Blocked__c = FALSE
+                                        AND PolicyHolder__r.Anonymized__c = FALSE
+                                        AND PolicyStatus__c IN ('V', 'A') 
+                                        AND Blocked__c = FALSE
+                                        AND Anonymized__c = FALSE]).getQuery();
+        } else {
+            return null;
+        }
     }
     
 }
