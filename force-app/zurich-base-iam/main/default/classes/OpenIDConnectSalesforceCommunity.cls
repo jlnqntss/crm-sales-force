@@ -923,52 +923,22 @@ public with sharing class OpenIDConnectSalesforceCommunity {
     }
 
     /**
-     * @Description Generar los account team member en caso que se esté 
-     * @date 03/06/2020
-     * @author rpolvera
+     * @Description Calcular los account team member para el usuario ZRM que inicia sesión en la comunidad
+     * @date 19/03/2024
+     * @author fpalomo <fpalomo@seidor.es>
      */
-    @Future
     @TestVisible
-    private static void generateZRMATMs(String userId, List<String> profileList) {
+    private static void generateZRMATMs(String intermediaryUserId, List<String> profiles)
+    {
+        String profile = profiles.get(0);
 
-        String profile = profileList.get(0);
-
-        if ('Agente Ventas'.equals(profile)) {
-            // 1º Obtengo el Mediador del usuario
-            UsersSelector usersSelector = new UsersSelector();
-            User userInserted = usersSelector.findUserIntermediaryByUserId(userId);
-
-            List<Policy__c> intermediaryPolicies = (new PoliciesSelector()).selectByIntermediaryId(new Set<String> {userInserted.contact.AccountId});
-            generateZRMATMs(intermediaryPolicies, userInserted.Id);
-            
-
-        } else if ('Agente Ventas - AGR'.equals(profile)) {
-            // 1º Obtengo el Mediador del usuario y agrupacion
-            UsersSelector usersSelector = new UsersSelector();
-            User userInserted = usersSelector.findUserIntermediaryByUserId(userId); 
-
-            List<Policy__c> intermediaryPolicies = (new PoliciesSelector()).selectByIntermediaryGroupId(new Set<String> {userInserted.contact.Account.IntermediaryGroup__c});
-            generateZRMATMs(intermediaryPolicies, userInserted.Id);
-        }        
-    }
-
-    /**
-     * @Description Generar los account team member para un usuario con perfil Agente Ventas AGR
-     * @date 24/2/2024
-     * @author dmunoz
-     */
-    private static void generateZRMATMs(List<Policy__c>  intermediaryPolicies, String userId) {
-        List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
-        AccountTeamMember atm;
-
-        for (Policy__c policy: intermediaryPolicies) {
-            atm = AccountTeamMemberUtil.createATMZRMRecord(policy.PolicyHolder__c, userId);
-            atmsToInsert.add(atm);
+        if (!profile.equals('Agente Ventas') || !profile.equals('Agente Ventas - AGR'))
+        {
+            // Si no es agente ventas o agente ventas agr no hacemos nada
+            return;
         }
 
-        if (!atmsToInsert.isEmpty()) {
-            insert atmsToInsert; 
-        }        
+        Database.executeBatch(new Batch_VisibilitySFCommunityOID(profile, intermediaryUserId));
     }
 
     /**
