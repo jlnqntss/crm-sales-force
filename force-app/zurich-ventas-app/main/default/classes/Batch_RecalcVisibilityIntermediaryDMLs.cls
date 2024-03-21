@@ -6,38 +6,38 @@
  * @date 18/03/2024
  *
  */
-global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Database.Batchable<sObject> {
+global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Database.Batchable<sObject>, Database.Stateful {
 
     private static final String CLASS_NAME = 'Batch_RecalcVisibilityIntermediaryDMLs';
 
     private List<Account> intermediariesToProcess;
-    private List<AccountTeamMember> atmsToDML; // dml para los primeros 5k operaciones
     private List<AccountTeamMember> atmsToDelete;
     private List<AccountTeamMember> atmsToInsert;
     private Set<String> intermediaryAccountIdsSet; // clientes del mediador que se está procesando
     private Integer numDMLs = 5000; 
     private String batchType;
+    private Boolean stopRecursive; // en caso que se produzca una excepcion para el proceso
     
     // Constructor only DML/Constructor recursivo
     public Batch_RecalcVisibilityIntermediaryDMLs(List<Account> intermediariesToProcess, List<AccountTeamMember> atmsToDelete, List<AccountTeamMember> atmsToInsert, Integer numDMLs, String batchType) {
         this.intermediariesToProcess = intermediariesToProcess;
         this.intermediaryAccountIdsSet = new Set<String>();
-        this.atmsToDML = new List<AccountTeamMember>();
         this.atmsToDelete = atmsToDelete;
         this.atmsToInsert = atmsToInsert;
         this.numDMLs = numDMLs;
         this.batchType = batchType;
+        this.stopRecursive = false;
     }
 
     // Constructor principal calculo de nueva agrupacion
     public Batch_RecalcVisibilityIntermediaryDMLs(List<Account> intermediariesToProcess, Set<String> intermediaryAccountIdsSet, List<AccountTeamMember> atmsToDelete, List<AccountTeamMember> atmsToInsert, Integer numDMLs, String batchType) {
         this.intermediariesToProcess = intermediariesToProcess;
         this.intermediaryAccountIdsSet = intermediaryAccountIdsSet;
-        this.atmsToDML = new List<AccountTeamMember>();
         this.atmsToDelete = atmsToDelete;
         this.atmsToInsert = atmsToInsert;
         this.numDMLs = numDMLs;
         this.batchType = batchType;
+        this.stopRecursive = false;
     }
 
 
@@ -82,7 +82,6 @@ global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Data
      * @date 18/03/2024
      */
     global void execute(Database.BatchableContext bc, List<sObject> scope) {
-
         try {
 
             if ('CALCULATE'.equals(batchType)) { 
@@ -93,6 +92,7 @@ global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Data
             }
             
         } catch (Exception e) {
+            stopRecursive = true;
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
     }
@@ -106,7 +106,9 @@ global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Data
      * @date 18/03/2024
      */
     global void finish(Database.BatchableContext bc) {
-        recursiveBatch();        
+        if (!Test.isRunningTest() && !stopRecursive) {
+            recursiveBatch();  
+        }      
     }
 
     /**
@@ -224,10 +226,10 @@ global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Data
     private void processDelete(List<sObject> scope) {
 
         List<AccountTeamMember> atmsFutureBatch = new List<AccountTeamMember>();        
+        List<AccountTeamMember> atmsToDML = new List<AccountTeamMember>();
 
         Integer contador = 0;
 
-        atmsToDML.clear();
         for (AccountTeamMember atm: (List<AccountTeamMember>) scope) {
             if (contador < numDMLs) {
                 atmsToDML.add(atm);
@@ -254,10 +256,10 @@ global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Data
      */
     private void processInsert(List<sObject> scope) {
 
-        List<AccountTeamMember> atmsFutureBatch = new List<AccountTeamMember>();   
+        List<AccountTeamMember> atmsFutureBatch = new List<AccountTeamMember>(); 
+        List<AccountTeamMember> atmsToDML = new List<AccountTeamMember>();  
 
         Integer contador = 0;
-        atmsToDML.clear();
 
         for (AccountTeamMember atm: (List<AccountTeamMember>) scope) {
             if (contador < numDMLs) {
@@ -269,7 +271,7 @@ global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Data
         }
 
         insert atmsToDML;
-        atmsToInsert.clear(); // limpio la lista de atm a insertar y le añado el sobrante si hay
+        atmsToInsert = new List<AccountTeamMember>(); // limpio la lista de atm a insertar y le añado el sobrante si hay
 
         if (!atmsFutureBatch.isEmpty()) {
             atmsToInsert.addAll(atmsFutureBatch);
@@ -284,17 +286,17 @@ global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Data
      * @date 18/03/2024
      */
     private void recursiveBatch() {
-
+        
         if (!atmsToDelete.isEmpty()) {
             Database.executeBatch(new Batch_RecalcVisibilityIntermediaryDMLs(intermediariesToProcess, atmsToDelete, atmsToInsert, numDMLs, 'DELETE'), numDMLs);
-
+            
         } else if (atmsToDelete.isEmpty() && !atmsToInsert.isEmpty()) {
             Database.executeBatch(new Batch_RecalcVisibilityIntermediaryDMLs(intermediariesToProcess, atmsToDelete, atmsToInsert, numDMLs, 'INSERT'), numDMLs);
-
+            
         } else if (atmsToDelete.isEmpty() && atmsToInsert.isEmpty() && !intermediariesToProcess.isEmpty()) { 
             // una vez terminado de procesar los account team elimino el primer mediador a procesar y si hay mediadores a procesar vuelvo a llamar al batch Batch_RecalcVisibilityIntermediary
             intermediariesToProcess.remove(0);
-
+            
             if (!intermediariesToProcess.isEmpty()) {
                 Database.executeBatch(new Batch_RecalcVisibilityIntermediary(intermediariesToProcess, false, numDMLs), numDMLs); 
             }

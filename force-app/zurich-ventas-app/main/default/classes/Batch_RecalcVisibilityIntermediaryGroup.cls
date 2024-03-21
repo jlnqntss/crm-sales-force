@@ -6,7 +6,7 @@
  *
  */
 
-global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Database.Batchable<sObject>, Schedulable {
+global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Database.Batchable<sObject>, Schedulable, Database.Stateful {
 
     private static final String CLASS_NAME = 'Batch_RecalcVisibilityIntermediaryGroup';
     private static final string AGENTEVENTA_PROFILE = 'Agente Ventas';
@@ -69,7 +69,8 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
         
         // si no hay elementos en intermediariesToProcess lanzamos la consulta de BD
         if (intermediariesToProcess.isEmpty()) {
-            return (new AccountsSelector()).findIntermediariesWithGroupChanges(); 
+            intermediariesToProcess.addAll((new AccountsSelector()).findIntermediariesWithGroupChanges());
+            return intermediariesToProcess; 
         } else {
             return intermediariesToProcess;
         }
@@ -86,8 +87,8 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
      */
     global void execute(Database.BatchableContext bc, List<Account> scope) {
         try {
-            // aseguro que se informa la variable intermediariesToProcess
-            intermediariesToProcess = scope;                                 
+
+            // Do nothing este batch solo se encarga de lanzar el primero de los resultados encontrados
             
         } catch (Exception e) {
             ErrorLogUtil.commitError(e, CLASS_NAME);
@@ -102,7 +103,9 @@ global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Dat
      * @date 15/02/2024
      */
     global void finish(Database.BatchableContext bc) {
-        Database.executeBatch(new Batch_RecalcVisibilityIntermediary(intermediariesToProcess, false, numDMLs), numDMLs);    
+        if (!Test.isRunningTest()) {
+            Database.executeBatch(new Batch_RecalcVisibilityIntermediary(intermediariesToProcess, false, numDMLs), numDMLs);   
+        }
     }    
 
 

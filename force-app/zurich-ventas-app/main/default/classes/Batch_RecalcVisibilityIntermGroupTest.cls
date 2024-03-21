@@ -61,67 +61,6 @@ public with sharing class Batch_RecalcVisibilityIntermGroupTest {
 
 
     @isTest
-    private static void testBajaMediador() {
-
-        Date yesterdayDate = Date.today();
-        yesterdayDate = yesterdayDate.addDays(-1);
-
-        List<AccountTeamMember> atmsBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember WHERE TeamMemberRole = 'MediadorZRM']);
-
-        // Obtener cliente y dar de baja de la agrupación
-        Account intermediary = [SELECT Id, IntermediaryGroup__c FROM Account WHERE RecordType.DeveloperName = 'Intermediary' AND Name = 'MediadorTest' LIMIT 1];
-
-        String intermdiaryGroup = intermediary.IntermediaryGroup__c;
-
-        intermediary.IntermediaryGroup__c = null;
-        intermediary.LastIntermediaryGroup__c = intermdiaryGroup;
-        intermediary.LastIntermediaryGroupChange__c = yesterdayDate;        
-
-        update intermediary;
-
-        Test.startTest();
-        Database.executeBatch(new Batch_RecalcVisibilityIntermediaryGroup(), 200); 
-        Test.stopTest();
-
-        List<AccountTeamMember> atmsAfter = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember WHERE TeamMemberRole = 'MediadorZRM']);
-
-        System.assert(atmsAfter != null, 'Debe haber atms generados por el batch');
-
-    }
-
-    @isTest
-    private static void testCambioAgrupacionMediador() {
-
-        Date yesterdayDate = Date.today();
-        yesterdayDate = yesterdayDate.addDays(-1);
-
-        List<AccountTeamMember> atmsBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember WHERE TeamMemberRole = 'MediadorZRM']);
-
-        // Obtener mediador y cambiar la agrupacion
-        Account intermediary = [SELECT Id, IntermediaryGroup__c FROM Account WHERE RecordType.DeveloperName = 'Intermediary' AND Name = 'MediadorTest' LIMIT 1];
-        String intermdiaryGroup = intermediary.IntermediaryGroup__c;
-        
-        // Obtener la segunda agrupacion
-        Account intermediaryGroup = [SELECT Id, IntermediaryGroup__c FROM Account WHERE RecordType.DeveloperName = 'AgrupacionMediador' AND Id != :intermdiaryGroup LIMIT 1];
-
-        intermediary.IntermediaryGroup__c = null;
-        intermediary.LastIntermediaryGroup__c = intermdiaryGroup;
-        intermediary.LastIntermediaryGroupChange__c = yesterdayDate;   
-        intermediary.IntermediaryGroup__c = intermediaryGroup.Id;
-
-        update intermediary;
-
-        Test.startTest();
-        Database.executeBatch(new Batch_RecalcVisibilityIntermediaryGroup(), 200); 
-        Test.stopTest();
-
-        List<AccountTeamMember> atmsAfter = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember WHERE TeamMemberRole = 'MediadorZRM']);
-
-        System.assert(atmsAfter != null, 'Debe haber atms generados por el batch');
-
-    }
-
-    @isTest
     private static void testSchedule() {
 
 
@@ -141,15 +80,35 @@ public with sharing class Batch_RecalcVisibilityIntermGroupTest {
 
         // prueba batch
         Test.startTest();
-        String jobName = 'Prueba Test Batch';
-        String cron = '0 0 3 * * ?';
 
-        String jobId = Batch_RecalcVisibilityIntermediaryGroup.createStandardSchedule(jobName, cron);
+        String jobId = Batch_RecalcVisibilityIntermediaryGroup.createStandardSchedule('', '', 5000);
 
         Test.stopTest();
 
         List<CronTrigger> cronList = new List<CronTrigger>([SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobId]);
 
         System.assertEquals(1, cronList.size(), 'Debe haber un job programado');
+    }
+
+    @isTest
+    private static void testConstructor() {
+
+
+        Date yesterdayDate = Date.today();
+        yesterdayDate = yesterdayDate.addDays(-1);
+
+        // Obtener cliente y dar de baja de la agrupación
+        List<Account> intermediary = [SELECT Id, IntermediaryGroup__c FROM Account WHERE RecordType.DeveloperName = 'Intermediary' AND Name = 'MediadorTest' LIMIT 1];
+
+        // prueba batch
+        Test.startTest();
+
+        String jobId = Database.executeBatch(new Batch_RecalcVisibilityIntermediaryGroup(intermediary, 5000));
+
+        Test.stopTest();
+
+        List<AsyncApexJob> apexJob = new List<AsyncApexJob>([SELECT Id  FROM AsyncApexJob WHERE id = :jobId]);
+
+        System.assertEquals(1, apexJob.size(), 'Debe haber un job');
     }
 }

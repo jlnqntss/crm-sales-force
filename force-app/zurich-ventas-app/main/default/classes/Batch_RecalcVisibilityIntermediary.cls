@@ -5,7 +5,7 @@
  * @date 18/03/2024
  *
  */
-global with sharing class Batch_RecalcVisibilityIntermediary implements Database.Batchable<sObject> {
+global with sharing class Batch_RecalcVisibilityIntermediary implements Database.Batchable<sObject>, Database.Stateful {
     
     private static final String CLASS_NAME = 'Batch_RecalcVisibilityIntermediary';
 
@@ -15,6 +15,7 @@ global with sharing class Batch_RecalcVisibilityIntermediary implements Database
     private List<AccountTeamMember> atmsToInsert;
     private Boolean intermediaryRecalcButton;
     private Set<String> allClients;
+    private Boolean stopRecursive; // en caso que se produzca una excepcion para el proceso
 
     public Batch_RecalcVisibilityIntermediary(List<Account> intermediariesToProcess, Boolean intermediaryRecalcButton, Integer numDMLs) {
         this.intermediariesToProcess = intermediariesToProcess;
@@ -23,6 +24,41 @@ global with sharing class Batch_RecalcVisibilityIntermediary implements Database
         this.numDMLs = numDMLs;
         this.intermediaryRecalcButton = intermediaryRecalcButton;
         this.allClients = new Set<String>();
+        this.stopRecursive = false;
+    }
+
+
+    /**
+     * @description Clase wrapper para el metodo invocable
+     * @author fpalomo
+     */
+    public class Requests
+    {
+        @InvocableVariable public String intermediaryId;
+        @InvocableVariable public Integer numDMLs;
+    }
+
+    /**
+     * @description Metodo invocable para lanzar el batch desde un flow
+     * @param requests List<Requests>
+     * @author fpalomo
+     */
+    @InvocableMethod
+    public static void invocableExecuteBatch(List<Requests> requests)
+    {
+         if (requests == null || requests.isEmpty())
+        {
+            return;
+        }
+
+        if (requests[0].intermediaryId != null && String.isNotEmpty(requests[0].intermediaryId))
+        {
+            List<Account> intermediaryAccount = [SELECT Id, IntermediaryGroup__c  
+                                        FROM Account
+                                        WHERE Id = :requests[0].intermediaryId]; 
+                                        
+            Database.executeBatch(new Batch_RecalcVisibilityIntermediary(intermediaryAccount, true, requests[0].numDMLs));
+        }
     }
 
 
@@ -81,6 +117,7 @@ global with sharing class Batch_RecalcVisibilityIntermediary implements Database
             // Una vez terminado los cálculos elimino el mediador de la lista a procesar para calcular el siguiente en la próxima iteración de este batch recursivo
 
         } catch (Exception e) {
+            stopRecursive = true;
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
     }
@@ -93,10 +130,11 @@ global with sharing class Batch_RecalcVisibilityIntermediary implements Database
      * @author dmunoz
      * @date 18/03/2024
      */
-    global void finish(Database.BatchableContext bc) {        
-        callDMLBatch();           
+    global void finish(Database.BatchableContext bc) {  
+        if (!Test.isRunningTest() && !stopRecursive) {      
+            callDMLBatch();
+        }      
     }
-
 
 
     /******************************************************************************************* Métodos auxiliares ************************************************************************************************/
@@ -147,7 +185,7 @@ global with sharing class Batch_RecalcVisibilityIntermediary implements Database
 
         // Recálculo desde botón
         if (intermediaryRecalcButton) {
-            //recalcIntermediaryVisibilityButton(intermediary, policyHolderIdsSet, offerAccountIdsSet);
+            recalcIntermediaryVisibilityButton(intermediary);
         } else if (String.isEmpty(intermediary.LastIntermediaryGroup__c) && String.isNotEmpty(intermediary.IntermediaryGroup__c)) { // alta mediador en agrupacion
             newIntermediaryInIntermediaryGroup(intermediary);
         } else if (String.isNotEmpty(intermediary.LastIntermediaryGroup__c)) { // cambio/baja mediador agrupacion
@@ -155,6 +193,36 @@ global with sharing class Batch_RecalcVisibilityIntermediary implements Database
         }
     }
 
+
+    /**
+     * Metodo que recalcula por completo la visibilidad de un mediador y de los usuarios que cuelgan de ese mediador
+     * 
+     * @author dmunoz
+     * @date 18/03/2024
+     */
+    private void recalcIntermediaryVisibilityButton(Account intermediary) {
+
+        // Añado el mediador de la lista intermediariesToProcess. Al ser el botón solo llegará un elemento
+        List<String> intermediaryIdList = new List<String>();
+        intermediaryIdList.add(intermediary.Id);
+
+        // 1º Obtener los usuarios de dicho mediador (desde el botón la lista solo tendrá un elemento)
+        List<User> intermediaryUsers = (new UsersSelector()).findZRMActiveUsersByIntermediaryId(intermediaryIdList);
+
+        // 2º Si el mediador tiene usuarios eliminamos todos sus account team
+        if (!intermediaryUsers.isEmpty()) {            
+            atmsToDelete.addAll((new AccountTeamMemberSelector().findZRMATMsByUser(intermediaryUsers)));
+
+        // si el mediador tiene usuarios obtengo los usuarios agr de su agrupacion
+        } if (String.isNotEmpty(intermediary.IntermediaryGroup__c)) { 
+            intermediaryUsers.addAll((new UsersSelector()).getOtherZRMAGRUsers(intermediary.Id, intermediary.IntermediaryGroup__c));
+        }
+
+        // 3º Generar los account team para sus usuarios y allClients (todos los clientes de sus ofertas y polizas)
+        for (String accountId: allClients) {
+            atmsToInsert.addAll(AccountTeamMemberUtil.createATMZRMRecordList(accountId, intermediaryUsers));
+        }
+    }
 
    
     /**
@@ -291,7 +359,7 @@ global with sharing class Batch_RecalcVisibilityIntermediary implements Database
         Account intermediary = intermediariesToProcess.get(0);
 
         // si el mediador tiene usuarios agr calculamos la visibilidad en el siguiente batch
-        List<User> agrUser = (new UsersSelector()).getIntermediaryZRMAGRUsers(intermediary.Id);
+        List<User> agrUser = (new UsersSelector()).getIntermediaryZRMAGRUsers(intermediary.Id);        
 
         if (agrUser != null && !agrUser.isEmpty()) { // calcular la visibilidad del usuario que se ha dado de baja o ha cambiado de agrupacion si tiene algún usuario agrupacion
             Database.executeBatch(new Batch_RecalcVisibilityIntermediaryDMLs(intermediariesToProcess, allClients, atmsToDelete, atmsToInsert, numDMLs, 'CALCULATE'), numDMLs);
