@@ -11466,6 +11466,10 @@
         <recordType>Case.OCSSprinklr</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Default SAM</layout>
+        <recordType>Case.SAMInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
