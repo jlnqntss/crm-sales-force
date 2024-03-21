@@ -6,7 +6,10 @@
         <name>AreAccountsIntermediaryOrIntermediaryGroupType</name>
         <label>¿Las cuentas son de tipo Mediador o Agrupación Mediador?</label>
         <locationX>380</locationX>
-        <locationY>503</locationY>
+        <locationY>611</locationY>
+        <defaultConnector>
+            <targetReference>Actualizar_Record_Type</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Resultado predeterminado</defaultConnectorLabel>
         <rules>
             <name>SomeAreIntermediaryOrIntermediaryGroupTypeOutcome</name>
@@ -49,7 +52,7 @@
         <name>Las_cuentas_son_de_tipo_Agrupacion</name>
         <label>¿Las cuentas son de tipo Agrupacion?</label>
         <locationX>182</locationX>
-        <locationY>611</locationY>
+        <locationY>719</locationY>
         <defaultConnector>
             <targetReference>UpdateEventAction</targetReference>
         </defaultConnector>
@@ -130,7 +133,7 @@
         <locationY>395</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>AreAccountsIntermediaryOrIntermediaryGroupType</targetReference>
+            <targetReference>Obtener_Record_Type_SDM_Event</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -144,12 +147,39 @@
         <object>Contact</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Obtener_Record_Type_SDM_Event</name>
+        <label>Obtener Record Type SDM Event</label>
+        <locationX>380</locationX>
+        <locationY>503</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AreAccountsIntermediaryOrIntermediaryGroupType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SDM_Event</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <description>Se actualiza el campo &quot;¿Relacionado con un Mediador?&quot; del evento que ha desencadenado el flujo.</description>
         <name>Actualizar_evento_Agrupacion</name>
         <label>Actualizar evento Agrupación</label>
         <locationX>50</locationX>
-        <locationY>719</locationY>
+        <locationY>827</locationY>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Obtener_Record_Type_SDM_Event.Id</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>RelatedToIntermediary__c</field>
             <value>
@@ -165,11 +195,30 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Actualizar_Record_Type</name>
+        <label>Actualizar Record Type</label>
+        <locationX>578</locationX>
+        <locationY>719</locationY>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Obtener_Record_Type_SDM_Event.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <description>Se actualiza el campo &quot;¿Relacionado con un Mediador?&quot; del evento que ha desencadenado el flujo.</description>
         <name>UpdateEventAction</name>
         <label>Actualizar evento Mediador</label>
         <locationX>314</locationX>
-        <locationY>719</locationY>
+        <locationY>827</locationY>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Obtener_Record_Type_SDM_Event.Id</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>RelatedToIntermediary__c</field>
             <value>
