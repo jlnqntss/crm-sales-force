@@ -107,7 +107,7 @@ public class PolicyUtil
         
         if (newList != null && !newList.isEmpty()) {
             for (Policy__c policy: newList) { 
-                if ('A'.equals(policy.PolicyStatus__c) || 'V'.equals(policy.PolicyStatus__c) && !policy.Blocked__c && !policy.Anonymized__c) { // solo procesamos cambios sobre polizas no bloqueadas y en vigor o anuladas
+                if (String.isNotEmpty(policy.IntermediaryId__c) && ('A'.equals(policy.PolicyStatus__c) || 'V'.equals(policy.PolicyStatus__c)) && !policy.Blocked__c && !policy.Anonymized__c) { // solo procesamos cambios sobre polizas no bloqueadas y en vigor o anuladas
                     if (isPolicyHolderChanged(policy, oldMap)) {
                         policiesWithPolicyHolderChanges.add(policy);
                     } else if (isIntermediaryChanged(policy, oldMap)) {

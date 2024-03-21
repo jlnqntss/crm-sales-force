@@ -17,7 +17,7 @@ public without sharing class ZRMOfferVisibilityUtil {
         Map<String, Set<String>> result = new Map<String, Set<String>>();
 
         for (Opportunity offer: newList) {     
-            if (!offer.Blocked__c && !offer.Anonymized__c) { // poliza anulada o en vigor no bloqueada/anonimizada
+            if (String.isNotEmpty(offer.IntermediaryId__c) && !offer.Blocked__c && !offer.Anonymized__c) { // poliza anulada o en vigor no bloqueada/anonimizada
                 result = generateSetMap(result, offer.IntermediaryId__c, offer.AccountId);                
             }            
         }
