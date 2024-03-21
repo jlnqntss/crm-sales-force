@@ -324,6 +324,45 @@ public with sharing class GenesysInteractionsService
     /**
      * Lanza una búsqueda con la configuración determinada por request
      *
+     * @author jfherrero
+     * @date 19/03/2024
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {SearchResultAuto} Resultados devueltos por la búsqueda
+     */
+    public static SearchResultAuto findPeopleAutoBy(SearchRequest request)
+    {
+        // 1 - Comprobar que la request tiene informados todos los campos requeridos
+        if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) )
+        {
+            throw new GenesysPeopleServiceException(GenesysInteractionsService.class.getName() 
+            + MISSING_FIELDS_REQUIRED + ': searchType, filterBy and value. Payload: ' + request);
+        }
+
+        SearchResultAuto results = new SearchResultAuto();
+
+        // 2 - Realizar la búsqueda de registros en base a los filtros definidos en la request
+        switch on request.filterBy
+        {
+            // Inicialmente vamos a trabajar sólo con búsqueda de 'customers'
+            when 'customers'
+            {
+                results = findCustomersAutoBy(request);
+            }
+            //Inicialmente vamos a trabajar sólo buscando customers
+            when else
+            {
+                throw new GenesysPeopleServiceException(FILTER_NOT_DEFINED+'('+request.filterBy+')');
+            }
+        }
+
+        // 3 - Devolver los resultados obtenidos
+        return results;
+    }
+
+
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     *
      * @author jjuaristi
      * @param {SearchRequest} request Solicitud de búsqueda
      * @return {SearchResult} Resultados devueltos por la búsqueda
@@ -517,37 +556,11 @@ public with sharing class GenesysInteractionsService
         SearchResult results = new SearchResult();
         List<Account> accounts = new List<Account>();
 
+        String searchType = request.searchType;
         RecordsSelector.Scope scope = RecordsSelector.getScope(request.scope);
         RecordsSelector.LegalEntity legalEntity = RecordsSelector.getLegalEntity(request.legalEntity);
 
-        switch on request.searchType
-        {
-            when 'phone'
-            {
-                accounts = AccountSearchService.findCustomersByPhoneNumber( new List<String>{request.value}, scope, legalEntity, null, null );
-            }
-            when 'email'
-            {
-                accounts = AccountSearchService.findCustomersByEmail( new List<String>{request.value}, scope, legalEntity, null, null );
-            }
-            when 'document'
-            {
-                accounts = AccountSearchService.findCustomersByDocumentId( new List<String>{request.value}, null, scope, legalEntity, null, null );
-            }
-            when 'policy_code'
-            {
-                accounts = AccountSearchService.findCustomersByPolicyNumber( new List<String>{request.value}, scope, legalEntity );
-
-                if(accounts == null || accounts.isEmpty())
-                {
-                    accounts = AccountSearchService.findCustomersByQuoteNumber( new List<String>{request.value}, scope, legalEntity );
-                }
-            }
-            when else
-            {
-                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);
-            }
-        }
+        accounts = findCustomersBySearchType (new List<String>{request.value}, searchType, scope, legalEntity);
 
         if(accounts.size() == 1)
         {
@@ -562,6 +575,119 @@ public with sharing class GenesysInteractionsService
         }
 
         //20210804: Estadísticas/Informes
+        if(accounts.size() == 0)
+        {
+            results.noIdentified = true;
+        }
+        else if(accounts.size() == 1 && searchType == 'phone')
+        {
+            results.identifiedByANI = true;
+        }
+        else if(accounts.size() > 1 && searchType == 'phone')
+        {
+            results.multiIdentifiedByANI = true;
+        }
+        else if(accounts.size() == 1 && searchType == 'document')
+        {
+            results.identifiedByNIF = true;
+        }
+        else if(accounts.size() > 1 && searchType == 'document')
+        {
+            results.multiIdentifiedByNIF = true;
+        }
+
+        return results;
+    }
+
+    /**
+     * Lanza una búsqueda con la configuración determinada por request y devuelve una lista de Accounts
+     *
+     * @author jfherrero
+     * @param List<String> values                       Valores para buscar
+     * @param String searchType                         Tipo de búsqueda a realizar
+     * @param RecordsSelector.Scope scope               Ámbito de la búsqueda
+     * @param RecordsSelector.LegalEntity legalEntity   Entidad legal
+     * 
+     * @return {SearchResult} Resultados devueltos por la búsqueda
+     */
+    private static List<Account> findCustomersBySearchType (List<String> values, String searchType, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
+    {
+        List<Account> accounts = new List<Account>();
+
+        switch on searchType
+        {
+            when 'phone'
+            {
+                accounts = AccountSearchService.findCustomersByPhoneNumber( values, scope, legalEntity, null, null );
+            }
+            when 'email'
+            {
+                accounts = AccountSearchService.findCustomersByEmail( values, scope, legalEntity, null, null );
+            }
+            when 'document'
+            {
+                accounts = AccountSearchService.findCustomersByDocumentId( values, null, scope, legalEntity, null, null );
+            }
+            when 'policy_code'
+            {
+                accounts = AccountSearchService.findCustomersByPolicyNumber( values, scope, legalEntity );
+
+                if(accounts == null || accounts.isEmpty())
+                {
+                    accounts = AccountSearchService.findCustomersByQuoteNumber( values, scope, legalEntity );
+                }
+            }
+            when else
+            {
+                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);
+            }
+        }
+
+        return accounts;
+    }
+
+
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     * Se desdobla la funcionalidad para recuperar nuevos valores.
+     *
+     * @author jfherrero
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {SearchResultAuto} Resultados devueltos por la búsqueda
+     */
+    public static SearchResultAuto findCustomersAutoBy(SearchRequest request)
+    {
+        SearchResultAuto results = new SearchResultAuto();
+        List<Account> accounts = new List<Account>();
+
+        String searchType = request.searchType;
+        RecordsSelector.Scope scope = RecordsSelector.getScope(request.scope);
+        
+        RecordsSelector.LegalEntity legalEntity = RecordsSelector.getLegalEntity(request.legalEntity);
+
+        accounts = findCustomersBySearchType (new List<String>{request.value}, searchType, scope, legalEntity);
+
+        if(accounts.size() == 1)
+        {
+            Account customer = accounts.get(0);
+            results.screenPopRecordId = customer.Id;
+            results.nationalId = customer.NationalId__c;
+            results.email = customer.MainEmail__c;
+            results.phone = String.isBlank(customer.Phone)? customer.MainMobilePhone__c : customer.Phone;
+            results.totalPolicies = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
+            results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
+
+            // Nos interesa únicamente el ramo 'AUTOS'
+            List<Claim__c> latestClaims = findLatestClaimsByBranch(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity), 'AUTOS');
+
+            if(latestClaims != null && latestClaims.size()>0)
+            {
+                results.claim = new ClaimAuto(latestClaims[0]);
+                results.policy = new PolicyAuto(latestClaims[0]);
+            }
+        }
+
+        //Estadísticas/Informes
         if(accounts.size() == 0)
         {
             results.noIdentified = true;
@@ -841,6 +967,79 @@ public with sharing class GenesysInteractionsService
         List<Claim__c> claims = claimsSelector.selectByHolder(customerId);
 
         return new OpenedClaims(claims);
+    }
+
+    /**
+     * Obtener el último siniestro de un cliente para un ramo indicado
+     *
+     * @author jfherrero
+     * @date 14/03/2024
+     */
+    @testVisible
+    private static List<Claim__c> findLatestClaimsByBranch(Id customerId, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity, String branch)
+    { 
+        ClaimsSelector claimsSelector = new ClaimsSelector();
+        claimsSelector.setFields
+        (
+            new List<Schema.SobjectField>
+            {
+                //Datos del siniestro
+                Claim__c.Id,
+                Claim__c.Name,
+                Claim__c.Status__c,
+                Claim__c.ClaimType__c,
+                Claim__c.ClaimOwnerTeamName__c,
+                Claim__c.ClaimOwnerTeamCode__c,
+                Claim__c.ClaimOwnerNationalId__c,
+                Claim__c.ClaimOwnerName__c,
+                Claim__c.ClaimOwnerFirstName__c,
+                Claim__c.ClaimOwnerLastName__c,
+                Claim__c.CreatedDate
+            },
+            new List<String>
+            {
+                //Datos de la póliza
+                'Policy__r.Id',
+                'Policy__r.Name',
+                'Policy__r.PolicyType__c', 
+                'Policy__r.CommercialCode__c',
+                'Policy__r.TechnicalCode__c',
+                'Policy__r.ProductId__r.Name',
+                'Policy__r.ProductId__r.GroupDescription__c',
+                //Datos del partner
+                'Policy__r.Partner__c',
+                'Policy__r.Partner__r.PartnerSFCode__c',
+                'Policy__r.Partner__r.PartnerSector__c',
+                'Policy__r.Partner__r.GrandparentBusinessName__c',
+                //Datos del mediador
+                'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c',
+                'Policy__r.IntermediaryId__r.IntermediaryDescription__c',
+                'Policy__r.IntermediaryId__r.ClassDescription__c',
+                'Policy__r.IntermediaryId__r.MainMobilePhone__c',
+                'Policy__r.IntermediaryId__r.Phone',
+                'Policy__r.IntermediaryId__r.MainEmail__c',
+                'Policy__r.IntermediaryId__r.Channel__c',
+                'Policy__r.IntermediaryId__r.Segment__c',
+                //Datos del tomador
+                'Policy__r.PolicyHolder__r.Name',
+                'Policy__r.PolicyHolder__r.NationalId__c',
+                'Policy__r.PolicyHolder__r.MainEmail__c',
+                'Policy__r.PolicyHolder__r.Phone',
+                'Policy__r.PolicyHolder__r.MainMobilePhone__c',
+                //Datos del objeto asegurado
+                'InsuredObject__r.RegistrationNumber__c',
+                'InsuredObject__r.BrandName__c',
+                'InsuredObject__r.Model__c'
+            }
+        );
+
+        claimsSelector.setScope(scope);
+        claimsSelector.setLegalEntity(legalEntity);
+
+        //Recogemos el último siniestro: determinar si lo queremos cerrado 'T' o no cerrado
+        List<Claim__c> claims = claimsSelector.selectByHolderAndBranch(customerId, 'AUTOS', false, 'CreatedDate', 'desc');
+
+        return claims;
     }
 
     /**
@@ -1152,6 +1351,38 @@ public with sharing class GenesysInteractionsService
     }
 
     /**
+     * Representa los resultados de búsqueda del CRM para búsquedas de Auto
+     *
+     * @author  jfherrero
+     * @date    19/03/2024
+     */
+    public class SearchResultAuto
+    {
+        public transient List<Contact> names;
+        public transient List<SObject> relatedRecords;
+        public String screenPopRecordId;
+        public String phone;
+        public String email;
+        public Integer totalPolicies;
+        public Integer totalQuotes;
+        public ClaimAuto claim;
+        public PolicyAuto policy;
+        public String nationalId;
+
+        //Estadísticas/Informes
+        public Boolean identifiedByNIF;
+        public Boolean identifiedByANI;
+        public Boolean noIdentified;
+        public Boolean multiIdentifiedByNIF;
+        public Boolean multiIdentifiedByANI;
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
      * Representa la información del mediador
      *
      * @author adelgado
@@ -1388,6 +1619,83 @@ public with sharing class GenesysInteractionsService
     }
 
     /**
+     * Representa la información de una póliza de auto activa en el CRM
+     *
+     * @author jfherrero
+     */
+    public class PolicyAuto
+    {
+        public String id;
+        public String policyCode;
+        public String policyTechnicalCode;
+        public String policyCommercialCode;
+        public String type;
+        public String intermediaryClass;
+        public String partnerId;
+        public String destinationCode;
+        public String partnerName;
+        public String partnerSector;
+        public String intermediaryCode;
+        public String intermediaryDescription;
+        public String intermediaryChannel;
+        public String intermediaryPhone;
+        public String intermediaryEmail;
+        public String intermediarySegment;
+        public String holderName;
+        public String holderNationalId;
+
+
+        public PolicyAuto(){}
+        public PolicyAuto(Policy__c policy)
+        {
+            this.id = policy.id;
+            this.policyCode = policy.Name;
+            this.policyTechnicalCode = policy.TechnicalCode__c;
+            this.policyCommercialCode = policy.CommercialCode__c;
+            this.type = String.isNotBlank(policy.PolicyType__c) ? policy.PolicyType__c : policy.ProductId__r.GroupDescription__c;
+            this.intermediaryClass = policy.IntermediaryId__r.ClassDescription__c;
+            this.partnerId = policy.Partner__c;
+            this.destinationCode = policy.Partner__r.PartnerSFCode__c;
+            this.partnerName = policy.Partner__r.GrandparentBusinessName__c;
+            this.partnerSector = policy.Partner__r.PartnerSector__c;
+            this.intermediaryCode = policy.IntermediaryId__r.INFOIntermediaryCode__c;
+            this.intermediaryDescription = policy.IntermediaryId__r.IntermediaryDescription__c;
+            this.intermediaryChannel = policy.IntermediaryId__r.Channel__c;
+            this.intermediaryPhone = String.isBlank(policy.IntermediaryId__r.Phone)? policy.IntermediaryId__r.MainMobilePhone__c : policy.IntermediaryId__r.Phone;
+            this.intermediaryEmail = policy.IntermediaryId__r.MainEmail__c;
+            this.intermediarySegment = policy.IntermediaryId__r.Segment__c;
+            this.holderName = policy.PolicyHolder__r.Name;
+            this.holderNationalId = policy.PolicyHolder__r.NationalId__c;
+        }
+        public PolicyAuto(Claim__c claim)
+        {
+            this.id = claim.Policy__r.id;
+            this.policyCode = claim.Policy__r.Name;
+            this.policyTechnicalCode = claim.Policy__r.TechnicalCode__c;
+            this.policyCommercialCode = claim.Policy__r.CommercialCode__c;
+            this.type = String.isNotBlank(claim.Policy__r.PolicyType__c) ? claim.Policy__r.PolicyType__c : claim.Policy__r.ProductId__r.GroupDescription__c;
+            this.intermediaryClass = claim.Policy__r.IntermediaryId__r.ClassDescription__c;
+            this.partnerId = claim.Policy__r.Partner__c;
+            this.destinationCode = claim.Policy__r.Partner__r.PartnerSFCode__c;
+            this.partnerName = claim.Policy__r.Partner__r.GrandparentBusinessName__c;
+            this.partnerSector = claim.Policy__r.Partner__r.PartnerSector__c;
+            this.intermediaryCode = claim.Policy__r.IntermediaryId__r.INFOIntermediaryCode__c;
+            this.intermediaryDescription = claim.Policy__r.IntermediaryId__r.IntermediaryDescription__c;
+            this.intermediaryChannel = claim.Policy__r.IntermediaryId__r.Channel__c;
+            this.intermediaryPhone = String.isBlank(claim.Policy__r.IntermediaryId__r.Phone)? claim.Policy__r.IntermediaryId__r.MainMobilePhone__c : claim.Policy__r.IntermediaryId__r.Phone;
+            this.intermediaryEmail = claim.Policy__r.IntermediaryId__r.MainEmail__c;
+            this.intermediarySegment = claim.Policy__r.IntermediaryId__r.Segment__c;
+            this.holderName = claim.Policy__r.PolicyHolder__r.Name;
+            this.holderNationalId = claim.Policy__r.PolicyHolder__r.NationalId__c;
+        }
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
      * Representa la información de los siniestros abiertos en el CRM
      *
      * @author adelgado
@@ -1511,6 +1819,47 @@ public with sharing class GenesysInteractionsService
             this.carRegistration = claim.InsuredObject__r.RegistrationNumber__c;
             this.claimNumber = claim.Name;
             this.policy = new ActivePolicy(claim.Policy__r);
+        }
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa la información de un siniestro abierto en una póliza en el CRM
+     *
+     * @author jfherrero
+     */
+    public class ClaimAuto
+    {
+        public String id;
+        public String ownerTeam;
+        public String ownerTeamCode;
+        public String ownerFullname;
+        public String ownerNationalId;
+        public String status;
+        public String carRegistration;
+        public String carBrand;
+        public String carModel;
+        public String claimNumber;
+        public String claimType;
+
+        public ClaimAuto() {}
+        public ClaimAuto(Claim__c claim)
+        {
+            this.id = claim.id;
+            this.ownerTeam = claim.ClaimOwnerTeamName__c;
+            this.ownerTeamCode = claim.ClaimOwnerTeamCode__c;
+            this.ownerFullname = String.join(new List<String>{claim.ClaimOwnerName__c, claim.ClaimOwnerFirstName__c, claim.ClaimOwnerLastName__c}, ' ').toUpperCase();
+            this.ownerNationalId = claim.ClaimOwnerNationalId__c;
+            this.status = claim.Status__c;
+            this.carRegistration = claim.InsuredObject__r.RegistrationNumber__c;
+            this.carBrand = claim.InsuredObject__r.BrandName__c;
+            this.carModel = claim.InsuredObject__r.Model__c;
+            this.claimNumber = claim.Name;
+            this.claimType = claim.ClaimType__c;
         }
 
         public override String toString()
