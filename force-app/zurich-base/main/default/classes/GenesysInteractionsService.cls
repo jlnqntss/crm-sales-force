@@ -24,6 +24,7 @@ public with sharing class GenesysInteractionsService
     //Refactorización
     static final String ASSET_REGISTRATION_NUMBER = 'InsuredObject__r.RegistrationNumber__c';
     static final String POLICY_TYPE = 'Policy__r.PolicyType__c';
+    static final String POLICY_NUMBER = 'Policy__r.Name';
     static final String BRANCH = 'Policy__r.ProductId__r.GroupDescription__c';
     static final String PARTNER_SF_CODE = 'Policy__r.Partner__r.PartnerSFCode__c';
     static final String PARTNER_SECTOR = 'Policy__r.Partner__r.PartnerSector__c';
@@ -523,7 +524,7 @@ public with sharing class GenesysInteractionsService
                 PARTNER_SF_CODE,
                 PARTNER_SECTOR,
                 PARTNER_NAME,
-                'Policy__r.Name',
+                POLICY_NUMBER,
                 INTERMEDIARY_CODE, 
                 INTERMEDIARY_MOBILE_PHONE,
                 INTERMEDIARY_PHONE,
@@ -962,7 +963,7 @@ public with sharing class GenesysInteractionsService
                 PARTNER_SECTOR,
                 PARTNER_NAME,
                 INTERMEDIARY_CODE,
-                'Policy__r.Name',
+                POLICY_NUMBER,
                 INTERMEDIARY_MOBILE_PHONE,
                 INTERMEDIARY_PHONE,
                 INTERMEDIARY_MAIL,
@@ -1010,7 +1011,7 @@ public with sharing class GenesysInteractionsService
             {
                 //Datos de la póliza
                 'Policy__r.Id',
-                'Policy__r.Name',
+                POLICY_NUMBER,
                 POLICY_TYPE, 
                 'Policy__r.CommercialCode__c',
                 'Policy__r.TechnicalCode__c',
