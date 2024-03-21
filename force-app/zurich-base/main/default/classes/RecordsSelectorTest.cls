@@ -35,8 +35,16 @@ private class RecordsSelectorTest
         System.assertEquals('SELECT id FROM Policy__c OFFSET 1', policiesSelector.baseQuery.toQueryString(), 'No se ha generado la query correctamente');
     }
 
+    /**
+    * @description Comprueba que los campos del objeto que se desean obtener se 
+    * han añadido correctamente a la SOQL cuando son pasados como una lista de tipo
+    * 'Schema.SObjectField'.
+    *
+    * @author adelgado
+    * @date 21-02-2021
+    **/
     @IsTest
-    static void test_setFields_NoRelationshipFields()
+    private static void test_setFieldsAsSchemaSObjectFieldList_NoRelationshipFields()
     {
         PoliciesSelector policiesSelector = new PoliciesSelector();
 
@@ -47,6 +55,58 @@ private class RecordsSelectorTest
           {
             Policy__c.Id,
             Policy__c.Name
+          }
+        );
+        Test.stopTest();
+
+        System.assertEquals('SELECT id, name FROM Policy__c', policiesSelector.baseQuery.toQueryString(), 'No se ha generado la query correctamente');
+    }
+
+    /**
+    * @description Comprueba que los campos del objeto que se desean obtener se 
+    * han añadido correctamente a la SOQL cuando son pasados como una lista de Strings.
+    *
+    * @author amiranda
+    * @date 21-03-2024 
+    **/
+    @IsTest
+    private static void test_setFieldsAsStringList_NoRelationshipFields()
+    {
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+
+        Test.startTest();
+        policiesSelector.setFields
+        (
+          new List<String>
+          {
+            'Id',
+            'Name'
+          }
+        );
+        Test.stopTest();
+
+        System.assertEquals('SELECT id, name FROM Policy__c', policiesSelector.baseQuery.toQueryString(), 'No se ha generado la query correctamente');
+    }
+
+    /**
+    * @description Comprueba que los campos del objeto que se desean obtener se 
+    * han añadido correctamente a la SOQL cuando son pasados como una lista de Strings
+    *
+    * @author amiranda
+    * @date 21-03-2024 
+    **/
+    @IsTest
+    private static void test_setFieldsAsStringSet_NoRelationshipFields()
+    {
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+
+        Test.startTest();
+        policiesSelector.setFields
+        (
+          new List<String>
+          {
+            'Id',
+            'Name'
           }
         );
         Test.stopTest();

@@ -1,13 +1,15 @@
 /**
- * @description       : 
+ * @description       :
  * @author            : mfernandezcarrera
- * @group             : 
- * @last modified on  : 11-20-2023
- * @last modified by  : mfernandezcarrera
-**/
+ * @group             :
+ * @last modified on  : 21-03-2024
+ * @last modified by  : amiranda
+ **/
 @isTest
 private with sharing class CampaignMembersSelectorTest
 {
+    private static final String INTERMEDIARY_CODE = '00000111';
+
     @TestSetup
     public static void createScenario()
     {
@@ -21,6 +23,10 @@ private with sharing class CampaignMembersSelectorTest
         accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE PersonContactId != null]);
 
         List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(accounts, campaigns, 'Subscribed');
+        for (CampaignMember campaignMember : campaignMembers)
+        {
+            campaignMember.OfferAssignedCode__c = INTERMEDIARY_CODE;
+        }
         insert campaignMembers;
     }
 
@@ -133,7 +139,7 @@ private with sharing class CampaignMembersSelectorTest
         System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
 
         Test.startTest();
-        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectById(new Set<Id>());
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector().selectById( new Set<Id>() );
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
@@ -156,7 +162,7 @@ private with sharing class CampaignMembersSelectorTest
         System.assertEquals(false, campaigns.isEmpty(), 'List should NOT be empty');
 
         Test.startTest();
-        List<CampaignMember> matchedRecords = new CampaignMembersSelector(new Set<String> {'invalidField'}).selectById(new Set<Id>());
+        List<CampaignMember> matchedRecords = new CampaignMembersSelector(new Set<String> {'invalidField'}).selectById( new Set<Id>() );
         Test.stopTest();
 
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
@@ -300,4 +306,50 @@ private with sharing class CampaignMembersSelectorTest
         System.assertEquals(true, matchedRecords.isEmpty(), 'List should be empty');
     }
 
+    /**
+    * @description Método que comprueba que se recuperan los miembros de campaña
+    * en base al Id de campaña y al código contenido en el campo 'OfferAssignedCode__c'
+    *
+    * @author amiranda
+    * @date 21-03-2024 
+    **/
+    @IsTest
+    private static void test_selectByCampaignIdAndOfferAssignedCode_matchedRecords()
+    {
+        List<Campaign> campaigns = [SELECT Id FROM Campaign];
+        Assert.isFalse(campaigns.isEmpty(), 'List should NOT be empty');
+
+        Test.startTest();
+        List<CampaignMember> campaignMembers = new CampaignMembersSelector.ProperCampaignMembersSelector().selectByCampaignIdAndOfferAssignedCode(campaigns.get(0).Id, new Set<String> {INTERMEDIARY_CODE});
+        Test.stopTest();
+
+        Assert.isFalse(campaignMembers.isEmpty(), 'The list of Campaign Members should not be empty');
+        for (CampaignMember campaignMember : campaignMembers)
+        {
+            Assert.areEqual(INTERMEDIARY_CODE, campaignMember.OfferAssignedCode__c, 'Intermediary code with the \'OfferAssignedCode__c\' should match');
+        }
+    }
+
+    /**
+    * @description Métod que comprueba que no se recupera ningún miembro de campaña
+    * cuando el código pasado al selector no corresponde a ningún código contenido
+    * en el campo 'OfferAssignedCode__c'
+    *
+    * @author amiranda
+    * @date 21-03-2024
+    **/
+    @IsTest
+    private static void test_selectByCampaignIdAndOfferAssignedCode_notMatchedRecords()
+    {
+        List<Campaign> campaigns = [SELECT Id FROM Campaign];
+        Assert.isFalse(campaigns.isEmpty(), 'List should NOT be empty');
+
+        String nonExistentIntermediaryCode = '00000222';
+
+        Test.startTest();
+        List<CampaignMember> campaignMembers = new CampaignMembersSelector.ProperCampaignMembersSelector().selectByCampaignIdAndOfferAssignedCode(campaigns.get(0).Id, new Set<String> {nonExistentIntermediaryCode});
+        Test.stopTest();
+
+        Assert.isTrue(campaignMembers.isEmpty(), 'The list of Campaign Members should be empty');
+    }
 }

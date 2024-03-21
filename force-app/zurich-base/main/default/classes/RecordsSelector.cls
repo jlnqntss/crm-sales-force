@@ -131,5 +131,31 @@ public abstract class RecordsSelector
         this.baseQuery.selectFields(fields);
     }
 
+    /**
+    * @description Método que permite seleccionar los campos como un 'Conjunto'
+    * de 'Strings' que se desean recuperar en la consulta a la base de datos.
+    *
+    * @author amiranda 
+    * @date 21-03-2024 
+    * @param fields Conjunto de campos a recuperar
+    **/
+    public void setFields(Set<String> fields)
+    {
+        this.baseQuery.selectFields(fields);
+    }
+
+    /**
+    * @description Método que permite seleccionar los campos como una 'Lista' 
+    * de 'Strings'que se desean recuperar en la consulta a la base de datos. 
+    *
+    * @author amiranda 
+    * @date 21-03-2024 
+    * @param fields Lista de campos a recuperar
+    **/
+    public void setFields(List<String> fields)
+    {
+        this.setFields(new Set<String>(fields));
+    }
+
     // #endregion
 }
