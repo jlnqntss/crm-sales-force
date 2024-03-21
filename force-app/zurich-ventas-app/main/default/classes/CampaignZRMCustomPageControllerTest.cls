@@ -66,16 +66,14 @@ private with sharing class CampaignZRMCustomPageControllerTest
             usersToInsert.addAll(agrupacionAgenteVentasUsers);
             insert usersToInsert;
 
-            PermissionSetGroup permissionSetGroup = [SELECT Id FROM PermissionSetGroup WHERE DeveloperName = 'Ventas_Mediador'];
+            PermissionSet permissionSet = [SELECT Id FROM PermissionSet WHERE Name = 'ZRM_Consulta_Datos'];
             List<PermissionSetAssignment> permissionSetAssignments = new List<PermissionSetAssignment>();
             for (User userToInsert : usersToInsert)
             {
-                permissionSetAssignments.add( new PermissionSetAssignment(PermissionSetGroupId = permissionSetGroup.Id,
+                permissionSetAssignments.add( new PermissionSetAssignment(PermissionSetId = permissionSet.Id,
                                                                           AssigneeId = userToInsert.Id) );
             }
             insert permissionSetAssignments;
-
-            Test.calculatePermissionSetGroup(permissionSetGroup.Id);
 
             // Se crea el custom setting que indica el usuario genérico
             Cross_Selling__c ventaCruzada = new Cross_Selling__c();
