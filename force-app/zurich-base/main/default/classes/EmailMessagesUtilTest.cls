@@ -237,10 +237,8 @@ private with sharing class EmailMessagesUtilTest
         relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
         relatedCase.Industry__c = INDUSTRY_VALUE;
         insert relatedCase;
-        system.debug('>>> RelatedcASE' + relatedCase);
 
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
-        system.debug('>>> emails' + emails);
         for(Integer i=0; i < emails.size(); i++)
         {
             List<String> addressList = new List<String>();
@@ -387,9 +385,7 @@ private with sharing class EmailMessagesUtilTest
         EmailMessagesUtil emUtil = new EmailMessagesUtil();
 
         Test.startTest();
-        System.debug('++++ Entramos en el checkblablabla');
         emUtil.checkNewCaseFromClosedCase(emails);
-        System.debug('++++ Salimos del checkblablabla');
         Test.stopTest();
 
         // Comprobamos que se haya creado un 3er caso, y que el email se ha relacionado con el.
@@ -462,7 +458,7 @@ private with sharing class EmailMessagesUtilTest
     @isTest
     private static void test_markPublicActivity()
     {
-        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email');
+        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.ocsRecordTypeId);
         insert casoToEmailMessage;
 
         Task taskToEmailMessage = new Task (Subject = 'Correo electrónico',Status = 'Nueva',Priority = 'Normal');
@@ -486,7 +482,7 @@ private with sharing class EmailMessagesUtilTest
     @isTest
     static void test_closeCaseOnlyInCc_Cerrar()
     {
-        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email');
+        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.ocsRecordTypeId);
         insert casoToEmailMessage;
 
         List<CloseOnCcMailboxList__mdt> closeOnCcMailboxList = CloseOnCcMailboxList__mdt.getAll().values();
@@ -508,7 +504,7 @@ private with sharing class EmailMessagesUtilTest
     @isTest
     static void test_closeCaseOnlyInCc_No_Cerrar()
     {
-        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email');
+        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.ocsRecordTypeId);
         insert casoToEmailMessage;
 
         List<CloseOnCcMailboxList__mdt> closeOnCcMailboxList = CloseOnCcMailboxList__mdt.getAll().values();

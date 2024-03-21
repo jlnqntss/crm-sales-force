@@ -211,6 +211,26 @@
         <field>PlanComercial__c.Zone__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Club_Olimpia_Pymes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Club_Olimpia_Vida__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Propuesta_Olimpia__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Gestor_personalizado_USP__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 	<fieldPermissions>
         <editable>false</editable>
         <field>Account.Segmento_Expats_Auto__c</field>
@@ -1367,6 +1387,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.ActaLink__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Task.CommercialActionType__c</field>
         <readable>true</readable>
@@ -1399,6 +1424,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.Ramo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Task.SubjectLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

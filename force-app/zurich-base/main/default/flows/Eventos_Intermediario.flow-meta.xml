@@ -4,8 +4,8 @@
     <assignments>
         <name>Assign_Intermediary_Id</name>
         <label>Assign Intermediary Id</label>
-        <locationX>138</locationX>
-        <locationY>782</locationY>
+        <locationX>270</locationX>
+        <locationY>974</locationY>
         <assignmentItems>
             <assignToReference>IntermediariesIds</assignToReference>
             <operator>Add</operator>
@@ -21,7 +21,7 @@
         <name>Group_Events_Assignment</name>
         <label>Group Events Assignment</label>
         <locationX>50</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>ListadeEventos</assignToReference>
             <operator>Add</operator>
@@ -37,7 +37,7 @@
         <name>Intermediaries_Events_Assignment</name>
         <label>Intermediaries Events Assignment</label>
         <locationX>50</locationX>
-        <locationY>1082</locationY>
+        <locationY>1382</locationY>
         <assignmentItems>
             <assignToReference>ListadeEventos</assignToReference>
             <operator>Add</operator>
@@ -52,8 +52,8 @@
     <assignments>
         <name>Intermediary_Events_Assignment</name>
         <label>Intermediary Events Assignment</label>
-        <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationX>490</locationX>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>ListadeEventos</assignToReference>
             <operator>Add</operator>
@@ -69,8 +69,8 @@
         <name>Order_by_date</name>
         <elementSubtype>SortCollectionProcessor</elementSubtype>
         <label>Order by date</label>
-        <locationX>50</locationX>
-        <locationY>1190</locationY>
+        <locationX>182</locationX>
+        <locationY>1574</locationY>
         <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
         <collectionReference>ListadeEventos</collectionReference>
         <connector>
@@ -83,9 +83,34 @@
         </sortOptions>
     </collectionProcessors>
     <decisions>
+        <name>El_mediador_tiene_eventos</name>
+        <label>El mediador tiene eventos?</label>
+        <locationX>622</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Eventos</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>S4</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Events</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Intermediary_Events_Assignment</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Es_Agrupaci_n</name>
         <label>Es Agrupación</label>
-        <locationX>182</locationX>
+        <locationX>402</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>Get_Events</targetReference>
@@ -107,6 +132,56 @@
             <label>Sí</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>La_agrupaci_n_tiene_eventos</name>
+        <label>La agrupación tiene eventos?</label>
+        <locationX>182</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Get_Intermediaries</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>S2</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Group_Events</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Group_Events_Assignment</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Los_mediadores_tienen_eventos</name>
+        <label>Los mediadores tienen eventos?</label>
+        <locationX>182</locationX>
+        <locationY>1274</locationY>
+        <defaultConnector>
+            <targetReference>Order_by_date</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>S3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Intermediaries_Events</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Intermediaries_Events_Assignment</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
     <description>Eventos relacionados con un intermediario</description>
     <environments>Default</environments>
     <formulas>
@@ -124,8 +199,8 @@
     <loops>
         <name>Intermediaries_Loop</name>
         <label>Intermediaries Loop</label>
-        <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationX>182</locationX>
+        <locationY>866</locationY>
         <collectionReference>Get_Intermediaries</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -157,7 +232,7 @@
     <recordLookups>
         <name>Get_Account</name>
         <label>Get Account</label>
-        <locationX>182</locationX>
+        <locationX>402</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -178,11 +253,11 @@
     <recordLookups>
         <name>Get_Events</name>
         <label>Get Events</label>
-        <locationX>314</locationX>
+        <locationX>622</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Intermediary_Events_Assignment</targetReference>
+            <targetReference>El_mediador_tiene_eventos</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -213,11 +288,11 @@
     <recordLookups>
         <name>Get_Group_Events</name>
         <label>Get Group Events</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Group_Events_Assignment</targetReference>
+            <targetReference>La_agrupaci_n_tiene_eventos</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -248,8 +323,8 @@
     <recordLookups>
         <name>Get_Intermediaries</name>
         <label>Get Intermediaries</label>
-        <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationX>182</locationX>
+        <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Intermediaries_Loop</targetReference>
@@ -269,11 +344,11 @@
     <recordLookups>
         <name>Get_Intermediaries_Events</name>
         <label>Get Intermediaries Events</label>
-        <locationX>50</locationX>
-        <locationY>974</locationY>
+        <locationX>182</locationX>
+        <locationY>1166</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Intermediaries_Events_Assignment</targetReference>
+            <targetReference>Los_mediadores_tienen_eventos</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -304,8 +379,8 @@
     <screens>
         <name>Eventos</name>
         <label>Eventos</label>
-        <locationX>182</locationX>
-        <locationY>1382</locationY>
+        <locationX>402</locationX>
+        <locationY>1766</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -351,7 +426,7 @@
             <inputParameters>
                 <name>columns</name>
                 <value>
-                    <stringValue>[{&quot;apiName&quot;:&quot;SubjectLink__c&quot;,&quot;guid&quot;:&quot;column-9d5b&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Asunto&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Subject&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;ActaLink__c&quot;,&quot;guid&quot;:&quot;column-eda2&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Acta&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;Type&quot;,&quot;guid&quot;:&quot;column-44fa&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Tipo&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Type&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;StartDateTime&quot;,&quot;guid&quot;:&quot;column-b700&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Fecha de reunión&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Start Date Time&quot;,&quot;type&quot;:&quot;customDateTime&quot;}]</stringValue>
+                    <stringValue>[{&quot;apiName&quot;:&quot;SubjectLink__c&quot;,&quot;guid&quot;:&quot;column-9d5b&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Asunto&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Subject&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;ActaLink__c&quot;,&quot;guid&quot;:&quot;column-eda2&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Acta&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;EventType__c&quot;,&quot;guid&quot;:&quot;column-8a7c&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Tipo&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Event type&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;StartDateTime&quot;,&quot;guid&quot;:&quot;column-b700&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Fecha de reunión&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Start Date Time&quot;,&quot;type&quot;:&quot;customDateTime&quot;}]</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -369,7 +444,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>276</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Account</targetReference>

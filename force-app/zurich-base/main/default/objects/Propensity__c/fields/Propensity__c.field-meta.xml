@@ -4,7 +4,7 @@
     <description>Propensity type</description>
     <externalId>false</externalId>
     <label>Propensity</label>
-    <length>50</length>
+    <length>255</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>

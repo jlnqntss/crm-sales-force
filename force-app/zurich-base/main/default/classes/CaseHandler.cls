@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 05-03-2024
+ * @last modified on  : 08-03-2024
  * @last modified by  : aberuete
 **/
 public without sharing class CaseHandler implements ITrigger
@@ -45,7 +45,10 @@ public without sharing class CaseHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        CaseUtil.getSprinklrSocialPersonaToLinkContact((List<Case>) newList, (Map<Id,Case>) oldMap);
+        CaseUtil.getSprinklrSocialPersonaToDeleteContactRelated ((List<Case>) newList, (Map<Id,Case>) oldMap);
+    }
 
     /**
      * beforeInsert
@@ -124,5 +127,7 @@ public without sharing class CaseHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {}
+    {
+        CaseUtil.updateSprSocialPersonaToLinkContact();
+    }
 }

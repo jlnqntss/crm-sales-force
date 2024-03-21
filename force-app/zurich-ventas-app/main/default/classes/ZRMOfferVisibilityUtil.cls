@@ -4,7 +4,7 @@
  * @author dmunoz
  * @date 05/03/2024 
  */
-public with sharing class ZRMOfferVisibilityUtil {
+public without sharing class ZRMOfferVisibilityUtil {
 
     /**
      * Método que devuelve de forma ordenada un mapa con los distintos mediadores de las ofertas no bloqueadas o anonimizadas trigger y sus clientes asociados de la forma <IntermdiaryId__c, List<AccountId>>
