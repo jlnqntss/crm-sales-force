@@ -1,5 +1,7 @@
 public with sharing class ClaimsSelector extends RecordsSelector
 {
+    private static final string POLICY_ENDDATE ='Policy__r.EndDate__c';
+
     //#region Contructores
 
     public ClaimsSelector()
@@ -125,8 +127,8 @@ public with sharing class ClaimsSelector extends RecordsSelector
         {
             Query.Condition condition = Query.doOr
             (
-                Query.conditionEq('Policy__r.EndDate__c', null),
-                Query.conditionGe('Policy__r.EndDate__c', Query.TODAY)
+                Query.conditionEq(POLICY_ENDDATE, null),
+                Query.conditionGe(POLICY_ENDDATE, Query.TODAY)
             );
 
             this.baseQuery.addConditionNotEq(Claim__c.Status__c, 'T').addConditionEq(Claim__c.PolicyHolder__c, policyHolder);
@@ -158,8 +160,8 @@ public with sharing class ClaimsSelector extends RecordsSelector
         {
             Query.Condition condition = Query.doOr
             (
-                Query.conditionEq('Policy__r.EndDate__c', null),
-                Query.conditionGe('Policy__r.EndDate__c', Query.TODAY)
+                Query.conditionEq(POLICY_ENDDATE, null),
+                Query.conditionGe(POLICY_ENDDATE, Query.TODAY)
             );
 
             this.baseQuery.addConditionEq(Claim__c.PolicyHolder__c, policyHolder);

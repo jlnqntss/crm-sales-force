@@ -21,6 +21,21 @@ public with sharing class GenesysInteractionsService
     @TestVisible
     static final String TASK_QUEUE = 'Missed Calls';
 
+    //Refactorización
+    static final String ASSET_REGISTRATION_NUMBER = 'InsuredObject__r.RegistrationNumber__c';
+    static final String POLICY_TYPE = 'Policy__r.PolicyType__c';
+    static final String BRANCH = 'Policy__r.ProductId__r.GroupDescription__c';
+    static final String PARTNER_SF_CODE = 'Policy__r.Partner__r.PartnerSFCode__c';
+    static final String PARTNER_SECTOR = 'Policy__r.Partner__r.PartnerSector__c';
+    static final String PARTNER_NAME = 'Policy__r.Partner__r.GrandparentBusinessName__c';
+    static final String INTERMEDIARY_CODE = 'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c';
+    static final String INTERMEDIARY_MOBILE_PHONE = 'Policy__r.IntermediaryId__r.MainMobilePhone__c';
+    static final String INTERMEDIARY_PHONE = 'Policy__r.IntermediaryId__r.Phone';
+    static final String INTERMEDIARY_MAIL = 'Policy__r.IntermediaryId__r.MainEmail__c';
+    static final String INTERMEDIARY_CHANNEL = 'Policy__r.IntermediaryId__r.Channel__c';
+    static final String INTERMEDIARY_SEGMENT = 'Policy__r.IntermediaryId__r.Segment__c';
+
+
     //#region Métodos públicos
 
     /**
@@ -503,17 +518,18 @@ public with sharing class GenesysInteractionsService
             },
             new List<String>
             {
-                'InsuredObject__r.RegistrationNumber__c',
-                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
-                'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
-                'Policy__r.Partner__r.GrandparentBusinessName__c',
+                ASSET_REGISTRATION_NUMBER,
+                POLICY_TYPE,
+                PARTNER_SF_CODE,
+                PARTNER_SECTOR,
+                PARTNER_NAME,
                 'Policy__r.Name',
-                'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c', 
-                'Policy__r.IntermediaryId__r.MainMobilePhone__c',
-                'Policy__r.IntermediaryId__r.Phone',
-                'Policy__r.IntermediaryId__r.MainEmail__c',
-                'Policy__r.IntermediaryId__r.Channel__c',
-                'Policy__r.IntermediaryId__r.Segment__c'
+                INTERMEDIARY_CODE, 
+                INTERMEDIARY_MOBILE_PHONE,
+                INTERMEDIARY_PHONE,
+                INTERMEDIARY_MAIL,
+                INTERMEDIARY_CHANNEL,
+                INTERMEDIARY_SEGMENT
             }
         );
 
@@ -692,19 +708,11 @@ public with sharing class GenesysInteractionsService
         {
             results.noIdentified = true;
         }
-        else if(accounts.size() == 1 && request.searchType == 'phone')
-        {
-            results.identifiedByANI = true;
-        }
-        else if(accounts.size() > 1 && request.searchType == 'phone')
-        {
-            results.multiIdentifiedByANI = true;
-        }
-        else if(accounts.size() == 1 && request.searchType == 'document')
+        else if(accounts.size() == 1)
         {
             results.identifiedByNIF = true;
         }
-        else if(accounts.size() > 1 && request.searchType == 'document')
+        else if(accounts.size() > 1)
         {
             results.multiIdentifiedByNIF = true;
         }
@@ -947,17 +955,19 @@ public with sharing class GenesysInteractionsService
             },
             new List<String>
             {
-                'InsuredObject__r.RegistrationNumber__c',
-                'Policy__r.PolicyType__c', 'Policy__r.ProductId__r.GroupDescription__c',
-                'Policy__r.Partner__r.PartnerSFCode__c', 'Policy__r.Partner__r.PartnerSector__c',
-                'Policy__r.Partner__r.GrandparentBusinessName__c',
-                'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c',
+                ASSET_REGISTRATION_NUMBER,
+                POLICY_TYPE,
+                BRANCH,
+                PARTNER_SF_CODE,
+                PARTNER_SECTOR,
+                PARTNER_NAME,
+                INTERMEDIARY_CODE,
                 'Policy__r.Name',
-                'Policy__r.IntermediaryId__r.MainMobilePhone__c',
-                'Policy__r.IntermediaryId__r.Phone',
-                'Policy__r.IntermediaryId__r.MainEmail__c',
-                'Policy__r.IntermediaryId__r.Channel__c',
-                'Policy__r.IntermediaryId__r.Segment__c'
+                INTERMEDIARY_MOBILE_PHONE,
+                INTERMEDIARY_PHONE,
+                INTERMEDIARY_MAIL,
+                INTERMEDIARY_CHANNEL,
+                INTERMEDIARY_SEGMENT
             }
         );
 
@@ -1001,25 +1011,25 @@ public with sharing class GenesysInteractionsService
                 //Datos de la póliza
                 'Policy__r.Id',
                 'Policy__r.Name',
-                'Policy__r.PolicyType__c', 
+                POLICY_TYPE, 
                 'Policy__r.CommercialCode__c',
                 'Policy__r.TechnicalCode__c',
                 'Policy__r.ProductId__r.Name',
-                'Policy__r.ProductId__r.GroupDescription__c',
+                BRANCH,
                 //Datos del partner
                 'Policy__r.Partner__c',
-                'Policy__r.Partner__r.PartnerSFCode__c',
-                'Policy__r.Partner__r.PartnerSector__c',
-                'Policy__r.Partner__r.GrandparentBusinessName__c',
+                PARTNER_SF_CODE,
+                PARTNER_SECTOR,
+                PARTNER_NAME,
                 //Datos del mediador
-                'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c',
+                INTERMEDIARY_CODE,
                 'Policy__r.IntermediaryId__r.IntermediaryDescription__c',
                 'Policy__r.IntermediaryId__r.ClassDescription__c',
-                'Policy__r.IntermediaryId__r.MainMobilePhone__c',
-                'Policy__r.IntermediaryId__r.Phone',
-                'Policy__r.IntermediaryId__r.MainEmail__c',
-                'Policy__r.IntermediaryId__r.Channel__c',
-                'Policy__r.IntermediaryId__r.Segment__c',
+                INTERMEDIARY_MOBILE_PHONE,
+                INTERMEDIARY_PHONE,
+                INTERMEDIARY_MAIL,
+                INTERMEDIARY_CHANNEL,
+                INTERMEDIARY_SEGMENT,
                 //Datos del tomador
                 'Policy__r.PolicyHolder__r.Name',
                 'Policy__r.PolicyHolder__r.NationalId__c',
@@ -1027,7 +1037,7 @@ public with sharing class GenesysInteractionsService
                 'Policy__r.PolicyHolder__r.Phone',
                 'Policy__r.PolicyHolder__r.MainMobilePhone__c',
                 //Datos del objeto asegurado
-                'InsuredObject__r.RegistrationNumber__c',
+                ASSET_REGISTRATION_NUMBER,
                 'InsuredObject__r.BrandName__c',
                 'InsuredObject__r.Model__c'
             }
