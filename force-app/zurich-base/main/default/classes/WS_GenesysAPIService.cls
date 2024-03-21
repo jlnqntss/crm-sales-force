@@ -2,8 +2,11 @@
  * @description       : 
  * @author            : jjuaristi
  * @group             : 
- * @last modified on  : 20-10-2021
- * @last modified by  : jjuaristi
+ * @modified on  : 20-10-2021
+ * @modified by  : jjuaristi
+ * @last modified on  : 19-03-2024
+ * @last modified by  : jfherrero
+ * Incluir servicio 'peopleAuto'
 **/
 @RestResource(urlMapping = '/genesys-cloud/*/*')
 global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
@@ -56,6 +59,13 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                     response.statusCode = 200;
                     response.responseBody = Blob.valueOf(
                         GenesysInteractionsService.findDigitalCustomer(new GenesysInteractionsService.DigitalCustomer(RestContext.request.params)).toString()
+                    );
+                }
+                when 'peopleAuto' {
+                    GenesysInteractionsService.version =  WS_BaseAPIService.version;
+                    response.statusCode = 200;
+                    response.responseBody = Blob.valueOf(
+                        GenesysInteractionsService.findPeopleAutoBy(new GenesysInteractionsService.SearchRequest(RestContext.request.params) ).toString()
                     );
                 }
                 when else 
