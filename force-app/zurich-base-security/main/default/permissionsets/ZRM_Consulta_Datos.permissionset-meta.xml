@@ -286,6 +286,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.IntermediaryGroup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.IntermediaryProvinceCode__c</field>
         <readable>true</readable>
     </fieldPermissions>

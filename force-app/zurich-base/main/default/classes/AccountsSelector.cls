@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 28-09-2023
- * @last modified by  : overes
+ * @last modified on  : 21-03-2024
+ * @last modified by  : amiranda
  **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -1121,20 +1121,36 @@ public with sharing class AccountsSelector extends RecordsSelector
 
 
     /**
-     * Consultar agrupaciones para una lista de ids de mediadores
+     * @description Método que recupera las cuentas que pertenecen a una misma agrupación.
      *
      * @author dmunoz
      * @date 12/2/2024
-     * @return List<Account> Listado de mediadores con su agrupación
+     * @param intermediariesSet Conjunto de Ids de Agrupación. Pues venir vacío o nulo.
+     * @return List<Account> Listado de mediadores con su agrupación. 
+     * Si 'intermediariesSet' es nulo o vacío, devuelve una lista de cuentas vacía.
+     * 
+     * @change amiranda 20/03/2024 Se refactoriza el método para añadir un nuevo
+     * campo a recuperar y para adaptarlo al uso de la librería 'Query'.
      */
     public List<Account> findAllIntermediarysFromIntermediaryGroups(Set<String> intermediariesSet) {
-        List<Account> result = new List<Account>();
+        List<Account> accounts = new List<Account>();
 
-        if (intermediariesSet != null && !intermediariesSet.isEmpty()) {
-            result = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE IntermediaryGroup__c IN :intermediariesSet]);
+        if (intermediariesSet != null && !intermediariesSet.isEmpty()) 
+        {
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.INFOIntermediaryCode__c,
+                Account.IntermediaryGroup__c
+            };
+
+            accounts = this.baseQuery
+                            .selectFields(fieldsToRetrieve)
+                            .addConditionIn(Account.IntermediaryGroup__c, intermediariesSet)
+                            .enforceSecurity()
+                            .run();
         }
 
-        return result;
+        return accounts;
     }
-
 }
