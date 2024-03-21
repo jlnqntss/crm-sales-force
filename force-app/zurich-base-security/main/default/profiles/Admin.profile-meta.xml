@@ -32,6 +32,11 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>SAM</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>System_Administrator</application>
         <default>false</default>
         <visible>true</visible>
@@ -16467,6 +16472,10 @@
         <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Default SAM</layout>
+        <recordType>Case.SAMInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -18879,6 +18888,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Case.OCSSprinklr</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.SAMInquiry</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

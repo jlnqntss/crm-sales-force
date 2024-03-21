@@ -1,6 +1,13 @@
-<apex:page >
+<apex:page showHeader="false"
+  sidebar="false"
+  lightningStylesheets="true"
+  standardStylesheets="false"
+>
   <apex:slds />
   <apex:includeLightning />
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
   <div id="lightningvf">
     <div
       id="skeleton"
@@ -17,7 +24,6 @@
   <script>
     (function () {
       var hashId = "{!JSENCODE($CurrentPage.parameters.Hash)}";
-      var language = "{!JSENCODE($CurrentPage.parameters.Language)}";
 
       var lightningEndPointURI = window.location.href.split("?")[0];
       if (
@@ -27,14 +33,11 @@
         lightningEndPointURI = lightningEndPointURI.slice(0, -1);
       }
       $Lightning.use(
-        "c:PreferenceCentreApp",
+        "c:UploadCaseDocumentationApp",
         function () {
           $Lightning.createComponent(
-            "c:PreferenceCentre",
-            {
-              hash: hashId,
-              language: language
-            },
+            "c:UploadCaseDocumentation",
+            { hash: hashId },
             "lightningvf",
             function (cmp) {
               document.getElementById("skeleton").remove();
