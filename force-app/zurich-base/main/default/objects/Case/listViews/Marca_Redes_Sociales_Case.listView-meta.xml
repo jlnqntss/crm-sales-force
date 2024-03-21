@@ -5,7 +5,6 @@
     <columns>CASES.SUBJECT</columns>
     <columns>PrimerMensaje__c</columns>
     <columns>CASES.STATUS</columns>
-    <columns>CASES.PRIORITY</columns>
     <columns>CASES.TYPE</columns>
     <columns>Subtype__c</columns>
     <columns>TypeN3__c</columns>

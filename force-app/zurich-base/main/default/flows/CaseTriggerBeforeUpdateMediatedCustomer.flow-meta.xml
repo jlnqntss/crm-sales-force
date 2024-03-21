@@ -476,17 +476,6 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
                     <stringValue>USPInquiry</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.Account.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Intermediary</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Id</leftValueReference>
-                <operator>NotEqualTo</operator>
-            </conditions>
             <connector>
                 <targetReference>offerPolicyDecision</targetReference>
             </connector>

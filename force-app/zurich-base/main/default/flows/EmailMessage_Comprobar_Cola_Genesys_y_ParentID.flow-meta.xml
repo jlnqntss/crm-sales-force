@@ -649,7 +649,7 @@
         </rules>
         <rules>
             <name>VentaSpecialties</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 OR 4) AND 2 AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>VerticalCaso</leftValueReference>
                 <operator>EqualTo</operator>
@@ -669,6 +669,13 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>peticiones.fastflow@zurich.com</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -743,7 +750,7 @@
         </rules>
         <rules>
             <name>CarteraSpecialties</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 OR 4) AND 2 AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>VerticalCaso</leftValueReference>
                 <operator>EqualTo</operator>
@@ -763,6 +770,13 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>VerticalCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>peticiones.fastflow@zurich.com</stringValue>
                 </rightValue>
             </conditions>
             <connector>
