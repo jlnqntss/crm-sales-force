@@ -251,9 +251,6 @@ public with sharing class CampaignZRMCustomPageController
         if ( users != null && !users.isEmpty() )
         {
             User currentUser = users.get(0);
-            System.debug('amiranda -> currentUser ' + currentUser);
-            System.debug('amiranda -> currentUser AccountId ' + currentUser.Contact.Account.IntermediaryGroup__c);
-            System.debug('amiranda -> currentUser AccountId ' + currentUser.Contact.Account.INFOIntermediaryCode__c);
             
             // Si el perfil es el de Agrupación se obtienen las códigos de mediador que cuelgan de este
             if (currentUser.Profile.Name == AV_AGRUPACION_PROFILE_NAME)

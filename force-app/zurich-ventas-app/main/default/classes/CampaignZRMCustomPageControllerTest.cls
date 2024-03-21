@@ -75,6 +75,8 @@ private with sharing class CampaignZRMCustomPageControllerTest
             }
             insert permissionSetAssignments;
 
+            Test.calculatePermissionSetGroup(permissionSetGroup.Id);
+
             // Se crea el custom setting que indica el usuario genérico
             Cross_Selling__c ventaCruzada = new Cross_Selling__c();
             ventaCruzada.ContactCenterUser__c = 'generico';
