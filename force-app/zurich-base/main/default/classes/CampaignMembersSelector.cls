@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 17-11-2023
+ * @last modified on  : 21-03-2024
  * @last modified by  : amiranda
  **/
 public with sharing class CampaignMembersSelector extends BaseSelector
@@ -198,16 +198,36 @@ public with sharing class CampaignMembersSelector extends BaseSelector
          * @param campaignId Id de la campaña sobre la que recuperar los miembros de campaña
          * @return List<CampaignMember> Miembros de campañana relacionads con la campaña
          * @where AuraEnabled method
+         * 
+         * amiranda 21/03/2024 Se refactoriza para la reutilización de un método
+         * con un parámetro adicional.
          **/
         public List<CampaignMember> selectByCampaignId(Id campaignId)
         {
+            return selectByCampaignIdAndOfferAssignedCode(campaignId, null);
+        }
+
+        /**
+        * @description Método que recupera los miembros de campaña pertenecientes
+        * a una campaña concreta y cuyo campo 'OfferAssignedCode__c' coincide
+        * con los códigos de mediador pasados por parámetro.
+        *
+        * @author amiranda
+        * @date 21-03-2024 
+        * @param campaignId Id de la campaña sobre la que recuperar los miembros de campaña
+        * @param offerAssignedCodes Códigos de mediador que deben coincidir con el campo 'OfferAssignedCode__c'
+        * @return List<CampaignMember> Miembros de campaña
+         * @where AuraEnabled method
+        **/
+        public List<CampaignMember> selectByCampaignIdAndOfferAssignedCode(Id campaignId, Set<String> offerAssignedCodes)
+        {
             List<CampaignMember> campaignMembers = new List<CampaignMember>();
 
-            /* 
-            * Se crea un conjunto de Strings porque algunos campos dan error al
-            * tratar de pasarlos como 'Schema.sObjectField'
-            * https://salesforce.stackexchange.com/questions/118597/schema-sobjectfield-inconsistency-with-relationship-fields
-            */
+            /*
+             * Se crea un conjunto de Strings porque algunos campos dan error al
+             * tratar de pasarlos como 'Schema.sObjectField'
+             * https://salesforce.stackexchange.com/questions/118597/schema-sobjectfield-inconsistency-with-relationship-fields
+             */
             Set<String> fieldsToRetrieve = new Set<String>
             {
                 'CampaignId',
@@ -221,6 +241,11 @@ public with sharing class CampaignMembersSelector extends BaseSelector
 
             if (campaignId != null)
             {
+                if (offerAssignedCodes != null)
+                {
+                    this.baseQuery.addConditionIn(CampaignMember.OfferAssignedCode__c, offerAssignedCodes);
+                }
+
                 campaignMembers = this.baseQuery
                                   .selectFields(fieldsToRetrieve)
                                   .toLabel('Contact.Account.RecordType.Name')

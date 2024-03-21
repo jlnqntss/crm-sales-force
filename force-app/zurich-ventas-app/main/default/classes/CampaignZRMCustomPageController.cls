@@ -3,8 +3,8 @@
  * con la página custom desarrollada para la ficha de campañas en la comunidad ZRM
  *
  * @author            : amiranda
- * @date              : 28-12-2023
- * @last modified on  : 28-12-2023
+ * @date              : 21-03-2024
+ * @last modified on  : 21-03-2024
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -13,8 +13,11 @@
 public with sharing class CampaignZRMCustomPageController
 {
     private static final String CLASS_NAME = 'CampaignZRMCustomPageConroller';
+    private static final String AV_AGRUPACION_PROFILE_NAME = 'Agente Ventas - AGR';
     private static final Set<String> ASSIGNED_CUSTOMER_STATUS = new Set<String> {'Gestión Mediador'};
     private static final Set<String> ASSIGNED_CC_STATUS = new Set<String> {'Gestión CC', 'Pdte. Revisión Mediador'};
+
+    // #region Public methods
 
     /**
      * @description Método que retorna las campañas con los datos a visualizar
@@ -88,8 +91,13 @@ public with sharing class CampaignZRMCustomPageController
      * representados por la clase interna 'CampaignMemberData' limitados por el
      * acceso que tiene el usuario a la cuenta relacionada con el contacto
      * relacionado con el miembro de campaña
-     *
      * @where LWC IntermediaryCampaignMember
+     *
+     * @amiranda 20/03/2024 Se recuperan los miembros de campaña en base a:
+     *  - El Id de la campaña
+     *  - El código de mediador:
+     *      * Si el usuario no tiene perfil Agrupación, se utilizará su código de mediador
+     *      * Si el usuario tiene perfil Agrupación, se utilizarán todos los códigos de mediador que cuelgan de este
      **/
     @AuraEnabled(cacheable=true)
     public static List<CampaignMemberData> getCampaignMembers(Id campaignId)
@@ -98,24 +106,9 @@ public with sharing class CampaignZRMCustomPageController
 
         try
         {
-            List<CampaignMember> campaignMembersRelatedToCampaign = new CampaignMembersSelector.ProperCampaignMembersSelector().selectByCampaignId(campaignId);
+            Set<String> intermediaryCodes = getIntermediaryCodes();
 
-            // Obtener todos los Ids de las cuentas relacionadas con los miembros de campaña
-            Map<Id, CampaignMember> campaignMembersByAccountId = new Map<Id, CampaignMember>();
-
-            for (CampaignMember campaignMemberRelatedToCampaign : campaignMembersRelatedToCampaign)
-            {
-                /*
-                 * Si el usuario no tiene acceso a la cuenta relacionada con el
-                 * contacto que a su vez está relacionado con el miembro de campaña,
-                 * el campo 'AccountId' será null. Se puede evitar lanzar una nueva
-                 * consulta al objeto 'UserRecordAccess'
-                 */
-                if (campaignMemberRelatedToCampaign.Contact.AccountId != null)
-                {
-                    campaignMembersByAccountId.put(campaignMemberRelatedToCampaign.Contact.AccountId, campaignMemberRelatedToCampaign);
-                }
-            }
+            Map<Id, CampaignMember> campaignMembersByAccountId = new Map<Id, CampaignMember>( new CampaignMembersSelector.ProperCampaignMembersSelector().selectByCampaignIdAndOfferAssignedCode(campaignId, intermediaryCodes) );
 
             // Se obtienen todas las ofertas que no han sido clonadas asociadas a las cuentas asociadas a los contactos que a su vez están asociados a los miembros de campaña
             List<Opportunity> offersRelatedToCampaignMembers = new OpportunitiesSelector().selectByAccountIdsAndCampaignId(campaignMembersByAccountId.keySet(), campaignId, false);
@@ -228,6 +221,63 @@ public with sharing class CampaignZRMCustomPageController
         }
     }
 
+    // #endregion
+
+    // #region Private methods
+
+    /**
+     * @description Método que obtiene lo/s código/s de mediador de un usuario.
+     *   - Si el usuario no tiene perfil Agrupación, se retorna su código
+     *   - Si el usuario tiene perfil Agrupación, se retorna los códigos que cuelgan de este
+     *
+     * @author amiranda
+     * @date 21-03-2024
+     * @return Set<String> Conjunto de códigos de mediador
+     **/
+    @TestVisible
+    private static Set<String> getIntermediaryCodes()
+    {
+        Set<String> intermediaryCodes = new Set<String>();
+
+        // Se obtiene la información del usuario que está visualizando el componente
+        UsersSelector usersSelector = new UsersSelector();
+        usersSelector.setFields(new Set<String> {
+            'Profile.Name',
+            'Contact.Account.INFOIntermediaryCode__c',
+            'Contact.Account.IntermediaryGroup__c'
+        });
+        List<User> users  = usersSelector.findById(new Set<Id> {UserInfo.getUserId()});
+
+        if ( users != null && !users.isEmpty() )
+        {
+            User currentUser = users.get(0);
+            System.debug('amiranda -> currentUser ' + currentUser);
+            System.debug('amiranda -> currentUser AccountId ' + currentUser.Contact.Account.IntermediaryGroup__c);
+            System.debug('amiranda -> currentUser AccountId ' + currentUser.Contact.Account.INFOIntermediaryCode__c);
+            
+            // Si el perfil es el de Agrupación se obtienen las códigos de mediador que cuelgan de este
+            if (currentUser.Profile.Name == AV_AGRUPACION_PROFILE_NAME)
+            {
+                
+                List<Account> mediatorGroupAccounts = new AccountsSelector().findAllIntermediarysFromIntermediaryGroups(new Set<String> {currentUser.Contact.Account.IntermediaryGroup__c});
+
+                for (Account mediatorGroupAccount : mediatorGroupAccounts)
+                {
+                    intermediaryCodes.add(mediatorGroupAccount.INFOIntermediaryCode__c);
+                }
+            }
+            else
+            {
+                intermediaryCodes.add(currentUser.Contact.Account.INFOIntermediaryCode__c);
+            }
+        }
+
+        return intermediaryCodes;
+    }
+
+    // #endregion
+
+    //#region Private classes
 
     /**
      * Clase interna que representa una Campaña con los datos necesarios que
@@ -301,4 +351,6 @@ public with sharing class CampaignZRMCustomPageController
         @AuraEnabled
         public Boolean offerIsClosed {get; set;}
     }
+
+    // #endregion
 }
