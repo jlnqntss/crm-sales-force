@@ -6075,6 +6075,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.CIFNIFManual__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.CIFNIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.ClaimId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6816,6 +6826,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.ClaimHandlingType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.vaciado__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
