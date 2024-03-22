@@ -96,32 +96,29 @@ public with sharing class CampaignsSelector extends BaseSelector
     /**
      * @description Método selector que devuelve todas las campañas y sus respectivos
      * miembros de campaña. Se aplica un filtro para que devuelva exclusivamente
-     * aquellas campañas que contienen al menos un miembro de campaña cuya cuenta relacionada
-     * con el miembro de campaña es visible por el mediador con el Id pasado por parámetro.
+     * aquellas campañas que contienen al menos un miembro de campaña cuyo 
+     * 'OfferAssignedCode__c' coincide con alguno de los pasados por parámetro.
      *
      * @author amiranda
      * @date 30-10-2023
-     * @param intermediaryId Id de la cuenta de tipo Intermediario que tiene visibilidad
-     * sobre la cuenta relacionada con el miembro de campaña. En caso de null se retorna
-     * una lista vacía de campañas.
+     * @param offerAssignedCodes Códigos de mediador que deben coincidir con el 
+     * campo 'OfferAssignedCode__c'
      * @return List<Campaign> Lista de campañas y sus respectivos miembros de campañaa
      * @where Restringido a llamarse desde métodos donde se debe verificar el control
      * de acceso a los objetos/campos.
      *
-     * @change amiranda 28/12/2023 Se añade el parámetro 'intermediaryId' al método
      **/
-    public List<Campaign> selectCampaigns()
+    public List<Campaign> selectCampaignsAndCampaignMembersByOfferAssignedCodes(Set<String> offerAssignedCodes)
     {
         List<Campaign> campaigns = new List<Campaign>();
-
 
         campaigns = [SELECT Id, Name, StartDate, EndDate, toLabel(Type),
                         toLabel(ProductBranch__c), isActive,
                         (SELECT Id, Status
-                        FROM CampaignMembers)
+                        FROM CampaignMembers WHERE OfferAssignedCode__c IN :offerAssignedCodes)
                     FROM Campaign
                     WHERE Id IN (SELECT CampaignId
-                                FROM CampaignMember)
+                                FROM CampaignMember WHERE OfferAssignedCode__c IN :offerAssignedCodes)
                     WITH USER_MODE ORDER BY Name ];
         
         return campaigns;
