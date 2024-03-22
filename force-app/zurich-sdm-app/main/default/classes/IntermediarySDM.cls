@@ -1291,7 +1291,7 @@ public with sharing class IntermediarySDM {
                 AccountId= i.Id,
                 userId= u.Id,
                 TeamMemberRole= roleLabel,
-                AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL,
+                AccountAccessLevel= ATM_ACCOUNT_ACCESS_LEVEL_EDIT,
                 ContactAccessLevel= ATM_CONTACT_ACCESS_LEVEL,
                 CaseAccessLevel= ATM_CASE_ACCESS_LEVEL,
                 OpportunityAccessLevel= ATM_OFFER_ACCESS_LEVEL

@@ -11,7 +11,7 @@
     <valueSet>
     <restricted>false</restricted>
         <valueSetDefinition>
-            <sorted>false</sorted>
+            <sorted>true</sorted>
             <value>
                 <fullName>App</fullName>
                 <default>false</default>
@@ -43,9 +43,9 @@
                 <label>Life</label>
             </value>
             <value>
-                <fullName>Moto/fleet</fullName>
+                <fullName>Motor/fleet</fullName>
                 <default>false</default>
-                <label>Moto/fleet</label>
+                <label>Motor/fleet</label>
             </value>
             <value>
                 <fullName>No info provided</fullName>

@@ -258,7 +258,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
         Campaign campanya = [SELECT id FROM Campaign LIMIT 1];
 
         List<CampaignZRMCustomPageController.CampaignMemberData> retorno = new List<CampaignZRMCustomPageController.CampaignMemberData>();
-        
+
         Test.startTest();
         retorno = CampaignZRMCustomPageController.getCampaignMembers(campanya.id);
         Test.stopTest();

@@ -130,4 +130,37 @@ public with sharing class ClaimsSelectorTest
 
         System.assertEquals(false, matchedRecords.isEmpty(), '[3] List should NOT be empty');
     }
+
+    @IsTest
+    static void test_selectByHolderAndBranch()
+    {
+        // Comprobaciones iniciales
+        List<Policy__c> policies = [SELECT Id, PolicyHolder__c FROM Policy__c];
+        System.assertEquals(false, policies.isEmpty(), '[0] Policies list should NOT be empty');
+        List<Asset> insuredObjects = [SELECT Id, Name, RegistrationNumber__c, AccountId, INFOInsuredObjectCode__c, RecordTypeId FROM Asset];
+        System.assertEquals(false, insuredObjects.isEmpty(), '[1] Insured Objets list should NOT be empty');
+        List<Claim__c> claims = [SELECT Id, Name, PolicyHolder__c, Policy__r.PolicyType__c, InsuredObject__c, INFOClaimNumber__c FROM Claim__c];
+        System.assertEquals(false, claims.isEmpty(), '[2] Claims list should NOT be empty');
+
+        for(Claim__c claim : claims)
+        {
+            claim.LegalEntity__c = '001';
+        }
+
+        update claims;
+
+        Test.startTest();
+        ClaimsSelector claimsSelector = new ClaimsSelector();
+        //claimsSelector.setLegalEntity(RecordsSelector.LegalEntity.GI);
+        List<Claim__c> matchedRecords = claimsSelector.selectByHolderAndBranch(claims.get(0).PolicyHolder__c, claims.get(0).Policy__r.PolicyType__c,
+                                                                               false, 'CreatedDate', 'DESC');
+
+        List<Claim__c> unmatchedRecordsBranch = claimsSelector.selectByHolderAndBranch(claims.get(0).PolicyHolder__c, 'XXXX', true, 'CreatedDate', '');
+        List<Claim__c> matchedRecordsNoAccount = claimsSelector.selectByHolderAndBranch(null, '', true, 'CreatedDate', '');
+        Test.stopTest();
+
+        System.assertEquals(false, matchedRecords.isEmpty(), '[3] List should NOT be empty');
+        System.assertEquals(true, unmatchedRecordsBranch.isEmpty(), '[4] List should be empty');
+        System.assertEquals(true, matchedRecordsNoAccount.isEmpty(), '[5] List should be empty');
+    }
 }

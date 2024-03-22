@@ -1,5 +1,7 @@
 public with sharing class ClaimsSelector extends RecordsSelector
 {
+    private static final string POLICY_ENDDATE ='Policy__r.EndDate__c';
+
     //#region Contructores
 
     public ClaimsSelector()
@@ -125,8 +127,8 @@ public with sharing class ClaimsSelector extends RecordsSelector
         {
             Query.Condition condition = Query.doOr
             (
-                Query.conditionEq('Policy__r.EndDate__c', null),
-                Query.conditionGe('Policy__r.EndDate__c', Query.TODAY)
+                Query.conditionEq(POLICY_ENDDATE, null),
+                Query.conditionGe(POLICY_ENDDATE, Query.TODAY)
             );
 
             this.baseQuery.addConditionNotEq(Claim__c.Status__c, 'T').addConditionEq(Claim__c.PolicyHolder__c, policyHolder);
@@ -138,4 +140,62 @@ public with sharing class ClaimsSelector extends RecordsSelector
             return new List<Claim__c>();
         }
     }
+
+    /**
+     * Busca siniestros de pólizas activas a partir Id de la cuenta del cliente
+     * Permite filtrar por status y orden
+     **
+     * @author jfherrero
+     * @date 15/03/2024
+     * @param   String          policyHolder    Tomador de la póliza asociada al siniestro
+     * @param   String          branch          Ramo de la póliza asociada al siniestro
+     * @param   Boolean         branch         Buscar sólo siniestros no cerrados
+     * @param   String          orderByField    Campo para ordenar
+     * @param   String          order           Orden de resultados
+     * @return  List<Claim__c>  Listado de siniestros sobre los que se ha realizado match
+     */
+    public List<Claim__c> selectByHolderAndBranch(Id policyHolder, String branch, Boolean active, String orderByField, String order)
+    {
+        if(policyHolder != null)
+        {
+            Query.Condition condition = Query.doOr
+            (
+                Query.conditionEq(POLICY_ENDDATE, null),
+                Query.conditionGe(POLICY_ENDDATE, Query.TODAY)
+            );
+
+            this.baseQuery.addConditionEq(Claim__c.PolicyHolder__c, policyHolder);
+
+            if(String.isNotBlank(branch))
+            {
+                this.baseQuery.addConditionEq('Claim__c.Policy__r.PolicyType__c', branch);
+            }
+
+            if(active)
+            {
+                this.baseQuery.addConditionNotEq(Claim__c.Status__c, 'T');
+            }
+
+            if(String.isNotBlank(orderByField))
+            {
+                if ( order.toLowerCase() == 'asc' || order.toLowerCase() == 'desc')
+                {
+                    this.baseQuery.orderBy(orderByField, order);
+                }
+                else 
+                {
+                    this.baseQuery.orderBy(orderByField);
+                }
+            }
+
+            this.baseQuery.setLimit(2000);
+
+            return (List<Claim__c>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<Claim__c>();
+        }
+    }
+
 }

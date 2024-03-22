@@ -295,15 +295,25 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
     public List<AccountTeamMember> findZRMATMsByAccountIdAndIntermediaryOrIntermediaryGroup(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountId) {
         List<AccountTeamMember> result = new List<AccountTeamMember>();
 
-        result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
-                                                FROM AccountTeamMember 
-                                                WHERE TeamMemberRole = 'MediadorZRM' 
-                                                AND AccountId IN : accountId 
-                                                AND (
-                                                    User.Contact.AccountId IN: intermediaryIdsSet OR 
-                                                    User.Contact.Account.IntermediaryGroup__c IN: intermediaryGroupIdsSet
-                                                    )
-                                                ]);
+        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty()) {
+            result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
+                                                    FROM AccountTeamMember 
+                                                    WHERE TeamMemberRole = 'MediadorZRM' 
+                                                    AND AccountId IN : accountId 
+                                                    AND (
+                                                        User.Contact.AccountId IN: intermediaryIdsSet OR 
+                                                        User.Contact.Account.IntermediaryGroup__c IN: intermediaryGroupIdsSet
+                                                        )
+                                                    ]);
+
+        } else if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) {
+            result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
+                                                    FROM AccountTeamMember 
+                                                    WHERE TeamMemberRole = 'MediadorZRM' 
+                                                    AND AccountId IN : accountId 
+                                                    AND User.Contact.AccountId IN: intermediaryIdsSet]);
+        }
+
         
 
         return result;
@@ -327,5 +337,48 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         }
         return result;
 
+    }
+
+
+    /**
+     * Método que recupera los AccountTeamMember de un cliente para un mediador y agrupaciones
+     * *
+     * @author dmunoz
+     * @date 26/02/2024
+     */
+    public List<AccountTeamMember> getZRMATMByAccountAndUser(Set<String> accountIdsSet, List<User> userList) {
+        List<AccountTeamMember> result = new List<AccountTeamMember>();
+
+        if (accountIdsSet != null && !accountIdsSet.isEmpty() && userList != null && !userList.isEmpty()) {
+            result = new List<AccountTeamMember>([SELECT Id
+                                                    FROM AccountTeamMember 
+                                                    WHERE AccountId IN :accountIdsSet 
+                                                    AND UserId IN :userList
+                                                    AND TeamMemberRole = 'MediadorZRM']);
+
+        }        
+
+        return result;
+    }
+
+    /**
+     * Método que recupera los AccountTeamMember de un cliente para un mediador y agrupaciones
+     * *
+     * @author dmunoz
+     * @date 26/02/2024
+     */
+    public List<AccountTeamMember> getZRMATMUserAndOtherAccounts(Set<String> accountIdsSet, List<User> userList) {
+        List<AccountTeamMember> result = new List<AccountTeamMember>();
+
+        if (accountIdsSet != null && !accountIdsSet.isEmpty() && userList != null && !userList.isEmpty()) {
+            result = new List<AccountTeamMember>([SELECT Id
+                                                    FROM AccountTeamMember 
+                                                    WHERE AccountId NOT IN :accountIdsSet 
+                                                    AND UserId IN :userList
+                                                    AND TeamMemberRole = 'MediadorZRM']);
+
+        }        
+
+        return result;
     }
 }

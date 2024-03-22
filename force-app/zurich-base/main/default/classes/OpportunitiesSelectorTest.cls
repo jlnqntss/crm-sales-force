@@ -427,27 +427,6 @@ private with sharing class OpportunitiesSelectorTest
     }
 
     @isTest
-    static void findOffersWithIncorrectVisibilityTest() {
-
-        Test.startTest();
-        String offerList = (new OpportunitiesSelector()).findOffersWithIncorrectVisibility();
-        Test.stopTest();
-
-        System.assertEquals(true, offerList != null, 'No debe ser nulo');
-    }
-
-    @isTest
-    static void findOffersWithIncorrectVisibilityByAccountIdTest() {
-
-        Test.startTest();
-        Set<String> accountIds = new Set<String>();
-        String offerList = (new OpportunitiesSelector()).findOffersWithIncorrectVisibilityByAccountId(accountIds);
-        Test.stopTest();
- 
-        System.assertEquals(true, offerList == null, 'Debe ser nulo');
-    }
-
-    @isTest
     static void findCrossSellingCampaignNotClosedOfferTest() {
 
         Test.startTest();

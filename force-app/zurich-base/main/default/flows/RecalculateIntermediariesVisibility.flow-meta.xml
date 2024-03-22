@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <description>Ejecutar batch Batch_IntermediaryVisibilityRecalcAcc</description>
-        <name>Execute_Batch</name>
+        <name>Execute_Batch_Recalc</name>
         <label>Execute Batch</label>
         <locationX>176</locationX>
         <locationY>242</locationY>
-        <actionName>Batch_IntermediaryVisibilityRecalcAcc</actionName>
+        <actionName>Batch_RecalcVisibilityIntermediary</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -15,11 +14,24 @@
                 <elementReference>recordId</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>Batch_IntermediaryVisibilityRecalcAcc</nameSegment>
+        <inputParameters>
+            <name>numDMLs</name>
+            <value>
+                <elementReference>numDMLs</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Batch_RecalcVisibilityIntermediary</nameSegment>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
-    <description>Flujo que lanza el batch de recálculo de visibilidad &quot;Batch_IntermediaryVisibilityRecalcAcc&quot;</description>
+    <constants>
+        <name>numDMLs</name>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>5000.0</numberValue>
+        </value>
+    </constants>
+    <description>Flujo que lanza el batch de recálculo de visibilidad &quot;Batch_RecalcVisibilityIntermediary&quot;</description>
     <environments>Default</environments>
     <interviewLabel>Recalculate Intermediaries Visibility {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Recalculate Intermediaries Visibility</label>
@@ -52,7 +64,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Execute_Batch</targetReference>
+            <targetReference>Execute_Batch_Recalc</targetReference>
         </connector>
         <fields>
             <name>StartMessage</name>
