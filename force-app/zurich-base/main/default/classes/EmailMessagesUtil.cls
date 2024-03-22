@@ -838,6 +838,10 @@ public with sharing class EmailMessagesUtil
      * 
      * @author jfherrero
      * @date 22/01/2024
+     * 
+     * @last modified on  : 22-03-2024
+     * @last modified by  : jfherrero
+     * 
      * @param List<EmailMessage> emailList : Lista de email message
     */
     public void checkIfMailOnlyInCc (List<EmailMessage> emailList)
@@ -854,18 +858,18 @@ public with sharing class EmailMessagesUtil
                 mailboxes.add(mailbox.Email__c);
             }
 
-            List<EmailMessage> emailListRecentlyOpened = new List<EmailMessage>();
+            List<EmailMessage> emailListRecentlyCreated = new List<EmailMessage>();
 
             for (EmailMessage em : emailList)
             {
                 if (em.CreatedDate >= Datetime.now().addMinutes(-1))
                 {
-                    emailListRecentlyOpened.add(em);
+                    emailListRecentlyCreated.add(em);
                 }
             }
 
             // Vemos si los buzones están en el CC pero no en ToAddress y los guardamos
-            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailListRecentlyOpened, mailboxes);//new List<EmailMessage>();
+            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailListRecentlyCreated, mailboxes);//new List<EmailMessage>();
 
             Set<String> caseIds = new Set<String>();
 
@@ -875,10 +879,22 @@ public with sharing class EmailMessagesUtil
             }
 
             // Seleccionamos todos los casos que cumplen el criterio
+            
             List<Case> casesForAutoClose = new CasesSelector().findAllDataById(caseIds);
             
+            // y que sean de reciente creación
+            List<Case> onlyNewCases = new List<Case>();
+
+            for (Case c : casesForAutoClose)
+            {
+                if (c.CreatedDate >= Datetime.now().addMinutes(-1))
+                {
+                    onlyNewCases.add(c);
+                }
+            }
+
             //Cierre de los casos que cumplen el criterio
-        	this.closeCasesOnlyInCc(casesForAutoClose);
+        	this.closeCasesOnlyInCc(onlyNewCases);
         }
     }
 
