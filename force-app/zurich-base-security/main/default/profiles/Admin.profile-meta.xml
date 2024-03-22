@@ -3900,6 +3900,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.Completed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Acta__c.IsViewedByCreator__c</field>
         <readable>true</readable>
@@ -3907,6 +3912,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Acta__c.Location__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.NumberOfActions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9382,6 +9392,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.MediatedCustomer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Modalidad__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -1719,6 +1719,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Acta__c.Completed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Acta__c.Location__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1730,6 +1735,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Acta__c.MeetingObjective__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Acta__c.NumberOfActions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10419,6 +10429,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.MeetingMinutes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Task.Modalidad__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
