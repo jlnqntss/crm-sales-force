@@ -57,8 +57,13 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     
             for(sObject record : records)
             {
-                campaignMembersAccountMap.put(((CampaignMember) record).Contact.AccountId, (CampaignMember) record);
-                intermediaryCodes.add(((CampaignMember) record).OfferAssignedCode__c);
+                if (((CampaignMember) record).Contact.AccountId != null) {
+                    campaignMembersAccountMap.put(((CampaignMember) record).Contact.AccountId, (CampaignMember) record);
+                }
+
+                if (((CampaignMember) record).OfferAssignedCode__c != null) {
+                    intermediaryCodes.add(((CampaignMember) record).OfferAssignedCode__c);
+                }
             }
 
             // Los usuarios AGR deben gestionarse distinto a los mediadores
@@ -75,9 +80,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
                     intermediaryGroupIdSet.add(intermediaryAccount.IntermediaryGroup__c);
                 }
             }
-    
-            // Eliminamos los nulos del mapa en caso de que hubiese
-            intermediaryCodes.remove(null);
 
             // 1. Filtra los miembros de campaña para solo generar oportunidades sobre los que tengan un cliente con una póliza asociada en estado "Vigor" o "Anulada" y cuyo check de GDPR esté a true
             List<CampaignMember> filteredCampaignMembers = filterCampaignMembersByCustomerVisibility(campaignMembersAccountMap, intermediaryCodes, intermediaryGroupIdSet);
