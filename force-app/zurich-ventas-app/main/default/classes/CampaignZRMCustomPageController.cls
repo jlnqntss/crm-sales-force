@@ -269,18 +269,12 @@ public with sharing class CampaignZRMCustomPageController
 
                 for (Account mediatorGroupAccount : mediatorGroupAccounts)
                 {
-                    if (mediatorGroupAccount.INFOIntermediaryCode__c != null)
-                    {
-                        intermediaryCodes.add(mediatorGroupAccount.INFOIntermediaryCode__c);
-                    }
+                    intermediaryCodes.add(mediatorGroupAccount.INFOIntermediaryCode__c);
                 }
             }
             else
             {
-                if (currentUser.Contact.Account.INFOIntermediaryCode__c != null)
-                {
-                    intermediaryCodes.add(currentUser.Contact.Account.INFOIntermediaryCode__c);
-                }
+                intermediaryCodes.add(currentUser.Contact.Account.INFOIntermediaryCode__c);
             }
         }
 

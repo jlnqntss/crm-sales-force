@@ -107,10 +107,6 @@ private with sharing class CampaignZRMCustomPageControllerTest
 
             // Se crean los miembros de campaña asociados a las campañas
             List<CampaignMember> campaignMembersToInsert = TestDataFactory.generateCampaignMembersForEachCampaign(personAccounts, campaignsToInsert, 'Subscribed');
-            for (CampaignMember campaignMemberToInsert : campaignMembersToInsert)
-            {
-                campaignMemberToInsert.OfferAssignedCode__c = intermediaryContacts.get(0).Account.INFOIntermediaryCode__c;
-            }
             insert campaignMembersToInsert;
         }
     }
@@ -259,20 +255,12 @@ private with sharing class CampaignZRMCustomPageControllerTest
     @isTest
     private static void getCampaignMembers_ok()
     {
-        User agenteVentas = [SELECT Id, Contact.Account.INFOIntermediaryCode__c
-                             FROM User
-                             WHERE Profile.Name = 'Agente Ventas'
-                                                  AND Alias = 'medtest1' LIMIT 1];
-
-        CampaignMember campaignMember = [SELECT CampaignId FROM CampaignMember WHERE OfferAssignedCode__c = :agenteVentas.Contact.Account.INFOIntermediaryCode__c LIMIT 1];
+        Campaign campanya = [SELECT id FROM Campaign LIMIT 1];
 
         List<CampaignZRMCustomPageController.CampaignMemberData> retorno = new List<CampaignZRMCustomPageController.CampaignMemberData>();
-
+        
         Test.startTest();
-        System.runAs(agenteVentas)
-        {
-            retorno = CampaignZRMCustomPageController.getCampaignMembers(campaignMember.CampaignId);
-        }
+        retorno = CampaignZRMCustomPageController.getCampaignMembers(campanya.id);
         Test.stopTest();
 
         System.assertEquals(false, retorno.isEmpty(), 'Se deben encontrar miembros de campaña');
