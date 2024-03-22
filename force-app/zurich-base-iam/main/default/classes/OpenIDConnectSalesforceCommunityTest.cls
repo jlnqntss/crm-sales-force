@@ -510,17 +510,20 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
     @isTest
     private static void testZRMAccountTeamMemberAgenteVentasAGR() {
 
-        List<User> userZRM = new List<User>([SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND IsActive = true]);
+        List<User> userZRM = new List<User>([SELECT Profile.Name, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND IsActive = true]);
 
-        List<String> profileList = new List<String>();
-        profileList.add('Agente Ventas - AGR');
-        
         if (!userZRM.isEmpty()) {
             // inserto una poliza al medidador del usuario encontrado
             List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
 
-            List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);        
-            policies[0].IntermediaryId__c = userZRM.get(0).Contact.AccountId;
+            List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
+            for (Policy__c policy: policies)
+            {
+                policy.IntermediaryId__c = userZRM[0].Contact.AccountId;
+                policy.PolicyStatus__c = 'V';
+                policy.Anonymized__c = false;
+                policy.Blocked__c = false;
+            }
             insert policies;
 
             // Elimino los atm que se hayan podido generar
@@ -531,7 +534,7 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
 
 
             Test.startTest();
-            OpenIDConnectSalesforceCommunity.generateZRMATMs(userZRM.get(0).Id, profileList);
+            OpenIDConnectSalesforceCommunity.generateZRMATMs(userZRM[0].Id, new List<String>{userZRM[0].Profile.Name});
             Test.stopTest();   
 
 
