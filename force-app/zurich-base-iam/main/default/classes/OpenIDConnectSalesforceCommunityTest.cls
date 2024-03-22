@@ -499,8 +499,11 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
             }
             
             Test.startTest();
-            OpenIDConnectSalesforceCommunity.generateZRMATMs(userZRM.get(0).Id, profileList);
-            Test.stopTest();   
+            System.runAs(userZRM[0])
+            {
+                OpenIDConnectSalesforceCommunity.generateZRMATMs(userZRM.get(0).Id, profileList);
+            }
+            Test.stopTest();
 
             List<AsyncApexJob> apexJob = new List<AsyncApexJob>([SELECT Id  FROM AsyncApexJob]);
             Assert.isTrue(apexJob.size() > 0, 'Debe haber un job');
