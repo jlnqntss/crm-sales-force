@@ -327,31 +327,6 @@ public with sharing class PoliciesSelector extends RecordsSelector
         return (List<Policy__c>) this.baseQuery.run();
     }
 
-    /**
-     * Busca pólizas no bloqueadas a partir de una lista de agrupaciones y mediadores
-     *
-     * @author dmunoz
-     * @date 15/02/2024
-     * 
-     * 
-     */
-    public List<Policy__c> selectByIntermediaryGroupId(Set<String> intermediaryGroupIdSet, Set<String> intermediaryIdsSet) {
-
-        List<Policy__c> result = new List<Policy__c>();
-        
-        result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c FROM Policy__c
-                                    WHERE (IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdSet 
-                                    OR IntermediaryId__C IN: intermediaryIdsSet)
-                                    AND PolicyHolder__r.Blocked__c = FALSE
-                                    AND PolicyHolder__r.Anonymized__c = FALSE
-                                    AND PolicyStatus__c IN ('V', 'A') 
-                                    AND Blocked__c = FALSE
-                                    AND Anonymized__c = FALSE]);
-          
-
-        return result;
-    }
-
 
     /**
      * Obtiene las polizas no bloqueadas de un mediador
@@ -408,7 +383,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
     }
 
     /**
-     * Obtenemos las polizas de un mediador y las de una agrupacion con excepcion de un conjunto de polizas (necesario para el calculo de )
+     * Obtenemos las polizas de un mediador y las de una agrupacion con excepcion de un conjunto de polizas (necesario para el calculo de visibilidad)
      *
      * @author dmunoz
      * @date 21/02/2024
@@ -419,20 +394,36 @@ public with sharing class PoliciesSelector extends RecordsSelector
 
         List<Policy__c> result = new List<Policy__c>();
 
-        result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
-                                        FROM Policy__c 
-                                        WHERE
-                                        ID NOT IN: policiesToExclude
-                                        AND PolicyHolder__c IN :policyHolderIdSet
-                                        AND PolicyHolder__r.Blocked__c = FALSE
-                                        AND PolicyHolder__r.Anonymized__c = FALSE
-                                        AND (
-                                            IntermediaryId__c IN :intermediaryIdsSet OR
-                                            IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdsSet
-                                            )
-                                        AND PolicyStatus__c IN ('V', 'A') 
-                                        AND Blocked__c = FALSE
-                                        AND Anonymized__c = FALSE]);        
+        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty()) {
+            result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
+                                            FROM Policy__c 
+                                            WHERE
+                                            ID NOT IN: policiesToExclude
+                                            AND PolicyHolder__c IN :policyHolderIdSet
+                                            AND PolicyHolder__r.Blocked__c = FALSE
+                                            AND PolicyHolder__r.Anonymized__c = FALSE
+                                            AND (
+                                                IntermediaryId__c IN :intermediaryIdsSet OR
+                                                IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdsSet
+                                                )
+                                            AND PolicyStatus__c IN ('V', 'A') 
+                                            AND Blocked__c = FALSE
+                                            AND Anonymized__c = FALSE]);        
+
+        } else if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) {
+            result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
+                                            FROM Policy__c 
+                                            WHERE
+                                            ID NOT IN: policiesToExclude
+                                            AND PolicyHolder__c IN :policyHolderIdSet
+                                            AND PolicyHolder__r.Blocked__c = FALSE
+                                            AND PolicyHolder__r.Anonymized__c = FALSE
+                                            AND IntermediaryId__c IN :intermediaryIdsSet
+                                            AND PolicyStatus__c IN ('V', 'A') 
+                                            AND Blocked__c = FALSE
+                                            AND Anonymized__c = FALSE]);    
+        }
+
 
         return result;
     }
@@ -498,14 +489,14 @@ public with sharing class PoliciesSelector extends RecordsSelector
      */
     public String getIntermediaryPoliciesToRecalculateZRMVisibility(List<Account> intermediariesToProcess) {
         if (intermediariesToProcess != null && !intermediariesToProcess.isEmpty()) {
-            return Database.getQueryLocator([SELECT Id, PolicyHolder__c 
-                                        FROM Policy__c 
-                                        WHERE IntermediaryId__c = :intermediariesToProcess.get(0).Id
-                                        AND PolicyHolder__r.Blocked__c = FALSE
-                                        AND PolicyHolder__r.Anonymized__c = FALSE
-                                        AND PolicyStatus__c IN ('V', 'A') 
-                                        AND Blocked__c = FALSE
-                                        AND Anonymized__c = FALSE]).getQuery();
+            return 'SELECT Id, PolicyHolder__c ' +
+                    'FROM Policy__c  ' +
+                    'WHERE IntermediaryId__c =  \'' + intermediariesToProcess.get(0).Id + '\'' +
+                    'AND PolicyHolder__r.Blocked__c = FALSE ' +
+                    'AND PolicyHolder__r.Anonymized__c = FALSE ' +
+                    'AND PolicyStatus__c IN (\'V\', \'A\')  ' +
+                    'AND Blocked__c = FALSE ' +
+                    'AND Anonymized__c = FALSE';
         } else {
             return null;
         }

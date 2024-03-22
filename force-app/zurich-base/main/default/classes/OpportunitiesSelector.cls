@@ -542,12 +542,16 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
                                             WHERE IntermediaryId__c = :intermediary.Id
                                             AND AccountId NOT IN :accountIdsNotToQuery
+                                            AND Account.Blocked__c = FALSE
+                                            AND Account.Anonymized__c = FALSE
                                             AND Blocked__c = FALSE
                                             AND Anonymized__c = FALSE]);
 
         } else if (intermediary != null && accountIdsNotToQuery != null && accountIdsNotToQuery.isEmpty()) {
             result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
                                             WHERE IntermediaryId__c = :intermediary.Id
+                                            AND Account.Blocked__c = FALSE
+                                            AND Account.Anonymized__c = FALSE
                                             AND Blocked__c = FALSE
                                             AND Anonymized__c = FALSE]);
         }
@@ -578,7 +582,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                             AND Blocked__c = FALSE
                                             AND Anonymized__c = FALSE]);
 
-        } else if (accountIdsToQuery != null && accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) { // en caso que no haya elementos en accountIdsToQuery traemos todo
+        } else if (accountIdsToQuery != null && accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) { // en caso que no haya elementos en accountIdsToQuery traemos todos los registros
             result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
                                             WHERE IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
                                             AND Account.Blocked__c = FALSE
