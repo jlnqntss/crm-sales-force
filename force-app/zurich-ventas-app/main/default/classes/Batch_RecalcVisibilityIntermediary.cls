@@ -367,6 +367,13 @@ global with sharing class Batch_RecalcVisibilityIntermediary implements Database
             Database.executeBatch(new Batch_RecalcVisibilityIntermediaryDMLs(intermediariesToProcess, atmsToDelete, atmsToInsert, numDMLs, 'DELETE'), numDMLs);
         } else if (atmsToDelete.isEmpty() && !atmsToInsert.isEmpty()) {
             Database.executeBatch(new Batch_RecalcVisibilityIntermediaryDMLs(intermediariesToProcess, atmsToDelete, atmsToInsert, numDMLs, 'INSERT'), numDMLs);
+        } else if (atmsToDelete.isEmpty() && atmsToInsert.isEmpty() && !intermediariesToProcess.isEmpty()) { 
+            // una vez terminado de procesar los account team elimino el primer mediador a procesar y si hay mediadores a procesar vuelvo a llamar al batch Batch_RecalcVisibilityIntermediary
+            intermediariesToProcess.remove(0);
+            
+            if (!intermediariesToProcess.isEmpty()) {
+                Database.executeBatch(new Batch_RecalcVisibilityIntermediary(intermediariesToProcess, false, numDMLs), numDMLs); 
+            }
         }
     }
 
