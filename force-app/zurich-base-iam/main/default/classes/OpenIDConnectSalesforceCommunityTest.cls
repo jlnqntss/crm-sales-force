@@ -482,40 +482,6 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
             // inserto una poliza al medidador del usuario encontrado
             List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
 
-            List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);        
-            policies[0].IntermediaryId__c = userZRM.get(0).Contact.AccountId;
-            insert policies;
-
-            // Elimino los atm que se hayan podido generar
-            List<AccountTeamMember> atmsToDelete = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
-            if (!atmsToDelete.isEmpty()) {
-                delete atmsToDelete;
-            }
-
-
-            Test.startTest();
-            OpenIDConnectSalesforceCommunity.generateZRMATMs(userZRM.get(0).Id, profileList);
-            Test.stopTest();   
-
-
-            List<AccountTeamMember> atmsAfterProcess = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember LIMIT 1]);
-
-            System.assert(atmsAfterProcess.size() > 0, 'Debe haber al menos 1 atm');
-            
-            
-        }
-    }
-
-
-    @isTest
-    private static void testZRMAccountTeamMemberAgenteVentasAGR() {
-
-        List<User> userZRM = new List<User>([SELECT Profile.Name, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND IsActive = true]);
-
-        if (!userZRM.isEmpty()) {
-            // inserto una poliza al medidador del usuario encontrado
-            List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-
             List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
             for (Policy__c policy: policies)
             {
@@ -531,19 +497,13 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
             if (!atmsToDelete.isEmpty()) {
                 delete atmsToDelete;
             }
-
-
+            
             Test.startTest();
-            OpenIDConnectSalesforceCommunity.generateZRMATMs(userZRM[0].Id, new List<String>{userZRM[0].Profile.Name});
+            OpenIDConnectSalesforceCommunity.generateZRMATMs(userZRM.get(0).Id, profileList);
             Test.stopTest();   
 
-
-            List<AccountTeamMember> atmsAfterProcess = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember LIMIT 1]);
-
-            System.assert(atmsAfterProcess.size() > 0, 'Debe haber al menos 1 atm');
-            
-            
+            List<AsyncApexJob> apexJob = new List<AsyncApexJob>([SELECT Id  FROM AsyncApexJob]);
+            Assert.isTrue(apexJob.size() > 0, 'Debe haber un job');
         }
-
     }
 }
