@@ -222,13 +222,16 @@ public with sharing class PoliciesSelector extends RecordsSelector
       * @return List<Policy__c>
       * @return List<Policy__c>
       */
-    public List<Policy__c> findPoliciesByAccountId(Set<Id> accountIds, Set<String> intermediaryCodes)
+    public List<Policy__c> findPoliciesByAccountId(Set<Id> accountIds, Set<String> intermediaryCodes, Set<String> intermediaryGroupIdSet)
     {
         return new List<Policy__c>([
-            SELECT PolicyHolder__c, IntermediaryId__r.INFOIntermediaryCode__c 
+            SELECT PolicyHolder__c, IntermediaryId__r.IntermediaryGroup__c, IntermediaryId__r.INFOIntermediaryCode__c
             FROM Policy__c
             WHERE PolicyHolder__c IN :accountIds
-                AND IntermediaryId__r.INFOIntermediaryCode__c IN :intermediaryCodes
+                AND (
+                    IntermediaryId__r.INFOIntermediaryCode__c IN :intermediaryCodes OR
+                    IntermediaryId__r.IntermediaryGroup__c IN : intermediaryGroupIdSet
+                )
                 AND PolicyStatus__c IN ('V', 'A')
                 AND Blocked__c = false
                 AND Anonymized__c = false
