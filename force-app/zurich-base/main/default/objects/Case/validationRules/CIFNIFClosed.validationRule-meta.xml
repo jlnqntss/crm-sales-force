@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CIFNIFClosed</fullName>
+    <active>true</active>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
+ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp; ISPICKVAL(Type,&quot;Venta&quot;) &amp;&amp; 
+(
+( ISPICKVAL(Subtype__c,&quot;Cotización&quot;) &amp;&amp; (ISPICKVAL(CloseResult__c ,&quot;Declinada - Actividad&quot;) || ISPICKVAL(CloseResult__c ,&quot;Declinada - Precio&quot;) || ISPICKVAL(CloseResult__c ,&quot;Declinada - Medidas protección&quot;) ) 
+||  
+(ISPICKVAL(Subtype__c,&quot;Gestión Competencias&quot;)  &amp;&amp;   
+NOT(
+(
+ISPICKVAL(CloseResult__c ,&quot;Aprobada - Ajuste de precio&quot;) || ISPICKVAL(CloseResult__c ,&quot;Aprobada - Modificación Garantías&quot;) ||  ISPICKVAL(CloseResult__c ,&quot;Aprobada - Modificación Capitales&quot;) || ISPICKVAL(CloseResult__c ,&quot;Aprobada - Modificación Garantías&quot;) ||  ISPICKVAL(CloseResult__c ,&quot;Aprobada - Emisión Póliza&quot;)   ||  ISPICKVAL(CloseResult__c ,&quot;Aprobada - Modificación Clausulado&quot;) || ISPICKVAL(CloseResult__c ,&quot;Aprobada - Suplemento no económico&quot;) || ISPICKVAL(CloseResult__c ,&quot;Aprobada - Protecciones del riesgo&quot;) || ISPICKVAL(CloseResult__c ,&quot;No Realizado USP&quot;) 
+)
+)
+)
+)     
+)&amp;&amp;
+  ISBLANK(CIFNIF__c)   &amp;&amp; $Permission.USPTriggerCaseValidationRules</errorConditionFormula>
+    <errorMessage>[VR Caso] Es obligatorio informar el CIF/NIF antes de cerrar el caso</errorMessage>
+</ValidationRule>

@@ -4083,6 +4083,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.CIFNIFManual__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.CIFNIF__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.ClaimDetail__c</field>
         <readable>true</readable>
@@ -4910,6 +4920,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Type_translation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.vaciado__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
