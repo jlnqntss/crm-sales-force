@@ -564,6 +564,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>No realizado- Caso Duplicado</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Perdida - Garantías</fullName>
             <default>false</default>
         </values>
