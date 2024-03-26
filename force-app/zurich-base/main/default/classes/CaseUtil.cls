@@ -11,10 +11,10 @@ public with sharing class CaseUtil
     public static final String closeResult='No Realizado';
     public static final String statusWon='Won';
     public static final String typeVenta= 'Venta';
-    public static final String rT_USP_CASES= 'USPInquiry';
     public static final String queryDays ='365';
     public static final String estadoCerrado= 'Cerrado';
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+    public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
@@ -32,9 +32,20 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
 
     // Recupera el Id del RecordType de casos USP
-    public static final ID rtUSPId {
-        get {
+    public static final ID RT_ID_USPINQUIRY 
+    {
+        get 
+        {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
+        }
+    }
+
+    // Recupera el Id del RecordType de casos OCS
+    public static final ID RT_ID_OCSINQUIRY 
+    {
+        get 
+        {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSINQUIRY)?.getRecordTypeId();
         }
     }
 
@@ -392,7 +403,7 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if( caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich')
+                if( caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich')
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
                     //Utilizar el email del SuppliedEmail
@@ -605,7 +616,7 @@ public with sharing class CaseUtil
      */
     private static List<Case> generateUspCaseList(List<Case> cases)
     {
-        Id rtUSPId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        Id rtUSPId = RT_ID_USPINQUIRY;
         List<Case> uspCases = new List<Case>();
 
         for(Case currentCase : cases)
@@ -708,7 +719,7 @@ public with sharing class CaseUtil
             MediatedCustomer__c = padre?.MediatedCustomer__c
             );
 
-        Id rtOCSId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        Id rtOCSId = RT_ID_OCSINQUIRY;
         if (padre.RecordTypeId == rtOCSId)
         {
             casoHijo.CallCenter__c = padre?.CallCenter__c;
@@ -880,7 +891,7 @@ public with sharing class CaseUtil
         Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
         Map <Id, Decimal> mapWonChildCases= new Map <Id,Decimal>();
 
-        Id rtCasesUSPId= Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rT_USP_CASES)?.getRecordTypeId();
+        Id rtCasesUSPId= RT_ID_USPINQUIRY;
 
         cases= new CasesSelector().getQueryCasesConversionRatio(accountsIntermediary,statusCombinado,closeResult,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
 
@@ -1063,7 +1074,7 @@ public with sharing class CaseUtil
     {
         List<Case> updatedCases = new List<Case>();
         Case oldCase = new Case();
-        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        Id rtOCSInquiryId = RT_ID_OCSINQUIRY;
 
         //Almacenar los casos que cumplen las condiciones
         for(Case caso : newList)

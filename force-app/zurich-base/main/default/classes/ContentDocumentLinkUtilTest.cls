@@ -88,7 +88,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -159,7 +159,7 @@ private with sharing class ContentDocumentLinkUtilTest
     static void test_createDocument_not_linked_with_emailMessage_ok()
     {
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -265,7 +265,7 @@ private with sharing class ContentDocumentLinkUtilTest
         System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -367,7 +367,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -489,7 +489,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -603,7 +603,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -669,7 +669,7 @@ private with sharing class ContentDocumentLinkUtilTest
     static void test_update_delete_contentDocumentLink_ok()
     {
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -753,7 +753,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -865,7 +865,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -978,7 +978,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
@@ -1090,7 +1090,7 @@ private with sharing class ContentDocumentLinkUtilTest
         Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 

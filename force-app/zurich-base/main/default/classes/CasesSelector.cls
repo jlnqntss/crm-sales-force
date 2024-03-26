@@ -167,7 +167,7 @@ public with sharing class CasesSelector extends RecordsSelector
                 Case.RobotDocumentId__c,
                 Case.MediatedCustomer__c
             })
-            .addConditionEq(Case.RecordTypeId, CaseUtil.rtUSPId)
+            .addConditionEq(Case.RecordTypeId, CaseUtil.RT_ID_USPINQUIRY)
             .addConditionNotNull(Case.RobotDocumentId__c)
             .addConditionNull(Case.MediatedCustomer__c)
             .addConditionString(CASES_LAST_DATE + days);
@@ -179,7 +179,7 @@ public with sharing class CasesSelector extends RecordsSelector
             return '';
         }
     }
-
+    
     /**
      * Método utilizado por Batch_CloseInteractions para definir el scope
      * @author lrodriguez6@seidor.es
@@ -191,7 +191,7 @@ public with sharing class CasesSelector extends RecordsSelector
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Case.Id
         })
-        .addConditionEq(Case.RecordTypeId, CaseUtil.rtUSPId)
+        .addConditionEq(Case.RecordTypeId, CaseUtil.RT_ID_USPINQUIRY)
         .addConditionEq(Case.CloseInteractionBatch__c,true)
         .addConditionEq(Case.ExpectedClosingDate__c,System.TODAY())
         .addConditionEq(Case.CloseByBatch__c,false);
@@ -217,7 +217,7 @@ public with sharing class CasesSelector extends RecordsSelector
                 Case.CreatedOffer__c,
                 Case.OfferId__c
             })
-            .addConditionEq(Case.RecordTypeId, CaseUtil.rtUSPId)
+            .addConditionEq(Case.RecordTypeId, CaseUtil.RT_ID_USPINQUIRY)
             .addConditionNotNull(Case.CreatedOffer__c)
             .addConditionNull(Case.OfferId__c)
             .addConditionString(CASES_LAST_DATE + days);

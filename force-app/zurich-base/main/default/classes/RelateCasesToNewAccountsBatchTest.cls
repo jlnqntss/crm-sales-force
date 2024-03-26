@@ -16,7 +16,7 @@ public with sharing class RelateCasesToNewAccountsBatchTest {
         // Se crean casos con el cif de la primera cuenta, para que se relacionen
         for(Case currentCase : cases)
         {
-            currentCase.RecordTypeId = CaseUtil.rtUSPId;
+            currentCase.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
             currentCase.RobotDocumentId__c = cif;
         }
         insert cases;

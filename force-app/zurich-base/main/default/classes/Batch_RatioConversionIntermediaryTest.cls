@@ -19,7 +19,7 @@ public with sharing class Batch_RatioConversionIntermediaryTest
         update accounts;
 
         //Se crean casos 
-        Id caseRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        Id caseRecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 4);
         insert cases;
 

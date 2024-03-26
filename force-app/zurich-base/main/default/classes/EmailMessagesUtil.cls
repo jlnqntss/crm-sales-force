@@ -37,9 +37,9 @@ public with sharing class EmailMessagesUtil
 
     Map<String,String> mapRouteTypeDestinatario = getEmailRouteTypeList();
 
-    private static final Id uspRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+    private static final Id uspRecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
     @testvisible
-    private static final Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+    private static final Id ocsRecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
 
     /**
      * Get from the metadata configuration the list of emails configured for the Hegeo robot
