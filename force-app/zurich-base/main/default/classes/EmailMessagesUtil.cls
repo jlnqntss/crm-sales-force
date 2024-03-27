@@ -953,7 +953,7 @@ public with sharing class EmailMessagesUtil
             List<Case> casesEmailDefault = new CasesSelector().findAllDataById(caseIds);
 
             //Cierre de los casos que cumplen el criterio
-        	this.CasesControlEmailCC(casesEmailDefault);
+        	this.casesControlEmailCC(casesEmailDefault);
 
         }
         //Email sin direcciones en cc
@@ -969,7 +969,7 @@ public with sharing class EmailMessagesUtil
             // Seleccionamos todos los casos que cumplen el criterio
             
             List<Case> caseEmailNotDefault = new CasesSelector().findAllDataById(caseIdsDesactivate);
-            this.CasesControlEmailCCDesactivate(caseEmailNotDefault);
+            this.casesControlEmailCCDesactivate(caseEmailNotDefault);
         }
         
     }
@@ -989,14 +989,25 @@ public with sharing class EmailMessagesUtil
         for (EmailMessage emailMessage : emailList)
         {
             if (emailMessage.ParentId != null && emailMessage.CcAddress != null && emailMessage.ToAddress != null)
-                if(checkIfMailboxesInCc(emailMessage, mailboxes) && checkIfMailboxesInTo(emailMessage, mailboxes))
             {
-                // Opta para cierre
-                selectedMails.add(emailMessage);
+                selectedMails=this.checkEmails(emailMessage,mailboxes);
             }
         }
 
         return selectedMails;
+    }
+
+    private List<EmailMessage> checkEmails (EmailMessage emailMessage, List<String> mailboxes) 
+    {
+        List<EmailMessage> selectedMails = new List<EmailMessage>();
+
+        if(checkIfMailboxesInCc(emailMessage, mailboxes) && checkIfMailboxesInTo(emailMessage, mailboxes))
+            {
+                // Opta para cierre
+                selectedMails.add(emailMessage);
+            }
+        
+            return selectedMails;
     }
 
     /**
@@ -1082,7 +1093,7 @@ public with sharing class EmailMessagesUtil
      * @date 27/03/2024
      * @param List<Case> casesToActivate : Lista de casos para activar
     */
-    private void CasesControlEmailCC (List<Case> casesToActivate) 
+    private void casesControlEmailCC (List<Case> casesToActivate) 
     {
         List<Case> updateCases = new List<Case>();
         
@@ -1108,7 +1119,7 @@ public with sharing class EmailMessagesUtil
      * @date 27/03/2024
      * @param List<Case> casesToDesactivate : Lista de casos para desactivar
     */
-    private void CasesControlEmailCCDesactivate (List<Case> casesToDesactivate) 
+    private void casesControlEmailCCDesactivate (List<Case> casesToDesactivate) 
     {
         List<Case> updateCases = new List<Case>();
         
