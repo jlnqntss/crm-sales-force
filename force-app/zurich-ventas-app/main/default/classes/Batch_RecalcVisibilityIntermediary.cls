@@ -57,7 +57,7 @@ global with sharing class Batch_RecalcVisibilityIntermediary implements Database
                                         FROM Account
                                         WHERE Id = :requests[0].intermediaryId]; 
                                         
-            Database.executeBatch(new Batch_RecalcVisibilityIntermediary(intermediaryAccount, true, requests[0].numDMLs));
+            Database.executeBatch(new Batch_RecalcVisibilityIntermediary(intermediaryAccount, true, requests[0].numDMLs), requests[0].numDMLs);
         }
     }
 

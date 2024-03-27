@@ -41,7 +41,7 @@ public with sharing class AccountTeamMemberUtil
         List<AccountTeamMember> result = new List<AccountTeamMember>();
         AccountTeamMember atm;
 
-        if (userList != null && !userList.isEmpty()) {
+        if (userList != null && !userList.isEmpty() && accountId != null && String.isNotEmpty(accountId)) {
             for (User user: userList) {
                 atm = new AccountTeamMember();
                 atm.AccountId = accountId;
@@ -70,7 +70,7 @@ public with sharing class AccountTeamMemberUtil
         List<AccountTeamMember> result = new List<AccountTeamMember>();
         AccountTeamMember atm;
 
-        if (userList != null && !userList.isEmpty()) {
+        if (userList != null && !userList.isEmpty() && accountId != null && String.isNotEmpty(accountId)) {
             for (String userId: userList) {
                 atm = new AccountTeamMember();
                 atm.AccountId = accountId;
