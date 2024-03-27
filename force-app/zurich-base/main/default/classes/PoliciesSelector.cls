@@ -351,7 +351,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                         AND PolicyHolder__r.Anonymized__c = FALSE
                                         AND PolicyStatus__c IN ('V', 'A') 
                                         AND Blocked__c = FALSE
-                                        AND Anonymized__c = FALSE]);
+                                        AND Anonymized__c = FALSE
+                                        AND PolicyHolder__c != NULL]);
 
         }
 
@@ -378,7 +379,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                         AND PolicyHolder__r.Anonymized__c = FALSE
                                         AND PolicyStatus__c IN ('V', 'A') 
                                         AND Blocked__c = FALSE
-                                        AND Anonymized__c = FALSE]);
+                                        AND Anonymized__c = FALSE
+                                        AND PolicyHolder__c != NULL]);
 
         }
 
@@ -411,7 +413,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                                 )
                                             AND PolicyStatus__c IN ('V', 'A') 
                                             AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE]);        
+                                            AND Anonymized__c = FALSE
+                                            AND PolicyHolder__c != NULL]);        
 
         } else if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) {
             result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
@@ -424,7 +427,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                             AND IntermediaryId__c IN :intermediaryIdsSet
                                             AND PolicyStatus__c IN ('V', 'A') 
                                             AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE]);    
+                                            AND Anonymized__c = FALSE
+                                            AND PolicyHolder__c != NULL]);    
         }
 
 
@@ -451,7 +455,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                         AND PolicyHolder__r.Anonymized__c = FALSE
                                         AND PolicyStatus__c IN ('V', 'A') 
                                         AND Blocked__c = FALSE
-                                        AND Anonymized__c = FALSE]);
+                                        AND Anonymized__c = FALSE
+                                        AND PolicyHolder__c != NULL]);
         }
 
         return result;
@@ -477,7 +482,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                         AND PolicyHolder__r.Anonymized__c = FALSE
                                         AND PolicyStatus__c IN ('V', 'A') 
                                         AND Blocked__c = FALSE
-                                        AND Anonymized__c = FALSE]);
+                                        AND Anonymized__c = FALSE
+                                        AND PolicyHolder__c != NULL]);
         }
 
         return result;
@@ -499,7 +505,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                     'AND PolicyHolder__r.Anonymized__c = FALSE ' +
                     'AND PolicyStatus__c IN (\'V\', \'A\')  ' +
                     'AND Blocked__c = FALSE ' +
-                    'AND Anonymized__c = FALSE';
+                    'AND Anonymized__c = FALSE ' + 
+                    'AND PolicyHolder__c != NULL';
         } else {
             return null;
         }

@@ -125,7 +125,7 @@ global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Data
 
         if (agrUser != null && !agrUser.isEmpty()) {
             // Obtener account team members que no deben ver, para ello obtenemos los account team distintos a la lista de clientes que llegan en el contructor del batch
-            atmsToDelete.addAll((new AccountTeamMemberSelector()).getZRMATMUserAndOtherAccounts(intermediaryAccountIdsSet, agrUser));
+            getATMToDelete(agrUser);
     
             // Obtener la lista de polizas y ofertas de la agrupacion destino (solo cambio agrupacion) sin contar los clientes que ya ve el mediador
             if (String.isNotEmpty(intermediary.IntermediaryGroup__c)) {
@@ -181,6 +181,32 @@ global with sharing class Batch_RecalcVisibilityIntermediaryDMLs implements Data
 
         return result;
 
+    }
+
+    
+     /**
+     * Metodo que obtiene los nuevos account team que un usuario agrupacion debe poder ver en una agrupación
+     * 
+     * @author dmunoz
+     * @date 18/03/2024
+     */
+    private void getATMToDelete(List<User> agrUser) {
+
+        List<AccountTeamMember> atmsQueryList = (new AccountTeamMemberSelector()).getZRMATMUserAndOtherAccounts(intermediaryAccountIdsSet, agrUser);
+
+        // Convertir la lista de atm to delete a mapa  para evitar duplicados
+        Map<Id, AccountTeamMember> atmToDeleteMap = new Map<Id, AccountTeamMember>();
+        for (AccountTeamMember atm: atmsToDelete) {
+            atmToDeleteMap.put(atm.Id, atm);
+        }
+
+        // Recorremos la lista de atmsQuery y lo insertamos en el mapa para evitar duplicados
+        for (AccountTeamMember atmQuery: atmsQueryList) {
+            atmToDeleteMap.put(atmQuery.Id, atmQuery);
+        } 
+
+        atmsToDelete.clear();
+        atmsToDelete.addAll(atmToDeleteMap.values());
     }
 
 

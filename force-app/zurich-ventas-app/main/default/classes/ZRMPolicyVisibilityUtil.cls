@@ -462,7 +462,8 @@ public with sharing class ZRMPolicyVisibilityUtil {
         Map<String, Set<String>> result = new Map<String, Set<String>>();
 
         for (Policy__c policy: newList) {     
-            if (String.isNotEmpty(policy.IntermediaryId__c) && ('A'.equals(policy.PolicyStatus__c) || 'V'.equals(policy.PolicyStatus__c)) && !policy.Blocked__c && !policy.Anonymized__c) { // poliza anulada o en vigor no bloqueada/anonimizada
+            if (String.isNotEmpty(policy.IntermediaryId__c) && String.isNotEmpty(policy.PolicyHolder__c) && ('A'.equals(policy.PolicyStatus__c) || 'V'.equals(policy.PolicyStatus__c)) 
+                    && !policy.Blocked__c && !policy.Anonymized__c) { // poliza anulada o en vigor no bloqueada/anonimizada
                 result = generateSetMap(result, policy.IntermediaryId__c, policy.PolicyHolder__c);                
             }            
         }
