@@ -36,7 +36,7 @@ public with sharing class EmailMessagesUtil
     private List<EmailMessage> emailMessageToCheck;
 
     Map<String,String> mapRouteTypeDestinatario = getEmailRouteTypeList();
-
+    @testvisible
     private static final Id uspRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
     @testvisible
     private static final Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
@@ -899,6 +899,82 @@ public with sharing class EmailMessagesUtil
     }
 
     /**
+     * Determina si el email tiene buzones de apertura de caso sólo en CcAddress y no en ToAddress
+     * Para aquellos en los que así sea habrá que establecer un email por defecto cuando el agente conteste un caso
+     * Cuando el email unicamente cuente con alguna de las direcciones en TO desactivara esta dirección por defecto
+     * 
+     * @author lrodriguez
+     * @date 27/03/2024
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+    */
+    public void checkMailCc (List<EmailMessage> emailList)
+    {
+        // Rescatamos los buzones
+        List<EmailFromByDefaultCC__mdt> emailByDefaultCcMailboxList = EmailFromByDefaultCC__mdt.getAll().values();
+        List<String> mailboxes = new List<String>();
+        
+        if (!emailByDefaultCcMailboxList.isEmpty())
+        {
+            // Si la lista de buzones a cerrar no está vacía, obtenemos los emails
+            for (EmailFromByDefaultCC__mdt mailbox : emailByDefaultCcMailboxList)
+            {
+                mailboxes.add(mailbox.Email__c);
+            }
+        }
+        
+        List<EmailMessage> emailCC= new List<EmailMessage>();
+        List<EmailMessage> emailNoCC= new List<EmailMessage>();
+
+        //Separamos aquellos email que tengan direcciones en cc de los que no
+        for(EmailMessage e:emailList)
+        {
+            if(e.ccAddress!=null)
+            {
+                emailCC.add(e);
+            }
+            else{
+                emailNoCC.add(e);
+            }
+        }
+        
+        //Email con direcciones en cc
+        if(emailCC!=null)
+        {
+            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailList, mailboxes);
+            Set<String> caseIds = new Set<String>();
+
+            for (EmailMessage mailToClose: mailsToCloseRelatedCase)
+            {
+                caseIds.add(mailToClose.ParentId);
+            }
+
+            // Seleccionamos todos los casos que cumplen el criterio
+            List<Case> casesEmailDefault = new CasesSelector().findAllDataById(caseIds);
+
+            //Cierre de los casos que cumplen el criterio
+        	this.CasesControlEmailCC(casesEmailDefault);
+
+        }
+        //Email sin direcciones en cc
+        if(emailNoCC!=null)
+        {   
+            Set<String> caseIdsDesactivate = new Set<String>();
+
+            for (EmailMessage mailToClose: emailNoCC)
+            {
+                caseIdsDesactivate.add(mailToClose.ParentId);
+            }
+
+            // Seleccionamos todos los casos que cumplen el criterio
+            
+            List<Case> caseEmailNotDefault = new CasesSelector().findAllDataById(caseIdsDesactivate);
+            this.CasesControlEmailCCDesactivate(caseEmailNotDefault);
+        }
+        
+    }
+
+    /**
      * Devuelve los emails que tienen las los buzones indicados en CcAddress pero no en ToAddress
      * 
      * @author jfherrero
@@ -912,8 +988,8 @@ public with sharing class EmailMessagesUtil
 
         for (EmailMessage emailMessage : emailList)
         {
-            if (emailMessage.ParentId != null && emailMessage.CcAddress != null && emailMessage.ToAddress != null
-                && checkIfMailboxesInCc(emailMessage, mailboxes) && checkIfMailboxesInTo(emailMessage, mailboxes))
+            if (emailMessage.ParentId != null && emailMessage.CcAddress != null && emailMessage.ToAddress != null)
+                if(checkIfMailboxesInCc(emailMessage, mailboxes) && checkIfMailboxesInTo(emailMessage, mailboxes))
             {
                 // Opta para cierre
                 selectedMails.add(emailMessage);
@@ -996,6 +1072,58 @@ public with sharing class EmailMessagesUtil
         if(!openCases.isEmpty())
         {
             update openCases;
+        }
+    }
+
+    /**
+     * Pasa los casos selecionados al ControlEmailCC__c TRUE
+     * 
+     * @author lrodriguez 
+     * @date 27/03/2024
+     * @param List<Case> casesToActivate : Lista de casos para activar
+    */
+    private void CasesControlEmailCC (List<Case> casesToActivate) 
+    {
+        List<Case> updateCases = new List<Case>();
+        
+        for (Case caseToClose : casesToActivate)
+        {
+            if(caseToClose.ControlEmailCC__c !=true)
+            {
+                caseToClose.ControlEmailCC__c =true;
+                updateCases.add(caseToClose);
+            }
+        }
+        
+        if(!updateCases.isEmpty())
+        {
+            update updateCases;
+        }
+    }
+
+     /**
+     * Pasa los casos selecionados al ControlEmailCC__c FALSE
+     * 
+     * @author lrodriguez
+     * @date 27/03/2024
+     * @param List<Case> casesToDesactivate : Lista de casos para desactivar
+    */
+    private void CasesControlEmailCCDesactivate (List<Case> casesToDesactivate) 
+    {
+        List<Case> updateCases = new List<Case>();
+        
+        for (Case caseToClose : casesToDesactivate)
+        {
+            if(caseToClose.ControlEmailCC__c !=false)
+            {
+                caseToClose.ControlEmailCC__c =false;
+                updateCases.add(caseToClose);
+            }
+        }
+        
+        if(!updateCases.isEmpty())
+        {
+            update updateCases;
         }
     }
 
