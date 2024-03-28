@@ -36,4 +36,9 @@
         <default>false</default>
         <label>Social media</label>
     </standardValue>
+    <standardValue>
+        <fullName>CanalUnico</fullName>
+        <default>false</default>
+        <label>Single channel</label>
+    </standardValue>
 </StandardValueSet>

@@ -94,6 +94,11 @@
                 <default>false</default>
                 <label>Interno RRSS</label>
             </value>
+            <value>
+                <fullName>Partner</fullName>
+                <default>false</default>
+                <label>Partner</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
@@ -158,6 +163,10 @@
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
             <valueName>Interno RRSS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Partner</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

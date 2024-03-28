@@ -39,6 +39,10 @@
         <translation>Otros</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Partner</masterLabel>
+        <translation>Partner</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Subscription</masterLabel>
         <translation>Suscripción</translation>
     </picklistValues>
