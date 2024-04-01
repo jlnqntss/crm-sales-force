@@ -526,7 +526,7 @@ private with sharing class EmailMessagesUtilTest
     @isTest
     static void test_checkMailCc_Activar()
     {
-        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.uspRecordTypeId);
+        Case casoToEmailMessage = new Case (Subject = 'prueba activar',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.uspRecordTypeId);
         insert casoToEmailMessage;
 
         List<EmailFromByDefaultCC__mdt> emailFromByDefaultCC = EmailFromByDefaultCC__mdt.getAll().values();
@@ -542,14 +542,10 @@ private with sharing class EmailMessagesUtilTest
         insert emailList;
 
         Test.stopTest();
-
-        Set<String> caseIds = new Set<String>();
         
-        caseIds.add(casoToEmailMessage.id);
-        
-        List<Case> casesEmailDefault = new CasesSelector().findAllDataById(caseIds);
+        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba activar']; 
 
-        System.assertEquals(casesEmailDefault[0].ControlEmailCC__c,true,'Debe ser false');
+        System.assertEquals(casesEmailDefault.ControlEmailCC__c,true,'Debe ser false');
 
     }
 
@@ -561,7 +557,7 @@ private with sharing class EmailMessagesUtilTest
     @isTest
     static void test_checkMailCc_Desactivar()
     {
-        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.uspRecordTypeId);
+        Case casoToEmailMessage = new Case (Subject = 'prueba Desactivar',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.uspRecordTypeId);
         insert casoToEmailMessage;
 
         List<EmailFromByDefaultCC__mdt> emailFromByDefaultCC = EmailFromByDefaultCC__mdt.getAll().values();
@@ -577,13 +573,9 @@ private with sharing class EmailMessagesUtilTest
 
         Test.stopTest();
 
-        Set<String> caseIds = new Set<String>();
-        
-        caseIds.add(casoToEmailMessage.id);
-        
-        List<Case> casesEmailDefault = new CasesSelector().findAllDataById(caseIds);
+        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba Desactivar']; 
 
-        System.assertEquals(casesEmailDefault[0].ControlEmailCC__c,false,'Debe ser false');
+        System.assertEquals(casesEmailDefault.ControlEmailCC__c,false,'Debe ser false');
 
     }
 

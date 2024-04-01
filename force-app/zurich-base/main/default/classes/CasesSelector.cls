@@ -120,8 +120,7 @@ public with sharing class CasesSelector extends RecordsSelector
                 this.baseQuery.selectFields(new Set<Schema.SObjectField>{
                     Case.Id,
                     Case.OwnerId, 
-                    Case.Query__c,
-                    Case.ControlEmailCC__c
+                    Case.Query__c
                  })
                 .selectFields('Owner.Type')
                 .selectFields('Owner.Profile.Name');
