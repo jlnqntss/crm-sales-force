@@ -344,9 +344,9 @@
                 <label>Traslado a gestión centro tramitador</label>
             </value>
             <value>
-                <fullName>No realizado- Caso Duplicado</fullName>
+                <fullName>No realizado - Caso Duplicado</fullName>
                 <default>false</default>
-                <label>No realizado- Caso Duplicado</label>
+                <label>No realizado - Caso Duplicado</label>
             </value>
         </valueSetDefinition>
         <valueSettings>
