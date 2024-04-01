@@ -950,7 +950,7 @@ public with sharing class EmailMessagesUtil
             }
 
             // Seleccionamos todos los casos que cumplen el criterio
-            List<Case> casesEmailDefault = new CasesSelector().findAllDataById(caseIds);
+            List<Case> casesEmailDefault = new CasesSelector().findByIdControlCC(caseIds);
 
             //Cierre de los casos que cumplen el criterio
         	this.casesControlEmailCC(casesEmailDefault);
@@ -968,7 +968,7 @@ public with sharing class EmailMessagesUtil
 
             // Seleccionamos todos los casos que cumplen el criterio
             
-            List<Case> caseEmailNotDefault = new CasesSelector().findAllDataById(caseIdsDesactivate);
+            List<Case> caseEmailNotDefault = new CasesSelector().findByIdControlCC(caseIdsDesactivate);
             this.casesControlEmailCCDesactivate(caseEmailNotDefault);
         }
         

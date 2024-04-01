@@ -181,6 +181,35 @@ public with sharing class CasesSelector extends RecordsSelector
     }
 
     /**
+     * Método utilizado por la clase EmailMessageutil 
+     * @author lrodriguez6@seidor.es
+     * @date 01/04/2024
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
+    public List<Case> findByIdControlCC(Set<String> caseIds)
+    {
+        if(caseIds != null && !caseIds.isEmpty() )
+        {
+            
+                this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                    Case.Id,
+                    Case.ControlEmailCC__c
+                 });
+          
+            this.baseQuery.addConditionString('Case.Id IN (\'' + String.join(new List<String>(caseIds), '\',\'') + '\')');
+
+            this.baseQuery.debug();
+
+            return (List<Case>) this.baseQuery.run(); 
+        }
+        else
+        {
+            return new List<Case>();
+        }
+    }
+
+    /**
      * Método utilizado por Batch_CloseInteractions para definir el scope
      * @author lrodriguez6@seidor.es
      * @date 12/02/2024
