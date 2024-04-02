@@ -526,7 +526,7 @@ private with sharing class EmailMessagesUtilTest
     @isTest
     static void test_checkMailCc_Activar()
     {
-        Case casoToEmailMessage = new Case (Subject = 'prueba activar',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.uspRecordTypeId);
+        Case casoToEmailMessage = new Case (Subject = 'prueba activar',Status = 'Assigned', Origin = 'Email', RecordTypeId = CaseUtil.rtUSPId);
         insert casoToEmailMessage;
 
         List<EmailFromByDefaultCC__mdt> emailFromByDefaultCC = EmailFromByDefaultCC__mdt.getAll().values();
@@ -557,7 +557,7 @@ private with sharing class EmailMessagesUtilTest
     @isTest
     static void test_checkMailCc_Desactivar()
     {
-        Case casoToEmailMessage = new Case (Subject = 'prueba Desactivar',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.uspRecordTypeId);
+        Case casoToEmailMessage = new Case (Subject = 'prueba Desactivar',Status = 'Assigned', Origin = 'Email', RecordTypeId = CaseUtil.rtUSPId);
         insert casoToEmailMessage;
 
         List<EmailFromByDefaultCC__mdt> emailFromByDefaultCC = EmailFromByDefaultCC__mdt.getAll().values();
