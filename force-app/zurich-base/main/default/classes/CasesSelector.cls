@@ -189,17 +189,17 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public List<Case> findByIdControlCC(Set<String> caseIds)
     {
+        Set<Schema.SObjectField> setFields =  new Set<Schema.SObjectField>{
+            Case.Id,
+            Case.ControlEmailCC__c
+        };
+
         if(caseIds != null && !caseIds.isEmpty() )
         {
             
-                this.baseQuery.selectFields(new Set<Schema.SObjectField>{
-                    Case.Id,
-                    Case.ControlEmailCC__c
-                 })
-                 .addConditionIn(Case.Id,caseIds);
+            this.baseQuery.selectFields(setFields)
+            .addConditionIn(Case.Id,caseIds);
           
-            this.baseQuery.debug();
-
             return (List<Case>) this.baseQuery.run(); 
         }
         else
