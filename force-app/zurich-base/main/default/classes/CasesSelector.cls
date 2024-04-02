@@ -195,10 +195,9 @@ public with sharing class CasesSelector extends RecordsSelector
                 this.baseQuery.selectFields(new Set<Schema.SObjectField>{
                     Case.Id,
                     Case.ControlEmailCC__c
-                 });
+                 })
+                 .addConditionIn(Case.Id,caseIds);
           
-            this.baseQuery.addConditionString('Case.Id IN (\'' + String.join(new List<String>(caseIds), '\',\'') + '\')');
-
             this.baseQuery.debug();
 
             return (List<Case>) this.baseQuery.run(); 
