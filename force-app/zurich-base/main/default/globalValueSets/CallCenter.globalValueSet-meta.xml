@@ -46,19 +46,19 @@
         <label>TWW Retención</label>
     </customValue>
     <customValue>
-        <fullName>RRSS Postventa-Siniestros</fullName>
+        <fullName>ZDA_MU_s</fullName>
         <default>false</default>
-        <label>RRSS Postventa-Siniestros</label>
+        <label>ZDA MU&apos;s</label>
     </customValue>
     <customValue>
-        <fullName>RRSS Marca</fullName>
+        <fullName>ZDA_Soporte_Red</fullName>
         <default>false</default>
-        <label>RRSS Marca</label>
+        <label>ZDA Soporte Red</label>
     </customValue>
     <customValue>
-        <fullName>GSS CSM</fullName>
+        <fullName>ZDA_Gestion_Cartera</fullName>
         <default>false</default>
-        <label>GSS CSM</label>
+        <label>ZDA Gestión Cartera</label>
     </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
