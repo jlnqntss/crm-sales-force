@@ -575,7 +575,7 @@ public with sharing class INFOHandler implements ISystem
             if( String.isBlank(recordTypeDevName) ) 
             {
                 //En caso de no encontrar equivalencia se establece el caso tendrá RecordType OCS
-                caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+                caseRecord.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
             }
             else 
             {

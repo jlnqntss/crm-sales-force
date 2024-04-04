@@ -139,7 +139,7 @@ public class MiZurichHandler implements ISystem
     private static void processFormToCase (Map<String, Object> recordValuesMap, ExternalRequest__c externalRequest)
     {
         Case caseRecord = (Case) ExternalRequestHandlerUtil.tf.transform(FORM_INC, SOBJECT_CASE, recordValuesMap);
-        caseRecord.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        caseRecord.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         caseRecord.Origin = ORIGIN_WEB;
         caseRecord.SourceArea__c = SOURCE_AREA_GENERIC_END_CUSTOMER;
         caseRecord.Status = STATUS_ASIGNADO;

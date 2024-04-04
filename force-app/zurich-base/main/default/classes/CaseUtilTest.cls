@@ -71,7 +71,7 @@ private with sharing class CaseUtilTest
         Test.startTest();
         //Crear caso
         List<Case> cases = new List<Case>();
-        Case caso = new Case( SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() );
+        Case caso = new Case( SuppliedEmail = emailsToSearch[0], RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY);
         cases.add(caso);
         //insertarlo
         insert cases;
@@ -117,7 +117,7 @@ private with sharing class CaseUtilTest
         Test.startTest();
         //Crear caso
         List<Case> cases = new List<Case>();
-        Case caso = new Case( SuppliedEmail = emailsToSearch[0], RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() );
+        Case caso = new Case( SuppliedEmail = emailsToSearch[0], RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY);
         cases.add(caso);
         //insertarlo
         insert cases;
@@ -145,7 +145,7 @@ private with sharing class CaseUtilTest
         Test.startTest();
         //Crear caso
         List<Case> cases = new List<Case>();
-        Case caso = new Case( SuppliedEmail = 'noexistoentrelosemailscreados@nts-solutions.com', RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() );
+        Case caso = new Case( SuppliedEmail = 'noexistoentrelosemailscreados@nts-solutions.com', RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY);
         cases.add(caso);
         //insertarlo
         insert cases;
@@ -173,7 +173,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_markMilestonesCompletedWhenClose_ok()
     {
-        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        Id rtOCSInquiryId = CaseUtil.RT_ID_OCSINQUIRY;
 
         //Crear caso
         List<Case> cases = new List<Case>();
@@ -408,7 +408,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_markMilestonesCompletedWhenClose_ko()
     {
-        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        Id rtOCSInquiryId = CaseUtil.RT_ID_OCSINQUIRY;
 
         //Crear caso
         List<Case> cases = new List<Case>();
@@ -459,7 +459,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_completeUSPMilestonesWhenClosedOrPending_ok()
     {
-        Id rtUSPId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        Id rtUSPId = CaseUtil.RT_ID_USPINQUIRY;
 
         List<Entitlement> ents = [SELECT Id FROM Entitlement WHERE Name = 'DefaultUsp'];
         System.assertEquals(false, ents.isEmpty(),MESSAGE_ENTITLEMENTS);
@@ -529,7 +529,7 @@ private with sharing class CaseUtilTest
         List<Case> cases = [SELECT Id, MediatedCustomer__c, RobotDocumentId__c FROM case];
         for(Case currentCase: cases)
         {
-            currentCase.RecordTypeId = CaseUtil.rtUSPId;
+            currentCase.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
             currentCase.RobotDocumentId__c = customer.NationalId__c;
         }
 
@@ -571,7 +571,7 @@ private with sharing class CaseUtilTest
 
         for(Case currentCase: cases)
         {
-            currentCase.RecordTypeId = CaseUtil.rtUSPId;
+            currentCase.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
             currentCase.CreatedOffer__c = oferta.InfoQuoteNumber__c;
         }
 
@@ -660,7 +660,7 @@ private with sharing class CaseUtilTest
     @IsTest
     private static void test_checkTypificationByRecordType_OK()
     {
-        String recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        String recordTypeOCS = CaseUtil.RT_ID_OCSINQUIRY;
 
         Boolean resultado;
         test.startTest();
@@ -678,7 +678,7 @@ private with sharing class CaseUtilTest
     @IsTest
     private static void test_checkTypificationByRecordType_KO()
     {
-        String recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        String recordTypeOCS = CaseUtil.RT_ID_OCSINQUIRY;
 
         Boolean resultado;
         test.startTest();
@@ -710,7 +710,7 @@ private with sharing class CaseUtilTest
         for (Case caseRelatedToIntermediary : casesRelatedToIntermediaries)
         {
             caseRelatedToIntermediary.Type = 'Venta';
-            caseRelatedToIntermediary.RecordTypeId = CaseUtil.rtUSPId;
+            caseRelatedToIntermediary.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
             caseRelatedToIntermediary.Status = 'Cerrado';
             caseRelatedToIntermediary.QuotationStage__c = 'Work In Progress';
         }
@@ -820,7 +820,7 @@ private with sharing class CaseUtilTest
     private static void test_getCasesToMarkMilestonesCompletedWhenClose()
     {
         // Crea datos de prueba
-        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        Id rtOCSInquiryId = CaseUtil.RT_ID_OCSINQUIRY;
         Case oldCase = new Case(Status = 'Abierto', RecordTypeId = rtOCSInquiryId);
         Case newCase = new Case(Status = 'Cerrado', RecordTypeId = rtOCSInquiryId);
         insert new List<Case> {oldCase, newCase};
@@ -998,7 +998,7 @@ private with sharing class CaseUtilTest
         List<Group> queueAnulacion = new GroupSelector().findByName('Email_TWW_Anulacion');
         List<Case> caseList = new List<Case>();
 
-        Id ocsInquiry = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry')?.getRecordTypeId();
+        Id ocsInquiry = CaseUtil.RT_ID_OCSINQUIRY;
 
         Case caso = new Case();
         caso.RecordTypeId = ocsInquiry;

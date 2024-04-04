@@ -3,8 +3,8 @@
  * con la página custom desarrollada para la ficha de campañas en la comunidad ZRM
  *
  * @author            : amiranda
- * @date              : 21-03-2024
- * @last modified on  : 21-03-2024
+ * @date              : 22-03-2024
+ * @last modified on  : 22-03-2024
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -38,7 +38,9 @@ public with sharing class CampaignZRMCustomPageController
 
         try
         {
-            List<Campaign> retrievedCampaigns = new CampaignsSelector().selectCampaigns();
+            Set<String> intermediaryCodes = getIntermediaryCodes();
+
+            List<Campaign> retrievedCampaigns = new CampaignsSelector().selectCampaignsAndCampaignMembersByOfferAssignedCodes(intermediaryCodes);
 
             if ( !retrievedCampaigns.isEmpty() )
             {
@@ -108,7 +110,15 @@ public with sharing class CampaignZRMCustomPageController
         {
             Set<String> intermediaryCodes = getIntermediaryCodes();
 
-            Map<Id, CampaignMember> campaignMembersByAccountId = new Map<Id, CampaignMember>( new CampaignMembersSelector.ProperCampaignMembersSelector().selectByCampaignIdAndOfferAssignedCode(campaignId, intermediaryCodes) );
+            List<CampaignMember> campaignMembersRelatedToCampaign  = new CampaignMembersSelector.ProperCampaignMembersSelector().selectByCampaignIdAndOfferAssignedCode(campaignId, intermediaryCodes);
+
+            // Obtener todos los Ids de las cuentas relacionadas con los miembros de campaña
+            Map<Id, CampaignMember> campaignMembersByAccountId = new Map<Id, CampaignMember>();
+
+            for (CampaignMember campaignMemberRelatedToCampaign : campaignMembersRelatedToCampaign)
+            {
+                campaignMembersByAccountId.put(campaignMemberRelatedToCampaign.Contact.AccountId, campaignMemberRelatedToCampaign);
+            }
 
             // Se obtienen todas las ofertas que no han sido clonadas asociadas a las cuentas asociadas a los contactos que a su vez están asociados a los miembros de campaña
             List<Opportunity> offersRelatedToCampaignMembers = new OpportunitiesSelector().selectByAccountIdsAndCampaignId(campaignMembersByAccountId.keySet(), campaignId, false);
@@ -251,11 +261,10 @@ public with sharing class CampaignZRMCustomPageController
         if ( users != null && !users.isEmpty() )
         {
             User currentUser = users.get(0);
-            
+
             // Si el perfil es el de Agrupación se obtienen las códigos de mediador que cuelgan de este
             if (currentUser.Profile.Name == AV_AGRUPACION_PROFILE_NAME)
             {
-                
                 List<Account> mediatorGroupAccounts = new AccountsSelector().findAllIntermediarysFromIntermediaryGroups(new Set<String> {currentUser.Contact.Account.IntermediaryGroup__c});
 
                 for (Account mediatorGroupAccount : mediatorGroupAccounts)

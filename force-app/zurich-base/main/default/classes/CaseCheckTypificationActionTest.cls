@@ -4,7 +4,7 @@ public with sharing class CaseCheckTypificationActionTest {
     @isTest
     static void test_CaseCheckTypificationAction_OK()
     {
-        String recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        String recordTypeOCS = CaseUtil.RT_ID_OCSINQUIRY;
 
         // Preparamos la Request
         List<CaseCheckTypificationAction.CheckTypificationRequest> typificationRequests = new List<CaseCheckTypificationAction.CheckTypificationRequest>();
@@ -34,7 +34,7 @@ public with sharing class CaseCheckTypificationActionTest {
     @isTest
     static void test_CaseCheckTypificationAction_KO()
     {
-        String recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        String recordTypeOCS = CaseUtil.RT_ID_OCSINQUIRY;
 
         // Preparamos la Request
         List<CaseCheckTypificationAction.CheckTypificationRequest> typificationRequests = new List<CaseCheckTypificationAction.CheckTypificationRequest>();

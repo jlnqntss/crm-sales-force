@@ -545,7 +545,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                             AND Account.Blocked__c = FALSE
                                             AND Account.Anonymized__c = FALSE
                                             AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE]);
+                                            AND Anonymized__c = FALSE
+                                            AND AccountId != NULL]);
 
         } else if (intermediary != null && accountIdsNotToQuery != null && accountIdsNotToQuery.isEmpty()) {
             result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
@@ -553,7 +554,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                             AND Account.Blocked__c = FALSE
                                             AND Account.Anonymized__c = FALSE
                                             AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE]);
+                                            AND Anonymized__c = FALSE
+                                            AND AccountId != NULL]);
         }
 
         return result;
@@ -580,7 +582,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                             AND Account.Blocked__c = FALSE
                                             AND Account.Anonymized__c = FALSE
                                             AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE]);
+                                            AND Anonymized__c = FALSE
+                                            AND AccountId != NULL]);
 
         } else if (accountIdsToQuery != null && accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) { // en caso que no haya elementos en accountIdsToQuery traemos todos los registros
             result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
@@ -588,7 +591,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                             AND Account.Blocked__c = FALSE
                                             AND Account.Anonymized__c = FALSE
                                             AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE]);
+                                            AND Anonymized__c = FALSE
+                                            AND AccountId != NULL]);
         }
 
         return result;
@@ -615,7 +619,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                             AND Account.Blocked__c = FALSE
                                             AND Account.Anonymized__c = FALSE
                                             AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE]);
+                                            AND Anonymized__c = FALSE
+                                            AND AccountId != NULL]);
 
         }
 
