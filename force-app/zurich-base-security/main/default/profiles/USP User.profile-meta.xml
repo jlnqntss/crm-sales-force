@@ -15392,7 +15392,7 @@
         <recordType>Account.Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-OCS Partner</layout>
+        <layout>Account-OCS Partner USP Users</layout>
         <recordType>Account.PartnerOCS</recordType>
     </layoutAssignments>
     <layoutAssignments>

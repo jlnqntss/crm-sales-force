@@ -191,7 +191,7 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
-        <content>OCS_Partner_Default</content>
+        <content>OCS_Partner_Default_USP_Users</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.PartnerOCS</recordType>
@@ -200,7 +200,7 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
-        <content>OCS_Partner_Default</content>
+        <content>OCS_Partner_Default_USP_Users</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.PartnerOCS</recordType>
@@ -209,7 +209,7 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
-        <content>OCS_Partner_Default</content>
+        <content>OCS_Partner_Default_USP_Users</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.PartnerOCS</recordType>
@@ -218,7 +218,7 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
-        <content>OCS_Partner_Default</content>
+        <content>OCS_Partner_Default_USP_Users</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.PartnerOCS</recordType>
@@ -227,7 +227,7 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
-        <content>OCS_Partner_Default</content>
+        <content>OCS_Partner_Default_USP_Users</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.PartnerOCS</recordType>
@@ -236,7 +236,7 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
-        <content>OCS_Partner_Default</content>
+        <content>OCS_Partner_Default_USP_Users</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.PartnerOCS</recordType>
@@ -461,7 +461,7 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
-        <content>OCS_Partner_Default</content>
+        <content>OCS_Partner_Default_USP_Users</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.PartnerOCS</recordType>
@@ -470,7 +470,7 @@
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
-        <content>OCS_Partner_Default</content>
+        <content>OCS_Partner_Default_USP_Users</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.PartnerOCS</recordType>
