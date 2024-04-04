@@ -12,6 +12,10 @@
         <default>false</default>
     </values>
     <values>
+        <fullName>Cerrado sin respuesta</fullName>
+        <default>false</default>
+    </values>
+    <values>
         <fullName>Nuevo</fullName>
         <default>true</default>
     </values>

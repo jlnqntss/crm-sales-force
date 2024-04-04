@@ -1,5 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>Cód. producto comercial</label>
+    <label>Producto comercial</label>
     <name>CommercialProductCode__c</name>
+    <picklistValues>
+        <masterLabel>Pack Productos Empresa</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Protección Camiones Leasing Zurich (OFERTABLE)</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Protección Comercios y Oficinas BSSG (OFERTABLE)</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Protección Comercios y Oficinas Zurich (No Ofertable)</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Protección Comunidades Zurich (OFERTABLE)</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Protección Construcción (OFERTABLE)</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Protección Empresas  Zurich (OFERTABLE)</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Protección Transportes Zurich (OFERTABLE)</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Responsabilidad Civil D&amp;O Zurich (OFERTABLE)</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Responsabilidad Civil Zurich (OFERTABLE)</masterLabel>
+        <translation></translation>
+    </picklistValues>
 </CustomFieldTranslation>

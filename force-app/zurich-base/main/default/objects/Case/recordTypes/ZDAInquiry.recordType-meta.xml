@@ -762,6 +762,49 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>CommercialProductCode__c</picklist>
+        <values>
+            <fullName>PRD0020</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0027</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0028</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0029</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0032</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0035</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0038</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PRD0901</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pack Productos Empresa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Protección Comercios y Oficinas BSSG %28OFERTABLE%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>CustomerFoundBy__c</picklist>
         <values>
             <fullName>Email</fullName>
