@@ -4,7 +4,9 @@
     <label>SAM Supervisor</label>
     <permissionSets>Acceso_App_SAM</permissionSets>
     <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
+    <permissionSets>Consulta_Datos_SAM</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
+    <permissionSets>Gestion_Datos_SAM</permissionSets>
     <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>
