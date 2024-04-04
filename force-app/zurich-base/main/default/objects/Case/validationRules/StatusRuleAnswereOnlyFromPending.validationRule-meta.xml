@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusRuleAnswereOnlyFromPending</fullName>
+    <active>true</active>
+    <description>[VR Caso] Caso sólo puede pasar a RESPONDIDO desde el estado PENDIENTE</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;ZDAInquiry&quot;  &amp;&amp; 
+ISCHANGED(Status) &amp;&amp;
+ISPICKVAL(Status,&quot;Respondido&quot;) &amp;&amp;
+NOT(ISPICKVAL( PRIORVALUE(Status),&quot;Respondido&quot;)) &amp;&amp; 
+$Permission.ZDATriggerCaseValidationRules</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>[VR Caso] Caso sólo puede pasar a RESPONDIDO desde el estado PENDIENTE</errorMessage>
+</ValidationRule>
