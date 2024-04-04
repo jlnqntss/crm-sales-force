@@ -4940,36 +4940,12 @@
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.AgrupacionMediador</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.Potential_Broker</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Business Customer</layout>
-        <recordType>Account.BusinessCustomer</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Intermediary</layout>
+        <layout>Account-SAM Intermediary</layout>
         <recordType>Account.Intermediary</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Master layout</layout>
-        <recordType>Account.Master</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-OCS Partner</layout>
-        <recordType>Account.Partner</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-OCS Partner</layout>
+        <layout>Account-SAM Partner</layout>
         <recordType>Account.PartnerOCS</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Parent Account</layout>
-        <recordType>Account.ParentAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>AccountRelationship__c-Admin Layout</layout>
@@ -4984,49 +4960,11 @@
         <layout>AuthMapping__mdt-AuthMapping Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Campaign-Campaign Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Campaign-Campaign Layout</layout>
-        <recordType>Campaign.Default</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Campaign-Campaign Layout</layout>
-        <recordType>Campaign.Telemarketing</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CampaignMember-Campaign Member Page Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Case Default OCS</layout>
-        <recordType>Case.OCSInquiry</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Case Default OCS</layout>
+        <layout>Case-Case Default SAM</layout>
         <recordType>Case.SAMInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Case Summary Sprinklr</layout>
-        <recordType>Case.OCSSprinklr</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Case Summary USP</layout>
-        <recordType>Case.USPInquiry</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>CaseInteraction-Case Feed Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Claim__c-Claim Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Codigo_Negocio_BancSabadell__mdt-Codigo Negocio BancSabadell Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Competitor__c-Agente zrm</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Consent__c-Consent Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
@@ -5127,39 +5065,6 @@
         <layout>MunicipalityAssignment__mdt-Municipality Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Objective__c-Frequency of notifications</layout>
-        <recordType>Objective__c.FrequencyNotifications</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Objective__c-Objetivos Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Objective__c-Objetivos Layout</layout>
-        <recordType>Objective__c.Objectives</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-Opportunity Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Order-Policy GI</layout>
-        <recordType>Order.PolicyGI</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Order-Policy life</layout>
-        <recordType>Order.PolicyLife</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Order-Quote GI</layout>
-        <recordType>Order.QuoteGI</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Order-Quote life</layout>
-        <recordType>Order.QuoteLife</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>OtherProduct__mdt-Other Product Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>PersonAccount-Formato de cuenta personal</layout>
         <recordType>PersonAccount.Customer</recordType>
     </layoutAssignments>
@@ -5172,12 +5077,6 @@
         <recordType>PersonAccount.Lead</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Product2-OCS Product</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Propensity__c-Agente zrm</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ProvinceAssignment__mdt-Province Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -5188,12 +5087,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Robot_Hegeo_Setting__mdt-Robot Hegeo Setting Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>SDMCommercialPlan__mdt-SDMCommercialPlan Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Special_Condition__c-Special Condition Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>SurveyAnswerOption__mdt-Survey Answer Option Layout</layout>
@@ -5243,16 +5136,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZRM_Genesys_WrapUp_mapping__mdt-Genesys WrapUp mapping Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>spr_sf__SocialPersona__c-Sprinklr Social Persona Default</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>spr_sf__SocialPersona__c-spr_sf__Sprinklr Social Persona Layout</layout>
-        <recordType>spr_sf__SocialPersona__c.Sprinklr</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>spr_sf__SocialPost__c-Sprinklr Social Post Default</layout>
     </layoutAssignments>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
@@ -5376,15 +5259,9 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
-        <recordType>Account.BusinessCustomer</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.Intermediary</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5394,7 +5271,7 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.ParentAccount</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5404,7 +5281,7 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.PartnerOCS</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5413,28 +5290,8 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
-        <recordType>Campaign.Default</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Campaign.Telemarketing</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Case.Claim</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Case.Enquiry</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>true</default>
         <recordType>Case.OCSInquiry</recordType>
-        <visible>true</visible>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
@@ -5442,9 +5299,9 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
+        <default>true</default>
         <recordType>Case.SAMInquiry</recordType>
-        <visible>false</visible>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
