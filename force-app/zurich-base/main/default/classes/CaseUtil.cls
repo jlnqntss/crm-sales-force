@@ -573,7 +573,7 @@ public with sharing class CaseUtil
 
     }
 
-     /**
+    /**
      * Método utilizado por Batch_CLoseInteractions para activar el campo CloseByBatch__c
      * @author lrodriguez6@seidor.es
      * @date 21/02/2024
@@ -589,8 +589,8 @@ public with sharing class CaseUtil
             for(Case currentCase : casesToRelate)
             {
                 currentCase.CloseByBatch__c = true;
-                casesToUpdate.add(currentCase);   
-            }  
+                casesToUpdate.add(currentCase);
+            }
         }
         return casesToUpdate;
     }
@@ -1536,10 +1536,10 @@ public with sharing class CaseUtil
     /**
      * Método que obtiene una lista de los perfiles sociales ,relacionados a los casos de tipo Sprinklr en los que se ha actualizado la cuenta a una de tipo Customer,
      * para actualizar el contacto. Dicho contacto será la person account relacionada al caso.
-     * 
+     *
      * @author aberuete
      * @date 08/03/2024
-     * 
+     *
      * @param List<Case> casesUpdated : Lista de casos
      * @param Map<Id,Case> oldCaseMap : Mapa de casos con los valores antiguos
      */
@@ -1556,25 +1556,25 @@ public with sharing class CaseUtil
                 if (caseUpdated.recordTypeId == RT_ID_OCSSPRINKLR && caseUpdated.AccountId != null && caseOld.AccountId != caseUpdated.AccountId && caseUpdated.SprinklrSocialPersona__c != null )
                 {
                     casesToUpdateSprSocialPersona.add(caseUpdated);
-                }  
+                }
             }
         }
 
-        List<Case> casesToLinkSprinklrSocialPersonaToContact = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (casesToUpdateSprSocialPersona, new List<String>{'Customer'});
+        List<Case> casesToLinkSprinklrSocialPersonaToContact = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (casesToUpdateSprSocialPersona, new List<String> {'Customer'});
 
         for (Case caseToLinkSprinklrSocialPersonaToContact : casesToLinkSprinklrSocialPersonaToContact)
         {
-            sprinklrSocialPersonaToUpdate.add(new spr_sf__SocialPersona__c (Id = caseToLinkSprinklrSocialPersonaToContact.SprinklrSocialPersona__c, spr_sf__Contact__c = caseToLinkSprinklrSocialPersonaToContact.Account.PersonContactId) );    
+            sprinklrSocialPersonaToUpdate.add( new spr_sf__SocialPersona__c (Id = caseToLinkSprinklrSocialPersonaToContact.SprinklrSocialPersona__c, spr_sf__Contact__c = caseToLinkSprinklrSocialPersonaToContact.Account.PersonContactId) );
         }
     }
 
     /**
-     * Método que obtiene una lista de los perfiles sociales ,relacionados a los casos de Sprinklr en los que se ha eliminado la cuenta, para borrar el contacto. 
-     * 
+     * Método que obtiene una lista de los perfiles sociales ,relacionados a los casos de Sprinklr en los que se ha eliminado la cuenta, para borrar el contacto.
+     *
      * @author aberuete
      * @date 08/03/2024
-     * 
-     * @param List<Case> casesUpdated : Lista de casos 
+     *
+     * @param List<Case> casesUpdated : Lista de casos
      * @param Map<Id,Case> oldCaseMap : Mapa de casos con los valores antiguos
      */
     public static void getSprinklrSocialPersonaToDeleteContactRelated (List<Case> casesUpdated, Map<Id,Case> oldCaseMap)
@@ -1596,17 +1596,17 @@ public with sharing class CaseUtil
 
         for (Case caseToUpdateSprSocialPersona : casesToUpdateSprSocialPersona)
         {
-            sprinklrSocialPersonaToUpdate.add(new spr_sf__SocialPersona__c (Id = caseToUpdateSprSocialPersona.SprinklrSocialPersona__c, spr_sf__Contact__c = null) );
+            sprinklrSocialPersonaToUpdate.add( new spr_sf__SocialPersona__c (Id = caseToUpdateSprSocialPersona.SprinklrSocialPersona__c, spr_sf__Contact__c = null) );
         }
     }
 
     /**
-     * Método que actualiza los perfiles sociales relacionados con los casos. 
-     * 
+     * Método que actualiza los perfiles sociales relacionados con los casos.
+     *
      * @author aberuete
      * @date 06/03/2024
-     * 
-     * @param List<Case> casesUpdated : Lista de casos 
+     *
+     * @param List<Case> casesUpdated : Lista de casos
      */
     public static void updateSprSocialPersonaToLinkContact()
     {
@@ -1617,25 +1617,25 @@ public with sharing class CaseUtil
             try
             {
                 Database.SaveResult [] resultList = Database.update(sprinklrSocialPersonaToUpdate, false);
-                
+
                 for (Database.SaveResult result: resultList )
                 {
-                    if(!result.isSuccess())
+                    if( !result.isSuccess() )
                     {
-                        for (Database.Error error :result.getErrors())
+                        for ( Database.Error error :result.getErrors() )
                         {
-                            msgErrores.add(error.getStatusCode() + ': ' + error.getMessage());
+                            msgErrores.add( error.getStatusCode() + ': ' + error.getMessage() );
                         }
                     }
-                }   
-                if (!msgErrores.isEmpty())
+                }
+                if ( !msgErrores.isEmpty() )
                 {
-                    ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando los perfiles sociales relacionados con los casos',CaseUtil.class.getName(),(String.join(msgErrores,'\n')));
-                } 
+                    ErrorLogUtil.commitError( ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando los perfiles sociales relacionados con los casos',CaseUtil.class.getName(),( String.join(msgErrores,'\n') ) );
+                }
             }
             catch (Exception e)
             {
-                ErrorLogUtil.commitError(e, CaseUtil.class.getName());
+                ErrorLogUtil.commitError( e, CaseUtil.class.getName() );
             }
         }
     }
@@ -1665,31 +1665,5 @@ public with sharing class CaseUtil
         }
 
         return mappingConfiguration;
-    }
-
-    /**
-     * Representa la configuración de tipologías de un caso.
-     * @author jfherrero
-     * @created date: 22/02/2024
-     */
-
-    @TestVisible
-    public class CaseTypology
-    {
-        public String type;
-        public String subtype;
-        public String typeN3;
-
-        /**
-         * Constructor por defecto
-         * @author jfherrero
-         * @created date: 22/02/2024
-         */
-        public caseTypology(String type, String subtype, String typeN3)
-        {
-            this.type = type;
-            this.subtype = subtype;
-            this.typeN3 = typeN3;
-        }
     }
 }
