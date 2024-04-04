@@ -46,19 +46,25 @@
         <label>TWW Retención</label>
     </customValue>
     <customValue>
-        <fullName>ZDA_MU_s</fullName>
+        <fullName>RRSS Postventa-Siniestros</fullName>
         <default>false</default>
-        <label>ZDA MU&apos;s</label>
+        <label>RRSS Postventa-Siniestros</label>
     </customValue>
     <customValue>
-        <fullName>ZDA_Soporte_Red</fullName>
+        <fullName>RRSS Marca</fullName>
         <default>false</default>
-        <label>ZDA Soporte Red</label>
+        <label>RRSS Marca</label>
     </customValue>
     <customValue>
-        <fullName>ZDA_Gestion_Cartera</fullName>
+        <fullName>GSS CSM</fullName>
         <default>false</default>
-        <label>ZDA Gestión Cartera</label>
+        <label>GSS CSM</label>
+    </customValue>
+    <customValue>
+        <fullName>Sprinklr</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Sprinklr</label>
     </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
