@@ -234,7 +234,7 @@ private with sharing class EmailMessagesUtilTest
     {
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
         relatedCase.Industry__c = INDUSTRY_VALUE;
         insert relatedCase;
 
@@ -278,7 +278,7 @@ private with sharing class EmailMessagesUtilTest
     private static void assignGenesysRoutingFieldsIndustry_update_ok()
     {
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
         relatedCase.Industry__c = INDUSTRY_VALUE;
         insert relatedCase;
         // The first time the emails dont have any valid genesys queue email receipts

@@ -627,7 +627,7 @@ private with sharing class Test_SystemUtil
     @IsTest
     private static void test_getDependantPicklistValuesByRecordType()
     {
-        Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        Id ocsRecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
 
         Map<String, List<String> > resultados = new Map<String, List<String> >();
         test.startTest();

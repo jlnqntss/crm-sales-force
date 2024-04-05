@@ -6,7 +6,7 @@ public with sharing class GenesysCloudStatusActionTest
     {
         //creamos el caso y el email relacionado
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 
