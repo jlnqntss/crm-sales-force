@@ -5,6 +5,7 @@
     <queueMembers>
         <roles>
             <role>SAM_Gestor</role>
+            <role>SAM_Supervisor</role>
         </roles>
     </queueMembers>
     <queueSobject>
