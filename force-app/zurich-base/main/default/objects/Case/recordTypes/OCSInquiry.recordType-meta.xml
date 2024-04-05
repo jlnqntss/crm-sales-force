@@ -25,6 +25,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>GSS CSM</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>TWW Retención</fullName>
             <default>false</default>
         </values>

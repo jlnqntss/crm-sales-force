@@ -6,7 +6,7 @@ public with sharing class TaskSelectorTest
     {
         Case relatedCase = new Case();
         List<Case> listaCaso = new List<Case>();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
         
         insert relatedCase;
 
