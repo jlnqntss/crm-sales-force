@@ -3,9 +3,9 @@
     <doesSendEmailToMembers>false</doesSendEmailToMembers>
     <name>Email_SAM_Partners</name>
     <queueMembers>
-        <users>
-            <user>adminklinc@zurich-es.com</user>
-        </users>
+        <roles>
+            <role>SAM_Gestor</role>
+        </roles>
     </queueMembers>
     <queueSobject>
         <sobjectType>Case</sobjectType>
