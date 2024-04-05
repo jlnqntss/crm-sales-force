@@ -36,6 +36,7 @@ public with sharing class EmailMessagesUtil
     private List<EmailMessage> emailMessageToCheck;
 
     Map<String,String> mapRouteTypeDestinatario = getEmailRouteTypeList();
+    @testvisible
     private static final Id uspRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
     @testvisible
     private static final Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
