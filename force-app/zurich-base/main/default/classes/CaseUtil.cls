@@ -11,10 +11,10 @@ public with sharing class CaseUtil
     public static final String closeResult='No Realizado';
     public static final String statusWon='Won';
     public static final String typeVenta= 'Venta';
-    public static final String rT_USP_CASES= 'USPInquiry';
     public static final String queryDays ='365';
     public static final String estadoCerrado= 'Cerrado';
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
+    public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
@@ -32,9 +32,20 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
 
     // Recupera el Id del RecordType de casos USP
-    public static final ID rtUSPId {
-        get {
+    public static final ID RT_ID_USPINQUIRY 
+    {
+        get 
+        {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
+        }
+    }
+
+    // Recupera el Id del RecordType de casos OCS
+    public static final ID RT_ID_OCSINQUIRY 
+    {
+        get 
+        {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSINQUIRY)?.getRecordTypeId();
         }
     }
 
@@ -392,7 +403,7 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if( caso.RecordTypeId == Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId() && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich')
+                if( caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich')
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
                     //Utilizar el email del SuppliedEmail
@@ -573,7 +584,7 @@ public with sharing class CaseUtil
 
     }
 
-     /**
+    /**
      * Método utilizado por Batch_CLoseInteractions para activar el campo CloseByBatch__c
      * @author lrodriguez6@seidor.es
      * @date 21/02/2024
@@ -589,8 +600,8 @@ public with sharing class CaseUtil
             for(Case currentCase : casesToRelate)
             {
                 currentCase.CloseByBatch__c = true;
-                casesToUpdate.add(currentCase);   
-            }  
+                casesToUpdate.add(currentCase);
+            }
         }
         return casesToUpdate;
     }
@@ -605,7 +616,7 @@ public with sharing class CaseUtil
      */
     private static List<Case> generateUspCaseList(List<Case> cases)
     {
-        Id rtUSPId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        Id rtUSPId = RT_ID_USPINQUIRY;
         List<Case> uspCases = new List<Case>();
 
         for(Case currentCase : cases)
@@ -708,7 +719,7 @@ public with sharing class CaseUtil
             MediatedCustomer__c = padre?.MediatedCustomer__c
             );
 
-        Id rtOCSId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        Id rtOCSId = RT_ID_OCSINQUIRY;
         if (padre.RecordTypeId == rtOCSId)
         {
             casoHijo.CallCenter__c = padre?.CallCenter__c;
@@ -880,7 +891,7 @@ public with sharing class CaseUtil
         Map <Id, Decimal> mapWonIntermediaryCases= new Map <Id,Decimal>();
         Map <Id, Decimal> mapWonChildCases= new Map <Id,Decimal>();
 
-        Id rtCasesUSPId= Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(rT_USP_CASES)?.getRecordTypeId();
+        Id rtCasesUSPId= RT_ID_USPINQUIRY;
 
         cases= new CasesSelector().getQueryCasesConversionRatio(accountsIntermediary,statusCombinado,closeResult,typeVenta,rtCasesUSPId,queryDays,estadoCerrado);
 
@@ -1063,7 +1074,7 @@ public with sharing class CaseUtil
     {
         List<Case> updatedCases = new List<Case>();
         Case oldCase = new Case();
-        Id rtOCSInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        Id rtOCSInquiryId = RT_ID_OCSINQUIRY;
 
         //Almacenar los casos que cumplen las condiciones
         for(Case caso : newList)
@@ -1536,10 +1547,10 @@ public with sharing class CaseUtil
     /**
      * Método que obtiene una lista de los perfiles sociales ,relacionados a los casos de tipo Sprinklr en los que se ha actualizado la cuenta a una de tipo Customer,
      * para actualizar el contacto. Dicho contacto será la person account relacionada al caso.
-     * 
+     *
      * @author aberuete
      * @date 08/03/2024
-     * 
+     *
      * @param List<Case> casesUpdated : Lista de casos
      * @param Map<Id,Case> oldCaseMap : Mapa de casos con los valores antiguos
      */
@@ -1556,25 +1567,25 @@ public with sharing class CaseUtil
                 if (caseUpdated.recordTypeId == RT_ID_OCSSPRINKLR && caseUpdated.AccountId != null && caseOld.AccountId != caseUpdated.AccountId && caseUpdated.SprinklrSocialPersona__c != null )
                 {
                     casesToUpdateSprSocialPersona.add(caseUpdated);
-                }  
+                }
             }
         }
 
-        List<Case> casesToLinkSprinklrSocialPersonaToContact = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (casesToUpdateSprSocialPersona, new List<String>{'Customer'});
+        List<Case> casesToLinkSprinklrSocialPersonaToContact = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (casesToUpdateSprSocialPersona, new List<String> {'Customer'});
 
         for (Case caseToLinkSprinklrSocialPersonaToContact : casesToLinkSprinklrSocialPersonaToContact)
         {
-            sprinklrSocialPersonaToUpdate.add(new spr_sf__SocialPersona__c (Id = caseToLinkSprinklrSocialPersonaToContact.SprinklrSocialPersona__c, spr_sf__Contact__c = caseToLinkSprinklrSocialPersonaToContact.Account.PersonContactId) );    
+            sprinklrSocialPersonaToUpdate.add( new spr_sf__SocialPersona__c (Id = caseToLinkSprinklrSocialPersonaToContact.SprinklrSocialPersona__c, spr_sf__Contact__c = caseToLinkSprinklrSocialPersonaToContact.Account.PersonContactId) );
         }
     }
 
     /**
-     * Método que obtiene una lista de los perfiles sociales ,relacionados a los casos de Sprinklr en los que se ha eliminado la cuenta, para borrar el contacto. 
-     * 
+     * Método que obtiene una lista de los perfiles sociales ,relacionados a los casos de Sprinklr en los que se ha eliminado la cuenta, para borrar el contacto.
+     *
      * @author aberuete
      * @date 08/03/2024
-     * 
-     * @param List<Case> casesUpdated : Lista de casos 
+     *
+     * @param List<Case> casesUpdated : Lista de casos
      * @param Map<Id,Case> oldCaseMap : Mapa de casos con los valores antiguos
      */
     public static void getSprinklrSocialPersonaToDeleteContactRelated (List<Case> casesUpdated, Map<Id,Case> oldCaseMap)
@@ -1596,17 +1607,17 @@ public with sharing class CaseUtil
 
         for (Case caseToUpdateSprSocialPersona : casesToUpdateSprSocialPersona)
         {
-            sprinklrSocialPersonaToUpdate.add(new spr_sf__SocialPersona__c (Id = caseToUpdateSprSocialPersona.SprinklrSocialPersona__c, spr_sf__Contact__c = null) );
+            sprinklrSocialPersonaToUpdate.add( new spr_sf__SocialPersona__c (Id = caseToUpdateSprSocialPersona.SprinklrSocialPersona__c, spr_sf__Contact__c = null) );
         }
     }
 
     /**
-     * Método que actualiza los perfiles sociales relacionados con los casos. 
-     * 
+     * Método que actualiza los perfiles sociales relacionados con los casos.
+     *
      * @author aberuete
      * @date 06/03/2024
-     * 
-     * @param List<Case> casesUpdated : Lista de casos 
+     *
+     * @param List<Case> casesUpdated : Lista de casos
      */
     public static void updateSprSocialPersonaToLinkContact()
     {
@@ -1617,25 +1628,25 @@ public with sharing class CaseUtil
             try
             {
                 Database.SaveResult [] resultList = Database.update(sprinklrSocialPersonaToUpdate, false);
-                
+
                 for (Database.SaveResult result: resultList )
                 {
-                    if(!result.isSuccess())
+                    if( !result.isSuccess() )
                     {
-                        for (Database.Error error :result.getErrors())
+                        for ( Database.Error error :result.getErrors() )
                         {
-                            msgErrores.add(error.getStatusCode() + ': ' + error.getMessage());
+                            msgErrores.add( error.getStatusCode() + ': ' + error.getMessage() );
                         }
                     }
-                }   
-                if (!msgErrores.isEmpty())
+                }
+                if ( !msgErrores.isEmpty() )
                 {
-                    ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando los perfiles sociales relacionados con los casos',CaseUtil.class.getName(),(String.join(msgErrores,'\n')));
-                } 
+                    ErrorLogUtil.commitError( ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando los perfiles sociales relacionados con los casos',CaseUtil.class.getName(),( String.join(msgErrores,'\n') ) );
+                }
             }
             catch (Exception e)
             {
-                ErrorLogUtil.commitError(e, CaseUtil.class.getName());
+                ErrorLogUtil.commitError( e, CaseUtil.class.getName() );
             }
         }
     }
@@ -1665,31 +1676,5 @@ public with sharing class CaseUtil
         }
 
         return mappingConfiguration;
-    }
-
-    /**
-     * Representa la configuración de tipologías de un caso.
-     * @author jfherrero
-     * @created date: 22/02/2024
-     */
-
-    @TestVisible
-    public class CaseTypology
-    {
-        public String type;
-        public String subtype;
-        public String typeN3;
-
-        /**
-         * Constructor por defecto
-         * @author jfherrero
-         * @created date: 22/02/2024
-         */
-        public caseTypology(String type, String subtype, String typeN3)
-        {
-            this.type = type;
-            this.subtype = subtype;
-            this.typeN3 = typeN3;
-        }
     }
 }

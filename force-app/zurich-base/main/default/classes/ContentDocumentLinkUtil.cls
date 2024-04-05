@@ -21,8 +21,8 @@ public with sharing class ContentDocumentLinkUtil
     public static List<EmailMessage> emailMessagesToUpdate = new List<EmailMessage>();
     public static List<Case> casesToUpdate = new List<Case>();
 
-    public static id recordTypeOCS = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
-    public static id recordTypeUSP = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+    public static id recordTypeOCS = CaseUtil.RT_ID_OCSINQUIRY;
+    public static id recordTypeUSP = CaseUtil.RT_ID_USPINQUIRY;
 
     private static void initSettings()
     {

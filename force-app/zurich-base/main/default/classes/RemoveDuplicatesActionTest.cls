@@ -5,7 +5,7 @@ public with sharing class RemoveDuplicatesActionTest
     @isTest
     static void test_removeDuplicates_OK()
     {
-        Id caseUspRecordType = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        Id caseUspRecordType = CaseUtil.RT_ID_USPINQUIRY;
         Case casoPrueba= new Case(RecordTypeId=caseUspRecordType,Subject='Test caso',Status='New',Origin='Phone',
                                   SourceArea__c='Partner',Type='Venta',Subtype__c='Apoyo Captación',TypeN3__c='Con oferta');
         Case casoDiferente= new Case(RecordTypeId=caseUspRecordType,Subject='Test caso2',Status='New',Origin='Phone',
