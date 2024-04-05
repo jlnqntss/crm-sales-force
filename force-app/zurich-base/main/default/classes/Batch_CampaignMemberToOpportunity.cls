@@ -303,7 +303,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         Map<Id, CampaignMember> cms = new Map<Id, CampaignMember>( campaignMembersSelector.selectByCampaignTypeAndId(crossSellingCampaigns, campMemberIdSetReceived) );
         Set<Id> campMemberIdSetFlow = cms.keyset();
 
-        Database.executeBatch( new Batch_CampaignMemberToOpportunity(campMemberIdSetFlow) );
+        Database.executeBatch( new Batch_CampaignMemberToOpportunity(campMemberIdSetFlow), 100 );
     }
 
 
