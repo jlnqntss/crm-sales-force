@@ -488,40 +488,53 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     }
     
     /**
-     * Método que saca las ofertas relacionadas con las cuentas y campañas 
-     * que pertencen a los miembros de campaña pasados por parámetro
-     * @author nikola.cobian@seidor.com
-     * @date 19/02/2024
-     * @param List<CampaignMember> campaignMembers
+     * Método devuelve las ofertas de un mediador, obviando las que tengan como cliente a cualquiera de los que se incluyen en la lista recibida (accountsIDsNotToQuery)
+     * y excluyendo las que no pertenezcan a los campaign member recibidos (campaignMembers)
+     * 
+     * SELECT AccountId FROM Opportunity
+     * WHERE IntermediaryId__c = :intermediaryID
+     *   AND Account.Blocked__c = false
+     *   AND Account.Anonymized__c = false
+     *   AND Blocked__c = false
+     *   AND Anonymized__c = false
+     *   AND AccountId != null
+     * IF (accountIDsNotToQuery != null && !accountIDsNotToQuery.isEmpty())
+     *   AND AccountId NOT IN :accountIDsNotToQuery
+     * IF (campaignIDsToExcludeMembers != null && !campaignIDsToExcludeMembers.isEmpty())
+     *   AND CampaignId NOT IN :campaignIDsToExcludeMembers
+     * 
+     * 
+     * @author fpalomo
+     * @date 04/04/2024
+     * 
      * @return List<Opportunities>
      */
-    public List<Opportunity> findZRMOpportunityByCampaignMembers(List<CampaignMember> campaignMembers)
+    public List<Opportunity> getIntermediaryOtherOffersByCampaignMembers(Set<String> campaignIDsToExcludeMembers, Set<String> accountIDsNotToQuery, String intermediaryID)
     {
-        List<Id> campaignMembersAccountsIds = new List<Id>();
-        Set<Id> campaignIds = new Set<Id>();
-        
-        for(CampaignMember cm : campaignMembers)
+        Set<Id> campaignIDs = new Set<Id>();
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> 
         {
-            campaignMembersAccountsIds.add(cm.Contact.AccountId);
-            campaignIds.add(cm.CampaignId);
+            Opportunity.AccountId
+        })
+        .addConditionEq(Opportunity.IntermediaryId__c, intermediaryID)
+        .addConditionEq(Account.Blocked__c, false)
+        .addConditionEq(Account.Anonymized__c, false)
+        .addConditionEq(Opportunity.Blocked__c, false)
+        .addConditionEq(Opportunity.Anonymized__c, false)
+        .addConditionNotEq(Opportunity.AccountId, null);
+        
+        if (accountIDsNotToQuery != null && !accountIDsNotToQuery.isEmpty())
+        {
+            this.baseQuery.addConditionNotIn(Opportunity.AccountId, accountIDsNotToQuery);
         }
 
-        List<Opportunity> retrievedOffers = new List<Opportunity>();
-        if(!campaignMembers.isEmpty())
+        if (campaignIDsToExcludeMembers != null && !campaignIDsToExcludeMembers.isEmpty())
         {
-            this.baseQuery.selectFields(new Set<Schema.SObjectField> 
-            {
-                Opportunity.AccountId,
-                Opportunity.CampaignId,
-                Opportunity.ZRM__c
-            })
-            .addConditionIn(Opportunity.AccountId, campaignMembersAccountsIds)
-            .addConditionIn(Opportunity.CampaignId, campaignIds);
-
-            retrievedOffers =  (List<Opportunity>) this.baseQuery.run();
+            this.baseQuery.addConditionNotIn(Opportunity.CampaignId, campaignIDsToExcludeMembers);
         }
-        
-        return retrievedOffers;
+            
+        return (List<Opportunity>) this.baseQuery.run();
     }
 
 
