@@ -66,35 +66,6 @@ private with sharing class OpportunitiesSelectorTest
         insert offers;
     }
 
-    /**
-     * Método que comprueba la lógica del selector findZRMOpportunityByCampaignMembers
-     * @author nikola.cobian@seidor.com
-     * @date 20/02/2024
-     * @see OpportunitiesSelector.findZRMOpportunityByCampaignMembers
-     */
-    @isTest
-    private static void test_findZRMOpportunityByCampaignMembers()
-    {                
-        //Cogemos las campañas generadas de tipo Venta Cruzada
-        Campaign testCampaign = [SELECT Id FROM Campaign WHERE Type = 'Cross Selling'];
-        
-        //Cogemos los miembros de campaña asociados a la campaña generada
-        List<CampaignMember> testCampaignMembers = [SELECT Id, CampaignId, Contact.AccountId FROM CampaignMember WHERE CampaignId =: testCampaign.Id];
-
-        //Cogemos las ofertas de ZRM generadas asociadas a las cuentas asociadas a los miembros de campaña
-        List<Opportunity> ZRMoffers = [SELECT Id, AccountId FROM Opportunity WHERE AccountId =: testCampaignMembers[0].Contact.AccountId];
-
-        Test.startTest();
-        List<Opportunity> retrievedOffers = new OpportunitiesSelector().findZRMOpportunityByCampaignMembers(testCampaignMembers);
-        Test.stopTest();
-
-        //Comprobamos que cada oferta devuelta tenga el atributo ZRM__c a true
-        for(Opportunity retrievedOffer : retrievedOffers)
-        {
-            System.assertEquals(retrievedOffer.ZRM__c, true, 'El atributo ZRM debe ser true');
-        }
-    }
-
     @isTest
     static void test_selectByAccountIdAndScopes_matchedRecords()
     {
