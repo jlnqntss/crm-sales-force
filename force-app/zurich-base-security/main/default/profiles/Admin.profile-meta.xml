@@ -6446,6 +6446,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.ControlEmailCC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
