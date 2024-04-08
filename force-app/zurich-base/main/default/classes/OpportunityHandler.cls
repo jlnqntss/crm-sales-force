@@ -39,6 +39,7 @@ public class OpportunityHandler implements ITrigger
     {
         OpportunityUtil.setStageNameOpen(newList);
         OpportunityUtil.setSalesProcess(newList);
+        OpportunityUtil.identifyPotentialMatches(newList);
     }
 
     /**
