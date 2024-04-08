@@ -15,15 +15,36 @@
         <valueSetDefinition>
             <sorted>true</sorted>
             <value>
+                <fullName>Abrir</fullName>
+                <default>false</default>
+                <label>Abrir</label>
+            </value>
+            <value>
+                <fullName>Acceso Descargas</fullName>
+                <default>false</default>
+                <label>Acceso Descargas</label>
+            </value>
+            <value>
                 <fullName>Activation failure</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Activation failure</label>
             </value>
             <value>
+                <fullName>Ajuste oferta</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Ajuste oferta</label>
+            </value>
+            <value>
                 <fullName>Alegaciones SDC</fullName>
                 <default>false</default>
                 <label>Alegaciones SDC</label>
+            </value>
+            <value>
+                <fullName>Alta</fullName>
+                <default>false</default>
+                <label>Alta</label>
             </value>
             <value>
                 <fullName>Annulment</fullName>
@@ -45,6 +66,21 @@
                 <fullName>Atención deficiente tramitador</fullName>
                 <default>false</default>
                 <label>Atención deficiente tramitador</label>
+            </value>
+            <value>
+                <fullName>Ayuda Acceso</fullName>
+                <default>false</default>
+                <label>Ayuda Acceso</label>
+            </value>
+            <value>
+                <fullName>Ayuda Descargas</fullName>
+                <default>false</default>
+                <label>Ayuda Descargas</label>
+            </value>
+            <value>
+                <fullName>Baja</fullName>
+                <default>false</default>
+                <label>Baja</label>
             </value>
             <value>
                 <fullName>Bank data</fullName>
@@ -143,6 +179,11 @@
                 <label>Cartera</label>
             </value>
             <value>
+                <fullName>Cerrar</fullName>
+                <default>false</default>
+                <label>Cerrar</label>
+            </value>
+            <value>
                 <fullName>Certificados</fullName>
                 <default>false</default>
                 <label>Certificados</label>
@@ -192,6 +233,16 @@
                 <label>Conductor</label>
             </value>
             <value>
+                <fullName>Configuración MFA</fullName>
+                <default>false</default>
+                <label>Configuración MFA</label>
+            </value>
+            <value>
+                <fullName>Configuración Usuario</fullName>
+                <default>false</default>
+                <label>Configuración Usuario</label>
+            </value>
+            <value>
                 <fullName>Congratulations</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -209,6 +260,11 @@
                 <label>Consulta</label>
             </value>
             <value>
+                <fullName>Contact Center</fullName>
+                <default>false</default>
+                <label>Contact Center</label>
+            </value>
+            <value>
                 <fullName>Contratación</fullName>
                 <default>false</default>
                 <label>Contratación</label>
@@ -217,6 +273,11 @@
                 <fullName>Cotización</fullName>
                 <default>false</default>
                 <label>Cotización</label>
+            </value>
+            <value>
+                <fullName>CSM/Comercial</fullName>
+                <default>false</default>
+                <label>CSM/Comercial</label>
             </value>
             <value>
                 <fullName>CTL surveys</fullName>
@@ -410,6 +471,11 @@
                 <label>Gestión</label>
             </value>
             <value>
+                <fullName>Gestionar</fullName>
+                <default>false</default>
+                <label>Gestionar</label>
+            </value>
+            <value>
                 <fullName>Gestión competencias</fullName>
                 <default>false</default>
                 <label>Gestión competencias</label>
@@ -425,6 +491,16 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Green card</label>
+            </value>
+            <value>
+                <fullName>Herramientas Google</fullName>
+                <default>false</default>
+                <label>Herramientas Google</label>
+            </value>
+            <value>
+                <fullName>Herramientas Zurich</fullName>
+                <default>false</default>
+                <label>Herramientas Zurich</label>
             </value>
             <value>
                 <fullName>Incidencia</fullName>
@@ -454,6 +530,11 @@
                 <label>Inconsistency</label>
             </value>
             <value>
+                <fullName>Incorrecta</fullName>
+                <default>false</default>
+                <label>Incorrecta</label>
+            </value>
+            <value>
                 <fullName>Información</fullName>
                 <default>false</default>
                 <label>Información</label>
@@ -462,6 +543,11 @@
                 <fullName>Infraseguro</fullName>
                 <default>false</default>
                 <label>Infraseguro</label>
+            </value>
+            <value>
+                <fullName>Instalación</fullName>
+                <default>false</default>
+                <label>Instalación</label>
             </value>
             <value>
                 <fullName>Insured management</fullName>
@@ -490,6 +576,11 @@
                 <fullName>Modificación</fullName>
                 <default>false</default>
                 <label>Modificación</label>
+            </value>
+            <value>
+                <fullName>Modificación Correo electrónico</fullName>
+                <default>false</default>
+                <label>Modificación Correo electrónico</label>
             </value>
             <value>
                 <fullName>Modificación oferta</fullName>
@@ -536,6 +627,11 @@
                 <label>No offer</label>
             </value>
             <value>
+                <fullName>No se genera</fullName>
+                <default>false</default>
+                <label>No se genera</label>
+            </value>
+            <value>
                 <fullName>Nueva oferta</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -546,6 +642,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Nueva Producción</label>
+            </value>
+            <value>
+                <fullName>O365</fullName>
+                <default>false</default>
+                <label>O365</label>
             </value>
             <value>
                 <fullName>Oferta</fullName>
@@ -571,9 +672,20 @@
                 <label>Offer (Shipping)</label>
             </value>
             <value>
+                <fullName>Ofimática</fullName>
+                <default>false</default>
+                <label>Ofimática</label>
+            </value>
+            <value>
                 <fullName>Otras áreas</fullName>
                 <default>false</default>
                 <label>Otras áreas</label>
+            </value>
+            <value>
+                <fullName>Otros</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Otros</label>
             </value>
             <value>
                 <fullName>Pago Graciable</fullName>
@@ -753,6 +865,11 @@
                 <label>Return</label>
             </value>
             <value>
+                <fullName>Revisar Usuario</fullName>
+                <default>false</default>
+                <label>Revisar Usuario</label>
+            </value>
+            <value>
                 <fullName>Revocación saneamiento</fullName>
                 <default>false</default>
                 <label>Revocación saneamiento</label>
@@ -786,9 +903,39 @@
                 <label>Seguimiento</label>
             </value>
             <value>
+                <fullName>Siniestros</fullName>
+                <default>false</default>
+                <label>Siniestros</label>
+            </value>
+            <value>
                 <fullName>Sin Oferta</fullName>
                 <default>false</default>
                 <label>Sin Oferta</label>
+            </value>
+            <value>
+                <fullName>Sistema Opertivo</fullName>
+                <default>false</default>
+                <label>Sistema Opertivo</label>
+            </value>
+            <value>
+                <fullName>Soporte</fullName>
+                <default>false</default>
+                <label>Soporte</label>
+            </value>
+            <value>
+                <fullName>Soporte informático</fullName>
+                <default>false</default>
+                <label>Soporte informático</label>
+            </value>
+            <value>
+                <fullName>Soporte Recertificación</fullName>
+                <default>false</default>
+                <label>Soporte Recertificación</label>
+            </value>
+            <value>
+                <fullName>Soporte remoto</fullName>
+                <default>false</default>
+                <label>Soporte remoto</label>
             </value>
             <value>
                 <fullName>Spam</fullName>
@@ -848,6 +995,17 @@
                 <label>Validación/ emisión</label>
             </value>
             <value>
+                <fullName>Validación / emisión</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Validación / emisión</label>
+            </value>
+            <value>
+                <fullName>Videollamadas</fullName>
+                <default>false</default>
+                <label>Videollamadas</label>
+            </value>
+            <value>
                 <fullName>Warranty extension</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
@@ -864,6 +1022,11 @@
                 <default>false</default>
                 <isActive>false</isActive>
                 <label>Web</label>
+            </value>
+            <value>
+                <fullName>Web Corporativa</fullName>
+                <default>false</default>
+                <label>Web Corporativa</label>
             </value>
             <value>
                 <fullName>With offer (Management skills)</fullName>
@@ -884,9 +1047,13 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>Queja</controllingFieldValue>
-            <valueName>Queja</valueName>
-                </valueSettings>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
+            <valueName>Modificación oferta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transferencia</controllingFieldValue>
+            <valueName>Otras áreas</valueName>
+        </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
             <valueName>Atención deficiente tramitador</valueName>
@@ -938,6 +1105,10 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <valueName>Alegaciones SDC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
             <valueName>Cumplimiento resolución</valueName>
         </valueSettings>
         <valueSettings>
@@ -958,8 +1129,34 @@
             <valueName>Resolución SDC</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Contratacion</controllingFieldValue>
-            <valueName>Contratación</valueName>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>ZRM</controllingFieldValue>
+            <controllingFieldValue>Zurich Empresas</controllingFieldValue>
+            <controllingFieldValue>Catálogo virtual</controllingFieldValue>
+            <controllingFieldValue>Correo Corporativo</controllingFieldValue>
+            <controllingFieldValue>Webservices</controllingFieldValue>
+            <valueName>Ayuda Acceso</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Zona Zurich</controllingFieldValue>
+            <controllingFieldValue>ZRM</controllingFieldValue>
+            <controllingFieldValue>Zurich Empresas</controllingFieldValue>
+            <controllingFieldValue>ZVGO</controllingFieldValue>
+            <controllingFieldValue>Catálogo virtual</controllingFieldValue>
+            <controllingFieldValue>Correo Corporativo</controllingFieldValue>
+            <controllingFieldValue>Descargas / Descargas EIAC</controllingFieldValue>
+            <controllingFieldValue>Documentación</controllingFieldValue>
+            <controllingFieldValue>INFO</controllingFieldValue>
+            <controllingFieldValue>MFA (Okta)</controllingFieldValue>
+            <controllingFieldValue>Password</controllingFieldValue>
+            <valueName>Soporte remoto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ZRM</controllingFieldValue>
+            <controllingFieldValue>Zurich Empresas</controllingFieldValue>
+            <controllingFieldValue>ZVGO</controllingFieldValue>
+            <controllingFieldValue>Webservices</controllingFieldValue>
+            <valueName>Revisar Usuario</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Queja</controllingFieldValue>
@@ -1020,24 +1217,32 @@
             <valueName>No definido</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Consulta</controllingFieldValue>
-            <valueName>Consulta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión</controllingFieldValue>
-            <valueName>Gestión</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Dorsales</controllingFieldValue>
-            <valueName>Dorsales</valueName>
+            <controllingFieldValue>Contratacion</controllingFieldValue>
+            <valueName>Contratación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Comentario</controllingFieldValue>
             <valueName>Comentario</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Consulta</controllingFieldValue>
+            <valueName>Consulta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dorsales</controllingFieldValue>
+            <valueName>Dorsales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión</controllingFieldValue>
+            <valueName>Gestión</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Spam</controllingFieldValue>
             <valueName>Spam</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
+            <valueName>Incidencia</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Apoyo Captación</controllingFieldValue>
@@ -1072,8 +1277,82 @@
             <valueName>Anulación</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Incidencia</valueName>
+            <controllingFieldValue>Banca Seguros</controllingFieldValue>
+            <controllingFieldValue>Correo Corporativo</controllingFieldValue>
+            <controllingFieldValue>Mediación</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Alta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Banca Seguros</controllingFieldValue>
+            <controllingFieldValue>Correo Corporativo</controllingFieldValue>
+            <controllingFieldValue>Mediación</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Baja</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Banca Seguros</controllingFieldValue>
+            <controllingFieldValue>Correo Corporativo</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Mediación</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Password</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Modificación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Catálogo virtual</controllingFieldValue>
+            <valueName>Configuración Usuario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Contact Center</controllingFieldValue>
+            <valueName>Contact Center</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CSM/Comercial</controllingFieldValue>
+            <valueName>CSM/Comercial</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Descargas / Descargas EIAC</controllingFieldValue>
+            <valueName>Acceso Descargas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Descargas / Descargas EIAC</controllingFieldValue>
+            <valueName>Ayuda Descargas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Documentación</controllingFieldValue>
+            <valueName>Incorrecta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Documentación</controllingFieldValue>
+            <valueName>No se genera</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Genious Bar</controllingFieldValue>
+            <valueName>Herramientas Google</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Genious Bar</controllingFieldValue>
+            <valueName>Herramientas Zurich</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Genious Bar</controllingFieldValue>
+            <valueName>O365</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Genious Bar</controllingFieldValue>
+            <valueName>Soporte informático</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Genious Bar</controllingFieldValue>
+            <valueName>Videollamadas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Genious Bar</controllingFieldValue>
+            <valueName>Web Corporativa</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
@@ -1148,12 +1427,20 @@
             <valueName>Renovación póliza</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Información</controllingFieldValue>
-            <valueName>Información</valueName>
+            <controllingFieldValue>Incidencia Service Now</controllingFieldValue>
+            <valueName>Abrir</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
-            <valueName>Envíos (Mediador)</valueName>
+            <controllingFieldValue>Incidencia Service Now</controllingFieldValue>
+            <valueName>Cerrar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Incidencia Service Now</controllingFieldValue>
+            <valueName>Gestionar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Información</controllingFieldValue>
+            <valueName>Información</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Retención</controllingFieldValue>
@@ -1181,14 +1468,6 @@
             <valueName>Emisión de Factura Electrónica</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
-            <valueName>Modificación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Modificación oferta</controllingFieldValue>
-            <valueName>Modificación oferta</valueName>
-        </valueSettings>
-        <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <valueName>Cotización</valueName>
         </valueSettings>
@@ -1199,10 +1478,6 @@
             <valueName>Emisión</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Seguimiento</controllingFieldValue>
-            <valueName>Seguimiento</valueName>
-        </valueSettings>
-        <valueSettings>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <valueName>Certificados</valueName>
         </valueSettings>
@@ -1211,12 +1486,24 @@
             <valueName>Documentación</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
+            <valueName>Envíos (Mediador)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INFO</controllingFieldValue>
+            <valueName>Instalación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Seguimiento</controllingFieldValue>
+            <valueName>Seguimiento</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Campaña</controllingFieldValue>
             <valueName>Campaña</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Transferencia</controllingFieldValue>
-            <valueName>Otras áreas</valueName>
+            <controllingFieldValue>MFA (Okta)</controllingFieldValue>
+            <valueName>Configuración MFA</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias (Cliente)</controllingFieldValue>
@@ -1233,12 +1520,36 @@
             <valueName>Recibo</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Password</controllingFieldValue>
+            <valueName>Soporte</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <valueName>Comisiones</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <valueName>Zona Zurich</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recertificación Usuarios</controllingFieldValue>
+            <valueName>Modificación Correo electrónico</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recertificación Usuarios</controllingFieldValue>
+            <valueName>Soporte Recertificación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestros</controllingFieldValue>
+            <valueName>Siniestros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Software Obsoleto</controllingFieldValue>
+            <valueName>Ofimática</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Software Obsoleto</controllingFieldValue>
+            <valueName>Sistema Opertivo</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Recobro reactivo</controllingFieldValue>
