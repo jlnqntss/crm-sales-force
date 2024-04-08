@@ -684,7 +684,6 @@
             <value>
                 <fullName>Otros</fullName>
                 <default>false</default>
-                <isActive>false</isActive>
                 <label>Otros</label>
             </value>
             <value>
@@ -1157,6 +1156,13 @@
             <controllingFieldValue>ZVGO</controllingFieldValue>
             <controllingFieldValue>Webservices</controllingFieldValue>
             <valueName>Revisar Usuario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ZVGO</controllingFieldValue>
+            <controllingFieldValue>Otros</controllingFieldValue>
+            <controllingFieldValue>INFO</controllingFieldValue>
+            <controllingFieldValue>Recertificación Usuarios</controllingFieldValue>
+            <valueName>Otros</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Queja</controllingFieldValue>
