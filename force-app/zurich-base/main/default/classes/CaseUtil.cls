@@ -16,6 +16,7 @@ public with sharing class CaseUtil
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
     public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
+    public static final String RT_NAME_ZDA = 'ZDAInquiry';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
     public static final String SPRINKLR_QUEUE_POSTVENTA = 'Postventa Redes Sociales';
@@ -32,18 +33,18 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
 
     // Recupera el Id del RecordType de casos USP
-    public static final ID RT_ID_USPINQUIRY 
+    public static final ID RT_ID_USPINQUIRY
     {
-        get 
+        get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
         }
     }
 
     // Recupera el Id del RecordType de casos OCS
-    public static final ID RT_ID_OCSINQUIRY 
+    public static final ID RT_ID_OCSINQUIRY
     {
-        get 
+        get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSINQUIRY)?.getRecordTypeId();
         }
@@ -55,6 +56,15 @@ public with sharing class CaseUtil
         get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR).getRecordTypeId();
+        }
+    }
+
+    // Recupera el Id del RecordType de casos ZDA
+    public static final ID RT_ID_ZDA
+    {
+        get
+        {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId();
         }
     }
 
@@ -383,6 +393,30 @@ public with sharing class CaseUtil
                     customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_SINIESTROS;
                     customerRequest.OwnerId = queuePostventaRRSS[0].Id;
                 }
+            }
+        }
+    }
+
+    /**
+     * Para aquellos casos que sean de ZDA y el origen sea Canal unico (llegan via API estandar), se aplica formato a la descripcion
+     * del caso, puesto que llegan con este formato:
+     * Usuario: NOMBRE APELLIDO1 APELLIDO2;;Correo electrónico: USUARIO@bancsabadell.com;;Unidad de trabajo: 0086
+     * Se debe sustituir ;; por un salto de linea, de tal manera que quede:
+     * Usuario: NOMBRE APELLIDO1 APELLIDO2
+     * Correo electrónico: USUARIO@bancsabadell.com
+     * Unidad de trabajo: 0086
+     *
+     * @author mario.navarro@seidor.com
+     * @date 08/04/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void applyFormatToZDABody(List<Case> insertedCases)
+    {
+        for(Case insertedCase : insertedCases)
+        {
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.Origin?.equals('CanalUnico') && insertedCase.Description != null)
+            {
+                insertedCase.Description = insertedCase.Description.replace(';;', '\n');
             }
         }
     }
