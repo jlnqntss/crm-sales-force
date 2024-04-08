@@ -129,7 +129,7 @@ public without sharing class ZRMOfferVisibilityUtil {
             // si tiene agrupacion añado los usuarios agr a los que apunte ese mediador
             if (intermediaryGroupId != null) {
                 for (User userAGR: userAGRList) {
-                    if (userAGR.Contact.Account.IntermediaryGroup__c.equals(intermediaryGroupId)) {
+                    if (userAGR.Contact.Account.IntermediaryGroup__c != null && String.isNotEmpty(userAGR.Contact.Account.IntermediaryGroup__c) && userAGR.Contact.Account.IntermediaryGroup__c.equals(intermediaryGroupId)) {
                         result = generateMap(result, intermediaryId, userAGR.Id);
                     }
                 }
