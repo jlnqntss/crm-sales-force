@@ -982,13 +982,18 @@ public with sharing class CaseUtil
         }
 
         List<Case> parentCases = new CasesSelector().getCasesByTicketId(ticketIdsToSearch);
+        if ( parentCases.isEmpty() )
+        {
+            //no se ha encontrado ningun parent, no hay nada que relacionar ==> FIN
+            return;
+        }
         //2- Agrupamos casos por ticketId
         Map<Double, Case> casesByTicketId = (Map<Double, Case>) CollectionUtil.hashList( parentCases, Case.fields.TicketId__c.getDescribe().getName() );
 
         //3- Iteramos para setear los 'padres'
         for (Case c : casesToRelate)
         {
-            if ( c.RelatedRequestId__c != null && casesByTicketId.containsKey(c.RelatedRequestId__c) )
+            if ( c.RelatedRequestId__c != null && casesByTicketId?.containsKey(c.RelatedRequestId__c) )
             {
                 c.ParentId = casesByTicketId.get(c.RelatedRequestId__c).Id;
             }
