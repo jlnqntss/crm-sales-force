@@ -650,35 +650,39 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * 
      * 
      */
-    public List<Opportunity> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountIdsSet, Set<String> offersToExclude) {
-
+    public List<Opportunity> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountIdsSet, Set<String> offersToExclude)
+    {
         List<Opportunity> result = new List<Opportunity>();
 
-        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && accountIdsSet != null && !accountIdsSet.isEmpty()) {
-
-            this.baseQuery.selectFields
-            (
-                new List<Schema.SObjectField>
-            {
+        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && accountIdsSet != null && !accountIdsSet.isEmpty())
+        {
+            this.baseQuery.selectFields(new List<Schema.SObjectField>{
                 Opportunity.Id,
                 Opportunity.AccountId,
                 Opportunity.IntermediaryId__c
-            }
-            ).selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c');
+            }).selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c');
 
             this.baseQuery                            
                             .addConditionNotEq(Opportunity.Id, offersToExclude)
                             .addConditionIn(Opportunity.AccountId, accountIdsSet)
                             .addConditionEq(Opportunity.Account.Blocked__c, FALSE)
                             .addConditionEq(Opportunity.Account.Anonymized__c, FALSE)
-                            //.addConditionIn(Opportunity., )
-                            //.addConditionIn(Opportunity., )
                             .addConditionEq(Opportunity.Blocked__c, FALSE)
                             .addConditionEq(Opportunity.Anonymized__c, FALSE);
                             //.addConditionNotEq(Opportunity.AccountId, NULL);
 
-            if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) { // si no tiene agrupación podemos traer solo 1 resultado
+            // si no tiene agrupación podemos traer solo 1 resultado
+            if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty())
+            {
                 this.baseQuery.setLimit(1);
+            }
+
+            else
+            {
+                this.baseQuery.addCondition(Query.doOr(
+                    Query.conditionIn('Intermediary__c', intermediaryIdsSet),
+                    Query.conditionIn('IntermediaryId__r.IntermediaryGroup__c', intermediaryGroupIdsSet)
+                ));
             }
 
             result = this.baseQuery.enforceSecurity().run();

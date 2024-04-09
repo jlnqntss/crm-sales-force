@@ -255,18 +255,45 @@ public with sharing class UsersSelector extends RecordsSelector
 
     /**
      * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
+     * 
+     * SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+     * FROM User 
+     * WHERE Profile.Name IN ( ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR )
+     *  AND (
+     *      Contact.AccountId IN :intermediariesSet
+     *      OR Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList
+     *  ) 
+     *  AND IsActive = TRUE
+     * 
      * @author      dmunoz
      * @date        16/02/2024
      */
-    public List<User> findZRMActiveUsersByIntermediaryId(Set<String> intermediariesSet, List<String> intermediaryGroupIdList) {
+    public List<User> findZRMActiveUsersByIntermediaryId(Set<String> intermediariesSet, List<String> intermediaryGroupIdList)
+    {
         List<User> result = new List<User>();
 
-        if (intermediariesSet != null && !intermediariesSet.isEmpty()) {
-            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
-                                    FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
-                                    AND (Contact.AccountId IN :intermediariesSet OR Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList) 
-                                    AND IsActive = TRUE]);
+        if (intermediariesSet != null && !intermediariesSet.isEmpty())
+        {
+            List<Schema.SObjectField> fieldsToSelect = new List<Schema.SObjectField>{
+                User.Contact.AccountId,
+                User.Profile.Name,
+                User.Contact.Account.IntermediaryGroup__c
+            }
+
+            this.baseQuery
+                .selectFields(fieldsToSelect)
+                .addConditionIn(User.Profile.Name, new Set<String>{
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS,
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
+                })
+                .addCondition(Query.doOr(
+                    Query.conditionIn(User.Contact.AccountId, intermediariesSet),
+                    Query.conditionIn(User.Contact.Account.IntermediaryGroup__c, intermediaryGroupIdList)
+                ));
+                .addConditionEq(User.IsActive, true)
+                .enforceSecurity(true);
+    
+            result = this.baseQuery.run();
         }
 
         return result;
@@ -274,18 +301,39 @@ public with sharing class UsersSelector extends RecordsSelector
 
     /**
      * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
+     * 
+     * SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+     * FROM User 
+     * WHERE Profile.Name IN ( ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR )
+     *  AND Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList
+     *  AND IsActive = TRUE
+     * 
      * @author      dmunoz
      * @date        16/02/2024
      */
-    public List<User> findZRMActiveUsersByIntermediaryGroupId(Set<String> intermediaryGroupIdList) {
+    public List<User> findZRMActiveUsersByIntermediaryGroupId(Set<String> intermediaryGroupIdList)
+    {
         List<User> result = new List<User>();
 
-        if (intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty()) {
-            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
-                                    FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
-                                    AND Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList
-                                    AND IsActive = TRUE]);
+        if (intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty())
+        {
+            List<Schema.SObjectField> fieldsToSelect = new List<Schema.SObjectField>{
+                User.Contact.AccountId,
+                User.Profile.Name,
+                User.Contact.Account.IntermediaryGroup__c
+            }
+
+            this.baseQuery
+                .selectFields(fieldsToSelect)
+                .addConditionIn(User.Profile.Name, new Set<String>{
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS,
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
+                })
+                .addConditionIn(User.Contact.Account.IntermediaryGroup__c, intermediaryGroupIdList);
+                .addConditionEq(User.IsActive, true)
+                .enforceSecurity(true);
+    
+            result = this.baseQuery.run();
         }
 
         return result;
@@ -293,18 +341,39 @@ public with sharing class UsersSelector extends RecordsSelector
 
     /**
      * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
+     * 
+     * SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+     * FROM User 
+     * WHERE Profile.Name IN ( ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR )
+     *  AND Contact.AccountId IN :intermediaryIdList
+     *  AND IsActive = TRUE
+     * 
      * @author      dmunoz
      * @date        16/02/2024
      */
-    public List<User> findZRMActiveUsersByIntermediaryId(List<String> intermediaryIdList) {
+    public List<User> findZRMActiveUsersByIntermediaryId(List<String> intermediaryIdList)
+    {
         List<User> result = new List<User>();
 
-        if (intermediaryIdList != null && !intermediaryIdList.isEmpty()) {
-            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
-                                    FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
-                                    AND Contact.AccountId IN :intermediaryIdList
-                                    AND IsActive = TRUE]);
+        if (intermediaryIdList != null && !intermediaryIdList.isEmpty())
+        {
+            List<Schema.SObjectField> fieldsToSelect = new List<Schema.SObjectField>{
+                User.Contact.AccountId,
+                User.Profile.Name,
+                User.Contact.Account.IntermediaryGroup__c
+            }
+
+            this.baseQuery
+                .selectFields(fieldsToSelect)
+                .addConditionIn(User.Profile.Name, new Set<String>{
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS,
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
+                })
+                .addConditionIn(User.Contact.AccountId, intermediaryIdList);
+                .addConditionEq(User.IsActive, true)
+                .enforceSecurity(true);
+    
+            result = this.baseQuery.run();
         }
 
         return result;
@@ -313,24 +382,57 @@ public with sharing class UsersSelector extends RecordsSelector
 
     /**
      * @description Selector que obtiene los usuarios de un mediador y los agrupación de la agrupación a la que pertenecen (si hay)
+     * 
+     * SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User
+     * WHERE Profile.Name IN ( ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR )
+     *  AND IsActive = TRUE
+     *  if (intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty())
+     *    AND (
+     *      Contact.AccountId IN :intermediariesSet
+     *      OR Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList
+     *    )
+     *  else
+     *    AND Contact.AccountId IN :intermediariesSet
+     * 
      * @author      dmunoz
      * @date        16/02/2024
      */
-    public List<User> findZRMActiveUsersFromIntermediaryAndAGRFromGroup(Set<String> intermediariesSet, List<String> intermediaryGroupIdList) {
+    public List<User> findZRMActiveUsersFromIntermediaryAndAGRFromGroup(Set<String> intermediariesSet, List<String> intermediaryGroupIdList)
+    {
         List<User> result = new List<User>();
         
-        if (intermediariesSet != null && !intermediariesSet.isEmpty() && intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty()) {
-            result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
-                                WHERE(
-                                    (Contact.AccountId IN :intermediariesSet AND Profile.Name IN ('Agente Ventas - AGR', 'Agente Ventas')) 
-                                    OR (Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList AND Profile.Name = 'Agente Ventas - AGR')
-                                    )
-                                AND IsActive = TRUE]);  
-        } else if (intermediariesSet != null && !intermediariesSet.isEmpty()) { // Si no hay agrupaciones buscamos solo los usuarios del conjunto de mediadores
-            result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
-                                WHERE Contact.AccountId IN :intermediariesSet AND Profile.Name IN ('Agente Ventas - AGR', 'Agente Ventas')
-                                AND IsActive = TRUE]);
-        }           
+        if (intermediariesSet != null && !intermediariesSet.isEmpty())
+        {
+            List<Schema.SObjectField> fieldsToSelect = new List<Schema.SObjectField>{
+                User.Contact.AccountId,
+                User.Profile.Name,
+                User.Contact.Account.IntermediaryGroup__c
+            }
+
+            this.baseQuery
+                .selectFields(fieldsToSelect)
+                .addConditionIn(User.Profile.Name, new Set<String>{
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS,
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
+                })
+                .addConditionEq(User.IsActive, true)
+                .enforceSecurity(true);
+
+            if (intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty())
+            {
+                this.baseQuery.addCondition(Query.doOr(
+                    Query.conditionIn(User.Contact.AccountId, intermediariesSet),
+                    Query.conditionIn(User.Contact.Account.IntermediaryGroup__c, intermediaryGroupIdList)
+                ));
+            }
+
+            else
+            {
+                this.baseQuery.addConditionIn(User.Contact.AccountId, intermediariesSet);
+            }
+    
+            result = this.baseQuery.run();
+        }      
 
         return result; 
     }
@@ -357,6 +459,16 @@ public with sharing class UsersSelector extends RecordsSelector
 
     /**
      * @description Selector para conseguir usuarios ZRM a partir de su relación con Ids de Account
+     * 
+     * SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
+     * FROM User 
+     * WHERE Profile.Name IN ( ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR )
+     *  AND (
+     *      Contact.AccountId = :intermediaryId
+     *      OR Contact.Account.IntermediaryGroup__c = :idIntermediaryGroupId
+     *  ) 
+     *  AND IsActive = TRUE
+     * 
      * @author      dmunoz
      * @date        16/02/2024
      */
@@ -364,11 +476,27 @@ public with sharing class UsersSelector extends RecordsSelector
         List<User> result = new List<User>();
 
         if (String.isNotEmpty(intermediaryId)) {
-            result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
-                                    FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
-                                    AND (Contact.AccountId = :intermediaryId OR Contact.Account.IntermediaryGroup__c = :idIntermediaryGroupId) 
-                                    AND IsActive = TRUE]);
+            List<Schema.SObjectField> fieldsToSelect = new List<Schema.SObjectField>{
+                User.Contact.AccountId,
+                User.Profile.Name,
+                User.Contact.Account.IntermediaryGroup__c
+            }
+
+            this.baseQuery
+                .selectFields(fieldsToSelect)
+                .addConditionIn(User.Profile.Name, new Set<String>{
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS,
+                    ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
+                })
+                .addCondition(Query.doOr(
+                    Query.conditionEq(User.Contact.AccountId, intermediaryId),
+                    Query.conditionEq(User.Contact.Account.IntermediaryGroup__c, idIntermediaryGroupId)
+                ));
+                .addConditionIn(User.Contact.AccountId, intermediaryIdList);
+                .addConditionEq(User.IsActive, true)
+                .enforceSecurity(true);
+    
+            result = this.baseQuery.run();
         }
 
         return result;
@@ -376,6 +504,13 @@ public with sharing class UsersSelector extends RecordsSelector
 
     /**
      * @description Selector para obtener los usuarios agr de un mediador
+     * 
+     * SELECT Id 
+     * FROM User 
+     * WHERE Profile.Name = 'Agente Ventas - AGR'
+     *  AND Contact.AccountId = :intermediaryId 
+     *  AND IsActive = TRUE
+     * 
      * @author      dmunoz
      * @date        16/02/2024
      */
@@ -383,18 +518,35 @@ public with sharing class UsersSelector extends RecordsSelector
         List<User> result = new List<User>();
 
         if (intermediaryId != null && String.isNotEmpty(intermediaryId)) {
-            result = new List<User>([SELECT Id 
-                                    FROM User 
-                                    WHERE Profile.Name = 'Agente Ventas - AGR'
-                                    AND Contact.AccountId = :intermediaryId 
-                                    AND IsActive = TRUE]);
+            List<Schema.SObjectField> fieldsToSelect = new List<Schema.SObjectField>{
+                User.Contact.AccountId,
+                User.Profile.Name,
+                User.Contact.Account.IntermediaryGroup__c
+            }
+
+            this.baseQuery
+                .selectFields(fieldsToSelect)
+                .addConditionEq(User.Profile.Name, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
+                .addConditionEq(User.Contact.AccountId, intermediaryId);
+                .addConditionEq(User.IsActive, true)
+                .enforceSecurity(true);
+    
+            result = this.baseQuery.run();
         }
 
         return result;
     }
 
     /**
-     * @description Selector para obtener los usuarios agr de la agrupación de un mediador sin tener en cuenta los usuarios ZRM que cuelgan de dicho mediador 
+     * @description Selector para obtener los usuarios agr de la agrupación de un mediador sin tener en cuenta los usuarios ZRM que cuelgan de dicho mediador
+     * 
+     * SELECT Id 
+     * FROM User 
+     * WHERE Profile.Name = 'Agente Ventas - AGR'
+     *  AND Contact.Account.IntermediaryGroup__c = :intermediaryGroupId 
+     *  AND Contact.AccountId != :intermediaryId 
+     *  AND IsActive = TRUE
+     * 
      * @author      dmunoz
      * @date        16/02/2024
      */
@@ -402,15 +554,23 @@ public with sharing class UsersSelector extends RecordsSelector
         List<User> result = new List<User>();
 
         if (intermediaryId != null && String.isNotEmpty(intermediaryId) && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
-            result = new List<User>([SELECT Id 
-                                    FROM User 
-                                    WHERE Profile.Name = 'Agente Ventas - AGR'
-                                    AND Contact.Account.IntermediaryGroup__c = :intermediaryGroupId 
-                                    AND Contact.AccountId != :intermediaryId 
-                                    AND IsActive = TRUE]);
+            List<Schema.SObjectField> fieldsToSelect = new List<Schema.SObjectField>{
+                User.Contact.AccountId,
+                User.Profile.Name,
+                User.Contact.Account.IntermediaryGroup__c
+            }
+
+            this.baseQuery
+                .selectFields(fieldsToSelect)
+                .addConditionEq(User.Profile.Name, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
+                .addConditionEq(Contact.Account.IntermediaryGroup__c, intermediaryGroupId)
+                .addConditionNotEq(User.Contact.AccountId, intermediaryId);
+                .addConditionEq(User.IsActive, true)
+                .enforceSecurity(true);
+    
+            result = this.baseQuery.run();
         }
 
         return result;
     }
-
 }
