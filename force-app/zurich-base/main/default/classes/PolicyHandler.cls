@@ -37,7 +37,10 @@ public class PolicyHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        // fpalomo - 08/04/2024 - Nuevo método "handlePolicyHolderOrIntermediaryChange" para rellenar los campos solicitados en CV-2061
+        PolicyUtil.handlePolicyHolderOrIntermediaryChange((List<Policy__c>)newList, (Map<Id, Policy__c>) oldMap);
+    }
 
     /**
      * beforeDelete

@@ -45,7 +45,42 @@ public class PolicyUtil
                 polToGeneratePartner
             );
         }
-    }  
+    }
+
+    /**
+     * Informa los siguientes campos para pólizas en las que se haya cambiado el mediador o cliente
+     *
+     * @author fpalomo
+     * @date 08/04/2024
+     */
+    public static void handlePolicyHolderOrIntermediaryChange(List<Policy__c> newList, Map<Id, Policy__c> oldMap)
+    {
+        for(Policy__c policyNew : newList)
+        {
+            Policy__c policyOld = oldMap.get(policyNew.Id);
+
+            // AccountId
+            if (policyNew.PolicyHolder__c != policyOld.PolicyHolder__c)
+            {
+                policyNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_CLIENTE;
+                policyNew.LastAccountId__c = policyOld.PolicyHolder__c;
+            }
+
+            // Mediador
+            else if (policyOld.IntermediaryId__c != policyNew.IntermediaryId__c)
+            {
+                policyNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_MEDIADOR;
+                policyNew.LastAccountId__c = policyOld.IntermediaryId__c;
+            }
+
+            // Estos dos campos se rellenan de la misma forma para cualquiera de los dos casos posibles
+            if (policyOld.LastAccountId__c != policyNew.LastAccountId__c)
+            {
+                policyNew.LastDateIntermediaryOrAccountChange__c = System.today();
+                policyNew.VisibilityRetry__c = 0;
+            }
+        }
+    }
     
     
     /******************************* Métodos principales Visibilidad ZRM ******************************************************/
