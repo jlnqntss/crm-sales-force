@@ -32,18 +32,18 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
 
     // Recupera el Id del RecordType de casos USP
-    public static final ID RT_ID_USPINQUIRY 
+    public static final ID RT_ID_USPINQUIRY
     {
-        get 
+        get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
         }
     }
 
     // Recupera el Id del RecordType de casos OCS
-    public static final ID RT_ID_OCSINQUIRY 
+    public static final ID RT_ID_OCSINQUIRY
     {
-        get 
+        get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSINQUIRY)?.getRecordTypeId();
         }
@@ -953,6 +953,46 @@ public with sharing class CaseUtil
             casesToUpdate = comprobarCasos(casesToRelate, mapRetrievedOffers, mapRetrievedPolicies);
         }
         return casesToUpdate;
+    }
+
+    /**
+     * Relaciona los casos cuyo campo RelatedRequestId__c esta informado, para asignarles como parent
+     * case aquellos cuyo TicketId__c coincida
+     *
+     * @author mario.navarro@seidor.com
+     * @date 09/04/2024
+     * @param casesToRelate lista de casos a relacionar
+     */
+    public static void relateCasesByTicketId(List<Case> casesToRelate)
+    {
+        //1- construimos un set con los ticket id a buscar
+        Set<Double> ticketIdsToSearch = new Set<Double>();
+        for (Case c : casesToRelate)
+        {
+            if (c.RelatedRequestId__c != null)
+            {
+                ticketIdsToSearch.add(c.RelatedRequestId__c);
+            }
+        }
+
+        if ( ticketIdsToSearch.isEmpty() )
+        {
+            //si no hay nada que buscar, no hay nada que relacionar ==> FIN
+            return;
+        }
+
+        List<Case> parentCases = new CasesSelector().getCasesByTicketId(ticketIdsToSearch);
+        //2- Agrupamos casos por ticketId
+        Map<Double, Case> casesByTicketId = (Map<Double, Case>) CollectionUtil.hashList( parentCases, Case.fields.TicketId__c.getDescribe().getName() );
+
+        //3- Iteramos para setear los 'padres'
+        for (Case c : casesToRelate)
+        {
+            if ( c.RelatedRequestId__c != null && casesByTicketId.containsKey(c.RelatedRequestId__c) )
+            {
+                c.ParentId = casesByTicketId.get(c.RelatedRequestId__c).Id;
+            }
+        }
     }
 
     /**
