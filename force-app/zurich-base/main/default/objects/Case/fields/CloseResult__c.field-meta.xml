@@ -395,7 +395,7 @@
             <controllingFieldValue>Cotización</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
-            <valueName>No realizado- Caso Duplicado</valueName>
+            <valueName>No realizado - Caso Duplicado</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
