@@ -10,23 +10,46 @@ global with sharing class Batch_VisibilitySFCommunityOID implements Database.Bat
 {
     private static final String CLASS_NAME = 'Batch_VisibilitySFCommunityOID';
 
+    
     private Integer numDMLs = 5000;
     Set<AccountTeamMember> pendingATMs;
+    Set<AccountTeamMember> pendingATMsToDelete;
     private String intermediaryUserId;
     private String profile;
     private Boolean stopRecusrive = false;
 
-    public Batch_VisibilitySFCommunityOID(Set<AccountTeamMember> pendingATMs, String intermediaryUserId)
+    public Batch_VisibilitySFCommunityOID(Set<AccountTeamMember> pendingATMs, Set<AccountTeamMember> pendingATMsToDelete, String intermediaryUserId)
     {
         this.pendingATMs = pendingATMs;
+        this.pendingATMsToDelete = pendingATMsToDelete;
         this.intermediaryUserId = intermediaryUserId;
     }
     
     public Batch_VisibilitySFCommunityOID(String profile, String intermediaryUserId)
     {
         this.pendingATMs = new Set<AccountTeamMember>();
+        this.pendingATMsToDelete = new Set<AccountTeamMember>();
         this.intermediaryUserId = intermediaryUserId;
         this.profile = profile;
+    }
+
+    public with sharing class Requests
+    {
+        @InvocableVariable public String profile;
+        @InvocableVariable public String intermediaryUserId;
+    }
+
+    @InvocableMethod
+    public static void batchGenerateATMsInvocableMethod(List<Requests> requests)
+    {
+        if(requests == null || requests.isEmpty())
+        {
+            return;
+        }
+        if((requests[0].profile != null || requests[0].intermediaryUserId != null) && (String.isNotEmpty(requests[0].profile) || String.isNotEmpty(requests[0].intermediaryUserId)))
+        {
+            Database.executeBatch(new Batch_VisibilitySFCommunityOID(requests[0].profile, requests[0].intermediaryUserId));
+        }
     }
 
     /**
@@ -51,7 +74,12 @@ global with sharing class Batch_VisibilitySFCommunityOID implements Database.Bat
     {
         try
         {
-            if (pendingATMs != null && !pendingATMs.isEmpty())
+            if(pendingATMsToDelete != null && !pendingATMsToDelete.isEmpty())
+            {
+                //Eliminamos los ATMs
+                processDelete(pendingATMsToDelete);
+            }
+            else if (pendingATMs != null && !pendingATMs.isEmpty())
             {
                 // Insertamos los ATMs
                 processInsert(pendingATMs);
@@ -78,9 +106,9 @@ global with sharing class Batch_VisibilitySFCommunityOID implements Database.Bat
      * @date 20/03/2024
      */
     global void finish(Database.BatchableContext bc) {
-        if (!pendingATMs.isEmpty() && !stopRecusrive)
+        if ((!pendingATMs.isEmpty() || !pendingATMsToDelete.isEmpty()) && !stopRecusrive)
         {
-            Database.executeBatch(new Batch_VisibilitySFCommunityOID(pendingATMs, intermediaryUserId));
+            Database.executeBatch(new Batch_VisibilitySFCommunityOID(pendingATMs, pendingATMsToDelete, intermediaryUserId));
         }
     }
 
@@ -116,6 +144,42 @@ global with sharing class Batch_VisibilitySFCommunityOID implements Database.Bat
     }
 
     /**
+     * Método que procesa el borrado de ATMs y prepara los paquetes futuros
+     * @author nikola.cobian@seidor.com
+     * @date 08/04/2024
+     * @param Set<AccountTeamMember>
+     */
+    private void processDelete(Set<AccountTeamMember> scope)
+    {
+        List<AccountTeamMember> toDelete = new List<AccountTeamMember>();
+        Set<AccountTeamMember> toFuture = new Set<AccountTeamMember>();
+
+        // Dividimos los ATMs que recibe el metodo en 2:
+        // 1. Lote de ATMs "toDelete" son los que mandaremos al DML
+        // 2. Lote de ATMs "toFuture" son los que mandaremos al Batch de nuevo para que los vuelva a procesar
+        Integer contador = 0;
+        for (AccountTeamMember atm: scope) 
+        {
+            if (contador < numDMLs) 
+            {
+                toDelete.add(atm);
+                contador++;
+            } 
+            else 
+            {
+                toFuture.add(atm);
+            }
+        }
+
+        // Eliminamos los ATMs que entran en el lote que acaba de procesarse
+        delete toDelete;
+        
+        // Nos aseguramos que no haya nada en la lista de ATMs pendientes y añadimos los que se eliminarán en la siguiente tanda
+        pendingATMsToDelete.clear();
+        pendingATMsToDelete = toFuture;
+    }
+
+    /**
      * Metodo encargado de calcular los ATMs para un mediador en base a los clientes de ofertas y pólizas
      * 
      * @author fpalomo
@@ -126,9 +190,18 @@ global with sharing class Batch_VisibilitySFCommunityOID implements Database.Bat
         // Selectores
         PoliciesSelector policiesSelector = new PoliciesSelector();
         OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
+        AccountTeamMemberSelector atmsSelector = new AccountTeamMemberSelector();
 
         List<Opportunity> offers = new List<Opportunity>();
         List<Policy__c> policies = new List<Policy__c>();
+        List<AccountTeamMember> atms = new List<AccountTeamMember>();
+
+        //DELETE ATMs: seleccionamos los ATMs a borrar
+        atms = atmsSelector.findATMsForIntermediariesByUserId(new Set<String>{intermediaryUser.Id});
+
+        //DELETE ATMs: recorremos el resultado de la búsqueda para añadirlos a los ATMs a eliminar
+        pendingATMsToDelete.addAll(atms);
+
 
         // Obtenemos las ofertas y pólzas para el mediador según su perfil
         if (profile.equals('Agente Ventas'))
