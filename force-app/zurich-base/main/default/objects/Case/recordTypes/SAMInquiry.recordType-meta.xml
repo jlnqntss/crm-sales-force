@@ -952,34 +952,18 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>MassiveTasks</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NoteINFO</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Phone</fullName>
             <default>true</default>
-        </values>
-        <values>
-            <fullName>Web</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>WhatsApp</fullName>
-            <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
         <picklist>PendingBy__c</picklist>
         <values>
-            <fullName>Client</fullName>
+            <fullName>Incident Resolution</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Competency Management</fullName>
+            <fullName>Intermediary</fullName>
             <default>false</default>
         </values>
         <values>
@@ -987,15 +971,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Other areas Zurich</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Supervisor</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Systems Incidence</fullName>
+            <fullName>Others</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1187,18 +1163,6 @@
     <picklistValues>
         <picklist>SourceArea__c</picklist>
         <values>
-            <fullName>End customer partner</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generic Internal</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generic end customer</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>INFO note</fullName>
             <default>false</default>
         </values>
@@ -1208,22 +1172,6 @@
         </values>
         <values>
             <fullName>Partner</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Partner dome</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>SDC %28Customer Defense Service%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>TNPS Customer Survey</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Zurich Business Client</fullName>
             <default>false</default>
         </values>
     </picklistValues>
