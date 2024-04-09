@@ -936,18 +936,34 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>MassiveTasks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NoteINFO</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Phone</fullName>
             <default>true</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WhatsApp</fullName>
+            <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
         <picklist>PendingBy__c</picklist>
         <values>
-            <fullName>Incident Resolution</fullName>
+            <fullName>Client</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Intermediary</fullName>
+            <fullName>Competency Management</fullName>
             <default>false</default>
         </values>
         <values>
@@ -955,7 +971,15 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Others</fullName>
+            <fullName>Other areas Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supervisor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Systems Incidence</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1147,6 +1171,18 @@
     <picklistValues>
         <picklist>SourceArea__c</picklist>
         <values>
+            <fullName>End customer partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Generic Internal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Generic end customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>INFO note</fullName>
             <default>false</default>
         </values>
@@ -1156,6 +1192,22 @@
         </values>
         <values>
             <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner dome</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDC %28Customer Defense Service%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TNPS Customer Survey</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zurich Business Client</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1287,6 +1339,14 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Banca Seguros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CSM%2FComercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Cambio de intermediario</fullName>
             <default>false</default>
         </values>
@@ -1295,11 +1355,31 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Catálogo virtual</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contact Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Correo Corporativo</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Cotización</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Descargas %2F Descargas EIAC</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Devolución de recibo liquidado mediador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1327,11 +1407,23 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Genious Bar</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Gestión Competencias</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Gestión de recibos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INFO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidencia Service Now</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1355,6 +1447,14 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>MFA %28Okta%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mediación</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Modificación</fullName>
             <default>false</default>
         </values>
@@ -1363,7 +1463,23 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Otros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Password</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Queja</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recertificación Usuarios</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1407,7 +1523,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Software Obsoleto</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Sugerencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TPA</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1418,36 +1546,72 @@
             <fullName>Transferencia</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Webservices</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZRM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZVGO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zona Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zurich Empresas</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
         <values>
-            <fullName>Campañas</fullName>
+            <fullName>Agente</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Cliente</fullName>
+            <fullName>Banca seguros</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Económica</fullName>
+            <fullName>Corredor</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Mediador</fullName>
+            <fullName>Gestión Usuarios</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Gestión Servicios</fullName>
+            <fullName>Partner</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Venta</fullName>
+            <fullName>Proveedor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TPA</fullName>
             <default>false</default>
         </values>
     </picklistValues>
     <picklistValues>
         <picklist>TypeN3__c</picklist>
+        <values>
+            <fullName>Abrir</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Acceso Descargas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Alta</fullName>
+            <default>false</default>
+        </values>
         <values>
             <fullName>Anotación Embargo</fullName>
             <default>false</default>
@@ -1461,11 +1625,27 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Ayuda Acceso</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ayuda Descargas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Baja</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Bloqueo %2F Desbloqueo</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Bloqueo usuario%2Fcontraseña</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CSM%2FComercial</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1505,6 +1685,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cerrar</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Certificados</fullName>
             <default>false</default>
         </values>
@@ -1518,6 +1702,18 @@
         </values>
         <values>
             <fullName>Conductor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Configuración MFA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Configuración Usuario</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contact Center</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1617,11 +1813,27 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Gestionar</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Gestión competencias</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Herramientas Google</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Herramientas Zurich</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Inconsistencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incorrecta</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1633,11 +1845,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Instalación</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Levantamiento de Embargo</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Modificación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Modificación Correo electrónico</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1653,11 +1873,27 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>No se genera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>O365</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Oferta</fullName>
             <default>false</default>
         </values>
         <values>
+            <fullName>Ofimática</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Otras áreas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Otros</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1741,6 +1977,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Revisar Usuario</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Revocación saneamiento</fullName>
             <default>false</default>
         </values>
@@ -1757,7 +1997,39 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sistema Opertivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Soporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Soporte Recertificación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Soporte informático</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Soporte remoto</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Sugerencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Videollamadas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web Corporativa</fullName>
             <default>false</default>
         </values>
         <values>
