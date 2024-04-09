@@ -60,6 +60,11 @@
         <default>false</default>
         <label>GSS CSM</label>
     </customValue>
+    <customValue>
+        <fullName>SAM</fullName>
+        <default>false</default>
+        <label>SAM</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
