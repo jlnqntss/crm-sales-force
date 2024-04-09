@@ -626,4 +626,64 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         return result;
     }
+
+
+    /**
+     * Obtenemos las polizas de un mediador y las de una agrupacion con excepcion de un conjunto de polizas (necesario para el calculo de visibilidad)
+     * QUERY: 
+     * SELECT Id, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
+                                            FROM Opportunity 
+                                            WHERE
+                                            ID NOT IN: offersToExclude
+                                            AND AccountId IN :accountIdsSet
+                                            AND AccountId.Blocked__c = FALSE
+                                            AND AccountId.Anonymized__c = FALSE
+                                            AND (
+                                                IntermediaryId__c IN :intermediaryIdsSet OR
+                                                IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdsSet
+                                                )
+                                            AND Blocked__c = FALSE
+                                            AND Anonymized__c = FALSE
+                                            AND PolicyHolder__c != NULL
+     * @author dmunoz
+     * @date 08/04/2024
+     * 
+     * 
+     */
+    public List<Opportunity> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountIdsSet, Set<String> offersToExclude) {
+
+        List<Opportunity> result = new List<Opportunity>();
+
+        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && accountIdsSet != null && !accountIdsSet.isEmpty()) {
+
+            this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+            {
+                Opportunity.Id,
+                Opportunity.AccountId,
+                Opportunity.IntermediaryId__c
+            }
+            ).selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c');
+
+            this.baseQuery                            
+                            .addConditionNotEq(Opportunity.Id, offersToExclude)
+                            .addConditionIn(Opportunity.AccountId, accountIdsSet)
+                            .addConditionEq(Opportunity.Account.Blocked__c, FALSE)
+                            .addConditionEq(Opportunity.Account.Anonymized__c, FALSE)
+                            //.addConditionIn(Opportunity., )
+                            //.addConditionIn(Opportunity., )
+                            .addConditionEq(Opportunity.Blocked__c, FALSE)
+                            .addConditionEq(Opportunity.Anonymized__c, FALSE);
+                            //.addConditionNotEq(Opportunity.AccountId, NULL);
+
+            if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) { // si no tiene agrupación podemos traer solo 1 resultado
+                this.baseQuery.setLimit(1);
+            }
+
+            result = this.baseQuery.enforceSecurity().run();
+        }        
+
+        return result;
+    }
 }
