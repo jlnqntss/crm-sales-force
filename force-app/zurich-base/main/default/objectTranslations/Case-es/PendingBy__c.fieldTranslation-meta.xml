@@ -23,6 +23,10 @@
         <translation>Diferido</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Incident Resolution</masterLabel>
+        <translation>Resolución de incidencia</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Intermediary</masterLabel>
         <translation>Mediador</translation>
     </picklistValues>

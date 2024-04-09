@@ -46,46 +46,30 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         return ( campaignMembersSelector.selectByCampaignTypeAndId(crossSellingCampaigns, campMemberIdSet) );
     }
 
-    public void execute(Database.BatchableContext bc, List<sObject> records)
+    public void execute(Database.BatchableContext bc, List<CampaignMember> campaignMembers)
     {
         try {
             oppsToInsert.clear();           
     
             Map<Id, CampaignMember> campaignMembersAccountMap = new Map<Id, CampaignMember>();
-            Set<String> intermediaryGroupIdSet = new Set<String>();
             Set<String> intermediaryCodes = new Set<String>();
     
-            for(sObject record : records)
+            for(CampaignMember campaignMember : campaignMembers)
             {
-                if (((CampaignMember) record).Contact.AccountId != null) {
-                    campaignMembersAccountMap.put(((CampaignMember) record).Contact.AccountId, (CampaignMember) record);
+                if (campaignMember.Contact.AccountId != null) {
+                    campaignMembersAccountMap.put(campaignMember.Contact.AccountId, campaignMember);
                 }
 
-                if (((CampaignMember) record).OfferAssignedCode__c != null) {
-                    intermediaryCodes.add(((CampaignMember) record).OfferAssignedCode__c);
-                }
-            }
-
-            // Los usuarios AGR deben gestionarse distinto a los mediadores
-            User loggedUser = (new UsersSelector()).findUserIntermediaryByUserId(UserInfo.getUserId());
-            Account intermediaryAccount = loggedUser.Contact.Account;
-            if (loggedUser.Profile.Name.equals('Agente Ventas - AGR'))
-            {
-                if (intermediaryAccount.INFOIntermediaryCode__c != null)
-                {
-                    intermediaryCodes.add(intermediaryAccount.INFOIntermediaryCode__c);
-                }
-                if (intermediaryAccount.IntermediaryGroup__c != null)
-                {
-                    intermediaryGroupIdSet.add(intermediaryAccount.IntermediaryGroup__c);
+                if (campaignMember.OfferAssignedCode__c != null) {
+                    intermediaryCodes.add(campaignMember.OfferAssignedCode__c);
                 }
             }
 
             // 1. Filtra los miembros de campaña para solo generar oportunidades sobre los que tengan un cliente con una póliza asociada en estado "Vigor" o "Anulada" y cuyo check de GDPR esté a true
-            List<CampaignMember> filteredCampaignMembers = filterCampaignMembersByCustomerVisibility(campaignMembersAccountMap, intermediaryCodes, intermediaryGroupIdSet);
-    
+            List<CampaignMember> filteredCampaignMembers = getFilteredCampaignMembers(campaignMembersAccountMap, intermediaryCodes);
+            
             // 2. Actualiza el campo Status de los registros de CampaignMember del scope con el valor "Mediador Sin Visibilidad" si no cumplen con el filtro
-            List<CampaignMember> updatedCampaignMembers = getUpdatedCampaignMembersNoVisibility(campaignMembersAccountMap, filteredCampaignMembers);
+            List<CampaignMember> updatedCampaignMembers = getUpdatedCampaignMembersNoVisibility(campaignMembers, filteredCampaignMembers);
     
             if (updatedCampaignMembers.size() > 0)
             {
@@ -115,38 +99,79 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     // ##region Resto métodos
 
-       
-
     /**
-     * Devuelve la lista de miembros de campaña que recibe como parámetro, filtrada sin los miembros de campaña para cuyos clientes el agente no tiene visibilidad
-     *
+     * Devuelve la lista de CampaignMembers que recibe como parámetro, filtrada para eliminar todos aquellos para los que el mediador no tenga visibilidad
+     * 
      * @author fpalomo
-     * @param campaignMembersAccountMap Map<Id, CampaignMember>
-     * @param intermediaryIds Set<Id>
-     * @return List<CampaignMember>
+     * @date 04/04/2024
+     * 
+     * @return List<Opportunities>
      */
-    private List<CampaignMember> filterCampaignMembersByCustomerVisibility(Map<Id, CampaignMember> campaignMembersAccountMap, Set<String> intermediaryCodes, Set<String> intermediaryGroupIdSet)
+    private List<CampaignMember> getFilteredCampaignMembers(Map<Id, CampaignMember> campaignMembersAccountMap, Set<String> intermediaryCodes)
     {
-        List<CampaignMember> result = new List<CampaignMember>();
-        List<Policy__c> campaignMembersPolicies = new PoliciesSelector().findPoliciesByAccountId(campaignMembersAccountMap.keySet(), intermediaryCodes, intermediaryGroupIdSet);
+        List<CampaignMember> filteredCampaignMembers = new List<CampaignMember>();
+        List<Policy__c> campaignMembersPolicies = new List<Policy__c>();
 
-        // Ordeno las polizas encontradas en un mapa por mediador <IntermediaryCode, Set<PolicyHolderId>
-        Map<String, Set<String>> intermediaryPolicyHoldersMap = getIntermediaryPolicyHoldersMap(campaignMembersPolicies);
+        User loggedUser = (new UsersSelector()).findUserIntermediaryByUserId(UserInfo.getUserId());
 
-        // Recorro cada miembro de campaña que llega al batch y si cumple que el cliente y mediador de ese miembro de campaña no tiene una poliza lo marcamos para "Mediador sin visibilidad"
-        for (CampaignMember campaignMember: campaignMembersAccountMap.values()) {
-            if (intermediaryPolicyHoldersMap.containsKey(campaignMember.OfferAssignedCode__c) && !!intermediaryPolicyHoldersMap.get(campaignMember.OfferAssignedCode__c).contains(campaignMember.Contact.AccountId)) {
-                result.add(campaignMember); 
+        // Obtenemos las pólizas
+        if (ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR.equals(loggedUser.Profile.Name) && String.isNotBlank(loggedUser.Contact.Account.IntermediaryGroup__c))
+        {
+            campaignMembersPolicies = (new PoliciesSelector()).selectByIntermediaryGroupId(new Set<String>{ loggedUser.Contact.Account.IntermediaryGroup__c });
+        }
+        else
+        {
+            campaignMembersPolicies = (new PoliciesSelector()).findPoliciesByAccountId(campaignMembersAccountMap.keySet(), intermediaryCodes);
+        }
+
+        // Lista con las IDs de cuenta para las que se van a generar ofertas
+        Set<String> toOfferAccountIDs = new Set<String>();
+
+        // Añadimos los clientes de las pólizas a la lista de cuentas
+        for(Policy__c policy : campaignMembersPolicies)
+        {
+            toOfferAccountIDs.add(policy.PolicyHolder__c);
+        }
+
+        Set<String> campaignIDsToExcludeMembers = new Set<String>();
+        for (CampaignMember cm : campaignMembersAccountMap.values()) {
+            campaignIDsToExcludeMembers.add(cm.CampaignId);
+        }
+
+        // Recuperamos las ofertas, excluyendo las que pertenezcan a clientes que ya estén en la lista
+        List<Opportunity> campaignMembersOffers = (new OpportunitiesSelector()).getIntermediaryOtherOffersByCampaignMembers(campaignIDsToExcludeMembers, toOfferAccountIDs, loggedUser.Contact.AccountId);
+
+        // Añadimos los clientes de las ofertas recuperadas a la lista de cuentas a las que se le van a generar ofertas
+        for(Opportunity offer : campaignMembersOffers)
+        {
+            toOfferAccountIDs.add(offer.AccountId);
+        }
+
+        // Añadimos a la lista los miembros de campaña que cumplan el filtro
+        for (CampaignMember campaignMember : campaignMembersAccountMap.values())
+        {
+            if (toOfferAccountIDs.contains(campaignMember.Contact.AccountId))
+            {
+                filteredCampaignMembers.add(campaignMember);
             }
         }
 
-        return result;
+        return filteredCampaignMembers;
     }
 
-    private List<CampaignMember> getUpdatedCampaignMembersNoVisibility(Map<Id, CampaignMember> campaignMembersAccountMap, List<CampaignMember> filteredCampaignMembers)
+    /**
+     * Actualiza el estado de los miembros de campaña que recibe como parámetro y que no se encuentran en el filtro
+     * 
+     * @author fpalomo
+     * @date 04/04/2024
+     * 
+     * @return List<Opportunities>
+     */
+    private List<CampaignMember> getUpdatedCampaignMembersNoVisibility(List<CampaignMember> campaignMembers, List<CampaignMember> filteredCampaignMembers)
     {
         Map<Id, CampaignMember> updatedCampaignMembers = new Map<Id, CampaignMember>();
-        for (CampaignMember cm : campaignMembersAccountMap.values())
+
+        for (CampaignMember cm : campaignMembers)
         {
             if (!filteredCampaignMembers.contains(cm) && !updatedCampaignMembers.containsKey(cm.Id))
             {
@@ -192,7 +217,9 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             // CC se corresponde con miembros de campaña para el Contact Center, que se asignarán a un usuario genérico
             else if  (cm.OfferAssignedType__c == 'CC') 
             {
-                opp = fillCCData(opp, cm); 
+                opp.LegalEntity__c = '001';
+                opp.BusinessCode__c = cm.Campaign.BusinessCode__c;
+                opp.Scope__c = 'Ventas';
                 opp.ZRM__c = false; 
             }
 
@@ -227,21 +254,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         }
 
         return accountByIntermCode;
-    }
-
-    /* Método para informar campos de forma específica para miembros de campaña tipo Contact Center.
-     * @author jfherrero
-     * @date 04/08/2023
-     * @param opp Oportunidad a generar.
-     * @param cm MMiembro de campaña del que se genera la oportunidad.
-     **/
-    private Opportunity fillCCData(Opportunity opp, CampaignMember cm)
-    {
-        opp.LegalEntity__c = '001'; // añadimos entidad legal Zurich
-        opp.BusinessCode__c = cm.Campaign.BusinessCode__c;
-        opp.Scope__c = 'Ventas';
-
-        return opp;
     }
 
     /**
@@ -291,7 +303,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         Map<Id, CampaignMember> cms = new Map<Id, CampaignMember>( campaignMembersSelector.selectByCampaignTypeAndId(crossSellingCampaigns, campMemberIdSetReceived) );
         Set<Id> campMemberIdSetFlow = cms.keyset();
 
-        Database.executeBatch( new Batch_CampaignMemberToOpportunity(campMemberIdSetFlow) );
+        Database.executeBatch( new Batch_CampaignMemberToOpportunity(campMemberIdSetFlow), 100 );
     }
 
 
@@ -315,44 +327,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         defaultUserId = defaultUsers.get(0).Id;
 
         return defaultUserId;
-    }
-
-
-    /**
-     * Metodo que ordena las polizas encontradas en bd en formato <CodigoMediador, Set<PolicyHolderId>>
-     * 
-     * @author dmunoz
-     * @date 11/3/2024
-     */
-    private static Map<String, Set<String>> getIntermediaryPolicyHoldersMap(List<Policy__c> campaignMembersPolicies) {
-
-        Map<String, Set<String>> result = new Map<String, Set<String>>();
-        for (Policy__c policy: campaignMembersPolicies) {
-            result = generateSetMap(result, policy.IntermediaryId__r.INFOIntermediaryCode__c, policy.PolicyHolder__c);
-        }
-
-        return result;
-    }
-
-    /**
-     * Método que añade un valor a un Map<String, Set<String>>
-     *
-     * @author dmunoz
-     * @date 05/03/2024 
-     */
-    private static Map<String, Set<String>> generateSetMap(Map<String, Set<String>> mapToInsert, String key, String valueToAdd) {
-        Set<String> aux;
-        if (mapToInsert.containsKey(key)) {
-            aux = mapToInsert.get(key);
-            aux.add(valueToAdd);
-            mapToInsert.put(key, aux);
-        } else {
-            aux = new Set<String>();
-            aux.add(valueToAdd);
-            mapToInsert.put(key, aux);
-        }
-
-        return mapToInsert;
     }
 
     // ##endregion Resto métodos

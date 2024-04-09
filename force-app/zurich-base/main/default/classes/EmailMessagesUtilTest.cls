@@ -519,6 +519,67 @@ private with sharing class EmailMessagesUtilTest
     }
 
     /**
+     * Test para activar campo ControlEmailCC__c 
+     * @author lrodriguez
+     * @date 27/03/2024
+     */
+    @isTest
+    static void test_checkMailCc_Activar()
+    {
+        Case casoToEmailMessage = new Case (Subject = 'prueba activar',Status = 'Assigned', Origin = 'Email', RecordTypeId = CaseUtil.RT_ID_USPINQUIRY);
+        insert casoToEmailMessage;
+
+        List<EmailFromByDefaultCC__mdt> emailFromByDefaultCC = EmailFromByDefaultCC__mdt.getAll().values();
+        String mailOnlyCc = emailFromByDefaultCC[0].Email__c;
+
+        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
+        emailList[0].RelatedToId = casoToEmailMessage.id;
+        emailList[0].ToAddress = 'mail@ficticio.es';
+        emailList[0].CcAddress = mailOnlyCc;
+
+        Test.startTest();
+
+        insert emailList;
+
+        Test.stopTest();
+        
+        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba activar']; 
+
+        System.assertEquals(casesEmailDefault.ControlEmailCC__c,true,'Debe ser false');
+
+    }
+
+    /**
+     * Test para activar campo ControlEmailCC__c 
+     * @author lrodriguez
+     * @date 27/03/2024
+     */
+    @isTest
+    static void test_checkMailCc_Desactivar()
+    {
+        Case casoToEmailMessage = new Case (Subject = 'prueba Desactivar',Status = 'Assigned', Origin = 'Email', RecordTypeId = CaseUtil.RT_ID_USPINQUIRY);
+        insert casoToEmailMessage;
+
+        List<EmailFromByDefaultCC__mdt> emailFromByDefaultCC = EmailFromByDefaultCC__mdt.getAll().values();
+        String mailOnlyCc = emailFromByDefaultCC[0].Email__c;
+
+        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
+        emailList[0].RelatedToId = casoToEmailMessage.id;
+        emailList[0].ToAddress = mailOnlyCc;
+
+        Test.startTest();
+
+        insert emailList;
+
+        Test.stopTest();
+
+        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba Desactivar']; 
+
+        System.assertEquals(casesEmailDefault.ControlEmailCC__c,false,'Debe ser false');
+
+    }
+
+    /**
      * Test para cerrar casos creados para buzones que están sólo en CCC
      * @author jfherrero
      * @date 06/02/2024

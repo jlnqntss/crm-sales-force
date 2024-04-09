@@ -326,4 +326,28 @@ private with sharing class CasesSelectorTest
 
         System.assertEquals(1, casos.size(), 'no devuelve el número de registros correcto');
     }
+
+    /*
+     * Test del método que devuelve casos para findByIdControlCC (método de EmailMessageUtil)
+     * @author lrodriguez6@seidor.es
+     * @date 01/03/2024
+     */
+    @isTest
+    private static void test_findByIdControlCC_matchedRecord()
+    {
+        Case casoCC = [SELECT Id FROM Case LIMIT 1];
+        casoCC.ControlEmailCC__c=true;
+        update casoCC;
+
+        Set<String> casosIds = new Set<String>();
+        casosIds.add(casoCC.Id);
+
+        // Test
+        Test.startTest();
+        List<Case> matchedRecords = new CasesSelector().findByIdControlCC(casosIds);
+        Test.stopTest();
+
+        System.assertEquals(matchedRecords.size(), 1, 'no devuelve el número de registros correcto');
+        System.assertEquals(matchedRecords[0].ControlEmailCC__c,true);
+    }
 }

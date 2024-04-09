@@ -4194,6 +4194,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.ControlEmailCC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4770,6 +4775,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.SlaStartDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SMESegment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

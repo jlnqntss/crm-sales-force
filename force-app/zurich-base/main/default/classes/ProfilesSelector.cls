@@ -1,6 +1,13 @@
 public with sharing class ProfilesSelector {
 
     /**
+     * Variables estáticas con los perfiles de Ventas User, Agente Ventas y Agente Ventas - AGR
+     */
+    public static final String PROFILE_AGENTE_VENTAS_AGR = 'Agente Ventas - AGR';
+    public static final String PROFILE_AGENTE_VENTAS = 'Agente Ventas';
+    public static final String PROFILE_VENTAS_USER = 'Ventas User';
+
+    /**
      * Método que devuelve un mapa con los perfiles autorizados
      * 
      * @author arcortazar - nts
