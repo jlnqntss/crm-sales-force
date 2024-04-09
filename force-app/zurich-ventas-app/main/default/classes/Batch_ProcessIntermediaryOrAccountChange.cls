@@ -350,7 +350,7 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
             intermediaryGroupIdSet.add(intermediary.IntermediaryGroup__c);
         }
         
-        List<User> usersQuery = selector.findZRMActiveUsersByIntermediaryId(intermediary.Id, intermediary.IntermediaryGroup__c); 
+        List<User> usersQuery = selector.findZRMActiveUsersFromIntermediaryAndAGRFromGroup(new Set<String>{intermediary.Id}, intermediaryGroupIdSet); 
         
         // recorro los usuarios, para los nominales veo si el mediador no tiene más visibilidad lo añado a la lista para borrar su atm con el cliente del registro que está procesando
         for (User user: usersQuery) {
@@ -366,10 +366,12 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
     }
 
     private List<AccountTeamMember> getATMsToInsert(String accountId, String intermediaryId) {
-        // 1º Obtener los usuarios del mediador
-        //List<User>
+        // 1. Obtenemos los usuarios del mediador
+        List<User> agrUserList = (new UsersSelector()).getIntermediaryZRMAGRUsers(intermediaryId);
 
-        // 2º Generar los atms a insertar
+        // 2. Generamos los atms a insertar
+        List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
+        atmsToInsert.addAll(createATMZRMRecordList(accountId, agrUserList));
 
         return atmsToInsert;
     }
