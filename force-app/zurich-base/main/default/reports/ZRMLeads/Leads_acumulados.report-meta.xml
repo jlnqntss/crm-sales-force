@@ -4,6 +4,21 @@
         <field>ACCOUNT_NAME</field>
     </columns>
     <columns>
+        <field>Opportunity.SalesProcess__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.IntermediaryCode__c</field>
+    </columns>
+    <columns>
+        <field>LEAD_SOURCE</field>
+    </columns>
+    <columns>
+        <field>PHONE1</field>
+    </columns>
+    <columns>
+        <field>Account.MainEmail__c</field>
+    </columns>
+    <columns>
         <field>Opportunity.InfoUser__c</field>
     </columns>
     <columns>
@@ -11,9 +26,6 @@
     </columns>
     <columns>
         <field>Opportunity.InfoQuoteNumber__c</field>
-    </columns>
-    <columns>
-        <field>ACCOUNT_RECORDTYPE</field>
     </columns>
     <columns>
         <field>Opportunity.ProductBranch__c</field>
@@ -36,29 +48,28 @@
     <columns>
         <field>Opportunity.InfoLastModifiedDate__c</field>
     </columns>
-    <columns>
-        <field>Opportunity.Loss_Reason__c</field>
-    </columns>
-    <columns>
-        <field>Opportunity.Sales_Loss_Reason__c</field>
-    </columns>
-    <columns>
-        <field>Opportunity.IntermediaryCode__c</field>
-    </columns>
+    <description>Ofertas leads pendientes (con fecha creación diferente de hoy)</description>
     <filter>
         <criteriaItems>
             <column>STAGE_NAME</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>Closed Lost</value>
+            <value>App Submitted,Legit Lead,Quoted</value>
         </criteriaItems>
         <criteriaItems>
-            <column>CLOSE_DATE</column>
+            <column>ACCOUNT_RECORDTYPE</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>N_MONTHS_AGO:10</value>
+            <value>PersonAccount.Lead</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CREATED_DATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>notEqual</operator>
+            <value>TODAY</value>
         </criteriaItems>
         <language>es</language>
     </filter>
@@ -68,7 +79,7 @@
         <field>STAGE_NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Ofertas Perdidas PY</name>
+    <name>Leads acumulados</name>
     <params>
         <name>open</name>
         <value>all</value>
