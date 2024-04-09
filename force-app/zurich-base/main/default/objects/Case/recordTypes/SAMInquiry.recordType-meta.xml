@@ -8,24 +8,8 @@
     <picklistValues>
         <picklist>CallCenter__c</picklist>
         <values>
-            <fullName>CC Service</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CSM Administración</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CSM Particulares</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Centro Excelencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>TWW Retención</fullName>
-            <default>false</default>
+            <fullName>SAM</fullName>
+            <default>true</default>
         </values>
     </picklistValues>
     <picklistValues>
