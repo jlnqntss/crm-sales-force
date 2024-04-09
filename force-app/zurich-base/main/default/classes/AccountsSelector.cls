@@ -1086,17 +1086,28 @@ public with sharing class AccountsSelector extends RecordsSelector
 
     /**
      * Consultar agrupaciones para una lista de ids de mediadores
-     *
+     *  Query: SELECT Id, IntermediaryGroup__c FROM Account WHERE Id IN :intermediariesIds
      * @author dmunoz
      * @date 12/2/2024
      * @return List<Account> Listado de mediadores con su agrupación
      */
-    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesPolicySet) {
+    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesIds) {
         List<Account> result = new List<Account>();
 
-        if (intermediariesPolicySet != null && !intermediariesPolicySet.isEmpty()) {
-            result = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE Id IN :intermediariesPolicySet]);
-        }
+        if (intermediariesIds != null && !intermediariesIds.isEmpty()) {
+
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.IntermediaryGroup__c
+            };
+
+            result = this.baseQuery
+                            .selectFields(fieldsToRetrieve)
+                            .addConditionIn(Account.Id, intermediariesIds)
+                            .enforceSecurity()
+                            .run();
+        }        
 
         return result;
     }

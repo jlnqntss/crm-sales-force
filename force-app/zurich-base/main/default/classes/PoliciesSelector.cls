@@ -389,18 +389,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
 
     /**
      * Obtenemos las polizas de un mediador y las de una agrupacion con excepcion de un conjunto de polizas (necesario para el calculo de visibilidad)
-     *
-     * @author dmunoz
-     * @date 21/02/2024
-     * 
-     * 
-     */
-    public List<Policy__c> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> policyHolderIdSet, List<Policy__c> policiesToExclude) {
-
-        List<Policy__c> result = new List<Policy__c>();
-
-        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty()) {
-            result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
+     * QUERY: 
+     * SELECT Id, PolicyHolder__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
                                             FROM Policy__c 
                                             WHERE
                                             ID NOT IN: policiesToExclude
@@ -414,23 +404,48 @@ public with sharing class PoliciesSelector extends RecordsSelector
                                             AND PolicyStatus__c IN ('V', 'A') 
                                             AND Blocked__c = FALSE
                                             AND Anonymized__c = FALSE
-                                            AND PolicyHolder__c != NULL]);        
+                                            AND PolicyHolder__c != NULL
+     * @author dmunoz
+     * @date 21/02/2024
+     * 
+     * 
+     */
+    public List<Policy__c> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> policyHolderIdSet, Set<String> policiesToExclude) {
 
-        } else if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) {
-            result = new List<Policy__c>([SELECT Id, PolicyHolder__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
-                                            FROM Policy__c 
-                                            WHERE
-                                            ID NOT IN: policiesToExclude
-                                            AND PolicyHolder__c IN :policyHolderIdSet
-                                            AND PolicyHolder__r.Blocked__c = FALSE
-                                            AND PolicyHolder__r.Anonymized__c = FALSE
-                                            AND IntermediaryId__c IN :intermediaryIdsSet
-                                            AND PolicyStatus__c IN ('V', 'A') 
-                                            AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE
-                                            AND PolicyHolder__c != NULL]);    
-        }
+        List<Policy__c> result = new List<Policy__c>();
 
+        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && policyHolderIdSet != null && !policyHolderIdSet.isEmpty()) {
+            
+            this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+            {
+                Policy__c.Id,
+                Policy__c.PolicyHolder__c,
+                Policy__c.IntermediaryId__c
+            }
+            ).selectFields('Policy__c.IntermediaryId__r.IntermediaryGroup__c');
+
+            this.baseQuery
+                            .addConditionNotEq(Policy__c.Id, policiesToExclude)
+                            .addConditionIn(Policy__c.PolicyHolder__c, policyHolderIdSet)
+                            .addConditionEq(Policy__c.PolicyHolder__r.Blocked__c, false)
+                            .addConditionEq(Policy__c.PolicyHolder__r.Anonymized__c, false)
+                            //.addConditionIn(Policy__c., )
+                            //.addConditionIn(Policy__c., )
+                            .addConditionIn(Policy__c.PolicyStatus__c, new Set<String>{'V', 'A'})
+                            .addConditionEq(Policy__c.Blocked__c, false)
+                            .addConditionEq(Policy__c.Anonymized__c, false)
+                            .addConditionNotEq(Policy__c.PolicyHolder__c, null);
+
+                            
+
+            if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) {
+                this.baseQuery.setLimit(1);
+            }
+
+            result = this.baseQuery.enforceSecurity().run();
+        }        
 
         return result;
     }
@@ -489,6 +504,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
         return result;
     }
 
+    
     /**
      * Devuelve un query locator para obtener las polizas de los mediadores a tener en cuenta para el batch de recalculo de visibilidad de mediador Batch_RecalcVisibilityIntermediary
      *
