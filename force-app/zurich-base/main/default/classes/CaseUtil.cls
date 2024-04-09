@@ -414,7 +414,7 @@ public with sharing class CaseUtil
     {
         for(Case insertedCase : insertedCases)
         {
-            if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.Origin?.equals('CanalUnico') && insertedCase.Description != null)
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.Description != null)
             {
                 insertedCase.Description = insertedCase.Description.replace(';;', '\n');
             }
