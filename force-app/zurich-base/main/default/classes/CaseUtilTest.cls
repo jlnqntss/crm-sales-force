@@ -19,7 +19,7 @@ private with sharing class CaseUtilTest
     static final String MESSAGE_CUENTA_NO_ASIGNADA = 'La cuenta no se ha asignado correctamente';
     static final String LABEL_SUBJECT_ZURICH = 'Solicitud de ayuda al registro de MiZurich';
     static final String EMAIL_CASE = 'exampletocontactpointemail@gmail.com.invalid';
-   
+
     static final String ROBOT_TYPE_N1 = 'Dorsales';
 
     static final String SHORT_DESCRIPTION = 'test';
@@ -220,7 +220,7 @@ private with sharing class CaseUtilTest
             System.assertEquals(true, cmilestone.isCompleted, 'el milestone debería estar completado ya');
         }
     }
-    
+
     /**
      * Se comprueba que los procesos que asignan los atributos para la clasificación del caso operan correctamente.
      * En este escenario se inserta un caso con una clasificación o TAG previa, esta clasificación se realiza fuera de Salesforce.
@@ -236,11 +236,11 @@ private with sharing class CaseUtilTest
         newSprinklrCase.RobotTypeN1__c = 'Dorsales';
         newSprinklrCase.Subject = 'test_setSprinklrCaseTipification';
         newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
- 		
+
         Test.startTest();
         insert newSprinklrCase;
         Test.stopTest();
-        
+
         Case caseToCompare = [SELECT Id, RobotTypeN1__c, Type, SubType__c, TypeN3__c, CallCenter__c, OwnerId FROM Case WHERE id =: newSprinklrCase.id];
         Robot_Hegeo_Field_Mapping__mdt expectedValues = [SELECT Type__c, SubType__c, TypeN3__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c =: newSprinklrCase.RobotTypeN1__c LIMIT 1];
         Assert.areEqual(expectedValues.Type__c, caseToCompare.Type);
@@ -251,7 +251,7 @@ private with sharing class CaseUtilTest
     /**
      * Test que comprueba la correcta inserción de caso tipo Sprinklr con una descripcion menor a 255 caracteres
      * El caso debe ser insertado con el mismo valor para Description que para PrimerMensaje__c
-    */
+     */
     @isTest
     private static void test_descriptionCaseShort()
     {
@@ -266,7 +266,7 @@ private with sharing class CaseUtilTest
         newList.add(caseShortDescription);
 
         insert newList;
-       
+
         Case caseToCompareShort = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseShortDescription.id];
 
         System.assertEquals(caseToCompareShort.Description.length() == caseToCompareShort.PrimerMensaje__c.length(), true, 'Se ha asignado bien el campo PrimerMensaje__c');
@@ -290,7 +290,7 @@ private with sharing class CaseUtilTest
         newList.add(caseLongDescription);
 
         insert newList;
-       
+
         Case caseToCompareLong = [SELECT id,Description, PrimerMensaje__c FROM Case where id =: caseLongDescription.id];
         System.assertEquals(caseToCompareLong.PrimerMensaje__c.length()  < 256, true,'El campo PrimerMensaje__c no supera el límite de caracteres');
     }
@@ -298,7 +298,7 @@ private with sharing class CaseUtilTest
     /**
      * Test que comprueba la correcta inserción de caso tipo Sprinklr con una descripcion nula
      * El caso debe ser insertado correctamente.
-    */
+     */
     @isTest
     private static void test_descriptionCaseNull()
     {
@@ -331,7 +331,7 @@ private with sharing class CaseUtilTest
         newSprinklrCase.RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR;
         newSprinklrCase.Subject = 'test_setSprinklrCaseTipificationWithInvalidConfiguration';
         newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
- 		
+
         Test.startTest();
         insert newSprinklrCase;
         Test.stopTest();
@@ -340,7 +340,7 @@ private with sharing class CaseUtilTest
         Robot_Hegeo_Field_Mapping__mdt expectedValues = [SELECT Type__c, SubType__c, TypeN3__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c =: CaseUtil.DEFAULT_SPRINKLR_CASE_TIPIFICATION];
         Assert.areEqual(expectedValues.Type__c, caseToCompare.Type);
         Assert.areEqual(expectedValues.SubType__c, caseToCompare.Subtype__c);
-        Assert.areEqual(expectedValues.TypeN3__c, caseToCompare.TypeN3__c);    
+        Assert.areEqual(expectedValues.TypeN3__c, caseToCompare.TypeN3__c);
     }
 
     /**
@@ -359,7 +359,7 @@ private with sharing class CaseUtilTest
         newSprinklrCase.RobotTypeN1__c = 'NO EXISTE';
         newSprinklrCase.Subject = 'test_setSprinklrCaseTipificationWithInvalidConfiguration';
         newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
- 		
+
         Test.startTest();
         insert newSprinklrCase;
         Test.stopTest();
@@ -369,9 +369,9 @@ private with sharing class CaseUtilTest
         Assert.isNull(caseToCompare.SubType__c);
         Assert.isNull(caseToCompare.TypeN3__c);
     }
-    
 
-    
+
+
     /**
      * Se comprueba la correcta asignación de CallCenter__c y Queue para casos tipo Sprinklr que vengan con una TAGSprinklr
      * reconocida por Salesforce. Esta TAG viene establecida desde fuera del sistema.
@@ -387,7 +387,7 @@ private with sharing class CaseUtilTest
         newSprinklrCase.Subject = 'test_setSprinklrCaseCallCenterAndGroup';
         newSprinklrCase.SuppliedEmail = 'sprinklrCase@zurich.com';
         List<Group> queueSiniestrosRRSS = new GroupSelector().findByName(CaseUtil.SPRINKLR_QUEUE_SINIESTROS);
- 		
+
         Test.startTest();
         insert newSprinklrCase;
         Test.stopTest();
@@ -396,6 +396,70 @@ private with sharing class CaseUtilTest
         Assert.areEqual(CaseUtil.SPRINKLR_CALLCENTER_SINIESTROS, caseToCompare.CallCenter__c);
         Assert.areEqual(queueSiniestrosRRSS[0].id, caseToCompare.OwnerId);
 
+    }
+
+    /**
+     * Se comprueba que el metodo applyFormatToZDABody funciona correctamente. Para ello:
+     * - Crea un caso de tipo ZDA (origen CanalUnico) con descripcion formateable. DEBE APLICAR FORMATO
+     * - Crea un caso de tipo ZDA (origen CanalUnico) con sin ;;. NO DEBE HABER CAMBIOS
+     * - Crea un caso de tipo ZDA (origen Web) con descripcion formateable. NO DEBE HABER CAMBIOS
+     * - Crea un caso de tipo Sprinklr (origen CanalUnico) con descripcion formateable. NO DEBE HABER CAMBIOS
+     *
+     * @author mario.navarro@seidor.com
+     * @date 08/04/2024
+     */
+    @isTest
+    private static void test_applyFormatToZDABody()
+    {
+        Case newZDACaseToFormat = new Case (
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Description = 'Usuario: NOMBRE APELLIDO1 APELLIDO2;;Correo electrónico: USUARIO@bancsabadell.com;;Unidad de trabajo: 0086',
+            Origin = 'CanalUnico',
+            Subject = 'Caso a formatear'
+            );
+        String formattedText = newZDACaseToFormat.Description.replace(';;', '\n');
+        Case newZDACaseNoFormat = new Case (
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Description = 'Descripcion no formateable',
+            Origin = 'CanalUnico',
+            Subject = 'Caso NO formatear 1'
+            );
+        Case newZDACaseNoFormat2 = new Case (
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Description = newZDACaseToFormat.Description,
+            Origin = 'Web',
+            Subject = 'Caso NO formatear 2'
+            );
+        Case newSprinklrCase = new Case (
+            RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR,
+            Description = newZDACaseToFormat.Description,
+            Origin = 'CanalUnico',
+            Subject = 'Caso NO formatear 3'
+            );
+        List<Case> casesToInsert = new List<Case>();
+        casesToInsert.add(newZDACaseToFormat);
+        casesToInsert.add(newZDACaseNoFormat);
+        casesToInsert.add(newZDACaseNoFormat2);
+        casesToInsert.add(newSprinklrCase);
+
+        Test.startTest();
+        insert casesToInsert;
+        Test.stopTest();
+
+        List<Case> casesToCompare = [SELECT Subject, Description FROM Case];
+        for (Case caseToCompare : casesToCompare)
+        {
+            if ( caseToCompare.Subject.equals(newZDACaseToFormat.Subject) )
+            {
+                //Caso que debe haber sido formateado
+                Assert.areEqual(formattedText, caseToCompare.Description);
+            }
+            else
+            {
+                //El resto no se deben haber formateado
+                Assert.areNotEqual(formattedText, caseToCompare.Description);
+            }
+        }
     }
 
     /**
@@ -1152,7 +1216,7 @@ private with sharing class CaseUtilTest
         List<Case> listaEntrada= new List<Case>();
         List<Case> listaSalida= new List<Case>();
         caseRecord.subject='test campo closeByBatch';
-        
+
         insert caseRecord;
 
         listaEntrada.add(caseRecord);
@@ -1164,7 +1228,7 @@ private with sharing class CaseUtilTest
     }
 
     /**
-     * Test que comprueba que al actualizar un caso de tipo Sprinklr enlazando una cuenta de tipo customer, 
+     * Test que comprueba que al actualizar un caso de tipo Sprinklr enlazando una cuenta de tipo customer,
      * se actualiza el contacto asociado al perfil social del caso.
      **
      * @author aberuete
@@ -1189,12 +1253,12 @@ private with sharing class CaseUtilTest
         update caseToLinkAccount;
         Test.stopTest();
 
-        spr_sf__SocialPersona__c sprSocialPersonaReturned = [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=:sprSocialPersona.id];
+        spr_sf__SocialPersona__c sprSocialPersonaReturned = [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=: sprSocialPersona.id];
         System.assertEquals (accountTiLinkCase[0].PersonContactId, sprSocialPersonaReturned.spr_sf__Contact__c, 'No se ha actualizado correctamente el perfil social');
     }
 
     /**
-     * Test que comprueba que al actualizar un caso de tipo Sprinklr enlazando una cuenta de un tipo distinto a customer, 
+     * Test que comprueba que al actualizar un caso de tipo Sprinklr enlazando una cuenta de un tipo distinto a customer,
      * no se actualiza el contacto asociado al perfil social del caso.
      **
      * @author aberuete
@@ -1220,12 +1284,12 @@ private with sharing class CaseUtilTest
         update caseToLinkAccount;
         Test.stopTest();
 
-        spr_sf__SocialPersona__c sprSocialPersonaReturned = [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=:sprSocialPersona.id];
+        spr_sf__SocialPersona__c sprSocialPersonaReturned = [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=: sprSocialPersona.id];
         System.assertEquals (null, sprSocialPersonaReturned.spr_sf__Contact__c, 'El perfil social no debería tener un contacto asociado');
     }
 
     /**
-     * Test que comprueba que al actualizar un caso de tipo Sprinklr eliminado su cuenta asociada, 
+     * Test que comprueba que al actualizar un caso de tipo Sprinklr eliminado su cuenta asociada,
      * se elimina el contacto del perfil social del caso.
      **
      * @author aberuete
@@ -1251,7 +1315,7 @@ private with sharing class CaseUtilTest
         update caseToLinkAccount;
         Test.stopTest();
 
-        spr_sf__SocialPersona__c sprSocialPersonaAfterDeleted= [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=:sprSocialPersona.id];
+        spr_sf__SocialPersona__c sprSocialPersonaAfterDeleted= [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=: sprSocialPersona.id];
         System.assertEquals (null, sprSocialPersonaAfterDeleted.spr_sf__Contact__c, 'El contacto se debería haber borrado');
     }
 }
