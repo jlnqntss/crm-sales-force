@@ -67,4 +67,28 @@
         <label>Cerrado sin respuesta</label>
         <closed>true</closed>
     </standardValue>
+    <standardValue>
+        <fullName>No Iniciado</fullName>
+        <default>false</default>
+        <label>No Iniciado</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>En Gestión</fullName>
+        <default>false</default>
+        <label>En Gestión</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Cerrado Ganado</fullName>
+        <default>false</default>
+        <label>Cerrado Ganado</label>
+        <closed>true</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Cerrado Perdido</fullName>
+        <default>false</default>
+        <label>Cerrado Perdido</label>
+        <closed>true</closed>
+    </standardValue>
 </StandardValueSet>

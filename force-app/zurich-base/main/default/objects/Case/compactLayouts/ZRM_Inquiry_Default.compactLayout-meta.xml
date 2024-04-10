@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRM_Inquiry_Default</fullName>
+    <fields>CaseNumber</fields>
+    <fields>AccountId</fields>
+    <fields>PolicyId__c</fields>
+    <fields>Product_Name__c</fields>
+    <fields>PolicyEndDate__c</fields>
+    <label>ZRM Inquiry Default</label>
+</CompactLayout>
