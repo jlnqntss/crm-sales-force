@@ -5,7 +5,7 @@
  * @date 01/12/2021
  */
 @isTest
-private class EmailMessagesUtilTest
+private with sharing class EmailMessagesUtilTest
 {
     public static final Integer NUM_EMAILS = 5;
     public static final String EMAIL_FORMAT_TO = 'toaddress{0}@zurich.com.invalid';
@@ -25,7 +25,7 @@ private class EmailMessagesUtilTest
      * @date 01/12/2021
      */
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         List<purecloud__PureCloud_Queue__c> queues = TestDataFactory.generateGenesysQueues(1);
         queues[0].SalesforceRecipientEmail__c = EMAIL_QUEUE;
@@ -37,7 +37,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void checkEmailMessageForGenesysRouting_hegeo_ok()
+    private static void checkEmailMessageForGenesysRouting_hegeo_ok()
     {
         // Prepare the emails message to be inserted.
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
@@ -82,7 +82,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void assignGenesysRoutingFields_insert_ok()
+    private static void assignGenesysRoutingFields_insert_ok()
     {
         // Generamos los casos que necesitamos
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
@@ -168,9 +168,9 @@ private class EmailMessagesUtilTest
         ];
         System.assertEquals(NUM_EMAILS, emailsResult.size(), 'There should be ' + NUM_EMAILS + ' EmailMessages');
     }
-    
+
     @isTest
-    static void assignGenesysRoutingFields_update_ok()
+    private static void assignGenesysRoutingFields_update_ok()
     {
         // Generamos los casos que necesitamos
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
@@ -230,17 +230,15 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void assignGenesysRoutingIndustry_insert_ok()
+    private static void assignGenesysRoutingIndustry_insert_ok()
     {
 
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
         relatedCase.Industry__c = INDUSTRY_VALUE;
         insert relatedCase;
-        system.debug('>>> RelatedcASE' + relatedCase);
 
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
-        system.debug('>>> emails' + emails);
         for(Integer i=0; i < emails.size(); i++)
         {
             List<String> addressList = new List<String>();
@@ -277,10 +275,10 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void assignGenesysRoutingFieldsIndustry_update_ok()
+    private static void assignGenesysRoutingFieldsIndustry_update_ok()
     {
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
         relatedCase.Industry__c = INDUSTRY_VALUE;
         insert relatedCase;
         // The first time the emails dont have any valid genesys queue email receipts
@@ -332,7 +330,7 @@ private class EmailMessagesUtilTest
 
 
     @isTest
-    static void assignGenesysRoutingFields_insert_ko()
+    private static void assignGenesysRoutingFields_insert_ko()
     {
         EmailMessagesUtil emUtil = new EmailMessagesUtil();
         emUtil.isTestUnknownError = true;
@@ -345,7 +343,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void delete_ok()
+    private static void delete_ok()
     {
         // For EmailMessagesHandler coverage
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(NUM_EMAILS);
@@ -357,7 +355,7 @@ private class EmailMessagesUtilTest
     }
 
     @isTest
-    static void generateChildCases_OK()
+    private static void generateChildCases_OK()
     {
         // Generamos los casos que necesitamos
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
@@ -387,9 +385,7 @@ private class EmailMessagesUtilTest
         EmailMessagesUtil emUtil = new EmailMessagesUtil();
 
         Test.startTest();
-        System.debug('++++ Entramos en el checkblablabla');
         emUtil.checkNewCaseFromClosedCase(emails);
-        System.debug('++++ Salimos del checkblablabla');
         Test.stopTest();
 
         // Comprobamos que se haya creado un 3er caso, y que el email se ha relacionado con el.
@@ -406,7 +402,7 @@ private class EmailMessagesUtilTest
      * @date 26/06/2023
      */
     @isTest
-    static void generateChildCasesFromTranscom_OK()
+    private static void generateChildCasesFromTranscom_OK()
     {
         Group queue = new Group (Name = 'Grupo_De_Prueba',Type = 'Queue' );
         insert queue;
@@ -460,9 +456,9 @@ private class EmailMessagesUtilTest
      * @date 26/07/2023
      */
     @isTest
-    static void test_markPublicActivity()
+    private static void test_markPublicActivity()
     {
-        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email');
+        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.ocsRecordTypeId);
         insert casoToEmailMessage;
 
         Task taskToEmailMessage = new Task (Subject = 'Correo electrónico',Status = 'Nueva',Priority = 'Normal');
@@ -476,5 +472,149 @@ private class EmailMessagesUtilTest
 
         List<Task> tasksList = ActivitySelector.selectTasksById (new Set<Id> {taskToEmailMessage.id});
         System.assertEquals(true, tasksList[0].IsVisibleInSelfService, 'La tarea no se ha actualizado correctamente');
+    }
+
+    /**
+     * Test para cerrar casos creados para buzones que están sólo en CCC
+     * @author jfherrero
+     * @date 22/01/2024
+     */
+    @isTest
+    static void test_closeCaseOnlyInCc_Cerrar()
+    {
+        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.ocsRecordTypeId);
+        insert casoToEmailMessage;
+
+        List<CloseOnCcMailboxList__mdt> closeOnCcMailboxList = CloseOnCcMailboxList__mdt.getAll().values();
+        String mailToCloseIfOnlyCc = closeOnCcMailboxList[0].Email__c;
+
+        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
+        emailList[0].RelatedToId = casoToEmailMessage.id;
+        emailList[0].ToAddress = 'mail@ficticio.es';
+        emailList[0].CcAddress = mailToCloseIfOnlyCc;
+
+        insert emailList;
+    }
+
+    /**
+     * Test para cerrar casos creados para buzones que están sólo en CCC
+     * @author jfherrero
+     * @date 22/01/2024
+     */
+    @isTest
+    static void test_closeCaseOnlyInCc_No_Cerrar()
+    {
+        Case casoToEmailMessage = new Case (Subject = 'prueba',Status = 'Assigned', Origin = 'Email', RecordTypeId = EmailMessagesUtil.ocsRecordTypeId);
+        insert casoToEmailMessage;
+
+        List<CloseOnCcMailboxList__mdt> closeOnCcMailboxList = CloseOnCcMailboxList__mdt.getAll().values();
+        String mailToCloseIfOnlyCc = closeOnCcMailboxList[0].Email__c;
+
+        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
+        emailList[0].RelatedToId = casoToEmailMessage.id;
+        emailList[0].ToAddress = mailToCloseIfOnlyCc;
+        emailList[0].CcAddress = 'mail@ficticio.es';
+
+        insert emailList;
+    }
+
+    /**
+     * Test para activar campo ControlEmailCC__c 
+     * @author lrodriguez
+     * @date 27/03/2024
+     */
+    @isTest
+    static void test_checkMailCc_Activar()
+    {
+        Case casoToEmailMessage = new Case (Subject = 'prueba activar',Status = 'Assigned', Origin = 'Email', RecordTypeId = CaseUtil.RT_ID_USPINQUIRY);
+        insert casoToEmailMessage;
+
+        List<EmailFromByDefaultCC__mdt> emailFromByDefaultCC = EmailFromByDefaultCC__mdt.getAll().values();
+        String mailOnlyCc = emailFromByDefaultCC[0].Email__c;
+
+        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
+        emailList[0].RelatedToId = casoToEmailMessage.id;
+        emailList[0].ToAddress = 'mail@ficticio.es';
+        emailList[0].CcAddress = mailOnlyCc;
+
+        Test.startTest();
+
+        insert emailList;
+
+        Test.stopTest();
+        
+        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba activar']; 
+
+        System.assertEquals(casesEmailDefault.ControlEmailCC__c,true,'Debe ser false');
+
+    }
+
+    /**
+     * Test para activar campo ControlEmailCC__c 
+     * @author lrodriguez
+     * @date 27/03/2024
+     */
+    @isTest
+    static void test_checkMailCc_Desactivar()
+    {
+        Case casoToEmailMessage = new Case (Subject = 'prueba Desactivar',Status = 'Assigned', Origin = 'Email', RecordTypeId = CaseUtil.RT_ID_USPINQUIRY);
+        insert casoToEmailMessage;
+
+        List<EmailFromByDefaultCC__mdt> emailFromByDefaultCC = EmailFromByDefaultCC__mdt.getAll().values();
+        String mailOnlyCc = emailFromByDefaultCC[0].Email__c;
+
+        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
+        emailList[0].RelatedToId = casoToEmailMessage.id;
+        emailList[0].ToAddress = mailOnlyCc;
+
+        Test.startTest();
+
+        insert emailList;
+
+        Test.stopTest();
+
+        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba Desactivar']; 
+
+        System.assertEquals(casesEmailDefault.ControlEmailCC__c,false,'Debe ser false');
+
+    }
+
+    /**
+     * Test para cerrar casos creados para buzones que están sólo en CCC
+     * @author jfherrero
+     * @date 06/02/2024
+     */
+    @isTest
+    static void test_getEmailGenesisQueueId()
+    {
+        // Generar mail
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(3);
+        Group queueGroup = new Group (Name='Cola_Test', DeveloperName='Cola_Test', Type='Queue');
+        insert queueGroup;
+
+        emails[0].GenesysQueueName__c = 'Cola_Test';
+        emails[1].GenesysQueueName__c = 'Cola_Test_fallo';
+
+        Id integratorUserId;
+        Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'OCS Community User'});
+
+        if ( UserInfo.getProfileId() != listaPerfiles.keySet().iterator().next() )
+        {
+            integratorUserId = [Select Id FROM User WHERE Profile.Name like : Label.IntegratorUser].get(0).Id;
+        }
+
+        Test.startTest();
+
+        EmailMessagesUtil emailMessagesUtil =new EmailMessagesUtil();
+
+        Id test01 = emailMessagesUtil.getEmailGenesisQueueId(emails[0], integratorUserId);
+        Id test02 = emailMessagesUtil.getEmailGenesisQueueId(emails[1], integratorUserId);
+        Id test03 = emailMessagesUtil.getEmailGenesisQueueId(emails[2], integratorUserId);
+
+        Test.stopTest();
+
+        System.assertEquals(test01, queueGroup.Id, 'Ambas ids deben ser iguales');
+        System.assertEquals(test02, integratorUserId, 'Debe ser el fallback por no encontrar grupos');
+        System.assertEquals(test03, integratorUserId, 'Debe ser el fallback venir el grupo vacío');
     }
 }

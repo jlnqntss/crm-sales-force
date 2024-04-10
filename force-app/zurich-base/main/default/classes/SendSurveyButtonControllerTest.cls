@@ -1,14 +1,22 @@
 @isTest
-public class SendSurveyButtonControllerTest
+private with sharing class SendSurveyButtonControllerTest
 {
-    @isTest
-    static void test_getTransferPollPhoneNumber_ok()
+    @TestSetup
+    private static void makeData()
     {
-        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos'];
-        User u = [SELECT Id FROM User WHERE Id = : usuarios.get(0).AssigneeId AND IsActive = true];
+        List<purecloud__PureCloud_Queue__c> testingGenesysQueues = TestDataFactory.generateGenesysQueues(5);
+        testingGenesysQueues[1].IsSurveyable__c = true;
+        insert testingGenesysQueues;
+    }
+
+    @isTest
+    private static void test_getTransferPollPhoneNumber_ok()
+    {
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'Consulta_Datos' and Assignee.isActive = TRUE];
+        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         String pollPhoneNumberResult;
         SendSurveyButtonController.testListPollPhoneNumber =
-            new AdminSetupParameter__mdt(
+        new AdminSetupParameter__mdt(
                 Label='TestMetadataPollNumber',
                 DeveloperName='TestMetadataPollNumber',
                 KeyName__c='TestMetadataPollNumber',
@@ -25,16 +33,8 @@ public class SendSurveyButtonControllerTest
         System.assertEquals(SendSurveyButtonController.testListPollPhoneNumber.Value__c, pollPhoneNumberResult, 'PhoneNumber is the same');
     }
 
-    @TestSetup
-    static void makeData()
-    {
-        List<purecloud__PureCloud_Queue__c> testingGenesysQueues = TestDataFactory.generateGenesysQueues(5);
-        testingGenesysQueues[1].IsSurveyable__c = true;
-        insert testingGenesysQueues;
-    }
-
     @IsTest
-    static void test_getAllQueues_ok()
+    private static void test_getAllQueues_ok()
     {
         List<purecloud__PureCloud_Queue__c> totalQueues = [SELECT Id, Name, IsSurveyable__c FROM purecloud__PureCloud_Queue__c];
 

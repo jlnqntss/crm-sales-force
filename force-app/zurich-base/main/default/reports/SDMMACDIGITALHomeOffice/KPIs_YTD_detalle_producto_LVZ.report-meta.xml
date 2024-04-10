@@ -11,7 +11,8 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>KPI__c.TotalLoad__c:SUM/KPI__c.Income__c:SUM</calculatedFormula>
+        <calculatedFormula>IF(KPI__c.Income__c:SUM == 0, null,
+KPI__c.TotalLoad__c:SUM/KPI__c.Income__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Siniestralidad total</description>
         <developerName>FORMULA2</developerName>
@@ -40,7 +41,8 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>(KPI__c.PN__c:SUM-KPI__c.PA_PN__c:SUM)/KPI__c.PA_PN__c:SUM</calculatedFormula>
+        <calculatedFormula>IF (KPI__c.PA_PN__c:SUM == 0, 0,
+(KPI__c.PN__c:SUM-KPI__c.PA_PN__c:SUM)/KPI__c.PA_PN__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
         <description>Variación PN respecto PA</description>
         <developerName>FORMULA5</developerName>

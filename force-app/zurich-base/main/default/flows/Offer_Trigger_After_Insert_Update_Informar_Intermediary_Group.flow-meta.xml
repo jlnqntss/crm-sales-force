@@ -14,7 +14,7 @@
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Account.RecordTypeId</leftValueReference>
+                <leftValueReference>$Record.IntermediaryId__r.RecordTypeId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>Get_Intermediary_Record_Type_Id.Id</elementReference>
@@ -112,7 +112,7 @@
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
-                <elementReference>$Record.AccountId</elementReference>
+                <elementReference>$Record.IntermediaryId__c</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -125,7 +125,7 @@
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
-                <elementReference>$Record.Account.ParentId</elementReference>
+                <elementReference>$Record.IntermediaryId__r.ParentId</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>

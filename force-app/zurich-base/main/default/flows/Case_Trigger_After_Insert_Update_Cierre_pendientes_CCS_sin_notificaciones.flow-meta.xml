@@ -5,8 +5,8 @@
         <description>Direcciones para las que, dadas las condiciones, se van a cerrar de forma automatizada los correos</description>
         <name>Asignamos_buzones_a_cerrar</name>
         <label>Asignamos buzones a cerrar</label>
-        <locationX>374</locationX>
-        <locationY>276</locationY>
+        <locationX>182</locationX>
+        <locationY>384</locationY>
         <assignmentItems>
             <assignToReference>Lista_Correos_Cierre</assignToReference>
             <operator>Add</operator>
@@ -54,19 +54,77 @@
         </connector>
     </assignments>
     <decisions>
+        <name>Caso_OCS</name>
+        <label>¿Caso OCS?</label>
+        <locationX>380</locationX>
+        <locationY>276</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Caso_OCS_Inquiry</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignamos_buzones_a_cerrar</targetReference>
+            </connector>
+            <label>Caso OCS Inquiry</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Caso_Sprinklr</name>
+        <label>¿Caso Sprinklr?</label>
+        <locationX>974</locationX>
+        <locationY>276</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Caso_OCS_Sprinklr</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSSprinklr</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Sistema_User</targetReference>
+            </connector>
+            <label>Caso OCS Sprinklr</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Cerramos_el_caso</name>
         <label>¿Cerramos el caso?</label>
-        <locationX>374</locationX>
-        <locationY>492</locationY>
+        <locationX>182</locationX>
+        <locationY>600</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Cerramos</name>
-            <conditionLogic>(1 OR (2 AND 3)) OR (4 OR 5)</conditionLogic>
+            <conditionLogic>(1 OR 2 OR 3 OR (4 AND 5)) OR (6 OR 7)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Origin</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Phone</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Web</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>WhatsApp</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -128,8 +186,8 @@
     <recordLookups>
         <name>Get_Related_Emails</name>
         <label>Get Related Emails</label>
-        <locationX>374</locationX>
-        <locationY>384</locationY>
+        <locationX>182</locationX>
+        <locationY>492</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Cerramos_el_caso</targetReference>
@@ -151,11 +209,32 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Sistema_User</name>
+        <label>Get Sistema User</label>
+        <locationX>842</locationX>
+        <locationY>384</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Cerrar_el_caso</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Sistema</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Obtenemos el usuario Sistema</description>
         <name>Get_System_User</name>
         <label>Get System User</label>
-        <locationX>242</locationX>
-        <locationY>600</locationY>
+        <locationX>50</locationX>
+        <locationY>708</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Actualizamos_valores</targetReference>
@@ -175,8 +254,8 @@
     <recordUpdates>
         <name>Actualizamos_valores</name>
         <label>Actualizamos valores</label>
-        <locationX>242</locationX>
-        <locationY>708</locationY>
+        <locationX>50</locationX>
+        <locationY>816</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>IsClosed</field>
@@ -217,11 +296,50 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>Cerrar_el_caso</name>
+        <label>Cerrar el caso</label>
+        <locationX>842</locationX>
+        <locationY>492</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsClosed</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>CloseResult__c</field>
+            <value>
+                <stringValue>Realizado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ClosedBy__c</field>
+            <value>
+                <elementReference>Get_Sistema_User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PendingBy__c</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cerrado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
-        <filterLogic>(1 AND (2 OR 3) OR (5 OR 6)) AND 4</filterLogic>
+        <filterLogic>(1 AND (2 OR 3 OR 4 OR 5) OR (6 OR 7 OR 9)) AND 8</filterLogic>
         <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
@@ -244,10 +362,17 @@
             </value>
         </filters>
         <filters>
-            <field>PendingBy__c</field>
+            <field>Origin</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Client</stringValue>
+                <stringValue>WhatsApp</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Origin</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Web</stringValue>
             </value>
         </filters>
         <filters>
@@ -264,15 +389,40 @@
                 <stringValue>CSM Particulares</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>PendingBy__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Client</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Origin</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Social media</stringValue>
+            </value>
+        </filters>
         <object>Case</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <scheduledPaths>
             <name>Cierre12dias</name>
             <connector>
-                <targetReference>Asignamos_buzones_a_cerrar</targetReference>
+                <targetReference>Caso_OCS</targetReference>
             </connector>
             <label>Cierre 12 dias</label>
             <offsetNumber>12</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>LastModifiedDate</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Cierre3dias</name>
+            <connector>
+                <targetReference>Caso_Sprinklr</targetReference>
+            </connector>
+            <label>Cierre 3 dias</label>
+            <offsetNumber>3</offsetNumber>
             <offsetUnit>Days</offsetUnit>
             <recordField>LastModifiedDate</recordField>
             <timeSource>RecordField</timeSource>

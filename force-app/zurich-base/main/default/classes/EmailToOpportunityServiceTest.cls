@@ -1,7 +1,7 @@
 @isTest(SeeAllData = false)
-private class EmailToOpportunityServiceTest
+private with sharing class EmailToOpportunityServiceTest
 {
-    static final String EMAIL_SOPORTE = 'soporte-ocs@nts-solutions.com';
+    private static final String EMAIL_SOPORTE = 'soporte-ocs@nts-solutions.com';
     /**
      * Preparación de datos para los tests
      **
@@ -9,7 +9,7 @@ private class EmailToOpportunityServiceTest
      * @date 03/11/2020
      */
     @testSetup
-    static void makeData()
+    private static void makeData()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
@@ -37,7 +37,7 @@ private class EmailToOpportunityServiceTest
      * @date 03/11/2020
      */
     @isTest
-    static void test_inboundEmail_firstEmail_ok()
+    private static void test_inboundEmail_firstEmail_ok()
     {
         GenesysCloud.RoutingService.mock = new GenesysCloudMocks('{"id":"1JB9ZmJnCCKXlerwxAOZXC"}', 200);
 
@@ -97,7 +97,7 @@ private class EmailToOpportunityServiceTest
      * @date 03/11/2020
      */
     @isTest
-    static void test_inboundEmail_inReplyTo_ok()
+    private static void test_inboundEmail_inReplyTo_ok()
     {
         GenesysCloud.RoutingService.mock = new GenesysCloudMocks('{"id":"1JB9ZmJnCCKXlerwxAOZXC"}', 200);
 

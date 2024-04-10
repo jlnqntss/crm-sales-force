@@ -1,13 +1,17 @@
 @isTest
 public class Batch_LeadOffersToReassignToCCTest {
-    
-
-
     @TestSetup
     static void makeData()
     {
         Lead_Offers__c leadOffer = TestDataFactory.generateLeadOfferCS();
         insert leadOffer;
+
+        /*****************************  CUSTOM SETTINGS  ****************************/
+        Cross_Selling__c ventaCruzada = new Cross_Selling__c();
+        ventaCruzada.ContactCenterUser__c = 'generico';
+        ventaCruzada.DefaultUser__c = 'adminkli';
+
+        insert ventaCruzada;
 
         /********************************  INTERMEDIARIOS  ********************************/
         // Crear cuentas de intermediarios
@@ -67,11 +71,11 @@ public class Batch_LeadOffersToReassignToCCTest {
 
         /*****************************  OFERTAS  ****************************/
 
-        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Legit lead', System.today().addDays(3), 6);
-        opportunities[0].OwnerId = listUser[0].Id;
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Legit lead', System.today().addDays(3), 5);
         opportunities[0].IntermediaryId__c = intermediaries[0].Id;
-        opportunities[1].OwnerId = listUser[1].Id;
+        opportunities[0].ZRM__c = true;
         opportunities[1].IntermediaryId__c = intermediaries[1].Id;
+        opportunities[1].ZRM__c = true;
         opportunities[2].OwnerId = listUser[1].Id;
         opportunities[2].IntermediaryId__c = intermediaries[1].Id;
         opportunities[3].OwnerId = listUser[1].Id;
@@ -79,8 +83,6 @@ public class Batch_LeadOffersToReassignToCCTest {
         opportunities[3].StageName = 'Quoted';
         opportunities[4].OwnerId = listUser[2].Id;
         opportunities[4].IntermediaryId__c = intermediaries[2].Id;
-        opportunities[5].OwnerId = listUser[3].Id;
-        opportunities[5].IntermediaryId__c = intermediaries[3].Id;
         insert opportunities;
 
         Test.setCreatedDate(opportunities[0].Id, Date.today() - 15); //Oferta a cambiar, tiene todo lo indicado
@@ -88,7 +90,6 @@ public class Batch_LeadOffersToReassignToCCTest {
         Test.setCreatedDate(opportunities[2].Id, Date.today() - 5);  //Oferta se mantiene, no cumple con la restriccion de tiempo
         Test.setCreatedDate(opportunities[3].Id, Date.today() - 15); //Oferta se mantiene, no cumple con la restriccion de StageName
         Test.setCreatedDate(opportunities[4].Id, Date.today() - 15); //Oferta se mantiene, el Owner no tiene el flag activado
-        Test.setCreatedDate(opportunities[5].Id, Date.today() - 15); //Oferta se mantiene, el Owner no es el perfil correcto
         upsert opportunities;
 
         /*****************************  ATM  ****************************/
@@ -122,7 +123,7 @@ public class Batch_LeadOffersToReassignToCCTest {
     @isTest
     private static void test_reassignOffers_ok()
     {
-        List<Opportunity> offersPreBatch = [SELECT Id, CreatedDate, IntermediaryId__r.EnableReassignmentLeadOffers__c, ReassignToContactCenter__c, Account.RecordType.DeveloperName, StageName, OwnerId, Owner.Name, Owner.Profile.Name, BusinessCode__c, CloseDate from Opportunity];
+        List<Opportunity> offersPreBatch = [SELECT Id, ZRM__c, CreatedDate, IntermediaryId__r.EnableReassignmentLeadOffers__c, ReassignToContactCenter__c, Account.RecordType.DeveloperName, StageName, OwnerId, Owner.Name, Owner.Profile.Name, BusinessCode__c, CloseDate from Opportunity];
         List<AccountTeamMember> atmsPreBatch = [SELECT Id, AccountId, UserId FROM AccountTeamMember];
 
         Batch_LeadOffersToReassignToCC batch = new Batch_LeadOffersToReassignToCC();
@@ -134,17 +135,16 @@ public class Batch_LeadOffersToReassignToCCTest {
 
         System.debug('+++ Despues del batch');
 
-        Map<Id, Opportunity> offersPostBatch = new Map<Id, Opportunity>([SELECT Id, CreatedDate, IntermediaryId__r.EnableReassignmentLeadOffers__c, ReassignToContactCenter__c, Account.RecordType.DeveloperName, StageName, OwnerId, Owner.Name, Owner.Profile.Name, BusinessCode__c, CloseDate from Opportunity]);
+        Map<Id, Opportunity> offersPostBatch = new Map<Id, Opportunity>([SELECT Id, ZRM__c, CreatedDate, IntermediaryId__r.EnableReassignmentLeadOffers__c, ReassignToContactCenter__c, Account.RecordType.DeveloperName, StageName, OwnerId, Owner.Name, Owner.Profile.Name, BusinessCode__c, CloseDate from Opportunity]);
         Integer contCambios = 0;
         Integer contNoCambios = 0;
         for(Opportunity oPre : offersPreBatch)
         {
             Opportunity oPost = offersPostBatch.get(oPre.id);
 
-            if(oPre.Owner.Profile.Name == 'Agente Ventas' && oPre.ReassignToContactCenter__c)
+            if(oPre.ZRM__c && oPre.ReassignToContactCenter__c)
             {
                 // Ha de haber cambiado
-                System.assertNotEquals(oPre.OwnerId, oPost.OwnerId, 'El owner de la oferta ha de haber cambiado');
                 System.assertNotEquals(oPre.BusinessCode__c, oPost.BusinessCode__c, 'El BusinessCode de la oferta ha de haber cambiado');
                 System.assertNotEquals(oPre.CloseDate, oPost.CloseDate, 'La fecha de cierre de la oferta ha de haber cambiado');
                 contCambios++;
@@ -161,15 +161,13 @@ public class Batch_LeadOffersToReassignToCCTest {
 
         // Comprobamos que se han modificado las ofertas que han de hacerlo
         System.assertEquals(2, contCambios, 'No se han modificado las ofertas que tendrian que haberlo hecho');
-        System.assertEquals(4, contNoCambios, 'No se han mantenido iguales las ofertas que tendrian que haberlo hecho');
+        System.assertEquals(3, contNoCambios, 'No se han mantenido iguales las ofertas que tendrian que haberlo hecho');
 
         // Comprobamos que se han creado call me backs que deberían
         List<ContactRequest> cmbs = [SELECT Id, PreferredPhone FROM ContactRequest];
         System.assertEquals(false, cmbs.isEmpty(), 'Se han tenido que generar CallMeBacks');
         System.assertEquals(2, cmbs.size(), 'Se ha tenido que generar sólo una ContactRequest por la oferta que se cambia');
 
-        // Comprobamos que se han eliminado los ATM correspondientes
-        List<AccountTeamMember> atmsPostBatch = [SELECT Id, AccountId, UserId FROM AccountTeamMember];
-        System.assertEquals(true, atmsPostBatch.size() < atmsPreBatch.size(), 'Se han debido eliminar Account Team Members');
+        
     }
 }

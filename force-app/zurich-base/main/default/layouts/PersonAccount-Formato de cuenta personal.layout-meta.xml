@@ -311,6 +311,15 @@
         <fields>NAME</fields>
         <relatedList>Relationship__c.SecondaryAccountId__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>spr_sf__Social_Profile_Url__c</fields>
+        <fields>spr_sf__Channel__c</fields>
+        <fields>spr_sf__FollowerCount__c</fields>
+        <relatedList>spr_sf__SocialPersona__c.spr_sf__Contact__c</relatedList>
+        <sortField>spr_sf__FollowerCount__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>

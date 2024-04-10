@@ -7,6 +7,41 @@
     <description>Permiso para permitir a ciertos usuarios gestionar avisos (CustomerWarning__c) y acuerdos (Special_Condition__c). Solo para USP. Estos avisos y acuerdos se ven en el componente  WarningAndAgreementViewer</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.AllowedIntermediaryCharge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.PreClientPortfolioCommunication__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SMEsSegment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SelfServiceQuotation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SpecializationType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.AgenteOlimpia__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ZZExclusiveManagement__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>CustomerWarning__c.Description__c</field>
         <readable>true</readable>
     </fieldPermissions>

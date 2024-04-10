@@ -38,6 +38,11 @@
                 <label>Backoffice</label>
             </value>
             <value>
+                <fullName>Banca Seguros</fullName>
+                <default>false</default>
+                <label>Banca Seguros</label>
+            </value>
+            <value>
                 <fullName>Cambio de intermediario</fullName>
                 <default>false</default>
                 <label>Cambio de intermediario</label>
@@ -53,9 +58,19 @@
                 <label>Cancelacion</label>
             </value>
             <value>
+                <fullName>Catálogo virtual</fullName>
+                <default>false</default>
+                <label>Catálogo virtual</label>
+            </value>
+            <value>
                 <fullName>Coberturas</fullName>
                 <default>false</default>
                 <label>Coberturas</label>
+            </value>
+            <value>
+                <fullName>Comentario</fullName>
+                <default>false</default>
+                <label>Comentario</label>
             </value>
             <value>
                 <fullName>Como abro un siniestro</fullName>
@@ -98,6 +113,16 @@
                 <label>Como valido mi seguro</label>
             </value>
             <value>
+                <fullName>Consulta</fullName>
+                <default>false</default>
+                <label>Consulta</label>
+            </value>
+            <value>
+                <fullName>Contact Center</fullName>
+                <default>false</default>
+                <label>Contact Center</label>
+            </value>
+            <value>
                 <fullName>Contraseña App</fullName>
                 <default>false</default>
                 <label>Contraseña App</label>
@@ -108,9 +133,19 @@
                 <label>Contratación</label>
             </value>
             <value>
+                <fullName>Correo Corporativo</fullName>
+                <default>false</default>
+                <label>Correo Corporativo</label>
+            </value>
+            <value>
                 <fullName>Cotización</fullName>
                 <default>false</default>
                 <label>Cotización</label>
+            </value>
+            <value>
+                <fullName>CSM/Comercial</fullName>
+                <default>false</default>
+                <label>CSM/Comercial</label>
             </value>
             <value>
                 <fullName>Cuando me avisan</fullName>
@@ -163,9 +198,19 @@
                 <label>Descargar App</label>
             </value>
             <value>
+                <fullName>Descargas / Descargas EIAC</fullName>
+                <default>false</default>
+                <label>Descargas / Descargas EIAC</label>
+            </value>
+            <value>
                 <fullName>Devolución de recibo liquidado mediador</fullName>
                 <default>false</default>
                 <label>Devolución de recibo liquidado mediador</label>
+            </value>
+            <value>
+                <fullName>Documentación</fullName>
+                <default>false</default>
+                <label>Documentación</label>
             </value>
             <value>
                 <fullName>Documentacion - Bloqueo IMEI</fullName>
@@ -248,6 +293,11 @@
                 <label>Documentación Otros Vida</label>
             </value>
             <value>
+                <fullName>Dorsales</fullName>
+                <default>false</default>
+                <label>Dorsales</label>
+            </value>
+            <value>
                 <fullName>Dudas sobre recogida/entrega</fullName>
                 <default>false</default>
                 <label>Dudas sobre recogida/entrega</label>
@@ -308,6 +358,16 @@
                 <label>Franquicia</label>
             </value>
             <value>
+                <fullName>Genious Bar</fullName>
+                <default>false</default>
+                <label>Genious Bar</label>
+            </value>
+            <value>
+                <fullName>Gestión</fullName>
+                <default>false</default>
+                <label>Gestión</label>
+            </value>
+            <value>
                 <fullName>Gestión Competencias</fullName>
                 <default>false</default>
                 <label>Gestión Competencias</label>
@@ -323,6 +383,11 @@
                 <label>Gestión de recibos</label>
             </value>
             <value>
+                <fullName>Incidencia</fullName>
+                <default>false</default>
+                <label>Incidencia</label>
+            </value>
+            <value>
                 <fullName>Incidencias (Cliente)</fullName>
                 <default>false</default>
                 <label>Incidencias (Cliente)</label>
@@ -336,6 +401,11 @@
                 <fullName>Incidencias-Consultas Siniestros</fullName>
                 <default>false</default>
                 <label>Incidencias-Consultas Siniestros</label>
+            </value>
+            <value>
+                <fullName>Incidencia Service Now</fullName>
+                <default>false</default>
+                <label>Incidencia Service Now</label>
             </value>
             <value>
                 <fullName>Incidencias Mi Zurich</fullName>
@@ -363,6 +433,11 @@
                 <label>Indemnización por mis lesiones Movilidad</label>
             </value>
             <value>
+                <fullName>INFO</fullName>
+                <default>false</default>
+                <label>INFO</label>
+            </value>
+            <value>
                 <fullName>Información</fullName>
                 <default>false</default>
                 <label>Información</label>
@@ -373,9 +448,19 @@
                 <label>Internas</label>
             </value>
             <value>
+                <fullName>Mediación</fullName>
+                <default>false</default>
+                <label>Mediación</label>
+            </value>
+            <value>
                 <fullName>Metodos de pago admitidos</fullName>
                 <default>false</default>
                 <label>Metodos de pago admitidos</label>
+            </value>
+            <value>
+                <fullName>MFA (Okta)</fullName>
+                <default>false</default>
+                <label>MFA (Okta)</label>
             </value>
             <value>
                 <fullName>Modificación</fullName>
@@ -458,9 +543,19 @@
                 <label>Pago de Franquicia Movilidad</label>
             </value>
             <value>
+                <fullName>Partner</fullName>
+                <default>false</default>
+                <label>Partner</label>
+            </value>
+            <value>
                 <fullName>Partnership</fullName>
                 <default>false</default>
                 <label>Partnership</label>
+            </value>
+            <value>
+                <fullName>Password</fullName>
+                <default>false</default>
+                <label>Password</label>
             </value>
             <value>
                 <fullName>Precio de mi seguro</fullName>
@@ -486,6 +581,11 @@
                 <fullName>Queja</fullName>
                 <default>false</default>
                 <label>Queja</label>
+            </value>
+            <value>
+                <fullName>Recertificación Usuarios</fullName>
+                <default>false</default>
+                <label>Recertificación Usuarios</label>
             </value>
             <value>
                 <fullName>Reclamación</fullName>
@@ -583,9 +683,24 @@
                 <label>Seguimiento</label>
             </value>
             <value>
+                <fullName>Siniestros</fullName>
+                <default>false</default>
+                <label>Siniestros</label>
+            </value>
+            <value>
+                <fullName>Software Obsoleto</fullName>
+                <default>false</default>
+                <label>Software Obsoleto</label>
+            </value>
+            <value>
                 <fullName>Solicitud factura</fullName>
                 <default>false</default>
                 <label>Solicitud factura</label>
+            </value>
+            <value>
+                <fullName>Spam</fullName>
+                <default>false</default>
+                <label>Spam</label>
             </value>
             <value>
                 <fullName>Sugerencia</fullName>
@@ -608,6 +723,11 @@
                 <label>Tareas administrativas</label>
             </value>
             <value>
+                <fullName>TPA</fullName>
+                <default>false</default>
+                <label>TPA</label>
+            </value>
+            <value>
                 <fullName>Transferencia</fullName>
                 <default>false</default>
                 <label>Transferencia</label>
@@ -617,31 +737,259 @@
                 <default>false</default>
                 <label>Validación</label>
             </value>
+            <value>
+                <fullName>Webservices</fullName>
+                <default>false</default>
+                <label>Webservices</label>
+            </value>
+            <value>
+                <fullName>Zona Zurich</fullName>
+                <default>false</default>
+                <label>Zona Zurich</label>
+            </value>
+            <value>
+                <fullName>ZRM</fullName>
+                <default>false</default>
+                <label>ZRM</label>
+            </value>
+            <value>
+                <fullName>Zurich Empresas</fullName>
+                <default>false</default>
+                <label>Zurich Empresas</label>
+            </value>
+            <value>
+                <fullName>ZVGO</fullName>
+                <default>false</default>
+                <label>ZVGO</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Tareas</controllingFieldValue>
             <valueName>Tareas administrativas</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <valueName>Como renuevo mi seguro</valueName>
+            <controllingFieldValue>Postventa (Local Customer Service)</controllingFieldValue>
+            <valueName>Consulta</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <valueName>El precio de mi renovacion</valueName>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Cambio de intermediario</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Embargo Mediador</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Envíos (Mediador)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Felicitación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <valueName>Incidencias (Mediador)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Incidencias-Consultas Siniestros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <controllingFieldValue>Asistencia (Information/ Contact)</controllingFieldValue>
+            <valueName>Información</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Queja</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Siniestros (Claims)</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Reclamación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Reclamación Siniestros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
+            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
+            <valueName>Sugerencia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención (Renew/ Cancel)</controllingFieldValue>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Anulación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestros (Claims)</controllingFieldValue>
+            <valueName>Gestión</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Venta (Quote/Purchase)</controllingFieldValue>
+            <valueName>Contratacion</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <valueName>Catálogo virtual</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <valueName>Correo Corporativo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <valueName>CSM/Comercial</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Proveedor</controllingFieldValue>
+            <valueName>Descargas / Descargas EIAC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Proveedor</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Documentación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <valueName>Genious Bar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Proveedor</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Incidencia Service Now</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>INFO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <valueName>MFA (Okta)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Proveedor</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
             <controllingFieldValue>Validar mi seguro</controllingFieldValue>
             <controllingFieldValue>Pago de mi seguro</controllingFieldValue>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
             <valueName>Otros</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
-            <valueName>Cuando me avisan</valueName>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Proveedor</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Password</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Recertificación Usuarios</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <valueName>Software Obsoleto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>Proveedor</controllingFieldValue>
+            <valueName>Webservices</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Zona Zurich</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <valueName>ZRM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <valueName>Zurich Empresas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agente</controllingFieldValue>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Corredor</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <valueName>ZVGO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Banca seguros</controllingFieldValue>
+            <controllingFieldValue>Partner</controllingFieldValue>
+            <valueName>Contact Center</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Usuarios</controllingFieldValue>
+            <valueName>Banca Seguros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Usuarios</controllingFieldValue>
+            <valueName>Mediación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Usuarios</controllingFieldValue>
+            <valueName>Partner</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Usuarios</controllingFieldValue>
+            <valueName>TPA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TPA</controllingFieldValue>
+            <valueName>Siniestros</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
@@ -678,57 +1026,6 @@
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
             <valueName>Datos personales</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Cambio de intermediario</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Embargo Mediador</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Envíos (Mediador)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Felicitación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <valueName>Incidencias (Mediador)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Incidencias-Consultas Siniestros</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Información</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Queja</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Reclamación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Reclamación Siniestros</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Mediador</controllingFieldValue>
-            <controllingFieldValue>Gestión Cliente</controllingFieldValue>
-            <valueName>Sugerencia</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
@@ -780,10 +1077,6 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencia</controllingFieldValue>
-            <valueName>Contratacion</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Incidencia</controllingFieldValue>
             <valueName>Validacion</valueName>
         </valueSettings>
         <valueSettings>
@@ -806,10 +1099,6 @@
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
             <valueName>Modificación oferta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Anulación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>
@@ -1068,12 +1357,29 @@
             <valueName>Recobro reactivo</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
+            <controllingFieldValue>MiZurich (Use)</controllingFieldValue>
+            <valueName>Comentario</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
+            <valueName>Dorsales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
+            <valueName>Spam</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Campañas</controllingFieldValue>
             <valueName>Campaña</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Campañas</controllingFieldValue>
             <valueName>Seguimiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>MiZurich (Use)</controllingFieldValue>
+            <valueName>Incidencia</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

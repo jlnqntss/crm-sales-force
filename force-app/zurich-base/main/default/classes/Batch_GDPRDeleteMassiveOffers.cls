@@ -7,11 +7,25 @@
  *
  * @author            : mfernandezcarrera
  * @group             : Seidor
- * @last modified on  : 11-07-2023
+ * @last modified on  : 02-28-2024
  * @last modified by  : mfernandezcarrera
 **/
 public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject>
 {
+    /**
+     * @description Constructor que acepte el parámetro query
+     * @author      mfernandezcarrera | 27/02/2024
+     */
+    private String query;
+    public Batch_GDPRDeleteMassiveOffers(String query)
+    {
+        // Query recibida por parámetro
+        if(!String.isBlank(query))
+        {
+            this.query = query;
+        }
+    }
+
     // La clave se sompone de la entidad legal, el código de estructura y el tipo de cuenta.
     // El valor son los días a partir de los que se tienen que borrar.
     @TestVisible
@@ -32,18 +46,19 @@ public class Batch_GDPRDeleteMassiveOffers implements Database.Batchable<Sobject
         '001F' => 60,   '001J' => 730,  '005F' => 30,   '005J' => 30,   '008F' => 90,   '008J' => 730
     };
 
-    /**
-     * @description El proceso start prepara una query en la que se toman inicialmente todas las ofertas creadas hace 30 días o mas.
-     * @author      jgallaga | 27/10/2023
-     */
-    public Database.QueryLocator start(Database.BatchableContext bc)
-    {
-        /*
-        * Coger todas las ofertas con los campos que nos interesas de SF cuya fecha de creación sea minimo de hace a 30 días
-        */
-        Date firstDateFilter = Date.today().addDays(-30);
-        String query = 'SELECT CommercialStructureCode__c, Account.Type, CreatedDate, LegalEntity__c FROM Opportunity WHERE CreatedDate <= :firstDateFilter';
-
+     /**
+    * @description En el start si la variable viene vacía ejecutamos la Query por defecto.
+    *              En la que se toman inicialmente todas las ofertas creadas hace 30 días o mas.
+    * @author      mfernandezcarrera | 27/02/2024
+    */
+    public Database.QueryLocator start(Database.BatchableContext bc) 
+    {  
+        if (query == null || query == '')
+        {
+            Date firstDateFilter = Date.today().addDays(-30);
+            query = 'SELECT CommercialStructureCode__c, Account.Type, CreatedDate, LegalEntity__c FROM Opportunity WHERE CreatedDate <= :firstDateFilter'; 
+        }
+        
         return Database.getQueryLocator(query);
     }
 

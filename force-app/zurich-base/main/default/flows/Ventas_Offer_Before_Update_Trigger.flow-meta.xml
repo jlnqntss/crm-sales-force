@@ -94,9 +94,9 @@
         <connector>
             <targetReference>Update_Stage_To_Quote</targetReference>
         </connector>
-        <filterFormula>({!$Record.Owner.Profile.Name} = &apos;Agente Ventas&apos; || {!$Record.Owner.Profile.Name} = &apos;Ventas User&apos;) 
+        <filterFormula> OR({!$Record.Owner.Profile.Name} = &apos;Ventas User&apos;, {!$Record.ZRM__c} = true)
 &amp;&amp; 
-( NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Won&apos;)) || NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Lost&apos;)) )</filterFormula>
+( NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Won&apos;)) || NOT(ISPICKVAL({!$Record__Prior.StageName},  &apos;Closed Lost&apos;)))</filterFormula>
         <object>Opportunity</object>
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>

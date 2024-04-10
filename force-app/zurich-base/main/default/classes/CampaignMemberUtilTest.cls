@@ -125,53 +125,7 @@ private with sharing class CampaignMemberUtilTest
         List<CampaignMember> currentCampaignMembers = [SELECT Id, Status FROM CampaignMember];
         System.assertEquals(false, currentCampaignMembers.isEmpty(), 'List should NOT be empty');
     }
-
-    /**
-     * Método que comprueba que se eliminan todos los miembros de campaña con Status = Delete
-     * al llamar a CampaignMemberUtil.deleteMembers
-     *
-     * @author rlopez
-     * @date 22/12/2020
-     */
-    @isTest
-    static void test_deleteMembers_ko()
-    {
-        //Recuperamos el usuario Read Only para ejecutar el borrado y que falle
-        Profile readOnlyProfile = [SELECT Id FROM Profile WHERE Name = 'Read Only'];
-        List<User> userList  = [SELECT Id FROM User WHERE ProfileId =: readOnlyProfile.Id];
-        System.assertEquals(false, userList.isEmpty(), 'List should NOT be empty');
-
-        //Recuperamos CampaignMembers para marcarlos con Status = Delete
-        List<CampaignMember> campaignMembersToUpdate = [SELECT Id, Status, CampaignId FROM CampaignMember];
-        System.assertEquals(false, campaignMembersToUpdate.isEmpty(), 'List should NOT be empty');
-
-        campaignMembersToUpdate.get(0).Status = 'Delete';
-        update campaignMembersToUpdate;
-
-        //Actualizamos la campaña del miembro que acabamos de actualizar
-        //para que el owner sea el usuario Read Only y pueda encontrarlo en la query
-        List<Campaign> campaignsToUpdate = [SELECT Id, OwnerId FROM Campaign WHERE Id =:campaignMembersToUpdate.get(0).CampaignId];
-        System.assertEquals(false, campaignsToUpdate.isEmpty(), 'List should NOT be empty');
-
-        campaignsToUpdate.get(0).OwnerId = userList.get(0).Id;
-        update campaignsToUpdate;
-
-        //Ejecutamos el test con el usuario Read Only
-        System.runAs( userList.get(0) )
-        {
-            Test.startTest();
-            CampaignMemberUtil.deleteMembers();
-            Test.stopTest();
-
-            //Comprobamos que NO se han eliminado todos los miembros de campaña
-            List<CampaignMember> deletedMembers = new CampaignMembersSelector().selectByStatus('Delete');
-            System.assertEquals(false, deletedMembers.isEmpty(), 'There should be CampaignMembers with status "Delete"');
-
-            //Comprobamos que se ha generado un registro de error
-            List<Error_Log__c> errors = [SELECT Id FROM Error_Log__c];
-            System.assertEquals(false, errors.isEmpty(), 'List should NOT be empty');
-        }
-    }
+    
 
     /**
      * Método de test que comprueba que al eliminar un miembro de campaña de una campaña, las ofertas relacionadas pasan a estado Cerrado Perdida
@@ -195,6 +149,21 @@ private with sharing class CampaignMemberUtilTest
             idCampanyas.add(cm.CampaignId);
             idMiembros.add(cm.Contact.AccountId);
         }
+
+        List<Account> accounts = new List<Account>([SELECT Id FROM Account WHERE id in :idMiembros]);
+
+        List<Opportunity> legitLeadOfferList = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'Ventas', 'Legit Lead', Date.today(), 1);
+        List<String> campaignIdList = new List<String>(idCampanyas);
+        
+        for (Opportunity o: legitLeadOfferList) {
+            o.InfoQuoteNumber__c = '';              
+            o.CampaignId = campaignIdList.get(0);
+            o.ZRM__c = true;
+        }
+
+        insert legitLeadOfferList;
+
+        
         
         OpportunitiesSelector selector = new OpportunitiesSelector();
         List<Opportunity> oportunidades = selector.findByCampaignAndCampaignMember(idCampanyas, idMiembros);

@@ -64,13 +64,6 @@
             <operator>equals</operator>
             <value>THIS_MONTH</value>
         </criteriaItems>
-        <criteriaItems>
-            <column>OWNER_PROFILE</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>Agente Ventas</value>
-        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>

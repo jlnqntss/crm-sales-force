@@ -79,8 +79,8 @@
             <values>Vida Riesgo</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>m</values>
+            <operator>equals</operator>
+            <values>Particulares,Pymes</values>
         </dashboardFilterOptions>
         <name>Segmento / Ramo</name>
     </dashboardFilters>
@@ -577,55 +577,55 @@
                     <flexTableColumn>
                         <reportColumn>PARENT.NAME</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PA_PN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.APES__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PoliciesPN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PA_PoliciesPN__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.Portfolio__c</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA1</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA2</reportColumn>
                         <showSubTotal>false</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableSortInfo>
@@ -667,43 +667,43 @@
                     <flexTableColumn>
                         <reportColumn>KPI__c.EstructuraUnificada__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>KPI__c.EstructuraDetalle__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA5</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA1</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA2</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.Portfolio__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PN__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableSortInfo>
@@ -748,43 +748,43 @@
                     <flexTableColumn>
                         <reportColumn>KPI__c.EstructuraUnificada__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>KPI__c.EstructuraDetalle__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>grouping</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA5</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA1</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>FORMULA2</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.Portfolio__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableColumn>
                         <reportColumn>s!KPI__c.PN__c</reportColumn>
                         <showSubTotal>true</showSubTotal>
-                        <showTotal>true</showTotal>
+                        <showTotal>false</showTotal>
                         <type>aggregate</type>
                     </flexTableColumn>
                     <flexTableSortInfo>

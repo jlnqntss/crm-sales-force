@@ -25,6 +25,11 @@
                 <default>false</default>
                 <label>Teams</label>
             </value>
+            <value>
+                <fullName>Training</fullName>
+                <default>false</default>
+                <label>Training</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

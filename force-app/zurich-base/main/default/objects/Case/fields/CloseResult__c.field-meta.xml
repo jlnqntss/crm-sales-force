@@ -343,21 +343,33 @@
                 <default>false</default>
                 <label>Traslado a gestión centro tramitador</label>
             </value>
+            <value>
+                <fullName>No realizado - Caso Duplicado</fullName>
+                <default>false</default>
+                <label>No realizado - Caso Duplicado</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
             <controllingFieldValue>Reclamación Siniestros</controllingFieldValue>
+            <controllingFieldValue>Contratacion</controllingFieldValue>
             <controllingFieldValue>Queja</controllingFieldValue>
             <controllingFieldValue>Reclamación</controllingFieldValue>
             <controllingFieldValue>Incidencias Mi Zurich</controllingFieldValue>
             <controllingFieldValue>Embargo Cliente</controllingFieldValue>
             <controllingFieldValue>Sugerencia</controllingFieldValue>
             <controllingFieldValue>Felicitación</controllingFieldValue>
-            <controllingFieldValue>Apoyo Captación</controllingFieldValue>
+            <controllingFieldValue>Consulta</controllingFieldValue>
+            <controllingFieldValue>Gestión</controllingFieldValue>
+            <controllingFieldValue>Dorsales</controllingFieldValue>
+            <controllingFieldValue>Comentario</controllingFieldValue>
+            <controllingFieldValue>Spam</controllingFieldValue>
+            <controllingFieldValue>Apoyo Captación</controllingFieldValue>s
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Revocación Saneamiento</controllingFieldValue>
             <controllingFieldValue>Anulación</controllingFieldValue>
+            <controllingFieldValue>Incidencia</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
@@ -374,6 +386,16 @@
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>Realizado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <valueName>No realizado - Caso Duplicado</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
@@ -393,7 +415,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
-            <valueName>Traslado a gestión centro tramitador</valueName>
+<valueName>Traslado a gestión centro tramitador</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Transferencia</controllingFieldValue>
@@ -473,6 +495,7 @@
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>
             <controllingFieldValue>Seguimiento</controllingFieldValue>
             <controllingFieldValue>Campaña</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
             <controllingFieldValue>Embargo Mediador</controllingFieldValue>
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
@@ -490,6 +513,7 @@
             <controllingFieldValue>Rehabilitación</controllingFieldValue>
             <controllingFieldValue>Información</controllingFieldValue>
             <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <controllingFieldValue>Emisión</controllingFieldValue>
             <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
             <controllingFieldValue>Envíos (Mediador)</controllingFieldValue>

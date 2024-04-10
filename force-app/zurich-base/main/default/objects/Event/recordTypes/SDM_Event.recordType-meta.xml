@@ -98,6 +98,10 @@
             <fullName>Teams</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Training</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Follow_up_type__c</picklist>
@@ -144,7 +148,7 @@
             <default>false</default>
         </values>
     </picklistValues>
-    <picklistValues>
+        <picklistValues>
         <picklist>Ramo__c</picklist>
         <values>
             <fullName>Autos</fullName>
@@ -185,7 +189,7 @@
             <default>false</default>
         </values>
     </picklistValues>
-    <picklistValues>
+        <picklistValues>
         <picklist>Type</picklist>
         <values>
             <fullName>Call</fullName>
@@ -197,6 +201,10 @@
         </values>
         <values>
             <fullName>Meeting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Training</fullName>
             <default>false</default>
         </values>
         <values>

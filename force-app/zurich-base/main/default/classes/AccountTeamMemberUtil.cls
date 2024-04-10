@@ -28,4 +28,85 @@ public with sharing class AccountTeamMemberUtil
     {
         intermediary.put(fieldToUpdate,null);
     }
+
+
+    /**
+     * Método que crea una lista de registros de atm para un n usuarios y un account
+     * @author dmunoz
+     * @date 12/02/2024
+     * 
+     */
+    public static List<AccountTeamMember> createATMZRMRecordList(Id accountId, List<User> userList) {
+
+        List<AccountTeamMember> result = new List<AccountTeamMember>();
+        AccountTeamMember atm;
+
+        if (userList != null && !userList.isEmpty() && accountId != null && String.isNotEmpty(accountId)) {
+            for (User user: userList) {
+                atm = new AccountTeamMember();
+                atm.AccountId = accountId;
+                atm.UserId = user.Id;
+                atm.TeamMemberRole = 'MediadorZRM';
+                atm.AccountAccessLevel = 'Edit';
+                atm.ContactAccessLevel = 'Read';
+                atm.OpportunityAccessLevel = 'None';
+                atm.CaseAccessLevel = 'None';
+                result.add(atm);    
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Método que crea una lista de registros de atm para un n usuarios y un account
+     * @author dmunoz
+     * @date 12/02/2024
+     * 
+     */
+    public static List<AccountTeamMember> createATMZRMRecordList(Id accountId, List<String> userList) {
+
+        List<AccountTeamMember> result = new List<AccountTeamMember>();
+        AccountTeamMember atm;
+
+        if (userList != null && !userList.isEmpty() && accountId != null && String.isNotEmpty(accountId)) {
+            for (String userId: userList) {
+                atm = new AccountTeamMember();
+                atm.AccountId = accountId;
+                atm.UserId = userId;
+                atm.TeamMemberRole = 'MediadorZRM';
+                atm.AccountAccessLevel = 'Edit';
+                atm.ContactAccessLevel = 'Read';
+                atm.OpportunityAccessLevel = 'None';
+                atm.CaseAccessLevel = 'None';
+                result.add(atm);    
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Método que crea atm para un usuario y un account de ZRM
+     * @author dmunoz
+     * @date 12/02/2024
+     * 
+     */
+    public static AccountTeamMember createATMZRMRecord(String accountId, String userId) {
+        AccountTeamMember result = new AccountTeamMember();
+
+        if (String.isNotEmpty(accountId) && String.isNotEmpty(userId)) {
+            
+            result.AccountId = accountId;
+            result.UserId = userId;
+            result.TeamMemberRole = 'MediadorZRM';
+            result.AccountAccessLevel = 'Edit';
+            result.ContactAccessLevel = 'Read';
+            result.OpportunityAccessLevel = 'None';
+            result.CaseAccessLevel = 'None';
+        }
+        
+        return result;
+    }
+
 }

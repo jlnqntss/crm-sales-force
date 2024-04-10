@@ -23,9 +23,9 @@ public class EmailMessageHandler implements ITrigger
     {
         // Check if the emails are valid for the Genesys Routing
         emailMessagesUtil.checkEmailMessageForGenesysRouting(
-            (List<EmailMessage>)newList, 
+            (List<EmailMessage>) newList,
             Trigger.isInsert
-        );
+            );
     }
 
     /**
@@ -35,7 +35,8 @@ public class EmailMessageHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * beforeInsert
@@ -45,7 +46,7 @@ public class EmailMessageHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
-        emailMessagesUtil.checkNewCaseFromClosedCase((List<EmailMessage>)newList);
+        emailMessagesUtil.checkNewCaseFromClosedCase( (List<EmailMessage>) newList );
         emailMessagesUtil.assignGenesysRoutingFields();
     }
 
@@ -67,7 +68,8 @@ public class EmailMessageHandler implements ITrigger
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * afterInsert
@@ -77,7 +79,8 @@ public class EmailMessageHandler implements ITrigger
      * has modified any values. The record is 'read only' by this point.
      */
     public void afterInsert(List<SObject> newList)
-    {}
+    {
+    }
 
     /**
      * afterUpdate
@@ -86,7 +89,11 @@ public class EmailMessageHandler implements ITrigger
      * trigger.
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        emailMessagesUtil.checkIfMailOnlyInCc( (List<EmailMessage>) newList );
+        emailMessagesUtil.checkMailCc( (List<EmailMessage>) newList );
+
+    }
 
     /**
      * afterDelete
@@ -95,7 +102,8 @@ public class EmailMessageHandler implements ITrigger
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * andFinally
@@ -107,8 +115,8 @@ public class EmailMessageHandler implements ITrigger
     {
         if (Trigger.isAfter && Trigger.isInsert)
         {
-            emailMessagesUtil.markPublicActivity((Map<Id, EmailMessage>) newMap);
+            emailMessagesUtil.markPublicActivity( (Map<Id, EmailMessage>) newMap );
         }
-        
+
     }
 }

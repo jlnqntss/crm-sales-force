@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NonHiringReason__c</fullName>
+    <description>Motivo de no contratación en caso de que el cliente confirme que optará por la competencia</description>
+    <externalId>false</externalId>
+    <label>Motivo de no contratación</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>NotInformedByClient</fullName>
+                <default>false</default>
+                <label>Cliente no informa</label>
+            </value>
+            <value>
+                <fullName>HighPrice</fullName>
+                <default>false</default>
+                <label>Precio elevado</label>
+            </value>
+            <value>
+                <fullName>InsufficientCoverage</fullName>
+                <default>false</default>
+                <label>Coberturas insuficientes</label>
+            </value>
+            <value>
+                <fullName>Unresponded</fullName>
+                <default>false</default>
+                <label>Cliente no responde</label>
+            </value>
+            <value>
+                <fullName>Others</fullName>
+                <default>false</default>
+                <label>Otros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -12,6 +12,7 @@
     <permissionSets>Gestion_Objetivos_SDM</permissionSets>
     <permissionSets>Gestion_Suscripcion</permissionSets>
     <permissionSets>Gestionar_vistaslista</permissionSets>
+    <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <permissionSets>SDMDataManagementHO</permissionSets>
     <permissionSets>SDM_Gestion_Informes</permissionSets>
     <permissionSets>SDM_Plan_comercial</permissionSets>

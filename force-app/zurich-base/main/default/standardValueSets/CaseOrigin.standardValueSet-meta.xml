@@ -31,4 +31,19 @@
         <default>false</default>
         <label>WhatsApp</label>
     </standardValue>
+    <standardValue>
+        <fullName>Social media</fullName>
+        <default>false</default>
+        <label>Social media</label>
+    </standardValue>
+    <standardValue>
+        <fullName>CanalUnico</fullName>
+        <default>false</default>
+        <label>Single channel</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Retenciones</fullName>
+        <default>false</default>
+        <label>Retenciones</label>
+    </standardValue>
 </StandardValueSet>

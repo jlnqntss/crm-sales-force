@@ -3,8 +3,8 @@
  *                      de la clase 'CampaignZRMCustomPageController'
  *
  * @author            : amiranda
- * @date              : 03-01-2024
- * @last modified on  : 03-01-2024
+ * @date              : 22-03-2024
+ * @last modified on  : 22-03-2024
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -16,65 +16,99 @@ private with sharing class CampaignZRMCustomPageControllerTest
     @TestSetup
     private static void setup()
     {
-        // Se crea una cuenta de tipo Mediador para preparar el usuario de la comunidad ZRM
-        List<Account> intermediaries = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary', 1);
-        insert intermediaries;
+        User thisUser = [SELECT Id FROM User WHERE Id = :UserInfo.getUserId()];
 
-        // Se crea el contacto relacionado con la cuenta anterior, necesario para el usuario de la comunidad ZRM
-        List<Contact> intermediaryContacts = TestDataFactory.generateContactsFromAccounts(intermediaries,
-                                                                                          ContactsSelector.RT_NAME_CONTACT,
-                                                                                          1);
-        insert intermediaryContacts;
-
-        // Obtener el rol para el usuario de la comunidad
-        UserRole portalRole = [SELECT Id FROM UserRole WHERE PortalType = 'None' LIMIT 1];
-
-        // Se crea el usuario de la comunidad
-        Id portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
-        List<User> users = TestDataFactory.generateUsersByProfile(portalProfile, 1);
-
-        users.get(0).FirstName = 'Agente';
-        users.get(0).LastName = 'Mediador';
-        users.get(0).Alias = 'amedtest';
-        users.get(0).UserRole = portalRole;
-        users.get(0).ContactId = intermediaryContacts.get(0).Id;
-
-        insert users;
-
-        // Se crea el custom setting que indica el usuario genérico
-        Cross_Selling__c ventaCruzada = new Cross_Selling__c();
-        ventaCruzada.ContactCenterUser__c = 'generico';
-        ventaCruzada.DefaultUser__c = 'adminkli';
-
-        insert ventaCruzada;
-
-        // Se crean las campañas
-        List<Campaign> campaignsToInsert = TestDataFactory.generateCampaigns('001', 5);
-        for (Campaign campaignToInsert: campaignsToInsert)
+        System.runas(thisUser)
         {
-            campaignToInsert.Type = 'Cross Selling';
-            campaignToInsert.IsActive = true;
-            campaignToInsert.StartDate = Date.today();
-            campaignToInsert.EndDate = Date.today() + 7;
+            // Se crea una cuenta de tipo Agrupación de la que colgarán los mediadores creados posteriormente
+            List<Account> agrupaciones = TestDataFactory.generateAccounts(Label.GeneralInsurance,'AgrupacionMediador', 1);
+            insert agrupaciones;
+
+            // Se crea una cuenta de tipo Mediador para preparar el usuario de la comunidad ZRM
+            List<Account> intermediaries = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary', 3);
+            for (Account intermediary : intermediaries)
+            {
+                intermediary.IntermediaryGroup__c = agrupaciones.get(0).Id;
+            }
+            insert intermediaries;
+
+            // Se crean los contactos relacionados con las cuentas de tipo 'Intermediary'
+            List<Contact> intermediaryContacts = TestDataFactory.generateContactsFromAccounts(intermediaries,
+                                                                                              ContactsSelector.RT_NAME_CONTACT,
+                                                                                              1);
+            insert intermediaryContacts;
+
+            // Se crean los usuarios de la comunidad
+            Id agenteVentasProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+            Id agrupacionAgenteVentasProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas - AGR' LIMIT 1].Id;
+
+            List<User> agenteVentasUsers = TestDataFactory.generateUsersByProfile(agenteVentasProfile, 2);
+            List<User> agrupacionAgenteVentasUsers = TestDataFactory.generateUsersByProfile(agrupacionAgenteVentasProfile,1);
+
+            agenteVentasUsers.get(0).FirstName = 'Agente';
+            agenteVentasUsers.get(0).LastName = 'Mediador 1';
+            agenteVentasUsers.get(0).Alias = 'medtest1';
+            agenteVentasUsers.get(0).ContactId = intermediaryContacts.get(0).Id;
+
+            agenteVentasUsers.get(1).FirstName = 'Agente';
+            agenteVentasUsers.get(1).LastName = 'Mediador 2';
+            agenteVentasUsers.get(1).Alias = 'medtest2';
+            agenteVentasUsers.get(1).ContactId = intermediaryContacts.get(1).Id;
+
+            agrupacionAgenteVentasUsers.get(0).FirstName = 'Agente';
+            agrupacionAgenteVentasUsers.get(0).LastName = 'Agrupación';
+            agrupacionAgenteVentasUsers.get(0).Alias = 'agtest';
+            agrupacionAgenteVentasUsers.get(0).Email = 'agrup@test.com';
+            agrupacionAgenteVentasUsers.get(0).ContactId = intermediaryContacts.get(2).Id;
+
+            List<User> usersToInsert = new List<User>();
+            usersToInsert.addAll(agenteVentasUsers);
+            usersToInsert.addAll(agrupacionAgenteVentasUsers);
+            insert usersToInsert;
+
+            PermissionSet permissionSet = [SELECT Id FROM PermissionSet WHERE Name = 'ZRM_Consulta_Datos'];
+            List<PermissionSetAssignment> permissionSetAssignments = new List<PermissionSetAssignment>();
+            for (User userToInsert : usersToInsert)
+            {
+                permissionSetAssignments.add( new PermissionSetAssignment(PermissionSetId = permissionSet.Id,
+                                                                          AssigneeId = userToInsert.Id) );
+            }
+            insert permissionSetAssignments;
+
+            // Se crea el custom setting que indica el usuario genérico
+            Cross_Selling__c ventaCruzada = new Cross_Selling__c();
+            ventaCruzada.ContactCenterUser__c = 'generico';
+            ventaCruzada.DefaultUser__c = 'adminkli';
+
+            insert ventaCruzada;
+
+            // Se crean las campañas
+            List<Campaign> campaignsToInsert = TestDataFactory.generateCampaigns('001', 5);
+            for (Campaign campaignToInsert: campaignsToInsert)
+            {
+                campaignToInsert.Type = 'Cross Selling';
+                campaignToInsert.IsActive = true;
+                campaignToInsert.StartDate = Date.today();
+                campaignToInsert.EndDate = Date.today() + 7;
+            }
+            insert campaignsToInsert;
+
+            // Se crean las cuentas personales para generar los miembros de campaña
+            List<Account> customers = TestDataFactory.generateAccounts('001', 'Customer', 10);
+            for (Account customer : customers)
+            {
+                customer.IntermediaryVisibilityAcc__c = intermediaries.get(0).Id;
+            }
+            insert customers;
+
+            // Se recuperan las cuentas personales generadas para recuperar el campo 'PersonContactId'
+            List<Account> personAccounts = [SELECT Id, PersonContactId FROM Account WHERE IsPersonAccount = true];
+            Assert.areEqual(customers.size(), personAccounts.size(), 'El número de cuentas personales no coincide.');
+
+            // Se crean los miembros de campaña asociados a las campañas
+            List<CampaignMember> campaignMembersToInsert = TestDataFactory.generateCampaignMembersForEachCampaign(personAccounts, campaignsToInsert, 'Subscribed');
+            insert campaignMembersToInsert;
         }
-        insert campaignsToInsert;
-
-        // Se crean las cuentas personales para generar los miembros de campaña
-        List<Account> accountsToInsert = TestDataFactory.generateAccounts('001', 'Customer', 10);
-        for (Account accountToInsert : accountsToInsert)
-        {
-            accountToInsert.IntermediaryVisibilityAcc__c = intermediaries.get(0).Id;
-        }
-        insert accountsToInsert;
-
-        // Se recuperan las cuentas personales generadas para recuperar el campo 'PersonContactId'
-        List<Account> personAccounts = [SELECT Id, PersonContactId FROM Account WHERE IsPersonAccount = true];
-        Assert.areEqual(accountsToInsert.size(), personAccounts.size(), 'El número de cuentas personales no coincide.');
-
-        // Se crean los miembros de campaña asociados a las campañas
-        List<CampaignMember> campaignMembersToInsert = TestDataFactory.generateCampaignMembersForEachCampaign(personAccounts, campaignsToInsert, 'Subscribed');
-        insert campaignMembersToInsert;
-
     }
 
     /**
@@ -90,14 +124,14 @@ private with sharing class CampaignZRMCustomPageControllerTest
     {
         Integer numberCampaignMemberToRetrieve = 5;
         String gestionMediadorStatus = 'Gestión Mediador';
-        User intermediary = [SELECT Contact.AccountId FROM User WHERE Alias = 'amedtest' LIMIT 1];
+        User intermediary = [SELECT Contact.AccountId FROM User WHERE Alias = 'medtest1' LIMIT 1];
 
         /* Se recuperan las campañas a las que se les van a añadir nuevos miembros
          * de campaña y un número determinado de sus miembros de campaña a los que
          * se les asignará alguno de estos estados.
          */
         List<Campaign> campaignsToInsertNewStatus = [SELECT Id,
-                                                     (SELECT Id, Status FROM CampaignMembers LIMIT :numberCampaignMemberToRetrieve)
+                                                     (SELECT Id, Status FROM CampaignMembers LIMIT : numberCampaignMemberToRetrieve)
                                                      FROM Campaign LIMIT 2];
 
         // Se crean los estados para las diferentes campañas y se actualizan los estados de los miembros de campaña
@@ -122,7 +156,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
         update campaignMembersToUpdate;
 
         Test.startTest();
-        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns(intermediary.Contact.AccountId);
+        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns();
         Test.stopTest();
 
         Assert.isFalse(campaignsToInsertNewStatus.isEmpty(), 'La lista de campañas no debería estar vacía.');
@@ -156,14 +190,14 @@ private with sharing class CampaignZRMCustomPageControllerTest
     {
         Integer numberCampaignMemberToRetrieve = 5;
         List<String> gestionCCStatus = new List<String> {'Gestión CC', 'Pdte. Revisión Mediador'};
-        User intermediary = [SELECT Contact.AccountId FROM User WHERE Alias = 'amedtest' LIMIT 1];
+        User intermediary = [SELECT Contact.AccountId FROM User WHERE Alias = 'medtest1' LIMIT 1];
 
         /* Se recuperan las campañas a las que se les van a añadir nuevos miembros
          * de campaña y un número determinado de sus miembros de campaña a los que
          * se les asignará alguno de estos estados.
          */
         List<Campaign> campaignsToInsertNewStatus = [SELECT Id,
-                                                     (SELECT Id, Status FROM CampaignMembers LIMIT :numberCampaignMemberToRetrieve)
+                                                     (SELECT Id, Status FROM CampaignMembers LIMIT : numberCampaignMemberToRetrieve)
                                                      FROM Campaign LIMIT 2];
 
         // Se crean los estados para las diferentes campañas y se actualizan los estados de los miembros de campaña
@@ -189,7 +223,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
         update campaignMembersToUpdate;
 
         Test.startTest();
-        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns(intermediary.Contact.AccountId);
+        List<CampaignZRMCustomPageController.CampaignData> campaigns = CampaignZRMCustomPageController.getCampaigns();
         Test.stopTest();
 
         Assert.isFalse(campaignsToInsertNewStatus.isEmpty(), 'La lista de campañas no debería estar vacía.');
@@ -222,33 +256,19 @@ private with sharing class CampaignZRMCustomPageControllerTest
     private static void getCampaignMembers_ok()
     {
         Campaign campanya = [SELECT id FROM Campaign LIMIT 1];
-        List<CampaignMember> miembros = [SELECT id, Contact.AccountId FROM CampaignMember WHERE CampaignId = :campanya.id];
-        System.assertEquals(false, miembros.isEmpty(), 'Hemos de disponer de miembros de campaña');
-
-        List<ID> lstAccountIDS = new List<Id>();
-        for(CampaignMember cm : miembros)
-        {
-            lstAccountIDS.add(cm.Contact.AccountId);
-        }
-        List<Opportunity> offers = [SELECT Id, AccountId, CampaignId FROM Opportunity WHERE AccountId IN :lstAccountIDS AND CampaignId = :campanya.id];
-        System.assertEquals(false, offers.isEmpty(), 'Hemos de tener ofertas asociadas a las cuentas y a esa campaña');
 
         List<CampaignZRMCustomPageController.CampaignMemberData> retorno = new List<CampaignZRMCustomPageController.CampaignMemberData>();
+
         Test.startTest();
         retorno = CampaignZRMCustomPageController.getCampaignMembers(campanya.id);
         Test.stopTest();
 
         System.assertEquals(false, retorno.isEmpty(), 'Se deben encontrar miembros de campaña');
-        System.assertEquals(offers.size(), retorno.size(), 'Se han de encontrar las mismas ofertas que manualmente');
         // Para los datos obtenidos, comprobamos que ha cargado información del CM y de la oferta asociada mediante la comprobación de algunos campos
         for(CampaignZRMCustomPageController.CampaignMemberData cmData : retorno)
         {
             // Comprobamos que contiene datos del CampaignMember
             System.assertEquals(true, String.isNotBlank(cmData.cmId), 'Ha de contener el Id del miembro de campaña');
-
-            // Comprobamos que contiene datos de la oferta asociada al CM
-            System.assertEquals(true, String.isNotBlank(cmData.offerName), 'Ha de contener el Name de la oferta');
-            System.assertEquals(true, String.isNotBlank(cmData.offerId), 'Ha de contener el ID de la oferta');
         }
     }
 
@@ -269,5 +289,68 @@ private with sharing class CampaignZRMCustomPageControllerTest
         Test.stopTest();
 
         System.assertEquals(true, retorno.isEmpty(), 'No se deben encontrar miembros de campaña');
+    }
+
+    /**
+     * @description Método que comprueba que se recuperan los códigos de mediadores
+     * cuando el usuario tiene el perfil 'Agente Ventas'.
+     *
+     * @author amiranda
+     * @date 21-03-2024
+     **/
+    @IsTest
+    private static void getIntermediaryCodes_intermediaryAccount()
+    {
+        User agenteVentas = [SELECT Id, Contact.Account.INFOIntermediaryCode__c
+                             FROM User
+                             WHERE Profile.Name = 'Agente Ventas'
+                                                  AND Alias = 'medtest1' LIMIT 1];
+        Assert.isNotNull(agenteVentas, 'There must be a user with the profile \'Agente Ventas\'');
+
+        Set<String> intermediaryCodes;
+
+        Test.startTest();
+        System.runAs(agenteVentas)
+        {
+            intermediaryCodes = CampaignZRMCustomPageController.getIntermediaryCodes();
+        }
+        Test.stopTest();
+
+        Assert.isFalse(intermediaryCodes.isEmpty(), 'The \'intermediaryCodes\' set should not be empty.');
+        Assert.isTrue(intermediaryCodes.contains(agenteVentas.Contact.Account.INFOIntermediaryCode__c), 'Intermediary code does not match.');
+    }
+
+    /**
+     * @description Método que comprueba que se recuperan los códigos de mediadores
+     * cuando el usuario tiene el perfil 'Agente Ventas - AGR'.
+     *
+     * @author amiranda
+     * @date 21-03-2024
+     **/
+    @IsTest
+    private static void getIntermediaryCodes_agrupacionAccount()
+    {
+        User agrupacionAgenteVentas = [SELECT Id
+                                       FROM User
+                                       WHERE Profile.Name = 'Agente Ventas - AGR'
+                                                            AND Alias = 'agtest' LIMIT 1];
+        Assert.isNotNull(agrupacionAgenteVentas, 'There must be a user with the profile \'Agente Ventas\'');
+
+        Set<String> intermediaryCodes;
+
+        Test.startTest();
+        System.runAs(agrupacionAgenteVentas)
+        {
+            intermediaryCodes = CampaignZRMCustomPageController.getIntermediaryCodes();
+        }
+        Test.stopTest();
+
+        Assert.isFalse(intermediaryCodes.isEmpty(), 'The \'intermediaryCodes\' set should not be empty.');
+
+        List<Account> intermediaries = [SELECT INFOIntermediaryCode__c FROM Account WHERE RecordType.Name = :AccountsSelector.RT_NAME_INTERMEDIARY];
+        for(Account intermediary : intermediaries)
+        {
+            Assert.isTrue(intermediaryCodes.contains(intermediary.INFOIntermediaryCode__c), 'Intermediary code is not in the set of \'intermediaryCodes\'.');
+        }
     }
 }

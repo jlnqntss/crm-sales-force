@@ -20,7 +20,7 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>VTO Ofertas Cliente</header>
+                <header>Ofertas clientes pendientes</header>
                 <indicatorBreakpoint1>0.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
                 <indicatorHighColor>#23366F</indicatorHighColor>
@@ -44,7 +44,7 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>VTO Ofertas Leads</header>
+                <header>Ofertas leads pendientes</header>
                 <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
                 <indicatorHighColor>#23366F</indicatorHighColor>
@@ -68,7 +68,7 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>VTO Pólizas</header>
+                <header>Vencimiento de pólizas</header>
                 <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
                 <indicatorHighColor>#23366F</indicatorHighColor>
@@ -92,13 +92,13 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>Siniestros Abiertos</header>
-                <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
+                <header>Pólizas perdidas año anterior</header>
+                <indicatorBreakpoint1>0.0</indicatorBreakpoint1>
+                <indicatorBreakpoint2>100.0</indicatorBreakpoint2>
                 <indicatorHighColor>#23366F</indicatorHighColor>
                 <indicatorLowColor>#23366F</indicatorLowColor>
                 <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMSiniestros/Siniestros_Abiertos_apk</report>
+                <report>Polizas/Plizas_perdidas_ao_anterior_z8X</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
@@ -158,103 +158,6 @@
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartSummary>
-                    <aggregate>Unique</aggregate>
-                    <column>CAMPAIGN_ID</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>Campañas Activas</header>
-                <indicatorBreakpoint1>33.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>67.0</indicatorBreakpoint2>
-                <indicatorHighColor>#23366F</indicatorHighColor>
-                <indicatorLowColor>#23366F</indicatorLowColor>
-                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMCampaas/Campaas_Activas_con_miembros_de_campaa_iFT</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>5</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>2</colSpan>
-            <columnIndex>7</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <column>RowCount</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>Clientes en Campañas</header>
-                <indicatorBreakpoint1>33.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>67.0</indicatorBreakpoint2>
-                <indicatorHighColor>#23366F</indicatorHighColor>
-                <indicatorLowColor>#23366F</indicatorLowColor>
-                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMCampaas/Miembros_de_Campaa_en_Campaas_S00</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>5</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>2</colSpan>
-            <columnIndex>0</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <column>RowCount</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>VTO Competencia</header>
-                <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
-                <indicatorHighColor>#23366F</indicatorHighColor>
-                <indicatorLowColor>#23366F</indicatorLowColor>
-                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMCompetencia/VTO_Competencia_D9Y</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>10</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>2</colSpan>
-            <columnIndex>2</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <column>RowCount</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>Ofertas Perdidas PY</header>
-                <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
-                <indicatorHighColor>#23366F</indicatorHighColor>
-                <indicatorLowColor>#23366F</indicatorLowColor>
-                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMOfertas/Ofertas_Perdidas_PY_FFl</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>10</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>2</colSpan>
-            <columnIndex>5</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
                     <column>RowCount</column>
                 </chartSummary>
                 <componentType>Metric</componentType>
@@ -270,7 +173,7 @@
                 <report>ZRMTareasyEventos/Tareas_Pendientes_cOB</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>10</rowIndex>
+            <rowIndex>5</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -294,6 +197,78 @@
                 <report>ZRMTareasyEventos/Tareas_Vencidas_fhq</report>
                 <showRange>false</showRange>
             </dashboardComponent>
+            <rowIndex>5</rowIndex>
+            <rowSpan>5</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>2</colSpan>
+            <columnIndex>0</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartSummary>
+                    <column>RowCount</column>
+                </chartSummary>
+                <componentType>Metric</componentType>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <groupingSortProperties/>
+                <header>Pólizas competencia</header>
+                <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
+                <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
+                <indicatorHighColor>#23366F</indicatorHighColor>
+                <indicatorLowColor>#23366F</indicatorLowColor>
+                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
+                <report>ZRMCompetencia/VTO_Competencia_D9Y</report>
+                <showRange>false</showRange>
+            </dashboardComponent>
+            <rowIndex>10</rowIndex>
+            <rowSpan>5</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>2</colSpan>
+            <columnIndex>2</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartSummary>
+                    <column>RowCount</column>
+                </chartSummary>
+                <componentType>Metric</componentType>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <groupingSortProperties/>
+                <header>Ofertas perdidas año anterior</header>
+                <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
+                <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
+                <indicatorHighColor>#23366F</indicatorHighColor>
+                <indicatorLowColor>#23366F</indicatorLowColor>
+                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
+                <report>ZRMOfertas/Ofertas_Perdidas_PY_FFl</report>
+                <showRange>false</showRange>
+            </dashboardComponent>
+            <rowIndex>10</rowIndex>
+            <rowSpan>5</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>2</colSpan>
+            <columnIndex>5</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartSummary>
+                    <column>RowCount</column>
+                </chartSummary>
+                <componentType>Metric</componentType>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <groupingSortProperties/>
+                <header>Siniestros Abiertos</header>
+                <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
+                <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
+                <indicatorHighColor>#23366F</indicatorHighColor>
+                <indicatorLowColor>#23366F</indicatorLowColor>
+                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
+                <report>ZRMSiniestros/Siniestros_abiertos_v2</report>
+                <showRange>false</showRange>
+            </dashboardComponent>
             <rowIndex>10</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
@@ -304,12 +279,12 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <componentType>RichText</componentType>
                 <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;underline\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leyenda\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;VTO Ofertas Cliente:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas de cliente existente cuya fecha de vencimiento es el mes actual.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;VTO Ofertas Lead: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas de leads cuyo estado sea distinto a cerrada.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas Interesado m\u00E1s adelante: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas de interesado m\u00E1s adelante no cerrada con fecha de inter\u00E9s mes actual.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
+                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;underline\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leyenda\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas clientes pendientes:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas de clientes existentes no cerradas cuya fecha de vencimiento es el mes actual\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas leads pendientes: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas de leads no cerradas.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas Interesado m\u00E1s adelante: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas que se cerraron como \\\&amp;quot;interesado m\u00E1s adelante\\\&amp;quot; con fecha de inter\u00E9s mes actual.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
                 </dashboardComponentContents>
                 <groupingSortProperties/>
             </dashboardComponent>
             <rowIndex>15</rowIndex>
-            <rowSpan>3</rowSpan>
+            <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>4</colSpan>
@@ -318,12 +293,12 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <componentType>RichText</componentType>
                 <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;underline\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leyenda\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;VTO P\u00F3lizas:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas activas cuya fecha de vencimiento sea el mes actual.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Siniestros Abiertos:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Siniestros pendientes de resoluci\u00F3n.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Campa\u00F1as activas:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Campa\u00F1as en curso.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Clientes en Campa\u00F1as: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Clientes incluidos en cada campa\u00F1a activa. Detalle de campa\u00F1a y clientes en cada campa\u00F1a.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas Pendientes: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas no cerradas pendientes cuya fecha de vencimiento es esta semana.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas Vencidas:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Tareas no cerradas cuya fecha de vencimiento haya pasado.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
+                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;underline\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leyenda\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Vencimiento de p\u00F3lizas:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas en vigor cuya fecha de vencimiento es el mes actual.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;P\u00F3lizas perdidas a\u00F1o anterior:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas p\u00E9rdidas con fecha de anulaci\u00F3n del mes actual del a\u00F1o anterior\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas pendientes: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas no cerradas cuya fecha de vencimiento es esta semana.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas Vencidas: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas no cerradas cuya fecha de vencimiento ya ha pasado.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\\n\&amp;quot;}]</richTextContent>
                 </dashboardComponentContents>
                 <groupingSortProperties/>
             </dashboardComponent>
             <rowIndex>15</rowIndex>
-            <rowSpan>6</rowSpan>
+            <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>4</colSpan>
@@ -332,12 +307,12 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <componentType>RichText</componentType>
                 <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas prefiero que gestione mi Agente: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas con motivo \\\&amp;quot;prefiero que lo gestione mi agente\\\&amp;quot; derivadas del Contact Center no cerradas.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;VTO Competencia: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Vencimientos de competencia cuya fecha de vencimiento sea en los siguientes 3 meses.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas Perdidas PY:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas cerradas como perdidas del mes actual del a\u00F1o anterior.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
+                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas prefiero gestione mi agente: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas derivadas del Contact Center para gestionar por el Agente.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;P\u00F3lizas competencia:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas de los clientes con la competencia con fecha de contacto en el mes \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;actual.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas perdidas a\u00F1o anterior: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas cerradas como perdidas en el mes actual del a\u00F1o anterior.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
                 </dashboardComponentContents>
                 <groupingSortProperties/>
             </dashboardComponent>
-            <rowIndex>18</rowIndex>
-            <rowSpan>3</rowSpan>
+            <rowIndex>19</rowIndex>
+            <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <numberOfColumns>9</numberOfColumns>
         <rowHeight>36</rowHeight>

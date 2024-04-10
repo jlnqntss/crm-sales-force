@@ -35,9 +35,9 @@ public with sharing class EmailMessagesUtil
 
     Map<String,String> mapRouteTypeDestinatario = getEmailRouteTypeList();
 
-    private static final Id uspRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry').getRecordTypeId();
+    private static final Id uspRecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
     @testvisible
-    private static final Id ocsRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+    private static final Id ocsRecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
 
     /**
      * Get from the metadata configuration the list of emails configured for the Hegeo robot
@@ -98,15 +98,28 @@ public with sharing class EmailMessagesUtil
             Case casoHijo = mapaCasosHijos.get(posicion);
             Case casoPadre = mapaCasosPadre.get(casoHijo.ParentId);
 
-            // Creamos las referencias de los casos padre e hiijo
-            String caseThreadIDpadre = getCaseReference(casoPadre.Id);            
-            if(email.HtmlBody.contains('ref:'+caseThreadIDpadre + ':ref'))
+            // Creamos las referencias de los casos padre e hijo
+            String caseThreadIDpadreOld = getCaseReference(casoPadre.Id, true); 
+            String caseThreadIDpadreNew = getCaseReference(casoPadre.Id, false);
+            
+            if(email.HtmlBody.contains(caseThreadIDpadreOld))
             {
-                String caseThreadIDhijo = getCaseReference(casoHijo.id);
+                String caseThreadIDhijo = getCaseReference(casoHijo.id, false);
 
                 // Actualizamos las referencias en el email
-                email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadre, caseThreadIDhijo);
-                email.TextBody = email.TextBody.replace(caseThreadIDpadre, caseThreadIDhijo);
+                email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadreOld, caseThreadIDhijo);
+                email.TextBody = email.TextBody.replace(caseThreadIDpadreOld, caseThreadIDhijo);
+
+                email.ThreadIdentifier = '';
+            }
+
+            else if(email.HtmlBody.contains(caseThreadIDpadreNew))
+            {
+                String caseThreadIDhijo = getCaseReference(casoHijo.id, false);
+
+                // Actualizamos las referencias en el email
+                email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadreNew, caseThreadIDhijo);
+                email.TextBody = email.TextBody.replace(caseThreadIDpadreNew, caseThreadIDhijo);
 
                 email.ThreadIdentifier = '';
             }
@@ -129,7 +142,7 @@ public with sharing class EmailMessagesUtil
      */
     public void checkEmailMessageForGenesysRouting(List<EmailMessage> emailMessages, Boolean checkHegeoEmails)
     {
-        
+
         if( emailMessages != null && !emailMessages.isEmpty() ) {
             if( this.emailMessageToCheck == null ) this.emailMessageToCheck = new List<EmailMessage>();
 
@@ -223,7 +236,6 @@ public with sharing class EmailMessagesUtil
             }
         }
     }
-
     
     /**
      * Devuelve un listado con los registros de los tipos de enrutado para cada dirección de email
@@ -280,6 +292,7 @@ public with sharing class EmailMessagesUtil
     public void assignGenesysRoutingFields()
     {
         try {
+            
             if( Test.isRunningTest() && isTestUnknownError )
                 throw new EmailMessagesUtilException('Unknown Error');
 
@@ -289,16 +302,21 @@ public with sharing class EmailMessagesUtil
                 this.getGenesysQueuesByEmails();
                 this.getGenesysQueuesByIndustry();
 
-                if( mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty() ) {
+                if(mapGenesysQueueByEmail != null && !mapGenesysQueueByEmail.isEmpty())
+                {
                     this.getEmailRouteTypeList();
                     // For each EmailMessage...
                     for(EmailMessage em: this.emailMessageToCheck) {
                         // Find the Genesys queue data from the emails of the EmailMessage object
                         purecloud__PureCloud_Queue__c genesysQueue = findGenesysQueue(em);
                         
-                        if( genesysQueue != null ) {
+                        if( genesysQueue != null )
+                        {
                             // copy the following data to the EmailMessage
-                            em.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+                            if (genesysQueue.GenesysFlowId__c != null)
+                            {
+                                em.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+                            }
                             em.GenesysQueueName__c = genesysQueue.Name;
                         }
                     }
@@ -371,14 +389,19 @@ public with sharing class EmailMessagesUtil
      * @author aberuete 
      * @date 20/11/2023 
      * @descripción Refactorizar el método y añadir que los casos de tipo USP , si el campo industry viene un correo, buscar la cola de enrutar a genesys por email
+     * 
+     * * * * modificaciones 
+     * @author jfherrero 
+     * @date 27/02/2024 
+     * @descripción Buscar si la cola se tiene que asignar por tipología a otros centros (inicialmente para GSS) - REVERTIDO
      */
     private purecloud__PureCloud_Queue__c findGenesysQueue(EmailMessage em)
     {
         purecloud__PureCloud_Queue__c genesysQueue;
                     
-        if( em != null ) 
+        if( em != null )
         {
-            try 
+            try
             {
                 // List of emails to check
                 String industryGeneric= 'Generico';
@@ -390,10 +413,10 @@ public with sharing class EmailMessagesUtil
                 if(em.Incoming && String.isNotBlank(em.ParentId)) idCaso.add(em.ParentId); 
                 List<Case> listaCaso = new CasesSelector().findAllDataById(idCaso);
 
-                if(!listaCaso.isEmpty()  && em.Industry__c != null && em.Industry__c.contains('@'))
+                if(!listaCaso.isEmpty() && em.Industry__c != null && em.Industry__c.contains('@'))
                 {
                     genesysQueue = this.findGenesysQueueByEmail(em.Industry__c.trim().toLowerCase());  
-
+    
                     if (genesysQueue == null && listaCaso.get(0).RecordTypeId == uspRecordTypeId )
                     {
                         genesysQueue=this.findGenesysQueueByIndustry(industryGeneric.trim().toLowerCase());
@@ -597,13 +620,22 @@ public with sharing class EmailMessagesUtil
      * @param String el ID del caso
      * @return String 
      */
-    private String getCaseReference(String caseId)
+    private String getCaseReference(String caseId, Boolean oldFormat)
     {
         String threadID;
+
         if(caseId != null)
         {
-            threadID = '_'  + UserInfo.getOrganizationId().left(5)  + UserInfo.getOrganizationId().mid(11,4) + '._'  + caseId.left(5)  + caseId.mid(10,5) +'';
+            if(oldFormat)
+            {
+                threadID = 'ref:_' + UserInfo.getOrganizationId().left(5) + UserInfo.getOrganizationId().mid(11,4) + '._' + caseId.left(5) + caseId.mid(10,5) + ':ref';
+            }
+            else
+            {
+                threadID = 'ref:!' + UserInfo.getOrganizationId().left(6) + UserInfo.getOrganizationId().mid(11,4) + '.!' + caseId.left(6) + caseId.mid(10,5) + ':ref';
+            }
         }
+
         return threadID;
     }
 
@@ -614,8 +646,13 @@ public with sharing class EmailMessagesUtil
      * @date 26/06/2023
      * @param Case padre : caso padre
      * @param Case casoHijo : caso hijo
+     * 
+     * modificaciones
+     * @author nts - jfherrero
+     * @date 31/01/2024
+     * @descripción Verificar que el propietario del caso padre esté activo. Si no, intentar asignar la cola de Genesys
     */
-    private Case getOwnerOfChildCase (Case padre, Case casoHijo)
+    private Case getOwnerOfChildCase (Case padre, Case casoHijo, EmailMessage email)
     {
         Id integratorUserId;
         Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'OCS Community User'});
@@ -631,7 +668,14 @@ public with sharing class EmailMessagesUtil
         }
         else if(padre.RecordTypeId==uspRecordTypeId && padre.OwnerId!=null)
         { 
-            casoHijo.OwnerId=padre.OwnerId; //Asignamos como propietario del caso Hijo el mismo que el caso Padre
+            if (CaseUtil.validCaseOwner(padre.OwnerId))
+            {
+                casoHijo.OwnerId = padre.OwnerId; //Asignamos como propietario del caso Hijo el mismo que el caso Padre
+            }
+            else
+            {
+                casohijo.OwnerId = getEmailGenesisQueueId(email, integratorUserId);
+            }
         }
         else
         {
@@ -704,13 +748,350 @@ public with sharing class EmailMessagesUtil
                 Boolean heredamosTipificacion = (padre?.RecordTypeId == ocsRecordTypeId && (padre?.CallCenter__c == 'CC Service' || padre?.CallCenter__c == 'TWW Retención') ); // Corregimos para que solo herede la tipificación en los casos que corresponde
                 
                 Case casoHijo = CaseUtil.createCaseFromParent(padre, email, (tipificacionCorrecta && heredamosTipificacion)); 
-                casoHijo = getOwnerOfChildCase (padre, casoHijo); // Asignamos el owner del caso
+                casoHijo = getOwnerOfChildCase (padre, casoHijo, email); // Asignamos el owner del caso
                 casoHijo.SuppliedEmail = email.FromAddress; // Asignamos el from del email que general el caso hijo como SuppliedEmail
                 mapaCasosHijos.put(posicion, casoHijo);
             }
         }
         insert mapaCasosHijos.values();
         return mapaCasosHijos;
+    }
+
+    /**
+     * Determina si el email tiene buzones de apertura de caso sólo en CcAddress y no en ToAddress
+     * Para aquellos en los que así sea habrá que cerrar el caso creado
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * 
+     * @last modified on  : 22-03-2024
+     * @last modified by  : jfherrero
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+    */
+    public void checkIfMailOnlyInCc (List<EmailMessage> emailList)
+    {
+        // Rescatamos los buzones
+        List<CloseOnCcMailboxList__mdt> closeOnCcMailboxList = CloseOnCcMailboxList__mdt.getAll().values();
+        List<String> mailboxes = new List<String>();
+        
+        if (!closeOnCcMailboxList.isEmpty())
+        {
+            // Si la lista de buzones a cerrar no está vacía, obtenemos los emails
+            for (CloseOnCcMailboxList__mdt mailbox : closeOnCcMailboxList)
+            {
+                mailboxes.add(mailbox.Email__c);
+            }
+
+            List<EmailMessage> emailListRecentlyCreated = new List<EmailMessage>();
+
+            for (EmailMessage em : emailList)
+            {
+                if (em.CreatedDate >= Datetime.now().addMinutes(-1))
+                {
+                    emailListRecentlyCreated.add(em);
+                }
+            }
+
+            // Vemos si los buzones están en el CC pero no en ToAddress y los guardamos
+            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailListRecentlyCreated, mailboxes);//new List<EmailMessage>();
+
+            Set<String> caseIds = new Set<String>();
+
+            for (EmailMessage mailToClose: mailsToCloseRelatedCase)
+            {
+                caseIds.add(mailToClose.ParentId);
+            }
+
+            // Seleccionamos todos los casos que cumplen el criterio
+            
+            List<Case> casesForAutoClose = new CasesSelector().findAllDataById(caseIds);
+            
+            // y que sean de reciente creación
+            List<Case> onlyNewCases = new List<Case>();
+
+            for (Case c : casesForAutoClose)
+            {
+                if (c.CreatedDate >= Datetime.now().addMinutes(-1))
+                {
+                    onlyNewCases.add(c);
+                }
+            }
+
+            //Cierre de los casos que cumplen el criterio
+        	this.closeCasesOnlyInCc(onlyNewCases);
+        }
+    }
+
+    /**
+     * Determina si el email tiene buzones de apertura de caso sólo en CcAddress y no en ToAddress
+     * Para aquellos en los que así sea habrá que establecer un email por defecto cuando el agente conteste un caso
+     * Cuando el email unicamente cuente con alguna de las direcciones en TO desactivara esta dirección por defecto
+     * 
+     * @author lrodriguez
+     * @date 27/03/2024
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+    */
+    public void checkMailCc (List<EmailMessage> emailList)
+    {
+        // Rescatamos los buzones
+        List<EmailFromByDefaultCC__mdt> emailByDefaultCcMailboxList = EmailFromByDefaultCC__mdt.getAll().values();
+        List<String> mailboxes = new List<String>();
+        
+        if (!emailByDefaultCcMailboxList.isEmpty())
+        {
+            // Si la lista de buzones a cerrar no está vacía, obtenemos los emails
+            for (EmailFromByDefaultCC__mdt mailbox : emailByDefaultCcMailboxList)
+            {
+                mailboxes.add(mailbox.Email__c);
+            }
+        }
+        
+        List<EmailMessage> emailCC= new List<EmailMessage>();
+        List<EmailMessage> emailNoCC= new List<EmailMessage>();
+
+        //Separamos aquellos email que tengan direcciones en cc de los que no
+        for(EmailMessage e:emailList)
+        {
+            if(e.ccAddress!=null)
+            {
+                emailCC.add(e);
+            }
+            else{
+                emailNoCC.add(e);
+            }
+        }
+        
+        //Email con direcciones en cc
+        if(emailCC!=null)
+        {
+            List<EmailMessage> mailsToCloseRelatedCase = checkIfMailboxesOnlyInCc (emailList, mailboxes);
+            Set<String> caseIds = new Set<String>();
+
+            for (EmailMessage mailToClose: mailsToCloseRelatedCase)
+            {
+                caseIds.add(mailToClose.ParentId);
+            }
+
+            // Seleccionamos todos los casos que cumplen el criterio
+            List<Case> casesEmailDefault = new CasesSelector().findByIdControlCC(caseIds);
+
+            //Cierre de los casos que cumplen el criterio
+        	this.casesControlEmailCC(casesEmailDefault);
+
+        }
+        //Email sin direcciones en cc
+        if(emailNoCC!=null)
+        {   
+            Set<String> caseIdsDesactivate = new Set<String>();
+
+            for (EmailMessage mailToClose: emailNoCC)
+            {
+                caseIdsDesactivate.add(mailToClose.ParentId);
+            }
+
+            // Seleccionamos todos los casos que cumplen el criterio
+            
+            List<Case> caseEmailNotDefault = new CasesSelector().findByIdControlCC(caseIdsDesactivate);
+            this.casesControlEmailCCDesactivate(caseEmailNotDefault);
+        }
+        
+    }
+
+    /**
+     * Devuelve los emails que tienen las los buzones indicados en CcAddress pero no en ToAddress
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * @param List<EmailMessage> emailList : Lista de email message
+     * @param List<Email> mailboxes : Mapa de id del caso padre y el caso padre 
+    */
+    private List<EmailMessage> checkIfMailboxesOnlyInCc (List<EmailMessage> emailList, List<String> mailboxes) 
+    {
+        List<EmailMessage> selectedMails = new List<EmailMessage>();
+
+        for (EmailMessage emailMessage : emailList)
+        {
+            if (emailMessage.ParentId != null && emailMessage.CcAddress != null && emailMessage.ToAddress != null)
+            {
+                selectedMails=this.checkEmails(emailMessage,mailboxes);
+            }
+        }
+
+        return selectedMails;
+    }
+
+    private List<EmailMessage> checkEmails (EmailMessage emailMessage, List<String> mailboxes) 
+    {
+        List<EmailMessage> selectedMails = new List<EmailMessage>();
+
+        if(checkIfMailboxesInCc(emailMessage, mailboxes) && checkIfMailboxesInTo(emailMessage, mailboxes))
+            {
+                // Opta para cierre
+                selectedMails.add(emailMessage);
+            }
+        
+            return selectedMails;
+    }
+
+    /**
+     * Si el alguno de los buzones está en CcAddress pasa a buscar en ToAddress
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * @param EmailMessage emailMessage : correo a verificar si está en CcAddress
+     * @param List<Email> mailboxes : Mapa de id del caso padre y el caso padre 
+    */
+    private Boolean checkIfMailboxesInCc (EmailMessage emailMessage, List<String> mailboxes) 
+    {
+        Boolean closeThisCase = false;
+        
+        for (String mailboxCc : mailboxes)
+        {             
+            if (emailMessage.CcAddress.contains(mailboxCc))
+            {
+                closeThisCase = true;
+                break;
+            }
+        }
+        return closeThisCase;
+    }
+    
+    /**
+     * Devuelve true si alguno de los buzones está en ToAddress
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * @param EmailMessage emailMessage : correo a verificar si está en ToAddress
+     * @param List<Email> mailboxes : Mapa de id del caso padre y el caso padre 
+    */
+    private Boolean checkIfMailboxesInTo (EmailMessage emailMessage, List<String> mailboxes) 
+    {
+        Boolean closeThisCase = true;
+        
+        for (String mailboxTo : mailboxes)
+        {
+            if (emailMessage.ToAddress.contains(mailboxTo))
+            {
+                closeThisCase = false;
+                break;
+            }
+        }
+        
+        return closeThisCase;
+    }
+
+    /**
+     * Pasa los casos selecionados al estado 'Closed'
+     * 
+     * @author jfherrero
+     * @date 22/01/2024
+     * @param List<Case> casesToClose : Lista de casos para cerrar
+    */
+    private void closeCasesOnlyInCc (List<Case> casesToClose) 
+    {
+        List<Case> openCases = new List<Case>();
+        
+        for (Case caseToClose : casesToClose)
+        {
+            if(caseToClose.Status != 'Closed')
+            {
+                caseToClose.Status = 'Closed';
+                caseToClose.CloseDetail__c = 'Buzón centro en copia';
+                caseToClose.CloseResult__c = 'No Realizado';
+                caseToClose.PendingBy__c = null;
+                openCases.add(caseToClose);
+            }
+        }
+        
+        if(!openCases.isEmpty())
+        {
+            update openCases;
+        }
+    }
+
+    /**
+     * Pasa los casos selecionados al ControlEmailCC__c TRUE
+     * 
+     * @author lrodriguez 
+     * @date 27/03/2024
+     * @param List<Case> casesToActivate : Lista de casos para activar
+    */
+    private void casesControlEmailCC (List<Case> casesToActivate) 
+    {
+        List<Case> updateCases = new List<Case>();
+        
+        for (Case caseToClose : casesToActivate)
+        {
+            if(caseToClose.ControlEmailCC__c !=true)
+            {
+                caseToClose.ControlEmailCC__c =true;
+                updateCases.add(caseToClose);
+            }
+        }
+        
+        if(!updateCases.isEmpty())
+        {
+            update updateCases;
+        }
+    }
+
+     /**
+     * Pasa los casos selecionados al ControlEmailCC__c FALSE
+     * 
+     * @author lrodriguez
+     * @date 27/03/2024
+     * @param List<Case> casesToDesactivate : Lista de casos para desactivar
+    */
+    private void casesControlEmailCCDesactivate (List<Case> casesToDesactivate) 
+    {
+        List<Case> updateCases = new List<Case>();
+        
+        for (Case caseToClose : casesToDesactivate)
+        {
+            if(caseToClose.ControlEmailCC__c !=false)
+            {
+                caseToClose.ControlEmailCC__c =false;
+                updateCases.add(caseToClose);
+            }
+        }
+        
+        if(!updateCases.isEmpty())
+        {
+            update updateCases;
+        }
+    }
+
+    /**
+     * Obtener la cola a la que está asignada un correo para devolver su Id. Si no, devuelve el usuario
+     * o cola indicado como fallback.
+     * 
+     * @author aberuete
+     * @date 31/01/2024
+     * @param EmailMessage email : email para el cual vamos a buscaer la cola
+     * @param Id defaultOwnerOnFallback : usuario por defecto en caso de no encontrar la cola
+    */
+    @TestVisible
+    private Id getEmailGenesisQueueId (EmailMessage email, Id defaultOwnerOnFallback)
+    {
+        if (String.isNotBlank(email?.GenesysQueueName__c))
+        {
+            List<Group> myQueue = [SELECT Id FROM Group WHERE Type='Queue' AND DeveloperName = : email.GenesysQueueName__c];
+
+            if (myQueue.size()>0)
+            {
+                return myQueue[0].Id;
+            }
+            else
+            {
+                return defaultOwnerOnFallback;
+            }
+        }
+        else
+        {
+            return defaultOwnerOnFallback;
+        }
     }
 
     private class EmailMessagesUtilException extends Exception {}

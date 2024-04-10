@@ -177,4 +177,136 @@ public class AccountUtil
         }
         return mapAccountsToRelateByCIF;
     }
+
+
+    /**
+     * Método que resuelve la visibilidad para los cambios de mediador de agrupación, alta a una agrupacion o baja de una agrupación
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    public static void zrmVisibility(List<Account> accountsTrigger, Map<Id,Account> oldMap) {         
+        Date todayDate = Date.today();
+
+        for (Account account: accountsTrigger) {
+            if (esMediador(account)) {
+                if (esAltaAgrupacion(account, oldMap)) {
+                    account.LastIntermediaryGroupChange__c = todayDate;
+                    account.LastIntermediaryGroup__c = '';
+                } else if (esBajaAgrupacion(account, oldMap) || esCambioAgrupacion(account, oldMap)) {
+                    account.LastIntermediaryGroupChange__c = todayDate;
+                    account.LastIntermediaryGroup__c = oldMap.get(account.Id).IntermediaryGroup__c;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Se ha de insertar atm para lead si los está insertando un usuario ZRM desde el boton nuevo de la comunidad 
+     * @author dmunoz
+     * @date 06/03/2024
+     */
+    
+     public static void zrmNewLeadVisibility(List<Account> newList) {
+
+        String leadRT = (new AccountsSelector()).rtLeadId;
+
+        // Recorremos los leads que no esten ni bloqueados ni anonimizados
+        List<Account> leadsToProcessList = new List<Account>();
+        for (Account account: newList) {
+            if (account.RecordTypeId.equals(leadRT) && !account.Blocked__c && !account.Anonymized__c) {
+                leadsToProcessList.add(account);
+            }
+        }
+
+        if (!leadsToProcessList.isEmpty()) {
+            // 1º informacion del usuario logueado - solo ejecutamos este codigo si es usuario ZRM
+            User loggedUser = (new UsersSelector()).findUserIntermediaryByUserId(UserInfo.getUserId());
+            
+            if ('Agente Ventas'.equals(loggedUser.Profile.Name) || 'Agente Ventas - AGR'.equals(loggedUser.Profile.Name)) {  
+
+                // genero los eventos y los publico
+                for (Account lead: leadsToProcessList) {
+                    Eventbus.publish(
+                        new ZRMLeadATM__e(
+                            AccountId__c = lead.Id,
+                            ZRMUserId__c = loggedUser.Id                    
+                        )
+                    );
+                }
+
+            }
+        }
+    }
+
+
+    /****************** Metodos Visibilidad ****************************************/
+    /**
+     * Comprobamos si el registro es un mediador, no se procesa otro tipo de registro
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    private static Boolean esMediador(Account account) {
+        Boolean result = false;
+
+        System.debug('DMM ' + new AccountsSelector().rtIntermediaryId);
+        System.debug('DMM 2 ' + account.RecordTypeId);
+
+        if (new AccountsSelector().rtIntermediaryId.equals(account.RecordTypeId)) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Comprobamos si el movimiento es de un mediador haciendo un alta a una agrupación (no cambio)
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    private static Boolean esAltaAgrupacion(Account account, Map<Id,Account> oldMap) {
+        Boolean result = false;
+        String oldIntermediaryGroup = oldMap.get(account.Id).IntermediaryGroup__c;
+
+        // si la relacion de agrupación pasa de vacio a un valor, lo añadimos a la lista de alta
+        if (oldIntermediaryGroup == null && account.IntermediaryGroup__c != null) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Comprobamos si el movimiento es de un mediador haciendo un cambio de agrupación 
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    private static Boolean esCambioAgrupacion(Account account, Map<Id,Account> oldMap) {
+        Boolean result = false;
+        String oldIntermediaryGroup = oldMap.get(account.Id).IntermediaryGroup__c;
+
+        // si la relacion de agrupación cambia, lo añadimos a la lista de cambio
+        if (oldIntermediaryGroup != null && account.IntermediaryGroup__c != null && !account.IntermediaryGroup__c.equals(oldIntermediaryGroup)) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * Comprobamos si el movimiento es de un mediador haciendo una baja a una agrupación (no cambio)
+     * @author dmunoz
+     * @date 14/2/2024
+     */
+    private static Boolean esBajaAgrupacion(Account account, Map<Id,Account> oldMap) {
+        Boolean result = false;
+        String oldIntermediaryGroup = oldMap.get(account.Id).IntermediaryGroup__c;
+
+        // si la relacion de agrupación pasa de un valor a vacio, lo añadimos a la lista de baja
+        if (oldIntermediaryGroup != null && account.IntermediaryGroup__c == null) {
+            result = true;
+        }
+
+        return result;
+    }
 }

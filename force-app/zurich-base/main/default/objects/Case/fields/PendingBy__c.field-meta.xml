@@ -89,6 +89,21 @@
                 <default>false</default>
                 <label>Consultant</label>
             </value>
+            <value>
+                <fullName>Interno RRSS</fullName>
+                <default>false</default>
+                <label>Interno RRSS</label>
+            </value>
+            <value>
+                <fullName>Partner</fullName>
+                <default>false</default>
+                <label>Partner</label>
+            </value>
+            <value>
+                <fullName>Incident Resolution</fullName>
+                <default>false</default>
+                <label>Incident Resolution</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
@@ -149,6 +164,18 @@
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
             <valueName>Consultant</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Interno RRSS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Partner</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Incident Resolution</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

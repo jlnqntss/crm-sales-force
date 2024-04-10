@@ -1,12 +1,12 @@
 /**
- * @description       : 
+ * @description       :
  * @author            : jjuaristi
- * @group             : 
+ * @group             :
  * @last modified on  : 20-10-2021
  * @last modified by  : jjuaristi
-**/
+ **/
 @isTest(SeeAllData = false)
-private without sharing class GenesysInteractionsServiceTest
+private with sharing class GenesysInteractionsServiceTest
 {
     /**
      * creación de registros necesarios
@@ -15,7 +15,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/10/2020
      */
     @testSetup
-    public static void createScenario()
+    private static void createScenario()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
@@ -36,8 +36,8 @@ private without sharing class GenesysInteractionsServiceTest
         intermediaries.get(1).MainEmail__c = 'intermediario2@email.com';//202102: Añadido email para los intermediarios
 
         List<Account> intermediariesUpdate = new List<Account>();
-        intermediariesUpdate.add(intermediaries.get(0));
-        intermediariesUpdate.add(intermediaries.get(1));
+        intermediariesUpdate.add( intermediaries.get(0) );
+        intermediariesUpdate.add( intermediaries.get(1) );
         update intermediariesUpdate;
 
         List<Account> partners = TestDataFactory.generateAccounts('001', 'PartnerOCS', 10);
@@ -92,7 +92,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_initInteraction_noInteractionId()
+    private static void test_initInteraction_noInteractionId()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -137,13 +137,13 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_initInteraction_outboundMatchedOpportunityPhoneInteraction()
+    private static void test_initInteraction_outboundMatchedOpportunityPhoneInteraction()
     {
         //TODO: Mejora -> Sobrecargar método en TestDataFactory.generateOpportunitiesForEachAccount() con nuevo parámetro ownerID sin romper test antiguos
         //Controlar el email que tiene UserInfo:
         Id testUserId = UserInfo.getUserId();
-        User testUser = new User(Id = testUserId, Email = 'emailfortesting@nts-solutions.com');
-        update testUser;
+        // User testUser = new User(Id = testUserId, Email = 'emailfortesting@nts-solutions.com');
+        // update testUser;
 
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -168,7 +168,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email, OwnerId FROM Opportunity LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email, BestAgent__c, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email, BestAgent__c, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -189,7 +189,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 26/11/2020
      */
     @IsTest
-    static void test_initInteraction_inboundMatchedIntermediary()
+    private static void test_initInteraction_inboundMatchedIntermediary()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -215,7 +215,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         List<Account> expectedAccounts = new AccountsSelector().selectById(recordIds);
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email, WhatId, WhoId, Status, CallObject FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedAccounts[0].Id, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de mediador');
 
@@ -241,7 +241,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor_noRecordMatches()
+    private static void test_findBestAgentFor_noRecordMatches()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -267,7 +267,7 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(testInteractionLog.customerId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de cliente');
         System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
@@ -283,7 +283,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor_ByPhone_inboundMatchedOpportunityInteraction()
+    private static void test_findBestAgentFor_ByPhone_inboundMatchedOpportunityInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -309,7 +309,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -325,7 +325,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor_ByPhone_outboundMatchedOpportunityInteraction()
+    private static void test_findBestAgentFor_ByPhone_outboundMatchedOpportunityInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -350,7 +350,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -367,7 +367,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor_ByPhone_inboundMatchedCaseInteraction()
+    private static void test_findBestAgentFor_ByPhone_inboundMatchedCaseInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -392,7 +392,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Case expectedCase = [SELECT AccountId, Owner.Email FROM Case LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedCase.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedCase.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -408,7 +408,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor_ByPhone_outboundMatchedCaseInteraction()
+    private static void test_findBestAgentFor_ByPhone_outboundMatchedCaseInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -433,7 +433,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Case expectedCase = [SELECT AccountId, Owner.Email FROM Case LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedCase.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedCase.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -450,7 +450,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor_ByEmailinboundMatchedOpportunityInteraction()
+    private static void test_findBestAgentFor_ByEmailinboundMatchedOpportunityInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -476,7 +476,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -492,7 +492,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor_ByEmail_outboundMatchedOpportunityInteraction()
+    private static void test_findBestAgentFor_ByEmail_outboundMatchedOpportunityInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -517,7 +517,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Opportunity expectedOpportunity = [SELECT AccountId, Owner.Email FROM Opportunity LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedOpportunity.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedOpportunity.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -534,7 +534,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor_ByEmail_inboundMatchedCaseInteraction()
+    private static void test_findBestAgentFor_ByEmail_inboundMatchedCaseInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -560,7 +560,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Case expectedCase = [SELECT AccountId, Owner.Email FROM Case LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedCase.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedCase.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -576,7 +576,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findBestAgentFor_ByEmail_outboundMatchedCaseInteraction()
+    private static void test_findBestAgentFor_ByEmail_outboundMatchedCaseInteraction()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -601,7 +601,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         // Then
         Case expectedCase = [SELECT AccountId, Owner.Email FROM Case LIMIT 1];
-        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT AccountId, Owner.Email FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(expectedCase.Owner.Email, testInteractionLog.bestAgentId, 'No coincide el Id. del mejor agente');
         System.assertEquals(expectedCase.AccountId, testInteractionLog.screenPopRecordId, 'No se está realizando screen pop del Id. de oportunidad');
@@ -620,7 +620,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 02/11/2020
      */
     @IsTest
-    static void test_findPeopleBy_Customer_Phone_matchedPerson()
+    private static void test_findPeopleBy_Customer_Phone_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -642,7 +642,7 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE Id IN (SELECT ParentId FROM ContactPointPhone WHERE Id IN :recordIds )];
+        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE Id IN (SELECT ParentId FROM ContactPointPhone WHERE Id IN : recordIds )];
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
@@ -655,7 +655,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    static void test_findPeopleBy_Customer_Email_matchedPerson()
+    private static void test_findPeopleBy_Customer_Email_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -677,7 +677,7 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE Id IN (SELECT ParentId FROM ContactPointEmail WHERE Id IN :recordIds )];
+        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE Id IN (SELECT ParentId FROM ContactPointEmail WHERE Id IN : recordIds )];
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
@@ -690,7 +690,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    static void test_findPeopleBy_Customer_Document_matchedPerson()
+    private static void test_findPeopleBy_Customer_Document_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -721,7 +721,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    static void test_findPeopleBy_Customer_PolicyCode_matchedPerson()
+    private static void test_findPeopleBy_Customer_PolicyCode_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -753,7 +753,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    static void test_findPeopleBy_Intermediary_Phone_matchedPerson()
+    private static void test_findPeopleBy_Intermediary_Phone_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -803,7 +803,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 23/11/2020
      */
     @IsTest
-    static void test_findPeopleBy_Intermediary_IntermediaryCode_matchedPerson()
+    private static void test_findPeopleBy_Intermediary_IntermediaryCode_matchedPerson()
     {
         // When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -838,7 +838,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    static void test_findPeopleBy_RequiredFieldsError()
+    private static void test_findPeopleBy_RequiredFieldsError()
     {
         //When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -871,7 +871,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    static void test_findPeopleBy_NoValidFilterBy()
+    private static void test_findPeopleBy_NoValidFilterBy()
     {
         //When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -910,7 +910,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    static void test_findCustomersBy_NoValidSearchType()
+    private static void test_findCustomersBy_NoValidSearchType()
     {
         //When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -949,7 +949,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    static void test_findIntermediariesBy_NoValidSearchType()
+    private static void test_findIntermediariesBy_NoValidSearchType()
     {
         //When
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
@@ -988,7 +988,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 25/11/2020
      */
     @IsTest
-    static void test_findBestAgents_Intermediary_noCasesOpen()
+    private static void test_findBestAgents_Intermediary_noCasesOpen()
     {
         // When
         GenesysInteractionsService.Intermediary intermediary = new GenesysInteractionsService.Intermediary();
@@ -1016,13 +1016,13 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 21/01/2021
      */
     @IsTest
-    static void test_findActivePolicies()
+    private static void test_findActivePolicies()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
         Id partnerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('PartnerOCS').getRecordTypeId();
 
-        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
-        List<Account> partners = [SELECT Id, PartnerSFCode__c FROM Account WHERE RecordTypeId = :partnerRecordTypeId LIMIT 2];
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = : customerRecordTypeId LIMIT 1];
+        List<Account> partners = [SELECT Id, PartnerSFCode__c FROM Account WHERE RecordTypeId = : partnerRecordTypeId LIMIT 2];
         List<Account> intermediary = [SELECT Id, MainMobilePhone__c, Phone, MainEmail__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' OR INFOIntermediaryCode__c = '0999777888' ORDER BY INFOIntermediaryCode__c DESC LIMIT 2]; //mismo nº que en createScenario()
 
         List<Product2> products = new List<Product2>
@@ -1112,13 +1112,13 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 22/01/2021
      */
     @IsTest
-    static void test_findOpenedClaims()
+    private static void test_findOpenedClaims()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
-        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = : customerRecordTypeId LIMIT 1];
 
-        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = : customer.get(0).Id];
 
         List<Product2> products = new List<Product2>
         {
@@ -1183,11 +1183,11 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 27/01/2021
      */
     @IsTest
-    static void test_findActivePolicy()
+    private static void test_findActivePolicy()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
-        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = : customerRecordTypeId LIMIT 1];
         List<Account> intermediary = [SELECT Id, Phone, MainEmail__c, Channel__c FROM Account WHERE INFOIntermediaryCode__c = '0999888777' LIMIT 1]; //mismo nº que en createScenario()
 
         PoliciesSelector policiesSelector = new PoliciesSelector();
@@ -1236,7 +1236,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 20/10/2021
      */
     @IsTest
-    static void test_findActivePolicy_RequiredFieldsError()
+    private static void test_findActivePolicy_RequiredFieldsError()
     {
         // Test
         Test.startTest();
@@ -1247,7 +1247,7 @@ private without sharing class GenesysInteractionsServiceTest
         }
         catch (Exception ex)
         {
-            system.assertEquals('GenesysInteractionsService.GenesysPoliciesServiceException', ex.getTypeName());
+            system.assertEquals( 'GenesysInteractionsService.GenesysPoliciesServiceException', ex.getTypeName() );
         }
 
         Test.stopTest();
@@ -1260,13 +1260,13 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 27/01/2021
      */
     @IsTest
-    static void test_findOpenedClaim_correctNumber()
+    private static void test_findOpenedClaim_correctNumber()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
-        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = : customerRecordTypeId LIMIT 1];
 
-        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = : customer.get(0).Id];
 
         List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
         claims[0].INFOClaimNumber__c = '0000044444';
@@ -1298,13 +1298,13 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 15/04/2021
      */
     @IsTest
-    static void test_findOpenedClaim_claim_number_noPad()
+    private static void test_findOpenedClaim_claim_number_noPad()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
-        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = : customerRecordTypeId LIMIT 1];
 
-        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = : customer.get(0).Id];
 
         List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
         claims[0].INFOClaimNumber__c = '0000044444';
@@ -1337,13 +1337,13 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 15/04/2021
      */
     @IsTest
-    static void test_findOpenedClaim_claim_number_malformedNumber()
+    private static void test_findOpenedClaim_claim_number_malformedNumber()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
-        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = : customerRecordTypeId LIMIT 1];
 
-        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+        List<Policy__c> policies = [SELECT PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = : customer.get(0).Id];
 
         List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
         claims[0].INFOClaimNumber__c = '0000044444'; // Claim Number con 20 dígitos
@@ -1374,7 +1374,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 20/10/2021
      */
     @IsTest
-    static void test_findOpenedClaim_RequiredFieldsError()
+    private static void test_findOpenedClaim_RequiredFieldsError()
     {
         GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
 
@@ -1386,7 +1386,7 @@ private without sharing class GenesysInteractionsServiceTest
         }
         catch (Exception ex)
         {
-            system.assertEquals('GenesysInteractionsService.GenesysClaimsServiceException', ex.getTypeName());
+            system.assertEquals( 'GenesysInteractionsService.GenesysClaimsServiceException', ex.getTypeName() );
         }
 
         Test.stopTest();
@@ -1399,13 +1399,13 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 27/01/2021
      */
     @IsTest
-    static void test_findOpenedClaim_car_registration()
+    private static void test_findOpenedClaim_car_registration()
     {
         Id customerRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId();
 
-        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = :customerRecordTypeId LIMIT 1];
+        List<Account> customer = [SELECT Id FROM Account WHERE RecordTypeId = : customerRecordTypeId LIMIT 1];
 
-        List<Policy__c> policies = [SELECT Name, PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = :customer.get(0).Id];
+        List<Policy__c> policies = [SELECT Name, PolicyHolder__c, (SELECT Id FROM PolicyNumbers__r) FROM Policy__c WHERE PolicyHolder__c = : customer.get(0).Id];
 
         List<Claim__c> claims = TestDataFactory.generateClaimsForEachPolicyInsuredObject(new List<Policy__c> {policies[0]}, policies[0].PolicyNumbers__r, 1);
         insert claims;
@@ -1452,7 +1452,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 28/01/2021
      */
     @IsTest
-    static void test_searchQueueTaskId_ok()
+    private static void test_searchQueueTaskId_ok()
     {
         Test.startTest();
         //En el stopTest finaliza el future
@@ -1476,7 +1476,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         GenesysInteractionsService.initInteraction(testInteractionLog);
 
-        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = : testInteractionLog.interactionId];
         System.assertEquals(queues[0].SalesforceQueueName__c, expectedTasks[0].Owner.Name, 'El OwnerID de la task debería ser la cola en SF con mismo nombre que en Genesys');
     }
 
@@ -1488,7 +1488,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 28/01/2021
      */
     @IsTest
-    static void test_searchQueueTaskId_ko_NoSFQueue()
+    private static void test_searchQueueTaskId_ko_NoSFQueue()
     {
         //Cola de Genesys
         List<purecloud__PureCloud_Queue__c> queues = new List<purecloud__PureCloud_Queue__c>();
@@ -1508,7 +1508,7 @@ private without sharing class GenesysInteractionsServiceTest
 
         GenesysInteractionsService.initInteraction(testInteractionLog);
 
-        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = : testInteractionLog.interactionId];
         //Como la cola NO existe en SF, debe ponerse Missed Calls
         System.assertEquals(missedCalls.QueueId, expectedTasks[0].OwnerId, 'La cola para Tasks -Missed Calls- debe existir previamente en la Org');
     }
@@ -1521,7 +1521,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 28/01/2021
      */
     @IsTest
-    static void test_searchQueueTaskId_ko_QueueNull()
+    private static void test_searchQueueTaskId_ko_QueueNull()
     {
         QueueSobject missedCalls = [SELECT QueueId, Queue.Name, SobjectType FROM QueueSobject WHERE SobjectType = 'Task' AND Queue.Name = 'Missed Calls' LIMIT 1];
 
@@ -1535,14 +1535,14 @@ private without sharing class GenesysInteractionsServiceTest
 
         GenesysInteractionsService.initInteraction(testInteractionLog);
 
-        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT OwnerId, Owner.Name, CallObject FROM Task WHERE CallObject = : testInteractionLog.interactionId];
         //Como no ha llegao el parámetro queueId, debe ponerse Missed Calls
         System.assertEquals(missedCalls.QueueId, expectedTasks[0].OwnerId, 'La cola para Tasks -Missed Calls- debe existir previamente en la Org');
     }
     // #endregion
 
     @isTest
-    static void test_findDigitalCustomer_ok()
+    private static void test_findDigitalCustomer_ok()
     {
         //Creación de registros del modelo de datos de KLINC
         Account newMaster = new Account(Name = 'test', CustomerNum__c = '3123');
@@ -1577,9 +1577,9 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(true, digitalcustomer.isDigitalCustomer, 'Debería haber devuelto que isDigitalCustomer es true');
     }
 
-   
+
     @isTest
-    static void test_findDigitalCustomer_ko()
+    private static void test_findDigitalCustomer_ko()
     {
         GenesysInteractionsService.DigitalCustomer request = new GenesysInteractionsService.DigitalCustomer();
         request.searchType = 'document';
@@ -1594,14 +1594,14 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(false, digitalcustomer.isDigitalCustomer, 'Debería haber devuelto que isDigitalCustomer es false');
     }
 
-     /**
+    /**
      * Valida la excepción lanzada al faltar parámetros en la búsqueda de digitalcustomer
      **
      * @author jjuaristi
      * @date 20/10/2021
      */
     @isTest
-    static void test_findDigitalCustomer_RequiredFieldsError()
+    private static void test_findDigitalCustomer_RequiredFieldsError()
     {
         GenesysInteractionsService.DigitalCustomer request = new GenesysInteractionsService.DigitalCustomer();
         request.searchType = 'document';
@@ -1614,7 +1614,7 @@ private without sharing class GenesysInteractionsServiceTest
         }
         catch (Exception ex)
         {
-            system.assertEquals('GenesysInteractionsService.GenesysInteractionsServiceException', ex.getTypeName());
+            system.assertEquals( 'GenesysInteractionsService.GenesysInteractionsServiceException', ex.getTypeName() );
         }
 
         Test.stopTest();
@@ -1627,7 +1627,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 04/08/2021
      */
     @IsTest
-    static void test_initInteraction_reportStatistics_noIdentified()
+    private static void test_initInteraction_reportStatistics_noIdentified()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -1652,7 +1652,7 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Task> expectedTasks = [SELECT NoIdentified__c, IdentifiedByNIF__c, IdentifiedByANI__c, MultiIdentifiedByNIF__c, MultiIdentifiedByANI__c FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT NoIdentified__c, IdentifiedByNIF__c, IdentifiedByANI__c, MultiIdentifiedByNIF__c, MultiIdentifiedByANI__c FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         System.assertEquals(false, expectedTasks.isEmpty(), 'No se han generado tareas');
         System.assertEquals(true, expectedTasks[0].NoIdentified__c, 'Estadística: no ha sido identificado ni por ANI ni por NIF');
@@ -1662,12 +1662,12 @@ private without sharing class GenesysInteractionsServiceTest
         System.assertEquals(false, expectedTasks[0].MultiIdentifiedByANI__c, 'Estadística: multiples coincidencias por ANI');
     }
 
-     /**
+    /**
      * Valida la estadística: identificación por ANI
      * @date 04/08/2021
      */
     @IsTest
-    static void test_initInteraction_reportStatistics_identifiedByANI()
+    private static void test_initInteraction_reportStatistics_identifiedByANI()
     {
         // When
         GenesysInteractionsService.Interaction testInteractionLog = new GenesysInteractionsService.Interaction();
@@ -1692,7 +1692,7 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Task> expectedTasks = [SELECT NoIdentified__c, IdentifiedByNIF__c, IdentifiedByANI__c, MultiIdentifiedByNIF__c, MultiIdentifiedByANI__c FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT NoIdentified__c, IdentifiedByNIF__c, IdentifiedByANI__c, MultiIdentifiedByNIF__c, MultiIdentifiedByANI__c FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         //System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
         System.assertEquals(false, expectedTasks.isEmpty(), 'No se han generado tareas');
@@ -1708,7 +1708,7 @@ private without sharing class GenesysInteractionsServiceTest
      * @date 04/08/2021
      */
     @IsTest
-    static void test_initInteraction_reportStatistics_multipleIdentifiedByANI()
+    private static void test_initInteraction_reportStatistics_multipleIdentifiedByANI()
     {
         //Crear un 2º cliente con mismo teléfono para que haya multiple coincidencia
         List<Account> account = TestDataFactory.generateAccounts('001', 'Customer', 1);
@@ -1741,7 +1741,7 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         // Then
-        List<Task> expectedTasks = [SELECT NoIdentified__c, IdentifiedByNIF__c, IdentifiedByANI__c, MultiIdentifiedByNIF__c, MultiIdentifiedByANI__c FROM Task WHERE CallObject = :testInteractionLog.interactionId];
+        List<Task> expectedTasks = [SELECT NoIdentified__c, IdentifiedByNIF__c, IdentifiedByANI__c, MultiIdentifiedByNIF__c, MultiIdentifiedByANI__c FROM Task WHERE CallObject = : testInteractionLog.interactionId];
 
         //System.assertNotEquals(null, testInteractionLog.customerId, 'El id del cliente es nulo');
         System.assertEquals(false, expectedTasks.isEmpty(), 'No se han generado tareas');
@@ -1753,17 +1753,17 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     @IsTest
-    static void test_findPartnersBy_MultiIdentifiedANI ()
+    private static void test_findPartnersBy_MultiIdentifiedANI ()
     {
 
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PartnerOCS'];
         List<Contact> contacts = TestDataFactory.generateContactsFromAccounts
-        (
-            accounts, 
-            ContactsSelector.RT_NAME_CONTACT, 
+                                 (
+            accounts,
+            ContactsSelector.RT_NAME_CONTACT,
             1
-        );
-        
+                                 );
+
         for(Contact currentContact : contacts)
         {
             currentContact.Phone = '111555777';
@@ -1786,17 +1786,17 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     @IsTest
-    static void test_findPartnersBy_NoIdentified ()
+    private static void test_findPartnersBy_NoIdentified ()
     {
 
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PartnerOCS'];
         List<Contact> contacts = TestDataFactory.generateContactsFromAccounts
-        (
-            accounts, 
-            ContactsSelector.RT_NAME_CONTACT, 
+                                 (
+            accounts,
+            ContactsSelector.RT_NAME_CONTACT,
             1
-        );
-        
+                                 );
+
         for(Contact currentContact : contacts)
         {
             currentContact.Phone = '111555767';
@@ -1819,16 +1819,16 @@ private without sharing class GenesysInteractionsServiceTest
     }
 
     @IsTest
-    static void test_findPartnersBy_SingleResult ()
+    private static void test_findPartnersBy_SingleResult ()
     {
 
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'PartnerOCS'];
         List<Contact> contacts = TestDataFactory.generateContactsFromAccounts
-        (
-            accounts, 
-            ContactsSelector.RT_NAME_CONTACT, 
+                                 (
+            accounts,
+            ContactsSelector.RT_NAME_CONTACT,
             1
-        );
+                                 );
 
         contacts[0].Phone = '111555777';
 
@@ -1846,5 +1846,84 @@ private without sharing class GenesysInteractionsServiceTest
         Test.stopTest();
 
         System.assertEquals(true, result.identifiedByANI);
+    }
+
+    /**
+     * Valida el escenario en de búsqueda de personas para siniestros Auto.
+     **
+     * @author jfherrero
+     * @date 20/03/2024
+     */
+    @IsTest
+    private static void test_findPeopleAutoBy_Customer_Document_matchedPerson()
+    {
+        List<Product2> products = new List<Product2>
+        {
+            new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'AUTOS'
+            ),
+            new Product2
+            (
+                Name = 'Product test 2',
+                GroupDescription__c = 'HOGAR'
+            )
+        };
+        insert products;
+
+        for (Product2 product: products)
+            System.debug('PRODUCT: ' + product);
+
+        List<Policy__c> policies = [SELECT Id, Name, TechnicalCode__c, CommercialCode__c, PolicyType__c, IntermediaryId__r.ClassDescription__c,
+                                    Partner__c, Partner__r.PartnerSFCode__c, Partner__r.GrandparentBusinessName__c, Partner__r.PartnerSector__c,
+                                    IntermediaryId__r.INFOIntermediaryCode__c, IntermediaryId__r.IntermediaryDescription__c,
+                                    IntermediaryId__r.Channel__c, IntermediaryId__r.Phone, IntermediaryId__r.MainEmail__c,
+                                    IntermediaryId__r.Segment__c, PolicyHolder__r.Name, PolicyHolder__r.NationalId__c, PolicyHolder__c,
+                                    Scope__c, EndDate__c, ProductId__c, ProductId__r.GroupDescription__c
+                                    FROM Policy__c WHERE PolicyHolder__r.NationalId__c = '777888111Y' LIMIT 1];
+
+        policies[0].ProductId__c = products[0].Id;
+        policies[0].EndDate__c = Date.today() + 10;
+        policies[0].Scope__c = 'Z';
+        update policies[0];
+
+        List<Asset> insuredObjects = [SELECT Id FROM Asset LIMIT 1];
+
+        Integer claimNumber = (Math.random() * 1000000000).intValue();
+
+        Claim__c myClaim =  new Claim__c(
+            Name = String.valueOf(claimNumber),
+            PolicyHolder__c = policies[0].PolicyHolder__c,
+            Policy__c = policies[0].Id,
+            InsuredObject__c = insuredObjects[0].Id,
+            LegalEntity__c = '001',
+            INFOClaimNumber__c = String.valueOf(claimNumber) );
+
+        insert myClaim;
+
+        // When
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+
+        searchRequest.searchType = 'document';
+        searchRequest.value = '777888111Y';
+        searchRequest.filterBy  = 'customers';
+        searchRequest.legalEntity  = 'gi';
+        searchRequest.scope  = 'Z';
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.SearchResultAuto result = GenesysInteractionsService.findPeopleAutoBy(searchRequest);
+        GenesysInteractionsService.ClaimAuto claimAuto = new GenesysInteractionsService.ClaimAuto(myClaim);
+        GenesysInteractionsService.PolicyAuto policyAuto = new GenesysInteractionsService.PolicyAuto(policies[0]);
+
+        Test.stopTest();
+
+        // Then
+        List<Account> expectedAccounts = [SELECT Id FROM Account WHERE NationalId__c = : searchRequest.value];
+
+        System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
+        System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
     }
 }

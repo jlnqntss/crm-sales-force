@@ -324,24 +324,10 @@
             <value>YTD</value>
         </criteriaItems>
         <criteriaItems>
-            <column>CDF1</column>
+            <column>Account.TerritorialDirection__c</column>
             <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
+            <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>THIS_MONTH</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Contact.CompanyName__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value></value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>PC_DEPARTMENT</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
             <value></value>
         </criteriaItems>
         <language>en_US</language>

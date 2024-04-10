@@ -36,7 +36,7 @@
                   "locked": false,
                   "seedComponents": [],
                   "tabKey": "1",
-                  "tabName": "Details"
+                  "tabName": "Detalles"
                 },
                 {
                   "UUID": "d2d18f0e-25dc-4565-9ea4-7447d6cc1299",
@@ -44,7 +44,7 @@
                   "locked": false,
                   "seedComponents": [],
                   "tabKey": "2",
-                  "tabName": "Related"
+                  "tabName": "Relacionado"
                 }
               ],
               "useOverflowMenu": false
@@ -66,7 +66,7 @@
                 }
               ],
               "id": "580502d1-fc90-4232-9165-2e4f65a15efd",
-              "regionLabel": "Details",
+              "regionLabel": "Detalles",
               "regionName": "1",
               "renditionMap": {},
               "type": "region"
@@ -86,7 +86,7 @@
                 }
               ],
               "id": "d2d18f0e-25dc-4565-9ea4-7447d6cc1299",
-              "regionLabel": "Related",
+              "regionLabel": "Relacionado",
               "regionName": "2",
               "renditionMap": {},
               "type": "region"

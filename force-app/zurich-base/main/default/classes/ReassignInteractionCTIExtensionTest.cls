@@ -6,7 +6,7 @@
  * @last modified by  : jgallaga
  **/
 @isTest(SeeAllData = false)
-private without sharing class ReassignInteractionCTIExtensionTest
+private with sharing class ReassignInteractionCTIExtensionTest
 {
     /**
      * @description  Se asegura que al cambiar de advisor en una interacción, este ultimo queda como propietario de la tarea.
@@ -17,7 +17,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * @author jgallaga | 05/08/2022
      **/
     @isTest
-    static void test_onSaveLog_chageTaskOwner()
+    private static void test_onSaveLog_chageTaskOwner()
     {
         List<Task> tasksInTestStart = [SELECT Id From Task];
 
@@ -72,7 +72,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
             ReassignInteractionCTIExtension.onSaveLog(interactionChangedEventString);
         }
 
-        tasksInSystem = [SELECT id, Status FROM task];
+        tasksInSystem = [SELECT id, Status FROM task WHERE Status = 'Asignada'];
 
         System.assertEquals(1, tasksInSystem.size(), 'Una interaccion solo debería crear una tarea');
         currentTask = tasksInSystem.get(0);
@@ -86,7 +86,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
 
         Test.stopTest();
 
-        tasksInSystem = [SELECT id, Status, OwnerId, RecordType.DeveloperName FROM task];
+        tasksInSystem = [SELECT id, Status, OwnerId, RecordType.DeveloperName FROM task WHERE Status = 'Cerrada'];
         currentTask = tasksInSystem.get(0);
 
         System.assertEquals(1, tasksInSystem.size(), 'Se han generado mas tareas de las necesarias');
@@ -102,7 +102,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * @author fpalomo | 14/09/2023
      */
     @isTest
-    static void test_onSaveLog_eventOnInteractionDisconnected()
+    private static void test_onSaveLog_eventOnInteractionDisconnected()
     {
         List<Task> tasksInTestStart = [SELECT Id From Task];
         Assert.isTrue(tasksInTestStart.isEmpty(), 'For this test there should not be any task');
@@ -162,6 +162,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
             /* --------------------------- MIEMBROS DE CAMPAÑA -------------------------- */
             CampaignMember campaignMember = TestDataFactory.generateCampaignMembersForEachCampaign(new List<Contact> {customerContact}, new List<Campaign> {campaign}, 'New')[0];
             campaignMember.CallRetries__c = 0;
+            campaignMember.Origen_BBDD__c = 'Prueba Origen BBDD';
             insert campaignMember;
 
             String originalCampaignMemberId = campaignMember.Id;
@@ -172,7 +173,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
             String interactionChangedEventString = '{"eventName": "interactionChanged", "interaction" : { "id": "ucid0"},  "callLog": {"CallObject": "ucid0"}}';
             ReassignInteractionCTIExtension.onSaveLog(interactionChangedEventString);
 
-            List<Task> tasksInSystem = [SELECT Id FROM Task];
+            List<Task> tasksInSystem = [SELECT Id, Origen_BBDD__c FROM Task];
             Assert.areEqual(1, tasksInSystem.size(), 'La interaccion solo debería crear una tarea');
 
             Map<String, String> genesysWrapUpMapping = new Map<String, String>();
@@ -188,11 +189,14 @@ private without sharing class ReassignInteractionCTIExtensionTest
             Test.stopTest();
 
             /* --------------------------------- ASSERTS -------------------------------- */
-            List<CampaignMember> clonedCampaignMemberList = [SELECT Id, ContactId, CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId AND CampaignId = : campaignMember.CampaignId];
+            List<CampaignMember> clonedCampaignMemberList = [SELECT Id, Origen_BBDD__c, ContactId, CallRetries__c FROM CampaignMember WHERE ContactId = : campaignMember.ContactId AND CampaignId = : campaignMember.CampaignId];
+            List<Task> assertTaskList = [SELECT Id, Origen_BBDD__c FROM Task WHERE Id = : tasksInSystem[0].Id];
 
             Assert.isFalse(clonedCampaignMemberList.isEmpty(), 'No se ha encontrado el CampaignMember clonado.');
+            Assert.isFalse(assertTaskList.isEmpty(), 'No se ha recuperado la tarea de la interacción.');
             Assert.areNotEqual(0, clonedCampaignMemberList[0].CallRetries__c, 'El número de reintentos no se ha actualizado.');
             Assert.areNotEqual(originalCampaignMemberId, clonedCampaignMemberList[0].Id, 'El campaign member clonado no ha cambiado de ID, puede que no se haya borrado el antiguo.');
+            Assert.areEqual(assertTaskList[0].Origen_BBDD__c, clonedCampaignMemberList[0].Origen_BBDD__c, 'El campo Origen_BBDD__c no se ha rellenado correctamente.');
         }
     }
 
@@ -202,7 +206,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * @date 27/10/2020
      */
     @isTest
-    static void test_onSaveLog_updateTask()
+    private static void test_onSaveLog_updateTask()
     {
         List<Task> interaction = TestDataFactory.generateInteractionTasks(1);
         insert interaction;
@@ -234,7 +238,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * @date 27/10/2020
      */
     @isTest
-    static void test_onSaveLog_createTask()
+    private static void test_onSaveLog_createTask()
     {
         Test.startTest();
         ReassignInteractionCTIExtension.onSaveLog(
@@ -255,7 +259,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * Prueba que se actualice el Owner del caso relacionado con la task
      */
     @isTest
-    static void test_onSaveLog_changeCaseOwnerFromQueueToUser_ok()
+    private static void test_onSaveLog_changeCaseOwnerFromQueueToUser_ok()
     {
         Test.startTest();
         //En el stopTest finaliza el future
@@ -297,7 +301,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * la tarea no está relacionada
      */
     @isTest
-    static void test_onSaveLog_changeCaseOwnerFromQueueToUser_ko()
+    private static void test_onSaveLog_changeCaseOwnerFromQueueToUser_ko()
     {
         Test.startTest();
         //En el stopTest finaliza el future
@@ -330,7 +334,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * Prueba que se actualice el Owner del Offer relacionado con la task
      */
     @isTest
-    static void test_changeOwner_Offer_ok()
+    private static void test_changeOwner_Offer_ok()
     {
         List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
         Id integratorId = users[0].Id;
@@ -360,7 +364,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * Prueba que NO se actualice el Owner del Offer relacionado con la task porque no es perfil integrador
      */
     @isTest
-    static void test_changeOwner_Offer_ko()
+    private static void test_changeOwner_Offer_ko()
     {
         List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
         Id integratorId = users[0].Id;
@@ -390,7 +394,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * Prueba que se actualice el Owner del ContactRequest relacionado con la task
      */
     @isTest
-    static void test_changeOwner_ContactRequest_ok()
+    private static void test_changeOwner_ContactRequest_ok()
     {
         List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
         Id integratorId = users[0].Id;
@@ -418,7 +422,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * Prueba que se NO actualice el Owner del ContactRequest relacionado con la task
      */
     @isTest
-    static void test_changeOwner_ContactRequest_ko()
+    private static void test_changeOwner_ContactRequest_ko()
     {
         List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
         Id integratorId = users[0].Id;
@@ -447,7 +451,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * Y del resto de Offer que coincidan en misma AccountId y ScopeId
      */
     @isTest
-    static void test_changeOwner_ExtraOffers_ok()
+    private static void test_changeOwner_ExtraOffers_ok()
     {
         List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
         Id integratorId = users[0].Id;
@@ -496,7 +500,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * Y del resto de Offer que coincidan en misma AccountId y ScopeId
      */
     @isTest
-    static void test_changeOwner_ExtraOffers_ko()
+    private static void test_changeOwner_ExtraOffers_ko()
     {
         List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
         Id integratorId = users[0].Id;
@@ -541,7 +545,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * Y del resto de Offer que coincidan en misma AccountId y ScopeId
      */
     @isTest
-    static void test_changeOwner_ExtraOffers_ko_v2()
+    private static void test_changeOwner_ExtraOffers_ko_v2()
     {
         List<User> users = [SELECT Id, ProfileId, Profile.Name FROM User WHERE Profile.Name = 'Integrator'];
         Id integratorId = users[0].Id;
@@ -590,7 +594,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * @date 5/7/2021
      */
     @isTest
-    static void test_onSaveLog_parseId()
+    private static void test_onSaveLog_parseId()
     {
         List<Task> interaction = TestDataFactory.generateInteractionTasks(1);
         insert interaction;
@@ -623,7 +627,7 @@ private without sharing class ReassignInteractionCTIExtensionTest
      * @date 21/07/2022
      */
     @isTest
-    static void test_onSaveLog_interactionChanged_hasTaskId()
+    private static void test_onSaveLog_interactionChanged_hasTaskId()
     {
         List<Task> interaction = TestDataFactory.generateInteractionTasks(1);
         insert interaction;

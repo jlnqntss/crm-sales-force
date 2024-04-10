@@ -5,8 +5,11 @@
         <description>Se comprueba tanto si la cuenta relacionada con el contacto como la cuenta relacionada, ambos casos relacionados con el evento, son de tipo Mediador o Agrupación Mediador.</description>
         <name>AreAccountsIntermediaryOrIntermediaryGroupType</name>
         <label>¿Las cuentas son de tipo Mediador o Agrupación Mediador?</label>
-        <locationX>182</locationX>
-        <locationY>551</locationY>
+        <locationX>380</locationX>
+        <locationY>611</locationY>
+        <defaultConnector>
+            <targetReference>Actualizar_Record_Type</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Resultado predeterminado</defaultConnectorLabel>
         <rules>
             <name>SomeAreIntermediaryOrIntermediaryGroupTypeOutcome</name>
@@ -40,9 +43,41 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>UpdateEventAction</targetReference>
+                <targetReference>Las_cuentas_son_de_tipo_Agrupacion</targetReference>
             </connector>
             <label>Alguna es de tipo Mediador o Agrupación Mediador</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Las_cuentas_son_de_tipo_Agrupacion</name>
+        <label>¿Las cuentas son de tipo Agrupacion?</label>
+        <locationX>182</locationX>
+        <locationY>719</locationY>
+        <defaultConnector>
+            <targetReference>UpdateEventAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Alguna_es_de_tipo_Agrupaci_n</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>GetRelatedContactAction.Account.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>AgrupacionMediador</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedAccountAction.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>AgrupacionMediador</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Actualizar_evento_Agrupacion</targetReference>
+            </connector>
+            <label>Alguna es de tipo Agrupación</label>
         </rules>
     </decisions>
     <description>Flujo que se encarga de informar el campo &quot;¿Relacionado con un intermediario?&quot; del objeto Evento con el valor &quot;Sí&quot;, en el caso de que la cuenta relacionada con el contacto o la cuenta, ambos casos relacionados con el evento, sean de tipo &quot;Intermediario&quot;.</description>
@@ -72,8 +107,8 @@
         <description>Se recupera la cuenta relacionada con el evento.</description>
         <name>GetRelatedAccountAction</name>
         <label>Obtener cuenta relacionada</label>
-        <locationX>182</locationX>
-        <locationY>311</locationY>
+        <locationX>380</locationX>
+        <locationY>287</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetRelatedContactAction</targetReference>
@@ -94,11 +129,11 @@
         <description>Se recupera el contacto relacionado con el evento.</description>
         <name>GetRelatedContactAction</name>
         <label>Obtener contacto relacionado</label>
-        <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationX>380</locationX>
+        <locationY>395</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>AreAccountsIntermediaryOrIntermediaryGroupType</targetReference>
+            <targetReference>Obtener_Record_Type_SDM_Event</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -112,12 +147,78 @@
         <object>Contact</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Obtener_Record_Type_SDM_Event</name>
+        <label>Obtener Record Type SDM Event</label>
+        <locationX>380</locationX>
+        <locationY>503</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AreAccountsIntermediaryOrIntermediaryGroupType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SDM_Event</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Se actualiza el campo &quot;¿Relacionado con un Mediador?&quot; del evento que ha desencadenado el flujo.</description>
+        <name>Actualizar_evento_Agrupacion</name>
+        <label>Actualizar evento Agrupación</label>
+        <locationX>50</locationX>
+        <locationY>827</locationY>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Obtener_Record_Type_SDM_Event.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RelatedToIntermediary__c</field>
+            <value>
+                <stringValue>Yes</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Related_to_Intermediary_Group__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Actualizar_Record_Type</name>
+        <label>Actualizar Record Type</label>
+        <locationX>578</locationX>
+        <locationY>719</locationY>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Obtener_Record_Type_SDM_Event.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <recordUpdates>
         <description>Se actualiza el campo &quot;¿Relacionado con un Mediador?&quot; del evento que ha desencadenado el flujo.</description>
         <name>UpdateEventAction</name>
-        <label>Actualizar evento</label>
-        <locationX>50</locationX>
-        <locationY>671</locationY>
+        <label>Actualizar evento Mediador</label>
+        <locationX>314</locationX>
+        <locationY>827</locationY>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Obtener_Record_Type_SDM_Event.Id</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>RelatedToIntermediary__c</field>
             <value>
@@ -127,7 +228,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetRelatedAccountAction</targetReference>

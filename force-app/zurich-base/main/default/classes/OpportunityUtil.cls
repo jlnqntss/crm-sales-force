@@ -7,6 +7,7 @@
  **/
 public with sharing class OpportunityUtil
 {
+    private static final String CLASS_NAME = 'OpportunityUtil';
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
     public static Map<Id, String> mapAccountRecordTypes; //Mapa de Accounts con sus respectivos RecordType.DeveloperName
     public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
@@ -106,18 +107,18 @@ public with sharing class OpportunityUtil
     {
         List<Opportunity> optysToGenerateScope = new List<Opportunity>();
 
-        for(Opportunity opty : newList)
-        {
-            if( String.isNotBlank(opty.InfoQuoteNumber__c) && opty.ScopeId__c == null
-                && opty.AccountId != null)
+        for(Opportunity opty : newList) {
+
+            if( (String.isNotBlank(opty.InfoQuoteNumber__c) && opty.ScopeId__c == null && opty.AccountId != null)
+             || ( opty.Scope__c == 'Ventas' && opty.ScopeId__c == null && String.isNotBlank(opty.BusinessCode__c) ))
             {
                 optysToGenerateScope.add(opty);
             }
-        }
 
-        if( !optysToGenerateScope.isEmpty() )
-        {
-            GenerateScopeUtil.generateScopeEvents('AccountId', 'BusinessCode__c', optysToGenerateScope);
+            if( !optysToGenerateScope.isEmpty() )
+            {
+                GenerateScopeUtil.generateScopeEvents('AccountId', 'BusinessCode__c', optysToGenerateScope);
+            }
         }
     }
 
@@ -382,5 +383,37 @@ public with sharing class OpportunityUtil
                 }
             }
         }
+    }
+
+    /**
+     * Metodo para dar visibilidad ZRM sobre clientes y leads en caso de insertar una nueva oferta
+     * 
+     * @author dmunoz
+     * @created date 05/03/2024
+     */
+    public static void zrmVisibilityNewOffer(List<Opportunity> newList) 
+    {
+
+        try 
+        {
+            // 1º obtener los mediadores y clientes de las polizas en vigor <IntermdiaryId__c, List<AccountId>>
+            Map<String, Set<String>> accountIdByIntermediaryMap = ZRMOfferVisibilityUtil.getAccountIdByIntermediaryMap(newList);
+
+            if (accountIdByIntermediaryMap != null && !accountIdByIntermediaryMap.isEmpty()) 
+            {
+                // 2º Obtener las agrupaciones de los mediadores para obtener los usuarios agr de esos mediadores <IntermdiaryId__c, IntermediaryGroup__c>
+                Map<String, String> intermediaryWithIntermediariesGroupsIdMap = ZRMOfferVisibilityUtil.getIntermediaryGroupIdMap(accountIdByIntermediaryMap.keySet());
+        
+                // 3º Obtener los usuarios de los mediadores <IntermediaryId, List<UserId>
+                Map<String, List<String>> intermediariesWithUsers = ZRMOfferVisibilityUtil.getIntermediariesUsers(accountIdByIntermediaryMap.keySet(), intermediaryWithIntermediariesGroupsIdMap);
+        
+                // 4º Insertar atm y activar registros de competencia y cuentas relacionadas
+                ZRMOfferVisibilityUtil.newOfferInsertATMs(accountIdByIntermediaryMap, intermediariesWithUsers);
+            }
+        } 
+        catch (Exception e) 
+        {
+            ErrorLogUtil.commitError(e, CLASS_NAME);
+        }        
     }
 }

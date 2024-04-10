@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <assignments>
+        <description>Blanquear el campo Intermediary e informamos el campo IntermediaryIdOld</description>
+        <name>Set_IntermediaryOld</name>
+        <label>Set IntermediaryOld</label>
+        <locationX>264</locationX>
+        <locationY>503</locationY>
+        <assignmentItems>
+            <assignToReference>Modificar_Registros_de_Competencia.IntermediaryIdOld__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Modificar_Registros_de_Competencia.IntermediaryId__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Modificar_Registros_de_Competencia.IntermediaryId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Modificar_Registros_de_Competencia</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_IntermeidaryOld_Cuenta_Relacionada</name>
+        <label>Set IntermeidaryOld Cuenta Relacionada</label>
+        <locationX>264</locationX>
+        <locationY>911</locationY>
+        <assignmentItems>
+            <assignToReference>Modificar_Registros_de_Cuentas_Relacionadas.IntermediaryIdOld__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Modificar_Registros_de_Cuentas_Relacionadas.IntermediaryId__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Modificar_Registros_de_Cuentas_Relacionadas.IntermediaryId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Modificar_Registros_de_Cuentas_Relacionadas</targetReference>
+        </connector>
+    </assignments>
+    <description>Se ha de recalcular la visibilidad de los registros de competencia o relaciones de cuentas</description>
+    <environments>Default</environments>
+    <interviewLabel>Account Team Member After Delete {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Account Team Member - After Delete Recalculate Competitor And AccountRelationship</label>
+    <loops>
+        <description>Modificamos el campo mediador a vacio y</description>
+        <name>Modificar_Registros_de_Competencia</name>
+        <label>Modificar Registros de Competencia</label>
+        <locationX>176</locationX>
+        <locationY>395</locationY>
+        <collectionReference>Get_Competitors_To_Disable</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_IntermediaryOld</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Accounts_Relationship_to_Disable</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Modificar_Registros_de_Cuentas_Relacionadas</name>
+        <label>Modificar Registros de Cuentas Relacionadas</label>
+        <locationX>176</locationX>
+        <locationY>803</locationY>
+        <collectionReference>Get_Accounts_Relationship_to_Disable</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_IntermeidaryOld_Cuenta_Relacionada</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Competitor</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Obtener los registros de cuentas relacionadas para los clientes y mediadores que apunta el atm</description>
+        <name>Get_Accounts_Relationship_to_Disable</name>
+        <label>Get Accounts Relationship to Disable</label>
+        <locationX>176</locationX>
+        <locationY>695</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Modificar_Registros_de_Cuentas_Relacionadas</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IntermediaryId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.User.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AccountRelationship__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Obtener los registros de competencia que ha generado para el cliente y mediador de los atm que se están eliminando</description>
+        <name>Get_Competitors_To_Disable</name>
+        <label>Get Competitors To Disable</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Modificar_Registros_de_Competencia</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IntermediaryId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.User.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Competitor__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Actualizar registros de competencia</description>
+        <name>Update_Competitor</name>
+        <label>Update Competitor</label>
+        <locationX>176</locationX>
+        <locationY>1103</locationY>
+        <connector>
+            <targetReference>Update_Cuentas_Relacionadas</targetReference>
+        </connector>
+        <inputReference>Get_Competitors_To_Disable</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Actualizar los registros de Cuentas Relacionadas</description>
+        <name>Update_Cuentas_Relacionadas</name>
+        <label>Update Cuentas Relacionadas</label>
+        <locationX>176</locationX>
+        <locationY>1211</locationY>
+        <inputReference>Get_Accounts_Relationship_to_Disable</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Competitors_To_Disable</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>TeamMemberRole</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>MediadorZRM</stringValue>
+            </value>
+        </filters>
+        <object>AccountTeamMember</object>
+        <recordTriggerType>Delete</recordTriggerType>
+        <triggerType>RecordBeforeDelete</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -40,8 +40,8 @@
             <values>Vida Riesgo</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>m</values>
+            <operator>equals</operator>
+            <values>Particulares,Pymes</values>
         </dashboardFilterOptions>
         <name>Segmento / Ramo</name>
     </dashboardFilters>

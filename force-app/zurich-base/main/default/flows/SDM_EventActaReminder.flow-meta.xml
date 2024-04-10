@@ -5,7 +5,7 @@
         <name>Send_Notification_To_User</name>
         <label>Send Notification To User</label>
         <locationX>242</locationX>
-        <locationY>648</locationY>
+        <locationY>600</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -39,6 +39,8 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>56.0</apiVersion>
     <assignments>
@@ -46,7 +48,7 @@
         <name>Set_Recipient</name>
         <label>Set Recipient</label>
         <locationX>242</locationX>
-        <locationY>408</locationY>
+        <locationY>384</locationY>
         <assignmentItems>
             <assignToReference>RecipientId</assignToReference>
             <operator>Add</operator>
@@ -63,16 +65,23 @@
         <name>Is_Acta_Set</name>
         <label>Is Acta Set</label>
         <locationX>374</locationX>
-        <locationY>288</locationY>
+        <locationY>276</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Acta_Not_Set</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Acta__c</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>$Record.CreatedBy.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Acta__r.Completed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -114,7 +123,7 @@
         <name>Get_Notification_Id</name>
         <label>Get Notification Id</label>
         <locationX>242</locationX>
-        <locationY>528</locationY>
+        <locationY>492</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Send_Notification_To_User</targetReference>

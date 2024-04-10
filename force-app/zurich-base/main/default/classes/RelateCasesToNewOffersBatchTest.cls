@@ -26,7 +26,7 @@ public with sharing class RelateCasesToNewOffersBatchTest {
         // Se crean casos con la misma oferta creada que la oferta, para que se relacionen
         for(Case currentCase : cases)
         {
-            currentCase.RecordTypeId = CaseUtil.rtUSPId;
+            currentCase.RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
             currentCase.CreatedOffer__c = offer.InfoQuoteNumber__c;
         }
         insert cases;

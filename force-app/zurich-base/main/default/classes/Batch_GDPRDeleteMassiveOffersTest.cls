@@ -2,15 +2,21 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 11-09-2023
+ * @last modified on  : 02-28-2024
  * @last modified by  : mfernandezcarrera
 **/
 @isTest
 public class Batch_GDPRDeleteMassiveOffersTest
 {
+    private static final string ACCOUNT_BCUSTOMER = 'Business Customer';
+    Date firstDateFilter = Date.today().addDays(-30);
+    static final String QUERY_Offer= 'SELECT CommercialStructureCode__c, Account.Type, CreatedDate, LegalEntity__c FROM Opportunity WHERE CreatedDate <= :firstDateFilter Limit 150';
+    static final String QUERY_OfferNull= '';
+
     @TestSetup
     static void makeData()
     {
+       
         Integer numFAccounts = 0;
         Integer numJAccounts = 0;
 
@@ -24,7 +30,7 @@ public class Batch_GDPRDeleteMassiveOffersTest
         numFAccounts = numFAccounts + numTypeAccounts.get('F');
         numJAccounts = numJAccounts + numTypeAccounts.get('J');
 
-        List<Account> accountsForTest = TestDataFactory.generateAccounts('001', 'Business Customer', numFAccounts + numJAccounts);
+        List<Account> accountsForTest = TestDataFactory.generateAccounts('001', ACCOUNT_BCUSTOMER, numFAccounts + numJAccounts);
 
         List<Account> fAccounts = new List<Account>();
         List<Account> jAccounts = new List<Account>();
@@ -148,7 +154,9 @@ public class Batch_GDPRDeleteMassiveOffersTest
         {
             System.debug('Opp ' + testOpportunity.Account.Type + ' - Estructura ' + testOpportunity.CommercialStructureCode__c  + ' - Entidad ' + testOpportunity.LegalEntity__c + ' - ' +  testOpportunity.createddate);
         }
-        Database.executeBatch(new Batch_GDPRDeleteMassiveOffers());
+        Batch_GDPRDeleteMassiveOffers batchGDPR=new Batch_GDPRDeleteMassiveOffers(QUERY_Offer);
+        Database.executeBatch(batchGDPR);
+        
         Test.stopTest();
 
         List<Opportunity> deletedOffers = [SELECT Id FROM Opportunity];
@@ -162,7 +170,7 @@ public class Batch_GDPRDeleteMassiveOffersTest
     // Método del test en el que no se debe de borrar ninfuna oferta ya que no cumplen las condiciones
     static void test_NoDeleteOffers()
     {
-        List<Account> accountF = TestDataFactory.generateAccounts('999', 'Business Customer', 1);
+        List<Account> accountF = TestDataFactory.generateAccounts('999', ACCOUNT_BCUSTOMER, 1);
 
         accountF[0].FirstName='Prueba';
         accountF[0].Type='F';
@@ -178,7 +186,7 @@ public class Batch_GDPRDeleteMassiveOffersTest
        insert newOffersFNoDelete;
 
         test.startTest();
-        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers();
+        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers(QUERY_Offer);
         Database.executeBatch(batchDeleteMassiveOfferGdpr);
         test.stopTest();
         List<Opportunity> oppListNew= [SELECT id FROM Opportunity];
@@ -189,7 +197,7 @@ public class Batch_GDPRDeleteMassiveOffersTest
     // Método del test en el que no se debe de borrar ninfuna oferta ya que no cumplen las condiciones por las fechas
     static void test_NoDeleteOffersByDate()
     {
-        List<Account> accountJ = TestDataFactory.generateAccounts('001', 'Business Customer', 1);
+        List<Account> accountJ = TestDataFactory.generateAccounts('001', ACCOUNT_BCUSTOMER, 1);
 
         accountJ[0].FirstName='Prueba';
         accountJ[0].Type='J';
@@ -204,7 +212,7 @@ public class Batch_GDPRDeleteMassiveOffersTest
        insert newOffersJNoDelete;
 
         test.startTest();
-        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers();
+        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers(QUERY_Offer);
         Database.executeBatch(batchDeleteMassiveOfferGdpr);
         test.stopTest();
         List<Opportunity> oppListNew= [SELECT id FROM Opportunity];
@@ -215,7 +223,7 @@ public class Batch_GDPRDeleteMassiveOffersTest
     // Método del test en el que no se debe de borrar ninfuna oferta ya que no cumplen las condiciones por las fechas
     static void test_NoDeleteOfferLegalEntity()
     {
-        List<Account> accountJ = TestDataFactory.generateAccounts('999', 'Business Customer', 1);
+        List<Account> accountJ = TestDataFactory.generateAccounts('999', ACCOUNT_BCUSTOMER, 1);
 
         accountJ[0].FirstName='Prueba';
         accountJ[0].Type='J';
@@ -232,7 +240,34 @@ public class Batch_GDPRDeleteMassiveOffersTest
        Test.setCreatedDate(ofertas[0].Id, fecha);
 
         test.startTest();
-        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers();
+        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers(QUERY_Offer);
+        Database.executeBatch(batchDeleteMassiveOfferGdpr);
+        test.stopTest();
+        List<Opportunity> oppListNew= [SELECT id,createdDate,LegalEntity__c,CommercialStructureCode__c,Account.Type FROM Opportunity];
+        System.assertEquals(1, oppListNew.size());
+    }
+    @isTest
+    // Método del test en el que no se debe de borrar ninfuna oferta ya que no cumplen las condiciones por las fechas
+    static void test_NoDeleteOfferLegalEntityNoConstructor()
+    {
+        List<Account> accountJ = TestDataFactory.generateAccounts('999', ACCOUNT_BCUSTOMER, 1);
+
+        accountJ[0].FirstName='Prueba';
+        accountJ[0].Type='J';
+        insert accountJ;
+
+       // create new offer
+       List<Opportunity> newOffersJNoDelete = TestDataFactory.generateOpportunitiesForEachAccount(accountJ, 'General', 'Open',System.today().addDays(10), 1);
+
+       newOffersJNoDelete[0].CommercialStructureCode__c='0000';
+
+       insert newOffersJNoDelete;
+       List<Opportunity> ofertas = [Select id,CreatedDate from Opportunity where id in: newOffersJNoDelete];
+       Datetime fecha = Datetime.now().addYears(-6);
+       Test.setCreatedDate(ofertas[0].Id, fecha);
+
+        test.startTest();
+        Batch_GDPRDeleteMassiveOffers batchDeleteMassiveOfferGdpr=new Batch_GDPRDeleteMassiveOffers(QUERY_OfferNull);
         Database.executeBatch(batchDeleteMassiveOfferGdpr);
         test.stopTest();
         List<Opportunity> oppListNew= [SELECT id,createdDate,LegalEntity__c,CommercialStructureCode__c,Account.Type FROM Opportunity];

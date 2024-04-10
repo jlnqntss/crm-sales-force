@@ -1,7 +1,7 @@
 /**
  * @description       : Nuevo Web Service REST que extiende de la clase APEX actual "WS_BaseAPIService"
  * @author            : nts - overes
- * @last modified on  : 02-10-2023
+ * @last modified on  : 17-01-2024
  **/
 public with sharing class SalesCRMQuoteAndBuyService
 {
@@ -120,38 +120,54 @@ public with sharing class SalesCRMQuoteAndBuyService
     }
 
     /**
-     * Método que convierte el String "10:15" recibido en el Json a DateTime
-     * *
+     * Método que convierte la fecha y hora recibida en el JSON a un formato válido
+     * para el objeto DateTime de Salesforce.
+     * 
      * @author overes | 09-04-2023
-     * @param timeString
-     * @return DateTime
+     * @param dateToConvert Cadena de texto que contiene la fecha a procesar
+     * @param timeToConvert Cadena de texto que contiene la hora a procesar
+     * @return DateTime o null en caso de que el parámetro date o time tenga el
+     * valor null o haya un problema en la conversión.
+     * 
+     * @change amiranda 17-01-2024 Se modifica el método para que además de procesar
+     * la hora procese también la fecha.
      **/
-    public static DateTime convertStringToDateTime(String timeString)
+    public static DateTime convertStringToDateTime(String dateToConvert, String timeToConvert)
     {
-        Date today = Date.today();
+        Datetime convertedDateTime;
 
-        // Divide la cadena en partes (hora y minuto)
-        List<String> timeParts = timeString.split(':');
-
-        if (timeParts.size() == 2)
+        if (dateToConvert != null && timeToConvert != null)
         {
-            Integer hour = Integer.valueOf(timeParts[0]);
-            Integer minute = Integer.valueOf(timeParts[1]);
+            try
+            {
+                // Se obtienen los datos de la fecha
+                Integer year = Integer.valueOf(dateToConvert.substring(0, 4));
+                Integer month = Integer.valueOf(dateToConvert.substring(4, 6));
+                Integer day = Integer.valueOf(dateToConvert.substring(6, 8));
+    
+                // Se obtienen los datos de la hora
+                List<String> timeParts = timeToConvert.split(':');
+    
+                if (timeParts.size() == 2)
+                {
+                    Integer hour = Integer.valueOf(timeParts[0]);
+                    Integer minute = Integer.valueOf(timeParts[1]);
+    
+                    // Combina la fecha de referencia y la hora para crear un DateTime
+                    convertedDateTime = DateTime.newInstance( year, month, day, hour, minute, 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Si hay un problema al procesar la fecha y la hora se devuelve null
+                convertedDateTime = null;
+            }
+        }
 
-            // Combina la fecha de referencia y la hora para crear un DateTime
-            DateTime dateTimeValue = DateTime.newInstance(
-                today.year(), today.month(), today.day(),
-                hour, minute, 0
-                );
-            return dateTimeValue;
-        }
-        else
-        {
-            // Manejar el caso en que la cadena no tenga el formato esperado
-            return null;
-        }
+        return convertedDateTime;
     }
-
+    
+    
     /**
      * Método que convierte el entero de fechaNaciemiento a Date para el Objeto Account y considerando que le llega este formato '19900121'
      * *
@@ -402,12 +418,14 @@ public with sharing class SalesCRMQuoteAndBuyService
                 return requestData.cliente.contacto.email;
             }
             when ACCOUNT_PREFERED_CONTACT_START {
+                String contactDate = String.valueOf(requestData.cliente.contacto.llamada);
                 String contactStart = requestData.cliente.contacto.horaDesde;
-                return contactStart != null ? convertStringToDateTime(contactStart) : null;
+                return contactDate != null && contactStart != null ? convertStringToDateTime(contactDate, contactStart) : null;
             }
             when ACCOUNT_PREFERED_CONTACT_END {
+                String contactDate = String.valueOf(requestData.cliente.contacto.llamada);
                 String contactEnd = requestData.cliente.contacto.horaHasta;
-                return contactEnd != null ? convertStringToDateTime(contactEnd) : null;
+                return contactDate != null && contactEnd != null? convertStringToDateTime(contactDate, contactEnd) : null;
             }
             when else {
                 return null;

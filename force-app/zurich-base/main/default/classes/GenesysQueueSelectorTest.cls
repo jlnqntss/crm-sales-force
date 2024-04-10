@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @author jgarciamartinez@nts-solutions.com
  * @date 29/03/2022
  * clase test para comprobar que el selector de queries funciona

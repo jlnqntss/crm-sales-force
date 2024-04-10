@@ -384,27 +384,6 @@ private with sharing class PoliciesSelectorTest
         System.assertEquals(true, encontradas.isEmpty(), 'Policies list should be empty');
     }
 
-    @isTest
-    static void findPoliciesWithIncorrectVisibilityTest()
-    {
-        Test.startTest();
-        String policyList = ( new PoliciesSelector() ).findPoliciesWithIncorrectVisibility();
-        Test.stopTest();
-
-        System.assertEquals(true, policyList != null, 'No debe ser nulo');
-    }
-
-    @isTest
-    static void findPoliciesWithIncorrectVisibilityByAccountIdTest()
-    {
-        Test.startTest();
-        Set<String> accountIds = new Set<String>();
-        String policyList = ( new PoliciesSelector() ).findPoliciesWithIncorrectVisibilityByAccountId(accountIds);
-        Test.stopTest();
-
-        System.assertEquals(true, policyList == null, 'Debe ser nulo');
-    }
-
 
     @IsTest
     static void test_selectByIdAndRecordType_ok()

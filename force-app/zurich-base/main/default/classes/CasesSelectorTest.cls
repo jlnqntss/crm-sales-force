@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : aberuete
+ * @group             : 
+ * @last modified on  : 08-03-2024
+ * @last modified by  : aberuete
+**/
 @isTest
 private with sharing class CasesSelectorTest
 {
@@ -9,10 +16,6 @@ private with sharing class CasesSelectorTest
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         insert cases;
-
-        
-
-
     }
 
     @isTest
@@ -94,7 +97,7 @@ private with sharing class CasesSelectorTest
         casos[1].RobotDocumentId__c = '2341341';
 
         // Solo el primer caso tendrá recordType USP, de esta manera comprobamos que solo aplica a USP
-        casos[0].RecordTypeId = CaseUtil.rtUSPId;
+        casos[0].RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
         update casos;
 
         // Test
@@ -120,7 +123,7 @@ private with sharing class CasesSelectorTest
         casos[1].CreatedOffer__c = '11112';
 
         // Solo el primer caso tendrá recordType USP, de esta manera comprobamos que solo aplica a USP
-        casos[0].RecordTypeId = CaseUtil.rtUSPId;
+        casos[0].RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
       
         update casos;
 
@@ -150,7 +153,7 @@ private with sharing class CasesSelectorTest
             cas.Subject='test';
             cas.SourceArea__c='Mediator';
             cas.Type='Venta';
-            cas.RecordTypeId=CaseUtil.rtUSPId;
+            cas.RecordTypeId=CaseUtil.RT_ID_USPINQUIRY;
             cas.Status='Cerrado';
             cas.CloseResult__c='Perdida - Garantías';
             cas.AutomaticNotifications__c=false;
@@ -160,7 +163,7 @@ private with sharing class CasesSelectorTest
 
         // Test
         Test.startTest();
-        List<Case> matchedRecords = new CasesSelector().getQueryCasesConversionRatio(cuentasRatio,'Combinado','No Realizado','Venta',CaseUtil.rtUSPId,'365','Cerrado');
+        List<Case> matchedRecords = new CasesSelector().getQueryCasesConversionRatio(cuentasRatio,'Combinado','No Realizado','Venta',CaseUtil.RT_ID_USPINQUIRY,'365','Cerrado');
         Test.stopTest();
 
         System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');
@@ -182,7 +185,7 @@ private with sharing class CasesSelectorTest
         casoPadre1.Subject='test';
         casoPadre1.SourceArea__c='Mediator';
         casoPadre1.Type='Venta';
-        casoPadre1.RecordTypeId=CaseUtil.rtUSPId;
+        casoPadre1.RecordTypeId=CaseUtil.RT_ID_USPINQUIRY;
         casoPadre1.Status='Cerrado';
         casoPadre1.CloseResult__c='Perdida - Garantías';
         casoPadre1.AutomaticNotifications__c=false;
@@ -198,7 +201,7 @@ private with sharing class CasesSelectorTest
             casos[i].Subject='test';
             casos[i].SourceArea__c='Mediator';
             casos[i].Type='Venta';
-            casos[i].RecordTypeId=CaseUtil.rtUSPId;
+            casos[i].RecordTypeId=CaseUtil.RT_ID_USPINQUIRY;
             casos[i].Status='Cerrado';
             casos[i].CloseResult__c='Ganada';
             casos[i].AutomaticNotifications__c=false;
@@ -212,7 +215,7 @@ private with sharing class CasesSelectorTest
 
         // Test
         Test.startTest();
-        Map <Id, Decimal> matchedRecords = new CasesSelector().getMapChildCasesConversionRatio(casosPadre,'Won','No Realizado','Combinado','Venta',CaseUtil.rtUSPId,'365','Cerrado');
+        Map <Id, Decimal> matchedRecords = new CasesSelector().getMapChildCasesConversionRatio(casosPadre,'Won','No Realizado','Combinado','Venta',CaseUtil.RT_ID_USPINQUIRY,'365','Cerrado');
         Test.stopTest();
 
 
@@ -273,5 +276,78 @@ private with sharing class CasesSelectorTest
         Test.stopTest();
 
         System.assertNotEquals(0, matchedRecords.size(), 'Ha de devolver casos');
+    }
+
+    /**
+     * Test del método que devuelve una lista de casos filtada por el tipo de cuenta que tiene asociado el caso
+     * @author aberuete
+     * @date 06/03/2024
+     */
+    @isTest
+    private static void test_getCasesFilterByRecordTypeNamesAccount()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 2);
+        insert accounts;
+
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        insert cases;  
+
+        List<Case> allCases = [Select id from Case];
+        System.assertEquals (12, allCases.size(), 'El número de casos totales no es correcto');
+
+        Test.startTest();
+        List<Case> casesReturned = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (allCases, new List<String>{'Customer'});
+        Test.stopTest();
+
+        System.assertEquals (2, casesReturned.size(),'El número de casos devuelto no es correcto');
+        
+    }
+    /*
+     * Test del método que devuelve casos para el Batch_CloseInteractions
+     * @author lrodriguez6@seidor.es
+     * @date 01/03/2024
+     */
+    @isTest
+    private static void test_casesBatchCloseInteractions_matchedRecord()
+    {
+        List<Case> casos = [SELECT Id, CreatedOffer__c FROM Case LIMIT 1];
+        
+        casos[0].RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
+        casos[0].CloseInteractionBatch__c= true;
+        casos[0].ExpectedClosingDate__c= System.TODAY();
+        casos[0].CloseByBatch__c= false;
+
+        update casos;
+
+        
+        Test.startTest();
+        casos = new CasesSelector().getCasesToCloseInteractions();
+        Test.stopTest();
+
+        System.assertEquals(1, casos.size(), 'no devuelve el número de registros correcto');
+    }
+
+    /*
+     * Test del método que devuelve casos para findByIdControlCC (método de EmailMessageUtil)
+     * @author lrodriguez6@seidor.es
+     * @date 01/03/2024
+     */
+    @isTest
+    private static void test_findByIdControlCC_matchedRecord()
+    {
+        Case casoCC = [SELECT Id FROM Case LIMIT 1];
+        casoCC.ControlEmailCC__c=true;
+        update casoCC;
+
+        Set<String> casosIds = new Set<String>();
+        casosIds.add(casoCC.Id);
+
+        // Test
+        Test.startTest();
+        List<Case> matchedRecords = new CasesSelector().findByIdControlCC(casosIds);
+        Test.stopTest();
+
+        System.assertEquals(matchedRecords.size(), 1, 'no devuelve el número de registros correcto');
+        System.assertEquals(matchedRecords[0].ControlEmailCC__c,true);
     }
 }

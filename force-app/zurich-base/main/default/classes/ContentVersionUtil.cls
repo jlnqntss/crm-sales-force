@@ -1,10 +1,10 @@
 /**
- * @description       : 
- * @author            : 
- * @group             : 
+ * @description       :
+ * @author            :
+ * @group             :
  * @last modified on  : 04-19-2023
  * @last modified by  : aberuete
-**/
+ **/
 public without sharing class ContentVersionUtil
 {
     public static Map<String, Case> hashToCaseMap;
@@ -149,7 +149,7 @@ public without sharing class ContentVersionUtil
         if( !hashToContentVersion.isEmpty() )
         {
             //Recuperamos los casos relacionados con ese hash para crear el ContentDocumentLink y relacionar el documento con el caso
-            List<Case> relatedCases = [SELECT Id, Status, DocumentationHashId__c FROM Case WHERE DocumentationHashId__c IN: hashToContentVersion.keySet()];
+            List<Case> relatedCases = [SELECT Id, Status, DocumentationHashId__c FROM Case WHERE DocumentationHashId__c IN : hashToContentVersion.keySet()];
             if( !relatedCases.isEmpty() )
             {
                 for(Case related: relatedCases)
@@ -157,6 +157,6 @@ public without sharing class ContentVersionUtil
                     hashToCaseMap.put(related.DocumentationHashId__c, related);
                 }
             }
-        }  
+        }
     }
 }

@@ -1112,6 +1112,11 @@ Para usuarios de la comunidad zrm</description>
         <field>Opportunity.ValidationErrors__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.ZRM__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PreferedContactEnd__c</field>

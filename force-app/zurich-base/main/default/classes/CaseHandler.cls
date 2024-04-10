@@ -1,10 +1,10 @@
 /**
- * @description       : 
- * @author            : 
- * @group             : 
- * @last modified on  : 08-16-2023
+ * @description       :
+ * @author            :
+ * @group             :
+ * @last modified on  : 08-03-2024
  * @last modified by  : aberuete
-**/
+ **/
 public without sharing class CaseHandler implements ITrigger
 {
     public CaseHandler()
@@ -21,7 +21,7 @@ public without sharing class CaseHandler implements ITrigger
         List<Case> listCasesFromZurich = new List<Case> ();
         if (Trigger.isInsert)
         {
-            for (Case newCase : (List<Case>)newList)
+            for (Case newCase : (List<Case>) newList)
             {
                 if (newCase.Subject == 'Solicitud de ayuda al registro de MiZurich')
                 {
@@ -29,11 +29,12 @@ public without sharing class CaseHandler implements ITrigger
                 }
             }
 
-            if (!listCasesFromZurich.isEmpty())
+            if ( !listCasesFromZurich.isEmpty() )
             {
                 CaseUtil.assignAccountAndContactFromDniSuppliedEmailAndPhone(listCasesFromZurich);
             }
-            
+
+            CaseUtil.getQueuesSprinklr();
         }
     }
 
@@ -44,7 +45,10 @@ public without sharing class CaseHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        CaseUtil.getSprinklrSocialPersonaToLinkContact( (List<Case>) newList, (Map<Id,Case>) oldMap );
+        CaseUtil.getSprinklrSocialPersonaToDeleteContactRelated ( (List<Case>) newList, (Map<Id,Case>) oldMap );
+    }
 
     /**
      * beforeInsert
@@ -57,6 +61,10 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.assignContactToCase(newList);
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
         CaseUtil.updateTranscomCase(newList);
+        CaseUtil.setSprinklrCaseTipification(newList);
+        CaseUtil.shortDescriptionNeeded(newList);
+        CaseUtil.setSprinklrCaseCallCenterAndGroup(newList);
+        CaseUtil.applyFormatToZDABody(newList);
     }
 
     /**
@@ -69,7 +77,7 @@ public without sharing class CaseHandler implements ITrigger
     {
         CaseUtil.markMilestonesCompletedWhenClose( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.completeUSPMilestonesWhenClosedOrPending( (List<Case>) newList, (Map<Id,Case>) oldMap );
-        
+
     }
 
     /**
@@ -79,7 +87,8 @@ public without sharing class CaseHandler implements ITrigger
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * afterInsert
@@ -111,7 +120,8 @@ public without sharing class CaseHandler implements ITrigger
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * andFinally
@@ -120,5 +130,7 @@ public without sharing class CaseHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {}
+    {
+        CaseUtil.updateSprSocialPersonaToLinkContact();
+    }
 }

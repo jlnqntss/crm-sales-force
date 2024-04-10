@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : aberuete
+ * @group             : 
+ * @last modified on  : 06-03-2024
+ * @last modified by  : aberuete
+**/
 public with sharing class CasesSelector extends RecordsSelector
 {
     //#region Contructores
@@ -12,8 +19,9 @@ public with sharing class CasesSelector extends RecordsSelector
    
 
     public static final String CASES_LAST_DATE = 'Case.CreatedDate = LAST_N_DAYS:';
-
     public static final String CASES_MODIFY_LAST_DATE = 'Case.LastModifiedDate = LAST_N_DAYS:';
+    public static final String ACCOUNT_RT_NAME_FIELD = 'Case.Account.RecordType.DeveloperName';
+    public static final String CONTACT_PERSON_ACCOUNT_FIELD = 'Case.Account.PersonContactId';
 
 
    
@@ -159,7 +167,7 @@ public with sharing class CasesSelector extends RecordsSelector
                 Case.RobotDocumentId__c,
                 Case.MediatedCustomer__c
             })
-            .addConditionEq(Case.RecordTypeId, CaseUtil.rtUSPId)
+            .addConditionEq(Case.RecordTypeId, CaseUtil.RT_ID_USPINQUIRY)
             .addConditionNotNull(Case.RobotDocumentId__c)
             .addConditionNull(Case.MediatedCustomer__c)
             .addConditionString(CASES_LAST_DATE + days);
@@ -170,6 +178,55 @@ public with sharing class CasesSelector extends RecordsSelector
         {
             return '';
         }
+    }
+    
+    /**
+     * Método utilizado por la clase EmailMessageutil 
+     * @author lrodriguez6@seidor.es
+     * @date 01/04/2024
+     * @param String days para filtrar la query
+     * @return String query que se va a lanzar en el batch
+     */
+    public List<Case> findByIdControlCC(Set<String> caseIds)
+    {
+        Set<Schema.SObjectField> setFields =  new Set<Schema.SObjectField>{
+            Case.Id,
+            Case.ControlEmailCC__c
+        };
+
+        if(caseIds != null && !caseIds.isEmpty() )
+        {
+            
+            this.baseQuery.selectFields(setFields)
+            .addConditionIn(Case.Id,caseIds);
+          
+            return (List<Case>) this.baseQuery.run(); 
+        }
+        else
+        {
+            return new List<Case>();
+        }
+    }
+
+    /**
+     * Método utilizado por Batch_CloseInteractions para definir el scope
+     * @author lrodriguez6@seidor.es
+     * @date 12/02/2024
+     * @return List<Case> que se va a lanzar en el batch
+     */
+    public List<Case> getCasesToCloseInteractions()
+    {
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.Id
+        })
+        .addConditionEq(Case.RecordTypeId, CaseUtil.RT_ID_USPINQUIRY)
+        .addConditionEq(Case.CloseInteractionBatch__c,true)
+        .addConditionEq(Case.ExpectedClosingDate__c,System.TODAY())
+        .addConditionEq(Case.CloseByBatch__c,false);
+
+        System.debug('Casos recuperados desde Selector: '+(List<Case>)this.baseQuery.run());
+        return (List<Case>) this.baseQuery.run();
+        
     }
 
     /**
@@ -188,7 +245,7 @@ public with sharing class CasesSelector extends RecordsSelector
                 Case.CreatedOffer__c,
                 Case.OfferId__c
             })
-            .addConditionEq(Case.RecordTypeId, CaseUtil.rtUSPId)
+            .addConditionEq(Case.RecordTypeId, CaseUtil.RT_ID_USPINQUIRY)
             .addConditionNotNull(Case.CreatedOffer__c)
             .addConditionNull(Case.OfferId__c)
             .addConditionString(CASES_LAST_DATE + days);
@@ -334,5 +391,31 @@ public with sharing class CasesSelector extends RecordsSelector
             return '';
         }
     }
-    
+
+    /**
+     * Método que obtiene una lista de casos filtrados por el record type name de la cuenta asociada al caso
+     * @author aberuete
+     * @date 06/03/2024
+     * @param List<Case> caseList : lista de casos a filtrar
+     * @param List<String> recordTypeNamesAccount : lista de nombres de record types de cuenta a filtrar
+    */
+    public List<Case> getCasesFilterByRecordTypeNamesAccount (List<Case> caseList, List<String> recordTypeNamesAccount)
+    {
+        if (recordTypeNamesAccount != null && !recordTypeNamesAccount.isEmpty() && caseList != null && !caseList.isEmpty() )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>
+            {
+                Case.Id,
+                Case.AccountId,
+                Case.SprinklrSocialPersona__c
+            })
+            .selectFields(CONTACT_PERSON_ACCOUNT_FIELD)
+            .addConditionIn(Case.Id, caseList)
+            .addConditionIn(ACCOUNT_RT_NAME_FIELD, recordTypeNamesAccount);
+
+            return (List<Case>) this.baseQuery.run();
+        }
+        
+        return new List<Case>();
+    }
 }

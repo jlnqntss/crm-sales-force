@@ -59,6 +59,11 @@ private with sharing class OpportunitiesSelectorTest
         List<CampaignMember> campaignMembers = TestDataFactory.generateCampaignMembersForEachCampaign(miembroCampanya, campaigns, 'Subscribed');
         campaignMembers[0].OfferAssignedType__c = 'CC';
         insert campaignMembers;
+
+        List<Opportunity> offers = TestDataFactory.generateOpportunities(miembroCampanya, 'Existing Business', 'Legit Lead', System.today() + 7, 2);
+        offers[0].ZRM__c = true;
+        offers[1].ZRM__c = true;
+        insert offers;
     }
 
     @isTest
@@ -390,27 +395,6 @@ private with sharing class OpportunitiesSelectorTest
         Test.stopTest();
 
         Assert.isFalse(offers.isEmpty(), 'Offers list should not be empty');
-    }
-
-    @isTest
-    static void findOffersWithIncorrectVisibilityTest() {
-
-        Test.startTest();
-        String offerList = (new OpportunitiesSelector()).findOffersWithIncorrectVisibility();
-        Test.stopTest();
-
-        System.assertEquals(true, offerList != null, 'No debe ser nulo');
-    }
-
-    @isTest
-    static void findOffersWithIncorrectVisibilityByAccountIdTest() {
-
-        Test.startTest();
-        Set<String> accountIds = new Set<String>();
-        String offerList = (new OpportunitiesSelector()).findOffersWithIncorrectVisibilityByAccountId(accountIds);
-        Test.stopTest();
- 
-        System.assertEquals(true, offerList == null, 'Debe ser nulo');
     }
 
     @isTest

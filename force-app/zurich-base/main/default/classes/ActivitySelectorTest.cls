@@ -1,5 +1,5 @@
 @isTest(SeeAllData = false)
-public without sharing class ActivitySelectorTest
+private with sharing class ActivitySelectorTest
 {
 
     /**
@@ -8,7 +8,7 @@ public without sharing class ActivitySelectorTest
      * @date 03/11/2020
      */
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         List<Task> tasks = new List<Task>();
         tasks = TestDataFactory.generateInteractionTasks(10);
@@ -21,7 +21,7 @@ public without sharing class ActivitySelectorTest
      * @date 27/10/2020
      */
     @isTest
-    static void test_selectTasksByCallObjectIdentifier_list()
+    private static void test_selectTasksByCallObjectIdentifier_list()
     {
         List<String> interactionIds = new List<String> {
             'ucid1',
@@ -48,7 +48,7 @@ public without sharing class ActivitySelectorTest
      * @date 27/10/2020
      */
     @isTest
-    static void test_selectTasksByCallObjectIdentifier_string()
+    private static void test_selectTasksByCallObjectIdentifier_string()
     {
         Test.startTest();
         List<Task> selectedTasks = ActivitySelector.selectTasksByCallObjectIdentifier(
@@ -69,7 +69,7 @@ public without sharing class ActivitySelectorTest
      * @date 27/10/2020
      */
     @isTest
-    static void test_selectTasksByCallObjectIdentifier_nullOutput()
+    private static void test_selectTasksByCallObjectIdentifier_nullOutput()
     {
         Test.startTest();
         List<Task> selectedTasks = ActivitySelector.selectTasksByCallObjectIdentifier(
@@ -90,7 +90,7 @@ public without sharing class ActivitySelectorTest
      * @date 27/10/2020
      */
     @isTest
-    static void test_selectTasksByCallObjectIdentifier_nullInput1()
+    private static void test_selectTasksByCallObjectIdentifier_nullInput1()
     {
         Test.startTest();
         List<Task> selectedTasks = ActivitySelector.selectTasksByCallObjectIdentifier(
@@ -111,7 +111,7 @@ public without sharing class ActivitySelectorTest
      * @date 03/11/2020
      */
     @isTest
-    static void test_selectTasksByCallObjectIdentifier_nullInput2()
+    private static void test_selectTasksByCallObjectIdentifier_nullInput2()
     {
         List<String> nullList = null;
         Test.startTest();
@@ -133,7 +133,7 @@ public without sharing class ActivitySelectorTest
      * @date 03/11/2020
      */
     @isTest
-    static void test_selectTasksByCallObjectIdentifier_nullInput3()
+    private static void test_selectTasksByCallObjectIdentifier_nullInput3()
     {
         String nullString = null;
         Test.startTest();
@@ -157,7 +157,7 @@ public without sharing class ActivitySelectorTest
      * @date 17/11/2020
      */
     @isTest
-    static void test_selectTasksById_nullInput()
+    private static void test_selectTasksById_nullInput()
     {
         Test.startTest();
 
@@ -174,7 +174,7 @@ public without sharing class ActivitySelectorTest
      * @date 17/11/2020
      */
     @isTest
-    static void test_selectTasksById_emptyInput()
+    private static void test_selectTasksById_emptyInput()
     {
         Test.startTest();
 
@@ -192,7 +192,7 @@ public without sharing class ActivitySelectorTest
      * @date 17/11/2020
      */
     @isTest
-    static void test_selectTasksById_recordInput()
+    private static void test_selectTasksById_recordInput()
     {
         // When
         Set<Id> taskIds = new Map<Id, Task>( [SELECT Id, Subject, CallObject FROM Task WHERE CallObject != null] ).keySet();
@@ -219,7 +219,7 @@ public without sharing class ActivitySelectorTest
      * @date 17/11/2020
      */
     @isTest
-    static void selectOpenTasksByWhatIdTest()
+    private static void selectOpenTasksByWhatIdTest()
     {
         // When
         Set<Id> taskWhatIds = new Set<Id>();

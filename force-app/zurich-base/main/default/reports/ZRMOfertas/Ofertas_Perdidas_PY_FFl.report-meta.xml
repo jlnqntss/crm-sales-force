@@ -57,13 +57,6 @@
             <operator>equals</operator>
             <value>N_MONTHS_AGO:12</value>
         </criteriaItems>
-        <criteriaItems>
-            <column>OWNER_PROFILE</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>Agente Ventas</value>
-        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>

@@ -74,7 +74,8 @@
         <field>ADDRESS1_STATE</field>
     </columns>
     <columns>
-        <field>BucketField_61725951</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Potential_Broker__c</field>
     </columns>
     <columns>
         <field>Account.SDMAssociation__c</field>
@@ -321,7 +322,14 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Account.AgrupacionMediador</value>
+            <value>Account.Intermediary,Account.Potential_Broker</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.StatusIntermediary__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Active</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>

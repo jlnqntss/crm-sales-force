@@ -55,7 +55,8 @@ public with sharing class OpenIDConnectSalesforceCommunity {
     private static final string AUTH_DATA_ATTRIBUTE_MANAGER = 'manager';
     @testvisible
     private static final string AUTH_DATA_ATTRIBUTE_ACCOUNT_CODE = 'accountcode';    
-
+    @testvisible
+    private static final string PERMISSION_TYPE_LICENSE_GROUP = 'LicenseGroup';
 
     private static final string CLASS_NAME = 'OpenIDConnectSalesforceLicense';
     // errores
@@ -147,6 +148,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         authMap.put(PERMISSION_TYPE_SIGNATURE, new List<String>());
         authMap.put(PERMISSION_TYPE_TITLE, new List<String>());
         authMap.put(PERMISSION_TYPE_AFFILIATION_CODE, new List<String>());
+        authMap.put(PERMISSION_TYPE_LICENSE_GROUP, new List<String>());
 
         
         // Get the list of Auth Mapping Data fro the given roles
@@ -201,6 +203,10 @@ public with sharing class OpenIDConnectSalesforceCommunity {
 
         // añadir configuración restante
         addUserRelated(u.Id, metadataInfoMap);
+
+        // ZRM ATMs (generamos los AccountTeamsMember solo para el primer login)
+        Map<String, List<String>> authMap = (Map<String, List<String>>) metadataInfoMap.get('AuthMap');
+        generateZRMATMs(u.Id, authMap.get(PERMISSION_TYPE_PROFILE));
 
         return u;
 
@@ -330,6 +336,8 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         String department = getDepartmentFromRoles(authMap.get(PERMISSION_TYPE_DEPARTMENT));
         // GET Title
         String title = getTitleFromRoles(authMap.get(PERMISSION_TYPE_TITLE));
+        // GET LicenseGroup
+        String licenseGroup = getLicenseGroupFromRoles(authMap.get(PERMISSION_TYPE_LICENSE_GROUP));
         // GET Manager
         Id managerId = getManagerIdFromNickname(data);
         // NEW USER
@@ -358,6 +366,9 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         }
         if (String.isNotBlank(title)) {
             u.Title = title;
+        }
+        if( String.isNotBlank(licenseGroup) ) {
+            u.License_Group__c = licenseGroup;
         }
         if (ManagerId != null) {
             u.ManagerId = ManagerId;
@@ -388,6 +399,8 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         String department = getDepartmentFromRoles(authMap.get(PERMISSION_TYPE_DEPARTMENT));
         // GET Title
         String title = getTitleFromRoles(authMap.get(PERMISSION_TYPE_TITLE));
+        // GET LicenseGroup
+        String licenseGroup = getLicenseGroupFromRoles(authMap.get(PERMISSION_TYPE_LICENSE_GROUP));
         // GET Manager
         Id managerId = getManagerIdFromNickname(data);
 
@@ -400,7 +413,8 @@ public with sharing class OpenIDConnectSalesforceCommunity {
                     u.userName != data.username + USERNAME_SERVER || u.profileId != profileId || 
                     u.UserRoleId != roleId || u.alias != data.username.left(8) || u.email != data.email ||
                     (String.isNotBlank(signature) && signature != u.Signature) ||
-                    u.Title != title || (ManagerId != null && u.ManagerId != ManagerId)
+                    u.Title != title || (ManagerId != null && u.ManagerId != ManagerId) || 
+                    (String.isNotBlank(licenseGroup) && licenseGroup != u.License_Group__c)
                 );
         
         if (modified) {
@@ -416,6 +430,9 @@ public with sharing class OpenIDConnectSalesforceCommunity {
             updateSignature(u, signature);
             updateTitle(u, title);
             updateManager(u, managerId);
+            if( String.isNotBlank(licenseGroup) ) {
+                u.License_Group__c = licenseGroup;
+            }
 
             if( userPermissionMap != null && !userPermissionMap.isEmpty()){
                 activateUserPermission(userPermissionMap, u);
@@ -444,7 +461,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         assignPublicGroups(userId, publicGroupIdList);
         // PERMISSION SETS
         List<Id> permissionSetGroupIdList = getPermissionSetGroupsFromRoles(authMap.get(PERMISSION_TYPE_PERMISSION_SET_GROUP));
-        assignPermissionSetGroup(userId, permissionSetGroupIdList);
+        assignPermissionSetGroup(userId, permissionSetGroupIdList);       
     }
 
 
@@ -538,6 +555,23 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         return result;
     }
 
+    /**
+     * Get the licenseGroup configured for the given list of roles.
+     * 
+     * @author zurih (jonander.sanjuanlago)
+     * @date 18/01/2024
+     * @param {List<String> licenseGroupNames} A list of licenseGroup
+     * @return {string}: The licenseGroup
+     */
+    private String getLicenseGroupFromRoles(List<String> licenseGroupNames ) 
+    {
+        String result = null;
+        if( licenseGroupNames != null && !licenseGroupNames.isEmpty() ) {
+            // because of the order in the query, the first one should be the best one
+            result = licenseGroupNames[0];
+        }
+        return result;
+    }
 
     /**
      * @Description obtener el ManagerId desde el atributo Manager del data que nos viene del IAM
@@ -886,6 +920,25 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         if( managerId != null ) {
             u.ManagerId = ManagerId;
         }
+    }
+
+    /**
+     * @Description Calcular los account team member para el usuario ZRM que inicia sesión en la comunidad
+     * @date 19/03/2024
+     * @author fpalomo <fpalomo@seidor.es>
+     */
+    @TestVisible
+    private static void generateZRMATMs(String intermediaryUserId, List<String> profiles)
+    {
+        String profile = profiles.get(0);
+
+        if (!profile.equals('Agente Ventas') && !profile.equals('Agente Ventas - AGR'))
+        {
+            // Si no es agente ventas o agente ventas agr no hacemos nada
+            return;
+        }
+
+        Database.executeBatch(new Batch_VisibilitySFCommunityOID(profile, intermediaryUserId));
     }
 
     /**

@@ -1,7 +1,7 @@
 /**
  * @description       : Clase-queueable ejecutada desde el WS de Quote&Buy que inserta/actualiza/asigna un registro de Oferta de Lead e inserta un registro de Póliza (si aplica)
  * @author            : nts - overes
- * @last modified on  : 02-10-2023
+ * @last modified on  : 07-03-2024
  **/
 
 public with sharing class AccountLeadOpportunityQueueJob implements Queueable
@@ -159,6 +159,9 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
      * @param offerToInsertUpdate
      * @param phone
      * @return Opportunity
+     * 
+     * @change amiranda 06/03/2024 Se elimina la asignación de 'Owner' y se cambia
+     * la lógica que asigna valores a los campos `IntermediaryId__c' y 'IntermediaryCode__c'
      **/
     public static Opportunity manageConstrainsKey (Map<String,Account> assign, Account accountRecord, Opportunity offerToInsertUpdate, String phone, String quiereLlamada, String intermediary)
     {
@@ -179,11 +182,12 @@ public with sharing class AccountLeadOpportunityQueueJob implements Queueable
         }
         else
         {
-            offerToUpdate.OwnerId = new List<String>( assign.keySet() ).get(0);
-            if (assign.get(offerToInsertUpdate.OwnerId) != null)
+            Id ownerId = new List<String>( assign.keySet() ).get(0);
+
+            if (assign.get(ownerId) != null) 
             {
-                offerToUpdate.IntermediaryId__c = assign.get(offerToInsertUpdate.OwnerId).Id;
-                offerToUpdate.IntermediaryCode__c = assign.get(offerToInsertUpdate.OwnerId).INFOIntermediaryCode__c;
+                offerToUpdate.IntermediaryId__c = assign.get(ownerId).Id;
+                offerToUpdate.IntermediaryCode__c = assign.get(ownerId).INFOIntermediaryCode__c;
             }
         }
         return offerToUpdate;

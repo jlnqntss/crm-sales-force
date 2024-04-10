@@ -166,8 +166,8 @@
             <section>Financial Information</section>
         </sections>
         <sections>
-            <label>Info Zurich</label>
-            <section>Info Zurich</section>
+            <label>Propuestas de Valor</label>
+            <section>Value propositions</section>
         </sections>
         <sections>
             <label>Información general</label>
@@ -346,20 +346,12 @@
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label>Indicadores clave</label>
-            <section>Indicators</section>
-        </sections>
-        <sections>
             <label>Datos de contacto</label>
             <section>Intermediary Contact</section>
         </sections>
         <sections>
             <label>Información general</label>
             <section>Main section</section>
-        </sections>
-        <sections>
-            <label>Información del sistema</label>
-            <section>System Information</section>
         </sections>
     </layouts>
     <layouts>

@@ -325,7 +325,7 @@ private with sharing class MiZurichHandlerTest
         Case caserecord = (Case) ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(MiZurichHandler.FORM_INC).get(MiZurichHandler.SOBJECT_CASE).keySet().iterator().next();
         System.assertEquals(false, ExternalRequestHandlerUtil.recordsToUpsertByEntity.isEmpty(), 'Debe haber registros a insertar');
         System.assertEquals('Web', caserecord.Origin , 'El origen del caso es incorrecto');
-        System.assertEquals(Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId(), caserecord.RecordTypeId , 'El record type  del caso es incorrecto');
+        System.assertEquals(CaseUtil.RT_ID_OCSINQUIRY, caserecord.RecordTypeId , 'El record type  del caso es incorrecto');
         System.assertEquals('Generic end customer', caserecord.SourceArea__c , 'El area del caso es incorrecto');
         System.assertEquals('Asignado', caserecord.Status , 'El estado del caso es incorrecto');
         System.assertEquals('CC Service', caserecord.CallCenter__c , 'El call center del caso es incorrecto');

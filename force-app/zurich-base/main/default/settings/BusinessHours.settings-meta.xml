@@ -19,18 +19,34 @@
     <businessHours>
         <active>true</active>
         <default>false</default>
-        <fridayEndTime>14:30:00.000Z</fridayEndTime>
-        <fridayStartTime>08:30:00.000Z</fridayStartTime>
+        <fridayEndTime>15:00:00.000Z</fridayEndTime>
+        <fridayStartTime>08:00:00.000Z</fridayStartTime>
         <mondayEndTime>18:00:00.000Z</mondayEndTime>
-        <mondayStartTime>08:30:00.000Z</mondayStartTime>
-        <name>CSM Default</name>
+        <mondayStartTime>08:00:00.000Z</mondayStartTime>
+        <name>CSM Administracion</name>
         <thursdayEndTime>18:00:00.000Z</thursdayEndTime>
-        <thursdayStartTime>08:30:00.000Z</thursdayStartTime>
+        <thursdayStartTime>08:00:00.000Z</thursdayStartTime>
         <timeZoneId>Europe/Paris</timeZoneId>
         <tuesdayEndTime>18:00:00.000Z</tuesdayEndTime>
-        <tuesdayStartTime>08:30:00.000Z</tuesdayStartTime>
+        <tuesdayStartTime>08:00:00.000Z</tuesdayStartTime>
         <wednesdayEndTime>18:00:00.000Z</wednesdayEndTime>
-        <wednesdayStartTime>08:30:00.000Z</wednesdayStartTime>
+        <wednesdayStartTime>08:00:00.000Z</wednesdayStartTime>
+    </businessHours>
+    <businessHours>
+        <active>true</active>
+        <default>false</default>
+        <fridayEndTime>15:00:00.000Z</fridayEndTime>
+        <fridayStartTime>08:00:00.000Z</fridayStartTime>
+        <mondayEndTime>18:00:00.000Z</mondayEndTime>
+        <mondayStartTime>08:00:00.000Z</mondayStartTime>
+        <name>CSM Default</name>
+        <thursdayEndTime>18:00:00.000Z</thursdayEndTime>
+        <thursdayStartTime>08:00:00.000Z</thursdayStartTime>
+        <timeZoneId>Europe/Paris</timeZoneId>
+        <tuesdayEndTime>18:00:00.000Z</tuesdayEndTime>
+        <tuesdayStartTime>08:00:00.000Z</tuesdayStartTime>
+        <wednesdayEndTime>18:00:00.000Z</wednesdayEndTime>
+        <wednesdayStartTime>08:00:00.000Z</wednesdayStartTime>
     </businessHours>
     <businessHours>
         <active>true</active>
@@ -120,7 +136,19 @@
     </businessHours>
     <holidays>
         <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
+        <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
+        <description>Festivo nacional</description>
+        <isRecurring>true</isRecurring>
+        <name>01/01 - Año nuevo</name>
+        <recurrenceDayOfMonth>1</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-01-01</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>CCS Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
         <name>01/05 - Jornada Intensiva Víspera Reyes CCS</name>
@@ -131,11 +159,20 @@
         <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
-        <businessHours>CSM Default</businessHours>
-        <businessHours>USP Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
         <name>01/05 - Jornada Intensiva Víspera Reyes CSM</name>
+        <recurrenceDayOfMonth>5</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-01-05</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <businessHours>USP Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>01/05 - Jornada Intensiva Víspera Reyes USP</name>
         <recurrenceDayOfMonth>5</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
         <recurrenceStartDate>2023-01-05</recurrenceStartDate>
@@ -144,8 +181,6 @@
     </holidays>
     <holidays>
         <businessHours>CCS Default</businessHours>
-        <businessHours>CSM Default</businessHours>
-        <businessHours>Centro Excelencia Default</businessHours>
         <businessHours>USP Default</businessHours>
         <description>Mes/Día - Festividad</description>
         <isRecurring>true</isRecurring>
@@ -154,6 +189,28 @@
         <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
         <recurrenceStartDate>2022-01-06</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>CSM Administracion</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>01/22 - Día Jornada Intensiva San Vicente Mártir</name>
+        <recurrenceDayOfMonth>22</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>January</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-01-22</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <businessHours>CSM Administracion</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>03/19 - Jornada Intensiva San José</name>
+        <recurrenceDayOfMonth>19</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>March</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-03-19</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
         <businessHours>Centro Excelencia Default</businessHours>
@@ -166,28 +223,55 @@
     </holidays>
     <holidays>
         <businessHours>CCS Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
-        <name>04/05 - Jornada Intensiva Víspera Jueves Santo CCS</name>
-        <recurrenceDayOfMonth>5</recurrenceDayOfMonth>
-        <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
-        <recurrenceStartDate>2023-04-05</recurrenceStartDate>
+        <name>03/27 - Jornada Intensiva Víspera Jueves Santo CCS</name>
+        <recurrenceDayOfMonth>27</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>March</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-03-27</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
         <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
         <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
+        <businessHours>CSM Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
-        <name>04/06 - Jornada Intensiva Víspera Viernes Santo CCS</name>
-        <recurrenceDayOfMonth>6</recurrenceDayOfMonth>
-        <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
-        <recurrenceStartDate>2023-04-06</recurrenceStartDate>
+        <name>03/28 - Jornada Intensiva Víspera Viernes Santo CCS</name>
+        <recurrenceDayOfMonth>28</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>March</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-03-28</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
         <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
+        <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
         <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <businessHours>USP Default</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>03/29 - Viernes Santo</name>
+        <recurrenceDayOfMonth>29</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>March</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-03-29</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
+        <businessHours>CSM Administracion</businessHours>
+        <businessHours>CSM Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>04/01 - Jornada Intensiva Lunes de Pascua CSM</name>
+        <recurrenceDayOfMonth>1</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
+        <recurrenceStartDate>2023-04-01</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>USP Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
@@ -208,37 +292,26 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
-        <businessHours>CCS Default</businessHours>
-        <businessHours>CSM Default</businessHours>
-        <businessHours>Centro Excelencia Default</businessHours>
-        <businessHours>USP Default</businessHours>
-        <isRecurring>true</isRecurring>
-        <name>04/07 - Viernes Santo</name>
-        <recurrenceDayOfMonth>7</recurrenceDayOfMonth>
-        <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
-        <recurrenceStartDate>2023-04-07</recurrenceStartDate>
-        <recurrenceType>RecursYearly</recurrenceType>
-    </holidays>
-    <holidays>
-        <businessHours>CSM Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
-        <name>04/10 - Jornada Intensiva Lunes de Pascua CSM</name>
-        <recurrenceDayOfMonth>10</recurrenceDayOfMonth>
+        <name>04/08 - Día Jornada Intensiva San Vicente Ferrer</name>
+        <recurrenceDayOfMonth>8</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
-        <recurrenceStartDate>2023-04-10</recurrenceStartDate>
+        <recurrenceStartDate>2024-04-08</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
-        <startTime>14:30:00.000Z</startTime>
+        <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
+        <businessHours>CSM Administracion</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
-        <name>04/18 - Jornada Intensiva Lunes de Pascua</name>
-        <recurrenceDayOfMonth>18</recurrenceDayOfMonth>
+        <name>04/09 - Jornada Intensiva CSM</name>
+        <recurrenceDayOfMonth>9</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>April</recurrenceMonthOfYear>
-        <recurrenceStartDate>2022-04-18</recurrenceStartDate>
+        <recurrenceStartDate>2024-04-09</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
-        <startTime>14:30:00.000Z</startTime>
+        <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
         <isRecurring>true</isRecurring>
@@ -250,6 +323,7 @@
     </holidays>
     <holidays>
         <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
         <businessHours>USP Default</businessHours>
@@ -279,6 +353,17 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>CSM Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>05/20 - Jornada Intensiva Lunes Pascua Granada</name>
+        <recurrenceDayOfMonth>20</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>May</recurrenceMonthOfYear>
+        <recurrenceStartDate>2022-05-20</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>Centro Excelencia Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
@@ -288,18 +373,34 @@
         <recurrenceDayOfWeek>Wednesday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Thursday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Friday</recurrenceDayOfWeek>
-        <recurrenceEndDate>2023-09-15</recurrenceEndDate>
+        <recurrenceEndDate>2024-09-15</recurrenceEndDate>
         <recurrenceInterval>1</recurrenceInterval>
-        <recurrenceStartDate>2023-06-16</recurrenceStartDate>
+        <recurrenceStartDate>2024-06-17</recurrenceStartDate>
         <recurrenceType>RecursWeekly</recurrenceType>
         <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
+        <businessHours>CSM Administracion</businessHours>
         <businessHours>CSM Default</businessHours>
-        <businessHours>USP Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
         <name>06/16 - Jornada Intensiva Verano CSM</name>
+        <recurrenceDayOfWeek>Monday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Tuesday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Wednesday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Thursday</recurrenceDayOfWeek>
+        <recurrenceDayOfWeek>Friday</recurrenceDayOfWeek>
+        <recurrenceEndDate>2024-09-15</recurrenceEndDate>
+        <recurrenceInterval>1</recurrenceInterval>
+        <recurrenceStartDate>2024-06-17</recurrenceStartDate>
+        <recurrenceType>RecursWeekly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <businessHours>USP Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>06/16 - Jornada Intensiva Verano USP</name>
         <recurrenceDayOfWeek>Monday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Tuesday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Wednesday</recurrenceDayOfWeek>
@@ -312,6 +413,15 @@
         <startTime>14:30:00.000Z</startTime>
     </holidays>
     <holidays>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <isRecurring>true</isRecurring>
+        <name>07/25 - Santiago Apóstol</name>
+        <recurrenceDayOfMonth>25</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>July</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-07-25</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>ZE Business Hours</businessHours>
         <endTime>20:00:00.000Z</endTime>
@@ -322,14 +432,15 @@
         <recurrenceDayOfWeek>Wednesday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Thursday</recurrenceDayOfWeek>
         <recurrenceDayOfWeek>Friday</recurrenceDayOfWeek>
-        <recurrenceEndDate>2023-08-01</recurrenceEndDate>
+        <recurrenceEndDate>2024-08-31</recurrenceEndDate>
         <recurrenceInterval>1</recurrenceInterval>
-        <recurrenceStartDate>2023-08-01</recurrenceStartDate>
+        <recurrenceStartDate>2024-08-01</recurrenceStartDate>
         <recurrenceType>RecursWeekly</recurrenceType>
         <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
         <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
         <businessHours>USP Default</businessHours>
@@ -341,6 +452,17 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>CSM Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>09/24 - Jornada Intensiva La Mercé CSM</name>
+        <recurrenceDayOfMonth>24</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>September</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-09-24</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <isRecurring>true</isRecurring>
         <name>09/26 - Jornada Intensiva</name>
         <recurrenceDayOfMonth>26</recurrenceDayOfMonth>
@@ -349,9 +471,19 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>CSM Administracion</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>10/09 - Jornada Intensiva Día Comunidad de Madrid</name>
+        <recurrenceDayOfMonth>9</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>October</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-10-09</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
-        <businessHours>Centro Excelencia Default</businessHours>
         <businessHours>USP Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>10/12 - Día de la Hispanidad</name>
@@ -361,7 +493,21 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>CSM Administracion</businessHours>
+        <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>10/31 - Jornada Intensiva Víspera Todos los Santos CSM</name>
+        <recurrenceDayOfMonth>31</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>October</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-10-31</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
         <businessHours>USP Default</businessHours>
@@ -382,7 +528,20 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>CSM Administracion</businessHours>
+        <businessHours>CSM Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>12/05 - Jornada Intensiva Puente Constitucion CSM</name>
+        <recurrenceDayOfMonth>5</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-12-05</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
         <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
         <businessHours>USP Default</businessHours>
@@ -394,7 +553,6 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
-        <businessHours>Centro Excelencia Default</businessHours>
         <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
         <name>12/07 - Jornada Intensiva Puente Constitucion CE</name>
@@ -419,7 +577,6 @@
     <holidays>
         <businessHours>CCS Default</businessHours>
         <businessHours>CSM Default</businessHours>
-        <businessHours>Centro Excelencia Default</businessHours>
         <businessHours>USP Default</businessHours>
         <isRecurring>true</isRecurring>
         <name>12/08 - Día de la Inmaculada Concepción</name>
@@ -430,6 +587,21 @@
     </holidays>
     <holidays>
         <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
+        <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>12/24 - Jornada Intensiva Víspera Navidad CCS</name>
+        <recurrenceDayOfMonth>24</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-12-24</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
         <businessHours>CSM Default</businessHours>
         <businessHours>Centro Excelencia Default</businessHours>
         <businessHours>USP Default</businessHours>
@@ -441,12 +613,30 @@
         <recurrenceType>RecursYearly</recurrenceType>
     </holidays>
     <holidays>
+        <businessHours>CSM Default</businessHours>
+        <endTime>20:00:00.000Z</endTime>
         <isRecurring>true</isRecurring>
-        <name>12/26 - Jornada Intensiva San Esteban</name>
+        <name>12/26 - Jornada Intensiva San Esteban CSM</name>
         <recurrenceDayOfMonth>26</recurrenceDayOfMonth>
         <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
         <recurrenceStartDate>2022-12-26</recurrenceStartDate>
         <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
+    </holidays>
+    <holidays>
+        <businessHours>CCS Default</businessHours>
+        <businessHours>CSM Administracion</businessHours>
+        <businessHours>CSM Default</businessHours>
+        <businessHours>Centro Excelencia Default</businessHours>
+        <description>Festivo nacional</description>
+        <endTime>20:00:00.000Z</endTime>
+        <isRecurring>true</isRecurring>
+        <name>12/31 - Jornada Intensiva Víspera Año Nuevo CCS</name>
+        <recurrenceDayOfMonth>31</recurrenceDayOfMonth>
+        <recurrenceMonthOfYear>December</recurrenceMonthOfYear>
+        <recurrenceStartDate>2024-12-31</recurrenceStartDate>
+        <recurrenceType>RecursYearly</recurrenceType>
+        <startTime>15:00:00.000Z</startTime>
     </holidays>
     <holidays>
         <businessHours>USP Default</businessHours>
