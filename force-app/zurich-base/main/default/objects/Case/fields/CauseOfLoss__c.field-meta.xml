@@ -56,6 +56,71 @@
                 <default>false</default>
                 <label>Accidental Damage</label>
             </value>
+            <value>
+                <fullName>Desaparición del riesgo</fullName>
+                <default>false</default>
+                <label>Desaparición del riesgo</label>
+            </value>
+            <value>
+                <fullName>Prima elevada</fullName>
+                <default>false</default>
+                <label>Prima elevada</label>
+            </value>
+            <value>
+                <fullName>Reemplazo póliza</fullName>
+                <default>false</default>
+                <label>Reemplazo póliza</label>
+            </value>
+            <value>
+                <fullName>Anulación por fallecimiento</fullName>
+                <default>false</default>
+                <label>Anulación por fallecimiento</label>
+            </value>
+            <value>
+                <fullName>Mejor oferta competencia</fullName>
+                <default>false</default>
+                <label>Mejor oferta competencia</label>
+            </value>
+            <value>
+                <fullName>Faltan coberturas/producto</fullName>
+                <default>false</default>
+                <label>Faltan coberturas/producto</label>
+            </value>
+            <value>
+                <fullName>Indemnización siniestro</fullName>
+                <default>false</default>
+                <label>Indemnización siniestro</label>
+            </value>
+            <value>
+                <fullName>Insatisfacción gestión siniestros</fullName>
+                <default>false</default>
+                <label>Insatisfacción gestión siniestros</label>
+            </value>
+            <value>
+                <fullName>Insatisfacción atención cliente</fullName>
+                <default>false</default>
+                <label>Insatisfacción atención cliente</label>
+            </value>
+            <value>
+                <fullName>Cambio de vehículo</fullName>
+                <default>false</default>
+                <label>Cambio de vehículo</label>
+            </value>
+            <value>
+                <fullName>Cambio de domicilio</fullName>
+                <default>false</default>
+                <label>Cambio de domicilio</label>
+            </value>
+            <value>
+                <fullName>Periodo Finalizado</fullName>
+                <default>false</default>
+                <label>Periodo Finalizado</label>
+            </value>
+            <value>
+                <fullName>Agente mediador elimina cliente</fullName>
+                <default>false</default>
+                <label>Agente mediador elimina cliente</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
