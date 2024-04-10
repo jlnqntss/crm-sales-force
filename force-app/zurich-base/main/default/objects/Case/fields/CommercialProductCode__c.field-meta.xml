@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CommercialProductCode__c</fullName>
+    <description>Producto en BS (ZDA)</description>
+    <externalId>false</externalId>
+    <label>Commercial product</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pack Productos Empresa</fullName>
+                <default>false</default>
+                <label>Pack Productos Empresa</label>
+            </value>
+            <value>
+                <fullName>PRD0020</fullName>
+                <default>false</default>
+                <label>Protección Comunidades Zurich (OFERTABLE)</label>
+            </value>
+            <value>
+                <fullName>PRD0027</fullName>
+                <default>false</default>
+                <label>Protección Comercios y Oficinas Zurich (No Ofertable)</label>
+            </value>
+            <value>
+                <fullName>PRD0028</fullName>
+                <default>false</default>
+                <label>Protección Empresas  Zurich (OFERTABLE)</label>
+            </value>
+            <value>
+                <fullName>PRD0029</fullName>
+                <default>false</default>
+                <label>Protección Transportes Zurich (OFERTABLE)</label>
+            </value>
+            <value>
+                <fullName>PRD0032</fullName>
+                <default>false</default>
+                <label>Protección Camiones Leasing Zurich (OFERTABLE)</label>
+            </value>
+            <value>
+                <fullName>PRD0035</fullName>
+                <default>false</default>
+                <label>Protección Construcción (OFERTABLE)</label>
+            </value>
+            <value>
+                <fullName>PRD0038</fullName>
+                <default>false</default>
+                <label>Responsabilidad Civil Zurich (OFERTABLE)</label>
+            </value>
+            <value>
+                <fullName>PRD0901</fullName>
+                <default>false</default>
+                <label>Responsabilidad Civil D&amp;O Zurich (OFERTABLE)</label>
+            </value>
+            <value>
+                <fullName>Protección Comercios y Oficinas BSSG (OFERTABLE)</fullName>
+                <default>false</default>
+                <label>Protección Comercios y Oficinas BSSG (OFERTABLE)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

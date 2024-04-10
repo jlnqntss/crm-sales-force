@@ -11,7 +11,7 @@ public class PolicyUtil
      * @author adelgado
      * @date 08/01/2021
      *
-     * @change 10/05/2021 - nts (agonzalezisasi) - OCS-1798 - Se incluye el calculo de la cuenta Partner de la poliza 
+     * @change 10/05/2021 - nts (agonzalezisasi) - OCS-1798 - Se incluye el calculo de la cuenta Partner de la poliza
      *         como evento.
      */
     public static void generateScope(List<Policy__c> newList)
@@ -26,7 +26,8 @@ public class PolicyUtil
                 polToGenerateScope.add(policy);
             }
 
-            if( String.isNotBlank(policy.BusinessCode__c) && policy.Partner__c == null ) {
+            if( String.isNotBlank(policy.BusinessCode__c) && policy.Partner__c == null )
+            {
                 polToGeneratePartner.add(policy);
             }
         }
@@ -36,69 +37,71 @@ public class PolicyUtil
             GenerateScopeUtil.generateScopeEvents('PolicyHolder__c', 'BusinessCode__c', polToGenerateScope);
         }
 
-        if( !polToGeneratePartner.isEmpty() ) {
+        if( !polToGeneratePartner.isEmpty() )
+        {
             GenerateScopeUtil.generatePartnerEvents(
-                Policy__c.BusinessCode__c.getDescribe().getName(), 
-                Policy__c.Partner__c.getDescribe().getName(), 
-                Account.getSObjectType().getDescribe().getName(), 
-                Account.INFOBusinessCode__c.getDescribe().getName(), 
+                Policy__c.BusinessCode__c.getDescribe().getName(),
+                Policy__c.Partner__c.getDescribe().getName(),
+                Account.getSObjectType().getDescribe().getName(),
+                Account.INFOBusinessCode__c.getDescribe().getName(),
                 polToGeneratePartner
-            );
+                );
         }
-    }  
-    
-    
+    }
+
+
     /******************************* Métodos principales Visibilidad ZRM ******************************************************/
 
     /**
      * Metodo que genera atm cuando llega una nueva poliza en vigor o anulada para los usuarios ZRM
-     * 
+     *
      *
      * @author dmunoz
-     * @date 12/02/2024 
+     * @date 12/02/2024
      */
-    public static void zrmVisibilityNewPolicy(List<Policy__c> newList) 
+    public static void zrmVisibilityNewPolicy(List<Policy__c> newList)
     {
 
-        try 
+        try
         {
             // 1º obtener los mediadores y clientes de las polizas en vigor <IntermdiaryId__c, List<PolicyHolder__c>>
-            Map<String, Set<String>> policyHoldersByIntermediaryMap = ZRMPolicyVisibilityUtil.getPolicyHoldersByIntermediaryMap(newList);
+            Map<String, Set<String> > policyHoldersByIntermediaryMap = ZRMPolicyVisibilityUtil.getPolicyHoldersByIntermediaryMap(newList);
 
-            if (policyHoldersByIntermediaryMap != null && !policyHoldersByIntermediaryMap.isEmpty()) 
+            if ( policyHoldersByIntermediaryMap != null && !policyHoldersByIntermediaryMap.isEmpty() )
             {
                 // 2º Obtener las agrupaciones de los mediadores para obtener los usuarios agr de esos mediadores <IntermdiaryId__c, IntermediaryGroup__c>
-                Map<String, String> intermediaryWithIntermediariesGroupsIdMap = ZRMPolicyVisibilityUtil.getIntermediaryGroupIdMap(policyHoldersByIntermediaryMap.keySet());
-    
+                Map<String, String> intermediaryWithIntermediariesGroupsIdMap = ZRMPolicyVisibilityUtil.getIntermediaryGroupIdMap( policyHoldersByIntermediaryMap.keySet() );
+
                 // 3º Obtener los usuarios de los mediadores <IntermediaryId, List<UserId>
-                Map<String, List<String>> intermediariesWithUsers = ZRMPolicyVisibilityUtil.getIntermediariesUsers(policyHoldersByIntermediaryMap.keySet(), intermediaryWithIntermediariesGroupsIdMap);
-    
+                Map<String, List<String> > intermediariesWithUsers = ZRMPolicyVisibilityUtil.getIntermediariesUsers(policyHoldersByIntermediaryMap.keySet(), intermediaryWithIntermediariesGroupsIdMap);
+
                 // 4º Insertar atm y activar registros de competencia y cuentas relacionadas
                 ZRMPolicyVisibilityUtil.newPolicyInsertATMs(policyHoldersByIntermediaryMap, intermediariesWithUsers);
-            }            
-        } 
-        catch (Exception e) 
+            }
+        }
+        catch (Exception e)
         {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
-               
+
     }
 
 
     /**
      * Metodo que calcula atm para los escenarios de cambio de mediador o tomador
-     * 
+     *
      *
      * @author dmunoz
-     * @date 21/02/2024 
+     * @date 21/02/2024
      */
-    public static void zrmVisibilityUpdatePolicy(List<Policy__c> newList, Map<Id, Policy__c> oldMap) {
+    public static void zrmVisibilityUpdatePolicy(List<Policy__c> newList, Map<Id, Policy__c> oldMap)
+    {
 
         // 1º Obtener polizas a procesar (cambio tomador o cambio mediador) <TipoCambio, List<Policy__c>>
-        Map<String, List<Policy__c>> policiesToProcess = getPoliciesToProcessAfterUpdate(newList, oldMap);
+        Map<String, List<Policy__c> > policiesToProcess = getPoliciesToProcessAfterUpdate(newList, oldMap);
 
         // 2º Proceso recalculo mediador
-        ZRMPolicyVisibilityUtil.atmsIntermediaryChangeToProcess(policiesToProcess, oldMap); 
+        ZRMPolicyVisibilityUtil.atmsIntermediaryChangeToProcess(policiesToProcess, oldMap);
 
         // 3º Proceso recalculo tomador, borra e inserta atm y recalcula competencias y cuentas relacionadas
         ZRMPolicyVisibilityUtil.atmsPolicyHolderChangeToProcess(policiesToProcess, oldMap);
@@ -107,27 +110,34 @@ public class PolicyUtil
 
     /**
      * Método que recorre los elementos del trigger y nos quedamos solo con los que queremos <TipoCambio, List<Policy__c>>
-     * 
+     *
      *
      * @author dmunoz
-     * @date 21/02/2024 
+     * @date 21/02/2024
      */
-    private static Map<String, List<Policy__c>> getPoliciesToProcessAfterUpdate(List<Policy__c> newList, Map<Id, Policy__c> oldMap) {
-        Map<String, List<Policy__c>> result = new Map<String, List<Policy__c>>();
+    private static Map<String, List<Policy__c> > getPoliciesToProcessAfterUpdate(List<Policy__c> newList, Map<Id, Policy__c> oldMap)
+    {
+        Map<String, List<Policy__c> > result = new Map<String, List<Policy__c> >();
         List<Policy__c> policiesWithIntermediariesChanges = new List<Policy__c>();
         List<Policy__c> policiesWithPolicyHolderChanges = new List<Policy__c>();
-        
-        if (newList != null && !newList.isEmpty()) {
-            for (Policy__c policy: newList) { 
+
+        if ( newList != null && !newList.isEmpty() )
+        {
+            for (Policy__c policy: newList)
+            {
                 if (String.isNotEmpty(policy.IntermediaryId__c) && String.isNotEmpty(policy.PolicyHolder__c) &&
-                ('A'.equals(policy.PolicyStatus__c) || 'V'.equals(policy.PolicyStatus__c)) 
-                && !policy.Blocked__c && !policy.Anonymized__c) { // solo procesamos cambios sobre polizas no bloqueadas y en vigor o anuladas que tengan mediador y cliente
-                    if (isPolicyHolderChanged(policy, oldMap)) {
+                    ( 'A'.equals(policy.PolicyStatus__c) || 'V'.equals(policy.PolicyStatus__c) )
+                    && !policy.Blocked__c && !policy.Anonymized__c) // solo procesamos cambios sobre polizas no bloqueadas y en vigor o anuladas que tengan mediador y cliente
+                {
+                    if ( isPolicyHolderChanged(policy, oldMap) )
+                    {
                         policiesWithPolicyHolderChanges.add(policy);
-                    } else if (isIntermediaryChanged(policy, oldMap)) {
+                    }
+                    else if ( isIntermediaryChanged(policy, oldMap) )
+                    {
                         policiesWithIntermediariesChanges.add(policy);
                     }
-                }           
+                }
             }
         }
 
@@ -140,15 +150,17 @@ public class PolicyUtil
 
     /**
      * Comprobamos si la polizas ha sufrido un cambio de tomador
-     * 
+     *
      *
      * @author dmunoz
-     * @date 21/02/2024 
+     * @date 21/02/2024
      */
-    private static Boolean isPolicyHolderChanged(Policy__c policy, Map<Id, Policy__c> oldMap) {
+    private static Boolean isPolicyHolderChanged(Policy__c policy, Map<Id, Policy__c> oldMap)
+    {
         Boolean result = false;
 
-        if (policy.PolicyHolder__c != null && !policy.PolicyHolder__c.equals(oldMap.get(policy.Id).PolicyHolder__c)) {
+        if ( policy.PolicyHolder__c != null && !policy.PolicyHolder__c.equals(oldMap.get(policy.Id).PolicyHolder__c) )
+        {
             result = true;
         }
 
@@ -157,15 +169,17 @@ public class PolicyUtil
 
     /**
      * Comprobamos si la polizas ha sufrido un cambio de mediador
-     * 
+     *
      *
      * @author dmunoz
-     * @date 21/02/2024 
+     * @date 21/02/2024
      */
-    private static Boolean isIntermediaryChanged(Policy__c policy, Map<Id, Policy__c> oldMap) {
+    private static Boolean isIntermediaryChanged(Policy__c policy, Map<Id, Policy__c> oldMap)
+    {
         Boolean result = false;
 
-        if (policy.IntermediaryId__c != null && !policy.IntermediaryId__c.equals(oldMap.get(policy.Id).IntermediaryId__c)) {
+        if ( policy.IntermediaryId__c != null && !policy.IntermediaryId__c.equals(oldMap.get(policy.Id).IntermediaryId__c) )
+        {
             result = true;
         }
 
