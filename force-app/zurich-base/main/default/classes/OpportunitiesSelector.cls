@@ -512,7 +512,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      */
     public List<Opportunity> getIntermediaryOtherOffersByCampaignMembers(Set<String> campaignIDsToExcludeMembers, Set<String> accountIDsNotToQuery, String intermediaryID)
     {
-        Set<Id> campaignIDs = new Set<Id>();
 
         this.baseQuery.selectFields(new Set<Schema.SObjectField>
         {
@@ -668,7 +667,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                                 )
                                             AND Blocked__c = FALSE
                                             AND Anonymized__c = FALSE
-                                            AND PolicyHolder__c != NULL
+                                            AND AccountId != NULL
      * @author dmunoz
      * @date 08/04/2024
      * 
@@ -692,8 +691,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                             .addConditionEq(Opportunity.Account.Blocked__c, FALSE)
                             .addConditionEq(Opportunity.Account.Anonymized__c, FALSE)
                             .addConditionEq(Opportunity.Blocked__c, FALSE)
-                            .addConditionEq(Opportunity.Anonymized__c, FALSE);
-                            //.addConditionNotEq(Opportunity.AccountId, NULL);
+                            .addConditionEq(Opportunity.Anonymized__c, FALSE)
+                            .addConditionNotEq(Opportunity.AccountId, null);
 
             // si no tiene agrupación podemos traer solo 1 resultado
             if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty())

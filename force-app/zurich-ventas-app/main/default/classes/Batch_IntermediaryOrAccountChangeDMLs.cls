@@ -116,7 +116,7 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
         
         // si al terminar la ejecución del registro no hay ningun elemento a borrar o insertar, pasamos al siguiente si hubiera
         if (!stopRecordProcess && (atmsToDelete != null && atmsToDelete.isEmpty()) || (atmsToInsert != null && atmsToInsert.isEmpty()) && !recordsToProcess.isEmpty()) {
-            Batch_IntermediaryOrAccountChangeUtil.updatePolicyWithProcessBlanks(recordsToProcess);
+            Batch_IntermediaryOrAccountChangeUtil.updateRecordWithProcessOK(recordsToProcess, CLASS_NAME);
             recordsToProcess.remove(0);
         }
 

@@ -59,9 +59,9 @@ public class PolicyUtil
     {
         for(Policy__c policyNew : newList)
         {   
-            if (String.isNotEmpty(policy.IntermediaryId__c) && String.isNotEmpty(policy.PolicyHolder__c) &&
-                    ( 'A'.equals(policy.PolicyStatus__c) || 'V'.equals(policy.PolicyStatus__c) )
-                    && !policy.Blocked__c && !policy.Anonymized__c) // solo procesamos cambios sobre polizas no bloqueadas y en vigor o anuladas que tengan mediador y cliente
+            if (String.isNotEmpty(policyNew.IntermediaryId__c) && String.isNotEmpty(policyNew.PolicyHolder__c) &&
+                    ( 'A'.equals(policyNew.PolicyStatus__c) || 'V'.equals(policyNew.PolicyStatus__c) )
+                    && !policyNew.Blocked__c && !policyNew.Anonymized__c) // solo procesamos cambios sobre polizas no bloqueadas y en vigor o anuladas que tengan mediador y cliente
             {
                 Policy__c policyOld = oldMap.get(policyNew.Id);
     
@@ -76,7 +76,7 @@ public class PolicyUtil
                 else if (policyOld.IntermediaryId__c != policyNew.IntermediaryId__c)
                 {
                     policyNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_MEDIADOR;
-                    policyNew.LastAccountId__c = policyOld.IntermediaryId__c;
+                    policyNew.LastAccountId__c = policyOld.IntermediaryId__c; 
                 }
     
                 // Estos dos campos se rellenan de la misma forma para cualquiera de los dos casos posibles

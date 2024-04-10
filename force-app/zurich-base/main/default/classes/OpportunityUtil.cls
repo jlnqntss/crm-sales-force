@@ -198,7 +198,7 @@ public with sharing class OpportunityUtil
     {
         for(Opportunity oppNew : newList)
         {
-            if (String.isNotEmpty(oppNew.AccountId) && String.isNotEmpty(oppNew.Intermediary__c) && !oppNew.Blocked__c && !oppNew.Anonymized__c) {
+            if (String.isNotEmpty(oppNew.AccountId) && String.isNotEmpty(oppNew.IntermediaryId__c) && !oppNew.Blocked__c && !oppNew.Anonymized__c) {
 
                 Opportunity oppOld = oldMap.get(oppNew.Id);
     

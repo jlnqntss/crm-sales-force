@@ -476,14 +476,15 @@ public with sharing class PoliciesSelector extends RecordsSelector
             };
 
             result = this.baseQuery
+                            .selectFields(fieldsToRetrieve)
                             .addConditionIn(Policy__c.PolicyHolder__c, policyHolderIdSet)
-                            .addConditionEq(IntermediaryId__r.IntermediaryGroup__c, intermediaryGroupId)
+                            .addConditionEq('Policy__c.IntermediaryId__r.IntermediaryGroup__c', intermediaryGroupId)
                             .addConditionEq(Policy__c.PolicyHolder__r.Blocked__c, false)
                             .addConditionEq(Policy__c.PolicyHolder__r.Anonymized__c, false)
                             .addConditionIn(Policy__c.PolicyStatus__c, new Set<String>{'V', 'A'})
                             .addConditionEq(Policy__c.Blocked__c, false)
                             .addConditionEq(Policy__c.Anonymized__c, false)
-                            .addConditionNotEq(Policy__c.PolicyHolder__c, null);
+                            .addConditionNotEq(Policy__c.PolicyHolder__c, null)
                             .enforceSecurity()
                             .run();
         }

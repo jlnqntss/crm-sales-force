@@ -134,7 +134,7 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
         
         // si al terminar la ejecución del registro no hay ningun elemento a borrar o insertar, pasamos al siguiente si hubiera
         if (!stopRecordProcess && (atmsToDelete != null && atmsToDelete.isEmpty()) || (atmsToInsert != null && atmsToInsert.isEmpty()) && !recordsToProcess.isEmpty()) {
-            Batch_IntermediaryOrAccountChangeUtil.updatePolicyWithProcessBlanks(recordsToProcess);
+            Batch_IntermediaryOrAccountChangeUtil.updateRecordWithProcessOK(recordsToProcess, CLASS_NAME);
             recordsToProcess.remove(0);
         }
 
@@ -448,7 +448,7 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
             intermediaryGroupIdSet.add(intermediary.IntermediaryGroup__c);
         }
         
-        List<User> usersQuery = selector.findZRMActiveUsersFromIntermediaryAndAGRFromGroup(new Set<String>{intermediary.Id}, intermediaryGroupIdSet); 
+        List<User> usersQuery = selector.findZRMActiveUsersFromIntermediaryAndAGRFromGroup(new Set<String>{intermediary.Id}, new List<String>(intermediaryGroupIdSet)); 
         
         // recorro los usuarios, para los nominales veo si el mediador no tiene más visibilidad lo añado a la lista para borrar su atm con el cliente del registro que está procesando
         for (User user: usersQuery) {
@@ -480,7 +480,7 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
         }
 
         // 1. Obtenemos los usuarios del mediador
-        List<User> agrUserList = (new UsersSelector()).findZRMActiveUsersFromIntermediaryAndAGRFromGroup(new Set<String>{intermediary.Id}, intermediaryGroupIdSet);
+        List<User> agrUserList = (new UsersSelector()).findZRMActiveUsersFromIntermediaryAndAGRFromGroup(new Set<String>{intermediary.Id}, new List<String>(intermediaryGroupIdSet));
 
         // 2. Generamos los atms a insertar
         List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();

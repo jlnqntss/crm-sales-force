@@ -90,7 +90,7 @@ global with sharing class Batch_IntermediaryOrAccountChangeZRM implements Databa
     /**
      * Dar un nombre por defecto al Job programado en caso de no informar este valor
      * @param jobName: Nombre del batch programado
-     * @return String
+     * @return String 
      * @author dmunoz
      * @date 04/04/2024
      */

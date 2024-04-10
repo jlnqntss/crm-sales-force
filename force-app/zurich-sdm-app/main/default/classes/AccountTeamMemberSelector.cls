@@ -304,69 +304,6 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
 
 
     /**
-     * Método que recupera los AccountTeamMember de un cliente para un mediador y agrupaciones
-     *
-     * SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
-     * FROM AccountTeamMember 
-     * WHERE TeamMemberRole = 'MediadorZRM' 
-     *  AND AccountId IN : accountId 
-     * if (!intermediaryGroupIdsSet.isEmpty())
-     *  AND (
-     *      User.Contact.AccountId IN :intermediaryIdsSet OR 
-     *      User.Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdsSet
-     *  )
-     * else
-     *  AND User.Contact.AccountId IN :intermediaryIdsSet
-     * 
-     * @author dmunoz
-     * @date 26/02/2024
-     */
-
-    public List<AccountTeamMember> findZRMATMsByAccountIdAndIntermediaryOrIntermediaryGroup(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountId) {
-        List<AccountTeamMember> result = new List<AccountTeamMember>();
-
-        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null)
-        {
-            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
-            {
-                AccountTeamMember.AccountId,
-                AccountTeamMember.UserId,
-                AccountTeamMember.User.Contact.AccountId
-            };
-            Set<String> fieldsToRetrieveString = new Set<String>
-            {
-                'User.Contact.Account.IntermediaryGroup__c',
-                'User.Profile.Name'
-            };
-
-            this.baseQuery
-                            .selectFields(fieldsToRetrieve)
-                            .selectFields(fieldsToRetrieveString)
-                            .addConditionIn(AccountTeamMember.AccountId, accountId)
-                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
-                            .enforceSecurity();
-
-            if (!intermediaryGroupIdsSet.isEmpty())
-            {
-                this.baseQuery.addCondition(Query.doOr(
-                    Query.conditionIn(AccountTeamMember.User.Contact.AccountId, intermediaryIdsSet),
-                    Query.conditionIn('User.Contact.Account.IntermediaryGroup__c', intermediaryGroupIdsSet)
-                ));
-            }
-
-            else
-            {
-                this.baseQuery.addConditionIn(AccountTeamMember.User.Contact.AccountId, intermediaryIdsSet);
-            }
-
-            result = this.baseQuery.run();
-        }
-
-        return result;
-    }
-
-
-    /**
      * Método que recupera los AccountTeamMember de un lead para el batch de merge. Este batch elimina los atm del lead por lo que tenemos que consultarlos antes
      * 
      * SELECT AccountId, UserId, TeamMemberRole, AccountAccessLevel, OpportunityAccessLevel, CaseAccessLevel, ContactAccessLevel 

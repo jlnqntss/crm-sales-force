@@ -84,17 +84,60 @@ public with sharing class Batch_IntermediaryOrAccountChangeUtil {
         }
     }
 
+
+    public static void updateRecordWithProcessOK(List<sObject> recordsToProcess, String className) {
+
+        try {
+
+            if (recordsToProcess != null && !recordsToProcess.isEmpty()) {
+                sObject record = recordsToProcess.get(0);
+    
+                Schema.SObjectType offerObject = Schema.Opportunity.getSObjectType();
+                Schema.SObjectType policyObject = Schema.Policy__c.getSObjectType();
+                Schema.SObjectType recordObject = record.getsobjecttype();
+        
+                if (offerObject == recordObject) {
+                    updateOfferWithProcessBlanks((Opportunity) record);
+    
+                } else if (policyObject == recordObject) {
+                    updatePolicyWithProcessBlanks((Policy__c) record);
+                }
+            }
+            
+        } catch(Exception e) {
+            ErrorLogUtil.commitError(e, className);
+        }
+    }
+
+    /**
+     * blanquea los campos VisibilityRetry__c y LastDateIntermediaryOrAccountChange__c
+     * @author fpalomo
+     * @date 10/04/2024
+    **/
+    private static void updateOfferWithProcessBlanks(Opportunity offer) {
+        
+        Opportunity recordToUpdate = new Opportunity();
+        recordToUpdate.Id = offer.Id;
+        recordToUpdate.VisibilityRetry__c = 0;
+        recordToUpdate.LastDateIntermediaryOrAccountChange__c = null;
+        
+        update recordToUpdate;        
+    }
+
     /**
      * blanquea los campos VisibilityRetry__c y LastDateIntermediaryOrAccountChange__c
      * @author fpalomo
      * @date 10/04/2024
     **/
     private static void updatePolicyWithProcessBlanks(Policy__c policy) {
+
         Policy__c recordToUpdate = new Policy__c();
         recordToUpdate.Id = policy.Id;
         recordToUpdate.VisibilityRetry__c = 0;
         recordToUpdate.LastDateIntermediaryOrAccountChange__c = null;
         
         update recordToUpdate;
+        
+       
     }
 }
