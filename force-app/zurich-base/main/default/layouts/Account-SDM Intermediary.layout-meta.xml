@@ -245,14 +245,14 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>NewTask</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>LogCall_Klinc</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>NewTask</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>SendEmail</actionName>
@@ -331,10 +331,22 @@
     </quickActionList>
     <relatedLists>
         <fields>CASES.CASE_NUMBER</fields>
-        <fields>CASES.SUBJECT</fields>
-        <fields>CASES.CREATED_DATE</fields>
-        <fields>CASES.PRIORITY</fields>
-        <relatedList>Case.IntermediaryId__c</relatedList>
+        <fields>OfferId__c</fields>
+        <fields>Days_Open__c</fields>
+        <fields>Product_Name__c</fields>
+        <fields>PRODUCT.NAME</fields>
+        <fields>Subtype__c</fields>
+        <fields>OWNER_NAME</fields>
+        <fields>CASES.STATUS</fields>
+        <relatedList>RelatedCaseList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>OPPORTUNITY.NAME</fields>
+        <fields>Product_Text__c</fields>
+        <fields>OPPORTUNITY.CREATED_DATE</fields>
+        <fields>EffectiveDate__c</fields>
+        <fields>OPPORTUNITY.STAGE_NAME</fields>
+        <relatedList>Opportunity.IntermediaryId__c</relatedList>
     </relatedLists>
     <relatedLists>
         <excludeButtons>NewEvent</excludeButtons>
@@ -383,12 +395,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Policy__c.IntermediaryId__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>OPPORTUNITY.NAME</fields>
-        <fields>ACCOUNT.NAME</fields>
-        <fields>OPPORTUNITY.CLOSE_DATE</fields>
-        <relatedList>Opportunity.IntermediaryId__c</relatedList>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
