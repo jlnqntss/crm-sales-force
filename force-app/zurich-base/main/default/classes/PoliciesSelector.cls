@@ -527,5 +527,52 @@ public with sharing class PoliciesSelector extends RecordsSelector
             return null;
         }
     }
+
+
+    /**
+     * Obtenemos las polizas que han sufrido un cambio de mediador o cliente en las ultimas 24 horas y que el numero de reintentos sea menor al de la metadata
+     * QUERY: 
+     * SELECT Id, PolicyHolder__c, IntermediaryId__c, ZRMMovementType__c, LastAccountId__c
+                                            FROM Policy__c 
+                                            WHERE
+                                            LastDateIntermediaryOrAccountChange__c = YESTERDAY
+                                            AND VisibilityRetry__c <= :numMaxRetries
+                                            
+     * @author dmunoz
+     * @date 08/04/2024
+     * 
+     * 
+     */
+    public List<Policy__c> getPoliciesToProcessIntermediaryOrAccountChange(Integer numMaxRetries) {
+
+        List<Policy__c> result = new List<Policy__c>();
+
+        // añado un valor por defecto por si viniera nulo el parámetro
+        if (numMaxRetries == null || numMaxRetries <= 0) {
+            numMaxRetries = 3;
+        }
+
+        this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+                {
+                    Policy__c.Id,
+                    Policy__c.PolicyHolder__c,
+                    Policy__c.IntermediaryId__c,
+                    Policy__c.ZRMMovementType__c,
+                    Policy__c.LastAccountId__c
+                }
+            );
+
+            this.baseQuery                            
+                            .addConditionEq(Policy__c.LastDateIntermediaryOrAccountChange__c, Query.YESTERDAY)
+                            .addConditionLe(Policy__c.VisibilityRetry__c, numMaxRetries);
+
+            
+
+            result = this.baseQuery.enforceSecurity().run();
+
+        return result;
+    }
     
 }

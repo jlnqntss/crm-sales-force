@@ -197,8 +197,39 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
      */
     private void processOfferAccountChange(List<sObject> scope) {
         if (scope != null && !scope.isEmpty()) {
+            Opportunity opportunity = (Opportunity) scope.get(0);
+                
+            // 3º Busco atms para borrar
+            atmsToDelete =  getOfferAccountChangeAtMsToDelete(opportunity);
 
+            // 2º Generar los atms a insertar para los usuarios del nuevo mediador y los usuarios AGR de la agrupación (si tuviera)
+            atmsToInsert = getATMsToInsert(opportunity.AccountId, opportunity.IntermediaryId__c);
         }
+    }
+
+
+    /**
+     * Método que obtiene los atms a borrar (si procede) del mediador saliente para el cliente de la oportunidad
+     * @author dmunoz
+     * @date 04/04/2024
+     */
+    private List<AccountTeamMember> getOfferAccountChangeAtMsToDelete(Opportunity opportunity) {
+        AccountsSelector accountSelector = new AccountsSelector();
+
+        // 1º Obtengo el mediador antiguo de la oportunidad y su agrupación (si tuviera)
+        List<Account> intermediaryList = accountSelector.findIntermediaryGroupByIntermediaries(new Set<String> {opportunity.IntermediaryId__c});
+
+        if (intermediaryList != null && !intermediaryList.isEmpty()) {
+            // 2º Recupero alguna otra oferta/póliza para dicho cliente y mediador saliente (si hay resultado no hacer nada más). Devuelve un mapa con dos claves: 'Existe cliente en mediador' y 'Existe cliente en agrupacion'
+            Map<String, Boolean> oldIntermediaryHasOtherAccountPoliciesOrOffersMap = intermediaryHasOtherAccountPoliciesOrOffers(opportunity.LastAccountId__c, intermediaryList, opportunity.Id);    
+
+            // 3º Compruebo los dos flags y recupero los usuarios agr y/o nominales a los que borraremos los atm para el cliente de la oferta
+            List<User> usersToDeleteATM = getUsersToDeleteATM(intermediaryList.get(0), oldIntermediaryHasOtherAccountPoliciesOrOffersMap);
+            // 4º Obtener los atms para la lista de usuarios y cliente
+            atmsToDelete = (new AccountTeamMemberSelector()).getZRMATMByAccountAndUser(new Set<String>{opportunity.LastAccountId__c}, usersToDeleteATM);    
+        }
+
+        return atmsToDelete;        
     }
 
 
@@ -210,10 +241,40 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
      */
     private void processPolicyIntermediaryChange(List<sObject> scope) {
         if (scope != null && !scope.isEmpty())  {
+            Policy__c policy = (Policy__c) scope.get(0);
 
+            // 1º Calcular para el mediador antiguo si tengo que eliminar los atms de sus usuarios nominales y los AGR de la agrupación (si tuviera)
+            atmsToDelete = getPolicyIntermediaryChangeAtMsToDelete(policy);
+
+            // 2º Generar los atms a insertar para los usuarios del nuevo mediador y los usuarios AGR de la agrupación (si tuviera)
+            atmsToInsert = getATMsToInsert(policy.PolicyHolder__c, policy.IntermediaryId__c);
         }
-        
+    }
 
+
+    /**
+     * Método que obtiene los atms a borrar (si procede) del mediador saliente para el cliente de la oportunidad
+     * @author dmunoz
+     * @date 04/04/2024
+     */
+    private List<AccountTeamMember> getPolicyIntermediaryChangeAtMsToDelete(Policy__c policy) {
+
+        AccountsSelector accountSelector = new AccountsSelector();
+
+        // 1º Obtengo el mediador antiguo de la oportunidad y su agrupación (si tuviera)
+        List<Account> intermediaryOldList = accountSelector.findIntermediaryGroupByIntermediaries(new Set<String> {policy.LastAccountId__c});
+
+        if (intermediaryOldList != null && !intermediaryOldList.isEmpty()) {
+            // 2º Recupero alguna otra oferta/póliza para dicho cliente y mediador saliente (si hay resultado no hacer nada más). Devuelve un mapa con dos claves: 'Existe cliente en mediador' y 'Existe cliente en agrupacion'
+            Map<String, Boolean> oldIntermediaryHasOtherAccountPoliciesOrOffersMap = intermediaryHasOtherAccountPoliciesOrOffers(policy.PolicyHolder__c, intermediaryOldList, policy.Id);    
+
+            // 3º Compruebo los dos flags y recupero los usuarios agr y/o nominales a los que borraremos los atm para el cliente de la oferta
+            List<User> usersToDeleteATM = getUsersToDeleteATM(intermediaryOldList.get(0), oldIntermediaryHasOtherAccountPoliciesOrOffersMap);
+            // 4º Obtener los atms para la lista de usuarios y cliente
+            atmsToDelete = (new AccountTeamMemberSelector()).getZRMATMByAccountAndUser(new Set<String>{policy.PolicyHolder__c}, usersToDeleteATM);    
+        }
+
+        return atmsToDelete;
     }
 
 
@@ -224,9 +285,40 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
      * @date 04/04/2024
      */
     private void processPolicyAccountChange(List<sObject> scope) {
-        if (scope != null && !scope.isEmpty())  {
+        if (scope != null && !scope.isEmpty()) {
+            Policy__c policy = (Policy__c) scope.get(0);
 
+            // 1º Calcular para el mediador antiguo si tengo que eliminar los atms de sus usuarios nominales y los AGR de la agrupación (si tuviera)
+            atmsToDelete = getPolicyAccountChangeAtMsToDelete(policy);
+
+            // 2º Generar los atms a insertar para los usuarios del nuevo mediador y los usuarios AGR de la agrupación (si tuviera)
+            atmsToInsert = getATMsToInsert(policy.PolicyHolder__c, policy.IntermediaryId__c);
         }
+    }
+
+
+    /**
+     * Método que obtiene los atms a borrar (si procede) del mediador saliente para el cliente de la oportunidad
+     * @author dmunoz
+     * @date 04/04/2024
+     */
+    private List<AccountTeamMember> getPolicyAccountChangeAtMsToDelete(Policy__c policy) {
+        AccountsSelector accountSelector = new AccountsSelector();
+
+        // 1º Obtengo el mediador antiguo de la oportunidad y su agrupación (si tuviera)
+        List<Account> intermediaryList = accountSelector.findIntermediaryGroupByIntermediaries(new Set<String> {policy.IntermediaryId__c});
+
+        if (intermediaryList != null && !intermediaryList.isEmpty()) {
+            // 2º Recupero alguna otra oferta/póliza para dicho cliente y mediador saliente (si hay resultado no hacer nada más). Devuelve un mapa con dos claves: 'Existe cliente en mediador' y 'Existe cliente en agrupacion'
+            Map<String, Boolean> oldIntermediaryHasOtherAccountPoliciesOrOffersMap = intermediaryHasOtherAccountPoliciesOrOffers(policy.LastAccountId__c, intermediaryList, policy.Id);    
+
+            // 3º Compruebo los dos flags y recupero los usuarios agr y/o nominales a los que borraremos los atm para el cliente de la oferta
+            List<User> usersToDeleteATM = getUsersToDeleteATM(intermediaryList.get(0), oldIntermediaryHasOtherAccountPoliciesOrOffersMap);
+            // 4º Obtener los atms para la lista de usuarios y cliente
+            atmsToDelete = (new AccountTeamMemberSelector()).getZRMATMByAccountAndUser(new Set<String>{policy.LastAccountId__c}, usersToDeleteATM);    
+        }
+
+        return atmsToDelete;        
     }
 
 
@@ -367,15 +459,12 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
 
     private List<AccountTeamMember> getATMsToInsert(String accountId, String intermediaryId) {
         // 1º Obtener los usuarios del mediador
-        //List<User>
+
+        //List<User> usersQuery = selector.findZRMActiveUsersFromIntermediaryAndAGRFromGroup(intermediary.Id, intermediary.IntermediaryGroup__c); 
 
         // 2º Generar los atms a insertar
 
+
         return atmsToInsert;
     }
-
-
-
-
-
 }

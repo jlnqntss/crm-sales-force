@@ -8,6 +8,7 @@
 global with sharing class Batch_IntermediaryOrAccountChangeZRM implements Database.Batchable<sObject>, Database.Stateful, Schedulable {
 
     private static final String CLASS_NAME = 'Batch_IntermediaryOrAccountChangeZRM';
+    private static final String ZRM_NUM_MAX_RETRIES = 'ZRMNumMaxRetries';
 
     private Integer numDMLs = 5000;
     private List<sObject> recordsToProcess;
@@ -55,8 +56,11 @@ global with sharing class Batch_IntermediaryOrAccountChangeZRM implements Databa
      */
     public List<sObject> start(Database.BatchableContext bc) {
 
-        List<sObject> policiesToProcess = new List<sObject>();
-        List<sObject> offersToProcess = new List<sObject>();
+        // Obtengo el valor de la metadata del número de intentos
+        AdminSetupParameter__mdt numMaxRetriesMTD = AdminSetupParameter__mdt.getInstance(ZRM_NUM_MAX_RETRIES);
+
+        List<Policy__c> policiesToProcess = (new PoliciesSelector()).getPoliciesToProcessIntermediaryOrAccountChange(Integer.valueOf(numMaxRetriesMTD.Value__c));
+        List<Opportunity> offersToProcess = (new OpportunitiesSelector()).getOffersToProcessIntermediaryOrAccountChange(Integer.valueOf(numMaxRetriesMTD.Value__c));
 
         recordsToProcess.addAll(policiesToProcess);
         recordsToProcess.addAll(offersToProcess);

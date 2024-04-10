@@ -686,4 +686,49 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         return result;
     }
+
+
+    /**
+     * Obtenemos las ofertas que han sufrido un cambio de mediador o cliente en las ultimas 24 horas y que el numero de reintentos sea menor al de la metadata
+     * QUERY: 
+     * SELECT Id, AccountId, IntermediaryId__c, ZRMMovementType__c, LastAccountId__c
+                                            FROM Opportunity 
+                                            WHERE
+                                            LastDateIntermediaryOrAccountChange__c = YESTERDAY
+                                            AND VisibilityRetry__c <= :numMaxRetries
+                                            
+     * @author dmunoz
+     * @date 08/04/2024
+     * 
+     * 
+     */
+    public List<Opportunity> getOffersToProcessIntermediaryOrAccountChange(Integer numMaxRetries) {
+
+        List<Opportunity> result = new List<Opportunity>();
+
+        // añado un valor por defecto por si viniera nulo el parámetro
+        if (numMaxRetries == null || numMaxRetries <= 0) {
+            numMaxRetries = 3;
+        }
+
+        this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+                {
+                    Opportunity.Id,
+                    Opportunity.AccountId,
+                    Opportunity.IntermediaryId__c,
+                    Opportunity.ZRMMovementType__c,
+                    Opportunity.LastAccountId__c
+                }
+            );
+
+            this.baseQuery                            
+                            .addConditionEq(Opportunity.LastDateIntermediaryOrAccountChange__c, Query.YESTERDAY)
+                            .addConditionLe(Opportunity.VisibilityRetry__c, numMaxRetries);
+           
+            result = this.baseQuery.enforceSecurity().run();
+
+        return result;
+    }
 }
