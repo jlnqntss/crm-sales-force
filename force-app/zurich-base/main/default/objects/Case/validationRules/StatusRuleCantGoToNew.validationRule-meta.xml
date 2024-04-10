@@ -8,6 +8,9 @@ ISCHANGED(Status) &amp;&amp; NOT(ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;)
 ,
 RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp; 
 ISCHANGED(Status) &amp;&amp; NOT(ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;)) &amp;&amp; ISPICKVAL(Status,&quot;Nuevo&quot;)&amp;&amp; $Permission.USPTriggerCaseValidationRules
+,
+RecordType.DeveloperName == &quot;ZDAInquiry&quot; &amp;&amp;
+ISCHANGED(Status) &amp;&amp; NOT(ISPICKVAL(PRIORVALUE(Status),&quot;Nuevo&quot;)) &amp;&amp; ISPICKVAL(Status,&quot;Nuevo&quot;)&amp;&amp; $Permission.ZDATriggerCaseValidationRules
 )</errorConditionFormula>
     <errorDisplayField>Status</errorDisplayField>
     <errorMessage>[VR Caso] Desde ningún otro estado de caso se podrá pasar a NUEVO</errorMessage>

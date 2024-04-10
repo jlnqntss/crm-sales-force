@@ -7,7 +7,10 @@
 ISPICKVAL(Status,&quot;Pendiente&quot;) &amp;&amp; ISBLANK(TEXT(PendingBy__c))
 ,
 RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
-ISPICKVAL(Status,&quot;Pendiente&quot;) &amp;&amp; ISBLANK(TEXT(PendingBy__c))&amp;&amp; $Permission.USPTriggerCaseValidationRules)</errorConditionFormula>
+ISPICKVAL(Status,&quot;Pendiente&quot;) &amp;&amp; ISBLANK(TEXT(PendingBy__c))&amp;&amp; $Permission.USPTriggerCaseValidationRules
+,
+RecordType.DeveloperName == &quot;ZDAInquiry&quot; &amp;&amp;
+ISPICKVAL(Status,&quot;Pendiente&quot;) &amp;&amp; ISBLANK(TEXT(PendingBy__c))&amp;&amp; $Permission.ZDATriggerCaseValidationRules)</errorConditionFormula>
     <errorDisplayField>PendingBy__c</errorDisplayField>
     <errorMessage>[VR Caso] Es obligatorio cumplimentar &quot;Pendiente de&quot; si el estado es &quot;Pendiente&quot;</errorMessage>
 </ValidationRule>
