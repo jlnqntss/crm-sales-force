@@ -32,13 +32,24 @@ global with sharing class Batch_VisibilitySFCommunityOID implements Database.Bat
         this.intermediaryUserId = intermediaryUserId;
         this.profile = profile;
     }
-
+    /**
+     * Clase Wrapper que inicializa las variables invocables necesarias para el método invocable
+     * @author nikola.cobian@seidor.com
+     * @date 10/04/2024 
+     */
     public with sharing class Requests
     {
         @InvocableVariable public String profile;
         @InvocableVariable public String intermediaryUserId;
     }
 
+    /**
+     * Método invocable para llamar al Batch desde un flujo Apex
+     * @author nikola.cobian@seidor.com
+     * @date 10/04/2024
+     * @param 
+     * @return 
+     */
     @InvocableMethod
     public static void batchGenerateATMsInvocableMethod(List<Requests> requests)
     {
