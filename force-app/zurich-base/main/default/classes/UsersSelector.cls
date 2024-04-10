@@ -383,16 +383,16 @@ public with sharing class UsersSelector extends RecordsSelector
     /**
      * @description Selector que obtiene los usuarios de un mediador y los agrupación de la agrupación a la que pertenecen (si hay)
      * 
-     * SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User
-     * WHERE Profile.Name IN ( ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR )
-     *  AND IsActive = TRUE
-     *  if (intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty())
-     *    AND (
-     *      Contact.AccountId IN :intermediariesSet
-     *      OR Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList
-     *    )
-     *  else
-     *    AND Contact.AccountId IN :intermediariesSet
+     * SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
+                                WHERE(
+                                    (Contact.AccountId IN :intermediariesSet AND Profile.Name IN ('Agente Ventas - AGR', 'Agente Ventas')) 
+                                    OR (Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList AND Profile.Name = 'Agente Ventas - AGR')
+                                    )
+                                AND IsActive = TRUE
+
+        SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
+                                WHERE Contact.AccountId IN :intermediariesSet AND Profile.Name IN ('Agente Ventas - AGR', 'Agente Ventas')
+                                AND IsActive = TRUE
      * 
      * @author      dmunoz
      * @date        16/02/2024
@@ -401,7 +401,7 @@ public with sharing class UsersSelector extends RecordsSelector
     {
         List<User> result = new List<User>();
         
-        if (intermediariesSet != null && !intermediariesSet.isEmpty())
+        if (intermediariesSet != null)
         {
             List<Schema.SObjectField> fieldsToSelect = new List<Schema.SObjectField>{
                 User.Contact.AccountId,
@@ -409,27 +409,34 @@ public with sharing class UsersSelector extends RecordsSelector
                 User.Contact.Account.IntermediaryGroup__c
             }
 
+
             this.baseQuery
                 .selectFields(fieldsToSelect)
-                .addConditionIn(User.Profile.Name, new Set<String>{
-                    ProfilesSelector.PROFILE_AGENTE_VENTAS,
-                    ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
-                })
-                .addConditionEq(User.IsActive, true)
-                .enforceSecurity(true);
+                .addConditionEq(User.IsActive, true);
 
-            if (intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty())
-            {
-                this.baseQuery.addCondition(Query.doOr(
-                    Query.conditionIn(User.Contact.AccountId, intermediariesSet),
-                    Query.conditionIn(User.Contact.Account.IntermediaryGroup__c, intermediaryGroupIdList)
-                ));
-            }
-
-            else
-            {
-                this.baseQuery.addConditionIn(User.Contact.AccountId, intermediariesSet);
-            }
+                if (!intermediariesSet.isEmpty() && intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty()) {
+                    this.baseQuery.
+                        .addCondition(Query.doOr(
+                            Query.doAnd(
+                                    Query.conditionIn(User.Contact.AccountId, intermediariesSet), 
+                                    Query.addConditionIn(User.Profile.Name, new Set<String>{
+                                        ProfilesSelector.PROFILE_AGENTE_VENTAS,
+                                        ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
+                                    })
+                            ),
+                            Query.doAnd(
+                                    Query.conditionIn(User.Contact.Account.IntermediaryGroup__c, intermediaryGroupIdList), 
+                                    Query.addConditionEq(User.Profile.Name,ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
+                            )
+                        
+                        ));
+                } else if (!intermediariesSet.isEmpty()) { // SI NO HAY AGRUPACION
+                    this.baseQuery.addConditionIn(User.Contact.AccountId, intermediariesSet)
+                    .addConditionIn(User.Profile.Name, new Set<String>{
+                        ProfilesSelector.PROFILE_AGENTE_VENTAS,
+                        ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
+                    });
+                }
     
             result = this.baseQuery.run();
         }      

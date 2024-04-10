@@ -89,17 +89,6 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
                 doInsert();
             }
 
-            // Escenario 4:
-            // Debe ejecutarse al menos 1 vez por cada <recordsToProcess> a menos que se produzca un fallo en cuyo caso se ejecuta el catch
-            // - No quedan ATMs que procesar para el registro (recordsToProcess) actual.
-            // > Actualizamos el registro para blanquear los campos utilizados para los reintentos y se elimina el registro de la cola
-
-            else if (atmsToDelete.isEmpty() && atmsToDelete.isEmpty())
-            {
-                Batch_IntermediaryOrAccountChangeUtil.updatePolicyWithProcessBlanks(recordsToProcess);
-                recordsToProcess.remove(0);
-            }
-
         } catch (Exception e) {
             // Si hay error actualizamos el registro para que se procese al día siguiente y eliminamos ese registro de la cola del procesamiento
             stopRecordProcess = true;
@@ -123,7 +112,14 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
      * @author dmunoz
      * @date 04/04/2024
      */
-    private void processDMLs() {        
+    private void processDMLs() {    
+        
+        // si al terminar la ejecución del registro no hay ningun elemento a borrar o insertar, pasamos al siguiente si hubiera
+        if (!stopRecordProcess && (atmsToDelete != null && atmsToDelete.isEmpty()) || (atmsToInsert != null && atmsToInsert.isEmpty()) && !recordsToProcess.isEmpty()) {
+            Batch_IntermediaryOrAccountChangeUtil.updatePolicyWithProcessBlanks(recordsToProcess);
+            recordsToProcess.remove(0);
+        }
+
         if (!stopRecordProcess && ((atmsToDelete != null && !atmsToDelete.isEmpty()) || (atmsToInsert != null && !atmsToInsert.isEmpty()))) {
             Database.executeBatch(new Batch_IntermediaryOrAccountChangeDMLs(recordsToProcess, atmsToDelete, atmsToInsert, numDMLs), numDMLs);
         } else if (!recordsToProcess.isEmpty()) {

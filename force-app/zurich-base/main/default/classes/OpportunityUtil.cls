@@ -198,33 +198,36 @@ public with sharing class OpportunityUtil
     {
         for(Opportunity oppNew : newList)
         {
-            Opportunity oppOld = oldMap.get(oppNew.Id);
+            if (String.isNotEmpty(oppNew.AccountId) && String.isNotEmpty(oppNew.Intermediary__c) && !oppNew.Blocked__c && !oppNew.Anonymized__c) {
 
-            String oldAccountRT = mapOldAccountRecordTypes.get(oppOld.AccountId);
-            String newAccountRT = mapAccountRecordTypes.get(oppNew.AccountId);
-
-            // Si el RecordType de la cuenta es nulo o tipo lead no hacemos nada
-            if (oldAccountRT == null || newAccountRT == null || oldAccountRT == AccountLeadUtil.LEAD || newAccountRT == AccountLeadUtil.LEAD)
-            {
-                continue;
-            }
-
-            // AccountId
-            if (oppNew.AccountId != oppOld.AccountId)
-            {
-                oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_CLIENTE;
-                oppNew.LastAccountId__c = oppOld.AccountId;
-                oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
-                oppNew.VisibilityRetry__c = 0;
-            }
-
-            // Mediador
-            else if (oppOld.IntermediaryId__c != oppNew.IntermediaryId__c)
-            {
-                oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_MEDIADOR;
-                oppNew.LastAccountId__c = oppOld.IntermediaryId__c;
-                oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
-                oppNew.VisibilityRetry__c = 0;
+                Opportunity oppOld = oldMap.get(oppNew.Id);
+    
+                String oldAccountRT = mapOldAccountRecordTypes.get(oppOld.AccountId);
+                String newAccountRT = mapAccountRecordTypes.get(oppNew.AccountId);
+    
+                // Si el RecordType de la cuenta es nulo o tipo lead no hacemos nada
+                if (oldAccountRT == null || newAccountRT == null || oldAccountRT == AccountLeadUtil.LEAD || newAccountRT == AccountLeadUtil.LEAD)
+                {
+                    continue;
+                }
+    
+                // AccountId
+                if (oppNew.AccountId != oppOld.AccountId)
+                {
+                    oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_CLIENTE;
+                    oppNew.LastAccountId__c = oppOld.AccountId;
+                    oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
+                    oppNew.VisibilityRetry__c = 0;
+                }
+    
+                // Mediador
+                else if (oppOld.IntermediaryId__c != oppNew.IntermediaryId__c)
+                {
+                    oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_MEDIADOR;
+                    oppNew.LastAccountId__c = oppOld.IntermediaryId__c;
+                    oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
+                    oppNew.VisibilityRetry__c = 0;
+                }
             }
         }
     }

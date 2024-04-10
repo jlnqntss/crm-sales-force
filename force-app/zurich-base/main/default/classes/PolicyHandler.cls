@@ -73,7 +73,6 @@ public class PolicyHandler implements ITrigger
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         PolicyUtil.generateScope(newList);
-        PolicyUtil.zrmVisibilityUpdatePolicy(newList, (Map<Id, Policy__c>) oldMap);
     }
 
     /**

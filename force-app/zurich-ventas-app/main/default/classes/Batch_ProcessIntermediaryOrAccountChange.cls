@@ -130,7 +130,13 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
      * @author dmunoz
      * @date 04/04/2024
      */
-    private void processDMLs() {        
+    private void processDMLs() {       
+        
+        // si al terminar la ejecución del registro no hay ningun elemento a borrar o insertar, pasamos al siguiente si hubiera
+        if (!stopRecordProcess && (atmsToDelete != null && atmsToDelete.isEmpty()) || (atmsToInsert != null && atmsToInsert.isEmpty()) && !recordsToProcess.isEmpty()) {
+            Batch_IntermediaryOrAccountChangeUtil.updatePolicyWithProcessBlanks(recordsToProcess);
+            recordsToProcess.remove(0);
+        }
 
         // si no hay error y hay elementos a hacer dml invoco al ultimo flujo
         if (!stopRecordProcess && ((atmsToDelete != null && !atmsToDelete.isEmpty()) || (atmsToInsert != null && !atmsToInsert.isEmpty()))) {
@@ -459,11 +465,11 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
 
     private List<AccountTeamMember> getATMsToInsert(String accountId, String intermediaryId) {
 
-        List<Account> intermediaryAccList = accountSelector.findIntermediaryGroupByIntermediaries(new Set<String> {intermediaryId});
+        List<Account> intermediaryAccList = (new AccountsSelector()).findIntermediaryGroupByIntermediaries(new Set<String> {intermediaryId});
 
         if (intermediaryAccList.isEmpty())
         {
-            return;
+            return atmsToInsert; // devuelve la lista vacia inicializada en el constructor
         }
 
         Account intermediary = intermediaryAccList[0];
@@ -478,7 +484,7 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
 
         // 2. Generamos los atms a insertar
         List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
-        atmsToInsert.addAll(createATMZRMRecordList(accountId, agrUserList));
+        atmsToInsert.addAll(AccountTeamMemberUtil.createATMZRMRecordList(accountId, agrUserList));
 
         return atmsToInsert;
     }
