@@ -1167,11 +1167,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Insurance Banking</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Mediator</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TPA%27s</fullName>
             <default>false</default>
         </values>
     </picklistValues>
