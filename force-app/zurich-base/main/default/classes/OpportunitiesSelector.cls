@@ -350,13 +350,14 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @author dmonuz | 06/10/2023
      * @return  String query
      */
-    public String findCrossSellingCampaignNotClosedOffer() {
+    public String findCrossSellingCampaignNotClosedOffer()
+    {
         return 'SELECT Id, StageName, Sales_Loss_Reason__c ' +
-                        'FROM  Opportunity ' +
-                        'WHERE Campaign.Type = \'Cross Selling\' ' +
-                        'AND Campaign.EndDate <= TODAY ' +
-                        'AND StageName IN (\'Legit Lead\', \'App Submitted\', \'Quoted\') ' +
-                        'AND ZRM__c = true';
+               'FROM  Opportunity ' +
+               'WHERE Campaign.Type = \'Cross Selling\' ' +
+               'AND Campaign.EndDate <= TODAY ' +
+               'AND StageName IN (\'Legit Lead\', \'App Submitted\', \'Quoted\') ' +
+               'AND ZRM__c = true';
     }
 
     /**
@@ -417,10 +418,10 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      */
     public String findZRMtoReassign()
     {
-        return 'SELECT Id, AccountId, Account.Name, Account.Phone, Account.PreferedContactStart__c, ' + 
-                    'Account.PreferedContactEnd__c, Account.WebId__c, OwnerId, CreatedDate FROM Opportunity ' +
-                    'WHERE ZRM__c = true AND ReassignToContactCenter__c = true';
-       
+        return 'SELECT Id, AccountId, Account.Name, Account.Phone, Account.PreferedContactStart__c, ' +
+               'Account.PreferedContactEnd__c, Account.WebId__c, OwnerId, CreatedDate FROM Opportunity ' +
+               'WHERE ZRM__c = true AND ReassignToContactCenter__c = true';
+
     }
 
     /**
@@ -435,20 +436,20 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     public List<Opportunity> findByAccountAndOwner(Set<Id> accountsIDs, Set<Id> usersIDs)
     {
         List<Opportunity> retorno = new List<Opportunity>();
-        if (accountsIDs != null && !accountsIDs.isEmpty() 
-            && usersIDs != null && !usersIDs.isEmpty() )
-            {
-                this.baseQuery.selectFields(new Set<Schema.SObjectField> {
-                    Opportunity.Id,
-                    Opportunity.AccountId,
-                    Opportunity.OwnerId
-                })
-                .addConditionIn(Opportunity.AccountId, accountsIDs)
-                .addConditionIn(Opportunity.OwnerId, usersIDs);
+        if ( accountsIDs != null && !accountsIDs.isEmpty()
+             && usersIDs != null && !usersIDs.isEmpty() )
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+                Opportunity.Id,
+                Opportunity.AccountId,
+                Opportunity.OwnerId
+            })
+            .addConditionIn(Opportunity.AccountId, accountsIDs)
+            .addConditionIn(Opportunity.OwnerId, usersIDs);
 
-                retorno = (List<Opportunity>) this.baseQuery.run();
-            }
-        
+            retorno = (List<Opportunity>) this.baseQuery.run();
+        }
+
         return retorno;
     }
 
@@ -457,16 +458,16 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @param Set<String> idsCampaign: listado de identificadores de campañas de las que se han eliminado miembros de campaña
      * @param Set<String> idsCampaignMember: listado de identificadores de miembros de campañas que se han eliminado
      * @return List<Opportunity>
-     * 
+     *
      * @author arcortazar
-     * @createdDate 06/11/2023 
+     * @createdDate 06/11/2023
      */
     public List<Opportunity> findByCampaignAndCampaignMember(Set<String> idsCampaign, Set<String> idsCampaignMembers)
     {
         List<Opportunity> retrievedOffers = new List<Opportunity>();
 
         if( idsCampaign != null && !idsCampaign.isEmpty() &&
-        idsCampaignMembers != null && !idsCampaignMembers.isEmpty())
+            idsCampaignMembers != null && !idsCampaignMembers.isEmpty() )
         {
             this.baseQuery.selectFields(new Set<Schema.SObjectField> {
                 Opportunity.Id,
@@ -480,17 +481,17 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             .addConditionIn(Opportunity.CampaignId, idsCampaign)
             .addConditionIn(Opportunity.AccountId, idsCampaignMembers)
             .addConditionEq(Opportunity.IsClosed, false);
-    
+
             retrievedOffers =  (List<Opportunity>) this.baseQuery.run();
         }
-        
+
         return retrievedOffers;
     }
-    
+
     /**
      * Método devuelve las ofertas de un mediador, obviando las que tengan como cliente a cualquiera de los que se incluyen en la lista recibida (accountsIDsNotToQuery)
      * y excluyendo las que no pertenezcan a los campaign member recibidos (campaignMembers)
-     * 
+     *
      * SELECT AccountId FROM Opportunity
      * WHERE IntermediaryId__c = :intermediaryID
      *   AND Account.Blocked__c = false
@@ -502,18 +503,18 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      *   AND AccountId NOT IN :accountIDsNotToQuery
      * IF (campaignIDsToExcludeMembers != null && !campaignIDsToExcludeMembers.isEmpty())
      *   AND CampaignId NOT IN :campaignIDsToExcludeMembers
-     * 
-     * 
+     *
+     *
      * @author fpalomo
      * @date 04/04/2024
-     * 
+     *
      * @return List<Opportunities>
      */
     public List<Opportunity> getIntermediaryOtherOffersByCampaignMembers(Set<String> campaignIDsToExcludeMembers, Set<String> accountIDsNotToQuery, String intermediaryID)
     {
         Set<Id> campaignIDs = new Set<Id>();
 
-        this.baseQuery.selectFields(new Set<Schema.SObjectField> 
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>
         {
             Opportunity.AccountId
         })
@@ -523,52 +524,56 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         .addConditionEq(Opportunity.Blocked__c, false)
         .addConditionEq(Opportunity.Anonymized__c, false)
         .addConditionNotEq(Opportunity.AccountId, null);
-        
-        if (accountIDsNotToQuery != null && !accountIDsNotToQuery.isEmpty())
+
+        if ( accountIDsNotToQuery != null && !accountIDsNotToQuery.isEmpty() )
         {
             this.baseQuery.addConditionNotIn(Opportunity.AccountId, accountIDsNotToQuery);
         }
 
-        if (campaignIDsToExcludeMembers != null && !campaignIDsToExcludeMembers.isEmpty())
+        if ( campaignIDsToExcludeMembers != null && !campaignIDsToExcludeMembers.isEmpty() )
         {
             this.baseQuery.addConditionNotIn(Opportunity.CampaignId, campaignIDsToExcludeMembers);
         }
-            
+
         return (List<Opportunity>) this.baseQuery.run();
     }
 
 
     /**
      * Método que devuelve las ofertas de un mediador obviando o no una lista de clientes (uso en recálculo de visibilidad zrm)
-     * 
+     *
      * @author dmunoz
      * @date 18/03/2024
-     * 
+     *
      * @return List<Opportunities>
      */
-    public List<Opportunity> getIntermediaryOtherOffers(Set<String> accountIdsNotToQuery, Account intermediary) {
+    public List<Opportunity> getIntermediaryOtherOffers(Set<String> accountIdsNotToQuery, Account intermediary)
+    {
         List<Opportunity> result = new List<Opportunity>();
 
         // Si no el mediador no tiene lista de clientes que obviar obtengo todas las ofertas
-        if (intermediary != null && accountIdsNotToQuery != null && !accountIdsNotToQuery.isEmpty()) {
+        if ( intermediary != null && accountIdsNotToQuery != null && !accountIdsNotToQuery.isEmpty() )
+        {
 
-            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
-                                            WHERE IntermediaryId__c = :intermediary.Id
-                                            AND AccountId NOT IN :accountIdsNotToQuery
-                                            AND Account.Blocked__c = FALSE
-                                            AND Account.Anonymized__c = FALSE
-                                            AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE
-                                            AND AccountId != NULL]);
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity
+                                            WHERE IntermediaryId__c = : intermediary.Id
+                                                                      AND AccountId NOT IN: accountIdsNotToQuery
+                                                                      AND Account.Blocked__c = FALSE
+                                                                                               AND Account.Anonymized__c = FALSE
+                                                                                                                           AND Blocked__c = FALSE
+                                                                                                                                            AND Anonymized__c = FALSE
+                                                                                                                                                                AND AccountId != NULL]);
 
-        } else if (intermediary != null && accountIdsNotToQuery != null && accountIdsNotToQuery.isEmpty()) {
-            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
-                                            WHERE IntermediaryId__c = :intermediary.Id
-                                            AND Account.Blocked__c = FALSE
-                                            AND Account.Anonymized__c = FALSE
-                                            AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE
-                                            AND AccountId != NULL]);
+        }
+        else if ( intermediary != null && accountIdsNotToQuery != null && accountIdsNotToQuery.isEmpty() )
+        {
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity
+                                            WHERE IntermediaryId__c = : intermediary.Id
+                                                                      AND Account.Blocked__c = FALSE
+                                                                                               AND Account.Anonymized__c = FALSE
+                                                                                                                           AND Blocked__c = FALSE
+                                                                                                                                            AND Anonymized__c = FALSE
+                                                                                                                                                                AND AccountId != NULL]);
         }
 
         return result;
@@ -577,35 +582,39 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
     /**
      * Método que devuelve las ofertas de una agrupacion obviando o no una lista de clientes (uso en recálculo de visibilidad zrm)
-     * 
+     *
      * @author dmunoz
      * @date 18/03/2024
-     * 
+     *
      * @return List<Opportunities>
      */
-    public List<Opportunity> offersClientsFromIntermediaryGroup(Set<String> accountIdsToQuery, String intermediaryGroupId) {
+    public List<Opportunity> offersClientsFromIntermediaryGroup(Set<String> accountIdsToQuery, String intermediaryGroupId)
+    {
 
         List<Opportunity> result = new List<Opportunity>();
 
-        if (accountIdsToQuery != null && !accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
+        if ( accountIdsToQuery != null && !accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId) )
+        {
 
-            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
-                                            WHERE IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
-                                            AND AccountId IN :accountIdsToQuery
-                                            AND Account.Blocked__c = FALSE
-                                            AND Account.Anonymized__c = FALSE
-                                            AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE
-                                            AND AccountId != NULL]);
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity
+                                            WHERE IntermediaryId__r.IntermediaryGroup__c = : intermediaryGroupId
+                                                                                           AND AccountId IN: accountIdsToQuery
+                                                                                           AND Account.Blocked__c = FALSE
+                                                                                                                    AND Account.Anonymized__c = FALSE
+                                                                                                                                                AND Blocked__c = FALSE
+                                                                                                                                                                 AND Anonymized__c = FALSE
+                                                                                                                                                                                     AND AccountId != NULL]);
 
-        } else if (accountIdsToQuery != null && accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) { // en caso que no haya elementos en accountIdsToQuery traemos todos los registros
-            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
-                                            WHERE IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
-                                            AND Account.Blocked__c = FALSE
-                                            AND Account.Anonymized__c = FALSE
-                                            AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE
-                                            AND AccountId != NULL]);
+        }
+        else if ( accountIdsToQuery != null && accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId) )   // en caso que no haya elementos en accountIdsToQuery traemos todos los registros
+        {
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity
+                                            WHERE IntermediaryId__r.IntermediaryGroup__c = : intermediaryGroupId
+                                                                                           AND Account.Blocked__c = FALSE
+                                                                                                                    AND Account.Anonymized__c = FALSE
+                                                                                                                                                AND Blocked__c = FALSE
+                                                                                                                                                                 AND Anonymized__c = FALSE
+                                                                                                                                                                                     AND AccountId != NULL]);
         }
 
         return result;
@@ -614,26 +623,28 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
     /**
      * Método que devuelve las ofertas de una agrupacion obviando o no una lista de clientes (uso en recálculo de visibilidad zrm)
-     * 
+     *
      * @author dmunoz
      * @date 18/03/2024
-     * 
+     *
      * @return List<Opportunities>
      */
-    public List<Opportunity> offersClientsFromIntermediaryGroupExcludeAccountIds(Set<String> accountIdsToQuery, String intermediaryGroupId) {
+    public List<Opportunity> offersClientsFromIntermediaryGroupExcludeAccountIds(Set<String> accountIdsToQuery, String intermediaryGroupId)
+    {
 
         List<Opportunity> result = new List<Opportunity>();
 
-        if (accountIdsToQuery != null && !accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
+        if ( accountIdsToQuery != null && !accountIdsToQuery.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId) )
+        {
 
-            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity 
-                                            WHERE IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
-                                            AND AccountId NOT IN :accountIdsToQuery
-                                            AND Account.Blocked__c = FALSE
-                                            AND Account.Anonymized__c = FALSE
-                                            AND Blocked__c = FALSE
-                                            AND Anonymized__c = FALSE
-                                            AND AccountId != NULL]);
+            result = new List<Opportunity>([SELECT Id, AccountId FROM Opportunity
+                                            WHERE IntermediaryId__r.IntermediaryGroup__c = : intermediaryGroupId
+                                                                                           AND AccountId NOT IN: accountIdsToQuery
+                                                                                           AND Account.Blocked__c = FALSE
+                                                                                                                    AND Account.Anonymized__c = FALSE
+                                                                                                                                                AND Blocked__c = FALSE
+                                                                                                                                                                 AND Anonymized__c = FALSE
+                                                                                                                                                                                     AND AccountId != NULL]);
 
         }
 

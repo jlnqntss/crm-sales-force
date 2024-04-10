@@ -48,46 +48,52 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     public void execute(Database.BatchableContext bc, List<CampaignMember> campaignMembers)
     {
-        try {
-            oppsToInsert.clear();           
-    
+        try
+        {
+            oppsToInsert.clear();
+
             Map<Id, CampaignMember> campaignMembersAccountMap = new Map<Id, CampaignMember>();
             Set<String> intermediaryCodes = new Set<String>();
-    
+
             for(CampaignMember campaignMember : campaignMembers)
             {
-                if (campaignMember.Contact.AccountId != null) {
+                if (campaignMember.Contact.AccountId != null)
+                {
                     campaignMembersAccountMap.put(campaignMember.Contact.AccountId, campaignMember);
                 }
 
-                if (campaignMember.OfferAssignedCode__c != null) {
+                if (campaignMember.OfferAssignedCode__c != null)
+                {
                     intermediaryCodes.add(campaignMember.OfferAssignedCode__c);
                 }
             }
 
             // 1. Filtra los miembros de campaña para solo generar oportunidades sobre los que tengan un cliente con una póliza asociada en estado "Vigor" o "Anulada" y cuyo check de GDPR esté a true
             List<CampaignMember> filteredCampaignMembers = getFilteredCampaignMembers(campaignMembersAccountMap, intermediaryCodes);
-            
+
             // 2. Actualiza el campo Status de los registros de CampaignMember del scope con el valor "Mediador Sin Visibilidad" si no cumplen con el filtro
             List<CampaignMember> updatedCampaignMembers = getUpdatedCampaignMembersNoVisibility(campaignMembers, filteredCampaignMembers);
-    
+
             if (updatedCampaignMembers.size() > 0)
             {
                 update updatedCampaignMembers;
             }
-    
+
             // 3. Recorre los registros de CampaignMember filtrados y genera para cada uno la oferta
             // crea un nuevo registro opp de Opportunity con los siguientes campos informados:
             generateOpportunities(filteredCampaignMembers);
-    
-            if (!oppsToInsert.isEmpty()) {
+
+            if ( !oppsToInsert.isEmpty() )
+            {
                 insert oppsToInsert;
-    
+
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
-        
+
     }
 
     public void finish(Database.BatchableContext bc)
@@ -101,10 +107,10 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     /**
      * Devuelve la lista de CampaignMembers que recibe como parámetro, filtrada para eliminar todos aquellos para los que el mediador no tenga visibilidad
-     * 
+     *
      * @author fpalomo
      * @date 04/04/2024
-     * 
+     *
      * @return List<Opportunities>
      */
     private List<CampaignMember> getFilteredCampaignMembers(Map<Id, CampaignMember> campaignMembersAccountMap, Set<String> intermediaryCodes)
@@ -112,16 +118,16 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         List<CampaignMember> filteredCampaignMembers = new List<CampaignMember>();
         List<Policy__c> campaignMembersPolicies = new List<Policy__c>();
 
-        User loggedUser = (new UsersSelector()).findUserIntermediaryByUserId(UserInfo.getUserId());
+        User loggedUser = ( new UsersSelector() ).findUserIntermediaryByUserId( UserInfo.getUserId() );
 
         // Obtenemos las pólizas
-        if (ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR.equals(loggedUser.Profile.Name) && String.isNotBlank(loggedUser.Contact.Account.IntermediaryGroup__c))
+        if ( ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR.equals(loggedUser.Profile.Name) && String.isNotBlank(loggedUser.Contact.Account.IntermediaryGroup__c) )
         {
-            campaignMembersPolicies = (new PoliciesSelector()).selectByIntermediaryGroupId(new Set<String>{ loggedUser.Contact.Account.IntermediaryGroup__c });
+            campaignMembersPolicies = ( new PoliciesSelector() ).selectByIntermediaryGroupId(new Set<String> { loggedUser.Contact.Account.IntermediaryGroup__c });
         }
         else
         {
-            campaignMembersPolicies = (new PoliciesSelector()).findPoliciesByAccountId(campaignMembersAccountMap.keySet(), intermediaryCodes);
+            campaignMembersPolicies = ( new PoliciesSelector() ).findPoliciesByAccountId(campaignMembersAccountMap.keySet(), intermediaryCodes);
         }
 
         // Lista con las IDs de cuenta para las que se van a generar ofertas
@@ -134,12 +140,13 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         }
 
         Set<String> campaignIDsToExcludeMembers = new Set<String>();
-        for (CampaignMember cm : campaignMembersAccountMap.values()) {
+        for ( CampaignMember cm : campaignMembersAccountMap.values() )
+        {
             campaignIDsToExcludeMembers.add(cm.CampaignId);
         }
 
         // Recuperamos las ofertas, excluyendo las que pertenezcan a clientes que ya estén en la lista
-        List<Opportunity> campaignMembersOffers = (new OpportunitiesSelector()).getIntermediaryOtherOffersByCampaignMembers(campaignIDsToExcludeMembers, toOfferAccountIDs, loggedUser.Contact.AccountId);
+        List<Opportunity> campaignMembersOffers = ( new OpportunitiesSelector() ).getIntermediaryOtherOffersByCampaignMembers(campaignIDsToExcludeMembers, toOfferAccountIDs, loggedUser.Contact.AccountId);
 
         // Añadimos los clientes de las ofertas recuperadas a la lista de cuentas a las que se le van a generar ofertas
         for(Opportunity offer : campaignMembersOffers)
@@ -148,9 +155,9 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         }
 
         // Añadimos a la lista los miembros de campaña que cumplan el filtro
-        for (CampaignMember campaignMember : campaignMembersAccountMap.values())
+        for ( CampaignMember campaignMember : campaignMembersAccountMap.values() )
         {
-            if (toOfferAccountIDs.contains(campaignMember.Contact.AccountId))
+            if ( toOfferAccountIDs.contains(campaignMember.Contact.AccountId) )
             {
                 filteredCampaignMembers.add(campaignMember);
             }
@@ -161,10 +168,10 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     /**
      * Actualiza el estado de los miembros de campaña que recibe como parámetro y que no se encuentran en el filtro
-     * 
+     *
      * @author fpalomo
      * @date 04/04/2024
-     * 
+     *
      * @return List<Opportunities>
      */
     private List<CampaignMember> getUpdatedCampaignMembersNoVisibility(List<CampaignMember> campaignMembers, List<CampaignMember> filteredCampaignMembers)
@@ -173,7 +180,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
         for (CampaignMember cm : campaignMembers)
         {
-            if (!filteredCampaignMembers.contains(cm) && !updatedCampaignMembers.containsKey(cm.Id))
+            if ( !filteredCampaignMembers.contains(cm) && !updatedCampaignMembers.containsKey(cm.Id) )
             {
                 cm.Status = 'Mediador Sin Visibilidad';
                 updatedCampaignMembers.put(cm.Id, cm);
@@ -208,19 +215,20 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             opp.IntermediaryId__c = intermediaryIdMap.containsKey(cm.OfferAssignedCode__c) ? intermediaryIdMap.get(cm.OfferAssignedCode__c) : null;
             opp.IntermediaryCode__c = cm.OfferAssignedCode__c;
             opp.OwnerId = obtainDefaultUser();
-            
+
             // M se corresponde con miembros de campaña para Agentes Mediador
-            if (cm.OfferAssignedType__c == 'M') {
+            if (cm.OfferAssignedType__c == 'M')
+            {
                 opp.ZRM__c = true;
             }
 
             // CC se corresponde con miembros de campaña para el Contact Center, que se asignarán a un usuario genérico
-            else if  (cm.OfferAssignedType__c == 'CC') 
+            else if  (cm.OfferAssignedType__c == 'CC')
             {
                 opp.LegalEntity__c = '001';
                 opp.BusinessCode__c = cm.Campaign.BusinessCode__c;
                 opp.Scope__c = 'Ventas';
-                opp.ZRM__c = false; 
+                opp.ZRM__c = false;
             }
 
             oppsToInsert.add(opp);
@@ -231,17 +239,19 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 
     /**
      * Obtener los ids de los mediadores a los que apunta el miembro de campaña
-     * 
+     *
      * @author dmunoz
      * @date 29/02/2024
      */
-    private Map<String, String> getIntermediaryMap(List<CampaignMember> campaignMembers) {
+    private Map<String, String> getIntermediaryMap(List<CampaignMember> campaignMembers)
+    {
 
         Map<String, String> accountByIntermCode = new Map<String, String>();
 
         List<String> cmOfferAssignedCodes = new List<String>();
 
-        for (CampaignMember cm: campaignMembers) {
+        for (CampaignMember cm: campaignMembers)
+        {
             cmOfferAssignedCodes.add(cm.OfferAssignedCode__c);
         }
 
@@ -249,7 +259,8 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
         List<Account> accountInCmOfferAssignedCodes = accountsSelector.findByIntermediaryCode(cmOfferAssignedCodes);
 
 
-        for(Account acc : accountInCmOfferAssignedCodes) {
+        for(Account acc : accountInCmOfferAssignedCodes)
+        {
             accountByIntermCode.put(acc.INFOIntermediaryCode__c, acc.Id);
         }
 

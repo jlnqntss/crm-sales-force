@@ -990,6 +990,51 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Relaciona los casos cuyo campo RelatedRequestId__c esta informado, para asignarles como parent
+     * case aquellos cuyo TicketId__c coincida
+     *
+     * @author mario.navarro@seidor.com
+     * @date 09/04/2024
+     * @param casesToRelate lista de casos a relacionar
+     */
+    public static void relateCasesByTicketId(List<Case> casesToRelate)
+    {
+        //1- construimos un set con los ticket id a buscar
+        Set<Double> ticketIdsToSearch = new Set<Double>();
+        for (Case c : casesToRelate)
+        {
+            if (c.RelatedRequestId__c != null)
+            {
+                ticketIdsToSearch.add(c.RelatedRequestId__c);
+            }
+        }
+
+        if ( ticketIdsToSearch.isEmpty() )
+        {
+            //si no hay nada que buscar, no hay nada que relacionar ==> FIN
+            return;
+        }
+
+        List<Case> parentCases = new CasesSelector().getCasesByTicketId(ticketIdsToSearch);
+        if ( parentCases.isEmpty() )
+        {
+            //no se ha encontrado ningun parent, no hay nada que relacionar ==> FIN
+            return;
+        }
+        //2- Agrupamos casos por ticketId
+        Map<Double, Case> casesByTicketId = (Map<Double, Case>) CollectionUtil.hashList( parentCases, Case.fields.TicketId__c.getDescribe().getName() );
+
+        //3- Iteramos para setear los 'padres'
+        for (Case c : casesToRelate)
+        {
+            if ( c.RelatedRequestId__c != null && casesByTicketId?.containsKey(c.RelatedRequestId__c) )
+            {
+                c.ParentId = casesByTicketId.get(c.RelatedRequestId__c).Id;
+            }
+        }
+    }
+
+    /**
      * Método privado que obtiene las pólizas y ofertas relacionadas con los casos
      * @author: arcortazar
      * @date: 27/03/2023
