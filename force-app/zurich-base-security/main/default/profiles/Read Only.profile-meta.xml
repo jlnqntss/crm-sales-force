@@ -2831,7 +2831,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.LastDateIntermediaryOrAccountChange__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2966,7 +2966,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.LastDateIntermediaryOrAccountChange__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
