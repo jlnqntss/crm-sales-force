@@ -366,8 +366,23 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
     }
 
     private List<AccountTeamMember> getATMsToInsert(String accountId, String intermediaryId) {
+
+        List<Account> intermediaryAccList = accountSelector.findIntermediaryGroupByIntermediaries(new Set<String> {intermediaryId});
+
+        if (intermediaryAccList.isEmpty())
+        {
+            return;
+        }
+
+        Account intermediary = intermediaryAccList[0];
+
+        Set<String> intermediaryGroupIdSet = new Set<String>();
+        if (intermediary.IntermediaryGroup__c != null && String.isNotEmpty(intermediary.IntermediaryGroup__c)) {
+            intermediaryGroupIdSet.add(intermediary.IntermediaryGroup__c);
+        }
+
         // 1. Obtenemos los usuarios del mediador
-        List<User> agrUserList = (new UsersSelector()).getIntermediaryZRMAGRUsers(intermediaryId);
+        List<User> agrUserList = (new UsersSelector()).findZRMActiveUsersFromIntermediaryAndAGRFromGroup(new Set<String>{intermediary.Id}, intermediaryGroupIdSet);
 
         // 2. Generamos los atms a insertar
         List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
