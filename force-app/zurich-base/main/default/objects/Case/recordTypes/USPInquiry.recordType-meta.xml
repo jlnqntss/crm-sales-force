@@ -548,6 +548,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>No realizado - Caso Duplicado</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>No realizado - Derivado otras áreas</fullName>
             <default>false</default>
         </values>

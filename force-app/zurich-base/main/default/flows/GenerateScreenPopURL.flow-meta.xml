@@ -5,7 +5,7 @@
         <name>CCSVariablesAssignment</name>
         <label>Assign CCS Variables</label>
         <locationX>314</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>relatedId</assignToReference>
             <operator>Assign</operator>
@@ -28,7 +28,7 @@
         <name>CSMVariablesAssignment</name>
         <label>Assign CSM Variables</label>
         <locationX>578</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>relatedId</assignToReference>
             <operator>Assign</operator>
@@ -50,8 +50,8 @@
     <assignments>
         <name>RecordIdAssignment</name>
         <label>AssignRecordId</label>
-        <locationX>1106</locationX>
-        <locationY>278</locationY>
+        <locationX>1370</locationX>
+        <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>screenPopURL</assignToReference>
             <operator>Assign</operator>
@@ -63,8 +63,8 @@
     <assignments>
         <name>URLAssignment</name>
         <label>Assign URL</label>
-        <locationX>578</locationX>
-        <locationY>614</locationY>
+        <locationX>710</locationX>
+        <locationY>542</locationY>
         <assignmentItems>
             <assignToReference>screenPopURL</assignToReference>
             <operator>Assign</operator>
@@ -77,7 +77,7 @@
         <name>USPVariablesAssignment</name>
         <label>Assign USP Variables</label>
         <locationX>842</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>relatedId</assignToReference>
             <operator>Assign</operator>
@@ -100,7 +100,7 @@
         <name>ZEVariablesAssignment</name>
         <label>Assign ZE Variables</label>
         <locationX>50</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>relatedId</assignToReference>
             <operator>Assign</operator>
@@ -150,8 +150,8 @@
     <decisions>
         <name>ScopeDecision</name>
         <label>Scope</label>
-        <locationX>578</locationX>
-        <locationY>158</locationY>
+        <locationX>710</locationX>
+        <locationY>134</locationY>
         <defaultConnector>
             <targetReference>RecordIdAssignment</targetReference>
         </defaultConnector>
@@ -237,6 +237,22 @@
             </connector>
             <label>USP</label>
         </rules>
+        <rules>
+            <name>SAM</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>emailRecord.GenesysQueueName__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>SAM</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>CSMVariablesAssignment</targetReference>
+            </connector>
+            <label>SAM</label>
+        </rules>
     </decisions>
     <environments>Default</environments>
     <formulas>
@@ -267,7 +283,7 @@
     <processType>AutoLaunchedFlow</processType>
     <runInMode>DefaultMode</runInMode>
     <start>
-        <locationX>452</locationX>
+        <locationX>584</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>ScopeDecision</targetReference>

@@ -1164,4 +1164,16 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return accounts;
     }
+	
+	/**
+    * @description Método que devuelve las cuentas a partir de un set de Ids
+    * @author rserrano | 08/04/2024 
+    * @param accountsIdSet : Set de Ids
+    * @return List<Account>: Listado de cuentas
+    **/
+    public List<Account> findAccountsById (Set<String> accountsIdSet)
+    {
+        List<Account> result = [SELECT Id FROM Account WHERE Id IN :accountsIdSet];
+        return result;
+    }	
 }

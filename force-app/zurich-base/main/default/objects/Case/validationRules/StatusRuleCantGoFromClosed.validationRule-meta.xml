@@ -12,6 +12,9 @@ ISCHANGED(Status) &amp;&amp; (ISPICKVAL(PRIORVALUE(Status),&quot;Cerrado&quot;)
 || ISPICKVAL(PRIORVALUE(Status),&quot;Combinado&quot;))
 &amp;&amp;  NOT(ISPICKVAL((Status),&quot;Combinado&quot;))
 &amp;&amp; $Permission.USPTriggerCaseValidationRules
+,
+RecordType.DeveloperName == &quot;ZDAInquiry&quot; &amp;&amp; 
+ISCHANGED(Status) &amp;&amp; ISPICKVAL(PRIORVALUE(Status),&quot;Cerrado&quot;) &amp;&amp; $Permission.ZDATriggerCaseValidationRules
 )</errorConditionFormula>
     <errorDisplayField>Status</errorDisplayField>
     <errorMessage>[VR Caso] Caso en estado CERRADO no puede pasar a ningún otro estado</errorMessage>

@@ -2,6 +2,12 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>false</sorted>
     <standardValue>
+        <fullName>Nuevo</fullName>
+        <default>true</default>
+        <label>Nuevo</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
         <fullName>Asignado</fullName>
         <default>false</default>
         <label>Asignado</label>
@@ -12,12 +18,6 @@
         <default>false</default>
         <label>Cerrado</label>
         <closed>true</closed>
-    </standardValue>
-    <standardValue>
-        <fullName>Nuevo</fullName>
-        <default>true</default>
-        <label>Nuevo</label>
-        <closed>false</closed>
     </standardValue>
     <standardValue>
         <fullName>En espera</fullName>
@@ -59,6 +59,12 @@
         <fullName>Combinado</fullName>
         <default>false</default>
         <label>Combinado</label>
+        <closed>true</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Cerrado sin respuesta</fullName>
+        <default>false</default>
+        <label>Cerrado sin respuesta</label>
         <closed>true</closed>
     </standardValue>
 </StandardValueSet>

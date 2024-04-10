@@ -343,6 +343,11 @@
                 <default>false</default>
                 <label>Traslado a gestión centro tramitador</label>
             </value>
+            <value>
+                <fullName>No realizado - Caso Duplicado</fullName>
+                <default>false</default>
+                <label>No realizado - Caso Duplicado</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
@@ -381,6 +386,16 @@
             <controllingFieldValue>Incidencias (Mediador)</controllingFieldValue>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>Realizado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <controllingFieldValue>Gestión de recibos</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Envíos (Cliente)</controllingFieldValue>
+            <valueName>No realizado - Caso Duplicado</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>

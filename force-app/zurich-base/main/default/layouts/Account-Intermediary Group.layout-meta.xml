@@ -478,6 +478,25 @@
         </quickActionListItems>
     </quickActionList>
     <relatedLists>
+        <fields>CASES.CASE_NUMBER</fields>
+        <fields>OfferId__c</fields>
+        <fields>Days_Open__c</fields>
+        <fields>PRODUCT.NAME</fields>
+        <fields>Product_Name__c</fields>
+        <fields>Subtype__c</fields>
+        <fields>OWNER_NAME</fields>
+        <fields>CASES.STATUS</fields>
+        <relatedList>RelatedCaseList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>OPPORTUNITY.NAME</fields>
+        <fields>Product_Text__c</fields>
+        <fields>OPPORTUNITY.CREATED_DATE</fields>
+        <fields>EffectiveDate__c</fields>
+        <fields>OPPORTUNITY.STAGE_NAME</fields>
+        <relatedList>Opportunity.IntermediaryId__c</relatedList>
+    </relatedLists>
+    <relatedLists>
         <fields>CONTACT.FULL_NAME</fields>
         <fields>CONTACT.ACCOUNT_NAME</fields>
         <fields>CONTACT.TITLE</fields>
