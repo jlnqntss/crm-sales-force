@@ -16619,10 +16619,6 @@
         <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Case Default OCS</layout>
-        <recordType>Case.ZDAInquiry</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Case-Case Default Sprinklr</layout>
         <recordType>Case.OCSSprinklr</recordType>
     </layoutAssignments>

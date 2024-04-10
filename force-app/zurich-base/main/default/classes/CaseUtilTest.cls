@@ -318,6 +318,77 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Se valida que el metodo test_relateCasesByTicketId relaciona correctamente los casos por el TicketId__c y RelatedRequestId__c, para ello:
+     * - Se crea un caso sin RelatedRequestId__c. No debe vincular nada
+     * - Se crea un caso con RelatedRequestId__c, pero no existe el 'parent'. No debe vincular nada
+     * - Se crea un caso con RelatedRequestId__c, el 'parent' existe. Debe vincular con el parent
+     * - Se crea un caso con RelatedRequestId__c, el 'parent' existe pero no es de ZDA (no deberia suceder). No debe vincular nada
+     *
+     * @author mario.navarro@seidor.com
+     * @date 09/04/2024
+     */
+    @isTest
+    private static void test_relateCasesByTicketId()
+    {
+        Case parentCaseZDA = new Case(
+            TicketId__c = 1,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Caso padre ZDA'
+            );
+        Case parentCaseNoZDA = new Case(
+            TicketId__c = 2,
+            RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR,
+            Subject = 'Caso padre no ZDA'
+            );
+        insert new List<Case> {parentCaseZDA, parentCaseNoZDA};
+
+        List<Case> parentsCreated = [SELECT Id FROM Case WHERE TicketId__c IN (1,2)];
+        Assert.areEqual( 2, parentsCreated.size() );
+
+        Case noRelatedCase = new Case(
+            TicketId__c = 10,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso no relacionado'
+            );
+        Case relatedWithoutParentCase = new Case(
+            TicketId__c = 20,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso relacionado sin parent',
+            RelatedRequestId__c = 666
+            );
+        Case relatedWithParentCase = new Case(
+            TicketId__c = 30,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso relacionado con parent',
+            RelatedRequestId__c = parentCaseZDA.TicketId__c
+            );
+        Case relatedWithParentCaseNoZDA = new Case(
+            TicketId__c = 40,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso relacionado con parent no ZDA',
+            RelatedRequestId__c = parentCaseNoZDA.TicketId__c
+            );
+
+        Test.startTest();
+        insert new List<Case> {noRelatedCase, relatedWithoutParentCase, relatedWithParentCase, relatedWithParentCaseNoZDA};
+        Test.stopTest();
+
+        Case noRelatedCaseCreated = [SELECT Id, ParentId FROM Case WHERE Id = : noRelatedCase.Id];
+        Case relatedWithoutParentCaseCreated = [SELECT Id, ParentId FROM Case WHERE Id = : relatedWithoutParentCase.Id];
+        Case relatedWithParentCaseCreated = [SELECT Id, ParentId FROM Case WHERE Id = : relatedWithParentCase.Id];
+        Case relatedWithParentCaseNoZDACreated = [SELECT Id, ParentId FROM Case WHERE Id = : relatedWithParentCaseNoZDA.Id];
+
+        Assert.isNotNull(noRelatedCaseCreated);
+        Assert.isNull(noRelatedCaseCreated.ParentId);
+        Assert.isNotNull(relatedWithoutParentCaseCreated);
+        Assert.isNull(relatedWithoutParentCaseCreated.ParentId);
+        Assert.isNotNull(relatedWithParentCaseCreated);
+        Assert.areEqual(parentCaseZDA.Id, relatedWithParentCaseCreated.ParentId);
+        Assert.isNotNull(noRelatedCaseCreated);
+        Assert.isNull(relatedWithParentCaseNoZDACreated.ParentId);
+    }
+
+    /**
      * Se comprueba que los procesos que asignan los atributos para la clasificación del caso operan correctamente.
      * En este escenario se inserta un caso SIN una clasificación o TAG previa, esta clasificación se realiza fuera de Salesforce.
      * El caso se clasifica utilizando la configuración por defecto.

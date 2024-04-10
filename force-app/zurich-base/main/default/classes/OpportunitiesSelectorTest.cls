@@ -1,10 +1,10 @@
 /**
- * @description       : 
+ * @description       :
  * @author            : mfernandezcarrera
- * @group             : 
+ * @group             :
  * @last modified on  : 22-12-2023
  * @last modified by  : amiranda
-**/
+ **/
 @isTest
 private with sharing class OpportunitiesSelectorTest
 {
@@ -32,7 +32,8 @@ private with sharing class OpportunitiesSelectorTest
 
         List<Asset> insuredObjects = TestDataFactory.generateInsuredObjectsForEachPolicy('Address', policies, 1);
         // Cambiamos los asset para que vayan por oferta en vez de por poliza
-        for(Asset a: insuredObjects) {
+        for(Asset a: insuredObjects)
+        {
             a.OfferId__c = mapPoliciesById.get(a.PolicyId__c).OpportunityName__c;
             a.PolicyId__c = null;
         }
@@ -129,7 +130,7 @@ private with sharing class OpportunitiesSelectorTest
             ownerIds.add(matchedOpp.OwnerId);
         }
 
-        List<User> owners = [SELECT Id, Profile.Name FROM User WHERE Id IN: ownerIds];
+        List<User> owners = [SELECT Id, Profile.Name FROM User WHERE Id IN : ownerIds];
         System.assertEquals(false, owners.isEmpty(), 'List should NOT be empty');
         for(User retrievedOwner: owners)
         {
@@ -176,7 +177,7 @@ private with sharing class OpportunitiesSelectorTest
         Test.startTest();
         List<Opportunity> offers = new OpportunitiesSelector().findByAccountIdAndScope(
             existingScopes[0].AccountId__c, existingScopes[0].Scope__c
-        );
+            );
         Test.stopTest();
 
         System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
@@ -190,7 +191,7 @@ private with sharing class OpportunitiesSelectorTest
         Test.startTest();
         List<Opportunity> offers = new OpportunitiesSelector().findById(
             existingOpportunities[0].Id
-        );
+            );
         Test.stopTest();
 
         System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
@@ -201,7 +202,7 @@ private with sharing class OpportunitiesSelectorTest
     {
 
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
-        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
+        User u = [Select Id FROM User WHERE Id = : usuarios.get(0).AssigneeId];
 
         List<Opportunity> existingOpportunities = [SELECT Id FROM Opportunity];
         existingOpportunities.get(0).OwnerId = u.id;
@@ -212,7 +213,7 @@ private with sharing class OpportunitiesSelectorTest
             Test.startTest();
             List<Opportunity> offers = new OpportunitiesSelector().findById(
                 existingOpportunities[0].Id
-            );
+                );
             Test.stopTest();
 
             System.assertEquals(false, offers.isEmpty(), 'There should be same offers');
@@ -227,10 +228,10 @@ private with sharing class OpportunitiesSelectorTest
         Test.startTest();
         List<Opportunity> offers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(
             existingOpportunities.get(0).Id, existingOpportunities.get(0).AccountId, existingOpportunities.get(0).ScopeId__c
-        );
+            );
         Test.stopTest();
 
-        System.assertEquals(false, offers.isEmpty());
+        System.assertEquals( false, offers.isEmpty() );
     }
 
     @isTest
@@ -238,7 +239,7 @@ private with sharing class OpportunitiesSelectorTest
     {
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
         System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
-        User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
+        User u = [Select Id FROM User WHERE Id = : usuarios.get(0).AssigneeId];
 
         List<Opportunity> existingOpportunities = [SELECT Id, AccountId, ScopeId__c FROM Opportunity];
         for (Opportunity o : existingOpportunities)
@@ -247,24 +248,24 @@ private with sharing class OpportunitiesSelectorTest
         }
         upsert existingOpportunities;
         existingOpportunities = [SELECT Id, AccountId, ScopeId__c FROM Opportunity];
-        
+
         System.runAs(u)
         {
             Test.startTest();
             List<Opportunity> offers = new OpportunitiesSelector().findByAccountIdAndScopeAndNotId(
                 existingOpportunities.get(0).Id, existingOpportunities.get(0).AccountId, existingOpportunities.get(0).ScopeId__c
-            );
+                );
             Test.stopTest();
-    
-            System.assertEquals(false, offers.isEmpty());
+
+            System.assertEquals( false, offers.isEmpty() );
         }
     }
 
-    @isTest 
+    @isTest
     static void test_findUpdatedFromInfoByQuoteNumber()
     {
         List<Opportunity> existingOpportunities = [SELECT Id, isUpdatedFromINFO__c, InfoQuoteNumber__c FROM Opportunity];
-        
+
         // Actualizamos tres oportunidades metiéndoles InfoNumber y el flag
         existingOpportunities.get(0).InfoQuoteNumber__c = 'ACB123';
         existingOpportunities.get(0).isUpdatedFromINFO__c = true;
@@ -279,14 +280,14 @@ private with sharing class OpportunitiesSelectorTest
         existingOpportunities.get(3).isUpdatedFromINFO__c = true;
 
         List<Opportunity> optysToUpdate = new List<Opportunity>();
-        optysToUpdate.add(existingOpportunities.get(0));
-        optysToUpdate.add(existingOpportunities.get(1));
-        optysToUpdate.add(existingOpportunities.get(2));
-        optysToUpdate.add(existingOpportunities.get(3));
+        optysToUpdate.add( existingOpportunities.get(0) );
+        optysToUpdate.add( existingOpportunities.get(1) );
+        optysToUpdate.add( existingOpportunities.get(2) );
+        optysToUpdate.add( existingOpportunities.get(3) );
 
         upsert optysToUpdate;
 
-        Set<String> idsABuscar = new Set<String>{'ACB123', 'ACB124', 'ACB125', '   '};
+        Set<String> idsABuscar = new Set<String> {'ACB123', 'ACB124', 'ACB125', '   '};
         Set<String> idsRecuperados;
         Test.startTest();
         idsRecuperados = new OpportunitiesSelector().findUpdatedFromInfoByQuoteNumber(idsABuscar);
@@ -306,18 +307,18 @@ private with sharing class OpportunitiesSelectorTest
     {
         Account cuenta = [SELECT Id, NationalId__c FROM Account LIMIT 1];
         Opportunity oferta= new Opportunity();
-        OpportunitiesSelector OppSel = new OpportunitiesSelector(); 
+        OpportunitiesSelector OppSel = new OpportunitiesSelector();
         oferta.InfoQuoteNumber__c='11111';
         oferta.Name='Test';
         oferta.AccountId=cuenta.Id;
         oferta.StageName='Quoted';
-        oferta.CloseDate=System.today()+1;
+        oferta.CloseDate=System.today() + 1;
 
         insert oferta;
         String ofertaGenerada=oferta.InfoQuoteNumber__c;
 
         Test.startTest();
-        List<Opportunity> offersFound = new OpportunitiesSelector().findByCreatedOfferAndCreationDate(new List<String>{ofertaGenerada}, '1');
+        List<Opportunity> offersFound = new OpportunitiesSelector().findByCreatedOfferAndCreationDate(new List<String> {ofertaGenerada}, '1');
         Test.stopTest();
 
         System.assertEquals(1, offersFound.size(), 'Deberia encontrar 1 oferta');
@@ -365,18 +366,18 @@ private with sharing class OpportunitiesSelectorTest
     }
 
     /**
-    * @description Método que se encarga de comprobar el correcto funcionamiento
-    * del método 'findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed'
-    * de la clase 'OpportunitiesSelector'.
-    *
-    * @author amiranda
-    * @date 04-09-2023 
-    **/
+     * @description Método que se encarga de comprobar el correcto funcionamiento
+     * del método 'findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed'
+     * de la clase 'OpportunitiesSelector'.
+     *
+     * @author amiranda
+     * @date 04-09-2023
+     **/
     @isTest
     static void test_findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed_OK()
     {
         String productBranchAutos = '0000000001';
-        
+
         Account accRelatedToOffer = [SELECT INFOIntermediaryCode__c FROM Account LIMIT 1];
 
         Opportunity offer = [SELECT AccountId, IntermediaryCode__c, ProductBranch__c FROM Opportunity LIMIT 1];
@@ -398,21 +399,22 @@ private with sharing class OpportunitiesSelectorTest
     }
 
     @isTest
-    static void findCrossSellingCampaignNotClosedOfferTest() {
+    static void findCrossSellingCampaignNotClosedOfferTest()
+    {
 
         Test.startTest();
-        String offerList = (new OpportunitiesSelector()).findCrossSellingCampaignNotClosedOffer();
+        String offerList = ( new OpportunitiesSelector() ).findCrossSellingCampaignNotClosedOffer();
         Test.stopTest();
- 
+
         System.assertEquals(true, offerList != null, 'No Debe ser nulo');
     }
 
     /**
-    * Test del  Método selector que recupera aquellas ofertas que se encuentran
-    * relacionadas con la campaña y con alguna de las cuentas pasada por parámetro.
-    * @author mfernandezcarrera
-    * @date 20/11/2023
-    */
+     * Test del  Método selector que recupera aquellas ofertas que se encuentran
+     * relacionadas con la campaña y con alguna de las cuentas pasada por parámetro.
+     * @author mfernandezcarrera
+     * @date 20/11/2023
+     */
     @IsTest
     static void test_selectByAccountIdsAndCampaignId()
     {
@@ -420,7 +422,7 @@ private with sharing class OpportunitiesSelectorTest
         List<Account> account = TestDataFactory.generateAccounts('001', 'Business Customer', 1);
         account[0].FirstName='Prueba';
         insert account;
-        
+
         // create new campaign
         List<Campaign> campaigns = TestDataFactory.generateCampaigns('001', 1);
         insert campaigns;
@@ -431,10 +433,10 @@ private with sharing class OpportunitiesSelectorTest
         insert newOffers;
 
         Id campaignToSearch = campaigns.get(0).Id;
-       
+
 
         List <Account> listacc = [Select Id,FirstName from Account where FirstName='Prueba'];
-        
+
         Map<Id,Account> mapAccountsById = new Map<Id,Account> (listacc);
 
         Test.startTest();
@@ -445,12 +447,13 @@ private with sharing class OpportunitiesSelectorTest
     }
 
     @isTest
-    static void findZRMtoReassignTest() {
+    static void findZRMtoReassignTest()
+    {
 
         Test.startTest();
-        String offerList = (new OpportunitiesSelector()).findZRMtoReassign();
+        String offerList = ( new OpportunitiesSelector() ).findZRMtoReassign();
         Test.stopTest();
- 
+
         System.assertEquals(true, offerList != null, 'No Debe ser nulo');
     }
 
@@ -468,7 +471,7 @@ private with sharing class OpportunitiesSelectorTest
 
         List<Opportunity> retrievedOpportunities = new List<Opportunity>();
         Test.startTest();
-        retrievedOpportunities = (new OpportunitiesSelector()).findByAccountAndOwner(accountsIDs, usersIDs);
+        retrievedOpportunities = ( new OpportunitiesSelector() ).findByAccountAndOwner(accountsIDs, usersIDs);
         Test.stopTest();
 
         System.assertEquals(false, retrievedOpportunities.isEmpty(), 'Ha debido encontrar oportunidades');
@@ -483,7 +486,7 @@ private with sharing class OpportunitiesSelectorTest
 
         List<Opportunity> retrievedOpportunities = new List<Opportunity>();
         Test.startTest();
-        retrievedOpportunities = (new OpportunitiesSelector()).findByAccountAndOwner(accountsIDs, usersIDs);
+        retrievedOpportunities = ( new OpportunitiesSelector() ).findByAccountAndOwner(accountsIDs, usersIDs);
         Test.stopTest();
 
         System.assertEquals(true, retrievedOpportunities.isEmpty(), 'Ha de devolver una lista vacia');
@@ -494,17 +497,17 @@ private with sharing class OpportunitiesSelectorTest
     {
         // Obtenemos las campañas y los miembros
         List<Campaign> listaCampanyas = [SELECT id FROM Campaign];
-        Set<String> idCampanya = new Set<String>{listaCampanyas[0].id};
+        Set<String> idCampanya = new Set<String> {listaCampanyas[0].id};
 
         List<CampaignMember> campaignMembers = [SELECT id, ContactId, CampaignId, Campaign.Type FROM CampaignMember WHERE CampaignId = : listaCampanyas[0].id];
         List<Contact> contacto = [SELECT Id, AccountId FROM Contact WHERE id =: campaignMembers[0].ContactId];
-        Set<String> idMiembro = new Set<String>{contacto[0].AccountId}; 
+        Set<String> idMiembro = new Set<String> {contacto[0].AccountId};
 
         List<Opportunity> retrievedOpportunitites = new List<Opportunity>();
         Test.startTest();
-        retrievedOpportunitites = (new OpportunitiesSelector().findByCampaignAndCampaignMember(idCampanya, idMiembro));
+        retrievedOpportunitites = ( new OpportunitiesSelector().findByCampaignAndCampaignMember(idCampanya, idMiembro) );
         Test.stopTest();
 
-        System.assertEquals(true, retrievedOpportunitites != null, 'No Debe ser nulo'); 
+        System.assertEquals(true, retrievedOpportunitites != null, 'No Debe ser nulo');
     }
 }

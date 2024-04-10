@@ -519,7 +519,7 @@ private with sharing class EmailMessagesUtilTest
     }
 
     /**
-     * Test para activar campo ControlEmailCC__c 
+     * Test para activar campo ControlEmailCC__c
      * @author lrodriguez
      * @date 27/03/2024
      */
@@ -542,15 +542,15 @@ private with sharing class EmailMessagesUtilTest
         insert emailList;
 
         Test.stopTest();
-        
-        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba activar']; 
+
+        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba activar'];
 
         System.assertEquals(casesEmailDefault.ControlEmailCC__c,true,'Debe ser false');
 
     }
 
     /**
-     * Test para activar campo ControlEmailCC__c 
+     * Test para activar campo ControlEmailCC__c
      * @author lrodriguez
      * @date 27/03/2024
      */
@@ -573,7 +573,7 @@ private with sharing class EmailMessagesUtilTest
 
         Test.stopTest();
 
-        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba Desactivar']; 
+        Case casesEmailDefault = [SELECT Id,ControlEmailCC__c FROM Case WHERE Subject = 'prueba Desactivar'];
 
         System.assertEquals(casesEmailDefault.ControlEmailCC__c,false,'Debe ser false');
 
