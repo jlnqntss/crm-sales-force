@@ -16,6 +16,10 @@ public class OpportunityHandler implements ITrigger
         OpportunityUtil.initMapOfProfiles();
         // jfherrero - 21/09/2023: CV-458, cargamos un mapa de Accounts con sus record types para informar un campo en las ofertas creadas
         OpportunityUtil.initMapOfAccountRecordTypes(newList);
+        if (!oldMap.isEmpty())
+        {
+            OpportunityUtil.initMapOfAccountRecordTypesTriggerOld(oldMap.values());
+        }
         // arcortazar - 22/12/2023: CV-1182, cargamos el mapa que relaciona los Business Code con los scopes
         OpportunityUtil.fillMapBusinessCode();
     }
@@ -51,6 +55,9 @@ public class OpportunityHandler implements ITrigger
     {
         OpportunityUtil.preventNullUpdates((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
         OpportunityUtil.detectOpportunityAccountChange((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
+        
+        // fpalomo - 08/04/2024 - Nuevo método "handleAccountOrIntermediaryChange" para rellenar los campos solicitados en CV-2058
+        OpportunityUtil.handleAccountOrIntermediaryChange((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);
 
         // arcortazar - 09/03/2022: Validamos si puede llevarse a cabo el cambio que se presenta
         OpportunityUtil.validateOfferStage((List<Opportunity>)newList, (Map<Id, Opportunity>) oldMap);

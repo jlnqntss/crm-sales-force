@@ -84,5 +84,17 @@ public with sharing class Batch_IntermediaryOrAccountChangeUtil {
         }
     }
 
-
+    /**
+     * blanquea los campos VisibilityRetry__c y LastDateIntermediaryOrAccountChange__c
+     * @author fpalomo
+     * @date 10/04/2024
+    **/
+    private static void updatePolicyWithProcessBlanks(Policy__c policy) {
+        Policy__c recordToUpdate = new Policy__c();
+        recordToUpdate.Id = policy.Id;
+        recordToUpdate.VisibilityRetry__c = 0;
+        recordToUpdate.LastDateIntermediaryOrAccountChange__c = null;
+        
+        update recordToUpdate;
+    }
 }

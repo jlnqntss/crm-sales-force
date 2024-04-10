@@ -5,7 +5,7 @@ public with sharing class GenesysCloudTaskActionTest
     static void test_genesysCloudTaskActionTest_status_ok()
     {
         Case relatedCase = new Case();
-        relatedCase.RecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSInquiry').getRecordTypeId();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         relatedCase.LegalEntity__c = Label.GeneralInsurance;
         insert relatedCase;
 

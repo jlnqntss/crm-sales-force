@@ -40,16 +40,66 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
 
     /**
      * Este proceso solo se encarga de iniciar el proceso por lo que el método execute está vacío para enviar la información y calcularlo de manera individual de forma controlada
-     * @author dmunoz
-     * @date 04/04/2024
+     * @author fpalomo
+     * @date 10/04/2024
      */
     public void execute(Database.BatchableContext bc, List<sObject> scope) {
         try {
 
-            // delete recursivo
+            // Escenario 1:
+            // - Nos llegan ATMs para borrar e insertar
 
-            // inserts recursivo
+            if (!atmsToDelete.isEmpty() && !atmsToInsert.isEmpty())
+            {
+                // Escenario 1A:
+                // - Tenemos que ejecutar una cantidad de DMLs MENOR a lo permitido por cada ejecución de batch (variable numDMLs)
+                // > Realizamos todos los DMLs a la vez
+
+                if ((atmsToDelete.size() + atmsToInsert.size()) <= numDMLs)
+                {
+                    doDelete();
+                    doInsert();
+                }
+
+                // Escenario 1B:
+                // - Tenemos que ejecutar una cantidad de DMLs MAYOR a lo permitido por cada ejecución de batch (variable numDMLs)
+                // > Realizamos solo el borrado de ATMs, se ejecutarán un máximo de <numDMLs> y el sobrante (si hubiese) volverá a enviarse a este mismo batch
+
+                else if (!atmsToDelete.isEmpty())
+                {
+                    doDelete();
+                }
+            }
             
+            // Escenario 2:
+            // - Nos vienen ATMs para BORRAR pero no para insertar
+            // > Realizamos el borrado de ATMs, se ejecutarán un máximo de <numDMLs> y el sobrante (si hubiese) volverá a enviarse a este mismo batch
+
+            else if (!atmsToDelete.isEmpty())
+            {
+                doDelete();
+            }
+            
+            // Escenario 3:
+            // - Nos vienen ATMs para INSERTAR pero no para borrar
+            // > Insertamos los ATMs, se ejecutarán un máximo de <numDMLs> y el sobrante (si hubiese) volverá a enviarse a este mismo batch
+            
+            else if (!atmsToInsert.isEmpty())
+            {
+                doInsert();
+            }
+
+            // Escenario 4:
+            // Debe ejecutarse al menos 1 vez por cada <recordsToProcess> a menos que se produzca un fallo en cuyo caso se ejecuta el catch
+            // - No quedan ATMs que procesar para el registro (recordsToProcess) actual.
+            // > Actualizamos el registro para blanquear los campos utilizados para los reintentos y se elimina el registro de la cola
+
+            else if (atmsToDelete.isEmpty() && atmsToDelete.isEmpty())
+            {
+                Batch_IntermediaryOrAccountChangeUtil.updatePolicyWithProcessBlanks(recordsToProcess);
+                recordsToProcess.remove(0);
+            }
+
         } catch (Exception e) {
             // Si hay error actualizamos el registro para que se procese al día siguiente y eliminamos ese registro de la cola del procesamiento
             stopRecordProcess = true;
@@ -74,7 +124,6 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
      * @date 04/04/2024
      */
     private void processDMLs() {        
-
         if (!stopRecordProcess && ((atmsToDelete != null && !atmsToDelete.isEmpty()) || (atmsToInsert != null && !atmsToInsert.isEmpty()))) {
             Database.executeBatch(new Batch_IntermediaryOrAccountChangeDMLs(recordsToProcess, atmsToDelete, atmsToInsert, numDMLs), numDMLs);
         } else if (!recordsToProcess.isEmpty()) {
@@ -82,7 +131,65 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
         } 
     }
 
+    /**
+     * Metodo que procesa la inserción y prepara los paquetes futuros
+     * 
+     * @author fpalomo
+     * @date 10/04/2024
+     */
+    private void doInsert() {
+        List<AccountTeamMember> toInsert = new List<AccountTeamMember>();
+        Set<AccountTeamMember> toFuture = new Set<AccountTeamMember>();
 
+        // Dividimos los ATMs que recibe el metodo en 2:
+        // 1. Lote de ATMs "toInsert" son los que mandaremos al DML
+        // 2. Lote de ATMs "toFuture" son los que mandaremos al Batch de nuevo para que los vuelva a procesar
+        Integer contador = 0;
+        for (AccountTeamMember atm: atmsToInsert) {
+            if (contador < numDMLs) {
+                toInsert.add(atm);
+                contador++;
+            } else {
+                toFuture.add(atm);
+            }
+        } 
 
+        // Insertamos los ATMs que entran en el lote que acaba de procesarse
+        insert toInsert;
+        
+        // Nos aseguramos que no haya nada en la lista de ATMs pendientes y añadimos los que se insertarán en la siguiente tanda
+        atmsToInsert.clear();
+        atmsToInsert = new List<AccountTeamMember>(toFuture);
+    }
 
+    /**
+     * Metodo que procesa la inserción y prepara los paquetes futuros
+     * 
+     * @author fpalomo
+     * @date 10/04/2024
+     */
+    private void doDelete() {
+        List<AccountTeamMember> toDelete = new List<AccountTeamMember>();
+        Set<AccountTeamMember> toFuture = new Set<AccountTeamMember>();
+
+        // Dividimos los ATMs que recibe el metodo en 2:
+        // 1. Lote de ATMs "toDelete" son los que mandaremos al DML
+        // 2. Lote de ATMs "toFuture" son los que mandaremos al Batch de nuevo para que los vuelva a procesar
+        Integer contador = 0;
+        for (AccountTeamMember atm: atmsToDelete) {
+            if (contador < numDMLs) {
+                toDelete.add(atm);
+                contador++;
+            } else {
+                toFuture.add(atm);
+            }
+        }
+
+        // Borramos los ATMs que entran en el lote que acaba de procesarse
+        delete toDelete;
+        
+        // Nos aseguramos que no haya nada en la lista de ATMs pendientes y añadimos los que se insertarán en la siguiente tanda
+        atmsToInsert.clear();
+        atmsToInsert = new List<AccountTeamMember>(toFuture);
+    }
 }

@@ -410,38 +410,39 @@ public with sharing class PoliciesSelector extends RecordsSelector
      * 
      * 
      */
-    public List<Policy__c> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> policyHolderIdSet, Set<String> policiesToExclude) {
-
+    public List<Policy__c> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> policyHolderIdSet, Set<String> policiesToExclude)
+    {
         List<Policy__c> result = new List<Policy__c>();
 
-        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && policyHolderIdSet != null && !policyHolderIdSet.isEmpty()) {
-            
-            this.baseQuery.selectFields
-            (
-                new List<Schema.SObjectField>
-            {
+        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && policyHolderIdSet != null && !policyHolderIdSet.isEmpty())
+        {
+            this.baseQuery.selectFields(new List<Schema.SObjectField>{
                 Policy__c.Id,
                 Policy__c.PolicyHolder__c,
                 Policy__c.IntermediaryId__c
-            }
-            ).selectFields('Policy__c.IntermediaryId__r.IntermediaryGroup__c');
+            }).selectFields('Policy__c.IntermediaryId__r.IntermediaryGroup__c');
 
             this.baseQuery
                             .addConditionNotEq(Policy__c.Id, policiesToExclude)
                             .addConditionIn(Policy__c.PolicyHolder__c, policyHolderIdSet)
                             .addConditionEq(Policy__c.PolicyHolder__r.Blocked__c, false)
                             .addConditionEq(Policy__c.PolicyHolder__r.Anonymized__c, false)
-                            //.addConditionIn(Policy__c., )
-                            //.addConditionIn(Policy__c., )
                             .addConditionIn(Policy__c.PolicyStatus__c, new Set<String>{'V', 'A'})
                             .addConditionEq(Policy__c.Blocked__c, false)
                             .addConditionEq(Policy__c.Anonymized__c, false)
                             .addConditionNotEq(Policy__c.PolicyHolder__c, null);
 
-                            
-
-            if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) {
+            if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty())
+            {
                 this.baseQuery.setLimit(1);
+            }
+
+            else
+            {
+                this.baseQuery.addCondition(Query.doOr(
+                    Query.conditionIn('Intermediary__c', intermediaryIdsSet),
+                    Query.conditionIn('IntermediaryId__r.IntermediaryGroup__c', intermediaryGroupIdsSet)
+                ));
             }
 
             result = this.baseQuery.enforceSecurity().run();
@@ -453,6 +454,17 @@ public with sharing class PoliciesSelector extends RecordsSelector
     /**
      * Obtenemos las polizas de un conjunto de clientes y una agrupación para el recalculo de visibilidad de zrm
      *
+     * SELECT Id, PolicyHolder__c
+     * FROM Policy__c 
+     * WHERE PolicyHolder__c IN :policyHolderIdSet
+     *  AND IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
+     *  AND PolicyHolder__r.Blocked__c = FALSE
+     *  AND PolicyHolder__r.Anonymized__c = FALSE
+     *  AND PolicyStatus__c IN ('V', 'A') 
+     *  AND Blocked__c = FALSE
+     *  AND Anonymized__c = FALSE
+     *  AND PolicyHolder__c != NULL
+     * 
      * @author dmunoz
      * @date 19/03/2024
      * 
@@ -462,16 +474,22 @@ public with sharing class PoliciesSelector extends RecordsSelector
         List<Policy__c> result = new List<Policy__c>();
 
         if (policyHolderIdSet != null && !policyHolderIdSet.isEmpty() && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
-            result = new List<Policy__c>([SELECT Id, PolicyHolder__c
-                                        FROM Policy__c 
-                                        WHERE PolicyHolder__c IN :policyHolderIdSet
-                                        AND IntermediaryId__r.IntermediaryGroup__c = :intermediaryGroupId
-                                        AND PolicyHolder__r.Blocked__c = FALSE
-                                        AND PolicyHolder__r.Anonymized__c = FALSE
-                                        AND PolicyStatus__c IN ('V', 'A') 
-                                        AND Blocked__c = FALSE
-                                        AND Anonymized__c = FALSE
-                                        AND PolicyHolder__c != NULL]);
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Policy__c.PolicyHolder__c
+            };
+
+            result = this.baseQuery
+                            .addConditionIn(Policy__c.PolicyHolder__c, policyHolderIdSet)
+                            .addConditionEq(IntermediaryId__r.IntermediaryGroup__c, intermediaryGroupId)
+                            .addConditionEq(Policy__c.PolicyHolder__r.Blocked__c, false)
+                            .addConditionEq(Policy__c.PolicyHolder__r.Anonymized__c, false)
+                            .addConditionIn(Policy__c.PolicyStatus__c, new Set<String>{'V', 'A'})
+                            .addConditionEq(Policy__c.Blocked__c, false)
+                            .addConditionEq(Policy__c.Anonymized__c, false)
+                            .addConditionNotEq(Policy__c.PolicyHolder__c, null);
+                            .enforceSecurity()
+                            .run();
         }
 
         return result;

@@ -269,7 +269,12 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
 
     /**
      * Método que recupera los AccountTeamMember según una lista de usuarios
-     * *
+     * 
+     * SELECT Id, AccountId, UserId, User.Profile.Name
+     * FROM AccountTeamMember
+     * WHERE UserId = :userList
+     *  AND TeamMemberRole = 'MediadorZRM'
+     * 
      * @author dmunoz
      * @date 14/02/2024
      * @param Set<String> lista de identificadores de cuentas
@@ -279,7 +284,19 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         List<AccountTeamMember> result = new List<AccountTeamMember>();
 
         if (userList != null && !userList.isEmpty()) {
-            result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId, User.Profile.Name FROM AccountTeamMember WHERE UserId = :userList AND TeamMemberRole = 'MediadorZRM']);
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                AccountTeamMember.AccountId,
+                AccountTeamMember.UserId
+            };
+
+            result = this.baseQuery
+                            .selectFields(fieldsToRetrieve)
+                            .selectField('User.Profile.Name')
+                            .addConditionIn(AccountTeamMember.UserId, userList)
+                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
+                            .enforceSecurity()
+                            .run();
         }
 
         return result;
@@ -288,33 +305,62 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
 
     /**
      * Método que recupera los AccountTeamMember de un cliente para un mediador y agrupaciones
-     * *
+     *
+     * SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
+     * FROM AccountTeamMember 
+     * WHERE TeamMemberRole = 'MediadorZRM' 
+     *  AND AccountId IN : accountId 
+     * if (!intermediaryGroupIdsSet.isEmpty())
+     *  AND (
+     *      User.Contact.AccountId IN :intermediaryIdsSet OR 
+     *      User.Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdsSet
+     *  )
+     * else
+     *  AND User.Contact.AccountId IN :intermediaryIdsSet
+     * 
      * @author dmunoz
      * @date 26/02/2024
      */
+
     public List<AccountTeamMember> findZRMATMsByAccountIdAndIntermediaryOrIntermediaryGroup(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountId) {
         List<AccountTeamMember> result = new List<AccountTeamMember>();
 
-        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty()) {
-            result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
-                                                    FROM AccountTeamMember 
-                                                    WHERE TeamMemberRole = 'MediadorZRM' 
-                                                    AND AccountId IN : accountId 
-                                                    AND (
-                                                        User.Contact.AccountId IN: intermediaryIdsSet OR 
-                                                        User.Contact.Account.IntermediaryGroup__c IN: intermediaryGroupIdsSet
-                                                        )
-                                                    ]);
+        if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null)
+        {
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                AccountTeamMember.AccountId,
+                AccountTeamMember.UserId,
+                AccountTeamMember.User.Contact.AccountId
+            };
+            Set<String> fieldsToRetrieveString = new Set<String>
+            {
+                'User.Contact.Account.IntermediaryGroup__c',
+                'User.Profile.Name'
+            };
 
-        } else if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) {
-            result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
-                                                    FROM AccountTeamMember 
-                                                    WHERE TeamMemberRole = 'MediadorZRM' 
-                                                    AND AccountId IN : accountId 
-                                                    AND User.Contact.AccountId IN: intermediaryIdsSet]);
+            this.baseQuery
+                            .selectFields(fieldsToRetrieve)
+                            .selectFields(fieldsToRetrieveString)
+                            .addConditionIn(AccountTeamMember.AccountId, accountId)
+                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
+                            .enforceSecurity();
+
+            if (!intermediaryGroupIdsSet.isEmpty())
+            {
+                this.baseQuery.addCondition(Query.doOr(
+                    Query.conditionIn(AccountTeamMember.User.Contact.AccountId, intermediaryIdsSet),
+                    Query.conditionIn('User.Contact.Account.IntermediaryGroup__c', intermediaryGroupIdsSet)
+                ));
+            }
+
+            else
+            {
+                this.baseQuery.addConditionIn(AccountTeamMember.User.Contact.AccountId, intermediaryIdsSet);
+            }
+
+            result = this.baseQuery.run();
         }
-
-        
 
         return result;
     }
@@ -322,18 +368,38 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
 
     /**
      * Método que recupera los AccountTeamMember de un lead para el batch de merge. Este batch elimina los atm del lead por lo que tenemos que consultarlos antes
-     * *
+     * 
+     * SELECT AccountId, UserId, TeamMemberRole, AccountAccessLevel, OpportunityAccessLevel, CaseAccessLevel, ContactAccessLevel 
+     * FROM AccountTeamMember 
+     * WHERE AccountId = :leadAccount.Id
+     *  AND TeamMemberRole = 'MediadorZRM'
+     * 
      * @author dmunoz
      * @date 12/03/2024
      */
-    public List<AccountTeamMember> getLeadZRMAccountTeamsMember(Account leadAccount) {
-
+    public List<AccountTeamMember> getLeadZRMAccountTeamsMember(Account leadAccount)
+    {
         List<AccountTeamMember> result = new List<AccountTeamMember>();
-        if (leadAccount != null) {
-            result = new List<AccountTeamMember>([SELECT AccountId, UserId, TeamMemberRole, AccountAccessLevel, OpportunityAccessLevel, CaseAccessLevel, ContactAccessLevel 
-                                                    FROM AccountTeamMember 
-                                                    WHERE AccountId =: leadAccount.Id
-                                                    AND TeamMemberRole = 'MediadorZRM']); 
+
+        if (leadAccount != null)
+        {
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                AccountTeamMember.AccountId,
+                AccountTeamMember.UserId,
+                AccountTeamMember.TeamMemberRole,
+                AccountTeamMember.AccountAccessLevel,
+                AccountTeamMember.OpportunityAccessLevel,
+                AccountTeamMember.CaseAccessLevel,
+                AccountTeamMember.ContactAccessLevel
+            };
+
+            result = this.baseQuery
+                            .selectFields(fieldsToRetrieve)
+                            .addConditionEq(AccountTeamMember.AccountId, leadAccount.Id)
+                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
+                            .enforceSecurity()
+                            .run();
         }
         return result;
 
@@ -342,20 +408,33 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
 
     /**
      * Método que recupera los AccountTeamMember de un cliente para un mediador y agrupaciones
-     * *
+     * 
+     * SELECT Id FROM AccountTeamMember
+     * WHERE AccountId IN :accountIdsSet
+     *     AND UserId IN :userList
+     *     AND TeamMemberRole = 'MediadorZRM'
+     * 
      * @author dmunoz
      * @date 26/02/2024
      */
-    public List<AccountTeamMember> getZRMATMByAccountAndUser(Set<String> accountIdsSet, List<User> userList) {
+    public List<AccountTeamMember> getZRMATMByAccountAndUser(Set<String> accountIdsSet, List<User> userList)
+    {
         List<AccountTeamMember> result = new List<AccountTeamMember>();
 
-        if (accountIdsSet != null && !accountIdsSet.isEmpty() && userList != null && !userList.isEmpty()) {
-            result = new List<AccountTeamMember>([SELECT Id
-                                                    FROM AccountTeamMember 
-                                                    WHERE AccountId IN :accountIdsSet 
-                                                    AND UserId IN :userList
-                                                    AND TeamMemberRole = 'MediadorZRM']);
+        if (accountIdsSet != null && !accountIdsSet.isEmpty() && userList != null && !userList.isEmpty())
+        {
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                AccountTeamMember.Id
+            };
 
+            result = this.baseQuery
+                            .selectFields(fieldsToRetrieve)
+                            .addConditionIn(AccountTeamMember.AccountId, accountIdsSet)
+                            .addConditionIn(AccountTeamMember.UserId, userList)
+                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
+                            .enforceSecurity()
+                            .run();
         }        
 
         return result;
@@ -363,20 +442,33 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
 
     /**
      * Método que recupera los AccountTeamMember de un cliente para un mediador y agrupaciones
-     * *
+     *
+     * SELECT Id FROM AccountTeamMember 
+     * WHERE AccountId NOT IN :accountIdsSet 
+     *  AND UserId IN :userList
+     *  AND TeamMemberRole = 'MediadorZRM'
+     * 
      * @author dmunoz
      * @date 26/02/2024
      */
-    public List<AccountTeamMember> getZRMATMUserAndOtherAccounts(Set<String> accountIdsSet, List<User> userList) {
+    public List<AccountTeamMember> getZRMATMUserAndOtherAccounts(Set<String> accountIdsSet, List<User> userList)
+    {
         List<AccountTeamMember> result = new List<AccountTeamMember>();
 
-        if (accountIdsSet != null && !accountIdsSet.isEmpty() && userList != null && !userList.isEmpty()) {
-            result = new List<AccountTeamMember>([SELECT Id
-                                                    FROM AccountTeamMember 
-                                                    WHERE AccountId NOT IN :accountIdsSet 
-                                                    AND UserId IN :userList
-                                                    AND TeamMemberRole = 'MediadorZRM']);
+        if (accountIdsSet != null && !accountIdsSet.isEmpty() && userList != null && !userList.isEmpty())
+        {
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                AccountTeamMember.Id
+            };
 
+            result = this.baseQuery
+                            .selectFields(fieldsToRetrieve)
+                            .addConditionNotIn(AccountTeamMember.AccountId, accountIdsSet)
+                            .addConditionIn(AccountTeamMember.UserId, userList)
+                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
+                            .enforceSecurity()
+                            .run();
         }        
 
         return result;
