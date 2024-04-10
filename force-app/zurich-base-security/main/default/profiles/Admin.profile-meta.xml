@@ -17251,9 +17251,7 @@
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
     </layoutAssignments>
-    <layoutAssignments>
-        <layout>AccountRelationship__c-Account Relationship Layout</layout>
-    </layoutAssignments>
+
     <layoutAssignments>
         <layout>CloseOnCcMailboxList__mdt-CloseOnCcMailboxList Layout</layout>
     </layoutAssignments>
