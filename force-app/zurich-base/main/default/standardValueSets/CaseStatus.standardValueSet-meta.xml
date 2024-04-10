@@ -61,4 +61,10 @@
         <label>Combinado</label>
         <closed>true</closed>
     </standardValue>
+    <standardValue>
+        <fullName>Cerrado sin respuesta</fullName>
+        <default>false</default>
+        <label>Cerrado sin respuesta</label>
+        <closed>true</closed>
+    </standardValue>
 </StandardValueSet>
