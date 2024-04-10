@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SAMMisCasosPendientes</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>PendingBy__c</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CASES.LAST_UPDATE</columns>
+    <columns>CASES.TYPE</columns>
+    <columns>Subtype__c</columns>
+    <columns>TypeN3__c</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>Intermediary__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>Pendiente</value>
+    </filters>
+    <label>Mis casos pendientes</label>
+    <sharedTo>
+        <roleAndSubordinatesInternal>SAM_Supervisor</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>
