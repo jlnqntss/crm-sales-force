@@ -16600,6 +16600,10 @@
         <recordType>Case.SAMInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Default ZDA</layout>
+        <recordType>Case.ZDAInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
