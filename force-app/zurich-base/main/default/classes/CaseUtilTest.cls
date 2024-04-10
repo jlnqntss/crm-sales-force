@@ -470,6 +470,70 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Se comprueba que el metodo applyFormatToZDABody funciona correctamente. Para ello:
+     * - Crea un caso de tipo ZDA (origen CanalUnico) con descripcion formateable. DEBE APLICAR FORMATO
+     * - Crea un caso de tipo ZDA (origen CanalUnico) con sin ;;. NO DEBE HABER CAMBIOS
+     * - Crea un caso de tipo ZDA (origen Web) con descripcion formateable. NO DEBE HABER CAMBIOS
+     * - Crea un caso de tipo Sprinklr (origen CanalUnico) con descripcion formateable. NO DEBE HABER CAMBIOS
+     *
+     * @author mario.navarro@seidor.com
+     * @date 08/04/2024
+     */
+    @isTest
+    private static void test_applyFormatToZDABody()
+    {
+        Case newZDACaseToFormat = new Case (
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Description = 'Usuario: NOMBRE APELLIDO1 APELLIDO2;;Correo electrónico: USUARIO@bancsabadell.com;;Unidad de trabajo: 0086',
+            Origin = 'CanalUnico',
+            Subject = 'Caso a formatear'
+            );
+        String formattedText = newZDACaseToFormat.Description.replace(';;', '\n');
+        Case newZDACaseNoFormat = new Case (
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Description = 'Descripcion no formateable',
+            Origin = 'CanalUnico',
+            Subject = 'Caso NO formatear 1'
+            );
+        Case newZDACaseNoFormat2 = new Case (
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Description = newZDACaseToFormat.Description,
+            Origin = 'Web',
+            Subject = 'Caso NO formatear 2'
+            );
+        Case newSprinklrCase = new Case (
+            RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR,
+            Description = newZDACaseToFormat.Description,
+            Origin = 'CanalUnico',
+            Subject = 'Caso NO formatear 3'
+            );
+        List<Case> casesToInsert = new List<Case>();
+        casesToInsert.add(newZDACaseToFormat);
+        casesToInsert.add(newZDACaseNoFormat);
+        casesToInsert.add(newZDACaseNoFormat2);
+        casesToInsert.add(newSprinklrCase);
+
+        Test.startTest();
+        insert casesToInsert;
+        Test.stopTest();
+
+        List<Case> casesToCompare = [SELECT Subject, Description FROM Case];
+        for (Case caseToCompare : casesToCompare)
+        {
+            if ( caseToCompare.Subject.equals(newZDACaseToFormat.Subject) )
+            {
+                //Caso que debe haber sido formateado
+                Assert.areEqual(formattedText, caseToCompare.Description);
+            }
+            else
+            {
+                //El resto no se deben haber formateado
+                Assert.areNotEqual(formattedText, caseToCompare.Description);
+            }
+        }
+    }
+
+    /**
      * IMPORTANTE: este test depende de que esté activo el flow CaseTriggerBeforeEntitlement
      * porque es el encargado de asignar al caso un entitlement, y debido a eso se generan
      * los CaseMilestones

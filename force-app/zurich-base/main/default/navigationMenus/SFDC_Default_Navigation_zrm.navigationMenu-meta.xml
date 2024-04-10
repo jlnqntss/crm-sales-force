@@ -39,15 +39,23 @@
         <type>SalesforceObject</type>
     </navigationMenuItem>
     <navigationMenuItem>
-        <label>Campañas</label>
+        <defaultListViewId>MyCases</defaultListViewId>
+        <label>Casos</label>
         <position>6</position>
+        <publiclyAvailable>false</publiclyAvailable>
+        <target>Case</target>
+        <type>SalesforceObject</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Campañas</label>
+        <position>7</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>Campaign</target>
         <type>SalesforceObject</type>
     </navigationMenuItem>
     <navigationMenuItem>
         <label>Informes</label>
-        <position>7</position>
+        <position>8</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>Report</target>
         <type>SalesforceObject</type>
