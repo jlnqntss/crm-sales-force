@@ -1130,6 +1130,7 @@ public with sharing class GenesysInteractionsService
                 INTERMEDIARY_MAIL,
                 INTERMEDIARY_CHANNEL,
                 INTERMEDIARY_SEGMENT,
+                'Policy__r.IntermediaryId__r.SegmentDescription__c',
                 //Datos del tomador
                 'Policy__r.PolicyHolder__r.Name',
                 'Policy__r.PolicyHolder__r.NationalId__c',
@@ -1868,6 +1869,7 @@ public with sharing class GenesysInteractionsService
         public String intermediaryPhone;
         public String intermediaryEmail;
         public String intermediarySegment;
+        public String intermediarySegmentDescription;
         public String holderName;
         public String holderNationalId;
 
@@ -1891,6 +1893,7 @@ public with sharing class GenesysInteractionsService
             this.intermediaryPhone = String.isBlank(policy.IntermediaryId__r.Phone)? policy.IntermediaryId__r.MainMobilePhone__c : policy.IntermediaryId__r.Phone;
             this.intermediaryEmail = policy.IntermediaryId__r.MainEmail__c;
             this.intermediarySegment = policy.IntermediaryId__r.Segment__c;
+            this.intermediarySegmentDescription = policy.IntermediaryId__r.SegmentDescription__c;
             this.holderName = policy.PolicyHolder__r.Name;
             this.holderNationalId = policy.PolicyHolder__r.NationalId__c;
         }
@@ -1912,6 +1915,7 @@ public with sharing class GenesysInteractionsService
             this.intermediaryPhone = String.isBlank(claim.Policy__r.IntermediaryId__r.Phone)? claim.Policy__r.IntermediaryId__r.MainMobilePhone__c : claim.Policy__r.IntermediaryId__r.Phone;
             this.intermediaryEmail = claim.Policy__r.IntermediaryId__r.MainEmail__c;
             this.intermediarySegment = claim.Policy__r.IntermediaryId__r.Segment__c;
+            this.intermediarySegmentDescription = claim.Policy__r.IntermediaryId__r.SegmentDescription__c;
             this.holderName = claim.Policy__r.PolicyHolder__r.Name;
             this.holderNationalId = claim.Policy__r.PolicyHolder__r.NationalId__c;
         }
