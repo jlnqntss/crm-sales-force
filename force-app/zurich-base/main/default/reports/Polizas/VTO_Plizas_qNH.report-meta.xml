@@ -56,16 +56,16 @@
         <criteriaItems>
             <column>Policy__c.EndDate__c</column>
             <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>TODAY</value>
+            <isUnlocked>true</isUnlocked>
+            <operator>lessOrEqual</operator>
+            <value>NEXT_N_DAYS:60</value>
         </criteriaItems>
         <criteriaItems>
             <column>Policy__c.EndDate__c</column>
             <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
+            <isUnlocked>true</isUnlocked>
             <operator>greaterOrEqual</operator>
-            <value>NEXT_N_DAYS:60</value>
+            <value>TODAY</value>
         </criteriaItems>
         <language>es</language>
     </filter>
