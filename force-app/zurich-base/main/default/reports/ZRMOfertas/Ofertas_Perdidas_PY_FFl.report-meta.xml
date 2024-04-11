@@ -4,6 +4,9 @@
         <field>ACCOUNT_NAME</field>
     </columns>
     <columns>
+        <field>Opportunity.InfoUser__c</field>
+    </columns>
+    <columns>
         <field>OPPORTUNITY_NAME</field>
     </columns>
     <columns>
@@ -55,7 +58,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>N_MONTHS_AGO:12</value>
+            <value>N_MONTHS_AGO:10</value>
         </criteriaItems>
         <language>es</language>
     </filter>

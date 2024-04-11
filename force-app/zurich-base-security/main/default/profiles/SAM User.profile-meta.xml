@@ -2545,11 +2545,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.TOPAgent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.TerritoryManagerName__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2616,11 +2611,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>AccountRelationship__c.RelationshipType__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AccountTeamMember.rol__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3035,16 +3025,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case_Queue_override_by_type__mdt.Subtype_Description__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case_Queue_override_by_type__mdt.TypeDescription__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Claim__c.Anonymized__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3426,11 +3406,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Event.CaseMediator__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.ClienteMediado__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

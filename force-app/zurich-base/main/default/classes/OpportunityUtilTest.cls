@@ -4,6 +4,8 @@ private with sharing class OpportunityUtilTest
     @TestSetup
     private static void makeData()
     {
+        setMetadataConfigurations();
+
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 10);
         insert accounts;
 
@@ -783,4 +785,172 @@ private with sharing class OpportunityUtilTest
 
     }
 
+    /**
+    * @description Método de test que comprueba que se marca el campo 'PotentialMatch__c'
+    * cuando se identifica la oportunidad de ZRM cuando no tiene informado el 
+    * campo 'BusinessCode__c'.
+    * @author amiranda
+    * @date 08-04-2024 
+    **/
+    @IsTest
+    private static void test_identifyPotentialMatches_withoutBusinessCode() 
+    {
+        // Se informa esta variable estática para simular que la acción DML de inserción viene del contexto del batch de las ERs
+        ExternalJobQueueBatch.className = ExternalJobQueueBatch.class.getName();
+
+        List<Account> accounts = [SELECT Name FROM Account];
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 2);
+
+        Test.startTest();
+        insert opportunities;
+        Test.stopTest();
+
+        List<Opportunity> insertedOpportunities = [SELECT PotentialMatch__c FROM Opportunity];
+
+        for(Opportunity insertedOpportunity : insertedOpportunities)
+        {
+           Assert.isTrue(insertedOpportunity.PotentialMatch__c, 
+                         'El valor del campo \'PotentialMatch__c\' debería ser \'true\'');
+        }
+    }
+
+    /**
+    * @description Método de test que comprueba que se marca el campo 'PotentialMatch__c'
+    * cuando se identifica la oportunidad de ZRM cuando tiene informado el 
+    * campo 'BusinessCode__c' con el código de negocio del scope 'Ventas'.
+    * @author amiranda
+    * @date 08-04-2024 
+    **/
+    @IsTest
+    private static void test_identifyPotentialMatches_withBusinessCode() 
+    {
+        // Se informa esta variable estática para simular que la acción DML de inserción viene del contexto del batch de las ERs
+        ExternalJobQueueBatch.className = ExternalJobQueueBatch.class.getName();
+
+        List<Account> accounts = [SELECT Name FROM Account];
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 2);
+        for(Integer i = 0; i < opportunities.size(); i++)
+        {
+            opportunities[i].BusinessCode__c = '3200012969';
+        }
+
+        Test.startTest();
+        insert opportunities;
+        Test.stopTest();
+
+        List<Opportunity> insertedOpportunities = [SELECT PotentialMatch__c FROM Opportunity];
+
+        for(Opportunity insertedOpportunity : insertedOpportunities)
+        {
+           Assert.isTrue(insertedOpportunity.PotentialMatch__c, 
+                         'El valor del campo \'PotentialMatch__c\' debería ser \'true\'');
+        }
+    }
+
+    /**
+    * @description Método de test que comprueba que NO se marca el campo 'PotentialMatch__c'
+    * cuando la acción DML de inserción de las oportunidades no se simula que procede
+    * del contexto del batch que procesa las External Request.
+    * @author amiranda
+    * @date 08-04-2024 
+    **/
+    @IsTest
+    private static void test_identifyPotentialMatches_notLaunchedFromBatch() 
+    {
+        List<Account> accounts = [SELECT Name FROM Account];
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 2);
+
+        Test.startTest();
+        insert opportunities;
+        Test.stopTest();
+
+        List<Opportunity> insertedOpportunities = [SELECT PotentialMatch__c FROM Opportunity];
+
+        for(Opportunity insertedOpportunity : insertedOpportunities)
+        {
+           Assert.isFalse(insertedOpportunity.PotentialMatch__c, 
+                          'El valor del campo \'PotentialMatch__c\' debería ser \'false\'');
+        }
+    }
+
+    /**
+    * @description Método que se encarga de cargar en memoria los registros
+    * del Custom Metadata 'Scope_Setting__mdt'.
+    * @author amiranda
+    * @date 08-04-2024 
+    **/
+    private static void setMetadataConfigurations()
+    {
+        List<Scope_Setting__mdt> testScopeSettingsMetadata = new List<Scope_Setting__mdt>();
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'EMPLEADOSORANGE',
+                                         BusinessCode__c = '3200012487',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'EMPLEADOSORANGE2',
+                                         BusinessCode__c = '3200012596',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ORANGEDIGITAL',            
+                                         BusinessCode__c = '3200012539',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ORANGEDIGITALCC',
+                                         BusinessCode__c = '3200012567',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ORANGEDIGITALSD',
+                                         BusinessCode__c = '3200012560',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ORANGEFUERZASCOMERCIALES',
+                                         BusinessCode__c = '3200012686',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ORANGEINBOUND',            
+                                         BusinessCode__c = '3200012538',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ORANGEINBOUNDLPLEADSCDDLANDING',
+                                         BusinessCode__c = '3200012617',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ORANGEOUTBOUND',
+                                         BusinessCode__c = '3200012518',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ORANGEOUTBOUND2',
+                                         BusinessCode__c = '3200012428',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ORANGEOUTBOUNDLPFUNNEL',
+                                         BusinessCode__c = '3200012616',
+                                         Scope__c = 'ZEO') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'XSELLAGENTESZURICHEMPRESAS',
+                                         BusinessCode__c = '3200012675',
+                                         Scope__c = 'ZE') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'XSELLAGENTESZURICHEMPRESASLC',
+                                         BusinessCode__c = '3200012655',
+                                         Scope__c = 'ZE') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ZE',
+                                         BusinessCode__c = '3200012491',
+                                         Scope__c = 'ZE') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ZE2',
+                                         BusinessCode__c = '3200013349',
+                                         Scope__c = 'ZE') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'ZEB',
+                                         BusinessCode__c = '3200012912',
+                                         Scope__c = 'ZEB') );
+        testScopeSettingsMetadata.add( new Scope_Setting__mdt(
+                                         DeveloperName = 'Zurich_Ventas',
+                                         BusinessCode__c = '3200012969',
+                                         Scope__c = 'Ventas') );
+
+        OpportunityUtil.scopeSettingsMetadata = testScopeSettingsMetadata;                                 
+    }
 }

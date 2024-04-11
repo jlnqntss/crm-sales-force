@@ -136,6 +136,11 @@
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
+    <applicationVisibilities>
+        <application>ZDA</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
     <classAccesses>
         <apexClass>AccountSearchService</apexClass>
         <enabled>true</enabled>
@@ -294,6 +299,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ChangePasswordControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CollectionUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -11041,6 +11050,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PersonLeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PotentialMatch__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
