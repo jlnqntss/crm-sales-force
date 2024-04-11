@@ -2,8 +2,8 @@
 <ReportFolder xmlns="http://soap.sforce.com/2006/04/metadata">
     <folderShares>
         <accessLevel>Manage</accessLevel>
-        <sharedTo>leopoldo.gonzalez@zurich.com</sharedTo>
-        <sharedToType>User</sharedToType>
+        <sharedTo>SAM_Supervisor</sharedTo>
+        <sharedToType>RoleAndSubordinatesInternal</sharedToType>
     </folderShares>
     <name>Paneles de Inicio SAM</name>
 </ReportFolder>
