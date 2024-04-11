@@ -353,14 +353,13 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
         // Obtengo las polizas que apuntan a al cliente
         policiesQuery = (new PoliciesSelector()).selectByIntermediaryAndIntermediaryGroupExcludingPolicies(new Set<String>{intermediary.Id}, intermediaryGroupIdSet, new Set<String>{accountId}, new Set<String> {idNotToSearch});
         
-        // si no encuentra resultado busco en ofertas
-        if (policiesQuery != null && policiesQuery.isEmpty()) {
-            opportunityQuery = (new OpportunitiesSelector()).selectByIntermediaryAndIntermediaryGroupExcludingOffers(new Set<String>{intermediary.Id}, intermediaryGroupIdSet, new Set<String>{accountId}, new Set<String> {idNotToSearch});
-        }        
+        // Busco en ofertas
+        opportunityQuery = (new OpportunitiesSelector()).selectByIntermediaryAndIntermediaryGroupExcludingOffers(new Set<String>{intermediary.Id}, intermediaryGroupIdSet, new Set<String>{accountId}, new Set<String> {idNotToSearch});
+                        
 
         // informo el resultado del mapa
         result = intermediaryHasClientVisibility(result, policiesQuery, opportunityQuery, intermediary.Id);
-        result = intermediaryGroupHasClientVisibility(result, policiesQuery, opportunityQuery, intermediary.IntermediaryGroup__c);        
+        result = intermediaryGroupHasClientVisibility(result, policiesQuery, opportunityQuery, intermediary.IntermediaryGroup__c);    
 
         return result;
     }

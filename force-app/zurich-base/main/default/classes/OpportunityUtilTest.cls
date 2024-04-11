@@ -42,7 +42,7 @@ private with sharing class OpportunityUtilTest
             // Usuario AGR
             String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas - AGR' LIMIT 1].Id;
 
-            userAGRList = TestDataFactory.generateUsersByProfile(portalAGRProfile, 1);            
+            userAGRList = TestDataFactory.generateUsersByProfile(portalAGRProfile, 1);
             userAGRList[0].ContactId = contacts[1].Id;
 
             insert userAGRList;
@@ -78,18 +78,18 @@ private with sharing class OpportunityUtilTest
 
         for(Opportunity opty : optysUpdated)
         {
-            System.assert (String.isNotBlank(opty.Scope__c), 'No se ha informado la picklist de scope');            
+            System.assert (String.isNotBlank(opty.Scope__c), 'No se ha informado la picklist de scope');
         }
     }
 
     /**
      * Método de test que comprueba que la oportunidad NO esta Cerrada Ganada
-     * 
+     *
      * @author arcortazar - nts
      * @date 10/03/2022
      */
     @isTest
-    private static void test_isValidStageName_OK() 
+    private static void test_isValidStageName_OK()
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -106,12 +106,12 @@ private with sharing class OpportunityUtilTest
 
     /**
      * Método de test que comprueba que la oportunidad SI está cerrada ganada
-     * 
+     *
      * @author arcortazar - nts
      * @date 10/03/2022
      */
     @isTest
-    private static void test_isValidStageName_NOK() 
+    private static void test_isValidStageName_NOK()
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -127,13 +127,13 @@ private with sharing class OpportunityUtilTest
     }
 
     /**
-     * Método de test que comprueba que se hace correctamente el bypass debido al perfil. 
-     * 
+     * Método de test que comprueba que se hace correctamente el bypass debido al perfil.
+     *
      * @author arcortazar - nts
      * @date 10/03/2022
      */
     @isTest
-    private static void test_skipStageNameValidation_byProfile_OK() 
+    private static void test_skipStageNameValidation_byProfile_OK()
     {
 
         User u = [Select Id FROM User WHERE Name like 'Integrator'];
@@ -156,12 +156,12 @@ private with sharing class OpportunityUtilTest
 
     /**
      * Método de test que comprueba que se hace correctamente el Bypass debido al Custom Permisson
-     * 
+     *
      * @author arcortazar - nts
      * @date 10/03/2022
      */
     @isTest
-    private static void test_skipStageNameValidation_byCustomPermisson_OK() 
+    private static void test_skipStageNameValidation_byCustomPermisson_OK()
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -172,7 +172,7 @@ private with sharing class OpportunityUtilTest
 
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
         System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
-        
+
         User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         System.runAs(u)
         {
@@ -185,12 +185,12 @@ private with sharing class OpportunityUtilTest
 
     /**
      * Método de test que comprueba que se hace correctamente el Bypass debido al flag de reasignación
-     * 
+     *
      * @author arcortazar - nts
      * @date 10/03/2022
      */
     @isTest
-    private static void test_skipStageNameValidation_byHasBeenReassigned_OK() 
+    private static void test_skipStageNameValidation_byHasBeenReassigned_OK()
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -199,7 +199,7 @@ private with sharing class OpportunityUtilTest
         insert opp;
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
         System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
-        
+
         User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
         Boolean salida;
@@ -215,12 +215,12 @@ private with sharing class OpportunityUtilTest
 
     /**
      * Método de test que comprueba que no se lleva a cabo el bypass debido a que no se da ninguna de las condiciones.
-     * 
+     *
      * @author arcortazar - nts
      * @date 10/03/2022
      */
     @isTest
-    private static void test_skipStageNameValidation_NOK() 
+    private static void test_skipStageNameValidation_NOK()
     {
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
@@ -230,7 +230,7 @@ private with sharing class OpportunityUtilTest
 
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
         System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
-        
+
         User u = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
         Boolean salida;
         System.runAs(u)
@@ -247,10 +247,10 @@ private with sharing class OpportunityUtilTest
      * Método de test que comprueba que se hace un update de la oportunidad utilizando uno de los perfiles bypaseados (En este caso, sysadmin).
      * @author arcortazar
      * @date 09/03/2022
-     * 
+     *
      */
     @isTest
-    private static void test_runAsSysAdmin_OK() 
+    private static void test_runAsSysAdmin_OK()
     {
         // Setup del test
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
@@ -260,14 +260,14 @@ private with sharing class OpportunityUtilTest
 
         opp.OwnerId = UserInfo.getUserId();
         opp.HasBeenReassigned__c = true;
-        
-        // Lanzamos el test, modificamos la oferta 
+
+        // Lanzamos el test, modificamos la oferta
         Test.startTest();
         upsert opp;
         Test.stopTest();
 
         // Comprobamos que se haya modificado la oferta
-        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity]; 
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity];
         System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
 
         System.assertEquals(UserInfo.getUserId(), oportunidades.get(0).OwnerId, 'EL owner de la oferta ha de ser el usuario que corre el test');
@@ -278,26 +278,26 @@ private with sharing class OpportunityUtilTest
      * Método de test que comprueba que se hace un update de la oportunidad utilizando un perfil supervisor.
      * @author arcortazar
      * @date 09/03/2022
-     * 
+     *
      */
     @isTest
-    private static void test_runAsSupervisor_OK() 
+    private static void test_runAsSupervisor_OK()
     {
         // Obtenemos los diferentes usuarios: supervisor y no supervisor
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
         System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
-        
+
         User uSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
         // Creamos la oportunidad que vamos a manejar en el test
         List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
-       Product2 p = new Product2
-            (
-                Name = 'Product test 1',
-                GroupDescription__c = 'Group 1',
-                INFO_Product_Number__c = '00800-00001'
-            );
+        Product2 p = new Product2
+                     (
+            Name = 'Product test 1',
+            GroupDescription__c = 'Group 1',
+            INFO_Product_Number__c = '00800-00001'
+                     );
         insert p;
 
         Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
@@ -311,15 +311,15 @@ private with sharing class OpportunityUtilTest
         opp.HasBeenReassigned__c = true;
 
         System.runAs(uSup)
-        {   
-            // Lanzamos el test, modificamos la oferta 
+        {
+            // Lanzamos el test, modificamos la oferta
             Test.startTest();
             upsert opp;
             Test.stopTest();
         }
 
         // Comprobamos que se haya modificado la oferta
-        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity]; 
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity];
         System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
 
         System.assertEquals(uSup.Id, oportunidades.get(0).OwnerId, 'EL owner de la oferta ha de ser el usuario que corre el test');
@@ -330,48 +330,48 @@ private with sharing class OpportunityUtilTest
      * Método de test que comprueba que se hace un update de la oportunidad utilizando un perfil no supervisor, mediante el bypass de HassBeenReassigned
      * @author arcortazar
      * @date 09/03/2022
-     * 
+     *
      */
     @isTest
-    private static void test_runNotAsSupervisor_OK() 
+    private static void test_runNotAsSupervisor_OK()
     {
-       // Obtenemos los diferentes usuarios: supervisor y no supervisor
-       List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
+        // Obtenemos los diferentes usuarios: supervisor y no supervisor
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
         System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
-        
+
         User uNoSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
-       // Creamos la oportunidad que vamos a manejar en el test
-       List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        // Creamos la oportunidad que vamos a manejar en el test
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
-       Product2 p = new Product2
-            (
-                Name = 'Product test 1',
-                GroupDescription__c = 'Group 1',
-                INFO_Product_Number__c = '00800-00001'
-            );
+        Product2 p = new Product2
+                     (
+            Name = 'Product test 1',
+            GroupDescription__c = 'Group 1',
+            INFO_Product_Number__c = '00800-00001'
+                     );
         insert p;
 
-       Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
-       opp.BusinessCode__c = '123456';
-       opp.InfoQuoteNumber__c = '123456';
-       opp.OwnerId = uNoSup.Id;
-       opp.ProductId__c = p.Id;
-       insert opp;
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
+        opp.BusinessCode__c = '123456';
+        opp.InfoQuoteNumber__c = '123456';
+        opp.OwnerId = uNoSup.Id;
+        opp.ProductId__c = p.Id;
+        insert opp;
 
-       // Modificamos la oportunidad
-       opp.HasBeenReassigned__c = true;
+        // Modificamos la oportunidad
+        opp.HasBeenReassigned__c = true;
 
-       System.runAs(uNoSup)
-       {   
-           // Lanzamos el test, modificamos la oferta 
-           Test.startTest();
-           upsert opp;
-           Test.stopTest();
-       }
+        System.runAs(uNoSup)
+        {
+            // Lanzamos el test, modificamos la oferta
+            Test.startTest();
+            upsert opp;
+            Test.stopTest();
+        }
 
         // Comprobamos que se haya modificado la oferta
-        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity]; 
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity];
         System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
         System.assertEquals(false, oportunidades.get(0).HasBeenReassigned__c, 'El flag debe haberse modificado');
     }
@@ -380,53 +380,53 @@ private with sharing class OpportunityUtilTest
      * Método de test que comprueba que NO se hace un update de la oportunidad. No tenemos ninguna de las opciones de bypass
      * @author arcortazar
      * @date 09/03/2022
-     * 
+     *
      */
     @isTest
-    private static void test_runNotAsSupervisor_ClosedWon_NOK() 
+    private static void test_runNotAsSupervisor_ClosedWon_NOK()
     {
         // Obtenemos los diferentes usuarios: supervisor y no supervisor
         List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True];
         System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
-        
+
         User uNoSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
-       // Creamos la oportunidad que vamos a manejar en el test
-       List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        // Creamos la oportunidad que vamos a manejar en el test
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
-       Product2 p = new Product2
-            (
-                Name = 'Product test 1',
-                GroupDescription__c = 'Group 1',
-                INFO_Product_Number__c = '00800-00001'
-            );
+        Product2 p = new Product2
+                     (
+            Name = 'Product test 1',
+            GroupDescription__c = 'Group 1',
+            INFO_Product_Number__c = '00800-00001'
+                     );
         insert p;
 
-       Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed Won', System.today().addDays(10), 1).get(0);
-       opp.BusinessCode__c = '123456';
-       opp.InfoQuoteNumber__c = '123456';
-       opp.OwnerId = uNoSup.Id;
-       opp.ProductId__c = p.Id;
-       insert opp;
+        Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed Won', System.today().addDays(10), 1).get(0);
+        opp.BusinessCode__c = '123456';
+        opp.InfoQuoteNumber__c = '123456';
+        opp.OwnerId = uNoSup.Id;
+        opp.ProductId__c = p.Id;
+        insert opp;
 
-       // Modificamos la oportunidad
-       opp.HasBeenReassigned__c = false;
+        // Modificamos la oportunidad
+        opp.HasBeenReassigned__c = false;
 
-       Database.SaveResult resultados;
-       System.runAs(uNoSup)
-       {   
-           // Lanzamos el test, modificamos la oferta 
-           Test.startTest();
-           resultados = Database.update(opp, false);
-           Test.stopTest();
-       }
+        Database.SaveResult resultados;
+        System.runAs(uNoSup)
+        {
+            // Lanzamos el test, modificamos la oferta
+            Test.startTest();
+            resultados = Database.update(opp, false);
+            Test.stopTest();
+        }
 
         // Comprobamos que se haya modificado la oferta
-        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, StageName, HasBeenReassigned__c FROM Opportunity]; 
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, StageName, HasBeenReassigned__c FROM Opportunity];
         System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
 
-        System.assertEquals(false, resultados.isSuccess());
-        System.assertEquals(Label.OfferStageValidationMessage, resultados.getErrors().get(0).getMessage());
+        System.assertEquals( false, resultados.isSuccess() );
+        System.assertEquals( Label.OfferStageValidationMessage, resultados.getErrors().get(0).getMessage() );
     }
 
     /**
@@ -435,23 +435,23 @@ private with sharing class OpportunityUtilTest
      * @date 09/03/2022
      */
     @isTest
-    private static void test_runAsSupervisor_ClosedWon_OK() 
+    private static void test_runAsSupervisor_ClosedWon_OK()
     {
-       // Obtenemos los diferentes usuarios: supervisor y no supervisor
-       List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
+        // Obtenemos los diferentes usuarios: supervisor y no supervisor
+        List<PermissionSetAssignment> usuarios = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True];
         System.assertNotEquals(0, usuarios.size(), 'Ha de haber por lo menos un usuario con el permission set requerido');
-        
+
         User uSup = [Select Id FROM User WHERE Id = :usuarios.get(0).AssigneeId];
 
-       // Creamos la oportunidad que vamos a manejar en el test
-       List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+        // Creamos la oportunidad que vamos a manejar en el test
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
 
         Product2 p = new Product2
-           (
-               Name = 'Product test 1',
-               GroupDescription__c = 'Group 1',
-               INFO_Product_Number__c = '00800-00001'
-           );
+                     (
+            Name = 'Product test 1',
+            GroupDescription__c = 'Group 1',
+            INFO_Product_Number__c = '00800-00001'
+                     );
         insert p;
 
         Opportunity opp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'Closed Won', System.today().addDays(10), 1).get(0);
@@ -466,17 +466,17 @@ private with sharing class OpportunityUtilTest
 
         Database.SaveResult resultados;
         System.runAs(uSup)
-        {   
-           // Lanzamos el test, modificamos la oferta 
-           Test.startTest();
-           resultados = Database.update(opp, false);
-           Test.stopTest();
+        {
+            // Lanzamos el test, modificamos la oferta
+            Test.startTest();
+            resultados = Database.update(opp, false);
+            Test.stopTest();
         }
 
         // Comprobamos que se haya modificado la oferta
-        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity]; 
+        List<Opportunity> oportunidades  = [SELECT Id, Name, OwnerId, HasBeenReassigned__c FROM Opportunity];
         System.assertEquals(1, oportunidades.size(), 'Ha de haber una oferta insertada');
-        System.assertEquals(true, resultados.isSuccess());
+        System.assertEquals( true, resultados.isSuccess() );
     }
 
     /**
@@ -498,7 +498,8 @@ private with sharing class OpportunityUtilTest
         List<Account> accountsOther = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 10);
         insert accountsOther;
         // Change the offers AccountId to the new accounts
-        for(Integer i=0,j=optys.size();i<j;i++) {
+        for(Integer i=0,j=optys.size(); i < j; i++)
+        {
             optys[i].AccountId = accountsOther[i].Id;
         }
 
@@ -657,14 +658,14 @@ private with sharing class OpportunityUtilTest
         }
     }
 
-       /**
+    /**
      * Método de test que comprueba que el Old Owner y el New Owner SI son de tipo ZE Advisor
-     * 
+     *
      * @author jpereztirado - nts
      * @date 20/12/2022
      */
     @isTest
-    private static void test_validateChangeOwner_KO() 
+    private static void test_validateChangeOwner_KO()
     {
         Map<Id, Opportunity> oldOppsMap = new Map<Id, Opportunity>();
         List<Opportunity> newOppsList = new List<Opportunity>();
@@ -674,7 +675,7 @@ private with sharing class OpportunityUtilTest
         Opportunity newOpp;
 
         List<PermissionSetAssignment> userList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
-        
+
         if (userList.size() > 1)
         {
             User u = [Select Id FROM User WHERE Id = :userList.get(0).AssigneeId];
@@ -686,17 +687,17 @@ private with sharing class OpportunityUtilTest
             oldOpp.OwnerId = oldAdvisor;
             oldOppsMap.put(oldOpp.Id, oldOpp);
             insert oldOpp;
-    
+
             newOpp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
             newOpp.OwnerId = newAdvisor;
             newOppsList.add(newOpp);
-    
+
             System.runAs(u)
             {
                 Test.startTest();
-                OpportunityUtil.validateChangeOwner(new List<Opportunity>{newOpp}, oldOppsMap);
+                OpportunityUtil.validateChangeOwner(new List<Opportunity> {newOpp}, oldOppsMap);
                 Test.stopTest();
-                System.assertEquals(Label.OfferChangeOwnerValidationMessage, newOpp.getErrors().get(0).getMessage());
+                System.assertEquals( Label.OfferChangeOwnerValidationMessage, newOpp.getErrors().get(0).getMessage() );
             }
         }
         else
@@ -706,14 +707,14 @@ private with sharing class OpportunityUtilTest
     }
 
 
-   /**
+    /**
      * Método de test que comprueba que el Old Owner y el New Owner NO son de tipo ZE Advisor
-     * 
+     *
      * @author jpereztirado - nts
      * @date 20/12/2022
      */
     @isTest
-    private static void test_validateChangeOwner_OK() 
+    private static void test_validateChangeOwner_OK()
     {
         Map<Id, Opportunity> oldOppsMap = new Map<Id, Opportunity>();
         List<Opportunity> newOppsList = new List<Opportunity>();
@@ -724,7 +725,7 @@ private with sharing class OpportunityUtilTest
 
         List<PermissionSetAssignment> userAdvisorList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Advisor' AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
         List<PermissionSetAssignment> userSuscriptorList = [SELECT AssigneeId FROM PermissionSetAssignment WHERE PermissionSet.Name = 'ZE_Suscriptor' AND Assignee.isActive = True AND Assignee.Profile.Name != 'System Administrator'];
-        
+
         if (userAdvisorList.size() > 0 && userSuscriptorList.size() > 0)
         {
             User u = [Select Id FROM User WHERE Id = :userSuscriptorList.get(0).AssigneeId];
@@ -735,20 +736,20 @@ private with sharing class OpportunityUtilTest
             oldOpp.OwnerId = oldAdvisor;
             oldOppsMap.put(oldOpp.Id, oldOpp);
             insert oldOpp;
-    
+
             newOpp = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
             newOpp.OwnerId = newSuscriptor;
             newOppsList.add(newOpp);
-    
+
             System.runAs(u)
             {
                 Test.startTest();
-                OpportunityUtil.validateChangeOwner(new List<Opportunity>{newOpp}, oldOppsMap);
+                OpportunityUtil.validateChangeOwner(new List<Opportunity> {newOpp}, oldOppsMap);
                 Test.stopTest();
-                System.assertEquals(0, newOpp.getErrors().size());
+                System.assertEquals( 0, newOpp.getErrors().size() );
             }
         }
-        else 
+        else
         {
             System.assertNotEquals(true, false, 'No existen suficientes datos para generar el test');
         }
@@ -757,19 +758,20 @@ private with sharing class OpportunityUtilTest
 
     /**
      * Método de test que comprueba que se hayan generado atm para zrm cuando se inserta una oferta
-     * 
+     *
      * @author jpereztirado - nts
      * @date 06/03/2024
      */
     @isTest
-    private static void test_insertOfferZRMVisibility() {
+    private static void test_insertOfferZRMVisibility()
+    {
 
         List<AccountTeamMember> atmBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
 
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
 
-        Opportunity offer = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);        
+        Opportunity offer = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1).get(0);
         offer.IntermediaryId__c = zrmIntermediary.Contact.AccountId;
 
         Test.startTest();
@@ -781,6 +783,61 @@ private with sharing class OpportunityUtilTest
 
         System.assertNotEquals(atmBefore.size(), atmAfter.size(), 'Deben de haberse insertado nuevos registros de ATM');
 
+    }
+
+    @isTest
+    private static void test_visibilityUpdatePolicyHolderZRM()
+    {
+
+        // Insertamos una poliza
+        List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
+
+        List<Opportunity> offers = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1);
+        offers[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
+
+        insert offers;
+
+        // actualizamos el el cliente de la poliza
+        List<Account> otherAccount = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' AND Id != :accounts.get(0).Id LIMIT 1];
+        offers[0].AccountId = otherAccount.get(0).Id;
+
+        Test.startTest();
+        update offers;
+        Test.stopTest();
+
+        List<Opportunity> offersWithChage = new List<Opportunity>([SELECT Id FROM Opportunity WHERE LastDateIntermediaryOrAccountChange__c != NULL LIMIT 1]);
+
+        Assert.isTrue(offersWithChage.size() > 0, 'Debe haber ofertas con el campo LastDateIntermediaryOrAccountChange__c informado');
+    }
+
+
+    @isTest
+    private static void test_visibilityUpdateIntermediaryZRM()
+    {
+
+        // Insertamos una poliza
+
+        List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
+
+
+        List<Opportunity> offers = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 2);
+        offers[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
+
+        insert offers;
+
+        // actualizamos el el cliente de la poliza
+        List<Account> otherIntermediary = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Intermediary' AND Name = 'MediadorTest2' LIMIT 1];
+        offers[0].IntermediaryId__c = otherIntermediary.get(0).Id;
+
+        Test.startTest();
+        update offers;
+        Test.stopTest();
+
+        List<Opportunity> offersWithChage = new List<Opportunity>([SELECT Id FROM Opportunity WHERE LastDateIntermediaryOrAccountChange__c != NULL LIMIT 1]);
+
+        Assert.isTrue(offersWithChage.size() > 0, 'Debe haber ofertas con el campo LastDateIntermediaryOrAccountChange__c informado');
     }
 
 }
