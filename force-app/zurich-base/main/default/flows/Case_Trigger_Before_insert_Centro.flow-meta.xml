@@ -41,6 +41,19 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>AsignarCallCenterSAM</name>
+        <label>Asignar Call Center del Owner</label>
+        <locationX>2690</locationX>
+        <locationY>503</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.CallCenter__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SAM</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>AsignarCallCenterSprinklr</name>
         <label>Asignar Call Center del Owner</label>
         <locationX>2162</locationX>
@@ -121,6 +134,14 @@
             <stringValue>OCSSprinklr</stringValue>
         </value>
     </constants>
+    <constants>
+        <description>Nombre API del tipo de registro de Caso: SAM Inquiry</description>
+        <name>RECORDTYPE_SAM_INQUIRY</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>SAMInquiry</stringValue>
+        </value>
+    </constants>
     <decisions>
         <name>Cambio_de_owner</name>
         <label>¿Cambio de owner?</label>
@@ -160,6 +181,49 @@
             </conditions>
             <connector>
                 <targetReference>AsignarCallCenterSprinklr</targetReference>
+            </connector>
+            <label>Cambio de owner</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Cambio_de_owner_SAM</name>
+        <label>¿Cambio de owner?</label>
+        <locationX>2822</locationX>
+        <locationY>395</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CambioDeOwnerSAM</name>
+            <conditionLogic>1 AND (2 OR (3 AND 4))</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>005</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Owner:User.Department</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AsignarCallCenterSAM</targetReference>
             </connector>
             <label>Cambio de owner</label>
         </rules>
@@ -303,7 +367,7 @@
     <decisions>
         <name>IsOCSDecision</name>
         <label>¿Es OCS?</label>
-        <locationX>1832</locationX>
+        <locationX>2096</locationX>
         <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -335,6 +399,21 @@
                 <targetReference>Cambio_de_owner</targetReference>
             </connector>
             <label>Sprinklr</label>
+        </rules>
+        <rules>
+            <name>SAM</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>RECORDTYPE_SAM_INQUIRY</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Cambio_de_owner_SAM</targetReference>
+            </connector>
+            <label>SAM</label>
         </rules>
     </decisions>
     <decisions>
@@ -542,7 +621,7 @@ IF(
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>1706</locationX>
+        <locationX>1970</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsOCSDecision</targetReference>

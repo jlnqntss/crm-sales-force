@@ -211,6 +211,9 @@
         <quickActionListItems>
             <quickActionName>FeedItem.QuestionPost</quickActionName>
         </quickActionListItems>
+        <quickActionListItems>
+            <quickActionName>Policy__c.NuevoCasoRetencion</quickActionName>
+        </quickActionListItems>
     </quickActionList>
     <relatedLists>
         <fields>NAME</fields>
