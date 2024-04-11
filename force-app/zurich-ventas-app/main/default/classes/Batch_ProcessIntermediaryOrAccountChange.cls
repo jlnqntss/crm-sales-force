@@ -71,7 +71,6 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
             }
             
         } catch (Exception e) {
-            System.debug('Execute exception');
             // Si hay error actualizamos el registro para que se procese al día siguiente y eliminamos ese registro de la cola del procesamiento
             stopRecordProcess = true;
             Batch_IntermediaryOrAccountChangeUtil.updateRecordWithProcessKO(recordsToProcess, CLASS_NAME);
@@ -131,11 +130,7 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
      * @author dmunoz
      * @date 04/04/2024
      */
-    private void processDMLs() {    
-        
-        System.debug('Finish batch PROCESS CHANGE ');
-        System.debug('DMM ' + atmsToDelete);
-        System.debug('DMM ' + atmsToInsert);
+    private void processDMLs() {
         
         // si al terminar la ejecución del registro no hay ningun elemento a borrar o insertar, pasamos al siguiente si hubiera
         if (!stopRecordProcess && atmsToDelete != null && atmsToDelete.isEmpty() && atmsToInsert != null && atmsToInsert.isEmpty() && !recordsToProcess.isEmpty()) {
@@ -357,16 +352,15 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
 
         // Obtengo las polizas que apuntan a al cliente
         policiesQuery = (new PoliciesSelector()).selectByIntermediaryAndIntermediaryGroupExcludingPolicies(new Set<String>{intermediary.Id}, intermediaryGroupIdSet, new Set<String>{accountId}, new Set<String> {idNotToSearch});
-
+        
         // si no encuentra resultado busco en ofertas
-        if (policiesQuery != null && !policiesQuery.isEmpty()) {
-            opportunityQuery = (new OpportunitiesSelector()).selectByIntermediaryAndIntermediaryGroupExcludingPolicies(new Set<String>{intermediary.Id}, intermediaryGroupIdSet, new Set<String>{accountId}, new Set<String> {idNotToSearch});
-        }
+        if (policiesQuery != null && policiesQuery.isEmpty()) {
+            opportunityQuery = (new OpportunitiesSelector()).selectByIntermediaryAndIntermediaryGroupExcludingOffers(new Set<String>{intermediary.Id}, intermediaryGroupIdSet, new Set<String>{accountId}, new Set<String> {idNotToSearch});
+        }        
 
         // informo el resultado del mapa
         result = intermediaryHasClientVisibility(result, policiesQuery, opportunityQuery, intermediary.Id);
-        result = intermediaryGroupHasClientVisibility(result, policiesQuery, opportunityQuery, intermediary.IntermediaryGroup__c);
-        
+        result = intermediaryGroupHasClientVisibility(result, policiesQuery, opportunityQuery, intermediary.IntermediaryGroup__c);        
 
         return result;
     }
@@ -480,16 +474,21 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
         Account intermediary = intermediaryAccList[0];
 
         Set<String> intermediaryGroupIdSet = new Set<String>();
+        List<String> intermediaryGroupIdList = new List<String>();
+
         if (intermediary.IntermediaryGroup__c != null && String.isNotEmpty(intermediary.IntermediaryGroup__c)) {
             intermediaryGroupIdSet.add(intermediary.IntermediaryGroup__c);
         }
 
-        // 1. Obtenemos los usuarios del mediador
-        List<User> agrUserList = (new UsersSelector()).findZRMActiveUsersFromIntermediaryAndAGRFromGroup(new Set<String>{intermediary.Id}, new List<String>(intermediaryGroupIdSet));
+        intermediaryGroupIdList.addAll(intermediaryGroupIdSet);
+
+
+        // 1. Obtenemos los usuarios del mediador y los agr si hubiera
+        List<User> userList = (new UsersSelector()).findZRMActiveUsersFromIntermediaryAndAGRFromGroup(new Set<String>{intermediary.Id}, intermediaryGroupIdList);
 
         // 2. Generamos los atms a insertar
         List<AccountTeamMember> atmsToInsert = new List<AccountTeamMember>();
-        atmsToInsert.addAll(AccountTeamMemberUtil.createATMZRMRecordList(accountId, agrUserList));
+        atmsToInsert.addAll(AccountTeamMemberUtil.createATMZRMRecordList(accountId, userList));
 
         return atmsToInsert;
     }

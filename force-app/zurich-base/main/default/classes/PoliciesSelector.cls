@@ -419,7 +419,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
             }).selectFields('Policy__c.IntermediaryId__r.IntermediaryGroup__c');
 
             this.baseQuery
-                            .addConditionNotEq(Policy__c.Id, policiesToExclude)
+                            .addConditionNotIn(Policy__c.Id, policiesToExclude)
                             .addConditionIn(Policy__c.PolicyHolder__c, policyHolderIdSet)
                             .addConditionEq(Policy__c.PolicyHolder__r.Blocked__c, false)
                             .addConditionEq(Policy__c.PolicyHolder__r.Anonymized__c, false)
@@ -430,7 +430,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
 
             if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty())
             {
-                this.baseQuery.setLimit(1);
+                this.baseQuery.addConditionIn(Policy__c.IntermediaryId__c, intermediaryIdsSet)
+                            .setLimit(1);
             }
 
             else

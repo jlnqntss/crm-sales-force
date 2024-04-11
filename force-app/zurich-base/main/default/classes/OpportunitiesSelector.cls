@@ -673,7 +673,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * 
      * 
      */
-    public List<Opportunity> selectByIntermediaryAndIntermediaryGroupExcludingPolicies(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountIdsSet, Set<String> offersToExclude)
+    public List<Opportunity> selectByIntermediaryAndIntermediaryGroupExcludingOffers(Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet, Set<String> accountIdsSet, Set<String> offersToExclude)
     {
         List<Opportunity> result = new List<Opportunity>();
 
@@ -686,7 +686,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             }).selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c');
 
             this.baseQuery                            
-                            .addConditionNotEq(Opportunity.Id, offersToExclude)
+                            .addConditionNotIn(Opportunity.Id, offersToExclude)
                             .addConditionIn(Opportunity.AccountId, accountIdsSet)
                             .addConditionEq(Opportunity.Account.Blocked__c, FALSE)
                             .addConditionEq(Opportunity.Account.Anonymized__c, FALSE)
@@ -697,7 +697,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             // si no tiene agrupación podemos traer solo 1 resultado
             if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty())
             {
-                this.baseQuery.setLimit(1);
+                this.baseQuery.addConditionIn(Opportunity.IntermediaryId__c, intermediaryIdsSet)
+                            .setLimit(1);
             }
 
             else

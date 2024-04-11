@@ -48,10 +48,6 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
 
             // Escenario 1:
             // - Nos llegan ATMs para borrar e insertar
-
-            System.debug('DMM ' + atmsToDelete);
-            System.debug('DMM ' + atmsToInsert);
-
             if (!atmsToDelete.isEmpty() && !atmsToInsert.isEmpty())
             {
                 // Escenario 1A:
@@ -138,7 +134,6 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
      */
     private void doInsert() {
 
-        System.debug('DMM  DOINSERT 1' + atmsToInsert);
         List<AccountTeamMember> toInsert = new List<AccountTeamMember>();
         Set<AccountTeamMember> toFuture = new Set<AccountTeamMember>();
 
@@ -159,10 +154,8 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
         insert toInsert;
         
         // Nos aseguramos que no haya nada en la lista de ATMs pendientes y añadimos los que se insertarán en la siguiente tanda
-        System.debug('DMM  DOINSERT 2' + atmsToInsert);
         atmsToInsert.clear();
         atmsToInsert = new List<AccountTeamMember>(toFuture);
-        System.debug('DMM  DOINSERT 3' + atmsToInsert);
     }
 
     /**
