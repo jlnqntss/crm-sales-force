@@ -353,6 +353,58 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Relaciona los casos proporcionados si tienen informado el campo CustomerNifCif__c a traves
+     * del campo 'mediated customer' (MediatedCustomer__c)
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     * @param casesToRelate casos a relacionar con los respectivos clientes
+     */
+    public static void relateCaseToCustomerByNifCif(List<Case> casesToRelate)
+    {
+        //1- construimos un set con los dnis a buscar
+        List<String> dniCifsToSearch = new List<String>();
+        for (Case c : casesToRelate)
+        {
+            if ( String.isNotBlank(c.CustomerNifCif__c) )
+            {
+                dniCifsToSearch.add(c.CustomerNifCif__c);
+            }
+        }
+
+        if ( dniCifsToSearch.isEmpty() )
+        {
+            //si no hay nada que buscar, no hay nada que relacionar ==> FIN
+            return;
+        }
+
+        //Se hace la busqueda, en este caso no filtramos el tipo de documento
+        List<Account> accountsFound = new AccountsSelector().findByNationalId(dniCifsToSearch, null);
+        if ( accountsFound.isEmpty() )
+        {
+            //no se ha encontrado ningun cliente, no hay nada que relacionar ==> FIN
+            return;
+        }
+        //2- Agrupamos clientes por dni
+        Map<String, List<Account> > accountsByNationalId = (Map<String, List<Account> >) CollectionUtil.groupListBy( accountsFound, Account.fields.NationalId__c.getDescribe().getName() );
+
+        //3- Iteramos para setear los clientes
+        List<Account> accountList;
+        for (Case c : casesToRelate)
+        {
+            if ( String.isNotBlank(c.CustomerNifCif__c) && accountsByNationalId?.containsKey(c.CustomerNifCif__c) )
+            {
+                accountList = accountsByNationalId.get(c.CustomerNifCif__c);
+                if (accountList.size() == 1)
+                {
+                    c.MediatedCustomer__c = accountList[0].Id;
+                }
+                //else hay mas de uno, por lo tanto, no lo asignamos
+            }
+        }
+    }
+
+    /**
      * Llamado en BulkBefore
      * Recoge los valores de Queues necesarios para casos Sprinklr
      * @author jchavez

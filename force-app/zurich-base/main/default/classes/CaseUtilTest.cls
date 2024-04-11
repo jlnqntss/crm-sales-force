@@ -1329,6 +1329,78 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Se valida que el metodo relateCaseToCustomerByNifCif relaciona correctamente el caso con
+     * el cliente mediado (cuenta.NationalId__c = caso.CustomerNifCif__c) y establece el campo
+     * MediatedCustomer__c en caso de encontrar relacion. Para ello:
+     * - Se crea un caso con CustomerNifCif__c, cuyo DNI solo existe en una cuenta. Debe vincular
+     * - Se crea un caso con CustomerNifCif__c, cuyo DNI existe en dos cuentas. NO debe vincular
+     * - Se crea un caso sin CustomerNifCif__c. NO debe vincular
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     */
+    @isTest
+    private static void test_relateCaseToCustomerByNifCif()
+    {
+        List<String> dnis = new List<String> {'11222333R', '77888999I'};
+        List<Account> accToInsert = new List<Account>();
+        Account accountUniqueDNI = new Account(
+            LastName = 'Cuenta DNI unico',
+            NationalId__c = dnis[0],
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId()
+            );
+        accToInsert.add(accountUniqueDNI);
+        Account accountDupDNI1 = new Account(
+            LastName = 'Cuenta DNI dup1',
+            NationalId__c = dnis[1],
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId()
+            );
+        accToInsert.add(accountDupDNI1);
+        Account accountDupDNI2 = new Account(
+            LastName = 'Cuenta DNI dup2',
+            NationalId__c = dnis[1],
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId()
+            );
+        accToInsert.add(accountDupDNI2);
+        insert accToInsert;
+        List<Account> createdAccs = [SELECT Id FROM Account WHERE NationalId__c IN : dnis];
+        Assert.areEqual( accToInsert.size(), createdAccs.size() );
+
+        Case caseToLink = new Case(
+            TicketId__c = 10,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso a vincular',
+            CustomerNifCif__c = accountUniqueDNI.NationalId__c
+            );
+        Case caseNoLink = new Case(
+            TicketId__c = 20,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso a NO vincular',
+            CustomerNifCif__c = accountDupDNI1.NationalId__c
+            );
+        Case caseNoLink2 = new Case(
+            TicketId__c = 20,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso a NO vincular 2'
+            );
+
+        Test.startTest();
+        insert new List<Case> {caseToLink, caseNoLink, caseNoLink2};
+        Test.stopTest();
+
+        Case linkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseToLink.Id];
+        Case notLinkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink.Id];
+        Case notLinkedCase2 = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink2.Id];
+
+        Assert.isNotNull(linkedCase);
+        Assert.areEqual(accountUniqueDNI.Id, linkedCase.MediatedCustomer__c);
+        Assert.isNotNull(notLinkedCase);
+        Assert.isNull(notLinkedCase.MediatedCustomer__c);
+        Assert.isNotNull(notLinkedCase2);
+        Assert.isNull(notLinkedCase2.MediatedCustomer__c);
+    }
+
+    /**
      * Test que comprueba que al actualizar un caso de tipo Sprinklr enlazando una cuenta de un tipo distinto a customer,
      * no se actualiza el contacto asociado al perfil social del caso.
      **
