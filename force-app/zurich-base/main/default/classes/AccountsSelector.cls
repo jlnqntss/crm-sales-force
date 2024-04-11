@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 21-03-2024
- * @last modified by  : amiranda
+ * @last modified on  : 10/04/2024
+ * @last modified by  : rserrano
  **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -1183,16 +1183,25 @@ public with sharing class AccountsSelector extends RecordsSelector
         return accounts;
     }
 
-
     /**
-     * @description Método que devuelve las cuentas a partir de un set de Ids
-     * @author rserrano | 08/04/2024
-     * @param accountsIdSet : Set de Ids
-     * @return List<Account>: Listado de cuentas
-     **/
-    public List<Account> findAccountsById (Set<String> accountsIdSet)
+    * @description     : Método que devuelve una query que utilizará el batch
+    * @author rserrano | 10/04/2024 
+    * @param days      : Número de días de antigüedad que ha de tener un lead para ser borrado
+    * @return String   : Query que utiliza el batch
+    **/
+    public String findZRMOldLeads(Integer days)
     {
-        List<Account> result = [SELECT Id FROM Account WHERE Id IN :accountsIdSet];
-        return result;
+        Set<Schema.SObjectField> accountfieldsToRetrieve = new Set<Schema.SObjectField>
+        {
+            Account.Id
+        };
+
+        String query = this.baseQuery
+                        .selectFields(accountfieldsToRetrieve)
+                        .addConditionEq(Account.RecordtypeId, rtLeadId)
+                        .addConditionLt(Account.CreatedDate, Query.LAST_N_DAYS(days))
+                        .addSubquery('Opportunities', 'StageName, BusinessCode__c')
+                        .toQueryString();
+        return query;
     }
 }
