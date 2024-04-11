@@ -47,7 +47,7 @@ private with sharing class PolicyUtilTest
             // Usuario AGR
             String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas - AGR' LIMIT 1].Id;
 
-            userAGRList = TestDataFactory.generateUsersByProfile(portalAGRProfile, 1);            
+            userAGRList = TestDataFactory.generateUsersByProfile(portalAGRProfile, 1);
             userAGRList[0].ContactId = contacts[1].Id;
 
             insert userAGRList;
@@ -94,10 +94,10 @@ private with sharing class PolicyUtilTest
     private static void test_generatePartner()
     {
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName != 'PartnerOCS'];
-        
+
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].BusinessCode__c = BUSINESS_CODE;
-        
+
         Test.startTest();
         insert policies;
         Test.stopTest();
@@ -107,13 +107,14 @@ private with sharing class PolicyUtilTest
     }
 
     @isTest
-    private static void test_visibilityZRM() {
+    private static void test_visibilityZRM()
+    {
         List<AccountTeamMember> atmBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
 
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
 
-        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);        
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
 
         Test.startTest();
@@ -128,15 +129,14 @@ private with sharing class PolicyUtilTest
 
 
     @isTest
-    private static void test_visibilityUpdatePolicyHolderZRM() {
+    private static void test_visibilityUpdatePolicyHolderZRM()
+    {
 
         // Insertamos una poliza
-        List<AccountTeamMember> atmBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
-
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
 
-        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);        
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
 
         insert policies;
@@ -149,23 +149,22 @@ private with sharing class PolicyUtilTest
         update policies;
         Test.stopTest();
 
+        List<Policy__c> policiesWithChage = new List<Policy__c>([SELECT Id FROM Policy__c WHERE LastDateIntermediaryOrAccountChange__c != NULL LIMIT 1]);
 
-        List<AccountTeamMember> atmAfter = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
-
-        System.assertNotEquals(atmBefore.size(), atmAfter.size(), 'Deben de haberse insertado nuevos registros de ATM');
+        Assert.isTrue(policiesWithChage.size() > 0, 'Debe haber ofertas con el campo LastDateIntermediaryOrAccountChange__c informado');
     }
 
 
     @isTest
-    private static void test_visibilityUpdateIntermediaryZRM() {
+    private static void test_visibilityUpdateIntermediaryZRM()
+    {
 
         // Insertamos una poliza
-        List<AccountTeamMember> atmBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
 
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
 
-        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);        
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
 
         insert policies;
@@ -178,9 +177,8 @@ private with sharing class PolicyUtilTest
         update policies;
         Test.stopTest();
 
+        List<Policy__c> policiesWithChage = new List<Policy__c>([SELECT Id FROM Policy__c WHERE LastDateIntermediaryOrAccountChange__c != NULL LIMIT 1]);
 
-        List<AccountTeamMember> atmAfter = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
-
-        System.assertNotEquals(atmBefore.size(), atmAfter.size(), 'Deben de haberse insertado nuevos registros de ATM');
+        Assert.isTrue(policiesWithChage.size() > 0, 'Debe haber ofertas con el campo LastDateIntermediaryOrAccountChange__c informado');
     }
 }

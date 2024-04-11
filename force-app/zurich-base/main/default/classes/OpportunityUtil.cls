@@ -19,6 +19,7 @@ public with sharing class OpportunityUtil
 
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
     public static Map<Id, String> mapAccountRecordTypes; //Mapa de Accounts con sus respectivos RecordType.DeveloperName
+    public static Map<Id, String> mapOldAccountRecordTypes; //Mapa de Accounts con sus respectivos RecordType.DeveloperName
     public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
     public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Ofertas
 
@@ -108,6 +109,48 @@ public with sharing class OpportunityUtil
     }
 
     /**
+     * Inicializa un mapa de Ids de Account y RecordType.DeveloperName para realizar cálculos antes de la inserción
+     *
+     * @author nts (jfherrero)
+     * @date 15/09/2023
+     * @trigger bulkBefore
+     */
+    public static void initMapOfAccountRecordTypesTriggerOld(List<Opportunity> oldList)
+    {
+        mapOldAccountRecordTypes = new Map<Id, String>();
+        Set<Id> accountIds = new Set<Id>();
+
+        if (oldList == null || oldList.isEmpty())
+        {
+            return;
+        }
+
+        for (Opportunity opp : oldList)
+        {
+            accountIds.add(opp.AccountId);
+        }
+
+        List<Account> oppAccounts = new AccountsSelector().selectById(accountIds);
+
+        if (oppAccounts == null || oppAccounts.isEmpty())
+        {
+            return;
+        }
+        
+        for (Opportunity opp : oldList)
+        {
+            for (Account acc : oppAccounts)
+            {
+                if (opp.AccountId == acc.Id)
+                {
+                    mapOldAccountRecordTypes.put(acc.Id, acc.RecordType.DeveloperName);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * Método que rellena el mapa que contiene la relación entre Business Code y Scopes
      *
      * @author arcortazar
@@ -171,6 +214,50 @@ public with sharing class OpportunityUtil
             if( o.AccountId != oldMap.get(o.Id).AccountId )
             {
                 o.OldAccountId__c = oldMap.get(o.Id).AccountId;
+            }
+        }
+    }
+
+    /**
+     * Informa los siguientes campos para oportunidades en las que se haya cambiado el mediador o cliente (los cambios de lead a cliente o lead a lead no se tienen en cuenta)
+     *
+     * @author fpalomo
+     * @date 08/04/2024
+     */
+    public static void handleAccountOrIntermediaryChange(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
+    {
+        for(Opportunity oppNew : newList)
+        {
+            if (String.isNotEmpty(oppNew.AccountId) && String.isNotEmpty(oppNew.IntermediaryId__c) && !oppNew.Blocked__c && !oppNew.Anonymized__c) {
+
+                Opportunity oppOld = oldMap.get(oppNew.Id);
+    
+                String oldAccountRT = mapOldAccountRecordTypes.get(oppOld.AccountId);
+                String newAccountRT = mapAccountRecordTypes.get(oppNew.AccountId);
+    
+                // Si el RecordType de la cuenta es nulo o tipo lead no hacemos nada
+                if (oldAccountRT == null || newAccountRT == null || oldAccountRT == AccountLeadUtil.LEAD || newAccountRT == AccountLeadUtil.LEAD)
+                {
+                    continue;
+                }
+    
+                // AccountId
+                if (oppNew.AccountId != oppOld.AccountId)
+                {
+                    oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_CLIENTE;
+                    oppNew.LastAccountId__c = oppOld.AccountId;
+                    oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
+                    oppNew.VisibilityRetry__c = 0;
+                }
+    
+                // Mediador
+                else if (oppOld.IntermediaryId__c != oppNew.IntermediaryId__c)
+                {
+                    oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_MEDIADOR;
+                    oppNew.LastAccountId__c = oppOld.IntermediaryId__c;
+                    oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
+                    oppNew.VisibilityRetry__c = 0;
+                }
             }
         }
     }
