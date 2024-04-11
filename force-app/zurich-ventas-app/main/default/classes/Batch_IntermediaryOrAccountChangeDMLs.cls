@@ -34,7 +34,7 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
         if (!recordsToProcess.isEmpty()) {
             return recordsToProcess;
         } else {
-            return null;
+            return new List<sObject>();
         }    
     }
 
@@ -48,6 +48,9 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
 
             // Escenario 1:
             // - Nos llegan ATMs para borrar e insertar
+
+            System.debug('DMM ' + atmsToDelete);
+            System.debug('DMM ' + atmsToInsert);
 
             if (!atmsToDelete.isEmpty() && !atmsToInsert.isEmpty())
             {
@@ -115,7 +118,7 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
     private void processDMLs() {    
         
         // si al terminar la ejecución del registro no hay ningun elemento a borrar o insertar, pasamos al siguiente si hubiera
-        if (!stopRecordProcess && (atmsToDelete != null && atmsToDelete.isEmpty()) || (atmsToInsert != null && atmsToInsert.isEmpty()) && !recordsToProcess.isEmpty()) {
+        if (!stopRecordProcess && atmsToDelete != null && atmsToDelete.isEmpty() && atmsToInsert != null && atmsToInsert.isEmpty() && !recordsToProcess.isEmpty()) {
             Batch_IntermediaryOrAccountChangeUtil.updateRecordWithProcessOK(recordsToProcess, CLASS_NAME);
             recordsToProcess.remove(0);
         }
@@ -134,6 +137,8 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
      * @date 10/04/2024
      */
     private void doInsert() {
+
+        System.debug('DMM  DOINSERT 1' + atmsToInsert);
         List<AccountTeamMember> toInsert = new List<AccountTeamMember>();
         Set<AccountTeamMember> toFuture = new Set<AccountTeamMember>();
 
@@ -154,8 +159,10 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
         insert toInsert;
         
         // Nos aseguramos que no haya nada en la lista de ATMs pendientes y añadimos los que se insertarán en la siguiente tanda
+        System.debug('DMM  DOINSERT 2' + atmsToInsert);
         atmsToInsert.clear();
         atmsToInsert = new List<AccountTeamMember>(toFuture);
+        System.debug('DMM  DOINSERT 3' + atmsToInsert);
     }
 
     /**
@@ -185,7 +192,7 @@ global with sharing class Batch_IntermediaryOrAccountChangeDMLs implements Datab
         delete toDelete;
         
         // Nos aseguramos que no haya nada en la lista de ATMs pendientes y añadimos los que se insertarán en la siguiente tanda
-        atmsToInsert.clear();
-        atmsToInsert = new List<AccountTeamMember>(toFuture);
+        atmsToDelete.clear();
+        atmsToDelete = new List<AccountTeamMember>(toFuture);
     }
 }

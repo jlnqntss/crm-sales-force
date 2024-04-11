@@ -703,7 +703,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             else
             {
                 this.baseQuery.addCondition(Query.doOr(
-                    Query.conditionIn('Intermediary__c', intermediaryIdsSet),
+                    Query.conditionIn('IntermediaryId__c', intermediaryIdsSet),
                     Query.conditionIn('IntermediaryId__r.IntermediaryGroup__c', intermediaryGroupIdsSet)
                 ));
             }
@@ -746,7 +746,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                     Opportunity.AccountId,
                     Opportunity.IntermediaryId__c,
                     Opportunity.ZRMMovementType__c,
-                    Opportunity.LastAccountId__c
+                    Opportunity.LastAccountId__c,
+                    Opportunity.VisibilityRetry__c
                 }
             );
 

@@ -436,7 +436,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
             else
             {
                 this.baseQuery.addCondition(Query.doOr(
-                    Query.conditionIn('Intermediary__c', intermediaryIdsSet),
+                    Query.conditionIn('IntermediaryId__c', intermediaryIdsSet),
                     Query.conditionIn('IntermediaryId__r.IntermediaryGroup__c', intermediaryGroupIdsSet)
                 ));
             }
@@ -575,7 +575,8 @@ public with sharing class PoliciesSelector extends RecordsSelector
                     Policy__c.PolicyHolder__c,
                     Policy__c.IntermediaryId__c,
                     Policy__c.ZRMMovementType__c,
-                    Policy__c.LastAccountId__c
+                    Policy__c.LastAccountId__c,
+                    Policy__c.VisibilityRetry__c
                 }
             );
 

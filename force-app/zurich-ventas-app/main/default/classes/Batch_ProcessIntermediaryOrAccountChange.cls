@@ -37,7 +37,7 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
         if (!recordsToProcess.isEmpty()) {
             return recordsToProcess;
         } else {
-            return null;
+            return new List<sObject>();
         }
     
     }
@@ -71,6 +71,7 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
             }
             
         } catch (Exception e) {
+            System.debug('Execute exception');
             // Si hay error actualizamos el registro para que se procese al día siguiente y eliminamos ese registro de la cola del procesamiento
             stopRecordProcess = true;
             Batch_IntermediaryOrAccountChangeUtil.updateRecordWithProcessKO(recordsToProcess, CLASS_NAME);
@@ -130,10 +131,14 @@ global with sharing class Batch_ProcessIntermediaryOrAccountChange implements Da
      * @author dmunoz
      * @date 04/04/2024
      */
-    private void processDMLs() {       
+    private void processDMLs() {    
+        
+        System.debug('Finish batch PROCESS CHANGE ');
+        System.debug('DMM ' + atmsToDelete);
+        System.debug('DMM ' + atmsToInsert);
         
         // si al terminar la ejecución del registro no hay ningun elemento a borrar o insertar, pasamos al siguiente si hubiera
-        if (!stopRecordProcess && (atmsToDelete != null && atmsToDelete.isEmpty()) || (atmsToInsert != null && atmsToInsert.isEmpty()) && !recordsToProcess.isEmpty()) {
+        if (!stopRecordProcess && atmsToDelete != null && atmsToDelete.isEmpty() && atmsToInsert != null && atmsToInsert.isEmpty() && !recordsToProcess.isEmpty()) {
             Batch_IntermediaryOrAccountChangeUtil.updateRecordWithProcessOK(recordsToProcess, CLASS_NAME);
             recordsToProcess.remove(0);
         }
