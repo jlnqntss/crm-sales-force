@@ -7,10 +7,11 @@
 
 global with sharing class Batch_IntermediaryOrAccountChangeZRM implements Database.Batchable<sObject>, Database.Stateful, Schedulable {
 
+    @TestVisible
     private static final String CLASS_NAME = 'Batch_IntermediaryOrAccountChangeZRM';
     private static final String ZRM_NUM_MAX_RETRIES = 'ZRMNumMaxRetries';
 
-    private Integer numDMLs = 5000;
+    private Integer numDMLs;
     private List<sObject> recordsToProcess;
 
     public Batch_IntermediaryOrAccountChangeZRM(Integer numDMLs) {
@@ -43,7 +44,7 @@ global with sharing class Batch_IntermediaryOrAccountChangeZRM implements Databa
      * @author dmunoz
      * @date 04/04/2024
      */
-    global void execute(SchedulableContext sc) {
+    public void execute(SchedulableContext sc) {
         Database.executeBatch(new Batch_IntermediaryOrAccountChangeZRM(numDMLs), numDMLs);               
     }
 
@@ -78,8 +79,8 @@ global with sharing class Batch_IntermediaryOrAccountChangeZRM implements Databa
     }
 
 
-    global void finish(Database.BatchableContext bc) {
-        if (!Test.isRunningTest() && recordsToProcess != null && !recordsToProcess.isEmpty()) {
+    public void finish(Database.BatchableContext bc) {
+        if (recordsToProcess != null && !recordsToProcess.isEmpty()) {
             Database.executeBatch(new Batch_ProcessIntermediaryOrAccountChange(recordsToProcess, numDMLs), numDMLs);    
         }
     }
@@ -94,9 +95,10 @@ global with sharing class Batch_IntermediaryOrAccountChangeZRM implements Databa
      * @author dmunoz
      * @date 04/04/2024
      */
+    @TestVisible
     private static String setJobName(String jobName) {
         if (String.isEmpty(jobName)){
-            jobName = 'Batch_IntermediaryOrAccountChangeZRM';
+            jobName = CLASS_NAME;
         } 
         return jobName; 
     }
@@ -108,6 +110,7 @@ global with sharing class Batch_IntermediaryOrAccountChangeZRM implements Databa
      * @author dmunoz
      * @date 04/04/2024
      */
+    @TestVisible
     private static String setTimeExpression(String timeExpression) {
         if (String.isEmpty(timeExpression)){
             timeExpression = '0 0 3 * * ?' ; 
