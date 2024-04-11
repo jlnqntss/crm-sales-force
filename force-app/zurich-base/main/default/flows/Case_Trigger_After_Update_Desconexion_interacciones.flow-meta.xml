@@ -332,6 +332,35 @@
             </connector>
             <label>OCS</label>
         </rules>
+        <rules>
+            <name>SAM</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>SAMInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendiente</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IsNoteINFOorWebDecision</targetReference>
+            </connector>
+            <label>SAM</label>
+        </rules>
     </decisions>
     <description>Flujo encargado de, cuando se cierra un caso, desconectar todas aquellas interacciones que estén pendientes de ser distribuidas por Genesys. 
 Se establece un orden de ejecución tardío al ser una llamada a un sistema externo.</description>

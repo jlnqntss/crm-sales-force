@@ -17,6 +17,10 @@
         <translation>Teléfono</translation>
     </valueTranslation>
     <valueTranslation>
+        <masterLabel>Single channel</masterLabel>
+        <translation>Canal único</translation>
+    </valueTranslation>
+    <valueTranslation>
         <masterLabel>Web</masterLabel>
         <translation>Web</translation>
     </valueTranslation>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusRulePendingToOtherStatuses</fullName>
+    <active>true</active>
+    <description>[VR Caso] Caso en estado PENDIENTE de PARTNER sólo puede pasar a RESPONDIDO o CERRADO</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;ZDAInquiry&quot;  &amp;&amp; 
+ISCHANGED(Status) &amp;&amp;
+ISPICKVAL( PRIORVALUE(Status),&quot;Pendiente&quot;) &amp;&amp; ISPICKVAL( PRIORVALUE(PendingBy__c),&quot;Partner&quot;) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Respondido&quot;)) &amp;&amp; NOT(ISPICKVAL(Status,&quot;Cerrado&quot;)) &amp;&amp;
+$Permission.ZDATriggerCaseValidationRules</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>[VR Caso] Caso en estado PENDIENTE de PARTNER sólo puede pasar a RESPONDIDO o CERRADO</errorMessage>
+</ValidationRule>

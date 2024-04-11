@@ -91,6 +91,8 @@ public class EmailMessageHandler implements ITrigger
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         emailMessagesUtil.checkIfMailOnlyInCc( (List<EmailMessage>) newList );
+        emailMessagesUtil.checkMailCc( (List<EmailMessage>) newList );
+
     }
 
     /**

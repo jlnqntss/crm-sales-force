@@ -1,10 +1,10 @@
 /**
- * @description       : 
+ * @description       :
  * @author            : aberuete
- * @group             : 
+ * @group             :
  * @last modified on  : 08-03-2024
  * @last modified by  : aberuete
-**/
+ **/
 @isTest
 private with sharing class CasesSelectorTest
 {
@@ -46,7 +46,7 @@ private with sharing class CasesSelectorTest
         // Test
         Test.startTest();
 
-        List<Case> matchedRecords = new CasesSelector().findOpenByAccount(new List<String>() );
+        List<Case> matchedRecords = new CasesSelector().findOpenByAccount( new List<String>() );
 
         Test.stopTest();
 
@@ -124,7 +124,7 @@ private with sharing class CasesSelectorTest
 
         // Solo el primer caso tendrá recordType USP, de esta manera comprobamos que solo aplica a USP
         casos[0].RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
-      
+
         update casos;
 
         // Test
@@ -194,9 +194,9 @@ private with sharing class CasesSelectorTest
         casosPadre.add(casoPadre1);
 
         List<Account> cuentasRatio= [SELECT Id FROM Account];
-    
-        
-        for (Integer i=5; i<casos.size();i++)
+
+
+        for (Integer i=5; i < casos.size(); i++)
         {
             casos[i].Subject='test';
             casos[i].SourceArea__c='Mediator';
@@ -211,7 +211,7 @@ private with sharing class CasesSelectorTest
 
         update casos;
 
-        
+
 
         // Test
         Test.startTest();
@@ -253,7 +253,7 @@ private with sharing class CasesSelectorTest
     private static void test_getQueryStringCasesWithoutPolicyOffer_queryKO()
     {
         Test.startTest();
-        String query = new CasesSelector().getQueryStringCasesWithoutPolicyOffer('', new List<String>(), new List<String>());
+        String query = new CasesSelector().getQueryStringCasesWithoutPolicyOffer( '', new List<String>(), new List<String>() );
         Test.stopTest();
 
         System.assertEquals('', query, 'La query ha de volver vacía');
@@ -290,18 +290,59 @@ private with sharing class CasesSelectorTest
         insert accounts;
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
-        insert cases;  
+        insert cases;
 
         List<Case> allCases = [Select id from Case];
         System.assertEquals (12, allCases.size(), 'El número de casos totales no es correcto');
 
         Test.startTest();
-        List<Case> casesReturned = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (allCases, new List<String>{'Customer'});
+        List<Case> casesReturned = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (allCases, new List<String> {'Customer'});
         Test.stopTest();
 
         System.assertEquals (2, casesReturned.size(),'El número de casos devuelto no es correcto');
-        
+
     }
+
+    /**
+     * Se comprueba que el metodo getCasesByTicketId funciona correctamente. Para ello:
+     * - Comprueba que pasandole un set nulo no retorna nada
+     * - Comprueba que pasandole un set vacio no retorna nada
+     * - Comprueba que pasandole dos TicketId existentes (uno de ZDA y otro de USP) y uno no existente, debe retornar solo un caso (el de ZDA)
+     */
+    @isTest
+    private static void test_getCasesByTicketId()
+    {
+        Case existingZDACase = [SELECT Id FROM Case LIMIT 1];
+
+        existingZDACase.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        existingZDACase.TicketId__c = 12345678;
+
+        Case newUSPCase = new Case(
+            RecordTypeId = CaseUtil.RT_ID_USPINQUIRY,
+            TicketId__c = 87654321
+            );
+
+        List<Case> casesToUpsert = new List<Case>();
+        casesToUpsert.add(existingZDACase);
+        casesToUpsert.add(newUSPCase);
+        upsert casesToUpsert;
+
+        List<Case> createdUSPCase = [SELECT Id FROM Case WHERE RecordTypeId = : CaseUtil.RT_ID_USPINQUIRY AND TicketId__c = : newUSPCase.TicketId__c];
+        Assert.isFalse(createdUSPCase.isEmpty(), 'Se deberia haber creado un caso de tipo USP');
+
+        Test.startTest();
+        List<Case> emptyCases = new CasesSelector().getCasesByTicketId(null);
+        List<Case> emptyCases2 = new CasesSelector().getCasesByTicketId( new Set<Double>() );
+        List<Case> foundCases = new CasesSelector().getCasesByTicketId(new Set<Double> {existingZDACase.TicketId__c, newUSPCase.TicketId__c, 748});
+        Test.stopTest();
+
+        Assert.areEqual( 0, emptyCases.size() );
+        Assert.areEqual( 0, emptyCases2.size() );
+        Assert.areEqual( 1, foundCases.size() );
+        Assert.areEqual(foundCases[0].Id, existingZDACase.Id);
+        Assert.areEqual(foundCases[0].TicketId__c, existingZDACase.TicketId__c);
+    }
+
     /*
      * Test del método que devuelve casos para el Batch_CloseInteractions
      * @author lrodriguez6@seidor.es
@@ -311,7 +352,7 @@ private with sharing class CasesSelectorTest
     private static void test_casesBatchCloseInteractions_matchedRecord()
     {
         List<Case> casos = [SELECT Id, CreatedOffer__c FROM Case LIMIT 1];
-        
+
         casos[0].RecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
         casos[0].CloseInteractionBatch__c= true;
         casos[0].ExpectedClosingDate__c= System.TODAY();
@@ -319,11 +360,35 @@ private with sharing class CasesSelectorTest
 
         update casos;
 
-        
+
         Test.startTest();
         casos = new CasesSelector().getCasesToCloseInteractions();
         Test.stopTest();
 
         System.assertEquals(1, casos.size(), 'no devuelve el número de registros correcto');
+    }
+
+    /*
+     * Test del método que devuelve casos para findByIdControlCC (método de EmailMessageUtil)
+     * @author lrodriguez6@seidor.es
+     * @date 01/03/2024
+     */
+    @isTest
+    private static void test_findByIdControlCC_matchedRecord()
+    {
+        Case casoCC = [SELECT Id FROM Case LIMIT 1];
+        casoCC.ControlEmailCC__c=true;
+        update casoCC;
+
+        Set<String> casosIds = new Set<String>();
+        casosIds.add(casoCC.Id);
+
+        // Test
+        Test.startTest();
+        List<Case> matchedRecords = new CasesSelector().findByIdControlCC(casosIds);
+        Test.stopTest();
+
+        System.assertEquals(matchedRecords.size(), 1, 'no devuelve el número de registros correcto');
+        System.assertEquals(matchedRecords[0].ControlEmailCC__c,true);
     }
 }
