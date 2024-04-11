@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Invocar_batch</name>
+        <label>Invocar batch</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <actionName>Batch_VisibilitySFCommunityOID</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>intermediaryUserId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>profile</name>
+            <value>
+                <elementReference>$Record.Profile.Name</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Batch_VisibilitySFCommunityOID</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>60.0</apiVersion>
+    <description>Trigger flow que se encarga de invocar al batch que recalcula la visibilidad cuando un usuario de ZRM cambia de perfil.</description>
+    <environments>Default</environments>
+    <interviewLabel>UserTriggerInvokeBatch {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>UserTrigger - After Update Invoke Visibility Batch ZRM</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Invocar_batch</targetReference>
+        </connector>
+        <filterFormula>({!$Record.Profile.Name} = &apos;Agente Ventas&apos; || {!$Record.Profile.Name} = &apos;Agente Ventas - AGR&apos;) 
+&amp;&amp;
+ISCHANGED({!$Record.ProfileId})</filterFormula>
+        <object>User</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

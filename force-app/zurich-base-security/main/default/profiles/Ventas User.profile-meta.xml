@@ -11543,8 +11543,8 @@
         <layout>CampaignMember-Campaign Member Page Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Ventas OCS Inquiry</layout>
-        <recordType>Case.OCSInquiry</recordType>
+        <layout>Case-Case Default ZRM</layout>
+        <recordType>Case.ZRMInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Ventas Case Layout</layout>
@@ -13634,7 +13634,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <recordType>Case.OCSInquiry</recordType>
+        <recordType>Case.ZRMInquiry</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

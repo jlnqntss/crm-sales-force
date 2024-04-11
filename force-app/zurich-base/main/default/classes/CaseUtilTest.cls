@@ -318,7 +318,7 @@ private with sharing class CaseUtilTest
     }
 
     /**
-     * Se valida que el metodo test_relateCasesByTicketId relaciona correctamente los casos por el TicketId__c y RelatedRequestId__c, para ello:
+     * Se valida que el metodo relateCasesByTicketId relaciona correctamente los casos por el TicketId__c y RelatedRequestId__c, para ello:
      * - Se crea un caso sin RelatedRequestId__c. No debe vincular nada
      * - Se crea un caso con RelatedRequestId__c, pero no existe el 'parent'. No debe vincular nada
      * - Se crea un caso con RelatedRequestId__c, el 'parent' existe. Debe vincular con el parent
@@ -384,8 +384,78 @@ private with sharing class CaseUtilTest
         Assert.isNull(relatedWithoutParentCaseCreated.ParentId);
         Assert.isNotNull(relatedWithParentCaseCreated);
         Assert.areEqual(parentCaseZDA.Id, relatedWithParentCaseCreated.ParentId);
-        Assert.isNotNull(noRelatedCaseCreated);
+        Assert.isNotNull(relatedWithParentCaseNoZDACreated);
         Assert.isNull(relatedWithParentCaseNoZDACreated.ParentId);
+    }
+
+    /**
+     * Se valida que el metodo relateCasesWithMediatedAccount relaciona correctamente los casos por el
+     * SuppliedEmail y el MainEmail__c de la cuenta Intermediary
+     * - Se crea un caso sin SuppliedEmail. No debe vincular nada
+     * - Se crea un caso con SuppliedEmail, pero no existe la cuenta. No debe vincular nada
+     * - Se crea un caso con SuppliedEmail, existe la cuenta. Debe vincular con la cuenta
+     * - Se crea un caso con SuppliedEmail, existela cuenta pero no es Intermediary. No debe vincular nada
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     */
+    @isTest
+    private static void test_relateCasesWithMediatedAccount()
+    {
+        //generamos la cuenta de tipo Intermediary
+        Account intermediaryAccount = TestDataFactory.generateAccounts('001', 'Intermediary', 1)[0];
+        intermediaryAccount.MainEmail__c = 'test@mail.com';
+
+        Account otherTypeAccount = TestDataFactory.generateAccounts('001', 'BusinessCustomer', 1)[0];
+        otherTypeAccount.MainEmail__c = 'test2@mail.com';
+
+        insert new List<Account> {intermediaryAccount, otherTypeAccount};
+
+        Case noRelatedCase = new Case(
+            TicketId__c = 10,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Origin = 'CanalUnico',
+            Subject = 'Asunto de caso sin mediador'
+            );
+        Case relatedWithoutAccount = new Case(
+            TicketId__c = 20,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Origin = 'CanalUnico',
+            Subject = 'Asunto de caso con mediador inexistente',
+            SuppliedEmail = 'notExisting@email.com'
+            );
+        Case relatedWithAccount = new Case(
+            TicketId__c = 30,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Origin = 'CanalUnico',
+            Subject = 'Asunto de caso con mediador existente',
+            SuppliedEmail = intermediaryAccount.MainEmail__c
+            );
+        Case relatedWithNoIntermediaryAcc = new Case(
+            TicketId__c = 40,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Origin = 'CanalUnico',
+            Subject = 'Asunto de caso con mail de cuenta no mediadora',
+            SuppliedEmail = otherTypeAccount.MainEmail__c
+            );
+
+        Test.startTest();
+        insert new List<Case> {noRelatedCase, relatedWithoutAccount, relatedWithAccount, relatedWithNoIntermediaryAcc};
+        Test.stopTest();
+
+        Case noRelatedCaseCreated = [SELECT AccountId FROM Case WHERE Id = : noRelatedCase.Id];
+        Case relatedWithoutAccountCreated = [SELECT AccountId FROM Case WHERE Id = : relatedWithoutAccount.Id];
+        Case relatedWithAccountCreated = [SELECT AccountId FROM Case WHERE Id = : relatedWithAccount.Id];
+        Case relatedWithNoIntermediaryAccCreated = [SELECT AccountId FROM Case WHERE Id = : relatedWithNoIntermediaryAcc.Id];
+
+        Assert.isNotNull(noRelatedCaseCreated);
+        Assert.isNull(noRelatedCaseCreated.AccountId);
+        Assert.isNotNull(relatedWithoutAccountCreated);
+        Assert.isNull(relatedWithoutAccountCreated.AccountId);
+        Assert.isNotNull(relatedWithAccountCreated);
+        Assert.areEqual(intermediaryAccount.Id, relatedWithAccountCreated.AccountId);
+        Assert.isNotNull(relatedWithNoIntermediaryAccCreated);
+        Assert.isNull(relatedWithNoIntermediaryAccCreated.AccountId);
     }
 
     /**
@@ -1326,6 +1396,78 @@ private with sharing class CaseUtilTest
 
         spr_sf__SocialPersona__c sprSocialPersonaReturned = [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=: sprSocialPersona.id];
         System.assertEquals (accountTiLinkCase[0].PersonContactId, sprSocialPersonaReturned.spr_sf__Contact__c, 'No se ha actualizado correctamente el perfil social');
+    }
+
+    /**
+     * Se valida que el metodo relateCaseToCustomerByNifCif relaciona correctamente el caso con
+     * el cliente mediado (cuenta.NationalId__c = caso.CustomerNifCif__c) y establece el campo
+     * MediatedCustomer__c en caso de encontrar relacion. Para ello:
+     * - Se crea un caso con CustomerNifCif__c, cuyo DNI solo existe en una cuenta. Debe vincular
+     * - Se crea un caso con CustomerNifCif__c, cuyo DNI existe en dos cuentas. NO debe vincular
+     * - Se crea un caso sin CustomerNifCif__c. NO debe vincular
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     */
+    @isTest
+    private static void test_relateCaseToCustomerByNifCif()
+    {
+        List<String> dnis = new List<String> {'11222333R', '77888999I'};
+        List<Account> accToInsert = new List<Account>();
+        Account accountUniqueDNI = new Account(
+            LastName = 'Cuenta DNI unico',
+            NationalId__c = dnis[0],
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId()
+            );
+        accToInsert.add(accountUniqueDNI);
+        Account accountDupDNI1 = new Account(
+            LastName = 'Cuenta DNI dup1',
+            NationalId__c = dnis[1],
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId()
+            );
+        accToInsert.add(accountDupDNI1);
+        Account accountDupDNI2 = new Account(
+            LastName = 'Cuenta DNI dup2',
+            NationalId__c = dnis[1],
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId()
+            );
+        accToInsert.add(accountDupDNI2);
+        insert accToInsert;
+        List<Account> createdAccs = [SELECT Id FROM Account WHERE NationalId__c IN : dnis];
+        Assert.areEqual( accToInsert.size(), createdAccs.size() );
+
+        Case caseToLink = new Case(
+            TicketId__c = 10,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso a vincular',
+            CustomerNifCif__c = accountUniqueDNI.NationalId__c
+            );
+        Case caseNoLink = new Case(
+            TicketId__c = 20,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso a NO vincular',
+            CustomerNifCif__c = accountDupDNI1.NationalId__c
+            );
+        Case caseNoLink2 = new Case(
+            TicketId__c = 20,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Subject = 'Asunto de caso a NO vincular 2'
+            );
+
+        Test.startTest();
+        insert new List<Case> {caseToLink, caseNoLink, caseNoLink2};
+        Test.stopTest();
+
+        Case linkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseToLink.Id];
+        Case notLinkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink.Id];
+        Case notLinkedCase2 = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink2.Id];
+
+        Assert.isNotNull(linkedCase);
+        Assert.areEqual(accountUniqueDNI.Id, linkedCase.MediatedCustomer__c);
+        Assert.isNotNull(notLinkedCase);
+        Assert.isNull(notLinkedCase.MediatedCustomer__c);
+        Assert.isNotNull(notLinkedCase2);
+        Assert.isNull(notLinkedCase2.MediatedCustomer__c);
     }
 
     /**

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClientEmailPhoneNotBlank</fullName>
+    <active>true</active>
+    <description>El email y el teléfono del cliente no pueden quedar vacíos si el check de &quot;Tarjeta regalo&quot; está activado</description>
+    <errorConditionFormula>RecordType.DeveloperName == &quot;ZRMInquiry&quot; &amp;&amp;
+ClientGiftCard__c == true &amp;&amp; 
+ISBLANK( SuppliedEmail ) &amp;&amp;
+ISBLANK( SuppliedPhone )</errorConditionFormula>
+    <errorMessage>[VR Caso] El email o el teléfono deben ser informados cuando el check de tarjeta regalo esté activo</errorMessage>
+</ValidationRule>

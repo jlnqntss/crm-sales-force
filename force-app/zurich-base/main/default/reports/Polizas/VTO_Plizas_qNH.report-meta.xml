@@ -57,8 +57,15 @@
             <column>Policy__c.EndDate__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>THIS_MONTH</value>
+            <operator>lessOrEqual</operator>
+            <value>NEXT_N_DAYS:60</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.EndDate__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>greaterOrEqual</operator>
+            <value>TODAY</value>
         </criteriaItems>
         <language>es</language>
     </filter>

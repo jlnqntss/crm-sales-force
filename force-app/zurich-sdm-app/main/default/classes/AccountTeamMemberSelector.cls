@@ -10,6 +10,8 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         super(AccountTeamMember.getSObjectType());
     }
 
+    public static final string ATM_ZRM_INTERMEDIARY_ROLE = 'MediadorZRM';
+    
     /**
      * Metodo que recupera los usuarios que cumplen un Rol en los mediadores que contienen un email dado en su
      * correspondiente campo de email. Por ejemplo los usuario RN (rol) que pertenecen a un Director Territorial

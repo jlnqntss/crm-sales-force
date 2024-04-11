@@ -268,6 +268,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CollectionUtil</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ContactHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -6939,6 +6943,41 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ClientGiftCard__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ClientHasContacted__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.EnlaceZonaZurich__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.IntermediaryOwner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.PolicyEndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.TendencyToEscape__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.UpdatedInsuranceCost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Claim__c.AssetIdentifier__c</field>
         <readable>true</readable>
@@ -10495,6 +10534,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PersonLeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PotentialMatch__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -15998,6 +16042,10 @@
         <recordType>Case.OCSSprinklr</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Default ZRM</layout>
+        <recordType>Case.ZRMInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Campaign-Telemarketing</layout>
         <recordType>Campaign.Telemarketing</recordType>
     </layoutAssignments>
@@ -18306,6 +18354,11 @@
     <recordTypeVisibilities>
         <default>true</default>
         <recordType>Case.ZDAInquiry</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.ZRMInquiry</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
