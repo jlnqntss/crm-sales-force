@@ -296,7 +296,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
                             .selectFields(fieldsToRetrieve)
                             .selectField('User.Profile.Name')
                             .addConditionIn(AccountTeamMember.UserId, userList)
-                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
+                            .addConditionEq(AccountTeamMember.TeamMemberRole, ATM_ZRM_INTERMEDIARY_ROLE)
                             .enforceSecurity()
                             .run();
         }
@@ -336,7 +336,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
             result = this.baseQuery
                             .selectFields(fieldsToRetrieve)
                             .addConditionEq(AccountTeamMember.AccountId, leadAccount.Id)
-                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
+                            .addConditionEq(AccountTeamMember.TeamMemberRole, ATM_ZRM_INTERMEDIARY_ROLE)
                             .enforceSecurity()
                             .run();
         }
@@ -371,7 +371,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
                             .selectFields(fieldsToRetrieve)
                             .addConditionIn(AccountTeamMember.AccountId, accountIdsSet)
                             .addConditionIn(AccountTeamMember.UserId, userList)
-                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
+                            .addConditionEq(AccountTeamMember.TeamMemberRole, ATM_ZRM_INTERMEDIARY_ROLE)
                             .enforceSecurity()
                             .run();
         }        
@@ -405,7 +405,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
                             .selectFields(fieldsToRetrieve)
                             .addConditionNotIn(AccountTeamMember.AccountId, accountIdsSet)
                             .addConditionIn(AccountTeamMember.UserId, userList)
-                            .addConditionEq(AccountTeamMember.TeamMemberRole, 'MediadorZRM')
+                            .addConditionEq(AccountTeamMember.TeamMemberRole, ATM_ZRM_INTERMEDIARY_ROLE)
                             .enforceSecurity()
                             .run();
         }        
