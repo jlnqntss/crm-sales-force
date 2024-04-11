@@ -67,6 +67,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.applyFormatToZDABody(newList);
         CaseUtil.relateCasesByTicketId(newList);
         CaseUtil.relateCaseToCustomerByNifCif(newList);
+        CaseUtil.relateCasesWithMediatedAccount(newList);
     }
 
     /**
