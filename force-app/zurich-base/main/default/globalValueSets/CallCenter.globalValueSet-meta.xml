@@ -61,6 +61,11 @@
         <label>GSS CSM</label>
     </customValue>
     <customValue>
+        <fullName>SAM</fullName>
+        <default>false</default>
+        <label>SAM</label>
+    </customValue>
+    <customValue>
         <fullName>Sprinklr</fullName>
         <default>false</default>
         <isActive>false</isActive>
