@@ -412,4 +412,29 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
 
         return result;
     }
+
+    /**
+     * Método que recupera los ATMs de un cliente a través del ID del usuario
+     * @author nikola.cobian@seidor.com
+     * @date 08/04/2024
+     * @param Set<Id> userId
+     * @return List<AccountTeamMember>
+     */
+    public List<AccountTeamMember> findATMsForIntermediariesByUserId(Set<String> usersId)
+    {
+        if(usersId != null && !usersId.isEmpty())
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                AccountTeamMember.Id
+            })
+            .addConditionIn(AccountTeamMember.UserId, usersId)
+            .addConditionEq(AccountTeamMember.TeamMemberRole, ATM_ZRM_INTERMEDIARY_ROLE);
+            
+            return (List<AccountTeamMember>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<AccountTeamMember>();
+        }
+    }
 }
