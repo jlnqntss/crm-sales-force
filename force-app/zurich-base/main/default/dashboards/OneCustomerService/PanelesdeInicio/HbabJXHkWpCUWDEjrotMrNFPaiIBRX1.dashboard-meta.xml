@@ -124,7 +124,6 @@
     <dashboardType>SpecifiedUser</dashboardType>
     <description>Panel de control de tareas de la aplicación del SAM.</description>
     <isGridLayout>true</isGridLayout>
-    <owner>leopoldo.gonzalez@zurich.com</owner>
     <runningUser>o.iglesiasalcala@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
     <title>Panel Inicio Supervisión SAM</title>
