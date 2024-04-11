@@ -10,6 +10,8 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         super(AccountTeamMember.getSObjectType());
     }
 
+    public static final string ATM_ZRM_INTERMEDIARY_ROLE = 'MediadorZRM';
+    
     /**
      * Metodo que recupera los usuarios que cumplen un Rol en los mediadores que contienen un email dado en su
      * correspondiente campo de email. Por ejemplo los usuario RN (rol) que pertenecen a un Director Territorial
@@ -279,7 +281,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         List<AccountTeamMember> result = new List<AccountTeamMember>();
 
         if (userList != null && !userList.isEmpty()) {
-            result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId, User.Profile.Name FROM AccountTeamMember WHERE UserId = :userList AND TeamMemberRole = 'MediadorZRM']);
+            result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId, User.Profile.Name FROM AccountTeamMember WHERE UserId = :userList AND TeamMemberRole =: ATM_ZRM_INTERMEDIARY_ROLE]);
         }
 
         return result;
@@ -298,7 +300,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty()) {
             result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
                                                     FROM AccountTeamMember 
-                                                    WHERE TeamMemberRole = 'MediadorZRM' 
+                                                    WHERE TeamMemberRole = :ATM_ZRM_INTERMEDIARY_ROLE 
                                                     AND AccountId IN : accountId 
                                                     AND (
                                                         User.Contact.AccountId IN: intermediaryIdsSet OR 
@@ -309,7 +311,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         } else if (intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty()) {
             result = new List<AccountTeamMember>([SELECT Id, AccountId, UserId , User.Contact.AccountId, User.Contact.Account.IntermediaryGroup__c, User.Profile.Name
                                                     FROM AccountTeamMember 
-                                                    WHERE TeamMemberRole = 'MediadorZRM' 
+                                                    WHERE TeamMemberRole =: ATM_ZRM_INTERMEDIARY_ROLE 
                                                     AND AccountId IN : accountId 
                                                     AND User.Contact.AccountId IN: intermediaryIdsSet]);
         }
@@ -317,6 +319,30 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
         
 
         return result;
+    }
+    /**
+     * Método que recupera los ATMs de un cliente a través del ID del usuario
+     * @author nikola.cobian@seidor.com
+     * @date 08/04/2024
+     * @param Set<Id> userId
+     * @return List<AccountTeamMember>
+     */
+    public List<AccountTeamMember> findATMsForIntermediariesByUserId(Set<String> usersId)
+    {
+        if(usersId != null && !usersId.isEmpty())
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                AccountTeamMember.Id
+            })
+            .addConditionIn(AccountTeamMember.UserId, usersId)
+            .addConditionEq(AccountTeamMember.TeamMemberRole, ATM_ZRM_INTERMEDIARY_ROLE);
+            
+            return (List<AccountTeamMember>) this.baseQuery.run();
+        }
+        else
+        {
+            return new List<AccountTeamMember>();
+        }
     }
 
 
@@ -333,7 +359,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
             result = new List<AccountTeamMember>([SELECT AccountId, UserId, TeamMemberRole, AccountAccessLevel, OpportunityAccessLevel, CaseAccessLevel, ContactAccessLevel 
                                                     FROM AccountTeamMember 
                                                     WHERE AccountId =: leadAccount.Id
-                                                    AND TeamMemberRole = 'MediadorZRM']); 
+                                                    AND TeamMemberRole = :ATM_ZRM_INTERMEDIARY_ROLE]); 
         }
         return result;
 
@@ -354,7 +380,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
                                                     FROM AccountTeamMember 
                                                     WHERE AccountId IN :accountIdsSet 
                                                     AND UserId IN :userList
-                                                    AND TeamMemberRole = 'MediadorZRM']);
+                                                    AND TeamMemberRole = :ATM_ZRM_INTERMEDIARY_ROLE]);
 
         }        
 
@@ -375,7 +401,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
                                                     FROM AccountTeamMember 
                                                     WHERE AccountId NOT IN :accountIdsSet 
                                                     AND UserId IN :userList
-                                                    AND TeamMemberRole = 'MediadorZRM']);
+                                                    AND TeamMemberRole = :ATM_ZRM_INTERMEDIARY_ROLE]);
 
         }        
 
