@@ -63,6 +63,16 @@
                 <default>false</default>
                 <label>TNPS Customer Survey</label>
             </value>
+            <value>
+                <fullName>Insurance Banking</fullName>
+                <default>false</default>
+                <label>Insurance Banking</label>
+            </value>
+            <value>
+                <fullName>TPA&apos;s</fullName>
+                <default>false</default>
+                <label>TPA&apos;s</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
