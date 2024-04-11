@@ -783,4 +783,57 @@ private with sharing class OpportunityUtilTest
 
     }
 
+    @isTest
+    private static void test_visibilityUpdatePolicyHolderZRM() {
+
+        // Insertamos una poliza
+        List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+
+        List<Opportunity> offers = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 1);           
+        offers[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
+
+        insert offers;
+
+        // actualizamos el el cliente de la poliza
+        List<Account> otherAccount = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' AND Id != :accounts.get(0).Id LIMIT 1];
+        offers[0].AccountId = otherAccount.get(0).Id;
+
+        Test.startTest();
+        update offers;
+        Test.stopTest();
+
+        List<Opportunity> offersWithChage = new List<Opportunity>([SELECT Id FROM Opportunity WHERE LastDateIntermediaryOrAccountChange__c != NULL LIMIT 1]);
+
+        Assert.isTrue(offersWithChage.size() > 0, 'Debe haber ofertas con el campo LastDateIntermediaryOrAccountChange__c informado');
+    }
+
+
+    @isTest
+    private static void test_visibilityUpdateIntermediaryZRM() {
+
+        // Insertamos una poliza
+
+        List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+
+        
+        List<Opportunity> offers = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 2);        
+        offers[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
+
+        insert offers;
+
+        // actualizamos el el cliente de la poliza
+        List<Account> otherIntermediary = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Intermediary' AND Name = 'MediadorTest2' LIMIT 1];
+        offers[0].IntermediaryId__c = otherIntermediary.get(0).Id;
+
+        Test.startTest();
+        update offers;
+        Test.stopTest();
+
+        List<Opportunity> offersWithChage = new List<Opportunity>([SELECT Id FROM Opportunity WHERE LastDateIntermediaryOrAccountChange__c != NULL LIMIT 1]);
+
+        Assert.isTrue(offersWithChage.size() > 0, 'Debe haber ofertas con el campo LastDateIntermediaryOrAccountChange__c informado');
+    }
+
 }

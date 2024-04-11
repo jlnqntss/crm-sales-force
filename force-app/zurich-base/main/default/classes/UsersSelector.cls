@@ -264,7 +264,7 @@ public with sharing class UsersSelector extends RecordsSelector
         if (intermediariesSet != null && !intermediariesSet.isEmpty()) {
             result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
                                     FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
+                                    WHERE Profile.Name IN (ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR) 
                                     AND (Contact.AccountId IN :intermediariesSet OR Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList) 
                                     AND IsActive = TRUE]);
         }
@@ -283,7 +283,7 @@ public with sharing class UsersSelector extends RecordsSelector
         if (intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty()) {
             result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
                                     FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
+                                    WHERE Profile.Name IN (ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR) 
                                     AND Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList
                                     AND IsActive = TRUE]);
         }
@@ -302,7 +302,7 @@ public with sharing class UsersSelector extends RecordsSelector
         if (intermediaryIdList != null && !intermediaryIdList.isEmpty()) {
             result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
                                     FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
+                                    WHERE Profile.Name IN (ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR) 
                                     AND Contact.AccountId IN :intermediaryIdList
                                     AND IsActive = TRUE]);
         }
@@ -322,13 +322,13 @@ public with sharing class UsersSelector extends RecordsSelector
         if (intermediariesSet != null && !intermediariesSet.isEmpty() && intermediaryGroupIdList != null && !intermediaryGroupIdList.isEmpty()) {
             result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
                                 WHERE(
-                                    (Contact.AccountId IN :intermediariesSet AND Profile.Name IN ('Agente Ventas - AGR', 'Agente Ventas')) 
-                                    OR (Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList AND Profile.Name = 'Agente Ventas - AGR')
+                                    (Contact.AccountId IN :intermediariesSet AND Profile.Name IN (ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR, ProfilesSelector.PROFILE_AGENTE_VENTAS)) 
+                                    OR (Contact.Account.IntermediaryGroup__c IN :intermediaryGroupIdList AND Profile.Name = ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
                                     )
                                 AND IsActive = TRUE]);  
         } else if (intermediariesSet != null && !intermediariesSet.isEmpty()) { // Si no hay agrupaciones buscamos solo los usuarios del conjunto de mediadores
             result = new List<User>([SELECT Id, Contact.AccountId, Contact.Account.IntermediaryGroup__c, Profile.Name FROM User 
-                                WHERE Contact.AccountId IN :intermediariesSet AND Profile.Name IN ('Agente Ventas - AGR', 'Agente Ventas')
+                                WHERE Contact.AccountId IN :intermediariesSet AND Profile.Name IN (ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR, ProfilesSelector.PROFILE_AGENTE_VENTAS)
                                 AND IsActive = TRUE]);
         }           
 
@@ -366,7 +366,7 @@ public with sharing class UsersSelector extends RecordsSelector
         if (String.isNotEmpty(intermediaryId)) {
             result = new List<User>([SELECT Id, Contact.AccountId, Profile.Name, Contact.Account.IntermediaryGroup__c
                                     FROM User 
-                                    WHERE Profile.Name IN ('Agente Ventas', 'Agente Ventas - AGR') 
+                                    WHERE Profile.Name IN (ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR) 
                                     AND (Contact.AccountId = :intermediaryId OR Contact.Account.IntermediaryGroup__c = :idIntermediaryGroupId) 
                                     AND IsActive = TRUE]);
         }
@@ -385,7 +385,7 @@ public with sharing class UsersSelector extends RecordsSelector
         if (intermediaryId != null && String.isNotEmpty(intermediaryId)) {
             result = new List<User>([SELECT Id 
                                     FROM User 
-                                    WHERE Profile.Name = 'Agente Ventas - AGR'
+                                    WHERE Profile.Name = ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
                                     AND Contact.AccountId = :intermediaryId 
                                     AND IsActive = TRUE]);
         }
@@ -404,7 +404,7 @@ public with sharing class UsersSelector extends RecordsSelector
         if (intermediaryId != null && String.isNotEmpty(intermediaryId) && intermediaryGroupId != null && String.isNotEmpty(intermediaryGroupId)) {
             result = new List<User>([SELECT Id 
                                     FROM User 
-                                    WHERE Profile.Name = 'Agente Ventas - AGR'
+                                    WHERE Profile.Name = ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
                                     AND Contact.Account.IntermediaryGroup__c = :intermediaryGroupId 
                                     AND Contact.AccountId != :intermediaryId 
                                     AND IsActive = TRUE]);

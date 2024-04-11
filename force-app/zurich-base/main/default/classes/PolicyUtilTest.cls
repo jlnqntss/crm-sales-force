@@ -131,8 +131,6 @@ private with sharing class PolicyUtilTest
     private static void test_visibilityUpdatePolicyHolderZRM() {
 
         // Insertamos una poliza
-        List<AccountTeamMember> atmBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
-
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
         User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
 
@@ -149,10 +147,9 @@ private with sharing class PolicyUtilTest
         update policies;
         Test.stopTest();
 
+        List<Policy__c> policiesWithChage = new List<Policy__c>([SELECT Id FROM Policy__c WHERE LastDateIntermediaryOrAccountChange__c != NULL LIMIT 1]);
 
-        List<AccountTeamMember> atmAfter = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
-
-        System.assertNotEquals(atmBefore.size(), atmAfter.size(), 'Deben de haberse insertado nuevos registros de ATM');
+        Assert.isTrue(policiesWithChage.size() > 0, 'Debe haber ofertas con el campo LastDateIntermediaryOrAccountChange__c informado');
     }
 
 
@@ -160,7 +157,6 @@ private with sharing class PolicyUtilTest
     private static void test_visibilityUpdateIntermediaryZRM() {
 
         // Insertamos una poliza
-        List<AccountTeamMember> atmBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
 
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
         User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
@@ -178,9 +174,8 @@ private with sharing class PolicyUtilTest
         update policies;
         Test.stopTest();
 
+        List<Policy__c> policiesWithChage = new List<Policy__c>([SELECT Id FROM Policy__c WHERE LastDateIntermediaryOrAccountChange__c != NULL LIMIT 1]);
 
-        List<AccountTeamMember> atmAfter = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
-
-        System.assertNotEquals(atmBefore.size(), atmAfter.size(), 'Deben de haberse insertado nuevos registros de ATM');
+        Assert.isTrue(policiesWithChage.size() > 0, 'Debe haber ofertas con el campo LastDateIntermediaryOrAccountChange__c informado');
     }
 }
