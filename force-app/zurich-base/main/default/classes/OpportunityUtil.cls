@@ -2,21 +2,49 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 04-24-2023
- * @last modified by  : aberuete
+ * @last modified on  : 08-04-2024
+ * @last modified by  : amiranda
  **/
 public with sharing class OpportunityUtil
 {
+    // #region Constants
+
+    private static final String FIELD_OWNER_ID = 'OwnerId';
+    private static final String FIELD_STAGE = 'StageName';
     private static final String CLASS_NAME = 'OpportunityUtil';
+    
+    // #endregion
+
+    // #region Public variables
+
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
     public static Map<Id, String> mapAccountRecordTypes; //Mapa de Accounts con sus respectivos RecordType.DeveloperName
     public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
-    static final String FIELD_OWNER_ID = 'OwnerId';
-    static final String FIELD_STAGE = 'StageName';
+    public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Ofertas
+
+    // #endregion
+
+    // #region Private variables
+
     private static List<String> nombresPerfilesVentas; // perfiles de la app ventas y zrm que muestra otro mensaje de error para la validación de cerrada ganada
     private static String userLoggedProfile; // query que obtiene el nombre del perfil del usuario logeado
     private final static String CRM_VENTAS_PROFILE = 'Ventas User';
-    public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Ofertas
+    @testVisible 
+    private static List<Scope_Setting__mdt> scopeSettingsMetadata
+    {
+        get
+        {
+            if (scopeSettingsMetadata == null)
+            {
+                scopeSettingsMetadata = Scope_Setting__mdt.getAll().values();
+            }
+
+            return scopeSettingsMetadata;
+        }
+        set;
+    }
+
+    // #endregion
 
 
     /**
@@ -79,18 +107,20 @@ public with sharing class OpportunityUtil
         }
     }
 
-     /**
+    /**
      * Método que rellena el mapa que contiene la relación entre Business Code y Scopes
-     * 
+     *
      * @author arcortazar
      * @date 21/12/2023
+     * 
+     * @change amiranda 08/04/2024 Los registros del Custom Metadata 'Scope_Setting__mdt'
+     * pasan a almacenarse en una variable estática con lógica en su getter.
      */
     public static void fillMapBusinessCode ()
     {
         mapBusinessCodes = new Map<String, String>();
-        List<Scope_Setting__mdt> scopeSettingsMapping = Scope_Setting__mdt.getAll().values();
 
-        for(Scope_Setting__mdt scope : scopeSettingsMapping)
+        for(Scope_Setting__mdt scope : scopeSettingsMetadata)
         {
             mapBusinessCodes.put(scope.BusinessCode__c, scope.Scope__c);
         }
@@ -107,10 +137,11 @@ public with sharing class OpportunityUtil
     {
         List<Opportunity> optysToGenerateScope = new List<Opportunity>();
 
-        for(Opportunity opty : newList) {
+        for(Opportunity opty : newList)
+        {
 
             if( (String.isNotBlank(opty.InfoQuoteNumber__c) && opty.ScopeId__c == null && opty.AccountId != null)
-             || ( opty.Scope__c == 'Ventas' && opty.ScopeId__c == null && String.isNotBlank(opty.BusinessCode__c) ))
+                || ( opty.Scope__c == 'Ventas' && opty.ScopeId__c == null && String.isNotBlank(opty.BusinessCode__c) ) )
             {
                 optysToGenerateScope.add(opty);
             }
@@ -182,9 +213,9 @@ public with sharing class OpportunityUtil
         {
             if( String.isBlank(opty.StageName) )
             {
-               
+
                 // Comprobamos las condiciones del Código de negocio
-                if(String.isBlank(opty.BusinessCode__c) || (!mapBusinessCodes.containsKey(opty.BusinessCode__c)) || (mapBusinessCodes.get(opty.BusinessCode__c) == 'Ventas'))
+                if( String.isBlank(opty.BusinessCode__c) || ( !mapBusinessCodes.containsKey(opty.BusinessCode__c) ) || (mapBusinessCodes.get(opty.BusinessCode__c) == 'Ventas') )
                 {
                     opty.StageName = 'Quoted';
                 }
@@ -387,33 +418,55 @@ public with sharing class OpportunityUtil
 
     /**
      * Metodo para dar visibilidad ZRM sobre clientes y leads en caso de insertar una nueva oferta
-     * 
+     *
      * @author dmunoz
      * @created date 05/03/2024
      */
-    public static void zrmVisibilityNewOffer(List<Opportunity> newList) 
+    public static void zrmVisibilityNewOffer(List<Opportunity> newList)
     {
 
-        try 
+        try
         {
             // 1º obtener los mediadores y clientes de las polizas en vigor <IntermdiaryId__c, List<AccountId>>
-            Map<String, Set<String>> accountIdByIntermediaryMap = ZRMOfferVisibilityUtil.getAccountIdByIntermediaryMap(newList);
+            Map<String, Set<String> > accountIdByIntermediaryMap = ZRMOfferVisibilityUtil.getAccountIdByIntermediaryMap(newList);
 
-            if (accountIdByIntermediaryMap != null && !accountIdByIntermediaryMap.isEmpty()) 
+            if ( accountIdByIntermediaryMap != null && !accountIdByIntermediaryMap.isEmpty() )
             {
                 // 2º Obtener las agrupaciones de los mediadores para obtener los usuarios agr de esos mediadores <IntermdiaryId__c, IntermediaryGroup__c>
-                Map<String, String> intermediaryWithIntermediariesGroupsIdMap = ZRMOfferVisibilityUtil.getIntermediaryGroupIdMap(accountIdByIntermediaryMap.keySet());
-        
+                Map<String, String> intermediaryWithIntermediariesGroupsIdMap = ZRMOfferVisibilityUtil.getIntermediaryGroupIdMap( accountIdByIntermediaryMap.keySet() );
+
                 // 3º Obtener los usuarios de los mediadores <IntermediaryId, List<UserId>
-                Map<String, List<String>> intermediariesWithUsers = ZRMOfferVisibilityUtil.getIntermediariesUsers(accountIdByIntermediaryMap.keySet(), intermediaryWithIntermediariesGroupsIdMap);
-        
+                Map<String, List<String> > intermediariesWithUsers = ZRMOfferVisibilityUtil.getIntermediariesUsers(accountIdByIntermediaryMap.keySet(), intermediaryWithIntermediariesGroupsIdMap);
+
                 // 4º Insertar atm y activar registros de competencia y cuentas relacionadas
                 ZRMOfferVisibilityUtil.newOfferInsertATMs(accountIdByIntermediaryMap, intermediariesWithUsers);
             }
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             ErrorLogUtil.commitError(e, CLASS_NAME);
-        }        
+        }
+    }
+
+    /**
+    * @description Método que marca la oportunidad para ser revisada por un
+    * proceso asíncrono en busca de coincidencias, siempre y cuando esta haya
+    * sido generada desde INFO y pertenezca a ZRM.
+    *
+    * @author amiranda
+    * @date 04-04-2024 
+    * @param List<Opportunity> Lista de oportunidades que van a ser insertadas 
+    **/
+    public static void identifyPotentialMatches(List<Opportunity> newOpportunities)
+    {
+        for (Opportunity newOpportunity : newOpportunities)
+        {
+            // Se comprueba que la acción DML de inserción la desencadena el batch de Exteral Request y que el registro pertenece al aplicativo ZRM
+            if ( String.isNotBlank(ExternalJobQueueBatch.className) &&
+                 (String.isBlank(newOpportunity.BusinessCode__c) || mapBusinessCodes?.get(newOpportunity.BusinessCode__c) == 'Ventas') )
+            {
+                newOpportunity.PotentialMatch__c = true;
+            }
+        }
     }
 }

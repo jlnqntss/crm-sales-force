@@ -930,10 +930,11 @@ private with sharing class AccountsSelectorTest
     @isTest
     static void test_findIntermediaryGroupByIntermediaryGroupCodes()
     {
-        List<Account> agrupacionesData = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c FROM Account WHERE RecordTypeId = :AccountsSelector.RT_NAME_AGRUPATION AND INFOIntermediaryGroupCode__c != NULL]);
+        List<Account> agrupacionesData = new List<Account>([SELECT Id, INFOIntermediaryGroupCode__c FROM Account WHERE RecordTypeId = : AccountsSelector.RT_NAME_AGRUPATION AND INFOIntermediaryGroupCode__c != NULL]);
         Set<String> groupCodes = new Set<String>();
 
-        for (Account acc: agrupacionesData) {
+        for (Account acc: agrupacionesData)
+        {
             groupCodes.add(acc.INFOIntermediaryGroupCode__c);
         }
 
@@ -948,12 +949,39 @@ private with sharing class AccountsSelectorTest
     @isTest
     static void test_findIntermediaryGroupByIntermediaries()
     {
-        
+
         Test.startTest();
-        List<Account> accountListAfterQuery = new AccountsSelector().findIntermediaryGroupByIntermediaries(new Set<String>());
+        List<Account> accountListAfterQuery = new AccountsSelector().findIntermediaryGroupByIntermediaries( new Set<String>() );
         Test.stopTest();
 
         System.assertEquals(true, accountListAfterQuery != null, 'No puede ser nulo el resultado de la query');
 
+    }
+
+    /**
+     * Se valida que el metodo findIntermediariesByMainEmail funciona según lo esperado. Para ello:
+     * - Hace una busqueda pasandole un nulo. Devuelve lista vacia
+     * - Hace una busqueda pasandole una lista vacia de emails. Devuelve lista vacia
+     * - Hace una busqueda pasandole una lista con un email que existe. Devuelve la cuenta esperada
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     */
+    @isTest
+    private static void test_findIntermediariesByMainEmail()
+    {
+        List<Account> intermediaryAcc = [SELECT Id FROM Account WHERE MainEmail__c = : INTERMEDIARY_EMAIL];
+        Assert.isFalse( intermediaryAcc.isEmpty() );
+
+        Test.startTest();
+        List<Account> emptyList = new AccountsSelector().findIntermediariesByMainEmail(null);
+        List<Account> emptyList2 = new AccountsSelector().findIntermediariesByMainEmail( new Set<String>() );
+        List<Account> found = new AccountsSelector().findIntermediariesByMainEmail(new Set<String> {INTERMEDIARY_EMAIL});
+        Test.stopTest();
+
+        Assert.isTrue( emptyList.isEmpty() );
+        Assert.isTrue( emptyList2.isEmpty() );
+        Assert.isFalse( found.isEmpty() );
+        Assert.areEqual(intermediaryAcc[0].Id, found[0].Id);
     }
 }

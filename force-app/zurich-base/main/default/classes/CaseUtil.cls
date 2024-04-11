@@ -16,6 +16,7 @@ public with sharing class CaseUtil
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
     public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
+    public static final String RT_NAME_ZDA = 'ZDAInquiry';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
     public static final String SPRINKLR_QUEUE_POSTVENTA = 'Postventa Redes Sociales';
@@ -32,18 +33,18 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
 
     // Recupera el Id del RecordType de casos USP
-    public static final ID RT_ID_USPINQUIRY 
+    public static final ID RT_ID_USPINQUIRY
     {
-        get 
+        get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_USPINQUIRY)?.getRecordTypeId();
         }
     }
 
     // Recupera el Id del RecordType de casos OCS
-    public static final ID RT_ID_OCSINQUIRY 
+    public static final ID RT_ID_OCSINQUIRY
     {
-        get 
+        get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSINQUIRY)?.getRecordTypeId();
         }
@@ -55,6 +56,15 @@ public with sharing class CaseUtil
         get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR).getRecordTypeId();
+        }
+    }
+
+    // Recupera el Id del RecordType de casos ZDA
+    public static final ID RT_ID_ZDA
+    {
+        get
+        {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId();
         }
     }
 
@@ -343,6 +353,58 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Relaciona los casos proporcionados si tienen informado el campo CustomerNifCif__c a traves
+     * del campo 'mediated customer' (MediatedCustomer__c)
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     * @param casesToRelate casos a relacionar con los respectivos clientes
+     */
+    public static void relateCaseToCustomerByNifCif(List<Case> casesToRelate)
+    {
+        //1- construimos un set con los dnis a buscar
+        List<String> dniCifsToSearch = new List<String>();
+        for (Case c : casesToRelate)
+        {
+            if ( String.isNotBlank(c.CustomerNifCif__c) )
+            {
+                dniCifsToSearch.add(c.CustomerNifCif__c);
+            }
+        }
+
+        if ( dniCifsToSearch.isEmpty() )
+        {
+            //si no hay nada que buscar, no hay nada que relacionar ==> FIN
+            return;
+        }
+
+        //Se hace la busqueda, en este caso no filtramos el tipo de documento
+        List<Account> accountsFound = new AccountsSelector().findByNationalId(dniCifsToSearch, null);
+        if ( accountsFound.isEmpty() )
+        {
+            //no se ha encontrado ningun cliente, no hay nada que relacionar ==> FIN
+            return;
+        }
+        //2- Agrupamos clientes por dni
+        Map<String, List<Account> > accountsByNationalId = (Map<String, List<Account> >) CollectionUtil.groupListBy( accountsFound, Account.fields.NationalId__c.getDescribe().getName() );
+
+        //3- Iteramos para setear los clientes
+        List<Account> accountList;
+        for (Case c : casesToRelate)
+        {
+            if ( String.isNotBlank(c.CustomerNifCif__c) && accountsByNationalId?.containsKey(c.CustomerNifCif__c) )
+            {
+                accountList = accountsByNationalId.get(c.CustomerNifCif__c);
+                if (accountList.size() == 1)
+                {
+                    c.MediatedCustomer__c = accountList[0].Id;
+                }
+                //else hay mas de uno, por lo tanto, no lo asignamos
+            }
+        }
+    }
+
+    /**
      * Llamado en BulkBefore
      * Recoge los valores de Queues necesarios para casos Sprinklr
      * @author jchavez
@@ -383,6 +445,30 @@ public with sharing class CaseUtil
                     customerRequest.CallCenter__c = SPRINKLR_CALLCENTER_SINIESTROS;
                     customerRequest.OwnerId = queuePostventaRRSS[0].Id;
                 }
+            }
+        }
+    }
+
+    /**
+     * Para aquellos casos que sean de ZDA y el origen sea Canal unico (llegan via API estandar), se aplica formato a la descripcion
+     * del caso, puesto que llegan con este formato:
+     * Usuario: NOMBRE APELLIDO1 APELLIDO2;;Correo electrónico: USUARIO@bancsabadell.com;;Unidad de trabajo: 0086
+     * Se debe sustituir ;; por un salto de linea, de tal manera que quede:
+     * Usuario: NOMBRE APELLIDO1 APELLIDO2
+     * Correo electrónico: USUARIO@bancsabadell.com
+     * Unidad de trabajo: 0086
+     *
+     * @author mario.navarro@seidor.com
+     * @date 08/04/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void applyFormatToZDABody(List<Case> insertedCases)
+    {
+        for(Case insertedCase : insertedCases)
+        {
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.Description != null)
+            {
+                insertedCase.Description = insertedCase.Description.replace(';;', '\n');
             }
         }
     }
@@ -953,6 +1039,101 @@ public with sharing class CaseUtil
             casesToUpdate = comprobarCasos(casesToRelate, mapRetrievedOffers, mapRetrievedPolicies);
         }
         return casesToUpdate;
+    }
+
+    /**
+     * Relaciona los casos cuyo campo RelatedRequestId__c esta informado, para asignarles como parent
+     * case aquellos cuyo TicketId__c coincida
+     *
+     * @author mario.navarro@seidor.com
+     * @date 09/04/2024
+     * @param casesToRelate lista de casos a relacionar
+     */
+    public static void relateCasesByTicketId(List<Case> casesToRelate)
+    {
+        //1- construimos un set con los ticket id a buscar
+        Set<Double> ticketIdsToSearch = new Set<Double>();
+        for (Case c : casesToRelate)
+        {
+            if (c.RelatedRequestId__c != null)
+            {
+                ticketIdsToSearch.add(c.RelatedRequestId__c);
+            }
+        }
+
+        if ( ticketIdsToSearch.isEmpty() )
+        {
+            //si no hay nada que buscar, no hay nada que relacionar ==> FIN
+            return;
+        }
+
+        List<Case> parentCases = new CasesSelector().getCasesByTicketId(ticketIdsToSearch);
+        if ( parentCases.isEmpty() )
+        {
+            //no se ha encontrado ningun parent, no hay nada que relacionar ==> FIN
+            return;
+        }
+        //2- Agrupamos casos por ticketId
+        Map<Double, Case> casesByTicketId = (Map<Double, Case>) CollectionUtil.hashList( parentCases, Case.fields.TicketId__c.getDescribe().getName() );
+
+        //3- Iteramos para setear los 'padres'
+        for (Case c : casesToRelate)
+        {
+            if ( c.RelatedRequestId__c != null && casesByTicketId?.containsKey(c.RelatedRequestId__c) )
+            {
+                c.ParentId = casesByTicketId.get(c.RelatedRequestId__c).Id;
+            }
+        }
+    }
+
+    /**
+     * Para aquellos casos que sean de ZDA y el origen sea Canal unico (llegan via API estandar), se comprueba si
+     * para el campo SuppliedEmail existe cuenta de tipo mediador, y en caso afirmativo, se vincula el caso
+     * mediante el AccountId
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void relateCasesWithMediatedAccount(List<Case> insertedCases)
+    {
+        //1- construimos un set con los emails a buscar
+        Set<String> emailsToSearch = new Set<String>();
+        for(Case insertedCase : insertedCases)
+        {
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            {
+                emailsToSearch.add(insertedCase.SuppliedEmail);
+            }
+        }
+
+        if ( emailsToSearch.isEmpty() )
+        {
+            //si no hay nada que buscar, no hay nada que relacionar ==> FIN
+            return;
+        }
+
+        List<Account> intermediaryAccs = new AccountsSelector().findIntermediariesByMainEmail(emailsToSearch);
+        if ( intermediaryAccs.isEmpty() )
+        {
+            //no se ha encontrado ninguna cuenta, no hay nada que relacionar ==> FIN
+            return;
+        }
+        //2- Agrupamos casos por ticketId
+        Map<String, List<Account> > accByEmail = (Map<String, List<Account> >) CollectionUtil.groupListBy( intermediaryAccs, Account.fields.MainEmail__c.getDescribe().getName() );
+        List<Account> emailAccounts;
+        for(Case insertedCase : insertedCases)
+        {
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            {
+                emailAccounts = accByEmail?.get(insertedCase.SuppliedEmail);
+                if (emailAccounts != null && emailAccounts.size() == 1)
+                {
+                    insertedCase.AccountId = emailAccounts[0].Id;
+                }
+                //else: no se han encontrado cuentas o hay mas de una. No se vincula
+            }
+        }
     }
 
     /**

@@ -211,6 +211,9 @@
         <quickActionListItems>
             <quickActionName>FeedItem.QuestionPost</quickActionName>
         </quickActionListItems>
+        <quickActionListItems>
+            <quickActionName>Policy__c.NuevoCasoRetencion</quickActionName>
+        </quickActionListItems>
     </quickActionList>
     <relatedLists>
         <fields>NAME</fields>
@@ -218,6 +221,18 @@
         <fields>GroupDescription__c</fields>
         <fields>AssetIdentifier__c</fields>
         <relatedList>Claim__c.Policy__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>NewCase</excludeButtons>
+        <fields>CASES.CASE_NUMBER</fields>
+        <fields>Product_Name__c</fields>
+        <fields>CASES.STATUS</fields>
+        <fields>PolicyEndDate__c</fields>
+        <fields>UpdatedInsuranceCost__c</fields>
+        <relatedList>Case.PolicyId__c</relatedList>
+        <sortField>CASES.STATUS</sortField>
+        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>ASSET.NAME</fields>
