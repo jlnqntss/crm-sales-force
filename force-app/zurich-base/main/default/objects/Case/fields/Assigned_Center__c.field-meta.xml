@@ -11,6 +11,7 @@
 					&quot;Zurich Empresas&quot;, IMAGE(&quot;/resource/zurichempresas&quot;, &quot;ZE&quot;, 40, 100),
 					&quot;TWW Retención&quot;, IMAGE(&quot;/resource/tww&quot;, &quot;TWW&quot;, 40, 100),
 &quot;Sprinklr&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
+&quot;SAM&quot;, IMAGE(&quot;/resource/LogoSAM&quot;, &quot;LogoSAM&quot;, 40, 100),
                                         &quot;RRSS Postventa-Siniestros&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
 &quot;RRSS Marca&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
 &quot;GSS CSM&quot;, IMAGE(&quot;/resource/gss&quot;, &quot;GSS&quot;, 40, 100),
