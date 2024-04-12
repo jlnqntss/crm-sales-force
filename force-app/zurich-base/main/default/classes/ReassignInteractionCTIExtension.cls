@@ -11,8 +11,6 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private final static String TASK_STATUS_CLOSED      = 'Cerrada';
     private final static String TASK_STATUS_TYPE_FORMS = 'Forms';
     private final static String TASK_RECORDTYPE_ID_INTERACTION = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
-    private final static String CRM_VENTAS_PROFILE = 'Ventas User';
-
     /**
      * Identifica una tarea a través del parámetro data.interaction.id y devuelve dicha tarea modificando el usuario Asignado
      * @param data: JSON string con la información de Genesys Cloud
@@ -200,7 +198,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      */
     private static void eventOnInteractionDisconnected(Task interactionTask, Map<String, Object> eventInteractionData)
     {
-        if ( new UserSelector().getUserInfo( UserInfo.getUserId() ).Profile.Name.equalsIgnoreCase(CRM_VENTAS_PROFILE) )
+        if ( new UserSelector().getUserInfo( UserInfo.getUserId() ).Profile.Name.equalsIgnoreCase(ProfilesSelector.PROFILE_VENTAS_USER) )
         {
             Map<String, String> genesysWrapUpMapping = new Map<String, String>();
             List<ZRM_Genesys_WrapUp_mapping__mdt> genesysWrapUpMappingMetadata = ZRM_Genesys_WrapUp_mapping__mdt.getAll().values();
@@ -431,7 +429,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                     String currentUserProfileName = new UserSelector().getUserInfo( UserInfo.getUserId() ).Profile.Name;
                     for(Opportunity offer: totalOffers)
                     {
-                        if( offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && offer.IsTest__c == false && !currentUserProfileName.equalsIgnoreCase(CRM_VENTAS_PROFILE) )
+                        if( offer.OwnerId != null && offer.Owner.Profile.Name == 'Integrator' && offer.IsTest__c == false && !currentUserProfileName.equalsIgnoreCase(ProfilesSelector.PROFILE_VENTAS_USER) )
                         {
                             //Cambiar el propietario al usuario actual
                             offer.OwnerId = UserInfo.getUserId();
@@ -516,7 +514,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
      **/
     private static Boolean isCrmVentasUserAndTaskClosed(Task task)
     {
-        return (new UserSelector().getUserInfo( UserInfo.getUserId() ).Profile.Name.equalsIgnoreCase(CRM_VENTAS_PROFILE)
+        return (new UserSelector().getUserInfo( UserInfo.getUserId() ).Profile.Name.equalsIgnoreCase(ProfilesSelector.PROFILE_VENTAS_USER)
                 && task?.Status == TASK_STATUS_CLOSED);
     }
 }

@@ -39,14 +39,14 @@
         System.runAs (adminUser)
         {
             // Usuario Nominal
-            String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+            String portalProfile = [SELECT Id FROM Profile WHERE Name = :ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
 
             userList = TestDataFactory.generateUsersByProfile(portalProfile, 1);
             userList[0].ContactId = contacts[0].Id;
             insert userList;
 
             // Usuario AGR
-            String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas - AGR' LIMIT 1].Id;
+            String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = :ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR LIMIT 1].Id;
 
             userAGRList = TestDataFactory.generateUsersByProfile(portalAGRProfile, 1);            
             userAGRList[0].ContactId = contacts[1].Id;
@@ -54,7 +54,7 @@
             insert userAGRList;
         }
 
-        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = :ProfilesSelector.PROFILE_AGENTE_VENTAS AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
         
         /********************************  CLIENTES  ********************************/
         // Crear cuentas de clientes
@@ -104,7 +104,7 @@
      {
          // Insertamos campaign members
          // Obtener 
-         User zrmIntermediary = [SELECT Id, Contact.AccountId, Contact.Account.INFOIntermediaryCode__c FROM User WHERE Profile.Name = 'Agente Ventas' AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
+         User zrmIntermediary = [SELECT Id, Contact.AccountId, Contact.Account.INFOIntermediaryCode__c FROM User WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
          List<Account> accounts = new List<Account>([SELECT Id, PersonContactId FROM Account WHERE RecordType.DeveloperName = 'Customer']);
          List<Campaign> campaignTest = [SELECT Id FROM Campaign WHERE ExternalId__c = 'TestCampaign'];
          Account mediador = zrmIntermediary.Contact.Account;

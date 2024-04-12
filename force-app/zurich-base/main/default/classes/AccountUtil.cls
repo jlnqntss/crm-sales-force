@@ -223,7 +223,7 @@ public class AccountUtil
             // 1º informacion del usuario logueado - solo ejecutamos este codigo si es usuario ZRM
             User loggedUser = (new UsersSelector()).findUserIntermediaryByUserId(UserInfo.getUserId());
             
-            if ('Agente Ventas'.equals(loggedUser.Profile.Name) || 'Agente Ventas - AGR'.equals(loggedUser.Profile.Name)) {  
+            if (loggedUser.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS || loggedUser.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR) {  
 
                 // genero los eventos y los publico
                 for (Account lead: leadsToProcessList) {

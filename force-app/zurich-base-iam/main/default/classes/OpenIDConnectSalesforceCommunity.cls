@@ -932,7 +932,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
     {
         String profile = profiles.get(0);
 
-        if (!profile.equals('Agente Ventas') && !profile.equals('Agente Ventas - AGR'))
+        if (profile != ProfilesSelector.PROFILE_AGENTE_VENTAS && profile != ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
         {
             // Si no es agente ventas o agente ventas agr no hacemos nada
             return;

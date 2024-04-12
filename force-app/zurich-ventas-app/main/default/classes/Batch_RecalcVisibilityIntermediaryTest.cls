@@ -35,7 +35,7 @@ public with sharing class Batch_RecalcVisibilityIntermediaryTest {
         System.runAs (adminUser)
         {
             // Usuario Nominal
-            String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+            String portalProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
 
             userList = TestDataFactory.generateUsersByProfile(portalProfile, 1);
             userList[0].ContactId = contacts[0].Id;

@@ -15,7 +15,6 @@ public with sharing class OpportunityUtil
     static final String FIELD_STAGE = 'StageName';
     private static List<String> nombresPerfilesVentas; // perfiles de la app ventas y zrm que muestra otro mensaje de error para la validación de cerrada ganada
     private static String userLoggedProfile; // query que obtiene el nombre del perfil del usuario logeado
-    private final static String CRM_VENTAS_PROFILE = 'Ventas User';
     public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Ofertas
 
 
@@ -36,7 +35,7 @@ public with sharing class OpportunityUtil
         listaUsuarios = ( new UsersSelector() ).getUsersByName(nombresUsuarios);
 
         // Perfiles Ventas
-        nombresPerfilesVentas = new List<String> {'Agente Ventas', 'Ventas User'};
+        nombresPerfilesVentas = new List<String> {ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_VENTAS_USER};
         userLoggedProfile = ProfilesSelector.getLoggedUserProfile();
     }
 
@@ -262,7 +261,7 @@ public with sharing class OpportunityUtil
             }
 
             // fpalomo - 10/10/2023 - CV-671
-            if ( oldOpty.StageName.equalsIgnoreCase('Legit Lead') && newOpty.StageName.equalsIgnoreCase('App Submitted') && userLoggedProfile.equalsIgnoreCase(CRM_VENTAS_PROFILE) )
+            if ( oldOpty.StageName.equalsIgnoreCase('Legit Lead') && newOpty.StageName.equalsIgnoreCase('App Submitted') && userLoggedProfile.equalsIgnoreCase(ProfilesSelector.PROFILE_VENTAS_USER) )
             {
                 newOpty.OwnerId = UserInfo.getUserId();
             }

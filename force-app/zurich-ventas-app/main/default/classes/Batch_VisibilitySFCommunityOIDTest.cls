@@ -1,5 +1,5 @@
 @IsTest
-public class Batch_VisibilitySFCommunityOIDTest {
+public with sharing class Batch_VisibilitySFCommunityOIDTest {
     @TestSetup
     static void makeData()
     {
@@ -27,7 +27,7 @@ public class Batch_VisibilitySFCommunityOIDTest {
         List<Boolean> activeStatus = new List<Boolean> {true};
         
         UserRole portalRole = [SELECT Id FROM UserRole WHERE PortalType = 'None' LIMIT 1];
-        String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+        String portalProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
         
         User adminUser = (new UsersSelector()).findByProfileName(adminProfiles, activeStatus, 1)[0];
         List<User> listUser = TestDataFactory.generateUsersByProfile(portalProfile, 2);

@@ -282,12 +282,12 @@ public with sharing class ZRMPolicyVisibilityUtil
             }
             else     // si el mediador del usuario SI tiene agrupacion informamos el mapa de atm de mediador y de agrupacion
             {
-                if ( 'Agente Ventas'.equals(atm.user.Profile.Name) )
+                if ( atm.user.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS )
                 {
                     intermediaryATMs = generateMapATM(intermediaryATMs, intermediaryId, atm);
 
                 }
-                else if ( 'Agente Ventas - AGR'.equals(atm.user.Profile.Name) )   // usuario agrupacion
+                else if ( atm.user.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR )   // usuario agrupacion
                 {
                     intermediaryGroupATMs = generateMapATM(intermediaryGroupATMs, intermediaryGroupId, atm);
                 }
@@ -573,7 +573,7 @@ public with sharing class ZRMPolicyVisibilityUtil
             }
 
             // Añado el usuario agr para recorrerlos despues
-            if ( 'Agente Ventas - AGR'.equals(user.Profile.Name) )
+            if ( user.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR )
             {
                 userAGRList.add(user);
             }

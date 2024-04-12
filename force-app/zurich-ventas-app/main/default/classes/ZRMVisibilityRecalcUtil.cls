@@ -9,7 +9,7 @@ public with sharing class ZRMVisibilityRecalcUtil {
         Map<Id, Set<AccountTeamMember>> intermediaryATMsMap = new Map<Id, Set<AccountTeamMember>>();
         for (AccountTeamMember atm : intermediaryATMs)
         {
-            if (atm.User.Profile.Name == 'Agente Ventas')
+            if (atm.User.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS)
             {
                 if (!intermediaryATMsMap.containsKey(atm.UserId))
                 {
@@ -31,7 +31,7 @@ public with sharing class ZRMVisibilityRecalcUtil {
         Map<Id, Set<AccountTeamMember>> intermediaryAgrATMsMap = new Map<Id, Set<AccountTeamMember>>();
         for (AccountTeamMember atm : intermediaryATMs)
         {
-            if (atm.User.Profile.Name == 'Agente Ventas - AGR')
+            if (atm.User.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
             {
                 if (!intermediaryAgrATMsMap.containsKey(atm.UserId))
                 {
