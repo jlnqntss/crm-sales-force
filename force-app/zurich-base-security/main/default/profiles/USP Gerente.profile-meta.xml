@@ -19585,10 +19585,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
-        <name>OpportunityIQUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
         <name>OpportunityScoreUser</name>
     </userPermissions>
     <userPermissions>
