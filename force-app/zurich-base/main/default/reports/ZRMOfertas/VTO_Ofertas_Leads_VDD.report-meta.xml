@@ -4,7 +4,22 @@
         <field>ACCOUNT_NAME</field>
     </columns>
     <columns>
-        <field>ACCOUNT_RECORDTYPE</field>
+        <field>Opportunity.SalesProcess__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.IntermediaryCode__c</field>
+    </columns>
+    <columns>
+        <field>LEAD_SOURCE</field>
+    </columns>
+    <columns>
+        <field>PHONE1</field>
+    </columns>
+    <columns>
+        <field>Account.MainEmail__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.InfoUser__c</field>
     </columns>
     <columns>
         <field>OPPORTUNITY_NAME</field>
@@ -33,9 +48,6 @@
     <columns>
         <field>Opportunity.InfoLastModifiedDate__c</field>
     </columns>
-    <columns>
-        <field>Opportunity.IntermediaryCode__c</field>
-    </columns>
     <filter>
         <criteriaItems>
             <column>STAGE_NAME</column>
@@ -50,6 +62,13 @@
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>PersonAccount.Lead</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CREATED_DATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>TODAY</value>
         </criteriaItems>
         <language>es</language>
     </filter>

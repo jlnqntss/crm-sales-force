@@ -1087,6 +1087,56 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Para aquellos casos que sean de ZDA y el origen sea Canal unico (llegan via API estandar), se comprueba si
+     * para el campo SuppliedEmail existe cuenta de tipo mediador, y en caso afirmativo, se vincula el caso
+     * mediante el AccountId
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void relateCasesWithMediatedAccount(List<Case> insertedCases)
+    {
+        //1- construimos un set con los emails a buscar
+        Set<String> emailsToSearch = new Set<String>();
+        for(Case insertedCase : insertedCases)
+        {
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            {
+                emailsToSearch.add(insertedCase.SuppliedEmail);
+            }
+        }
+
+        if ( emailsToSearch.isEmpty() )
+        {
+            //si no hay nada que buscar, no hay nada que relacionar ==> FIN
+            return;
+        }
+
+        List<Account> intermediaryAccs = new AccountsSelector().findIntermediariesByMainEmail(emailsToSearch);
+        if ( intermediaryAccs.isEmpty() )
+        {
+            //no se ha encontrado ninguna cuenta, no hay nada que relacionar ==> FIN
+            return;
+        }
+        //2- Agrupamos casos por ticketId
+        Map<String, List<Account> > accByEmail = (Map<String, List<Account> >) CollectionUtil.groupListBy( intermediaryAccs, Account.fields.MainEmail__c.getDescribe().getName() );
+        List<Account> emailAccounts;
+        for(Case insertedCase : insertedCases)
+        {
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            {
+                emailAccounts = accByEmail?.get(insertedCase.SuppliedEmail);
+                if (emailAccounts != null && emailAccounts.size() == 1)
+                {
+                    insertedCase.AccountId = emailAccounts[0].Id;
+                }
+                //else: no se han encontrado cuentas o hay mas de una. No se vincula
+            }
+        }
+    }
+
+    /**
      * Método privado que obtiene las pólizas y ofertas relacionadas con los casos
      * @author: arcortazar
      * @date: 27/03/2023

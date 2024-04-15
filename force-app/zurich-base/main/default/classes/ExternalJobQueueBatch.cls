@@ -13,6 +13,8 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>
 
     private Transformer transformer;
 
+    public static String className;
+
     global ExternalJobQueueBatch()
     {}
 
@@ -46,6 +48,9 @@ global class ExternalJobQueueBatch implements Database.Batchable<sObject>
 
     global void execute(Database.BatchableContext bc, List<ExternalRequest__c> externalRequestScope)
     {
+        // Se almacena el nombre de la clase de forma dinámica en una variable estática
+        className = String.valueOf(this).substring(0,String.valueOf(this).indexOf(':'));
+
         Set<Id> externalRequestIds = new Set<Id>();
 
         try

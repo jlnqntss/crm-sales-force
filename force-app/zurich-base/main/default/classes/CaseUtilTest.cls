@@ -318,7 +318,7 @@ private with sharing class CaseUtilTest
     }
 
     /**
-     * Se valida que el metodo test_relateCasesByTicketId relaciona correctamente los casos por el TicketId__c y RelatedRequestId__c, para ello:
+     * Se valida que el metodo relateCasesByTicketId relaciona correctamente los casos por el TicketId__c y RelatedRequestId__c, para ello:
      * - Se crea un caso sin RelatedRequestId__c. No debe vincular nada
      * - Se crea un caso con RelatedRequestId__c, pero no existe el 'parent'. No debe vincular nada
      * - Se crea un caso con RelatedRequestId__c, el 'parent' existe. Debe vincular con el parent
@@ -384,8 +384,78 @@ private with sharing class CaseUtilTest
         Assert.isNull(relatedWithoutParentCaseCreated.ParentId);
         Assert.isNotNull(relatedWithParentCaseCreated);
         Assert.areEqual(parentCaseZDA.Id, relatedWithParentCaseCreated.ParentId);
-        Assert.isNotNull(noRelatedCaseCreated);
+        Assert.isNotNull(relatedWithParentCaseNoZDACreated);
         Assert.isNull(relatedWithParentCaseNoZDACreated.ParentId);
+    }
+
+    /**
+     * Se valida que el metodo relateCasesWithMediatedAccount relaciona correctamente los casos por el
+     * SuppliedEmail y el MainEmail__c de la cuenta Intermediary
+     * - Se crea un caso sin SuppliedEmail. No debe vincular nada
+     * - Se crea un caso con SuppliedEmail, pero no existe la cuenta. No debe vincular nada
+     * - Se crea un caso con SuppliedEmail, existe la cuenta. Debe vincular con la cuenta
+     * - Se crea un caso con SuppliedEmail, existela cuenta pero no es Intermediary. No debe vincular nada
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     */
+    @isTest
+    private static void test_relateCasesWithMediatedAccount()
+    {
+        //generamos la cuenta de tipo Intermediary
+        Account intermediaryAccount = TestDataFactory.generateAccounts('001', 'Intermediary', 1)[0];
+        intermediaryAccount.MainEmail__c = 'test@mail.com';
+
+        Account otherTypeAccount = TestDataFactory.generateAccounts('001', 'BusinessCustomer', 1)[0];
+        otherTypeAccount.MainEmail__c = 'test2@mail.com';
+
+        insert new List<Account> {intermediaryAccount, otherTypeAccount};
+
+        Case noRelatedCase = new Case(
+            TicketId__c = 10,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Origin = 'CanalUnico',
+            Subject = 'Asunto de caso sin mediador'
+            );
+        Case relatedWithoutAccount = new Case(
+            TicketId__c = 20,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Origin = 'CanalUnico',
+            Subject = 'Asunto de caso con mediador inexistente',
+            SuppliedEmail = 'notExisting@email.com'
+            );
+        Case relatedWithAccount = new Case(
+            TicketId__c = 30,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Origin = 'CanalUnico',
+            Subject = 'Asunto de caso con mediador existente',
+            SuppliedEmail = intermediaryAccount.MainEmail__c
+            );
+        Case relatedWithNoIntermediaryAcc = new Case(
+            TicketId__c = 40,
+            RecordTypeId = CaseUtil.RT_ID_ZDA,
+            Origin = 'CanalUnico',
+            Subject = 'Asunto de caso con mail de cuenta no mediadora',
+            SuppliedEmail = otherTypeAccount.MainEmail__c
+            );
+
+        Test.startTest();
+        insert new List<Case> {noRelatedCase, relatedWithoutAccount, relatedWithAccount, relatedWithNoIntermediaryAcc};
+        Test.stopTest();
+
+        Case noRelatedCaseCreated = [SELECT AccountId FROM Case WHERE Id = : noRelatedCase.Id];
+        Case relatedWithoutAccountCreated = [SELECT AccountId FROM Case WHERE Id = : relatedWithoutAccount.Id];
+        Case relatedWithAccountCreated = [SELECT AccountId FROM Case WHERE Id = : relatedWithAccount.Id];
+        Case relatedWithNoIntermediaryAccCreated = [SELECT AccountId FROM Case WHERE Id = : relatedWithNoIntermediaryAcc.Id];
+
+        Assert.isNotNull(noRelatedCaseCreated);
+        Assert.isNull(noRelatedCaseCreated.AccountId);
+        Assert.isNotNull(relatedWithoutAccountCreated);
+        Assert.isNull(relatedWithoutAccountCreated.AccountId);
+        Assert.isNotNull(relatedWithAccountCreated);
+        Assert.areEqual(intermediaryAccount.Id, relatedWithAccountCreated.AccountId);
+        Assert.isNotNull(relatedWithNoIntermediaryAccCreated);
+        Assert.isNull(relatedWithNoIntermediaryAccCreated.AccountId);
     }
 
     /**

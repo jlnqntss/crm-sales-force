@@ -11,6 +11,8 @@ global with sharing class Batch_DeleteOldLeads implements Database.Batchable<sOb
 
     private static final String VENTAS_SCOPE_NAME = 'Zurich_Ventas';
 
+    private static final Integer DAYS = 90;
+
     public Batch_DeleteOldLeads() 
     {
 
@@ -22,26 +24,26 @@ global with sharing class Batch_DeleteOldLeads implements Database.Batchable<sOb
     * @param bc             : Batch context
     * @return List<Account> : Lista de Leads que se borrarán
     **/
-    global List<Account> start(Database.BatchableContext bc)
-    {
-        Scope_Setting__mdt ventasScopeMdt = Scope_Setting__mdt.getInstance(VENTAS_SCOPE_NAME);
-
-        Set<String> accountIdSet = Batch_DeleteOldLeads.findZRMOldLeadOffers(ventasScopeMdt.BusinessCode__c, 3);
-        
-        return (new AccountsSelector()).findAccountsById(accountIdSet);        
+    global Database.QueryLocator start(Database.BatchableContext bc)
+    {  
+        return Database.getQueryLocator(new AccountsSelector().findZRMOldLeads(DAYS));        
     }
 
     /**
-    * @description : Método execute del batch, borra los Leads
+    * @description : Método execute del batch, filtra los leads en base a una serie de criterios para borrarlos después
     * @author rserrano | 09/04/2024 
     * @param bc    : Batch context
     * @param scope : Lista de Leads procedentes del método start
     **/
     global void execute(Database.BatchableContext bc, List<Account> scope)
     {
+        Scope_Setting__mdt ventasScopeMdt = Scope_Setting__mdt.getInstance(VENTAS_SCOPE_NAME);
+
+        List<Account> accLst = filterZRMOldLeads(ventasScopeMdt.BusinessCode__c, scope);
+
         try {
 
-            delete scope;
+            delete accLst;
             
         } catch (Exception e) 
         {
@@ -58,46 +60,29 @@ global with sharing class Batch_DeleteOldLeads implements Database.Batchable<sOb
 
     }
 
+ 
     /**
-    * @description        : Método auxiliar que devuelve el id de los Leads más antiguos 
-    * @author rserrano | 08/04/2024 
-    * @param businessCode : Único valor del código de negocio de la Oportunidad que puede tener el Lead para ser borrado 
-    * @param months       : Mínimo número de meses de antiguedad que tiene que tener el Lead para para ser borrado
-    * @return Set<String> : Set con los Id's de los Leads a borrar
+    * @description          : Método auxiliar que filtra los leads a borrar en base a una serie de criterios
+    * @author rserrano | 10/04/2024 
+    * @param businessCode   : Único código de negocio que pueden tener las ofertas de los leads a borrar
+    * @param oldLeadLst     : Lista de leads a filtrar
+    * @return List<Account> : Lista de leads filtrada
     **/
-    private static Set<String> findZRMOldLeadOffers (String businessCode, Integer months)
+    private static List<Account> filterZRMOldLeads (String businessCode, List<Account> oldLeadLst)
     {
-        Datetime thresholdDatetime = Datetime.now().addMonths(months);
-        Set<String> accountIdSet = new Set<String>();
-        List<Opportunity> zrmOldOpportunityLst = 
-        [SELECT Id, AccountId, StageName, BusinessCode__c FROM Opportunity 
-        WHERE Account.RecordType.Name = 'Lead'
-        AND Account.CreatedDate < :thresholdDatetime
-        ];
+        List<Account> filteredOldLst = new List<Account>();
 
-        Map<String, List<Opportunity>> leadOpportunitiesMap = new Map<String, List<Opportunity>>();
-        for (Opportunity opp : zrmOldOpportunityLst)
+        for (Account acc : oldLeadLst)
         {
-            if(leadOpportunitiesMap.containsKey(opp.AccountId))
-            {
-                leadOpportunitiesMap.get(opp.AccountId).add(opp);
-            }
-            else 
-            {
-                leadOpportunitiesMap.put(opp.AccountId, new List<Opportunity>{opp});
-            }
-        }
-        for (String accountId : leadOpportunitiesMap.keyset())
-        {
-            if(leadOpportunitiesMap.get(accountId).size() > 1)
+            if(acc.Opportunities.size() > 1)
             {
                 continue;
             }
-            if(leadOpportunitiesMap.get(accountId).get(0).StageName == 'Legit Lead' && (leadOpportunitiesMap.get(accountId).get(0).BusinessCode__c == businessCode || String.isBlank(leadOpportunitiesMap.get(accountId).get(0).BusinessCode__c)))
+            if(acc.Opportunities.get(0).StageName == 'Legit Lead' && (acc.Opportunities.get(0).BusinessCode__c == businessCode || String.isBlank(acc.Opportunities.get(0).BusinessCode__c)))
             {
-                accountIdSet.add(accountId);
+                filteredOldLst.add(acc);
             }
         }
-        return accountIdSet;
+        return filteredOldLst;
     }
 }
