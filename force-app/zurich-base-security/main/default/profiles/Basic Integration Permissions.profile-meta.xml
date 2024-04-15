@@ -4553,13 +4553,6 @@
     <layoutAssignments>
         <layout>ZRM_Genesys_WrapUp_mapping__mdt-Genesys WrapUp mapping Layout</layout>
     </layoutAssignments>
-    <layoutAssignments>
-        <layout>spr_sf__SocialPersona__c-spr_sf__Sprinklr Social Persona Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>spr_sf__SocialPersona__c-spr_sf__Sprinklr Social Persona Layout</layout>
-        <recordType>spr_sf__SocialPersona__c.Sprinklr</recordType>
-    </layoutAssignments>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
         <enabled>false</enabled>
