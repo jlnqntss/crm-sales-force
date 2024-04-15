@@ -1608,10 +1608,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>RemoveDuplicateUsersAction</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>RemoveDuplicatesAction</apexClass>
         <enabled>false</enabled>
     </classAccesses>
