@@ -4502,9 +4502,6 @@
         <layout>SDMCommercialPlan__mdt-SDMCommercialPlan Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Seguimiento__c-Seguimiento Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Special_Condition__c-Special Condition Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
