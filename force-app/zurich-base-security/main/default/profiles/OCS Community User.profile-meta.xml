@@ -3492,11 +3492,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Task.ClienteMediado__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Task.ClosingObservation__c</field>
         <readable>false</readable>
     </fieldPermissions>

@@ -3225,11 +3225,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Task.ClienteMediado__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Task.Loss_Reason__c</field>
         <readable>false</readable>
     </fieldPermissions>
