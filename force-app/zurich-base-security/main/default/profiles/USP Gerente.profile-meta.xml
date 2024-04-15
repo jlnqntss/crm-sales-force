@@ -15409,10 +15409,6 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
-        <flow>TaskTrigger_AfterUpdate_BorrarTranscripcionesAntiguas</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
     <flowAccesses>
