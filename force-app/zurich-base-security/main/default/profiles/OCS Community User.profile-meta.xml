@@ -2732,11 +2732,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Event.ClienteMediado__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Event.ClosingObservation__c</field>
         <readable>false</readable>
     </fieldPermissions>
