@@ -3245,11 +3245,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Task.SegmentoMediadorCaso__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Task.Subtype__c</field>
         <readable>false</readable>
     </fieldPermissions>
