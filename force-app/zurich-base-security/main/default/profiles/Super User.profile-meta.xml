@@ -12138,9 +12138,6 @@
         <layout>WorkBadgeDefinition-Badge Layout 192</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>WorkProcedureStep-Formato Paso de procedimiento de trabajo</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>WorkThanks-Thanks Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
