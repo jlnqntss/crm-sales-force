@@ -74,17 +74,17 @@
     <customValue>
         <fullName>ZDA_MU_s</fullName>
         <default>false</default>
-        <label>ZDA MU&apos;s</label>
+        <label>Soporte a especialistas</label>
     </customValue>
     <customValue>
         <fullName>ZDA_Soporte_Red</fullName>
         <default>false</default>
-        <label>ZDA Soporte Red</label>
+        <label>Soporte a la red</label>
     </customValue>
     <customValue>
         <fullName>ZDA_Gestion_Cartera</fullName>
         <default>false</default>
-        <label>ZDA Gestión Cartera</label>
+        <label>Gestión cartera</label>
     </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
