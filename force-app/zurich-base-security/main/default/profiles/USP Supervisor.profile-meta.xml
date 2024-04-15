@@ -5121,11 +5121,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.RevenuesPerEmployee__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.RuralUrban__c</field>
         <readable>false</readable>
     </fieldPermissions>
