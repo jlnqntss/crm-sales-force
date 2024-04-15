@@ -12041,9 +12041,6 @@
         <layout>Seller-Formato Vendedor</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ServiceAppointmentGroup-Formato Service Appointment Group</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ServiceContract-Service Contract Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
