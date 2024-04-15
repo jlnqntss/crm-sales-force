@@ -2946,7 +2946,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Event.SoyManager__c</field>
         <readable>false</readable>
