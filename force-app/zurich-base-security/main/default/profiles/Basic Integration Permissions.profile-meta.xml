@@ -4300,11 +4300,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Task.MediadorCaso__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Task.MediatedCustomer__c</field>
         <readable>false</readable>
     </fieldPermissions>
