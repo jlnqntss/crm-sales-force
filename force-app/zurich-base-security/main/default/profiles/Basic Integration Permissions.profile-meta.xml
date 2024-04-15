@@ -3245,11 +3245,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>KPI__c.AccidentRate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>KPI__c.ClaimOcurridosCAYLarge__c</field>
         <readable>false</readable>
     </fieldPermissions>
