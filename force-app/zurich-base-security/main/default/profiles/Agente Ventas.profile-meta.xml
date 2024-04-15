@@ -2900,11 +2900,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Event.MediadorCaso__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Event.MediatedCustomer__c</field>
         <readable>false</readable>
     </fieldPermissions>
