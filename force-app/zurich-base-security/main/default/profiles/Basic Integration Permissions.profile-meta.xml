@@ -2440,11 +2440,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>AccountTeamMember.rol__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Acta__c.Attendees__c</field>
         <readable>false</readable>
     </fieldPermissions>
