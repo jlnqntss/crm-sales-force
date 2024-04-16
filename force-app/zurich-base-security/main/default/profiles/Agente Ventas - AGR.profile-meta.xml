@@ -3189,11 +3189,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.TOPAgent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.TOPIntermediary__c</field>
         <readable>false</readable>
     </fieldPermissions>
