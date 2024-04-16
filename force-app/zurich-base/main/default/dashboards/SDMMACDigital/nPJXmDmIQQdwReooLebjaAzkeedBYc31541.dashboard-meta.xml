@@ -40,10 +40,6 @@
             <values>Vida Riesgo</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
-            <operator>contains</operator>
-            <values>m</values>
-        </dashboardFilterOptions>
-        <dashboardFilterOptions>
             <operator>equals</operator>
             <values>Particulares,Pymes</values>
         </dashboardFilterOptions>
