@@ -74,8 +74,17 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
 
     /*************************************************
      * PROPAGATE BLOCKED
+     * Prueba 1 --> Lanzamos el batch donde probamos que
+       la propagación del bloqueo de la cuenta se propaga
+       siguiendo la jerarquía planteada.Es decir sobre los objetos 
+       relacionados con la cuenta que se manda bloquear
+     * En este test se pasa el index = 1 (Account) y
+       boolean = False (PropBloqueo)
      ************************************************/
 
+    /*************************************************
+     * Propagamos bloqueo de Cuenta a Contacto
+     ************************************************/
     @isTest
     private static void test_blockFieldPropagation_ContactBlocked()
     {
@@ -102,7 +111,9 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
             Assert.isTrue(testContact.Blocked__c,'No se ha asignado el campo blocked a true en los contactos');
         }
     }
-
+    /*************************************************
+     * Propagamos bloqueo de Cuenta a CampaingMember
+     ************************************************/
     @isTest
     private static void test_blockFieldPropagation_CampaignMemberBlocked()
     {
@@ -133,7 +144,9 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
             Assert.isTrue(testCampaignMember.Blocked__c, 'No se ha asignado el campo blocked a true en los miembros de campaña');
         }
     }
-
+    /*************************************************
+     * Propagamos bloqueo de Cuenta a Oportunidad
+     ************************************************/
     @isTest
     private static void test_blockFieldPropagation_OpportunityBlocked()
     {
@@ -156,9 +169,9 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
         }
     }
 
-    /**
-     *
-     */
+    /*******************************************************
+     * Propagamos bloqueo de Cuenta a Caso y de caso a Email
+     *******************************************************/
     @isTest
     private static void test_blockFieldPropagation_CaseAndEmailMessageBlocked()
     {
@@ -189,6 +202,17 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
     
     /*************************************************
      * PROPAGATE BLOCKED
+     * Prueba 2 --> Lanzamos el batch donde probamos que
+       la propagación del bloqueo de la cuenta se propaga
+       siguiendo la jerarquía planteada.Es decir sobre los objetos 
+       relacionados con la cuenta que se manda bloquear
+       En este test se pasa: el index = 1 (Account),
+       boolean = False (PropBloqueo) y la nueva variable
+       para la letra inicial de las cuentas
+     ************************************************/
+
+    /*************************************************
+     * Propagamos bloqueo de Cuenta a Contacto
      ************************************************/
 
      @isTest
@@ -220,7 +244,9 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
              Assert.isTrue(testContact.Blocked__c,'No se ha asignado el campo blocked a true en los contactos');
          }
      }
- 
+    /*************************************************
+     * Propagamos bloqueo de Cuenta a CampaingMember
+     ************************************************/
      @isTest
      private static void test_blockFieldPropagation_CampaignMemberBlocked2()
      {
@@ -251,7 +277,9 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
              Assert.isTrue(testCampaignMember.Blocked__c, 'No se ha asignado el campo blocked a true en los miembros de campaña');
          }
      }
- 
+    /*************************************************
+     * Propagamos bloqueo de Cuenta a Oportunidad
+     ************************************************/
      @isTest
      private static void test_blockFieldPropagation_OpportunityBlocked2()
      {
@@ -274,9 +302,9 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
          }
      }
  
-     /**
-      *
-      */
+     /******************************************************
+     * Propagamos bloqueo de Cuenta a Caso y de Caso a Email
+     ******************************************************/
      @isTest
      private static void test_blockFieldPropagation_CaseAndEmailMessageBlocked2()
      {
@@ -306,6 +334,11 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
 
     /*************************************************
      * PROPAGATE ANONYMOUS
+     * Prueba 1 --> Lanzamos el batch donde probamos que
+       la propagación del anonimizado de la cuenta se propaga
+       siguiendo la jerarquía planteada.Es decir sobre los objetos 
+       relacionados con la cuenta que se manda anonimizar
+       En este test se pasa: boolean = true (PropAnonimizado) 
      ************************************************/
 
      @isTest
@@ -334,7 +367,9 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
              Assert.isTrue(testContact.Anonymized__c,'No se ha asignado el campo anonymized a true en los contactos');
          }
      }
-
+    /******************************************************
+     * Propagamos anonimizado de Cuenta a CampaingMember
+     ******************************************************/
      @isTest
      private static void test_anonymousFieldPropagation_CampaignMember()
      {
@@ -365,7 +400,9 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
              Assert.isTrue(testCampaignMember.Anonymized__c, 'No se ha asignado el campo anonymized a true en los miembros de campaña');
          }
      }
-
+    /*****************************************************
+     * Propagamos anonimizado de Cuenta a Oportunidad
+     ***************************************************/
      @isTest
      private static void test_anonymousFieldPropagation_Opportunity()
      {
@@ -388,9 +425,10 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
          }
      }
 
-     /**
-      *
-      */
+     
+     /******************************************************
+     * Propagamos anonimizado de Cuenta a Caso y de Caso a Email
+     ******************************************************/
      @isTest
      private static void test_anonymousFieldPropagation_CaseAndEmailMessage()
      {
