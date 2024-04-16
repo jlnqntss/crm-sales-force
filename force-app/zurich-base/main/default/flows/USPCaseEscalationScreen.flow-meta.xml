@@ -427,6 +427,15 @@
         <dataType>String</dataType>
         <expression>{!principioBody} + {!caseRecordAction.CaseNumber}</expression>
     </formulas>
+    <formulas>
+        <name>MediatedCustomer</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  {!caseRecordAction.MediatedCustomer__r.IsPersonAccount},
+  {!caseRecordAction.MediatedCustomer__r.FirstName} &amp; &apos; &apos; &amp; {!caseRecordAction.MediatedCustomer__r.LastName},
+  {!caseRecordAction.MediatedCustomer__r.Name}
+)</expression>
+    </formulas>
     <interviewLabel>USP Case Escalation Screen {!$Flow.CurrentDateTime}</interviewLabel>
     <label>USP Case Escalation Screen</label>
     <loops>
@@ -719,9 +728,21 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>CaseMediator__c</field>
+            <value>
+                <elementReference>InfoMediador</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Description</field>
             <value>
                 <elementReference>comments</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MediatedCustomer__c</field>
+            <value>
+                <elementReference>MediatedCustomer</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -734,6 +755,12 @@
             <field>Priority</field>
             <value>
                 <stringValue>Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SegmentMediatorCase__c</field>
+            <value>
+                <elementReference>InfoSegmento</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1160,6 +1187,9 @@
         </fields>
         <fields>
             <name>comments</name>
+            <defaultValue>
+                <stringValue>{!caseRecordAction.RelatedPolicyOffer__c}</stringValue>
+            </defaultValue>
             <fieldText>Comentarios</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>false</isRequired>
@@ -1460,6 +1490,26 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>InfoMediador</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>{!caseRecordAction.Account.Name} </stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>InfoSegmento</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>{!caseRecordAction.Account.Segment__c} </stringValue>
+        </value>
     </variables>
     <variables>
         <name>IntExtInput</name>
