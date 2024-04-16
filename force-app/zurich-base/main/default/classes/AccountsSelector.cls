@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 10/04/2024
- * @last modified by  : rserrano
+ * @last modified on  : 16-04-2024
+ * @last modified by  : amiranda
  **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -1116,10 +1116,12 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 12/2/2024
      * @return List<Account> Listado de mediadores con su agrupación
      */
-    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesIds) {
+    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesIds)
+    {
         List<Account> result = new List<Account>();
 
-        if (intermediariesIds != null && !intermediariesIds.isEmpty()) {
+        if ( intermediariesIds != null && !intermediariesIds.isEmpty() )
+        {
 
             Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
             {
@@ -1128,11 +1130,11 @@ public with sharing class AccountsSelector extends RecordsSelector
             };
 
             result = this.baseQuery
-                            .selectFields(fieldsToRetrieve)
-                            .addConditionIn(Account.Id, intermediariesIds)
-                            .enforceSecurity()
-                            .run();
-        }        
+                     .selectFields(fieldsToRetrieve)
+                     .addConditionIn(Account.Id, intermediariesIds)
+                     .enforceSecurity()
+                     .run();
+        }
 
         return result;
     }
@@ -1193,11 +1195,11 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-    * @description     : Método que devuelve una query que utilizará el batch
-    * @author rserrano | 10/04/2024 
-    * @param days      : Número de días de antigüedad que ha de tener un lead para ser borrado
-    * @return String   : Query que utiliza el batch
-    **/
+     * @description     : Método que devuelve una query que utilizará el batch
+     * @author rserrano | 10/04/2024
+     * @param days      : Número de días de antigüedad que ha de tener un lead para ser borrado
+     * @return String   : Query que utiliza el batch
+     **/
     public String findZRMOldLeads(Integer days)
     {
         Set<Schema.SObjectField> accountfieldsToRetrieve = new Set<Schema.SObjectField>
@@ -1206,11 +1208,94 @@ public with sharing class AccountsSelector extends RecordsSelector
         };
 
         String query = this.baseQuery
-                        .selectFields(accountfieldsToRetrieve)
-                        .addConditionEq(Account.RecordtypeId, rtLeadId)
-                        .addConditionLt(Account.CreatedDate, Query.LAST_N_DAYS(days))
-                        .addSubquery('Opportunities', 'StageName, BusinessCode__c')
-                        .toQueryString();
+                       .selectFields(accountfieldsToRetrieve)
+                       .addConditionEq(Account.RecordtypeId, rtLeadId)
+                       .addConditionLt( Account.CreatedDate, Query.LAST_N_DAYS(days) )
+                       .addSubquery('Opportunities', 'StageName, BusinessCode__c')
+                       .toQueryString();
         return query;
+    }
+
+    /**
+     * @description Método selector que recupera cuentas y los registros relacionados
+     * 'ContactPointPhones' y 'ContactPointEmails' en base a los 'Id' pasados por parámetro
+     * @author amiranda
+     * @date 16-04-2024
+     * @param accountIds Ids de las cuentas a recuperar
+     * @return List<Account> Lista de cuentas recuperadas de la BBDD
+     **/
+    public List<Account> selectByIdWithCPPhoneAndCPEmail(Set<Id> accountIds)
+    {
+        List<Account> accounts = new List<Account>();
+
+        if ( accountIds != null && !accountIds.isEmpty() )
+        {
+            Set<Schema.SObjectField> accountFieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Account.Id
+            };
+
+            accounts = this.baseQuery
+                       .selectFields(accountFieldsToRetrieve)
+                       .addConditionIn(Account.Id, accountIds)
+                       .addSubQuery('ContactPointPhones', new Set<String> {'TelephoneNumber'})
+                       .addSubQuery('ContactPointEmails',new Set<String> {'EmailAddress'})
+                       .enforceSecurity()
+                       .run();
+        }
+
+        return accounts;
+    }
+
+
+    /**
+     * @description Método selector que recupera cuentas y los registros relacionados
+     * del objeto 'Opportunity' en base al tipo de registro y al email o el teléfono
+     * @author amiranda
+     * @date 16-04-2024
+     * @param contactPoints Conjunto de teléfonos y emails
+     * @param rtNames Conjunto de nombres de Record Types
+     * @return List<Account> Lista de cuentas recuperadas de la BBDD
+     **/
+    public List<Account> selectByRTNameAndPhoneAndEmailWithOpportunities(Set<String> contactPoints, Set<String> rtNames)
+    {
+        List<Account> accounts = new List<Account>();
+
+        if ( contactPoints != null && !contactPoints.isEmpty() )
+        {
+            Set<Schema.SObjectField> accountFieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Account.CreatedDate,
+                Account.PersonEmail,
+                Account.Phone
+            }
+            ;
+
+            Set<String> opportunityFieldsToRetrieve = new Set<String>
+            {
+                'CreatedDate',
+                'StageName',
+                'BusinessCode__c'
+            };
+
+            Query.Condition orCondition = Query.doOr(
+                Query.conditionIn(Account.Phone, contactPoints),
+                Query.conditionIn(Account.PersonEmail, contactPoints)
+                );
+
+            this.baseQuery
+            .selectFields(accountFieldsToRetrieve)
+            .addSubQuery('Opportunities', opportunityFieldsToRetrieve)
+            .addCondition(orCondition);
+
+            if ( rtNames != null && !rtNames.isEmpty() )
+            {
+                this.baseQuery.addConditionEq(RT_NAME_FIELD, rtNames);
+            }
+
+            accounts = this.baseQuery.enforceSecurity().run();
+        }
+
+        return accounts;
     }
 }
