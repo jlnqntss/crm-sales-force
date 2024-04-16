@@ -40,6 +40,10 @@
             <values>Vida Riesgo</values>
         </dashboardFilterOptions>
         <dashboardFilterOptions>
+            <operator>contains</operator>
+            <values>m</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
             <operator>equals</operator>
             <values>Particulares,Pymes</values>
         </dashboardFilterOptions>
@@ -1052,7 +1056,7 @@
     </dashboardGridLayout>
     <dashboardType>MyTeamUser</dashboardType>
     <isGridLayout>true</isGridLayout>
-    <runningUser>adminklinc@zurich-es.com</runningUser>
+    <runningUser>joan.cervera@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
     <title>inicio DT (*Fuente DW sin normalizar Flotas ni códigos de Digital*)</title>
     <titleColor>#000000</titleColor>
