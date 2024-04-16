@@ -178,7 +178,7 @@
         <description>Mensaje a mostrar para la notificación de recordatorio acta</description>
         <name>BodyNotification</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>Hace 4 días tuvo lugar la reunión {!$Record.Subject} y no se ha adjuntado acta. Recuerda hacerlo si fuese necesario.</text>
+        <text>Hace 4 días tuvo lugar la reunión {!$Record.Subject} y y queda pendiente añadir los detalles del Acta.</text>
     </textTemplates>
     <variables>
         <description>Colección de usuarios a los que enviar la notificación, solo contendrá el usuario que ha creado el evento</description>
