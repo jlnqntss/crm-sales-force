@@ -2,8 +2,8 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 18/10/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 04-16-2024
+ * @last modified by  : mfernandezcarrera
 **/
 @istest
 public with sharing class GDPRPropagateBlockedFieldBatchTest
@@ -24,7 +24,7 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
         List<Account> accs = TestDataFactory.generateAccounts(LEGAL_ENTITY, ACCOUNT_CUSTOMER, 1);
 
         for(Integer i = 0; accs.size() < i; i++){
-            accs[i].FirstName = 'Test Account';
+            accs[i].FirstName = 'Mikel Account';
             accs[i].LastName = '-001';
             accs[i].RecordTypeId = CustomerRecordTypeId;
         }
@@ -185,6 +185,124 @@ public with sharing class GDPRPropagateBlockedFieldBatchTest
             Assert.isTrue(testEmailmessage.Blocked__c, 'No se ha asignado el campo blocked a true en los Email Message');
         }
     }
+
+    
+    /*************************************************
+     * PROPAGATE BLOCKED
+     ************************************************/
+
+     @isTest
+     private static void test_blockFieldPropagation_ContactBlocked2()
+     {
+        String letra = 'M%';
+        String accountsStartingWithM = ' AND Name LIKE  \'' + letra +'\'';
+
+        List<Account> allTestAccounts = [SELECT Id FROM Account];
+
+        for(Account currentTestAccount : allTestACcounts)
+        {
+            currentTestAccount.blocked__c = true;
+        }
+
+        update allTestAccounts;
+
+         Test.startTest();
+         Database.executeBatch(new GDPRPropagateBlockedFieldBatch('1',false, accountsStartingWithM));
+         Test.stopTest();
+ 
+         for(Account testAccount : [SELECT Blocked__c FROM Account where Name Like 'M%'])
+         {
+             Assert.isTrue(testAccount.Blocked__c,'No se ha asignado el campo blocked a true en las cuentas');
+         }
+ 
+         for(Contact testContact : [SELECT Blocked__c FROM Contact where Name Like 'M%'])
+         {
+             Assert.isTrue(testContact.Blocked__c,'No se ha asignado el campo blocked a true en los contactos');
+         }
+     }
+ 
+     @isTest
+     private static void test_blockFieldPropagation_CampaignMemberBlocked2()
+     {
+         List<Account> allTestAccounts = [SELECT Id FROM Account];
+ 
+         for(Account currentTestAccount : allTestACcounts)
+         {
+             currentTestAccount.blocked__c = true;
+         }
+ 
+         update allTestAccounts;
+ 
+         List<Contact> allTestContacts = [SELECT Id FROM Contact];
+ 
+         for(Contact currentTestContact : allTestContacts)
+         {
+             currentTestContact.Blocked__c = true;
+         }
+ 
+         update allTestContacts;
+ 
+         Test.startTest();
+         Database.executeBatch(new GDPRPropagateBlockedFieldBatch('2', false));
+         Test.stopTest();
+ 
+         for(CampaignMember testCampaignMember : [SELECT Blocked__c FROM CampaignMember])
+         {
+             Assert.isTrue(testCampaignMember.Blocked__c, 'No se ha asignado el campo blocked a true en los miembros de campaña');
+         }
+     }
+ 
+     @isTest
+     private static void test_blockFieldPropagation_OpportunityBlocked2()
+     {
+         List<Account> allTestAccounts = [SELECT Id FROM Account];
+ 
+         for(Account currentTestAccount : allTestACcounts)
+         {
+             currentTestAccount.blocked__c = true;
+         }
+ 
+         update allTestAccounts;
+ 
+         Test.startTest();
+         Database.executeBatch(new GDPRPropagateBlockedFieldBatch('3', false));
+         Test.stopTest();
+ 
+         for(Opportunity testOpportunity : [SELECT Blocked__c FROM Opportunity])
+         {
+             Assert.isTrue(testOpportunity.Blocked__c, 'No se ha asignado el campo blocked a true en las ofertas');
+         }
+     }
+ 
+     /**
+      *
+      */
+     @isTest
+     private static void test_blockFieldPropagation_CaseAndEmailMessageBlocked2()
+     {
+         List<Account> allTestAccounts = [SELECT Id FROM Account];
+ 
+         for(Account currentTestAccount : allTestACcounts)
+         {
+             currentTestAccount.blocked__c = true;
+         }
+ 
+         update allTestAccounts;
+ 
+         Test.startTest();
+         Database.executeBatch(new GDPRPropagateBlockedFieldBatch('4', false));
+         Test.stopTest();
+ 
+         for(Case testCase : [SELECT Blocked__c FROM Case])
+         {
+             Assert.isTrue(testCase.Blocked__c, 'No se ha asignado el campo blocked a true en los casos');
+         }
+ 
+         for(EmailMessage testEmailmessage : [SELECT Blocked__c FROM EmailMessage])
+         {
+             Assert.isTrue(testEmailmessage.Blocked__c, 'No se ha asignado el campo blocked a true en los Email Message');
+         }
+     }
 
     /*************************************************
      * PROPAGATE ANONYMOUS
