@@ -1760,14 +1760,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SprinklrSocialPersonaSelector</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SprinklrSocialPersonaSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>SprinklrSocialPostHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
