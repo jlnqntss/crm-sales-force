@@ -17,7 +17,7 @@
                     <criteria>
                         <leftValue>{!$User.Title}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Gestor</rightValue>
+                        <rightValue>Supervisor</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -54,7 +54,7 @@
                     <criteria>
                         <leftValue>{!$User.Title}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Gestor</rightValue>
+                        <rightValue>Supervisor</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -91,7 +91,7 @@
                     <criteria>
                         <leftValue>{!$User.Title}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Gestor</rightValue>
+                        <rightValue>Supervisor</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>

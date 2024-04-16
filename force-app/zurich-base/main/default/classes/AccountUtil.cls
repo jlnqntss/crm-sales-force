@@ -249,9 +249,6 @@ public class AccountUtil
     private static Boolean esMediador(Account account) {
         Boolean result = false;
 
-        System.debug('DMM ' + new AccountsSelector().rtIntermediaryId);
-        System.debug('DMM 2 ' + account.RecordTypeId);
-
         if (new AccountsSelector().rtIntermediaryId.equals(account.RecordTypeId)) {
             result = true;
         }
