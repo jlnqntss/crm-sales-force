@@ -1116,12 +1116,10 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 12/2/2024
      * @return List<Account> Listado de mediadores con su agrupación
      */
-    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesIds)
-    {
+    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesIds) {
         List<Account> result = new List<Account>();
 
-        if ( intermediariesIds != null && !intermediariesIds.isEmpty() )
-        {
+        if (intermediariesIds != null && !intermediariesIds.isEmpty()) {
 
             Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
             {
@@ -1130,11 +1128,11 @@ public with sharing class AccountsSelector extends RecordsSelector
             };
 
             result = this.baseQuery
-                     .selectFields(fieldsToRetrieve)
-                     .addConditionIn(Account.Id, intermediariesIds)
-                     .enforceSecurity()
-                     .run();
-        }
+                            .selectFields(fieldsToRetrieve)
+                            .addConditionIn(Account.Id, intermediariesIds)
+                            .enforceSecurity()
+                            .run();
+        }        
 
         return result;
     }
@@ -1195,11 +1193,11 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-     * @description     : Método que devuelve una query que utilizará el batch
-     * @author rserrano | 10/04/2024
-     * @param days      : Número de días de antigüedad que ha de tener un lead para ser borrado
-     * @return String   : Query que utiliza el batch
-     **/
+    * @description     : Método que devuelve una query que utilizará el batch
+    * @author rserrano | 10/04/2024 
+    * @param days      : Número de días de antigüedad que ha de tener un lead para ser borrado
+    * @return String   : Query que utiliza el batch
+    **/
     public String findZRMOldLeads(Integer days)
     {
         Set<Schema.SObjectField> accountfieldsToRetrieve = new Set<Schema.SObjectField>
@@ -1208,11 +1206,11 @@ public with sharing class AccountsSelector extends RecordsSelector
         };
 
         String query = this.baseQuery
-                       .selectFields(accountfieldsToRetrieve)
-                       .addConditionEq(Account.RecordtypeId, rtLeadId)
-                       .addConditionLt( Account.CreatedDate, Query.LAST_N_DAYS(days) )
-                       .addSubquery('Opportunities', 'StageName, BusinessCode__c')
-                       .toQueryString();
+                        .selectFields(accountfieldsToRetrieve)
+                        .addConditionEq(Account.RecordtypeId, rtLeadId)
+                        .addConditionLt(Account.CreatedDate, Query.LAST_N_DAYS(days))
+                        .addSubquery('Opportunities', 'StageName, BusinessCode__c')
+                        .toQueryString();
         return query;
     }
 
