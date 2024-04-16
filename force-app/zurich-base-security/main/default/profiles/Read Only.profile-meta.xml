@@ -3960,10 +3960,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>purecloud__PureCloud_Campaign_Setting__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>purecloud__PureCloud_Chat_Transcript__c</tab>
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
