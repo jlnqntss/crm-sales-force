@@ -11,8 +11,6 @@ global with sharing class Batch_DeleteExternalRequest implements Database.Batcha
     public static final String PROCESSED_RESULT_OK = 'OK';
     public static final String PROCESSED_RESULT_KO = 'KO';
     private static final AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
-    private static Integer daysKO;
-    private static Integer daysOK;
     
 	// Inicio métodos batchable
 	//Constructor
