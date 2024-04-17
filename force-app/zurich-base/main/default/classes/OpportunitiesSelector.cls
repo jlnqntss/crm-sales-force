@@ -779,7 +779,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @author dmunoz
      * @date 09/04/2024
      */
-    public List<Opportunity> findMatchOffers(Set<String> productBranchSet, Set<String> accountIdsSet, Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet)
+    public List<Opportunity> findMatchOffers(Set<String> productBranchSet, Set<String> accountIdsSet, Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet) 
     {
 
         List<Opportunity> result = new List<Opportunity>();
@@ -793,7 +793,10 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             {
                 Opportunity.Id,
                 Opportunity.AccountId,
-                Opportunity.IntermediaryId__c
+                Opportunity.IntermediaryId__c,
+                Opportunity.ProductBranch__c,
+                Opportunity.Description,
+                Opportunity.CampaignId
             }
             ).selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c');
 
@@ -803,7 +806,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             .addConditionIn(Opportunity.StageName, new Set<String> {'Legit Lead', 'App Submitted'})
             .addConditionEq(Opportunity.InfoQuoteNumber__c, null)
             .addConditionEq(Opportunity.PotentialMatch__c, false)
-            .addConditionEq( Opportunity.CreatedDate, Query.last_n_months(2) );
+            .addConditionEq(Opportunity.CreatedDate, Query.last_n_months(2));
 
             // si la lista de agrupacion no está vacia buscamos en ambas
             if ( intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty() )
@@ -833,14 +836,13 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
     * @date 10-04-2024 
     * @return String query en formato String
     **/
-    public static String getQueryStringPotentialMatchOpportunities()
+    public String getQueryStringPotentialMatchOpportunities()
     {
         Set<Schema.SObjectField> fields = new Set<Schema.SObjectField>
         {
             Opportunity.AccountId,
             Opportunity.IntermediaryId__c,
             Opportunity.IntermediaryCode__c,
-            Opportunity.IntermediaryId__r.IntermediaryGroup__c,
             Opportunity.Description,
             Opportunity.ProductBranch__c,
             Opportunity.CampaignId
@@ -848,7 +850,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
 
         return this.baseQuery
                .selectFields(fields)
-               .addConditionEq(Opportunity.PotentialMatch__c, true)
+               .selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c')
+               //.addConditionEq(Opportunity.PotentialMatch__c, true)
                .enforceSecurity()
                .toQueryString();
     }

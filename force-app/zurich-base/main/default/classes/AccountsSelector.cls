@@ -1222,7 +1222,7 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @param accountIds Ids de las cuentas a recuperar
      * @return List<Account> Lista de cuentas recuperadas de la BBDD
      **/
-    public List<Account> selectByIdWithCPPhoneAndCPEmail(Set<Id> accountIds)
+    public List<Account> selectByIdWithCPPhoneAndCPEmail(Set<String> accountIds)
     {
         List<Account> accounts = new List<Account>();
 
