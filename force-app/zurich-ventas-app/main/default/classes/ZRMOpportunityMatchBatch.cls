@@ -625,7 +625,9 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     private Boolean checkIsZRM(Opportunity offer, Map<String, String> scopeMDT) {
         Boolean result = false;
         
-        if (offer.ZRM__c || (String.isBlank(offer.BusinessCode__c) || 'Ventas'.equals(scopeMDT?.get(offer.BusinessCode__c)))) {
+        if (offer.ZRM__c == true) {
+            result = true;
+        } else if (String.isBlank(offer.BusinessCode__c) || 'Ventas'.equals(scopeMDT?.get(offer.BusinessCode__c))) {
             result = true;
         }
 
