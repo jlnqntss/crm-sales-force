@@ -136,6 +136,11 @@
         <default>false</default>
         <visible>true</visible>
     </applicationVisibilities>
+    <applicationVisibilities>
+        <application>ZDA</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
     <classAccesses>
         <apexClass>AccountSearchService</apexClass>
         <enabled>true</enabled>
@@ -294,6 +299,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ChangePasswordControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CollectionUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -10920,6 +10929,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.LastDateIntermediaryOrAccountChange__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.LastAccountId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ZRMMovementType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.VisibilityRetry__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.LossSubReasonDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11041,6 +11070,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PersonLeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PotentialMatch__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11172,7 +11206,7 @@
         <editable>true</editable>
         <field>Opportunity.ZRM__c</field>
         <readable>true</readable>
-    </fieldPermissions>
+    </fieldPermissions>    
     <fieldPermissions>
         <editable>true</editable>
         <field>OpportunityLineItem.Description</field>
@@ -11935,6 +11969,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Policy__c.LastDateIntermediaryOrAccountChange__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.LastAccountId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.ZRMMovementType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.VisibilityRetry__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Policy__c.LegalEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -12062,7 +12116,7 @@
         <editable>true</editable>
         <field>Policy__c.Zrc__c</field>
         <readable>true</readable>
-    </fieldPermissions>
+    </fieldPermissions>    
     <fieldPermissions>
         <editable>true</editable>
         <field>PricebookEntry.ProductID__c</field>
@@ -17289,7 +17343,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
-    </layoutAssignments>
+    </layoutAssignments>    
     <layoutAssignments>
         <layout>AccountRelationship__c-Account Relationship Layout</layout>
     </layoutAssignments>

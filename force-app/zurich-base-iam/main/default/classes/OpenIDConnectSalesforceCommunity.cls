@@ -248,22 +248,34 @@ public with sharing class OpenIDConnectSalesforceCommunity {
         if (accountCode == null || String.isEmpty(accountCode)) { // si no ha llegado un código devolvemos error
             throw new RegHandlerException(ERROR_NO_ACCOUNT_CODE);
         }
+        // --------------------------------------------------------------
+        // List<Contact> contactList = (new ContactsSelector()).findIntermediaryContactByEmailAndAccountCode(data.email, accountCode);
 
-        List<Contact> contactList = (new ContactsSelector()).findIntermediaryContactByEmailAndAccountCode(data.email, accountCode);
+        // if (contactList.isEmpty()) { // si no existe contacto
+        //     // consulta de account
+        //     List<String> accountCodeList = new List<String>{accountCode};
+        //     List<Account> accountList = (new AccountsSelector()).findByIntermediaryCode(accountCodeList); // debe llegar solo 1
 
-        if (contactList.isEmpty()) { // si no existe contacto
-            // consulta de account
-            List<String> accountCodeList = new List<String>{accountCode};
-            List<Account> accountList = (new AccountsSelector()).findByIntermediaryCode(accountCodeList); // debe llegar solo 1
+        //     if (accountList == null || accountList.isEmpty()) { // si no existe cuenta
+        //         throw new RegHandlerException(ERROR_NO_INTERMEDIARY_ACCOUNT);
+        //     } else { // existe cuenta
+        //         Account account = accountList.get(0);
+        //         result = createContact(account.Id, data, 'AgentMediator');
+        //     }
+        // } else { // si existe devolvemos el primero
+        //     result = contactList.get(0).Id;
+        // }
+        // --------------------------------------------------------------
 
-            if (accountList == null || accountList.isEmpty()) { // si no existe cuenta
-                throw new RegHandlerException(ERROR_NO_INTERMEDIARY_ACCOUNT);
-            } else { // existe cuenta
-                Account account = accountList.get(0);
-                result = createContact(account.Id, data, 'AgentMediator');
-            }
-        } else { // si existe devolvemos el primero
-            result = contactList.get(0).Id;
+        // consulta de account
+        List<String> accountCodeList = new List<String>{accountCode};
+        List<Account> accountList = (new AccountsSelector()).findByIntermediaryCode(accountCodeList); // debe llegar solo 1
+
+        if (accountList == null || accountList.isEmpty()) { // si no existe cuenta
+            throw new RegHandlerException(ERROR_NO_INTERMEDIARY_ACCOUNT);
+        } else { // existe cuenta
+            Account account = accountList.get(0);
+            result = createContact(account.Id, data, 'CommunityUser');
         }
 
         return result;
@@ -308,6 +320,7 @@ public with sharing class OpenIDConnectSalesforceCommunity {
             c.Email = data.email;
             c.accountId = accountId;
             c.LegalEntity__c = '999';
+            c.Title = 'Agente/Mediador ZRM';
             insert c;
     
             result = c.Id;

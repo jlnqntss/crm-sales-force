@@ -6,9 +6,6 @@
     <excludeButtons>CreateCallList</excludeButtons>
     <excludeButtons>CreatePartnerChannelQuickAction</excludeButtons>
     <excludeButtons>CreateSurveyInvitation</excludeButtons>
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
-    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
@@ -166,6 +163,16 @@
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>NewCase</excludeButtons>
+        <fields>CASES.CASE_NUMBER</fields>
+        <fields>Product_Name__c</fields>
+        <fields>CASES.STATUS</fields>
+        <fields>PolicyEndDate__c</fields>
+        <fields>UpdatedInsuranceCost__c</fields>
+        <relatedList>RelatedCaseList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
         <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
         <fields>Status__c</fields>
@@ -229,7 +236,7 @@
         <relatedList>Scope__c.AccountId__c</relatedList>
         <sortField>NAME</sortField>
         <sortOrder>Asc</sortOrder>
-    </relatedLists>    
+    </relatedLists>
     <relatedLists>
         <relatedList>RelatedFileList</relatedList>
     </relatedLists>
@@ -249,7 +256,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hMU000000IhvN</masterLabel>
+        <masterLabel>00h68000000JxwR</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

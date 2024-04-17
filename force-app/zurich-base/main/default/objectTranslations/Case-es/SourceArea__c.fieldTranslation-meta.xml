@@ -15,6 +15,10 @@
         <translation>Cliente final genérico</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Insurance Banking</masterLabel>
+        <translation>Banca Seguros</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Mediator</masterLabel>
         <translation>Mediador</translation>
     </picklistValues>
@@ -37,6 +41,10 @@
     <picklistValues>
         <masterLabel>TNPS Customer Survey</masterLabel>
         <translation>Encuesta TNPS Cliente</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>TPA&apos;s</masterLabel>
+        <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Zurich Business Client</masterLabel>

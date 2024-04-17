@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LastAccountId__c</fullName>
+    <description>[ZRM] campo que acompaña a LastDateIntermediaryOrAccountChange__c indicando el valor anterior de IntermediaryId__c o AccountId cuando se han actualizado. Para account solo se escribe si el cambio es de cliente a cliente</description>
+    <externalId>false</externalId>
+    <label>Last Account</label>
+    <length>18</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

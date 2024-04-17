@@ -331,7 +331,7 @@ Para usuarios de la comunidad zrm</description>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <recordTypeVisibilities>
-        <recordType>Case.OCSInquiry</recordType>
+        <recordType>Case.ZRMInquiry</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
