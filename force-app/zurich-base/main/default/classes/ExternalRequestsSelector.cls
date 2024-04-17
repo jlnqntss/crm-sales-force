@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 05-24-2023
- * @last modified by  : aberuete
+ * @last modified on  : 04-17-2024
+ * @last modified by  : jchavez
 **/
 public with sharing class ExternalRequestsSelector
 {
@@ -202,6 +202,8 @@ public with sharing class ExternalRequestsSelector
             return null;
         }
 
+        recordsLimit = LIMIT_BATCH_DELETE_EXTERNAL_REQUEST;
+        
         return Database.getQueryLocator( String.format(DEFAULT_STRING_FORMAT, new List<String>
         {
             baseQuery,
@@ -255,7 +257,7 @@ public with sharing class ExternalRequestsSelector
             return String.format(DEFAULT_STRING_FORMAT, new List<String>
             {
                 baseQuery,
-                'WHERE Processed__c = true AND ProcessedDate__c < LAST_N_DAYS: ' + days + ' AND ProcessResult__c = ' + escape + processedResult + escape + 'AND ' + conditionRecordTypeIds,
+                'WHERE ProcessedDate__c < LAST_N_DAYS: ' + days + ' AND ProcessResult__c = ' + escape + processedResult + escape + ' AND ' + conditionRecordTypeIds,
                 limitCondition
             });
         }
