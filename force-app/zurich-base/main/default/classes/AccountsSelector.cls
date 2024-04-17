@@ -1284,7 +1284,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             this.baseQuery
             .selectFields(accountFieldsToRetrieve)
             .addCondition(orCondition)
-            .addSubQuery('Opportunities', 'CreatedDate, StageName, BusinessCode__c');
+            .addSubQuery('Opportunities', 'CreatedDate, StageName, BusinessCode__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c, ZRM__c');
 
             if ( rtNames != null && !rtNames.isEmpty() )
             {

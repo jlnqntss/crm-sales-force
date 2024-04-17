@@ -845,13 +845,14 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             Opportunity.IntermediaryCode__c,
             Opportunity.Description,
             Opportunity.ProductBranch__c,
-            Opportunity.CampaignId
+            Opportunity.CampaignId,
+            Opportunity.CreatedDate
         };
 
         return this.baseQuery
                .selectFields(fields)
                .selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c')
-               .addConditionEq(Opportunity.PotentialMatch__c, true)
+               .addConditionEq(Opportunity.PotentialMatch__c, true) 
                .enforceSecurity()
                .toQueryString();
     }
