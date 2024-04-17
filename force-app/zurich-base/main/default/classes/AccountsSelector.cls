@@ -1236,8 +1236,8 @@ public with sharing class AccountsSelector extends RecordsSelector
             accounts = this.baseQuery
                        .selectFields(accountFieldsToRetrieve)
                        .addConditionIn(Account.Id, accountIds)
-                       .addSubQuery('ContactPointPhones', new Set<String> {'TelephoneNumber'})
-                       .addSubQuery('ContactPointEmails',new Set<String> {'EmailAddress'})
+                       .addSubQuery('ContactPointPhones', 'TelephoneNumber')
+                       .addSubQuery('ContactPointEmails', 'EmailAddress')
                        .enforceSecurity()
                        .run();
         }
@@ -1283,14 +1283,14 @@ public with sharing class AccountsSelector extends RecordsSelector
 
             this.baseQuery
             .selectFields(accountFieldsToRetrieve)
-            .addSubQuery('Opportunities', opportunityFieldsToRetrieve)
-            .addCondition(orCondition);
+            .addCondition(orCondition)
+            .addSubQuery('Opportunities', 'CreatedDate, StageName, BusinessCode__c');
 
             if ( rtNames != null && !rtNames.isEmpty() )
             {
                 this.baseQuery.addConditionEq(RT_NAME_FIELD, rtNames);
             }
-
+            System.debug(this.baseQuery.toQueryString());
             accounts = this.baseQuery.enforceSecurity().run();
         }
 
