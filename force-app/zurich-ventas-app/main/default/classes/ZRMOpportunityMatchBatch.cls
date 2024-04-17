@@ -108,6 +108,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author dmunoz
      * @date 09/04/2024
      */
+    @TestVisible
     private void calculateClientOpportunitiesWithMatch(List<Opportunity> scope, Map<String, Object> opportunityDataMap) {
    
         // 1º Obtener el mapa de match par las ofertas de scope
@@ -126,6 +127,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author dmunoz
      * @date 09/04/2024
      */
+    @TestVisible
     private Map<String, Object> getDataFromOpportunities(List<Opportunity> scope) {
 
         Map<String, Object> result = new Map<String, Object>();
@@ -215,6 +217,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author dmunoz
      * @date 09/04/2024
      */
+    @TestVisible
     private Boolean matchConditions(Opportunity scopeOpportunity, Opportunity queryOpportunity) {
         Boolean result = false;
 
