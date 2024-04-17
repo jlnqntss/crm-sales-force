@@ -66,54 +66,7 @@ public with sharing class SystemUtil
      */
     public static AdminSetup__mdt getAdminSetupMetadata()
     {
-        List<AdminSetup__mdt> results = new List<AdminSetup__mdt>();
-
-        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-        results = [
-            SELECT
-            Id,
-            DeveloperName,
-            MasterLabel,
-            Language,
-            NamespacePrefix,
-            Label,
-            QualifiedApiName,
-            NumberDaysDeleteErrors__c,
-            NumberDaysDeleteRequests__c,
-            NumberDaysDeleteRequestErrors__c,
-            RetentionExternalRequestKO__c,
-            RetentionExternalRequestOK__c,
-            NumDaysDeleteLeads__c,
-            IBACaseworker__c,
-            MaxRetries__c,
-            IBA_Auth_token__c,
-            IBA_endpoint__c,
-            IBA_EMEA_Authorization_token__c,
-            IBA_EMEA_endpoint__c,
-            IBA_Multi_Partner_endpoint__c,
-            IBA_Multi_Partner_Authorization_token__c,
-            SameMasterPolicy__c,
-            IBA_EMEA_Non_Country__c,
-            IBA_Multi_Partner_Origin__c,
-            Multi_Partners__c,
-            WS_Service_Process_Request__c,
-            WS_Service_Quote_Entry__c,
-            WS_Source_IBA__c,
-            WS_Source_IBA_Multi_Partner__c,
-            IBA_EMEA_Prefix__c,
-            ExternalJobQueueBatchJobs__c,
-            WS_Source_IBA_EMEA__c,
-            NumDaysCallAtribution__c
-            FROM AdminSetup__mdt
-            WHERE MasterLabel = : ADMINSETUP_LABEL
-        ];
-
-        if ( !results.isEmpty() )
-        {
-            return results[0];
-        }
-
-        return null;
+        return AdminSetup__mdt.getInstance(ADMINSETUP_LABEL);
     }
 
     /**
