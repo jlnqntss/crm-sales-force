@@ -8,9 +8,6 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     private static final String SCOPE_OPPORTUNITY_ACCOUNTID = 'AccountId';
     private static final String SCOPE_OPPORTUNITY_INTERMEDIARY = 'Intermediary';
     private static final String SCOPE_OPPORTUNITY_INTERMEDIARY_GROUP = 'IntermediaryGroup';
-    private static final String OPPORTUNITY_CLIENT_MERGED = 'ClientOfferMerged';
-    private static final String TASK_CLIENT_OPPORTUNITY_MOVED = 'ClientOfferTaskMerged';
-    private static final String EVENT_CLIENT_OPPORTUNITY_MOVED = 'ClientOfferEventMerged';
 
     private static Set<String> contactPoints = new Set<String>();
     private static List<Opportunity> opportunitiesToUpdate = new List<Opportunity>();
@@ -82,6 +79,9 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
             Map<Opportunity, Set<String> > offersByIdWithContactInfoData = getOpportunitiesWithContactInfoData(scope, (Set<String>) opportunityDataMap.get(SCOPE_OPPORTUNITY_ACCOUNTID));
             matchLeadWithOpportunities(offersByIdWithContactInfoData);
 
+            // 4º Ejecutar DMLs
+            executeDMLs();
+
         } catch(Exception e) {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
@@ -108,7 +108,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author dmunoz
      * @date 09/04/2024
      */
-    public void calculateClientOpportunitiesWithMatch(List<Opportunity> scope, Map<String, Object> opportunityDataMap) {
+    private void calculateClientOpportunitiesWithMatch(List<Opportunity> scope, Map<String, Object> opportunityDataMap) {
    
         // 1º Obtener el mapa de match par las ofertas de scope
         Map<String, Opportunity> matchMap = getMatchOffersByParams(opportunityDataMap);
@@ -520,6 +520,40 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         }
     }
 
+     //#region DMLS
+
+      /**
+     * Una vez se ha calculado todas las actualizaciones en memoria, se ejecutan los dmls
+     * @author amiranda
+     * @date 17-04-2024
+     **/
+     private void executeDMLs() {
+
+        // Actualizar todas las ofertas del scope, (incluye el merge de ofertas de cliente y el blanqueo del campo PotencialMatch__c)
+        if (!opportunitiesToUpdate.isEmpty()) {
+            update opportunitiesToUpdate;
+        }
+
+        // Actualizar tareas que se han movido a la nueva que se ha mergeado
+        if (!tasksToUpdate.isEmpty()) {
+            update tasksToUpdate;
+        }
+
+        // Actualizar eventos que se han movido a la nueva que se ha mergeado
+        if (!eventsToUpdate.isEmpty()) {
+            update eventsToUpdate;
+        }
+
+        // Eliminar ofertas
+        if (!opportunitiesToDelete.isEmpty()) {
+            delete opportunitiesToDelete;
+        }
+
+        // Eliminar leads
+        if (!accountsToDelete.isEmpty()) {
+            delete accountsToDelete;
+        }
+     }
 
     //#region Metodos Auxiliares
 
