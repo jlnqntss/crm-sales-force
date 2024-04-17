@@ -851,7 +851,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         return this.baseQuery
                .selectFields(fields)
                .selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c')
-               //.addConditionEq(Opportunity.PotentialMatch__c, true)
+               .addConditionEq(Opportunity.PotentialMatch__c, true)
                .enforceSecurity()
                .toQueryString();
     }
