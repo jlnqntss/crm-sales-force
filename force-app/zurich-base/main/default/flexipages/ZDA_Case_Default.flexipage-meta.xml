@@ -394,6 +394,9 @@
                         <valueListItems>
                             <value>Global.Follow_Up</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>CustomButton.Case.ScaleZDA</value>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
