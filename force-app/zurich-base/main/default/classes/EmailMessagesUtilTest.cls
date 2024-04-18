@@ -492,9 +492,9 @@ private with sharing class EmailMessagesUtilTest
         // Comprobamos que se haya creado un 3er caso, y que el email se ha relacionado con el.
         List<Case> casosFinales = [SELECT id FROM Case];
         List<Case> casosHijos = [Select id, ParentId FROM Case Where ParentId != ''];
-        System.assertEquals(3, casosFinales.size(), 'Hemos de tener un caso más');
-        System.assertEquals(casosInciales[1].id, casosHijos[0].ParentId, 'El nuevo caso hijo ha de estar asociado al caso cerrado');
-        System.assertEquals(emails[1].ParentId, casosHijos[0].Id, 'El email ha de estar asociado al nuevo caso hijo');
+        Assert.areEqual(3, casosFinales.size(), 'Hemos de tener un caso más');
+        Assert.areEqual(casosInciales[1].id, casosHijos[0].ParentId, 'El nuevo caso hijo ha de estar asociado al caso cerrado');
+        Assert.areEqual(emails[1].ParentId, casosHijos[0].Id, 'El email ha de estar asociado al nuevo caso hijo');
     }
 
     /**
