@@ -16,6 +16,7 @@ public with sharing class CaseUtil
     public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
     public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
+    public static final String RT_NAME_SAMINQUIRY = 'SAMInquiry';
     public static final String RT_NAME_ZDA = 'ZDAInquiry';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
@@ -56,6 +57,15 @@ public with sharing class CaseUtil
         get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_OCSSPRINKLR).getRecordTypeId();
+        }
+    }
+
+    // Recupera el Id del RecordType de casos SAM
+    public static final ID RT_ID_SAMINQUIRY
+    {
+        get
+        {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_SAMINQUIRY).getRecordTypeId();
         }
     }
 
