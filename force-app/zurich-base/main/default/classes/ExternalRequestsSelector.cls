@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 04-17-2024
+ * @last modified on  : 04-18-2024
  * @last modified by  : jchavez
 **/
 public with sharing class ExternalRequestsSelector
@@ -257,7 +257,7 @@ public with sharing class ExternalRequestsSelector
             return String.format(DEFAULT_STRING_FORMAT, new List<String>
             {
                 baseQuery,
-                'WHERE ProcessedDate__c < LAST_N_DAYS: ' + days + ' AND ProcessResult__c = ' + escape + processedResult + escape + ' AND ' + conditionRecordTypeIds,
+                'WHERE ProcessedDate__c < N_DAYS_AGO: ' + days + ' AND ProcessResult__c = ' + escape + processedResult + escape + ' AND ' + conditionRecordTypeIds,
                 limitCondition
             });
         }
@@ -289,7 +289,7 @@ public with sharing class ExternalRequestsSelector
             if(days != 0 && processedResult != null && processedResult != '')
             {
                 return Database.countQuery(
-                    'SELECT count () FROM ExternalRequest__c WHERE ProcessedDate__c < LAST_N_DAYS: '+ days + ' AND ProcessResult__c = ' + escape + processedResult + escape +' AND'+ conditionRecordTypeIds );
+                    'SELECT count () FROM ExternalRequest__c WHERE ProcessedDate__c < N_DAYS_AGO: '+ days + ' AND ProcessResult__c = ' + escape + processedResult + escape +' AND'+ conditionRecordTypeIds );
 
             }
             else if (days == 0 && processedResult != null && processedResult != '')
