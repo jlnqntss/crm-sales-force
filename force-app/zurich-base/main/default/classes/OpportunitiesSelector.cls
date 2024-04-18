@@ -776,6 +776,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                             AND Stage IN ('Legit Lead', 'App Submitted')
                                             AND InfoQuoteNumber__c = null
                                             AND PotentialMatch__c = false
+                                            AND CreatedDate = last_n_days: 60
      * @author dmunoz
      * @date 09/04/2024
      */
@@ -806,7 +807,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             .addConditionIn(Opportunity.StageName, new Set<String> {'Legit Lead', 'App Submitted'})
             .addConditionEq(Opportunity.InfoQuoteNumber__c, null)
             .addConditionEq(Opportunity.PotentialMatch__c, false)
-            .addConditionEq(Opportunity.CreatedDate, Query.last_n_months(2));
+            .addConditionEq(Opportunity.CreatedDate, Query.last_n_days(60));
 
             // si la lista de agrupacion no está vacia buscamos en ambas
             if ( intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty() )

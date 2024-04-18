@@ -318,6 +318,8 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
 
                 // 2º Identificar esa oferta para mover sus tareas y eventos
                 matchIdByScopeId.put(scopeOffer.Id, matchOffer.Id);
+                // 3º Marcamos a eliminar la oferta que ha hecho match
+                opportunitiesToDelete.add(matchOffer);
             }
 
             scopeOffer.PotentialMatch__c = false; //Desmarcamos para que no vuelva a pasar por el flujo
@@ -361,7 +363,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     /**
      * Método que modifica el WhatId de las tareas relacionadas en las ofertas match(value) por la oferta scope(key)
      * @author igarcia
-     * @date 15/04/2024
+     * @date 15/04/2024 
      */
     @TestVisible
     private List<Task> moveTasksToScopeOffers(Map<String, String> matchIdByScopeId)
@@ -637,7 +639,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                  && checkIsZRM(leadOpportunity, scopeMDT) )
             {
                 offersToDelete.add(leadOpportunity);
-                opportunity.PersonLeadSource__c = 'FormularioBatch'; // TODO Pendiente de saber qué valor debemos introducir
+                opportunity.SalesProcess__c = 'L';
             }
             else
             {
