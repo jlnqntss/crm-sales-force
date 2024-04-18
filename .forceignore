@@ -91,4 +91,3 @@ force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredential
 
 # Custom index
 **/Customindex/*.indx-meta.xml
-force-app/zurich-base/main/default/objectTranslations/Account-es/TOPAgent__c.fieldTranslation-meta.xml
