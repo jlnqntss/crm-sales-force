@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : jchavez
  * @group             : 
- * @last modified on  : 04-17-2024
+ * @last modified on  : 04-18-2024
  * @last modified by  : jchavez
 **/
 global with sharing class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Schedulable
@@ -14,6 +14,9 @@ global with sharing class Batch_DeleteExternalRequest implements Database.Batcha
     
 	// Inicio métodos batchable
 	//Constructor
+    global Batch_DeleteExternalRequest() {
+    }
+
     global Batch_DeleteExternalRequest(String query) {
 
         this.query = query;
@@ -23,18 +26,23 @@ global with sharing class Batch_DeleteExternalRequest implements Database.Batcha
 
     global Database.QueryLocator start(Database.BatchableContext bc)
     {
-            
+        if(String.isBlank(query))
+        {
+            this.query = query;
+        }
         return Database.getQueryLocator(query);
     }
     
-   global void execute(Database.BatchableContext BC, List<ExternalRequest__c> scope)
+   global void execute(Database.BatchableContext bc, List<ExternalRequest__c> scope)
     {
          try
         {
             List<ExternalRequest__c> lstExternalRequestToDelete = new List<ExternalRequest__c>();
             
-            for (ExternalRequest__c er:scope) {
-                if (er.processed__c) {
+            for (ExternalRequest__c er : scope) {
+                
+                if (er.processed__c)
+                {
                     lstExternalRequestToDelete.add(er);                    
                 }
                 
@@ -49,7 +57,7 @@ global with sharing class Batch_DeleteExternalRequest implements Database.Batcha
         
     }
     
-     global void finish(Database.BatchableContext BC)
+     global void finish(Database.BatchableContext bc)
     {
     }
     
