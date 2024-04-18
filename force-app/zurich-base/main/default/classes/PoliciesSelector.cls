@@ -591,5 +591,31 @@ public with sharing class PoliciesSelector extends RecordsSelector
 
         return result;
     }
+
+    /**
+    * @description Método que devuelve una query en formato String para recuperar
+    * pólizas que sean 'match potenciales' (PotentialMatch__c = true)
+    * @author amiranda 
+    * @date 18-04-2024 
+    * @return String query en formato String
+    **/
+    public String getQueryStringPotentialMatchPolicies()
+    {
+        Set<Schema.SObjectField> fields = new Set<Schema.SObjectField>
+        {
+            Policy__c.PolicyHolder__c,
+            Policy__c.IntermediaryId__c,
+            Policy__c.ProductBranch__c,
+            Policy__c.CreatedDate
+        };
+
+        return this.baseQuery
+               .selectFields(fields)
+               .selectFields('Policy__c.IntermediaryId__r.IntermediaryGroup__c')
+               .addConditionEq(Policy__c.PotentialMatch__c, true) 
+               .enforceSecurity()
+               .toQueryString();
+    }
+
     
 }
