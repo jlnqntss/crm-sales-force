@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRM_Casos_CC</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>IntermediaryOwner__c</columns>
+    <columns>PolicyId__c</columns>
+    <columns>Product_Name__c</columns>
+    <columns>DaysToPolicyEndDate__c</columns>
+    <columns>DaysForAssignment__c</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>PolicyEndDate__c</columns>
+    <columns>UpdatedInsuranceCost__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>No Iniciado,En Gestión</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.ZRMInquiry</value>
+    </filters>
+    <filters>
+        <field>IntermediaryOwner__c</field>
+        <operation>equals</operation>
+        <value>Call Center</value>
+    </filters>
+    <label>Casos CC</label>
+    <sharedTo>
+        <group>Ventas_Agente_Mediador</group>
+    </sharedTo>
+</ListView>
