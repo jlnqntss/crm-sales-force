@@ -1,5 +1,5 @@
-public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObject>{
-
+public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObject>
+{
     // #region Instance properties
 
     private static final String CLASS_NAME = 'ZRMPolicyMatchBatch';
@@ -77,8 +77,8 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
             calculateClientOpportunitiesWithMatch(scope, policyDataMap);
 
             //3º Leads
-            //Map<Opportunity, Set<String> > offersByIdWithContactInfoData = getOpportunitiesWithContactInfoData( scope, (Set<String>) policyDataMap.get(SCOPE_POLICY_ACCOUNTID) );
-            //matchLeadWithOpportunities(offersByIdWithContactInfoData);
+            Map<Policy__c, Set<String> > policiesByIdWithContactInfoData = getPoliciesWithContactInfoData( scope, (Set<String>) policyDataMap.get(SCOPE_POLICY_ACCOUNTID) );
+            matchLeadWithOpportunities(policiesByIdWithContactInfoData);
 
             // 4º Ejecutar DMLs
             executeDMLs();
@@ -101,6 +101,8 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
         // do nothing
     }
 
+    // #endregion
+
     //#region calculo de merge de oferta cliente
 
     /**
@@ -118,7 +120,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
         mergePolicies( (Map<String, Policy__c>) opportunityDataMap.get(SCOPE_POLICY_MAP), matchMap );
     }
 
-     //#region Obtener datos y matcheo
+    //#region Obtener datos y matcheo
 
     /**
      * Método que devueve a partir de la lista de polizas los campos necesarios para buscar las polizas coincidentes
@@ -260,7 +262,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
         return result;
     }
 
-
     /**
      * Método que una vez se ha comprobado que la oportunidad de la query es un match, si se añade al mapa de resultado. Para ello tenemos 3 condiciones:
      * . Si el mapa para la oferta del scope no tiene ningun match se añade la primera que haya pasado el filtro
@@ -295,23 +296,26 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
         return result;
     }
 
-     //#region Calculo de Match
+    //#region Calculo de Match
 
-     /**
+    /**
      * Método que se encarga de actualizar la póliza con la oferta que hace match
      *
      * @author dmunoz
      * @date 09/04/2024
      */
-     private void mergePolicies(Map<String, Policy__c> scopeMap, Map<String, Opportunity> matchOppByScopeId) {
+    private void mergePolicies(Map<String, Policy__c> scopeMap, Map<String, Opportunity> matchOppByScopeId)
+    {
 
         Policy__c policyToUpdate;
         Opportunity offerToUpdate;
 
-        for (String idPolicy: scopeMap.keySet()) {
-            policyToUpdate = scopeMap.get(idPolicy);
+        for ( String idPolicy: scopeMap.keySet() )
+        {
+            offerToUpdate = matchOppByScopeId.get(idPolicy);
             // compruebo si existe en el mapa de match una oferta que haga match
-            if (matchOppByScopeId.containsKey(idPolicy)) {
+            if ( matchOppByScopeId.containsKey(idPolicy) )
+            {
                 offerToUpdate.get(idPolicy);
                 // actualizo la relación de póliza con oferta
                 policyToUpdate.OpportunityName__c = offerToUpdate.Id;
@@ -322,16 +326,16 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
             // añado los registros a actualizar
             policiesToUpdate.add(policyToUpdate);
         }
-     }
+    }
 
     //#region Lead
 
-     /**
+    /**
      * @description Método que permite construir un mapa con las pólizas
      * que potencialmente pueden hacer match relacionadas con la información
      * de contacto (teléfono y/o email) almacenada en la cuenta relacionada
      * (ContactPointEmail y ContactPointPhone).
-     * 
+     *
      * @author amiranda
      * @date 16-04-2024
      * @param opportunities Lista de oportunidades que potencialmente pueden
@@ -343,7 +347,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     @TestVisible
     private Map<Policy__c, Set<String> > getPoliciesWithContactInfoData(List<Policy__c> policies, Set<String> accountIdSet)
     {
-        Map<Policy__c, Set<String> > policiesById = new Map<Opportunity, Set<String> >();
+        Map<Policy__c, Set<String> > policiesById = new Map<Policy__c, Set<String> >();
 
         // Se recuperan las cuentas relacionadas con las polizas junto a los registros 'ContactPointPhone' y 'ContactPointEmail'
         Map<Id, Account> policiesRelatedAccounts = new Map<Id, Account>( new AccountsSelector().selectByIdWithCPPhoneAndCPEmail(accountIdSet) );
@@ -375,13 +379,24 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
         return policiesById;
     }
 
-    
-        /**
+    /**
      * @description Método que se encarga de comprobar si existen oportunidades
-     * a nivel de 'Lead' que hagan match. De las oportunidades que hagan match
-     * se actualiza el tomador del más reciente y se relaciona con la póliza.
-     * El resto de oportunidades se actualiza su estado a 'perdidas'.
-     * 
+     * a nivel de 'Lead' que hagan match. Los Leads y las oportunidades relacionadas
+     * se procesan del siguiente modo:
+     *
+     * 1. Lead que hace match sin oportunidades -> El Lead se debe eliminar
+     * 2. Lead con oportunidades relacionadas (todas ellas de ZRM) -> El Lead se debe
+     *    eliminar (sus oportunidades se eliminan de forma automática por lo que
+     *    no deben incluirse como oportunidades a eliminar).
+     * 3. Lead con oportunidades relacionadas (todas ellas de ZRM, tiene la
+     *    oportunidad más reciente) -> Como la oportunidad que hace match por
+     *    ser la más reciente pertenece a este Lead, el Lead no se puede eliminar (se mergeará).
+     *    Lo que sí debe suceder, es que el resto de oportunidades relacionadas
+     *    con el Lead se deben eliminar.
+     * 4. Lead con oportunidades relacionadas (no todas son de ZRM) -> El Lead no
+     *    se puede eliminar por tener oportunidades que no son de ZRM. Se eliminan
+     *    únicamente las oportunidades que hacen match.
+     *
      * @author amiranda
      * @date 17-04-2024
      * @param contactDataInfoByOpportunity Mapa que contiene el conjunto de datos
@@ -390,42 +405,59 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     @TestVisible
     private void matchLeadWithOpportunities(Map<Policy__c, Set<String> > contactDataInfoByPoilicy)
     {
-
         Set<String> recordTypeNames = new Set<String> {AccountsSelector.RT_NAME_LEAD};
-        List<Account> leadsWithOpportunities = new AccountsSelector().selectByRTNameAndPhoneAndEmailWithOpportunities(
-            contactPoints,
-            recordTypeNames
-            );
-
-        // TODO En principio no debemos eliminar oportunidades. Se modifica su estado para pasarlas como perdidas.
-        List<Opportunity> offersToClose = new List<Opportunity>();
-        Map<String, String> scopeMDT = getScopeMDT();
+        Map<Id, Account> leadsById = new Map<Id, Account>( new AccountsSelector().selectByRTNameAndPhoneAndEmailWithOpportunities(
+                                                               contactPoints,
+                                                               recordTypeNames
+                                                               ) );
 
         for ( Policy__c policy : contactDataInfoByPoilicy.keySet() )
         {
             Set<String> accountContactData = contactDataInfoByPoilicy.get(policy);
+            Map<Id, List<Opportunity> > opportunitiesByLeadId = new Map<Id, List<Opportunity> >();
+            Set<Id> leadWithOpportunitiesNotRelatedToZRM = new Set<Id>();
 
-            for (Account lead : leadsWithOpportunities)
+            for ( Account lead : leadsById.values() )
             {
-                Boolean leadShouldBeDeleted = false;
+                // Se asume que el lead no tiene oportunidades relacionadas
+                Boolean leadHasOpportunities = false;
 
+                // Se comprueba si el Lead hace match
                 if ( leadMatchesPolicy(lead, policy, accountContactData) )
                 {
-                    // TODO De los matches de oportunidades debemos actualizar el tomador de la más reciente
+                    for (Opportunity opportunity : lead.Opportunities)
+                    {
+                        leadHasOpportunities = true;
 
-                    // TODO El resto de oportunidades pasarán a actualizarse como perdidas
-                    leadShouldBeDeleted = deleteMatchingOpportunities(lead, opportunity, offersToClose, scopeMDT);
+                        // Se procesan las oportunidades que hagan match
+                        processZRMOpportunity(policy, opportunity, opportunitiesByLeadId, leadWithOpportunitiesNotRelatedToZRM);
+                    }
                 }
 
-                // TODO ¿Debemos eliminar los leads más antiguos que hagan match?
-                if (leadShouldBeDeleted)
+                // Si el lead que hace match no tiene oportunidades relacionadas se elimina
+                if (!leadHasOpportunities)
                 {
                     accountsToDelete.add(lead);
                 }
-                else if ( !offersToDelete.isEmpty() )
-                {
-                    opportunitiesToUpdate.addAll(offersToClose);
-                }
+            }
+
+            // Si ha habido match con alguna oportunidad, debemos quedarnos con la más reciente
+            if ( !opportunitiesByLeadId.isEmpty() )
+            {
+                // Se obtiene la oportunidad "ganadora" que será actualizada
+                Opportunity winningOpportunity = getWinningOpportunity(opportunitiesByLeadId);
+
+                // Se relaciona la oportunidad "ganadora" con la póliza
+                policy.InfoQuoteNumber__c = winningOpportunity.Id;
+
+                // Se procesan el resto de las oportunidades relacionadas al lead de la oportunidad "ganadora"
+                processRelatedOpportunities(opportunitiesByLeadId.remove(winningOpportunity.AccountId), winningOpportunity);
+
+                // Se actualiza el tomador de la oportunidad "ganadora"
+                updateWinningOpportunity(winningOpportunity, policy.PolicyHolder__c);
+
+                // Se procesan el resto de Leads que han hecho match y tienen alguna oportunidad relacionada
+                processRemainingLeads(opportunitiesByLeadId, leadsById, leadWithOpportunitiesNotRelatedToZRM);
             }
         }
     }
@@ -470,7 +502,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     /**
      * @description Método que comprueba si la póliza y el lead hacen match
      * en base a los datos de contacto y la fecha de creación.
-     * 
+     *
      * @author amiranda
      * @date 17-04-2024
      * @param lead Cuenta de tipo 'Lead'
@@ -488,50 +520,149 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     }
 
     /**
-     * @description Método que comprueba si alguna de las oportunidades relacionadas
-     * con el lead han de eliminarse. Además, si todas ellas son marcadas a eliminar
-     * nos indica que el 'Lead' relacionado con la oportunidad debe eliminarse.
-     * 
+     * @description Método que se encarga de comprobar si la oportunidad pertenece
+     * al aplicativo ZRM. Si es así, la oportunidad se añade a la lista del mapa
+     * de oportunidades agrupadas por el Id del Lead relacionado. Por el contrario,
+     * se añade el Lead relacionado con la oportunidad al conjunto de Ids de Leads.
+     *
      * @author amiranda
-     * @date 17-04-2024
-     * @param lead Lead sobre el que se comprueban sus oportunidades
-     * @param opportunity Oportunidad de ZRM que potencialmente puede hacer match
-     * @param offersToDelete Lista de ofertas a eliminar
-     * @return Boolean Indica si la cuenta de tipo 'Lead' relacionada con las
-     * oportunidades ha de eliminarse
+     * @date 19-04-2024
+     * @param policy Póliza del scope que no ha podido relacionarse con una
+     * oportunidad a nivel de cliente.
+     * @param opportunity Oportunidad relacionada con el Lead que ha hecho match.
+     * @param opportunitiesByLeadId Mapa de oportunidades asociadas a los diferentes Leads
+     * @param leadIds Conjunto de Leads con oportunidades relacionadas a otros.
+     * aplicativos que no son ZRM.
      **/
-    @TestVisible
-    private Boolean deleteMatchingOpportunities(Account lead, Policy__c policy, List<Opportunity> offersToDelete, Map<String, String> scopeMDT)
+    private void processZRMOpportunity(Policy__c policy, Opportunity opportunity, Map<Id, List<Opportunity> > opportunitiesByLeadId, Set<Id> leadIds)
     {
         Set<String> opportunityMatchStages = new Set<String> {'Legit Lead', 'App Submitted'};
+        Map<String, String> scopeMDT = getScopeMDT();
 
-        // Se asume que el lead no tienen oportunidades relacionadas y por lo tanto se elimina
-        Boolean leadShouldBeDeleted = true;
-        Opportunity policyMatchOffer;
-
-        // Se comprueba si alguna de las oportunidad relacionadas con la cuenta de tipo 'Lead' hace match
-        for (Opportunity leadOpportunity : lead.Opportunities)
+        // Se comprueba si la oportunidad hace match con los criterios definidos
+        if ( checkIntermediaryEquals(policy, opportunity)
+             && opportunityMatchStages.contains(opportunity.StageName)
+             && checkIsZRM(opportunity, scopeMDT) )
         {
-            if ( checkIntermediaryEquals(opportunity, leadOpportunity)
-                 && opportunityMatchStages.contains(leadOpportunity.StageName)
-                 && checkIsZRM(leadOpportunity, scopeMDT) )
+            // Si hace match guardamos en un mapa la oportunidad relacionada con el lead
+            if ( !opportunitiesByLeadId.containsKey(opportunity.AccountId) )
             {
-                if (policyMatchOffer != null && leadOpportunity.CreatedDate > policyMatchOffer.CreatedDate)
-                {
-                    // Se establece la relación entre la oportunidad y la póliza
-                    policy.OpportunityName__c = leadOpportunity.Id;
-                    policyMatchOffer = leadOpportunity;
-                }
+                opportunitiesByLeadId.put( opportunity.AccountId, new List<Opportunity>() );
+            }
 
-                offersToDelete.add(leadOpportunity);
+            opportunitiesByLeadId.get(opportunity.AccountId).add(opportunity);
+        }
+        else
+        {
+            // Si tiene oportunidades relacionadas que no pertenecen a ZRM el lead no se puede eliminar
+            leadIds.add(opportunity.AccountId);
+        }
+    }
+
+    /**
+     * @description Método que se encarga de comprobar cuál es la oportunidad más
+     * reciente de todas las oportunidades relacionadas con los diferentes Leads.
+     *
+     * @author amiranda
+     * @date 19-04-2024
+     * @param opportunitiesByLeadId Mapa con las oportunidades relacionadas con un Lead
+     * @return Opportunity más reciente
+     **/
+    private Opportunity getWinningOpportunity(Map<Id, List<Opportunity> > opportunitiesByLeadId)
+    {
+        List<Opportunity> opportunities = new List<Opportunity>();
+
+        // Recopilamos todas las oportunidades de los diferentes leads
+        for ( Id leadId : opportunitiesByLeadId.keySet() )
+        {
+            opportunities.addAll( opportunitiesByLeadId.get(leadId) );
+        }
+
+        Opportunity winningOpportunity;
+
+        // Comprobamos cuál es la oportunidad más reciente
+        for (Opportunity opportunity : opportunities)
+        {
+            if (winningOpportunity == null
+                || winningOpportunity.CreatedDate < opportunity.CreatedDate)
+            {
+                winningOpportunity = opportunity;
+            }
+        }
+
+        return winningOpportunity;
+    }
+
+    /**
+     * @description Método que se encarga de procesar el resto de oportunidades
+     * relacionadas con el Lead relacionado con la oportunidad "ganadora".
+     *
+     * @author amiranda
+     * @date 19-04-2024
+     * @param opportunities Lista con el resto de oportunidades relacionadas con
+     * lead de la oportunidad "ganadora"
+     * @param winningOpportunity Oportunidad "ganadora"
+     **/
+    private void processRelatedOpportunities(List<Opportunity> opportunities, Opportunity winningOpportunity)
+    {
+        // Las oportunidades que no coinciden con la oportunidad "ganadora" se añaden a eliminar
+        for (Opportunity opportunity : opportunities)
+        {
+            if ( winningOpportunity.AccountId  != opportunity.AccountId)
+            {
+                opportunitiesToDelete.add(opportunity);
+            }
+        }
+    }
+
+    /**
+     * @description Método que se encarga de actualizar tanto el tomador actual
+     * (tomador de la póliza) como el tomador anterior (el lead inicialmente
+     * relacionado con la oportunidad) de la oportunidad "ganadora".
+     *
+     * @author amiranda
+     * @date 19-04-2024
+     * @param winningOpportunity Oportunidad "ganadora".
+     * @param policyHolder Id del tomador de la póliza
+     **/
+    private void updateWinningOpportunity(Opportunity winningOpportunity, Id policyHolder)
+    {
+        // Modificamos el nuevo y antiguo tomador de la póliza "ganadora"
+        winningOpportunity.OldAccountId__c = winningOpportunity.AccountId;
+        winningOpportunity.AccountId = policyHolder;
+        opportunitiesToUpdate.add(winningOpportunity);
+    }
+
+    /**
+     * @description Método que se encarga de procesar el resto de Leads que han
+     * hecho match. Si el lead tiene únicamente oportunidades de ZRM, se elimina
+     * el lead (como consecuencia se eliminan sus oportunidades relacioandas). Si
+     * por el contrario tiene oportunidades de otro aplicativo, solamente se
+     * eliminan las oportunidades de ZRM.
+     *
+     * @author amiranda
+     * @date 19-04-2024
+     * @param opportunitiesByLeadId Mapa con las oportunidades relacionadas a
+     * los diferentes leads.
+     * @param leadIds Conjunto de Ids de los leads que tienen oportunidades relacionadas
+     * de otros aplicativos.
+     **/
+    private void processRemainingLeads(Map<Id, List<Opportunity> > opportunitiesByLeadId, Map<Id, Account> leadsById, Set<Id> leadIds)
+    {
+        // Se procesan el resto de leads que han hecho match
+        for ( Id leadId : opportunitiesByLeadId.keySet() )
+        {
+            // Si el lead tiene oportunidades que no son de ZRM relacionadas solamente se eliminan sus oportunidades
+            if ( leadIds.contains(leadId) )
+            {
+                opportunitiesToDelete.addAll( opportunitiesByLeadId.get(leadId) );
             }
             else
             {
-                // El Lead tiene al menos una oportunidad que no hace match, por lo tanto no se debe eliminar
-                leadShouldBeDeleted = false;
+                // Si no tiene otras oportunidades, se elimina el lead. Como consecuencia, todas sus oportunidades se eliminarán.
+                accountsToDelete.add( leadsById.get(leadId) );
             }
         }
-        return leadShouldBeDeleted;
     }
 
     /**

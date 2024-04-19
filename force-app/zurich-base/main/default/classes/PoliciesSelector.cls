@@ -598,6 +598,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
     /**
     * @description Método que devuelve una query en formato String para recuperar
     * pólizas que sean 'match potenciales' (PotentialMatch__c = true)
+    *
     * @author amiranda 
     * @date 18-04-2024 
     * @return String query en formato String
@@ -619,6 +620,4 @@ public with sharing class PoliciesSelector extends RecordsSelector
                .enforceSecurity()
                .toQueryString();
     }
-
-    
 }
