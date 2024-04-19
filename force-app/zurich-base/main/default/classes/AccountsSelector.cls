@@ -1267,14 +1267,7 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.PersonEmail,
                 Account.Phone
             }
-            ;
-
-            Set<String> opportunityFieldsToRetrieve = new Set<String>
-            {
-                'CreatedDate',
-                'StageName',
-                'BusinessCode__c'
-            };
+            ;            
 
             Query.Condition orCondition = Query.doOr(
                 Query.conditionIn(Account.Phone, contactPoints),

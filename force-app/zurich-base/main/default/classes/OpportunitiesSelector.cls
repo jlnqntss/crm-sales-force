@@ -13,6 +13,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         super( Opportunity.getSObjectType() );
     }
 
+    private static final String OPPORTUNITY_INTERMEDIARY_GROUP= 'Opportunity.IntermediaryId__r.IntermediaryGroup__c';
+
     //#endregion
 
     /**
@@ -683,7 +685,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                 Opportunity.Id,
                 Opportunity.AccountId,
                 Opportunity.IntermediaryId__c
-            }).selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c');
+            }).selectFields(OPPORTUNITY_INTERMEDIARY_GROUP);
 
             this.baseQuery                            
                             .addConditionNotIn(Opportunity.Id, offersToExclude)
@@ -799,7 +801,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                 Opportunity.Description,
                 Opportunity.CampaignId
             }
-            ).selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c');
+            ).selectFields(OPPORTUNITY_INTERMEDIARY_GROUP);
 
             this.baseQuery
             .addConditionIn(Opportunity.AccountId, accountIdsSet)
@@ -814,7 +816,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             {
                 Query.Condition orCondition = Query.doOr(
                     Query.conditionIn(Opportunity.IntermediaryId__c, intermediaryIdsSet),
-                    Query.conditionIn('IntermediaryId__r.IntermediaryGroup__c', intermediaryGroupIdsSet)
+                    Query.conditionIn(OPPORTUNITY_INTERMEDIARY_GROUP, intermediaryGroupIdsSet)
                     );
 
                 this.baseQuery.addCondition(orCondition);
