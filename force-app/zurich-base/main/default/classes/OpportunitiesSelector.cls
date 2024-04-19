@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 15-04-2024
+ * @last modified on  : 18-04-2024
  * @last modified by  : amiranda
  **/
 public with sharing class OpportunitiesSelector extends RecordsSelector
@@ -845,7 +845,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         {
             Opportunity.AccountId,
             Opportunity.IntermediaryId__c,
-            Opportunity.IntermediaryCode__c,
             Opportunity.Description,
             Opportunity.ProductBranch__c,
             Opportunity.CampaignId,

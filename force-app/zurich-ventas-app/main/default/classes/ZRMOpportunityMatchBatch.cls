@@ -15,7 +15,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     private static List<Task> tasksToUpdate = new List<Task>();
     private static List<Event> eventsToUpdate = new List<Event>();
     private static List<Opportunity> opportunitiesToDelete = new List<Opportunity>();
-    private static List<Account> accountsToDelete = new List<Account>();
+    private static Map<Id, Account> accountsByIdToDelete = new Map<Id, Account>();
 
     private String query
     {
@@ -537,7 +537,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
 
                 if (leadShouldBeDeleted)
                 {
-                    accountsToDelete.add(lead);
+                    accountsByIdToDelete.put(lead.Id, lead);
                 }
                 else if ( !offersToDelete.isEmpty() )
                 {
@@ -582,9 +582,9 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
         }
 
         // Eliminar leads
-        if ( !accountsToDelete.isEmpty() )
+        if ( !accountsByIdToDelete.isEmpty() )
         {
-            delete accountsToDelete;
+            delete accountsByIdToDelete.values();
         }
     }
 
