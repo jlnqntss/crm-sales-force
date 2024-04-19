@@ -5,7 +5,7 @@
  * @date 13/10/2020
  */
 @isTest
-public class TestDataFactory
+public with sharing class TestDataFactory
 {
     /*
           Tip: Obtener elementos random

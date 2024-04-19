@@ -8,7 +8,7 @@
  * change aberuete- 21/04/2023 - Refactorizar clase
  **/
 
- global class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>, Database.Stateful, Schedulable
+ global with sharing class Batch_MergeLeadsWithClients implements Database.Batchable<sObject>, Database.Stateful, Schedulable
  {
      private static final string CLASS_NAME = 'Batch_MergeLeadsWithClients';
      private static final string ERROR_NO_LEAD_RT_FOUND = 'The ID of the PersonAccount.Lead RecordType could not be found.';

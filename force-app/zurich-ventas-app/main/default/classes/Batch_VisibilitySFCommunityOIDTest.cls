@@ -1,5 +1,5 @@
 @IsTest
-public class Batch_VisibilitySFCommunityOIDTest {
+public with sharing class Batch_VisibilitySFCommunityOIDTest {
     @TestSetup
     static void makeData()
     {

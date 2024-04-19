@@ -1,5 +1,5 @@
 @isTest
-public class Batch_LeadOffersToReassignToCCTest {
+public with sharing class Batch_LeadOffersToReassignToCCTest {
     @TestSetup
     static void makeData()
     {
