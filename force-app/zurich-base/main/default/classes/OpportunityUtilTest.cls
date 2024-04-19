@@ -76,7 +76,7 @@ private with sharing class OpportunityUtilTest
         List<Scope__c> scopes = [SELECT Id, Name FROM Scope__c WHERE AccountId__c IN : accounts];
         List<Opportunity> optysUpdated = [SELECT Scope__c, ScopeId__c FROM Opportunity];
 
-        System.assertEquals(10, scopes.size(), 'No se han generado todos los ámbitos necesarios');
+        System.assertEquals(13, scopes.size(), 'No se han generado todos los ámbitos necesarios');
 
         for(Opportunity opty : optysUpdated)
         {
