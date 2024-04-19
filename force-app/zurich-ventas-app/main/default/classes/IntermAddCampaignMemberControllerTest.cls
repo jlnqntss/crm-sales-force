@@ -5,7 +5,7 @@
  * @date 20/11/2023
  */
 @isTest
-private class IntermAddCampaignMemberControllerTest 
+private with sharing class IntermAddCampaignMemberControllerTest 
 {
     /**
     * Test del  Método que se encarga de insertar los miembros de campaña
