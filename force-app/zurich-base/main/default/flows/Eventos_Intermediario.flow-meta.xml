@@ -282,10 +282,10 @@
             </value>
         </filters>
         <filters>
-            <field>OwnerId</field>
+            <field>IsChild</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$User.Id</elementReference>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -324,10 +324,10 @@
             </value>
         </filters>
         <filters>
-            <field>OwnerId</field>
+            <field>IsChild</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$User.Id</elementReference>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -387,10 +387,10 @@
             </value>
         </filters>
         <filters>
-            <field>OwnerId</field>
+            <field>IsChild</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$User.Id</elementReference>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
