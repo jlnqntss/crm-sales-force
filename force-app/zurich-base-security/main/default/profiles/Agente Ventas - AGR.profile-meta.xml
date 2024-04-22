@@ -3813,6 +3813,10 @@
         <layout>Propensity__c-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Default ZRM</layout>
+        <recordType>Case.ZRMInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Claim__c-Agente zrm</layout>
     </layoutAssignments>
     <layoutAssignments>
