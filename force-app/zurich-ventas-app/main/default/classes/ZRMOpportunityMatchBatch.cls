@@ -1,4 +1,4 @@
-public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable<sObject>
+public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable<sObject>, Schedulable
 {
     // #region Instance properties
 
@@ -100,6 +100,23 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     public void finish(Database.BatchableContext bc)
     {
         // TODO Se invocará al batch de Pólizas
+    }
+
+    // #endregion
+
+    // #region Schedulable interface implemented methods
+
+    /**
+    * @description Método que se ejecuta programáticamente. Puede ser ejecutado
+    * desde Apex (System.schedule()) o desde "Programar Apex".
+    * @author amiranda
+    * @date 22-04-2024 
+    * @param SchedulableContext sc Referencia del objeto que implementa la 
+    * interfaz Schedulable.
+    **/
+    public void execute(SchedulableContext sc)
+    {
+        Database.executeBatch(new ZRMOpportunityMatchBatch(), 50);
     }
 
     // #endregion
