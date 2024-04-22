@@ -15,12 +15,12 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <componentType>RichText</componentType>
                 <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;color\&amp;quot;:\&amp;quot;#091a3e\&amp;quot;,\&amp;quot;size\&amp;quot;:\&amp;quot;16px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leads\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;center\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
+                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;color\&amp;quot;:\&amp;quot;#091a3e\&amp;quot;,\&amp;quot;size\&amp;quot;:\&amp;quot;28px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leads\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;center\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
                 </dashboardComponentContents>
                 <groupingSortProperties/>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
-            <rowSpan>1</rowSpan>
+            <rowSpan>2</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>4</colSpan>
@@ -29,12 +29,12 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <componentType>RichText</componentType>
                 <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;color\&amp;quot;:\&amp;quot;#091a3e\&amp;quot;,\&amp;quot;size\&amp;quot;:\&amp;quot;16px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;center\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
+                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;color\&amp;quot;:\&amp;quot;#091a3e\&amp;quot;,\&amp;quot;size\&amp;quot;:\&amp;quot;24px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas cliente\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;center\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
                 </dashboardComponentContents>
                 <groupingSortProperties/>
             </dashboardComponent>
             <rowIndex>0</rowIndex>
-            <rowSpan>1</rowSpan>
+            <rowSpan>2</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -48,7 +48,7 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>Nuevos Leads (hoy)</header>
+                <header>Nuevos leads (hoy)</header>
                 <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
                 <indicatorHighColor>#22376F</indicatorHighColor>
@@ -57,7 +57,7 @@
                 <report>ZRMOfertas/VTO_Ofertas_Leads_VDD</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>1</rowIndex>
+            <rowIndex>2</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -81,7 +81,7 @@
                 <report>ZRMLeads/Leads_acumulados</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>1</rowIndex>
+            <rowIndex>2</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -96,7 +96,7 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>Ofertas Recientes</header>
+                <header>Ofertas recientes</header>
                 <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
                 <indicatorHighColor>#22376F</indicatorHighColor>
@@ -105,7 +105,7 @@
                 <report>ZRMOfertas/VTO_Ofertas_Cliente_j7p</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>1</rowIndex>
+            <rowIndex>2</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -129,7 +129,7 @@
                 <report>ZRMOfertas/Ofertas_Perdidas_PY_FFl</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>1</rowIndex>
+            <rowIndex>2</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -139,12 +139,12 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <componentType>RichText</componentType>
                 <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;P\u00F3lizas y Siniestros\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;center\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
+                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;28px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;P\u00F3lizas y siniestros\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;center\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
                 </dashboardComponentContents>
                 <groupingSortProperties/>
             </dashboardComponent>
-            <rowIndex>6</rowIndex>
-            <rowSpan>1</rowSpan>
+            <rowIndex>7</rowIndex>
+            <rowSpan>2</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -158,7 +158,7 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>Ofertas Interesado más adelante</header>
+                <header>Interesado a futuro</header>
                 <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
                 <indicatorHighColor>#23366F</indicatorHighColor>
@@ -167,7 +167,7 @@
                 <report>ZRMOfertas/Ofertas_Interesado_ms_adelante_DF1</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>6</rowIndex>
+            <rowIndex>7</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -182,7 +182,7 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>Ofertas prefiero gestione mi agente</header>
+                <header>Call center (requiere mediador)</header>
                 <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
                 <indicatorHighColor>#23366F</indicatorHighColor>
@@ -191,7 +191,7 @@
                 <report>ZRMOfertas/Nuevo_informe_de_Ofertas_fai</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>6</rowIndex>
+            <rowIndex>7</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -215,7 +215,7 @@
                 <report>Polizas/Plizas_perdidas_ao_anterior_z8X</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>7</rowIndex>
+            <rowIndex>9</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -239,22 +239,8 @@
                 <report>Polizas/VTO_Plizas_qNH</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>7</rowIndex>
+            <rowIndex>9</rowIndex>
             <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>4</colSpan>
-            <columnIndex>5</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
-                <componentType>RichText</componentType>
-                <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;center\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
-                </dashboardComponentContents>
-                <groupingSortProperties/>
-            </dashboardComponent>
-            <rowIndex>11</rowIndex>
-            <rowSpan>1</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -277,7 +263,7 @@
                 <report>ZRMCompetencia/VTO_Competencia_D9Y</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>12</rowIndex>
+            <rowIndex>14</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -292,7 +278,7 @@
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
-                <header>Siniestros Abiertos</header>
+                <header>Siniestros abiertos</header>
                 <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
                 <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
                 <indicatorHighColor>#23366F</indicatorHighColor>
@@ -301,55 +287,7 @@
                 <report>ZRMSiniestros/Siniestros_abiertos_v2</report>
                 <showRange>false</showRange>
             </dashboardComponent>
-            <rowIndex>12</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>2</colSpan>
-            <columnIndex>5</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <column>RowCount</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>Tareas Pendientes</header>
-                <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
-                <indicatorHighColor>#23366F</indicatorHighColor>
-                <indicatorLowColor>#23366F</indicatorLowColor>
-                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMTareasyEventos/Tareas_Pendientes_cOB</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>12</rowIndex>
-            <rowSpan>5</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>2</colSpan>
-            <columnIndex>7</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
-                <chartSummary>
-                    <column>RowCount</column>
-                </chartSummary>
-                <componentType>Metric</componentType>
-                <decimalPrecision>-1</decimalPrecision>
-                <displayUnits>Auto</displayUnits>
-                <groupingSortProperties/>
-                <header>Tareas Vencidas</header>
-                <indicatorBreakpoint1>-1.0</indicatorBreakpoint1>
-                <indicatorBreakpoint2>1.0</indicatorBreakpoint2>
-                <indicatorHighColor>#23366F</indicatorHighColor>
-                <indicatorLowColor>#23366F</indicatorLowColor>
-                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMTareasyEventos/Tareas_Vencidas_fhq</report>
-                <showRange>false</showRange>
-            </dashboardComponent>
-            <rowIndex>12</rowIndex>
+            <rowIndex>14</rowIndex>
             <rowSpan>5</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
@@ -359,12 +297,12 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <componentType>RichText</componentType>
                 <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leyendas\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;center\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
+                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;28px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leyendas\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;center\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
                 </dashboardComponentContents>
                 <groupingSortProperties/>
             </dashboardComponent>
-            <rowIndex>17</rowIndex>
-            <rowSpan>1</rowSpan>
+            <rowIndex>19</rowIndex>
+            <rowSpan>2</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>4</colSpan>
@@ -373,39 +311,25 @@
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <componentType>RichText</componentType>
                 <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Nuevos Leads (hoy):\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas de leads recibidos durante el d\u00EDa de hoy.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leads acumulados:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas de leads pendientes (con fecha de creaci\u00F3n diferente de hoy).\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;P\u00F3lizas Anuladas A\u00F1o anterior:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas perdidas del a\u00F1o anterior y que tocar\u00EDa renovaci\u00F3n en los pr\u00F3ximos dos meses.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Vencimiento de p\u00F3lizas:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas con vencimientos en los pr\u00F3ximos 60 d\u00EDas.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;P\u00F3lizas competencia:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas de los clientes con la competencia con fecha de contacto en el mes \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;actual\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
+                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Nuevos leads (hoy):\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas de leads recibidos durante el d\u00EDa de hoy.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Leads acumulados:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas de leads pendientes (con fecha de creaci\u00F3n diferente de hoy).\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;P\u00F3lizas anuladas a\u00F1o anterior:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas perdidas del a\u00F1o anterior y que tocar\u00EDa renovaci\u00F3n en los pr\u00F3ximos dos meses.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Vencimiento de p\u00F3lizas:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas con vencimientos en los pr\u00F3ximos 60 d\u00EDas.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;P\u00F3lizas competencia:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; P\u00F3lizas de los clientes con la competencia con fecha de contacto en el mes \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;actual\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
                 </dashboardComponentContents>
                 <groupingSortProperties/>
             </dashboardComponent>
-            <rowIndex>18</rowIndex>
+            <rowIndex>21</rowIndex>
             <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>4</colSpan>
-            <columnIndex>4</columnIndex>
+            <columnIndex>5</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
                 <componentType>RichText</componentType>
                 <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas Recientes:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas no cerradas de clientes existentes y fecha de creaci\u00F3n desde hace 2 meses hasta hoy.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas Perdidas A\u00F1o Anterior:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas perdidas del a\u00F1o anterior y que tocar\u00EDa renovaci\u00F3n en los pr\u00F3ximos dos meses.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas Interesado m\u00E1s adelante: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas que se cerraron como \\\&amp;quot;interesado m\u00E1s adelante\\\&amp;quot; con fecha de inter\u00E9s mes actual.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas prefiero gestione mi agente: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas derivadas del Contact Center para gestionar por el Agente.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
+                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas recientes:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas no cerradas de clientes existentes y fecha de creaci\u00F3n desde hace 2 meses hasta hoy.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas perdidas a\u00F1o anterior:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Ofertas perdidas del a\u00F1o anterior y que tocar\u00EDa renovaci\u00F3n en los pr\u00F3ximos dos meses.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Interesado a futuro: \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas que se cerraron como \\\&amp;quot;interesado m\u00E1s adelante\\\&amp;quot; con fecha de inter\u00E9s mes actual.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Call center (requiere mediador): \&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;14px\&amp;quot;,\&amp;quot;color\&amp;quot;:\&amp;quot;#172b4d\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;Ofertas derivadas del Contact Center para gestionar por el Agente.\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;align\&amp;quot;:\&amp;quot;left\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;}]</richTextContent>
                 </dashboardComponentContents>
                 <groupingSortProperties/>
             </dashboardComponent>
-            <rowIndex>18</rowIndex>
-            <rowSpan>4</rowSpan>
-        </dashboardGridComponents>
-        <dashboardGridComponents>
-            <colSpan>1</colSpan>
-            <columnIndex>8</columnIndex>
-            <dashboardComponent>
-                <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
-                <componentType>RichText</componentType>
-                <dashboardComponentContents>
-                    <richTextContent>[{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas Pendientes:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Tareas no cerradas que el usuario tiene asignadas\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;,\&amp;quot;bold\&amp;quot;:true},\&amp;quot;insert\&amp;quot;:\&amp;quot;Tareas Vencidas:\&amp;quot;},{\&amp;quot;attributes\&amp;quot;:{\&amp;quot;size\&amp;quot;:\&amp;quot;12px\&amp;quot;},\&amp;quot;insert\&amp;quot;:\&amp;quot; Tareas vencidas no cerradas que el usuario tiene asignadas.\&amp;quot;},{\&amp;quot;insert\&amp;quot;:\&amp;quot;\\n\\n\&amp;quot;}]</richTextContent>
-                </dashboardComponentContents>
-                <groupingSortProperties/>
-            </dashboardComponent>
-            <rowIndex>18</rowIndex>
+            <rowIndex>21</rowIndex>
             <rowSpan>4</rowSpan>
         </dashboardGridComponents>
         <numberOfColumns>9</numberOfColumns>
