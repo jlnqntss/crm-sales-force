@@ -84,7 +84,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
             executeDMLs();
         }
         catch(Exception e)
-        {
+        {   
             ErrorLogUtil.commitError(e, CLASS_NAME); 
         }
 
@@ -112,7 +112,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @author dmunoz
      * @date 09/04/2024
      */
-    @TestVisible
     private Map<String, Policy__c> calculateClientOpportunitiesWithMatch(List<Policy__c> scope, Map<String, Object> opportunityDataMap)
     {
         Map<String, Policy__c> result = (Map<String, Policy__c>) opportunityDataMap.get(SCOPE_POLICY_MAP);
@@ -133,7 +132,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @author dmunoz
      * @date 09/04/2024
      */
-    @TestVisible
     private Map<String, Object> getDataFromPolicies(List<Policy__c> scope)
     {
         Map<String, Object> result = new Map<String, Object>();
@@ -178,7 +176,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @date 09/04/2024
      * @return mapa con clave id oferta scope y oferta match
      */
-    @TestVisible
     private Map<String, Opportunity> getMatchOffersByParams(Map<String, Object> policyDataMap)
     {
         Map<String, Opportunity> result = new Map<String, Opportunity>();
@@ -222,7 +219,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @date 09/04/2024
      * @return boolean
      */
-    @TestVisible
     private Boolean matchConditions(Policy__c scopePolicy, Opportunity queryOpportunity)
     {
         Boolean result = false;
@@ -249,7 +245,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @date 09/04/2024
      * @return boolean
      */
-    @TestVisible
     private Boolean checkIntermediaryEquals(Policy__c scopePolicy, Opportunity queryOpportunity)
     {
         Boolean result = false;
@@ -279,7 +274,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @date 09/04/2024
      * @return boolean
      */
-    @TestVisible
     private Boolean checkMatchMap(Map<String, Opportunity> matchMap, Policy__c scopePolicy, Opportunity queryOffer)
     {
         Boolean result = false;
@@ -364,7 +358,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * la relación entre pólizas que potencialmente hacen match con los
      * datos de contacto (teléfono y/o email)
      **/
-    @TestVisible
     private Map<Policy__c, Set<String> > getPoliciesWithContactInfoData(List<Policy__c> policies, Set<String> accountIdSet)
     {
         Map<Policy__c, Set<String> > policiesById = new Map<Policy__c, Set<String> >();
@@ -422,7 +415,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @param contactDataInfoByOpportunity Mapa que contiene el conjunto de datos
      * de contacto (teléfono y email) por póliza.
      **/
-    @TestVisible
     private void matchLeadWithOpportunities(Map<Policy__c, Set<String> > contactDataInfoByPoilicy)
     {
         Set<String> recordTypeNames = new Set<String> {AccountsSelector.RT_NAME_LEAD};
@@ -470,11 +462,12 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
                 // Se relaciona la oportunidad "ganadora" con la póliza
                 policy.OpportunityName__c = winningOpportunity.Id;
 
-                // Se procesan el resto de las oportunidades relacionadas al lead de la oportunidad "ganadora"
-                processRelatedOpportunities(opportunitiesByLeadId.remove(winningOpportunity.AccountId), winningOpportunity);
-
                 // Se actualiza el tomador de la oportunidad "ganadora"
                 updateWinningOpportunity(winningOpportunity, policy.PolicyHolder__c);
+
+                // Se procesan el resto de las oportunidades relacionadas al lead de la oportunidad "ganadora"
+                processRelatedOpportunities(opportunitiesByLeadId.remove(winningOpportunity.OldAccountId__c), winningOpportunity);
+
 
                 // Se procesan el resto de Leads que han hecho match y tienen alguna oportunidad relacionada
                 processRemainingLeads(opportunitiesByLeadId, leadsById, leadWithOpportunitiesNotRelatedToZRM);
@@ -489,7 +482,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @author amiranda
      * @date 17-04-2024
      **/
-    @TestVisible
     private void executeDMLs()
     {
         // Actualizar todas las ofertas del scope, (incluye el merge de ofertas de cliente y el blanqueo del campo PotencialMatch__c)
@@ -531,7 +523,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * relacionada con la póliza
      * @return Boolean Indica si ha hecho match con el Lead
      **/
-    @TestVisible
     private Boolean leadMatchesPolicy(Account lead, Policy__c policy, Set<String> contactData)
     {
         return ( policy.CreatedDate > lead.CreatedDate
@@ -690,7 +681,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @author dmunoz
      * @date 09/04/2024
      */
-    @TestVisible
     private Boolean checkIsZRM(Opportunity offer, Map<String, String> scopeMDT)
     {
         Boolean result = false;
@@ -712,7 +702,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @author dmunoz
      * @date 09/04/2024
      */
-    @TestVisible
     private Map<String, String> getScopeMDT()
     {
         Map<String, String> result = new Map<String, String>();
@@ -732,7 +721,6 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @author dmunoz
      * @date 09/04/2024
      */
-    @TestVisible
     private Set<String> addElementToSet(Set<String> result, String value)
     {
         if ( value != null && String.isNotEmpty(value) )
