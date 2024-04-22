@@ -281,6 +281,13 @@
                 <elementReference>CurrentYearEnd</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>IsChild</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -314,6 +321,13 @@
             <operator>LessThanOrEqualTo</operator>
             <value>
                 <elementReference>CurrentYearEnd</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsChild</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -370,6 +384,13 @@
             <operator>LessThanOrEqualTo</operator>
             <value>
                 <elementReference>CurrentYearEnd</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsChild</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
