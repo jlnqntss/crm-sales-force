@@ -423,10 +423,10 @@
             </value>
         </filters>
         <filters>
-            <field>AccountId</field>
+            <field>ContactId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.AccountId</elementReference>
+                <elementReference>$Record.ContactId</elementReference>
             </value>
         </filters>
         <filters>
