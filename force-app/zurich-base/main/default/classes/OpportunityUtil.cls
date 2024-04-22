@@ -188,11 +188,11 @@ public with sharing class OpportunityUtil
             {
                 optysToGenerateScope.add(opty);
             }
+        }
 
-            if( !optysToGenerateScope.isEmpty() )
-            {
-                GenerateScopeUtil.generateScopeEvents('AccountId', 'BusinessCode__c', optysToGenerateScope);
-            }
+        if( !optysToGenerateScope.isEmpty() )
+        {
+            GenerateScopeUtil.generateScopeEvents('AccountId', 'BusinessCode__c', optysToGenerateScope);
         }
     }
 
