@@ -4,7 +4,13 @@
         <field>ACCOUNT_NAME</field>
     </columns>
     <columns>
-        <field>ACCOUNT_RECORDTYPE</field>
+        <field>Opportunity.SalesProcess__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.InfoUser__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.IntermediaryCode__c</field>
     </columns>
     <columns>
         <field>OPPORTUNITY_NAME</field>
@@ -32,9 +38,6 @@
     </columns>
     <columns>
         <field>Opportunity.InfoLastModifiedDate__c</field>
-    </columns>
-    <columns>
-        <field>Opportunity.IntermediaryCode__c</field>
     </columns>
     <filter>
         <criteriaItems>
@@ -93,6 +96,6 @@
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>CLOSE_DATE</dateColumn>
-        <interval>INTERVAL_THISMONTH</interval>
+        <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

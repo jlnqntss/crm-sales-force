@@ -975,30 +975,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningForgotPasswordController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningForgotPasswordControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningLoginFormController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningLoginFormControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningSelfRegisterController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningSelfRegisterControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MiZurichHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1264,10 +1240,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RelatedAccountsSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RemoveDuplicateUsersAction</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1828,11 +1800,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.TerritoryManagerName__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AccountTeamMember.rol__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2732,11 +2699,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Event.ClienteMediado__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Event.ClosingObservation__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2852,11 +2814,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Event.MediadorCaso__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Event.MediatedCustomer__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2962,11 +2919,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Event.SegmentoMediadorCaso__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Event.SoyManager__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3042,11 +2994,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>KPI__c.AccidentRate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>KPI__c.ClaimOcurridosCAYLarge__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3058,11 +3005,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>KPI__c.ClaimTotalIncome__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>KPI__c.RetentionRatio__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3512,11 +3454,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Task.ClienteMediado__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Task.ClosingObservation__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3622,11 +3559,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Task.MediadorCaso__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Task.MediatedCustomer__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3728,11 +3660,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.SegmentMediatorCase__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.SegmentoMediadorCaso__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

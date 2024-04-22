@@ -6,8 +6,6 @@ public class PolicyUtil
     public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Polizas
     private static final string ZRM_SCOPE = 'Ventas'; //Scope de las polizas de ZRM
 
-
-
     /**
      * Método que rellena el mapa que contiene la relación entre Business Code y Scopes
      *
@@ -132,7 +130,6 @@ public class PolicyUtil
         }
     }
     
-    
     /******************************* Métodos principales Visibilidad ZRM ******************************************************/
 
     /**
@@ -166,6 +163,5 @@ public class PolicyUtil
         {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
-
     }
 }

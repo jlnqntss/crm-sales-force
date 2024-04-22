@@ -13,7 +13,6 @@
 public with sharing class CampaignZRMCustomPageController
 {
     private static final String CLASS_NAME = 'CampaignZRMCustomPageConroller';
-    private static final String AV_AGRUPACION_PROFILE_NAME = 'Agente Ventas - AGR';
     private static final Set<String> ASSIGNED_CUSTOMER_STATUS = new Set<String> {'Gestión Mediador'};
     private static final Set<String> ASSIGNED_CC_STATUS = new Set<String> {'Gestión CC', 'Pdte. Revisión Mediador'};
 
@@ -263,7 +262,7 @@ public with sharing class CampaignZRMCustomPageController
             User currentUser = users.get(0);
 
             // Si el perfil es el de Agrupación se obtienen las códigos de mediador que cuelgan de este
-            if (currentUser.Profile.Name == AV_AGRUPACION_PROFILE_NAME)
+            if (currentUser.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
             {
                 List<Account> mediatorGroupAccounts = new AccountsSelector().findAllIntermediarysFromIntermediaryGroups(new Set<String> {currentUser.Contact.Account.IntermediaryGroup__c});
 

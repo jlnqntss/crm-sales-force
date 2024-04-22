@@ -1146,4 +1146,32 @@ private with sharing class ContentDocumentLinkUtilTest
         System.assertEquals(relatedIntermediary.Id, updatedCase.AccountId, 'Intermediary Account successfully related');
         System.assertEquals(receiptNumber, updatedCase.HegeoReceiptNumber__c, 'HegeoReceiptNumber__c successfully saved');
     }
+
+    /**
+     * Test que comprueba que al subir un fichero a un acta, ésta se marca como completada
+     * cuando se recibe una lista de correos en el toAddress
+     *
+     * @author Joan Cervera
+     * @date 16/04/2024
+     */
+        static testMethod void test_setActaCompleted() {
+            // Crear datos de prueba: ContentDocumentLink relacionados con Acta__c
+            List<ContentDocumentLink> docLinks = new List<ContentDocumentLink>();
+            Acta__c acta = new Acta__c();
+            insert acta;
+    
+            ContentDocumentLink docLink = new ContentDocumentLink();
+            docLink.LinkedEntityId = acta.Id;
+            docLinks.add(docLink);
+    
+            Test.startTest();
+            ContentDocumentLinkUtil.setActaCompleted(docLinks);
+            ContentDocumentLinkUtil.updateRelatedRecords();
+            Test.stopTest();
+    
+            // Verificar que los registros de Acta__c se hayan actualizado correctamente
+            List<Acta__c> updatedActas = [SELECT Id, Completed__c FROM Acta__c WHERE Id = :acta.Id];
+            System.assertEquals(1, updatedActas.size(), 'Debe haber una sola Acta__c actualizada');
+            System.assertEquals(true, updatedActas[0].Completed__c, 'El campo Completed__c debe ser true');
+        }
 }

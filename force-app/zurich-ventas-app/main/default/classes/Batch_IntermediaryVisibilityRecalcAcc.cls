@@ -76,11 +76,11 @@ public with sharing class Batch_IntermediaryVisibilityRecalcAcc implements Datab
             Map<Id, User> intermediaryAgrUserMap = new Map<Id, User>();
             for (User user : usersSelector.findZRMActiveUsersFromIntermediaryAndAGRFromGroup(intermediaryIds, intermediaryGroupIDs))
             {
-                if (user.Profile.Name == 'Agente Ventas')
+                if (user.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS)
                 {
                     intermediaryUserMap.put(user.Id, user);
                 }
-                else if (user.Profile.Name == 'Agente Ventas - AGR')
+                else if (user.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
                 {
                     intermediaryAgrUserMap.put(user.Id, user);
                 }
