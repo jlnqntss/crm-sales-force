@@ -468,7 +468,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
                 Opportunity winningOpportunity = getWinningOpportunity(opportunitiesByLeadId);
 
                 // Se relaciona la oportunidad "ganadora" con la póliza
-                policy.InfoQuoteNumber__c = winningOpportunity.Id;
+                policy.OpportunityName__c = winningOpportunity.Id;
 
                 // Se procesan el resto de las oportunidades relacionadas al lead de la oportunidad "ganadora"
                 processRelatedOpportunities(opportunitiesByLeadId.remove(winningOpportunity.AccountId), winningOpportunity);
