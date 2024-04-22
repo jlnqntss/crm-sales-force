@@ -19,6 +19,10 @@
         <translation>Banca Seguros</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>KLINK end customer</masterLabel>
+        <translation>Cliente final KLINC</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Mediator</masterLabel>
         <translation>Mediador</translation>
     </picklistValues>
