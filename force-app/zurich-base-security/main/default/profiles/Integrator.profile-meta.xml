@@ -4814,6 +4814,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.SAMCategory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.SMEConsultant__c</field>
         <readable>true</readable>
     </fieldPermissions>
