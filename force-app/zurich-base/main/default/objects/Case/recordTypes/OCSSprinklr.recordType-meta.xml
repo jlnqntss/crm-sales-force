@@ -1025,7 +1025,7 @@
         <picklist>SourceArea__c</picklist>
         <values>
             <fullName>Generic end customer</fullName>
-            <default>false</default>
+            <default>true</default>
         </values>
         <values>
             <fullName>INFO note</fullName>
