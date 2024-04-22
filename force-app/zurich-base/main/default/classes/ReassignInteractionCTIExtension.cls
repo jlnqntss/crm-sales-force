@@ -361,8 +361,8 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     /**
      * Si la tarea está asociada a un caso y este caso pertenece a una cola, reasignar el caso al usuario actual.
      * @param interactionTask Task recibida
-     * @last modified on  : 06-06-2023
-     * @last modified by  : amiranda
+     * @last modified on  : 17-04-2024
+     * @last modified by  : aberuete
      */
     @TestVisible
     private static void changeOwnerFromQueueToUser(Task interactionTask)
@@ -384,7 +384,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
                 //Si el propietario es una COLA
                 // arcortazar - nts: fix-OCS-2682: Hacemos que asignme el usuario si es Owner es una cola o el usuario Integrator
-                if(cases[0]?.OwnerId.getSobjectType() == Group.sObjectType || cases[0]?.Owner.Profile.Name == Label.IntegratorUser) //(cases[0].Owner.Type == 'Queue')
+                if(cases[0]?.OwnerId.getSobjectType() == Group.sObjectType || cases[0]?.Owner.Profile.Name == Label.IntegratorUser || cases[0]?.Owner.Profile.Name == Label.SAMUser) 
                 {
                     //Cambiar el propietario al usuario actual
                     cases[0].OwnerId = UserInfo.getUserId();
