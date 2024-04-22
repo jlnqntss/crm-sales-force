@@ -145,7 +145,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
 
         for (Policy__c policy: scope)
         {
-            productBranchSet = addElementToSet(productBranchSet, policy.ProductBranch__c);
+            productBranchSet = addElementToSet(productBranchSet, policy.ProductId__r.GroupCode__c);
             accountIdSet = addElementToSet(accountIdSet, policy.PolicyHolder__c);
             intermediaryIdSet = addElementToSet(intermediaryIdSet, policy.IntermediaryId__c);
             intermediaryGroupIdSet = addElementToSet(intermediaryGroupIdSet, policy.IntermediaryId__r.IntermediaryGroup__c);

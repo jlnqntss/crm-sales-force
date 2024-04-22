@@ -609,13 +609,13 @@ public with sharing class PoliciesSelector extends RecordsSelector
         {
             Policy__c.PolicyHolder__c,
             Policy__c.IntermediaryId__c,
-            Policy__c.ProductBranch__c,
             Policy__c.CreatedDate
         };
 
         return this.baseQuery
                .selectFields(fields)
                .selectFields(POLICY_INTERMEDIARY_GROUP)
+               .selectField('ProductId__r.GroupCode__c')
                .addConditionEq(Policy__c.PotentialMatch__c, true) 
                .enforceSecurity()
                .toQueryString();
