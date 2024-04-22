@@ -1,24 +1,24 @@
 @isTest
-public class ZRMOpportunityMatchBatchTest {
+private class ZRMOpportunityMatchBatchTest
+{
     @TestSetup
-    static void makeData(){
+    private static void makeData()
+    {
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'BusinessCustomer', 2);
         insert accounts;
 
         List<Account> leadAccounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Lead', 1);
         insert leadAccounts;
 
-
         List<Opportunity> optys = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', 'New', System.today().addDays(10), 2);
         List<Opportunity> optysFromLeads = TestDataFactory.generateOpportunitiesForEachAccount(leadAccounts, 'General', 'New', System.today().addDays(10), 2);
 
         insert optys;
-        insert optysFromLeads; 
+        insert optysFromLeads;
 
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 2);
         List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 2);
-        
-        
+
         insert contactPointEmails;
         insert contactPointPhones;
 
@@ -68,14 +68,14 @@ public class ZRMOpportunityMatchBatchTest {
     }
 
     @isTest
-    public static void mergeOffer_OK()
+    private static void mergeOffer_OK()
     {
         List<Account> accounts = [SELECT Name FROM Account];
 
         List<Opportunity> optys = [SELECT ID, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c,
-                                        ProductBranch__c 
-            FROM Opportunity
-            WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
+                                   ProductBranch__c
+                                   FROM Opportunity
+                                   WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
 
         List<Campaign> campaigns = TestDataFactory.generateCampaigns('000', 1);
 
@@ -94,39 +94,38 @@ public class ZRMOpportunityMatchBatchTest {
         Assert.areEqual(optys[0].Description, optys[1].Description);
         Assert.areEqual(optys[0].CampaignId, optys[1].CampaignId);
         Assert.areEqual(optys[1].StageName, 'Quoted');
-        
     }
 
     @isTest
-    public static void moveRelatedObjectToScopeOffers_WithTask_OK()
+    private static void moveRelatedObjectToScopeOffers_WithTask_OK()
     {
         Map<String, String> matchIdByScopeId = new Map<String, String>();
         List<Opportunity> optys = [SELECT ID, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c,
-                                        ProductBranch__c 
-            FROM Opportunity
-            WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
+                                   ProductBranch__c
+                                   FROM Opportunity
+                                   WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
         List<Task> tasks = new List<Task>();
 
         matchIdByScopeId.put(optys[0].Id, optys[1].Id);
 
         Task task0 = new Task();
-            task0.Status = 'Nueva';
-            task0.WhatId = optys[1].Id;
-            task0.Subject = 'test status';
-            task0.Type='Email';
-            task0.Subtype__c='Note Info';
+        task0.Status = 'Nueva';
+        task0.WhatId = optys[1].Id;
+        task0.Subject = 'test status';
+        task0.Type='Email';
+        task0.Subtype__c='Note Info';
 
-            tasks.add(task0);
+        tasks.add(task0);
 
         Task task2 = new Task();
-            task2.Status = 'Nueva';
-            task2.WhatId = optys[1].Id;
-            task2.Subject = 'test status';
-            task2.Type='Email';
-            task2.Subtype__c='Note Info';
+        task2.Status = 'Nueva';
+        task2.WhatId = optys[1].Id;
+        task2.Subject = 'test status';
+        task2.Type='Email';
+        task2.Subtype__c='Note Info';
 
-            tasks.add(task2);
-        
+        tasks.add(task2);
+
         insert tasks;
 
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
@@ -136,36 +135,36 @@ public class ZRMOpportunityMatchBatchTest {
 
         List<Task> movedTask = [SELECT Id FROM Task WHERE WhatId = :optys[0].Id];
 
-        Assert.areEqual(movedTask.size(), tasks.size());
+        Assert.areEqual( movedTask.size(), tasks.size() );
     }
 
     @isTest
-    public static void moveRelatedObjectToScopeOffers_WithEvents_OK()
+    private static void moveRelatedObjectToScopeOffers_WithEvents_OK()
     {
         List<Opportunity> optys = [SELECT ID, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c,
-                                        ProductBranch__c 
-            FROM Opportunity
-            WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
+                                   ProductBranch__c
+                                   FROM Opportunity
+                                   WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
         Map<String, String> matchIdByScopeId = new Map<String, String>();
         List<Event> events = new List<Event>();
 
         matchIdByScopeId.put(optys[0].Id, optys[1].Id);
 
         Event e = new Event();
-            e.subject = 'EventTest';
-            e.EventType__c = 'Call';
-            e.RelatedToIntermediary__c = 'No';
-            e.DurationInMinutes = 60;
-            e.ActivityDateTime = DateTime.now();
-            e.WhatId = optys[1].Id;
+        e.subject = 'EventTest';
+        e.EventType__c = 'Call';
+        e.RelatedToIntermediary__c = 'No';
+        e.DurationInMinutes = 60;
+        e.ActivityDateTime = DateTime.now();
+        e.WhatId = optys[1].Id;
 
         Event e1 = new Event();
-            e1.subject = 'EventTest';
-            e1.EventType__c = 'Call';
-            e1.RelatedToIntermediary__c = 'No';
-            e1.DurationInMinutes = 60;
-            e1.ActivityDateTime = DateTime.now().addDays(1);
-            e1.WhatId = optys[1].Id;
+        e1.subject = 'EventTest';
+        e1.EventType__c = 'Call';
+        e1.RelatedToIntermediary__c = 'No';
+        e1.DurationInMinutes = 60;
+        e1.ActivityDateTime = DateTime.now().addDays(1);
+        e1.WhatId = optys[1].Id;
 
         events.add(e);
         events.add(e1);
@@ -179,16 +178,16 @@ public class ZRMOpportunityMatchBatchTest {
 
         List<Event> movedEvents = [SELECT Id FROM Event WHERE WhatId = :optys[0].Id];
 
-        Assert.areEqual(movedEvents.size(), events.size());
+        Assert.areEqual( movedEvents.size(), events.size() );
     }
 
     @isTest
-    public static void getDataFromOpportunities_OK()
+    private static void getDataFromOpportunities_OK()
     {
         List<Opportunity> optys = [SELECT ID, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c,
-                                        ProductBranch__c 
-            FROM Opportunity
-            WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
+                                   ProductBranch__c
+                                   FROM Opportunity
+                                   WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
 
         Map<String, Object> result;
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
@@ -196,29 +195,30 @@ public class ZRMOpportunityMatchBatchTest {
         Test.startTest();
         result = zrmOppMatchBatch.getDataFromOpportunities(optys);
         Test.stopTest();
-
     }
 
     @isTest
-    public static void calculateClientOpportunitiesWithMatch_OK()
+    private static void calculateClientOpportunitiesWithMatch_OK()
     {
         List<Opportunity> optys = [SELECT ID, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c,
-                                        ProductBranch__c 
-            FROM Opportunity
-            WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
+                                   ProductBranch__c
+                                   FROM Opportunity
+                                   WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
 
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
         Map<String, Object> opportunityDataMap = zrmOppMatchBatch.getDataFromOpportunities(optys);
+
         Test.startTest();
         zrmOppMatchBatch.calculateClientOpportunitiesWithMatch(optys, opportunityDataMap);
         Test.stopTest();
     }
 
     @isTest
-    public static void matchConditions_OK(){
-        List<Opportunity> optys = [SELECT ID, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
-            FROM Opportunity
-            WHERE Account.RecordType.DeveloperName = 'BusinessCustomer' LIMIT 2];
+    private static void matchConditions_OK()
+    {
+        List<Opportunity> optys = [SELECT ID, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c
+                                   FROM Opportunity
+                                   WHERE Account.RecordType.DeveloperName = 'BusinessCustomer' LIMIT 2];
         User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
 
         for(Opportunity opp : optys)
@@ -240,10 +240,11 @@ public class ZRMOpportunityMatchBatchTest {
     }
 
     @isTest
-    public static void matchConditions_KO(){
-        List<Opportunity> optys = [SELECT ID, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c 
-            FROM Opportunity
-            WHERE Account.RecordType.DeveloperName = 'BusinessCustomer' LIMIT 2];
+    private static void matchConditions_KO()
+    {
+        List<Opportunity> optys = [SELECT ID, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c
+                                   FROM Opportunity
+                                   WHERE Account.RecordType.DeveloperName = 'BusinessCustomer' LIMIT 2];
 
         for(Opportunity opp : optys)
         {
@@ -254,6 +255,7 @@ public class ZRMOpportunityMatchBatchTest {
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
 
         Boolean result;
+
         Test.startTest();
         result = zrmOppMatchBatch.matchConditions(optys[0], optys[1]);
         Test.stopTest();
@@ -261,16 +263,16 @@ public class ZRMOpportunityMatchBatchTest {
         Assert.areEqual(false, result);
     }
 
-    @isTest 
-    public static void execute_ok()
+    @isTest
+    private static void execute_ok()
     {
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 2];
         List<Account> leadAccounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Lead'];
         User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
-        
+
         List<Opportunity> optys = [SELECT ID FROM Opportunity WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
         List<Opportunity> optysFromLeads = [SELECT ID FROM Opportunity WHERE Account.RecordType.DeveloperName = 'Lead'];
-        
+
         List<ContactPointPhone> contactPointPhones = [SELECT Id, TelephoneNumber FROM contactPointPhone];
         Map<String, String> matchIdByScopeId = new Map<String, String>();
         List<Event> events = new List<Event>();
@@ -282,30 +284,30 @@ public class ZRMOpportunityMatchBatchTest {
             opp.IntermediaryId__c = zrmIntermediary.Contact.AccountId;
             opp.StageName = 'Legit Lead';
             opp.InfoQuoteNumber__c = null;
-            Test.setCreatedDate(opp.Id, System.today().addDays(-40));
+            Test.setCreatedDate( opp.Id, System.today().addDays(-40) );
 
         }
-        
+
         optys[1].PotentialMatch__c = true;
         optys[3].PotentialMatch__c = true;
-        
+
         update optys;
 
         Event e = new Event();
-            e.subject = 'EventTest';
-            e.EventType__c = 'Call';
-            e.RelatedToIntermediary__c = 'No';
-            e.DurationInMinutes = 60;
-            e.ActivityDateTime = DateTime.now();
-            e.WhatId = optys[0].Id;
+        e.subject = 'EventTest';
+        e.EventType__c = 'Call';
+        e.RelatedToIntermediary__c = 'No';
+        e.DurationInMinutes = 60;
+        e.ActivityDateTime = DateTime.now();
+        e.WhatId = optys[0].Id;
 
         Event e1 = new Event();
-            e1.subject = 'EventTest';
-            e1.EventType__c = 'Call';
-            e1.RelatedToIntermediary__c = 'No';
-            e1.DurationInMinutes = 60;
-            e1.ActivityDateTime = DateTime.now().addDays(1);
-            e1.WhatId = optys[2].Id;
+        e1.subject = 'EventTest';
+        e1.EventType__c = 'Call';
+        e1.RelatedToIntermediary__c = 'No';
+        e1.DurationInMinutes = 60;
+        e1.ActivityDateTime = DateTime.now().addDays(1);
+        e1.WhatId = optys[2].Id;
 
         events.add(e);
         events.add(e1);
@@ -313,26 +315,24 @@ public class ZRMOpportunityMatchBatchTest {
         insert events;
 
         Task task0 = new Task();
-            task0.Status = 'Nueva';
-            task0.WhatId = optys[0].Id;
-            task0.Subject = 'test status';
-            task0.Type='Email';
-            task0.Subtype__c='Note Info';
-            tasks.add(task0);
+        task0.Status = 'Nueva';
+        task0.WhatId = optys[0].Id;
+        task0.Subject = 'test status';
+        task0.Type='Email';
+        task0.Subtype__c='Note Info';
+        tasks.add(task0);
 
-            
-            Task task2 = new Task();
-            task2.Status = 'Nueva';
-            task2.WhatId = optys[2].Id;
-            task2.Subject = 'test status';
-            task2.Type='Email';
-            task2.Subtype__c='Note Info';
-            
-            tasks.add(task2);
-        
+        Task task2 = new Task();
+        task2.Status = 'Nueva';
+        task2.WhatId = optys[2].Id;
+        task2.Subject = 'test status';
+        task2.Type='Email';
+        task2.Subtype__c='Note Info';
+
+        tasks.add(task2);
+
         insert tasks;
-        
-     
+
         String query =  new OpportunitiesSelector().getQueryStringPotentialMatchOpportunities();
         Test.startTest();
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch(query);
@@ -347,32 +347,27 @@ public class ZRMOpportunityMatchBatchTest {
         List<Event> movedEvents = [SELECT Id FROM Event WHERE WhatId IN :quotedOffers.keySet()];
 
         Assert.areEqual(quotedOffers.values().size(), 2);
-        Assert.areEqual(movedEvents.size(), events.size());
-        Assert.areEqual(movedTasks.size(), tasks.size());
-
+        Assert.areEqual( movedEvents.size(), events.size() );
+        Assert.areEqual( movedTasks.size(), tasks.size() );
     }
 
     @isTest
-    public static void execute_withLeads_ok()
+    private static void execute_withLeads_ok()
     {
         List<Account> accounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 2];
         List<Account> leadAccounts = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Lead'];
         User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
-        
+
         List<Opportunity> optys = [SELECT ID FROM Opportunity WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
         List<Opportunity> optysFromLeads = [SELECT ID FROM Opportunity WHERE Account.RecordType.DeveloperName = 'Lead'];
-        
-        List<ContactPointPhone> contactPointPhones = [SELECT Id, TelephoneNumber FROM contactPointPhone];
-        
-        
 
-        for (ContactPointPhone cpp : contactPointPhones) 
+        List<ContactPointPhone> contactPointPhones = [SELECT Id, TelephoneNumber FROM contactPointPhone];
+
+        for (ContactPointPhone cpp : contactPointPhones)
         {
             leadAccounts[0].Phone = cpp.TelephoneNumber;
         }
-        
-        
-        
+
         for(Opportunity opp : optys)
         {
             opp.ProductBranch__c = '0000000001';
@@ -380,7 +375,7 @@ public class ZRMOpportunityMatchBatchTest {
             opp.StageName = 'Legit Lead';
             opp.InfoQuoteNumber__c = null;
             opp.PotentialMatch__c = true;
-            Test.setCreatedDate(opp.Id, System.today().addDays(-40));
+            Test.setCreatedDate( opp.Id, System.today().addDays(-40) );
 
         }
 
@@ -390,19 +385,18 @@ public class ZRMOpportunityMatchBatchTest {
             opp.IntermediaryId__c = zrmIntermediary.Contact.AccountId;
             opp.StageName = 'Legit Lead';
             opp.InfoQuoteNumber__c = null;
-            Test.setCreatedDate(opp.Id, System.today().addDays(-40));
+            Test.setCreatedDate( opp.Id, System.today().addDays(-40) );
 
         }
 
-
-        Test.setCreatedDate(leadAccounts[0].Id, System.today().addDays(-45));
+        Test.setCreatedDate( leadAccounts[0].Id, System.today().addDays(-45) );
 
         update leadAccounts;
         update optys;
         update optysFromLeads;
 
         String query =  new OpportunitiesSelector().getQueryStringPotentialMatchOpportunities();
-        
+
         Test.startTest();
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch(query);
         Id jobId = Database.executeBatch(zrmOppMatchBatch, 200);
@@ -410,11 +404,11 @@ public class ZRMOpportunityMatchBatchTest {
 
         Map<Id, Opportunity> quotedOffers = new Map<Id, Opportunity>([SELECT Id, Name FROM Opportunity WHERE StageName = 'Quoted']);
         List<Account> resultLeads = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Lead'];
-        Assert.areEqual(true, resultLeads.isEmpty());
+        Assert.areEqual( true, resultLeads.isEmpty() );
     }
 
     @isTest
-    public static void checkMatchMap_notInMatchMap()
+    private static void checkMatchMap_notInMatchMap()
     {
         Map<String, Opportunity> matchMap = new Map<String, Opportunity>();
         List<Opportunity> optys = [SELECT ID, campaignId FROM Opportunity WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
@@ -430,7 +424,7 @@ public class ZRMOpportunityMatchBatchTest {
     }
 
     @isTest
-    public static void checkMatchMap_checkCampaign()
+    private static void checkMatchMap_checkCampaign()
     {
         Map<String, Opportunity> matchMap = new Map<String, Opportunity>();
         List<Opportunity> optys = [SELECT ID, campaignId FROM Opportunity WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
@@ -455,7 +449,7 @@ public class ZRMOpportunityMatchBatchTest {
     }
 
     @isTest
-    public static void checkMatchMap_scopeInMatch()
+    private static void checkMatchMap_scopeInMatch()
     {
         Map<String, Opportunity> matchMap = new Map<String, Opportunity>();
         List<Opportunity> optys = [SELECT ID, campaignId, CreatedDate FROM Opportunity WHERE Account.RecordType.DeveloperName = 'BusinessCustomer'];
@@ -463,15 +457,14 @@ public class ZRMOpportunityMatchBatchTest {
 
         system.debug(optys);
         system.debug(campaigns);
-        
+
         matchMap.put(optys[0].Id, optys[1]);
         Boolean result;
         update optys;
-        Test.setCreatedDate(optys[1].Id, System.today().addDays(-40));
+        Test.setCreatedDate( optys[1].Id, System.today().addDays(-40) );
         List<Opportunity> modifiedOpp = [SELECT Id, campaignId, CreatedDate FROM Opportunity WHERE CreatedDate = :System.today().addDays(-40)];
 
         Test.startTest();
-        
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
         result = zrmOppMatchBatch.checkMatchMap(matchMap, optys[0], modifiedOpp[0]);
         Test.stopTest();
@@ -480,12 +473,12 @@ public class ZRMOpportunityMatchBatchTest {
     }
 
     @isTest
-    public static void getOpportunitiesWithContactInfoDate_ok()
+    private static void getOpportunitiesWithContactInfoDate_ok()
     {
         Map<String, Account> accountMap = new Map<String, Account>([SELECT Id FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer']);
         List<Opportunity> optys = [SELECT ID, AccountId FROM Opportunity WHERE AccountId IN :accountMap.keySet()];
 
-        Map<Opportunity,Set<String>> opportunitiesWithContactInfoData = new Map<Opportunity,Set<String>>();
+        Map<Opportunity,Set<String> > opportunitiesWithContactInfoData = new Map<Opportunity,Set<String> >();
         for(Opportunity opp : optys)
         {
             opportunitiesWithContactInfoData.put(opp, null);
@@ -493,15 +486,15 @@ public class ZRMOpportunityMatchBatchTest {
 
         Test.startTest();
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
-        Map<Opportunity,Set<String>> result = zrmOppMatchBatch.getOpportunitiesWithContactInfoData(optys, accountMap.keySet());
+        Map<Opportunity,Set<String> > result = zrmOppMatchBatch.getOpportunitiesWithContactInfoData( optys, accountMap.keySet() );
         Test.stopTest();
 
         //:TODO Este assert queda retocardo
-        Assert.areEqual(opportunitiesWithContactInfoData.keySet(), result.keySet());
+        Assert.areEqual( opportunitiesWithContactInfoData.keySet(), result.keySet() );
     }
 
     @isTest
-    public static void checkIzZRM_isZRM()
+    private static void checkIzZRM_isZRM()
     {
         List<Scope_Setting__mdt> scopeMDT = Scope_Setting__mdt.getAll().values();
         Map<String, String> scopeMdtMap = new Map<String, String>();
@@ -524,7 +517,7 @@ public class ZRMOpportunityMatchBatchTest {
     }
 
     @isTest
-    public static void checkIzZRM_checkBusinessCode()
+    private static void checkIzZRM_checkBusinessCode()
     {
         List<Scope_Setting__mdt> scopeMDT = Scope_Setting__mdt.getAll().values();
         Map<String, String> scopeMdtMap = new Map<String, String>();
@@ -549,7 +542,7 @@ public class ZRMOpportunityMatchBatchTest {
     }
 
     @isTest
-    public static void checkIzZRM_notZRM()
+    private static void checkIzZRM_notZRM()
     {
         List<Scope_Setting__mdt> scopeMDT = Scope_Setting__mdt.getAll().values();
         Map<String, String> scopeMdtMap = new Map<String, String>();
@@ -563,7 +556,7 @@ public class ZRMOpportunityMatchBatchTest {
 
         offer[0].ZRM__c = false; //Forzamos que no sea ZRM
         offer[0].BusinessCode__c = 'NotZRM';
-         
+
         Boolean result;
 
         Test.startTest();
@@ -575,11 +568,12 @@ public class ZRMOpportunityMatchBatchTest {
     }
 
     @isTest
-    public static void getScopeMDT_ok()
+    private static void getScopeMDT_ok()
     {
         List<Scope_Setting__mdt> scopeMDT = Scope_Setting__mdt.getAll().values();
         Map<String, String> scopeMdtMap = new Map<String, String>();
         Map<String, String> resultScopeMdtMap = new Map<String, String>();
+
         for(Scope_Setting__mdt scope : scopeMDT)
         {
             scopeMdtMap.put(scope.BusinessCode__c, scope.Scope__c);
@@ -594,11 +588,11 @@ public class ZRMOpportunityMatchBatchTest {
     }
 
     @isTest
-    public static void leadMatchesOpportunity_true()
+    private static void leadMatchesOpportunity_true()
     {
         List<Account> leadAccount = [SELECT Id, CreatedDate, Phone, PersonEmail FROM Account WHERE RecordType.DeveloperName = 'Lead' LIMIT 1];
         List<Opportunity> offer = [SELECT Id, AccountId, CreatedDate FROM Opportunity WHERE Account.RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-        List<ContactPointPhone> contactPointPhones = [SELECT Id, TelephoneNumber FROM ContactPointPhone WHERE ParentId = :offer[0].AccountId]; 
+        List<ContactPointPhone> contactPointPhones = [SELECT Id, TelephoneNumber FROM ContactPointPhone WHERE ParentId = :offer[0].AccountId];
         List<ContactPointEmail> contactPointEmails = [SELECT Id, EmailAddress FROM ContactPointEmail WHERE ParentId = :offer[0].AccountId];
         Set<String> contactDataInfo = new Set<String>();
 
@@ -618,13 +612,10 @@ public class ZRMOpportunityMatchBatchTest {
         Boolean result;
 
         Test.startTest();
-            ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
-            result = zrmOppMatchBatch.leadMatchesOpportunity(leadAccount[0], offer[0], contactDataInfo);
+        ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
+        result = zrmOppMatchBatch.leadMatchesOpportunity(leadAccount[0], offer[0], contactDataInfo);
         Test.stopTest();
 
         Assert.areEqual(true, result);
-
-        
-
     }
 }
