@@ -74,10 +74,10 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
             Map<String, Object> policyDataMap = getDataFromPolicies(scope);
 
             // 2º Calculamos si para el existe una oferta que pueda hacer match con la póliza
-            calculateClientOpportunitiesWithMatch(scope, policyDataMap);
+            Map<String, Policy__c> policiesWithNoMatch = calculateClientOpportunitiesWithMatch(scope, policyDataMap);
 
             //3º Leads
-            Map<Policy__c, Set<String> > policiesByIdWithContactInfoData = getPoliciesWithContactInfoData( scope, (Set<String>) policyDataMap.get(SCOPE_POLICY_ACCOUNTID) );
+            Map<Policy__c, Set<String> > policiesByIdWithContactInfoData = getPoliciesWithContactInfoData( policiesWithNoMatch.values(), (Set<String>) policyDataMap.get(SCOPE_POLICY_ACCOUNTID) );
             matchLeadWithOpportunities(policiesByIdWithContactInfoData);
 
             // 4º Ejecutar DMLs
@@ -106,18 +106,24 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     //#region calculo de merge de oferta cliente
 
     /**
-     * Método que devueve los registros a actualizar del match de ofertas de cliente
+     * Método que devueve los registros a actualizar del match de ofertas de cliente. 
+     * 
+     * @return Devuelve el mapa de polizas que no han hecho match con una oferta para tener esas en cuenta para los leads
      * @author dmunoz
      * @date 09/04/2024
      */
     @TestVisible
-    private void calculateClientOpportunitiesWithMatch(List<Policy__c> scope, Map<String, Object> opportunityDataMap)
+    private Map<String, Policy__c> calculateClientOpportunitiesWithMatch(List<Policy__c> scope, Map<String, Object> opportunityDataMap)
     {
+        Map<String, Policy__c> result = (Map<String, Policy__c>) opportunityDataMap.get(SCOPE_POLICY_MAP);
+
         // 1º Obtener el mapa de match para las polizas de scope <idPoliza, ofertamatch>
         Map<String, Opportunity> matchMap = getMatchOffersByParams(opportunityDataMap);
 
         // 2º match de ofertas
-        mergePolicies( (Map<String, Policy__c>) opportunityDataMap.get(SCOPE_POLICY_MAP), matchMap );
+        result = mergePolicies(result, matchMap );
+
+        return result;
     }
 
     //#region Obtener datos y matcheo
@@ -299,19 +305,26 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     //#region Calculo de Match
 
     /**
-     * Método que se encarga de actualizar la póliza con la oferta que hace match
+     * Método que se encarga de actualizar la póliza con la oferta que hace match.
+     * 
+     * @return mapa con las polizas que no han hecho match
      *
      * @author dmunoz
      * @date 09/04/2024
      */
-    private void mergePolicies(Map<String, Policy__c> scopeMap, Map<String, Opportunity> matchOppByScopeId)
+    private Map<String, Policy__c> mergePolicies(Map<String, Policy__c> scopeMap, Map<String, Opportunity> matchOppByScopeId)
     {
 
-        Policy__c policyToUpdate = new Policy__c();
+        Map<String, Policy__c> result = new Map<String, Policy__c>(scopeMap);
+
+        Policy__c policyToUpdate;
         Opportunity offerToUpdate;
 
         for ( String idPolicy: scopeMap.keySet() )
         {
+            // inicializo el objeto policyToUpdate
+            policyToUpdate = scopeMap.get(idPolicy);
+
             // compruebo si existe en el mapa de match una oferta que haga match
             if ( matchOppByScopeId.containsKey(idPolicy) )
             {
@@ -319,6 +332,9 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
                 
                 // actualizo la relación de póliza con oferta
                 policyToUpdate.OpportunityName__c = offerToUpdate.Id;
+
+                // elimino la poliza del mapa resultado para no tenerla en cuenta en el proceso de leads
+                result.remove(idPolicy);
             }
 
             policyToUpdate.Id = idPolicy; 
@@ -327,6 +343,8 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
             // añado los registros a actualizar
             policiesToUpdate.add(policyToUpdate);
         }
+        
+        return result;
     }
 
     //#region Lead
