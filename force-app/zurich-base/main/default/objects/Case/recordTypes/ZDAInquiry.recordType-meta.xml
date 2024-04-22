@@ -1045,15 +1045,15 @@
     <picklistValues>
         <picklist>PendingBy__c</picklist>
         <values>
-            <fullName>Others</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Partner</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Supervisor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Support</fullName>
             <default>false</default>
         </values>
     </picklistValues>
