@@ -45,7 +45,7 @@ public with sharing class Test_AccountLeadUtil
      */
     private static void relateRecordsToAgents(Map<String, User> communityAgents, Map<String, Contact> communityAgentContacts)
     {
-        Profile zrmCommunityProfile = [Select Id from Profile where name = 'Agente Ventas']; // Perfil de comunidad de agentes de Mi Agencia
+        Profile zrmCommunityProfile = [Select Id from Profile where name = : ProfilesSelector.PROFILE_AGENTE_VENTAS]; // Perfil de comunidad de agentes de Mi Agencia
 
         for( String currentUserName : communityAgents.keySet() )
         {

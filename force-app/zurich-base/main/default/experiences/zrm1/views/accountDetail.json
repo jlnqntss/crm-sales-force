@@ -1,259 +1,300 @@
 {
-  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "componentName" : "siteforce:sldsTwoCol84Layout",
-  "dataProviders" : [ ],
-  "id" : "dffa4891-04c6-44df-bb39-ceb0c5a8a224",
-  "label" : "Account Detail",
-  "regions" : [ {
-    "components" : [ {
-      "componentAttributes" : {
-        "recordId" : "{!recordId}"
-      },
-      "componentName" : "forceCommunity:recordHeadline",
-      "id" : "40e469aa-10df-44bc-8028-340005fc5ff2",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "dec5a748-4e1c-4592-b3ed-2766d2a7cb07",
-    "regionName" : "header",
-    "type" : "region"
-  }, {
-    "components" : [ {
-      "componentAttributes" : {
-        "tabsetConfig" : {
-          "UUID" : "76310a11-7ba6-4d12-a0be-1786d569234f",
-          "activeTab" : "",
-          "tabs" : [ {
-            "UUID" : "679ff60d-80ee-4f88-9918-d0db75ecb987",
-            "allowGuestUser" : true,
-            "locked" : false,
-            "seedComponents" : [ ],
-            "tabKey" : "1",
-            "tabName" : "Detalles"
-          }, {
-            "UUID" : "dc51a565-6ae0-43bd-b9c9-96d53114c5d8",
-            "allowGuestUser" : false,
-            "locked" : false,
-            "seedComponents" : [ ],
-            "tabKey" : "a4405",
-            "tabName" : "Pólizas"
-          }, {
-            "UUID" : "b25696e1-7313-4dc0-8fbe-0c04850f4f6d",
-            "allowGuestUser" : false,
-            "locked" : false,
-            "seedComponents" : [ ],
-            "tabKey" : "f430a",
-            "tabName" : "Ofertas"
-          }, {
-            "UUID" : "aa2f6871-ced0-4a45-9b6b-aedf3e06dc07",
-            "allowGuestUser" : false,
-            "locked" : false,
-            "seedComponents" : [ ],
-            "tabKey" : "12fbc",
-            "tabName" : "Campañas"
-          } ],
-          "useOverflowMenu" : false
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName": "siteforce:sldsTwoCol84Layout",
+  "dataProviders": [],
+  "id": "dffa4891-04c6-44df-bb39-ceb0c5a8a224",
+  "label": "Account Detail",
+  "regions": [
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "recordId": "{!recordId}"
+          },
+          "componentName": "forceCommunity:recordHeadline",
+          "id": "40e469aa-10df-44bc-8028-340005fc5ff2",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
         }
-      },
-      "componentName" : "forceCommunity:tabset",
-      "id" : "76310a11-7ba6-4d12-a0be-1786d569234f",
-      "regions" : [ {
-        "components" : [ {
-          "componentAttributes" : {
-            "recordId" : "{!recordId}"
+      ],
+      "id": "dec5a748-4e1c-4592-b3ed-2766d2a7cb07",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "tabsetConfig": {
+              "UUID": "76310a11-7ba6-4d12-a0be-1786d569234f",
+              "activeTab": "",
+              "tabs": [
+                {
+                  "UUID": "679ff60d-80ee-4f88-9918-d0db75ecb987",
+                  "allowGuestUser": true,
+                  "locked": false,
+                  "seedComponents": [],
+                  "tabKey": "1",
+                  "tabName": "Detalles"
+                },
+                {
+                  "UUID": "dc51a565-6ae0-43bd-b9c9-96d53114c5d8",
+                  "allowGuestUser": false,
+                  "locked": false,
+                  "seedComponents": [],
+                  "tabKey": "a4405",
+                  "tabName": "Pólizas"
+                },
+                {
+                  "UUID": "b25696e1-7313-4dc0-8fbe-0c04850f4f6d",
+                  "allowGuestUser": false,
+                  "locked": false,
+                  "seedComponents": [],
+                  "tabKey": "f430a",
+                  "tabName": "Ofertas"
+                },
+                {
+                  "UUID": "aa2f6871-ced0-4a45-9b6b-aedf3e06dc07",
+                  "allowGuestUser": false,
+                  "locked": false,
+                  "seedComponents": [],
+                  "tabKey": "12fbc",
+                  "tabName": "Campañas"
+                }
+              ],
+              "useOverflowMenu": false
+            }
           },
-          "componentName" : "forceCommunity:recordDetail",
-          "id" : "3340c4fc-550e-45fa-973e-d975c130d4c5",
-          "renditionMap" : { },
-          "type" : "component"
-        }, {
-          "componentAttributes" : {
-            "relatedListApiName" : "Accounts_Relationships__r",
-            "relatedListComponentOverride" : "ADVGRID",
-            "width" : "MEDIUM"
+          "componentName": "forceCommunity:tabset",
+          "id": "76310a11-7ba6-4d12-a0be-1786d569234f",
+          "regions": [
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "recordId": "{!recordId}"
+                  },
+                  "componentName": "forceCommunity:recordDetail",
+                  "id": "3340c4fc-550e-45fa-973e-d975c130d4c5",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Accounts_Relationships__r",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "3990bc45-b704-49bf-aa8e-f71ed572afe0",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "679ff60d-80ee-4f88-9918-d0db75ecb987",
+              "regionLabel": "Detalles",
+              "regionName": "1",
+              "renditionMap": {},
+              "type": "region"
+            },
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "PoliciesHolder__r",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "0db488b4-b2c5-4a6c-bec9-e60dbcb29bdf",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Cases",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "39366546-4b60-4afb-8b38-9f4fbdfbbba1",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Claims__r",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "915fd2cf-a8ca-46af-93e8-d18ec8c226f6",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "dc51a565-6ae0-43bd-b9c9-96d53114c5d8",
+              "regionLabel": "Pólizas",
+              "regionName": "a4405",
+              "renditionMap": {},
+              "type": "region"
+            },
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Opportunities",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "4c4563ac-5cd1-4494-acb0-89fd2724b1ab",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Propensiones__r",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "f09e499d-94ac-4492-8fb0-3c6d488b43e2",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "Competitors__r",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "1bf8019d-5d2a-412c-8b82-7de7d82ad05e",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "b25696e1-7313-4dc0-8fbe-0c04850f4f6d",
+              "regionLabel": "Ofertas",
+              "regionName": "f430a",
+              "renditionMap": {},
+              "type": "region"
+            },
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "PersonCampaignMembers",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "3686d0b8-34a0-4308-a29f-1e65b119928c",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
+                    "relatedListApiName": "CampaignMembers",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "aeae180b-79ed-49d4-a9b3-3c8429e56157",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "aa2f6871-ced0-4a45-9b6b-aedf3e06dc07",
+              "regionLabel": "Campañas",
+              "regionName": "12fbc",
+              "renditionMap": {},
+              "type": "region"
+            }
+          ],
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "eaf94cac-d449-497d-ac1f-2b011b1f52fe",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "7b960640-f3ca-4c61-9dc1-622169eb1ded",
+      "regionName": "footer",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "customHeadTags": "",
+            "description": "",
+            "title": "{!Record._Object}: {!Record._Title}"
           },
-          "componentName" : "forceCommunity:responsiveRelatedListSingle",
-          "id" : "3990bc45-b704-49bf-aa8e-f71ed572afe0",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
-        "id" : "679ff60d-80ee-4f88-9918-d0db75ecb987",
-        "regionLabel" : "Detalles",
-        "regionName" : "1",
-        "renditionMap" : { },
-        "type" : "region"
-      }, {
-        "components" : [ {
-          "componentAttributes" : {
-            "relatedListApiName" : "PoliciesHolder__r",
-            "relatedListComponentOverride" : "ADVGRID",
-            "width" : "MEDIUM"
+          "componentName": "forceCommunity:seoAssistant",
+          "id": "674c968c-ad16-45fa-9da4-0fba12c4dd44",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "47c8f827-de25-4501-bb7c-0d5987547e46",
+      "regionName": "sfdcHiddenRegion",
+      "type": "region"
+    },
+    {
+      "id": "db9e921f-e847-4ed9-b276-5f2d4b12d9d5",
+      "regionName": "featured",
+      "type": "region"
+    },
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "relatedListApiName": "Scope__r",
+            "relatedListComponentOverride": "GRID",
+            "width": "SMALL"
           },
-          "componentName" : "forceCommunity:responsiveRelatedListSingle",
-          "id" : "0db488b4-b2c5-4a6c-bec9-e60dbcb29bdf",
-          "renditionMap" : { },
-          "type" : "component"
-        }, {
-          "componentAttributes" : {
-            "relatedListApiName" : "Cases",
-            "relatedListComponentOverride" : "ADVGRID",
-            "width" : "MEDIUM"
+          "componentName": "forceCommunity:responsiveRelatedListSingle",
+          "id": "c958f925-9d1c-41d5-8815-4ac215ca2b49",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "recordId": "{!recordId}",
+            "showLegacyActivityComposer": false
           },
-          "componentName" : "forceCommunity:responsiveRelatedListSingle",
-          "id" : "39366546-4b60-4afb-8b38-9f4fbdfbbba1",
-          "renditionMap" : { },
-          "type" : "component"
-        }, {
-          "componentAttributes" : {
-            "relatedListApiName" : "Claims__r",
-            "relatedListComponentOverride" : "ADVGRID",
-            "width" : "MEDIUM"
+          "componentName": "forceCommunity:activityPanel",
+          "id": "5fd34d55-ee51-4ed0-a3d8-63cfdadc783b",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        },
+        {
+          "componentAttributes": {
+            "relatedListApiName": "AttachedContentDocuments",
+            "relatedListComponentOverride": "NONE",
+            "width": "SMALL"
           },
-          "componentName" : "forceCommunity:responsiveRelatedListSingle",
-          "id" : "915fd2cf-a8ca-46af-93e8-d18ec8c226f6",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
-        "id" : "dc51a565-6ae0-43bd-b9c9-96d53114c5d8",
-        "regionLabel" : "Pólizas",
-        "regionName" : "a4405",
-        "renditionMap" : { },
-        "type" : "region"
-      }, {
-        "components" : [ {
-          "componentAttributes" : {
-            "relatedListApiName" : "Opportunities",
-            "relatedListComponentOverride" : "ADVGRID",
-            "width" : "MEDIUM"
-          },
-          "componentName" : "forceCommunity:responsiveRelatedListSingle",
-          "id" : "4c4563ac-5cd1-4494-acb0-89fd2724b1ab",
-          "renditionMap" : { },
-          "type" : "component"
-        }, {
-          "componentAttributes" : {
-            "relatedListApiName" : "Propensiones__r",
-            "relatedListComponentOverride" : "ADVGRID",
-            "width" : "MEDIUM"
-          },
-          "componentName" : "forceCommunity:responsiveRelatedListSingle",
-          "id" : "f09e499d-94ac-4492-8fb0-3c6d488b43e2",
-          "renditionMap" : { },
-          "type" : "component"
-        }, {
-          "componentAttributes" : {
-            "relatedListApiName" : "Competitors__r",
-            "relatedListComponentOverride" : "ADVGRID",
-            "width" : "MEDIUM"
-          },
-          "componentName" : "forceCommunity:responsiveRelatedListSingle",
-          "id" : "1bf8019d-5d2a-412c-8b82-7de7d82ad05e",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
-        "id" : "b25696e1-7313-4dc0-8fbe-0c04850f4f6d",
-        "regionLabel" : "Ofertas",
-        "regionName" : "f430a",
-        "renditionMap" : { },
-        "type" : "region"
-      }, {
-        "components" : [ {
-          "componentAttributes" : {
-            "relatedListApiName" : "PersonCampaignMembers",
-            "relatedListComponentOverride" : "ADVGRID",
-            "width" : "MEDIUM"
-          },
-          "componentName" : "forceCommunity:responsiveRelatedListSingle",
-          "id" : "3686d0b8-34a0-4308-a29f-1e65b119928c",
-          "renditionMap" : { },
-          "type" : "component"
-        }, {
-          "componentAttributes" : {
-            "relatedListApiName" : "CampaignMembers",
-            "relatedListComponentOverride" : "ADVGRID",
-            "width" : "MEDIUM"
-          },
-          "componentName" : "forceCommunity:responsiveRelatedListSingle",
-          "id" : "aeae180b-79ed-49d4-a9b3-3c8429e56157",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
-        "id" : "aa2f6871-ced0-4a45-9b6b-aedf3e06dc07",
-        "regionLabel" : "Campañas",
-        "regionName" : "12fbc",
-        "renditionMap" : { },
-        "type" : "region"
-      } ],
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "eaf94cac-d449-497d-ac1f-2b011b1f52fe",
-    "regionName" : "content",
-    "type" : "region"
-  }, {
-    "id" : "7b960640-f3ca-4c61-9dc1-622169eb1ded",
-    "regionName" : "footer",
-    "type" : "region"
-  }, {
-    "components" : [ {
-      "componentAttributes" : {
-        "customHeadTags" : "",
-        "description" : "",
-        "title" : "{!Record._Object}: {!Record._Title}"
-      },
-      "componentName" : "forceCommunity:seoAssistant",
-      "id" : "674c968c-ad16-45fa-9da4-0fba12c4dd44",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "47c8f827-de25-4501-bb7c-0d5987547e46",
-    "regionName" : "sfdcHiddenRegion",
-    "type" : "region"
-  }, {
-    "id" : "db9e921f-e847-4ed9-b276-5f2d4b12d9d5",
-    "regionName" : "featured",
-    "type" : "region"
-  }, {
-    "components" : [ {
-      "componentAttributes" : {
-        "relatedListApiName" : "Scope__r",
-        "relatedListComponentOverride" : "GRID",
-        "width" : "SMALL"
-      },
-      "componentName" : "forceCommunity:responsiveRelatedListSingle",
-      "id" : "c958f925-9d1c-41d5-8815-4ac215ca2b49",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    }, {
-      "componentAttributes" : {
-        "recordId" : "{!recordId}",
-        "showLegacyActivityComposer" : false
-      },
-      "componentName" : "forceCommunity:activityPanel",
-      "id" : "5fd34d55-ee51-4ed0-a3d8-63cfdadc783b",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    }, {
-      "componentAttributes" : {
-        "relatedListApiName" : "AttachedContentDocuments",
-        "relatedListComponentOverride" : "NONE",
-        "width" : "SMALL"
-      },
-      "componentName" : "forceCommunity:responsiveRelatedListSingle",
-      "id" : "1ba6819b-c32b-40db-8f65-1879d4304a11",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "4ad21a4a-2f8b-414f-bb42-ca1e798d44b9",
-    "regionName" : "sidebar",
-    "type" : "region"
-  } ],
-  "themeLayoutType" : "Inner",
-  "type" : "view",
-  "viewType" : "detail-001"
+          "componentName": "forceCommunity:responsiveRelatedListSingle",
+          "id": "1ba6819b-c32b-40db-8f65-1879d4304a11",
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "4ad21a4a-2f8b-414f-bb42-ca1e798d44b9",
+      "regionName": "sidebar",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "detail-001"
 }

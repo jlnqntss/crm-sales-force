@@ -1,8 +1,6 @@
 public class PolicyUtil
 {
     private static final string CLASS_NAME = 'PolicyUtil';
-    private static final string AGENTEVENTA_PROFILE = 'Agente Ventas';
-    private static final string AGENTEVENTAAGR_PROFILE = 'Agente Ventas - AGR';
 
     /**
      * Método que controla la generación del scope correspondiente

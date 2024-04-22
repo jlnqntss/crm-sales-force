@@ -32,14 +32,14 @@ public with sharing class Batch_RecalcVisibilityIntermediaDMLsTest {
         System.runAs (adminUser)
         {
             // Usuario Nominal
-            String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+            String portalProfile = [SELECT Id FROM Profile WHERE Name = :ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
 
             userList = TestDataFactory.generateUsersByProfile(portalProfile, 1);
             userList[0].ContactId = contacts[0].Id;
             insert userList;
 
             // Usuario AGR
-            String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas - AGR' LIMIT 1].Id;
+            String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR LIMIT 1].Id;
 
             userAGRList = TestDataFactory.generateUsersByProfile(portalAGRProfile, 1);            
             userAGRList[0].ContactId = contacts[1].Id;
@@ -67,7 +67,7 @@ public with sharing class Batch_RecalcVisibilityIntermediaDMLsTest {
 
     @isTest
     private static void testCalculateIntermediaryAGR() {
-        User user = [SELECT Id, Contact.AccountId FROM User WHERE Contact.Account.Name like 'MediadorTest%' AND Profile.Name = 'Agente Ventas - AGR'];
+        User user = [SELECT Id, Contact.AccountId FROM User WHERE Contact.Account.Name like 'MediadorTest%' AND Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR];
 
         List<Account> intermediariesToProcess = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE Id = :user.Contact.AccountId]);
         Integer numDMLs = 5000;
@@ -84,7 +84,7 @@ public with sharing class Batch_RecalcVisibilityIntermediaDMLsTest {
 
     @isTest
     private static void testProcessDelete() {
-        User user = [SELECT Id, Contact.AccountId FROM User WHERE Contact.Account.Name like 'MediadorTest%' AND Profile.Name = 'Agente Ventas - AGR'];
+        User user = [SELECT Id, Contact.AccountId FROM User WHERE Contact.Account.Name like 'MediadorTest%' AND Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR];
 
         List<Account> intermediariesToProcess = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE Id = :user.Contact.AccountId]);
         Integer numDMLs = 1;
@@ -103,7 +103,7 @@ public with sharing class Batch_RecalcVisibilityIntermediaDMLsTest {
 
     @isTest
     private static void testProcessInsert() {
-        User user = [SELECT Id, Contact.AccountId FROM User WHERE Contact.Account.Name like 'MediadorTest%' AND Profile.Name = 'Agente Ventas - AGR'];
+        User user = [SELECT Id, Contact.AccountId FROM User WHERE Contact.Account.Name like 'MediadorTest%' AND Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR];
 
         List<Account> intermediariesToProcess = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE Id = :user.Contact.AccountId]);
         Integer numDMLs = 1;

@@ -40,7 +40,7 @@ public with sharing class AccountRelationshipUtil {
                 }
             }
             
-            if (currentUser.Profile.Name == 'Agente Ventas' || currentUser.Profile.Name == 'Agente Ventas - AGR')
+            if (currentUser.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS || currentUser.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
             {
                 ar.IntermediaryId__c = currentUser.Contact.AccountId;
             }
