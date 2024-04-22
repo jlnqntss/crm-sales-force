@@ -85,7 +85,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
         }
         catch(Exception e)
         {
-            ErrorLogUtil.commitError(e, CLASS_NAME);
+            ErrorLogUtil.commitError(e, CLASS_NAME); 
         }
 
     }
@@ -227,8 +227,9 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     {
         Boolean result = false;
 
-        if ( scopePolicy.ProductBranch__c != null
-             && scopePolicy.ProductBranch__c.equals(queryOpportunity.ProductBranch__c)
+        if ( scopePolicy.ProductId__c != null &&
+             scopePolicy.ProductId__r.GroupCode__c != null
+             && scopePolicy.ProductId__r.GroupCode__c.equals(queryOpportunity.ProductBranch__c)
              && scopePolicy.PolicyHolder__c != null
              && scopePolicy.PolicyHolder__c.equals(queryOpportunity.AccountId)
              && checkIntermediaryEquals(scopePolicy, queryOpportunity) )
