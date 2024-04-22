@@ -799,7 +799,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                 Opportunity.IntermediaryId__c,
                 Opportunity.ProductBranch__c,
                 Opportunity.Description,
-                Opportunity.CampaignId
+                Opportunity.CampaignId,
+                Opportunity.CreatedDate
             }
             ).selectFields(OPPORTUNITY_INTERMEDIARY_GROUP);
 
