@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 18-04-2024
+ * @last modified on  : 22-04-2024
  * @last modified by  : amiranda
  **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -1277,7 +1277,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             this.baseQuery
             .selectFields(accountFieldsToRetrieve)
             .addCondition(orCondition)
-            .addSubQuery('Opportunities', 'CreatedDate, StageName, BusinessCode__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c, ZRM__c');
+            .addSubQuery('Opportunities', 'AccountId, CreatedDate, StageName, BusinessCode__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c, ZRM__c');
 
             if ( rtNames != null && !rtNames.isEmpty() )
             {
