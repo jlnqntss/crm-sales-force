@@ -307,20 +307,21 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     private void mergePolicies(Map<String, Policy__c> scopeMap, Map<String, Opportunity> matchOppByScopeId)
     {
 
-        Policy__c policyToUpdate;
+        Policy__c policyToUpdate = new Policy__c();
         Opportunity offerToUpdate;
 
         for ( String idPolicy: scopeMap.keySet() )
         {
-            offerToUpdate = matchOppByScopeId.get(idPolicy);
             // compruebo si existe en el mapa de match una oferta que haga match
             if ( matchOppByScopeId.containsKey(idPolicy) )
             {
-                offerToUpdate.get(idPolicy);
+                offerToUpdate = matchOppByScopeId.get(idPolicy);
+                
                 // actualizo la relación de póliza con oferta
                 policyToUpdate.OpportunityName__c = offerToUpdate.Id;
             }
 
+            policyToUpdate.Id = idPolicy; 
             policyToUpdate.PotentialMatch__c = false;
 
             // añado los registros a actualizar
