@@ -19,7 +19,7 @@
         <field>Opportunity.InfoQuoteNumber__c</field>
     </columns>
     <columns>
-        <field>Opportunity.ProductBranch__c</field>
+        <field>Campaign.ProductBranch__c</field>
     </columns>
     <columns>
         <field>Opportunity.ProductBranchDetail__c</field>
@@ -31,7 +31,7 @@
         <field>DESCRIPTION</field>
     </columns>
     <columns>
-        <field>CREATED_DATE</field>
+        <field>CAMPAIGN_CREATED_DATE</field>
     </columns>
     <columns>
         <field>CLOSE_DATE</field>
@@ -41,13 +41,6 @@
     </columns>
     <filter>
         <criteriaItems>
-            <column>ACCOUNT_RECORDTYPE</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>PersonAccount.Customer,Account.BusinessCustomer</value>
-        </criteriaItems>
-        <criteriaItems>
             <column>STAGE_NAME</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
@@ -55,35 +48,38 @@
             <value>App Submitted,Legit Lead,Quoted</value>
         </criteriaItems>
         <criteriaItems>
-            <column>CREATED_DATE</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>greaterOrEqual</operator>
-            <value>N_MONTHS_AGO:2</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>CREATED_DATE</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>lessThan</operator>
-            <value>TOMORROW</value>
-        </criteriaItems>
-        <criteriaItems>
             <column>Opportunity.Campaign__c</column>
             <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
+            <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>FALSE</value>
+            <value>ACTIVA</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity.Scope__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>,Ventas</value>
         </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
+        <field>CAMPAIGN_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
         <field>STAGE_NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>VTO Ofertas Cliente</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Opportunity.Scope__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Ofertas campañas pendientes</name>
     <params>
         <name>open</name>
         <value>all</value>
@@ -96,13 +92,13 @@
         <name>co</name>
         <value>1</value>
     </params>
-    <reportType>Opportunity</reportType>
+    <reportType>OpportunityCampaign</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
-        <dateColumn>CLOSE_DATE</dateColumn>
+        <dateColumn>CAMPAIGN_STARTDATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>
