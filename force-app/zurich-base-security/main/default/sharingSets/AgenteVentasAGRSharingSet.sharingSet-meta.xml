@@ -14,6 +14,12 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Edit</accessLevel>
+        <object>Case</object>
+        <objectField>IntermediaryId__c.IntermediaryGroup__c</objectField>
+        <userField>Account.IntermediaryGroup__c</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Edit</accessLevel>
         <object>Competitor__c</object>
         <objectField>IntermediaryId__c.IntermediaryGroup__c</objectField>
         <userField>Account.IntermediaryGroup__c</userField>
@@ -32,5 +38,5 @@
     </accessMappings>
     <description>Visibilidad para el Agente Mediador - AGR en la app de ZRM</description>
     <name>Agente Ventas - AGR Sharing Set</name>
-    <profiles>Agente Ventas - AGR</profiles>
+    <profiles>agente ventas - agr</profiles>
 </SharingSet>
