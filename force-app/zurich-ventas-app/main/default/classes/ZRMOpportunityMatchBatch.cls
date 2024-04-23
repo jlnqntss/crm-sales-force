@@ -2,8 +2,8 @@
  * @description       : Proceso batch que se encarga de procesar ofertas de ZRM
  * para hacer match contra oportunidades en SF a nivel de cliente y/o lead.
  * @author            : amiranda
- * @date              : 22-04-2024
- * @last modified on  : 22-04-2024
+ * @date              : 23-04-2024
+ * @last modified on  : 23-04-2024
  * @last modified by  : amiranda
  * Modifications Log
  * Ver   Date         Author     Modification
@@ -110,7 +110,8 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      **/
     public void finish(Database.BatchableContext bc)
     {
-        // TODO Se invocará al batch de Pólizas
+        // Tras finalizar con el proceso de las ofertas de ZRM se procesan las pólizas
+        Database.executeBatch(new ZRMPolicyMatchBatch(), 50);
     }
 
     // #endregion
@@ -418,7 +419,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
 
     /**
      * Método que cambia los registros de una lista relacionada de una oportunidad match a una oportunidad scope
-     * @date: 22-04-2024
+     * @date: 23-04-2024
      * @author  igarcia
      */
     @TestVisible
@@ -446,7 +447,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
 
     /**
      * Método que transforma una lista introducida como parámetro en un mapa cuya "Key" sea el campo especificado
-     * @date: 22-04-2024
+     * @date: 23-04-2024
      * @author  igarcia
      */
     @TestVisible
