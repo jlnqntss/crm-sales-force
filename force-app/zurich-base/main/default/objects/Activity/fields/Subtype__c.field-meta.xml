@@ -139,6 +139,16 @@
                 <default>false</default>
                 <label>Incidences Record MiZurich</label>
             </value>
+            <value>
+                <fullName>Scaled partner</fullName>
+                <default>false</default>
+                <label>Scaled partner</label>
+            </value>
+            <value>
+                <fullName>Scaled support</fullName>
+                <default>false</default>
+                <label>Scaled support</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

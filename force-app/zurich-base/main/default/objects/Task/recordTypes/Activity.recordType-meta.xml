@@ -207,6 +207,18 @@
             <fullName>Review</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Scaled Supervisor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Scaled partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Scaled support</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>Type</picklist>
@@ -217,6 +229,10 @@
         <values>
             <fullName>Other</fullName>
             <default>true</default>
+        </values>
+        <values>
+            <fullName>Scaled Case</fullName>
+            <default>false</default>
         </values>
     </picklistValues>
 </RecordType>

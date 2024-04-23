@@ -178,6 +178,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AvailableCasePicklistValuesByRtAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Batch_DeleteErrorLogs</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -16555,6 +16559,10 @@
     <flowAccesses>
         <enabled>false</enabled>
         <flow>SetExternalRequestRecordType</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>ZDACaseEscalationScreen</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
