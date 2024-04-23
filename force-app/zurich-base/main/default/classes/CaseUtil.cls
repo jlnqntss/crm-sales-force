@@ -17,6 +17,7 @@ public with sharing class CaseUtil
     public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
     public static final String RT_NAME_ZDA = 'ZDAInquiry';
+    public static final String RT_NAME_ZRM = 'ZRMInquiry';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
     public static final String SPRINKLR_QUEUE_POSTVENTA = 'Postventa Redes Sociales';
@@ -31,6 +32,7 @@ public with sharing class CaseUtil
     public static List<Group> queuePostventaRRSS = new List<Group>();
     public static List<Group> queueSiniestrosRRSS = new List<Group>();
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
+    public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
 
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
@@ -65,6 +67,15 @@ public with sharing class CaseUtil
         get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId();
+        }
+    }
+    
+    // Recupera el Id del RecordType de casos ZRM (Retenciones)
+    public static final ID RT_ID_ZRM
+    {
+        get
+        {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZRM).getRecordTypeId();
         }
     }
 
@@ -1857,5 +1868,86 @@ public with sharing class CaseUtil
         }
 
         return mappingConfiguration;
+    }
+
+    /**
+     * Consulta todos los casos sin cerrar que estén relacionados a las pólizadas enlazadas a los casos que vienen por el trigger
+     * y construye un Map<String, Case> que relaciona la póliza con el caso abierto.
+     * @author ivan.garcia.belen@seidor.com
+     * @date 22/04/2024
+     * @param newList Lista de casos que viene por el trigger.
+     */
+    public static void getZRMCasesRelatedToPolicy(List<Case> newList)
+    {
+        if(Trigger.isInsert)
+        {
+            Set<String> relatedPolicyIds = getRelatedPolicyifZRMIds(newList); 
+            if(!relatedPolicyIds.isEmpty())
+            {
+                List<Case> notClosedZrmCases =  new CasesSelector().getNotClosedZrmCasesByRelatedPolicy(relatedPolicyIds);
+                notClosedCaseByPolicyIdMap =  buildNotClosedZrmCasesByPolicyId(notClosedZrmCases);
+            }
+        }
+    }
+
+    /**
+     * Comprueba si los casos pasados como parámetro son de Retenciones ZRM.
+     * @author ivan.garcia.belen@seidor.com
+     * @date 22/04/2024
+     * @param newList Lista de casos que viene por el trigger.
+     * @return Lista de casos con el record type de Retenciones ZRM.
+     */
+    public static Set<String> getRelatedPolicyifZRMIds(List<Case> newList)
+    {
+        Set<String> relatedPolicyIds = new Set<String>();
+        for( Case caso : newList)
+        {
+            if(caso.recordTypeId.equals(RT_ID_ZRM))
+            {
+                relatedPolicyIds.add(caso.PolicyId__c);
+            }
+        }
+
+        return relatedPolicyIds;
+    }
+
+    /**
+     * Construye un map<String,Case> en el que la Key es la polizada relacionada al caso.
+     * @author ivan.garcia.belen@seidor.com
+     * @date 22/04/2024
+     * @param notClosedZrmCases Lista de casos de Retenciones ZRM cuyo estado no es 'Cerrado Ganado' o 'Cerrado Perdido'.
+     * @return Mapa que relaciona el caso abierto por la póliza enlazada a este.
+     */
+    public static Map<String, Case> buildNotClosedZrmCasesByPolicyId(List<Case> notClosedZrmCases)
+    {
+        if(notClosedZrmCases != null && !notClosedZrmCases.isEmpty()){
+            Map<String, Case> notClosedZrmCasesByPolicyId = new Map<String, Case>();
+            for(Case caso : notClosedZrmCases)
+            {
+                notClosedZrmCasesByPolicyId.put(caso.PolicyId__c, caso);
+            }
+    
+            return notClosedZrmCasesByPolicyId;
+        }
+
+        return new Map<String, Case>();
+    }
+
+    /**
+     * Comprueba si la poliza relacionada a los casos que vienen por el trigger tienen otro caso de tipo 'Retención ZRM' abierto.
+     * En caso de ser afirmativo se mostrará un error en pantalla mostrando el número del caso abierto.
+     * @author ivan.garcia.belen@seidor.com
+     * @date 22/04/2024
+     * @param newList Lista de casos provenientes del trigger.
+     */
+    public static void checkIfPolicyHaveOpenZrmCase(List<Case> newList)
+    {
+        for(Case caso : newList)
+        {
+            if(notClosedCaseByPolicyIdMap.containsKey(caso.PolicyId__c))
+            {
+                caso.addError(Label.CaseZRMOpenedCase + ' ' +notClosedCaseByPolicyIdMap.get(caso.PolicyId__c).CaseNumber);
+            }
+        }
     }
 }
