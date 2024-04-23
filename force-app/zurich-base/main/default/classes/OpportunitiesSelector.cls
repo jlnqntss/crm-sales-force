@@ -2,11 +2,13 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 18-04-2024
+ * @last modified on  : 23-04-2024
  * @last modified by  : amiranda
  **/
 public with sharing class OpportunitiesSelector extends RecordsSelector
 {
+    private static final String OPPORTUNITY_INTERMEDIARY_GROUP= 'Opportunity.IntermediaryId__r.IntermediaryGroup__c';
+    
     //#region Contructores
     public OpportunitiesSelector()
     {

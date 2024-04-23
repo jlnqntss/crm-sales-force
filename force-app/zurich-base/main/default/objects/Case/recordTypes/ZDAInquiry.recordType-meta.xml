@@ -31,11 +31,15 @@
     <picklistValues>
         <picklist>CallCenter__c</picklist>
         <values>
-            <fullName>USP</fullName>
-            <default>true</default>
+            <fullName>ZDA_Gestion_Cartera</fullName>
+            <default>false</default>
         </values>
         <values>
-            <fullName>Zurich Empresas</fullName>
+            <fullName>ZDA_MU_s</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ZDA_Soporte_Red</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1045,15 +1049,15 @@
     <picklistValues>
         <picklist>PendingBy__c</picklist>
         <values>
-            <fullName>Others</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Partner</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Supervisor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Support</fullName>
             <default>false</default>
         </values>
     </picklistValues>

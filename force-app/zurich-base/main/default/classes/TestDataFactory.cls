@@ -3180,6 +3180,7 @@ public class TestDataFactory
                         PolicyHolder__c = relatedOpportunity.AccountId,
                         InfoPolicyNumber__c = String.valueOf(policyNumber).leftPad(14, '0'),
                         OpportunityName__c = relatedOpportunity.Id,
+                        InfoQuoteNumber__c = relatedOpportunity.InfoQuoteNumber__c,
                         PolicyStatus__c = 'V'
                     )
                 );
@@ -3469,7 +3470,7 @@ public class TestDataFactory
 
         // Usuario genérico del Contact Center necesario para el Custom Setting
         Id ventasUserProfileId = [SELECT Id FROM Profile
-                                   WHERE Name = 'Ventas User' LIMIT 1].Id;
+                                   WHERE Name = :ProfilesSelector.PROFILE_VENTAS_USER LIMIT 1].Id;
         List<User> contactCenterUser = generateUsersByProfile(ventasUserProfileId, 1);
         insert contactCenterUser;
 

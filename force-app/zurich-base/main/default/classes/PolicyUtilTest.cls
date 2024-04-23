@@ -38,14 +38,14 @@ private with sharing class PolicyUtilTest
         System.runAs (adminUser)
         {
             // Usuario Nominal
-            String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+            String portalProfile = [SELECT Id FROM Profile WHERE Name = :ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
 
             userList = TestDataFactory.generateUsersByProfile(portalProfile, 1);
             userList[0].ContactId = contacts[0].Id;
             insert userList;
 
             // Usuario AGR
-            String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas - AGR' LIMIT 1].Id;
+            String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = :ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR LIMIT 1].Id;
 
             userAGRList = TestDataFactory.generateUsersByProfile(portalAGRProfile, 1);
             userAGRList[0].ContactId = contacts[1].Id;
@@ -112,7 +112,7 @@ private with sharing class PolicyUtilTest
         List<AccountTeamMember> atmBefore = new List<AccountTeamMember>([SELECT Id FROM AccountTeamMember]);
 
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
@@ -134,7 +134,7 @@ private with sharing class PolicyUtilTest
 
         // Insertamos una poliza
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
@@ -142,7 +142,7 @@ private with sharing class PolicyUtilTest
         insert policies;
 
         // actualizamos el el cliente de la poliza
-        List<Account> otherAccount = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' AND Id != :accounts.get(0).Id LIMIT 1];
+        List<Account> otherAccount = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' AND Id != : accounts.get(0).Id LIMIT 1];
         policies[0].PolicyHolder__c = otherAccount.get(0).Id;
 
         Test.startTest();
@@ -162,7 +162,7 @@ private with sharing class PolicyUtilTest
         // Insertamos una poliza
 
         List<Account> accounts = [SELECT Name FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND Contact.Account.Name = 'MediadorTest' LIMIT 1];
+        User zrmIntermediary = [SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS AND  Contact.Account.Name = 'MediadorTest' LIMIT 1];
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].IntermediaryId__c = zrmIntermediary.Contact.AccountId;
@@ -180,5 +180,141 @@ private with sharing class PolicyUtilTest
         List<Policy__c> policiesWithChage = new List<Policy__c>([SELECT Id FROM Policy__c WHERE LastDateIntermediaryOrAccountChange__c != NULL LIMIT 1]);
 
         Assert.isTrue(policiesWithChage.size() > 0, 'Debe haber ofertas con el campo LastDateIntermediaryOrAccountChange__c informado');
+    }
+
+
+    /**
+     * @description Método de test que comprueba que se marca el campo 'PotentialMatch__c'
+     * cuando se identifica la oferta de ZRM cuando no tiene informado el
+     * campo 'BusinessCode__c'.
+     * @author igarcia
+     * @date 09-04-2024
+     **/
+    @IsTest
+    private static void test_identifyPotentialMatches_withoutBusinessCode()
+    {
+
+        List<Account> accounts = [SELECT Name FROM Account];
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 2);
+        //policies[0].BusinessCode__c = zurichVentasMdt.BusinessCode__c;
+
+        Test.startTest();
+        insert policies;
+        Test.stopTest();
+
+        //Comprobamos que se ha marcado el check a True
+        List<Policy__c> insertedPolicies = [SELECT PotentialMatch__c FROM Policy__c];
+
+        for(Policy__c insertedPolicie : insertedPolicies)
+        {
+            Assert.isTrue(insertedPolicie.PotentialMatch__c,
+                          'El valor del campo \'PotentialMatch__c\' debería ser \'true\'');
+        }
+    }
+
+    /**
+     * @description Método de test que comprueba que se marca el campo 'PotentialMatch__c'
+     * cuando se identifica la oferta de ZRM cuando tiene informado el
+     * campo 'BusinessCode__c' con el código de negocio del scope 'Ventas'.
+     * @author igarcia
+     * @date 09-04-2024
+     **/
+    @IsTest
+    private static void test_identifyPotentialMatches_withBusinessCode()
+    {
+
+        List<Account> accounts = [SELECT Name FROM Account];
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 2);
+
+        for(Policy__c policy : policies)
+        {
+            policy.BusinessCode__c = '3200012969';
+        }
+
+        Test.startTest();
+        insert policies;
+        Test.stopTest();
+
+        //Comprobamos que se ha marcado el check a True
+        List<Policy__c> insertedPolicies = [SELECT PotentialMatch__c FROM Policy__c];
+
+        for(Policy__c insertedPolicie : insertedPolicies)
+        {
+            Assert.isTrue(insertedPolicie.PotentialMatch__c,
+                          'El valor del campo \'PotentialMatch__c\' debería ser \'true\'');
+        }
+    }
+
+    /**
+     * @description Método de test que comprueba que NO se marca el campo 'PotentialMatch__c'
+     * cuando se identifica la oferta de ZRM cuando tiene informado el
+     * campo 'BusinessCode__c' con otro código de negocio que el scope no sea 'Ventas'.
+     * @author igarcia
+     * @date 09-04-2024
+     **/
+    @IsTest
+    private static void test_identifyPotentialMatches_withBusinessCodeNotZRM()
+    {
+
+        List<Account> accounts = [SELECT Name FROM Account];
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 2);
+
+        for(Policy__c policy : policies)
+        {
+            policy.BusinessCode__c = '3200012567';
+        }
+
+        Test.startTest();
+        insert policies;
+        Test.stopTest();
+
+        //Comprobamos que se ha marcado el check a True
+        List<Policy__c> insertedPolicies = [SELECT PotentialMatch__c FROM Policy__c];
+
+        for(Policy__c insertedPolicie : insertedPolicies)
+        {
+            Assert.isFalse(insertedPolicie.PotentialMatch__c,
+                           'El valor del campo \'PotentialMatch__c\' debería ser \'false\'');
+        }
+    }
+
+    /**
+     * @description Método de test que comprueba que NO se marca el campo 'PotentialMatch__c'
+     * cuando se identifica la oferta de ZRM cuando tiene informado el
+     * campo 'BusinessCode__c' con otro código de negocio que el scope no sea 'Ventas'.
+     * @author igarcia
+     * @date 09-04-2024
+     **/
+    @IsTest
+    private static void test_identifyPotentialMatches_withOffer()
+    {
+
+        List<Account> accounts = [SELECT Name FROM Account LIMIT 1];
+
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 1);
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
+
+        insert opportunities;
+
+        for(Policy__c policy : policies)
+        {
+            policy.OpportunityName__c = opportunities[0].Id;
+        }
+
+        Test.startTest();
+        insert policies;
+        Test.stopTest();
+
+        //Comprobamos que se ha marcado el check a True
+        List<Policy__c> insertedPolicies = [SELECT PotentialMatch__c FROM Policy__c];
+
+        for(Policy__c insertedPolicie : insertedPolicies)
+        {
+            Assert.isFalse(insertedPolicie.PotentialMatch__c,
+                           'El valor del campo \'PotentialMatch__c\' debería ser \'false\'');
+        }
     }
 }

@@ -60,6 +60,7 @@ public without sharing class ContentDocumentLinkHandler implements ITrigger
     public void afterInsert(List<SObject> newList)
     {
         ContentDocumentLinkUtil.processHegeoCSV((List<ContentDocumentLink>) newList, null);
+        ContentDocumentLinkUtil.setActaCompleted((List<ContentDocumentLink>) newList);
     }
 
     /**

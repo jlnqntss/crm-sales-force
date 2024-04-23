@@ -5,7 +5,7 @@
         <name>ThrowCampaignMemberUpdateException</name>
         <label>Throw Campaign Member Update Exception</label>
         <locationX>440</locationX>
-        <locationY>350</locationY>
+        <locationY>458</locationY>
         <actionName>ExceptionUtil</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -23,7 +23,7 @@
         <name>ThrowOfferUpdateException</name>
         <label>Throw Offer Update Exception</label>
         <locationX>704</locationX>
-        <locationY>242</locationY>
+        <locationY>350</locationY>
         <actionName>ExceptionUtil</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -55,6 +55,11 @@
     </constants>
     <description>Flujo invocado desde las clase controladora Apex &apos;CampaignZRMCustomPageController&apos; utilizada en el componente LWC &apos;IntermediaryCampaignMembers&apos; para actualizar Ofertas y Miembros de Campaña.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>OfferAccountId15</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!Get_Opportunity.AccountId}, 15)</expression>
+    </formulas>
     <interviewLabel>Update Offer And Campaign Member {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Update Offer And Campaign Member</label>
     <processMetadataValues>
@@ -76,27 +81,62 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordUpdates>
-        <description>Se actualiza el miembro de campaña relacionado con la oferta actualizada en el paso anterior. Se identifica al miembro de campaña a través de la variable &apos;CampaignMemberId&apos; que se pasa por parámetro.</description>
-        <name>UpdateCampaignMemberAction</name>
-        <label>Update Campaign Member</label>
+    <recordLookups>
+        <name>Get_Opportunity</name>
+        <label>Get Opportunity</label>
         <locationX>176</locationX>
-        <locationY>242</locationY>
-        <faultConnector>
-            <targetReference>ThrowCampaignMemberUpdateException</targetReference>
-        </faultConnector>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>UpdateOfferAction</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>CampaignMemberId</elementReference>
+                <elementReference>OfferId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Se actualiza el miembro de campaña relacionado con la oferta actualizada en el paso anterior. Se identifica al miembro de campaña a través de la variable &apos;CampaignMemberId&apos; que se pasa por parámetro.</description>
+        <name>UpdateCampaignMemberAction</name>
+        <label>Update Campaign Member</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <faultConnector>
+            <targetReference>ThrowCampaignMemberUpdateException</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CampaignId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Opportunity.CampaignId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>OfferAccountId15</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pdte. Revisión Mediador</stringValue>
             </value>
         </filters>
         <inputAssignments>
-            <field>OfferAssignedCode__c</field>
+            <field>OfferAssignedType__c</field>
             <value>
-                <elementReference>UserIntermediaryCode</elementReference>
+                <stringValue>M</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -112,7 +152,7 @@
         <name>UpdateOfferAction</name>
         <label>Update Offer</label>
         <locationX>176</locationX>
-        <locationY>134</locationY>
+        <locationY>242</locationY>
         <connector>
             <targetReference>UpdateCampaignMemberAction</targetReference>
         </connector>
@@ -124,13 +164,19 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>OfferId</elementReference>
+                <elementReference>Get_Opportunity.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
             <field>BusinessCode__c</field>
             <value>
                 <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ZRM__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <object>Opportunity</object>
@@ -140,7 +186,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>UpdateOfferAction</targetReference>
+            <targetReference>Get_Opportunity</targetReference>
         </connector>
     </start>
     <status>Active</status>

@@ -854,6 +854,14 @@ Related fields: [{3}]</value>
         <value>Stop Recording</value>
     </labels>
     <labels>
+        <fullName>SAMUser</fullName>
+        <categories>Profile</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SAMUser</shortDescription>
+        <value>SAM User</value>
+    </labels>
+    <labels>
         <fullName>sendSurveyButtonLabel</fullName>
         <categories>sendSurveyButton</categories>
         <language>en_US</language>
