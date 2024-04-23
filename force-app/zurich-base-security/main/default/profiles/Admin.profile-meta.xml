@@ -4824,6 +4824,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.SAMCategory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.SMEConsultant__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -16609,6 +16614,10 @@
         <recordType>Account.ParentAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Account-SAM Partner</layout>
+        <recordType>Account.Partner_SAM</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Account-Partner layout</layout>
         <recordType>Account.Partner</recordType>
     </layoutAssignments>
@@ -16736,6 +16745,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-SAM Contact</layout>
+        <recordType>Contact.SAM_Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-OCS Contact</layout>
@@ -19049,6 +19062,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>Account.Partner_SAM</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Account.Potential_Broker</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -19165,6 +19183,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Contact.LeadGI</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.SAM_Partner</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

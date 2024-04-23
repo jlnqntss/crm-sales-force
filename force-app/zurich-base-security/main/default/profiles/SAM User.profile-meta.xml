@@ -4683,7 +4683,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-SAM Partner</layout>
-        <recordType>Account.PartnerOCS</recordType>
+        <recordType>Account.Partner_SAM</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>AccountRelationship__c-Admin Layout</layout>
@@ -4718,6 +4718,10 @@
     <layoutAssignments>
         <layout>Contact-Copy of Customer Layout_prod</layout>
         <recordType>Contact.CustomerLife</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-SAM Contact</layout>
+        <recordType>Contact.SAM_Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Copy of Customer Layout_prod</layout>
