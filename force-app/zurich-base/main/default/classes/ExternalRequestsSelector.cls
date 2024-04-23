@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 04-22-2024
+ * @last modified on  : 04-23-2024
  * @last modified by  : jchavez
 **/
 public with sharing class ExternalRequestsSelector
@@ -252,6 +252,7 @@ public with sharing class ExternalRequestsSelector
     public String getQueryProcessedAfterThan (Integer days , String processedResult)
     {
         recordsLimit=LIMIT_BATCH_DELETE_EXTERNAL_REQUEST;
+        
         try 
         {
             return String.format(DEFAULT_STRING_FORMAT, new List<String>
