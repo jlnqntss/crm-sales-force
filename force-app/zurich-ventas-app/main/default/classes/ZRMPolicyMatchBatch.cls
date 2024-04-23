@@ -74,7 +74,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
             Map<String, Object> policyDataMap = getDataFromPolicies(scope);
 
             // 2º Calculamos si para el existe una oferta que pueda hacer match con la póliza
-            Map<String, Policy__c> policiesWithNoMatch = calculateClientOpportunitiesWithMatch(scope, policyDataMap);
+            Map<String, Policy__c> policiesWithNoMatch = calculateClientOpportunitiesWithMatch(policyDataMap);
 
             //3º Leads
             Map<Policy__c, Set<String> > policiesByIdWithContactInfoData = getPoliciesWithContactInfoData( policiesWithNoMatch.values(), (Set<String>) policyDataMap.get(SCOPE_POLICY_ACCOUNTID) );
@@ -112,7 +112,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
      * @author dmunoz
      * @date 09/04/2024
      */
-    private Map<String, Policy__c> calculateClientOpportunitiesWithMatch(List<Policy__c> scope, Map<String, Object> opportunityDataMap)
+    private Map<String, Policy__c> calculateClientOpportunitiesWithMatch(Map<String, Object> opportunityDataMap)
     {
         Map<String, Policy__c> result = (Map<String, Policy__c>) opportunityDataMap.get(SCOPE_POLICY_MAP);
 
