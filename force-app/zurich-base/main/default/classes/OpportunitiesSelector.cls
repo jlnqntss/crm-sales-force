@@ -15,8 +15,6 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         super( Opportunity.getSObjectType() );
     }
 
-    private static final String OPPORTUNITY_INTERMEDIARY_GROUP= 'Opportunity.IntermediaryId__r.IntermediaryGroup__c';
-
     //#endregion
 
     /**
