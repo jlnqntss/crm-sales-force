@@ -2,7 +2,7 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 26-12-2023
+ * @last modified on  : 23-04-2024
  * @last modified by  : amiranda
  **/
 public with sharing class OpportunitiesSelector extends RecordsSelector
@@ -757,6 +757,76 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                             .addConditionLe(Opportunity.VisibilityRetry__c, numMaxRetries);
            
             result = this.baseQuery.enforceSecurity().run();
+
+        return result;
+    }
+    
+    /**
+     * Obtenemos las polizas de un mediador y las de una agrupacion con excepcion de un conjunto de polizas (necesario para el calculo de visibilidad)
+     * QUERY:
+     * SELECT Id, AccountId, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c
+                                            FROM Opportunity
+                                            WHERE
+                                            AND AccountId IN :accountIdsSet
+                                            AND (
+                                                IntermediaryId__c IN :intermediaryIdsSet OR
+                                                IntermediaryId__r.IntermediaryGroup__c IN :intermediaryGroupIdsSet
+                                                )
+                                            AND ProductBranch__c IN :productBranchSet
+                                            AND Stage IN ('Legit Lead', 'App Submitted')
+                                            AND InfoQuoteNumber__c = null
+                                            AND PotentialMatch__c = false
+                                            AND CreatedDate = last_n_days: 60
+     * @author dmunoz
+     * @date 09/04/2024
+     */
+    public List<Opportunity> findMatchOffers(Set<String> productBranchSet, Set<String> accountIdsSet, Set<String> intermediaryIdsSet, Set<String> intermediaryGroupIdsSet) 
+    {
+
+        List<Opportunity> result = new List<Opportunity>();
+
+        if ( intermediaryIdsSet != null && !intermediaryIdsSet.isEmpty() && accountIdsSet != null && !accountIdsSet.isEmpty() )
+        {
+
+            this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+            {
+                Opportunity.Id,
+                Opportunity.AccountId,
+                Opportunity.IntermediaryId__c,
+                Opportunity.ProductBranch__c,
+                Opportunity.Description,
+                Opportunity.CampaignId,
+                Opportunity.CreatedDate
+            }
+            ).selectFields(OPPORTUNITY_INTERMEDIARY_GROUP);
+
+            this.baseQuery
+            .addConditionIn(Opportunity.AccountId, accountIdsSet)
+            .addConditionIn(Opportunity.ProductBranch__c, productBranchSet)
+            .addConditionIn(Opportunity.StageName, new Set<String> {'Legit Lead', 'App Submitted'})
+            .addConditionEq(Opportunity.InfoQuoteNumber__c, null)
+            .addConditionEq(Opportunity.PotentialMatch__c, false)
+            .addConditionEq(Opportunity.CreatedDate, Query.last_n_days(60));
+
+            // si la lista de agrupacion no está vacia buscamos en ambas
+            if ( intermediaryGroupIdsSet != null && !intermediaryGroupIdsSet.isEmpty() )
+            {
+                Query.Condition orCondition = Query.doOr(
+                    Query.conditionIn(Opportunity.IntermediaryId__c, intermediaryIdsSet),
+                    Query.conditionIn(OPPORTUNITY_INTERMEDIARY_GROUP, intermediaryGroupIdsSet)
+                    );
+
+                this.baseQuery.addCondition(orCondition);
+            }
+            else
+            {
+                this.baseQuery.addConditionIn(Opportunity.IntermediaryId__c, intermediaryIdsSet);
+            }
+
+            result = this.baseQuery.enforceSecurity().run();
+        }
 
         return result;
     }
