@@ -40,14 +40,14 @@ public with sharing class GenerateZRMLeadATMUtilTest {
         System.runAs (adminUser)
         {
             // Usuario Nominal
-            String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+            String portalProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
 
             userList = TestDataFactory.generateUsersByProfile(portalProfile, 1);
             userList[0].ContactId = contacts[0].Id;
             insert userList;
 
             // Usuario AGR
-            String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas - AGR' LIMIT 1].Id;
+            String portalAGRProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR LIMIT 1].Id;
 
             userAGRList = TestDataFactory.generateUsersByProfile(portalAGRProfile, 1);            
             userAGRList[0].ContactId = contacts[1].Id;

@@ -33,7 +33,7 @@ public with sharing class AccountRelationshipUtilTest {
 
         /* ---------------------------------- USERS --------------------------------- */
         UserRole portalRole = [SELECT Id FROM UserRole WHERE PortalType = 'None' LIMIT 1];
-        Id portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+        Id portalProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
         List<User> users = TestDataFactory.generateUsersByProfile(portalProfile, 1);
         for(Integer i = 0; i < users.size(); i++)
         {
@@ -88,7 +88,7 @@ public with sharing class AccountRelationshipUtilTest {
     {
         /* -------------------------------- TEST DATA ------------------------------- */
         List<Account> customerAccounts = [SELECT Id, OwnerId FROM Account WHERE Name LIKE 'testlastname%'];
-        User agenteVentas = [SELECT Id, Account.IntermediaryGroup__c FROM User WHERE Profile.Name = 'Agente Ventas' and isactive = true LIMIT 1];
+        User agenteVentas = [SELECT Id, Account.IntermediaryGroup__c FROM User WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS and isactive = true LIMIT 1];
 
         AccountRelationship__c ar = new AccountRelationship__c();
         ar.Account__c = customerAccounts[0].Id;

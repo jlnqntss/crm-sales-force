@@ -31,6 +31,10 @@
     {
       "path": "force-app/zurich-ventas-app",
       "default": false
+    },
+    {
+      "path": "force-app/zurich-zda-app",
+      "default": false
     }
   ],
   "plugins": {

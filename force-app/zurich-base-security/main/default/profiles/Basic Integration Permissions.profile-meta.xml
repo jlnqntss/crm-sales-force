@@ -267,22 +267,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcOpp</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcOppTes</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcPol</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcPolTes</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>Batch_LeadOffersToReassignToCC</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1215,30 +1199,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningForgotPasswordController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningForgotPasswordControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningLoginFormController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningLoginFormControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningSelfRegisterController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningSelfRegisterControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MiZurichHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1536,10 +1496,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RelatedAccountsSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RemoveDuplicateUsersAction</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -2440,11 +2396,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>AccountTeamMember.rol__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Acta__c.Attendees__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3045,27 +2996,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Event.ClienteMediado__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Event.Due_Date_Time__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Event.Loss_Reason__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Event.Mandatory_Closing_Observation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.MediadorCaso__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3096,11 +3032,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Event.SegmentMediatorCase__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.SegmentoMediadorCaso__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3270,11 +3201,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>KPI__c.AccidentRate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>KPI__c.ClaimOcurridosCAYLarge__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3286,11 +3212,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>KPI__c.ClaimTotalIncome__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>KPI__c.RetentionRatio__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3885,146 +3806,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Receipt__c.AccountingDate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.CollectionMethod__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.Company__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.EffectiveDate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.ExpirationDate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.FiliationCode__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.FractionNumber__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.IntermediaryCode__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.IssueDate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.IssuingLevelIndicator__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PayIndicator__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PayerFiliationCode__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PaymentOption__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PolicyHolderFiliationCode__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PolicyNumber__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PolicyVersion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PreviousStatusDescription__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PreviousStatus__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PreviousSubStatusDescription__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.PreviousSubStatus__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.RebajeDate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.RefundManagamentIndicator__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.ReturnIndicator__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.StatusDescription__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.SubStatusDescription__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.SubStatus__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Receipt__c.TotalAmount__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Relationship__c.ClaimId__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4164,26 +3945,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Seguimiento__c.CrearTarea__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Seguimiento__c.Detalle__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Seguimiento__c.Nombre_Campa_a__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Seguimiento__c.Notificar_A__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Special_Condition__c.BusinessCode__c</field>
         <readable>false</readable>
@@ -4310,16 +4071,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Task.ClienteMediado__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Task.Due_Date_Time__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Task.IsVisibleInSelfService</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4331,11 +4082,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.Mandatory_Closing_Observation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.MediadorCaso__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4366,11 +4112,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Task.SegmentMediatorCase__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.SegmentoMediadorCaso__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4745,13 +4486,6 @@
         <layout>SDMCommercialPlan__mdt-SDMCommercialPlan Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Seguimiento__c-Seguimiento Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Seguimiento__c-Seguimiento Layout</layout>
-        <recordType>Seguimiento__c.Saneamiento</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Special_Condition__c-Special Condition Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -4802,13 +4536,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZRM_Genesys_WrapUp_mapping__mdt-Genesys WrapUp mapping Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>spr_sf__SocialPersona__c-spr_sf__Sprinklr Social Persona Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>spr_sf__SocialPersona__c-spr_sf__Sprinklr Social Persona Layout</layout>
-        <recordType>spr_sf__SocialPersona__c.Sprinklr</recordType>
     </layoutAssignments>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
@@ -4916,10 +4643,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>UnderConstruction</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>pruebaPage</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <recordTypeVisibilities>
@@ -5110,11 +4833,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Relationship__c.Policy</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Seguimiento__c.Saneamiento</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
