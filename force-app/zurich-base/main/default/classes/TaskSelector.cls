@@ -30,4 +30,27 @@ public with sharing class TaskSelector extends RecordsSelector
         return (List<Task>) this.baseQuery.run();        
     }
 
+    /**
+     * Método que devuelve las tareas relacionadas con los registros de whatId
+     * @author ivan
+     * @date 12/04/2024
+     * @return Lista de Tareas relacionadas con
+     */
+    public List<Task> getTaskRelatedWithWhatId(List<String> recordIds)
+    {        
+        List<Task> result = new List<Task>();
+
+        if (recordIds != null && !recordIds.isEmpty()) {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Task.Id,
+                Task.WhatId
+            })
+            .addConditionIn(Task.WhatId, recordIds);
+    
+            result = this.baseQuery.run();   
+        }
+
+        return result; 
+    }
+
 }

@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 22-04-2024
+ * @last modified on  : 23-04-2024
  * @last modified by  : amiranda
  **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -1266,8 +1266,7 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.CreatedDate,
                 Account.PersonEmail,
                 Account.Phone
-            }
-            ;
+            };            
 
             Query.Condition orCondition = Query.doOr(
                 Query.conditionIn(Account.Phone, contactPoints),

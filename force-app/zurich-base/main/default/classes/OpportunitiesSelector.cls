@@ -685,7 +685,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                 Opportunity.Id,
                 Opportunity.AccountId,
                 Opportunity.IntermediaryId__c
-            }).selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c');
+            }).selectFields(OPPORTUNITY_INTERMEDIARY_GROUP);
 
             this.baseQuery                            
                             .addConditionNotIn(Opportunity.Id, offersToExclude)
@@ -831,5 +831,32 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
         }
 
         return result;
+    }
+
+    /**
+    * @description Método que devuelve una query en formato String para recuperar
+    * oportunidades que sean 'match potenciales' (PotentialMatch__c = true)
+    * @author amiranda 
+    * @date 10-04-2024 
+    * @return String query en formato String
+    **/
+    public String getQueryStringPotentialMatchOpportunities()
+    {
+        Set<Schema.SObjectField> fields = new Set<Schema.SObjectField>
+        {
+            Opportunity.AccountId,
+            Opportunity.IntermediaryId__c,
+            Opportunity.Description,
+            Opportunity.ProductBranch__c,
+            Opportunity.CampaignId,
+            Opportunity.CreatedDate
+        };
+
+        return this.baseQuery
+               .selectFields(fields)
+               .selectFields('Opportunity.IntermediaryId__r.IntermediaryGroup__c')
+               .addConditionEq(Opportunity.PotentialMatch__c, true) 
+               .enforceSecurity()
+               .toQueryString();
     }
 }
