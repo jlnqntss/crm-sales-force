@@ -52,8 +52,16 @@ private with sharing class Test_TicketingHegeoAction
         req2.event = 4; //Petición información
         req2.comments = 'Comentarios de la peticion en test. SIN FICHEROS';
 
+        TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
+            200,
+            'OK',
+            'application/soap+xml;charset=utf-8',
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"><soap:Header><NS1:Security xmlns:NS1="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"><Timestamp xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><Created>2024-04-12T09:14:24.786Z</Created></Timestamp></NS1:Security></soap:Header><soap:Body><io:updateVsegTicketResponse xmlns:io="http://webservices.zurich.com/proxy/Hegeo/Ticketing/v1_0"><io:ticket><io:ticketId>102845</io:ticketId></io:ticket></io:updateVsegTicketResponse></soap:Body></soap:Envelope>',
+            false
+            );
+
         Test.startTest();
-        Test.setMock( HttpCalloutMock.class, new TicketingHegeoServiceMock.MockOk() );
+        Test.setMock(HttpCalloutMock.class, mock);
         List<String> resList = TicketingHegeoAction.doCallout(new List<TicketingHegeoAction.TicketingHegeoRequest> {req, req2});
         Test.stopTest();
 
