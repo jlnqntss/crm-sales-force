@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>AvailableForLeadCreationFlow__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>BusinessCode__c</field>
@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>GenesysCloudQueueName__c</field>
-        <value xsi:type="xsd:string">ZE_ESTANQUEROS</value>
+        <value xsi:type="xsd:string">Voz_ZurichEmpresas</value>
     </values>
     <values>
         <field>SandboxBusinessCode__c</field>
