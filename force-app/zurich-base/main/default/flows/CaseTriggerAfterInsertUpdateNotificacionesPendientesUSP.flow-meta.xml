@@ -128,6 +128,23 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Se le asigna una variable a true para posteriormente diferenciar si se envía email de alerta y cerrar el caso al pasar 90 días en casos de Grandes Pymes</description>
+        <name>CerrarCaso90DiasPath</name>
+        <label>Cerrar Caso 90 Dias</label>
+        <locationX>2338</locationX>
+        <locationY>276</locationY>
+        <assignmentItems>
+            <assignToReference>SeCierraCasoGrandesPymes</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>FulfilPrerequisitesDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>CorreoLocalizadoAssignment</name>
         <label>Correo Localizado</label>
         <locationX>1370</locationX>
@@ -179,9 +196,30 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>CloseCaseOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 AND 2) OR (3 AND 4)</conditionLogic>
             <conditions>
                 <leftValueReference>SeCierraCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByGrandesPymes__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SeCierraCasoGrandesPymes</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByGrandesPymes__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -356,6 +394,52 @@
         </rules>
     </decisions>
     <decisions>
+        <name>GrandesPymesDecision</name>
+        <label>Grandes Pymes?</label>
+        <locationX>1326</locationX>
+        <locationY>276</locationY>
+        <defaultConnector>
+            <targetReference>Grandes_Pymes_OFF</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>GrandesPymesOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendiente</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.PendingBy__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.LastModifiedBy.Area__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Grandes Pymes</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>statusPriorPending</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>off</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Grandes_Pymes_ON</targetReference>
+            </connector>
+            <label>Grandes Pymes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>SeHaExcluidoElDominioYCasoVentaDecision</name>
         <label>Se ha excluido el dominio y el caso es tipo Venta?</label>
         <locationX>1634</locationX>
@@ -381,6 +465,20 @@
                     <stringValue>Venta</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>SeCierraCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SeCierraCasoGrandesPymes</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <label>Excluido o No venta</label>
         </rules>
     </decisions>
@@ -392,12 +490,26 @@
         <defaultConnectorLabel>No cerrar Caso</defaultConnectorLabel>
         <rules>
             <name>CerrarCasoOutcome</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>(1 AND 3)OR (2 AND NOT(3))</conditionLogic>
             <conditions>
                 <leftValueReference>SeCierraCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SeCierraCasoGrandesPymes</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByGrandesPymes__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -429,6 +541,11 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>statusPriorPending</name>
+        <dataType>String</dataType>
+        <expression>IF(ISPICKVAL({!$Record__Prior.Status},&quot;Pending&quot;), &quot;on&quot;, &quot;off&quot;)</expression>
+    </formulas>
     <interviewLabel>Case Trigger - After Insert/Update - Notificaciones Pendientes USP {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - Notificaciones Pendientes USP</label>
     <loops>
@@ -927,6 +1044,32 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Grandes_Pymes_OFF</name>
+        <label>Grandes Pymes OFF</label>
+        <locationX>1458</locationX>
+        <locationY>384</locationY>
+        <inputAssignments>
+            <field>ModifiedByGrandesPymes__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Grandes_Pymes_ON</name>
+        <label>Grandes Pymes ON</label>
+        <locationX>1194</locationX>
+        <locationY>384</locationY>
+        <inputAssignments>
+            <field>ModifiedByGrandesPymes__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>UpdateCerrarCaso</name>
         <label>Actualizar Cerrar Caso</label>
         <locationX>50</locationX>
@@ -974,6 +1117,9 @@
     <start>
         <locationX>1706</locationX>
         <locationY>0</locationY>
+        <connector>
+            <targetReference>GrandesPymesDecision</targetReference>
+        </connector>
         <filterLogic>1 AND 2  AND (3 OR 4) AND 5 AND 6</filterLogic>
         <filters>
             <field>PendingBy__c</field>
@@ -1052,6 +1198,17 @@
             <recordField>LastModifiedDate</recordField>
             <timeSource>RecordField</timeSource>
         </scheduledPaths>
+        <scheduledPaths>
+            <name>CerrarCaso90dias</name>
+            <connector>
+                <targetReference>CerrarCaso90DiasPath</targetReference>
+            </connector>
+            <label>CerrarCaso90dias</label>
+            <offsetNumber>90</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>LastModifiedDate</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
@@ -1094,6 +1251,16 @@
     </variables>
     <variables>
         <name>SeCierraCaso</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>SeCierraCasoGrandesPymes</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
