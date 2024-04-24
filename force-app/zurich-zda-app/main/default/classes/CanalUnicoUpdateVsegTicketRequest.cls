@@ -1,0 +1,498 @@
+/**
+ * Clase encargada de encapsular los campos para una peticion de envio de informacion a canal unico
+ * a traves de ESB. Contiene metodos para la construccion de la peticion de tipo SOAP
+ *
+ * @author mario.navarro@seidor.com
+ * @date 21/03/2024
+ */
+public class CanalUnicoUpdateVsegTicketRequest
+{
+    public CanalUnicoTicket ticket;
+
+    //Para la validacion del campo event
+    private static Set<Integer> availableEventValues = new Set<Integer> {1,2,3,4,5,6,7,8,9,10,11};
+    //Para la validacion del campo ticketStatus
+    private static Set<Integer> availableTicketStatusValues = new Set<Integer> {1,2,3,4,5};
+    //Para la validacion del campo ticketSubStatus
+    private static Set<Integer> availableTicketSubStatusValues = new Set<Integer> {0,1};
+    //Para la validacion del campo CanalUnicoQuote.paymentType
+    private static Set<String> availablePaymentTypeValues = new Set<String> {'0','1','2','3','4','6','12'};
+
+    /**
+     * Construye el cuerpo de la peticion
+     *
+     * @author mario.navarro@seidor.com
+     * @date 21/03/2024
+     * @return retorna el string que contiene el cuerpo de la peticion SOAP
+     */
+    public String buildRequest()
+    {
+        String req = '<v1:updateVsegTicketRequest>';
+        if (ticket != null)
+        {
+            req += ticket.buildRequest();
+        }
+        req += '</v1:updateVsegTicketRequest>';
+        return req;
+    }
+
+    /**
+     * Encapsula los campos del elemento ticket de la peticion
+     *
+     * @author mario.navarro@seidor.com
+     * @date 21/03/2024
+     */
+    public class CanalUnicoTicket
+    {
+        /**
+         * Identificador del ticket en Canal único
+         *
+         * Tamaño maximo: 20
+         */
+        public String ticketId
+        {
+            get
+            {
+                return ticketId != null ? ticketId : '';
+            }
+            set;
+        }
+        /**
+         * Identificador del ticket en SF
+         */
+        public String externalTicketId
+        {
+            get
+            {
+                return externalTicketId != null ? externalTicketId : '';
+            }
+            set;
+        }
+        /**
+         * Acción que se realiza sobre el ticket. Campo obligatorio. Posibles valores:
+         * 1 - Inicio del trámite
+         * 2 - Finalización del trámite
+         * 3 - Desestimación del trámite
+         * 4 - Petición información
+         * 5 - Notificación a oficina
+         * 6 - Información nueva fecha prevista de cierre
+         * 7 - Respuesta a un contactar
+         * 8 - Actualización de etapa/sub estado
+         * 9 - Mover departamento
+         * 10 - Envío documentación
+         * 11 - Derivado a Especialista
+         */
+        public Integer event;
+        /**
+         * Estado en el que se encuentra el ticket. Por defecto al crear un ticket nuevo en Canal único, queda guardado como pendiente. Campo obligatorio. Posibles valores:
+         * 1 - Pendiente
+         * 2 - En tramitación
+         * 3 – Tramitado / Finalizado
+         * 4 - Desestimado
+         * 5 - Pendiente Información
+         */
+        public Integer ticketStatus;
+        /**
+         * Para cada estado se definirán N subestados. En caso de no poder informar el subestado, se informará el siguiente subStatusDesc. Campo obligatorio. Posibles valores:
+         * 0 - Sin sub estado
+         * 1 - En especialista
+         */
+        public Integer ticketSubStatus;
+        /**
+         * Campo libre para informar la descripción o comentarios del subestado
+         *
+         * Tamaño maximo: 1000
+         */
+        public String subStatusDesc
+        {
+            get
+            {
+                return subStatusDesc != null ? subStatusDesc : '';
+            }
+            set;
+        }
+        /**
+         * Técnico que está gestionando el ticket en Hegeo
+         *
+         * Tamaño maximo: 50
+         */
+        public String agent
+        {
+            get
+            {
+                return agent != null ? agent : '';
+            }
+            set;
+        }
+        /**
+         * Fecha del evento o cambio de situación. Campo obligatorio
+         *
+         * Formato: YYYY/MM/dd HH:mm:ss
+         */
+        public DateTime eventDate = DateTime.now();
+        /**
+         * Motivo del cambio de situación. Posibles valores:
+         * 1 - MFPOtros
+         * 2 - MRPOtros
+         * 3 - MPI_PetInfo
+         */
+        public Integer eventReason;
+        /**
+         * Descripción del evento o cambio de situación
+         *
+         * Tamaño máximo: 1000
+         */
+        public String eventDesc
+        {
+            get
+            {
+                return eventDesc != null ? eventDesc : '';
+            }
+            set;
+        }
+        /**
+         * Fecha prevista de cierre del ticket
+         *
+         * Formato: YYYY/MM/dd HH:mm:ss
+         */
+        public DateTime estimatedEndDate;
+        /**
+         * Comentario interno entre primeros niveles de BO
+         *
+         * Tamaño máximo: 1000
+         */
+        public String comments
+        {
+            get
+            {
+                return comments != null ? comments : '';
+            }
+            set;
+        }
+        /**
+         * Lista de cotizaciones. No se enviará nada
+         */
+        public List<CanalUnicoQuote> quotesList
+        {
+            get
+            {
+                return quotesList != null ? quotesList : new List<CanalUnicoQuote>();
+            }
+            set;
+        }
+        /**
+         * Lista de documentos adjuntos
+         */
+        public List<CanalUnicoDocument> documentList
+        {
+            get
+            {
+                return documentList != null ? documentList : new List<CanalUnicoDocument>();
+            }
+            set;
+        }
+
+        /**
+         * Construye el cuerpo de la peticion para el elemento ticket
+         *
+         * @author mario.navarro@seidor.com
+         * @date 21/03/2024
+         * @return retorna el string que contiene el cuerpo de la peticion SOAP
+         * @throws IllegalArgumentException en caso de que alguno de los campos obligatorios no este informado o su valor no sea valido
+         */
+        public String buildRequest()
+        {
+            //Checkeamos campos obligatorios (o invalidos), en caso de faltar alguno, lanzamos excepcion
+            if ( event == null || !availableEventValues.contains(event) )
+            {
+                throw new IllegalArgumentException('Valor ' + (event != null ? event.toString() : 'NULO') + ' no valido para el campo event');
+            }
+            if ( ticketStatus == null || !availableTicketStatusValues.contains(ticketStatus) )
+            {
+                throw new IllegalArgumentException('Valor ' + (ticketStatus != null ? ticketStatus.toString() : 'NULO') + ' no valido para el campo ticketStatus');
+            }
+            if ( ticketSubStatus == null || !availableTicketSubStatusValues.contains(ticketSubStatus) )
+            {
+                throw new IllegalArgumentException('Valor ' + (ticketSubStatus != null ? ticketSubStatus.toString() : 'NULO') + ' no valido para el campo ticketSubStatus');
+            }
+            String req = '<v1:ticket>';
+            req += '<v1:ticketId>' + ticketId + '</v1:ticketId>';
+            req += '<v1:externalTicketId>' + externalTicketId + '</v1:externalTicketId>';
+            req += '<v1:event>' + event.toString() + '</v1:event>'; //no necesario nullcheck, se ha hecho en el if anterior
+            req += '<v1:ticketStatus>' + ticketStatus.toString() + '</v1:ticketStatus>'; //no necesario nullcheck, se ha hecho en el if anterior
+            req += '<v1:ticketSubStatus>' + ticketSubStatus.toString() + '</v1:ticketSubStatus>'; //no necesario nullcheck, se ha hecho en el if anterior
+            req += '<v1:subStatusDesc>' + subStatusDesc + '</v1:subStatusDesc>';
+            req += '<v1:agent>' + agent + '</v1:agent>';
+            req += '<v1:eventDate>' + eventDate.format(TicketingHegeoUtil.DATE_TIME_FORMATTER) + '</v1:eventDate>';
+            req += '<v1:eventReason>' + (eventReason != null ? eventReason.toString() : '') + '</v1:eventReason>';
+            req += '<v1:eventDesc>' + eventDesc + '</v1:eventDesc>';
+            req += '<v1:estimatedEndDate>' + (estimatedEndDate != null ? estimatedEndDate.format(TicketingHegeoUtil.DATE_TIME_FORMATTER) : '') + '</v1:estimatedEndDate>';
+            req += '<v1:comments>' + comments + '</v1:comments>';
+            if ( !quotesList.isEmpty() )
+            {
+                req += '<v1:quotesList>';
+                for (CanalUnicoQuote cuq: quotesList)
+                {
+                    req += cuq.buildRequest();
+                }
+                req += '</v1:quotesList>';
+            }
+            if ( !documentList.isEmpty() )
+            {
+                req += '<v1:documentList>';
+                for (CanalUnicoDocument cud : documentList)
+                {
+                    req += cud.buildRequest();
+                }
+                req += '</v1:documentList>';
+            }
+            req += '</v1:ticket>';
+            return req;
+        }
+
+    }
+
+    public class CanalUnicoQuote
+    {
+        /**
+         * Identificador de la cotización en Hegeo
+         */
+        public String externalQuoteId
+        {
+            get
+            {
+                return externalQuoteId != null ? externalQuoteId : '';
+            }
+            set;
+        }
+        /**
+         * Alias de la compañía. Por defecto: 'ZURICH'
+         *
+         * Tamaño máximo: 10
+         */
+        public String company
+        {
+            get
+            {
+                return company != null ? company : '';
+            }
+            set;
+        }
+        /**
+         * Código de producto
+         *
+         * Tamaño máximo: 20
+         */
+        public String modality
+        {
+            get
+            {
+                return modality != null ? modality : '';
+            }
+            set;
+        }
+        /**
+         * Forma de pago asociada a la cotización. Posibles valores:
+         * 0 - Única
+         * 1 - Anual
+         * 2 - Semestral
+         * 3 - Cuatrimestral
+         * 4 - Trimestral
+         * 6 – Bimestral
+         * 12 - Mensual
+         */
+        public String paymentType
+        {
+            get
+            {
+                return paymentType != null ? paymentType : '';
+            }
+            set;
+        }
+        /**
+         * Duración de la póliza. Campo obligatorio
+         */
+        public DateTime duration;
+        /**
+         * Valor de la prima neta anual. Campo obligatorio
+         */
+        public Decimal anualNetPremium;
+        /**
+         * Valor de la prima total anual. Campo obligatorio
+         */
+        public Decimal totalAnualReceipt;
+        /**
+         * Comentarios asociados a la cotización.
+         *
+         * Tamaño máximo: 1000
+         */
+        public String comments
+        {
+            get
+            {
+                return comments != null ? comments : '';
+            }
+            set;
+        }
+        /**
+         *
+         */
+        public String eventReason
+        {
+            get
+            {
+                return eventReason != null ? eventReason : '';
+            }
+            set;
+        }
+        /**
+         *
+         */
+        public String eventDesc
+        {
+            get
+            {
+                return eventDesc != null ? eventDesc : '';
+            }
+            set;
+        }
+        /**
+         * Lista de documentos adjuntos a la cotización
+         */
+        public List<CanalUnicoDocument> documentList
+        {
+            get
+            {
+                return documentList != null ? documentList : new List<CanalUnicoDocument>();
+            }
+            set;
+        }
+
+        /**
+         * Construye el cuerpo de la peticion para el elemento CanalUnicoQuote
+         *
+         * @author mario.navarro@seidor.com
+         * @date 21/03/2024
+         * @return retorna el string que contiene el cuerpo de la peticion SOAP
+         * @throws IllegalArgumentException en caso de que alguno de los campos obligatorios no este informado
+         */
+        public String buildRequest()
+        {
+            //Checkeamos campos obligatorios, en caso de faltar alguno, lanzamos excepcion
+            if (duration == null || anualNetPremium == null || totalAnualReceipt == null )
+            {
+                //Error
+                throw new IllegalArgumentException('Es imprescindible haber informado los campos "duration", "anualNetPremium" y "totalAnualReceipt"');
+            }
+            if ( String.isNotBlank(paymentType) && !availablePaymentTypeValues.contains(paymentType) )
+            {
+                throw new IllegalArgumentException('Valor ' + paymentType + ' no valido para el campo paymentType');
+            }
+            String req = '<v1:quote>';
+            req += '<v1:externalQuoteId>' + externalQuoteId + '</v1:externalQuoteId>';
+            req += '<v1:company>' + company + '</v1:company>';
+            req += '<v1:modality>' + modality + '</v1:modality>';
+            req += '<v1:paymentType>' + paymentType + '</v1:paymentType>';
+            req += '<v1:duration>' + duration.format(TicketingHegeoUtil.DATE_TIME_FORMATTER) + '</v1:duration>';
+            req += '<v1:anualNetPremium>' + anualNetPremium + '</v1:anualNetPremium>'; //ojo formato
+            req += '<v1:totalAnualReceipt>' + totalAnualReceipt + '</v1:totalAnualReceipt>'; //ojo formato
+            req += '<v1:comments>' + comments + '</v1:comments>';
+            req += '<v1:eventReason>' + eventReason + '</v1:eventReason>';
+            req += '<v1:eventDesc>' + eventDesc + '</v1:eventDesc>';
+            if ( !documentList.isEmpty() )
+            {
+                req += '<v1:documentList>';
+                for (CanalUnicoDocument cud : documentList)
+                {
+                    req += cud.buildRequest();
+                }
+                req += '</v1:documentList>';
+            }
+            req += '</v1:quote>';
+            return req;
+        }
+    }
+
+    public class CanalUnicoDocument
+    {
+        public String documentCode
+        {
+            get
+            {
+                return documentCode != null ? documentCode : '';
+            }
+            set;
+        }
+        public CanalUnicoAttachedDocument attachedDocument = new CanalUnicoAttachedDocument();
+
+        /**
+         * Construye el cuerpo de la peticion para el elemento CanalUnicoDocument
+         *
+         * @author mario.navarro@seidor.com
+         * @date 21/03/2024
+         * @return retorna el string que contiene el cuerpo de la peticion SOAP
+         */
+        public String buildRequest()
+        {
+            String req = '<v1:document>';
+            req += '<v1:documentCode>' + documentCode + '</v1:documentCode>';
+            req += attachedDocument.buildRequest();
+            req += '</v1:document>';
+            return req;
+        }
+    }
+
+    public class CanalUnicoAttachedDocument
+    {
+        public String fileName
+        {
+            get
+            {
+                return fileName != null ? fileName : '';
+            }
+            set;
+        }
+        public String mimeType
+        {
+            get
+            {
+                return mimeType != null ? mimeType : '';
+            }
+            set;
+        }
+        public String data
+        {
+            get
+            {
+                return data != null ? data : '';
+            }
+            set;
+        }
+        public String encoding
+        {
+            get
+            {
+                return encoding != null ? encoding : '';
+            }
+            set;
+        }
+
+        /**
+         * Construye el cuerpo de la peticion para el elemento CanalUnicoAttachedDocument
+         *
+         * @author mario.navarro@seidor.com
+         * @date 21/03/2024
+         * @return retorna el string que contiene el cuerpo de la peticion SOAP
+         */
+        public String buildRequest()
+        {
+            String req = '<v1:attachedDocument>';
+            req += '<v1:fileName>' + fileName + '</v1:fileName>';
+            req += '<v1:mimeType>' + mimeType + '</v1:mimeType>';
+            req += '<v1:data>' + data + '</v1:data>';
+            req += '<v1:encoding>' + encoding + '</v1:encoding>';
+            req += '</v1:attachedDocument>';
+            return req;
+        }
+    }
+}
