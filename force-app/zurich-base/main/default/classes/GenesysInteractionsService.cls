@@ -11,6 +11,7 @@ public with sharing class GenesysInteractionsService
 
     @TestVisible
     static final String MISSING_FIELDS_REQUIRED = 'Some required fields are missing';
+    static final String MISSING_FIELDS_ERROR =': searchType, filterBy and value. Payload: ';
     @TestVisible
     static final String FILTER_NOT_DEFINED = 'filterBy value not defined';
     @TestVisible
@@ -29,12 +30,23 @@ public with sharing class GenesysInteractionsService
     static final String PARTNER_SF_CODE = 'Policy__r.Partner__r.PartnerSFCode__c';
     static final String PARTNER_SECTOR = 'Policy__r.Partner__r.PartnerSector__c';
     static final String PARTNER_NAME = 'Policy__r.Partner__r.GrandparentBusinessName__c';
-    static final String INTERMEDIARY_CODE = 'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c';
-    static final String INTERMEDIARY_MOBILE_PHONE = 'Policy__r.IntermediaryId__r.MainMobilePhone__c';
-    static final String INTERMEDIARY_PHONE = 'Policy__r.IntermediaryId__r.Phone';
-    static final String INTERMEDIARY_MAIL = 'Policy__r.IntermediaryId__r.MainEmail__c';
-    static final String INTERMEDIARY_CHANNEL = 'Policy__r.IntermediaryId__r.Channel__c';
-    static final String INTERMEDIARY_SEGMENT = 'Policy__r.IntermediaryId__r.Segment__c';
+    static final String POLICY_INTERMEDIARY_CODE = 'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c';
+    static final String POLICY_INTERMEDIARY_MOBILE_PHONE = 'Policy__r.IntermediaryId__r.MainMobilePhone__c';
+    static final String POLICY_INTERMEDIARY_PHONE = 'Policy__r.IntermediaryId__r.Phone';
+    static final String POLICY_INTERMEDIARY_MAIL = 'Policy__r.IntermediaryId__r.MainEmail__c';
+    static final String POLICY_INTERMEDIARY_CHANNEL = 'Policy__r.IntermediaryId__r.Channel__c';
+    static final String POLICY_INTERMEDIARY_SEGMENT = 'Policy__r.IntermediaryId__r.Segment__c';
+    static final String INTERMEDIARY_MOBILE_PHONE = 'IntermediaryId__r.MainMobilePhone__c';
+    static final String INTERMEDIARY_PHONE = 'IntermediaryId__r.Phone';
+    static final String INTERMEDIARY_MAIL = 'IntermediaryId__r.MainEmail__c';
+    static final String INTERMEDIARY_CHANNEL = 'IntermediaryId__r.Channel__c';
+    static final String INTERMEDIARY_SEGMENT = 'IntermediaryId__r.Segment__c';
+    static final String INTERMEDIARY_CODE = 'IntermediaryId__r.INFOIntermediaryCode__c';
+    static final String PRODUCT_GROUP_DESCRIPTION = 'ProductId__r.GroupDescription__c';
+    static final String PARTNER_SECTOR = 'Partner__r.PartnerSector__c';
+    static final String PARTNER_SECTOR_CODE = 'Partner__r.PartnerSFCode__c';
+    static final String PARTNER_GRANDPARENT_BUSINESS_CODE = 'Partner__r.GrandparentBusinessName__c';
+    
     
     //#region Métodos públicos
 
@@ -306,7 +318,7 @@ public with sharing class GenesysInteractionsService
         if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) )
         {
             throw new GenesysPeopleServiceException(GenesysInteractionsService.class.getName() 
-            + MISSING_FIELDS_REQUIRED + ': searchType, filterBy and value. Payload: ' + request);
+            + MISSING_FIELDS_REQUIRED + MISSING_FIELDS_ERROR + request);
         }
 
         SearchResult results = new SearchResult();
@@ -423,16 +435,16 @@ public with sharing class GenesysInteractionsService
             },
             new List<String>
             {
-                'ProductId__r.GroupDescription__c',
-                'Partner__r.PartnerSector__c',
-                'Partner__r.PartnerSFCode__c',
-                'Partner__r.GrandparentBusinessName__c',
-                'IntermediaryId__r.MainMobilePhone__c',
-                'IntermediaryId__r.Phone',
-                'IntermediaryId__r.MainEmail__c',
-                'IntermediaryId__r.Channel__c',
-                'IntermediaryId__r.Segment__c', 
-                'IntermediaryId__r.INFOIntermediaryCode__c' 
+                PRODUCT_GROUP_DESCRIPTION,
+                PARTNER_SECTOR,
+                PARTNER_SECTOR_CODE,
+                PARTNER_GRANDPARENT_BUSINESS_CODE,
+                INTERMEDIARY_MOBILE_PHONE,
+                INTERMEDIARY_PHONE,
+                INTERMEDIARY_MAIL,
+                INTERMEDIARY_CHANNEL,
+                INTERMEDIARY_SEGMENT, 
+                INTERMEDIARY_CODE 
             }
         );
 
@@ -484,12 +496,12 @@ public with sharing class GenesysInteractionsService
                 PARTNER_SF_CODE, PARTNER_SECTOR,
                 PARTNER_NAME,
                 POLICY_NUMBER,
-                INTERMEDIARY_CODE, 
-                INTERMEDIARY_MOBILE_PHONE,
-                INTERMEDIARY_PHONE,
-                INTERMEDIARY_MAIL,
-                INTERMEDIARY_CHANNEL,
-                INTERMEDIARY_SEGMENT
+                POLICY_INTERMEDIARY_CODE, 
+                POLICY_INTERMEDIARY_MOBILE_PHONE,
+                POLICY_INTERMEDIARY_PHONE,
+                POLICY_INTERMEDIARY_MAIL,
+                POLICY_INTERMEDIARY_CHANNEL,
+                POLICY_INTERMEDIARY_SEGMENT
             }
         );
 
@@ -763,16 +775,16 @@ public with sharing class GenesysInteractionsService
             },
             new List<String>
             {
-                'ProductId__r.GroupDescription__c',
-                'Partner__r.PartnerSector__c',
-                'Partner__r.PartnerSFCode__c',
-                'IntermediaryId__r.MainMobilePhone__c',
-                'IntermediaryId__r.Phone',
-                'IntermediaryId__r.MainEmail__c',
-                'IntermediaryId__r.Channel__c',
-                'IntermediaryId__r.Segment__c',
-                'IntermediaryId__r.INFOIntermediaryCode__c',
-                'Partner__r.GrandparentBusinessName__c'
+                PRODUCT_GROUP_DESCRIPTION,
+                PARTNER_SECTOR,
+                PARTNER_SECTOR_CODE,
+                INTERMEDIARY_MOBILE_PHONE,
+                INTERMEDIARY_PHONE,
+                INTERMEDIARY_MAIL,
+                INTERMEDIARY_CHANNEL,
+                INTERMEDIARY_SEGMENT,
+                INTERMEDIARY_CODE,
+                PARTNER_GRANDPARENT_BUSINESS_CODE
             }
         );
 
@@ -804,16 +816,16 @@ public with sharing class GenesysInteractionsService
             },
             new List<String>
             {
-                'ProductId__r.GroupDescription__c',
-                'Partner__r.PartnerSector__c',
-                'Partner__r.PartnerSFCode__c',
-                'IntermediaryId__r.MainMobilePhone__c',
-                'IntermediaryId__r.Phone',
-                'IntermediaryId__r.MainEmail__c',
-                'IntermediaryId__r.Channel__c',
-                'IntermediaryId__r.Segment__c',
-                'IntermediaryId__r.INFOIntermediaryCode__c',
-                'Partner__r.GrandparentBusinessName__c'
+                PRODUCT_GROUP_DESCRIPTION,
+                PARTNER_SECTOR,
+                PARTNER_SECTOR_CODE,
+                INTERMEDIARY_MOBILE_PHONE,
+                INTERMEDIARY_PHONE,
+                INTERMEDIARY_MAIL,
+                INTERMEDIARY_CHANNEL,
+                INTERMEDIARY_SEGMENT,
+                INTERMEDIARY_CODE,
+                PARTNER_GRANDPARENT_BUSINESS_CODE
             }
         );
 
@@ -855,13 +867,13 @@ public with sharing class GenesysInteractionsService
                 POLICY_TYPE, POLICY_BRANCH,
                 PARTNER_SF_CODE, PARTNER_SECTOR,
                 PARTNER_NAME,
-                INTERMEDIARY_CODE,
+                POLICY_INTERMEDIARY_CODE,
                 POLICY_NUMBER,
-                INTERMEDIARY_MOBILE_PHONE,
-                INTERMEDIARY_PHONE,
-                INTERMEDIARY_MAIL,
-                INTERMEDIARY_CHANNEL,
-                INTERMEDIARY_SEGMENT
+                POLICY_INTERMEDIARY_MOBILE_PHONE,
+                POLICY_INTERMEDIARY_PHONE,
+                POLICY_INTERMEDIARY_MAIL,
+                POLICY_INTERMEDIARY_CHANNEL,
+                POLICY_INTERMEDIARY_SEGMENT
             }
         );
 
@@ -1042,7 +1054,7 @@ public with sharing class GenesysInteractionsService
         if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) )
         {
             throw new GenesysPeopleServiceException(GenesysInteractionsService.class.getName() 
-            + MISSING_FIELDS_REQUIRED + ': searchType, filterBy and value. Payload: ' + request);
+            + MISSING_FIELDS_REQUIRED + MISSING_FIELDS_ERROR + request);
         }
 
         SearchResultAuto results = new SearchResultAuto();
@@ -1080,7 +1092,7 @@ public with sharing class GenesysInteractionsService
         if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) )
         {
             throw new GenesysPeopleServiceException(GenesysInteractionsService.class.getName() 
-            + MISSING_FIELDS_REQUIRED + ': searchType, filterBy and value. Payload: ' + request);
+            + MISSING_FIELDS_REQUIRED + MISSING_FIELDS_ERROR + request);
         }
 
         SearchResultSabadell results = new SearchResultSabadell();
@@ -1258,14 +1270,14 @@ public with sharing class GenesysInteractionsService
                 PARTNER_SECTOR,
                 PARTNER_NAME,
                 //Datos del mediador
-                INTERMEDIARY_CODE,
+                POLICY_INTERMEDIARY_CODE,
                 'Policy__r.IntermediaryId__r.IntermediaryDescription__c',
                 'Policy__r.IntermediaryId__r.ClassDescription__c',
-                INTERMEDIARY_MOBILE_PHONE,
-                INTERMEDIARY_PHONE,
-                INTERMEDIARY_MAIL,
-                INTERMEDIARY_CHANNEL,
-                INTERMEDIARY_SEGMENT,
+                POLICY_INTERMEDIARY_MOBILE_PHONE,
+                POLICY_INTERMEDIARY_PHONE,
+                POLICY_INTERMEDIARY_MAIL,
+                POLICY_INTERMEDIARY_CHANNEL,
+                POLICY_INTERMEDIARY_SEGMENT,
                 'Policy__r.IntermediaryId__r.SegmentDescription__c',
                 //Datos del tomador
                 'Policy__r.PolicyHolder__r.Name',
