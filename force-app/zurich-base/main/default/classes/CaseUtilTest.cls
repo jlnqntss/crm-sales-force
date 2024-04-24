@@ -1674,4 +1674,54 @@ private with sharing class CaseUtilTest
 
         Assert.areEqual(expectedMap, resultMap);
     }
+
+     /**
+     * Test que comprueba que para un caso de rt ZRMInquiry al insertarlo con un usuario de comunidad ZRM se cambia el owner al usuario por defecto 
+     **
+     * @author dmunoz
+     * @date 24/04/2024
+     */
+    @isTest
+    private static void test_updateInquiryCaseOwnerOnZRMCreation_OK() {
+
+        // Obtener cliente
+        List<Account> clienteList = new List<Account>([SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'Customer' LIMIT 1]);
+
+        // Obtener mediador
+        Account intermediary = [SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'Intermediary' AND Name = 'MediadorTest' LIMIT 1];
+
+        // Inserto una poliza para que se cree el atm y el registro con el que vamos a relacionar el caso de retencion zrm
+        List<Policy__c> policyToInsert = TestDataFactory.generatePoliciesForEachAccount(clienteList, 1);
+        for (Policy__c policy: policyToInsert) {
+            policy.IntermediaryId__c = intermediary.Id;
+            policy.EndDate__c = System.today().addDays(10);
+        }
+
+        insert policyToInsert;
+
+        // Obtengo el usuario para ejecutar el test
+        User u = [SELECT Id FROM User WHERE Contact.AccountId = :intermediary.Id];
+
+        System.runAs(u) {
+            Test.startTest();
+
+            // Creo el caso y lo inserto
+            Id rtZRMid = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+
+            Case zrmCase = new Case();
+            zrmCase.PolicyId__c = policyToInsert.get(0).Id; 
+            zrmCase.RecordTypeId = rtZRMid;
+            zrmCase.Status = 'No iniciado';
+            zrmCase.IntermediaryId__c = intermediary.Id;
+            insert zrmCase;
+
+            Test.stopTest();
+        }
+
+        List<Case> zrmCaseList = new List<Case>([SELECT Id, OwnerId FROM Case WHERE Recordtype.DeveloperName = 'ZRMInquiry']);
+
+        Assert.isTrue(!zrmCaseList.isEmpty(), 'Se debe haber insertado un caso de retencion zrm');
+        Assert.isTrue(zrmCaseList.get(0).OwnerId != u.Id, 'El Owner del caso debe ser diferente al usuario que lo ha insertado');
+
+    }
 }

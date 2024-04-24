@@ -1961,5 +1961,61 @@ public with sharing class CaseUtil
         }
     }
 
-    
+    /**
+     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner  
+     * @author dmunoz
+     * @date 23/04/2024
+     * @param newList lista de elementos del trigger after insert
+     */
+    public static void updateInquiryCaseOwnerOnZRMCreation(List<Case> newList) {
+
+        List<Case> zrmCases = new List<Case>();
+        List<Case> caseToUpdateList = new List<Case>();
+        Case caseAux;
+
+         // 1º compruebo si existe en el trigger algun caso de zrm con que encuentre solo 1 me vale para lanzar las consultas solo cuando sea necesario
+         for (Case caseTrigger: newList) {
+            if (RT_ID_ZRMINQUIRY.equals(caseTrigger.RecordTypeId)) {
+                zrmCases.add(caseTrigger);
+            }
+        }
+
+        if (!zrmCases.isEmpty()) {
+            // Si el usuario logueado es uno de ZRM actualizo el owner de los casos del trigger
+            String loggedProfile = ProfilesSelector.getLoggedUserProfile();
+
+            // si el perfil es Agente Ventas o Agente Ventas - AGR del usuario logueado
+            if (ProfilesSelector.PROFILE_AGENTE_VENTAS.equals(loggedProfile) || ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR.equals(loggedProfile)) {
+                //3º Obtengo el usuario por defecto de ZRM
+                User defaultUser = getDefaultOwnerUser();
+
+                // Recorro los casos del trigger y cambio el owner solo a aquellos cuyo rt sea ZRMInquiry
+                for (Case caseToUpdate: zrmCases) {
+                    caseAux = new Case();
+                    caseAux.Id = caseToUpdate.Id;
+                    caseAux.OwnerId = defaultUser.Id;
+                    caseToUpdateList.add(caseAux);
+                }
+
+                update caseToUpdateList; 
+            }
+        }
+    }
+
+    /**
+     * Obtiene el usuario por defecto para asignarle la propiedad de las AccountRelationship
+     *
+     * @author fpalomo
+     * @date 09/02/2024
+     */
+    private static User getDefaultOwnerUser()
+    {
+        UsersSelector userSelector = new UsersSelector();
+        
+        List<User> defaultUsers = userSelector.findUsersByAlias(new List<String> {
+            Cross_Selling__c.getinstance().DefaultUser__c
+        });
+
+        return defaultUsers.get(0);
+    }   
 }
