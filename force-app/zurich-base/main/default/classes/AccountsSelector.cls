@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 10/04/2024
- * @last modified by  : rserrano
+ * @last modified on  : 22-04-2024
+ * @last modified by  : amiranda
  **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -1212,5 +1212,81 @@ public with sharing class AccountsSelector extends RecordsSelector
                         .addSubquery('Opportunities', 'StageName, BusinessCode__c')
                         .toQueryString();
         return query;
+    }
+
+    /**
+     * @description Método selector que recupera cuentas y los registros relacionados
+     * 'ContactPointPhones' y 'ContactPointEmails' en base a los 'Id' pasados por parámetro
+     * @author amiranda
+     * @date 16-04-2024
+     * @param accountIds Ids de las cuentas a recuperar
+     * @return List<Account> Lista de cuentas recuperadas de la BBDD
+     **/
+    public List<Account> selectByIdWithCPPhoneAndCPEmail(Set<String> accountIds)
+    {
+        List<Account> accounts = new List<Account>();
+
+        if ( accountIds != null && !accountIds.isEmpty() )
+        {
+            Set<Schema.SObjectField> accountFieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Account.Id
+            };
+
+            accounts = this.baseQuery
+                       .selectFields(accountFieldsToRetrieve)
+                       .addConditionIn(Account.Id, accountIds)
+                       .addSubQuery('ContactPointPhones', 'TelephoneNumber')
+                       .addSubQuery('ContactPointEmails', 'EmailAddress')
+                       .enforceSecurity()
+                       .run();
+        }
+
+        return accounts;
+    }
+
+
+    /**
+     * @description Método selector que recupera cuentas y los registros relacionados
+     * del objeto 'Opportunity' en base al tipo de registro y al email o el teléfono
+     * @author amiranda
+     * @date 16-04-2024
+     * @param contactPoints Conjunto de teléfonos y emails
+     * @param rtNames Conjunto de nombres de Record Types
+     * @return List<Account> Lista de cuentas recuperadas de la BBDD
+     **/
+    public List<Account> selectByRTNameAndPhoneAndEmailWithOpportunities(Set<String> contactPoints, Set<String> rtNames)
+    {
+        List<Account> accounts = new List<Account>();
+
+        if ( contactPoints != null && !contactPoints.isEmpty() )
+        {
+            Set<Schema.SObjectField> accountFieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Account.CreatedDate,
+                Account.PersonEmail,
+                Account.Phone
+            }
+            ;
+
+            Query.Condition orCondition = Query.doOr(
+                Query.conditionIn(Account.Phone, contactPoints),
+                Query.conditionIn(Account.PersonEmail, contactPoints)
+                );
+
+            this.baseQuery
+            .selectFields(accountFieldsToRetrieve)
+            .addCondition(orCondition)
+            .addSubQuery('Opportunities', 'AccountId, CreatedDate, StageName, BusinessCode__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c, ZRM__c');
+
+            if ( rtNames != null && !rtNames.isEmpty() )
+            {
+                this.baseQuery.addConditionEq(RT_NAME_FIELD, rtNames);
+            }
+            System.debug(this.baseQuery.toQueryString());
+            accounts = this.baseQuery.enforceSecurity().run();
+        }
+
+        return accounts;
     }
 }
