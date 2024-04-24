@@ -9,7 +9,7 @@
         <formula>PolicyId__r.PolicyHolder__r.PersonContactId</formula>
     </fieldOverrides>
     <fieldOverrides>
-        <field>IntermediaryId__c</field>
+        <field>IntermediaryVisibilityAcc__c</field>
         <formula>Policy__c.IntermediaryId__c</formula>
     </fieldOverrides>
     <label>Nuevo caso retención</label>
