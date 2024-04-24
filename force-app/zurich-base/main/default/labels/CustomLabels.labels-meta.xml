@@ -65,6 +65,13 @@
         <value>Quiero recibir comunicaciones</value>
     </labels>
     <labels>
+        <fullName>CaseZRMOpenedCase</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CaseZRMOpenedCase</shortDescription>
+        <value>There is already an open hold case for that policy. Case number:</value>
+    </labels>
+    <labels>
         <fullName>Claim</fullName>
         <categories>Record Type</categories>
         <language>en_US</language>

@@ -1531,4 +1531,111 @@ private with sharing class CaseUtilTest
         spr_sf__SocialPersona__c sprSocialPersonaAfterDeleted= [Select id,spr_sf__Contact__c from spr_sf__SocialPersona__c where id=: sprSocialPersona.id];
         System.assertEquals (null, sprSocialPersonaAfterDeleted.spr_sf__Contact__c, 'El contacto se debería haber borrado');
     }
+
+    @isTest
+    private static void test_checkIfPolicyHaveOpenZrmCase()
+    {
+        Id rtZrmInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        List<Account> accountRecord = [Select id, PersonContactId from Account where RecordType.DeveloperName = 'Customer' limit 1 ];
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accountRecord, 1);
+        for(Policy__c poliza : policies)
+        {
+            poliza.EndDate__c = System.today();
+        }
+
+        insert policies;
+
+        Case caseToLinkAccount = new Case();
+        caseToLinkAccount.RecordTypeId = rtZrmInquiryId;
+        caseToLinkAccount.AccountId = accountRecord[0].Id;
+        caseToLinkAccount.policyId__c = policies[0].Id;
+        insert caseToLinkAccount;
+
+        Boolean exceptionThrown = false;
+        Test.startTest();
+            //Creamos otro caso para que salte el AddError.
+            Case caseToLaunchError = new Case();
+                caseToLaunchError.RecordTypeId = rtZrmInquiryId;
+                caseToLaunchError.AccountId = accountRecord[0].Id;
+                caseToLaunchError.policyId__c = policies[0].Id;
+            Database.SaveResult sr = Database.insert(caseToLaunchError, false);
+        
+        
+        Test.stopTest();
+
+        Database.Error error = sr.getErrors()[0];
+        Assert.areEqual(true, error.getMessage().contains(Label.CaseZRMOpenedCase));
+    } 
+
+    @isTest
+    private static void test_getRelatedPolicyIds()
+    {
+        Id rtZrmInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+
+        List<Account> accountRecord = [Select id, PersonContactId from Account where RecordType.DeveloperName = 'Customer' limit 1 ];
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accountRecord, 10);
+        for(Policy__c poliza : policies)
+        {
+            poliza.EndDate__c = System.today();
+        }
+
+        insert policies;
+
+        List<Case> cases = new List<Case>();
+        Case c;
+        for (Integer i = 0; i < 10; i++) {
+            c = new Case();
+                c.RecordTypeId = rtOCSSprinklrId;
+                c.AccountId = accountRecord[0].Id;
+                c.policyId__c = policies[i].Id;
+            cases.add(c);
+        }
+
+        Integer expected = 0;
+        for (Integer i = 0; i < 5; i++) {
+            cases[i].recordTypeId = rtZrmInquiryId;
+            expected ++;
+        }
+        
+        Set<String> result;
+        Test.startTest();
+            result = CaseUtil.getRelatedPolicyifZRMIds(cases);
+        Test.stopTest();
+
+        Assert.areEqual(expected, result.size());
+    }
+
+    @isTest
+    private static void test_buildNotClosedZrmCasesByPolicyId()
+    {
+        Id rtZrmInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        List<Account> accountRecord = [Select id, PersonContactId from Account where RecordType.DeveloperName = 'Customer' limit 1 ];
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accountRecord, 5);
+        insert policies;
+
+        Map<String, Case> expectedMap = new Map<String, Case>();
+        Map<String, Case> resultMap = new Map<String, Case>();
+
+        List<Case> cases = new List<Case>();
+        Case c; 
+
+        for(Policy__c policy : policies)
+        {
+            c = new Case();
+            c.RecordTypeId = rtZrmInquiryId;
+            c.AccountId = accountRecord[0].Id;
+            c.policyId__c = policy.Id;
+            cases.add(c);
+            expectedMap.put(policy.Id, c);
+        }
+
+        Test.startTest();
+            resultMap = CaseUtil.buildNotClosedZrmCasesByPolicyId(cases);
+        Test.stopTest();
+
+        Assert.areEqual(expectedMap, resultMap);
+    }
 }
