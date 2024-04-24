@@ -16,13 +16,6 @@
             <section>Custom Links</section>
         </sections>
     </layouts>
-    <layouts>
-        <layout>Sprinklr Social Persona Layout</layout>
-        <sections>
-            <label></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
     <nameFieldLabel></nameFieldLabel>
     <quickActions>
         <label></label>
