@@ -4064,6 +4064,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.CampaignsURL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.CAR__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4695,6 +4700,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.AgenteOlimpia__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.TemporaryRnEmail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
