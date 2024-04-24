@@ -1490,6 +1490,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.Priority__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.ProductGroupDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
