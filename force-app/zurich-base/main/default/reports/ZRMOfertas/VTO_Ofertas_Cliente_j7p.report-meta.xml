@@ -68,6 +68,13 @@
             <operator>lessThan</operator>
             <value>TOMORROW</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity.Campaign__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>FALSE</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>

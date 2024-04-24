@@ -36,6 +36,11 @@ public without sharing class CaseHandler implements ITrigger
 
             CaseUtil.getQueuesSprinklr();
         }
+
+        //CV-1407 
+        //22-04-2024
+        //Iván García
+        CaseUtil.getZRMCasesRelatedToPolicy(newList);
     }
 
     /**
@@ -62,12 +67,14 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
         CaseUtil.updateTranscomCase(newList);
         CaseUtil.setSprinklrCaseTipification(newList);
+        CaseUtil.setSprinklrCaseSubject(newList);
         CaseUtil.shortDescriptionNeeded(newList);
         CaseUtil.setSprinklrCaseCallCenterAndGroup(newList);
         CaseUtil.applyFormatToZDABody(newList);
         CaseUtil.relateCasesByTicketId(newList);
         CaseUtil.relateCaseToCustomerByNifCif(newList);
         CaseUtil.relateCasesWithMediatedAccount(newList);
+        CaseUtil.checkIfPolicyHaveOpenZrmCase(newList);
     }
 
     /**
