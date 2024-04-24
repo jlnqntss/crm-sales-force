@@ -9,7 +9,7 @@
     <accessMappings>
         <accessLevel>Edit</accessLevel>
         <object>Case</object>
-        <objectField>IntermediaryId__c</objectField>
+        <objectField>IntermediaryVisibilityAcc__c</objectField>
         <userField>Contact.Account</userField>
     </accessMappings>
     <accessMappings>

@@ -15,7 +15,7 @@
     <accessMappings>
         <accessLevel>Edit</accessLevel>
         <object>Case</object>
-        <objectField>IntermediaryId__c.IntermediaryGroup__c</objectField>
+        <objectField>IntermediaryVisibilityAcc__c.IntermediaryGroup__c</objectField>
         <userField>Account.IntermediaryGroup__c</userField>
     </accessMappings>
     <accessMappings>
