@@ -51,6 +51,21 @@
             </connector>
             <label>OCS</label>
         </rules>
+        <rules>
+            <name>SAM</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>SAMInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DeleteAccountContactAssignment</targetReference>
+            </connector>
+            <label>SAM</label>
+        </rules>
     </decisions>
     <description>Para aquellos casos provenientes de Email-to-case se elimina la cuenta y contacto que el comportamiento por defecto de dicha funcionalidad informa. Esto es debido a que Salesforce busca en el conjunto de todos los contactos del sistema, sin importar su tipo o la visibilidad del usuario sobre dicho contacto. Si se desea informar estos campos, deberá hacerse un desarrollo para cada caso de uso en particular.
 https://help.salesforce.com/s/articleView?id=000385630&amp;type=1</description>

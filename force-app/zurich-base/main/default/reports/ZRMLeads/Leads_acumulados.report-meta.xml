@@ -4,13 +4,13 @@
         <field>ACCOUNT_NAME</field>
     </columns>
     <columns>
-        <field>Opportunity.SalesProcess__c</field>
-    </columns>
-    <columns>
         <field>Opportunity.IntermediaryCode__c</field>
     </columns>
     <columns>
-        <field>LEAD_SOURCE</field>
+        <field>Opportunity.PersonLeadSource__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.SalesProcess__c</field>
     </columns>
     <columns>
         <field>PHONE1</field>
@@ -97,6 +97,8 @@
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
+    <sortColumn>Opportunity.SalesProcess__c</sortColumn>
+    <sortOrder>Desc</sortOrder>
     <timeFrameFilter>
         <dateColumn>CLOSE_DATE</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>

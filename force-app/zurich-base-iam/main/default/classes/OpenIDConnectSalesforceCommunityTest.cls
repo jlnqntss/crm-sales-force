@@ -473,10 +473,10 @@ public with sharing class OpenIDConnectSalesforceCommunityTest {
     @isTest
     private static void testZRMAccountTeamMemberAgenteVentas() {
 
-        List<User> userZRM = new List<User>([SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = 'Agente Ventas' AND IsActive = true]);
+        List<User> userZRM = new List<User>([SELECT Id, Contact.AccountId FROM User WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS AND IsActive = true]);
 
         List<String> profileList = new List<String>();
-        profileList.add('Agente Ventas');
+        profileList.add(ProfilesSelector.PROFILE_AGENTE_VENTAS);
         
         if (!userZRM.isEmpty()) {
             // inserto una poliza al medidador del usuario encontrado

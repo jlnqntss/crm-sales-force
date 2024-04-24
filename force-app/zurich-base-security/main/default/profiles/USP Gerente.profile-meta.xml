@@ -5121,11 +5121,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.RevenuesPerEmployee__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.RuralUrban__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -15414,10 +15409,6 @@
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
-        <flow>TaskTrigger_AfterUpdate_BorrarTranscripcionesAntiguas</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
     <flowAccesses>
@@ -18431,10 +18422,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-AnalyticsDataManager</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-AppLauncher</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -18739,14 +18726,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-WaveHome</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-WaveHomeLightning</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-WorkBadge</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -18778,10 +18757,6 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>AccessContentBuilder</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AccountIQUser</name>
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
@@ -19589,10 +19564,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
-        <name>OpportunityIQUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
         <name>OpportunityScoreUser</name>
     </userPermissions>
     <userPermissions>
@@ -19726,10 +19697,6 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>SkipIdentityConfirmation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SocialInsightsLogoAdmin</name>
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>

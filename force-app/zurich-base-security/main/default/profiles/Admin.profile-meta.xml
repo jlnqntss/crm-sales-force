@@ -178,6 +178,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AvailableCasePicklistValuesByRtAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Batch_DeleteErrorLogs</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -4820,6 +4824,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.SAMCategory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.SMEConsultant__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6444,6 +6453,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Comentario__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.Commercial_Code__c</field>
         <readable>true</readable>
@@ -6690,6 +6704,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.ModifiedByGrandesPymes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.NetPremiumRating__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6751,6 +6770,56 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Priority</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByAssociation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByOlimpia__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByRatio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByRequested__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByStatusAnswered__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByStatusNewAssigned__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByStatus__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByUW__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Priority__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12068,6 +12137,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.PotentialMatch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.ProductBranch__c</field>
         <readable>true</readable>
@@ -13575,6 +13649,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Trigger_Setting__mdt.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.Area__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16557,6 +16636,10 @@
         <flow>SetExternalRequestRecordType</flow>
     </flowAccesses>
     <flowAccesses>
+        <enabled>true</enabled>
+        <flow>ZDACaseEscalationScreen</flow>
+    </flowAccesses>
+    <flowAccesses>
         <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
@@ -16599,6 +16682,10 @@
     <layoutAssignments>
         <layout>Account-Parent Account</layout>
         <recordType>Account.ParentAccount</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-SAM Partner</layout>
+        <recordType>Account.Partner_SAM</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Partner layout</layout>
@@ -16728,6 +16815,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-SAM Contact</layout>
+        <recordType>Contact.SAM_Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-OCS Contact</layout>
@@ -17348,9 +17439,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
-    </layoutAssignments>    
-    <layoutAssignments>
-        <layout>AccountRelationship__c-Account Relationship Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CloseOnCcMailboxList__mdt-CloseOnCcMailboxList Layout</layout>
@@ -19044,6 +19132,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>Account.Partner_SAM</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Account.Potential_Broker</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -19160,6 +19253,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Contact.LeadGI</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contact.SAM_Partner</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

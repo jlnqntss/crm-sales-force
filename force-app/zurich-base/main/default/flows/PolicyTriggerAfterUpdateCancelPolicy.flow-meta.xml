@@ -30,6 +30,20 @@
                 <stringValue>Closed Lost</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetRelatedOfferAction.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetRelatedOfferAction.InfoQuoteNumber__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.InfoQuoteNumber__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Es_Ventas</targetReference>
         </connector>
@@ -84,10 +98,17 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>GetRelatedOfferAction.Owner.Profile.Name</leftValueReference>
+                <leftValueReference>GetRelatedOfferAction.CreatedBy.Profile.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Agente Ventas</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetRelatedOfferAction.CreatedBy.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Agente Ventas - AGR</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -96,7 +117,7 @@
             <label>ZRM/CC</label>
         </rules>
     </decisions>
-    <description>[Ventas] Setear el motivo de pérdida con valor &quot;Póliza Anulada&quot; si la oferta pertenece a un Usuario CC o ZRM</description>
+    <description>Se añade el seteo de campos de oferta desde la póliza por el match de ofertas huérfanas cuando llega una póliza anulada (proceso batch) y corrección visibilidad</description>
     <environments>Default</environments>
     <interviewLabel>Póliza Trigger - After update - Anular Póliza {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Póliza Trigger - After update - Anular Póliza</label>

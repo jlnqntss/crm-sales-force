@@ -15,7 +15,7 @@ public with sharing class CampaignUtil {
      */
     public static void checkIntermediaryProfile(List<Campaign> listaCampanyas)
     {
-        Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {'Agente Ventas'});
+        Map<Id, Profile> listaPerfiles = ProfilesSelector.getProfilesByName(new List<String> {ProfilesSelector.PROFILE_AGENTE_VENTAS});
         if (listaPerfiles.keySet().contains(UserInfo.getProfileId()))
         {
             for (Campaign c: listaCampanyas)

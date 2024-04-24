@@ -22,6 +22,10 @@ public with sharing class CasesSelector extends RecordsSelector
     public static final String CASES_MODIFY_LAST_DATE = 'Case.LastModifiedDate = LAST_N_DAYS:';
     public static final String ACCOUNT_RT_NAME_FIELD = 'Case.Account.RecordType.DeveloperName';
     public static final String CONTACT_PERSON_ACCOUNT_FIELD = 'Case.Account.PersonContactId';
+    public static final String CASE_RT_NAME_FIELD = 'Case.RecordType.DeveloperName';
+    public static final String CASE_ZRM_RT_NAME = 'ZRMInquiry';
+    public static final String CASE_STATUS_WIN_CLOSED = 'Cerrado Ganado';
+    public static final String CASE_STATUS_LOOSE_CLOSED = 'Cerrado Perdido';
 
 
    
@@ -441,4 +445,39 @@ public with sharing class CasesSelector extends RecordsSelector
         
         return new List<Case>();
     }
+
+    /**
+     * Método que obtiene una lista de casos abiertos de Retenciones ZRM filtrados por las pólizas asociadas.
+     * @author ivan.garcia.belen@seidor.com
+     * @date 22/04/2024
+     * @param relatedPolicyIds identificadores de póliza a filtrar 
+    */
+    public List<Case> getNotClosedZrmCasesByRelatedPolicy (Set<String> relatedPolicyIds)
+    {
+        if(relatedPolicyIds != null && !relatedPolicyIds.isEmpty())
+        {
+            Query.Condition andCondition = Query.doAnd(
+                Query.conditionNotEq(Case.Status, CASE_STATUS_LOOSE_CLOSED),
+                Query.conditionNotEq(Case.Status, CASE_STATUS_WIN_CLOSED));
+                
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>
+            {
+                Case.Id,
+                Case.PolicyId__c,
+                Case.Status,
+                Case.CaseNumber
+
+            })
+            .addConditionIn(Case.PolicyId__c, relatedPolicyIds)
+            .addConditionEq(CASE_RT_NAME_FIELD, CASE_ZRM_RT_NAME)
+            .addCondition(andCondition);
+            
+        
+            return (List<Case>) this.baseQuery.run();
+        }
+
+        return new List<Case>();
+
+    }
+    
 }

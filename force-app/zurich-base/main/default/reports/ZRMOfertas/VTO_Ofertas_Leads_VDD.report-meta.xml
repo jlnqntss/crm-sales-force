@@ -10,7 +10,7 @@
         <field>Opportunity.IntermediaryCode__c</field>
     </columns>
     <columns>
-        <field>LEAD_SOURCE</field>
+        <field>Opportunity.PersonLeadSource__c</field>
     </columns>
     <columns>
         <field>PHONE1</field>

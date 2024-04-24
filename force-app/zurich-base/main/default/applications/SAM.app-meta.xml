@@ -43,18 +43,36 @@
     <profileActionOverrides>
         <actionName>View</actionName>
         <content>SAM_Partner_Default</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Partner_SAM</recordType>
+        <type>Flexipage</type>
+        <profile>SAM User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SAM_Partner_Default</content>
         <formFactor>Small</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.PartnerOCS</recordType>
+        <recordType>Account.Partner_SAM</recordType>
         <type>Flexipage</type>
-        <profile>Admin</profile>
+        <profile>SAM User</profile>
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
         <content>SAM_Partner_Default</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.PartnerOCS</recordType>
+        <recordType>Account.Partner_SAM</recordType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>View</actionName>
+        <content>SAM_Partner_Default</content>
+        <formFactor>Small</formFactor>
+        <pageOrSobjectType>Account</pageOrSobjectType>
+        <recordType>Account.Partner_SAM</recordType>
         <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
@@ -91,24 +109,6 @@
         <formFactor>Large</formFactor>
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Intermediary</recordType>
-        <type>Flexipage</type>
-        <profile>SAM User</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>SAM_Partner_Default</content>
-        <formFactor>Small</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.PartnerOCS</recordType>
-        <type>Flexipage</type>
-        <profile>SAM User</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>SAM_Partner_Default</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.PartnerOCS</recordType>
         <type>Flexipage</type>
         <profile>SAM User</profile>
     </profileActionOverrides>
