@@ -47,11 +47,18 @@
             <value>,App Submitted,Legit Lead,Quoted</value>
         </criteriaItems>
         <criteriaItems>
-            <column>CAMPAIGN_STATUS</column>
+            <column>CAMPAIGN_STARTDATE</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>In Progress</value>
+            <operator>lessOrEqual</operator>
+            <value>TODAY</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CAMPAIGN_ENDDATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>TODAY</value>
         </criteriaItems>
         <language>es</language>
     </filter>

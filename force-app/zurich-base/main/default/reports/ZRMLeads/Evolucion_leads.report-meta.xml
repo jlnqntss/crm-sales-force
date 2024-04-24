@@ -44,6 +44,13 @@
             <operator>equals</operator>
             <value>LAST_N_WEEKS:2</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Account$RecordType</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>PersonAccount.Lead</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
