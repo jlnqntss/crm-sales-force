@@ -61,6 +61,10 @@
         <name>CampaignCheckbox</name>
     </customLabels>
     <customLabels>
+        <label>Ya existe un caso de retención abierto para esa póliza. Número del caso:</label>
+        <name>CaseZRMOpenedCase</name>
+    </customLabels>
+    <customLabels>
         <label><!-- Claim --></label>
         <name>Claim</name>
     </customLabels>

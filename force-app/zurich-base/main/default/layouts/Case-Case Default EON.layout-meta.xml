@@ -119,6 +119,10 @@
                 <behavior>Edit</behavior>
                 <field>AutomaticNotifications__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Priority__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

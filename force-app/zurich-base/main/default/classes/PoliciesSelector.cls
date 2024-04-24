@@ -1,5 +1,8 @@
 public with sharing class PoliciesSelector extends RecordsSelector
 {
+
+    private static final String POLICY_INTERMEDIARY_GROUP = 'Policy__c.IntermediaryId__r.IntermediaryGroup__c';
+
     //#region Contructores
 
     public PoliciesSelector()
@@ -416,7 +419,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
                 Policy__c.Id,
                 Policy__c.PolicyHolder__c,
                 Policy__c.IntermediaryId__c
-            }).selectFields('Policy__c.IntermediaryId__r.IntermediaryGroup__c');
+            }).selectFields(POLICY_INTERMEDIARY_GROUP);
 
             this.baseQuery
                             .addConditionNotIn(Policy__c.Id, policiesToExclude)
@@ -479,7 +482,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
             result = this.baseQuery
                             .selectFields(fieldsToRetrieve)
                             .addConditionIn(Policy__c.PolicyHolder__c, policyHolderIdSet)
-                            .addConditionEq('Policy__c.IntermediaryId__r.IntermediaryGroup__c', intermediaryGroupId)
+                            .addConditionEq(POLICY_INTERMEDIARY_GROUP, intermediaryGroupId)
                             .addConditionEq(Policy__c.PolicyHolder__r.Blocked__c, false)
                             .addConditionEq(Policy__c.PolicyHolder__r.Anonymized__c, false)
                             .addConditionIn(Policy__c.PolicyStatus__c, new Set<String>{'V', 'A'})
@@ -591,5 +594,30 @@ public with sharing class PoliciesSelector extends RecordsSelector
 
         return result;
     }
-    
+
+    /**
+    * @description Método que devuelve una query en formato String para recuperar
+    * pólizas que sean 'match potenciales' (PotentialMatch__c = true)
+    *
+    * @author amiranda 
+    * @date 18-04-2024 
+    * @return String query en formato String
+    **/
+    public String getQueryStringPotentialMatchPolicies()
+    {
+        Set<Schema.SObjectField> fields = new Set<Schema.SObjectField>
+        {
+            Policy__c.PolicyHolder__c,
+            Policy__c.IntermediaryId__c,
+            Policy__c.CreatedDate
+        };
+
+        return this.baseQuery
+               .selectFields(fields)
+               .selectFields(POLICY_INTERMEDIARY_GROUP)
+               .selectField('ProductId__r.GroupCode__c')
+               .addConditionEq(Policy__c.PotentialMatch__c, true) 
+               .enforceSecurity()
+               .toQueryString();
+    }
 }

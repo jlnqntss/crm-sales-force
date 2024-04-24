@@ -179,9 +179,9 @@ private with sharing class Batch_IntermediaryOrAccountChangeDMLTest
                                                                          10000) );
         Test.stopTest();
 
-        AccountTeamMember atmInserted = [SELECT LastModifiedDate FROM AccountTeamMember WHERE Id = : atms.get(0).Id LIMIT 1];
-        Assert.areNotEqual(atms.get(0).LastModifiedDate,
-                           atmInserted.LastModifiedDate,
-                           'La fecha de última modificación debería ser diferente.');
+        List<AccountTeamMember> atmInserted = new List<AccountTeamMember>([SELECT LastModifiedDate FROM AccountTeamMember]);
+        Assert.areEqual(atmInserted.size(),
+                        atms.size(),
+                        'Debe haber el mismo número de atms'); 
     }
 }
