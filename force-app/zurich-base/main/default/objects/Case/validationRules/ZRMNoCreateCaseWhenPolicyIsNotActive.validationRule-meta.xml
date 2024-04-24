@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRMNoCreateCaseWhenPolicyIsNotActive</fullName>
+    <active>true</active>
+    <description>No se permite que se cree un caso de ZRM cuando una póliza no está activa.</description>
+    <errorConditionFormula>AND(
+				ISNEW(),
+    RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
+    TEXT(PolicyId__r.PolicyStatus__c) != &apos;V&apos;
+)</errorConditionFormula>
+    <errorMessage>La póliza debe de estar en Vigor para crear un caso de retención.</errorMessage>
+</ValidationRule>

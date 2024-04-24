@@ -1,4 +1,13 @@
-public with sharing class EventSelector {
+public with sharing class EventSelector extends RecordsSelector {
+
+
+    //#region Contructores
+
+    public EventSelector()
+    {
+        super( Event.getSObjectType() );
+    }
+
     
 
     /**Recuperar la información del evento y sus attendees
@@ -51,6 +60,30 @@ public with sharing class EventSelector {
         } 
 
         return result;
+    }
+
+
+    /**
+     * Método que devuelve los eventos relacionadas con los registros de whatId
+     * @author ivan
+     * @date 12/04/2024
+     * @return Lista de Tareas relacionadas con
+     */
+    public List<Event> getRelatedEventsFromRecord(List<String> recordIds) {
+        List<Event> result = new List<Event>();
+
+        if (recordIds != null && !recordIds.isEmpty()) {
+
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Event.Id,
+                Event.WhatId
+            })
+            .addConditionIn(Event.WhatId, recordIds);
+    
+            result = this.baseQuery.enforceSecurity().run();
+        } 
+        
+        return result;        
     }
 
 }

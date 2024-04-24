@@ -3180,6 +3180,7 @@ public class TestDataFactory
                         PolicyHolder__c = relatedOpportunity.AccountId,
                         InfoPolicyNumber__c = String.valueOf(policyNumber).leftPad(14, '0'),
                         OpportunityName__c = relatedOpportunity.Id,
+                        InfoQuoteNumber__c = relatedOpportunity.InfoQuoteNumber__c,
                         PolicyStatus__c = 'V'
                     )
                 );

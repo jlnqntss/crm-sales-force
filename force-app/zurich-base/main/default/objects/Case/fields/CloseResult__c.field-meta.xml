@@ -348,6 +348,16 @@
                 <default>false</default>
                 <label>No realizado - Caso Duplicado</label>
             </value>
+            <value>
+                <fullName>Ajuste prima renovación realizado</fullName>
+                <default>false</default>
+                <label>Ajuste prima renovación realizado</label>
+            </value>
+            <value>
+                <fullName>Ajuste prima renovación denegado</fullName>
+                <default>false</default>
+                <label>Ajuste prima renovación denegado</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
@@ -787,6 +797,14 @@
         <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>No realizado - Derivado otras áreas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Ajuste prima renovación realizado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Ajuste prima renovación denegado</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Retención</controllingFieldValue>

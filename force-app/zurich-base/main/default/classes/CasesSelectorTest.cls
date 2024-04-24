@@ -391,4 +391,32 @@ private with sharing class CasesSelectorTest
         System.assertEquals(matchedRecords.size(), 1, 'no devuelve el número de registros correcto');
         System.assertEquals(matchedRecords[0].ControlEmailCC__c,true);
     }
+
+    @isTest
+    private static void test_getNotClosedZrmCasesByRelatedPolicy()
+    {
+        Id rtZrmInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        List<Account> accountRecord = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 1);
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accountRecord, 1);
+        Set<String> policiesIds = new Set<String>();
+
+        policies[0].EndDate__c = System.today();
+
+        insert policies;
+        Case caso = [SELECT Id From Case LIMIT 1];
+
+        caso.PolicyId__c = policies[0].Id;
+        caso.recordTypeId = rtZrmInquiryId;
+
+        update caso;
+
+        policiesIds.add(policies[0].Id);
+
+        Test.startTest();
+            List<Case> cases = new CasesSelector().getNotClosedZrmCasesByRelatedPolicy(policiesIds);
+        Test.stopTest();
+
+        Assert.areEqual(1, cases.size());
+    }
 }
