@@ -4,12 +4,55 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
+                    <name>actionNames</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>CustomButton.Event.Acta</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!Record.ActaLink__c}</leftValue>
+                                    <operator>NE</operator>
+                                    <rightValue>&lt;a href=&quot;/&quot; target=&quot;_parent&quot;&gt; &lt;/a&gt;</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Event.NuevoActa</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!Record.ActaLink__c}</leftValue>
+                                    <operator>EQUAL</operator>
+                                    <rightValue>&lt;a href=&quot;/&quot; target=&quot;_parent&quot;&gt; &lt;/a&gt;</rightValue>
+                                </criteria>
+                            </visibilityRule>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Event.Generar_Acta_PDF</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Edit</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Delete</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>FeedItem.TextPost</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>FeedItem.ContentPost</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>FeedItem.PollPost</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>collapsed</name>
                     <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>enableActionsConfiguration</name>
-                    <value>false</value>
+                    <value>true</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>enableActionsInNative</name>

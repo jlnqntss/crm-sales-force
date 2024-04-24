@@ -2,21 +2,49 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 04-24-2023
- * @last modified by  : aberuete
+ * @last modified on  : 08-04-2024
+ * @last modified by  : amiranda
  **/
 public with sharing class OpportunityUtil
 {
+    // #region Constants
+
+    private static final String FIELD_OWNER_ID = 'OwnerId';
+    private static final String FIELD_STAGE = 'StageName';
     private static final String CLASS_NAME = 'OpportunityUtil';
+    
+    // #endregion
+
+    // #region Public variables
+
     public static Map<Id, Profile> listaPerfiles; //Mapa de perfiles especiales a los que se les permite bypasear ciertas reglas de validación
     public static Map<Id, String> mapAccountRecordTypes; //Mapa de Accounts con sus respectivos RecordType.DeveloperName
+    public static Map<Id, String> mapOldAccountRecordTypes; //Mapa de Accounts con sus respectivos RecordType.DeveloperName
     public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
-    static final String FIELD_OWNER_ID = 'OwnerId';
-    static final String FIELD_STAGE = 'StageName';
+    public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Ofertas
+
+    // #endregion
+
+    // #region Private variables
+
     private static List<String> nombresPerfilesVentas; // perfiles de la app ventas y zrm que muestra otro mensaje de error para la validación de cerrada ganada
     private static String userLoggedProfile; // query que obtiene el nombre del perfil del usuario logeado
-    private final static String CRM_VENTAS_PROFILE = 'Ventas User';
-    public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Ofertas
+    @testVisible 
+    private static List<Scope_Setting__mdt> scopeSettingsMetadata
+    {
+        get
+        {
+            if (scopeSettingsMetadata == null)
+            {
+                scopeSettingsMetadata = Scope_Setting__mdt.getAll().values();
+            }
+
+            return scopeSettingsMetadata;
+        }
+        set;
+    }
+
+    // #endregion
 
 
     /**
@@ -36,7 +64,7 @@ public with sharing class OpportunityUtil
         listaUsuarios = ( new UsersSelector() ).getUsersByName(nombresUsuarios);
 
         // Perfiles Ventas
-        nombresPerfilesVentas = new List<String> {'Agente Ventas', 'Ventas User'};
+        nombresPerfilesVentas = new List<String> {ProfilesSelector.PROFILE_AGENTE_VENTAS, ProfilesSelector.PROFILE_VENTAS_USER};
         userLoggedProfile = ProfilesSelector.getLoggedUserProfile();
     }
 
@@ -80,17 +108,61 @@ public with sharing class OpportunityUtil
     }
 
     /**
+     * Inicializa un mapa de Ids de Account y RecordType.DeveloperName para realizar cálculos antes de la inserción
+     *
+     * @author nts (jfherrero)
+     * @date 15/09/2023
+     * @trigger bulkBefore
+     */
+    public static void initMapOfAccountRecordTypesTriggerOld(List<Opportunity> oldList)
+    {
+        mapOldAccountRecordTypes = new Map<Id, String>();
+        Set<Id> accountIds = new Set<Id>();
+
+        if (oldList == null || oldList.isEmpty())
+        {
+            return;
+        }
+
+        for (Opportunity opp : oldList)
+        {
+            accountIds.add(opp.AccountId);
+        }
+
+        List<Account> oppAccounts = new AccountsSelector().selectById(accountIds);
+
+        if (oppAccounts == null || oppAccounts.isEmpty())
+        {
+            return;
+        }
+        
+        for (Opportunity opp : oldList)
+        {
+            for (Account acc : oppAccounts)
+            {
+                if (opp.AccountId == acc.Id)
+                {
+                    mapOldAccountRecordTypes.put(acc.Id, acc.RecordType.DeveloperName);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * Método que rellena el mapa que contiene la relación entre Business Code y Scopes
      *
      * @author arcortazar
      * @date 21/12/2023
+     * 
+     * @change amiranda 08/04/2024 Los registros del Custom Metadata 'Scope_Setting__mdt'
+     * pasan a almacenarse en una variable estática con lógica en su getter.
      */
     public static void fillMapBusinessCode ()
     {
         mapBusinessCodes = new Map<String, String>();
-        List<Scope_Setting__mdt> scopeSettingsMapping = Scope_Setting__mdt.getAll().values();
 
-        for(Scope_Setting__mdt scope : scopeSettingsMapping)
+        for(Scope_Setting__mdt scope : scopeSettingsMetadata)
         {
             mapBusinessCodes.put(scope.BusinessCode__c, scope.Scope__c);
         }
@@ -115,11 +187,11 @@ public with sharing class OpportunityUtil
             {
                 optysToGenerateScope.add(opty);
             }
+        }
 
-            if( !optysToGenerateScope.isEmpty() )
-            {
-                GenerateScopeUtil.generateScopeEvents('AccountId', 'BusinessCode__c', optysToGenerateScope);
-            }
+        if( !optysToGenerateScope.isEmpty() )
+        {
+            GenerateScopeUtil.generateScopeEvents('AccountId', 'BusinessCode__c', optysToGenerateScope);
         }
     }
 
@@ -141,6 +213,50 @@ public with sharing class OpportunityUtil
             if( o.AccountId != oldMap.get(o.Id).AccountId )
             {
                 o.OldAccountId__c = oldMap.get(o.Id).AccountId;
+            }
+        }
+    }
+
+    /**
+     * Informa los siguientes campos para oportunidades en las que se haya cambiado el mediador o cliente (los cambios de lead a cliente o lead a lead no se tienen en cuenta)
+     *
+     * @author fpalomo
+     * @date 08/04/2024
+     */
+    public static void handleAccountOrIntermediaryChange(List<Opportunity> newList, Map<Id, Opportunity> oldMap)
+    {
+        for(Opportunity oppNew : newList)
+        {
+            if (String.isNotEmpty(oppNew.AccountId) && String.isNotEmpty(oppNew.IntermediaryId__c) && !oppNew.Blocked__c && !oppNew.Anonymized__c) {
+
+                Opportunity oppOld = oldMap.get(oppNew.Id);
+    
+                String oldAccountRT = mapOldAccountRecordTypes.get(oppOld.AccountId);
+                String newAccountRT = mapAccountRecordTypes.get(oppNew.AccountId);
+    
+                // Si el RecordType de la cuenta es nulo o tipo lead no hacemos nada
+                if (oldAccountRT == null || newAccountRT == null || oldAccountRT == AccountLeadUtil.LEAD || newAccountRT == AccountLeadUtil.LEAD)
+                {
+                    continue;
+                }
+    
+                // AccountId
+                if (oppNew.AccountId != oppOld.AccountId)
+                {
+                    oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_CLIENTE;
+                    oppNew.LastAccountId__c = oppOld.AccountId;
+                    oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
+                    oppNew.VisibilityRetry__c = 0;
+                }
+    
+                // Mediador
+                else if (oppOld.IntermediaryId__c != oppNew.IntermediaryId__c)
+                {
+                    oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_MEDIADOR;
+                    oppNew.LastAccountId__c = oppOld.IntermediaryId__c;
+                    oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
+                    oppNew.VisibilityRetry__c = 0;
+                }
             }
         }
     }
@@ -262,7 +378,7 @@ public with sharing class OpportunityUtil
             }
 
             // fpalomo - 10/10/2023 - CV-671
-            if ( oldOpty.StageName.equalsIgnoreCase('Legit Lead') && newOpty.StageName.equalsIgnoreCase('App Submitted') && userLoggedProfile.equalsIgnoreCase(CRM_VENTAS_PROFILE) )
+            if ( oldOpty.StageName.equalsIgnoreCase('Legit Lead') && newOpty.StageName.equalsIgnoreCase('App Submitted') && userLoggedProfile.equalsIgnoreCase(ProfilesSelector.PROFILE_VENTAS_USER) )
             {
                 newOpty.OwnerId = UserInfo.getUserId();
             }
@@ -415,6 +531,28 @@ public with sharing class OpportunityUtil
         catch (Exception e)
         {
             ErrorLogUtil.commitError(e, CLASS_NAME);
+        }
+    }
+
+    /**
+    * @description Método que marca la oportunidad para ser revisada por un
+    * proceso asíncrono en busca de coincidencias, siempre y cuando esta haya
+    * sido generada desde INFO y pertenezca a ZRM.
+    *
+    * @author amiranda
+    * @date 04-04-2024 
+    * @param List<Opportunity> Lista de oportunidades que van a ser insertadas 
+    **/
+    public static void identifyPotentialMatches(List<Opportunity> newOpportunities)
+    {
+        for (Opportunity newOpportunity : newOpportunities)
+        {
+            // Se comprueba que la acción DML de inserción la desencadena el batch de Exteral Request y que el registro pertenece al aplicativo ZRM
+            if ( String.isNotBlank(ExternalJobQueueBatch.className) &&
+                 (String.isBlank(newOpportunity.BusinessCode__c) || mapBusinessCodes?.get(newOpportunity.BusinessCode__c) == 'Ventas') )
+            {
+                newOpportunity.PotentialMatch__c = true;
+            }
         }
     }
 }

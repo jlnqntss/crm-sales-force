@@ -3,6 +3,47 @@ public class PolicyUtil
     private static final string CLASS_NAME = 'PolicyUtil';
     private static final string AGENTEVENTA_PROFILE = 'Agente Ventas';
     private static final string AGENTEVENTAAGR_PROFILE = 'Agente Ventas - AGR';
+    public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Polizas
+    private static final string ZRM_SCOPE = 'Ventas'; //Scope de las polizas de ZRM
+
+    /**
+     * Método que rellena el mapa que contiene la relación entre Business Code y Scopes
+     *
+     * @author Iván García
+     * @date 08/04/2024
+     */
+    public static void fillMapBusinessCode ()
+    {
+        mapBusinessCodes = new Map<String, String>();
+        List<Scope_Setting__mdt> scopeSettingsMapping = Scope_Setting__mdt.getAll().values();
+
+        for(Scope_Setting__mdt scope : scopeSettingsMapping)
+        {
+            mapBusinessCodes.put(scope.BusinessCode__c, scope.Scope__c);
+        }
+    }
+
+    /**
+     * @description Método que marca la poliza para ser revisada por un
+     * proceso asíncrono en busca de coincidencias, siempre y cuando pertenezca a ZRM.
+     *
+     * @author igarcia
+     * @date 09-04-2024
+     * @param List<Policy> Lista de polizas que van a ser insertadas
+     **/
+    public static void identifyPotentialMatches(List<Policy__c> newList)
+    {
+        for (Policy__c policy : newList)
+        {
+
+            //Se comprueba que el registro pertenece al aplicativo ZRM y no tenga ninguna oferta enlazada
+            if ( String.isBlank(policy.OpportunityName__c) &&
+                 ( mapBusinessCodes?.get(policy.BusinessCode__c) == (ZRM_SCOPE) || String.isBlank(policy.BusinessCode__c) ) )
+            {
+                policy.PotentialMatch__c = true;
+            }
+        }
+    }
 
     /**
      * Método que controla la generación del scope correspondiente
@@ -49,7 +90,46 @@ public class PolicyUtil
         }
     }
 
-
+    /**
+     * Informa los siguientes campos para pólizas en las que se haya cambiado el mediador o cliente
+     *
+     * @author fpalomo
+     * @date 08/04/2024
+     */
+    public static void handlePolicyHolderOrIntermediaryChange(List<Policy__c> newList, Map<Id, Policy__c> oldMap)
+    {
+        for(Policy__c policyNew : newList)
+        {   
+            if (String.isNotEmpty(policyNew.IntermediaryId__c) && String.isNotEmpty(policyNew.PolicyHolder__c) &&
+                    ( 'A'.equals(policyNew.PolicyStatus__c) || 'V'.equals(policyNew.PolicyStatus__c) )
+                    && !policyNew.Blocked__c && !policyNew.Anonymized__c) // solo procesamos cambios sobre polizas no bloqueadas y en vigor o anuladas que tengan mediador y cliente
+            {
+                Policy__c policyOld = oldMap.get(policyNew.Id);
+    
+                // AccountId
+                if (policyNew.PolicyHolder__c != policyOld.PolicyHolder__c)
+                {
+                    policyNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_CLIENTE;
+                    policyNew.LastAccountId__c = policyOld.PolicyHolder__c;
+                }
+    
+                // Mediador
+                else if (policyOld.IntermediaryId__c != policyNew.IntermediaryId__c)
+                {
+                    policyNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_MEDIADOR;
+                    policyNew.LastAccountId__c = policyOld.IntermediaryId__c; 
+                }
+    
+                // Estos dos campos se rellenan de la misma forma para cualquiera de los dos casos posibles
+                if (policyOld.LastAccountId__c != policyNew.LastAccountId__c)
+                {
+                    policyNew.LastDateIntermediaryOrAccountChange__c = System.today();
+                    policyNew.VisibilityRetry__c = 0;
+                }                
+            }
+        }
+    }
+    
     /******************************* Métodos principales Visibilidad ZRM ******************************************************/
 
     /**
@@ -83,106 +163,5 @@ public class PolicyUtil
         {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
-
-    }
-
-
-    /**
-     * Metodo que calcula atm para los escenarios de cambio de mediador o tomador
-     *
-     *
-     * @author dmunoz
-     * @date 21/02/2024
-     */
-    public static void zrmVisibilityUpdatePolicy(List<Policy__c> newList, Map<Id, Policy__c> oldMap)
-    {
-
-        // 1º Obtener polizas a procesar (cambio tomador o cambio mediador) <TipoCambio, List<Policy__c>>
-        Map<String, List<Policy__c> > policiesToProcess = getPoliciesToProcessAfterUpdate(newList, oldMap);
-
-        // 2º Proceso recalculo mediador
-        ZRMPolicyVisibilityUtil.atmsIntermediaryChangeToProcess(policiesToProcess, oldMap);
-
-        // 3º Proceso recalculo tomador, borra e inserta atm y recalcula competencias y cuentas relacionadas
-        ZRMPolicyVisibilityUtil.atmsPolicyHolderChangeToProcess(policiesToProcess, oldMap);
-    }
-
-
-    /**
-     * Método que recorre los elementos del trigger y nos quedamos solo con los que queremos <TipoCambio, List<Policy__c>>
-     *
-     *
-     * @author dmunoz
-     * @date 21/02/2024
-     */
-    private static Map<String, List<Policy__c> > getPoliciesToProcessAfterUpdate(List<Policy__c> newList, Map<Id, Policy__c> oldMap)
-    {
-        Map<String, List<Policy__c> > result = new Map<String, List<Policy__c> >();
-        List<Policy__c> policiesWithIntermediariesChanges = new List<Policy__c>();
-        List<Policy__c> policiesWithPolicyHolderChanges = new List<Policy__c>();
-
-        if ( newList != null && !newList.isEmpty() )
-        {
-            for (Policy__c policy: newList)
-            {
-                if (String.isNotEmpty(policy.IntermediaryId__c) && String.isNotEmpty(policy.PolicyHolder__c) &&
-                    ( 'A'.equals(policy.PolicyStatus__c) || 'V'.equals(policy.PolicyStatus__c) )
-                    && !policy.Blocked__c && !policy.Anonymized__c) // solo procesamos cambios sobre polizas no bloqueadas y en vigor o anuladas que tengan mediador y cliente
-                {
-                    if ( isPolicyHolderChanged(policy, oldMap) )
-                    {
-                        policiesWithPolicyHolderChanges.add(policy);
-                    }
-                    else if ( isIntermediaryChanged(policy, oldMap) )
-                    {
-                        policiesWithIntermediariesChanges.add(policy);
-                    }
-                }
-            }
-        }
-
-        result.put('PoliciesWithIntermediariesChanges', policiesWithIntermediariesChanges);
-        result.put('PoliciesWithPolicyHolderChanges', policiesWithPolicyHolderChanges);
-
-        return result;
-    }
-
-
-    /**
-     * Comprobamos si la polizas ha sufrido un cambio de tomador
-     *
-     *
-     * @author dmunoz
-     * @date 21/02/2024
-     */
-    private static Boolean isPolicyHolderChanged(Policy__c policy, Map<Id, Policy__c> oldMap)
-    {
-        Boolean result = false;
-
-        if ( policy.PolicyHolder__c != null && !policy.PolicyHolder__c.equals(oldMap.get(policy.Id).PolicyHolder__c) )
-        {
-            result = true;
-        }
-
-        return result;
-    }
-
-    /**
-     * Comprobamos si la polizas ha sufrido un cambio de mediador
-     *
-     *
-     * @author dmunoz
-     * @date 21/02/2024
-     */
-    private static Boolean isIntermediaryChanged(Policy__c policy, Map<Id, Policy__c> oldMap)
-    {
-        Boolean result = false;
-
-        if ( policy.IntermediaryId__c != null && !policy.IntermediaryId__c.equals(oldMap.get(policy.Id).IntermediaryId__c) )
-        {
-            result = true;
-        }
-
-        return result;
     }
 }

@@ -1270,6 +1270,64 @@ public with sharing class SystemUtil
     {}
 
     /**
+     * Realiza un callout al UI-API para obtener los picklist values dado un recordtype, campo y objeto concreto
+     *
+     * @author mario.navarro@seidor.com
+     * @date 15/04/2024
+     * @param objectName api name del objeto del que obtener los valores del picklist
+     * @param fieldName api name del campo del que obtener los valores del picklist
+     * @param recordTypeId identificador del recordtype del que obtener los valores del picklist
+     * @return un mapa cuya clave es el API name y el valor es el label del picklist en cuestion
+     */
+    public static Map<String, String> getPicklistValuesByRecordtype(String objectName, String fieldName, String recordTypeId)
+    {
+        String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
+        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId + '/' + fieldName;
+
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.setEndpoint(endpoint);
+        httpRequest.setMethod('GET');
+
+        String sesionId = UserInfo.getSessionId();
+        httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
+
+        List<String> listControllers;
+        Map<String, String> mapPicklistValues = new Map<String, String>(); // el retorno
+
+        try
+        {
+            Http http = new Http();
+            HttpResponse httpResponse = http.send(httpRequest);
+            if (httpResponse.getStatusCode() == 200 )
+            {
+                String jsonString = httpResponse.getBody();
+                Map<String, Object> resultado = (Map<String, Object>) JSON.deserializeUntyped(jsonString);
+
+                // Lista de objetos
+                List<Object> picklistElements = (List<Object>) resultado.get('values');
+
+                for(Object val: picklistElements)
+                {
+                    Map<String, Object> picklistElement = (Map<String, Object>) val;
+                    String label = (String) picklistElement.get('label');
+                    String apiName = (String) picklistElement.get('value');
+                    mapPicklistValues.put(apiName, label);
+                }
+            }
+            else
+            {
+                throw new CalloutException( httpResponse.getBody() );
+            }
+        }
+        catch( System.Exception e)
+        {
+            throw e;
+        }
+
+        return mapPicklistValues;
+    }
+
+    /**
      * Método que devuelve los valores que controlan una picklist dependiente, segun su recordType.
      * Es decir, si le solicitamos el campo N3 que depente del N2 obtendremos un mapa con la siguiente estructura:
      *  {N3_1=(N2_1, N2_2), N3_2=(N2_3), N3_3=(N2_1, N2_2, N2_4),....}

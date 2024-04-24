@@ -2,7 +2,7 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 21-03-2024
+ * @last modified on  : 23-04-2024
  * @last modified by  : amiranda
  **/
 public with sharing class AccountsSelector extends RecordsSelector
@@ -941,6 +941,31 @@ public with sharing class AccountsSelector extends RecordsSelector
             ];
     }
 
+    /**
+     * Busca cuentas de MEDIADORES a partir del principal email (MainEmail__c)
+     *
+     * @author mario.navarro@seidor.com
+     * @date 10/04/2024
+     * @param emails lista de emails a buscar
+     * @return la lista de cuentas encontradas
+     */
+    public List<Account> findIntermediariesByMainEmail(Set<String> emails)
+    {
+        if ( emails == null || emails.isEmpty() )
+        {
+            return new List<Account>();
+        }
+
+        String intermediaryRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Intermediary').getRecordTypeId();
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+            Account.MainEmail__c
+        })
+        .addConditionEq(Account.RecordTypeId,intermediaryRecordTypeId)
+        .addConditionIn(Account.MainEmail__c, emails);
+
+        return (List<Account>) this.baseQuery.run();
+    }
+
 
 
     /**
@@ -1086,17 +1111,28 @@ public with sharing class AccountsSelector extends RecordsSelector
 
     /**
      * Consultar agrupaciones para una lista de ids de mediadores
-     *
+     *  Query: SELECT Id, IntermediaryGroup__c FROM Account WHERE Id IN :intermediariesIds
      * @author dmunoz
      * @date 12/2/2024
      * @return List<Account> Listado de mediadores con su agrupación
      */
-    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesPolicySet) {
+    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesIds) {
         List<Account> result = new List<Account>();
 
-        if (intermediariesPolicySet != null && !intermediariesPolicySet.isEmpty()) {
-            result = new List<Account>([SELECT Id, IntermediaryGroup__c FROM Account WHERE Id IN :intermediariesPolicySet]);
-        }
+        if (intermediariesIds != null && !intermediariesIds.isEmpty()) {
+
+            Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Account.Id,
+                Account.IntermediaryGroup__c
+            };
+
+            result = this.baseQuery
+                            .selectFields(fieldsToRetrieve)
+                            .addConditionIn(Account.Id, intermediariesIds)
+                            .enforceSecurity()
+                            .run();
+        }        
 
         return result;
     }
@@ -1107,14 +1143,15 @@ public with sharing class AccountsSelector extends RecordsSelector
      *
      * @author dmunoz
      * @date 12/2/2024
-     * 
+     *
      */
-    public List<Account> findIntermediariesWithGroupChanges() {
+    public List<Account> findIntermediariesWithGroupChanges()
+    {
 
-        List<Account> result = new List<Account>([SELECT Id, IntermediaryGroup__c, LastIntermediaryGroup__c 
-                        FROM Account 
-                        WHERE RecordType.DeveloperName = 'Intermediary' 
-                        AND LastIntermediaryGroupChange__c = YESTERDAY]);
+        List<Account> result = new List<Account>([SELECT Id, IntermediaryGroup__c, LastIntermediaryGroup__c
+                                                  FROM Account
+                                                  WHERE RecordType.DeveloperName = 'Intermediary'
+                                                                                   AND LastIntermediaryGroupChange__c = YESTERDAY]);
 
         return result;
     }
@@ -1126,16 +1163,17 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @author dmunoz
      * @date 12/2/2024
      * @param intermediariesSet Conjunto de Ids de Agrupación. Pues venir vacío o nulo.
-     * @return List<Account> Listado de mediadores con su agrupación. 
+     * @return List<Account> Listado de mediadores con su agrupación.
      * Si 'intermediariesSet' es nulo o vacío, devuelve una lista de cuentas vacía.
-     * 
+     *
      * @change amiranda 20/03/2024 Se refactoriza el método para añadir un nuevo
      * campo a recuperar y para adaptarlo al uso de la librería 'Query'.
      */
-    public List<Account> findAllIntermediarysFromIntermediaryGroups(Set<String> intermediariesSet) {
+    public List<Account> findAllIntermediarysFromIntermediaryGroups(Set<String> intermediariesSet)
+    {
         List<Account> accounts = new List<Account>();
 
-        if (intermediariesSet != null && !intermediariesSet.isEmpty()) 
+        if ( intermediariesSet != null && !intermediariesSet.isEmpty() )
         {
             Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
             {
@@ -1145,10 +1183,63 @@ public with sharing class AccountsSelector extends RecordsSelector
             };
 
             accounts = this.baseQuery
-                            .selectFields(fieldsToRetrieve)
-                            .addConditionIn(Account.IntermediaryGroup__c, intermediariesSet)
-                            .enforceSecurity()
-                            .run();
+                       .selectFields(fieldsToRetrieve)
+                       .addConditionIn(Account.IntermediaryGroup__c, intermediariesSet)
+                       .enforceSecurity()
+                       .run();
+        }
+
+        return accounts;
+    }
+
+    /**
+    * @description     : Método que devuelve una query que utilizará el batch
+    * @author rserrano | 10/04/2024 
+    * @param days      : Número de días de antigüedad que ha de tener un lead para ser borrado
+    * @return String   : Query que utiliza el batch
+    **/
+    public String findZRMOldLeads(Integer days)
+    {
+        Set<Schema.SObjectField> accountfieldsToRetrieve = new Set<Schema.SObjectField>
+        {
+            Account.Id
+        };
+
+        String query = this.baseQuery
+                        .selectFields(accountfieldsToRetrieve)
+                        .addConditionEq(Account.RecordtypeId, rtLeadId)
+                        .addConditionLt(Account.CreatedDate, Query.LAST_N_DAYS(days))
+                        .addSubquery('Opportunities', 'StageName, BusinessCode__c')
+                        .toQueryString();
+        return query;
+    }
+
+    /**
+     * @description Método selector que recupera cuentas y los registros relacionados
+     * 'ContactPointPhones' y 'ContactPointEmails' en base a los 'Id' pasados por parámetro
+     * @author amiranda
+     * @date 16-04-2024
+     * @param accountIds Ids de las cuentas a recuperar
+     * @return List<Account> Lista de cuentas recuperadas de la BBDD
+     **/
+    public List<Account> selectByIdWithCPPhoneAndCPEmail(Set<String> accountIds)
+    {
+        List<Account> accounts = new List<Account>();
+
+        if ( accountIds != null && !accountIds.isEmpty() )
+        {
+            Set<Schema.SObjectField> accountFieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Account.Id
+            };
+
+            accounts = this.baseQuery
+                       .selectFields(accountFieldsToRetrieve)
+                       .addConditionIn(Account.Id, accountIds)
+                       .addSubQuery('ContactPointPhones', 'TelephoneNumber')
+                       .addSubQuery('ContactPointEmails', 'EmailAddress')
+                       .enforceSecurity()
+                       .run();
         }
 
         return accounts;
@@ -1156,14 +1247,45 @@ public with sharing class AccountsSelector extends RecordsSelector
 
 
     /**
-    * @description Método que devuelve las cuentas a partir de un set de Ids
-    * @author rserrano | 08/04/2024 
-    * @param accountsIdSet : Set de Ids
-    * @return List<Account>: Listado de cuentas
-    **/
-    public List<Account> findAccountsById (Set<String> accountsIdSet)
+     * @description Método selector que recupera cuentas y los registros relacionados
+     * del objeto 'Opportunity' en base al tipo de registro y al email o el teléfono
+     * @author amiranda
+     * @date 16-04-2024
+     * @param contactPoints Conjunto de teléfonos y emails
+     * @param rtNames Conjunto de nombres de Record Types
+     * @return List<Account> Lista de cuentas recuperadas de la BBDD
+     **/
+    public List<Account> selectByRTNameAndPhoneAndEmailWithOpportunities(Set<String> contactPoints, Set<String> rtNames)
     {
-        List<Account> result = [SELECT Id FROM Account WHERE Id IN :accountsIdSet];
-        return result;
+        List<Account> accounts = new List<Account>();
+
+        if ( contactPoints != null && !contactPoints.isEmpty() )
+        {
+            Set<Schema.SObjectField> accountFieldsToRetrieve = new Set<Schema.SObjectField>
+            {
+                Account.CreatedDate,
+                Account.PersonEmail,
+                Account.Phone
+            };            
+
+            Query.Condition orCondition = Query.doOr(
+                Query.conditionIn(Account.Phone, contactPoints),
+                Query.conditionIn(Account.PersonEmail, contactPoints)
+                );
+
+            this.baseQuery
+            .selectFields(accountFieldsToRetrieve)
+            .addCondition(orCondition)
+            .addSubQuery('Opportunities', 'AccountId, CreatedDate, StageName, BusinessCode__c, IntermediaryId__c, IntermediaryId__r.IntermediaryGroup__c, ZRM__c');
+
+            if ( rtNames != null && !rtNames.isEmpty() )
+            {
+                this.baseQuery.addConditionEq(RT_NAME_FIELD, rtNames);
+            }
+            System.debug(this.baseQuery.toQueryString());
+            accounts = this.baseQuery.enforceSecurity().run();
+        }
+
+        return accounts;
     }
 }

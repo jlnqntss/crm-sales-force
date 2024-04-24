@@ -104,6 +104,11 @@
                 <default>false</default>
                 <label>Incident Resolution</label>
             </value>
+            <value>
+                <fullName>Support</fullName>
+                <default>false</default>
+                <label>Support</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
@@ -176,6 +181,10 @@
         <valueSettings>
             <controllingFieldValue>Pendiente</controllingFieldValue>
             <valueName>Incident Resolution</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Pendiente</controllingFieldValue>
+            <valueName>Support</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

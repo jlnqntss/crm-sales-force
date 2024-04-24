@@ -157,6 +157,20 @@
                 <elementReference>$Record.Name</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>getRelatedOfferAction.InfoQuoteNumber__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.InfoQuoteNumber__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>updateCustomerDecision</targetReference>
         </connector>
@@ -269,7 +283,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <description>Añadir la actualización del campo Intermediary_Name__c de account con el valor de mediador que llega desde la póliza</description>
+    <description>Se añade el seteo de los campos de la oferta relacionada, name e InfoQuoteNumber</description>
     <environments>Default</environments>
     <formulas>
         <name>timeSearch</name>

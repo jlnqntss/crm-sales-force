@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : rserrano
  * @group             : 
- * @last modified on  : 09/04/2024
+ * @last modified on  : 10/04/2024
  * @last modified by  : rserrano
 **/
 @IsTest
@@ -85,7 +85,7 @@ public with sharing class Batch_DeleteOldLeadsTest {
         //Setear la fecha de creación de todos los leads
         for(Account acc : [SELECT Id FROM Account])
         {
-            Test.setCreatedDate(acc.Id, Datetime.now().addDays(-1).addMonths(-3));
+            Test.setCreatedDate(acc.Id, Datetime.now().addDays(-91));
         }
     }
     @isTest

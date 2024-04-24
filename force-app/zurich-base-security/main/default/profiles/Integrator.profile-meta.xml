@@ -168,6 +168,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AvailableCasePicklistValuesByRtAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Batch_DeleteErrorLogs</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -265,6 +269,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ChangePasswordControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CollectionUtil</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -4810,6 +4818,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.SAMCategory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.SMEConsultant__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6154,6 +6167,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Comentario__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.Commercial_Code__c</field>
         <readable>true</readable>
@@ -6370,6 +6388,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.ModifiedByGrandesPymes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.NetPremiumRating__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6436,6 +6459,56 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Priority</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByAssociation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByOlimpia__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByRatio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByRequested__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByStatusAnswered__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByStatusNewAssigned__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByStatus__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.PriorityByUW__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Priority__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10389,6 +10462,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.LastDateIntermediaryOrAccountChange__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.LastAccountId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ZRMMovementType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.VisibilityRetry__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.LossSubReasonDescription__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10510,6 +10603,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PersonLeadSource__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.PotentialMatch__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11404,6 +11502,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Policy__c.LastDateIntermediaryOrAccountChange__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.LastAccountId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.ZRMMovementType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.VisibilityRetry__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Policy__c.LegalEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11468,6 +11586,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.PotentialMatch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.ProductBranch__c</field>
         <readable>true</readable>
@@ -11521,7 +11644,7 @@
         <editable>true</editable>
         <field>Policy__c.Zrc__c</field>
         <readable>true</readable>
-    </fieldPermissions>
+    </fieldPermissions>    
     <fieldPermissions>
         <editable>true</editable>
         <field>PricebookEntry.ProductID__c</field>
@@ -12890,6 +13013,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Trigger_Setting__mdt.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.Area__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -15846,6 +15974,10 @@
         <flow>SetExternalRequestRecordType</flow>
     </flowAccesses>
     <flowAccesses>
+        <enabled>true</enabled>
+        <flow>ZDACaseEscalationScreen</flow>
+    </flowAccesses>
+    <flowAccesses>
         <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
@@ -16593,9 +16725,7 @@
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
     </layoutAssignments>
-    <layoutAssignments>
-        <layout>AccountRelationship__c-Account Relationship Layout</layout>
-    </layoutAssignments>
+
     <loginIpRanges>
         <description>Avoid security token</description>
         <endAddress>255.255.255.255</endAddress>
@@ -19740,10 +19870,6 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>SkipIdentityConfirmation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SocialInsightsLogoAdmin</name>
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>

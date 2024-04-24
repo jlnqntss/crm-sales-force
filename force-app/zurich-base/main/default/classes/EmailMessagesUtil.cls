@@ -38,6 +38,8 @@ public with sharing class EmailMessagesUtil
     private static final Id uspRecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
     @testvisible
     private static final Id ocsRecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
+    @testvisible
+    private static final Id samRecordTypeId = CaseUtil.RT_ID_SAMINQUIRY;
 
     /**
      * Get from the metadata configuration the list of emails configured for the Hegeo robot
@@ -651,6 +653,11 @@ public with sharing class EmailMessagesUtil
      * @author nts - jfherrero
      * @date 31/01/2024
      * @descripción Verificar que el propietario del caso padre esté activo. Si no, intentar asignar la cola de Genesys
+     * 
+     * modificaciones
+     * @author nts - aberuete
+     * @date 18/04/2024
+     * @descripción Asignar el owner del caso para los casos de tipo SAM
     */
     private Case getOwnerOfChildCase (Case padre, Case casoHijo, EmailMessage email)
     {
@@ -666,7 +673,7 @@ public with sharing class EmailMessagesUtil
         {
             getOwnerOfChildCaseForTranscom (padre, casoHijo);
         }
-        else if(padre.RecordTypeId==uspRecordTypeId && padre.OwnerId!=null)
+        else if((padre.RecordTypeId==uspRecordTypeId || padre.RecordTypeId==samRecordTypeId) && padre.OwnerId!=null)
         { 
             if (CaseUtil.validCaseOwner(padre.OwnerId))
             {
@@ -730,6 +737,7 @@ public with sharing class EmailMessagesUtil
      * @param List<EmailMessage> emailList : Lista de email message
      * @param Map<Id, Case> mapaCasosPadre : Mapa de id del caso padre y el caso padre 
      * @change aberuete - Refactorización del método checkNewCaseFromClosedCase
+     * @change aberuete - 18/04/2024 Añadir crear casos hijos para los casos de tipo SAM
     */
     private Map<Integer,Case> checkIfCaseCloseCreateChildCase (Map<Integer, Id> mapaPosiciones, List<EmailMessage> emailList, Map<Id, Case> mapaCasosPadre ) 
     {
@@ -740,12 +748,12 @@ public with sharing class EmailMessagesUtil
         {
             Case padre = mapaCasosPadre.get(mapaPosiciones.get(posicion));  
 
-            if(padre?.IsClosed && (padre?.RecordTypeId == ocsRecordTypeId || padre?.RecordTypeId == uspRecordTypeId ))
+            if(padre?.IsClosed && (padre?.RecordTypeId == ocsRecordTypeId || padre?.RecordTypeId == uspRecordTypeId || padre?.RecordTypeId == samRecordTypeId  ))
             {
                 EmailMessage email = emailList.get(posicion);
                 // Comprobamos si ha de heredarse la tipificación del caso padre
                 Boolean tipificacionCorrecta = CaseUtil.checkTypification(padre);
-                Boolean heredamosTipificacion = (padre?.RecordTypeId == ocsRecordTypeId && (padre?.CallCenter__c == 'CC Service' || padre?.CallCenter__c == 'TWW Retención') ); // Corregimos para que solo herede la tipificación en los casos que corresponde
+                Boolean heredamosTipificacion = ((padre?.RecordTypeId == ocsRecordTypeId && (padre?.CallCenter__c == 'CC Service' || padre?.CallCenter__c == 'TWW Retención') ) || (padre?.RecordTypeId == samRecordTypeId)) ; // Corregimos para que solo herede la tipificación en los casos que corresponde
                 
                 Case casoHijo = CaseUtil.createCaseFromParent(padre, email, (tipificacionCorrecta && heredamosTipificacion)); 
                 casoHijo = getOwnerOfChildCase (padre, casoHijo, email); // Asignamos el owner del caso

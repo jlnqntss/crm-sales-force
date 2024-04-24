@@ -4,7 +4,6 @@
     <columns>ACCOUNT.NAME</columns>
     <columns>ACCOUNT.RECORDTYPE</columns>
     <columns>NationalId__c</columns>
-    <columns>Intermediary_Name__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>ACCOUNT.RECORDTYPE</field>

@@ -190,6 +190,13 @@
             <operator>notEqual</operator>
             <value></value>
         </criteriaItems>
+        <criteriaItems>
+            <column>KPI__c.Temporalidad__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>YTD</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
@@ -216,7 +223,7 @@
         <field>KPI__c.EstructuraDetalle__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>KPI&apos;s VIDA Consultores</name>
+    <name>KPI&apos;s YTD VIDA Consultores</name>
     <params>
         <name>co</name>
         <value>0</value>

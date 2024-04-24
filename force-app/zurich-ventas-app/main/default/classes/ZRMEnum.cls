@@ -1,0 +1,5 @@
+public with sharing class ZRMEnum {
+
+    public enum ZRMMovementType {OFFER_INTERMEDIARY_CHANGE, OFFER_ACCOUNT_CHANGE, POLICY_INTERMEDIARY_CHANGE, POLICY_ACCOUNT_CHANGE, ERROR}
+    
+}

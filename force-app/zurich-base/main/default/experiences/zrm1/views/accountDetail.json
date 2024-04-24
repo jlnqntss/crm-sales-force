@@ -113,6 +113,17 @@
                 },
                 {
                   "componentAttributes": {
+                    "relatedListApiName": "Cases",
+                    "relatedListComponentOverride": "ADVGRID",
+                    "width": "MEDIUM"
+                  },
+                  "componentName": "forceCommunity:responsiveRelatedListSingle",
+                  "id": "39366546-4b60-4afb-8b38-9f4fbdfbbba1",
+                  "renditionMap": {},
+                  "type": "component"
+                },
+                {
+                  "componentAttributes": {
                     "relatedListApiName": "Claims__r",
                     "relatedListComponentOverride": "ADVGRID",
                     "width": "MEDIUM"

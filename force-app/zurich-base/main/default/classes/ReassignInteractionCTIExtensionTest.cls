@@ -112,7 +112,7 @@ private with sharing class ReassignInteractionCTIExtensionTest
         insert ventasUserAccount;
 
         /* -------------------------------- USUARIOS -------------------------------- */
-        String ventasUserProfile = [SELECT Id FROM Profile WHERE Name = 'Ventas User' LIMIT 1].Id;
+        String ventasUserProfile = [SELECT Id FROM Profile WHERE Name = :ProfilesSelector.PROFILE_VENTAS_USER LIMIT 1].Id;
         List<String> adminProfiles = new List<String> {'Administrador del sistema', 'System Administrator'};
         List<Boolean> activeStatus = new List<Boolean> {true};
 

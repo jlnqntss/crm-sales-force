@@ -10,7 +10,9 @@ public class PolicyHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkBefore(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        PolicyUtil.fillMapBusinessCode();
+    }
 
     /**
      * bulkAfter
@@ -19,7 +21,8 @@ public class PolicyHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * beforeInsert
@@ -28,7 +31,9 @@ public class PolicyHandler implements ITrigger
      * trigger. Never execute any SOQL/SOSL etc in this and other iterative methods.
      */
     public void beforeInsert(List<SObject> newList)
-    {}
+    {
+        PolicyUtil.identifyPotentialMatches(newList);
+    }
 
     /**
      * beforeUpdate
@@ -37,7 +42,10 @@ public class PolicyHandler implements ITrigger
      * trigger.
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        // fpalomo - 08/04/2024 - Nuevo método "handlePolicyHolderOrIntermediaryChange" para rellenar los campos solicitados en CV-2061
+        PolicyUtil.handlePolicyHolderOrIntermediaryChange((List<Policy__c>)newList, (Map<Id, Policy__c>) oldMap);
+    }
 
     /**
      * beforeDelete
@@ -46,7 +54,8 @@ public class PolicyHandler implements ITrigger
      * trigger.
      */
     public void beforeDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * afterInsert
@@ -58,7 +67,7 @@ public class PolicyHandler implements ITrigger
     public void afterInsert(List<SObject> newList)
     {
         PolicyUtil.generateScope(newList);
-        PolicyUtil.zrmVisibilityNewPolicy(newList); 
+        PolicyUtil.zrmVisibilityNewPolicy(newList);
     }
 
     /**
@@ -70,7 +79,6 @@ public class PolicyHandler implements ITrigger
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         PolicyUtil.generateScope(newList);
-        PolicyUtil.zrmVisibilityUpdatePolicy(newList, (Map<Id, Policy__c>) oldMap);
     }
 
     /**
@@ -80,7 +88,8 @@ public class PolicyHandler implements ITrigger
      * trigger.
      */
     public void afterDelete(Map<Id, SObject> oldMap)
-    {}
+    {
+    }
 
     /**
      * andFinally
@@ -89,5 +98,6 @@ public class PolicyHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {}
+    {
+    }
 }

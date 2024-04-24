@@ -60,6 +60,32 @@
         <default>false</default>
         <label>GSS CSM</label>
     </customValue>
+    <customValue>
+        <fullName>SAM</fullName>
+        <default>false</default>
+        <label>SAM</label>
+    </customValue>
+    <customValue>
+        <fullName>Sprinklr</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Sprinklr</label>
+    </customValue>
+    <customValue>
+        <fullName>ZDA_MU_s</fullName>
+        <default>false</default>
+        <label>Soporte a especialistas</label>
+    </customValue>
+    <customValue>
+        <fullName>ZDA_Soporte_Red</fullName>
+        <default>false</default>
+        <label>Soporte a la red</label>
+    </customValue>
+    <customValue>
+        <fullName>ZDA_Gestion_Cartera</fullName>
+        <default>false</default>
+        <label>Gestión cartera</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

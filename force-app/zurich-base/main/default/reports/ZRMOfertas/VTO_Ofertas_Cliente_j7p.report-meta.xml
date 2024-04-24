@@ -4,7 +4,13 @@
         <field>ACCOUNT_NAME</field>
     </columns>
     <columns>
-        <field>ACCOUNT_RECORDTYPE</field>
+        <field>Opportunity.SalesProcess__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.InfoUser__c</field>
+    </columns>
+    <columns>
+        <field>Opportunity.IntermediaryCode__c</field>
     </columns>
     <columns>
         <field>OPPORTUNITY_NAME</field>
@@ -33,9 +39,6 @@
     <columns>
         <field>Opportunity.InfoLastModifiedDate__c</field>
     </columns>
-    <columns>
-        <field>Opportunity.IntermediaryCode__c</field>
-    </columns>
     <filter>
         <criteriaItems>
             <column>ACCOUNT_RECORDTYPE</column>
@@ -50,6 +53,27 @@
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>App Submitted,Legit Lead,Quoted</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CREATED_DATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>greaterOrEqual</operator>
+            <value>N_MONTHS_AGO:2</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CREATED_DATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>lessThan</operator>
+            <value>TOMORROW</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity.Campaign__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>FALSE</value>
         </criteriaItems>
         <language>es</language>
     </filter>
@@ -79,6 +103,6 @@
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>CLOSE_DATE</dateColumn>
-        <interval>INTERVAL_THISMONTH</interval>
+        <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

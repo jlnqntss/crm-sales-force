@@ -49,9 +49,9 @@
         <criteriaItems>
             <column>Policy__c.MovementStartDate__c</column>
             <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
+            <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>N_MONTHS_AGO:12</value>
+            <value>N_MONTHS_AGO:10</value>
         </criteriaItems>
         <criteriaItems>
             <column>Policy__c.PolicyStatus__c</column>
@@ -59,6 +59,13 @@
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>A</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.MovementReason__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>notEqual</operator>
+            <value>A165,3165,A705</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
