@@ -67,6 +67,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
         CaseUtil.updateTranscomCase(newList);
         CaseUtil.setSprinklrCaseTipification(newList);
+        CaseUtil.setSprinklrCaseSubject(newList);
         CaseUtil.shortDescriptionNeeded(newList);
         CaseUtil.setSprinklrCaseCallCenterAndGroup(newList);
         CaseUtil.applyFormatToZDABody(newList);

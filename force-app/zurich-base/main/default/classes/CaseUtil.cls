@@ -347,6 +347,23 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Añade al asunto de un Caso de Sprinklr la red social indicada.
+     * @author Juan Francisco Herrero
+     * @date 23/04/2024
+     * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+     */
+    public static void setSprinklrCaseSubject(List<Case> insertedCases)
+    {
+        for(Case customerRequest : insertedCases)
+        {
+            if( customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR && !String.isBlank(customerRequest.SprinklrSocialMediaChannel__c) )
+            {
+                customerRequest.Subject = 'Mensaje de un usuario de ' + customerRequest.SprinklrSocialMediaChannel__c;
+            }
+        }
+    }
+
+    /**
      * Método que da valor a los campos Description y PrimerMensaje__c del objeto Case
      * Ejecutado en beforInsert porque vienen casos desde Sprinklr con la descripción rellena por un mensaje del cliente
      * @author jchavez
