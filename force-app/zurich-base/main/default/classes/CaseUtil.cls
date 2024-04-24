@@ -345,12 +345,9 @@ public with sharing class CaseUtil
     {
         for(Case customerRequest : insertedCases)
         {
-            if(customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR)
+            if( customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR && !String.isBlank(customerRequest.SprinklrSocialMediaChannel__c) )
             {
-                if ( !String.isBlank(customerRequest.SprinklrSocialMediaChannel__c) )
-                {
-                    customerRequest.Subject = 'Mensaje de un usuario de ' + customerRequest.SprinklrSocialMediaChannel__c;
-                }
+                customerRequest.Subject = 'Mensaje de un usuario de ' + customerRequest.SprinklrSocialMediaChannel__c;
             }
         }
     }
