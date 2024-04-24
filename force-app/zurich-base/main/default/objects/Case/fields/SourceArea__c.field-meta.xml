@@ -73,6 +73,11 @@
                 <default>false</default>
                 <label>TPA&apos;s</label>
             </value>
+            <value>
+                <fullName>KLINK end customer</fullName>
+                <default>false</default>
+                <label>KLINK end customer</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

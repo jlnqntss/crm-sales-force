@@ -165,6 +165,7 @@
         <excludeButtons>MassChangeOwner</excludeButtons>
         <excludeButtons>NewCase</excludeButtons>
         <fields>CASES.CASE_NUMBER</fields>
+        <fields>PolicyId__c</fields>
         <fields>Product_Name__c</fields>
         <fields>CASES.STATUS</fields>
         <fields>PolicyEndDate__c</fields>

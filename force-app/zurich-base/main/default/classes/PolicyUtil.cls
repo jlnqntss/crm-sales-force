@@ -3,6 +3,47 @@ public class PolicyUtil
     private static final string CLASS_NAME = 'PolicyUtil';
     private static final string AGENTEVENTA_PROFILE = 'Agente Ventas';
     private static final string AGENTEVENTAAGR_PROFILE = 'Agente Ventas - AGR';
+    public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Polizas
+    private static final string ZRM_SCOPE = 'Ventas'; //Scope de las polizas de ZRM
+
+    /**
+     * Método que rellena el mapa que contiene la relación entre Business Code y Scopes
+     *
+     * @author Iván García
+     * @date 08/04/2024
+     */
+    public static void fillMapBusinessCode ()
+    {
+        mapBusinessCodes = new Map<String, String>();
+        List<Scope_Setting__mdt> scopeSettingsMapping = Scope_Setting__mdt.getAll().values();
+
+        for(Scope_Setting__mdt scope : scopeSettingsMapping)
+        {
+            mapBusinessCodes.put(scope.BusinessCode__c, scope.Scope__c);
+        }
+    }
+
+    /**
+     * @description Método que marca la poliza para ser revisada por un
+     * proceso asíncrono en busca de coincidencias, siempre y cuando pertenezca a ZRM.
+     *
+     * @author igarcia
+     * @date 09-04-2024
+     * @param List<Policy> Lista de polizas que van a ser insertadas
+     **/
+    public static void identifyPotentialMatches(List<Policy__c> newList)
+    {
+        for (Policy__c policy : newList)
+        {
+
+            //Se comprueba que el registro pertenece al aplicativo ZRM y no tenga ninguna oferta enlazada
+            if ( String.isBlank(policy.OpportunityName__c) &&
+                 ( mapBusinessCodes?.get(policy.BusinessCode__c) == (ZRM_SCOPE) || String.isBlank(policy.BusinessCode__c) ) )
+            {
+                policy.PotentialMatch__c = true;
+            }
+        }
+    }
 
     /**
      * Método que controla la generación del scope correspondiente
@@ -89,7 +130,6 @@ public class PolicyUtil
         }
     }
     
-    
     /******************************* Métodos principales Visibilidad ZRM ******************************************************/
 
     /**
@@ -123,6 +163,5 @@ public class PolicyUtil
         {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
-
     }
 }

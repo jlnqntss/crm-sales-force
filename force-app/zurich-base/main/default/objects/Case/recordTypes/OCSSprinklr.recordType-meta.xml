@@ -1024,14 +1024,6 @@
     <picklistValues>
         <picklist>SourceArea__c</picklist>
         <values>
-            <fullName>End customer partner</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Generic Internal</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Generic end customer</fullName>
             <default>true</default>
         </values>
@@ -1040,27 +1032,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Mediator</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Partner</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Partner dome</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>SDC %28Customer Defense Service%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>TNPS Customer Survey</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Zurich Business Client</fullName>
+            <fullName>KLINK end customer</fullName>
             <default>false</default>
         </values>
     </picklistValues>

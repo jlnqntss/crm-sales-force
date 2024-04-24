@@ -879,7 +879,7 @@
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>KPI&apos;s VIDA Consultores</header>
+                <header>KPI&apos;s YTD VIDA Consultores</header>
                 <report>SDMMACDIGITALHomeOffice/KPIs_VIDA_Consultores_fDT</report>
             </dashboardComponent>
             <rowIndex>77</rowIndex>

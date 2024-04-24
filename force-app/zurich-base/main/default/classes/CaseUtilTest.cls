@@ -1568,160 +1568,110 @@ private with sharing class CaseUtilTest
         System.assertEquals (null, sprSocialPersonaAfterDeleted.spr_sf__Contact__c, 'El contacto se debería haber borrado');
     }
 
-    /**
-     * Test que comprueba que al actualizar un caso de tipo ZRM, cuando se pasa el campo ClientHasContacted a SI este se actualiza y se cambia el estado
-     **
-     * @author arcortazar
-     * @date 22/04/2024
-     */
     @isTest
-    private static void test_casesZRMChangeStatus_ClientHasContacted_OK()
+    private static void test_checkIfPolicyHaveOpenZrmCase()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
-        insert accounts;
- 
-        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
-        policies[0].EndDate__c = System.today().addDays(10);
+        Id rtZrmInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        List<Account> accountRecord = [Select id, PersonContactId from Account where RecordType.DeveloperName = 'Customer' limit 1 ];
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accountRecord, 1);
+        for(Policy__c poliza : policies)
+        {
+            poliza.EndDate__c = System.today();
+        }
+
         insert policies;
 
-        Id rtZRMid = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        Case caseToLinkAccount = new Case();
+        caseToLinkAccount.RecordTypeId = rtZrmInquiryId;
+        caseToLinkAccount.AccountId = accountRecord[0].Id;
+        caseToLinkAccount.policyId__c = policies[0].Id;
+        insert caseToLinkAccount;
 
-        Case zrmCase = new Case();
-        zrmCase.PolicyId__c = policies[0].id;
-        zrmCase.RecordTypeId = rtZRMid;
-        zrmCase.Status = 'No iniciado';
-        zrmCase.ClientHasContacted__c = 'No';
-        insert zrmCase;
-
+        Boolean exceptionThrown = false;
         Test.startTest();
-        zrmCase.ClientHasContacted__c = 'Si';
-        update zrmCase;
-        Test.stopTest();
-
-        Case casePostUpdate = [SELECT id, Status FROM Case][0];
-        System.assertEquals ('En Gestión', casePostUpdate.Status, 'El estado del caso debería haber cambiado');
-    }
-
-    /**
-     * Test que comprueba que al actualizar un caso de tipo ZRM, cuando se intenta actualizar el campo ClientHasContacted desde SI, no se permite y lanza un error
-     **
-     * @author arcortazar
-     * @date 22/04/2024
-     */
-    @isTest
-    private static void test_casesZRMChangeStatus_ClientHasContacted_KO()
-    {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
-        insert accounts;
- 
-        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
-        policies[0].EndDate__c = System.today().addDays(10);
-        insert policies;
-
-        Id rtZRMid = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
-
-        Case zrmCase = new Case();
-        zrmCase.PolicyId__c = policies[0].id;
-        zrmCase.RecordTypeId = rtZRMid;
-        zrmCase.Status = 'No iniciado';
-        zrmCase.ClientHasContacted__c = 'Si';
-        insert zrmCase;
-
-        Test.startTest();
-        zrmCase.ClientHasContacted__c = 'No';
-        try
-        {
-            update zrmCase;
-        }
-        catch(Exception ex)
-        {
-            System.assertEquals('No se puede modificar este valor', zrmCase.getErrors()[0].getMessage(), 'Debería tener un error asociado');
-        }
+            //Creamos otro caso para que salte el AddError.
+            Case caseToLaunchError = new Case();
+                caseToLaunchError.RecordTypeId = rtZrmInquiryId;
+                caseToLaunchError.AccountId = accountRecord[0].Id;
+                caseToLaunchError.policyId__c = policies[0].Id;
+            Database.SaveResult sr = Database.insert(caseToLaunchError, false);
+        
         
         Test.stopTest();
-    }
 
-    /**
-     * Test que comprueba que al actualizar un caso de tipo ZRM, cuando se intenta actualizar el campo ClientGiftCard__c, se cambia el estado a Cerrado Ganado
-     **
-     * @author arcortazar
-     * @date 22/04/2024
-     */
+        Database.Error error = sr.getErrors()[0];
+        Assert.areEqual(true, error.getMessage().contains(Label.CaseZRMOpenedCase));
+    } 
+
     @isTest
-    private static void test_casesZRMChangeStatus_ClientGiftCard_OK()
-    {   
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
-        insert accounts;
- 
-        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
-        policies[0].EndDate__c = System.today().addDays(10);
+    private static void test_getRelatedPolicyIds()
+    {
+        Id rtZrmInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        Id rtOCSSprinklrId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('OCSSprinklr').getRecordTypeId();
+
+        List<Account> accountRecord = [Select id, PersonContactId from Account where RecordType.DeveloperName = 'Customer' limit 1 ];
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accountRecord, 10);
+        for(Policy__c poliza : policies)
+        {
+            poliza.EndDate__c = System.today();
+        }
+
         insert policies;
 
-        Id rtZRMid = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        List<Case> cases = new List<Case>();
+        Case c;
+        for (Integer i = 0; i < 10; i++) {
+            c = new Case();
+                c.RecordTypeId = rtOCSSprinklrId;
+                c.AccountId = accountRecord[0].Id;
+                c.policyId__c = policies[i].Id;
+            cases.add(c);
+        }
 
-        Case zrmCase = new Case();
-        zrmCase.PolicyId__c = policies[0].id;
-        zrmCase.RecordTypeId = rtZRMid;
-        insert zrmCase;
-
+        Integer expected = 0;
+        for (Integer i = 0; i < 5; i++) {
+            cases[i].recordTypeId = rtZrmInquiryId;
+            expected ++;
+        }
+        
+        Set<String> result;
         Test.startTest();
-        zrmCase.ClientGiftCard__c = true;
-        zrmCase.SuppliedEmail = 'test@email.com';
-        update zrmCase;
+            result = CaseUtil.getRelatedPolicyifZRMIds(cases);
         Test.stopTest();
 
-        Case casePostUpdate = [SELECT id, Status FROM Case][0];
-        System.assertEquals ('Cerrado Ganado', casePostUpdate.Status, 'El estado del caso debería haber cambiado');
+        Assert.areEqual(expected, result.size());
     }
 
-    /**
-     * Test que comprueba que para un caso de rt ZRMInquiry al insertarlo con un usuario de comunidad ZRM se cambia el owner al usuario por defecto 
-     **
-     * @author dmunoz
-     * @date 24/04/2024
-     */
     @isTest
-    private static void test_updateInquiryCaseOwnerOnZRMCreation_OK() {
+    private static void test_buildNotClosedZrmCasesByPolicyId()
+    {
+        Id rtZrmInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        List<Account> accountRecord = [Select id, PersonContactId from Account where RecordType.DeveloperName = 'Customer' limit 1 ];
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accountRecord, 5);
+        insert policies;
 
-        // Obtener cliente
-        List<Account> clienteList = new List<Account>([SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'Customer' LIMIT 1]);
+        Map<String, Case> expectedMap = new Map<String, Case>();
+        Map<String, Case> resultMap = new Map<String, Case>();
 
-        // Obtener mediador
-        Account intermediary = [SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'Intermediary' AND Name = 'MediadorTest' LIMIT 1];
+        List<Case> cases = new List<Case>();
+        Case c; 
 
-        // Inserto una poliza para que se cree el atm y el registro con el que vamos a relacionar el caso de retencion zrm
-        List<Policy__c> policyToInsert = TestDataFactory.generatePoliciesForEachAccount(clienteList, 1);
-        for (Policy__c policy: policyToInsert) {
-            policy.IntermediaryId__c = intermediary.Id;
-            policy.EndDate__c = System.today().addDays(10);
+        for(Policy__c policy : policies)
+        {
+            c = new Case();
+            c.RecordTypeId = rtZrmInquiryId;
+            c.AccountId = accountRecord[0].Id;
+            c.policyId__c = policy.Id;
+            cases.add(c);
+            expectedMap.put(policy.Id, c);
         }
 
-        insert policyToInsert;
+        Test.startTest();
+            resultMap = CaseUtil.buildNotClosedZrmCasesByPolicyId(cases);
+        Test.stopTest();
 
-        // Obtengo el usuario para ejecutar el test
-        User u = [SELECT Id FROM User WHERE Contact.AccountId = :intermediary.Id];
-
-        System.runAs(u) {
-            Test.startTest();
-
-            // Creo el caso y lo inserto
-            Id rtZRMid = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
-
-            Case zrmCase = new Case();
-            zrmCase.PolicyId__c = policyToInsert.get(0).Id; 
-            zrmCase.RecordTypeId = rtZRMid;
-            zrmCase.Status = 'No iniciado';
-            zrmCase.IntermediaryId__c = intermediary.Id;
-            insert zrmCase;
-
-            Test.stopTest();
-        }
-
-        List<Case> zrmCaseList = new List<Case>([SELECT Id, OwnerId FROM Case WHERE Recordtype.DeveloperName = 'ZRMInquiry']);
-
-        Assert.isTrue(!zrmCaseList.isEmpty(), 'Se debe haber insertado un caso de retencion zrm');
-        Assert.isTrue(zrmCaseList.get(0).OwnerId != u.Id, 'El Owner del caso debe ser diferente al usuario que lo ha insertado');
-
+        Assert.areEqual(expectedMap, resultMap);
     }
-
 }

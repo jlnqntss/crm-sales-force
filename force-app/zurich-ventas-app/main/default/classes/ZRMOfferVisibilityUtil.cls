@@ -83,7 +83,7 @@ public without sharing class ZRMOfferVisibilityUtil
             }
 
             // Añado el usuario agr para recorrerlos despues
-            if ( 'Agente Ventas - AGR'.equals(user.Profile.Name) )
+            if (user.Profile.Name == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
             {
                 userAGRList.add(user);
             }

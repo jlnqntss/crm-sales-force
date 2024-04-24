@@ -215,12 +215,12 @@ global with sharing class Batch_VisibilitySFCommunityOID implements Database.Bat
 
 
         // Obtenemos las ofertas y pólzas para el mediador según su perfil
-        if (profile.equals('Agente Ventas'))
+        if (profile == ProfilesSelector.PROFILE_AGENTE_VENTAS)
         {
             policies = policiesSelector.selectByIntermediaryId(new Set<String> { intermediaryUser.contact.AccountId });
             offers = opportunitiesSelector.getIntermediaryOtherOffers(new Set<String>(), intermediaryUser.Contact.Account);
         }
-        else if (profile.equals('Agente Ventas - AGR'))
+        else if (profile == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
         {
             policies = policiesSelector.selectByIntermediaryGroupId(new Set<String> { intermediaryUser.contact.Account.IntermediaryGroup__c });
             offers = opportunitiesSelector.getIntermediaryOtherOffers(new Set<String>(), intermediaryUser.Contact.Account);
