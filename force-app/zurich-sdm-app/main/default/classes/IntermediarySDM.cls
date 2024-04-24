@@ -22,9 +22,9 @@ public with sharing class IntermediarySDM {
     private static final String SETUP_NOTIFICATION_BODY = 'SDMNotificationBody';
     public static final String ATM_ACCOUNT_ACCESS_LEVEL = 'Read';
     public static final String ATM_ACCOUNT_ACCESS_LEVEL_EDIT = 'Edit';
-    public static final String ATM_CONTACT_ACCESS_LEVEL = 'Read';
+    public static final String ATM_CONTACT_ACCESS_LEVEL = 'Edit';
     public static final String ATM_CASE_ACCESS_LEVEL = 'Edit';
-    public static final String ATM_OFFER_ACCESS_LEVEL = 'Read';
+    public static final String ATM_OFFER_ACCESS_LEVEL = 'Edit';
 
     public static final String INTERMEDIARY_FIELD_NATIONALID = 'NationalId__c';
     public static final String INTERMEDIARY_FIELD_PARENTID = 'ParentId';
