@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : jchavez
  * @group             : 
- * @last modified on  : 04-23-2024
+ * @last modified on  : 04-24-2024
  * @last modified by  : jchavez
 **/
 global with sharing class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Schedulable
@@ -11,32 +11,31 @@ global with sharing class Batch_DeleteExternalRequest implements Database.Batcha
     public static final String PROCESSED_RESULT_OK = 'OK';
     public static final String PROCESSED_RESULT_KO = 'KO';
     private static final AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
+    private static final String JOBOK = 'Clear_External_Request_OK';
+    private static final String JOBKO = 'Clear_External_Request_KO';
+    private static final String SCHEDULED_TIME = ' 0 0 2 * * ?';
     
 	// Inicio métodos batchable
 	//Constructor
-    global Batch_DeleteExternalRequest()
-    {
-    }
 
     global Batch_DeleteExternalRequest(String query)
     {
-        this.query = query;
+        if(!String.isBlank(query))
+        {
+            this.query = query;
+        }
     }
 
     //Obtiene la query para eliminar los External Request
 
     global Database.QueryLocator start(Database.BatchableContext bc)
     {
-        if(String.isBlank(query))
-        {
-            this.query = query;
-        }
         return Database.getQueryLocator(query);
     }
     
    global void execute(Database.BatchableContext bc, List<ExternalRequest__c> scope)
-    {
-         try
+   {
+        try
         {
             List<ExternalRequest__c> lstExternalRequestToDelete = new List<ExternalRequest__c>();
             
@@ -57,7 +56,7 @@ global with sharing class Batch_DeleteExternalRequest implements Database.Batcha
         
     }
     
-     global void finish(Database.BatchableContext bc)
+    global void finish(Database.BatchableContext bc)
     {
     }
     
@@ -71,20 +70,20 @@ global with sharing class Batch_DeleteExternalRequest implements Database.Batcha
                );
     }
     
-    // Programa el borrado de External Request con resultado = KO 
+    // Programa el borrado de External Request con ProcessedResult__c en KO, que hayan sido procesadas y con el límite de tiempo establecido.
     public static String scheduleExternalRequestClearKOs()
     {
         String  query = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id,ExternalRequest__c.processed__c}).getQueryProcessedAfterThan(SystemUtil.getAdminSetupMetadata().RetentionExternalRequestKO__c.intValue(), PROCESSED_RESULT_KO);
     
-        return scheduleExternalRequestClear('Clear_External_Request_KO', ' 0 0 2 * * ?', query);
+        return scheduleExternalRequestClear(JOBKO, SCHEDULED_TIME , query);
     }
     
-    // Programa el borrado de External Request con resultado = OK
+    // Programa el borrado de External Request con ProcessedResult__c en OK, que hayan sido procesadas y con el límite de tiempo establecido.
     public static String scheduleExternalRequestClearOKs()
     {
        String query = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id,ExternalRequest__c.processed__c}).getQueryProcessedAfterThan(SystemUtil.getAdminSetupMetadata().RetentionExternalRequestOK__c.intValue(), PROCESSED_RESULT_OK);
        
-       return scheduleExternalRequestClear('Clear_External_Request_OK', '0 0 2 * * ?', query);
+       return scheduleExternalRequestClear(JOBKO, SCHEDULED_TIME, query);
     }        
     
     // FIN métodos batchable
