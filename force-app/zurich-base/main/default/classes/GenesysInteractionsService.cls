@@ -785,6 +785,47 @@ public with sharing class GenesysInteractionsService
     }
 
     /**
+     * Obtener las pólizas activas a partir de un Id de cliente
+     *
+     * @author adelgado
+     * @date 20/01/2021
+     */
+    @testVisible
+    private static ActivePoliciesSabadell findActivePoliciesSabadell(Id customerId, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
+    {
+        PoliciesSelector policiesSelector = new PoliciesSelector();
+        policiesSelector.setFields
+        (
+            new List<Schema.SobjectField>
+            {
+                Policy__c.Id,
+                Policy__c.Name,
+                Policy__c.PolicyType__c
+            },
+            new List<String>
+            {
+                'ProductId__r.GroupDescription__c',
+                'Partner__r.PartnerSector__c',
+                'Partner__r.PartnerSFCode__c',
+                'IntermediaryId__r.MainMobilePhone__c',
+                'IntermediaryId__r.Phone',
+                'IntermediaryId__r.MainEmail__c',
+                'IntermediaryId__r.Channel__c',
+                'IntermediaryId__r.Segment__c',
+                'IntermediaryId__r.INFOIntermediaryCode__c',
+                'Partner__r.GrandparentBusinessName__c'
+            }
+        );
+
+        policiesSelector.setScope(scope);
+        policiesSelector.setLegalEntity(legalEntity);
+
+        List<Policy__c> policies = policiesSelector.selectByHolder(customerId);
+
+        return new ActivePoliciesSabadell(policies);
+    }
+
+    /**
      * Obtener los siniestros abiertos a partir de un Id de cliente
      *
      * @author adelgado
@@ -1024,6 +1065,44 @@ public with sharing class GenesysInteractionsService
         // 3 - Devolver los resultados obtenidos
         return results;
     }
+
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     *
+     * @author jfherrero
+     * @date 24/04/2024
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {SearchResultAuto} Resultados devueltos por la búsqueda
+     */
+    public static SearchResultSabadell findPeopleSabadellBy(SearchRequest request)
+    {
+        // 1 - Comprobar que la request tiene informados todos los campos requeridos
+        if ( String.isBlank(request.searchType) || String.isBlank(request.filterBy) || String.isBlank(request.value) )
+        {
+            throw new GenesysPeopleServiceException(GenesysInteractionsService.class.getName() 
+            + MISSING_FIELDS_REQUIRED + ': searchType, filterBy and value. Payload: ' + request);
+        }
+
+        SearchResultSabadell results = new SearchResultSabadell();
+
+        // 2 - Realizar la búsqueda de registros en base a los filtros definidos en la request
+        switch on request.filterBy
+        {
+            // Inicialmente vamos a trabajar sólo con búsqueda de 'customers'
+            when 'customers'
+            {
+                results = findCustomersSabadellBy(request);
+            }
+            //Inicialmente vamos a trabajar sólo buscando customers
+            when else
+            {
+                throw new GenesysPeopleServiceException(FILTER_NOT_DEFINED+'('+request.filterBy+')');
+            }
+        }
+
+        // 3 - Devolver los resultados obtenidos
+        return results;
+    }
     
     /**
      * Lanza una búsqueda con la configuración determinada por request
@@ -1072,6 +1151,63 @@ public with sharing class GenesysInteractionsService
             results.noIdentified = true;
         }
         else if(accounts.size() > 1)
+        {
+            results.multiIdentifiedByNIF = true;
+        }
+
+        return results;
+    }
+
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     * Se desdobla la funcionalidad para recuperar nuevos valores.
+     *
+     * @author jfherrero
+     * @date 24-04-2024
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {SearchResultAuto} Resultados devueltos por la búsqueda
+     */
+    public static SearchResultSabadell findCustomersSabadellBy(SearchRequest request)
+    {
+        SearchResultSabadell results = new SearchResultSabadell();
+        List<Account> accounts = new List<Account>();
+
+        RecordsSelector.Scope scope = RecordsSelector.getScope(request.scope);
+        RecordsSelector.LegalEntity legalEntity = RecordsSelector.getLegalEntity(request.legalEntity);
+
+        String searchType = request.searchType;
+        accounts = findCustomersBySearchType (new List<String>{request.value}, searchType, scope, legalEntity);
+
+        if(accounts.size() == 1)
+        {
+            Account customer = accounts.get(0);
+            results.screenPopRecordId = customer.Id;
+            results.nationalId = customer.NationalId__c;
+            results.totalPolicies = customer.NumPolicies__pc != null ? Integer.valueOf(customer.NumPolicies__pc) : null;
+            results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
+
+            results.policies = findActivePoliciesSabadell(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
+            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
+        }
+
+        //20210804: Estadísticas/Informes
+        if(accounts.size() == 0)
+        {
+            results.noIdentified = true;
+        }
+        else if(accounts.size() == 1 && searchType == 'phone')
+        {
+            results.identifiedByANI = true;
+        }
+        else if(accounts.size() > 1 && searchType == 'phone')
+        {
+            results.multiIdentifiedByANI = true;
+        }
+        else if(accounts.size() == 1 && searchType == 'document')
+        {
+            results.identifiedByNIF = true;
+        }
+        else if(accounts.size() > 1 && searchType == 'document')
         {
             results.multiIdentifiedByNIF = true;
         }
@@ -1354,6 +1490,43 @@ public with sharing class GenesysInteractionsService
     }
 
     /**
+     * Representa los resultados de búsqueda del CRM
+     *
+     * @author jfherrero
+     * @date 24/04/2024
+     */
+    public class SearchResultSabadell
+    {
+        public transient List<Contact> names;
+        public transient List<SObject> relatedRecords;
+        public String screenPopRecordId;
+        public String phone;
+        public String email;
+        public String territoryCode;
+        public Integer totalPolicies;
+        public Integer totalQuotes;
+        public Agent[] bestAgents;
+        public ActivePoliciesSabadell policies;
+        public OpenedClaims claims;
+        public String nationalId;
+        public String intermediaryChannel;
+        public String intermediarySegment;
+        public String association;
+
+        //20210804: Estadísticas/Informes
+        public Boolean identifiedByNIF;
+        public Boolean identifiedByANI;
+        public Boolean noIdentified;
+        public Boolean multiIdentifiedByNIF;
+        public Boolean multiIdentifiedByANI;
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
      * Representa la información del mediador
      *
      * @author adelgado
@@ -1484,6 +1657,150 @@ public with sharing class GenesysInteractionsService
         private List<ActivePolicy> policies;
 
         public ActivePolicies (List<Policy__c> policies)
+        {
+            this.policies = new List<ActivePolicy> ();
+            this.byPartner = new Map<String, List<ActivePolicy>>();
+            this.bySector = new Map<String, List<ActivePolicy>>();
+            this.byIntermediary = new Map<String, List<ActivePolicy>>();
+            this.byType = new Map<String, List<ActivePolicy>>();
+
+            for(Policy__c policy: policies)
+            {
+                this.add(new ActivePolicy(policy));
+            }
+        }
+
+        public void add(ActivePolicy policy)
+        {
+            this.policies.add(policy);
+
+            if(String.isNotBlank(policy.partnerName))
+            {
+                if(!byPartner.containsKey(policy.partnerName))
+                {
+                    byPartner.put(policy.partnerName, new List<ActivePolicy>());
+                }
+
+                byPartner.get(policy.partnerName).add(policy);
+            }
+
+            if(String.isNotBlank(policy.partnerSector))
+            {
+                if(!bySector.containsKey(policy.partnerSector))
+                {
+                    bySector.put(policy.partnerSector, new List<ActivePolicy>());
+                }
+
+                bySector.get(policy.partnerSector).add(policy);
+            }
+
+            if(String.isNotBlank(policy.intermediaryCode))
+            {
+                if(!byIntermediary.containsKey(policy.intermediaryCode))
+                {
+                    byIntermediary.put(policy.intermediaryCode, new List<ActivePolicy>());
+                }
+
+                byIntermediary.get(policy.intermediaryCode).add(policy);
+            }
+
+            if(String.isNotBlank(policy.type))
+            {
+                if(!byType.containsKey(policy.type))
+                {
+                    byType.put(policy.type, new List<ActivePolicy>());
+                }
+
+                byType.get(policy.type).add(policy);
+            }
+        }
+
+        public override String toString()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Representa la información de las pólizas activas en el CRM. Ofrece las pólizas ordenadas por partner, sector, intermediario y tipo
+     * A nivel de integración, la representación JSON incluye todos los parámetros, incluido los atributos privados, para que sistemas como
+     * Genesys puedan procesar la información. Versión ajustada para consultas de Banco Sabadell
+     *
+     * @author jfherrero
+     * @date 24/04/2024
+     */
+    public class ActivePoliciesSabadell
+    {
+        public Map<String, List<ActivePolicy>> byPartner { get; private set;}
+        public Map<String, List<ActivePolicy>> bySector { get; private set;}
+        public Map<String, List<ActivePolicy>> byIntermediary { get; private set;}
+        public Map<String, List<ActivePolicy>> byType { get; private set;}
+
+        /**
+         * Representa la póliza preferente de cara al enrutamiento - una póliza preferente se considera bajo los casos siguientes:
+         * - El cliente tiene una única póliza
+         * - El cliente tiene varias pólizas, todas del mismo partner y tipo
+         */
+        public ActivePolicy preferredPolicy
+        {
+            get
+            {
+                if (this.byType.get('AUTOS') != null && this.byType.get('AUTOS').size() > 0)
+                {
+                    return this.byType.get('AUTOS')[0];
+                }
+                
+                return null;
+            }
+        }
+
+        /**
+         * Determina si existen pólizas de múltiples tipos
+         */
+        public Boolean hasMultipleTypes
+        {
+            get
+            {
+                return this.byType.size() > 1;
+            }
+        }
+
+        /**
+         * Determina si existen pólizas de múltiples partners
+         */
+        public Boolean hasMultiplePartners
+        {
+            get
+            {
+                return this.byPartner.size() > 1;
+            }
+        }
+
+        /**
+         * Determina si existen pólizas de múltiples intermediarios
+         */
+        public Boolean hasMultipleIntermediaries
+        {
+            get
+            {
+                return this.byIntermediary.size() > 1;
+            }
+        }
+
+         /**
+         * Devuelve el total de pólizas
+         */
+        public Integer total
+        {
+            get
+            {
+                return this.policies.size();
+            }
+        }
+
+        private List<ActivePolicy> policies;
+
+        public ActivePoliciesSabadell (List<Policy__c> policies)
         {
             this.policies = new List<ActivePolicy> ();
             this.byPartner = new Map<String, List<ActivePolicy>>();
