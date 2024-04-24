@@ -17,6 +17,7 @@ public with sharing class CaseUtil
     public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
     public static final String RT_NAME_ZDA = 'ZDAInquiry';
+    public static final String RT_NAME_ZRM = 'ZRMInquiry';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
     public static final String SPRINKLR_QUEUE_POSTVENTA = 'Postventa Redes Sociales';
@@ -65,6 +66,15 @@ public with sharing class CaseUtil
         get
         {
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId();
+        }
+    }
+
+    // Recupera el Id del RecordType de casos ZRM
+    public static final ID RT_ID_ZRM
+    {
+        get
+        {
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZRM).getRecordTypeId();
         }
     }
 
@@ -1857,5 +1867,60 @@ public with sharing class CaseUtil
         }
 
         return mappingConfiguration;
+    }
+
+    /**
+     * Realiza actualizaciones sobre los datos del caso en base al estado y si tiene o no gift card o descuento
+     * 
+     * @author fpalomo <fpalomo@seidor.es>
+     * @date 22/04/2024
+     */
+    public static void handleCaseStatusChangeZRM(List<Case> newList, Map<Id,Case> oldMap)
+    {
+        System.debug('fpalomo#handleCaseStatusChangeZRM');
+        Case oldCase = new Case();
+
+        for(Case newCase : newList)
+        {
+            Boolean newCaseGiftCard = newCase.ClientGiftCard__c;
+            Boolean newCaseDiscount = newCase.ClientDiscount__c;
+
+            if(newCase.RecordTypeId == RT_ID_ZRM)
+            {
+                oldCase = oldMap.get(newCase.Id);
+
+                /**
+                 * Los casos 3, 4, 6 no requieren de lógica adicional en este método pero los dejo anotados como referencia a futuro:
+                 *  > Caso 3 - Cerrado ganado, había dto aplicado, le aplica tarjeta. Se mantiene el estado en cerrado ganado.
+                 *  > Caso 4 - Cerrado ganado, había tarjeta. Además le aplica dto. Se actualiza la información con los datos del dto.
+                 *  > Caso 6 - Cerrado ganado con tarjeta y descuento, desmarca la tarjeta -> se mantiene el estado a “Cerrado Ganado”
+                 */
+
+                if (newCase.Status.equals('Cerrado Perdido'))
+                {
+                    // Caso 2: Cerrado perdido + tarjeta descuento -> Se actualiza el estado a cerrado ganado.
+                    if (newCaseGiftCard)
+                    {
+                        newCase.Status = 'Cerrado Ganado';
+                    }
+
+                    // Caso 1 - Cerrado perdido. Hay descuento posterior. Se actualiza el estado a Cerrado Ganado
+                    else if (newCaseDiscount)
+                    {
+                        newCase.Status = 'Cerrado Ganado';
+                    }
+                }
+
+                else if (newCase.Status.equals('Cerrado Ganado'))
+                {
+                    // Caso 5: Cerrado ganado solo con tarjeta, desmarca la tarjeta -> se actualiza el estado a “En gestión”
+                    if (oldCase.ClientGiftCard__c && !newCaseGiftCard && !newCaseDiscount)
+                    {
+                        newCase.Status = 'En Gestión';
+                    }
+                }
+            }
+        }
+
     }
 }
