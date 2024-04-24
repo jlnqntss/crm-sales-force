@@ -29,6 +29,8 @@ public with sharing class CaseUtil
     public static final String SPRINKLR_TYPE_ASISTENCIA = 'Asistencia (Information/ Contact)';
     public static final String SPRINKLR_TYPE_SINIESTROS = 'Siniestros (Claims)';
 
+    private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
+
     public static List<Group> queueMarcaRRSS = new List<Group>();
     public static List<Group> queuePostventaRRSS = new List<Group>();
     public static List<Group> queueSiniestrosRRSS = new List<Group>();
@@ -76,7 +78,7 @@ public with sharing class CaseUtil
     {
         get
         {
-            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId();
+            return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId(); 
         }
     }
     
@@ -1962,6 +1964,51 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Método que actualiza el estado de un caso de ZRM en función de ciertos parámetros
+     * @author arcortazar
+     * @date 22/04/2023
+     * @param newList lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+
+     public static void casesZRMChangeStatus(List<Case> listaCasos, Map<Id,Case> oldMap)
+     {
+         for(Case casoNew : listaCasos)
+         {
+             if(casoNew.RecordTypeId == RT_ID_ZRM) // Sólo vamos a hacer los cambios si es de ZRM
+             {
+                 Case casoOld;
+                 if(oldMap != null && oldMap.containsKey(casoNew.id))
+                 {
+                     casoOld = oldMap.get(casoNew.id);
+                 }
+ 
+                 // Comprobamos el cambio de "Cliente ha contactado"
+                 if (casoNew.ClientHasContacted__c != casoOld.ClientHasContacted__c)
+                 {
+                     if (casoOld.ClientHasContacted__c == 'Si')
+                     {
+                         casoNew.addError(FIELD_CLIENT_HAS_CONTACTED, 'No se puede modificar este valor');
+                     }
+                     else
+                     {
+                         if (casoOld.Status.equalsIgnoreCase('No iniciado') )
+                         {
+                             casoNew.Status = 'En gestión';
+                         }
+                     }
+                 }
+ 
+                 // Comprobamos el cambio de "check de tarjeta"
+                 if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
+                 {  
+                     casoNew.Status = 'Cerrado ganado';
+                 }                
+             }
+         }
+     }
+
+    /**
      * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner  
      * @author dmunoz
      * @date 23/04/2024
@@ -1975,7 +2022,7 @@ public with sharing class CaseUtil
 
          // 1º compruebo si existe en el trigger algun caso de zrm con que encuentre solo 1 me vale para lanzar las consultas solo cuando sea necesario
          for (Case caseTrigger: newList) {
-            if (RT_ID_ZRMINQUIRY.equals(caseTrigger.RecordTypeId)) {
+            if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId)) {
                 zrmCases.add(caseTrigger);
             }
         }
@@ -2017,5 +2064,5 @@ public with sharing class CaseUtil
         });
 
         return defaultUsers.get(0);
-    }   
+    }    
 }

@@ -1722,6 +1722,112 @@ private with sharing class CaseUtilTest
 
         Assert.isTrue(!zrmCaseList.isEmpty(), 'Se debe haber insertado un caso de retencion zrm');
         Assert.isTrue(zrmCaseList.get(0).OwnerId != u.Id, 'El Owner del caso debe ser diferente al usuario que lo ha insertado');
+ 
+    } 
 
+     /**
+     * Test que comprueba que al actualizar un caso de tipo ZRM, cuando se pasa el campo ClientHasContacted a SI este se actualiza y se cambia el estado
+     **
+     * @author arcortazar
+     * @date 22/04/2024
+     */
+    @isTest
+    private static void test_casesZRMChangeStatus_ClientHasContacted_OK()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+ 
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
+        policies[0].EndDate__c = System.today().addDays(10);
+        insert policies;
+
+        Id rtZRMid = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+
+        Case zrmCase = new Case();
+        zrmCase.PolicyId__c = policies[0].id;
+        zrmCase.RecordTypeId = rtZRMid;
+        zrmCase.Status = 'No iniciado';
+        zrmCase.ClientHasContacted__c = 'No';
+        insert zrmCase;
+
+        Test.startTest();
+        zrmCase.ClientHasContacted__c = 'Si';
+        update zrmCase;
+        Test.stopTest();
+
+        Case casePostUpdate = [SELECT id, Status FROM Case][0];
+        System.assertEquals ('En Gestión', casePostUpdate.Status, 'El estado del caso debería haber cambiado');
+    }
+
+    /**
+     * Test que comprueba que al actualizar un caso de tipo ZRM, cuando se intenta actualizar el campo ClientHasContacted desde SI, no se permite y lanza un error
+     **
+     * @author arcortazar
+     * @date 22/04/2024
+     */
+    @isTest
+    private static void test_casesZRMChangeStatus_ClientHasContacted_KO()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+ 
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
+        policies[0].EndDate__c = System.today().addDays(10);
+        insert policies;
+
+        Id rtZRMid = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+
+        Case zrmCase = new Case();
+        zrmCase.PolicyId__c = policies[0].id;
+        zrmCase.RecordTypeId = rtZRMid;
+        zrmCase.Status = 'No iniciado';
+        zrmCase.ClientHasContacted__c = 'Si';
+        insert zrmCase;
+
+        Test.startTest();
+        zrmCase.ClientHasContacted__c = 'No';
+        try
+        {
+            update zrmCase;
+        }
+        catch(Exception ex)
+        {
+            System.assertEquals('No se puede modificar este valor', zrmCase.getErrors()[0].getMessage(), 'Debería tener un error asociado');
+        }
+        
+        Test.stopTest();
+    }
+
+    /**
+     * Test que comprueba que al actualizar un caso de tipo ZRM, cuando se intenta actualizar el campo ClientGiftCard__c, se cambia el estado a Cerrado Ganado
+     **
+     * @author arcortazar
+     * @date 22/04/2024
+     */
+    @isTest
+    private static void test_casesZRMChangeStatus_ClientGiftCard_OK()
+    {   
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+ 
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
+        policies[0].EndDate__c = System.today().addDays(10);
+        insert policies;
+
+        Id rtZRMid = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+
+        Case zrmCase = new Case();
+        zrmCase.PolicyId__c = policies[0].id;
+        zrmCase.RecordTypeId = rtZRMid;
+        insert zrmCase;
+
+        Test.startTest();
+        zrmCase.ClientGiftCard__c = true;
+        zrmCase.SuppliedEmail = 'test@email.com';
+        update zrmCase;
+        Test.stopTest();
+
+        Case casePostUpdate = [SELECT id, Status FROM Case][0];
+        System.assertEquals ('Cerrado Ganado', casePostUpdate.Status, 'El estado del caso debería haber cambiado');
     }
 }
