@@ -48,18 +48,18 @@
             <value>App Submitted,Legit Lead,Quoted</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Opportunity.Campaign__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>ACTIVA</value>
-        </criteriaItems>
-        <criteriaItems>
             <column>Opportunity.Scope__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>,Ventas</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACTIVE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
         </criteriaItems>
         <language>es</language>
     </filter>
