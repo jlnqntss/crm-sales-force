@@ -86,6 +86,11 @@
         <expression>LEFT({!Get_Offer.AccountId}, 15)</expression>
     </formulas>
     <formulas>
+        <name>OfferContactId15</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!Get_Offer.ContactId}, 15)</expression>
+    </formulas>
+    <formulas>
         <description>Obtengo el id de 15 para comparar con el usuario que está lanzando el flow si es igual muestro mensaje</description>
         <name>OfferOwnerId15</name>
         <dataType>String</dataType>
@@ -201,10 +206,22 @@
                 <elementReference>Get_Offer.CampaignId</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>AccountId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>OfferAccountId15</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pdte. Revisión Mediador</stringValue>
+            </value>
+        </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>CampaignMember</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Status</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -243,24 +260,10 @@
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>CampaignId</field>
+            <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Offer.CampaignId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>AccountId__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>OfferAccountId15</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Pdte. Revisión Mediador</stringValue>
+                <elementReference>Get_CampaignMember.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
