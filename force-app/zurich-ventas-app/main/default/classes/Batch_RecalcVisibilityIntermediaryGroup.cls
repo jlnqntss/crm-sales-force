@@ -9,8 +9,6 @@
 global with sharing class Batch_RecalcVisibilityIntermediaryGroup implements Database.Batchable<sObject>, Schedulable, Database.Stateful {
 
     private static final String CLASS_NAME = 'Batch_RecalcVisibilityIntermediaryGroup';
-    private static final string AGENTEVENTA_PROFILE = 'Agente Ventas';
-    private static final string AGENTEVENTAAGR_PROFILE = 'Agente Ventas - AGR';
 
     private Integer numDMLs = 5000;
     private List<Account> intermediariesToProcess; // guarda los mediadores a procesar por el batch

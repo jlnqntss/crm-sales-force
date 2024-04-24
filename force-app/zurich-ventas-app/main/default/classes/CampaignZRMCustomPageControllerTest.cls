@@ -39,8 +39,8 @@ private with sharing class CampaignZRMCustomPageControllerTest
             insert intermediaryContacts;
 
             // Se crean los usuarios de la comunidad
-            Id agenteVentasProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
-            Id agrupacionAgenteVentasProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas - AGR' LIMIT 1].Id;
+            Id agenteVentasProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
+            Id agrupacionAgenteVentasProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR LIMIT 1].Id;
 
             List<User> agenteVentasUsers = TestDataFactory.generateUsersByProfile(agenteVentasProfile, 2);
             List<User> agrupacionAgenteVentasUsers = TestDataFactory.generateUsersByProfile(agrupacionAgenteVentasProfile,1);
@@ -303,7 +303,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
     {
         User agenteVentas = [SELECT Id, Contact.Account.INFOIntermediaryCode__c
                              FROM User
-                             WHERE Profile.Name = 'Agente Ventas'
+                             WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS
                                                   AND Alias = 'medtest1' LIMIT 1];
         Assert.isNotNull(agenteVentas, 'There must be a user with the profile \'Agente Ventas\'');
 
@@ -332,7 +332,7 @@ private with sharing class CampaignZRMCustomPageControllerTest
     {
         User agrupacionAgenteVentas = [SELECT Id
                                        FROM User
-                                       WHERE Profile.Name = 'Agente Ventas - AGR'
+                                       WHERE Profile.Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR
                                                             AND Alias = 'agtest' LIMIT 1];
         Assert.isNotNull(agrupacionAgenteVentas, 'There must be a user with the profile \'Agente Ventas\'');
 

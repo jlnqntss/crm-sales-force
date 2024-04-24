@@ -267,22 +267,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcOpp</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcOppTes</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcPol</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcPolTes</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>Batch_LeadOffersToReassignToCC</apexClass>
         <enabled>false</enabled>
     </classAccesses>

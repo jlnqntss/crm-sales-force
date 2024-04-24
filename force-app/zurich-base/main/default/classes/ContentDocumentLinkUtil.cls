@@ -20,6 +20,7 @@ public with sharing class ContentDocumentLinkUtil
 
     public static List<EmailMessage> emailMessagesToUpdate = new List<EmailMessage>();
     public static List<Case> casesToUpdate = new List<Case>();
+    public static List<Acta__c> actasToUpdate = new List<Acta__c>();
 
     public static id recordTypeOCS = CaseUtil.RT_ID_OCSINQUIRY;
     public static id recordTypeUSP = CaseUtil.RT_ID_USPINQUIRY;
@@ -511,6 +512,24 @@ public with sharing class ContentDocumentLinkUtil
         }
     }
 
+    public static void setActaCompleted(List<ContentDocumentLink> newList)
+    {
+        for(ContentDocumentLink docLink: newList)
+        {
+            id linkedId = docLink.LinkedEntityId;
+            SObjectType t = linkedId.getSObjectType();
+            SObjectType actaType = Schema.getGlobalDescribe().get('Acta__c');
+            if( t == actaType)
+            {
+                Acta__c acta = new Acta__c();
+                acta.Id = linkedId;
+                acta.Completed__c = true;
+                actasToUpdate.add(acta);
+
+            }
+        }
+    }
+
     public static void updateRelatedRecords()
     {
         if( !emailMessagesToUpdate.isEmpty() )
@@ -534,6 +553,17 @@ public with sharing class ContentDocumentLinkUtil
             catch(Exception ex)
             {
                 ErrorLogUtil.commitError(ex,'ContentDocumentLinkUtil', 'updateRelatedRecords - casesToUpdate');
+            }
+        }
+        if( !actasToUpdate.isEmpty() )
+        {
+            try
+            {
+                update actasToUpdate;
+            }
+            catch(Exception ex)
+            {
+                ErrorLogUtil.commitError(ex,'ContentDocumentLinkUtil', 'updateRelatedRecords - actasToUpdate');
             }
         }
     }

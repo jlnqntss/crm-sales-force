@@ -168,6 +168,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AvailableCasePicklistValuesByRtAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Batch_DeleteErrorLogs</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -4810,6 +4814,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.SAMTechnicalIssues__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SAMCategory__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11517,6 +11526,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.PotentialMatch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.ProductBranch__c</field>
         <readable>true</readable>
@@ -15895,6 +15909,10 @@
         <flow>SetExternalRequestRecordType</flow>
     </flowAccesses>
     <flowAccesses>
+        <enabled>true</enabled>
+        <flow>ZDACaseEscalationScreen</flow>
+    </flowAccesses>
+    <flowAccesses>
         <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
@@ -16642,9 +16660,7 @@
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
     </layoutAssignments>
-    <layoutAssignments>
-        <layout>AccountRelationship__c-Account Relationship Layout</layout>
-    </layoutAssignments>
+
     <loginIpRanges>
         <description>Avoid security token</description>
         <endAddress>255.255.255.255</endAddress>
@@ -19789,10 +19805,6 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>SkipIdentityConfirmation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SocialInsightsLogoAdmin</name>
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>

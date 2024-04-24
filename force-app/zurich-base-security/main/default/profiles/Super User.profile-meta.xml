@@ -224,6 +224,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AvailableCasePicklistValuesByRtAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BaseSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -2699,6 +2703,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.SAMTechnicalIssues__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SAMCategory__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9246,6 +9255,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.PotentialMatch__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.ProductBranch__c</field>
         <readable>true</readable>
@@ -11498,6 +11512,10 @@
         <flow>Task_Trigger_Before_insert_update_Email_Interaction_Case_Related</flow>
     </flowAccesses>
     <flowAccesses>
+        <enabled>true</enabled>
+        <flow>ZDACaseEscalationScreen</flow>
+    </flowAccesses>
+    <flowAccesses>
         <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
@@ -12081,9 +12099,6 @@
         <layout>Seller-Formato Vendedor</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ServiceAppointmentGroup-Formato Service Appointment Group</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ServiceContract-Service Contract Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -12181,12 +12196,6 @@
         <layout>WorkBadgeDefinition-Badge Layout 192</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>WorkProcedure-Formato Procedimiento de trabajo</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>WorkProcedureStep-Formato Paso de procedimiento de trabajo</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>WorkThanks-Thanks Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -12197,9 +12206,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>AccountRelationship__c-Account Relationship Layout</layout>
     </layoutAssignments>
     <loginIpRanges>
         <endAddress>255.255.255.254</endAddress>
@@ -13976,10 +13982,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ShowCompanyNameAsUserBadge</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>SocialInsightsLogoAdmin</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

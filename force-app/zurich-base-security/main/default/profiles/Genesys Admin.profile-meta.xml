@@ -166,6 +166,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AvailableCasePicklistValuesByRtAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BaseSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -4882,11 +4886,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.SalesResult__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.RevenuesPerEmployee__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13330,6 +13329,10 @@
         <flow>TaskTriggerBeforeInsertUpdateDNIS</flow>
     </flowAccesses>
     <flowAccesses>
+        <enabled>true</enabled>
+        <flow>ZDACaseEscalationScreen</flow>
+    </flowAccesses>
+    <flowAccesses>
         <enabled>false</enabled>
         <flow>ZECallbackRoute</flow>
     </flowAccesses>
@@ -16994,10 +16997,6 @@
     <userPermissions>
         <enabled>false</enabled>
         <name>SkipIdentityConfirmation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>SocialInsightsLogoAdmin</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
