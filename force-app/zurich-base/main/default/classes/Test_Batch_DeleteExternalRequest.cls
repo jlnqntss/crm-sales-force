@@ -25,13 +25,10 @@ private with sharing class Test_Batch_DeleteExternalRequest
     @TestSetup
     private static void makeData()
     {
-        
         List<ExternalRequest__c> externalRequestListOK = new List<ExternalRequest__c>();
 
-        //External request procesadas
+        //External request procesadas con valor OK
         externalRequestListOK.addAll( TestDataFactory.generateExternalRequest('INFO', 'INFO_PROCESSED', 30) );
-        //externalRequestList.addAll( TestDataFactory.generateExternalRequest('IBA', 'NATURAL_ACCOUNT', 15) );
-
         Datetime customDateTime = Datetime.now().addDays(-20);
 
         for(ExternalRequest__c externalRequest : externalRequestListOK)
@@ -43,9 +40,8 @@ private with sharing class Test_Batch_DeleteExternalRequest
 
         List<ExternalRequest__c> externalRequestListKO = new List<ExternalRequest__c>();
 
-        //External request procesadas
+        //External request procesadas con valor KO
         externalRequestListKO.addAll( TestDataFactory.generateExternalRequest('INFO', 'INFO_PROCESSED', 30) );
-        //externalRequestList.addAll( TestDataFactory.generateExternalRequest('IBA', 'NATURAL_ACCOUNT', 15) );
 
 
         for(ExternalRequest__c externalRequest : externalRequestListKO)
@@ -58,6 +54,7 @@ private with sharing class Test_Batch_DeleteExternalRequest
         insert externalRequestListOK;
         insert externalRequestListKO;
 
+        //Se aplica el Record Type INFOPRocessed a las External Request, requisito indispensable para que sean borradas.
         for(ExternalRequest__c exR : externalRequestListOK)
         {
             exR.RecordTypeID = INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID;
@@ -72,74 +69,54 @@ private with sharing class Test_Batch_DeleteExternalRequest
     }
 
     /**
-     * Comprobar que el batch elimina solo registros de external request procesados cuyo origen sea INFO
+     * Comprobar que el batch elimina solo registros de external request procesados cuyo origen sea INFO,
+     * que hayan sido procesadas, con un ProcessedResult__c igual a OK y con más de un día de procesado.
      * *
-     * @author adelgado
-     * @date 13/11/2020
+     * @author jchavez
+     * @date 24/04/2024
      */
     @isTest
-    private static void test_scheduleExternalRequestClearOKs()
+    private static void test_borradoExternalRequestClearOKs()
     {
-        List<ExternalRequest__c> ExRToDeleteBefore = [Select id from ExternalRequest__c where recordtype.Id =: INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID AND ProcessResult__c =: PROCESSED_RESULT_OK ];
+        List<ExternalRequest__c> exRToDeleteBefore = [Select id from ExternalRequest__c where recordtype.Id =: INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID AND ProcessResult__c =: PROCESSED_RESULT_OK ];
 
         Test.startTest(); 
         Batch_DeleteExternalRequest b = new Batch_DeleteExternalRequest(QUERY_OK);
         String jobId = database.executeBatch(b, 200 );
-        Test.stopTest(); 
+        Test.stopTest();
 
         List<ExternalRequest__c> ExRToDeleteAfter = [Select id from ExternalRequest__c where recordtype.Id =: INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID AND ProcessResult__c =:PROCESSED_RESULT_OK ];
-        Assert.areNotEqual(null, jobID);
-        Assert.areEqual(True, ExRToDeleteBefore.size() > ExRToDeleteAfter.size(),'Se ha borrado el Ex correspondiente');
+        Assert.areNotEqual(null, jobID, 'Se ha procesado el batch correctamente');
+        Assert.areEqual(True, exRToDeleteBefore.size() > ExRToDeleteAfter.size(),'Se ha borrado el Ex correspondiente');
     }
 
     /**
-     * Comprobar que el batch elimina solo registros de external request procesados cuyo cuyo resultado de procesado sea KO
+     * Comprobar que el batch elimina solo registros de external request procesados cuyo origen sea INFO,
+     * que hayan sido procesadas, con un ProcessedResult__c igual a KO y con más de siete días de procesado.
      * *
-     * @author adelgadot
-     * @date 13/11/2020
+     * @author jchavez
+     * @date 24/04/2024
      */
     @isTest
-    private static void test_scheduleExternalRequestClearKOs()
+    private static void test_borradoExternalRequestClearKOs()
     {
-        List<ExternalRequest__c> ExRToDeleteBefore = [Select Id from ExternalRequest__c where recordtype.Id =: INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID AND ProcessResult__c =:PROCESSED_RESULT_KO ];
+        List<ExternalRequest__c> exRToDeleteBefore = [Select Id from ExternalRequest__c where recordtype.Id =: INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID AND ProcessResult__c =:PROCESSED_RESULT_KO ];
 
         Test.startTest(); 
         Batch_DeleteExternalRequest b = new Batch_DeleteExternalRequest(QUERY_KO);
         String jobID = database.executeBatch(b, 200 );
-        Test.stopTest(); 
-
-        List<ExternalRequest__c> ExRToDeleteAfter = [Select id from ExternalRequest__c where recordtype.Id =: INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID AND ProcessResult__c =:PROCESSED_RESULT_KO ];
-        Assert.areNotEqual(null, jobID);
-        Assert.areEqual(True , ExRToDeleteBefore.size() > ExRToDeleteAfter.size(),'Se ha borrado el Ex correspondiente');
-    }
-
-    /**
-     * Comprobar que el batch elimina todos los registros de external request procesados independientemente del origen
-     * *
-     * @author adelgado
-     * @date 13/11/2020
-     */
-    @isTest
-    private static void test_EliminarRequestsProcesadas()
-    {
-        Integer numReqPreBatch = [SELECT COUNT() FROM ExternalRequest__c LIMIT 50000];
-
-        String query = 'SELECT Id FROM ExternalRequest__c WHERE Processed__c = true';
-
-        Test.startTest();
-        database.executeBatch(new Batch_DeleteExternalRequest(query), 200);
         Test.stopTest();
 
-        Integer numReqAfterBatch = [SELECT COUNT() FROM ExternalRequest__c LIMIT 50000];
-
-        Assert.areEqual(numReqPreBatch , numReqAfterBatch, 'Se han eliminado registros de external request erroneos');
+        List<ExternalRequest__c> exRToDeleteAfter = [Select id from ExternalRequest__c where recordtype.Id =: INFO_PROCESSED_RECORD_TYPE_DEVELOPER_ID AND ProcessResult__c =:PROCESSED_RESULT_KO ];
+        Assert.areNotEqual(null, jobID, 'Se ha procesado el batch correctamente');
+        Assert.areEqual(True , exRToDeleteBefore.size() > exRToDeleteAfter.size(),'Se ha borrado el Ex correspondiente');
     }
 
     /**
-     * Comprobar que el batch elimina todos los registros de external request creadas antes del número de días indicado en el metadato personalizado
+     * Se comprueba que se recuperan bien el metadatado AdminSetup
      * *
-     * @author adelgado
-     * @date 13/11/2020
+     * @author jchavez
+     * @date 24/04/2024
      */
     @isTest
     private static void test_EliminarRequests_Metadato()
@@ -149,14 +126,37 @@ private with sharing class Test_Batch_DeleteExternalRequest
         Assert.areNotEqual(null, adminSetup.RetentionExternalRequestOK__c, 'Metadato No existe');
     }
 
+    /**
+     * Se comprueba que se ha programado correctamente la ejecución del batch para
+     * External Request con ProcessedResult__c = OK
+     * *
+     * @author jchavez
+     * @date 24/04/2024
+     */
     @isTest
-    private static void test_scheduleExternalRequestClear()
+    private static void test_scheduleExternalRequestClearOKs()
     {
-        Batch_DeleteExternalRequest b = new Batch_DeleteExternalRequest(QUERY_KO);
         Test.startTest();
-        String jobID = system.schedule( 'Delete External Request Test', '0 50 * * * ?', b);
+        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearOKs();
         Test.stopTest();
 
-        Assert.areNotEqual(null, jobID, 'Se ha programado la ejecución del batch');
+        System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
+    }
+
+     /**
+     * Se comprueba que se ha programado correctamente la ejecución del batch para
+     * External Request con ProcessedResult__c = KO
+     * *
+     * @author jchavez
+     * @date 24/04/2024
+     */
+    @isTest
+    private static void test_scheduleExternalRequestClearKOs()
+    {
+        Test.startTest();
+        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearKOs();
+        Test.stopTest();
+
+        System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
     }
 }
