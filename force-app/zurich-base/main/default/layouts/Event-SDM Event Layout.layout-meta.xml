@@ -39,7 +39,7 @@
                 <field>WhatId</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Readonly</behavior>
                 <field>RelatedToIntermediary__c</field>
             </layoutItems>
             <layoutItems>
