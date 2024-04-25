@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : jchavez
+ * @group             : 
+ * @last modified on  : 04-24-2024
+ * @last modified by  : jchavez
+**/
 @isTest
 private class ExternalRequestsSelectorTest
 {
@@ -321,7 +328,7 @@ private class ExternalRequestsSelectorTest
             iterator.next();
         }
 
-        System.assertEquals(1, numRecords, 'No se han obtenido external request');
+        System.assertEquals(10, numRecords, 'No se han obtenido external request');
     }
     
     @istest
