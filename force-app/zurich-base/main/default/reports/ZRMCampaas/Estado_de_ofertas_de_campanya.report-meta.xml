@@ -46,6 +46,20 @@
             <operator>greaterThan</operator>
             <value>TODAY</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>Closed Won,Closed Lost,App Submitted,Legit Lead,Quoted</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ACTIVE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
