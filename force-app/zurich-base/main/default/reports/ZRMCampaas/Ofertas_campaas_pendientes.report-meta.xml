@@ -55,11 +55,11 @@
             <value>,Ventas</value>
         </criteriaItems>
         <criteriaItems>
-            <column>ACTIVE</column>
+            <column>CAMPAIGN_ENDDATE</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>1</value>
+            <operator>greaterThan</operator>
+            <value>TODAY</value>
         </criteriaItems>
         <language>es</language>
     </filter>
