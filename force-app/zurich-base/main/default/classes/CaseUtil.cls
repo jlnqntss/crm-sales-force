@@ -2084,4 +2084,58 @@
  
          return defaultUsers.get(0);
      }    
- }
+ 
+    /**
+     * Realiza actualizaciones sobre los datos del caso en base al estado y si tiene o no gift card o descuento
+     * 
+     * @author fpalomo <fpalomo@seidor.es>
+     * @date 22/04/2024
+     */
+    public static void handleCaseStatusChangeZRM(List<Case> newList, Map<Id,Case> oldMap)
+    {
+        Case oldCase = new Case();
+
+        for(Case newCase : newList)
+        {
+            Boolean newCaseGiftCard = newCase.ClientGiftCard__c;
+            Boolean newCaseDiscount = newCase.ClientDiscount__c;
+
+            if(newCase.RecordTypeId == RT_ID_ZRM)
+            {
+                oldCase = oldMap.get(newCase.Id);
+
+                /**
+                 * Los casos 3, 4, 6 no requieren de lógica adicional en este método pero los dejo anotados como referencia a futuro:
+                 *  > Caso 3 - Cerrado ganado, había dto aplicado, le aplica tarjeta. Se mantiene el estado en cerrado ganado.
+                 *  > Caso 4 - Cerrado ganado, había tarjeta. Además le aplica dto. Se actualiza la información con los datos del dto.
+                 *  > Caso 6 - Cerrado ganado con tarjeta y descuento, desmarca la tarjeta -> se mantiene el estado a “Cerrado Ganado”
+                 */
+
+                if (newCase.Status.equals('Cerrado Perdido'))
+                {
+                    // Caso 2: Cerrado perdido + tarjeta descuento -> Se actualiza el estado a cerrado ganado.
+                    if (newCaseGiftCard)
+                    {
+                        newCase.Status = 'Cerrado Ganado';
+                    }
+
+                    // Caso 1 - Cerrado perdido. Hay descuento posterior. Se actualiza el estado a Cerrado Ganado
+                    else if (newCaseDiscount)
+                    {
+                        newCase.Status = 'Cerrado Ganado';
+                    }
+                }
+
+                else if (newCase.Status.equals('Cerrado Ganado'))
+                {
+                    // Caso 5: Cerrado ganado solo con tarjeta, desmarca la tarjeta -> se actualiza el estado a “En gestión”
+                    if (oldCase.ClientGiftCard__c && !newCaseGiftCard && !newCaseDiscount)
+                    {
+                        newCase.Status = 'En Gestión';
+                    }
+                }
+            }
+        }
+
+    }
+}

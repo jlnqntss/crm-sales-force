@@ -1830,5 +1830,47 @@ private with sharing class CaseUtilTest
         Assert.isTrue(!zrmCaseList.isEmpty(), 'Se debe haber insertado un caso de retencion zrm');
         Assert.isTrue(zrmCaseList.get(0).OwnerId != u.Id, 'El Owner del caso debe ser diferente al usuario que lo ha insertado');
  
-    }   
+    }
+
+    @isTest
+    private static void handleCaseStatusChangeZRMTest()
+    {
+        Id rtZrmInquiryId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
+        List<Account> accountRecord = [Select id, PersonContactId from Account where RecordType.DeveloperName = 'Customer' limit 1 ];
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accountRecord, 1);
+        policies[0].EndDate__c = System.today().addMonths(1);
+        insert policies;
+
+        Case c = new Case();
+        c.RecordTypeId = rtZrmInquiryId;
+        c.AccountId = accountRecord[0].Id;
+        c.PolicyId__c = policies[0].Id;
+        c.SuppliedPhone = '666777666';
+        c.ClientGiftCard__c = false;
+        c.ClientDiscount__c = false;
+        insert c;
+
+        Test.startTest();
+            // Caso 1
+            c.Status = 'Cerrado Perdido';
+            c.ClientGiftCard__c = false;
+            c.ClientDiscount__c = true;
+            update c;
+
+            // Caso 2
+            c.Status = 'Cerrado Perdido';
+            c.ClientGiftCard__c = true;
+            c.ClientDiscount__c = false;
+            update c;
+
+            // Caso 5
+            c.Status = 'Cerrado Ganado';
+            c.ClientGiftCard__c = false;
+            c.ClientDiscount__c = false;
+            update c;
+        Test.stopTest();
+
+        Case result = [SELECT Status FROM Case WHERE Id = :c.Id];
+        Assert.areEqual('En Gestión', result.Status, 'El caso debería haber terminado en estado "En Gestión"');
+    }
 }

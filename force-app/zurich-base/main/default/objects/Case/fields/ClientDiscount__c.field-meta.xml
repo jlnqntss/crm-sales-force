@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClientDiscount__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Este campo se marca a true en caso de que se aplique un descuento al cliente</description>
+    <externalId>false</externalId>
+    <label>Client Discount</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
