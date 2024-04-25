@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ZDA User</fullName>
     <applicationVisibilities>
         <application>Klinc</application>
         <default>false</default>
@@ -5143,6 +5142,31 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>SendDocCUInfo__c.CaseId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>SendDocCUInfo__c.Comments__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>SendDocCUInfo__c.ContentDocIds__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>SendDocCUInfo__c.Result__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>SendDocCUInfo__c.SendDate__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>SurveyResponse__c.QuestionType__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -5175,10 +5199,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
-        <recordType>Account.BusinessCustomer</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Account Layout</layout>
         <recordType>Account.ParentAccount</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -5198,23 +5218,27 @@
         <recordType>Account.Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-SAM Intermediary</layout>
-        <recordType>Account.Intermediary</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-SAM Partner</layout>
         <recordType>Account.PartnerOCS</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-ZDA Business Customer</layout>
+        <recordType>Account.BusinessCustomer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-ZDA Intermediary</layout>
+        <recordType>Account.Intermediary</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>AdminSetupParameter__mdt-AdminSetupParameter Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Case Default OCS</layout>
-        <recordType>Case.ZDAInquiry</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Case-Case Default SAM</layout>
         <recordType>Case.SAMInquiry</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Case Default ZDA</layout>
+        <recordType>Case.ZDAInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
@@ -5357,6 +5381,14 @@
         <layout>OtherProduct__mdt-Other Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>PersonAccount-ZDA Customer</layout>
+        <recordType>PersonAccount.Customer</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>PersonAccount-ZDA Lead</layout>
+        <recordType>PersonAccount.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>PlanComercial__c-Plan Comercial Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -5370,6 +5402,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Robot_Hegeo_Setting__mdt-Robot Hegeo Setting Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>SendDocCUInfo__c-Envio doc canal unico Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>SurveyAnswerOption__mdt-Survey Answer Option Layout</layout>
