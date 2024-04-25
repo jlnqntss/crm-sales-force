@@ -29,13 +29,13 @@
      public static final String SPRINKLR_TYPE_ASISTENCIA = 'Asistencia (Information/ Contact)';
      public static final String SPRINKLR_TYPE_SINIESTROS = 'Siniestros (Claims)';
  
+     private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
+ 
      public static List<Group> queueMarcaRRSS = new List<Group>();
      public static List<Group> queuePostventaRRSS = new List<Group>();
      public static List<Group> queueSiniestrosRRSS = new List<Group>();
      public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
      public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
- 
-     private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
  
      // Recupera el Id del RecordType de casos USP
      public static final ID RT_ID_USPINQUIRY
@@ -78,10 +78,10 @@
      {
          get
          {
-             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId();
+             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId(); 
          }
      }
- 
+     
      // Recupera el Id del RecordType de casos ZRM (Retenciones)
      public static final ID RT_ID_ZRM
      {
@@ -348,13 +348,32 @@
          }
      }
  
-     /**
+     
+ 
+      /**
+      * Añade al asunto de un Caso de Sprinklr la red social indicada.
+      * @author Juan Francisco Herrero
+      * @date 23/04/2024
+      * @param insertedCases Colección de nuevos casos que se insertan en la base de datos.
+      */
+     public static void setSprinklrCaseSubject(List<Case> insertedCases)
+     {
+         for(Case customerRequest : insertedCases)
+         {
+             if( customerRequest.RecordTypeId == RT_ID_OCSSPRINKLR && !String.isBlank(customerRequest.SprinklrSocialMediaChannel__c) )
+             {
+                 customerRequest.Subject = 'Mensaje de un usuario de ' + customerRequest.SprinklrSocialMediaChannel__c;
+             }
+         }
+     }                 
+         
+    /**
       * Método que da valor a los campos Description y PrimerMensaje__c del objeto Case
       * Ejecutado en beforInsert porque vienen casos desde Sprinklr con la descripción rellena por un mensaje del cliente
       * @author jchavez
       * @date 23/02/2024
       **/
- 
+
      public static void shortDescriptionNeeded(List<Case> newList)
      {
          integer stringLimit = 255;
@@ -1883,51 +1902,6 @@
      }
  
      /**
-      * Método que actualiza el estado de un caso de ZRM en función de ciertos parámetros
-      * @author arcortazar
-      * @date 22/04/2023
-      * @param newList lista de los casos actualizados
-      * @param oldMap mapa de los casos antes de la actualización
-      */
- 
-     public static void casesZRMChangeStatus(List<Case> listaCasos, Map<Id,Case> oldMap)
-     {
-         for(Case casoNew : listaCasos)
-         {
-             if(casoNew.RecordTypeId == RT_ID_ZRM) // Sólo vamos a hacer los cambios si es de ZRM
-             {
-                 Case casoOld;
-                 if(oldMap != null && oldMap.containsKey(casoNew.id))
-                 {
-                     casoOld = oldMap.get(casoNew.id);
-                 }
- 
-                 // Comprobamos el cambio de "Cliente ha contactado"
-                 if (casoNew.ClientHasContacted__c != casoOld.ClientHasContacted__c)
-                 {
-                     if (casoOld.ClientHasContacted__c == 'Si')
-                     {
-                         casoNew.addError(FIELD_CLIENT_HAS_CONTACTED, 'No se puede modificar este valor');
-                     }
-                     else
-                     {
-                         if (casoOld.Status.equalsIgnoreCase('No iniciado') )
-                         {
-                             casoNew.Status = 'En gestión';
-                         }
-                     }
-                 }
- 
-                 // Comprobamos el cambio de "check de tarjeta"
-                 if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
-                 {  
-                     casoNew.Status = 'Cerrado ganado';
-                 }                
-             }
-         }
-     }
- 
-     /**
       * Consulta todos los casos sin cerrar que estén relacionados a las pólizadas enlazadas a los casos que vienen por el trigger
       * y construye un Map<String, Case> que relaciona la póliza con el caso abierto.
       * @author ivan.garcia.belen@seidor.com
@@ -2003,8 +1977,111 @@
          {
              if(notClosedCaseByPolicyIdMap.containsKey(caso.PolicyId__c))
              {
-                 caso.addError(Label.CaseZRMOpenedCase + ' ' + notClosedCaseByPolicyIdMap.get(caso.PolicyId__c).CaseNumber);
+                 caso.addError(Label.CaseZRMOpenedCase + ' ' +notClosedCaseByPolicyIdMap.get(caso.PolicyId__c).CaseNumber);
+             } 
+         }
+     }
+ 
+     /**
+      * Método que actualiza el estado de un caso de ZRM en función de ciertos parámetros
+      * @author arcortazar
+      * @date 22/04/2023
+      * @param newList lista de los casos actualizados
+      * @param oldMap mapa de los casos antes de la actualización
+      */
+ 
+      public static void casesZRMChangeStatus(List<Case> listaCasos, Map<Id,Case> oldMap)
+      {
+          for(Case casoNew : listaCasos)
+          {
+              if(casoNew.RecordTypeId == RT_ID_ZRM) // Sólo vamos a hacer los cambios si es de ZRM
+              {
+                  Case casoOld;
+                  if(oldMap != null && oldMap.containsKey(casoNew.id))
+                  {
+                      casoOld = oldMap.get(casoNew.id);
+                  }
+  
+                  // Comprobamos el cambio de "Cliente ha contactado"
+                  if (casoNew.ClientHasContacted__c != casoOld.ClientHasContacted__c)
+                  {
+                      if (casoOld.ClientHasContacted__c == 'Si')
+                      {
+                          casoNew.addError(FIELD_CLIENT_HAS_CONTACTED, 'No se puede modificar este valor');
+                      }
+                      else
+                      {
+                          if (casoOld.Status.equalsIgnoreCase('No iniciado') )
+                          {
+                              casoNew.Status = 'En gestión';
+                          }
+                      }
+                  }
+  
+                  // Comprobamos el cambio de "check de tarjeta"
+                  if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
+                  {  
+                      casoNew.Status = 'Cerrado ganado';
+                  }                
+              }
+          }
+      }
+ 
+     /**
+      * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner  
+      * @author dmunoz
+      * @date 23/04/2024
+      * @param newList lista de elementos del trigger after insert
+      */
+     public static void updateInquiryCaseOwnerOnZRMCreation(List<Case> newList) {
+ 
+         List<Case> zrmCases = new List<Case>();
+         List<Case> caseToUpdateList = new List<Case>();
+         Case caseAux;
+ 
+          // 1º compruebo si existe en el trigger algun caso de zrm con que encuentre solo 1 me vale para lanzar las consultas solo cuando sea necesario
+          for (Case caseTrigger: newList) {
+             if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId)) {
+                 zrmCases.add(caseTrigger);
+             }
+         }
+ 
+         if (!zrmCases.isEmpty()) {
+             // Si el usuario logueado es uno de ZRM actualizo el owner de los casos del trigger
+             String loggedProfile = ProfilesSelector.getLoggedUserProfile();
+ 
+             // si el perfil es Agente Ventas o Agente Ventas - AGR del usuario logueado
+             if (ProfilesSelector.PROFILE_AGENTE_VENTAS.equals(loggedProfile) || ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR.equals(loggedProfile)) {
+                 //3º Obtengo el usuario por defecto de ZRM
+                 User defaultUser = getDefaultOwnerUser();
+ 
+                 // Recorro los casos del trigger y cambio el owner solo a aquellos cuyo rt sea ZRMInquiry
+                 for (Case caseToUpdate: zrmCases) {
+                     caseAux = new Case();
+                     caseAux.Id = caseToUpdate.Id;
+                     caseAux.OwnerId = defaultUser.Id;
+                     caseToUpdateList.add(caseAux);
+                 }
+ 
+                 update caseToUpdateList; 
              }
          }
      }
+ 
+     /**
+      * Obtiene el usuario por defecto para asignarle la propiedad de las AccountRelationship
+      *
+      * @author fpalomo
+      * @date 09/02/2024
+      */
+     private static User getDefaultOwnerUser()
+     {
+         UsersSelector userSelector = new UsersSelector();
+         
+         List<User> defaultUsers = userSelector.findUsersByAlias(new List<String> {
+             Cross_Selling__c.getinstance().DefaultUser__c
+         });
+ 
+         return defaultUsers.get(0);
+     }    
  }

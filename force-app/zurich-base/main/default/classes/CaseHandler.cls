@@ -111,6 +111,7 @@ public without sharing class CaseHandler implements ITrigger
     public void afterInsert(List<SObject> newList)
     {
         CaseUtil.SummaryTotalClaims( (List<Case>) newList );
+        CaseUtil.updateInquiryCaseOwnerOnZRMCreation(newList); 
     }
 
     /**
