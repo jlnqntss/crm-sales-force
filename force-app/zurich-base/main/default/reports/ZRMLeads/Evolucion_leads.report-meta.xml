@@ -49,7 +49,14 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>PersonAccount.Lead</value>
+            <value>Account.BusinessCustomer,PersonAccount.Customer,PersonAccount.Lead</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.Opportunities$PersonLeadSource__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>notEqual</operator>
+            <value>NULL</value>
         </criteriaItems>
         <language>es</language>
     </filter>

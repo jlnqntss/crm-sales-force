@@ -55,13 +55,6 @@
             <value>,Ventas</value>
         </criteriaItems>
         <criteriaItems>
-            <column>CAMPAIGN_STARTDATE</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>lessOrEqual</operator>
-            <value>TODAY</value>
-        </criteriaItems>
-        <criteriaItems>
             <column>CAMPAIGN_ENDDATE</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>

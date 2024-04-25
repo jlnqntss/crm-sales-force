@@ -57,6 +57,13 @@
             <operator>equals</operator>
             <value>LAST_N_MONTHS:12</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Opportunity.Campaign__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value></value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>

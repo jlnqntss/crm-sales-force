@@ -72,6 +72,13 @@
             <operator>notEqual</operator>
             <value>A165,3165,A705</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.MovementType__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>3</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>

@@ -28,7 +28,7 @@
             <column>Competitor__c.ContactDate__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
-            <operator>greaterThan</operator>
+            <operator>equals</operator>
             <value>THIS_YEAR</value>
         </criteriaItems>
         <criteriaItems>
