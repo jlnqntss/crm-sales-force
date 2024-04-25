@@ -81,7 +81,7 @@ public with sharing class Batch_RecalcVisibilityIntermGroupTest {
         // prueba batch
         Test.startTest();
 
-        String jobId = Batch_RecalcVisibilityIntermediaryGroup.createStandardSchedule('', '', 5000);
+        String jobId = Batch_RecalcVisibilityIntermediaryGroup.createStandardSchedule('Batch_RecalcVisibilityIntermediaryGroup' + System.today(), '', 5000);
 
         Test.stopTest();
 
