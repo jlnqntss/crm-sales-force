@@ -11,6 +11,7 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
     }
 
     public static final string ATM_ZRM_INTERMEDIARY_ROLE = 'MediadorZRM';
+    public static final string TEMPORARY_ACCOUNT_TEAM_MEMBER = 'RN Temporal';
     
     /**
      * Metodo que recupera los usuarios que cumplen un Rol en los mediadores que contienen un email dado en su
@@ -103,6 +104,8 @@ public with sharing class AccountTeamMemberSelector extends RecordsSelector {
                 SELECT Id, AccountId, UserId, User.Email, TeamMemberRole 
                 FROM AccountTeamMember 
                 WHERE AccountId IN :intermediaries
+                // Los miembros temporales se crean y eliminan manualmente y no deben ser tenidos en cuenta por otros procesos.
+                AND TeamMemberRole <> :TEMPORARY_ACCOUNT_TEAM_MEMBER
             ];
         }
 
