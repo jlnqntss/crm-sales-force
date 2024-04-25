@@ -27,9 +27,9 @@ public with sharing class GenesysInteractionsService
     static final String POLICY_TYPE = 'Policy__r.PolicyType__c';
     static final String POLICY_NUMBER = 'Policy__r.Name';
     static final String POLICY_BRANCH = 'Policy__r.ProductId__r.GroupDescription__c';
-    static final String PARTNER_SF_CODE = 'Policy__r.Partner__r.PartnerSFCode__c';
-    static final String PARTNER_SECTOR = 'Policy__r.Partner__r.PartnerSector__c';
-    static final String PARTNER_NAME = 'Policy__r.Partner__r.GrandparentBusinessName__c';
+    static final String POLICY_PARTNER_SF_CODE = 'Policy__r.Partner__r.PartnerSFCode__c';
+    static final String POLICY_PARTNER_SECTOR = 'Policy__r.Partner__r.PartnerSector__c';
+    static final String POLICY_PARTNER_NAME = 'Policy__r.Partner__r.GrandparentBusinessName__c';
     static final String POLICY_INTERMEDIARY_CODE = 'Policy__r.IntermediaryId__r.INFOIntermediaryCode__c';
     static final String POLICY_INTERMEDIARY_MOBILE_PHONE = 'Policy__r.IntermediaryId__r.MainMobilePhone__c';
     static final String POLICY_INTERMEDIARY_PHONE = 'Policy__r.IntermediaryId__r.Phone';
@@ -44,7 +44,7 @@ public with sharing class GenesysInteractionsService
     static final String INTERMEDIARY_CODE = 'IntermediaryId__r.INFOIntermediaryCode__c';
     static final String PRODUCT_GROUP_DESCRIPTION = 'ProductId__r.GroupDescription__c';
     static final String PARTNER_SECTOR = 'Partner__r.PartnerSector__c';
-    static final String PARTNER_SECTOR_CODE = 'Partner__r.PartnerSFCode__c';
+    static final String PARTNER_SF_CODE = 'Partner__r.PartnerSFCode__c';
     static final String PARTNER_GRANDPARENT_BUSINESS_CODE = 'Partner__r.GrandparentBusinessName__c';
     
     
@@ -437,7 +437,7 @@ public with sharing class GenesysInteractionsService
             {
                 PRODUCT_GROUP_DESCRIPTION,
                 PARTNER_SECTOR,
-                PARTNER_SECTOR_CODE,
+                PARTNER_SF_CODE,
                 PARTNER_GRANDPARENT_BUSINESS_CODE,
                 INTERMEDIARY_MOBILE_PHONE,
                 INTERMEDIARY_PHONE,
@@ -493,8 +493,9 @@ public with sharing class GenesysInteractionsService
             {
                 ASSET_REGISTRATION_NUMBER,
                 POLICY_TYPE, POLICY_BRANCH,
-                PARTNER_SF_CODE, PARTNER_SECTOR,
-                PARTNER_NAME,
+                POLICY_PARTNER_SF_CODE,
+                POLICY_PARTNER_SECTOR,
+                POLICY_PARTNER_NAME,
                 POLICY_NUMBER,
                 POLICY_INTERMEDIARY_CODE, 
                 POLICY_INTERMEDIARY_MOBILE_PHONE,
@@ -777,7 +778,7 @@ public with sharing class GenesysInteractionsService
             {
                 PRODUCT_GROUP_DESCRIPTION,
                 PARTNER_SECTOR,
-                PARTNER_SECTOR_CODE,
+                PARTNER_SF_CODE,
                 INTERMEDIARY_MOBILE_PHONE,
                 INTERMEDIARY_PHONE,
                 INTERMEDIARY_MAIL,
@@ -818,7 +819,7 @@ public with sharing class GenesysInteractionsService
             {
                 PRODUCT_GROUP_DESCRIPTION,
                 PARTNER_SECTOR,
-                PARTNER_SECTOR_CODE,
+                PARTNER_SF_CODE,
                 INTERMEDIARY_MOBILE_PHONE,
                 INTERMEDIARY_PHONE,
                 INTERMEDIARY_MAIL,
@@ -865,8 +866,9 @@ public with sharing class GenesysInteractionsService
             {
                 ASSET_REGISTRATION_NUMBER,
                 POLICY_TYPE, POLICY_BRANCH,
-                PARTNER_SF_CODE, PARTNER_SECTOR,
-                PARTNER_NAME,
+                POLICY_PARTNER_SF_CODE,
+                POLICY_PARTNER_SECTOR,
+                POLICY_PARTNER_NAME,
                 POLICY_INTERMEDIARY_CODE,
                 POLICY_NUMBER,
                 POLICY_INTERMEDIARY_MOBILE_PHONE,
@@ -1266,9 +1268,9 @@ public with sharing class GenesysInteractionsService
                 POLICY_BRANCH,
                 //Datos del partner
                 'Policy__r.Partner__c',
-                PARTNER_SF_CODE,
-                PARTNER_SECTOR,
-                PARTNER_NAME,
+                POLICY_PARTNER_SF_CODE,
+                POLICY_PARTNER_SECTOR,
+                POLICY_PARTNER_NAME,
                 //Datos del mediador
                 POLICY_INTERMEDIARY_CODE,
                 'Policy__r.IntermediaryId__r.IntermediaryDescription__c',
