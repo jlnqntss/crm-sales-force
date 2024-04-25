@@ -28,7 +28,7 @@ private with sharing class Test_Batch_DeleteExternalRequest
         List<ExternalRequest__c> externalRequestListOK = new List<ExternalRequest__c>();
 
         //External request procesadas con valor OK
-        externalRequestListOK.addAll( TestDataFactory.generateExternalRequest('INFO', 'INFO_PROCESSED', 30) );
+        externalRequestListOK.addAll( TestDataFactory.generateExternalRequest('INFO', 'POLICY', 30) );
         Datetime customDateTime = Datetime.now().addDays(-20);
 
         for(ExternalRequest__c externalRequest : externalRequestListOK)
@@ -41,7 +41,7 @@ private with sharing class Test_Batch_DeleteExternalRequest
         List<ExternalRequest__c> externalRequestListKO = new List<ExternalRequest__c>();
 
         //External request procesadas con valor KO
-        externalRequestListKO.addAll( TestDataFactory.generateExternalRequest('INFO', 'INFO_PROCESSED', 30) );
+        externalRequestListKO.addAll( TestDataFactory.generateExternalRequest('INFO', 'POLICY', 30) );
 
 
         for(ExternalRequest__c externalRequest : externalRequestListKO)
