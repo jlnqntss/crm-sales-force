@@ -75,6 +75,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.relateCaseToCustomerByNifCif(newList);
         CaseUtil.relateCasesWithMediatedAccount(newList);
         CaseUtil.checkIfPolicyHaveOpenZrmCase(newList);
+
     }
 
     /**
@@ -87,7 +88,7 @@ public without sharing class CaseHandler implements ITrigger
     {
         CaseUtil.markMilestonesCompletedWhenClose( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.completeUSPMilestonesWhenClosedOrPending( (List<Case>) newList, (Map<Id,Case>) oldMap );
-
+        CaseUtil.casesZRMChangeStatus( (List<Case>) newList, (Map<Id,Case>) oldMap );
     }
 
     /**
@@ -110,6 +111,7 @@ public without sharing class CaseHandler implements ITrigger
     public void afterInsert(List<SObject> newList)
     {
         CaseUtil.SummaryTotalClaims( (List<Case>) newList );
+        CaseUtil.updateInquiryCaseOwnerOnZRMCreation(newList); 
     }
 
     /**
