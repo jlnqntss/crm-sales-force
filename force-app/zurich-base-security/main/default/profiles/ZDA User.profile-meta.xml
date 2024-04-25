@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata"> 
+    <fullName>ZDA User</fullName>
     <applicationVisibilities>
         <application>Klinc</application>
         <default>false</default>
