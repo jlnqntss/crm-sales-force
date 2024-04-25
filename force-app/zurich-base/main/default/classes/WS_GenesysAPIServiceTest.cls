@@ -1,10 +1,12 @@
 /**
- * @description       : 
+ * @description       :
  * @author            : jjuaristi
- * @group             : 
- * @last modified on  : 20-10-2021
- * @last modified by  : jjuaristi
-**/
+ * @group             :
+ * @modified on  : 20-10-2021
+ * @modified by  : jjuaristi
+ * @last modified on  : 24-04-2024
+ * @last modified by  : jfherrero
+ **/
 @isTest(SeeAllData = false)
 private with sharing class WS_GenesysAPIServiceTest
 {
@@ -213,7 +215,7 @@ private with sharing class WS_GenesysAPIServiceTest
     /**
      * Valida la entrada al GET cuando algún parámetro es nulo
      **
-     * @author jjuaristi    
+     * @author jjuaristi
      * @date 18/10/2021
      */
     @isTest
@@ -428,18 +430,18 @@ private with sharing class WS_GenesysAPIServiceTest
         survey.numberOfQuestions = 5;
         survey.questionId = '123456789-1';
         survey.questionType = 'ivr';
-        survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt'+
-        'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper'+
-        'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate'+
-        'velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim'+
-        'qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi';
+        survey.answer = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt' +
+                        'ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper' +
+                        'suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate' +
+                        'velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim' +
+                        'qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi';
 
         RestResponse response = new RestResponse();
         RestRequest request = new RestRequest();
         request.requestURI = '/genesys-cloud/v1/surveys';
         request.httpMethod = 'POST';
         request.addHeader('Content-Type', 'application/json');
-        request.requestBody = Blob.valueOf(JSON.serialize(survey));
+        request.requestBody = Blob.valueOf( JSON.serialize(survey) );
 
         RestContext.request = request;
         RestContext.response = response;
@@ -479,7 +481,7 @@ private with sharing class WS_GenesysAPIServiceTest
         request.requestURI = '/genesys-cloud/v1/surveys';
         request.httpMethod = 'POST';
         request.addHeader('Content-Type', 'application/json');
-        request.requestBody = Blob.valueOf(JSON.serialize(survey));
+        request.requestBody = Blob.valueOf( JSON.serialize(survey) );
 
         RestContext.request = request;
         RestContext.response = response;
@@ -513,7 +515,7 @@ private with sharing class WS_GenesysAPIServiceTest
         request.requestURI = '/genesys-cloud/v1/surveys';
         request.httpMethod = 'POST';
         request.addHeader('Content-Type', 'application/json');
-        request.requestBody = Blob.valueOf(JSON.serialize(survey));
+        request.requestBody = Blob.valueOf( JSON.serialize(survey) );
 
         RestContext.request = request;
         RestContext.response = response;
@@ -602,4 +604,69 @@ private with sharing class WS_GenesysAPIServiceTest
         // Then
         System.assertEquals(400, RestContext.response.statusCode);
     }
+
+    /**
+     * Valida la entrada al GET para el recurso /peopleAuto
+     **
+     * @author jfherrero
+     * @date 24/04/2024
+     */
+    @isTest
+    private static void test_doGet_peopleAuto_OK()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/peopleAuto';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('scope', 'ccs');
+        request.addParameter('searchType', 'document');
+        request.addParameter('filterBy', 'customers');
+        request.addParameter('value', '77788899F');
+        request.addParameter('legalEntity', 'gi');
+
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(200, RestContext.response.statusCode);
+    }
+
+    /**
+     * Valida la entrada al GET para el recurso /peopleSabadell
+     **
+     * @author jfherrero
+     * @date 24/04/2024
+     */
+    @isTest
+    private static void test_doGet_peopleSabadell_OK()
+    {
+        RestResponse response = new RestResponse();
+        RestRequest request = new RestRequest();
+        request.requestURI = '/genesys-cloud/v1/peopleSabadell';
+        request.httpMethod = 'GET';
+        request.addHeader('Content-Type', 'application/json');
+        request.addParameter('scope', 'ccs');
+        request.addParameter('searchType', 'document');
+        request.addParameter('filterBy', 'customers');
+        request.addParameter('value', '77788899F');
+        request.addParameter('legalEntity', 'gi');
+
+
+        RestContext.request = request;
+        RestContext.response = response;
+
+        Test.startTest();
+        WS_GenesysAPIService.doGet();
+        Test.stopTest();
+
+        // Then
+        System.assertEquals(200, RestContext.response.statusCode);
+    }
+
 }
