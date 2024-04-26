@@ -6,13 +6,16 @@
 
  public with sharing class CaseUtil
  {
-     //Constantes
-     public static final String statusCombinado='Combinado';
-     public static final String closeResult='No Realizado';
-     public static final String statusWon='Won';
-     public static final String typeVenta= 'Venta';
-     public static final String queryDays ='365';
-     public static final String estadoCerrado= 'Cerrado';
+    //Constantes
+    public static final String statusCombinado='Combinado';
+    public static final String closeResult='No Realizado';
+    public static final String statusWon='Won';
+    public static final String typeVenta= 'Venta';
+    public static final String queryDays ='365';
+    public static final String estadoCerrado= 'Cerrado';
+    public static final String CASE_CLOSED_LOST = 'Cerrado Perdido';
+    public static final String CASE_CLOSED_WON = 'Cerrado Ganado';
+    public static final String CASE_CAUSE_OF_LOSS_PERIOD_ENDED = 'Periodo Finalizado';
      public static final String RT_NAME_USPINQUIRY = 'USPInquiry';
      public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
      public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
@@ -2136,6 +2139,36 @@
                 }
             }
         }
+    }
+    
+    /**
+     * Método utilizado por Batch_CloseZRMExpiredCases para actualizar los casos de ZRM que hayan pasado 2 meses o más desde su fecha de cierre
+     * y que estén sin cerrar, a 'Cerrado Perdido' con motivo de pérdida a 'Periodo Finalizado'
+     * @author nikola.cobian@seidor.com
+     * @date 22/04/2024
+     * @param List<Case> [givenCases] casos que devuelve el Batch
+     * @return List<Case> casos a actualizar en el Batch
+     */
+    public static List<Case> updateZRMExpiredCases(List<Case> givenCases)
+    {
+        //Lista de Casos modificados que añadiremos para devolver al batch para que se actualicen
+        List<Case> casesToUpdate = new List<Case>();
 
+        //Comprobamos que los Casos enviados no sean nulos o estén vacíos
+        if(givenCases != null || !givenCases.isEmpty())
+        {
+            //Recorremos los Casos devueltos por el Batch
+            for(Case givenCase : givenCases)
+            {
+                //Asignamos los valores que corresponden con la descripción del método
+                givenCase.Status = CASE_CLOSED_LOST;
+                givenCase.CauseOfLoss__c = CASE_CAUSE_OF_LOSS_PERIOD_ENDED;
+                //Añadimos a la lista los Casos modificados
+                casesToUpdate.add(givenCase);
+            }
+        }
+        
+        //Finalmente devolvemos la lista de casos a actualizar
+        return casesToUpdate;
     }
 }
