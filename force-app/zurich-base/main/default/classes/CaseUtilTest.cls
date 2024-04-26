@@ -84,16 +84,6 @@ private with sharing class CaseUtilTest
             userList[0].ContactId = contacts[0].Id;
             insert userList;
         }
-
-        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(createdAccounts, 1);
-        policies[0].EndDate__c = Date.today().addDays(-60);
-        insert policies;
-
-        List<Case> ZRMCases = TestDataFactory.generateCasesForEachAccount(createdAccounts, 1);
-        ZRMCases[0].RecordTypeId = Caseutil.RT_ID_ZRM;
-        ZRMCases[0].PolicyId__c = policies[0].Id;
-        ZRMCases[0].Status = 'En Gestión';
-        insert ZRMCases;
     }
 
     /**
@@ -1893,6 +1883,19 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_updateZRMExpiredCases_OK()
     {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
+        policies[0].EndDate__c = Date.today().addDays(-60);
+        insert policies;
+
+        List<Case> ZRMCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        ZRMCases[0].RecordTypeId = Caseutil.RT_ID_ZRM;
+        ZRMCases[0].PolicyId__c = policies[0].Id;
+        ZRMCases[0].Status = 'En Gestión';
+        insert ZRMCases;
+
         String recordTypeName = CaseUtil.RT_NAME_ZRM;
         String months = '2';
         String query = new CasesSelector().getQueryStringZRMExpiredAndNotClosedCasesWithPolicy(recordTypeName, months);

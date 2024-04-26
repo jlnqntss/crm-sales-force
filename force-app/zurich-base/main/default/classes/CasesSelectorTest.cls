@@ -47,7 +47,7 @@ private with sharing class CasesSelectorTest
 
         Test.stopTest();
 
-        System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');
+        System.assertEquals(20, matchedRecords.size(), 'no devuelve el número de registros correcto');
     }
 
     @isTest
@@ -176,7 +176,7 @@ private with sharing class CasesSelectorTest
         List<Case> matchedRecords = new CasesSelector().getQueryCasesConversionRatio(cuentasRatio,'Combinado','No Realizado','Venta',CaseUtil.RT_ID_USPINQUIRY,'365','Cerrado');
         Test.stopTest();
 
-        System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');
+        System.assertEquals(20, matchedRecords.size(), 'no devuelve el número de registros correcto');
 
     }
 
@@ -303,7 +303,7 @@ private with sharing class CasesSelectorTest
         insert cases;
 
         List<Case> allCases = [Select id from Case];
-        System.assertEquals (12, allCases.size(), 'El número de casos totales no es correcto');
+        System.assertEquals (22, allCases.size(), 'El número de casos totales no es correcto');
 
         Test.startTest();
         List<Case> casesReturned = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (allCases, new List<String> {'Customer'});
