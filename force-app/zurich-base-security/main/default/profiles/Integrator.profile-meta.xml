@@ -9081,11 +9081,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>FileMimeType__mdt.MimeType__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>FollowUp__c.CIF__c</field>
         <readable>true</readable>

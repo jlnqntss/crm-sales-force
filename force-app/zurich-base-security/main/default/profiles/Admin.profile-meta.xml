@@ -10153,11 +10153,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>FileMimeType__mdt.MimeType__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>IBADocument__c.DocumentDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
