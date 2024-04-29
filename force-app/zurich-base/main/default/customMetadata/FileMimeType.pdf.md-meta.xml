@@ -3,6 +3,10 @@
     <label>pdf</label>
     <protected>false</protected>
     <values>
+        <field>AllowedInZDA__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
         <field>KindOfDocument__c</field>
         <value xsi:type="xsd:string">Adobe Portable Document Format</value>
     </values>

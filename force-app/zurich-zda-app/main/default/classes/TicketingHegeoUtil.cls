@@ -21,7 +21,10 @@ public with sharing class TicketingHegeoUtil
                 MIME_TYPE_EXTENSIONS = new Map<String, String>();
                 for (FileMimeType__mdt fileMime : fileMimeList)
                 {
-                    MIME_TYPE_EXTENSIONS.put(fileMime.Label, fileMime.MimeType__c);
+                    if (fileMime.AllowedInZDA__c)
+                    {
+                        MIME_TYPE_EXTENSIONS.put(fileMime.Label, fileMime.MimeType__c);
+                    }
                 }
             }
             return MIME_TYPE_EXTENSIONS;

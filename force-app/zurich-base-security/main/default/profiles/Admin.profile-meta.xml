@@ -10123,6 +10123,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>FileMimeType__mdt.AllowedInZDA__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>FileMimeType__mdt.KindOfDocument__c</field>
         <readable>true</readable>
     </fieldPermissions>
