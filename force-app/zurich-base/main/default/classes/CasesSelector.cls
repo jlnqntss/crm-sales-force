@@ -420,6 +420,39 @@ public with sharing class CasesSelector extends RecordsSelector
     }
 
     /**
+     * Busca el caso por identificador filtrando por (aparte del id) el recordtype de ZDA.
+     * Retorna el caso con los campos TicketId__c, CaseNumber, Status, PendingBy__c, Owner.Name
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 25/04/2029
+     * @param caseId identificador del caso a buscar
+     * @return el caso encontrado o nulo si no se proporciona un id o no se encuentra
+     */
+    public Case getByIdWithZDAInfo(Id caseId)
+    {
+        Case caseFound = null;
+        if (caseId == null)
+        {
+            return caseFound;
+        }
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.TicketId__c,
+            Case.CaseNumber,
+            Case.Status,
+            Case.PendingBy__c
+        })
+        .selectFields('Case.Owner.Name')
+        .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)
+        .addConditionEq(Case.Id, caseId);
+        List<Case> casesFound = (List<Case>) this.baseQuery.run();
+        if (casesFound != null && !casesFound.isEmpty())
+        {
+            caseFound = casesFound[0];
+        }
+        return caseFound;
+    }
+
+    /**
      * Método que obtiene una lista de casos filtrados por el record type name de la cuenta asociada al caso
      * @author aberuete
      * @date 06/03/2024

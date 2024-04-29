@@ -35,8 +35,8 @@ public with sharing class TicketingHegeoService
         req.setEndpoint('callout:ESBCanalUnico');
         req.setMethod('POST');
         req.setHeader('Content-Type', 'application/soap+xml;charset=UTF-8');
-        //default timeout es 10 segundos, aumentamos a 20 (en pruebas daba timeout a pesar de que la peticion llegaba a destino correctamente)
-        req.setTimeout(20000);
+        //default timeout es 10 segundos, aumentamos a 40 (en pruebas daba timeout a pesar de que la peticion llegaba a destino correctamente)
+        req.setTimeout(40000);
         req.setBody(requestBody);
 
         String responseResult;
