@@ -4,7 +4,7 @@
  * @group             : 
  * @modified on  : 20-10-2021
  * @modified by  : jjuaristi
- * @last modified on  : 19-03-2024
+ * @last modified on  : 24-04-2024
  * @last modified by  : jfherrero
  * Incluir servicio 'peopleAuto'
 **/
@@ -54,6 +54,7 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                         GenesysInteractionsService.findOpenedClaim(new GenesysInteractionsService.SearchRequest(RestContext.request.params) ).toString()
                     );
                 }
+                // 4 - GET /digitalcustomer
                 when 'digitalcustomer' {
                     GenesysInteractionsService.version =  WS_BaseAPIService.version;
                     response.statusCode = 200;
@@ -61,11 +62,20 @@ global without sharing class WS_GenesysAPIService extends WS_BaseAPIService
                         GenesysInteractionsService.findDigitalCustomer(new GenesysInteractionsService.DigitalCustomer(RestContext.request.params)).toString()
                     );
                 }
+                // 5 - GET /peopleAuto: Procesa búsqueda de clientes, último siniestro para póliza AUTOS
                 when 'peopleAuto' {
                     GenesysInteractionsService.version =  WS_BaseAPIService.version;
                     response.statusCode = 200;
                     response.responseBody = Blob.valueOf(
                         GenesysInteractionsService.findPeopleAutoBy(new GenesysInteractionsService.SearchRequest(RestContext.request.params) ).toString()
+                    );
+                }
+                // 6 - GET /peopleSabadell: Procesa búsqueda de clientes, póliza favorita vigente de tipo AUTOS
+                when 'peopleSabadell' {
+                    GenesysInteractionsService.version =  WS_BaseAPIService.version;
+                    response.statusCode = 200;
+                    response.responseBody = Blob.valueOf(
+                        GenesysInteractionsService.findPeopleSabadellBy(new GenesysInteractionsService.SearchRequest(RestContext.request.params) ).toString()
                     );
                 }
                 when else 

@@ -22,8 +22,9 @@ private with sharing class Batch_IntermediaryOrAccountChangeZRMTest
     @IsTest
     private static void test_createStandardSchedule()
     {
+        String jobName = Batch_IntermediaryOrAccountChangeZRM.CLASS_NAME + System.Today();
         Test.startTest();
-        Batch_IntermediaryOrAccountChangeZRM.createStandardSchedule(null, null, 50);
+        Batch_IntermediaryOrAccountChangeZRM.createStandardSchedule(jobName, null, 50);
         Test.stopTest();
 
         List<AsyncApexJob> asyncApexJobs = [SELECT ApexClass.Name, JobType
@@ -105,7 +106,7 @@ private with sharing class Batch_IntermediaryOrAccountChangeZRMTest
     * @date 11-04-2024 
     **/
     @IsTest
-    private static void test_setTimeExpression_customExpression()
+    private static void test_setTimeExpression_customExpression() 
     {
         String timeExpression = '0 30 12 * * ?';
 

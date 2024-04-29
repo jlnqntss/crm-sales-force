@@ -40,18 +40,25 @@
     </columns>
     <filter>
         <criteriaItems>
+            <column>CAMPAIGN_ENDDATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>greaterThan</operator>
+            <value>TODAY</value>
+        </criteriaItems>
+        <criteriaItems>
             <column>STAGE_NAME</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>,App Submitted,Legit Lead,Quoted</value>
+            <value>Closed Won,Closed Lost,App Submitted,Legit Lead,Quoted</value>
         </criteriaItems>
         <criteriaItems>
-            <column>CAMPAIGN_STATUS</column>
+            <column>ACTIVE</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>In Progress</value>
+            <value>1</value>
         </criteriaItems>
         <language>es</language>
     </filter>

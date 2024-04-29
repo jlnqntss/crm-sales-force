@@ -59,7 +59,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>greaterOrEqual</operator>
-            <value>N_MONTHS_AGO:2</value>
+            <value>N_DAYS_AGO:60</value>
         </criteriaItems>
         <criteriaItems>
             <column>CREATED_DATE</column>
@@ -71,9 +71,9 @@
         <criteriaItems>
             <column>Opportunity.Campaign__c</column>
             <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
+            <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>FALSE</value>
+            <value></value>
         </criteriaItems>
         <language>es</language>
     </filter>

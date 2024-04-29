@@ -4797,6 +4797,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.CampaignsURL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.ClaimsPhoneNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4888,6 +4893,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.SubscriptionManager__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.TemporaryRnEmail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6337,6 +6347,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Intermediary__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7033,6 +7048,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.ViolatedSla__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ClientDiscount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -1966,6 +1966,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.CampaignsURL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.CAR__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2887,6 +2892,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Succession__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.TemporaryRnEmail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4396,6 +4406,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.IntermediaryVisibilityAcc__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IntermediaryId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5112,6 +5127,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.vaciado__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ClientDiscount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

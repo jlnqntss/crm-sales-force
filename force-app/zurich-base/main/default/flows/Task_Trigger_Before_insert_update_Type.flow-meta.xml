@@ -254,6 +254,7 @@
         <connector>
             <targetReference>TaskTypeIsCall</targetReference>
         </connector>
+        <filterFormula>ISNEW() || ISCHANGED({!$Record.Type}) || ISCHANGED({!$Record.Subtype__c}) || ISCHANGED({!$Record.TaskSubtype}) || ISCHANGED({!$Record.CallDisposition}) || ISCHANGED({!$Record.Subject})</filterFormula>
         <object>Task</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
