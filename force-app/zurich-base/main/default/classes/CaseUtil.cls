@@ -2129,13 +2129,10 @@
                     }
                 }
 
-                else if (newCase.Status.equals(CASE_CLOSED_WON))
+                // Caso 5: Cerrado ganado solo con tarjeta, desmarca la tarjeta -> se actualiza el estado a “En gestión”
+                else if (newCase.Status.equals(CASE_CLOSED_WON) && oldCase.ClientGiftCard__c && !newCaseGiftCard && !newCaseDiscount)
                 {
-                    // Caso 5: Cerrado ganado solo con tarjeta, desmarca la tarjeta -> se actualiza el estado a “En gestión”
-                    if (oldCase.ClientGiftCard__c && !newCaseGiftCard && !newCaseDiscount)
-                    {
-                        newCase.Status = 'En Gestión';
-                    }
+                    newCase.Status = 'En Gestión';
                 }
             }
         }
