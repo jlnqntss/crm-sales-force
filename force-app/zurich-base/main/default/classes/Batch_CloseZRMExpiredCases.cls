@@ -61,4 +61,14 @@ public with sharing class Batch_CloseZRMExpiredCases implements Database.Batchab
 
     public void finish(Database.BatchableContext bc)
     {}
+
+
+    /* Código para programar como 'Scheduled Apex' este batch desde la 
+    *  ventana de ejecución anónima en la Developer Console.
+    *  El valor del parámetro 'cron' es para lanzarlo a diario a las 10:00 AM
+    *
+    Batch_CloseZRMExpiredCases batchToSchedule = new Batch_CloseZRMExpiredCases();
+    String sch = '0 0 10 1/1 * ? *';
+    String jobID = System.schedule('Batch Limpieza de Casos abiertos en ZRM', sch, batchToSchedule);
+    */
 }
