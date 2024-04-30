@@ -36,7 +36,7 @@ public with sharing class Batch_RecalcVisibilityIntermGroupTest {
         System.runAs (adminUser)
         {
             // Usuario Nominal
-            String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+            String portalProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
 
             userList = TestDataFactory.generateUsersByProfile(portalProfile, 1);
             userList[0].ContactId = contacts[0].Id;
@@ -81,7 +81,7 @@ public with sharing class Batch_RecalcVisibilityIntermGroupTest {
         // prueba batch
         Test.startTest();
 
-        String jobId = Batch_RecalcVisibilityIntermediaryGroup.createStandardSchedule('', '', 5000);
+        String jobId = Batch_RecalcVisibilityIntermediaryGroup.createStandardSchedule('Batch_RecalcVisibilityIntermediaryGroup' + System.today(), '', 5000);
 
         Test.stopTest();
 

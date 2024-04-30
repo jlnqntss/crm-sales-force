@@ -451,6 +451,53 @@ private with sharing class EmailMessagesUtilTest
     }
 
     /**
+     * Test que comprueba que se crea correctamente el caso hijo para los casos de tipo SAM
+     * @author aberuete
+     * @date 18/04/2024
+     */
+    @isTest
+    private static void generateChildCasesFromSAM_OK()
+    {
+        // Generamos los casos que necesitamos
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 2);
+        cases[0].Status = 'Asignado';
+        cases[0].RecordTypeId = EmailMessagesUtil.samRecordTypeId;
+        cases[1].Status = 'Cerrado';
+        cases[1].RecordTypeId = EmailMessagesUtil.samRecordTypeId;
+        insert cases;
+
+        List<Case> casosInciales = [SELECT id FROM Case];
+        System.assertEquals( 2, casosInciales.size() );
+
+        // al insertar los emailMessages debemos haber generado un 3er caso
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(2);
+        emails[0].Incoming = true;
+        emails[0].ParentId = casosInciales[0].Id;
+        emails[0].HtmlBody = '';
+        emails[0].TextBody = '';
+        emails[1].Incoming = true;
+        emails[1].ParentId = casosInciales[1].Id;
+        emails[1].HtmlBody = '';
+        emails[1].TextBody = '';
+
+        EmailMessagesUtil emUtil = new EmailMessagesUtil();
+
+        Test.startTest();
+        emUtil.checkNewCaseFromClosedCase(emails);
+        Test.stopTest();
+
+        // Comprobamos que se haya creado un 3er caso, y que el email se ha relacionado con el.
+        List<Case> casosFinales = [SELECT id FROM Case];
+        List<Case> casosHijos = [Select id, ParentId FROM Case Where ParentId != ''];
+        Assert.areEqual(3, casosFinales.size(), 'Hemos de tener un caso más');
+        Assert.areEqual(casosInciales[1].id, casosHijos[0].ParentId, 'El nuevo caso hijo ha de estar asociado al caso cerrado');
+        Assert.areEqual(emails[1].ParentId, casosHijos[0].Id, 'El email ha de estar asociado al nuevo caso hijo');
+    }
+
+    /**
      * Test que comprueba que se marca correctamente la tarea a pública cuando se crea un email message que tiene una tarea relacionada
      * @author aberuete
      * @date 26/07/2023

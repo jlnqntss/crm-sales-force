@@ -258,22 +258,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcOpp</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcOppTes</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcPol</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Batch_IntermediaryVisibilityRecalcPolTes</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>Batch_LeadOffersToReassignToCC</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3197,11 +3181,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.TOPAgent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.TOPIntermediary__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3811,6 +3790,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Propensity__c-Agente zrm</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Case Default ZRM</layout>
+        <recordType>Case.ZRMInquiry</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Claim__c-Agente zrm</layout>

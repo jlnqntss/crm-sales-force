@@ -8,6 +8,10 @@
         <field>ContactId</field>
         <formula>PolicyId__r.PolicyHolder__r.PersonContactId</formula>
     </fieldOverrides>
+    <fieldOverrides>
+        <field>IntermediaryVisibilityAcc__c</field>
+        <formula>Policy__c.IntermediaryId__c</formula>
+    </fieldOverrides>
     <label>Nuevo caso retención</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
@@ -15,13 +19,8 @@
         <quickActionLayoutColumns>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
-                <field>AccountId</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
                 <field>PolicyId__c</field>
-                <uiBehavior>Edit</uiBehavior>
+                <uiBehavior>Readonly</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
@@ -31,16 +30,6 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>ClientHasContacted__c</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>Subject</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>Description</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>

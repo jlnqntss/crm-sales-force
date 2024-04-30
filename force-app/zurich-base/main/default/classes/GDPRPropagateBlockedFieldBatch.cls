@@ -10,13 +10,14 @@
  *                      lanzará el proceso de borrado de dichos registros.
  * @author            : jgallaga
  * @group             : Seidor
- * @last modified on  : 18/10/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 04-16-2024
+ * @last modified by  : mfernandezcarrera
 **/
 public without sharing class GDPRPropagateBlockedFieldBatch implements Database.Batchable<sObject>
 {
     private GDPRPropagationOrder__mdt currentSObjectPropagationParameters;
     private Boolean isAnonymizeMode; // Indica si se esta propagando el campo Blocked o Anonymized
+    private String whereLocalClause;
 
     public GDPRPropagateBlockedFieldBatch(Boolean isAnonymize)
     {
@@ -26,6 +27,13 @@ public without sharing class GDPRPropagateBlockedFieldBatch implements Database.
     public GDPRPropagateBlockedFieldBatch(String indexValue, Boolean isAnonymize)
     {
         currentSObjectPropagationParameters = getMetadataParameters(indexValue, isAnonymize);
+    }
+
+    public GDPRPropagateBlockedFieldBatch(String indexValue, Boolean isAnonymize, String whereClause)
+    {
+        currentSObjectPropagationParameters = getMetadataParameters(indexValue, isAnonymize);
+        whereLocalClause=whereClause;
+
     }
 
     /**
@@ -65,7 +73,7 @@ public without sharing class GDPRPropagateBlockedFieldBatch implements Database.
 
         return foundMetadataRecord;
     }
-
+    
     /**
      * @description El metodo execute del batch recogera los parametros indicados en los metadatos
      *              para generar una query que recogera todos aquellos registros que estén
@@ -75,14 +83,20 @@ public without sharing class GDPRPropagateBlockedFieldBatch implements Database.
      */
     public Database.QueryLocator start(Database.BatchableContext bc)
     {
+        String  scopeQuery;
         String formulaField = currentSObjectPropagationParameters.FormulaField__c;
         String blockingField = currentSObjectPropagationParameters.BlockingField__c;
         String sObjectName = currentSObjectPropagationParameters.SObjectAPIName__c;
 
-        String scopeQuery =
+        scopeQuery =
             'SELECT ' + formulaField + ' , ' + blockingField +
             ' FROM ' + sObjectName +
-            ' WHERE (' + formulaField + ' = true AND ' + blockingField + ' = false) OR (' + formulaField + ' = false AND ' + blockingField + ' = true)';
+            ' WHERE ((' + formulaField + ' = true AND ' + blockingField + ' = false) OR (' + formulaField + ' = false AND ' + blockingField + ' = true)) ';
+
+        if(String.isNotBlank(whereLocalClause))
+        {
+            scopeQuery += whereLocalClause;
+        }
 
         return Database.getQueryLocator(scopeQuery);
     }

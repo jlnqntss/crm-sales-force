@@ -66,54 +66,7 @@ public with sharing class SystemUtil
      */
     public static AdminSetup__mdt getAdminSetupMetadata()
     {
-        List<AdminSetup__mdt> results = new List<AdminSetup__mdt>();
-
-        // nts (agonzalezisasi) - 26/oct/2020 - Include IBA Multi-Partner
-        results = [
-            SELECT
-            Id,
-            DeveloperName,
-            MasterLabel,
-            Language,
-            NamespacePrefix,
-            Label,
-            QualifiedApiName,
-            NumberDaysDeleteErrors__c,
-            NumberDaysDeleteRequests__c,
-            NumberDaysDeleteRequestErrors__c,
-            RetentionExternalRequestKO__c,
-            RetentionExternalRequestOK__c,
-            NumDaysDeleteLeads__c,
-            IBACaseworker__c,
-            MaxRetries__c,
-            IBA_Auth_token__c,
-            IBA_endpoint__c,
-            IBA_EMEA_Authorization_token__c,
-            IBA_EMEA_endpoint__c,
-            IBA_Multi_Partner_endpoint__c,
-            IBA_Multi_Partner_Authorization_token__c,
-            SameMasterPolicy__c,
-            IBA_EMEA_Non_Country__c,
-            IBA_Multi_Partner_Origin__c,
-            Multi_Partners__c,
-            WS_Service_Process_Request__c,
-            WS_Service_Quote_Entry__c,
-            WS_Source_IBA__c,
-            WS_Source_IBA_Multi_Partner__c,
-            IBA_EMEA_Prefix__c,
-            ExternalJobQueueBatchJobs__c,
-            WS_Source_IBA_EMEA__c,
-            NumDaysCallAtribution__c
-            FROM AdminSetup__mdt
-            WHERE MasterLabel = : ADMINSETUP_LABEL
-        ];
-
-        if ( !results.isEmpty() )
-        {
-            return results[0];
-        }
-
-        return null;
+        return AdminSetup__mdt.getInstance(ADMINSETUP_LABEL);
     }
 
     /**
@@ -1268,6 +1221,64 @@ public with sharing class SystemUtil
 
     public class SystemUtilException extends Exception
     {}
+
+    /**
+     * Realiza un callout al UI-API para obtener los picklist values dado un recordtype, campo y objeto concreto
+     *
+     * @author mario.navarro@seidor.com
+     * @date 15/04/2024
+     * @param objectName api name del objeto del que obtener los valores del picklist
+     * @param fieldName api name del campo del que obtener los valores del picklist
+     * @param recordTypeId identificador del recordtype del que obtener los valores del picklist
+     * @return un mapa cuya clave es el API name y el valor es el label del picklist en cuestion
+     */
+    public static Map<String, String> getPicklistValuesByRecordtype(String objectName, String fieldName, String recordTypeId)
+    {
+        String sfdcURL = URL.getOrgDomainUrl().toExternalForm();
+        String endpoint = sfdcURL + '/services/data/v56.0/ui-api/object-info/' + objectName + '/picklist-values/' + recordTypeId + '/' + fieldName;
+
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.setEndpoint(endpoint);
+        httpRequest.setMethod('GET');
+
+        String sesionId = UserInfo.getSessionId();
+        httpRequest.setHeader('Authorization', 'Bearer ' + sesionId);
+
+        List<String> listControllers;
+        Map<String, String> mapPicklistValues = new Map<String, String>(); // el retorno
+
+        try
+        {
+            Http http = new Http();
+            HttpResponse httpResponse = http.send(httpRequest);
+            if (httpResponse.getStatusCode() == 200 )
+            {
+                String jsonString = httpResponse.getBody();
+                Map<String, Object> resultado = (Map<String, Object>) JSON.deserializeUntyped(jsonString);
+
+                // Lista de objetos
+                List<Object> picklistElements = (List<Object>) resultado.get('values');
+
+                for(Object val: picklistElements)
+                {
+                    Map<String, Object> picklistElement = (Map<String, Object>) val;
+                    String label = (String) picklistElement.get('label');
+                    String apiName = (String) picklistElement.get('value');
+                    mapPicklistValues.put(apiName, label);
+                }
+            }
+            else
+            {
+                throw new CalloutException( httpResponse.getBody() );
+            }
+        }
+        catch( System.Exception e)
+        {
+            throw e;
+        }
+
+        return mapPicklistValues;
+    }
 
     /**
      * Método que devuelve los valores que controlan una picklist dependiente, segun su recordType.

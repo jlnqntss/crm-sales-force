@@ -1,46 +1,125 @@
 {
-  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "componentName" : "siteforce:sldsOneColLayout",
-  "dataProviders" : [ ],
-  "id" : "71688a10-86b9-4d95-8fe9-26b0d9e1a4d6",
-  "label" : "Case List",
-  "regions" : [ {
-    "id" : "853b6cf1-3198-459e-94c8-dfc5e8caa4fd",
-    "regionName" : "header",
-    "type" : "region"
-  }, {
-    "components" : [ {
-      "componentAttributes" : {
-        "enableInlineEdit" : true,
-        "filterName" : "{!filterId}",
-        "layout" : "FULL",
-        "pageSize" : 25,
-        "scope" : "{!objectName}",
-        "showActionBar" : true,
-        "showChartsPanel" : true,
-        "showDisplay" : "showall",
-        "showFilterPanel" : true,
-        "showImageIcon" : true,
-        "showManualRefreshButton" : true,
-        "showObjectName" : true,
-        "showPinnedList" : true,
-        "showSearchBar" : true
-      },
-      "componentName" : "forceCommunity:objectHome",
-      "id" : "c7a5c3b8-046a-43f1-9bd7-3c0ab4a23ad9",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
-    "id" : "1e7982cb-e14b-47fe-9547-226c4a4d7ab4",
-    "regionName" : "content",
-    "type" : "region"
-  }, {
-    "id" : "c22d5c1f-90da-486d-a481-6fd8afa8d65c",
-    "regionName" : "footer",
-    "type" : "region"
-  } ],
-  "themeLayoutType" : "Inner",
-  "type" : "view",
-  "viewType" : "list-500"
+  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName": "siteforce:sldsOneColLayout",
+  "dataProviders": [],
+  "id": "71688a10-86b9-4d95-8fe9-26b0d9e1a4d6",
+  "label": "Case List",
+  "regions": [
+    {
+      "components": [
+        {
+          "componentAttributes": {
+            "tabsetConfig": {
+              "UUID": "6a6e937b-1915-40e5-b249-2888e0209887",
+              "activeTab": "",
+              "tabs": [
+                {
+                  "UUID": "5d69118f-3408-4ce6-bbd9-959fea3db3be",
+                  "allowGuestUser": false,
+                  "locked": false,
+                  "seedComponents": [],
+                  "tabKey": "1",
+                  "tabName": "Mis casos"
+                },
+                {
+                  "UUID": "3dbb1cb6-ec7c-47dc-b6bd-a37986de7585",
+                  "allowGuestUser": false,
+                  "locked": false,
+                  "seedComponents": [],
+                  "tabKey": "2",
+                  "tabName": "Casos CC"
+                }
+              ],
+              "useOverflowMenu": false
+            }
+          },
+          "componentName": "forceCommunity:tabset",
+          "id": "6a6e937b-1915-40e5-b249-2888e0209887",
+          "regions": [
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "enableInlineEdit": true,
+                    "filterName": "ZRM_Mis_casos",
+                    "layout": "FULL",
+                    "pageSize": 25,
+                    "scope": "Case",
+                    "showActionBar": false,
+                    "showChartsPanel": true,
+                    "showDisplay": "showall",
+                    "showFilterPanel": true,
+                    "showImageIcon": true,
+                    "showManualRefreshButton": true,
+                    "showObjectName": true,
+                    "showPinnedList": true,
+                    "showSearchBar": true
+                  },
+                  "componentName": "forceCommunity:objectHome",
+                  "id": "7853ffb6-22c8-4850-b93c-1b33bb622651",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "5d69118f-3408-4ce6-bbd9-959fea3db3be",
+              "regionLabel": "Mis casos",
+              "regionName": "1",
+              "renditionMap": {},
+              "type": "region"
+            },
+            {
+              "components": [
+                {
+                  "componentAttributes": {
+                    "enableInlineEdit": true,
+                    "filterName": "ZRM_Casos_CC",
+                    "layout": "FULL",
+                    "pageSize": 25,
+                    "scope": "Case",
+                    "showActionBar": false,
+                    "showChartsPanel": true,
+                    "showDisplay": "showall",
+                    "showFilterPanel": true,
+                    "showImageIcon": true,
+                    "showManualRefreshButton": true,
+                    "showObjectName": true,
+                    "showPinnedList": true,
+                    "showSearchBar": true
+                  },
+                  "componentName": "forceCommunity:objectHome",
+                  "id": "25c86bbc-3e2e-4ee3-93d3-63a25cb90144",
+                  "renditionMap": {},
+                  "type": "component"
+                }
+              ],
+              "id": "3dbb1cb6-ec7c-47dc-b6bd-a37986de7585",
+              "regionLabel": "Casos CC",
+              "regionName": "2",
+              "renditionMap": {},
+              "type": "region"
+            }
+          ],
+          "renderPriority": "NEUTRAL",
+          "renditionMap": {},
+          "type": "component"
+        }
+      ],
+      "id": "853b6cf1-3198-459e-94c8-dfc5e8caa4fd",
+      "regionName": "header",
+      "type": "region"
+    },
+    {
+      "id": "1e7982cb-e14b-47fe-9547-226c4a4d7ab4",
+      "regionName": "content",
+      "type": "region"
+    },
+    {
+      "id": "c22d5c1f-90da-486d-a481-6fd8afa8d65c",
+      "regionName": "footer",
+      "type": "region"
+    }
+  ],
+  "themeLayoutType": "Inner",
+  "type": "view",
+  "viewType": "list-500"
 }

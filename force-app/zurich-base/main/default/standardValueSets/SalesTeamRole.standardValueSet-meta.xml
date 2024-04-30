@@ -66,4 +66,9 @@
         <default>false</default>
         <label>MediadorZRM</label>
     </standardValue>
+    <standardValue>
+        <fullName>RN Temporal</fullName>
+        <default>false</default>
+        <label>RN Temporal</label>
+    </standardValue>
 </StandardValueSet>

@@ -65,6 +65,13 @@
         <value>Quiero recibir comunicaciones</value>
     </labels>
     <labels>
+        <fullName>CaseZRMOpenedCase</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CaseZRMOpenedCase</shortDescription>
+        <value>There is already an open hold case for that policy. Case number:</value>
+    </labels>
+    <labels>
         <fullName>Claim</fullName>
         <categories>Record Type</categories>
         <language>en_US</language>
@@ -852,6 +859,14 @@ Related fields: [{3}]</value>
         <protected>false</protected>
         <shortDescription>callRecordingButtonStop</shortDescription>
         <value>Stop Recording</value>
+    </labels>
+    <labels>
+        <fullName>SAMUser</fullName>
+        <categories>Profile</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SAMUser</shortDescription>
+        <value>SAM User</value>
     </labels>
     <labels>
         <fullName>sendSurveyButtonLabel</fullName>

@@ -27,11 +27,11 @@ public with sharing class Batch_LeadOffersToReassignToCCTest {
         insert intermediaryContacts;
     
         // Creamos los perfiles de los intermediarios
-        String portalProfile = [SELECT Id FROM Profile WHERE Name = 'Agente Ventas' LIMIT 1].Id;
+        String portalProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_AGENTE_VENTAS LIMIT 1].Id;
         List<User> listUser=TestDataFactory.generateUsersByProfile(portalProfile, 3);
 
         // Partners - profile agente ventas
-        String ccProfile = [SELECT Id FROM Profile WHERE Name = 'Ventas User' LIMIT 1].Id;
+        String ccProfile = [SELECT Id FROM Profile WHERE Name = : ProfilesSelector.PROFILE_VENTAS_USER LIMIT 1].Id;
         listUser.addAll(TestDataFactory.generateUsersByProfile(ccProfile, 1));
 
         listUser[0].FirstName='Agente';

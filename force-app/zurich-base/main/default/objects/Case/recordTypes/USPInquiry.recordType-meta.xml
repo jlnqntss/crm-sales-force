@@ -432,6 +432,14 @@
     <picklistValues>
         <picklist>CloseResult__c</picklist>
         <values>
+            <fullName>Ajuste prima renovación denegado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ajuste prima renovación realizado</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Anulación - Desaparición riesgo</fullName>
             <default>false</default>
         </values>

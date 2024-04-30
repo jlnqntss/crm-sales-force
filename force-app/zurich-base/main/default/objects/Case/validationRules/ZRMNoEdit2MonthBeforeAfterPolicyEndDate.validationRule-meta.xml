@@ -6,9 +6,9 @@
     <errorConditionFormula>AND(
     RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
     NOT(
-        OR(
-            DATETIMEVALUE(CreatedDate) &gt;= (DATETIMEVALUE(DATE(YEAR(PolicyEndDate__c), MONTH(PolicyEndDate__c), 1)) - 60), /* 2 meses antes */
-            DATETIMEVALUE(CreatedDate) &lt;= (DATETIMEVALUE(DATE(YEAR(PolicyEndDate__c), MONTH(PolicyEndDate__c), 1)) + 61) /* 2 meses después */
+        AND(
+           PolicyEndDate__c &lt;= TODAY() + 60, 
+           PolicyEndDate__c &gt;= TODAY() - 60
         )
     )
 )</errorConditionFormula>
