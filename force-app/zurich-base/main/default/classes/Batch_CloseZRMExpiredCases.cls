@@ -29,6 +29,13 @@ public with sharing class Batch_CloseZRMExpiredCases implements Database.Batchab
         return Database.getQueryLocator(query);
     }
 
+    /**
+     * Método que se ejecuta programáticamente. Puede ser ejecutado desde Apex (System.schedule())
+     * o desde "Programar Apex"
+     * @author nikola.cobian@seidor.com
+     * @date 02/05/2024
+     * @param SchedulableContext sc. Referencia del objeto que implementa la interfaz schedulable.
+     */
     public void execute(SchedulableContext sc)
     {
         Database.executeBatch(new Batch_CloseZRMExpiredCases(), 10);
@@ -61,14 +68,4 @@ public with sharing class Batch_CloseZRMExpiredCases implements Database.Batchab
 
     public void finish(Database.BatchableContext bc)
     {}
-
-
-    /* Código para programar como 'Scheduled Apex' este batch desde la 
-    *  ventana de ejecución anónima en la Developer Console.
-    *  El valor del parámetro 'cron' es para lanzarlo a diario a las 10:00 AM
-    *
-    Batch_CloseZRMExpiredCases batchToSchedule = new Batch_CloseZRMExpiredCases();
-    String sch = '0 0 10 1/1 * ? *';
-    String jobID = System.schedule('Batch Limpieza de Casos abiertos en ZRM', sch, batchToSchedule);
-    */
 }
