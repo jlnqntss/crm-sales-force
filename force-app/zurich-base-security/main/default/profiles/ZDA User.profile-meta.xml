@@ -3708,6 +3708,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.BestAgent__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.Blocked__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4034,6 +4039,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.HegeoReceiptNumber__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.IdTipologiaBs__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4629,6 +4639,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.SprinklrSocialPersona__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.StatusCanalUnico__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
