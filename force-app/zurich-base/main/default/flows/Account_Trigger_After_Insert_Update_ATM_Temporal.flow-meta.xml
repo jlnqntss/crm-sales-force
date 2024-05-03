@@ -8,6 +8,16 @@
             <stringValue>Este email no corresponde a ningún usuario activo del MAC, por favor, revísalo o contacta con el administrador.</stringValue>
         </value>
     </constants>
+    <customErrors>
+        <name>El_usuario_no_existe</name>
+        <label>El usuario no existe</label>
+        <locationX>314</locationX>
+        <locationY>647</locationY>
+        <customErrorMessages>
+            <errorMessage>{!mensajeUsuarioNoExiste}</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
     <decisions>
         <name>ATM_Temporal_Exists</name>
         <label>ATM Temporal Exists</label>
