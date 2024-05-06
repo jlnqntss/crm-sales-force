@@ -1878,4 +1878,43 @@ private with sharing class CaseUtilTest
         Case result = [SELECT Status FROM Case WHERE Id = : c.Id];
         Assert.areEqual('En Gestión', result.Status, 'El caso debería haber terminado en estado "En Gestión"');
     }
+
+    /**
+     * Método test para Batch_CloseZRMExpiredCases. Se encarga de asignar los valores a actualizar
+     * de los casos obtenidos en el selector para Casos sin cerrar en ZRM.
+     * @author nikola.cobian@seidor.com
+     * @date 23/04/2024
+     */
+    @isTest
+    private static void test_updateZRMExpiredCases_OK()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
+        policies[0].EndDate__c = Date.today().addDays(-60);
+        insert policies;
+
+        List<Case> ZRMCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        ZRMCases[0].RecordTypeId = Caseutil.RT_ID_ZRM;
+        ZRMCases[0].PolicyId__c = policies[0].Id;
+        ZRMCases[0].Status = 'En Gestión';
+        insert ZRMCases;
+
+        String recordTypeName = CaseUtil.RT_NAME_ZRM;
+        String months = '2';
+        String query = new CasesSelector().getQueryStringZRMExpiredAndNotClosedCasesWithPolicy(recordTypeName, months);
+        List<Case> matchedRecords = (List<Case>) Database.query(query);
+
+        Test.startTest();
+        List<Case> casesToUpdate = CaseUtil.updateZRMExpiredCases(matchedRecords);
+        update casesToUpdate;
+        Test.stopTest();
+
+        List<Case> updatedRecords = [SELECT Id, Status, CauseOfLoss__c FROM Case WHERE Id =: casesToUpdate[0].Id];
+
+        Assert.areEqual(casesToUpdate[0].Id, updatedRecords[0].Id, 'Los IDs deben coincidir');
+        Assert.areEqual(CaseUtil.CASE_CAUSE_OF_LOSS_PERIOD_ENDED, updatedRecords[0].CauseOfLoss__c, 'El motivo de pérdida debe coincidir');
+        Assert.areEqual(CaseUtil.CASE_CLOSED_LOST, updatedRecords[0].Status, 'Los estados deben coincidir');        
+    }
 }

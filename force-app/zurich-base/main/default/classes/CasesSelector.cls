@@ -20,6 +20,7 @@ public with sharing class CasesSelector extends RecordsSelector
 
     public static final String CASES_LAST_DATE = 'Case.CreatedDate = LAST_N_DAYS:';
     public static final String CASES_MODIFY_LAST_DATE = 'Case.LastModifiedDate = LAST_N_DAYS:';
+    public static final String CASES_END_DATE = 'Case.PolicyEndDate__c <= LAST_N_MONTHS:';
     public static final String ACCOUNT_RT_NAME_FIELD = 'Case.Account.RecordType.DeveloperName';
     public static final String CONTACT_PERSON_ACCOUNT_FIELD = 'Case.Account.PersonContactId';
     public static final String CASE_RT_NAME_FIELD = 'Case.RecordType.DeveloperName';
@@ -477,7 +478,40 @@ public with sharing class CasesSelector extends RecordsSelector
         }
 
         return new List<Case>();
-
     }
-    
+
+    /**
+     * Método selector que devuelve los Casos de la comunidad ZRM, que no figuren como 'Cerrado'/'Cerrado Perdido'/'Cerrado Ganado'
+     * y que su fecha de vencimiento haya pasado los 2 meses.
+     * @author nikola.cobian@seidor.com
+     * @date 22/04/2024
+     * @param String recordTypeName, String months
+     * RT y Fecha de vencimiento para filtrar la query
+     * @return String query que se devuelve para operar en el batch
+     */
+    public String getQueryStringZRMExpiredAndNotClosedCasesWithPolicy(String recordTypeName, String months)
+    {
+        if(months != null && String.isNotEmpty(months) 
+        && recordTypeName != null && String.isNotEmpty(recordTypeName) && recordTypeName == CaseUtil.RT_NAME_ZRM)
+        {
+            this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+                Case.Id,
+                Case.Status,
+                Case.RecordTypeId,
+                Case.CauseOfLoss__c
+            })
+            .addConditionEq(Case.RecordTypeId, CaseUtil.RT_ID_ZRM)
+            .addConditionNotNull(Case.PolicyId__c)
+            .addConditionNotEq(Case.Status, Caseutil.CASE_CLOSED_LOST)
+            .addConditionNotEq(Case.Status, Caseutil.CASE_CLOSED_WON)
+            .addConditionNotEq(Case.Status, Caseutil.estadoCerrado)
+            .addConditionString(CASES_END_DATE + months);
+
+            return this.baseQuery.toQueryString();
+        } 
+        else 
+        {
+            return '';    
+        }
+    }
 }

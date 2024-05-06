@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Iniciativa__c</fullName>
+    <externalId>false</externalId>
+    <label>Iniciativa</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>SoW Pymes</fullName>
+                <default>false</default>
+                <label>SoW Pymes</label>
+            </value>
+            <value>
+                <fullName>SoW Vida</fullName>
+                <default>false</default>
+                <label>SoW Vida</label>
+            </value>
+            <value>
+                <fullName>Diversa</fullName>
+                <default>false</default>
+                <label>Diversa</label>
+            </value>
+            <value>
+                <fullName>Expats</fullName>
+                <default>false</default>
+                <label>Expats</label>
+            </value>
+            <value>
+                <fullName>Grupos</fullName>
+                <default>false</default>
+                <label>Grupos</label>
+            </value>
+            <value>
+                <fullName>Top 10 Vida</fullName>
+                <default>false</default>
+                <label>Top 10 Vida</label>
+            </value>
+            <value>
+                <fullName>Conectividad</fullName>
+                <default>false</default>
+                <label>Conectividad</label>
+            </value>
+            <value>
+                <fullName>Smart Sales</fullName>
+                <default>false</default>
+                <label>Smart Sales</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
