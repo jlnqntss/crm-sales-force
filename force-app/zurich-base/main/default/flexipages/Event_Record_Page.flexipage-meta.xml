@@ -28,6 +28,13 @@
                         </valueListItems>
                         <valueListItems>
                             <value>Event.Generar_Acta_PDF</value>
+                            <visibilityRule>
+                                <criteria>
+                                    <leftValue>{!Record.ActaLink__c}</leftValue>
+                                    <operator>NE</operator>
+                                    <rightValue>&lt;a href=&quot;/&quot; target=&quot;_parent&quot;&gt; &lt;/a&gt;</rightValue>
+                                </criteria>
+                            </visibilityRule>
                         </valueListItems>
                         <valueListItems>
                             <value>Edit</value>

@@ -16,6 +16,16 @@ private with sharing class CasesSelectorTest
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         insert cases;
+
+        List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
+        policies[0].EndDate__c = Date.today().addDays(-60);
+        insert policies;
+
+	    List<Case> ZRMCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        ZRMCases[0].RecordTypeId = Caseutil.RT_ID_ZRM;
+        ZRMCases[0].PolicyId__c = policies[0].Id;
+        ZRMCases[0].Status = 'En Gestión';
+        insert ZRMCases;
     }
 
     @isTest
@@ -37,7 +47,7 @@ private with sharing class CasesSelectorTest
 
         Test.stopTest();
 
-        System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');
+        System.assertEquals(20, matchedRecords.size(), 'no devuelve el número de registros correcto');
     }
 
     @isTest
@@ -166,7 +176,7 @@ private with sharing class CasesSelectorTest
         List<Case> matchedRecords = new CasesSelector().getQueryCasesConversionRatio(cuentasRatio,'Combinado','No Realizado','Venta',CaseUtil.RT_ID_USPINQUIRY,'365','Cerrado');
         Test.stopTest();
 
-        System.assertEquals(10, matchedRecords.size(), 'no devuelve el número de registros correcto');
+        System.assertEquals(20, matchedRecords.size(), 'no devuelve el número de registros correcto');
 
     }
 
@@ -293,7 +303,7 @@ private with sharing class CasesSelectorTest
         insert cases;
 
         List<Case> allCases = [Select id from Case];
-        System.assertEquals (12, allCases.size(), 'El número de casos totales no es correcto');
+        System.assertEquals (22, allCases.size(), 'El número de casos totales no es correcto');
 
         Test.startTest();
         List<Case> casesReturned = new CasesSelector().getCasesFilterByRecordTypeNamesAccount (allCases, new List<String> {'Customer'});
@@ -453,5 +463,65 @@ private with sharing class CasesSelectorTest
         Test.stopTest();
 
         Assert.areEqual( 1, cases.size() );
+    }
+
+    /**
+     * Método test para Batch_CloseZRMExpiredCases. El selector devuelve una query que ha de volver informada
+     * ya que los dos parámetros String del método están informados con el valor correcto
+     * @author nikola.cobian@seidor.com
+     * @date 23/04/2024
+     */
+    @isTest
+    private static void test_getQueryStringZRMExpiredAndNotClosedCasesWithPolicy_OK()
+    {
+        String recordTypeName = CaseUtil.RT_NAME_ZRM;
+        String months = '2';
+
+        Test.startTest();
+        String query = new CasesSelector().getQueryStringZRMExpiredAndNotClosedCasesWithPolicy(recordTypeName, months);
+        Test.stopTest();
+
+        Assert.areNotEqual('', query, 'El resultado de la query debe estar informado');
+    }
+
+    /**
+     * Método test para Batch_CloseZRMExpiredCases. El selector devuelve una query que ha de volver vacía
+     * ya que uno de los dos parámetros String del método están vacíos
+     * @author nikola.cobian@seidor.com
+     * @date 23/04/2024
+     */
+    @isTest
+    private static void test_getQueryStringZRMExpiredAndNotClosedCasesWithPolicy_KO()
+    {
+        String recordTypeName = '';
+        String months = '2';
+
+        Test.startTest();
+        String query = new CasesSelector().getQueryStringZRMExpiredAndNotClosedCasesWithPolicy(recordTypeName, months);
+        Test.stopTest();
+
+        Assert.areEqual('', query, 'El resultado de la query debe estar vacío');
+    }
+
+    /**
+     * Método test para Batch_CloseZRMExpiredCases. El selector devuelve una query que manipulamos mediante
+     * la instrucción Database.query para comprobar los valores esperados en el caso generado
+     * @author nikola.cobian@seidor.com
+     * @date 23/04/2024
+     */
+    @isTest
+    private static void test_getQueryStringZRMExpiredAndNotClosedCasesWithPolicy_obtainedResults()
+    {
+        String recordTypeName = CaseUtil.RT_NAME_ZRM;
+        String months = '2';
+
+        Test.startTest();
+        String query = new CasesSelector().getQueryStringZRMExpiredAndNotClosedCasesWithPolicy(recordTypeName, months);
+        List<Case> matchedRecords = (List<Case>) Database.query(query);
+        Test.stopTest();
+
+        Assert.areNotEqual('', query, 'El resultado de la query debe estar informado');
+        Assert.areNotEqual(0, matchedRecords.size(), 'Deben haberse generado casos');
+        Assert.areEqual(CaseUtil.RT_ID_ZRM, matchedRecords[0].RecordTypeId, 'El tipo de registro debe coincdir');
     }
 }

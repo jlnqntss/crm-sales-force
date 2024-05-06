@@ -76,6 +76,16 @@
                 <identifier>RecordActionResponsible__cField</identifier>
             </fieldInstance>
         </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.Parent__c</fieldItem>
+                <identifier>RecordParent_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
         <name>Facet-a23e9c9e-404f-47a4-8351-576ba4bbf280</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -86,8 +96,18 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Parent__c</fieldItem>
-                <identifier>RecordParent_cField</identifier>
+                <fieldItem>Record.Iniciativa__c</fieldItem>
+                <identifier>RecordIniciativa_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.PlanDeNegocio__c</fieldItem>
+                <identifier>RecordPlanDeNegocio_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -197,6 +217,10 @@
                     <value>Facet-5beb2cd1-182e-4b89-afa0-491cd0fa38e8</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>label</name>
                     <value>Information</value>
                 </componentInstanceProperties>
@@ -235,6 +259,10 @@
                 <componentInstanceProperties>
                     <name>columns</name>
                     <value>Facet-fbc4a8c4-8048-4304-8758-6353facbe5dd</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>

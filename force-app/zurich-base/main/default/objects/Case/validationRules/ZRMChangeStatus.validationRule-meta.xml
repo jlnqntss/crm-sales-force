@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRMChangeStatus</fullName>
+    <active>true</active>
+    <description>Cuando un caso ha avanzado a estados posteriores a “No iniciado”, nunca podrá volver a ese estado.</description>
+    <errorConditionFormula>AND(
+				RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
+    ISCHANGED(Status),
+    ISPICKVAL(Status, &quot;No Iniciado&quot;),
+    NOT(ISPICKVAL(PRIORVALUE(Status), &quot;No Iniciado&quot;))
+)</errorConditionFormula>
+    <errorMessage>No se puede volver al estado &apos;No Iniciado&apos;, cuando hemos cambiado el estado del caso a un estado posterior.</errorMessage>
+</ValidationRule>
