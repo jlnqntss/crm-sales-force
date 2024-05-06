@@ -12,6 +12,11 @@
     </folderShares>
     <folderShares>
         <accessLevel>View</accessLevel>
+        <sharedTo>Ventas_Agente_Mediador</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
         <sharedTo>Ventas_Director</sharedTo>
         <sharedToType>Group</sharedToType>
     </folderShares>
