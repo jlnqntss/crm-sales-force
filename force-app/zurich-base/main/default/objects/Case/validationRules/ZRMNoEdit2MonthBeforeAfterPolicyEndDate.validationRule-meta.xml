@@ -5,10 +5,14 @@
     <description>Restringir la creación manual y edición de casos para los Agentes Mediadores de ZRM, entre dos meses antes y dos meses después de la fecha de finalización de la póliza.</description>
     <errorConditionFormula>AND(
     RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
-    NOT(
-        AND(
+				IF(ISNEW(),
+				    NOT(AND(
            PolicyEndDate__c &lt;= TODAY() + 60, 
            PolicyEndDate__c &gt;= TODAY() - 60
+        )),
+					   AND(
+           PRIORVALUE(PolicyEndDate__c) &lt;= TODAY() + 60, 
+           PRIORVALUE(PolicyEndDate__c) &gt;= TODAY() - 60
         )
     )
 )</errorConditionFormula>
