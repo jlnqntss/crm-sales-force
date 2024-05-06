@@ -12,6 +12,10 @@
         <field>IntermediaryVisibilityAcc__c</field>
         <formula>Policy__c.IntermediaryId__c</formula>
     </fieldOverrides>
+    <fieldOverrides>
+        <field>PolicyEndDate__c</field>
+        <formula>Policy__c.EndDate__c</formula>
+    </fieldOverrides>
     <label>Nuevo caso retención</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
