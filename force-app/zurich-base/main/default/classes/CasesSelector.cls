@@ -397,24 +397,24 @@ public with sharing class CasesSelector extends RecordsSelector
     }
 
     /**
-     * Busca los casos (de recordtype ZDA) cuyo TicketId coincide con los pasados por parametro
+     * Busca los casos (de recordtype ZDA) cuyo CuTicketId__c coincide con los pasados por parametro
      * 
      * @author mario.navarro@seidor.com
      * @date 09/04/2029
-     * @param ticketIds lista de TicketIds a buscar
-     * @return la lista de casos cuyo TicketId coincide con los de entrada
+     * @param ticketIds lista de CuTicketId__c a buscar
+     * @return la lista de casos cuyo CuTicketId__c coincide con los de entrada
      */
-    public List<Case> getCasesByTicketId(Set<Double> ticketIds)
+    public List<Case> getCasesByTicketId(Set<String> ticketIds)
     {
         if (ticketIds == null || ticketIds.isEmpty())
         {
             return new List<Case>();
         }
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
-            Case.TicketId__c
+            Case.CuTicketId__c
         })
         .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)
-        .addConditionIn(Case.TicketId__c, ticketIds);
+        .addConditionIn(Case.CuTicketId__c, ticketIds);
 
         return (List<Case>) this.baseQuery.run();
     }

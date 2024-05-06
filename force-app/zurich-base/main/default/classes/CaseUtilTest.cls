@@ -57,7 +57,7 @@ private with sharing class CaseUtilTest
         Entitlement entitlementUsp = new Entitlement( AccountId = cuentaHolder.Id, Name = 'DefaultUsp', SlaProcessId = slasUsp[0].Id, StartDate = System.today() );
         insert entitlementUsp;
 
-         /** Insertar usuarios ZRM ***************************************************************/
+        /** Insertar usuarios ZRM ***************************************************************/
         // Crear cuentas de mediadores
         List<Account> intermediaryAccounts = TestDataFactory.generateAccounts(Label.GeneralInsurance,'Intermediary', 1);
         intermediaryAccounts.get(0).INFOIntermediaryCode__c = '0000012345';
@@ -354,11 +354,11 @@ private with sharing class CaseUtilTest
     }
 
     /**
-     * Se valida que el metodo relateCasesByTicketId relaciona correctamente los casos por el TicketId__c y RelatedRequestId__c, para ello:
-     * - Se crea un caso sin RelatedRequestId__c. No debe vincular nada
-     * - Se crea un caso con RelatedRequestId__c, pero no existe el 'parent'. No debe vincular nada
-     * - Se crea un caso con RelatedRequestId__c, el 'parent' existe. Debe vincular con el parent
-     * - Se crea un caso con RelatedRequestId__c, el 'parent' existe pero no es de ZDA (no deberia suceder). No debe vincular nada
+     * Se valida que el metodo relateCasesByTicketId relaciona correctamente los casos por el CuTicketId__c y RelatedCuTicketId__c, para ello:
+     * - Se crea un caso sin RelatedCuTicketId__c. No debe vincular nada
+     * - Se crea un caso con RelatedCuTicketId__c, pero no existe el 'parent'. No debe vincular nada
+     * - Se crea un caso con RelatedCuTicketId__c, el 'parent' existe. Debe vincular con el parent
+     * - Se crea un caso con RelatedCuTicketId__c, el 'parent' existe pero no es de ZDA (no deberia suceder). No debe vincular nada
      *
      * @author mario.navarro@seidor.com
      * @date 09/04/2024
@@ -367,42 +367,42 @@ private with sharing class CaseUtilTest
     private static void test_relateCasesByTicketId()
     {
         Case parentCaseZDA = new Case(
-            TicketId__c = 1,
+            CuTicketId__c = '1',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Subject = 'Caso padre ZDA'
             );
         Case parentCaseNoZDA = new Case(
-            TicketId__c = 2,
+            CuTicketId__c = '2',
             RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR,
             Subject = 'Caso padre no ZDA'
             );
         insert new List<Case> {parentCaseZDA, parentCaseNoZDA};
 
-        List<Case> parentsCreated = [SELECT Id FROM Case WHERE TicketId__c IN (1,2)];
+        List<Case> parentsCreated = [SELECT Id FROM Case WHERE CuTicketId__c IN ('1','2')];
         Assert.areEqual( 2, parentsCreated.size() );
 
         Case noRelatedCase = new Case(
-            TicketId__c = 10,
+            CuTicketId__c = '10',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Subject = 'Asunto de caso no relacionado'
             );
         Case relatedWithoutParentCase = new Case(
-            TicketId__c = 20,
+            CuTicketId__c = '20',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Subject = 'Asunto de caso relacionado sin parent',
-            RelatedRequestId__c = 666
+            RelatedCuTicketId__c = '666'
             );
         Case relatedWithParentCase = new Case(
-            TicketId__c = 30,
+            CuTicketId__c = '30',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Subject = 'Asunto de caso relacionado con parent',
-            RelatedRequestId__c = parentCaseZDA.TicketId__c
+            RelatedCuTicketId__c = parentCaseZDA.CuTicketId__c
             );
         Case relatedWithParentCaseNoZDA = new Case(
-            TicketId__c = 40,
+            CuTicketId__c = '40',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Subject = 'Asunto de caso relacionado con parent no ZDA',
-            RelatedRequestId__c = parentCaseNoZDA.TicketId__c
+            RelatedCuTicketId__c = parentCaseNoZDA.CuTicketId__c
             );
 
         Test.startTest();
@@ -448,27 +448,27 @@ private with sharing class CaseUtilTest
         insert new List<Account> {intermediaryAccount, otherTypeAccount};
 
         Case noRelatedCase = new Case(
-            TicketId__c = 10,
+            CuTicketId__c = '10',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Origin = 'CanalUnico',
             Subject = 'Asunto de caso sin mediador'
             );
         Case relatedWithoutAccount = new Case(
-            TicketId__c = 20,
+            CuTicketId__c = '20',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Origin = 'CanalUnico',
             Subject = 'Asunto de caso con mediador inexistente',
             SuppliedEmail = 'notExisting@email.com'
             );
         Case relatedWithAccount = new Case(
-            TicketId__c = 30,
+            CuTicketId__c = '30',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Origin = 'CanalUnico',
             Subject = 'Asunto de caso con mediador existente',
             SuppliedEmail = intermediaryAccount.MainEmail__c
             );
         Case relatedWithNoIntermediaryAcc = new Case(
-            TicketId__c = 40,
+            CuTicketId__c = '40',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Origin = 'CanalUnico',
             Subject = 'Asunto de caso con mail de cuenta no mediadora',
@@ -1473,19 +1473,19 @@ private with sharing class CaseUtilTest
         Assert.areEqual( accToInsert.size(), createdAccs.size() );
 
         Case caseToLink = new Case(
-            TicketId__c = 10,
+            CuTicketId__c = '10',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Subject = 'Asunto de caso a vincular',
             CustomerNifCif__c = accountUniqueDNI.NationalId__c
             );
         Case caseNoLink = new Case(
-            TicketId__c = 20,
+            CuTicketId__c = '20',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Subject = 'Asunto de caso a NO vincular',
             CustomerNifCif__c = accountDupDNI1.NationalId__c
             );
         Case caseNoLink2 = new Case(
-            TicketId__c = 20,
+            CuTicketId__c = '20',
             RecordTypeId = CaseUtil.RT_ID_ZDA,
             Subject = 'Asunto de caso a NO vincular 2'
             );
@@ -1579,7 +1579,7 @@ private with sharing class CaseUtilTest
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
         insert accounts;
- 
+
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].EndDate__c = System.today().addDays(10);
         insert policies;
@@ -1613,7 +1613,7 @@ private with sharing class CaseUtilTest
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
         insert accounts;
- 
+
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].EndDate__c = System.today().addDays(10);
         insert policies;
@@ -1637,7 +1637,7 @@ private with sharing class CaseUtilTest
         {
             System.assertEquals('No se puede modificar este valor', zrmCase.getErrors()[0].getMessage(), 'Debería tener un error asociado');
         }
-        
+
         Test.stopTest();
     }
 
@@ -1649,10 +1649,10 @@ private with sharing class CaseUtilTest
      */
     @isTest
     private static void test_casesZRMChangeStatus_ClientGiftCard_OK()
-    {   
+    {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
         insert accounts;
- 
+
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
         policies[0].EndDate__c = System.today().addDays(10);
         insert policies;
@@ -1674,7 +1674,7 @@ private with sharing class CaseUtilTest
         System.assertEquals ('Cerrado Ganado', casePostUpdate.Status, 'El estado del caso debería haber cambiado');
     }
 
-    
+
     @isTest
     private static void test_checkIfPolicyHaveOpenZrmCase()
     {
@@ -1697,19 +1697,19 @@ private with sharing class CaseUtilTest
 
         Boolean exceptionThrown = false;
         Test.startTest();
-            //Creamos otro caso para que salte el AddError.
-            Case caseToLaunchError = new Case();
-                caseToLaunchError.RecordTypeId = rtZrmInquiryId;
-                caseToLaunchError.AccountId = accountRecord[0].Id;
-                caseToLaunchError.policyId__c = policies[0].Id;
-            Database.SaveResult sr = Database.insert(caseToLaunchError, false);
-        
-        
+        //Creamos otro caso para que salte el AddError.
+        Case caseToLaunchError = new Case();
+        caseToLaunchError.RecordTypeId = rtZrmInquiryId;
+        caseToLaunchError.AccountId = accountRecord[0].Id;
+        caseToLaunchError.policyId__c = policies[0].Id;
+        Database.SaveResult sr = Database.insert(caseToLaunchError, false);
+
+
         Test.stopTest();
 
         Database.Error error = sr.getErrors()[0];
-        Assert.areEqual(true, error.getMessage().contains(Label.CaseZRMOpenedCase));
-    } 
+        Assert.areEqual( true, error.getMessage().contains(Label.CaseZRMOpenedCase) );
+    }
 
     @isTest
     private static void test_getRelatedPolicyIds()
@@ -1729,26 +1729,28 @@ private with sharing class CaseUtilTest
 
         List<Case> cases = new List<Case>();
         Case c;
-        for (Integer i = 0; i < 10; i++) {
+        for (Integer i = 0; i < 10; i++)
+        {
             c = new Case();
-                c.RecordTypeId = rtOCSSprinklrId;
-                c.AccountId = accountRecord[0].Id;
-                c.policyId__c = policies[i].Id;
+            c.RecordTypeId = rtOCSSprinklrId;
+            c.AccountId = accountRecord[0].Id;
+            c.policyId__c = policies[i].Id;
             cases.add(c);
         }
 
         Integer expected = 0;
-        for (Integer i = 0; i < 5; i++) {
+        for (Integer i = 0; i < 5; i++)
+        {
             cases[i].recordTypeId = rtZrmInquiryId;
-            expected ++;
+            expected++;
         }
-        
+
         Set<String> result;
         Test.startTest();
-            result = CaseUtil.getRelatedPolicyifZRMIds(cases);
+        result = CaseUtil.getRelatedPolicyifZRMIds(cases);
         Test.stopTest();
 
-        Assert.areEqual(expected, result.size());
+        Assert.areEqual( expected, result.size() );
     }
 
     @isTest
@@ -1763,7 +1765,7 @@ private with sharing class CaseUtilTest
         Map<String, Case> resultMap = new Map<String, Case>();
 
         List<Case> cases = new List<Case>();
-        Case c; 
+        Case c;
 
         for(Policy__c policy : policies)
         {
@@ -1776,20 +1778,21 @@ private with sharing class CaseUtilTest
         }
 
         Test.startTest();
-            resultMap = CaseUtil.buildNotClosedZrmCasesByPolicyId(cases);
+        resultMap = CaseUtil.buildNotClosedZrmCasesByPolicyId(cases);
         Test.stopTest();
 
         Assert.areEqual(expectedMap, resultMap);
     }
 
-     /**
-     * Test que comprueba que para un caso de rt ZRMInquiry al insertarlo con un usuario de comunidad ZRM se cambia el owner al usuario por defecto 
+    /**
+     * Test que comprueba que para un caso de rt ZRMInquiry al insertarlo con un usuario de comunidad ZRM se cambia el owner al usuario por defecto
      **
      * @author dmunoz
      * @date 24/04/2024
      */
     @isTest
-    private static void test_updateInquiryCaseOwnerOnZRMCreation_OK() {
+    private static void test_updateInquiryCaseOwnerOnZRMCreation_OK()
+    {
 
         // Obtener cliente
         List<Account> clienteList = new List<Account>([SELECT Id FROM Account WHERE Recordtype.DeveloperName = 'Customer' LIMIT 1]);
@@ -1799,7 +1802,8 @@ private with sharing class CaseUtilTest
 
         // Inserto una poliza para que se cree el atm y el registro con el que vamos a relacionar el caso de retencion zrm
         List<Policy__c> policyToInsert = TestDataFactory.generatePoliciesForEachAccount(clienteList, 1);
-        for (Policy__c policy: policyToInsert) {
+        for (Policy__c policy: policyToInsert)
+        {
             policy.IntermediaryId__c = intermediary.Id;
             policy.EndDate__c = System.today().addDays(10);
         }
@@ -1807,16 +1811,17 @@ private with sharing class CaseUtilTest
         insert policyToInsert;
 
         // Obtengo el usuario para ejecutar el test
-        User u = [SELECT Id FROM User WHERE Contact.AccountId = :intermediary.Id];
+        User u = [SELECT Id FROM User WHERE Contact.AccountId = : intermediary.Id];
 
-        System.runAs(u) {
+        System.runAs(u)
+        {
             Test.startTest();
 
             // Creo el caso y lo inserto
             Id rtZRMid = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('ZRMInquiry').getRecordTypeId();
 
             Case zrmCase = new Case();
-            zrmCase.PolicyId__c = policyToInsert.get(0).Id; 
+            zrmCase.PolicyId__c = policyToInsert.get(0).Id;
             zrmCase.RecordTypeId = rtZRMid;
             zrmCase.Status = 'No iniciado';
             zrmCase.IntermediaryId__c = intermediary.Id;
@@ -1829,7 +1834,7 @@ private with sharing class CaseUtilTest
 
         Assert.isTrue(!zrmCaseList.isEmpty(), 'Se debe haber insertado un caso de retencion zrm');
         Assert.isTrue(zrmCaseList.get(0).OwnerId != u.Id, 'El Owner del caso debe ser diferente al usuario que lo ha insertado');
- 
+
     }
 
     @isTest
@@ -1851,26 +1856,26 @@ private with sharing class CaseUtilTest
         insert c;
 
         Test.startTest();
-            // Caso 1
-            c.Status = 'Cerrado Perdido';
-            c.ClientGiftCard__c = false;
-            c.ClientDiscount__c = true;
-            update c;
+        // Caso 1
+        c.Status = 'Cerrado Perdido';
+        c.ClientGiftCard__c = false;
+        c.ClientDiscount__c = true;
+        update c;
 
-            // Caso 2
-            c.Status = 'Cerrado Perdido';
-            c.ClientGiftCard__c = true;
-            c.ClientDiscount__c = false;
-            update c;
+        // Caso 2
+        c.Status = 'Cerrado Perdido';
+        c.ClientGiftCard__c = true;
+        c.ClientDiscount__c = false;
+        update c;
 
-            // Caso 5
-            c.Status = 'Cerrado Ganado';
-            c.ClientGiftCard__c = false;
-            c.ClientDiscount__c = false;
-            update c;
+        // Caso 5
+        c.Status = 'Cerrado Ganado';
+        c.ClientGiftCard__c = false;
+        c.ClientDiscount__c = false;
+        update c;
         Test.stopTest();
 
-        Case result = [SELECT Status FROM Case WHERE Id = :c.Id];
+        Case result = [SELECT Status FROM Case WHERE Id = : c.Id];
         Assert.areEqual('En Gestión', result.Status, 'El caso debería haber terminado en estado "En Gestión"');
     }
 }
