@@ -54,6 +54,14 @@
           <apex:outputText styleClass="text-black" value="{!EventType}" />
         </div>
         <div class="event-box-elem">
+          <!--Iniciativa-->
+          <apex:outputText value="Iniciativa: " />
+          <apex:outputText
+            styleClass="text-black"
+            value="{!Event.Iniciativa__c}"
+          />
+        </div>
+        <div class="event-box-elem">
           <!--Ubicación-->
           <apex:outputText value="Ubicación: " />
           <apex:outputText styleClass="text-black" value="{!Event.Location}" />
@@ -112,6 +120,22 @@
                 />
               </div>
               <div class="actions-elem">
+                <!-- Acción -->
+                <apex:outputText value="Iniciativa: " />
+                <apex:outputText
+                  styleClass="text-black"
+                  value="{!accionTratada.Iniciativa__c}"
+                />
+              </div>
+              <div class="actions-elem">
+                <!-- Acción -->
+                <apex:outputText value="Plan de negocio: " />
+                <apex:outputText
+                  styleClass="text-black"
+                  value="{!accionTratada.PlanDeNegocio__c}"
+                />
+              </div>
+              <div class="actions-elem">
                 <!-- Fecha límite -->
                 <apex:outputText value="Fecha límite: " />
                 <apex:outputText
@@ -129,6 +153,7 @@
                   value="{!accionTratada.ActionResponsible__r.Name}"
                 />
               </div>
+
               <div class="actions-elem">
                 <!-- Observaciones -->
                 <apex:outputText value="Observaciones: " />
