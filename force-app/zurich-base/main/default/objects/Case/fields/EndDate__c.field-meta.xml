@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>PolicyEndDate__c</fullName>
+    <fullName>EndDate__c</fullName>
+    <description>Fecha vencimiento de la póliza, se rellena a través de la quickAction &quot;NuevoCasoRetencion&quot;</description>
     <externalId>false</externalId>
     <label>Policy End Date</label>
     <required>false</required>

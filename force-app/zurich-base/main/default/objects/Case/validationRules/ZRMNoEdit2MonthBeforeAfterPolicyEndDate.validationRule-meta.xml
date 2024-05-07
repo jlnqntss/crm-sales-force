@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRMNoEdit2MonthBeforeAfterPolicyEndDate</fullName>
+    <active>false</active>
+    <description>Restringir la creación manual y edición de casos para los Agentes Mediadores de ZRM, entre dos meses antes y dos meses después de la fecha de finalización de la póliza.</description>
+    <errorConditionFormula>AND(
+RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
+NOT(
+AND(
+EndDate__c &lt;= TODAY() + 60,
+EndDate__c &gt;= TODAY() - 60
+)
+)
+)</errorConditionFormula>
+    <errorMessage>Para poder crear o editar un caso de retención, debes estar en el periodo comprendido entre 2 meses antes y después de la fecha de renovación.</errorMessage>
+</ValidationRule>
