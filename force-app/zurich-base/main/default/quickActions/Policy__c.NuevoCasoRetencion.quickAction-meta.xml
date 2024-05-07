@@ -9,12 +9,12 @@
         <formula>PolicyId__r.PolicyHolder__r.PersonContactId</formula>
     </fieldOverrides>
     <fieldOverrides>
-        <field>IntermediaryVisibilityAcc__c</field>
-        <formula>Policy__c.IntermediaryId__c</formula>
+        <field>EndDate__c</field>
+        <formula>Policy__c.EndDate__c</formula>
     </fieldOverrides>
     <fieldOverrides>
-        <field>PolicyEndDate__c</field>
-        <formula>Policy__c.EndDate__c</formula>
+        <field>IntermediaryVisibilityAcc__c</field>
+        <formula>Policy__c.IntermediaryId__c</formula>
     </fieldOverrides>
     <label>Nuevo caso retención</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
