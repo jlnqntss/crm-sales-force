@@ -2005,27 +2005,41 @@
                     casoOld = oldMap.get(casoNew.id);
                 }
 
-                // Comprobamos el cambio de "Cliente ha contactado"
-                if (casoNew.ClientHasContacted__c != casoOld.ClientHasContacted__c)
+                if (casoOld == null)
                 {
-                    if (casoOld.ClientHasContacted__c == 'Si')
+                    if (casoNew.ClientHasContacted__c == 'Si' )
                     {
-                        casoNew.addError(FIELD_CLIENT_HAS_CONTACTED, 'No se puede modificar este valor');
+                        casoNew.Status = 'En gestión';
                     }
-                    else
+                    if (casoNew.ClientGiftCard__c == true)
                     {
-                        if (casoOld.Status.equalsIgnoreCase('No iniciado') )
-                        {
-                            casoNew.Status = 'En gestión';
-                        }
+                        casoNew.Status = 'Cerrado ganado';
                     }
                 }
+                else
+                {
+                    // Comprobamos el cambio de "Cliente ha contactado"
+                    if (casoNew.ClientHasContacted__c != casoOld.ClientHasContacted__c)
+                    {
+                        if (casoOld.ClientHasContacted__c == 'Si')
+                        {
+                            casoNew.addError(FIELD_CLIENT_HAS_CONTACTED, 'No se puede modificar este valor');
+                        }
+                        else
+                        {
+                            if (casoNew.ClientHasContacted__c == 'Si' && casoOld.Status.equalsIgnoreCase('No iniciado') )
+                            {
+                                casoNew.Status = 'En gestión';
+                            }
+                        }
+                    }
 
-                // Comprobamos el cambio de "check de tarjeta"
-                if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
-                {  
-                    casoNew.Status = CASE_CLOSED_WON;
-                }                
+                    // Comprobamos el cambio de "check de tarjeta"
+                    if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
+                    {  
+                        casoNew.Status = CASE_CLOSED_WON;
+                    }    
+                }            
             }
         }
     }
