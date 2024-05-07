@@ -4,8 +4,8 @@
  * @date 23/04/2020
  */
 
- public with sharing class CaseUtil
- {
+public with sharing class CaseUtil
+{
     //Constantes
     public static final String statusCombinado='Combinado';
     public static final String closeResult='No Realizado';
@@ -1087,8 +1087,8 @@
     }
 
     /**
-     * Relaciona los casos cuyo campo RelatedRequestId__c esta informado, para asignarles como parent
-    * case aquellos cuyo TicketId__c coincida
+     * Relaciona los casos cuyo campo RelatedCuTicketId__c esta informado, para asignarles como parent
+     * case aquellos cuyo CuTicketId__c coincida
     *
     * @author mario.navarro@seidor.com
     * @date 09/04/2024
@@ -1097,12 +1097,12 @@
     public static void relateCasesByTicketId(List<Case> casesToRelate)
     {
         //1- construimos un set con los ticket id a buscar
-        Set<Double> ticketIdsToSearch = new Set<Double>();
+        Set<String> ticketIdsToSearch = new Set<String>();
         for (Case c : casesToRelate)
         {
-            if (c.RelatedRequestId__c != null)
+            if (c.RelatedCuTicketId__c != null)
             {
-                ticketIdsToSearch.add(c.RelatedRequestId__c);
+                ticketIdsToSearch.add(c.RelatedCuTicketId__c);
             }
         }
 
@@ -1119,14 +1119,14 @@
             return;
         }
         //2- Agrupamos casos por ticketId
-        Map<Double, Case> casesByTicketId = (Map<Double, Case>) CollectionUtil.hashList( parentCases, Case.fields.TicketId__c.getDescribe().getName() );
+        Map<String, Case> casesByTicketId = (Map<String, Case>) CollectionUtil.hashList( parentCases, Case.fields.CuTicketId__c.getDescribe().getName() );
 
         //3- Iteramos para setear los 'padres'
         for (Case c : casesToRelate)
         {
-            if ( c.RelatedRequestId__c != null && casesByTicketId?.containsKey(c.RelatedRequestId__c) )
+            if ( c.RelatedCuTicketId__c != null && casesByTicketId?.containsKey(c.RelatedCuTicketId__c) )
             {
-                c.ParentId = casesByTicketId.get(c.RelatedRequestId__c).Id;
+                c.ParentId = casesByTicketId.get(c.RelatedCuTicketId__c).Id;
             }
         }
     }
@@ -2087,10 +2087,10 @@
 
         return defaultUsers.get(0);
     }    
- 
+
     /**
      * Realiza actualizaciones sobre los datos del caso en base al estado y si tiene o no gift card o descuento
-     * 
+     *
      * @author fpalomo <fpalomo@seidor.es>
      * @date 22/04/2024
      */
