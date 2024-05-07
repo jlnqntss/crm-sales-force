@@ -13,7 +13,7 @@ private with sharing class Test_SendDocCanalUnicoAction
     {
         //Creamos el caso que vamos a utilizar para relacionar con el envio
         Case c = new Case(
-            TicketId__c = 15,
+            CuTicketId__c = '15',
             Status = 'Asignado',
             RecordTypeId = CaseUtil.RT_ID_ZDA
             );

@@ -51,7 +51,7 @@ public with sharing class SendDocCanalUnicoAction
         //Se construye la peticion
         CanalUnicoUpdateVsegTicketRequest calloutRequest = new CanalUnicoUpdateVsegTicketRequest();
         calloutRequest.ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
-        calloutRequest.ticket.ticketId = '' + relatedCase.TicketId__c;
+        calloutRequest.ticket.ticketId = relatedCase.CuTicketId__c;
         calloutRequest.ticket.externalTicketId = '' + relatedCase.CaseNumber;
         calloutRequest.ticket.event = 4; //envio de documentacion, siempre 4
         calloutRequest.ticket.agent = relatedCase.Owner.Name;

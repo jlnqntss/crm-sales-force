@@ -365,11 +365,11 @@ private with sharing class CasesSelectorTest
         Case existingZDACase = [SELECT Id FROM Case LIMIT 1];
 
         existingZDACase.RecordTypeId = CaseUtil.RT_ID_ZDA;
-        existingZDACase.TicketId__c = 12345678;
+        existingZDACase.CuTicketId__c = '12345678';
 
         Case newUSPCase = new Case(
             RecordTypeId = CaseUtil.RT_ID_USPINQUIRY,
-            TicketId__c = 87654321
+            CuTicketId__c = '87654321'
             );
 
         List<Case> casesToUpsert = new List<Case>();

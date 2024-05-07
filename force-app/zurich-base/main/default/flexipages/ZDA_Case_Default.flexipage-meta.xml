@@ -777,9 +777,8 @@
                         <rightValue>CanalUnico</rightValue>
                     </criteria>
                     <criteria>
-                        <leftValue>{!Record.TicketId__c}</leftValue>
-                        <operator>GT</operator>
-                        <rightValue>0</rightValue>
+                        <leftValue>{!Record.CuTicketId__c}</leftValue>
+                        <operator>NE</operator>
                     </criteria>
                 </visibilityRule>
             </componentInstance>

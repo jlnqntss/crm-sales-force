@@ -422,7 +422,7 @@ public with sharing class CasesSelector extends RecordsSelector
 
     /**
      * Busca el caso por identificador filtrando por (aparte del id) el recordtype de ZDA.
-     * Retorna el caso con los campos TicketId__c, CaseNumber, Status, PendingBy__c, Owner.Name
+     * Retorna el caso con los campos CuTicketId__c, CaseNumber, Status, PendingBy__c, Owner.Name
      * 
      * @author mario.navarro@seidor.com
      * @date 25/04/2029
@@ -437,7 +437,7 @@ public with sharing class CasesSelector extends RecordsSelector
             return caseFound;
         }
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
-            Case.TicketId__c,
+            Case.CuTicketId__c,
             Case.CaseNumber,
             Case.Status,
             Case.PendingBy__c
