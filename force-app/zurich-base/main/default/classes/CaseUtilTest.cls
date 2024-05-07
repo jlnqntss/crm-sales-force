@@ -1711,6 +1711,73 @@ private with sharing class CaseUtilTest
         Assert.areEqual( true, error.getMessage().contains(Label.CaseZRMOpenedCase) );
     }
 
+    /**
+     * Se valida que cuando cambia el owner de un caso de ZDA se actualiza con el nombre de la cola correspondiente
+     * Para ello crea un caso de tipo ZDA y otro de tipo OCS para validar que solo se actualiza el de ZDA.
+     * Tambien comprueba que no vuelve a actualizar el campo OwnerIdPrior__c si ya esta informado
+     *
+     * @author mario.navarro@seidor.com
+     * @date 06/05/2024
+     */
+    @isTest
+    private static void test_setOwnerIdPrior()
+    {
+        String zdaQueueName = 'Email_ZDA_Cotizacion';
+        List<Group> queueZda = new GroupSelector().findByName(zdaQueueName);
+        Assert.isFalse( queueZda.isEmpty() );
+
+        List<Case> caseList = new List<Case>();
+
+        Case zdaCase = new Case();
+        zdaCase.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        zdaCase.OwnerId = queueZda[0].id;
+        zdaCase.CuTicketId__c = '25';
+        caseList.add(zdaCase);
+
+        Case zdaCaseUserOwner = new Case();
+        zdaCaseUserOwner.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        zdaCaseUserOwner.OwnerId = UserInfo.getUserId();
+        zdaCaseUserOwner.CuTicketId__c = '26';
+        caseList.add(zdaCaseUserOwner);
+
+        Case zdaCaseNoChange = new Case();
+        zdaCaseNoChange.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        zdaCaseNoChange.OwnerId = queueZda[0].id;
+        zdaCaseNoChange.CuTicketId__c = '27';
+        zdaCaseNoChange.OwnerIdPrior__c = 'DUMMY_QUEUE';
+        caseList.add(zdaCaseNoChange);
+
+        Case ocsCase = new Case();
+        ocsCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
+        ocsCase.OwnerId = queueZda[0].id;
+        ocsCase.CuTicketId__c = '30';
+        caseList.add(ocsCase);
+
+        insert caseList;
+
+        Test.startTest();
+        zdaCase.OwnerId = UserInfo.getUserId();
+        zdaCaseUserOwner.OwnerId = queueZda[0].id;
+        zdaCaseNoChange.OwnerId = UserInfo.getUserId();
+        ocsCase.OwnerId = UserInfo.getUserId();
+        update caseList;
+        Test.stopTest();
+
+        Case updatedZdaCase = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCase.Id];
+        Case zdaCaseUserOwnerUpdated = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCaseUserOwner.Id];
+        Case notChangedZdaCase = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCaseNoChange.Id];
+        Case updatedOcsCase = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : ocsCase.Id];
+
+        Assert.isNotNull(updatedZdaCase);
+        Assert.isNotNull(zdaCaseUserOwnerUpdated);
+        Assert.isNotNull(notChangedZdaCase);
+        Assert.isNotNull(updatedOcsCase);
+        Assert.areEqual(zdaQueueName, updatedZdaCase.OwnerIdPrior__c);
+        Assert.isNull(zdaCaseUserOwnerUpdated.OwnerIdPrior__c);
+        Assert.areNotEqual(zdaQueueName, notChangedZdaCase.OwnerIdPrior__c);
+        Assert.isNull(updatedOcsCase.OwnerIdPrior__c);
+    }
+
     @isTest
     private static void test_getRelatedPolicyIds()
     {
