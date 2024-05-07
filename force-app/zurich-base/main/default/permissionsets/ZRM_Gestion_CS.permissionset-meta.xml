@@ -44,6 +44,11 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.EndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.InsuredObjectId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -299,6 +304,15 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>ZRM Gestión CS</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Case</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>false</allowDelete>
