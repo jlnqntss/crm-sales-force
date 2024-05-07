@@ -14,24 +14,10 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Get_latest_ZRM_Case.ClientHasContacted__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>NA</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>Get_latest_ZRM_Case.UpdatedInsuranceCost__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>$Record.TotalPremium__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Get_latest_ZRM_Case.IntermediaryOwner__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Agente mediador</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -239,5 +225,5 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
