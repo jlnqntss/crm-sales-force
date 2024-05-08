@@ -13,6 +13,8 @@
     public static final String typeVenta= 'Venta';
     public static final String queryDays ='365';
     public static final String estadoCerrado= 'Cerrado';
+    public static final String CASE_NO_INICIADO = 'No iniciado'; 
+    public static final String CASE_EN_GESTION = 'En gestión'; 
     public static final String CASE_CLOSED_LOST = 'Cerrado Perdido';
     public static final String CASE_CLOSED_WON = 'Cerrado Ganado';
     public static final String CASE_CAUSE_OF_LOSS_PERIOD_ENDED = 'Periodo Finalizado';
@@ -40,6 +42,7 @@
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
 
+    
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
     {
@@ -2009,11 +2012,11 @@
                 {
                     if (casoNew.ClientHasContacted__c == 'Si' )
                     {
-                        casoNew.Status = 'En gestión';
+                        casoNew.Status = CASE_EN_GESTION;
                     }
                     if (casoNew.ClientGiftCard__c == true)
                     {
-                        casoNew.Status = 'Cerrado ganado';
+                        casoNew.Status = CASE_CLOSED_WON;
                     }
                 }
                 else
@@ -2027,9 +2030,9 @@
                         }
                         else
                         {
-                            if (casoNew.ClientHasContacted__c == 'Si' && casoOld.Status.equalsIgnoreCase('No iniciado') )
+                            if (casoNew.ClientHasContacted__c == 'Si' && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
                             {
-                                casoNew.Status = 'En gestión';
+                                casoNew.Status = CASE_EN_GESTION;
                             }
                         }
                     }
