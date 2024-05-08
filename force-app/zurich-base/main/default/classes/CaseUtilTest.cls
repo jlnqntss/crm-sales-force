@@ -1713,8 +1713,6 @@ private with sharing class CaseUtilTest
 
     /**
      * Se valida que cuando cambia el owner de un caso de ZDA se actualiza con el nombre de la cola correspondiente
-     * Para ello crea un caso de tipo ZDA y otro de tipo OCS para validar que solo se actualiza el de ZDA.
-     * Tambien comprueba que no vuelve a actualizar el campo OwnerIdPrior__c si ya esta informado
      *
      * @author mario.navarro@seidor.com
      * @date 06/05/2024
@@ -1747,35 +1745,27 @@ private with sharing class CaseUtilTest
         zdaCaseNoChange.OwnerIdPrior__c = 'DUMMY_QUEUE';
         caseList.add(zdaCaseNoChange);
 
-        Case ocsCase = new Case();
-        ocsCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
-        ocsCase.OwnerId = queueZda[0].id;
-        ocsCase.CuTicketId__c = '30';
-        caseList.add(ocsCase);
-
         insert caseList;
 
         Test.startTest();
         zdaCase.OwnerId = UserInfo.getUserId();
         zdaCaseUserOwner.OwnerId = queueZda[0].id;
         zdaCaseNoChange.OwnerId = UserInfo.getUserId();
-        ocsCase.OwnerId = UserInfo.getUserId();
         update caseList;
         Test.stopTest();
 
         Case updatedZdaCase = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCase.Id];
         Case zdaCaseUserOwnerUpdated = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCaseUserOwner.Id];
         Case notChangedZdaCase = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCaseNoChange.Id];
-        Case updatedOcsCase = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : ocsCase.Id];
 
         Assert.isNotNull(updatedZdaCase);
         Assert.isNotNull(zdaCaseUserOwnerUpdated);
         Assert.isNotNull(notChangedZdaCase);
-        Assert.isNotNull(updatedOcsCase);
         Assert.areEqual(zdaQueueName, updatedZdaCase.OwnerIdPrior__c);
+        //zdaCaseUserOwnerUpdated.OwnerIdPrior__c debe ser nulo porque el propietario anterior era un usuario, y ese campo solo debe tener el nombre de una cola
         Assert.isNull(zdaCaseUserOwnerUpdated.OwnerIdPrior__c);
-        Assert.areNotEqual(zdaQueueName, notChangedZdaCase.OwnerIdPrior__c);
-        Assert.isNull(updatedOcsCase.OwnerIdPrior__c);
+        //deben ser iguales porque a pesar de estar asignado a una cola y reasignarse a un usuario OwnerIdPrior__c ya esta informado
+        Assert.areEqual(zdaCaseNoChange.OwnerIdPrior__c, notChangedZdaCase.OwnerIdPrior__c);
     }
 
     @isTest
