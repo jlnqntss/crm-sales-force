@@ -6,7 +6,9 @@ global with sharing class CommunitiesLoginController
     public static final List<String> trustedDomains = new List<String>
     {
         'zurich-es--qa.sandbox.my.salesforce-sites.com',
-        'zurich-es--qa.sandbox.my.site.com'
+        'zurich-es--qa.sandbox.my.site.com',
+        'zurich-es.my.salesforce-sites.com',
+        'zurich-es.my.site.com'
     };
 
     global CommunitiesLoginController ()

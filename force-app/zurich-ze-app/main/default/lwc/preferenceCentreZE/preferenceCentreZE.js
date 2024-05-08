@@ -79,7 +79,9 @@ export default class preferenceCentre extends LightningElement {
         if (this.label.PreferenceCentreRedirect) {
           const trustedDomains = [
             "zurich-es--qa.sandbox.my.salesforce-sites.com",
-            "zurich-es--qa.sandbox.my.site.com"
+            "zurich-es--qa.sandbox.my.site.com",
+            "zurich-es.my.salesforce-sites.com",
+            "zurich-es.my.site.com"
           ];
 
           const preferenceCentreRedirectURL =
