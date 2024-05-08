@@ -8,16 +8,6 @@
             <stringValue>Este email no corresponde a ningún usuario activo del MAC, por favor, revísalo o contacta con el administrador.</stringValue>
         </value>
     </constants>
-    <customErrors>
-        <name>El_usuario_no_existe</name>
-        <label>El usuario no existe</label>
-        <locationX>314</locationX>
-        <locationY>647</locationY>
-        <customErrorMessages>
-            <errorMessage>{!mensajeUsuarioNoExiste}</errorMessage>
-            <isFieldError>false</isFieldError>
-        </customErrorMessages>
-    </customErrors>
     <decisions>
         <name>ATM_Temporal_Exists</name>
         <label>ATM Temporal Exists</label>
@@ -71,7 +61,7 @@
         <locationX>182</locationX>
         <locationY>539</locationY>
         <defaultConnector>
-            <targetReference>El_usuario_no_existe</targetReference>
+            <targetReference>Borrar_campo_RN_temporal</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -233,6 +223,16 @@
         <object>User</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>Borrar_campo_RN_temporal</name>
+        <label>Borrar campo RN temporal</label>
+        <locationX>314</locationX>
+        <locationY>647</locationY>
+        <inputAssignments>
+            <field>TemporaryRnEmail__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
         <locationX>320</locationX>
         <locationY>0</locationY>
