@@ -208,14 +208,14 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>MovementReason__c</field>
+            <field>MovementReasonCode__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>2778</stringValue>
+                <stringValue>778</stringValue>
             </value>
         </filters>
         <filters>
-            <field>MovementReason__c</field>
+            <field>MovementReasonCode__c</field>
             <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
