@@ -630,8 +630,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @param contactData Datos de contacto (teléfono y/o email) de la cuenta
      * relacionada con la Oportunidad
      * @return Boolean Indica si ha hecho match con el Lead
-     **/
-    @TestVisible
+     **/    
     private Boolean leadMatchesOpportunity(Account lead, Opportunity opportunity, Set<String> contactData)
     {
         return ( opportunity.CreatedDate > lead.CreatedDate

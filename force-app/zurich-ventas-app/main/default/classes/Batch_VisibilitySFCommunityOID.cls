@@ -223,7 +223,7 @@ global with sharing class Batch_VisibilitySFCommunityOID implements Database.Bat
         else if (profile == ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR)
         {
             policies = policiesSelector.selectByIntermediaryGroupId(new Set<String> { intermediaryUser.contact.Account.IntermediaryGroup__c });
-            offers = opportunitiesSelector.getIntermediaryOtherOffers(new Set<String>(), intermediaryUser.Contact.Account);
+            offers = opportunitiesSelector.offersClientsFromIntermediaryGroup(new Set<String>(), intermediaryUser.Contact.Account.IntermediaryGroup__c);
         }
 
         // Recorremos las pólizas y generamos los ATMs para los account de las mismas
