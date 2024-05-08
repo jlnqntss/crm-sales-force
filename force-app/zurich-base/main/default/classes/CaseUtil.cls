@@ -12,6 +12,7 @@
     public static final String statusWon='Won';
     public static final String typeVenta= 'Venta';
     public static final String queryDays ='365';
+    public static final String afirmativo = 'Si';
     public static final String estadoCerrado= 'Cerrado';
     public static final String CASE_NO_INICIADO = 'No iniciado'; 
     public static final String CASE_EN_GESTION = 'En gestión'; 
@@ -2010,7 +2011,7 @@
 
                 if (casoOld == null)
                 {
-                    if (casoNew.ClientHasContacted__c == 'Si' )
+                    if (casoNew.ClientHasContacted__c == afirmativo )
                     {
                         casoNew.Status = CASE_EN_GESTION;
                     }
@@ -2024,13 +2025,13 @@
                     // Comprobamos el cambio de "Cliente ha contactado"
                     if (casoNew.ClientHasContacted__c != casoOld.ClientHasContacted__c)
                     {
-                        if (casoOld.ClientHasContacted__c == 'Si')
+                        if (casoOld.ClientHasContacted__c == afirmativo)
                         {
                             casoNew.addError(FIELD_CLIENT_HAS_CONTACTED, 'No se puede modificar este valor');
                         }
                         else
                         {
-                            if (casoNew.ClientHasContacted__c == 'Si' && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
+                            if (casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
                             {
                                 casoNew.Status = CASE_EN_GESTION;
                             }
