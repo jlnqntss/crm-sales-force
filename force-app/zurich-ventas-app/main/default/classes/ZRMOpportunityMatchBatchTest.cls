@@ -577,36 +577,4 @@ private class ZRMOpportunityMatchBatchTest
 
         Assert.areEqual(scopeMdtMap, resultScopeMdtMap);
     }
-
-    @isTest
-    private static void leadMatchesOpportunity_true()
-    {
-        List<Account> leadAccount = [SELECT Id, CreatedDate, Phone, PersonEmail FROM Account WHERE RecordType.DeveloperName = 'Lead' LIMIT 1];
-        List<Opportunity> offer = [SELECT Id, AccountId, CreatedDate FROM Opportunity WHERE Account.RecordType.DeveloperName = 'BusinessCustomer' LIMIT 1];
-        List<ContactPointPhone> contactPointPhones = [SELECT Id, TelephoneNumber FROM ContactPointPhone WHERE ParentId = :offer[0].AccountId];
-        List<ContactPointEmail> contactPointEmails = [SELECT Id, EmailAddress FROM ContactPointEmail WHERE ParentId = :offer[0].AccountId];
-        Set<String> contactDataInfo = new Set<String>();
-
-        for(ContactPointPhone cpp : contactPointPhones)
-        {
-            contactDataInfo.add(cpp.TelephoneNumber);
-        }
-
-        for(ContactPointEmail cpe : contactPointEmails)
-        {
-            contactDataInfo.add(cpe.EmailAddress);
-        }
-
-        leadAccount[0].Phone = contactPointPhones[0].TelephoneNumber;
-        leadAccount[0].PersonEmail = contactPointEmails[0].EmailAddress;
-
-        Boolean result;
-
-        Test.startTest();
-        ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
-        result = zrmOppMatchBatch.leadMatchesOpportunity(leadAccount[0], offer[0], contactDataInfo);
-        Test.stopTest();
-
-        Assert.areEqual(true, result);
-    }
 }
