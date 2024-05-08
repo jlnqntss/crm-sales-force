@@ -1,145 +1,178 @@
 {
-  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "componentName": "siteforce:sldsOneColLayout",
-  "dataProviders": [],
-  "id": "4059e802-2c90-4e41-a070-56e591b1840f",
-  "label": "Home",
-  "regions": [
-    {
-      "id": "cdfcf9a3-2688-41c6-8c8c-fa91c6fbc81d",
-      "regionName": "header",
-      "type": "region"
-    },
-    {
-      "components": [
-        {
-          "componentAttributes": {
-            "tabsetConfig": {
-              "UUID": "ff14e43c-a23a-4361-bc95-40a4fdd9f8d7",
-              "activeTab": "",
-              "tabs": [
-                {
-                  "UUID": "32ca5246-b33c-4da4-8acf-c870bd93ff2a",
-                  "allowGuestUser": false,
-                  "locked": false,
-                  "seedComponents": [],
-                  "tabKey": "1",
-                  "tabName": "Mis Gestiones"
-                },
-                {
-                  "UUID": "3e56f7b9-d36a-4bef-90fb-fd72bec54434",
-                  "allowGuestUser": false,
-                  "locked": false,
-                  "seedComponents": [],
-                  "tabKey": "2",
-                  "tabName": "Mi Negocio Mes Actual (1/2)"
-                },
-                {
-                  "UUID": "370b0166-76f6-40f2-853c-492b0c812283",
-                  "allowGuestUser": false,
-                  "locked": false,
-                  "seedComponents": [],
-                  "tabKey": "3",
-                  "tabName": "Mi Negocio Mes Actual (2/2)"
-                },
-                {
-                  "UUID": "67cf2df5-23bf-460b-86e1-4e353feea844",
-                  "allowGuestUser": false,
-                  "locked": false,
-                  "seedComponents": [],
-                  "tabKey": "0987c",
-                  "tabName": "Mi Negocio YTD (1/2)"
-                },
-                {
-                  "UUID": "ca265e3b-6231-4012-bcc5-6b9ac0597035",
-                  "allowGuestUser": false,
-                  "locked": false,
-                  "seedComponents": [],
-                  "tabKey": "9bc25",
-                  "tabName": "Mi Negocio YTD (2/2)"
-                }
-              ],
-              "useOverflowMenu": false
-            }
-          },
-          "componentName": "forceCommunity:tabset",
-          "id": "ff14e43c-a23a-4361-bc95-40a4fdd9f8d7",
-          "regions": [
-            {
-              "id": "32ca5246-b33c-4da4-8acf-c870bd93ff2a",
-              "regionLabel": "Mis Gestiones",
-              "regionName": "1",
-              "renditionMap": {},
-              "type": "region"
-            },
-            {
-              "id": "3e56f7b9-d36a-4bef-90fb-fd72bec54434",
-              "regionLabel": "Mi Negocio Mes Actual (1/2)",
-              "regionName": "2",
-              "renditionMap": {},
-              "type": "region"
-            },
-            {
-              "id": "370b0166-76f6-40f2-853c-492b0c812283",
-              "regionLabel": "Mi Negocio Mes Actual (2/2)",
-              "regionName": "3",
-              "renditionMap": {},
-              "type": "region"
-            },
-            {
-              "id": "67cf2df5-23bf-460b-86e1-4e353feea844",
-              "regionLabel": "Mi Negocio YTD (1/2)",
-              "regionName": "0987c",
-              "renditionMap": {},
-              "type": "region"
-            },
-            {
-              "id": "ca265e3b-6231-4012-bcc5-6b9ac0597035",
-              "regionLabel": "Mi Negocio YTD (2/2)",
-              "regionName": "9bc25",
-              "renditionMap": {},
-              "type": "region"
-            }
-          ],
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
+  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "4059e802-2c90-4e41-a070-56e591b1840f",
+  "label" : "Home",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "tabsetConfig" : {
+          "UUID" : "62fca29f-480b-401d-8e19-72ce93095037",
+          "activeTab" : "",
+          "tabs" : [ {
+            "UUID" : "3cefe7d0-dd8b-42cd-8b2e-243fcdadae44",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "1",
+            "tabName" : "Mis Gestiones"
+          }, {
+            "UUID" : "facbe932-2a24-4f88-883a-126f2606729f",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "2",
+            "tabName" : "Mi Negocio Mes Actual (1/2)"
+          }, {
+            "UUID" : "39ca1a90-b9b4-4cde-9a64-d45bd499664a",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "3",
+            "tabName" : "Mi Negocio Mes Actual (2/2)"
+          }, {
+            "UUID" : "0761335f-f9a3-4094-9f7d-ff9d095a425d",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "9eb13",
+            "tabName" : "Mi Negocio YTD (1/2)"
+          }, {
+            "UUID" : "176b564e-da0c-46d5-8d6b-213474399662",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "be345",
+            "tabName" : "Mi Negocio YTD (2/2)"
+          } ],
+          "useOverflowMenu" : true
         }
-      ],
-      "id": "a90fa6e7-7180-430b-a031-177028bf5c96",
-      "regionName": "content",
-      "type": "region"
-    },
-    {
-      "id": "c5e65c55-30f6-467a-9046-7b9d26439f37",
-      "regionName": "sidebar",
-      "type": "region"
-    },
-    {
-      "id": "c120b69c-01e5-49a4-84bc-5e0eda498d3d",
-      "regionName": "footer",
-      "type": "region"
-    },
-    {
-      "components": [
-        {
-          "componentAttributes": {
-            "customHeadTags": "",
-            "description": "",
-            "title": "Home"
+      },
+      "componentName" : "forceCommunity:tabLayout",
+      "id" : "62fca29f-480b-401d-8e19-72ce93095037",
+      "regions" : [ {
+        "components" : [ {
+          "componentAttributes" : {
+            "height" : "2200",
+            "recordId" : "01Z68000000HQDrEAO"
           },
-          "componentName": "forceCommunity:seoAssistant",
-          "id": "ece592e9-507f-497f-92fb-e704b947d2ac",
-          "renditionMap": {},
-          "type": "component"
-        }
-      ],
-      "id": "845639a9-ed7b-4dc6-82c3-d58e6667c1b7",
-      "regionName": "sfdcHiddenRegion",
-      "type": "region"
-    }
-  ],
-  "themeLayoutType": "Inner",
-  "type": "view",
-  "viewType": "home"
+          "componentName" : "forceCommunity:dashboard",
+          "id" : "1ca20b57-9aad-4d23-bf30-2d83abf629c4",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "3cefe7d0-dd8b-42cd-8b2e-243fcdadae44",
+        "regionLabel" : "Mis Gestiones",
+        "regionName" : "1",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "height" : "1200",
+            "recordId" : "01Z68000000HQDnEAO"
+          },
+          "componentName" : "forceCommunity:dashboard",
+          "id" : "f5f87545-83c4-4c56-ba11-ec543c6724aa",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "facbe932-2a24-4f88-883a-126f2606729f",
+        "regionLabel" : "Mi Negocio Mes Actual (1/2)",
+        "regionName" : "2",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "height" : "1200",
+            "recordId" : "01Z68000000HQDoEAO"
+          },
+          "componentName" : "forceCommunity:dashboard",
+          "id" : "7a978733-c444-4641-8ffe-aad44e2507fc",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "39ca1a90-b9b4-4cde-9a64-d45bd499664a",
+        "regionLabel" : "Mi Negocio Mes Actual (2/2)",
+        "regionName" : "3",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "height" : "1200",
+            "recordId" : "01Z68000000HQDpEAO"
+          },
+          "componentName" : "forceCommunity:dashboard",
+          "id" : "766f5ef3-6469-42ed-a851-c397cff5dd97",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "0761335f-f9a3-4094-9f7d-ff9d095a425d",
+        "regionLabel" : "Mi Negocio YTD (1/2)",
+        "regionName" : "9eb13",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "height" : "1200",
+            "recordId" : "01Z68000000HQDqEAO"
+          },
+          "componentName" : "forceCommunity:dashboard",
+          "id" : "34b79bdc-6aad-4308-be11-cd1363ff5f6f",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "176b564e-da0c-46d5-8d6b-213474399662",
+        "regionLabel" : "Mi Negocio YTD (2/2)",
+        "regionName" : "be345",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "cdfcf9a3-2688-41c6-8c8c-fa91c6fbc81d",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "id" : "a90fa6e7-7180-430b-a031-177028bf5c96",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "c5e65c55-30f6-467a-9046-7b9d26439f37",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "c120b69c-01e5-49a4-84bc-5e0eda498d3d",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Home"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "ece592e9-507f-497f-92fb-e704b947d2ac",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "845639a9-ed7b-4dc6-82c3-d58e6667c1b7",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "home"
 }
