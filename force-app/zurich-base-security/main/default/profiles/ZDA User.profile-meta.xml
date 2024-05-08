@@ -4276,7 +4276,6 @@
         <field>Case.Priority</field>
         <readable>false</readable>
     </fieldPermissions>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.ProductGroupDescription__c</field>
