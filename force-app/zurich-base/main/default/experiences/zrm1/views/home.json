@@ -52,85 +52,30 @@
       "componentName" : "forceCommunity:tabLayout",
       "id" : "62fca29f-480b-401d-8e19-72ce93095037",
       "regions" : [ {
-        "components" : [ {
-          "componentAttributes" : {
-            "height" : "2200",
-            "recordId" : "01Z68000000HQDrEAO"
-          },
-          "componentName" : "forceCommunity:dashboard",
-          "id" : "1ca20b57-9aad-4d23-bf30-2d83abf629c4",
-          "renderPriority" : "NEUTRAL",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
         "id" : "3cefe7d0-dd8b-42cd-8b2e-243fcdadae44",
         "regionLabel" : "Mis Gestiones",
         "regionName" : "1",
         "renditionMap" : { },
         "type" : "region"
       }, {
-        "components" : [ {
-          "componentAttributes" : {
-            "height" : "1200",
-            "recordId" : "01Z68000000HQDnEAO"
-          },
-          "componentName" : "forceCommunity:dashboard",
-          "id" : "f5f87545-83c4-4c56-ba11-ec543c6724aa",
-          "renderPriority" : "NEUTRAL",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
         "id" : "facbe932-2a24-4f88-883a-126f2606729f",
         "regionLabel" : "Mi Negocio Mes Actual (1/2)",
         "regionName" : "2",
         "renditionMap" : { },
         "type" : "region"
       }, {
-        "components" : [ {
-          "componentAttributes" : {
-            "height" : "1200",
-            "recordId" : "01Z68000000HQDoEAO"
-          },
-          "componentName" : "forceCommunity:dashboard",
-          "id" : "7a978733-c444-4641-8ffe-aad44e2507fc",
-          "renderPriority" : "NEUTRAL",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
         "id" : "39ca1a90-b9b4-4cde-9a64-d45bd499664a",
         "regionLabel" : "Mi Negocio Mes Actual (2/2)",
         "regionName" : "3",
         "renditionMap" : { },
         "type" : "region"
       }, {
-        "components" : [ {
-          "componentAttributes" : {
-            "height" : "1200",
-            "recordId" : "01Z68000000HQDpEAO"
-          },
-          "componentName" : "forceCommunity:dashboard",
-          "id" : "766f5ef3-6469-42ed-a851-c397cff5dd97",
-          "renderPriority" : "NEUTRAL",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
         "id" : "0761335f-f9a3-4094-9f7d-ff9d095a425d",
         "regionLabel" : "Mi Negocio YTD (1/2)",
         "regionName" : "9eb13",
         "renditionMap" : { },
         "type" : "region"
       }, {
-        "components" : [ {
-          "componentAttributes" : {
-            "height" : "1200",
-            "recordId" : "01Z68000000HQDqEAO"
-          },
-          "componentName" : "forceCommunity:dashboard",
-          "id" : "34b79bdc-6aad-4308-be11-cd1363ff5f6f",
-          "renderPriority" : "NEUTRAL",
-          "renditionMap" : { },
-          "type" : "component"
-        } ],
         "id" : "176b564e-da0c-46d5-8d6b-213474399662",
         "regionLabel" : "Mi Negocio YTD (2/2)",
         "regionName" : "be345",
