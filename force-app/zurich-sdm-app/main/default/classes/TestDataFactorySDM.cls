@@ -5,7 +5,7 @@
  * @date 05/07/2021
  */
 @isTest
-public with sharing class TestDataFactorySDM
+public class TestDataFactorySDM
 {
     public static final String ACCOUNT_LEGAL_ENTITY = '001';
     public static final String AGRUPATION_CIF = '1111';

@@ -6,7 +6,7 @@
  * @last modified by  : mfernandezcarrera
 **/
 @isTest
-public with sharing class Batch_GDPRDeleteMassiveOffersTest
+public class Batch_GDPRDeleteMassiveOffersTest
 {
     private static final string ACCOUNT_BCUSTOMER = 'Business Customer';
     Date firstDateFilter = Date.today().addDays(-30);

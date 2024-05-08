@@ -12,7 +12,7 @@
  *
  **/
 @isTest
-private with sharing class OpenIDConnectRegHandlerTest {
+private class OpenIDConnectRegHandlerTest {
 
     static final string IAM_ROLE_A = 'IAM_ROLE_COMMUNITY';
     static final string IAM_ROLE_B = 'IAM_ROLE_OCS';
