@@ -12,7 +12,10 @@ public with sharing class CaseUtil
     public static final String statusWon='Won';
     public static final String typeVenta= 'Venta';
     public static final String queryDays ='365';
+    public static final String afirmativo = 'Si';
     public static final String estadoCerrado= 'Cerrado';
+    public static final String CASE_NO_INICIADO = 'No iniciado'; 
+    public static final String CASE_EN_GESTION = 'En gestión'; 
     public static final String CASE_CLOSED_LOST = 'Cerrado Perdido';
     public static final String CASE_CLOSED_WON = 'Cerrado Ganado';
     public static final String CASE_CAUSE_OF_LOSS_PERIOD_ENDED = 'Periodo Finalizado';
@@ -40,6 +43,7 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
 
+    
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
     {
@@ -2006,27 +2010,41 @@ public with sharing class CaseUtil
                     casoOld = oldMap.get(casoNew.id);
                 }
 
-                // Comprobamos el cambio de "Cliente ha contactado"
-                if (casoNew.ClientHasContacted__c != casoOld.ClientHasContacted__c)
+                if (casoOld == null)
                 {
-                    if (casoOld.ClientHasContacted__c == 'Si')
+                    if (casoNew.ClientHasContacted__c == afirmativo )
                     {
-                        casoNew.addError(FIELD_CLIENT_HAS_CONTACTED, 'No se puede modificar este valor');
+                        casoNew.Status = CASE_EN_GESTION;
                     }
-                    else
+                    if (casoNew.ClientGiftCard__c == true)
                     {
-                        if ( casoOld.Status.equalsIgnoreCase('No iniciado') )
+                        casoNew.Status = CASE_CLOSED_WON;
+                    }
+                }
+                else
+                {
+                    // Comprobamos el cambio de "Cliente ha contactado"
+                    if (casoNew.ClientHasContacted__c != casoOld.ClientHasContacted__c)
+                    {
+                        if (casoOld.ClientHasContacted__c == afirmativo)
                         {
-                            casoNew.Status = 'En gestión';
+                            casoNew.addError(FIELD_CLIENT_HAS_CONTACTED, 'No se puede modificar este valor');
+                        }
+                        else
+                        {
+                            if (casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
+                            {
+                                casoNew.Status = CASE_EN_GESTION;
+                            }
                         }
                     }
-                }
 
-                // Comprobamos el cambio de "check de tarjeta"
-                if ( (casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true) )
-                {
-                    casoNew.Status = CASE_CLOSED_WON;
-                }
+                    // Comprobamos el cambio de "check de tarjeta"
+                    if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
+                    {  
+                        casoNew.Status = CASE_CLOSED_WON;
+                    }    
+                }            
             }
         }
     }
