@@ -24,6 +24,7 @@ private with sharing class CaseUtilTest
 
     static final String SHORT_DESCRIPTION = 'test';
     static final String LONG_DESCRIPTION = 'Se diferencia clientes empresas de clientes personas. Se detecta que las empresas no usan el campo Firstname o le colocan un punto. También es posible filtrar los Contactos que no están activos.  De esta manera que extraen los datos por medio de la fecha de creación. Consiguiendo finalizar la operación en 3 ficheros';
+    static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
 
     @TestSetup
     private static void createScenario()
@@ -367,12 +368,12 @@ private with sharing class CaseUtilTest
     private static void test_relateCasesByTicketId()
     {
         List<Case> generatedCases = TestDataFactory.generateZDACases(5);
+        //Caso padre ZDA
         Case parentCaseZDA = generatedCases[0];
-        parentCaseZDA.Subject = 'Caso padre ZDA';
 
+        //Caso padre no ZDA
         Case parentCaseNoZDA = new Case(
             CuTicketId__c = '5000',
-            Subject = 'Caso padre no ZDA',
             RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR
             );
 
@@ -382,19 +383,19 @@ private with sharing class CaseUtilTest
         List<Case> parentsCreated = [SELECT Id FROM Case WHERE CuTicketId__c IN : cuToSearch];
         Assert.areEqual( 2, parentsCreated.size() );
 
+        //caso no relacionado
         Case noRelatedCase = generatedCases[1];
-        noRelatedCase.Subject = 'Asunto de caso no relacionado';
 
+        //caso relacionado sin parent
         Case relatedWithoutParentCase = generatedCases[2];
-        relatedWithoutParentCase.Subject = 'Asunto de caso relacionado sin parent';
         relatedWithoutParentCase.RelatedCuTicketId__c = '666';
 
+        //caso relacionado con parent
         Case relatedWithParentCase = generatedCases[3];
-        relatedWithParentCase.Subject = 'Asunto de caso relacionado con parent';
         relatedWithParentCase.RelatedCuTicketId__c = parentCaseZDA.CuTicketId__c;
 
+        //caso relacionado con parent no ZDA
         Case relatedWithParentCaseNoZDA = generatedCases[4];
-        relatedWithParentCaseNoZDA.Subject = 'Asunto de caso relacionado con parent no ZDA';
         relatedWithParentCaseNoZDA.RelatedCuTicketId__c = parentCaseNoZDA.CuTicketId__c;
 
         Test.startTest();
@@ -439,33 +440,21 @@ private with sharing class CaseUtilTest
 
         insert new List<Account> {intermediaryAccount, otherTypeAccount};
 
-        Case noRelatedCase = new Case(
-            CuTicketId__c = '10',
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Origin = 'CanalUnico',
-            Subject = 'Asunto de caso sin mediador'
-            );
-        Case relatedWithoutAccount = new Case(
-            CuTicketId__c = '20',
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Origin = 'CanalUnico',
-            Subject = 'Asunto de caso con mediador inexistente',
-            SuppliedEmail = 'notExisting@email.com'
-            );
-        Case relatedWithAccount = new Case(
-            CuTicketId__c = '30',
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Origin = 'CanalUnico',
-            Subject = 'Asunto de caso con mediador existente',
-            SuppliedEmail = intermediaryAccount.MainEmail__c
-            );
-        Case relatedWithNoIntermediaryAcc = new Case(
-            CuTicketId__c = '40',
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Origin = 'CanalUnico',
-            Subject = 'Asunto de caso con mail de cuenta no mediadora',
-            SuppliedEmail = otherTypeAccount.MainEmail__c
-            );
+        List<Case> generatedCases = TestDataFactory.generateZDACases(4);
+        Case noRelatedCase = generatedCases[0];
+        noRelatedCase.Origin = ORIGIN_CANAL_UNICO;
+
+        Case relatedWithoutAccount = generatedCases[1];
+        relatedWithoutAccount.Origin = ORIGIN_CANAL_UNICO;
+        relatedWithoutAccount.SuppliedEmail = 'notExisting@email.com';
+
+        Case relatedWithAccount = generatedCases[2];
+        relatedWithAccount.Origin = ORIGIN_CANAL_UNICO;
+        relatedWithAccount.SuppliedEmail = intermediaryAccount.MainEmail__c;
+
+        Case relatedWithNoIntermediaryAcc = generatedCases[3];
+        relatedWithNoIntermediaryAcc.Origin = ORIGIN_CANAL_UNICO;
+        relatedWithNoIntermediaryAcc.SuppliedEmail = otherTypeAccount.MainEmail__c;
 
         Test.startTest();
         insert new List<Case> {noRelatedCase, relatedWithoutAccount, relatedWithAccount, relatedWithNoIntermediaryAcc};
