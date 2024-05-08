@@ -644,13 +644,13 @@
                             <value>CASES.CREATED_DATE</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>CASES.PRIORITY</value>
+                            <value>PrimerMensaje__c</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>relatedListLabel</name>
-                    <value>Cases for Parent Sprinklr Social Persona</value>
+                    <value>Casos del Perfil Social</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>showActionBar</name>
