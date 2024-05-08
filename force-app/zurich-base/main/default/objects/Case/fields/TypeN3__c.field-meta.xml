@@ -573,6 +573,11 @@
                 <label>Levantamiento de Embargo</label>
             </value>
             <value>
+                <fullName>Mención marca</fullName>
+                <default>false</default>
+                <label>Mención marca</label>
+            </value>
+            <value>
                 <fullName>Modificación</fullName>
                 <default>false</default>
                 <label>Modificación</label>
@@ -1164,6 +1169,10 @@
             <controllingFieldValue>Recertificación Usuarios</controllingFieldValue>
             <controllingFieldValue>Software Obsoleto</controllingFieldValue>
             <valueName>Otros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Mención marca</controllingFieldValue>
+            <valueName>Mención marca</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Queja</controllingFieldValue>
