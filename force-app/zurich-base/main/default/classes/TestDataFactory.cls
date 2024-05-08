@@ -2784,6 +2784,34 @@ public class TestDataFactory
         return products;
     }
 
+    /**
+     * Genera una lista de casos de ZDA
+     * 
+     * @param numRecords número de casos a generar
+     * @return listado de casos generados
+     */
+    public static List<Case> generateZDACases(Integer numRecords)
+    {
+        List<Case> cases = new List<Case>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            cases.add(
+                new Case(
+                    CuTicketId__c = ''+numRecords+1,
+                    RecordTypeId = CaseUtil.RT_ID_ZDA
+                )
+            );
+        }
+
+        return cases;
+    }
+
     /*
     * Genera Casos con un OwnerId determinado (Cola o Usuario)
     * @param ownerId ID de Cola o User

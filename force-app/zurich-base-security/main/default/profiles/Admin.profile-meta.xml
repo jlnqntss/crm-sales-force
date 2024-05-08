@@ -6524,6 +6524,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.CuTicketId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.DateReg__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7159,12 +7164,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.TicketId__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Case.RelatedRequestId__c</field>
+        <field>Case.RelatedCuTicketId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
