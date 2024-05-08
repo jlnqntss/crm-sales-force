@@ -2803,9 +2803,9 @@ public class TestDataFactory
         {
             cases.add(
                 new Case(
-                    CuTicketId__c = ''+numRecords+1,
+                    CuTicketId__c = ''+(i+1),
                     RecordTypeId = CaseUtil.RT_ID_ZDA,
-                    Subject = 'Subject del caso '+numRecords+1
+                    Subject = 'Subject del caso '+(i+1)
                 )
             );
         }
