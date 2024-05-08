@@ -1620,6 +1620,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <custom>true</custom>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>ZRMNoEdit2MonthBeforeAfterPolicyEndDate</name>
+    </customPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Cartera_2021__c</field>
