@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Botón ZRM para crear un nuevo registro de caso de retención asociado a una póliza</description>
     <fieldOverrides>
         <field>AccountId</field>
         <formula>PolicyId__r.PolicyHolder__c</formula>
@@ -11,6 +12,10 @@
     <fieldOverrides>
         <field>IntermediaryOwner__c</field>
         <literalValue>Agente mediador</literalValue>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>EndDate__c</field>
+        <formula>Policy__c.EndDate__c</formula>
     </fieldOverrides>
     <fieldOverrides>
         <field>IntermediaryVisibilityAcc__c</field>
