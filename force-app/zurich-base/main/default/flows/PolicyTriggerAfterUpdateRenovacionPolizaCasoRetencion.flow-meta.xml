@@ -193,6 +193,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>IntermediaryVisibilityAcc__c</field>
+            <value>
+                <elementReference>$Record.IntermediaryId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>PolicyId__c</field>
             <value>
                 <elementReference>$Record.Id</elementReference>
