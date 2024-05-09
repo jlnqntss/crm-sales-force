@@ -418,6 +418,7 @@ private with sharing class CasesSelectorTest
 
         caso.PolicyId__c = policies[0].Id;
         caso.recordTypeId = rtZrmInquiryId;
+        caso.EndDate__c = System.today();
 
         update caso;
 

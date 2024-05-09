@@ -3791,11 +3791,15 @@
     <customSettingAccesses>
         <enabled>true</enabled>
         <name>purecloud__PureCloud_Sync_Settings__c</name>
-    </customSettingAccesses>
+    </customSettingAccesses>    
     <customSettingAccesses>
         <enabled>true</enabled>
         <name>purecloud__PureCloud_Webhook__c</name>
     </customSettingAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>ZRMNoEdit2MonthBeforeAfterPolicyEndDate</name>
+    </customPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Cartera_2021__c</field>
@@ -7864,6 +7868,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointEmail.EmailLatestBounceReasonText</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

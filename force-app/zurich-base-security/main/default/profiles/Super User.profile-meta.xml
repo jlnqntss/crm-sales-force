@@ -1620,6 +1620,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <custom>true</custom>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>ZRMNoEdit2MonthBeforeAfterPolicyEndDate</name>
+    </customPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Cartera_2021__c</field>
@@ -5143,6 +5147,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.PolicyEndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
