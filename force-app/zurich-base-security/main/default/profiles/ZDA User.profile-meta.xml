@@ -3938,6 +3938,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.CuTicketId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.DateReg__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4343,7 +4348,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.RelatedRequestId__c</field>
+        <field>Case.RelatedCuTicketId__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4714,11 +4719,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.TerritorialDirection__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.TicketId__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

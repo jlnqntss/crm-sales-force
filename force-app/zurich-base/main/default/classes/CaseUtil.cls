@@ -1091,8 +1091,8 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Relaciona los casos cuyo campo RelatedRequestId__c esta informado, para asignarles como parent
-     * case aquellos cuyo TicketId__c coincida
+     * Relaciona los casos cuyo campo RelatedCuTicketId__c esta informado, para asignarles como parent
+     * case aquellos cuyo CuTicketId__c coincida
      *
      * @author mario.navarro@seidor.com
      * @date 09/04/2024
@@ -1101,12 +1101,12 @@ public with sharing class CaseUtil
     public static void relateCasesByTicketId(List<Case> casesToRelate)
     {
         //1- construimos un set con los ticket id a buscar
-        Set<Double> ticketIdsToSearch = new Set<Double>();
+        Set<String> ticketIdsToSearch = new Set<String>();
         for (Case c : casesToRelate)
         {
-            if (c.RelatedRequestId__c != null)
+            if (c.RelatedCuTicketId__c != null)
             {
-                ticketIdsToSearch.add(c.RelatedRequestId__c);
+                ticketIdsToSearch.add(c.RelatedCuTicketId__c);
             }
         }
 
@@ -1123,14 +1123,14 @@ public with sharing class CaseUtil
             return;
         }
         //2- Agrupamos casos por ticketId
-        Map<Double, Case> casesByTicketId = (Map<Double, Case>) CollectionUtil.hashList( parentCases, Case.fields.TicketId__c.getDescribe().getName() );
+        Map<String, Case> casesByTicketId = (Map<String, Case>) CollectionUtil.hashList( parentCases, Case.fields.CuTicketId__c.getDescribe().getName() );
 
         //3- Iteramos para setear los 'padres'
         for (Case c : casesToRelate)
         {
-            if ( c.RelatedRequestId__c != null && casesByTicketId?.containsKey(c.RelatedRequestId__c) )
+            if ( c.RelatedCuTicketId__c != null && casesByTicketId?.containsKey(c.RelatedCuTicketId__c) )
             {
-                c.ParentId = casesByTicketId.get(c.RelatedRequestId__c).Id;
+                c.ParentId = casesByTicketId.get(c.RelatedCuTicketId__c).Id;
             }
         }
     }
@@ -2231,5 +2231,22 @@ public with sharing class CaseUtil
 
         //Finalmente devolvemos la lista de casos a actualizar
         return casesToUpdate;
+    }
+
+
+    /**
+     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner  
+    * @author dmunoz
+    * @date 23/04/2024
+    * @param newList lista de elementos del trigger after insert
+    */
+    public static void setEndDateZRMInquiry(List<Case> newList) {
+
+        // 1º compruebo si existe en el trigger algun caso de zrm con que encuentre solo 1 me vale para lanzar las consultas solo cuando sea necesario
+        for (Case caseTrigger: newList) {
+            if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty(String.valueOf(caseTrigger.EndDate__c))) {
+                caseTrigger.EndDate__c = caseTrigger.PolicyEndDate__c;
+            }
+        }
     }
 }
