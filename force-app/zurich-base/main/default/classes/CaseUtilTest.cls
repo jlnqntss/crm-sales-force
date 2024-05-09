@@ -25,6 +25,7 @@ private with sharing class CaseUtilTest
     static final String SHORT_DESCRIPTION = 'test';
     static final String LONG_DESCRIPTION = 'Se diferencia clientes empresas de clientes personas. Se detecta que las empresas no usan el campo Firstname o le colocan un punto. También es posible filtrar los Contactos que no están activos.  De esta manera que extraen los datos por medio de la fecha de creación. Consiguiendo finalizar la operación en 3 ficheros';
     static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
+    static final String DUMMY_QUEUE_NAME = 'DUMMY_QUEUE';
 
     @TestSetup
     private static void createScenario()
@@ -1704,26 +1705,27 @@ private with sharing class CaseUtilTest
         String zdaQueueName = 'Email_ZDA_Cotizacion';
         List<Group> queueZda = new GroupSelector().findByName(zdaQueueName);
         Assert.isFalse( queueZda.isEmpty() );
+        Integer idCounter = 25;
 
         List<Case> caseList = new List<Case>();
 
         Case zdaCase = new Case();
         zdaCase.RecordTypeId = CaseUtil.RT_ID_ZDA;
         zdaCase.OwnerId = queueZda[0].id;
-        zdaCase.CuTicketId__c = '25';
+        zdaCase.CuTicketId__c = '' + idCounter;
         caseList.add(zdaCase);
 
         Case zdaCaseUserOwner = new Case();
         zdaCaseUserOwner.RecordTypeId = CaseUtil.RT_ID_ZDA;
         zdaCaseUserOwner.OwnerId = UserInfo.getUserId();
-        zdaCaseUserOwner.CuTicketId__c = '26';
+        zdaCaseUserOwner.CuTicketId__c = '' + (idCounter + 1);
         caseList.add(zdaCaseUserOwner);
 
         Case zdaCaseNoChange = new Case();
         zdaCaseNoChange.RecordTypeId = CaseUtil.RT_ID_ZDA;
         zdaCaseNoChange.OwnerId = queueZda[0].id;
-        zdaCaseNoChange.CuTicketId__c = '27';
-        zdaCaseNoChange.OwnerIdPrior__c = 'DUMMY_QUEUE';
+        zdaCaseNoChange.CuTicketId__c = '' + (idCounter + 2);
+        zdaCaseNoChange.OwnerIdPrior__c = DUMMY_QUEUE_NAME;
         caseList.add(zdaCaseNoChange);
 
         insert caseList;
