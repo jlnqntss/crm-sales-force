@@ -75,6 +75,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.relateCaseToCustomerByNifCif(newList);
         CaseUtil.relateCasesWithMediatedAccount(newList);
         CaseUtil.checkIfPolicyHaveOpenZrmCase(newList);
+        CaseUtil.casesZRMChangeStatus( (List<Case>) newList, null);
         CaseUtil.setEndDateZRMInquiry(newList); 
 
     }
