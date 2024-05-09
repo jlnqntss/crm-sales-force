@@ -1244,6 +1244,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Mención marca</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Reclamación</fullName>
             <default>false</default>
         </values>
@@ -1315,6 +1319,10 @@
         </values>
         <values>
             <fullName>Información</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mención marca</fullName>
             <default>false</default>
         </values>
         <values>
