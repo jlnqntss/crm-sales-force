@@ -213,13 +213,13 @@
         <inputAssignments>
             <field>SuppliedEmail</field>
             <value>
-                <elementReference>Get_Scope.PrimaryPhone__c</elementReference>
+                <elementReference>Get_Scope.PrimaryEmail__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>SuppliedPhone</field>
             <value>
-                <elementReference>Get_Scope.PrimaryEmail__c</elementReference>
+                <elementReference>Get_Scope.PrimaryPhone__c</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
