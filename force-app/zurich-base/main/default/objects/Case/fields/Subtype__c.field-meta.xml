@@ -453,6 +453,11 @@
                 <label>Mediación</label>
             </value>
             <value>
+                <fullName>Mención marca</fullName>
+                <default>false</default>
+                <label>Mención marca</label>
+            </value>
+            <value>
                 <fullName>Metodos de pago admitidos</fullName>
                 <default>false</default>
                 <label>Metodos de pago admitidos</label>
@@ -1364,6 +1369,10 @@
         <valueSettings>
             <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
             <valueName>Dorsales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
+            <valueName>Mención marca</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Marca (No info provided)</controllingFieldValue>
