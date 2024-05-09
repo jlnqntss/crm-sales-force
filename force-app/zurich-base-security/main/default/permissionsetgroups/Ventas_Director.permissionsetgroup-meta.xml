@@ -16,5 +16,6 @@
     <permissionSets>Ventas_Edicion_Competencia</permissionSets>
     <permissionSets>Ventas_Gestion_Captacion</permissionSets>
     <permissionSets>Ventas_Tareas</permissionSets>
+    <permissionSets>ZRM_Gestion_CS</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

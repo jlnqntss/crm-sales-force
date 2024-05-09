@@ -21,7 +21,7 @@ private with sharing class CasesSelectorTest
         policies[0].EndDate__c = Date.today().addDays(-60);
         insert policies;
 
-	    List<Case> ZRMCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        List<Case> ZRMCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         ZRMCases[0].RecordTypeId = Caseutil.RT_ID_ZRM;
         ZRMCases[0].PolicyId__c = policies[0].Id;
         ZRMCases[0].Status = 'En Gestión';
@@ -325,11 +325,11 @@ private with sharing class CasesSelectorTest
         Case existingZDACase = [SELECT Id FROM Case LIMIT 1];
 
         existingZDACase.RecordTypeId = CaseUtil.RT_ID_ZDA;
-        existingZDACase.TicketId__c = 12345678;
+        existingZDACase.CuTicketId__c = '12345678';
 
         Case newUSPCase = new Case(
             RecordTypeId = CaseUtil.RT_ID_USPINQUIRY,
-            TicketId__c = 87654321
+            CuTicketId__c = '87654321'
             );
 
         List<Case> casesToUpsert = new List<Case>();
@@ -337,20 +337,20 @@ private with sharing class CasesSelectorTest
         casesToUpsert.add(newUSPCase);
         upsert casesToUpsert;
 
-        List<Case> createdUSPCase = [SELECT Id FROM Case WHERE RecordTypeId = : CaseUtil.RT_ID_USPINQUIRY AND TicketId__c = : newUSPCase.TicketId__c];
+        List<Case> createdUSPCase = [SELECT Id FROM Case WHERE RecordTypeId = : CaseUtil.RT_ID_USPINQUIRY AND CuTicketId__c = : newUSPCase.CuTicketId__c];
         Assert.isFalse(createdUSPCase.isEmpty(), 'Se deberia haber creado un caso de tipo USP');
 
         Test.startTest();
         List<Case> emptyCases = new CasesSelector().getCasesByTicketId(null);
-        List<Case> emptyCases2 = new CasesSelector().getCasesByTicketId( new Set<Double>() );
-        List<Case> foundCases = new CasesSelector().getCasesByTicketId(new Set<Double> {existingZDACase.TicketId__c, newUSPCase.TicketId__c, 748});
+        List<Case> emptyCases2 = new CasesSelector().getCasesByTicketId( new Set<String>() );
+        List<Case> foundCases = new CasesSelector().getCasesByTicketId(new Set<String> {existingZDACase.CuTicketId__c, newUSPCase.CuTicketId__c, '748'});
         Test.stopTest();
 
         Assert.areEqual( 0, emptyCases.size() );
         Assert.areEqual( 0, emptyCases2.size() );
         Assert.areEqual( 1, foundCases.size() );
         Assert.areEqual(foundCases[0].Id, existingZDACase.Id);
-        Assert.areEqual(foundCases[0].TicketId__c, existingZDACase.TicketId__c);
+        Assert.areEqual(foundCases[0].CuTicketId__c, existingZDACase.CuTicketId__c);
     }
 
     /*
@@ -418,16 +418,17 @@ private with sharing class CasesSelectorTest
 
         caso.PolicyId__c = policies[0].Id;
         caso.recordTypeId = rtZrmInquiryId;
+        caso.EndDate__c = System.today();
 
         update caso;
 
         policiesIds.add(policies[0].Id);
 
         Test.startTest();
-            List<Case> cases = new CasesSelector().getNotClosedZrmCasesByRelatedPolicy(policiesIds);
+        List<Case> cases = new CasesSelector().getNotClosedZrmCasesByRelatedPolicy(policiesIds);
         Test.stopTest();
 
-        Assert.areEqual(1, cases.size());
+        Assert.areEqual( 1, cases.size() );
     }
 
     /**

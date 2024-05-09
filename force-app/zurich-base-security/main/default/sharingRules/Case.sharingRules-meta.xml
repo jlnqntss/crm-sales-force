@@ -523,7 +523,7 @@
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>ZRM_Inquiry_Ventas_CC</fullName>
-        <accessLevel>Read</accessLevel>
+        <accessLevel>Edit</accessLevel>
         <description>Regla de validación para que los usuarios de CC puedan ver los registros de casos de retención</description>
         <label>ZRM Inquiry Ventas CC</label>
         <sharedTo>
