@@ -3,6 +3,7 @@
     <fullName>ZRMAgenteMediadorNoSeleccionaCallCenter</fullName>
     <active>true</active>
     <errorConditionFormula>AND(
+				RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
     ISPICKVAL(IntermediaryOwner__c, &quot;Call Center&quot;),
     OR(
         $Profile.Name = &quot;Agente Ventas&quot;, 
