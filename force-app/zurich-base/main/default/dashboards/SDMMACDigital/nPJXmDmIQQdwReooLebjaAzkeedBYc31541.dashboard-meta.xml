@@ -96,6 +96,113 @@
         </dashboardFilterOptions>
         <name>Zona</name>
     </dashboardFilters>
+    <dashboardFilters>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>COMERCIOS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>RESP. CIVIL</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>INDIVIDUAL UNIT LINK UNICAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>COLECTIVO AHORRO PERIODICAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>INDIVIDUAL UNIT LINK PERIODICAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>INDIVIDUAL PPA</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>EMBARCACIONES</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>OTROS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>INMUEBLES</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>INDIVIDUAL AHORRO UNICAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>TRANSPORTES</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>TECNICOS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>RESP CIVIL</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>PLANES PENSIONES</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>PATRIMONIALES</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>INDIVIDUAL RIESGO PERIODICAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>INDIVIDUAL AHORRO PERIODICAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>HOGAR</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>FLOTAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>INDIVIDUAL RIESGO UNICAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>no informado</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>EPSV</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>COLECTIVO RIESGO PERIODICAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>AUTOS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>COLECTIVO AHORRO UNICAS</values>
+        </dashboardFilterOptions>
+        <dashboardFilterOptions>
+            <operator>equals</operator>
+            <values>ACCIDENTES</values>
+        </dashboardFilterOptions>
+        <name>Agrupación de Productos</name>
+    </dashboardFilters>
     <dashboardGridLayout>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
@@ -114,6 +221,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -150,6 +260,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <footer>Incluye Vida (a no ser que esté filtrado)</footer>
@@ -184,6 +297,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -220,6 +336,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
@@ -253,6 +372,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -288,6 +410,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
@@ -318,6 +443,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -423,6 +551,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>0</decimalPrecision>
                 <displayUnits>Integer</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -467,6 +598,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
@@ -501,6 +635,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -538,6 +675,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <footer>Incluye Vida (a no ser que esté filtrado)</footer>
@@ -574,6 +714,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>0</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
@@ -608,6 +751,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
                 </dashboardFilterColumns>
                 <decimalPrecision>0</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
@@ -644,6 +790,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <groupingSortProperties/>
@@ -674,6 +823,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -779,6 +931,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <decimalPrecision>0</decimalPrecision>
                 <displayUnits>Integer</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -819,6 +974,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>-1</decimalPrecision>
@@ -900,6 +1058,9 @@
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
                 </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
+                </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>0</decimalPrecision>
                     <flexTableColumn>
@@ -980,6 +1141,9 @@
                 </dashboardFilterColumns>
                 <dashboardFilterColumns>
                     <column>Account.Zone__c</column>
+                </dashboardFilterColumns>
+                <dashboardFilterColumns>
+                    <column>KPI__c.ProductGroup__c</column>
                 </dashboardFilterColumns>
                 <flexComponentProperties>
                     <decimalPrecision>0</decimalPrecision>
