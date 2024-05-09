@@ -86,6 +86,11 @@
         <default>false</default>
         <label>Gestión cartera</label>
     </customValue>
+    <customValue>
+        <fullName>CTL</fullName>
+        <default>false</default>
+        <label>CTL</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
