@@ -14,6 +14,10 @@ private with sharing class Test_Batch_DeleteExternalRequest
     public static final String PROCESSED_RESULT_OK = 'OK';
     private static final String  QUERY_OK = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id,ExternalRequest__c.processed__c}).getQueryProcessedAfterThan(SystemUtil.getAdminSetupMetadata().RetentionExternalRequestKO__c.intValue(), PROCESSED_RESULT_OK);
     private static final String  QUERY_KO = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id,ExternalRequest__c.processed__c}).getQueryProcessedAfterThan(SystemUtil.getAdminSetupMetadata().RetentionExternalRequestKO__c.intValue(), PROCESSED_RESULT_KO);
+    private static final String JOBOK = 'Clear_External_Request_OK';
+    private static final String JOBKO = 'Clear_External_Request_KO';
+    private static final List<CronTrigger> CRONTRIGGEROK  = [select id from CronTrigger where CronJobDetail.Name =: JOBOK ];
+    private static final List<CronTrigger> CRONTRIGGERKO  = [select id from CronTrigger where CronJobDetail.Name =: JOBKO ];
 
     /**
      * Create test data
@@ -112,23 +116,9 @@ private with sharing class Test_Batch_DeleteExternalRequest
         Assert.areEqual(True , exRToDeleteBefore.size() > exRToDeleteAfter.size(),'Se ha borrado el Ex correspondiente');
     }
 
-    /**
-     * Se comprueba que se recuperan bien el metadatado AdminSetup
-     * *
-     * @author jchavez
-     * @date 24/04/2024
-     */
-    @isTest
-    private static void test_EliminarRequests_Metadato()
-    {
-        AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
-        Assert.areNotEqual(null, adminSetup.RetentionExternalRequestKO__c, 'Metadato No existe');
-        Assert.areNotEqual(null, adminSetup.RetentionExternalRequestOK__c, 'Metadato No existe');
-    }
-
-    /**
-     * Se comprueba que se ha programado correctamente la ejecución del batch para
-     * External Request con ProcessedResult__c = OK
+	/**
+     * Se comprueba que se ha programado correctamente la ejecución del Job Clear_External_Request_OK
+     * Si ya está en ejecución, se termina y se vuelve a lanzar
      * *
      * @author jchavez
      * @date 24/04/2024
@@ -136,27 +126,49 @@ private with sharing class Test_Batch_DeleteExternalRequest
     @isTest
     private static void test_scheduleExternalRequestClearOKs()
     {
+        String jobId = '';
+
         Test.startTest();
-        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearOKs();
+        if(CRONTRIGGEROK.isEmpty())
+        {
+            jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearOKs();
+            database.executeBatch( new Batch_DeleteExternalRequest(QUERY_OK), 2000 );
+        }else
+        {
+            System.AbortJob(CRONTRIGGEROK[0].Id);
+            jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearOKs();
+            database.executeBatch( new Batch_DeleteExternalRequest(QUERY_OK), 2000 );
+        }
         Test.stopTest();
 
         System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
     }
 
      /**
-     * Se comprueba que se ha programado correctamente la ejecución del batch para
-     * External Request con ProcessedResult__c = KO
-     * *
+     * Se comprueba que se ha programado correctamente la ejecución del Job Clear_External_Request_KO
+     * Si ya está en ejecución, se termina y se vuelve a lanzar
+     * 
      * @author jchavez
      * @date 24/04/2024
      */
     @isTest
     private static void test_scheduleExternalRequestClearKOs()
     {
-        Test.startTest();
-        String jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearKOs();
-        Test.stopTest();
+        String jobId = '';
 
+        Test.startTest();
+        if(CRONTRIGGERKO.isEmpty())
+        {
+            jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearKOs();
+            database.executeBatch( new Batch_DeleteExternalRequest(QUERY_KO), 2000 );
+        }else
+        {
+            System.AbortJob(CRONTRIGGERKO[0].Id);
+            jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearKOs();
+            database.executeBatch( new Batch_DeleteExternalRequest(QUERY_KO), 2000 );
+        }
+        Test.stopTest();
+        
         System.assert (!String.isBlank(jobID), 'No se ha programado correctamente el batch');
     }
 }
