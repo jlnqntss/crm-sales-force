@@ -6,7 +6,7 @@
  * @last modified by  : aberuete
 **/
 @isTest
-private class FindGroupIdByEmailAndGroupNameActionTest 
+private with sharing class FindGroupIdByEmailAndGroupNameActionTest 
 {
     @TestSetup
     public static void createScenario()
