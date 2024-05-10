@@ -10,7 +10,7 @@ global with sharing class Batch_DeleteOldLeads implements Database.Batchable<sOb
     private static final String CLASS_NAME = 'Batch_DeleteOldLeads';
     private static final String VENTAS_SCOPE_NAME = 'Zurich_Ventas';
     private static final Integer DAYS = 90;
-    private static String LEGIT_LEAD_OFFER_STATUS = 'Legit Lead';
+    private static final String LEGIT_LEAD_OFFER_STATUS = 'Legit Lead';
 
     public Batch_DeleteOldLeads() 
     {
