@@ -12261,11 +12261,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>SendDocCUInfo__c.Notified__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>SendDocCUInfo__c.Result__c</field>
         <readable>true</readable>
     </fieldPermissions>
