@@ -219,9 +219,6 @@
         <label>¿Lista estados vacía?</label>
         <locationX>710</locationX>
         <locationY>2292</locationY>
-        <defaultConnector>
-            <targetReference>CrearLogListaEstadosVaciaAction</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>Si</defaultConnectorLabel>
         <rules>
             <name>OneResultOutcome</name>
@@ -491,70 +488,6 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>CrearLogListaEstadosVaciaAction</name>
-        <label>Crear Log Lista Estados Vacía</label>
-        <locationX>1040</locationX>
-        <locationY>2400</locationY>
-        <inputAssignments>
-            <field>Message__c</field>
-            <value>
-                <stringValue>La lista de estados está vacía</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>Case Trigger - After Update - Desconexión interacciones</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>CreateErrorLogEmailQueryAction</name>
-        <label>Crear Error Log Consulta Emails</label>
-        <locationX>1304</locationX>
-        <locationY>1584</locationY>
-        <inputAssignments>
-            <field>Level__c</field>
-            <value>
-                <stringValue>error</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Class__c</field>
-            <value>
-                <stringValue>Case Trigger - After Update - Desconexión interacciones</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_Method__c</field>
-            <value>
-                <stringValue>GetEmailByCaseIdAction</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Stack_Trace__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Throwing_Time__c</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Error_Log__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>CreateErrorLogStatusRequestAction</name>
         <label>Crear Error Log Solicitud Estado</label>
         <locationX>710</locationX>
@@ -640,9 +573,6 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <connector>
             <targetReference>IsListEmptyDecision</targetReference>
         </connector>
-        <faultConnector>
-            <targetReference>CreateErrorLogEmailQueryAction</targetReference>
-        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>ParentId</field>
