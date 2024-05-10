@@ -22,13 +22,10 @@ global with sharing class CommunitiesLoginController
             String startUrl = System.currentPageReference().getParameters().get('startURL');
             Set<String> trustedDomainsSet = new Set<String>(trustedDomains);
 
-            if(startUrl != null && String.isNotEmpty(startUrl))
+            if(startUrl != null && String.isNotEmpty(startUrl) && trustedDomainsSet.contains(startUrl))
             {
-                if(trustedDomainsSet.contains(startUrl))
-                {
-                    String displayType = System.currentPageReference().getParameters().get('display');
-                    return Network.forwardToAuthPage(startUrl, displayType);
-                }
+                String displayType = System.currentPageReference().getParameters().get('display');
+                return Network.forwardToAuthPage(startUrl, displayType);
             }
         } 
         catch (Exception ex) 
