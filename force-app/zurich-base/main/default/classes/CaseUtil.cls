@@ -1991,6 +1991,45 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Para el los casos de tipo ZDA establece el campo OwnerIdPrior__c cuando cambia el owner del caso por primera vez
+     *
+     * @author mario.navarro@seidor.com
+     * @date 06/05/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void setOwnerIdPrior(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        List<Id> groupIdToSearch = new List<Id>();
+        for(Case updatedCase : updatedCases)
+        {
+            if (updatedCase.RecordTypeId == RT_ID_ZDA && String.isBlank(oldMap.get(updatedCase.Id).OwnerIdPrior__c) &&
+                oldMap.get(updatedCase.Id).OwnerId != updatedCase.OwnerId )
+            {
+                groupIdToSearch.add(oldMap.get(updatedCase.Id).OwnerId);
+            }
+        }
+
+        if ( groupIdToSearch.isEmpty() )
+        {
+            //no hay nada que actualizar
+            return;
+        }
+        List<Group> queues = new GroupSelector().findById(groupIdToSearch);
+        Map<Id, Group> queuesById = (Map<Id, Group>) CollectionUtil.hashList( queues, Group.fields.Id.getDescribe().getName() );
+
+        for(Case updatedCase : updatedCases)
+        {
+            if ( updatedCase.RecordTypeId == RT_ID_ZDA && String.isBlank(oldMap.get(updatedCase.Id).OwnerIdPrior__c) &&
+                 oldMap.get(updatedCase.Id).OwnerId != updatedCase.OwnerId && queuesById.containsKey(oldMap.get(updatedCase.Id).OwnerId) )
+            {
+                //Solo se informa el campo para los casos de ZDA, cuando el campo OwnerIdPrior__c esta vacio y el owner ha cambiado
+                updatedCase.OwnerIdPrior__c = queuesById.get(oldMap.get(updatedCase.Id).OwnerId).Name;
+            }
+        }
+    }
+
+    /**
      * Método que actualiza el estado de un caso de ZRM en función de ciertos parámetros
      * @author arcortazar
      * @date 22/04/2023

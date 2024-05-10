@@ -135,7 +135,7 @@ private class ZRMOpportunityMatchBatchTest
         update zrmOppMatchBatch.moveTasksToScopeOffers(matchIdByScopeId);
         Test.stopTest();
 
-        List<Task> movedTask = [SELECT Id FROM Task WHERE WhatId = :optys[0].Id];
+        List<Task> movedTask = [SELECT Id FROM Task WHERE WhatId = : optys[0].Id];
 
         Assert.areEqual( movedTask.size(), tasks.size() );
     }
@@ -178,7 +178,7 @@ private class ZRMOpportunityMatchBatchTest
         update zrmOppMatchBatch.moveEventsToScopeOffers(matchIdByScopeId);
         Test.stopTest();
 
-        List<Event> movedEvents = [SELECT Id FROM Event WHERE WhatId = :optys[0].Id];
+        List<Event> movedEvents = [SELECT Id FROM Event WHERE WhatId = : optys[0].Id];
 
         Assert.areEqual( movedEvents.size(), events.size() );
     }
@@ -338,8 +338,8 @@ private class ZRMOpportunityMatchBatchTest
         Map<Id, Opportunity> quotedOffers = new Map<Id, Opportunity>([SELECT Id, Name FROM Opportunity WHERE StageName = 'Quoted']);
 
         //Comprobamos si las tareas y los eventos se han relacionado a las ofertas pasadas a Quoted
-        List<Task> movedTasks = [SELECT Id FROM Task WHERE WhatId IN :quotedOffers.keySet()];
-        List<Event> movedEvents = [SELECT Id FROM Event WHERE WhatId IN :quotedOffers.keySet()];
+        List<Task> movedTasks = [SELECT Id FROM Task WHERE WhatId IN : quotedOffers.keySet()];
+        List<Event> movedEvents = [SELECT Id FROM Event WHERE WhatId IN : quotedOffers.keySet()];
 
         Assert.areEqual(quotedOffers.values().size(), 2);
         Assert.areEqual( movedEvents.size(), events.size() );
@@ -454,7 +454,7 @@ private class ZRMOpportunityMatchBatchTest
         Boolean result;
         update optys;
         Test.setCreatedDate( optys[1].Id, System.today().addDays(-40) );
-        List<Opportunity> modifiedOpp = [SELECT Id, campaignId, CreatedDate FROM Opportunity WHERE CreatedDate = :System.today().addDays(-40)];
+        List<Opportunity> modifiedOpp = [SELECT Id, campaignId, CreatedDate FROM Opportunity WHERE CreatedDate = : System.today().addDays(-40)];
 
         Test.startTest();
         ZRMOpportunityMatchBatch zrmOppMatchBatch = new ZRMOpportunityMatchBatch();
@@ -468,7 +468,7 @@ private class ZRMOpportunityMatchBatchTest
     private static void getOpportunitiesWithContactInfoDate_ok()
     {
         Map<String, Account> accountMap = new Map<String, Account>([SELECT Id FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer']);
-        List<Opportunity> optys = [SELECT ID, AccountId FROM Opportunity WHERE AccountId IN :accountMap.keySet()];
+        List<Opportunity> optys = [SELECT ID, AccountId FROM Opportunity WHERE AccountId IN : accountMap.keySet()];
 
         Map<Opportunity,Set<String> > opportunitiesWithContactInfoData = new Map<Opportunity,Set<String> >();
         for(Opportunity opp : optys)

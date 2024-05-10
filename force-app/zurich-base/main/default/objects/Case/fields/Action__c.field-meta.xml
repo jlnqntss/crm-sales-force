@@ -10,18 +10,17 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        <restricted>true</restricted>
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
                 <fullName>1</fullName>
                 <default>false</default>
-                <label>Alta</label>
+                <label>Alta/Mover ticket</label>
             </value>
             <value>
                 <fullName>2</fullName>
                 <default>false</default>
-                <label>Notificación</label>
+                <label>Notificación oficina</label>
             </value>
             <value>
                 <fullName>3</fullName>
@@ -29,14 +28,14 @@
                 <label>Recotización</label>
             </value>
             <value>
-                <fullName>4</fullName>
+                <fullName>5</fullName>
                 <default>false</default>
                 <label>Contactar</label>
             </value>
             <value>
-                <fullName>5</fullName>
+                <fullName>6</fullName>
                 <default>false</default>
-                <label>Contratar</label>
+                <label>Alta/Mover ticket cotización</label>
             </value>
         </valueSetDefinition>
     </valueSet>

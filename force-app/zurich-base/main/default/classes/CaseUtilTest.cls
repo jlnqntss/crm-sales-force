@@ -25,6 +25,7 @@ private with sharing class CaseUtilTest
     static final String SHORT_DESCRIPTION = 'test';
     static final String LONG_DESCRIPTION = 'Se diferencia clientes empresas de clientes personas. Se detecta que las empresas no usan el campo Firstname o le colocan un punto. También es posible filtrar los Contactos que no están activos.  De esta manera que extraen los datos por medio de la fecha de creación. Consiguiendo finalizar la operación en 3 ficheros';
     static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
+    static final String DUMMY_QUEUE_NAME = 'DUMMY_QUEUE';
 
     @TestSetup
     private static void createScenario()
@@ -1690,6 +1691,64 @@ private with sharing class CaseUtilTest
 
         Database.Error error = sr.getErrors()[0];
         Assert.areEqual( true, error.getMessage().contains(Label.CaseZRMOpenedCase) );
+    }
+
+    /**
+     * Se valida que cuando cambia el owner de un caso de ZDA se actualiza con el nombre de la cola correspondiente
+     *
+     * @author mario.navarro@seidor.com
+     * @date 06/05/2024
+     */
+    @isTest
+    private static void test_setOwnerIdPrior()
+    {
+        String zdaQueueName = 'Email_ZDA_Cotizacion';
+        List<Group> queueZda = new GroupSelector().findByName(zdaQueueName);
+        Assert.isFalse( queueZda.isEmpty() );
+        Integer idCounter = 25;
+
+        List<Case> caseList = new List<Case>();
+
+        Case zdaCase = new Case();
+        zdaCase.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        zdaCase.OwnerId = queueZda[0].id;
+        zdaCase.CuTicketId__c = '' + idCounter;
+        caseList.add(zdaCase);
+
+        Case zdaCaseUserOwner = new Case();
+        zdaCaseUserOwner.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        zdaCaseUserOwner.OwnerId = UserInfo.getUserId();
+        zdaCaseUserOwner.CuTicketId__c = '' + (idCounter + 1);
+        caseList.add(zdaCaseUserOwner);
+
+        Case zdaCaseNoChange = new Case();
+        zdaCaseNoChange.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        zdaCaseNoChange.OwnerId = queueZda[0].id;
+        zdaCaseNoChange.CuTicketId__c = '' + (idCounter + 2);
+        zdaCaseNoChange.OwnerIdPrior__c = DUMMY_QUEUE_NAME;
+        caseList.add(zdaCaseNoChange);
+
+        insert caseList;
+
+        Test.startTest();
+        zdaCase.OwnerId = UserInfo.getUserId();
+        zdaCaseUserOwner.OwnerId = queueZda[0].id;
+        zdaCaseNoChange.OwnerId = UserInfo.getUserId();
+        update caseList;
+        Test.stopTest();
+
+        Case updatedZdaCase = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCase.Id];
+        Case zdaCaseUserOwnerUpdated = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCaseUserOwner.Id];
+        Case notChangedZdaCase = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCaseNoChange.Id];
+
+        Assert.isNotNull(updatedZdaCase);
+        Assert.isNotNull(zdaCaseUserOwnerUpdated);
+        Assert.isNotNull(notChangedZdaCase);
+        Assert.areEqual(zdaQueueName, updatedZdaCase.OwnerIdPrior__c);
+        //zdaCaseUserOwnerUpdated.OwnerIdPrior__c debe ser nulo porque el propietario anterior era un usuario, y ese campo solo debe tener el nombre de una cola
+        Assert.isNull(zdaCaseUserOwnerUpdated.OwnerIdPrior__c);
+        //deben ser iguales porque a pesar de estar asignado a una cola y reasignarse a un usuario OwnerIdPrior__c ya esta informado
+        Assert.areEqual(zdaCaseNoChange.OwnerIdPrior__c, notChangedZdaCase.OwnerIdPrior__c);
     }
 
     @isTest

@@ -3,7 +3,11 @@
     <label>Acción</label>
     <name>Action__c</name>
     <picklistValues>
-        <masterLabel>Alta</masterLabel>
+        <masterLabel>Alta/Mover ticket</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Alta/Mover ticket cotización</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
@@ -11,11 +15,7 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Contratar</masterLabel>
-        <translation></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>Notificación</masterLabel>
+        <masterLabel>Notificación oficina</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>

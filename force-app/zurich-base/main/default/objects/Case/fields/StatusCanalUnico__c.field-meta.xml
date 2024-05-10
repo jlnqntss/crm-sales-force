@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusCanalUnico__c</fullName>
+    <description>Campo que retorna la correspondencia valida para canal unico con respecto al campo status de Salesforce</description>
+    <externalId>false</externalId>
+    <formula>CASE(Status , &quot;Nuevo&quot;, &quot;1&quot;, &quot;Asignado&quot;, &quot;2&quot;, &quot;Respondido&quot;, &quot;2&quot;, &quot;Cerrado&quot;, &quot;3&quot;, &quot;Cerrado sin respuesta&quot;, &quot;3&quot;, &quot;5&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Status canal unico</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
