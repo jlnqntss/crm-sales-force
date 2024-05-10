@@ -425,16 +425,8 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
-                <componentInstanceProperties>
-                    <name>hideUpdateButton</name>
-                    <value>false</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>variant</name>
-                    <value>linear</value>
-                </componentInstanceProperties>
-                <componentName>runtime_sales_pathassistant:pathAssistant</componentName>
-                <identifier>runtime_sales_pathassistant_pathAssistant</identifier>
+                <componentName>displaySubject</componentName>
+                <identifier>c_displaySubject</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -458,10 +450,21 @@
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord6</identifier>
                 <visibilityRule>
+                    <booleanFilter>3 AND (1 OR 2)</booleanFilter>
                     <criteria>
-                        <leftValue>{!Record.IsQuotation__c}</leftValue>
+                        <leftValue>{!Record.Subtype__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>true</rightValue>
+                        <rightValue>Cotización</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Subtype__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Gestión Competencias</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Type}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Venta</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -500,19 +503,6 @@
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord2</identifier>
-                <visibilityRule>
-                    <booleanFilter>1 OR 2</booleanFilter>
-                    <criteria>
-                        <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>BusinessCustomer</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Customer</rightValue>
-                    </criteria>
-                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -531,17 +521,10 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>updateQuickActionName</name>
-                    <value>Account.UpdateIntermediaryEON</value>
+                    <value>Account.UpdateIntermediaryZDA</value>
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord3</identifier>
-                <visibilityRule>
-                    <criteria>
-                        <leftValue>{!Record.Account.RecordType.DeveloperName}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Intermediary</rightValue>
-                    </criteria>
-                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>Facet-294fafb1-47db-4cf5-90e1-14e913c9d51e</name>

@@ -162,11 +162,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.ClosedByMediator__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Case.ClosedBy__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -381,6 +376,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Intermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.IsBussinessCodeExcluded__c</field>
         <readable>true</readable>
@@ -502,12 +502,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.PrimerMensaje__c</field>
+        <field>Case.PrePolicy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.Priority</field>
+        <field>Case.PrimerMensaje__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
