@@ -10,6 +10,10 @@
         <formula>PolicyId__r.PolicyHolder__r.PersonContactId</formula>
     </fieldOverrides>
     <fieldOverrides>
+        <field>IntermediaryOwner__c</field>
+        <literalValue>Agente mediador</literalValue>
+    </fieldOverrides>
+    <fieldOverrides>
         <field>EndDate__c</field>
         <formula>Policy__c.EndDate__c</formula>
     </fieldOverrides>
