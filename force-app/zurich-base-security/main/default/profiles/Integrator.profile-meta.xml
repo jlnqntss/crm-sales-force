@@ -7087,6 +7087,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.EndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.TendencyToEscape__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11587,6 +11592,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.MovementReason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.MovementReasonCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
