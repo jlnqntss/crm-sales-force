@@ -250,261 +250,258 @@ public with sharing class ContentDocumentLinkUtil
                     }
 
                     //Existe configuración para el buzón especificado
-                    if(relatedEmailSettings != null)
+                    if( relatedEmailSettings != null && relatedHegeoInformation.isValidDocumentTitle(relatedEmailSettings) &&
+                        relatedHegeoInformation.isValidFileExtension(relatedEmailSettings) )
                     {
                         //Comprobamos si el documento cumple con los requisitos de título, extensión y tipo de registro del caso
-                        if( relatedHegeoInformation.isValidDocumentTitle(relatedEmailSettings) &&
-                            relatedHegeoInformation.isValidFileExtension(relatedEmailSettings) )
+                        if( relatedHegeoInformation.isValidRecordType(relatedEmailSettings) )
+
                         {
-                            if( relatedHegeoInformation.isValidRecordType(relatedEmailSettings) )
+                            //Inicialiamos variables con datos necesarios para el procesamiento del CSV
+                            EmailMessage relatedEmail = relatedHegeoInformation.relatedEmail;
 
+                            String csvSeparator = relatedEmailSettings.Separator__c;
+                            Integer fromAddressCSVIndex = Integer.valueOf(relatedEmailSettings.FromAddressIndex__c);
+                            Integer toAddressCSVIndex = Integer.valueOf(relatedEmailSettings.ToAddressIndex__c);
+                            Integer ccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.CCAddressIndex__c);
+                            Integer bccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.BCCAddressIndex__c);
+                            String caseFields = relatedEmailSettings.CaseFields__c;
+
+                            List<String> caseTypeFieldsMetadataList = new List<String>();
+                            if(relatedEmailSettings.CaseTypeFieldsMetadata__c != null)
                             {
-                                //Inicialiamos variables con datos necesarios para el procesamiento del CSV
-                                EmailMessage relatedEmail = relatedHegeoInformation.relatedEmail;
+                                caseTypeFieldsMetadataList = relatedEmailSettings.CaseTypeFieldsMetadata__c.split(',');
+                            }
 
-                                String csvSeparator = relatedEmailSettings.Separator__c;
-                                Integer fromAddressCSVIndex = Integer.valueOf(relatedEmailSettings.FromAddressIndex__c);
-                                Integer toAddressCSVIndex = Integer.valueOf(relatedEmailSettings.ToAddressIndex__c);
-                                Integer ccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.CCAddressIndex__c);
-                                Integer bccAddressCSVIndex = Integer.valueOf(relatedEmailSettings.BCCAddressIndex__c);
-                                String caseFields = relatedEmailSettings.CaseFields__c;
+                            List<String> caseFieldsList = new List<String>();
+                            if(caseFields != null)
+                            {
+                                caseFieldsList = caseFields.split(',');
+                            }
 
-                                List<String> caseTypeFieldsMetadataList = new List<String>();
-                                if(relatedEmailSettings.CaseTypeFieldsMetadata__c != null)
+                            //Recuperamos los datos del csv y dividimos por cada línea que contiene el documento
+                            List<String> csvFileLines = relatedHegeoInformation.versionData.split('\n');
+
+                            String fromAddress = '';
+                            String toAddress = '';
+
+                            //Si existen más de 2 líneas (0: tipificación del caso, 1: from, 2: to)
+                            if(csvFileLines.size() > 2)
+                            {
+                                //Extraemos el email fromAddress
+                                if( String.isNotBlank( csvFileLines.get(fromAddressCSVIndex) ) )
                                 {
-                                    caseTypeFieldsMetadataList = relatedEmailSettings.CaseTypeFieldsMetadata__c.split(',');
-                                }
-
-                                List<String> caseFieldsList = new List<String>();
-                                if(caseFields != null)
-                                {
-                                    caseFieldsList = caseFields.split(',');
-                                }
-
-                                //Recuperamos los datos del csv y dividimos por cada línea que contiene el documento
-                                List<String> csvFileLines = relatedHegeoInformation.versionData.split('\n');
-
-                                String fromAddress = '';
-                                String toAddress = '';
-
-                                //Si existen más de 2 líneas (0: tipificación del caso, 1: from, 2: to)
-                                if(csvFileLines.size() > 2)
-                                {
-                                    //Extraemos el email fromAddress
-                                    if( String.isNotBlank( csvFileLines.get(fromAddressCSVIndex) ) )
+                                    List<String> fromAddressLineValues = csvFileLines.get(fromAddressCSVIndex).split(csvSeparator);
+                                    if( fromAddressLineValues != null && !fromAddressLineValues.isEmpty() )
                                     {
-                                        List<String> fromAddressLineValues = csvFileLines.get(fromAddressCSVIndex).split(csvSeparator);
-                                        if( fromAddressLineValues != null && !fromAddressLineValues.isEmpty() )
+                                        String fromAddressFromCSV = fromAddressLineValues.get(0).trim();
+                                        if( fromAddressFromCSV.contains('<') )
                                         {
-                                            String fromAddressFromCSV = fromAddressLineValues.get(0).trim();
-                                            if( fromAddressFromCSV.contains('<') )
+                                            fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length() - 1).substringAfter('<');
+                                        }
+                                        else
+                                        {
+                                            fromAddress = fromAddressFromCSV;
+                                        }
+                                    }
+                                }
+
+                                if( String.isNotBlank(fromAddress) )
+                                {
+                                    relatedEmail.FromAddress = fromAddress;
+                                }
+
+                                //Extraemos el email toAddress
+                                List<String> toAddressList = new List<String>();
+                                if( String.isNotBlank( csvFileLines.get(toAddressCSVIndex) ) )
+                                {
+                                    List<String> toAddressLineValues = csvFileLines.get(toAddressCSVIndex).split(csvSeparator);
+                                    if( toAddressLineValues != null && !toAddressLineValues.isEmpty() )
+                                    {
+                                        for(String toAddressFromCSV: toAddressLineValues)
+                                        {
+                                            // hotfix - ocs-2246 - Salesforce no reconoce el destinatario indicado por el robot tipificador al incluir imap
+                                            String trimmedToAddressFromCSV = toAddressFromCSV.trim().toLowerCase().replaceAll('.imap', '');
+                                            if( trimmedToAddressFromCSV.contains('<') )
                                             {
-                                                fromAddress = fromAddressFromCSV.substring(0,fromAddressFromCSV.length() - 1).substringAfter('<');
+                                                toAddressList.add( trimmedToAddressFromCSV.substring(0,trimmedToAddressFromCSV.length() - 1).substringAfter('<') );
                                             }
                                             else
                                             {
-                                                fromAddress = fromAddressFromCSV;
+                                                toAddressList.add(trimmedToAddressFromCSV);
                                             }
                                         }
                                     }
+                                }
 
-                                    if( String.isNotBlank(fromAddress) )
-                                    {
-                                        relatedEmail.FromAddress = fromAddress;
-                                    }
+                                if( toAddressList != null && !toAddressList.isEmpty() )
+                                {
+                                    relatedEmail.ToAddress = String.join(toAddressList, ';');
+                                }
 
-                                    //Extraemos el email toAddress
-                                    List<String> toAddressList = new List<String>();
-                                    if( String.isNotBlank( csvFileLines.get(toAddressCSVIndex) ) )
+                                //Extraemos el email ccAddress
+                                if (csvFileLines.size() > 3)
+                                {
+                                    //Existe línea CC Address
+                                    List<String> ccAddressList = new List<String>();
+                                    if( String.isNotBlank( csvFileLines.get(ccAddressCSVIndex) ) )
                                     {
-                                        List<String> toAddressLineValues = csvFileLines.get(toAddressCSVIndex).split(csvSeparator);
-                                        if( toAddressLineValues != null && !toAddressLineValues.isEmpty() )
+                                        List<String> ccAddressLineValues = csvFileLines.get(ccAddressCSVIndex).split(csvSeparator);
+                                        if( ccAddressLineValues != null && !ccAddressLineValues.isEmpty() )
                                         {
-                                            for(String toAddressFromCSV: toAddressLineValues)
+                                            for(String ccAddressFromCSV: ccAddressLineValues)
                                             {
-                                                // hotfix - ocs-2246 - Salesforce no reconoce el destinatario indicado por el robot tipificador al incluir imap
-                                                String trimmedToAddressFromCSV = toAddressFromCSV.trim().toLowerCase().replaceAll('.imap', '');
-                                                if( trimmedToAddressFromCSV.contains('<') )
+                                                // hotfix - ocs-2411 - Salesforce no reconoce el destinatario indicado por el robot tipificador al incluir imap
+                                                String trimmedCcAddressFromCSV = ccAddressFromCSV.trim().toLowerCase().replaceAll('.imap', '');
+                                                if( trimmedCcAddressFromCSV.contains('<') )
                                                 {
-                                                    toAddressList.add( trimmedToAddressFromCSV.substring(0,trimmedToAddressFromCSV.length() - 1).substringAfter('<') );
+                                                    ccAddressList.add( trimmedCcAddressFromCSV.substring(0,trimmedCcAddressFromCSV.length() - 1).substringAfter('<') );
                                                 }
                                                 else
                                                 {
-                                                    toAddressList.add(trimmedToAddressFromCSV);
+                                                    ccAddressList.add(trimmedCcAddressFromCSV);
                                                 }
                                             }
                                         }
                                     }
 
-                                    if( toAddressList != null && !toAddressList.isEmpty() )
+                                    if( ccAddressList != null && !ccAddressList.isEmpty() )
                                     {
-                                        relatedEmail.ToAddress = String.join(toAddressList, ';');
+                                        relatedEmail.ccAddress = String.join(ccAddressList, ';');
                                     }
+                                }
 
-                                    //Extraemos el email ccAddress
-                                    if (csvFileLines.size() > 3)
+                                //Extraemos el email bccAddress
+                                if (csvFileLines.size() > 4)
+                                {
+                                    //Existe línea BCC Address
+                                    List<String> bccAddressList = new List<String>();
+                                    if( String.isNotBlank( csvFileLines.get(bccAddressCSVIndex) ) )
                                     {
-                                        //Existe línea CC Address
-                                        List<String> ccAddressList = new List<String>();
-                                        if( String.isNotBlank( csvFileLines.get(ccAddressCSVIndex) ) )
+                                        List<String> bccAddressLineValues = csvFileLines.get(bccAddressCSVIndex).split(csvSeparator);
+                                        if( bccAddressLineValues != null && !bccAddressLineValues.isEmpty() )
                                         {
-                                            List<String> ccAddressLineValues = csvFileLines.get(ccAddressCSVIndex).split(csvSeparator);
-                                            if( ccAddressLineValues != null && !ccAddressLineValues.isEmpty() )
+                                            for(String bccAddressFromCSV: bccAddressLineValues)
                                             {
-                                                for(String ccAddressFromCSV: ccAddressLineValues)
+                                                String trimmedBccAddressFromCSV = bccAddressFromCSV.trim();
+                                                if( trimmedBccAddressFromCSV.contains('<') )
                                                 {
-                                                    // hotfix - ocs-2411 - Salesforce no reconoce el destinatario indicado por el robot tipificador al incluir imap
-                                                    String trimmedCcAddressFromCSV = ccAddressFromCSV.trim().toLowerCase().replaceAll('.imap', '');
-                                                    if( trimmedCcAddressFromCSV.contains('<') )
-                                                    {
-                                                        ccAddressList.add( trimmedCcAddressFromCSV.substring(0,trimmedCcAddressFromCSV.length() - 1).substringAfter('<') );
-                                                    }
-                                                    else
-                                                    {
-                                                        ccAddressList.add(trimmedCcAddressFromCSV);
-                                                    }
+                                                    bccAddressList.add( trimmedBccAddressFromCSV.substring(0,trimmedBccAddressFromCSV.length() - 1).substringAfter('<') );
+                                                }
+                                                else
+                                                {
+                                                    bccAddressList.add(trimmedBccAddressFromCSV);
                                                 }
                                             }
-                                        }
-
-                                        if( ccAddressList != null && !ccAddressList.isEmpty() )
-                                        {
-                                            relatedEmail.ccAddress = String.join(ccAddressList, ';');
                                         }
                                     }
 
-                                    //Extraemos el email bccAddress
-                                    if (csvFileLines.size() > 4)
+                                    if( bccAddressList != null && !bccAddressList.isEmpty() )
                                     {
-                                        //Existe línea BCC Address
-                                        List<String> bccAddressList = new List<String>();
-                                        if( String.isNotBlank( csvFileLines.get(bccAddressCSVIndex) ) )
-                                        {
-                                            List<String> bccAddressLineValues = csvFileLines.get(bccAddressCSVIndex).split(csvSeparator);
-                                            if( bccAddressLineValues != null && !bccAddressLineValues.isEmpty() )
-                                            {
-                                                for(String bccAddressFromCSV: bccAddressLineValues)
-                                                {
-                                                    String trimmedBccAddressFromCSV = bccAddressFromCSV.trim();
-                                                    if( trimmedBccAddressFromCSV.contains('<') )
-                                                    {
-                                                        bccAddressList.add( trimmedBccAddressFromCSV.substring(0,trimmedBccAddressFromCSV.length() - 1).substringAfter('<') );
-                                                    }
-                                                    else
-                                                    {
-                                                        bccAddressList.add(trimmedBccAddressFromCSV);
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        if( bccAddressList != null && !bccAddressList.isEmpty() )
-                                        {
-                                            relatedEmail.BccAddress = String.join(bccAddressList, ';');
-                                        }
+                                        relatedEmail.BccAddress = String.join(bccAddressList, ';');
                                     }
+                                }
 
-                                    //Actualizamos los campos correspondientes al caso
-                                    if(relatedEmail.ParentId != null)
+                                //Actualizamos los campos correspondientes al caso
+                                if(relatedEmail.ParentId != null)
+                                {
+                                    //Dividimos la información de la tipificación del caso por el separador configurado
+                                    List<String> types = csvFileLines.get( Integer.valueOf(relatedEmailSettings.CaseFieldsIndex__c) ).trim().split(csvSeparator);
+                                    if ( !types.isEmpty() && types.size() >= caseTypeFieldsMetadataList.size() )
                                     {
-                                        //Dividimos la información de la tipificación del caso por el separador configurado
-                                        List<String> types = csvFileLines.get( Integer.valueOf(relatedEmailSettings.CaseFieldsIndex__c) ).trim().split(csvSeparator);
-                                        if ( !types.isEmpty() && types.size() >= caseTypeFieldsMetadataList.size() )
+                                        //Incluimos el Id del caso para deserializar
+                                        Map<String, String> caseFieldsMap = new Map<String, String> {
+                                            'Id' => relatedEmail.ParentId
+                                        };
+
+                                        //Extraemos la combinación de los tipos de casos (2 primeras posiciones del listado de valores)
+                                        String typeAndSubtypeCombination = types.get(0) + types.get(1);
+
+                                        if( caseTypesMapping.containsKey(typeAndSubtypeCombination) )
                                         {
-                                            //Incluimos el Id del caso para deserializar
-                                            Map<String, String> caseFieldsMap = new Map<String, String> {
-                                                'Id' => relatedEmail.ParentId
-                                            };
-
-                                            //Extraemos la combinación de los tipos de casos (2 primeras posiciones del listado de valores)
-                                            String typeAndSubtypeCombination = types.get(0) + types.get(1);
-
-                                            if( caseTypesMapping.containsKey(typeAndSubtypeCombination) )
-                                            {
-                                                caseFieldsMap.putAll( caseTypesMapping.get(typeAndSubtypeCombination) );
-                                            }
-                                            else
-                                            {
-                                                ErrorLogUtil.commitError(
-                                                    'warning',
-                                                    'La combinación de valores ' + typeAndSubtypeCombination + ' no existe. EmailMessage Id: ' + relatedEmail.Id,
-                                                    'ContentDocumentLinkUtil'
-                                                    );
-                                            }
-
-                                            //Recorremos la lista ordenada de campos a tipificar,
-                                            //así podemos acceder directamente por posición al valor recibido
-                                            for(Integer i=0; i < caseFieldsList.size(); i++)
-                                            {
-                                                //Este if controla que no falle la ejecución si recibimos menos valores de los esperados,
-                                                //si el valor viene vacio o si ya se ha incluido ese campo en el mapa a deserializar
-                                                if( i < types.size() && String.isNotBlank( types.get(i) ) && !caseFieldsMap.containsKey( caseFieldsList.get(i) ) )
-                                                {
-                                                    caseFieldsMap.put( caseFieldsList.get(i), types.get(i) );
-
-                                                    if(caseFieldsList.get(i) == 'Industry__c')
-                                                    {
-                                                        relatedEmail.Industry__c = types.get(i);
-                                                    }
-                                                }
-                                            }
-
-                                            // Obtenemos el tipo
-                                            String rtRecibido = types.get(types.size() - 1);
-                                            if ( rtRecibido.equalsIgnoreCase('OCS') )
-                                            {
-                                                caseFieldsMap.put('RecordTypeId', recordTypeOCS);
-                                            }
-                                            else if ( rtRecibido.equalsIgnoreCase('EON') )
-                                            {
-                                                caseFieldsMap.put('RecordTypeId', recordTypeUSP);
-                                                caseFieldsMap.put('CallCenter__c', 'USP');
-                                            }
-
-                                            casesToUpdate.add(
-                                                (Case) JSON.deserialize(
-                                                    JSON.serialize(caseFieldsMap), Case.class
-                                                    )
-                                                );
+                                            caseFieldsMap.putAll( caseTypesMapping.get(typeAndSubtypeCombination) );
                                         }
                                         else
                                         {
                                             ErrorLogUtil.commitError(
                                                 'warning',
-                                                'La información correspondiente a la tipificación de los casos está vacia o es menor de lo esperado. EmailMessage Id: ' + relatedEmail.Id,
+                                                'La combinación de valores ' + typeAndSubtypeCombination + ' no existe. EmailMessage Id: ' + relatedEmail.Id,
                                                 'ContentDocumentLinkUtil'
                                                 );
                                         }
+
+                                        //Recorremos la lista ordenada de campos a tipificar,
+                                        //así podemos acceder directamente por posición al valor recibido
+                                        for(Integer i=0; i < caseFieldsList.size(); i++)
+                                        {
+                                            //Este if controla que no falle la ejecución si recibimos menos valores de los esperados,
+                                            //si el valor viene vacio o si ya se ha incluido ese campo en el mapa a deserializar
+                                            if( i < types.size() && String.isNotBlank( types.get(i) ) && !caseFieldsMap.containsKey( caseFieldsList.get(i) ) )
+                                            {
+                                                caseFieldsMap.put( caseFieldsList.get(i), types.get(i) );
+
+                                                if(caseFieldsList.get(i) == 'Industry__c')
+                                                {
+                                                    relatedEmail.Industry__c = types.get(i);
+                                                }
+                                            }
+                                        }
+
+                                        // Obtenemos el tipo
+                                        String rtRecibido = types.get(types.size() - 1);
+                                        if ( rtRecibido.equalsIgnoreCase('OCS') )
+                                        {
+                                            caseFieldsMap.put('RecordTypeId', recordTypeOCS);
+                                        }
+                                        else if ( rtRecibido.equalsIgnoreCase('EON') )
+                                        {
+                                            caseFieldsMap.put('RecordTypeId', recordTypeUSP);
+                                            caseFieldsMap.put('CallCenter__c', 'USP');
+                                        }
+
+                                        casesToUpdate.add(
+                                            (Case) JSON.deserialize(
+                                                JSON.serialize(caseFieldsMap), Case.class
+                                                )
+                                            );
                                     }
                                     else
                                     {
                                         ErrorLogUtil.commitError(
                                             'warning',
-                                            'No existe caso relacionado con el email para procesar la información. EmailMessage Id: ' + relatedEmail.Id,
+                                            'La información correspondiente a la tipificación de los casos está vacia o es menor de lo esperado. EmailMessage Id: ' + relatedEmail.Id,
                                             'ContentDocumentLinkUtil'
                                             );
                                     }
-
-                                    emailMessagesToUpdate.add(relatedEmail);
-
                                 }
                                 else
                                 {
                                     ErrorLogUtil.commitError(
                                         'warning',
-                                        'El documento adjunto cumplía las condiciones establecidas para ser procesado, pero tiene menos información de la esperada para procesar. EmailMessage Id: ' + relatedEmail.Id,
+                                        'No existe caso relacionado con el email para procesar la información. EmailMessage Id: ' + relatedEmail.Id,
                                         'ContentDocumentLinkUtil'
                                         );
                                 }
+
+                                emailMessagesToUpdate.add(relatedEmail);
+
                             }
                             else
                             {
                                 ErrorLogUtil.commitError(
                                     'warning',
-                                    'El ContentDocumentLink no cumplía los requisitos del metadato para ser procesado: título y extensión del documento adjunto son válidos, pero el tipo de registro del caso relacionado no. EmailMessage Id: ' + relatedHegeoInformation.relatedEmail.Id,
+                                    'El documento adjunto cumplía las condiciones establecidas para ser procesado, pero tiene menos información de la esperada para procesar. EmailMessage Id: ' + relatedEmail.Id,
                                     'ContentDocumentLinkUtil'
                                     );
                             }
+                        }
+                        else
+                        {
+                            ErrorLogUtil.commitError(
+                                'warning',
+                                'El ContentDocumentLink no cumplía los requisitos del metadato para ser procesado: título y extensión del documento adjunto son válidos, pero el tipo de registro del caso relacionado no. EmailMessage Id: ' + relatedHegeoInformation.relatedEmail.Id,
+                                'ContentDocumentLinkUtil'
+                                );
                         }
                     }
                 }
