@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : jchavez
  * @group             : 
- * @last modified on  : 04-24-2024
+ * @last modified on  : 05-10-2024
  * @last modified by  : jchavez
 **/
 global with sharing class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Schedulable
@@ -83,7 +83,7 @@ global with sharing class Batch_DeleteExternalRequest implements Database.Batcha
     {
        String query = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id,ExternalRequest__c.processed__c}).getQueryProcessedAfterThan(SystemUtil.getAdminSetupMetadata().RetentionExternalRequestOK__c.intValue(), PROCESSED_RESULT_OK);
        
-       return scheduleExternalRequestClear(JOBKO, SCHEDULED_TIME, query);
+       return scheduleExternalRequestClear(JOBOK, SCHEDULED_TIME, query);
     }        
     
     // FIN métodos batchable
