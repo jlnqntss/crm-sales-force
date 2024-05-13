@@ -5,7 +5,7 @@
  * @last modified on  : 09-25-2023
  * @last modified by  : mfernandezcarrera
 **/
-public without sharing class TestGDPRDataFactory
+public with sharing class TestGDPRDataFactory
 {
     private static List<JerarquiaGDPR> gpdrRecords = new List<JerarquiaGDPR>();
     private static RecordType telemarketingCampaignRecordType = [SELECT Id FROM RecordType WHERE SObjectType = 'Campaign' AND DeveloperName = 'Telemarketing'];

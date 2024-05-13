@@ -70,15 +70,20 @@
     <navType>Console</navType>
     <tabs>standard-home</tabs>
     <tabs>standard-Case</tabs>
-    <tabs>standard-Account</tabs>
-    <tabs>Policy__c</tabs>
     <tabs>standard-Opportunity</tabs>
     <tabs>standard-Task</tabs>
-    <tabs>Scope__c</tabs>
     <tabs>standard-report</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>Policy__c</tabs>
+    <tabs>Claim__c</tabs>
+    <tabs>Scope__c</tabs>
+    <tabs>standard-Product2</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>ZDA_UtilityBar</utilityBar>
     <workspaceConfig>
+        <mappings>
+            <tab>Claim__c</tab>
+        </mappings>
         <mappings>
             <fieldName>PolicyHolder__c</fieldName>
             <tab>Policy__c</tab>
@@ -96,6 +101,9 @@
         </mappings>
         <mappings>
             <tab>standard-Opportunity</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-Product2</tab>
         </mappings>
         <mappings>
             <tab>standard-Task</tab>

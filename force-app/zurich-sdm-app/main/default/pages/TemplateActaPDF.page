@@ -56,7 +56,10 @@
         <div class="event-box-elem">
           <!--Iniciativa-->
           <apex:outputText value="Iniciativa: " />
-          <apex:outputText styleClass="text-black" value="{!Event.Iniciativa__c}" />
+          <apex:outputText
+            styleClass="text-black"
+            value="{!Event.Iniciativa__c}"
+          />
         </div>
         <div class="event-box-elem">
           <!--Ubicación-->

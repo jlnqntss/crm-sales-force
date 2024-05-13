@@ -50,7 +50,7 @@
     <assignments>
         <name>RecordIdAssignment</name>
         <label>AssignRecordId</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>screenPopURL</assignToReference>
@@ -63,7 +63,7 @@
     <assignments>
         <name>URLAssignment</name>
         <label>Assign URL</label>
-        <locationX>710</locationX>
+        <locationX>842</locationX>
         <locationY>542</locationY>
         <assignmentItems>
             <assignToReference>screenPopURL</assignToReference>
@@ -150,7 +150,7 @@
     <decisions>
         <name>ScopeDecision</name>
         <label>Scope</label>
-        <locationX>710</locationX>
+        <locationX>842</locationX>
         <locationY>134</locationY>
         <defaultConnector>
             <targetReference>RecordIdAssignment</targetReference>
@@ -253,6 +253,22 @@
             </connector>
             <label>SAM</label>
         </rules>
+        <rules>
+            <name>ZDA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>emailRecord.GenesysQueueName__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>ZDA</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>USPVariablesAssignment</targetReference>
+            </connector>
+            <label>ZDA</label>
+        </rules>
     </decisions>
     <environments>Default</environments>
     <formulas>
@@ -283,7 +299,7 @@
     <processType>AutoLaunchedFlow</processType>
     <runInMode>DefaultMode</runInMode>
     <start>
-        <locationX>584</locationX>
+        <locationX>716</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>ScopeDecision</targetReference>

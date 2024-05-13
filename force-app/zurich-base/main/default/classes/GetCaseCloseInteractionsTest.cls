@@ -1,5 +1,5 @@
 @isTest
-private class GetCaseCloseInteractionsTest {
+private with sharing class GetCaseCloseInteractionsTest {
     
     @TestSetup
     public static void createScenario()

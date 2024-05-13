@@ -8,7 +8,7 @@
  * Modifications Log
  * Ver   Date         Author     Modification
  * 1.0   22-04-2024   amiranda   Initial Version
-**/
+ **/
 public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable<sObject>, Schedulable
 {
     // #region Instance properties
@@ -119,13 +119,13 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     // #region Schedulable interface implemented methods
 
     /**
-    * @description Método que se ejecuta programáticamente. Puede ser ejecutado
-    * desde Apex (System.schedule()) o desde "Programar Apex".
-    * @author amiranda
-    * @date 22-04-2024 
-    * @param SchedulableContext sc Referencia del objeto que implementa la 
-    * interfaz Schedulable.
-    **/
+     * @description Método que se ejecuta programáticamente. Puede ser ejecutado
+     * desde Apex (System.schedule()) o desde "Programar Apex".
+     * @author amiranda
+     * @date 22-04-2024
+     * @param SchedulableContext sc Referencia del objeto que implementa la
+     * interfaz Schedulable.
+     **/
     public void execute(SchedulableContext sc)
     {
         Database.executeBatch(new ZRMOpportunityMatchBatch(), 50);
@@ -392,7 +392,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     /**
      * Método que modifica el WhatId de las tareas relacionadas en las ofertas match(value) por la oferta scope(key)
      * @author igarcia
-     * @date 15/04/2024 
+     * @date 15/04/2024
      */
     @TestVisible
     private List<Task> moveTasksToScopeOffers(Map<String, String> matchIdByScopeId)
@@ -451,7 +451,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @author  igarcia
      */
     @TestVisible
-    private  Map<String, List<Sobject> > fillMapList(List<Sobject> valuesSet, Schema.SObjectField key)
+    private Map<String, List<Sobject> > fillMapList(List<Sobject> valuesSet, Schema.SObjectField key)
     {
         Map<String, List<Sobject> > mapList = new Map<String, List<Sobject> >();
 
@@ -483,7 +483,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * que potencialmente pueden hacer match relacionadas con la información
      * de contacto (teléfono y/o email) almacenada en la cuenta relacionada
      * (ContactPointEmail y ContactPointPhone).
-     * 
+     *
      * @author amiranda
      * @date 16-04-2024
      * @param opportunities Lista de oportunidades que potencialmente pueden
@@ -532,7 +532,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * a nivel de 'Lead' que hagan match. Si alguna oportunidad hace match, esta
      * se marca a eliminar y posteriormente se comprueba si el 'Lead' tiene alguna
      * oportunidad relacionada. Si no tiene, este se marca para eliminar.
-     * 
+     *
      * @author amiranda
      * @date 17-04-2024
      * @param contactDataInfoByOpportunity Mapa que contiene el conjunto de datos
@@ -622,7 +622,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
     /**
      * @description Método que comprueba si la oportunidad y el lead hacen match
      * en base a los datos de contacto y la fecha de creación.
-     * 
+     *
      * @author amiranda
      * @date 17-04-2024
      * @param lead Cuenta de tipo 'Lead'
@@ -630,7 +630,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @param contactData Datos de contacto (teléfono y/o email) de la cuenta
      * relacionada con la Oportunidad
      * @return Boolean Indica si ha hecho match con el Lead
-     **/    
+     **/
     private Boolean leadMatchesOpportunity(Account lead, Opportunity opportunity, Set<String> contactData)
     {
         return ( opportunity.CreatedDate > lead.CreatedDate
@@ -642,7 +642,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
      * @description Método que comprueba si alguna de las oportunidades relacionadas
      * con el lead han de eliminarse. Además, si todas ellas son marcadas a eliminar
      * nos indica que el 'Lead' relacionado con la oportunidad debe eliminarse.
-     * 
+     *
      * @author amiranda
      * @date 17-04-2024
      * @param lead Lead sobre el que se comprueban sus oportunidades
