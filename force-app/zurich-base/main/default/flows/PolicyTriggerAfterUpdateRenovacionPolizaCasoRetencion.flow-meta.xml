@@ -4,7 +4,7 @@
     <assignments>
         <name>Edit_Case</name>
         <label>Edit Case</label>
-        <locationX>308</locationX>
+        <locationX>1370</locationX>
         <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>Get_latest_ZRM_Case.Status</assignToReference>
@@ -31,10 +31,74 @@
             <targetReference>Update_Case</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Set_ContactId_to_Get_Contact_Id</name>
+        <label>Set ContactId to Get_Contact.Id</label>
+        <locationX>314</locationX>
+        <locationY>863</locationY>
+        <assignmentItems>
+            <assignToReference>ContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_contact.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Scope</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_ContactId_to_PersonContactId</name>
+        <label>Set ContactId to PersonContactId</label>
+        <locationX>50</locationX>
+        <locationY>755</locationY>
+        <assignmentItems>
+            <assignToReference>ContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.PolicyHolder__r.PersonContactId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Scope</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>policyholder_person_account</name>
+        <label>policyholder = person account?</label>
+        <locationX>182</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>Get_contact</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>no</defaultConnectorLabel>
+        <rules>
+            <name>policyholder_person_account_yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PolicyHolder__r.PersonContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.PolicyHolder__r.IsPersonAccount</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_ContactId_to_PersonContactId</targetReference>
+            </connector>
+            <label>yes</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>ZRM_Case_is_null</name>
         <label>ZRM Case is null?</label>
-        <locationX>176</locationX>
+        <locationX>776</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Edit_Case</targetReference>
@@ -50,6 +114,9 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>policyholder_person_account</targetReference>
+            </connector>
             <label>is null</label>
         </rules>
     </decisions>
@@ -87,9 +154,87 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Create_Case_ZRMInquiry</name>
+        <label>Create Case (ZRMInquiry)</label>
+        <locationX>182</locationX>
+        <locationY>1163</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Create_errror</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <elementReference>$Record.PolicyHolder__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ClientDiscount__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ClientHasContacted__c</field>
+            <value>
+                <stringValue>NA</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ContactId</field>
+            <value>
+                <elementReference>ContactId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IntermediaryOwner__c</field>
+            <value>
+                <stringValue>Agente mediador</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IntermediaryVisibilityAcc__c</field>
+            <value>
+                <elementReference>$Record.IntermediaryId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PolicyId__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_ZRM_Inquiry_Record_Type.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cerrado Ganado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SuppliedEmail</field>
+            <value>
+                <elementReference>Get_Scope.PrimaryEmail__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SuppliedPhone</field>
+            <value>
+                <elementReference>Get_Scope.PrimaryPhone__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_errror</name>
         <label>Create errror</label>
-        <locationX>572</locationX>
+        <locationX>1634</locationX>
         <locationY>863</locationY>
         <inputAssignments>
             <field>Level__c</field>
@@ -119,9 +264,34 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>Get_contact</name>
+        <label>Get contact</label>
+        <locationX>314</locationX>
+        <locationY>755</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_ContactId_to_Get_Contact_Id</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Create_errror</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.PolicyHolder__r.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_latest_ZRM_Case</name>
         <label>Get latest ZRM Case</label>
-        <locationX>176</locationX>
+        <locationX>776</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -163,9 +333,41 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Scope</name>
+        <label>Get Scope</label>
+        <locationX>182</locationX>
+        <locationY>1055</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_Case_ZRMInquiry</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Create_errror</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Scope__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Z</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.PolicyHolder__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Scope__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_ZRM_Inquiry_Record_Type</name>
         <label>Get ZRM Inquiry Record Type</label>
-        <locationX>176</locationX>
+        <locationX>776</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -193,7 +395,7 @@
     <recordUpdates>
         <name>Update_Case</name>
         <label>Update Case</label>
-        <locationX>308</locationX>
+        <locationX>1370</locationX>
         <locationY>755</locationY>
         <faultConnector>
             <targetReference>Create_errror</targetReference>
@@ -201,7 +403,7 @@
         <inputReference>Get_latest_ZRM_Case</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>650</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_ZRM_Inquiry_Record_Type</targetReference>
@@ -226,4 +428,14 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>ContactId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
 </Flow>
