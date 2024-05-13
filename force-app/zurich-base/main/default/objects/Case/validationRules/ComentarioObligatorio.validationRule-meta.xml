@@ -3,10 +3,11 @@
     <fullName>ComentarioObligatorio</fullName>
     <active>true</active>
     <description>Indica error si no se comentan las tipificaciones indicadas</description>
-    <errorConditionFormula>(ISBLANK( Comentario__c )  &amp;&amp; (ISPICKVAL(Subtype__c , &apos;Otros&apos;) ||ISPICKVAL(Subtype__c , &apos;Software Obsoleto&apos;) ||ISPICKVAL(Subtype__c , &apos;Genious Bar&apos;)
+    <errorConditionFormula>RecordType.DeveloperName == &quot;SAMInquiry&quot; &amp;&amp;
+$Profile.Name == &apos;SAM User&apos; &amp;&amp;((ISBLANK( Comentario__c )  &amp;&amp; (ISPICKVAL(Subtype__c , &apos;Otros&apos;) ||ISPICKVAL(Subtype__c , &apos;Software Obsoleto&apos;) ||ISPICKVAL(Subtype__c , &apos;Genious Bar&apos;)
 ||ISPICKVAL(Subtype__c , &apos;Incidencia Service Now&apos;) ))
 ||
-(ISBLANK( Comentario__c ) &amp;&amp; ISPICKVAL( Subtype__c , &apos;Recertificación Usuarios&apos;)&amp;&amp; (ISPICKVAL( TypeN3__c , &apos;Otros&apos;) || ISPICKVAL( TypeN3__c , &apos;Modificación Correo electrónico&apos;)))</errorConditionFormula>
+(ISBLANK( Comentario__c ) &amp;&amp; ISPICKVAL( Subtype__c , &apos;Recertificación Usuarios&apos;)&amp;&amp; (ISPICKVAL( TypeN3__c , &apos;Otros&apos;) || ISPICKVAL( TypeN3__c , &apos;Modificación Correo electrónico&apos;))))</errorConditionFormula>
     <errorDisplayField>Comentario__c</errorDisplayField>
     <errorMessage>Es obligatorio agregar un comentario</errorMessage>
 </ValidationRule>

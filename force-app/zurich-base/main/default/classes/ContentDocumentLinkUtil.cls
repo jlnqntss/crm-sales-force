@@ -27,7 +27,8 @@ public with sharing class ContentDocumentLinkUtil
 
     private static void initSettings()
     {
-        if( robotHegeoSettings == null ) {
+        if( robotHegeoSettings == null )
+        {
 
             robotHegeoSettings = [SELECT Id, DeveloperName, CaseFields__c, CaseFieldsIndex__c, Separator__c, FromAddressIndex__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, CaseTypeFieldsMetadata__c, RoutingAddresses__c, CCAddressIndex__c, BCCAddressIndex__c FROM Robot_Hegeo_Setting__mdt];
         }
@@ -73,30 +74,31 @@ public with sharing class ContentDocumentLinkUtil
         }
 
         //Cargamos el mapeo de campos de tipificación del caso
-        if ( robotHegeoFieldsMapping == null ){
-            
+        if ( robotHegeoFieldsMapping == null )
+        {
+
             robotHegeoFieldsMapping = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
         }
-        
+
         if( !robotHegeoFieldsMapping.isEmpty() )
         {
             for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
             {
                 Map<String, String> typeValuesMap = new Map<String, String>();
 
-                // OCS-8133 - arcortazar - 31/08/2023: 
-                // Cambiamos y cargamos los valores aunque estén en blanco. Así, si el caso ya habia heredado 
+                // OCS-8133 - arcortazar - 31/08/2023:
+                // Cambiamos y cargamos los valores aunque estén en blanco. Así, si el caso ya habia heredado
                 // valores de un posible caso padre, se limpiarán con los correctos
 
                 typeValuesMap.put('Type', fieldMapping.Type__c);
                 typeValuesMap.put('RobotTypeN1__c', fieldMapping.Type__c);
-                
+
                 typeValuesMap.put('Subtype__c', fieldMapping.Subtype__c);
                 typeValuesMap.put('RobotTypeN2__c', fieldMapping.Subtype__c);
-            
+
                 typeValuesMap.put('TypeN3__c', fieldMapping.TypeN3__c);
                 typeValuesMap.put('RobotTypeN3__c', fieldMapping.TypeN3__c);
-                
+
                 caseTypesMapping.put(fieldMapping.SourceType__c + fieldMapping.SourceSubtype__c, typeValuesMap);
             }
         }
@@ -248,13 +250,12 @@ public with sharing class ContentDocumentLinkUtil
                     }
 
                     //Existe configuración para el buzón especificado
-                    if(relatedEmailSettings != null)
+                    if( relatedEmailSettings != null && relatedHegeoInformation.isValidDocumentTitle(relatedEmailSettings) &&
+                        relatedHegeoInformation.isValidFileExtension(relatedEmailSettings) )
                     {
                         //Comprobamos si el documento cumple con los requisitos de título, extensión y tipo de registro del caso
-                        if( relatedHegeoInformation.isValidDocumentTitle(relatedEmailSettings) &&
-                            relatedHegeoInformation.isValidFileExtension(relatedEmailSettings) &&
-                            relatedHegeoInformation.isValidRecordType(relatedEmailSettings)
-                            )
+                        if( relatedHegeoInformation.isValidRecordType(relatedEmailSettings) )
+
                         {
                             //Inicialiamos variables con datos necesarios para el procesamiento del CSV
                             EmailMessage relatedEmail = relatedHegeoInformation.relatedEmail;
@@ -415,7 +416,7 @@ public with sharing class ContentDocumentLinkUtil
 
                                         //Extraemos la combinación de los tipos de casos (2 primeras posiciones del listado de valores)
                                         String typeAndSubtypeCombination = types.get(0) + types.get(1);
-                                       
+
                                         if( caseTypesMapping.containsKey(typeAndSubtypeCombination) )
                                         {
                                             caseFieldsMap.putAll( caseTypesMapping.get(typeAndSubtypeCombination) );
@@ -446,18 +447,18 @@ public with sharing class ContentDocumentLinkUtil
                                             }
                                         }
 
-                                        // Obtenemos el tipo 
+                                        // Obtenemos el tipo
                                         String rtRecibido = types.get(types.size() - 1);
-                                        if (rtRecibido.equalsIgnoreCase('OCS'))
+                                        if ( rtRecibido.equalsIgnoreCase('OCS') )
                                         {
                                             caseFieldsMap.put('RecordTypeId', recordTypeOCS);
                                         }
-                                        else if (rtRecibido.equalsIgnoreCase('EON'))
+                                        else if ( rtRecibido.equalsIgnoreCase('EON') )
                                         {
                                             caseFieldsMap.put('RecordTypeId', recordTypeUSP);
                                             caseFieldsMap.put('CallCenter__c', 'USP');
                                         }
-                                
+
                                         casesToUpdate.add(
                                             (Case) JSON.deserialize(
                                                 JSON.serialize(caseFieldsMap), Case.class
@@ -498,7 +499,7 @@ public with sharing class ContentDocumentLinkUtil
                         {
                             ErrorLogUtil.commitError(
                                 'warning',
-                                'El EmailMessage no cumplía los requisitos del metadato para ser procesado: título o extensión del documento adjunto o tipo de registro del caso relacionado. EmailMessage Id: ' + relatedHegeoInformation.relatedEmail.Id,
+                                'El ContentDocumentLink no cumplía los requisitos del metadato para ser procesado: título y extensión del documento adjunto son válidos, pero el tipo de registro del caso relacionado no. EmailMessage Id: ' + relatedHegeoInformation.relatedEmail.Id,
                                 'ContentDocumentLinkUtil'
                                 );
                         }

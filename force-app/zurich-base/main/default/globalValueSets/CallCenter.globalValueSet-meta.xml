@@ -76,6 +76,11 @@
         <default>false</default>
         <label>ZDA</label>
     </customValue>
+    <customValue>
+        <fullName>CTL</fullName>
+        <default>false</default>
+        <label>CTL</label>
+    </customValue>
     <masterLabel>Call Center</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

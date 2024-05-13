@@ -6,7 +6,7 @@
  * @last modified by  : aberuete
 **/
 @isTest
-private class GroupMemberSelectorTest 
+private with sharing class GroupMemberSelectorTest 
 {
     @TestSetup
     public static void createScenario()
