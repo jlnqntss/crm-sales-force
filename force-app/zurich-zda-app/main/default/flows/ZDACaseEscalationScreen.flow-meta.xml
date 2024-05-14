@@ -1271,7 +1271,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <description>Establece el estado del caso como pendiente de soporte</description>
+        <description>Establece el estado del caso como pendiente de soporte. Tambien se resetea el campo ReasonId__c por si se nos envia desde canal unico una respuesta.</description>
         <name>UpdateCase_pending_support</name>
         <label>Set case pending support</label>
         <locationX>666</locationX>
@@ -1295,6 +1295,9 @@
             <value>
                 <elementReference>PendingByVar</elementReference>
             </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ReasonId__c</field>
         </inputAssignments>
         <inputAssignments>
             <field>Status</field>
