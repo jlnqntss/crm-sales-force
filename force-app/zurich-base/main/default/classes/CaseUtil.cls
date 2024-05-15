@@ -36,7 +36,6 @@ public with sharing class CaseUtil
     public static final String SPRINKLR_TYPE_SINIESTROS = 'Siniestros (Claims)';
 
     private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
-    public static final String INTERMEDIARY_EMAIL_FIELD =   'MainEmail__c';
 
     public static List<Group> queueMarcaRRSS = new List<Group>();
     public static List<Group> queuePostventaRRSS = new List<Group>();
@@ -559,20 +558,6 @@ public with sharing class CaseUtil
                         //Se asigna al caso la cuenta y el contacto
                         caso.AccountId = matchedAccounts[0].Id;
                         caso.ContactId = matchedAccounts[0].PersonContactId;
-                    }
-                }
-                else if((caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.SuppliedEmail)))
-                {
-                    // Propio de ZDA, porque buscamos sólo intermediarios mediante los emails que tiene en la cuenta
-                    //Utilizar el AccountSearchService
-                    List<Account> matchedIntermediaryAccounts = new List<Account>();
-                    matchedIntermediaryAccounts = new AccountsSelector().findIntermediariesByEmailInFields(caso.SuppliedEmail, new Set<String> {INTERMEDIARY_EMAIL_FIELD});
-
-                    //Solo se continua si se ha encontrado un único cliente; si hay más de uno no se sabría por cuál decidir
-                    if(matchedIntermediaryAccounts.size() == 1)
-                    {
-                        //Se asigna al caso la cuenta y el contacto
-                        caso.AccountId = matchedIntermediaryAccounts[0].Id;
                     }
                 }
             }
@@ -1165,7 +1150,7 @@ public with sharing class CaseUtil
         Set<String> emailsToSearch = new Set<String>();
         for(Case insertedCase : insertedCases)
         {
-            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
             {
                 emailsToSearch.add(insertedCase.SuppliedEmail);
             }
@@ -1188,7 +1173,7 @@ public with sharing class CaseUtil
         List<Account> emailAccounts;
         for(Case insertedCase : insertedCases)
         {
-            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
             {
                 emailAccounts = accByEmail?.get(insertedCase.SuppliedEmail);
                 if (emailAccounts != null && emailAccounts.size() == 1)
