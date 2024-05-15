@@ -1414,6 +1414,53 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Comprueba que el metodo preProcessReasonIdForZda funciona correctamente. Para ello, actualiza el ReasonId__c de un caso ZDA y otro SPRINKLR
+     * y comprueba si se actualiza el status del caso.
+     *
+     * El postProcessReasonIdForZda no se puede testear puesto que no hay manera de que se testeen las notificaciones enviadas
+     *
+     * @author mario.navarro@seidor.com
+     * @date 14/05/2024
+     */
+    @isTest
+    private static void test_preProcessReasonIdForZda()
+    {
+        List<Case> zdaCaseList = TestDataFactory.generateZDACases(3);
+
+        zdaCaseList[0].Status = CaseUtil.CASE_ASIGNADO; //este se rechaza => status Cerrado
+        zdaCaseList[1].Status = CaseUtil.CASE_ASIGNADO; //este se desestima => status Cerrado
+        zdaCaseList[2].Status = CaseUtil.CASE_PENDIENTE; //este se responde => status Respondido
+        zdaCaseList[2].PendingBy__c = CaseUtil.CASE_PENDIENTE_PARTNER;
+
+        Case sprinklrCase = new Case (
+            RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR,
+            Status = CaseUtil.CASE_ASIGNADO
+            );
+
+        insert new List<Case> {zdaCaseList[0], zdaCaseList[1], zdaCaseList[2], sprinklrCase};
+
+        zdaCaseList[0].ReasonId__c = CaseUtil.ZDA_REASON_RECHAZAR;
+        zdaCaseList[1].ReasonId__c = CaseUtil.ZDA_REASON_DESESTIMAR;
+        zdaCaseList[2].ReasonId__c = CaseUtil.ZDA_REASON_RESPUESTA_SOPORTE;
+        sprinklrCase.ReasonId__c = CaseUtil.ZDA_REASON_RECHAZAR;
+
+        Test.startTest();
+        update new List<Case> {zdaCaseList[0], zdaCaseList[1], zdaCaseList[2], sprinklrCase};
+        Test.stopTest();
+
+        Case closedZdaCase1 = [SELECT Id, Status FROM Case WHERE Id = : zdaCaseList[0].Id];
+        Case closedZdaCase2 = [SELECT Id, Status FROM Case WHERE Id = : zdaCaseList[1].Id];
+        Case answeredZdaCase = [SELECT Id, Status, PendingBy__c FROM Case WHERE Id = : zdaCaseList[2].Id];
+        Case updatedSprinklrCase = [SELECT Id, Status FROM Case WHERE Id = : sprinklrCase.Id];
+
+        Assert.areEqual(CaseUtil.estadoCerrado, closedZdaCase1.Status);
+        Assert.areEqual(CaseUtil.estadoCerrado, closedZdaCase2.Status);
+        Assert.areEqual(CaseUtil.CASE_RESPONDIDO, answeredZdaCase.Status);
+        Assert.isNull(answeredZdaCase.PendingBy__c);
+        Assert.areEqual(CaseUtil.CASE_ASIGNADO, updatedSprinklrCase.Status); //para este caso no debe cambiar el status
+    }
+
+    /**
      * Se valida que el metodo relateCaseToCustomerByNifCif relaciona correctamente el caso con
      * el cliente mediado (cuenta.NationalId__c = caso.CustomerNifCif__c) y establece el campo
      * MediatedCustomer__c en caso de encontrar relacion. Para ello:

@@ -6218,6 +6218,14 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
     <customLabels>
+        <label>Petición de soporte a partner respondida para el caso:</label>
+        <name>ZDAPartnerSupportAnsweredBody</name>
+    </customLabels>
+    <customLabels>
+        <label>Petición respondida</label>
+        <name>ZDAPartnerSupportAnsweredTitle</name>
+    </customLabels>
+    <customLabels>
         <label>Añadir</label>
         <name>ZRM_IntermAddCampMember_AddButton</name>
     </customLabels>

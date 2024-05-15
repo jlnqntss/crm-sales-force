@@ -4,18 +4,21 @@
  * @author nts (agonzalezisasi)
  * @date 19/08/2021
  */
-public with sharing class Notification {
+public with sharing class Notification
+{
     private static final String CLASS_NAME = 'Notification';
     private static final Integer TITLE_MAX_LENGTH = 250;
     private static final Integer BODY_MAX_LENGTH = 750;
-    
+
     // Tipo de notificacion
     public enum NotificationType {
-        SDMAlert
+        SDMAlert,
+        CaseTrackingAnswered
     }
     // Mapa de conversion del tipo de notificacion a su DeveloperName
-    private static final Map<NotificationType, String> mapTypesToName = new Map<NotificationType, String>{
-        NotificationType.SDMAlert => 'SDMTaskDueDateAlert'
+    private static final Map<NotificationType, String> mapTypesToName = new Map<NotificationType, String> {
+        NotificationType.SDMAlert => 'SDMTaskDueDateAlert',
+        NotificationType.CaseTrackingAnswered => 'CaseTrackingAnswered'
     };
 
     // Parametros de la notificacion
@@ -33,7 +36,7 @@ public with sharing class Notification {
         String typeDeveloperName = mapTypesToName.get(notifType);
         // Y el Id del tipo de notificacion para ese developer name
         CustomNotificationType notificationType = [
-            SELECT Id FROM CustomNotificationType WHERE DeveloperName = :typeDeveloperName
+            SELECT Id FROM CustomNotificationType WHERE DeveloperName = : typeDeveloperName
         ];
         this.notificationTypeId = notificationType.Id;
     }
@@ -41,30 +44,35 @@ public with sharing class Notification {
     public void send(String subject, String content)
     {
         // Si no hay target se pone un id dummy
-        if( this.targetId == null ) this.targetId = System.Label.DummyId;
-        
+        if( this.targetId == null )
+            this.targetId = System.Label.DummyId;
+
         // Creamos una nueva notificacion
         Messaging.CustomNotification notification = new Messaging.CustomNotification();
 
         // Establecemos el contenido de la notificacion
-        notification.setTitle(subject.left(TITLE_MAX_LENGTH));
-        notification.setBody(content.left(BODY_MAX_LENGTH));
+        notification.setTitle( subject.left(TITLE_MAX_LENGTH) );
+        notification.setBody( content.left(BODY_MAX_LENGTH) );
 
         // Establecemos el tipo de notificacion y el Target
         notification.setNotificationTypeId(this.notificationTypeId);
         notification.setTargetId(this.targetId);
 
-        if( this.pageReference != null ) {
-            notification.setTargetPageRef(this.pageReference.toJSON());
+        if( this.pageReference != null )
+        {
+            notification.setTargetPageRef( this.pageReference.toJSON() );
         }
-        
+
         // Finalmente se envia la notificacion
-        try {
+        try
+        {
             if( Test.isRunningTest() && this.testUknownError != null && this.testUknownError )
                 throw new NotificationException('Unknown Error');
 
             notification.send(this.userIds);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
     }
@@ -102,13 +110,14 @@ public with sharing class Notification {
 
     /**
      * Clase de apoyo para crear referencias a paginas de salesforce
-     * 
+     *
      * Referencias:
      * https://developer.salesforce.com/docs/component-library/documentation/en/lwc/lwc.reference_page_reference_type
      * https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_class_Messaging_CustomNotification.htm#apex_Messaging_CustomNotification_setTargetPageRef
      * https://salesforce.stackexchange.com/questions/323553/custom-notification-recipients-to-new-places-with-page-reference-navigation
      */
-    public class PageReference {
+    public class PageReference
+    {
         public String type;
         public Map<String, String> attributes;
         public Map<String, String> state;
@@ -116,7 +125,7 @@ public with sharing class Notification {
         /**
          * Crea una referencia a una pagina de salesforce para mas detalles ir a:
          * https://developer.salesforce.com/docs/component-library/documentation/en/lwc/lwc.reference_page_reference_type
-         * 
+         *
          * @param {String refType} tipo de referecia. Ej: standard__objectPage
          * @param {String objectApiName} nombre de objeto. Ej: Account
          * @param {String actionName} nombre de la accion. Ej: list
@@ -125,11 +134,11 @@ public with sharing class Notification {
         public PageReference(String refType, String objectApiName, String actionName, String stateFilterName)
         {
             type = refType; // ej: 'standard__objectPage';
-            attributes = new Map<String, String>{
+            attributes = new Map<String, String> {
                 'objectApiName' => objectApiName,
                 'actionName' => actionName
             };
-            state = new Map<String, String>{
+            state = new Map<String, String> {
                 'filterName' => stateFilterName
             };
         }
@@ -137,14 +146,14 @@ public with sharing class Notification {
         /**
          * Crea una referencia a una pagina de salesforce para mas detalles ir a:
          * https://developer.salesforce.com/docs/component-library/documentation/en/lwc/lwc.reference_page_reference_type
-         * 
+         *
          * @param {String refType} tipo de referecia. Ej: standard__navItemPage
          * @param {String navItemApiName} nombre de objeto. Ej: MyCustomTabName
          */
         public Pagereference(String refType, String navItemApiName)
         {
             type = refType; // ej: standard__navItemPage
-            attributes = new Map<String, String>{
+            attributes = new Map<String, String> {
                 'apiName' => navItemApiName
             };
         }
@@ -152,10 +161,12 @@ public with sharing class Notification {
         /**
          * Convierte este objeto en texto con formato JSON
          */
-        public string toJSON() {
+        public string toJSON()
+        {
             return JSON.serialize(this);
         }
     }
 
-    private class NotificationException extends Exception {}
+    private class NotificationException extends Exception
+    {}
 }

@@ -14,8 +14,12 @@ public with sharing class CaseUtil
     public static final String queryDays ='365';
     public static final String afirmativo = 'Si';
     public static final String estadoCerrado= 'Cerrado';
-    public static final String CASE_NO_INICIADO = 'No iniciado'; 
-    public static final String CASE_EN_GESTION = 'En gestión'; 
+    public static final String CASE_NO_INICIADO = 'No iniciado';
+    public static final String CASE_EN_GESTION = 'En gestión';
+    public static final String CASE_ASIGNADO = 'Asignado';
+    public static final String CASE_RESPONDIDO = 'Respondido';
+    public static final String CASE_PENDIENTE = 'Pendiente';
+    public static final String CASE_PENDIENTE_PARTNER = 'Partner';
     public static final String CASE_CLOSED_LOST = 'Cerrado Perdido';
     public static final String CASE_CLOSED_WON = 'Cerrado Ganado';
     public static final String CASE_CAUSE_OF_LOSS_PERIOD_ENDED = 'Periodo Finalizado';
@@ -34,6 +38,11 @@ public with sharing class CaseUtil
     public static final String SPRINKLR_TYPE_MARCA = 'Marca (No info provided)';
     public static final String SPRINKLR_TYPE_ASISTENCIA = 'Asistencia (Information/ Contact)';
     public static final String SPRINKLR_TYPE_SINIESTROS = 'Siniestros (Claims)';
+    public static final String ZDA_REASON_RECHAZAR = '1';
+    public static final String ZDA_REASON_DESESTIMAR = '2';
+    public static final String ZDA_REASON_RESPUESTA_SOPORTE = '3';
+    public static final String BLANK_SPACE = ' ';
+    public static final String EMPTY_STRING = '';
 
     private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
 
@@ -43,7 +52,7 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
 
-    
+
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
     {
@@ -538,8 +547,8 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if((caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich') 
-                || (caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.SuppliedEmail)))
+                if( (caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich')
+                    || ( caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.SuppliedEmail) ) )
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
                     //Utilizar el email del SuppliedEmail
@@ -1992,6 +2001,72 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Actualiza el status de los casos de ZDA cuando cambie el campo ReasonId__c. Esto ocurre cuando
+     * actualizan un caso via estandar API
+     *
+     * @author mario.navarro@seidor.com
+     * @date 14/05/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void preProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        for(Case updatedCase : updatedCases)
+        {
+            if ( updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.ReasonId__c != oldMap.get(updatedCase.Id).ReasonId__c &&
+                 (updatedCase.ReasonId__c == ZDA_REASON_RECHAZAR || updatedCase.ReasonId__c == ZDA_REASON_DESESTIMAR) )
+            {
+                //Es un caso de ZDA que cambia el ReasonId__c y pasa a ser rechazado o desestimado. Cerramos el caso
+                updatedCase.Status = estadoCerrado;
+                updatedCase.PendingBy__c = EMPTY_STRING;
+            }
+            else if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
+            {
+                updatedCase.Status = CASE_RESPONDIDO;
+                updatedCase.PendingBy__c = EMPTY_STRING;
+            }
+        }
+    }
+
+    /**
+     * Realiza las acciones necesarias (post-update) para los casos de ZDA cuando cambie el campo ReasonId__c. Esto ocurre cuando
+     * actualizan un caso via estandar API
+     *
+     * @author mario.navarro@seidor.com
+     * @date 14/05/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void postProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        Notification notif = new Notification(Notification.notificationType.CaseTrackingAnswered);
+        String content;
+        for(Case updatedCase : updatedCases)
+        {
+            if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
+            {
+                content = Label.ZDAPartnerSupportAnsweredBody + BLANK_SPACE + updatedCase.CaseNumber;
+                //si han contestado una peticion de soporte, se le notifica al propietario del caso
+                notif.send(updatedCase.Id, new Set<String> {updatedCase.OwnerId}, Label.ZDAPartnerSupportAnsweredTitle, content);
+            }
+        }
+    }
+
+    /**
+     * Comprueba si el caso es de zda y el ReasonId__c pasa a ser respondido (3)
+     *
+     * @author mario.navarro@seidor.com
+     * @date 14/05/2024
+     * @param updatedCase caso actualizado
+     * @param oldCase caso antes de la actualizacion
+     * @return true si es un caso de ZDA, el ReasonId__c ha cambiado y pasa a ser 3; false en caso contrario
+     */
+    private static Boolean isZDANewReasonAnswered(Case updatedCase, Case oldCase)
+    {
+        return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.ReasonId__c != oldCase.ReasonId__c && updatedCase.ReasonId__c == ZDA_REASON_RESPUESTA_SOPORTE;
+    }
+
+    /**
      * Para el los casos de tipo ZDA establece el campo OwnerIdPrior__c cuando cambia el owner del caso por primera vez
      *
      * @author mario.navarro@seidor.com
@@ -2072,7 +2147,7 @@ public with sharing class CaseUtil
                         }
                         else
                         {
-                            if (casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
+                            if ( casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
                             {
                                 casoNew.Status = CASE_EN_GESTION;
                             }
@@ -2080,11 +2155,11 @@ public with sharing class CaseUtil
                     }
 
                     // Comprobamos el cambio de "check de tarjeta"
-                    if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
-                    {  
+                    if ( (casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true) )
+                    {
                         casoNew.Status = CASE_CLOSED_WON;
-                    }    
-                }            
+                    }
+                }
             }
         }
     }
@@ -2236,16 +2311,19 @@ public with sharing class CaseUtil
 
 
     /**
-     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner  
-    * @author dmunoz
-    * @date 23/04/2024
-    * @param newList lista de elementos del trigger after insert
-    */
-    public static void setEndDateZRMInquiry(List<Case> newList) {
+     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner
+     * @author dmunoz
+     * @date 23/04/2024
+     * @param newList lista de elementos del trigger after insert
+     */
+    public static void setEndDateZRMInquiry(List<Case> newList)
+    {
 
         // 1º compruebo si existe en el trigger algun caso de zrm con que encuentre solo 1 me vale para lanzar las consultas solo cuando sea necesario
-        for (Case caseTrigger: newList) {
-            if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty(String.valueOf(caseTrigger.EndDate__c))) {
+        for (Case caseTrigger: newList)
+        {
+            if ( RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty( String.valueOf(caseTrigger.EndDate__c) ) )
+            {
                 caseTrigger.EndDate__c = caseTrigger.PolicyEndDate__c;
             }
         }

@@ -2459,6 +2459,22 @@ Create the record and try again.</value>
         <value>[VR Offer] A Closed Won Offer cannot be modified</value>
     </labels>
     <labels>
+        <fullName>ZDAPartnerSupportAnsweredBody</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAPartnerSupportAnsweredBody</shortDescription>
+        <value>Partner support request answered for the case:</value>
+    </labels>
+    <labels>
+        <fullName>ZDAPartnerSupportAnsweredTitle</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAPartnerSupportAnsweredTitle</shortDescription>
+        <value>Request answered</value>
+    </labels>
+    <labels>
         <fullName>ZRM_IntermAddCampMember_AddButton</fullName>
         <categories>ZRM_IntermAddCampMember</categories>
         <language>en_US</language>
