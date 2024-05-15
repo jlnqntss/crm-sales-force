@@ -4,8 +4,7 @@
  * @author nts (agonzalezisasi)
  * @date 19/08/2021
  */
-public with sharing class Notification
-{
+public with sharing class Notification {
     private static final String CLASS_NAME = 'Notification';
     private static final Integer TITLE_MAX_LENGTH = 250;
     private static final Integer BODY_MAX_LENGTH = 750;
@@ -44,8 +43,7 @@ public with sharing class Notification
     public void send(String subject, String content)
     {
         // Si no hay target se pone un id dummy
-        if( this.targetId == null )
-            this.targetId = System.Label.DummyId;
+        if( this.targetId == null ) this.targetId = System.Label.DummyId;
 
         // Creamos una nueva notificacion
         Messaging.CustomNotification notification = new Messaging.CustomNotification();
@@ -58,21 +56,17 @@ public with sharing class Notification
         notification.setNotificationTypeId(this.notificationTypeId);
         notification.setTargetId(this.targetId);
 
-        if( this.pageReference != null )
-        {
+        if( this.pageReference != null ) {
             notification.setTargetPageRef( this.pageReference.toJSON() );
         }
 
         // Finalmente se envia la notificacion
-        try
-        {
+        try {
             if( Test.isRunningTest() && this.testUknownError != null && this.testUknownError )
                 throw new NotificationException('Unknown Error');
 
             notification.send(this.userIds);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             ErrorLogUtil.commitError(e, CLASS_NAME);
         }
     }
@@ -116,8 +110,7 @@ public with sharing class Notification
      * https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_class_Messaging_CustomNotification.htm#apex_Messaging_CustomNotification_setTargetPageRef
      * https://salesforce.stackexchange.com/questions/323553/custom-notification-recipients-to-new-places-with-page-reference-navigation
      */
-    public class PageReference
-    {
+    public class PageReference {
         public String type;
         public Map<String, String> attributes;
         public Map<String, String> state;
@@ -161,12 +154,10 @@ public with sharing class Notification
         /**
          * Convierte este objeto en texto con formato JSON
          */
-        public string toJSON()
-        {
+        public string toJSON() {
             return JSON.serialize(this);
         }
     }
 
-    private class NotificationException extends Exception
-    {}
+    private class NotificationException extends Exception {}
 }

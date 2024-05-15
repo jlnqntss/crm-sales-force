@@ -2316,14 +2316,11 @@ public with sharing class CaseUtil
      * @date 23/04/2024
      * @param newList lista de elementos del trigger after insert
      */
-    public static void setEndDateZRMInquiry(List<Case> newList)
-    {
+    public static void setEndDateZRMInquiry(List<Case> newList) {
 
         // 1º compruebo si existe en el trigger algun caso de zrm con que encuentre solo 1 me vale para lanzar las consultas solo cuando sea necesario
-        for (Case caseTrigger: newList)
-        {
-            if ( RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty( String.valueOf(caseTrigger.EndDate__c) ) )
-            {
+        for (Case caseTrigger: newList) {
+            if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty(String.valueOf(caseTrigger.EndDate__c))) {
                 caseTrigger.EndDate__c = caseTrigger.PolicyEndDate__c;
             }
         }
