@@ -918,7 +918,6 @@ public with sharing class EmailMessagesUtil
     public void checkIdGenesys (List<EmailMessage> emailList)
     {
         Set<String> casesIds = new Set<String>();
-        List<EmailMessage> emailsIds = new List<EmailMessage>();
         Map<Id, String> mapaGenesys = new Map<Id, String>();
 
         for(EmailMessage e:emailList)
