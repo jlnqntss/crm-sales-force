@@ -391,7 +391,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             }//Comprobar si es un ContactRequest
             else if(interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
             {
-                List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
+                List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId WITH USER_MODE];
                 if( !contactrequests.isEmpty() )
                 {
                     //Cambiar el propietario al usuario actual siempre
