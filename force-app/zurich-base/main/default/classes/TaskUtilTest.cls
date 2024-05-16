@@ -106,4 +106,34 @@ private with sharing class TaskUtilTest
         List<Task> taskAfterDelete = [Select id from Task];
         System.assertEquals(0, taskAfterDelete.size(), 'La tarea no debería existir');
     }
+
+    /*
+     * Test que comprueba la id de Genesys en caso 
+     * @author aberuete
+     * @date 01/08/2023
+     */
+    @isTest
+    private static void test_Genesys()
+    {
+
+        Case casoToEmailMessage = new Case (Subject = 'prueba Genesys',Status = 'Assigned', Origin = 'Email', RecordTypeId = CaseUtil.RT_ID_USPINQUIRY);
+        insert casoToEmailMessage;
+
+        Task taskToCreate = new Task();
+        taskToCreate.Status = 'Asignada';
+        taskToCreate.Priority = 'Normal';
+        taskToCreate.CallObject = 'd7faf2ef-aadc-4001-85a4-17633fcfe492';
+        taskToCreate.WhatId = casoToEmailMessage.id;
+        
+      
+
+        Test.startTest();
+        insert taskToCreate;
+        Test.stopTest();
+
+        Case casesEmailDefault = [SELECT Id,GenesysID__c,LinkIdGenesys__c FROM Case WHERE Subject = 'prueba Genesys'];
+        System.assertEquals(casesEmailDefault.GenesysID__c,'d7faf2ef-aadc-4001-85a4-17633fcfe492','Debe estar informado con id Genesys');
+        System.assertEquals(casesEmailDefault.LinkIdGenesys__c,'https://apps.mypurecloud.ie/directory/#/engage/admin/interactions/d7faf2ef-aadc-4001-85a4-17633fcfe492','Debe estar informado con link id Genesys');    
+    }
+
 }
