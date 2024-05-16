@@ -61,4 +61,41 @@ public with sharing class TaskUtil
 
         return result;
     }
+
+
+    /**
+     * Método que informa en el caso el Id Genesys 
+     *
+     * @author LRODRIGUEZ
+     * @date 14/05/2024
+     *
+     * @param List<Task> newList : Lista de tareas a actualizar
+     */
+    public static void checkIdGenesys(List<Task> newList) {
+
+
+        Set<String> taskId = new Set<String>();
+        Map<Id, String> mapaGenesys = new Map<Id, String>();
+
+
+        for(Task t:newList)
+        {
+            if(t.CallObject!=null)
+            {
+                taskId.add(t.WhatId); 
+                mapaGenesys.put(t.WhatId,t.CallObject);
+            }
+        }
+
+        List<Case> casesToUpdate = new CasesSelector().findByIdControlCC(taskId);
+
+        for (Case c:casesToUpdate)
+        {
+            c.GenesysID__c=mapaGenesys.get(c.Id);
+        }
+
+        update casesToUpdate;
+
+        
+    }
 }

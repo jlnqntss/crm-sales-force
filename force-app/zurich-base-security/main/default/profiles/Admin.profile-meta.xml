@@ -6567,6 +6567,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.GenesysID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.GoogleAddress__c</field>
         <readable>true</readable>
@@ -6709,6 +6714,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.LegalEntity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.LinkIdGenesys__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
