@@ -6214,6 +6214,14 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>SDM_LinksInteres_ViewAll</name>
     </customLabels>
     <customLabels>
+        <label>Escalado a soporte respondido para el caso:</label>
+        <name>ZDAScaledSupportCaseAnsweredBody</name>
+    </customLabels>
+    <customLabels>
+        <label>Escalado a supervisor respondido para el caso:</label>
+        <name>ZDAScaledSupervisorCaseAnsweredBody</name>
+    </customLabels>
+    <customLabels>
         <label>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Ganada</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>

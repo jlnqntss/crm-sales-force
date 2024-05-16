@@ -2451,6 +2451,22 @@ Create the record and try again.</value>
         <value>Submit</value>
     </labels>
     <labels>
+        <fullName>ZDAScaledSupportCaseAnsweredBody</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAScaledCaseAnsweredBody</shortDescription>
+        <value>Escalation to support responded to the case:</value>
+    </labels>
+    <labels>
+        <fullName>ZDAScaledSupervisorCaseAnsweredBody</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAScaledCaseAnsweredBody</shortDescription>
+        <value>Escalation to supervisor responded to the case:</value>
+    </labels>
+    <labels>
         <fullName>OfferSalesStageValidationClosedWonMessage</fullName>
         <categories>Ventas,Offer</categories>
         <language>en_US</language>

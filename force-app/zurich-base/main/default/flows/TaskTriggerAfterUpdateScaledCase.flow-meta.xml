@@ -4,8 +4,8 @@
         <description>sirve para que le aparezca al agente que llevaba el caso un aviso en la campanita</description>
         <name>Notificar_Agente</name>
         <label>Notificar Agente</label>
-        <locationX>182</locationX>
-        <locationY>1055</locationY>
+        <locationX>380</locationX>
+        <locationY>1079</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -45,13 +45,66 @@
                 <elementReference>Caso.Id</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <description>Se le notifica al agente de ZDA con un titulo y un cuerpo diferente que al resto</description>
+        <name>NotifyZdaAgentActopm</name>
+        <label>Notify ZDA agent</label>
+        <locationX>116</locationX>
+        <locationY>1079</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>CreateCaseCommentAction</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>CustomNotification.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>NotificationRecipients</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderId</name>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>$Label.ZDAPartnerSupportAnsweredTitle</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>ZdaNotificationBodyFormula</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>Caso.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>50.0</apiVersion>
     <assignments>
         <name>AssignRecipients</name>
         <label>Assign Recipients</label>
-        <locationX>182</locationX>
-        <locationY>935</locationY>
+        <locationX>248</locationX>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>NotificationRecipients</assignToReference>
             <operator>Add</operator>
@@ -60,14 +113,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Notificar_Agente</targetReference>
+            <targetReference>IsZdaDecision</targetReference>
         </connector>
     </assignments>
     <decisions>
         <name>CasoCerradoDecision</name>
         <label>¿El caso esta cerrado?</label>
         <locationX>50</locationX>
-        <locationY>575</locationY>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>UpdateCase</targetReference>
         </defaultConnector>
@@ -86,10 +139,36 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Si el caso es de ZDA, el cuerpo de la notificacion cambia ligeramente y se debe crear un comentario en el caso con la respuesta de la Task</description>
+        <name>IsZdaDecision</name>
+        <label>Is ZDA</label>
+        <locationX>248</locationX>
+        <locationY>971</locationY>
+        <defaultConnector>
+            <targetReference>Notificar_Agente</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>YesZdaOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Caso.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ZDAInquiryRecordtypeId</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NotifyZdaAgentActopm</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Se_ha_Cerrado_la_Activity</name>
         <label>¿Se ha Cerrado la Activity?</label>
-        <locationX>248</locationX>
-        <locationY>335</locationY>
+        <locationX>347</locationX>
+        <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si</name>
@@ -108,6 +187,7 @@
             <label>Si</label>
         </rules>
     </decisions>
+    <description>Cuando una tarea de tipo escalado se cierra, el caso asociado pasa a ser respondido y se le envía una notificación al propietario del caso</description>
     <environments>Default</environments>
     <formulas>
         <name>NotificationBody</name>
@@ -128,6 +208,18 @@
         <name>USPInquiryRecordTypeId</name>
         <dataType>String</dataType>
         <expression>IF({!Caso.RecordType.DeveloperName} = &apos;USPInquiry&apos;, {!Caso.RecordTypeId}, &apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <description>Formula que retorna el identificador del recordtype del caso si es de ZDA</description>
+        <name>ZDAInquiryRecordtypeId</name>
+        <dataType>String</dataType>
+        <expression>IF({!Caso.RecordType.DeveloperName} = &apos;ZDAInquiry&apos;, {!Caso.RecordTypeId}, &apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <description>Cuerpo de la notificación de escritorio para el caso de ZDA</description>
+        <name>ZdaNotificationBodyFormula</name>
+        <dataType>String</dataType>
+        <expression>IF(ISPICKVAL({!Caso.PendingBy__c}, &apos;Supervisor&apos;), {!$Label.ZDAScaledSupervisorCaseAnsweredBody}, {!$Label.ZDAScaledSupportCaseAnsweredBody}) &amp; &apos; &apos; &amp; {!Caso.CaseNumber}</expression>
     </formulas>
     <interviewLabel>Task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After update Scaled Case</label>
@@ -150,11 +242,32 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Crea un comentario al caso relacionado cuyo cuerpo será la respuesta proporcionada en la tarea cerrada</description>
+        <name>CreateCaseCommentAction</name>
+        <label>Create case coment</label>
+        <locationX>116</locationX>
+        <locationY>1187</locationY>
+        <inputAssignments>
+            <field>CommentBody</field>
+            <value>
+                <elementReference>$Record.Response__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentId</field>
+            <value>
+                <elementReference>Caso.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>CaseComment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>Caso</name>
         <label>Caso</label>
         <locationX>50</locationX>
-        <locationY>455</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CasoCerradoDecision</targetReference>
@@ -174,8 +287,8 @@
     <recordLookups>
         <name>CustomNotification</name>
         <label>Custom Notification</label>
-        <locationX>182</locationX>
-        <locationY>815</locationY>
+        <locationX>248</locationX>
+        <locationY>755</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AssignRecipients</targetReference>
@@ -193,14 +306,15 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <description>Logica de actualizacion: Id + caso de OCS O (caso de USP y Pendiente de supervisor, consultant, subscription, champion o technical direction) O (caso de ZDA y pendiente de supervisor o soporte)</description>
         <name>UpdateCase</name>
         <label>Actualizar Caso</label>
-        <locationX>182</locationX>
-        <locationY>695</locationY>
+        <locationX>248</locationX>
+        <locationY>647</locationY>
         <connector>
             <targetReference>CustomNotification</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR (3 AND 4 AND (5 OR 6 OR 7 OR 8 OR 9)))</filterLogic>
+        <filterLogic>1 AND (2 OR (3 AND 4 AND (5 OR 6 OR 7 OR 8 OR 9)) OR (10 AND 11 AND (12 OR 13)))</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -264,6 +378,34 @@
                 <stringValue>Technical Direction</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDAInquiryRecordtypeId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendiente</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PendingBy__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Supervisor</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PendingBy__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Support</stringValue>
+            </value>
+        </filters>
         <inputAssignments>
             <field>PendingBy__c</field>
             <value>
@@ -279,7 +421,7 @@
         <object>Case</object>
     </recordUpdates>
     <start>
-        <locationX>122</locationX>
+        <locationX>221</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Se_ha_Cerrado_la_Activity</targetReference>
