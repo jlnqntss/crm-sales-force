@@ -1496,7 +1496,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cambio mediador</controllingFieldValue>
-            <valueName>Propuesta de oferta enviada<</valueName>
+            <valueName>Propuesta de oferta enviada</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
