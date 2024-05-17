@@ -7,6 +7,8 @@
  **/
 public with sharing class TaskUtil
 {
+    private static final Id uspRecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
+
     /**
      * Método que marca la tarea para que sea pública para los usuarios de la comunidad
      * en caso de que el owner sea un usuario de la comunidad de ocs
