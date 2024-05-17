@@ -91,6 +91,7 @@ public with sharing class TaskUtil
 
         for (Case c:casesToUpdate)
         {
+            if(c.RecordTypeId==uspRecordTypeId)
             c.GenesysID__c=mapaGenesys.get(c.Id);
         }
 

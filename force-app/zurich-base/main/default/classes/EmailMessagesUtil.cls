@@ -933,6 +933,7 @@ public with sharing class EmailMessagesUtil
 
         for (Case c:casesToUpdate)
         {
+            if(c.RecordTypeId==uspRecordTypeId)
             c.GenesysID__c=mapaGenesys.get(c.Id);
         }
 
