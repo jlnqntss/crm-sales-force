@@ -1,11 +1,18 @@
 <template>
-    <lightning-card variant="narrow" title="Ficheros" icon-name="standard:file">
+    <lightning-card variant="narrow" title={label.ZRM_FilesTitle} icon-name="standard:file">
         <div slot="actions">
             <lightning-button 
-                label="Subir Fichero" 
+                label={label.ZRM_NewFile} 
                 variant="Neutral"                    
                 onclick={handleUploadClick} 
             ></lightning-button>
+            <lightning-button-icon 
+                icon-name="utility:refresh"  
+                class="slds-m-left_xx-small"
+                alternative-text="Refresh" 
+                title="Refresh"
+                onclick={refreshComponent}>
+            </lightning-button-icon>
         </div>        
         <template if:true={showFileUploader}>
             <div class="slds-m-left_small">
@@ -28,14 +35,9 @@
                           </div>
                         <div class="slds-col slds-large-size_6-of-12 slds-medium-size_6-of-12 slds-size_12-of-12 slds-text-align_left">
                           <a href={file.filePreviewUrl}>{file.fileTitle}</a>
-                          <!--lightning-button label={file.fileTitle} 
-                            data-id={file.id}
-                            variant="base"
-                            onclick={previewHandler}
-                            ></lightning-button-->
                         </div>
                         <div class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12 slds-text-align_right">
-                          <a class="slds-button slds-button_brand" href={file.fileDownloadUrl} download>Download</a>
+                          <a class="slds-button slds-button_brand" href={file.fileDownloadUrl} download>{label.ZRM_DownloadFile}</a>
                         </div>
                     </div>
                 </div>

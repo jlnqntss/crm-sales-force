@@ -2893,4 +2893,52 @@ Create the record and try again.</value>
         <shortDescription>ZRM_IntermediaryCampaignMembers_ToastOngoingCampaignErrorMessage</shortDescription>
         <value>Ongoing, terminated or invalid campaign</value>
     </labels>
+    <labels>
+        <fullName>ZRM_DownloadFile</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_DownloadFile</shortDescription>
+        <value>Download</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_FilesTitle</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_FilesTitle</shortDescription>
+        <value>Files</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_NewFile</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_NewFile</shortDescription>
+        <value>New File</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Refresh</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Refresh</shortDescription>
+        <value>Files list successfully refreshed</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Success</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_UploadSuccess</fullName>
+        <categories>ZRM, Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_UploadSuccess</shortDescription>
+        <value>file(s) uploaded successfully</value>
+    </labels>
 </CustomLabels>

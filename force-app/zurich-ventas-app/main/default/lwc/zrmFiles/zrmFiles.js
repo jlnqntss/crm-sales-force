@@ -2,8 +2,26 @@ import { LightningElement, api, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getRelatedFilesByRecordId from '@salesforce/apex/ZRMFilesController.getRelatedFilesByRecordId';
 import { refreshApex } from '@salesforce/apex';
-import {NavigationMixin} from 'lightning/navigation';
-export default class ZRMFiles extends NavigationMixin(LightningElement) {
+
+// labels
+import ZRM_FilesTitle from "@salesforce/label/c.ZRM_FilesTitle";
+import ZRM_NewFile from "@salesforce/label/c.ZRM_NewFile";
+import ZRM_DownloadFile from "@salesforce/label/c.ZRM_DownloadFile";
+import ZRM_Success from "@salesforce/label/c.ZRM_Success";
+import ZRM_Refresh from "@salesforce/label/c.ZRM_Refresh";
+import ZRM_UploadSuccess from "@salesforce/label/c.ZRM_UploadSuccess";
+
+export default class ZRMFiles extends LightningElement {
+
+    // labels
+    label = {
+        ZRM_FilesTitle,
+        ZRM_NewFile,
+        ZRM_DownloadFile,
+        ZRM_Success,
+        ZRM_Refresh,
+        ZRM_UploadSuccess
+    };
 
     @api recordId;
     showFileUploader = false;
@@ -21,27 +39,13 @@ export default class ZRMFiles extends NavigationMixin(LightningElement) {
         refreshApex(this.filesList);
         // Mostrar mensaje toast
         const uploadedFiles = event.detail.files;
-        this.showToast('Éxito', `${uploadedFiles.length} archivo(s) cargado(s) con éxito.`, 'success');
+        this.showToast(this.label.ZRM_Success, uploadedFiles.length + this.label.ZRM_UploadSuccess, 'success');
     }
 
-
-    /*previewHandler(event){
-        try {
-            console.log(event.target.dataset.id);
-            this[NavigationMixin.Navigate]({ 
-                type:'standard__namedPage',
-                attributes:{ 
-                    pageName:'filePreview'
-                },
-                state:{ 
-                    selectedRecordId: event.target.dataset.id
-                }
-            })
-
-        } catch(error) {
-            console.log(JSON.stringify(error));
-        }
-    }*/
+    refreshComponent() {
+        refreshApex(this.filesList);
+        this.showToast(this.label.ZRM_Success, this.label.ZRM_Refresh, 'success');
+    }
 
 
     // Función para mostrar mensajes toast
