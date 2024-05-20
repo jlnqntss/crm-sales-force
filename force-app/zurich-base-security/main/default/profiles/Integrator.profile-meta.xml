@@ -3852,6 +3852,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.IsAccountZDA__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Potential_Broker__c</field>
         <readable>true</readable>
     </fieldPermissions>
