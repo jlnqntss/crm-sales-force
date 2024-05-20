@@ -14,10 +14,8 @@ private with sharing class Test_Batch_DeleteExternalRequest
     public static final String PROCESSED_RESULT_OK = 'OK';
     private static final String  QUERY_OK = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id,ExternalRequest__c.processed__c}).getQueryProcessedAfterThan(SystemUtil.getAdminSetupMetadata().RetentionExternalRequestKO__c.intValue(), PROCESSED_RESULT_OK);
     private static final String  QUERY_KO = new ExternalRequestsSelector(new List<Schema.SObjectField> {ExternalRequest__c.Id,ExternalRequest__c.processed__c}).getQueryProcessedAfterThan(SystemUtil.getAdminSetupMetadata().RetentionExternalRequestKO__c.intValue(), PROCESSED_RESULT_KO);
-    private static final String JOBOK = 'Clear_External_Request_OK';
-    private static final String JOBKO = 'Clear_External_Request_KO';
-    private static final List<CronTrigger> CRONTRIGGEROK  = [select id from CronTrigger where CronJobDetail.Name =: JOBOK ];
-    private static final List<CronTrigger> CRONTRIGGERKO  = [select id from CronTrigger where CronJobDetail.Name =: JOBKO ];
+    private static final String JOBOK = Batch_DeleteExternalRequest.JOBOK;
+    private static final String JOBKO = Batch_DeleteExternalRequest.JOBKO;
 
     /**
      * Create test data
@@ -126,16 +124,17 @@ private with sharing class Test_Batch_DeleteExternalRequest
     @isTest
     private static void test_scheduleExternalRequestClearOKs()
     {
+        List<CronTrigger> cronTriggerOK  = [select id from CronTrigger where CronJobDetail.Name =: JOBOK ];
         String jobId = '';
 
         Test.startTest();
-        if(CRONTRIGGEROK.isEmpty())
+        if(cronTriggerOK.isEmpty())
         {
             jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearOKs();
             database.executeBatch( new Batch_DeleteExternalRequest(QUERY_OK), 2000 );
         }else
         {
-            System.AbortJob(CRONTRIGGEROK[0].Id);
+            System.AbortJob(cronTriggerOK[0].Id);
             jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearOKs();
             database.executeBatch( new Batch_DeleteExternalRequest(QUERY_OK), 2000 );
         }
@@ -155,15 +154,16 @@ private with sharing class Test_Batch_DeleteExternalRequest
     private static void test_scheduleExternalRequestClearKOs()
     {
         String jobId = '';
+        List<CronTrigger> cronTriggerKO  = [select id from CronTrigger where CronJobDetail.Name =: JOBKO ];
 
         Test.startTest();
-        if(CRONTRIGGERKO.isEmpty())
+        if(cronTriggerKO.isEmpty())
         {
             jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearKOs();
             database.executeBatch( new Batch_DeleteExternalRequest(QUERY_KO), 2000 );
         }else
         {
-            System.AbortJob(CRONTRIGGERKO[0].Id);
+            System.AbortJob(cronTriggerKO[0].Id);
             jobID = Batch_DeleteExternalRequest.scheduleExternalRequestClearKOs();
             database.executeBatch( new Batch_DeleteExternalRequest(QUERY_KO), 2000 );
         }

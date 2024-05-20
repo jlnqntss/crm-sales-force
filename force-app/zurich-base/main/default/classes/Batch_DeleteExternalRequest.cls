@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : jchavez
  * @group             : 
- * @last modified on  : 05-10-2024
+ * @last modified on  : 05-20-2024
  * @last modified by  : jchavez
 **/
 global with sharing class Batch_DeleteExternalRequest implements Database.Batchable<sObject>, Schedulable
@@ -11,8 +11,8 @@ global with sharing class Batch_DeleteExternalRequest implements Database.Batcha
     public static final String PROCESSED_RESULT_OK = 'OK';
     public static final String PROCESSED_RESULT_KO = 'KO';
     private static final AdminSetup__mdt adminSetup = SystemUtil.getAdminSetupMetadata();
-    private static final String JOBOK = 'Clear_External_Request_OK';
-    private static final String JOBKO = 'Clear_External_Request_KO';
+    public static final String JOBOK = 'Clear_External_Request_OK';
+    public static final String JOBKO = 'Clear_External_Request_KO';
     private static final String SCHEDULED_TIME = ' 0 0 2 * * ?';
     
 	// Inicio métodos batchable
