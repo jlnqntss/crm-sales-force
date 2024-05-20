@@ -1012,4 +1012,48 @@ private with sharing class OpportunityUtilTest
 
         OpportunityUtil.scopeSettingsMetadata = testScopeSettingsMetadata;                                 
     }
+
+    /**
+     * @description Método de test que comprueba que se marca el campo 'IsAccountZDA__c'
+     * cuando se inserta una oferta que contiene un código de negocio de ZDA
+     * @author aberuete
+     * @date 17-05-2024
+     **/
+    @IsTest
+    private static void test_updateAccountToMarkIsAccountZDA()
+    {
+        List<Account> accounts = [SELECT Name,Id,IsAccountZDA__c  FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' limit 1];
+        Assert.isFalse(accounts[0].IsAccountZDA__c, 'La cuenta no debería ser de ZDA');
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 1);
+        opportunities[0].BusinessCode__c = '73456789';
+
+        Test.startTest();
+        insert opportunities;
+        Test.stopTest();
+
+        Account accountMarked = [SELECT Name,Id,IsAccountZDA__c  FROM Account WHERE id =:accounts[0].Id];
+        Assert.isTrue(accountMarked.IsAccountZDA__c, 'La cuenta debería ser de ZDA');
+    }
+
+    /**
+     * @description Método de test que comprueba que NO se marca el campo 'IsAccountZDA__c'
+     * cuando se inserta una oferta que contiene un código de negocio que no es de ZDA
+     * @author aberuete
+     * @date 17-05-2024
+     **/
+    @IsTest
+    private static void test_NotupdateAccountToMarkIsAccountZDA()
+    {
+        List<Account> accounts = [SELECT Name,Id,IsAccountZDA__c  FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' limit 1];
+        Assert.isFalse(accounts[0].IsAccountZDA__c, 'La cuenta no debería ser de ZDA');
+        List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 1);
+        opportunities[0].BusinessCode__c = '3200012969';
+
+        Test.startTest();
+        insert opportunities;
+        Test.stopTest();
+
+        Account accountMarked = [SELECT Name,Id,IsAccountZDA__c  FROM Account WHERE id =:accounts[0].Id];
+        Assert.isFalse(accountMarked.IsAccountZDA__c, 'La cuenta no se debería actualizar a ZDA');
+    }
 }

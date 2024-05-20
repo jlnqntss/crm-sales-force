@@ -5,6 +5,9 @@ public class PolicyUtil
     private static final string AGENTEVENTAAGR_PROFILE = 'Agente Ventas - AGR';
     public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Polizas
     private static final string ZRM_SCOPE = 'Ventas'; //Scope de las polizas de ZRM
+    private static final string ZDA_SCOPE = 'ZDA'; 
+
+    public static List<Account> accountsToMarkClientZDA = new List<Account>();
 
     /**
      * Método que rellena el mapa que contiene la relación entre Business Code y Scopes
@@ -20,6 +23,11 @@ public class PolicyUtil
         for(Scope_Setting__mdt scope : scopeSettingsMapping)
         {
             mapBusinessCodes.put(scope.BusinessCode__c, scope.Scope__c);
+        }
+        
+        if(Test.isRunningTest())
+        {
+            mapBusinessCodes.put('73456789', ZDA_SCOPE);
         }
     }
 
@@ -162,6 +170,76 @@ public class PolicyUtil
         catch (Exception e)
         {
             ErrorLogUtil.commitError(e, CLASS_NAME);
+        }
+    }
+
+    /**
+    * @description Método que obtiene las cuentas para marcar a true que una cuenta es de ZDA 
+    * en caso de que la póliza pertenezca a ZDA.Es decir, que su business code sea de ZDA. 
+    *
+    * @author aberuete
+    * @date 16-05-2024 
+    * @param List<Policy__c> newPolicies : Lista de pólizas que van a ser insertadas o actualizas
+    **/
+    public static void getAccountsZDA(List<Policy__c> newPolicies)
+    {
+        Set<String> accountsRelatedToPoliciesZDA = new Set<String> ();
+
+        for (Policy__c newPolicy : newPolicies)
+        {
+            if (newPolicy.PolicyHolder__c != null && newPolicy.BusinessCode__c != null && mapBusinessCodes?.get(newPolicy.BusinessCode__c) == ZDA_SCOPE)
+            {
+                accountsRelatedToPoliciesZDA.add(newPolicy.PolicyHolder__c); 
+            }
+        }
+
+        List<Account> accountsToUpdate = new AccountsSelector().selectByIdAndAccountZDA(accountsRelatedToPoliciesZDA, false);
+        
+        for (Account account : accountsToUpdate)
+        {
+            account.IsAccountZDA__c = true;
+            accountsToMarkClientZDA.add(account);
+        }
+    }
+
+    /**
+    * @description Método que actualiza las cuentas para marcar a true que una cuenta es de ZDA 
+    * en caso de que la póliza pertenezca a ZDA.Es decir, que su business code sea de ZDA. 
+    *
+    * @author aberuete
+    * @date 16-05-2024 
+    * @param List<Policy__c> newPolicies : Lista de pólizas que van a ser insertadas o actualizas
+    * @param Map<Id,Policy__c> oldPolicyMap: Mapa de pólizas que guarda los valores antes de ser actualizada la oportunidad
+    **/
+    public static void updateAccountsToMarkAccountZDA ()
+    {
+        List<String> msgErrores = new List<String>();
+
+        if( !accountsToMarkClientZDA.isEmpty() )
+        {
+            try
+            {
+                Database.SaveResult [] resultList = Database.update(accountsToMarkClientZDA, false);
+
+                for (Database.SaveResult result: resultList )
+                {
+                    if( !result.isSuccess() )
+                    {
+                        for ( Database.Error error :result.getErrors() )
+                        {
+                            msgErrores.add( error.getStatusCode() + ': ' + error.getMessage() );
+                        }
+                    }
+                }
+                if ( !msgErrores.isEmpty() )
+                {
+                    ErrorLogUtil.commitError( ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando las cuentas relacionadas con las pólizas',PolicyUtil.class.getName(),( String.join(msgErrores,'\n') ) );
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorLogUtil.commitError( e, PolicyUtil.class.getName() );
+            }
         }
     }
 }

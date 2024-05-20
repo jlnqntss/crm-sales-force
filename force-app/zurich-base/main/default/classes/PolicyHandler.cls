@@ -22,6 +22,10 @@ public class PolicyHandler implements ITrigger
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        if (Trigger.isInsert || Trigger.isUpdate)
+        {
+            PolicyUtil.getAccountsZDA((List<Policy__c>) newList);
+        }
     }
 
     /**
@@ -99,5 +103,6 @@ public class PolicyHandler implements ITrigger
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
     {
+        PolicyUtil.updateAccountsToMarkAccountZDA();
     }
 }
