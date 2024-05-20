@@ -53,6 +53,7 @@ public with sharing class ZRMFilesController {
      * @author dmunoz
      * @date 16/05/2024
      */
+    @TestVisible
     private static Map<String, String> initIconMap() {
         Map<String, String> result = new Map<String, String>();
         result.put('csv', DOCTYPE_CSV);
@@ -81,6 +82,7 @@ public with sharing class ZRMFilesController {
      * @author dmunoz
      * @date 16/05/2024
      */
+    @TestVisible
     private static String getIconName(Map<String, String> iconMap, String fileExtension) {
         String result = DOCTYPE_UNKNOWN;
 
@@ -97,6 +99,7 @@ public with sharing class ZRMFilesController {
      * @author dmunoz
      * @date 16/05/2024
      */
+    @TestVisible
     private static List<ZRMFile> getZRMFilesList(List<ContentDocumentLink> contentDocumentLinkList,  Map<String, String> iconMap) {
         List<ZRMFile> result = new List<ZRMFile>();
         ZRMFile zrmFile;
@@ -112,6 +115,7 @@ public with sharing class ZRMFilesController {
 
 
     //#region Private classes
+    @TestVisible
     private class ZRMFile {
 
         @AuraEnabled

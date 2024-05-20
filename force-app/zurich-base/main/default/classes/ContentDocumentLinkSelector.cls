@@ -14,10 +14,8 @@ public with sharing class ContentDocumentLinkSelector extends RecordsSelector {
         super( ContentDocumentLink.getSObjectType() );
     }
     
-    /**
-     * Query: SELECT Id, ContentDocument.Title, ContentDocument.FileExtension, ContentDocument.LatestPublishedVersion.VersionDataUrl FROM ContentDocumentLink where LinkedEntityId = :linkedEntityId 
-                AND ContentDocument.Owner.Contact.AccountId = :intermediaryId
-                
+    /** Obtener los documentos creados por un mediador
+     *                 
      * @return Lista de content document link de un registro para el usuario zrm nominal
      * @author dmunoz
      * @date 16/05/2024
@@ -38,10 +36,7 @@ public with sharing class ContentDocumentLinkSelector extends RecordsSelector {
         return result;
     }
 
-    /**
-     * Query: SELECT Id, ContentDocument.Title, ContentDocument.FileExtension, ContentDocument.LatestPublishedVersion.VersionDataUrl FROM ContentDocumentLink where LinkedEntityId = :recordId
-                //AND ContentDocument.Owner.Contact.Account.IntermediaryGroup__c = intermediaryGroupId
-                
+    /**  Obtener los documentos creados por una agrupacion             
      * @return Lista de content document link de un registro para el usuario zrm AGR
      * @author dmunoz
      * @date 16/05/2024
