@@ -31,16 +31,8 @@
     <picklistValues>
         <picklist>CallCenter__c</picklist>
         <values>
-            <fullName>ZDA_Gestion_Cartera</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ZDA_MU_s</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ZDA_Soporte_Red</fullName>
-            <default>false</default>
+            <fullName>ZDA</fullName>
+            <default>true</default>
         </values>
     </picklistValues>
     <picklistValues>
