@@ -6222,6 +6222,10 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDAScaledSupervisorCaseAnsweredBody</name>
     </customLabels>
     <customLabels>
+        <label>Se debe informar la respuesta para cerrar un escalado</label>
+        <name>ZDANotAllowedCloseScaledWithoutResponse</name>
+    </customLabels>
+    <customLabels>
         <label>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Ganada</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
