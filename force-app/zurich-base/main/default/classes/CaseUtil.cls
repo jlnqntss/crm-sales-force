@@ -42,7 +42,8 @@ public with sharing class CaseUtil
     public static final String ZDA_REASON_DESESTIMAR = '2';
     public static final String ZDA_REASON_RESPUESTA_SOPORTE = '3';
     public static final String BLANK_SPACE = ' ';
-    public static final String EMPTY_STRING = '';
+    public static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
+    public static final String ORIGIN_WEB = 'Web';
 
     private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
 
@@ -52,7 +53,7 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
 
-
+    
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
     {
@@ -547,8 +548,8 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if( (caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich')
-                    || ( caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.SuppliedEmail) ) )
+                if((caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich') 
+                || (caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.SuppliedEmail)))
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
                     //Utilizar el email del SuppliedEmail
@@ -2018,12 +2019,12 @@ public with sharing class CaseUtil
             {
                 //Es un caso de ZDA que cambia el ReasonId__c y pasa a ser rechazado o desestimado. Cerramos el caso
                 updatedCase.Status = estadoCerrado;
-                updatedCase.PendingBy__c = EMPTY_STRING;
+                updatedCase.PendingBy__c = null;
             }
             else if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
             {
                 updatedCase.Status = CASE_RESPONDIDO;
-                updatedCase.PendingBy__c = EMPTY_STRING;
+                updatedCase.PendingBy__c = null;
             }
         }
     }
@@ -2147,7 +2148,7 @@ public with sharing class CaseUtil
                         }
                         else
                         {
-                            if ( casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
+                            if (casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
                             {
                                 casoNew.Status = CASE_EN_GESTION;
                             }
@@ -2155,11 +2156,11 @@ public with sharing class CaseUtil
                     }
 
                     // Comprobamos el cambio de "check de tarjeta"
-                    if ( (casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true) )
-                    {
+                    if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
+                    {  
                         casoNew.Status = CASE_CLOSED_WON;
-                    }
-                }
+                    }    
+                }            
             }
         }
     }
@@ -2311,11 +2312,11 @@ public with sharing class CaseUtil
 
 
     /**
-     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner
-     * @author dmunoz
-     * @date 23/04/2024
-     * @param newList lista de elementos del trigger after insert
-     */
+     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner  
+    * @author dmunoz
+    * @date 23/04/2024
+    * @param newList lista de elementos del trigger after insert
+    */
     public static void setEndDateZRMInquiry(List<Case> newList) {
 
         // 1º compruebo si existe en el trigger algun caso de zrm con que encuentre solo 1 me vale para lanzar las consultas solo cuando sea necesario

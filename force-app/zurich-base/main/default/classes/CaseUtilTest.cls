@@ -24,10 +24,7 @@ private with sharing class CaseUtilTest
 
     static final String SHORT_DESCRIPTION = 'test';
     static final String LONG_DESCRIPTION = 'Se diferencia clientes empresas de clientes personas. Se detecta que las empresas no usan el campo Firstname o le colocan un punto. También es posible filtrar los Contactos que no están activos.  De esta manera que extraen los datos por medio de la fecha de creación. Consiguiendo finalizar la operación en 3 ficheros';
-    static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
-    static final String ORIGIN_WEB = 'Web';
     static final String DUMMY_QUEUE_NAME = 'DUMMY_QUEUE';
-    static final String CUSTOMER_RT_DEVELOPER_NAME = 'Customer';
 
     @TestSetup
     private static void createScenario()
@@ -41,7 +38,7 @@ private with sharing class CaseUtilTest
         insert ventaCruzada;
 
         //Importante usar el RT Customer porque es personal account y se necesita que esté relleno PersonContactId
-        List<Account> createdAccounts = TestDataFactory.generateAccounts('001', CUSTOMER_RT_DEVELOPER_NAME, 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
+        List<Account> createdAccounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
         insert createdAccounts;
 
         List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(createdAccounts, 1);
@@ -138,7 +135,7 @@ private with sharing class CaseUtilTest
     private static void test_assignAccountAndContactFromSuppliedEmail_ko_MoreThanOne()
     {
         //Clonar cuenta para que no se pueda decidir cual de las dos es
-        List<Account> accounts = TestDataFactory.generateAccounts('001', CUSTOMER_RT_DEVELOPER_NAME, 1); //El email se llamará igual para ambas: null@nts-solutions.com
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1); //El email se llamará igual para ambas: null@nts-solutions.com
         insert accounts;
         List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 1);
         insert contactPointEmails;
@@ -445,18 +442,18 @@ private with sharing class CaseUtilTest
 
         List<Case> generatedCases = TestDataFactory.generateZDACases(4);
         Case noRelatedCase = generatedCases[0];
-        noRelatedCase.Origin = ORIGIN_CANAL_UNICO;
+        noRelatedCase.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
 
         Case relatedWithoutAccount = generatedCases[1];
-        relatedWithoutAccount.Origin = ORIGIN_CANAL_UNICO;
+        relatedWithoutAccount.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
         relatedWithoutAccount.SuppliedEmail = 'notExisting@email.com';
 
         Case relatedWithAccount = generatedCases[2];
-        relatedWithAccount.Origin = ORIGIN_CANAL_UNICO;
+        relatedWithAccount.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
         relatedWithAccount.SuppliedEmail = intermediaryAccount.MainEmail__c;
 
         Case relatedWithNoIntermediaryAcc = generatedCases[3];
-        relatedWithNoIntermediaryAcc.Origin = ORIGIN_CANAL_UNICO;
+        relatedWithNoIntermediaryAcc.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
         relatedWithNoIntermediaryAcc.SuppliedEmail = otherTypeAccount.MainEmail__c;
 
         Test.startTest();
@@ -577,22 +574,22 @@ private with sharing class CaseUtilTest
         //Caso a formatear
         Case newZDACaseToFormat = zdaCasesList[0];
         newZDACaseToFormat.Description = 'Usuario: NOMBRE APELLIDO1 APELLIDO2;;Correo electrónico: USUARIO@bancsabadell.com;;Unidad de trabajo: 0086';
-        newZDACaseToFormat.Origin = ORIGIN_CANAL_UNICO;
+        newZDACaseToFormat.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
 
         //Descripcion no formateable
         Case newZDACaseNoFormat = zdaCasesList[1];
-        newZDACaseNoFormat.Origin = ORIGIN_CANAL_UNICO;
+        newZDACaseNoFormat.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
 
         //Caso NO formatear 2
         Case newZDACaseNoFormat2 = zdaCasesList[2];
         newZDACaseNoFormat2.Description = newZDACaseToFormat.Description;
-        newZDACaseNoFormat2.Origin = ORIGIN_WEB;
+        newZDACaseNoFormat2.Origin = CaseUtil.ORIGIN_WEB;
 
         String formattedText = newZDACaseToFormat.Description.replace(';;', '\n');
         Case newSprinklrCase = new Case (
             RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR,
             Description = newZDACaseToFormat.Description,
-            Origin = ORIGIN_CANAL_UNICO
+            Origin = CaseUtil.ORIGIN_CANAL_UNICO
             );
         List<Case> casesToInsert = new List<Case>();
         casesToInsert.addAll(zdaCasesList);
@@ -1192,7 +1189,7 @@ private with sharing class CaseUtilTest
         // Crear objeto Case
         Case caso = new Case();
         caso.SourceCountry__c = 'France';
-        caso.Origin = ORIGIN_WEB;
+        caso.Origin = CaseUtil.ORIGIN_WEB;
         caso.Type = 'Contratar mi seguro';
         caso.Subtype__c = 'Close result';
         insert caso;
@@ -1264,7 +1261,7 @@ private with sharing class CaseUtilTest
         caseRecord.Subject = LABEL_SUBJECT_ZURICH;
         caseRecord.RobotNif__c = '73562398D';
 
-        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, CUSTOMER_RT_DEVELOPER_NAME, 1);
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         accountFromCase[0].NationalId__c = '73562398D';
         accountFromCase[0].Type = 'F';
         insert accountFromCase;
@@ -1292,7 +1289,7 @@ private with sharing class CaseUtilTest
         caseRecord.RobotNif__c = '73562398D';
         caseRecord.SuppliedEmail = EMAIL_CASE;
 
-        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, CUSTOMER_RT_DEVELOPER_NAME, 1);
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         accountFromCase[0].Type = 'F';
         insert accountFromCase;
 
@@ -1334,7 +1331,7 @@ private with sharing class CaseUtilTest
         caseRecord.SuppliedEmail = EMAIL_CASE;
         caseRecord.SuppliedPhone = '607342167';
 
-        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, CUSTOMER_RT_DEVELOPER_NAME, 1);
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         accountFromCase[0].Type = 'F';
         insert accountFromCase;
 
@@ -1474,7 +1471,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_relateCaseToCustomerByNifCif()
     {
-        List<Account> accToInsert = TestDataFactory.generateAccounts(null, CUSTOMER_RT_DEVELOPER_NAME, 3);
+        List<Account> accToInsert = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 3);
 
         //Cuenta DNI unico
         Account accountUniqueDNI = accToInsert[0];
@@ -1592,7 +1589,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_casesZRMChangeStatus_ClientHasContacted_OK()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', CUSTOMER_RT_DEVELOPER_NAME, 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
@@ -1626,7 +1623,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_casesZRMChangeStatus_ClientHasContacted_KO()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', CUSTOMER_RT_DEVELOPER_NAME, 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
@@ -1665,7 +1662,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_casesZRMChangeStatus_ClientGiftCard_OK()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', CUSTOMER_RT_DEVELOPER_NAME, 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
@@ -1951,7 +1948,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_updateZRMExpiredCases_OK()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', CUSTOMER_RT_DEVELOPER_NAME, 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
