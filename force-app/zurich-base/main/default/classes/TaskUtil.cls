@@ -7,8 +7,11 @@
  **/
 public with sharing class TaskUtil
 {
-    private static final Id uspRecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
 
+    @testvisible
+    private static final Id uspRecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
+    @testvisible
+    private static final Id ocsRecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
     /**
      * Método que marca la tarea para que sea pública para los usuarios de la comunidad
      * en caso de que el owner sea un usuario de la comunidad de ocs
@@ -93,7 +96,7 @@ public with sharing class TaskUtil
 
         for (Case c:casesToUpdate)
         {
-            if(c.RecordTypeId==uspRecordTypeId)
+            if(c.RecordTypeId==uspRecordTypeId || c.RecordTypeId==ocsRecordTypeId)
             c.GenesysID__c=mapaGenesys.get(c.Id);
         }
 
