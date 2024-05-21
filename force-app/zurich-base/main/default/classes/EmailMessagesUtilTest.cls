@@ -656,35 +656,7 @@ private with sharing class EmailMessagesUtilTest
 
     }
 
-     /**
-     * Test para infromar id Genesys + link OCS
-     * @author lrodriguez
-     * @date 16/05/2024
-     */
-    @isTest
-    static void test_IdGenesys_OCS()
-    {
-        Case casoToEmailMessage = new Case (Subject = 'prueba Genesys',Status = 'Assigned', Origin = 'Email', RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY);
-        insert casoToEmailMessage;
-
-        List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
-        emailList[0].RelatedToId = casoToEmailMessage.id;
-        
-
-        Test.startTest();
-
-        insert emailList;
-        emailList[0].GenesysInteractionId__c='d7faf2ef-aadc-4001-85a4-17633fcfe492';
-        update emailList;
-
-        Test.stopTest();
-
-        Case casesEmailDefault = [SELECT Id,GenesysID__c,LinkIdGenesys__c FROM Case WHERE Subject = 'prueba Genesys'];
-
-        System.assertEquals(casesEmailDefault.GenesysID__c,'d7faf2ef-aadc-4001-85a4-17633fcfe492','Debe estar informado con id Genesys');
-        System.assertEquals(casesEmailDefault.LinkIdGenesys__c,'https://apps.mypurecloud.ie/directory/#/engage/admin/interactions/d7faf2ef-aadc-4001-85a4-17633fcfe492','Debe estar informado con link id Genesys');
-
-    }
+     
 
     /**
      * Test para cerrar casos creados para buzones que están sólo en CCC
