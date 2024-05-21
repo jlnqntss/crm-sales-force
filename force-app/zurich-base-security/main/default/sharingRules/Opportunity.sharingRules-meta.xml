@@ -39,30 +39,6 @@
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>Read_ZDA</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>Read_ZDA</label>
-        <sharedTo>
-            <role>ZDA_Agente</role>
-        </sharedTo>
-        <criteriaItems>
-            <field>Scope__c</field>
-            <operation>equals</operation>
-            <value>Zurich ZDA</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Anonymized__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Blocked__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>Ventas_CC</fullName>
         <accessLevel>Edit</accessLevel>
         <description>Permisos de escritura para Oportunidades Zurich Ventas</description>
@@ -120,18 +96,6 @@
         </criteriaItems>
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
-    <sharingOwnerRules>
-        <fullName>Ventas_CC_Ofertas_Agente_Venta</fullName>
-        <accessLevel>Edit</accessLevel>
-        <description>Un usuario de Venta CC puede editar las ofertas de un mediador ZRM</description>
-        <label>Ventas_CC_Ofertas_Agente_Venta</label>
-        <sharedTo>
-            <group>Write_Ventas_CC</group>
-        </sharedTo>
-        <sharedFrom>
-            <group>Ventas_Agente_Mediador</group>
-        </sharedFrom>
-    </sharingOwnerRules>
     <sharingOwnerRules>
         <fullName>Ventas_CC_Ofertas_Agente_Venta_ReadOnly</fullName>
         <accessLevel>Read</accessLevel>
