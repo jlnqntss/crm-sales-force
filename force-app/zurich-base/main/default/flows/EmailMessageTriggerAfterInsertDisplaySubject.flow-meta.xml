@@ -147,7 +147,7 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>Caso </stringValue>
+            <stringValue>Caso:</stringValue>
         </value>
     </variables>
 </Flow>
