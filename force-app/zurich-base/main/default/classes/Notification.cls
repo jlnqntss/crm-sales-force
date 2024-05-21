@@ -118,7 +118,7 @@ public with sharing class Notification {
         /**
          * Crea una referencia a una pagina de salesforce para mas detalles ir a:
          * https://developer.salesforce.com/docs/component-library/documentation/en/lwc/lwc.reference_page_reference_type
-         *
+         * 
          * @param {String refType} tipo de referecia. Ej: standard__objectPage
          * @param {String objectApiName} nombre de objeto. Ej: Account
          * @param {String actionName} nombre de la accion. Ej: list
