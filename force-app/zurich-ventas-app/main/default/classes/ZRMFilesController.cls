@@ -105,7 +105,7 @@ public with sharing class ZRMFilesController {
         ZRMFile zrmFile;
 
         for (ContentDocumentLink cdl: contentDocumentLinkList) {            
-            zrmFile = new ZRMFile(cdl.ContentDocument.Id, cdl.ContentDocument.Title, cdl.ContentDocument.LatestPublishedVersion.VersionDataUrl, getIconName(iconMap, cdl.ContentDocument.FileExtension));
+            zrmFile = new ZRMFile(cdl.ContentDocument.Title, cdl.ContentDocument.LatestPublishedVersion.VersionDataUrl, getIconName(iconMap, cdl.ContentDocument.FileExtension));
             result.add(zrmFile);
         }   
 
@@ -119,13 +119,7 @@ public with sharing class ZRMFilesController {
     private class ZRMFile {
 
         @AuraEnabled
-        public String id{get; set;}
-
-        @AuraEnabled
         public String fileTitle{get; set;}
-
-        @AuraEnabled
-        public String filePreviewUrl {get; set;}
 
         @AuraEnabled
         public String fileDownloadUrl {get; set;}
@@ -133,12 +127,10 @@ public with sharing class ZRMFilesController {
         @AuraEnabled
         public String fileIcon {get; set;}
 
-        public ZRMFile(String id, String fileTitle, String fileDownloadUrl, String fileIcon) {
-            this.id = id;
+        public ZRMFile(String fileTitle, String fileDownloadUrl, String fileIcon) {
             this.fileTitle = fileTitle;
             this.fileDownloadUrl = fileDownloadUrl;
             this.fileIcon = fileIcon;
-            this.filePreviewUrl = '/zrm/s/contentdocument/' + id;
         }
     }
 }
