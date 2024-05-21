@@ -72,9 +72,19 @@
         <label>Sprinklr</label>
     </customValue>
     <customValue>
-        <fullName>ZDA</fullName>
+        <fullName>ZDA_MU_s</fullName>
         <default>false</default>
-        <label>ZDA</label>
+        <label>Soporte a especialistas</label>
+    </customValue>
+    <customValue>
+        <fullName>ZDA_Soporte_Red</fullName>
+        <default>false</default>
+        <label>Soporte a la red</label>
+    </customValue>
+    <customValue>
+        <fullName>ZDA_Gestion_Cartera</fullName>
+        <default>false</default>
+        <label>Gestión cartera</label>
     </customValue>
     <customValue>
         <fullName>CTL</fullName>
