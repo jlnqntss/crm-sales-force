@@ -2451,27 +2451,19 @@ Create the record and try again.</value>
         <value>Submit</value>
     </labels>
     <labels>
-        <fullName>ZDAScaledSupportCaseAnsweredBody</fullName>
+        <fullName>ZDAScaledCaseAnsweredBody</fullName>
         <categories>ZDA</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ZDAScaledCaseAnsweredBody</shortDescription>
-        <value>Escalation to support responded to the case:</value>
-    </labels>
-    <labels>
-        <fullName>ZDAScaledSupervisorCaseAnsweredBody</fullName>
-        <categories>ZDA</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>ZDAScaledCaseAnsweredBody</shortDescription>
-        <value>Escalation to supervisor responded to the case:</value>
+        <value>You have received a response to the case support:</value>
     </labels>
     <labels>
         <fullName>ZDANotAllowedCloseScaledWithoutResponse</fullName>
         <categories>ZDA</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZDAScaledCaseAnsweredBody</shortDescription>
+        <shortDescription>ZDANotAllowedCloseScaledWithoutResponse</shortDescription>
         <value>The response must be reported to close an escalation</value>
     </labels>
     <labels>

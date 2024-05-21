@@ -219,7 +219,7 @@
         <description>Cuerpo de la notificación de escritorio para el caso de ZDA</description>
         <name>ZdaNotificationBodyFormula</name>
         <dataType>String</dataType>
-        <expression>IF(ISPICKVAL({!Caso.PendingBy__c}, &apos;Supervisor&apos;), {!$Label.ZDAScaledSupervisorCaseAnsweredBody}, {!$Label.ZDAScaledSupportCaseAnsweredBody}) &amp; &apos; &apos; &amp; {!Caso.CaseNumber}</expression>
+        <expression>{!$Label.ZDAScaledCaseAnsweredBody} &amp; &apos; &apos; &amp; {!Caso.CaseNumber}</expression>
     </formulas>
     <interviewLabel>Task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task Trigger - After update Scaled Case</label>
