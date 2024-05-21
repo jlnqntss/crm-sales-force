@@ -330,7 +330,7 @@ private with sharing class PolicyUtilTest
         List<Account> accounts = [SELECT Name,Id,IsAccountZDA__c  FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' limit 1];
         Assert.isFalse(accounts[0].IsAccountZDA__c, 'La cuenta no debería ser de ZDA');
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
-        policies[0].BusinessCode__c = '73456789';
+        policies[0].BusinessCode__c = '3200001056';
 
         Test.startTest();
         insert policies;

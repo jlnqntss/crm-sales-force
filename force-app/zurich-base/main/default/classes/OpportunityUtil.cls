@@ -168,11 +168,6 @@ public with sharing class OpportunityUtil
         {
             mapBusinessCodes.put(scope.BusinessCode__c, scope.Scope__c);
         }
-
-        if(Test.isRunningTest())
-        {
-            mapBusinessCodes.put('73456789', ZDA_SCOPE);
-        }
     }
 
     /**

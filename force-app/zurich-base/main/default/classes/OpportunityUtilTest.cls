@@ -1025,7 +1025,7 @@ private with sharing class OpportunityUtilTest
         List<Account> accounts = [SELECT Name,Id,IsAccountZDA__c  FROM Account WHERE RecordType.DeveloperName = 'BusinessCustomer' limit 1];
         Assert.isFalse(accounts[0].IsAccountZDA__c, 'La cuenta no debería ser de ZDA');
         List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, 'General', null, System.today().addDays(10), 1);
-        opportunities[0].BusinessCode__c = '73456789';
+        opportunities[0].BusinessCode__c = '3200001056';
 
         Test.startTest();
         insert opportunities;
