@@ -6218,7 +6218,7 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
     <customLabels>
-        <label>Petición de soporte a partner respondida para el caso:</label>
+        <label>Has recibido respuesta externa del caso:</label>
         <name>ZDAPartnerSupportAnsweredBody</name>
     </customLabels>
     <customLabels>
