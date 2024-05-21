@@ -82,21 +82,21 @@ public with sharing class TaskUtil
         Map<Id, String> mapaGenesys = new Map<Id, String>();
 
 
-        for(Task t:newList)
+        for(Task newEmail:newList)
         {
-            if(t.CallObject!=null)
+            if(newEmail.CallObject!=null)
             {
-                taskId.add(t.WhatId); 
-                mapaGenesys.put(t.WhatId,t.CallObject);
+                taskId.add(newEmail.WhatId); 
+                mapaGenesys.put(newEmail.WhatId,newEmail.CallObject);
             }
         }
 
         List<Case> casesToUpdate = new CasesSelector().findByIdControlCC(taskId);
 
-        for (Case c:casesToUpdate)
+        for (Case relatedCase:casesToUpdate)
         {
-            if(c.RecordTypeId==uspRecordTypeId)
-            c.GenesysID__c=mapaGenesys.get(c.Id);
+            if(relatedCase.RecordTypeId==uspRecordTypeId)
+            relatedCase.GenesysID__c=mapaGenesys.get(relatedCase.Id);
         }
 
         update casesToUpdate;

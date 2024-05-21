@@ -920,21 +920,21 @@ public with sharing class EmailMessagesUtil
         Set<String> casesIds = new Set<String>();
         Map<Id, String> mapaGenesys = new Map<Id, String>();
 
-        for(EmailMessage e:emailList)
+        for(EmailMessage newEmail:emailList)
         {
-            if(e.GenesysInteractionId__c!=null)
+            if(newEmail.GenesysInteractionId__c!=null)
             {
-                casesIds.add(e.RelatedToId); 
-                mapaGenesys.put(e.RelatedToId,e.GenesysInteractionId__c);
+                casesIds.add(newEmail.RelatedToId); 
+                mapaGenesys.put(newEmail.RelatedToId,newEmail.GenesysInteractionId__c);
             }
         }
 
         List<Case> casesToUpdate = new CasesSelector().findByIdControlCC(casesIds);
 
-        for (Case c:casesToUpdate)
+        for (Case relatedCase:casesToUpdate)
         {
-            if(c.RecordTypeId==uspRecordTypeId)
-            c.GenesysID__c=mapaGenesys.get(c.Id);
+            if(relatedCase.RecordTypeId==uspRecordTypeId)
+            relatedCase.GenesysID__c=mapaGenesys.get(relatedCase.Id);
         }
 
         update casesToUpdate;
