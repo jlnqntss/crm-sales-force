@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Id_Mandatory_Fields</fullName>
+    <active>true</active>
+    <description>Si el valor contiene un Id es necesario que estén rellenos todos los campos de valor.</description>
+    <errorConditionFormula>AND(Is_Id__c,OR(ISBLANK(Dev_Value__c),ISBLANK(Staging_Value__c),ISBLANK(Uat_Value__c)))</errorConditionFormula>
+    <errorDisplayField>Is_Id__c</errorDisplayField>
+    <errorMessage>Si el valor es un ID es necesario rellenar los campos Dev, Staging y UAT value.</errorMessage>
+</ValidationRule>
