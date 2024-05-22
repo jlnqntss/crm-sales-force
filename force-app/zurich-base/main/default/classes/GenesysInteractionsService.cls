@@ -2,8 +2,10 @@
  * @description       : 
  * @author            : jjuaristi
  * @group             : 
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
+ * @modified on  : 06-06-2023
+ * @modified by  : aberuete
+ * @last modified on  : 22-05-2024
+ * @last modified by  : jfherrero
 **/
 public with sharing class GenesysInteractionsService
 {
@@ -539,6 +541,8 @@ public with sharing class GenesysInteractionsService
      * @author adelgado
      * @param {SearchRequest} request Solicitud de búsqueda
      * @return {SearchResult} Resultados devueltos por la búsqueda
+     * @last modified on  : 22-05-2024
+     * @last modified by  : jfherrero
      */
     public static SearchResult findCustomersBy(SearchRequest request)
     {
@@ -553,6 +557,15 @@ public with sharing class GenesysInteractionsService
 
         if(accounts.size() == 1)
         {
+            // Vamos a registrar el parámetro opcional 'intent'. En éste caso para cambiar el cálculo del
+            // preferredClaim en base al mismo. Suponiendo que venga informado y no esté vacío
+            String intent = '';
+            
+            if (String.isNotBlank(request.intent))
+            {
+                intent = request.intent;
+            }
+
             Account customer = accounts.get(0);
             results.screenPopRecordId = customer.Id;
             results.nationalId = customer.NationalId__c;
@@ -560,7 +573,7 @@ public with sharing class GenesysInteractionsService
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
 
             results.policies = findActivePolicies(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
-            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
+            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity), intent);
         }
 
         //20210804: Estadísticas/Informes
@@ -845,7 +858,7 @@ public with sharing class GenesysInteractionsService
      * @date 20/01/2021
      */
     @testVisible
-    private static OpenedClaims findOpenedClaims(Id customerId, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
+    private static OpenedClaims findOpenedClaims(Id customerId, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity, String intent)
     {
         ClaimsSelector claimsSelector = new ClaimsSelector();
         claimsSelector.setFields
@@ -884,7 +897,7 @@ public with sharing class GenesysInteractionsService
 
         List<Claim__c> claims = claimsSelector.selectByHolder(customerId);
 
-        return new OpenedClaims(claims);
+        return new OpenedClaims(claims, intent);
     }
 
     /**
@@ -1201,7 +1214,7 @@ public with sharing class GenesysInteractionsService
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
 
             results.policies = findActivePoliciesSabadell(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
-            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
+            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity), '');
         }
 
         //20210804: Estadísticas/Informes
@@ -1420,11 +1433,27 @@ public with sharing class GenesysInteractionsService
             }
             set;
         }
+        public String intent
+        {
+            get
+            {
+                if(String.isBlank(intent))
+                {
+                    return '';
+                }
+                else
+                {
+                    return intent.toUpperCase();
+                }
+            }
+            set;
+        }
 
         public SearchRequest() {}
         public SearchRequest(Map<String, String> paramsByName)
         {
             this.searchType = paramsByName.get('searchType');
+            this.intent = paramsByName.get('intent');
             this.filterBy = paramsByName.get('filterBy');
             this.value = paramsByName.get('value');
             this.scope = paramsByName.get('scope');
@@ -1924,9 +1953,12 @@ public with sharing class GenesysInteractionsService
      * Representa la información de los siniestros abiertos en el CRM
      *
      * @author adelgado
+     * @last modified on  : 22-05-2024
+     * @last modified by  : jfherrero
      */
     public class OpenedClaims
     {
+        public String intent;
         public Map<String, List<OpenedClaim>> byOwner;
         public Map<String, List<OpenedClaim>> byType;
         public Boolean hasMultipleTypes
@@ -1956,12 +1988,101 @@ public with sharing class GenesysInteractionsService
         {
             get
             {
-                if(total == 0 || (total != 1 && hasDifferentOwners))
-                {
-                    return null;
-                }
+                switch on intent {
+                    when 'CONS_HOG'
+                    {
+                        return getClaimHogar();
+                    }	
+                    when 'CONS_COM'
+                    {
+                        return getClaimComercio();
+                    }
+                    when 'CONS_PYMS'
+                    {
+                        return getClaimPYMES();
+                    }
+                    when else
+                    {
+                        if(total == 0 || (total != 1 && hasDifferentOwners))
+                        {
+                            return null;
+                        }
 
-                return this.claims[0];
+                        return this.claims[0];
+                    }
+                }      
+            }
+        }
+
+        private OpenedClaim getClaimHogar ()
+        {
+            if (this.byType.get('HOGAR') != null && this.byType.get('HOGAR').size()>0)
+            {
+                return this.byType.get('HOGAR')[0];
+            }
+            else if (this.byType.get('INMUEBLES') != null && this.byType.get('INMUEBLES').size()>0)
+            {
+                return this.byType.get('INMUEBLES')[0];
+            }
+            else if (this.byType.get('COMERCIOS') != null && this.byType.get('COMERCIOS').size()>0)
+            {
+                return this.byType.get('COMERCIOS')[0];
+            }
+            else if (this.byType.get('PYMES') != null && this.byType.get('PYMES').size()>0)
+            {
+                return this.byType.get('PYMES')[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private OpenedClaim getClaimComercio ()
+        {
+            if (this.byType.get('INMUEBLES') != null && this.byType.get('INMUEBLES').size()>0)
+            {
+                return this.byType.get('INMUEBLES')[0];
+            }
+            else if (this.byType.get('HOGAR') != null && this.byType.get('HOGAR').size()>0)
+            {
+                return this.byType.get('HOGAR')[0];
+            }
+            else if (this.byType.get('COMERCIOS') != null && this.byType.get('COMERCIOS').size()>0)
+            {
+                return this.byType.get('COMERCIOS')[0];
+            }
+            else if (this.byType.get('PYMES') != null && this.byType.get('PYMES').size()>0)
+            {
+                return this.byType.get('PYMES')[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private OpenedClaim getClaimPYMES ()
+        {
+            if (this.byType.get('PYMES') != null && this.byType.get('PYMES').size()>0)
+            {
+                return this.byType.get('PYMES')[0];
+            }
+            else if (this.byType.get('COMERCIOS') != null && this.byType.get('COMERCIOS').size()>0)
+            {
+                return this.byType.get('COMERCIOS')[0];
+            }
+            else if (this.byType.get('INMUEBLES') != null && this.byType.get('INMUEBLES').size()>0)
+            {
+                return this.byType.get('INMUEBLES')[0];
+            }
+            else if (this.byType.get('HOGAR') != null && this.byType.get('HOGAR').size()>0)
+            {
+                return this.byType.get('HOGAR')[0];
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -1969,6 +2090,19 @@ public with sharing class GenesysInteractionsService
 
         public OpenedClaims (List<Claim__c> claims)
         {
+            this.claims = new List<OpenedClaim>();
+            byOwner = new Map<String, List<OpenedClaim>>();
+            byType = new Map<String, List<OpenedClaim>>();
+
+            for(Claim__c claim: claims)
+            {
+                this.add(new OpenedClaim(claim));
+            }
+        }
+
+        public OpenedClaims (List<Claim__c> claims, String intent)
+        {
+            this.intent = intent;
             this.claims = new List<OpenedClaim>();
             byOwner = new Map<String, List<OpenedClaim>>();
             byType = new Map<String, List<OpenedClaim>>();
