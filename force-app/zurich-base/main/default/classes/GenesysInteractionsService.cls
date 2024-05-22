@@ -572,29 +572,43 @@ public with sharing class GenesysInteractionsService
         }
 
         //20210804: Estadísticas/Informes
-        if(accounts.size() == 0)
-        {
-            results.noIdentified = true;
-        }
-        else if(accounts.size() == 1 && searchType == 'phone')
-        {
-            results.identifiedByANI = true;
-        }
-        else if(accounts.size() > 1 && searchType == 'phone')
-        {
-            results.multiIdentifiedByANI = true;
-        }
-        else if(accounts.size() == 1 && searchType == 'document')
-        {
-            results.identifiedByNIF = true;
-        }
-        else if(accounts.size() > 1 && searchType == 'document')
-        {
-            results.multiIdentifiedByNIF = true;
-        }
+        results.noIdentified = getStatistics(accounts.size(), 'identified');
+        results.identifiedByANI = getStatistics(accounts.size(), 'phone');
+        results.multiIdentifiedByANI = getStatistics(accounts.size(), 'phone');
+        results.identifiedByNIF = getStatistics(accounts.size(), 'document');
+        results.multiIdentifiedByNIF = getStatistics(accounts.size(), 'document');
 
         return results;
     }
+
+    /*
+    */
+    private boolean getStatistics (Integer size, String statisticName)
+    {
+        if(accounts.size() == 0 && searchType == 'identified')
+        {
+            return true;
+        }
+        else if(accounts.size() == 1 && searchType == 'phone')
+        {
+            return true;
+        }
+        else if(accounts.size() > 1 && searchType == 'phone')
+        {
+            return true;
+        }
+        else if(accounts.size() == 1 && searchType == 'document')
+        {
+            return true;
+        }
+        else if(accounts.size() > 1 && searchType == 'document')
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * Lanza una búsqueda con la configuración determinada por request
