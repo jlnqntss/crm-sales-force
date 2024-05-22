@@ -559,12 +559,7 @@ public with sharing class GenesysInteractionsService
         {
             // Vamos a registrar el parámetro opcional 'intent'. En éste caso para cambiar el cálculo del
             // preferredClaim en base al mismo. Suponiendo que venga informado y no esté vacío
-            String intent = '';
-            
-            if (String.isNotBlank(request.intent))
-            {
-                intent = request.intent;
-            }
+            String intent = String.isNotBlank(request.intent) ? request.intent : '';
 
             Account customer = accounts.get(0);
             results.screenPopRecordId = customer.Id;
