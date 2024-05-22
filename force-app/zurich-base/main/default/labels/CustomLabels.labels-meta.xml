@@ -2459,6 +2459,14 @@ Create the record and try again.</value>
         <value>You have received a response to the case support:</value>
     </labels>
     <labels>
+        <fullName>ZDAPartnerSupportAnsweredTitle</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAPartnerSupportAnsweredTitle</shortDescription>
+        <value>Request answered</value>
+    </labels>
+    <labels>
         <fullName>ZDANotAllowedCloseScaledWithoutResponse</fullName>
         <categories>ZDA</categories>
         <language>en_US</language>
