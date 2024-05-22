@@ -5,7 +5,7 @@
  * @date 13/10/2020
  */
 @isTest
-public class TestDataFactory
+public with sharing class TestDataFactory
 {
     /*
           Tip: Obtener elementos random
@@ -2782,6 +2782,35 @@ public class TestDataFactory
         }
 
         return products;
+    }
+
+    /**
+     * Genera una lista de casos de ZDA
+     * 
+     * @param numRecords número de casos a generar
+     * @return listado de casos generados
+     */
+    public static List<Case> generateZDACases(Integer numRecords)
+    {
+        List<Case> cases = new List<Case>();
+
+        if(numRecords == null || numRecords < 1)
+        {
+            numRecords = 1;
+        }
+
+        for(Integer i=0; i<numRecords; i++)
+        {
+            cases.add(
+                new Case(
+                    CuTicketId__c = ''+(i+1),
+                    RecordTypeId = CaseUtil.RT_ID_ZDA,
+                    Subject = 'Subject del caso '+(i+1)
+                )
+            );
+        }
+
+        return cases;
     }
 
     /*

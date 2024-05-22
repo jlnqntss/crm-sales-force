@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRMAgenteMediadorNoSeleccionaCallCenter</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+				RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
+    ISPICKVAL(IntermediaryOwner__c, &quot;Call Center&quot;),
+    OR(
+        $Profile.Name = &quot;Agente Ventas&quot;, 
+        $Profile.Name = &quot;Agente Ventas - AGR&quot;
+    )
+)</errorConditionFormula>
+    <errorMessage>Un agente mediador no puede seleccionar el valor Call Center del campo &apos;Responsable del caso&apos;.</errorMessage>
+</ValidationRule>

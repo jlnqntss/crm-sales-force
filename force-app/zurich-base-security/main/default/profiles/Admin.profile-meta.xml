@@ -3830,6 +3830,10 @@
         <enabled>true</enabled>
         <name>USPManageAgreementsWarnings</name>
     </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>ZRMNoEdit2MonthBeforeAfterPolicyEndDate</name>
+    </customPermissions>
     <customSettingAccesses>
         <enabled>true</enabled>
         <name>purecloud__CallCenterCustomSettings__c</name>
@@ -6403,6 +6407,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.BestAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.BusinessHoursId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6548,6 +6557,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.CuTicketId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.DateReg__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6619,6 +6633,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.HegeoReceiptNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.IdTipologiaBs__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6754,6 +6773,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.ModifiedByGrandesPymes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ModifiedByUSP__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7153,6 +7177,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.StatusCanalUnico__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.StatusDateTPA__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7183,12 +7212,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.TicketId__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Case.RelatedRequestId__c</field>
+        <field>Case.RelatedCuTicketId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7464,6 +7488,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.PolicyEndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12148,6 +12177,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.MovementReason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.MovementReasonCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -3,8 +3,8 @@
     <actionCalls>
         <name>MandarEmailCierreCasoUSP</name>
         <label>Mandar Email Cierre Caso USP</label>
-        <locationX>50</locationX>
-        <locationY>3017</locationY>
+        <locationX>314</locationX>
+        <locationY>3917</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <faultConnector>
@@ -47,8 +47,8 @@
     <actionCalls>
         <name>SendEmailUSPAction</name>
         <label>Mandar Email USP</label>
-        <locationX>1634</locationX>
-        <locationY>2801</locationY>
+        <locationX>1898</locationX>
+        <locationY>3593</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -88,8 +88,8 @@
     <actionCalls>
         <name>SplitEmailAddress</name>
         <label>Split Email Address</label>
-        <locationX>1282</locationX>
-        <locationY>1295</locationY>
+        <locationX>1414</locationX>
+        <locationY>2087</locationY>
         <actionName>SplitEmailAddress</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -114,7 +114,7 @@
         <description>Se le asigna una variable a true para posteriormente diferenciar si se envía email de alerta y cerrar el caso al pasar 15 días</description>
         <name>CerrarCaso15DiasAssignment</name>
         <label>Cerrar Caso 15 Dias</label>
-        <locationX>2140</locationX>
+        <locationX>2459</locationX>
         <locationY>276</locationY>
         <assignmentItems>
             <assignToReference>SeCierraCaso</assignToReference>
@@ -131,7 +131,7 @@
         <description>Se le asigna una variable a true para posteriormente diferenciar si se envía email de alerta y cerrar el caso al pasar 90 días en casos de Grandes Pymes</description>
         <name>CerrarCaso90DiasPath</name>
         <label>Cerrar Caso 90 Dias</label>
-        <locationX>2338</locationX>
+        <locationX>2723</locationX>
         <locationY>276</locationY>
         <assignmentItems>
             <assignToReference>SeCierraCasoGrandesPymes</assignToReference>
@@ -145,10 +145,34 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Se le asigna una variable a true para posteriormente diferenciar si se envía email de alerta y cerrar el caso al pasar 15 días</description>
+        <name>CerrarCasoFechaAssignment</name>
+        <label>Cerrar Caso Fecha</label>
+        <locationX>3075</locationX>
+        <locationY>276</locationY>
+        <assignmentItems>
+            <assignToReference>SeCierraCaso</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>FechaEstimadaAlcanzada</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>fecha_estimada_cierre</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>CorreoLocalizadoAssignment</name>
         <label>Correo Localizado</label>
-        <locationX>1370</locationX>
-        <locationY>1727</locationY>
+        <locationX>1502</locationX>
+        <locationY>2519</locationY>
         <assignmentItems>
             <assignToReference>DireccionRecordatorio</assignToReference>
             <operator>Assign</operator>
@@ -171,8 +195,8 @@
     <assignments>
         <name>DominioExcluidoUSPAssignment</name>
         <label>Dominio Excluido</label>
-        <locationX>1634</locationX>
-        <locationY>1727</locationY>
+        <locationX>1766</locationX>
+        <locationY>2519</locationY>
         <assignmentItems>
             <assignToReference>DominioExcluido</assignToReference>
             <operator>Assign</operator>
@@ -188,8 +212,8 @@
     <decisions>
         <name>CloseCaseDecision</name>
         <label>¿Se cierra el caso?</label>
-        <locationX>842</locationX>
-        <locationY>2153</locationY>
+        <locationX>974</locationX>
+        <locationY>2945</locationY>
         <defaultConnector>
             <targetReference>SeHaExcluidoElDominioYCasoVentaDecision</targetReference>
         </defaultConnector>
@@ -226,7 +250,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetSystemUserAction</targetReference>
+                <targetReference>CumpleFechaEstimadaDecision</targetReference>
             </connector>
             <label>Si se cierra</label>
         </rules>
@@ -234,8 +258,8 @@
     <decisions>
         <name>ContactoEncontradoCierreDecision</name>
         <label>Contacto Encontrado Cierre</label>
-        <locationX>1898</locationX>
-        <locationY>2477</locationY>
+        <locationX>2162</locationX>
+        <locationY>3269</locationY>
         <defaultConnectorLabel>Not Found</defaultConnectorLabel>
         <rules>
             <name>FoundOutcome</name>
@@ -256,8 +280,8 @@
     <decisions>
         <name>ContactoEncontradoDecision</name>
         <label>Contacto Encontrado</label>
-        <locationX>314</locationX>
-        <locationY>2693</locationY>
+        <locationX>578</locationX>
+        <locationY>3593</locationY>
         <defaultConnectorLabel>Not Found</defaultConnectorLabel>
         <rules>
             <name>ContactFound</name>
@@ -276,10 +300,96 @@
         </rules>
     </decisions>
     <decisions>
+        <name>CumpleFechaEstimadaCierreDecision</name>
+        <label>Cumple Fecha Estimada Cierre?</label>
+        <locationX>3086</locationX>
+        <locationY>2087</locationY>
+        <defaultConnector>
+            <targetReference>ObtenerSystemUserCerrarCaso</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Cierre Habitual</defaultConnectorLabel>
+        <rules>
+            <name>NoCumpleFechaCierreOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByUSP__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CloseDate__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>FechaEstimadaAlcanzada</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>No Cumple Fecha Cierre</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CumpleFechaEstimadaDecision</name>
+        <label>Cumple Fecha Estimada?</label>
+        <locationX>50</locationX>
+        <locationY>3053</locationY>
+        <defaultConnector>
+            <targetReference>GetSystemUserAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Cierre Habitual</defaultConnectorLabel>
+        <rules>
+            <name>NoCumpleFechaOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByUSP__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CloseDate__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>FechaEstimadaAlcanzada</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>No Cumple Fecha</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>DominioExcluidoDecision</name>
         <label>Dominio Excluido?</label>
-        <locationX>50</locationX>
-        <locationY>2477</locationY>
+        <locationX>314</locationX>
+        <locationY>3377</locationY>
         <defaultConnector>
             <targetReference>ContactoEmailCierreAction</targetReference>
         </defaultConnector>
@@ -300,8 +410,8 @@
     <decisions>
         <name>DominioExcluidoUSPDecision</name>
         <label>¿Dominio excluido USP?</label>
-        <locationX>1502</locationX>
-        <locationY>1619</locationY>
+        <locationX>1634</locationX>
+        <locationY>2411</locationY>
         <defaultConnector>
             <targetReference>DominioExcluidoUSPAssignment</targetReference>
         </defaultConnector>
@@ -325,8 +435,8 @@
     <decisions>
         <name>EmailEncontradoDecision</name>
         <label>¿Email Encontrado?</label>
-        <locationX>1832</locationX>
-        <locationY>1079</locationY>
+        <locationX>2129</locationX>
+        <locationY>1871</locationY>
         <defaultConnector>
             <targetReference>SeNecesitaCerrarElCasoDecision</targetReference>
         </defaultConnector>
@@ -355,10 +465,53 @@
         </rules>
     </decisions>
     <decisions>
+        <name>fecha_estimada_cierre</name>
+        <label>fecha estimada cierre</label>
+        <locationX>3075</locationX>
+        <locationY>384</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>cerrar</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByUSP__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Venta</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>DiasTranscurridos</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>15.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CloseDate__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>FulfilPrerequisitesDecision</targetReference>
+            </connector>
+            <label>cerrar</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>FulfilPrerequisitesDecision</name>
         <label>¿Cumple los prerrequisitos?</label>
-        <locationX>1832</locationX>
-        <locationY>479</locationY>
+        <locationX>2129</locationX>
+        <locationY>1271</locationY>
         <defaultConnector>
             <targetReference>SinCuentaDecision</targetReference>
         </defaultConnector>
@@ -394,12 +547,59 @@
         </rules>
     </decisions>
     <decisions>
-        <name>GrandesPymesDecision</name>
-        <label>Grandes Pymes?</label>
-        <locationX>1326</locationX>
+        <name>GPONDecision</name>
+        <label>GP ON?</label>
+        <locationX>1183</locationX>
+        <locationY>492</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>GPDesactivarOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByGrandesPymes__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GrandesPymesDesactivarAction</targetReference>
+            </connector>
+            <label>GP Desactivar</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>GrandesPymesONDecision</name>
+        <label>Grandes Pymes ON?</label>
+        <locationX>1711</locationX>
+        <locationY>384</locationY>
+        <defaultConnector>
+            <targetReference>USPONDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Desactivar GP</defaultConnectorLabel>
+        <rules>
+            <name>DesactivarGPOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByGrandesPymes__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Grandes_Pymes_OFF</targetReference>
+            </connector>
+            <label>Desactivar GP</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>GrandesPymesUSPDecision</name>
+        <label>Grandes Pymes/USP?</label>
+        <locationX>1183</locationX>
         <locationY>276</locationY>
         <defaultConnector>
-            <targetReference>Grandes_Pymes_OFF</targetReference>
+            <targetReference>GrandesPymesONDecision</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -438,12 +638,48 @@
             </connector>
             <label>Grandes Pymes</label>
         </rules>
+        <rules>
+            <name>USPOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendiente</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.PendingBy__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.LastModifiedBy.Area__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USP</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>statusPriorPending</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>off</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>USPONAction</targetReference>
+            </connector>
+            <label>USP</label>
+        </rules>
     </decisions>
     <decisions>
         <name>SeHaExcluidoElDominioYCasoVentaDecision</name>
         <label>Se ha excluido el dominio y el caso es tipo Venta?</label>
-        <locationX>1634</locationX>
-        <locationY>2261</locationY>
+        <locationX>1898</locationX>
+        <locationY>3053</locationY>
         <defaultConnector>
             <targetReference>ContactoEmailAction</targetReference>
         </defaultConnector>
@@ -479,14 +715,21 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>FechaEstimadaAlcanzada</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <label>Excluido o No venta</label>
         </rules>
     </decisions>
     <decisions>
         <name>SeNecesitaCerrarElCasoDecision</name>
         <label>¿Se necesita cerrar el caso?</label>
-        <locationX>2822</locationX>
-        <locationY>1187</locationY>
+        <locationX>3284</locationX>
+        <locationY>1979</locationY>
         <defaultConnectorLabel>No cerrar Caso</defaultConnectorLabel>
         <rules>
             <name>CerrarCasoOutcome</name>
@@ -513,7 +756,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>ObtenerSystemUserCerrarCaso</targetReference>
+                <targetReference>CumpleFechaEstimadaCierreDecision</targetReference>
             </connector>
             <label>Cerrar Caso</label>
         </rules>
@@ -521,8 +764,8 @@
     <decisions>
         <name>SinCuentaDecision</name>
         <label>Sin cuenta?</label>
-        <locationX>1964</locationX>
-        <locationY>587</locationY>
+        <locationX>2261</locationX>
+        <locationY>1379</locationY>
         <defaultConnectorLabel>Cuenta No Intermediario</defaultConnectorLabel>
         <rules>
             <name>SinCuentaOutcome</name>
@@ -540,7 +783,57 @@
             <label>Sin Cuenta</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>USP_ONDecision</name>
+        <label>USP ON?</label>
+        <locationX>655</locationX>
+        <locationY>492</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>USPDesactivarDecision</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByUSP__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>USPDesactivarAction</targetReference>
+            </connector>
+            <label>USP Desactivar</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>USPONDecision</name>
+        <label>USP ON?</label>
+        <locationX>1711</locationX>
+        <locationY>684</locationY>
+        <defaultConnectorLabel>No Desactivar USP</defaultConnectorLabel>
+        <rules>
+            <name>DescativarUSPDecision</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ModifiedByUSP__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>USPOFFAction</targetReference>
+            </connector>
+            <label>Descativar USP</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>DiasTranscurridos</name>
+        <dataType>Number</dataType>
+        <expression>{!$Flow.CurrentDateTime}-{!$Record.LastModifiedDate}</expression>
+        <scale>2</scale>
+    </formulas>
     <formulas>
         <name>statusPriorPending</name>
         <dataType>String</dataType>
@@ -551,8 +844,8 @@
     <loops>
         <name>EmailAddressLoop</name>
         <label>Email Address Loop</label>
-        <locationX>1282</locationX>
-        <locationY>1403</locationY>
+        <locationX>1414</locationX>
+        <locationY>2195</locationY>
         <collectionReference>SplitEmails</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -565,8 +858,8 @@
     <loops>
         <name>LastEmailSendLoop</name>
         <label>Ultimo Email Enviado Bucle</label>
-        <locationX>842</locationX>
-        <locationY>1187</locationY>
+        <locationX>974</locationX>
+        <locationY>1979</locationY>
         <collectionReference>LastEmailSendAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -598,8 +891,8 @@
     <recordCreates>
         <name>CreateErrorLogCaseCloseAction</name>
         <label>Generar Error Log Cierre de caso</label>
-        <locationX>842</locationX>
-        <locationY>2477</locationY>
+        <locationX>1106</locationX>
+        <locationY>3377</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -630,8 +923,8 @@
     <recordCreates>
         <name>CreateErrorLogCaseEmailSend</name>
         <label>Generar Error Log Envio Email</label>
-        <locationX>314</locationX>
-        <locationY>3125</locationY>
+        <locationX>578</locationX>
+        <locationY>4025</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -662,8 +955,8 @@
     <recordCreates>
         <name>GenerarErrorLogRecuperarContacto</name>
         <label>Generar Error Log Recuperar Contacto</label>
-        <locationX>2426</locationX>
-        <locationY>2477</locationY>
+        <locationX>2690</locationX>
+        <locationY>3269</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -694,8 +987,8 @@
     <recordCreates>
         <name>GenerarErrorLogRecuperarPlantilla</name>
         <label>Generar Error Log Recuperar Plantilla</label>
-        <locationX>1898</locationX>
-        <locationY>2693</locationY>
+        <locationX>2162</locationX>
+        <locationY>3485</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -726,8 +1019,8 @@
     <recordCreates>
         <name>GenerarErrorLogSystemUser</name>
         <label>Generar Error Log System User</label>
-        <locationX>1106</locationX>
-        <locationY>2369</locationY>
+        <locationX>1370</locationX>
+        <locationY>3269</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -758,8 +1051,8 @@
     <recordCreates>
         <name>GenerarErrorLogUltimoEmail</name>
         <label>Generar Error Log Ultimo Email</label>
-        <locationX>3218</locationX>
-        <locationY>1079</locationY>
+        <locationX>3746</locationX>
+        <locationY>1871</locationY>
         <inputAssignments>
             <field>Source_Class__c</field>
             <value>
@@ -790,8 +1083,8 @@
     <recordLookups>
         <name>ContactoEmailAction</name>
         <label>Contacto Email</label>
-        <locationX>1898</locationX>
-        <locationY>2369</locationY>
+        <locationX>2162</locationX>
+        <locationY>3161</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ContactoEncontradoCierreDecision</targetReference>
@@ -814,8 +1107,8 @@
     <recordLookups>
         <name>ContactoEmailCierreAction</name>
         <label>Contacto Email Cierre</label>
-        <locationX>314</locationX>
-        <locationY>2585</locationY>
+        <locationX>578</locationX>
+        <locationY>3485</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ContactoEncontradoDecision</targetReference>
@@ -835,8 +1128,8 @@
     <recordLookups>
         <name>GetOrganizationwideaddressAction</name>
         <label>Get Organization wide address</label>
-        <locationX>50</locationX>
-        <locationY>2909</locationY>
+        <locationX>314</locationX>
+        <locationY>3809</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>MandarEmailCierreCasoUSP</targetReference>
@@ -856,8 +1149,8 @@
     <recordLookups>
         <name>GetSystemUserAction</name>
         <label>Obtener System User</label>
-        <locationX>50</locationX>
-        <locationY>2261</locationY>
+        <locationX>314</locationX>
+        <locationY>3161</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>UpdateCerrarCaso</targetReference>
@@ -880,8 +1173,8 @@
     <recordLookups>
         <name>LastEmailSendAction</name>
         <label>Ultimo Email Enviado</label>
-        <locationX>1832</locationX>
-        <locationY>971</locationY>
+        <locationX>2129</locationX>
+        <locationY>1763</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>EmailEncontradoDecision</targetReference>
@@ -920,8 +1213,8 @@
     <recordLookups>
         <name>ObtenerSystemUserCerrarCaso</name>
         <label>Obtener System User Cerrar Caso</label>
-        <locationX>2690</locationX>
-        <locationY>1295</locationY>
+        <locationX>3218</locationX>
+        <locationY>2195</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ActualizarCerrarCasoSinEmail</targetReference>
@@ -941,8 +1234,8 @@
     <recordLookups>
         <name>OrganizationWideAddress</name>
         <label>Organization wide address</label>
-        <locationX>1634</locationX>
-        <locationY>2693</locationY>
+        <locationX>1898</locationX>
+        <locationY>3485</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SendEmailUSPAction</targetReference>
@@ -962,8 +1255,8 @@
     <recordLookups>
         <name>PlantillaCasosCerradosSinFinalizarUSPAction</name>
         <label>Get Plantilla Casos Cerrados Sin Finalizar USP</label>
-        <locationX>50</locationX>
-        <locationY>2801</locationY>
+        <locationX>314</locationX>
+        <locationY>3701</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetOrganizationwideaddressAction</targetReference>
@@ -983,8 +1276,8 @@
     <recordLookups>
         <name>PlantillaCasosPendientesUSPAction</name>
         <label>Plantilla Casos Pendientes USP</label>
-        <locationX>1634</locationX>
-        <locationY>2585</locationY>
+        <locationX>1898</locationX>
+        <locationY>3377</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>OrganizationWideAddress</targetReference>
@@ -1007,8 +1300,8 @@
     <recordUpdates>
         <name>ActualizarCerrarCasoSinEmail</name>
         <label>Actualizar Cerrar Caso Sin Email</label>
-        <locationX>2690</locationX>
-        <locationY>1403</locationY>
+        <locationX>3218</locationX>
+        <locationY>2303</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>IsClosed</field>
@@ -1046,8 +1339,11 @@
     <recordUpdates>
         <name>Grandes_Pymes_OFF</name>
         <label>Grandes Pymes OFF</label>
-        <locationX>1458</locationX>
-        <locationY>384</locationY>
+        <locationX>1579</locationX>
+        <locationY>492</locationY>
+        <connector>
+            <targetReference>USPONDecision</targetReference>
+        </connector>
         <inputAssignments>
             <field>ModifiedByGrandesPymes__c</field>
             <value>
@@ -1059,8 +1355,11 @@
     <recordUpdates>
         <name>Grandes_Pymes_ON</name>
         <label>Grandes Pymes ON</label>
-        <locationX>1194</locationX>
+        <locationX>655</locationX>
         <locationY>384</locationY>
+        <connector>
+            <targetReference>USP_ONDecision</targetReference>
+        </connector>
         <inputAssignments>
             <field>ModifiedByGrandesPymes__c</field>
             <value>
@@ -1070,10 +1369,23 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>GrandesPymesDesactivarAction</name>
+        <label>Grandes Pymes Desactivar</label>
+        <locationX>1051</locationX>
+        <locationY>600</locationY>
+        <inputAssignments>
+            <field>ModifiedByGrandesPymes__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>UpdateCerrarCaso</name>
         <label>Actualizar Cerrar Caso</label>
-        <locationX>50</locationX>
-        <locationY>2369</locationY>
+        <locationX>314</locationX>
+        <locationY>3269</locationY>
         <connector>
             <targetReference>DominioExcluidoDecision</targetReference>
         </connector>
@@ -1114,11 +1426,53 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>USPDesactivarAction</name>
+        <label>USP Desactivar</label>
+        <locationX>523</locationX>
+        <locationY>600</locationY>
+        <inputAssignments>
+            <field>ModifiedByUSP__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>USPOFFAction</name>
+        <label>USP OFF</label>
+        <locationX>1579</locationX>
+        <locationY>792</locationY>
+        <inputAssignments>
+            <field>ModifiedByUSP__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>USPONAction</name>
+        <label>USP ON</label>
+        <locationX>1183</locationX>
+        <locationY>384</locationY>
+        <connector>
+            <targetReference>GPONDecision</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ModifiedByUSP__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>1706</locationX>
+        <locationX>2003</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>GrandesPymesDecision</targetReference>
+            <targetReference>GrandesPymesUSPDecision</targetReference>
         </connector>
         <filterLogic>1 AND 2  AND (3 OR 4) AND 5 AND 6</filterLogic>
         <filters>
@@ -1209,14 +1563,25 @@
             <recordField>LastModifiedDate</recordField>
             <timeSource>RecordField</timeSource>
         </scheduledPaths>
+        <scheduledPaths>
+            <name>Cerrar_Fecha_Estimada</name>
+            <connector>
+                <targetReference>CerrarCasoFechaAssignment</targetReference>
+            </connector>
+            <label>Cerrar Fecha Estimada</label>
+            <offsetNumber>0</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <recordField>CloseDate__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
     <subflows>
         <name>ExcluirDominioUSPDecision</name>
         <label>Excluir Dominio USP</label>
-        <locationX>1502</locationX>
-        <locationY>1511</locationY>
+        <locationX>1634</locationX>
+        <locationY>2303</locationY>
         <connector>
             <targetReference>DominioExcluidoUSPDecision</targetReference>
         </connector>
@@ -1248,6 +1613,16 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>FechaEstimadaAlcanzada</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>SeCierraCaso</name>

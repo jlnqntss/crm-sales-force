@@ -162,4 +162,12 @@
         <tab>Special_Condition__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>CreateCustomizeFilters</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EditPublicFilters</name>
+    </userPermissions>
 </PermissionSet>

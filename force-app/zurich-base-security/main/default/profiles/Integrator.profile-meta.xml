@@ -3815,11 +3815,15 @@
     <customSettingAccesses>
         <enabled>true</enabled>
         <name>purecloud__PureCloud_Sync_Settings__c</name>
-    </customSettingAccesses>
+    </customSettingAccesses>    
     <customSettingAccesses>
         <enabled>true</enabled>
         <name>purecloud__PureCloud_Webhook__c</name>
     </customSettingAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>ZRMNoEdit2MonthBeforeAfterPolicyEndDate</name>
+    </customPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Cartera_2021__c</field>
@@ -6092,6 +6096,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.BestAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Blocked__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6261,6 +6270,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.CuTicketId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.Days_Open__c</field>
         <readable>true</readable>
@@ -6333,6 +6347,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.HegeoReceiptNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.IdTipologiaBs__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6438,6 +6457,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.ModifiedByGrandesPymes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ModifiedByUSP__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6812,6 +6836,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.StatusCanalUnico__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.StatusDateTPA__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6837,12 +6866,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.TicketId__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Case.RelatedRequestId__c</field>
+        <field>Case.RelatedCuTicketId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7088,6 +7112,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.PolicyEndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7888,6 +7917,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ContactPointEmail.EmailLatestBounceReasonText</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11597,6 +11631,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Policy__c.MovementReason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Policy__c.MovementReasonCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

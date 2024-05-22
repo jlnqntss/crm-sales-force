@@ -22,7 +22,7 @@ public with sharing class Batch_CloseZRMExpiredCases implements Database.Batchab
 
     public Database.QueryLocator start(Database.BatchableContext bc)
     {
-        if(query == null || String.isEmpty(query))
+        if( query == null || String.isEmpty(query) )
         {
             query = new CasesSelector().getQueryStringZRMExpiredAndNotClosedCasesWithPolicy(recordTypeToQueryZRMCases.Value__c, monthsToQueryCases.Value__c);
         }
@@ -53,7 +53,7 @@ public with sharing class Batch_CloseZRMExpiredCases implements Database.Batchab
                 List<Case> casesToUpdate = CaseUtil.updateZRMExpiredCases(givenCases);
 
                 // Si hay algún caso a actualizar
-                if(casesToUpdate != null && !casesToUpdate.isEmpty())
+                if( casesToUpdate != null && !casesToUpdate.isEmpty() )
                 {
                     // Se actualizan los registros
                     update casesToUpdate;
@@ -67,5 +67,6 @@ public with sharing class Batch_CloseZRMExpiredCases implements Database.Batchab
     }
 
     public void finish(Database.BatchableContext bc)
-    {}
+    {
+    }
 }

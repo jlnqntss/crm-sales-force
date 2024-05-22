@@ -3708,6 +3708,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.BestAgent__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.Blocked__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3933,6 +3938,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.CuTicketId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.DateReg__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4034,6 +4044,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.HegeoReceiptNumber__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.IdTipologiaBs__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4263,13 +4278,18 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.PrePolicy__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.PrimerMensaje__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Case.Priority</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -4333,7 +4353,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.RelatedRequestId__c</field>
+        <field>Case.RelatedCuTicketId__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4633,6 +4653,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.StatusCanalUnico__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.StatusDateTPA__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4699,11 +4724,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.TerritorialDirection__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.TicketId__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5955,10 +5975,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewRoles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ViewSetup</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
