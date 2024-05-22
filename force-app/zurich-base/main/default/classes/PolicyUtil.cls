@@ -124,7 +124,7 @@ public class PolicyUtil
                 if (policyOld.LastAccountId__c != policyNew.LastAccountId__c)
                 {
                     policyNew.LastDateIntermediaryOrAccountChange__c = System.today();
-                    policyNew.VisibilityRetry__c = 0;
+                    policyNew.VisibilityRetry__c = 1; // Inicializo el numero de reintentos en 1 ya que el 0 es para identificar ok
                 }                
             }
         }
