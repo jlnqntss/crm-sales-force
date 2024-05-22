@@ -69,32 +69,32 @@ public with sharing class TicketingHegeoUtil
      */
     public static void setStatusSubstatusByCase(CanalUnicoUpdateVsegTicketRequest request, Case c)
     {
-        request.ticket.ticketSubStatus = 0;
+        request.ticket.ticketSubStatus = '0';
         switch on c.Status
         {
             when  'Nuevo'
             {
                 //Pendiente
-                request.ticket.ticketStatus = 1;
+                request.ticket.ticketStatus = '1';
             }
             when  'Asignado', 'Respondido'
             {
                 //En tramitacion
-                request.ticket.ticketStatus = 2;
+                request.ticket.ticketStatus = '2';
             }
             when  'Cerrado'
             {
                 //De momento no podemos mirar motivos de cierre, estan por definir
                 //Cerrado (no hay desestimado por el momento)
-                request.ticket.ticketStatus = 3;
+                request.ticket.ticketStatus = '3';
             }
             when else
             {
                 //Pendiente informacion (Pendiente soporte o supervisor)
-                request.ticket.ticketStatus = 5;
+                request.ticket.ticketStatus = '5';
                 if (c.PendingBy__c == 'Support' || c.PendingBy__c == 'Supervisor')
                 {
-                    request.ticket.ticketSubStatus = 1;
+                    request.ticket.ticketSubStatus = '1';
                 }
                 request.ticket.subStatusDesc = 'Pendiente de '+c.PendingBy__c;
             }

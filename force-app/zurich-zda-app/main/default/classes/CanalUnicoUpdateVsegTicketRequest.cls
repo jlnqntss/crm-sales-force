@@ -10,13 +10,92 @@ public class CanalUnicoUpdateVsegTicketRequest
     public CanalUnicoTicket ticket;
 
     //Para la validacion del campo event
-    private static Set<Integer> availableEventValues = new Set<Integer> {1,2,3,4,5,6,7,8,9,10,11};
+    private static Set<String> availableEventValues
+    {
+        get
+        {
+            if (availableEventValues == null)
+            {
+                List<ZdaCuRequestAvailableEventValues__mdt> availableList = ZdaCuRequestAvailableEventValues__mdt.getAll().values();
+                availableEventValues = new Set<String>();
+                for (ZdaCuRequestAvailableEventValues__mdt availableValue : availableList)
+                {
+                    availableEventValues.add(availableValue.Label);
+                }
+            }
+            return availableEventValues;
+        }
+        set;
+    }
     //Para la validacion del campo ticketStatus
-    private static Set<Integer> availableTicketStatusValues = new Set<Integer> {1,2,3,4,5};
+    private static Set<String> availableTicketStatusValues
+    {
+        get
+        {
+            if (availableTicketStatusValues == null)
+            {
+                List<ZdaCuReqAvailableTicketStatusValues__mdt> availableList = ZdaCuReqAvailableTicketStatusValues__mdt.getAll().values();
+                availableTicketStatusValues = new Set<String>();
+                for (ZdaCuReqAvailableTicketStatusValues__mdt availableValue : availableList)
+                {
+                    availableTicketStatusValues.add(availableValue.Label);
+                }
+            }
+            return availableTicketStatusValues;
+        }
+        set;
+    }
     //Para la validacion del campo ticketSubStatus
-    private static Set<Integer> availableTicketSubStatusValues = new Set<Integer> {0,1};
+    private static Set<String> availableTicketSubStatusValues
+    {
+        get
+        {
+            if (availableTicketSubStatusValues == null)
+            {
+                List<ZdaCuReqAvailTicketSubStatusValues__mdt> availableList = ZdaCuReqAvailTicketSubStatusValues__mdt.getAll().values();
+                availableTicketSubStatusValues = new Set<String>();
+                for (ZdaCuReqAvailTicketSubStatusValues__mdt availableValue : availableList)
+                {
+                    availableTicketSubStatusValues.add(availableValue.Label);
+                }
+            }
+            return availableTicketSubStatusValues;
+        }
+        set;
+    }
     //Para la validacion del campo CanalUnicoQuote.paymentType
-    private static Set<String> availablePaymentTypeValues = new Set<String> {'0','1','2','3','4','6','12'};
+    private static Set<String> availablePaymentTypeValues
+    {
+        get
+        {
+            if (availablePaymentTypeValues == null)
+            {
+                List<ZdaCuReqAvailPaymentTypeValues__mdt> availableList = ZdaCuReqAvailPaymentTypeValues__mdt.getAll().values();
+                availablePaymentTypeValues = new Set<String>();
+                for (ZdaCuReqAvailPaymentTypeValues__mdt availableValue : availableList)
+                {
+                    availablePaymentTypeValues.add(availableValue.Label);
+                }
+            }
+            return availablePaymentTypeValues;
+        }
+        set;
+    }
+
+    //Placeholders para los labels de error
+    private static final String FIELD_VALUE_PLACEHOLDER = '#fieldValue#';
+    private static final String FIELD_NAME_PLACEHOLDER = '#fieldName#';
+    private static final String STR_NULL = 'NULL';
+
+    //Nombres de los campos que se validan
+    private static final String FIELD_EVENT = 'event';
+    private static final String FIELD_TICKET_STATUS = 'ticketStatus';
+    private static final String FIELD_TICKET_SUBSTATUS = 'ticketSubStatus';
+    private static final String FIELD_PAYMENT_TYPE = 'paymentType';
+    private static final String FIELD_DURATION = 'duration';
+    private static final String FIELD_ANUAL_NET_PREMIUM = 'anualNetPremium';
+    private static final String FIELD_TOTAL_ANUAL_RECEIPT = 'totalAnualReceipt';
+
 
     /**
      * Construye el cuerpo de la peticion
@@ -82,7 +161,7 @@ public class CanalUnicoUpdateVsegTicketRequest
          * 10 - Envío documentación
          * 11 - Derivado a Especialista
          */
-        public Integer event;
+        public String event;
         /**
          * Estado en el que se encuentra el ticket. Por defecto al crear un ticket nuevo en Canal único, queda guardado como pendiente. Campo obligatorio. Posibles valores:
          * 1 - Pendiente
@@ -91,13 +170,13 @@ public class CanalUnicoUpdateVsegTicketRequest
          * 4 - Desestimado
          * 5 - Pendiente Información
          */
-        public Integer ticketStatus;
+        public String ticketStatus;
         /**
          * Para cada estado se definirán N subestados. En caso de no poder informar el subestado, se informará el siguiente subStatusDesc. Campo obligatorio. Posibles valores:
          * 0 - Sin sub estado
          * 1 - En especialista
          */
-        public Integer ticketSubStatus;
+        public String ticketSubStatus;
         /**
          * Campo libre para informar la descripción o comentarios del subestado
          *
@@ -205,22 +284,22 @@ public class CanalUnicoUpdateVsegTicketRequest
             //Checkeamos campos obligatorios (o invalidos), en caso de faltar alguno, lanzamos excepcion
             if ( event == null || !availableEventValues.contains(event) )
             {
-                throw new IllegalArgumentException('Valor ' + (event != null ? event.toString() : 'NULO') + ' no valido para el campo event');
+                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace( FIELD_VALUE_PLACEHOLDER, (event != null ? event : STR_NULL) ).replace(FIELD_NAME_PLACEHOLDER, FIELD_EVENT) );
             }
             if ( ticketStatus == null || !availableTicketStatusValues.contains(ticketStatus) )
             {
-                throw new IllegalArgumentException('Valor ' + (ticketStatus != null ? ticketStatus.toString() : 'NULO') + ' no valido para el campo ticketStatus');
+                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace( FIELD_VALUE_PLACEHOLDER, (ticketStatus != null ? ticketStatus : STR_NULL) ).replace(FIELD_NAME_PLACEHOLDER, FIELD_TICKET_STATUS) );
             }
             if ( ticketSubStatus == null || !availableTicketSubStatusValues.contains(ticketSubStatus) )
             {
-                throw new IllegalArgumentException('Valor ' + (ticketSubStatus != null ? ticketSubStatus.toString() : 'NULO') + ' no valido para el campo ticketSubStatus');
+                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace( FIELD_VALUE_PLACEHOLDER, (ticketSubStatus != null ? ticketSubStatus : STR_NULL) ).replace(FIELD_NAME_PLACEHOLDER, FIELD_TICKET_SUBSTATUS) );
             }
             String req = '<v1:ticket>';
             req += '<v1:ticketId>' + ticketId + '</v1:ticketId>';
             req += '<v1:externalTicketId>' + externalTicketId + '</v1:externalTicketId>';
-            req += '<v1:event>' + event.toString() + '</v1:event>'; //no necesario nullcheck, se ha hecho en el if anterior
-            req += '<v1:ticketStatus>' + ticketStatus.toString() + '</v1:ticketStatus>'; //no necesario nullcheck, se ha hecho en el if anterior
-            req += '<v1:ticketSubStatus>' + ticketSubStatus.toString() + '</v1:ticketSubStatus>'; //no necesario nullcheck, se ha hecho en el if anterior
+            req += '<v1:event>' + event + '</v1:event>';
+            req += '<v1:ticketStatus>' + ticketStatus + '</v1:ticketStatus>';
+            req += '<v1:ticketSubStatus>' + ticketSubStatus + '</v1:ticketSubStatus>';
             req += '<v1:subStatusDesc>' + subStatusDesc + '</v1:subStatusDesc>';
             req += '<v1:agent>' + agent + '</v1:agent>';
             req += '<v1:eventDate>' + eventDate.format(TicketingHegeoUtil.DATE_TIME_FORMATTER) + '</v1:eventDate>';
@@ -379,14 +458,21 @@ public class CanalUnicoUpdateVsegTicketRequest
         public String buildRequest()
         {
             //Checkeamos campos obligatorios, en caso de faltar alguno, lanzamos excepcion
-            if (duration == null || anualNetPremium == null || totalAnualReceipt == null )
+            if (duration == null)
             {
-                //Error
-                throw new IllegalArgumentException('Es imprescindible haber informado los campos "duration", "anualNetPremium" y "totalAnualReceipt"');
+                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace(FIELD_VALUE_PLACEHOLDER, STR_NULL).replace(FIELD_NAME_PLACEHOLDER, FIELD_DURATION) );
+            }
+            if (anualNetPremium == null)
+            {
+                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace(FIELD_VALUE_PLACEHOLDER, STR_NULL).replace(FIELD_NAME_PLACEHOLDER, FIELD_ANUAL_NET_PREMIUM) );
+            }
+            if (totalAnualReceipt == null)
+            {
+                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace(FIELD_VALUE_PLACEHOLDER, STR_NULL).replace(FIELD_NAME_PLACEHOLDER, FIELD_TOTAL_ANUAL_RECEIPT) );
             }
             if ( String.isNotBlank(paymentType) && !availablePaymentTypeValues.contains(paymentType) )
             {
-                throw new IllegalArgumentException('Valor ' + paymentType + ' no valido para el campo paymentType');
+                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace(FIELD_VALUE_PLACEHOLDER, paymentType).replace(FIELD_NAME_PLACEHOLDER, FIELD_PAYMENT_TYPE) );
             }
             String req = '<v1:quote>';
             req += '<v1:externalQuoteId>' + externalQuoteId + '</v1:externalQuoteId>';

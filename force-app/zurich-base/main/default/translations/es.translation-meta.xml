@@ -6218,6 +6218,10 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
     <customLabels>
+        <label>Valor #fieldValue# no valido para el campo #fieldName#</label>
+        <name>ZDAVsegTicketRequestFieldValidationError</name>
+    </customLabels>
+    <customLabels>
         <label>Añadir</label>
         <name>ZRM_IntermAddCampMember_AddButton</name>
     </customLabels>
