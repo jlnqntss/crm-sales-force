@@ -6517,6 +6517,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.PrePolicy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.PrimerMensaje__c</field>
         <readable>true</readable>
     </fieldPermissions>
