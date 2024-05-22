@@ -32,6 +32,16 @@
         <label>Corredor</label>
     </standardValue>
     <standardValue>
+        <fullName>Cotización</fullName>
+        <default>false</default>
+        <label>Cotización</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Gestión Cartera</fullName>
+        <default>false</default>
+        <label>Gestión Cartera</label>
+    </standardValue>
+    <standardValue>
         <fullName>Gestión Cliente</fullName>
         <default>false</default>
         <label>Gestión Cliente</label>
