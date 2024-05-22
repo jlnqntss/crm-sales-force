@@ -90,8 +90,15 @@ public with sharing class ZRMFilesControllerTest {
 
     }
 
+    
+    /**
+     * Método test que recupera ficheros para el usuario logueado de zrm que devolverá al LWC
+     * @author dmunoz
+     * @date 21/05/2024
+     */
     @isTest
-    private static void test_getZRMContentDocumentByLinkedEntity() {
+    private static void test_getZRMContentDocumentByLinkedEntity()
+    {
 
         Account cliente = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Customer' LIMIT 1];
 
@@ -106,8 +113,14 @@ public with sharing class ZRMFilesControllerTest {
     }
 
 
+    /**
+     * Método test que comprueba el mapa de iconoes devuelve un valor
+     * @author dmunoz
+     * @date 21/05/2024
+     */
     @isTest
-    private static void test_getIconName() {
+    private static void test_getIconName() 
+    {
 
         Map<String, String> iconMap = ZRMFilesController.initIconMap();
 
@@ -122,8 +135,14 @@ public with sharing class ZRMFilesControllerTest {
     }
 
 
+    /**
+     * Método test que comprueba la conversión de contentdocument al objeto ZRMFile
+     * @author dmunoz
+     * @date 21/05/2024
+     */
     @isTest
-    private static void test_getZRMFilesList() {
+    private static void test_getZRMFilesList() 
+    {
 
         Map<String, String> iconMap = ZRMFilesController.initIconMap();
 
