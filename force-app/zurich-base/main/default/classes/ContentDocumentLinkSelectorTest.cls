@@ -90,8 +90,15 @@ public with sharing class ContentDocumentLinkSelectorTest {
 
     }
 
+
+    /**
+     * Método test que recupera ficheros para usuarios nominales de zrm
+     * @author dmunoz
+     * @date 21/05/2024
+     */
     @isTest
-    private static void test_getZRMContentDocumentByLinkedEntity() {
+    private static void test_getZRMContentDocumentByLinkedEntity() 
+    {
 
         Account cliente = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Customer' LIMIT 1];
         Account intermediary = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Intermediary' LIMIT 1];
@@ -106,8 +113,14 @@ public with sharing class ContentDocumentLinkSelectorTest {
 
     }
 
+    /**
+     * Método test que recupera ficheros para usuarios AGR de zrm
+     * @author dmunoz
+     * @date 21/05/2024
+     */
     @isTest
-    private static void test_getZRMAGRContentDocumentByLinkedEntity() {
+    private static void test_getZRMAGRContentDocumentByLinkedEntity() 
+    {
 
         Account cliente = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Customer' LIMIT 1];
         Account intermediary = [SELECT Id, IntermediaryGroup__c FROM Account WHERE RecordType.DeveloperName = 'Intermediary' LIMIT 1];
