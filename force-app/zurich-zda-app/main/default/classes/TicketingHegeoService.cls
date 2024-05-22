@@ -11,6 +11,12 @@ public with sharing class TicketingHegeoService
 
     //URL a la que apunta la named credential ESBCanalUnico = 'https://infoweb-uat.zurichspain.com/proxy/services/Hegeo/Ticketing/v1';
 
+    private static final String KO = 'KO';
+    private static final String OK = 'OK';
+    private static final String FAULT_OPENING = '<soap:Fault>';
+    private static final String ERROR_DESC_OPENING = '<io:errorDescription>';
+    private static final String UPDATE_METHOD_NAME = 'updateVsegTicket';
+
     /**
      * Realiza la peticion de envio al ESB de la request proporcionada
      *
@@ -48,8 +54,8 @@ public with sharing class TicketingHegeoService
         }
         catch (Exception ex)
         {
-            responseResult = 'KO';
-            ErrorLogUtil.commitError(ex, TicketingHegeoService.class.getName(), 'updateVsegTicket');
+            responseResult = KO;
+            ErrorLogUtil.commitError(ex, TicketingHegeoService.class.getName(), UPDATE_METHOD_NAME);
         }
 
         return responseResult;
@@ -108,13 +114,13 @@ public with sharing class TicketingHegeoService
         if ( response.getStatusCode() == 200 )
         {
             //Aunque nos haya retornado un codigo HTTP 200, hay que ver si el SOAP de respuesta contiene algun error
-            if ( response.getBody().contains('<soap:Fault>') )
+            if ( response.getBody().contains(FAULT_OPENING) )
             {
                 /*
                    SOAP FAULT => la peticion no esta bien construida (no deberia suceder, en CanalUnicoUpdateVsegTicketRequest
                    se comprueba que la peticion se crea correctamente)
                  */
-                String elemFault = response.getBody().substringBetween('<soap:Fault>','</soap:Fault>');
+                String elemFault = response.getBody().substringBetween(FAULT_OPENING,'</soap:Fault>');
                 String elemCode = elemFault.substringBetween('<soap:Code>','</soap:Code>');
                 String elemReason = elemFault.substringBetween('<soap:Reason>','</soap:Reason>');
                 String faultCode = elemCode.substringBetween('>', '<');
@@ -122,14 +128,14 @@ public with sharing class TicketingHegeoService
 
                 parsedResponse = faultCode + ' - ' + faultDescription;
             }
-            else if ( response.getBody().contains('<io:errorDescription>') )
+            else if ( response.getBody().contains(ERROR_DESC_OPENING) )
             {
                 //ERROR
-                parsedResponse = response.getBody().substringBetween('<io:errorDescription>','</io:errorDescription>');
+                parsedResponse = response.getBody().substringBetween(ERROR_DESC_OPENING,'</io:errorDescription>');
             }
             else
             {
-                parsedResponse = 'OK';
+                parsedResponse = OK;
             }
         }
         else
