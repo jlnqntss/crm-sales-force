@@ -1307,4 +1307,28 @@ public with sharing class AccountsSelector extends RecordsSelector
 
         return accounts;
     }
+
+    /**
+     * @description Método que obtiene cuentas filtradas por id y por el campo isAccountZDA
+     * @author aberuete
+     * @date 15-05-2024
+     * @param Set<String> accountIds : Conjunto de ids de cuentas
+     * @param Boolean isAccountZDA : Campo que si es afirmativo la cuenta tiene asociadas pólizas u ofertas de ZDA
+     **/
+    public List<Account> selectByIdAndAccountZDA (Set<String> accountIds, Boolean isAccountZDA)
+    {
+        if ( accountIds == null || accountIds.isEmpty() || isAccountZDA == null)
+        {
+            return new List<Account>();
+        }
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+            Account.Id,
+            Account.IsAccountZDA__c
+        })
+        .addConditionEq(Account.IsAccountZDA__c,isAccountZDA)
+        .addConditionIn(Account.Id, accountIds);
+
+        return (List<Account>) this.baseQuery.run();
+    }
 }

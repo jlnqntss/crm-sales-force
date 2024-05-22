@@ -25,6 +25,11 @@
         <default>false</default>
         <label>Zurich Ventas</label>
     </customValue>
+    <customValue>
+        <fullName>ZDA</fullName>
+        <default>false</default>
+        <label>Zurich ZDA</label>
+    </customValue>
     <masterLabel>Scope</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
