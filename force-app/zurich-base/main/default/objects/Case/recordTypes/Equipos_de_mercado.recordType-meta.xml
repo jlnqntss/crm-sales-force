@@ -18,66 +18,6 @@
             <fullName>CC Service</fullName>
             <default>false</default>
         </values>
-        <values>
-            <fullName>CSM Administración</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CSM Particulares</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Centro Excelencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>GSS CSM</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Motor Express</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Property Express</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>RRSS Marca</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>RRSS Postventa-Siniestros</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>SAM</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>TWW Retención</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>USP</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ZDA_Gestion_Cartera</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ZDA_MU_s</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ZDA_Soporte_Red</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Zurich Empresas</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>CauseOfLoss__c</picklist>
