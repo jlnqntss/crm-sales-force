@@ -548,8 +548,7 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if((caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich') 
-                || (caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.SuppliedEmail)))
+                if(caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich') 
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
                     //Utilizar el email del SuppliedEmail
@@ -1161,7 +1160,7 @@ public with sharing class CaseUtil
         Set<String> emailsToSearch = new Set<String>();
         for(Case insertedCase : insertedCases)
         {
-            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
             {
                 emailsToSearch.add(insertedCase.SuppliedEmail);
             }
@@ -1184,7 +1183,7 @@ public with sharing class CaseUtil
         List<Account> emailAccounts;
         for(Case insertedCase : insertedCases)
         {
-            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
             {
                 emailAccounts = accByEmail?.get(insertedCase.SuppliedEmail);
                 if (emailAccounts != null && emailAccounts.size() == 1)
