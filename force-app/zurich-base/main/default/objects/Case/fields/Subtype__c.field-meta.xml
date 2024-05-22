@@ -413,6 +413,11 @@
                 <label>Gestión de recibos</label>
             </value>
             <value>
+                <fullName>Gestión negocio</fullName>
+                <default>false</default>
+                <label>Gestión negocio</label>
+            </value>
+            <value>
                 <fullName>Incidencia</fullName>
                 <default>false</default>
                 <label>Incidencia</label>
@@ -481,6 +486,11 @@
                 <fullName>Mediación</fullName>
                 <default>false</default>
                 <label>Mediación</label>
+            </value>
+            <value>
+                <fullName>Mejora</fullName>
+                <default>false</default>
+                <label>Mejora</label>
             </value>
             <value>
                 <fullName>Mención marca</fullName>
@@ -756,6 +766,11 @@
                 <fullName>Sugerencia</fullName>
                 <default>false</default>
                 <label>Sugerencia</label>
+            </value>
+            <value>
+                <fullName>Suscripción</fullName>
+                <default>false</default>
+                <label>Suscripción</label>
             </value>
             <value>
                 <fullName>SWAP - experiencia</fullName>
@@ -1048,41 +1063,21 @@
             <valueName>Siniestros</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <valueName>Alta</valueName>
+            <controllingFieldValue>Petición mercado</controllingFieldValue>
+            <valueName>Gestión negocio</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <valueName>Cambio mediador</valueName>
+            <controllingFieldValue>Petición mercado</controllingFieldValue>
+            <valueName>Mejora</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <valueName>Certificado</valueName>
+            <controllingFieldValue>Petición mercado</controllingFieldValue>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Saneamiento</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <controllingFieldValue>Cotización</controllingFieldValue>
-            <valueName>Comparativa</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <valueName>Diligencia de embargo</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <valueName>Otros trámites / Peticiones</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <valueName>Recibos</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <valueName>Retención/Cancelación</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <valueName>Verificación</valueName>
+            <controllingFieldValue>Petición mercado</controllingFieldValue>
+            <valueName>Suscripción</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
@@ -1123,6 +1118,11 @@
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
             <valueName>Características / Coberturas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Comparativa</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
@@ -1167,6 +1167,38 @@
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
             <valueName>Partnership</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Alta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Cambio mediador</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Certificado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Diligencia de embargo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Otros trámites / Peticiones</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Recibos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Retención/Cancelación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Verificación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
@@ -1215,10 +1247,6 @@
         <valueSettings>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>
             <valueName>Revocación Saneamiento</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Saneamiento</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>

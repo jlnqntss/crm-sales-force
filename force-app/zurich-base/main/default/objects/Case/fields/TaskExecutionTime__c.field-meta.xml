@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TaskExecutionTime__c</fullName>
+    <externalId>false</externalId>
+    <label>Task execution time</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Entre 1 y 10 min</fullName>
+                <default>false</default>
+                <label>Entre 1 y 10 min</label>
+            </value>
+            <value>
+                <fullName>Entre 10 y 30 min</fullName>
+                <default>false</default>
+                <label>Entre 10 y 30 min</label>
+            </value>
+            <value>
+                <fullName>Entre 30 y 60 min</fullName>
+                <default>false</default>
+                <label>Entre 30 y 60 min</label>
+            </value>
+            <value>
+                <fullName>Más de 60 min</fullName>
+                <default>false</default>
+                <label>Más de 60 min</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
