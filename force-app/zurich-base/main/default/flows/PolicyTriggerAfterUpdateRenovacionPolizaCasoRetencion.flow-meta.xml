@@ -228,6 +228,12 @@
                 <elementReference>Get_Scope.PrimaryPhone__c</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>UpdatedInsuranceCost__c</field>
+            <value>
+                <elementReference>$Record.TotalPremium__c</elementReference>
+            </value>
+        </inputAssignments>
         <object>Case</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
