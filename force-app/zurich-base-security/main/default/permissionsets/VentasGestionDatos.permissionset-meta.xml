@@ -63,6 +63,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Competitor__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Competitor__c.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
