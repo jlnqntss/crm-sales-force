@@ -4573,6 +4573,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Regional__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.PlusCommunities__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5054,6 +5059,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.NumberOffices__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Office__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
