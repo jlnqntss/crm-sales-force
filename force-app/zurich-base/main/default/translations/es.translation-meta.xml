@@ -6222,6 +6222,10 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDAVsegTicketRequestFieldValidationError</name>
     </customLabels>
     <customLabels>
+        <label>Se ha producido un error en el envío, consultar log de errores</label>
+        <name>ZDAVsegTicketRequestError</name>
+    </customLabels>
+    <customLabels>
         <label>Añadir</label>
         <name>ZRM_IntermAddCampMember_AddButton</name>
     </customLabels>

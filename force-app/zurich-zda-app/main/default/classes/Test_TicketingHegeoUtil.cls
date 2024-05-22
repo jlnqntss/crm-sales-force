@@ -42,23 +42,23 @@ private with sharing class Test_TicketingHegeoUtil
         TicketingHegeoUtil.setStatusSubstatusByCase( reqPendPartner, new Case(status='Pendiente', PendingBy__c='Partner') );
         Test.stopTest();
 
-        Assert.areEqual(1, reqNew.ticket.ticketStatus);
-        Assert.areEqual(0, reqNew.ticket.ticketSubStatus);
-        Assert.areEqual(2, reqAssigned.ticket.ticketStatus);
-        Assert.areEqual(0, reqAssigned.ticket.ticketSubStatus);
-        Assert.areEqual(2, reqAnswered.ticket.ticketStatus);
-        Assert.areEqual(0, reqAnswered.ticket.ticketSubStatus);
-        Assert.areEqual(3, reqClosed.ticket.ticketStatus);
-        Assert.areEqual(0, reqClosed.ticket.ticketSubStatus);
+        Assert.areEqual('1', reqNew.ticket.ticketStatus);
+        Assert.areEqual('0', reqNew.ticket.ticketSubStatus);
+        Assert.areEqual('2', reqAssigned.ticket.ticketStatus);
+        Assert.areEqual('0', reqAssigned.ticket.ticketSubStatus);
+        Assert.areEqual('2', reqAnswered.ticket.ticketStatus);
+        Assert.areEqual('0', reqAnswered.ticket.ticketSubStatus);
+        Assert.areEqual('3', reqClosed.ticket.ticketStatus);
+        Assert.areEqual('0', reqClosed.ticket.ticketSubStatus);
 
-        Assert.areEqual(5, reqPendSupport.ticket.ticketStatus);
-        Assert.areEqual(1, reqPendSupport.ticket.ticketSubStatus);
+        Assert.areEqual('5', reqPendSupport.ticket.ticketStatus);
+        Assert.areEqual('1', reqPendSupport.ticket.ticketSubStatus);
         Assert.areEqual('Pendiente de Support', reqPendSupport.ticket.subStatusDesc);
-        Assert.areEqual(5, reqPendSupervisor.ticket.ticketStatus);
-        Assert.areEqual(1, reqPendSupervisor.ticket.ticketSubStatus);
+        Assert.areEqual('5', reqPendSupervisor.ticket.ticketStatus);
+        Assert.areEqual('1', reqPendSupervisor.ticket.ticketSubStatus);
         Assert.areEqual('Pendiente de Supervisor', reqPendSupervisor.ticket.subStatusDesc);
-        Assert.areEqual(5, reqPendPartner.ticket.ticketStatus);
-        Assert.areEqual(0, reqPendPartner.ticket.ticketSubStatus);
+        Assert.areEqual('5', reqPendPartner.ticket.ticketStatus);
+        Assert.areEqual('0', reqPendPartner.ticket.ticketSubStatus);
         Assert.areEqual('Pendiente de Partner', reqPendPartner.ticket.subStatusDesc);
     }
 

@@ -7,6 +7,11 @@
 public with sharing class SendDocCanalUnicoAction
 {
 
+    private static final String UTF_8_ENCODING = 'UTF-8';
+    private static final String V_SHARE_TYPE = 'V';
+    private static final String ALL_USERS_VISIBILITY = 'AllUsers';
+    private static final String KO = 'KO';
+
     @InvocableMethod(
         label='Send documentation'
                description='Ejecuta la peticion al ESB para el envio de informacion'
@@ -53,14 +58,13 @@ public with sharing class SendDocCanalUnicoAction
         calloutRequest.ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
         calloutRequest.ticket.ticketId = relatedCase.CuTicketId__c;
         calloutRequest.ticket.externalTicketId = '' + relatedCase.CaseNumber;
-        calloutRequest.ticket.event = 4; //envio de documentacion, siempre 4
+        calloutRequest.ticket.event = '4'; //envio de documentacion, siempre 4
         calloutRequest.ticket.agent = relatedCase.Owner.Name;
         calloutRequest.ticket.eventReason = 2; //OBLIGATORIO
         if ( String.isNotBlank(comments) )
         {
             calloutRequest.ticket.eventDesc = comments;
         }
-        calloutRequest.ticket.estimatedEndDate = DateTime.now().addDays(1); //TEMPORAL. POR DEFINIR SLAs
         TicketingHegeoUtil.setStatusSubstatusByCase(calloutRequest, relatedCase);
         List<ContentDocumentLink> linksToCreate = new List<ContentDocumentLink>();
         if ( !fileList.isEmpty() )
@@ -82,7 +86,7 @@ public with sharing class SendDocCanalUnicoAction
                     document.attachedDocument.fileName = file.PathOnClient;
                     document.attachedDocument.mimeType = fileMimeType;
                     document.attachedDocument.data = EncodingUtil.base64Encode(file.VersionData);
-                    document.attachedDocument.encoding = 'UTF-8';
+                    document.attachedDocument.encoding = UTF_8_ENCODING;
                     attDocList.add(document);
 
                     //se lincara cada documento enviado con el envio para saber que ficheros se enviaron
@@ -90,8 +94,8 @@ public with sharing class SendDocCanalUnicoAction
                         new ContentDocumentLink(
                             ContentDocumentId = file.ContentDocumentId,
                             LinkedEntityId = sendDocObjectId,
-                            ShareType = 'V',
-                            Visibility = 'AllUsers'
+                            ShareType = V_SHARE_TYPE,
+                            Visibility = ALL_USERS_VISIBILITY
                             )
                         );
                 }
@@ -100,9 +104,9 @@ public with sharing class SendDocCanalUnicoAction
         }
 
         String sendResult = TicketingHegeoService.updateVsegTicket(calloutRequest);
-        if ( 'KO'.equals(sendResult) )
+        if ( KO.equals(sendResult) )
         {
-            sendResult = 'Se ha producido un error en el envío, consultar log de errores';
+            sendResult = Label.ZDAVsegTicketRequestError;
         }
         //Actualizar Result__c
         SendDocCUInfo__c sendObj = new SendDocCUInfo__c(

@@ -234,7 +234,7 @@ public class CanalUnicoUpdateVsegTicketRequest
          *
          * Formato: YYYY/MM/dd HH:mm:ss
          */
-        public DateTime estimatedEndDate;
+        public DateTime estimatedEndDate = DateTime.now().addDays(1);
         /**
          * Comentario interno entre primeros niveles de BO
          *

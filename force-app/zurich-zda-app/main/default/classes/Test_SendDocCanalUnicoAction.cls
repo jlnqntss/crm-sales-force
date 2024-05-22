@@ -118,7 +118,7 @@ private with sharing class Test_SendDocCanalUnicoAction
         List<SendDocCUInfo__c> updatedSdcList = [SELECT Result__c, SendDate__c FROM SendDocCUInfo__c];
         Assert.isFalse( updatedSdcList.isEmpty() );
         Assert.isNotNull(updatedSdcList[0].Result__c);
-        Assert.areEqual('Se ha producido un error en el envío, consultar log de errores', updatedSdcList[0].Result__c);
+        Assert.areEqual(Label.ZDAVsegTicketRequestError, updatedSdcList[0].Result__c);
         Assert.isNotNull(updatedSdcList[0].SendDate__c);
     }
 

@@ -46,7 +46,7 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         Boolean reqEventNullThrown = false;
         //Valor invalido event
         CanalUnicoUpdateVsegTicketRequest reqEventInvalid = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqEventInvalid.ticket.event = 55;
+        reqEventInvalid.ticket.event = '55';
         Boolean reqEventInvalidThrown = false;
         //Valor nulo ticketStatus
         CanalUnicoUpdateVsegTicketRequest reqTicketStatusNull = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
@@ -54,7 +54,7 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         Boolean reqTicketStatusNullThrown = false;
         //Valor invalido ticketStatus
         CanalUnicoUpdateVsegTicketRequest reqTicketStatusInvalid = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqTicketStatusInvalid.ticket.ticketStatus = 55;
+        reqTicketStatusInvalid.ticket.ticketStatus = '55';
         Boolean reqTicketStatusInvalidThrown = false;
         //Valor nulo ticketSubStatus
         CanalUnicoUpdateVsegTicketRequest reqTicketSubStatusNull = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
@@ -62,7 +62,7 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         Boolean reqTicketSubStatusNullThrown = false;
         //Valor invalido ticketSubStatus
         CanalUnicoUpdateVsegTicketRequest reqTicketSubStatusInvalid = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqTicketSubStatusInvalid.ticket.ticketSubStatus = 55;
+        reqTicketSubStatusInvalid.ticket.ticketSubStatus = '55';
         Boolean reqTicketSubStatusInvalidThrown = false;
 
         Test.startTest();
@@ -154,15 +154,14 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
         ticket.ticketId = '12345678901234567890';
         ticket.externalTicketId = 'SF-123';
-        ticket.event = 1;
-        ticket.ticketStatus = 1;
-        ticket.ticketSubStatus = 0;
+        ticket.event = '1';
+        ticket.ticketStatus = '1';
+        ticket.ticketSubStatus = '0';
         ticket.subStatusDesc = 'SubStatus Description';
         ticket.agent = 'Test Agent';
         ticket.eventDate = DateTime.now();
         ticket.eventReason = 1;
         ticket.eventDesc = 'Test Event Description';
-        ticket.estimatedEndDate = DateTime.now();
         ticket.comments = 'Test Comments';
 
         CanalUnicoUpdateVsegTicketRequest.CanalUnicoQuote quote = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoQuote();

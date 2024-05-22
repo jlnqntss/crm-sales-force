@@ -2467,6 +2467,14 @@ Create the record and try again.</value>
         <value>Invalid value #fieldValue# for field #fieldName#</value>
     </labels>
     <labels>
+        <fullName>ZDAVsegTicketRequestError</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAVsegTicketRequestError</shortDescription>
+        <value>An error occurred while sending, check the error log</value>
+    </labels>
+    <labels>
         <fullName>ZRM_IntermAddCampMember_AddButton</fullName>
         <categories>ZRM_IntermAddCampMember</categories>
         <language>en_US</language>

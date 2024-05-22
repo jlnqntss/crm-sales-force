@@ -186,10 +186,9 @@ private with sharing class Test_TicketingHegeoService
         CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
         ticket.ticketId = '12345678901234567890';
         ticket.externalTicketId = 'SF-123';
-        ticket.event = 1;
-        ticket.ticketStatus = 1;
-        ticket.ticketSubStatus = 0;
-        ticket.eventDate = DateTime.now();
+        ticket.event = '1';
+        ticket.ticketStatus = '1';
+        ticket.ticketSubStatus = '0';
         ticket.eventReason = 1;
         ticket.estimatedEndDate = DateTime.now();
 
