@@ -33,13 +33,13 @@ private with sharing class Test_TicketingHegeoUtil
         reqPendPartner.ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
 
         Test.startTest();
-        TicketingHegeoUtil.setStatusSubstatusByCase( reqNew, new Case(status='Nuevo') );
-        TicketingHegeoUtil.setStatusSubstatusByCase( reqAssigned, new Case(status='Asignado') );
-        TicketingHegeoUtil.setStatusSubstatusByCase( reqAnswered, new Case(status='Respondido') );
-        TicketingHegeoUtil.setStatusSubstatusByCase( reqClosed, new Case(status='Cerrado') );
-        TicketingHegeoUtil.setStatusSubstatusByCase( reqPendSupport, new Case(status='Pendiente', PendingBy__c='Support') );
-        TicketingHegeoUtil.setStatusSubstatusByCase( reqPendSupervisor, new Case(status='Pendiente', PendingBy__c='Supervisor') );
-        TicketingHegeoUtil.setStatusSubstatusByCase( reqPendPartner, new Case(status='Pendiente', PendingBy__c='Partner') );
+        TicketingHegeoUtil.setStatusSubstatusByCase( reqNew, new Case(status=CaseUtil.CASE_NUEVO) );
+        TicketingHegeoUtil.setStatusSubstatusByCase( reqAssigned, new Case(status=CaseUtil.CASE_ASIGNADO) );
+        TicketingHegeoUtil.setStatusSubstatusByCase( reqAnswered, new Case(status=CaseUtil.CASE_RESPONDIDO) );
+        TicketingHegeoUtil.setStatusSubstatusByCase( reqClosed, new Case(status=CaseUtil.estadoCerrado) );
+        TicketingHegeoUtil.setStatusSubstatusByCase( reqPendSupport, new Case(status=CaseUtil.CASE_PENDIENTE, PendingBy__c=CaseUtil.CASE_PENDIENTE_SOPORTE) ); 
+        TicketingHegeoUtil.setStatusSubstatusByCase( reqPendSupervisor, new Case(status=CaseUtil.CASE_PENDIENTE, PendingBy__c=CaseUtil.CASE_PENDIENTE_SUPERVISOR) );
+        TicketingHegeoUtil.setStatusSubstatusByCase( reqPendPartner, new Case(status=CaseUtil.CASE_PENDIENTE, PendingBy__c=CaseUtil.CASE_PENDIENTE_PARTNER) );
         Test.stopTest();
 
         Assert.areEqual('1', reqNew.ticket.ticketStatus);

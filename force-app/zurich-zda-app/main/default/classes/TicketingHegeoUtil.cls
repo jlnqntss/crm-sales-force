@@ -30,6 +30,14 @@ public with sharing class TicketingHegeoUtil
     private static final String SUBSTATUS_ESPECIALISTA = 'EnEspecialista';
     private static final String STR_PENDIENTE_DE = 'Pendiente de ';
 
+    private static final Map<String, String> caseStatusCuStatusRelationship = new Map<String, String>
+    {
+        CaseUtil.CASE_NUEVO => ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_PENDIENTE)?.Value__c,
+        CaseUtil.CASE_ASIGNADO => ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_TRAMITACION)?.Value__c,
+        CaseUtil.CASE_RESPONDIDO => ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_TRAMITACION)?.Value__c,
+        CaseUtil.estadoCerrado => ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_CERRADO)?.Value__c
+    };
+
     //Relacion entre los ficheros admitidos para los envios y su extension. Necesario
     //para adjuntarlo en el campo mimeType para los ficheros adjuntos
     public static final Map<String, String> MIME_TYPE_EXTENSIONS
@@ -91,34 +99,16 @@ public with sharing class TicketingHegeoUtil
     public static void setStatusSubstatusByCase(CanalUnicoUpdateVsegTicketRequest request, Case c)
     {
         request.ticket.ticketSubStatus = ZdaCuReqAvailTicketSubStatusValues__mdt.getInstance(SUBSTATUS_SIN)?.Value__c;
-        switch on c.Status
+        request.ticket.ticketStatus = caseStatusCuStatusRelationship.get(c.Status);
+        if (request.ticket.ticketStatus == null)
         {
-            when  'Nuevo'
+            //Pendiente informacion (Pendiente soporte o supervisor)
+            request.ticket.ticketStatus = ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_PENDIENTE_INFO)?.Value__c;
+            if (c.PendingBy__c == CaseUtil.CASE_PENDIENTE_SOPORTE || c.PendingBy__c == CaseUtil.CASE_PENDIENTE_SUPERVISOR)
             {
-                //Pendiente
-                request.ticket.ticketStatus = ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_PENDIENTE)?.Value__c;
+                request.ticket.ticketSubStatus = ZdaCuReqAvailTicketSubStatusValues__mdt.getInstance(SUBSTATUS_ESPECIALISTA)?.Value__c;
             }
-            when  'Asignado', 'Respondido'
-            {
-                //En tramitacion
-                request.ticket.ticketStatus = ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_TRAMITACION)?.Value__c;
-            }
-            when  'Cerrado'
-            {
-                //De momento no podemos mirar motivos de cierre, estan por definir
-                //Cerrado (no hay desestimado por el momento)
-                request.ticket.ticketStatus = ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_CERRADO)?.Value__c;
-            }
-            when else
-            {
-                //Pendiente informacion (Pendiente soporte o supervisor)
-                request.ticket.ticketStatus = ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_PENDIENTE_INFO)?.Value__c;
-                if (c.PendingBy__c == CaseUtil.PENDING_BY_SUPPORT || c.PendingBy__c == CaseUtil.PENDING_BY_SUPERVISOR)
-                {
-                    request.ticket.ticketSubStatus = ZdaCuReqAvailTicketSubStatusValues__mdt.getInstance(SUBSTATUS_ESPECIALISTA)?.Value__c;
-                }
-                request.ticket.subStatusDesc = STR_PENDIENTE_DE+c.PendingBy__c;
-            }
+            request.ticket.subStatusDesc = STR_PENDIENTE_DE+c.PendingBy__c;
         }
         
     }

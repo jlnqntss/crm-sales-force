@@ -14,11 +14,14 @@ public with sharing class CaseUtil
     public static final String queryDays ='365';
     public static final String afirmativo = 'Si';
     public static final String estadoCerrado= 'Cerrado';
+    public static final String CASE_NUEVO = 'Nuevo';
     public static final String CASE_NO_INICIADO = 'No iniciado';
     public static final String CASE_EN_GESTION = 'En gestión';
     public static final String CASE_ASIGNADO = 'Asignado';
     public static final String CASE_RESPONDIDO = 'Respondido';
     public static final String CASE_PENDIENTE = 'Pendiente';
+    public static final String CASE_PENDIENTE_SOPORTE = 'Support';
+    public static final String CASE_PENDIENTE_SUPERVISOR = 'Supervisor';
     public static final String CASE_PENDIENTE_PARTNER = 'Partner';
     public static final String CASE_CLOSED_LOST = 'Cerrado Perdido';
     public static final String CASE_CLOSED_WON = 'Cerrado Ganado';
@@ -44,8 +47,6 @@ public with sharing class CaseUtil
     public static final String BLANK_SPACE = ' ';
     public static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
     public static final String ORIGIN_WEB = 'Web';
-    public static final String PENDING_BY_SUPPORT = 'Support';
-    public static final String PENDING_BY_SUPERVISOR = 'Supervisor';
 
     private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
 
