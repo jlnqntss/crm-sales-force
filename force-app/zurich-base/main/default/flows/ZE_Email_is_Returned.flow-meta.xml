@@ -134,6 +134,14 @@
         <connector>
             <targetReference>Ha_sido_entregado</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Blocked__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
         <object>EmailMessage</object>
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>

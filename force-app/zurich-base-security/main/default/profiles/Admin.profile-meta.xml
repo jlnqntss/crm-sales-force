@@ -3855,10 +3855,14 @@
         <field>Account.Category_Version__c</field>
         <readable>true</readable>
     </fieldPermissions>
-
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.ExceptionLetterRefuse__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IsAccountZDA__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3884,6 +3888,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Segmento_Imagen__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SuscriptorDyO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SuscriptorPymes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SuscriptorRC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6567,6 +6586,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.GenesysID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.GoogleAddress__c</field>
         <readable>true</readable>
@@ -6712,6 +6736,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.LinkIdGenesys__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.MasterClaimNo__c</field>
         <readable>true</readable>
@@ -6814,6 +6843,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Policy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.PrePolicy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16498,6 +16532,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>PlanComercial__c.Zone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Competitor__c.Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

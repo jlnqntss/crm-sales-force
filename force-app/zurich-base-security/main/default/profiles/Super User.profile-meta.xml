@@ -1675,6 +1675,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.IsAccountZDA__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.Potential_Broker__c</field>
         <readable>true</readable>
@@ -2882,6 +2887,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Succession__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SuscriptorDyO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SuscriptorPymes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SuscriptorRC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4330,6 +4350,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.GenesysID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.GoogleAddress__c</field>
         <readable>true</readable>
@@ -4472,6 +4497,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.LegalEntity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.LinkIdGenesys__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5167,6 +5197,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.PolicyEndDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.PrePolicy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11221,6 +11256,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>purecloud__PureCloud_Queue__c.purecloud__PureCloud_Division_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Competitor__c.Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

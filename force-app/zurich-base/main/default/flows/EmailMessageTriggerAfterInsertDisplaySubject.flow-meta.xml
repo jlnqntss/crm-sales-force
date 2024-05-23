@@ -31,6 +31,13 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>DisplaySubjectAction</targetReference>
             </connector>
@@ -131,6 +138,16 @@
     <textTemplates>
         <name>textHTML</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>{!$Record.Subject} &lt;p&gt;{!$Record.HtmlBody}&lt;/p&gt;</text>
+        <text>{!InfoCaso}{!$Record.Parent.CaseNumber}&lt;p&gt;{!$Record.Subject}&lt;/p&gt; &lt;p&gt;{!$Record.HtmlBody}&lt;/p&gt;</text>
     </textTemplates>
+    <variables>
+        <name>InfoCaso</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Caso:</stringValue>
+        </value>
+    </variables>
 </Flow>

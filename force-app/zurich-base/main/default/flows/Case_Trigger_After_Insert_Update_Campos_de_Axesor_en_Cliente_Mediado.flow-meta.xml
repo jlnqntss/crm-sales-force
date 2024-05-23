@@ -684,7 +684,7 @@ LPAD({!$Record.RobotCompanyActivityCnaeCode__c}, 5, &apos;0&apos;),
                  ISCHANGED({!$Record.CIFNIF__c}),
                 NOT(ISNULL({!$Record.MediatedCustomer__c})),
 	        NOT(ISNULL({!$Record.RobotNif__c}))
-	)&amp;&amp; {!$Record.RecordType.DeveloperName}==&apos;USPInquiry&apos; &amp;&amp; NOT(ISPICKVAL({!$Record.Status},&apos;Cerrado&apos;)) &amp;&amp;NOT(ISPICKVAL({!$Record.Status},&apos;Combinado&apos;)) )
+	)&amp;&amp; NOT(ISCHANGED({!$Record.CloseInteractionBatch__c}))&amp;&amp; {!$Record.RecordType.DeveloperName}==&apos;USPInquiry&apos; &amp;&amp; NOT(ISPICKVAL({!$Record.Status},&apos;Cerrado&apos;)) &amp;&amp;NOT(ISPICKVAL({!$Record.Status},&apos;Combinado&apos;)) )
 )</filterFormula>
         <object>Case</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>

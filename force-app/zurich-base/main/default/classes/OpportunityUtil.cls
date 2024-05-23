@@ -12,6 +12,7 @@ public with sharing class OpportunityUtil
     private static final String FIELD_OWNER_ID = 'OwnerId';
     private static final String FIELD_STAGE = 'StageName';
     private static final String CLASS_NAME = 'OpportunityUtil';
+    private static final string ZDA_SCOPE = 'ZDA'; 
     
     // #endregion
 
@@ -22,6 +23,7 @@ public with sharing class OpportunityUtil
     public static Map<Id, String> mapOldAccountRecordTypes; //Mapa de Accounts con sus respectivos RecordType.DeveloperName
     public static Map<Id, User> listaUsuarios; //Mapa de usuarios especiales a los que se les permite bypasear ciertas reglas de validación
     public static Map<String, String> mapBusinessCodes; // Mapa que va a contener la relación entre los Business codes y los scopes de las Ofertas
+    public static List<Account> accountsToMarkClientZDA = new List<Account>();
 
     // #endregion
 
@@ -552,6 +554,74 @@ public with sharing class OpportunityUtil
                  (String.isBlank(newOpportunity.BusinessCode__c) || mapBusinessCodes?.get(newOpportunity.BusinessCode__c) == 'Ventas') )
             {
                 newOpportunity.PotentialMatch__c = true;
+            }
+        }
+    }
+
+    /**
+    * @description Método que obtiene las cuentas para marcar a true que una cuenta es de ZDA 
+    * en caso de que la oportunidad pertenezca a ZDA.Es decir, que su business code sea de ZDA. 
+    *
+    * @author aberuete
+    * @date 16-05-2024 
+    * @param List<Opportunity> newOpportunities : Lista de oportunidades que van a ser insertadas o actualizas
+    **/
+    public static void getAccountsZDA(List<Opportunity> newOpportunities)
+    {
+        Set<String> accountsRelatedToOffersZDA = new Set<String> ();
+
+        for (Opportunity newOpportunity : newOpportunities)
+        {
+            if (newOpportunity.AccountId != null && newOpportunity.BusinessCode__c != null && mapBusinessCodes?.get(newOpportunity.BusinessCode__c) == (ZDA_SCOPE))
+            {
+                accountsRelatedToOffersZDA.add(newOpportunity.AccountId); 
+            }
+        }
+
+        List<Account> accountsToUpdate = new AccountsSelector().selectByIdAndAccountZDA(accountsRelatedToOffersZDA, false);
+        
+        for (Account account : accountsToUpdate)
+        {
+            account.IsAccountZDA__c = true;
+            accountsToMarkClientZDA.add(account);
+        }
+    }
+
+    /**
+    * @description Método que actualiza las cuentas para marcar a true que una cuenta es de ZDA 
+    * en caso de que la oportunidad pertenezca a ZDA.Es decir, que su business code sea de ZDA. 
+    *
+    * @author aberuete
+    * @date 16-05-2024 
+    **/
+    public static void updateAccountsToMarkAccountZDA()
+    {
+        List<String> msgErrores = new List<String>();
+
+        if( !accountsToMarkClientZDA.isEmpty() )
+        {
+            try
+            {
+                Database.SaveResult [] resultList = Database.update(accountsToMarkClientZDA, false);
+
+                for (Database.SaveResult result: resultList )
+                {
+                    if( !result.isSuccess() )
+                    {
+                        for ( Database.Error error :result.getErrors() )
+                        {
+                            msgErrores.add( error.getStatusCode() + ': ' + error.getMessage() );
+                        }
+                    }
+                }
+                if ( !msgErrores.isEmpty() )
+                {
+                    ErrorLogUtil.commitError( ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando las cuentas relacionadas con las oportunidades',OpportunityUtil.class.getName(),( String.join(msgErrores,'\n') ) );
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorLogUtil.commitError( e, OpportunityUtil.class.getName() );
             }
         }
     }
