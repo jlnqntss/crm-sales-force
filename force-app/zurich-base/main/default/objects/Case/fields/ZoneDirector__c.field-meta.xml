@@ -2,6 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ZoneDirector__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>Campo para introducir el director de zona de la cuenta relacionada</description>
     <externalId>false</externalId>
     <label>Zone director</label>
     <referenceTo>User</referenceTo>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>UsedTools__c</fullName>
+    <description>Indica las herramientas usadas para resolver una tarea representada por un caso de tipo mejora</description>
     <externalId>false</externalId>
     <label>Used tools</label>
     <required>false</required>
