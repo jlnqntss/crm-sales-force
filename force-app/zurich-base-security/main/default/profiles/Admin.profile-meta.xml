@@ -10261,6 +10261,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ZDAUpdateRequestTimeFormat__mdt.Format__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>IBADocument__c.DocumentDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -17160,6 +17165,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZdaCuReqAvailableEventReasonValues__mdt-ZDA CU Req available eventReason value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>FollowUp__c-Follow Up Layout</layout>

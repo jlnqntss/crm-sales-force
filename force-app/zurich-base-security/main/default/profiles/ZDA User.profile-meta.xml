@@ -4903,6 +4903,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ZDAUpdateRequestTimeFormat__mdt.Format__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Objective__c.Active__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -5372,6 +5377,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZdaCuReqAvailableEventReasonValues__mdt-ZDA CU Req available eventReason value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ForumOriginAssignment__mdt-Forum Origin Assignment Layout</layout>

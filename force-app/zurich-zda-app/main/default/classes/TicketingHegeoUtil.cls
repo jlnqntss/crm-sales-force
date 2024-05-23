@@ -7,7 +7,21 @@
 public with sharing class TicketingHegeoUtil
 {
     //formateador para las fechas que se envian por el servicio
-    public static final String DATE_TIME_FORMATTER = 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'';
+    public static final String DATE_TIME_FORMATTER
+    {
+        get
+        {
+            if (DATE_TIME_FORMATTER == null)
+            {
+                List<ZDAUpdateRequestTimeFormat__mdt> availableList = ZDAUpdateRequestTimeFormat__mdt.getAll().values();
+                DATE_TIME_FORMATTER = availableList[0].Format__c;
+                
+            }
+            return DATE_TIME_FORMATTER;
+        }
+        set;
+    }
+
     private static final String STATUS_PENDIENTE = 'Pendiente';
     private static final String STATUS_TRAMITACION = 'EnTramitacion';
     private static final String STATUS_CERRADO = 'TramitadoFinalizado';

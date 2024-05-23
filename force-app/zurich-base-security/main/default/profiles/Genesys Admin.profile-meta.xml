@@ -7973,6 +7973,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>ZDAUpdateRequestTimeFormat__mdt.Format__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>GenerateScopeEvent__e.AccountId__c</field>
         <readable>false</readable>
@@ -13716,6 +13721,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZdaCuReqAvailableEventReasonValues__mdt-ZDA CU Req available eventReason value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Global-Global Layout</layout>
