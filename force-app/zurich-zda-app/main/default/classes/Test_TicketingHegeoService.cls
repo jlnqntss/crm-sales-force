@@ -189,7 +189,7 @@ private with sharing class Test_TicketingHegeoService
         ticket.event = '1';
         ticket.ticketStatus = '1';
         ticket.ticketSubStatus = '0';
-        ticket.eventReason = 1;
+        ticket.eventReason = '1';
         ticket.estimatedEndDate = DateTime.now();
 
         CanalUnicoUpdateVsegTicketRequest request = new CanalUnicoUpdateVsegTicketRequest();

@@ -11,6 +11,8 @@ public with sharing class SendDocCanalUnicoAction
     private static final String V_SHARE_TYPE = 'V';
     private static final String ALL_USERS_VISIBILITY = 'AllUsers';
     private static final String KO = 'KO';
+    private static final String EVENT_PETICION_INFO = 'PeticionInfo';
+    private static final String EVENT_REASON_OTROS = 'MRPOtros';
 
     @InvocableMethod(
         label='Send documentation'
@@ -58,9 +60,9 @@ public with sharing class SendDocCanalUnicoAction
         calloutRequest.ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
         calloutRequest.ticket.ticketId = relatedCase.CuTicketId__c;
         calloutRequest.ticket.externalTicketId = '' + relatedCase.CaseNumber;
-        calloutRequest.ticket.event = '4'; //envio de documentacion, siempre 4
+        calloutRequest.ticket.event = ZdaCuRequestAvailableEventValues__mdt.getInstance(EVENT_PETICION_INFO)?.Value__c; //envio de documentacion, siempre 4
         calloutRequest.ticket.agent = relatedCase.Owner.Name;
-        calloutRequest.ticket.eventReason = 2; //OBLIGATORIO
+        calloutRequest.ticket.eventReason = ZdaCuReqAvailableEventReasonValues__mdt.getInstance(EVENT_REASON_OTROS)?.Value__c; //OBLIGATORIO
         if ( String.isNotBlank(comments) )
         {
             calloutRequest.ticket.eventDesc = comments;

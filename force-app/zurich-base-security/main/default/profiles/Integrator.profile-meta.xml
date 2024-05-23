@@ -9131,22 +9131,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>ZdaCuRequestAvailableEventValues__mdt.Description__c</field>
+        <field>ZdaCuRequestAvailableEventValues__mdt.Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>ZdaCuReqAvailableTicketStatusValues__mdt.Description__c</field>
+        <field>ZdaCuReqAvailableTicketStatusValues__mdt.Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>ZdaCuReqAvailTicketSubStatusValues__mdt.Description__c</field>
+        <field>ZdaCuReqAvailTicketSubStatusValues__mdt.Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>ZdaCuReqAvailPaymentTypeValues__mdt.Description__c</field>
+        <field>ZdaCuReqAvailPaymentTypeValues__mdt.Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ZdaCuReqAvailableEventReasonValues__mdt.Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16427,6 +16432,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZdaCuReqAvailPaymentTypeValues__mdt-ZDA CU Req available payment type value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailableEventReasonValues__mdt-ZDA CU Req available eventReason value Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>FollowUp__c-Follow Up Layout</layout>

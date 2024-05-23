@@ -46,7 +46,7 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         Boolean reqEventNullThrown = false;
         //Valor invalido event
         CanalUnicoUpdateVsegTicketRequest reqEventInvalid = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqEventInvalid.ticket.event = '55';
+        reqEventInvalid.ticket.event = '550';
         Boolean reqEventInvalidThrown = false;
         //Valor nulo ticketStatus
         CanalUnicoUpdateVsegTicketRequest reqTicketStatusNull = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
@@ -54,7 +54,7 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         Boolean reqTicketStatusNullThrown = false;
         //Valor invalido ticketStatus
         CanalUnicoUpdateVsegTicketRequest reqTicketStatusInvalid = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqTicketStatusInvalid.ticket.ticketStatus = '55';
+        reqTicketStatusInvalid.ticket.ticketStatus = '66';
         Boolean reqTicketStatusInvalidThrown = false;
         //Valor nulo ticketSubStatus
         CanalUnicoUpdateVsegTicketRequest reqTicketSubStatusNull = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
@@ -62,8 +62,12 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         Boolean reqTicketSubStatusNullThrown = false;
         //Valor invalido ticketSubStatus
         CanalUnicoUpdateVsegTicketRequest reqTicketSubStatusInvalid = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqTicketSubStatusInvalid.ticket.ticketSubStatus = '55';
+        reqTicketSubStatusInvalid.ticket.ticketSubStatus = '66';
         Boolean reqTicketSubStatusInvalidThrown = false;
+        //Valor invalido eventReason
+        CanalUnicoUpdateVsegTicketRequest reqTicketEventReasonInvalid = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
+        reqTicketEventReasonInvalid.ticket.eventReason = '88';
+        Boolean reqTicketEventReasonInvalidThrown = false;
 
         Test.startTest();
         reqEventNullThrown = Test_CanalUnicoUpdateVsegTicketRequest.isExceptionOnBuild(reqEventNull);
@@ -72,6 +76,7 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         reqTicketStatusInvalidThrown = Test_CanalUnicoUpdateVsegTicketRequest.isExceptionOnBuild(reqTicketStatusInvalid);
         reqTicketSubStatusNullThrown = Test_CanalUnicoUpdateVsegTicketRequest.isExceptionOnBuild(reqTicketSubStatusNull);
         reqTicketSubStatusInvalidThrown = Test_CanalUnicoUpdateVsegTicketRequest.isExceptionOnBuild(reqTicketSubStatusInvalid);
+        reqTicketEventReasonInvalidThrown = Test_CanalUnicoUpdateVsegTicketRequest.isExceptionOnBuild(reqTicketEventReasonInvalid);
         Test.stopTest();
 
         Assert.isTrue(reqEventNullThrown, 'Se deberia haber lanzado una excepcion de event null');
@@ -80,6 +85,7 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         Assert.isTrue(reqTicketStatusInvalidThrown, 'Se deberia haber lanzado una excepcion de ticket status invalido');
         Assert.isTrue(reqTicketSubStatusNullThrown, 'Se deberia haber lanzado una excepcion de ticket substatus null');
         Assert.isTrue(reqTicketSubStatusInvalidThrown, 'Se deberia haber lanzado una excepcion de ticket substatus invalido');
+        Assert.isTrue(reqTicketEventReasonInvalidThrown, 'Se deberia haber lanzado una excepcion de ticket eventReason invalido');
     }
 
     /**
@@ -160,7 +166,7 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
         ticket.subStatusDesc = 'SubStatus Description';
         ticket.agent = 'Test Agent';
         ticket.eventDate = DateTime.now();
-        ticket.eventReason = 1;
+        ticket.eventReason = '1';
         ticket.eventDesc = 'Test Event Description';
         ticket.comments = 'Test Comments';
 

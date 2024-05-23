@@ -20,7 +20,7 @@ public class CanalUnicoUpdateVsegTicketRequest
                 availableEventValues = new Set<String>();
                 for (ZdaCuRequestAvailableEventValues__mdt availableValue : availableList)
                 {
-                    availableEventValues.add(availableValue.Label);
+                    availableEventValues.add(availableValue.Value__c);
                 }
             }
             return availableEventValues;
@@ -38,7 +38,7 @@ public class CanalUnicoUpdateVsegTicketRequest
                 availableTicketStatusValues = new Set<String>();
                 for (ZdaCuReqAvailableTicketStatusValues__mdt availableValue : availableList)
                 {
-                    availableTicketStatusValues.add(availableValue.Label);
+                    availableTicketStatusValues.add(availableValue.Value__c);
                 }
             }
             return availableTicketStatusValues;
@@ -56,7 +56,7 @@ public class CanalUnicoUpdateVsegTicketRequest
                 availableTicketSubStatusValues = new Set<String>();
                 for (ZdaCuReqAvailTicketSubStatusValues__mdt availableValue : availableList)
                 {
-                    availableTicketSubStatusValues.add(availableValue.Label);
+                    availableTicketSubStatusValues.add(availableValue.Value__c);
                 }
             }
             return availableTicketSubStatusValues;
@@ -74,10 +74,28 @@ public class CanalUnicoUpdateVsegTicketRequest
                 availablePaymentTypeValues = new Set<String>();
                 for (ZdaCuReqAvailPaymentTypeValues__mdt availableValue : availableList)
                 {
-                    availablePaymentTypeValues.add(availableValue.Label);
+                    availablePaymentTypeValues.add(availableValue.Value__c);
                 }
             }
             return availablePaymentTypeValues;
+        }
+        set;
+    }
+    //Para la validacion del campo eventReason del ticket NO DEL QUOTE
+    private static Set<String> availableTicketEventReasonValues
+    {
+        get
+        {
+            if (availableTicketEventReasonValues == null)
+            {
+                List<ZdaCuReqAvailableEventReasonValues__mdt> availableList = ZdaCuReqAvailableEventReasonValues__mdt.getAll().values();
+                availableTicketEventReasonValues = new Set<String>();
+                for (ZdaCuReqAvailableEventReasonValues__mdt availableValue : availableList)
+                {
+                    availableTicketEventReasonValues.add(availableValue.Value__c);
+                }
+            }
+            return availableTicketEventReasonValues;
         }
         set;
     }
@@ -91,6 +109,7 @@ public class CanalUnicoUpdateVsegTicketRequest
     private static final String FIELD_EVENT = 'event';
     private static final String FIELD_TICKET_STATUS = 'ticketStatus';
     private static final String FIELD_TICKET_SUBSTATUS = 'ticketSubStatus';
+    private static final String FIELD_TICKET_EVENT_REASON = 'eventReason';
     private static final String FIELD_PAYMENT_TYPE = 'paymentType';
     private static final String FIELD_DURATION = 'duration';
     private static final String FIELD_ANUAL_NET_PREMIUM = 'anualNetPremium';
@@ -215,7 +234,7 @@ public class CanalUnicoUpdateVsegTicketRequest
          * 2 - MRPOtros
          * 3 - MPI_PetInfo
          */
-        public Integer eventReason;
+        public String eventReason;
         /**
          * Descripción del evento o cambio de situación
          *
@@ -293,6 +312,11 @@ public class CanalUnicoUpdateVsegTicketRequest
             if ( ticketSubStatus == null || !availableTicketSubStatusValues.contains(ticketSubStatus) )
             {
                 throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace( FIELD_VALUE_PLACEHOLDER, (ticketSubStatus != null ? ticketSubStatus : STR_NULL) ).replace(FIELD_NAME_PLACEHOLDER, FIELD_TICKET_SUBSTATUS) );
+            }
+            if ( eventReason != null && !availableTicketEventReasonValues.contains(eventReason) )
+            {
+                //Si el eventReason esta informado se comprueba que su valor sea valido
+                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace( FIELD_VALUE_PLACEHOLDER, eventReason ).replace(FIELD_NAME_PLACEHOLDER, FIELD_TICKET_EVENT_REASON) );
             }
             String req = '<v1:ticket>';
             req += '<v1:ticketId>' + ticketId + '</v1:ticketId>';
