@@ -16944,6 +16944,10 @@
         <layout>CampaignMember-Campaign Member Page Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Equipos Mercado</layout>
+        <recordType>Case.SDMMarketTeamRequests</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Default OCS</layout>
         <recordType>Case.OCSInquiry</recordType>
     </layoutAssignments>

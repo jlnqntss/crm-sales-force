@@ -11935,6 +11935,10 @@
         <layout>CampaignMemberStatus-Campaign Member Status Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Case Case Equipos Mercado</layout>
+        <recordType>Case.SDMMarketTeamRequests</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Case Default EON</layout>
         <recordType>Case.USPInquiry</recordType>
     </layoutAssignments>

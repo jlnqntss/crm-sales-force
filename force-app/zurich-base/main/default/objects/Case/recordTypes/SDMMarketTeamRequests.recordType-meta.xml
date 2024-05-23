@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Equipos_de_mercado</fullName>
+    <fullName>SDMMarketTeamRequests</fullName>
     <active>true</active>
     <businessProcess>Consulta</businessProcess>
     <description>Tipo de registro para peticiones y consultas de los equipos de mercado</description>
-    <label>Equipos de mercado</label>
+    <label>SDM Market Team Requests</label>
     <picklistValues>
         <picklist>Action__c</picklist>
         <values>
