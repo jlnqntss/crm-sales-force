@@ -2286,7 +2286,7 @@
         <recordType>Task.Interaction</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Case Case Equipos Mercado</layout>
+        <layout>Case-Case Equipos Mercado</layout>
         <recordType>Case.SDMMarketTeamRequests</recordType>
     </layoutAssignments>
     <layoutAssignments>
