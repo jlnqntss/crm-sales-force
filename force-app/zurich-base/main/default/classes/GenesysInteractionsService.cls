@@ -572,41 +572,51 @@ public with sharing class GenesysInteractionsService
         }
 
         //20210804: Estadísticas/Informes
-        results.noIdentified = getStatistics(accounts.size(), 'identified');
-        results.identifiedByANI = getStatistics(accounts.size(), 'phone');
-        results.multiIdentifiedByANI = getStatistics(accounts.size(), 'phone');
-        results.identifiedByNIF = getStatistics(accounts.size(), 'document');
-        results.multiIdentifiedByNIF = getStatistics(accounts.size(), 'document');
+        results = getSearchResultStatistics(request, results, accounts);
 
         return results;
     }
 
-    /*
-    */
-    private boolean getStatistics (Integer size, String statisticName)
+    /**
+     * Generación de estadísticas
+     *
+     * @author jfherrero
+     * @date 22-05-2024
+     * @param {SearchRequest} request Búsqueda realizada
+     * @param {SearchResult} results Resultados devueltos por la búsqueda
+     * @param {List<Account>} accounts Accounts encontrados para la búsqueda
+     * @return {SearchResult} Resultados devueltos por la búsqueda con estadísticas informadas
+     */
+    public static SearchResult getSearchResultStatistics (SearchRequest request, SearchResult results, List<Account> accounts)
     {
-        if(accounts.size() == 0 && searchType == 'identified')
+        if(accounts.size() == 0)
         {
-            return true;
+            results.noIdentified = true;
         }
-        else if(accounts.size() == 1 && searchType == 'phone')
+        else if(request.searchType == 'phone')
         {
-            return true;
+            if (accounts.size() == 1)
+            {
+                results.identifiedByANI = true;
+            }
+            else if (accounts.size() > 1)
+            {
+                results.multiIdentifiedByANI = true;
+            }
         }
-        else if(accounts.size() > 1 && searchType == 'phone')
+        else if(request.searchType == 'document')
         {
-            return true;
-        }
-        else if(accounts.size() == 1 && searchType == 'document')
-        {
-            return true;
-        }
-        else if(accounts.size() > 1 && searchType == 'document')
-        {
-            return true;
+            if (accounts.size() == 1)
+            {
+                results.identifiedByNIF = true;
+            }
+            else if (accounts.size() > 1)
+            {
+                results.multiIdentifiedByNIF = true;
+            }
         }
 
-        return false;
+        return results;
     }
 
 
