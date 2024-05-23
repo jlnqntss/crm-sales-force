@@ -7,6 +7,10 @@
  **/
 public with sharing class TaskUtil
 {
+
+    @testvisible
+    private static final Id uspRecordTypeId = CaseUtil.RT_ID_USPINQUIRY;
+    
     /**
      * Método que marca la tarea para que sea pública para los usuarios de la comunidad
      * en caso de que el owner sea un usuario de la comunidad de ocs
@@ -60,5 +64,43 @@ public with sharing class TaskUtil
         }
 
         return result;
+    }
+
+
+    /**
+     * Método que informa en el caso el Id Genesys 
+     *
+     * @author LRODRIGUEZ
+     * @date 14/05/2024
+     *
+     * @param List<Task> newList : Lista de tareas a actualizar
+     */
+    public static void checkIdGenesys(List<Task> newList) {
+
+
+        Set<String> taskId = new Set<String>();
+        Map<Id, String> mapaGenesys = new Map<Id, String>();
+
+
+        for(Task newEmail:newList)
+        {
+            if(newEmail.CallObject!=null)
+            {
+                taskId.add(newEmail.WhatId); 
+                mapaGenesys.put(newEmail.WhatId,newEmail.CallObject);
+            }
+        }
+
+        List<Case> casesToUpdate = new CasesSelector().findByIdControlCC(taskId);
+
+        for (Case relatedCase:casesToUpdate)
+        {
+            if(relatedCase.RecordTypeId==uspRecordTypeId)
+            relatedCase.GenesysID__c=mapaGenesys.get(relatedCase.Id);
+        }
+
+        update casesToUpdate;
+
+        
     }
 }

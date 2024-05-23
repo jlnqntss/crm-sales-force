@@ -14,8 +14,12 @@ public with sharing class CaseUtil
     public static final String queryDays ='365';
     public static final String afirmativo = 'Si';
     public static final String estadoCerrado= 'Cerrado';
-    public static final String CASE_NO_INICIADO = 'No iniciado'; 
-    public static final String CASE_EN_GESTION = 'En gestión'; 
+    public static final String CASE_NO_INICIADO = 'No iniciado';
+    public static final String CASE_EN_GESTION = 'En gestión';
+    public static final String CASE_ASIGNADO = 'Asignado';
+    public static final String CASE_RESPONDIDO = 'Respondido';
+    public static final String CASE_PENDIENTE = 'Pendiente';
+    public static final String CASE_PENDIENTE_PARTNER = 'Partner';
     public static final String CASE_CLOSED_LOST = 'Cerrado Perdido';
     public static final String CASE_CLOSED_WON = 'Cerrado Ganado';
     public static final String CASE_CAUSE_OF_LOSS_PERIOD_ENDED = 'Periodo Finalizado';
@@ -34,6 +38,12 @@ public with sharing class CaseUtil
     public static final String SPRINKLR_TYPE_MARCA = 'Marca (No info provided)';
     public static final String SPRINKLR_TYPE_ASISTENCIA = 'Asistencia (Information/ Contact)';
     public static final String SPRINKLR_TYPE_SINIESTROS = 'Siniestros (Claims)';
+    public static final String ZDA_REASON_RECHAZAR = '1';
+    public static final String ZDA_REASON_DESESTIMAR = '2';
+    public static final String ZDA_REASON_RESPUESTA_SOPORTE = '3';
+    public static final String BLANK_SPACE = ' ';
+    public static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
+    public static final String ORIGIN_WEB = 'Web';
 
     private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
 
@@ -538,8 +548,7 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if((caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich') 
-                || (caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.SuppliedEmail)))
+                if(caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich') 
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
                     //Utilizar el email del SuppliedEmail
@@ -1151,7 +1160,7 @@ public with sharing class CaseUtil
         Set<String> emailsToSearch = new Set<String>();
         for(Case insertedCase : insertedCases)
         {
-            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
             {
                 emailsToSearch.add(insertedCase.SuppliedEmail);
             }
@@ -1174,7 +1183,7 @@ public with sharing class CaseUtil
         List<Account> emailAccounts;
         for(Case insertedCase : insertedCases)
         {
-            if(insertedCase.RecordTypeId == RT_ID_ZDA && 'CanalUnico'.equals(insertedCase.Origin) && insertedCase.SuppliedEmail != null)
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.SuppliedEmail != null)
             {
                 emailAccounts = accByEmail?.get(insertedCase.SuppliedEmail);
                 if (emailAccounts != null && emailAccounts.size() == 1)
@@ -1989,6 +1998,72 @@ public with sharing class CaseUtil
                 caso.addError(Label.CaseZRMOpenedCase + ' ' + notClosedCaseByPolicyIdMap.get(caso.PolicyId__c).CaseNumber);
             }
         }
+    }
+
+    /**
+     * Actualiza el status de los casos de ZDA cuando cambie el campo ReasonId__c. Esto ocurre cuando
+     * actualizan un caso via estandar API
+     *
+     * @author mario.navarro@seidor.com
+     * @date 14/05/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void preProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        for(Case updatedCase : updatedCases)
+        {
+            if ( updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.ReasonId__c != oldMap.get(updatedCase.Id).ReasonId__c &&
+                 (updatedCase.ReasonId__c == ZDA_REASON_RECHAZAR || updatedCase.ReasonId__c == ZDA_REASON_DESESTIMAR) )
+            {
+                //Es un caso de ZDA que cambia el ReasonId__c y pasa a ser rechazado o desestimado. Cerramos el caso
+                updatedCase.Status = estadoCerrado;
+                updatedCase.PendingBy__c = null;
+            }
+            else if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
+            {
+                updatedCase.Status = CASE_RESPONDIDO;
+                updatedCase.PendingBy__c = null;
+            }
+        }
+    }
+
+    /**
+     * Realiza las acciones necesarias (post-update) para los casos de ZDA cuando cambie el campo ReasonId__c. Esto ocurre cuando
+     * actualizan un caso via estandar API
+     *
+     * @author mario.navarro@seidor.com
+     * @date 14/05/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void postProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        Notification notif = new Notification(Notification.notificationType.CaseTrackingAnswered);
+        String content;
+        for(Case updatedCase : updatedCases)
+        {
+            if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
+            {
+                content = Label.ZDAPartnerSupportAnsweredBody + BLANK_SPACE + updatedCase.CaseNumber;
+                //si han contestado una peticion de soporte, se le notifica al propietario del caso
+                notif.send(updatedCase.Id, new Set<String> {updatedCase.OwnerId}, Label.ZDAPartnerSupportAnsweredTitle, content);
+            }
+        }
+    }
+
+    /**
+     * Comprueba si el caso es de zda y el ReasonId__c pasa a ser respondido (3)
+     *
+     * @author mario.navarro@seidor.com
+     * @date 14/05/2024
+     * @param updatedCase caso actualizado
+     * @param oldCase caso antes de la actualizacion
+     * @return true si es un caso de ZDA, el ReasonId__c ha cambiado y pasa a ser 3; false en caso contrario
+     */
+    private static Boolean isZDANewReasonAnswered(Case updatedCase, Case oldCase)
+    {
+        return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.ReasonId__c != oldCase.ReasonId__c && updatedCase.ReasonId__c == ZDA_REASON_RESPUESTA_SOPORTE;
     }
 
     /**

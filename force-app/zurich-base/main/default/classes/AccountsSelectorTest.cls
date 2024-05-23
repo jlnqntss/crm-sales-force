@@ -984,4 +984,29 @@ private with sharing class AccountsSelectorTest
         Assert.isFalse( found.isEmpty() );
         Assert.areEqual(intermediaryAcc[0].Id, found[0].Id);
     }
+
+    /**
+     * Test del método que recupera las cuentas filtradas por id y el campo isAccountZDA
+     * @author aberuete
+     * @date 16/05/2024
+     */
+    @isTest
+    private static void test_selectByIdAndAccountZDA()
+    {
+        List<Account> listAccounts = [SELECT Id, IsAccountZDA__c FROM Account limit 2];
+        Assert.isFalse( listAccounts.isEmpty() ); 
+
+        Set<String> accountsIds = new Set<String>();
+        accountsIds.add(listAccounts[0].Id);
+        accountsIds.add(listAccounts[1].Id);
+
+        listAccounts[0].IsAccountZDA__c = true;
+        update listAccounts;
+
+        Test.startTest();
+        List<Account> accountsZDA = new AccountsSelector().selectByIdAndAccountZDA ( accountsIds, true);
+        Test.stopTest();
+
+        Assert.areEqual(1,accountsZDA.size(),'La lista devuelta no es correcta');
+    }
 }

@@ -1716,6 +1716,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Competitor__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Competitor__c.ContactDate__c</field>
         <readable>true</readable>
     </fieldPermissions>

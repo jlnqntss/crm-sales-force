@@ -6218,6 +6218,14 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
     <customLabels>
+        <label>Has recibido respuesta externa del caso:</label>
+        <name>ZDAPartnerSupportAnsweredBody</name>
+    </customLabels>
+    <customLabels>
+        <label>Petición respondida</label>
+        <name>ZDAPartnerSupportAnsweredTitle</name>
+    </customLabels>
+    <customLabels>
         <label>Archivos</label>
         <name>ZRM_FilesTitle</name>
     </customLabels>

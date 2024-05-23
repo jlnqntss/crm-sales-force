@@ -92,6 +92,7 @@ public class EmailMessageHandler implements ITrigger
     {
         emailMessagesUtil.checkIfMailOnlyInCc( (List<EmailMessage>) newList );
         emailMessagesUtil.checkMailCc( (List<EmailMessage>) newList );
+        emailMessagesUtil.checkIdGenesys( (List<EmailMessage>) newList );
 
     }
 
