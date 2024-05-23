@@ -908,6 +908,41 @@ public with sharing class EmailMessagesUtil
     }
 
     /**
+     * Determina si el email tiene la interacción de Genesys Informada 
+     * 
+     * @author lrodriguez
+     * @date 14/05/2024
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+    */
+    public void checkIdGenesys (List<EmailMessage> emailList)
+    {
+        Set<String> casesIds = new Set<String>();
+        Map<Id, String> mapaGenesys = new Map<Id, String>();
+
+        for(EmailMessage newEmail:emailList)
+        {
+            if(newEmail.GenesysInteractionId__c!=null)
+            {
+                casesIds.add(newEmail.RelatedToId); 
+                mapaGenesys.put(newEmail.RelatedToId,newEmail.GenesysInteractionId__c);
+            }
+        }
+
+        List<Case> casesToUpdate = new CasesSelector().findByIdControlCC(casesIds);
+
+        for (Case relatedCase:casesToUpdate)
+        {
+            if(relatedCase.RecordTypeId==uspRecordTypeId)
+            relatedCase.GenesysID__c=mapaGenesys.get(relatedCase.Id);
+        }
+
+        update casesToUpdate;
+        
+    }
+
+
+    /**
      * Devuelve los emails que tienen las los buzones indicados en CcAddress pero no en ToAddress
      * 
      * @author jfherrero

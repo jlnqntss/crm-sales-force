@@ -71,6 +71,8 @@ public class TaskHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
+        TaskUtil.checkIdGenesys( (List<Task>) newList );
+
     }
 
     /**

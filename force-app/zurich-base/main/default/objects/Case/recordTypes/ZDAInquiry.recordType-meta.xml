@@ -31,16 +31,8 @@
     <picklistValues>
         <picklist>CallCenter__c</picklist>
         <values>
-            <fullName>ZDA_Gestion_Cartera</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ZDA_MU_s</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ZDA_Soporte_Red</fullName>
-            <default>false</default>
+            <fullName>ZDA</fullName>
+            <default>true</default>
         </values>
     </picklistValues>
     <picklistValues>
@@ -597,171 +589,291 @@
     <picklistValues>
         <picklist>CloseResult__c</picklist>
         <values>
-            <fullName>Anulación - Desaparición riesgo</fullName>
+            <fullName>Ajuste oferta  presentada - Comparativa de pólizas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Anulación - Impago</fullName>
+            <fullName>Ajuste oferta  presentada - Con variación de datos tarificación y%2Fo cláusulas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Anulación - Saneamiento mal rendimiento</fullName>
+            <fullName>Ajuste oferta  presentada - Errores de la primera cotización</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Anulación - Saneamiento otros motivos</fullName>
+            <fullName>Ajuste oferta no presentado - Actividad excluida %2F no cumple política técnica %2F medidas de protección</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Anulación - Sin efecto</fullName>
+            <fullName>Ajuste oferta presentada - Con descuento adicional</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Anulación - Solicitud cliente</fullName>
+            <fullName>Anulaciones TXT</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Aprobada - Ajuste de precio</fullName>
+            <fullName>Anulación de poliza otros motivos</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Aprobada - Emisión Póliza</fullName>
+            <fullName>Anulación de poliza por mal rendimiento %2F agravación riesgo</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Aprobada - Modificación Capitales</fullName>
+            <fullName>Borrador presentado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Aprobada - Modificación Clausulado</fullName>
+            <fullName>Cambio de mediador realizado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Aprobada - Modificación Garantías</fullName>
+            <fullName>Cartera no generada</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Aprobada - Protecciones del riesgo</fullName>
+            <fullName>Carteras manuales</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Aprobada - Suplemento no económico</fullName>
+            <fullName>Certificado enviado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Caducada</fullName>
+            <fullName>Cliente sin posibilidad de propuesta de retención</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Declinada - Actividad</fullName>
+            <fullName>Comparativa no presentada - Falta documentación %2F  información %2F información incorrecta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Declinada - Medidas protección</fullName>
+            <fullName>Comparativa no presentada - Falta documentación %2F información</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Declinada - Precio</fullName>
+            <fullName>Comparativa presentada</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Denegada - Ajuste de precio</fullName>
+            <fullName>Comparativa presentada mas propuesta de descuento</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Denegada - Emisión Póliza</fullName>
+            <fullName>Consulta - Duda resuelta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Denegada - Modificación Capitales</fullName>
+            <fullName>Consulta - No corresponde a este departamento</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Denegada - Modificación Clausulado</fullName>
+            <fullName>Consulta de estatus de la póliza</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Denegada - Modificación Garantías</fullName>
+            <fullName>Consulta de información del recibo o pólizas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Denegada - Protecciones del riesgo</fullName>
+            <fullName>Consulta informe</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Denegada - Suplemento no económico</fullName>
+            <fullName>Cotización compleja que no debería entrar por urgente</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Derivado - Otras Áreas</fullName>
+            <fullName>Duda resuelta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Falta Respuesta Mediador</fullName>
+            <fullName>Duplicado de poliza enviado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Ganada</fullName>
+            <fullName>Encargo no realizado - Falta documentación %2F información</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No Realizado - Otros motivos</fullName>
+            <fullName>Encargo realizado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No Realizado USP</fullName>
+            <fullName>Falta información %2F información incorrecta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No realizado - Derivado otras áreas</fullName>
+            <fullName>GdC - Autorizada con modificaciones</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No realizado - No procede</fullName>
+            <fullName>GdC - Autorizada perfecta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No realizado - Otros</fullName>
+            <fullName>GdC - No autorizada</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No realizado - Rechazo técnico</fullName>
+            <fullName>GdC - No autorizada por falta de información %2F documentación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Perdida - Garantías</fullName>
+            <fullName>Informe recibido</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Perdida - Precio</fullName>
+            <fullName>No corresponde a este departamento</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Perdida - Tiempo respuesta</fullName>
+            <fullName>No emitida por falta de documentación%2Finformación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Realizado - Impacto en prima</fullName>
+            <fullName>No enviado - Falta documentación %2F información</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Realizado - Sin impacto en prima</fullName>
+            <fullName>No es nueva producción%2C se rechaza</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Realizado USP</fullName>
+            <fullName>No resuelto - Agravación de riesgo</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Redireccionado BOA</fullName>
+            <fullName>No resuelto - Falta documentación %2F información</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Redireccionado CI</fullName>
+            <fullName>No resuelto - Falta documentación %2F información %2F información incorrecta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Retención por Alto valor</fullName>
+            <fullName>No resuelto - Recibo bloqueado por cartera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no presentada - Actividad excluida %2F No cumple politica técnica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no presentada - Conocemos la prima de la competencia y vamos mal en precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no presentada - Falta documentación %2F información %2F información incorrecta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no presentada - Medidas protección</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no presentada - Otros motivos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no presentada - Petición duplicada %2F Estandar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no presentada - Poliza ya contratada %2F Saneada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta no presentada porque no corresponde a este departamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta presentada - Conocemos la prima de la competencia y vamos bien en precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta presentada - Conocemos la prima de la competencia y vamos mal en precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Oferta presentada - No tenemos información de la prima de la competencia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Petición duplicada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Poliza anulada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Poliza que no se recuperará</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Propuesta de descuento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Propuesta de oferta enviada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Propuesta de retención hecha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Póliza emitida</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rechazado por estar fuera de plazo para solicitarlo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recibo enviado al cobro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rehabilitación de póliza con efecto retroactivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rehabilitación de póliza hecha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Resolución enviada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retención emitida</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retención no aceptada por el cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Riesgo excluido o no cumple con los requisitos técnicos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Riesgo excluido%2C equifax o no cumple con los requisitos técnicos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Se podría hacer propuesta de retención</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Se propone hacer nueva póliza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suplemento emitido</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -1436,225 +1548,23 @@
     <picklistValues>
         <picklist>Subtype__c</picklist>
         <values>
-            <fullName>Anulación</fullName>
+            <fullName>Alta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cambio de intermediario</fullName>
+            <fullName>Cambio mediador</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Campaña</fullName>
+            <fullName>Características %2F Coberturas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Cotización</fullName>
+            <fullName>Certificado</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Devolución de recibo liquidado mediador</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Embargo Mediador</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Emisión</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Envíos %28Cliente%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Envíos %28Mediador%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Felicitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión Competencias</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión competencias %28Captación%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión de recibos</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencias %28Mediador%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Información</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Modificación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Modificación oferta</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Queja</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Reclamación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recobro indirecto</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recobro proactivo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Recobro reactivo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Reemplazo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Rehabilitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Revocación Saneamiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Saneamiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Seguimiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Sugerencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Tareas administrativas</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>Type</picklist>
-        <values>
-            <fullName>Campañas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión Cliente</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión Económica</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión Mediador</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión Servicios</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Tareas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Venta</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
-        <picklist>TypeN3__c</picklist>
-        <values>
-            <fullName>Anotación Embargo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Anulación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Bloqueo %2F Desbloqueo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Bloqueo usuario%2Fcontraseña</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio Idioma en póliza</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio Tomador</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio datos Riesgo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio de Actividad</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio de Riesgo</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio de Roles</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambio de intermediario</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Cambios intermediarios</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Campaña</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Capitales</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Certificados</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Clausulado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Comisiones</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Conductor</fullName>
+            <fullName>Comparativa</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1662,15 +1572,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Datos Bancarios</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Datos Personales</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Devolución</fullName>
+            <fullName>Diligencia de embargo</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1678,75 +1580,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Emisión</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Emisión de Factura Electrónica</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Envíos %28Mediador%29</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fallo activación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fallo registro NO identificado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fallo registro identificado</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Fechas</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Felicitación</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Firma digital</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Forma de Pago</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Garantías</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>General</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Gestión competencias</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Incidencias cartera</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Inconsistencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Información</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Infraseguro</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Levantamiento de Embargo</fullName>
+            <fullName>Gestión Competencias</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1754,59 +1588,113 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Modificación oferta</fullName>
+            <fullName>Otros trámites %2F Peticiones</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Multas</fullName>
+            <fullName>Recibos</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Navegación</fullName>
+            <fullName>Retención%2FCancelación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No definido</fullName>
+            <fullName>Verificación</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Cotización</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Oferta</fullName>
+            <fullName>Gestión Cartera</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TypeN3__c</picklist>
+        <values>
+            <fullName>Ajuste de cotización</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Pagos</fullName>
+            <fullName>Anulación</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Queja</fullName>
+            <fullName>Cambio de mediador</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Recibo</fullName>
+            <fullName>Cancelación%2FRetención %3E1%2E000%E2%82%AC ó mas de 3 pólizas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Reclamación</fullName>
+            <fullName>Características %2F Coberturas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Recobro indirecto</fullName>
+            <fullName>Certificado póliza</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Recobro proactivo</fullName>
+            <fullName>Comparativa %2F Descuento de pólizas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Recobro reactivo</fullName>
+            <fullName>Comparativa pólizas</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Reemplazo</fullName>
+            <fullName>Consulta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Regularización</fullName>
+            <fullName>Consulta %2F cobro %2F pago</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consulta sobre cotización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cotización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Devolución recibo liquidado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Diligencia de embargo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentación%2FListados%2FFicheros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Error de oficina en la contratación Desistimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gestión competencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Informe verificación</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Multicotización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quejas sobre venta%2C gestión%2C cancelación o renovación</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1814,39 +1702,31 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Renovación</fullName>
+            <fullName>Retención%2FCancelación%2FDesistimiento</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Renovación póliza</fullName>
+            <fullName>Solicitud Alta</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Retención</fullName>
+            <fullName>Solicitud de alta bolsa descuentos</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Revocación saneamiento</fullName>
+            <fullName>Suplemento económico</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Saneamiento</fullName>
+            <fullName>Suplemento no económico</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Seguimiento</fullName>
+            <fullName>Validación certificado de seguros transportes - Superdex</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Sugerencia</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Suscripción</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Zona Zurich</fullName>
+            <fullName>Verificación Comunidades encargo</fullName>
             <default>false</default>
         </values>
     </picklistValues>
