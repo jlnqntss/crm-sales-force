@@ -6226,6 +6226,30 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDAPartnerSupportAnsweredTitle</name>
     </customLabels>
     <customLabels>
+        <label>Archivos</label>
+        <name>ZRM_FilesTitle</name>
+    </customLabels>
+	<customLabels>
+        <label>Subir Fichero</label>
+        <name>ZRM_NewFile</name>
+    </customLabels>
+	<customLabels>
+        <label>Descargar</label>
+        <name>ZRM_DownloadFile</name>
+    </customLabels>
+	<customLabels>
+        <label>Éxito</label>
+        <name>ZRM_Success</name>
+    </customLabels>
+	<customLabels>
+        <label>Se ha refrescado la lista de ficheros con éxito</label>
+        <name>ZRM_Refresh</name>
+    </customLabels>
+	<customLabels>
+        <label> archivo(s) cargado(s) correctamente</label>
+        <name>ZRM_UploadSuccess</name>
+    </customLabels>
+    <customLabels>
         <label>Añadir</label>
         <name>ZRM_IntermAddCampMember_AddButton</name>
     </customLabels>

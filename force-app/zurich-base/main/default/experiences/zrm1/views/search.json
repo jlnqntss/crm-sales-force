@@ -1,71 +1,54 @@
 {
-  "appPageId": "49a9d117-0297-44e8-b92f-dbc02ab7f703",
-  "componentName": "siteforce:sldsOneColLayout",
-  "dataProviders": [],
-  "id": "96c94b50-de71-4a5f-a588-993dc7663534",
-  "label": "Search",
-  "regions": [
-    {
-      "id": "3b418e32-ce95-4cdd-87e2-c67511c011bc",
-      "regionName": "header",
-      "type": "region"
-    },
-    {
-      "components": [
-        {
-          "componentAttributes": {
-            "scopes": [
-              {
-                "isPublic": true,
-                "name": "Account"
-              },
-              {
-                "isPublic": false,
-                "name": "Opportunity"
-              },
-              {
-                "isPublic": true,
-                "name": "Policy__c"
-              },
-              {
-                "isPublic": false,
-                "name": "Campaign"
-              },
-              {
-                "isPublic": true,
-                "name": "Claim__c"
-              },
-              {
-                "isPublic": false,
-                "name": "ContentDocument"
-              },
-              {
-                "isPublic": true,
-                "name": "Scope__c"
-              }
-            ],
-            "searchResultFiltering": true,
-            "searchTerm": "{!term}",
-            "showTopResults": true
-          },
-          "componentName": "forceCommunity:search",
-          "id": "85103557-96bb-4b36-8841-fae445110dbd",
-          "renderPriority": "NEUTRAL",
-          "renditionMap": {},
-          "type": "component"
-        }
-      ],
-      "id": "2688c01d-3ecd-4809-95b3-d87d79947043",
-      "regionName": "content",
-      "type": "region"
-    },
-    {
-      "id": "eacb4046-93bd-4bb0-b280-755a6b66f303",
-      "regionName": "footer",
-      "type": "region"
-    }
-  ],
-  "themeLayoutType": "Inner",
-  "type": "view",
-  "viewType": "global-search"
+  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "96c94b50-de71-4a5f-a588-993dc7663534",
+  "label" : "Search",
+  "regions" : [ {
+    "id" : "3b418e32-ce95-4cdd-87e2-c67511c011bc",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "scopes" : [ {
+          "isPublic" : true,
+          "name" : "Account"
+        }, {
+          "isPublic" : false,
+          "name" : "Opportunity"
+        }, {
+          "isPublic" : true,
+          "name" : "Policy__c"
+        }, {
+          "isPublic" : false,
+          "name" : "Campaign"
+        }, {
+          "isPublic" : true,
+          "name" : "Claim__c"
+        }, {
+          "isPublic" : true,
+          "name" : "Scope__c"
+        } ],
+        "searchResultFiltering" : true,
+        "searchTerm" : "{!term}",
+        "showTopResults" : true
+      },
+      "componentName" : "forceCommunity:search",
+      "id" : "85103557-96bb-4b36-8841-fae445110dbd",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "2688c01d-3ecd-4809-95b3-d87d79947043",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "eacb4046-93bd-4bb0-b280-755a6b66f303",
+    "regionName" : "footer",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "global-search"
 }

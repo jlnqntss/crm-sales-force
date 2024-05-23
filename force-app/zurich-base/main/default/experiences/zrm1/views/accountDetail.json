@@ -249,12 +249,10 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "relatedListApiName" : "AttachedContentDocuments",
-        "relatedListComponentOverride" : "NONE",
-        "width" : "SMALL"
+        "recordId" : "{!recordId}"
       },
-      "componentName" : "forceCommunity:responsiveRelatedListSingle",
-      "id" : "1ba6819b-c32b-40db-8f65-1879d4304a11",
+      "componentName" : "c:zrmFiles",
+      "id" : "07ad52c0-5c79-4dd6-9090-9bdcc7457f18",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"

@@ -50,7 +50,7 @@
                 <leftValueReference>idsSize</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
-                    <numberValue>50.0</numberValue>
+                    <numberValue>40.0</numberValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -111,7 +111,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>SoloSupervisoresMensaje</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;⚠️Solo los supervisores USP pueden cerrar máximo 50 interacciones a la vez ⚠️&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;⚠️Solo los supervisores USP pueden cerrar máximo 40 interacciones a la vez ⚠️&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
