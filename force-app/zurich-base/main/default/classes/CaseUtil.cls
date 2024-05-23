@@ -55,7 +55,7 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
 
-
+    
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
     {
@@ -550,7 +550,7 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if(caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich')
+                if(caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich') 
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
                     //Utilizar el email del SuppliedEmail
@@ -2149,7 +2149,7 @@ public with sharing class CaseUtil
                         }
                         else
                         {
-                            if ( casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
+                            if (casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
                             {
                                 casoNew.Status = CASE_EN_GESTION;
                             }
@@ -2157,11 +2157,11 @@ public with sharing class CaseUtil
                     }
 
                     // Comprobamos el cambio de "check de tarjeta"
-                    if ( (casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true) )
-                    {
+                    if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
+                    {  
                         casoNew.Status = CASE_CLOSED_WON;
-                    }
-                }
+                    }    
+                }            
             }
         }
     }
@@ -2313,19 +2313,16 @@ public with sharing class CaseUtil
 
 
     /**
-     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner
-     * @author dmunoz
-     * @date 23/04/2024
-     * @param newList lista de elementos del trigger after insert
-     */
-    public static void setEndDateZRMInquiry(List<Case> newList)
-    {
+     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner  
+    * @author dmunoz
+    * @date 23/04/2024
+    * @param newList lista de elementos del trigger after insert
+    */
+    public static void setEndDateZRMInquiry(List<Case> newList) {
 
         // 1º compruebo si existe en el trigger algun caso de zrm con que encuentre solo 1 me vale para lanzar las consultas solo cuando sea necesario
-        for (Case caseTrigger: newList)
-        {
-            if ( RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty( String.valueOf(caseTrigger.EndDate__c) ) )
-            {
+        for (Case caseTrigger: newList) {
+            if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty(String.valueOf(caseTrigger.EndDate__c))) {
                 caseTrigger.EndDate__c = caseTrigger.PolicyEndDate__c;
             }
         }
