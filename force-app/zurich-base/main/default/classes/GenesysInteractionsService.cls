@@ -48,6 +48,11 @@ public with sharing class GenesysInteractionsService
     static final String PARTNER_SECTOR = 'Partner__r.PartnerSector__c';
     static final String PARTNER_SF_CODE = 'Partner__r.PartnerSFCode__c';
     static final String PARTNER_GRANDPARENT_BUSINESS_CODE = 'Partner__r.GrandparentBusinessName__c';
+
+    static final String TIPO_POLIZA_COMERCIOS = 'COMERCIOS';
+    static final String TIPO_POLIZA_HOGAR = 'HOGAR';
+    static final String TIPO_POLIZA_INMUEBLES = 'INMUEBLES';
+    static final String TIPO_POLIZA_PYMES = 'PYMES';
     
     
     //#region Métodos públicos
@@ -2035,21 +2040,21 @@ public with sharing class GenesysInteractionsService
 
         private OpenedClaim getClaimHogar ()
         {
-            if (this.byType.get('HOGAR') != null && this.byType.get('HOGAR').size()>0)
+            if (this.byType.get(TIPO_POLIZA_HOGAR) != null && this.byType.get(TIPO_POLIZA_HOGAR).size()>0)
             {
-                return this.byType.get('HOGAR')[0];
+                return this.byType.get(TIPO_POLIZA_HOGAR)[0];
             }
-            else if (this.byType.get('INMUEBLES') != null && this.byType.get('INMUEBLES').size()>0)
+            else if (this.byType.get(TIPO_POLIZA_INMUEBLES) != null && this.byType.get(TIPO_POLIZA_INMUEBLES).size()>0)
             {
-                return this.byType.get('INMUEBLES')[0];
+                return this.byType.get(TIPO_POLIZA_INMUEBLES)[0];
             }
-            else if (this.byType.get('COMERCIOS') != null && this.byType.get('COMERCIOS').size()>0)
+            else if (this.byType.get(TIPO_POLIZA_COMERCIOS) != null && this.byType.get(TIPO_POLIZA_COMERCIOS).size()>0)
             {
-                return this.byType.get('COMERCIOS')[0];
+                return this.byType.get(TIPO_POLIZA_COMERCIOS)[0];
             }
-            else if (this.byType.get('PYMES') != null && this.byType.get('PYMES').size()>0)
+            else if (this.byType.get(TIPO_POLIZA_PYMES) != null && this.byType.get(TIPO_POLIZA_PYMES).size()>0)
             {
-                return this.byType.get('PYMES')[0];
+                return this.byType.get(TIPO_POLIZA_PYMES)[0];
             }
             else
             {
@@ -2059,21 +2064,21 @@ public with sharing class GenesysInteractionsService
 
         private OpenedClaim getClaimComercio ()
         {
-            if (this.byType.get('INMUEBLES') != null && this.byType.get('INMUEBLES').size()>0)
+            if (this.byType.get(TIPO_POLIZA_INMUEBLES) != null && this.byType.get(TIPO_POLIZA_INMUEBLES).size()>0)
             {
-                return this.byType.get('INMUEBLES')[0];
+                return this.byType.get(TIPO_POLIZA_INMUEBLES)[0];
             }
-            else if (this.byType.get('HOGAR') != null && this.byType.get('HOGAR').size()>0)
+            else if (this.byType.get(TIPO_POLIZA_HOGAR) != null && this.byType.get(TIPO_POLIZA_HOGAR).size()>0)
             {
-                return this.byType.get('HOGAR')[0];
+                return this.byType.get(TIPO_POLIZA_HOGAR)[0];
             }
-            else if (this.byType.get('COMERCIOS') != null && this.byType.get('COMERCIOS').size()>0)
+            else if (this.byType.get(TIPO_POLIZA_COMERCIOS) != null && this.byType.get(TIPO_POLIZA_COMERCIOS).size()>0)
             {
-                return this.byType.get('COMERCIOS')[0];
+                return this.byType.get(TIPO_POLIZA_COMERCIOS)[0];
             }
-            else if (this.byType.get('PYMES') != null && this.byType.get('PYMES').size()>0)
+            else if (this.byType.get(TIPO_POLIZA_PYMES) != null && this.byType.get(TIPO_POLIZA_PYMES).size()>0)
             {
-                return this.byType.get('PYMES')[0];
+                return this.byType.get(TIPO_POLIZA_PYMES)[0];
             }
             else
             {
@@ -2083,21 +2088,21 @@ public with sharing class GenesysInteractionsService
 
         private OpenedClaim getClaimPYMES ()
         {
-            if (this.byType.get('PYMES') != null && this.byType.get('PYMES').size()>0)
+            if (this.byType.get(TIPO_POLIZA_PYMES) != null && this.byType.get(TIPO_POLIZA_PYMES).size()>0)
             {
-                return this.byType.get('PYMES')[0];
+                return this.byType.get(TIPO_POLIZA_PYMES)[0];
             }
-            else if (this.byType.get('COMERCIOS') != null && this.byType.get('COMERCIOS').size()>0)
+            else if (this.byType.get(TIPO_POLIZA_COMERCIOS) != null && this.byType.get(TIPO_POLIZA_COMERCIOS).size()>0)
             {
-                return this.byType.get('COMERCIOS')[0];
+                return this.byType.get(TIPO_POLIZA_COMERCIOS)[0];
             }
-            else if (this.byType.get('INMUEBLES') != null && this.byType.get('INMUEBLES').size()>0)
+            else if (this.byType.get(TIPO_POLIZA_INMUEBLES) != null && this.byType.get(TIPO_POLIZA_INMUEBLES).size()>0)
             {
-                return this.byType.get('INMUEBLES')[0];
+                return this.byType.get(TIPO_POLIZA_INMUEBLES)[0];
             }
-            else if (this.byType.get('HOGAR') != null && this.byType.get('HOGAR').size()>0)
+            else if (this.byType.get(TIPO_POLIZA_HOGAR) != null && this.byType.get(TIPO_POLIZA_HOGAR).size()>0)
             {
-                return this.byType.get('HOGAR')[0];
+                return this.byType.get(TIPO_POLIZA_HOGAR)[0];
             }
             else
             {
