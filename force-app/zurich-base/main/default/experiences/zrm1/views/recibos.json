@@ -1,0 +1,80 @@
+{
+  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "dataProviders" : [ ],
+  "id" : "75823587-1e68-4c4b-9075-7c6c32276e63",
+  "label" : "Recibos",
+  "regions" : [ {
+    "id" : "50d5804a-a83b-461c-a8ff-6689d410bcc3",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "tabsetConfig" : {
+          "UUID" : "e2c9f6c5-f53d-48f0-b291-54de6afa2cd8",
+          "activeTab" : "",
+          "tabs" : [ {
+            "UUID" : "2e5f1418-3a0a-4310-a042-e7f2a93f751a",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "1",
+            "tabName" : "Día Anterior"
+          }, {
+            "UUID" : "4b13727b-80d9-4d25-8ea5-f12c78adbb53",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "2",
+            "tabName" : "Acumulados"
+          } ],
+          "useOverflowMenu" : true
+        }
+      },
+      "componentName" : "forceCommunity:tabLayout",
+      "id" : "e2c9f6c5-f53d-48f0-b291-54de6afa2cd8",
+      "regions" : [ {
+        "id" : "2e5f1418-3a0a-4310-a042-e7f2a93f751a",
+        "regionLabel" : "Día Anterior",
+        "regionName" : "1",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "id" : "4b13727b-80d9-4d25-8ea5-f12c78adbb53",
+        "regionLabel" : "Acumulados",
+        "regionName" : "2",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b9c73eff-84e3-46ba-9223-713462f126fe",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "37d3251f-ff56-4c37-9cd9-06378607216e",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Recibos"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "17adabb9-265f-492d-807e-f37feacbc68f",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "05ca6561-6428-4ce3-9398-9a70eb828b77",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-recibos"
+}
