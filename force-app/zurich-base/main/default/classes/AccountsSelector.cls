@@ -2,8 +2,8 @@
  * @description       :
  * @author            :
  * @group             :
- * @last modified on  : 23-04-2024
- * @last modified by  : amiranda
+ * @last modified on  : 29/04/2024
+ * @last modified by  : rserrano
  **/
 public with sharing class AccountsSelector extends RecordsSelector
 {
@@ -1193,23 +1193,42 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-    * @description     : Método que devuelve una query que utilizará el batch
-    * @author rserrano | 10/04/2024 
-    * @param days      : Número de días de antigüedad que ha de tener un lead para ser borrado
-    * @return String   : Query que utiliza el batch
+    * @description        : Método que devuelve cuentas tipo lead en base a una serie de criterios
+    * @author rserrano    | 24/04/2024
+    * @param days         : Antigüedad mínima del lead para ser borrado
+    * @param stageName    : Etapa en la que se tiene que encontrar la oportunidad del lead para ser borrado
+    * @param businessCode : Código de negocio de la oportunidad del lead para ser borrado
+    * @return String
     **/
-    public String findZRMOldLeads(Integer days)
+    public String findZRMOldLeads(Integer days, String stageName, String businessCode)
     {
         Set<Schema.SObjectField> accountfieldsToRetrieve = new Set<Schema.SObjectField>
         {
             Account.Id
         };
-
+        Set<Schema.SObjectField> opportunityFieldsToRetrieve = new Set<Schema.SObjectField>
+        {
+            Opportunity.StageName,
+            Opportunity.BusinessCode__c
+        };
+ 
         String query = this.baseQuery
                         .selectFields(accountfieldsToRetrieve)
                         .addConditionEq(Account.RecordtypeId, rtLeadId)
                         .addConditionLt(Account.CreatedDate, Query.LAST_N_DAYS(days))
-                        .addSubquery('Opportunities', 'StageName, BusinessCode__c')
+                        .addSubquery
+                            (
+                            Query.subquery('Opportunities')
+                                .selectFields(opportunityFieldsToRetrieve)
+                                .addConditionEq(Opportunity.StageName, stageName)
+                                .addCondition(
+                                    query.doOr
+                                    (
+                                    Query.conditionEq('BusinessCode__c', businessCode),
+                                    Query.conditionEq('BusinessCode__c', null)
+                                    ))
+                                .setlimit(2)
+                            )
                         .toQueryString();
         return query;
     }
@@ -1287,5 +1306,29 @@ public with sharing class AccountsSelector extends RecordsSelector
         }
 
         return accounts;
+    }
+
+    /**
+     * @description Método que obtiene cuentas filtradas por id y por el campo isAccountZDA
+     * @author aberuete
+     * @date 15-05-2024
+     * @param Set<String> accountIds : Conjunto de ids de cuentas
+     * @param Boolean isAccountZDA : Campo que si es afirmativo la cuenta tiene asociadas pólizas u ofertas de ZDA
+     **/
+    public List<Account> selectByIdAndAccountZDA (Set<String> accountIds, Boolean isAccountZDA)
+    {
+        if ( accountIds == null || accountIds.isEmpty() || isAccountZDA == null)
+        {
+            return new List<Account>();
+        }
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField> {
+            Account.Id,
+            Account.IsAccountZDA__c
+        })
+        .addConditionEq(Account.IsAccountZDA__c,isAccountZDA)
+        .addConditionIn(Account.Id, accountIds);
+
+        return (List<Account>) this.baseQuery.run();
     }
 }

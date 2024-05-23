@@ -75,8 +75,8 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.relateCaseToCustomerByNifCif(newList);
         CaseUtil.relateCasesWithMediatedAccount(newList);
         CaseUtil.checkIfPolicyHaveOpenZrmCase(newList);
-        CaseUtil.casesZRMChangeStatus( (List<Case>) newList, null);
-        CaseUtil.setEndDateZRMInquiry(newList); 
+        CaseUtil.casesZRMChangeStatus( (List<Case>) newList, null );
+        CaseUtil.setEndDateZRMInquiry(newList);
     }
 
     /**
@@ -92,6 +92,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.completeUSPMilestonesWhenClosedOrPending( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.casesZRMChangeStatus( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.setOwnerIdPrior( (List<Case>) newList, (Map<Id,Case>) oldMap );
+        CaseUtil.preProcessReasonIdForZda( (List<Case>) newList, (Map<Id,Case>) oldMap );
     }
 
     /**
@@ -126,6 +127,7 @@ public without sharing class CaseHandler implements ITrigger
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         CaseUtil.assignContactToCaseEmail( (List<Case>) newList );
+        CaseUtil.postProcessReasonIdForZda( (List<Case>) newList, (Map<Id,Case>) oldMap );
     }
 
     /**

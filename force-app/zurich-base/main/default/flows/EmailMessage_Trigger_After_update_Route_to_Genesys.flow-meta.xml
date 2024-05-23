@@ -359,6 +359,50 @@
         </rules>
     </decisions>
     <decisions>
+        <name>fieldBlockedChanged</name>
+        <label>fieldBlockedIschanged</label>
+        <locationX>2912</locationX>
+        <locationY>276</locationY>
+        <defaultConnector>
+            <targetReference>GetGenesysQueueAsyncAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Modificado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Blocked__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>FieldBlockedIsChanged</name>
+        <label>FieldBlockedIsChanged</label>
+        <locationX>660</locationX>
+        <locationY>276</locationY>
+        <defaultConnector>
+            <targetReference>GetGenesysQueueAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Blocked__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Hay_que_actualizar_owner</name>
         <label>¿Hay que actualizar owner?</label>
         <locationX>3218</locationX>

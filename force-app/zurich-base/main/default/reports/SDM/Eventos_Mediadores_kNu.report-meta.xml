@@ -4,6 +4,9 @@
         <field>DUE_DATE</field>
     </columns>
     <columns>
+        <field>WHO_NAME</field>
+    </columns>
+    <columns>
         <field>WHAT_NAME</field>
     </columns>
     <columns>
@@ -27,6 +30,13 @@
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
             <value>THIS_YEAR</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Activity.RecordTypeDeveloperName__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>SDM_Event</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>

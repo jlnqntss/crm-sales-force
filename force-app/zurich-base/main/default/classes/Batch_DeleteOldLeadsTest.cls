@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : rserrano
  * @group             : 
- * @last modified on  : 10/04/2024
+ * @last modified on  : 25/04/2024
  * @last modified by  : rserrano
 **/
 @IsTest
@@ -118,22 +118,5 @@ public with sharing class Batch_DeleteOldLeadsTest {
         List<CronTrigger> cronList = new List<CronTrigger>([SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobID]);
 
         System.assertEquals(1, cronList.size(), 'Debe haber un job programado');
-    }
-
-    @isTest static void testSchedulerKO() 
-    {
-        test.startTest();
-        Batch_DeleteOldLeads batch = new Batch_DeleteOldLeads();
-        String sch = 'INALID CRON';
-        try
-        {
-            String jobID = System.schedule('BATCH DELETE OLD LEADS', sch, batch);
-            System.assert(false);
-        }
-        catch (Exception e)
-        {
-            System.assert(true);
-        }
-        test.stopTest();
     }
 }
