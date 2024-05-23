@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Regional__c</fullName>
+    <description>[ZDA] Campo Regional para Intermediarios DSE</description>
     <externalId>false</externalId>
     <label>Regional</label>
     <length>255</length>
