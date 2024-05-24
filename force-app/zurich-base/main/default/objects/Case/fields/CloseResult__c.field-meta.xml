@@ -358,6 +358,366 @@
                 <default>false</default>
                 <label>Ajuste prima renovación denegado</label>
             </value>
+            <value>
+                <fullName>Ajuste oferta  presentada - Comparativa de pólizas</fullName>
+                <default>false</default>
+                <label>Ajuste oferta  presentada - Comparativa de pólizas</label>
+            </value>
+            <value>
+                <fullName>Ajuste oferta  presentada - Con variación de datos tarificación y/o cláusulas</fullName>
+                <default>false</default>
+                <label>Ajuste oferta  presentada - Con variación de datos tarificación y/o cláusulas</label>
+            </value>
+            <value>
+                <fullName>Ajuste oferta  presentada - Errores de la primera cotización</fullName>
+                <default>false</default>
+                <label>Ajuste oferta  presentada - Errores de la primera cotización</label>
+            </value>
+            <value>
+                <fullName>Ajuste oferta no presentado - Actividad excluida / no cumple política técnica / medidas de protección</fullName>
+                <default>false</default>
+                <label>Ajuste oferta no presentado - Actividad excluida / no cumple política técnica / medidas de protección</label>
+            </value>
+            <value>
+                <fullName>Ajuste oferta presentada - Con descuento adicional</fullName>
+                <default>false</default>
+                <label>Ajuste oferta presentada - Con descuento adicional</label>
+            </value>
+            <value>
+                <fullName>Anulación de poliza otros motivos</fullName>
+                <default>false</default>
+                <label>Anulación de poliza otros motivos</label>
+            </value>
+            <value>
+                <fullName>Anulación de poliza por mal rendimiento / agravación riesgo</fullName>
+                <default>false</default>
+                <label>Anulación de poliza por mal rendimiento / agravación riesgo</label>
+            </value>
+            <value>
+                <fullName>Anulaciones TXT</fullName>
+                <default>false</default>
+                <label>Anulaciones TXT</label>
+            </value>
+            <value>
+                <fullName>Borrador presentado</fullName>
+                <default>false</default>
+                <label>Borrador presentado</label>
+            </value>
+            <value>
+                <fullName>Cambio de mediador realizado</fullName>
+                <default>false</default>
+                <label>Cambio de mediador realizado</label>
+            </value>
+            <value>
+                <fullName>Cartera no generada</fullName>
+                <default>false</default>
+                <label>Cartera no generada</label>
+            </value>
+            <value>
+                <fullName>Carteras manuales</fullName>
+                <default>false</default>
+                <label>Carteras manuales</label>
+            </value>
+            <value>
+                <fullName>Certificado enviado</fullName>
+                <default>false</default>
+                <label>Certificado enviado</label>
+            </value>
+            <value>
+                <fullName>Cliente sin posibilidad de propuesta de retención</fullName>
+                <default>false</default>
+                <label>Cliente sin posibilidad de propuesta de retención</label>
+            </value>
+            <value>
+                <fullName>Comparativa no presentada - Falta documentación /  información / información incorrecta</fullName>
+                <default>false</default>
+                <label>Comparativa no presentada - Falta documentación /  información / información incorrecta</label>
+            </value>
+            <value>
+                <fullName>Comparativa no presentada - Falta documentación / información</fullName>
+                <default>false</default>
+                <label>Comparativa no presentada - Falta documentación / información</label>
+            </value>
+            <value>
+                <fullName>Comparativa presentada</fullName>
+                <default>false</default>
+                <label>Comparativa presentada</label>
+            </value>
+            <value>
+                <fullName>Comparativa presentada mas propuesta de descuento</fullName>
+                <default>false</default>
+                <label>Comparativa presentada mas propuesta de descuento</label>
+            </value>
+            <value>
+                <fullName>Consulta - Duda resuelta</fullName>
+                <default>false</default>
+                <label>Consulta - Duda resuelta</label>
+            </value>
+            <value>
+                <fullName>Consulta - No corresponde a este departamento</fullName>
+                <default>false</default>
+                <label>Consulta - No corresponde a este departamento</label>
+            </value>
+            <value>
+                <fullName>Consulta de estatus de la póliza</fullName>
+                <default>false</default>
+                <label>Consulta de estatus de la póliza</label>
+            </value>
+            <value>
+                <fullName>Consulta de información del recibo o pólizas</fullName>
+                <default>false</default>
+                <label>Consulta de información del recibo o pólizas</label>
+            </value>
+            <value>
+                <fullName>Consulta informe</fullName>
+                <default>false</default>
+                <label>Consulta informe</label>
+            </value>
+            <value>
+                <fullName>Cotización compleja que no debería entrar por urgente</fullName>
+                <default>false</default>
+                <label>Cotización compleja que no debería entrar por urgente</label>
+            </value>
+            <value>
+                <fullName>Duda resuelta</fullName>
+                <default>false</default>
+                <label>Duda resuelta</label>
+            </value>
+            <value>
+                <fullName>Duplicado de poliza enviado</fullName>
+                <default>false</default>
+                <label>Duplicado de poliza enviado</label>
+            </value>
+            <value>
+                <fullName>Encargo no realizado - Falta documentación / información</fullName>
+                <default>false</default>
+                <label>Encargo no realizado - Falta documentación / información</label>
+            </value>
+            <value>
+                <fullName>Encargo realizado</fullName>
+                <default>false</default>
+                <label>Encargo realizado</label>
+            </value>
+            <value>
+                <fullName>Falta información / información incorrecta</fullName>
+                <default>false</default>
+                <label>Falta información / información incorrecta</label>
+            </value>
+            <value>
+                <fullName>GdC - Autorizada con modificaciones</fullName>
+                <default>false</default>
+                <label>GdC - Autorizada con modificaciones</label>
+            </value>
+            <value>
+                <fullName>GdC - Autorizada perfecta</fullName>
+                <default>false</default>
+                <label>GdC - Autorizada perfecta</label>
+            </value>
+            <value>
+                <fullName>GdC - No autorizada</fullName>
+                <default>false</default>
+                <label>GdC - No autorizada</label>
+            </value>
+            <value>
+                <fullName>GdC - No autorizada por falta de información / documentación</fullName>
+                <default>false</default>
+                <label>GdC - No autorizada por falta de información / documentación</label>
+            </value>
+            <value>
+                <fullName>Informe recibido</fullName>
+                <default>false</default>
+                <label>Informe recibido</label>
+            </value>
+            <value>
+                <fullName>No corresponde a este departamento</fullName>
+                <default>false</default>
+                <label>No corresponde a este departamento</label>
+            </value>
+            <value>
+                <fullName>No emitida por falta de documentación/información</fullName>
+                <default>false</default>
+                <label>No emitida por falta de documentación/información</label>
+            </value>
+            <value>
+                <fullName>No enviado - Falta documentación / información</fullName>
+                <default>false</default>
+                <label>No enviado - Falta documentación / información</label>
+            </value>
+            <value>
+                <fullName>No es nueva producción, se rechaza</fullName>
+                <default>false</default>
+                <label>No es nueva producción, se rechaza</label>
+            </value>
+            <value>
+                <fullName>No resuelto - Agravación de riesgo</fullName>
+                <default>false</default>
+                <label>No resuelto - Agravación de riesgo</label>
+            </value>
+            <value>
+                <fullName>No resuelto - Falta documentación / información</fullName>
+                <default>false</default>
+                <label>No resuelto - Falta documentación / información</label>
+            </value>
+            <value>
+                <fullName>No resuelto - Falta documentación / información / información incorrecta</fullName>
+                <default>false</default>
+                <label>No resuelto - Falta documentación / información / información incorrecta</label>
+            </value>
+            <value>
+                <fullName>No resuelto - Recibo bloqueado por cartera</fullName>
+                <default>false</default>
+                <label>No resuelto - Recibo bloqueado por cartera</label>
+            </value>
+            <value>
+                <fullName>Oferta no presentada - Actividad excluida / No cumple politica técnica</fullName>
+                <default>false</default>
+                <label>Oferta no presentada - Actividad excluida / No cumple politica técnica</label>
+            </value>
+            <value>
+                <fullName>Oferta no presentada - Conocemos la prima de la competencia y vamos mal en precio</fullName>
+                <default>false</default>
+                <label>Oferta no presentada - Conocemos la prima de la competencia y vamos mal en precio</label>
+            </value>
+            <value>
+                <fullName>Oferta no presentada - Falta documentación / información / información incorrecta</fullName>
+                <default>false</default>
+                <label>Oferta no presentada - Falta documentación / información / información incorrecta</label>
+            </value>
+            <value>
+                <fullName>Oferta no presentada - Medidas protección</fullName>
+                <default>false</default>
+                <label>Oferta no presentada - Medidas protección</label>
+            </value>
+            <value>
+                <fullName>Oferta no presentada - Otros motivos</fullName>
+                <default>false</default>
+                <label>Oferta no presentada - Otros motivos</label>
+            </value>
+            <value>
+                <fullName>Oferta no presentada - Petición duplicada / Estandar</fullName>
+                <default>false</default>
+                <label>Oferta no presentada - Petición duplicada / Estandar</label>
+            </value>
+            <value>
+                <fullName>Oferta no presentada - Poliza ya contratada / Saneada</fullName>
+                <default>false</default>
+                <label>Oferta no presentada - Poliza ya contratada / Saneada</label>
+            </value>
+            <value>
+                <fullName>Oferta no presentada porque no corresponde a este departamento</fullName>
+                <default>false</default>
+                <label>Oferta no presentada porque no corresponde a este departamento</label>
+            </value>
+            <value>
+                <fullName>Oferta presentada - Conocemos la prima de la competencia y vamos bien en precio</fullName>
+                <default>false</default>
+                <label>Oferta presentada - Conocemos la prima de la competencia y vamos bien en precio</label>
+            </value>
+            <value>
+                <fullName>Oferta presentada - Conocemos la prima de la competencia y vamos mal en precio</fullName>
+                <default>false</default>
+                <label>Oferta presentada - Conocemos la prima de la competencia y vamos mal en precio</label>
+            </value>
+            <value>
+                <fullName>Oferta presentada - No tenemos información de la prima de la competencia</fullName>
+                <default>false</default>
+                <label>Oferta presentada - No tenemos información de la prima de la competencia</label>
+            </value>
+            <value>
+                <fullName>Petición duplicada</fullName>
+                <default>false</default>
+                <label>Petición duplicada</label>
+            </value>
+            <value>
+                <fullName>Poliza anulada</fullName>
+                <default>false</default>
+                <label>Poliza anulada</label>
+            </value>
+            <value>
+                <fullName>Póliza emitida</fullName>
+                <default>false</default>
+                <label>Póliza emitida</label>
+            </value>
+            <value>
+                <fullName>Poliza que no se recuperará</fullName>
+                <default>false</default>
+                <label>Poliza que no se recuperará</label>
+            </value>
+            <value>
+                <fullName>Propuesta de descuento</fullName>
+                <default>false</default>
+                <label>Propuesta de descuento</label>
+            </value>
+            <value>
+                <fullName>Propuesta de oferta enviada</fullName>
+                <default>false</default>
+                <label>Propuesta de oferta enviada</label>
+            </value>
+            <value>
+                <fullName>Propuesta de retención hecha</fullName>
+                <default>false</default>
+                <label>Propuesta de retención hecha</label>
+            </value>
+            <value>
+                <fullName>Rechazado por estar fuera de plazo para solicitarlo</fullName>
+                <default>false</default>
+                <label>Rechazado por estar fuera de plazo para solicitarlo</label>
+            </value>
+            <value>
+                <fullName>Recibo enviado al cobro</fullName>
+                <default>false</default>
+                <label>Recibo enviado al cobro</label>
+            </value>
+            <value>
+                <fullName>Rehabilitación de póliza con efecto retroactivo</fullName>
+                <default>false</default>
+                <label>Rehabilitación de póliza con efecto retroactivo</label>
+            </value>
+            <value>
+                <fullName>Rehabilitación de póliza hecha</fullName>
+                <default>false</default>
+                <label>Rehabilitación de póliza hecha</label>
+            </value>
+            <value>
+                <fullName>Resolución enviada</fullName>
+                <default>false</default>
+                <label>Resolución enviada</label>
+            </value>
+            <value>
+                <fullName>Retención emitida</fullName>
+                <default>false</default>
+                <label>Retención emitida</label>
+            </value>
+            <value>
+                <fullName>Retención no aceptada por el cliente</fullName>
+                <default>false</default>
+                <label>Retención no aceptada por el cliente</label>
+            </value>
+            <value>
+                <fullName>Riesgo excluido o no cumple con los requisitos técnicos</fullName>
+                <default>false</default>
+                <label>Riesgo excluido o no cumple con los requisitos técnicos</label>
+            </value>
+            <value>
+                <fullName>Riesgo excluido, equifax o no cumple con los requisitos técnicos</fullName>
+                <default>false</default>
+                <label>Riesgo excluido, equifax o no cumple con los requisitos técnicos</label>
+            </value>
+            <value>
+                <fullName>Se podría hacer propuesta de retención</fullName>
+                <default>false</default>
+                <label>Se podría hacer propuesta de retención</label>
+            </value>
+            <value>
+                <fullName>Se propone hacer nueva póliza</fullName>
+                <default>false</default>
+                <label>Se propone hacer nueva póliza</label>
+            </value>
+            <value>
+                <fullName>Suplemento emitido</fullName>
+                <default>false</default>
+                <label>Suplemento emitido</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
@@ -512,6 +872,147 @@
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
             <controllingFieldValue>Cambio de intermediario</controllingFieldValue>
             <valueName>Realizado USP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Alta</controllingFieldValue>
+            <controllingFieldValue>Verificación</controllingFieldValue>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <controllingFieldValue>Recibos</controllingFieldValue>
+            <controllingFieldValue>Otros trámites / Peticiones</controllingFieldValue>
+            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Certificado</controllingFieldValue>
+            <controllingFieldValue>Cambio mediador</controllingFieldValue>
+            <controllingFieldValue>Diligencia de embargo</controllingFieldValue>
+            <controllingFieldValue>Características / Coberturas</controllingFieldValue>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Documentación</controllingFieldValue>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>No corresponde a este departamento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Alta</controllingFieldValue>
+            <valueName>No emitida por falta de documentación/información</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Alta</controllingFieldValue>
+            <controllingFieldValue>Verificación</controllingFieldValue>
+            <valueName>Petición duplicada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Alta</controllingFieldValue>
+            <valueName>Póliza emitida</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Alta</controllingFieldValue>
+            <valueName>Riesgo excluido, equifax o no cumple con los requisitos técnicos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Verificación</controllingFieldValue>
+            <valueName>Encargo no realizado - Falta documentación / información</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Verificación</controllingFieldValue>
+            <valueName>Encargo realizado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Verificación</controllingFieldValue>
+            <valueName>Riesgo excluido o no cumple con los requisitos técnicos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Anulación de poliza otros motivos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Anulación de poliza por mal rendimiento / agravación riesgo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Cartera no generada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Cliente sin posibilidad de propuesta de retención</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Consulta de estatus de la póliza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>No es nueva producción, se rechaza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Poliza anulada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Propuesta de retención hecha</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Rehabilitación de póliza con efecto retroactivo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Rehabilitación de póliza hecha</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Retención emitida</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Retención no aceptada por el cliente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
+            <valueName>Se propone hacer nueva póliza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recibos</controllingFieldValue>
+            <valueName>Consulta de información del recibo o pólizas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recibos</controllingFieldValue>
+            <valueName>Falta información / información incorrecta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recibos</controllingFieldValue>
+            <valueName>Poliza que no se recuperará</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recibos</controllingFieldValue>
+            <valueName>Recibo enviado al cobro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Recibos</controllingFieldValue>
+            <valueName>Se podría hacer propuesta de retención</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Otros trámites / Peticiones</controllingFieldValue>
+            <valueName>Duda resuelta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Otros trámites / Peticiones</controllingFieldValue>
+            <valueName>No resuelto - Falta documentación / información</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <valueName>Comparativa no presentada - Falta documentación / información</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <valueName>Comparativa presentada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <valueName>Comparativa presentada mas propuesta de descuento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <valueName>Propuesta de descuento</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Queja</controllingFieldValue>
@@ -768,6 +1269,18 @@
             <valueName>No Realizado - Otros motivos</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Documentación</controllingFieldValue>
+            <valueName>Anulaciones TXT</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Documentación</controllingFieldValue>
+            <valueName>Carteras manuales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Documentación</controllingFieldValue>
+            <valueName>Duplicado de poliza enviado</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Modificación</controllingFieldValue>
             <valueName>Realizado - Impacto en prima</valueName>
         </valueSettings>
@@ -808,6 +1321,26 @@
             <valueName>Ajuste prima renovación denegado</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Borrador presentado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>No resuelto - Agravación de riesgo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>No resuelto - Falta documentación / información / información incorrecta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>No resuelto - Recibo bloqueado por cartera</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Modificación</controllingFieldValue>
+            <valueName>Suplemento emitido</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Retención</controllingFieldValue>
             <valueName>Retenido</valueName>
         </valueSettings>
@@ -838,6 +1371,132 @@
             <controllingFieldValue>Recobro proactivo</controllingFieldValue>
             <controllingFieldValue>Recobro reactivo</controllingFieldValue>
             <valueName>Derivado - Norma 57/AJ</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Ajuste oferta  presentada - Comparativa de pólizas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Ajuste oferta  presentada - Con variación de datos tarificación y/o cláusulas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Ajuste oferta  presentada - Errores de la primera cotización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Ajuste oferta no presentado - Actividad excluida / no cumple política técnica / medidas de protección</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Ajuste oferta presentada - Con descuento adicional</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Consulta - No corresponde a este departamento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Cotización compleja que no debería entrar por urgente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta no presentada - Actividad excluida / No cumple politica técnica</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta no presentada - Conocemos la prima de la competencia y vamos mal en precio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta no presentada - Falta documentación / información / información incorrecta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta no presentada - Medidas protección</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta no presentada - Otros motivos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta no presentada - Petición duplicada / Estandar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta no presentada - Poliza ya contratada / Saneada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta no presentada porque no corresponde a este departamento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta presentada - Conocemos la prima de la competencia y vamos bien en precio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta presentada - Conocemos la prima de la competencia y vamos mal en precio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Oferta presentada - No tenemos información de la prima de la competencia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Certificado</controllingFieldValue>
+            <valueName>Certificado enviado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Certificado</controllingFieldValue>
+            <controllingFieldValue>Cambio mediador</controllingFieldValue>
+            <valueName>No enviado - Falta documentación / información</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cambio mediador</controllingFieldValue>
+            <valueName>Cambio de mediador realizado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cambio mediador</controllingFieldValue>
+            <valueName>Rechazado por estar fuera de plazo para solicitarlo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Diligencia de embargo</controllingFieldValue>
+            <valueName>Resolución enviada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Características / Coberturas</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Consulta - Duda resuelta</valueName>
+		</valueSettings>
+		<valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>GdC - Autorizada con modificaciones</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>GdC - Autorizada perfecta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>GdC - No autorizada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>GdC - No autorizada por falta de información / documentación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Verificación</controllingFieldValue>
+            <valueName>Informe recibido</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Verificación</controllingFieldValue>
+            <valueName>Consulta informe</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cambio mediador</controllingFieldValue>
+            <valueName>Propuesta de oferta enviada</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

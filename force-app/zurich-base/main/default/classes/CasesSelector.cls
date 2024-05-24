@@ -125,7 +125,9 @@ public with sharing class CasesSelector extends RecordsSelector
                 this.baseQuery.selectFields(new Set<Schema.SObjectField>{
                     Case.Id,
                     Case.OwnerId, 
-                    Case.Query__c
+                    Case.Query__c, 
+                    Case.RecordTypeId, 
+                    Case.Status
                  })
                 .selectFields('Owner.Type')
                 .selectFields('Owner.Profile.Name');
@@ -196,7 +198,9 @@ public with sharing class CasesSelector extends RecordsSelector
     {
         Set<Schema.SObjectField> setFields =  new Set<Schema.SObjectField>{
             Case.Id,
-            Case.ControlEmailCC__c
+            Case.ControlEmailCC__c,
+            Case.RecordTypeId,
+            Case.GenesysID__c
         };
 
         if(caseIds != null && !caseIds.isEmpty() )

@@ -5,6 +5,9 @@
 */
 public class AccountUtil
 {
+
+    public static final String CUSTOMER_RT_DEVELOPER_NAME = 'Customer';
+
     /**
      * Método que crea un nuevo partner si no existe y lo asocia al contacto
      * @author nbizkarra

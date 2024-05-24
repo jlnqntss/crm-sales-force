@@ -24,7 +24,6 @@ private with sharing class CaseUtilTest
 
     static final String SHORT_DESCRIPTION = 'test';
     static final String LONG_DESCRIPTION = 'Se diferencia clientes empresas de clientes personas. Se detecta que las empresas no usan el campo Firstname o le colocan un punto. También es posible filtrar los Contactos que no están activos.  De esta manera que extraen los datos por medio de la fecha de creación. Consiguiendo finalizar la operación en 3 ficheros';
-    static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
     static final String DUMMY_QUEUE_NAME = 'DUMMY_QUEUE';
 
     @TestSetup
@@ -39,7 +38,7 @@ private with sharing class CaseUtilTest
         insert ventaCruzada;
 
         //Importante usar el RT Customer porque es personal account y se necesita que esté relleno PersonContactId
-        List<Account> createdAccounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
+        List<Account> createdAccounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
         insert createdAccounts;
 
         List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(createdAccounts, 1);
@@ -136,7 +135,7 @@ private with sharing class CaseUtilTest
     private static void test_assignAccountAndContactFromSuppliedEmail_ko_MoreThanOne()
     {
         //Clonar cuenta para que no se pueda decidir cual de las dos es
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //El email se llamará igual para ambas: null@nts-solutions.com
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1); //El email se llamará igual para ambas: null@nts-solutions.com
         insert accounts;
         List<ContactPointEmail> contactPointEmails = TestDataFactory.generateContactPointEmailsFromAccounts(accounts, 1);
         insert contactPointEmails;
@@ -443,18 +442,18 @@ private with sharing class CaseUtilTest
 
         List<Case> generatedCases = TestDataFactory.generateZDACases(4);
         Case noRelatedCase = generatedCases[0];
-        noRelatedCase.Origin = ORIGIN_CANAL_UNICO;
+        noRelatedCase.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
 
         Case relatedWithoutAccount = generatedCases[1];
-        relatedWithoutAccount.Origin = ORIGIN_CANAL_UNICO;
+        relatedWithoutAccount.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
         relatedWithoutAccount.SuppliedEmail = 'notExisting@email.com';
 
         Case relatedWithAccount = generatedCases[2];
-        relatedWithAccount.Origin = ORIGIN_CANAL_UNICO;
+        relatedWithAccount.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
         relatedWithAccount.SuppliedEmail = intermediaryAccount.MainEmail__c;
 
         Case relatedWithNoIntermediaryAcc = generatedCases[3];
-        relatedWithNoIntermediaryAcc.Origin = ORIGIN_CANAL_UNICO;
+        relatedWithNoIntermediaryAcc.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
         relatedWithNoIntermediaryAcc.SuppliedEmail = otherTypeAccount.MainEmail__c;
 
         Test.startTest();
@@ -570,45 +569,40 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_applyFormatToZDABody()
     {
-        Case newZDACaseToFormat = new Case (
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Description = 'Usuario: NOMBRE APELLIDO1 APELLIDO2;;Correo electrónico: USUARIO@bancsabadell.com;;Unidad de trabajo: 0086',
-            Origin = 'CanalUnico',
-            Subject = 'Caso a formatear'
-            );
+        List<Case> zdaCasesList = TestDataFactory.generateZDACases(3);
+
+        //Caso a formatear
+        Case newZDACaseToFormat = zdaCasesList[0];
+        newZDACaseToFormat.Description = 'Usuario: NOMBRE APELLIDO1 APELLIDO2;;Correo electrónico: USUARIO@bancsabadell.com;;Unidad de trabajo: 0086';
+        newZDACaseToFormat.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+
+        //Descripcion no formateable
+        Case newZDACaseNoFormat = zdaCasesList[1];
+        newZDACaseNoFormat.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+
+        //Caso NO formatear 2
+        Case newZDACaseNoFormat2 = zdaCasesList[2];
+        newZDACaseNoFormat2.Description = newZDACaseToFormat.Description;
+        newZDACaseNoFormat2.Origin = CaseUtil.ORIGIN_WEB;
+
         String formattedText = newZDACaseToFormat.Description.replace(';;', '\n');
-        Case newZDACaseNoFormat = new Case (
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Description = 'Descripcion no formateable',
-            Origin = 'CanalUnico',
-            Subject = 'Caso NO formatear 1'
-            );
-        Case newZDACaseNoFormat2 = new Case (
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Description = newZDACaseToFormat.Description,
-            Origin = 'Web',
-            Subject = 'Caso NO formatear 2'
-            );
         Case newSprinklrCase = new Case (
             RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR,
             Description = newZDACaseToFormat.Description,
-            Origin = 'CanalUnico',
-            Subject = 'Caso NO formatear 3'
+            Origin = CaseUtil.ORIGIN_CANAL_UNICO
             );
         List<Case> casesToInsert = new List<Case>();
-        casesToInsert.add(newZDACaseToFormat);
-        casesToInsert.add(newZDACaseNoFormat);
-        casesToInsert.add(newZDACaseNoFormat2);
+        casesToInsert.addAll(zdaCasesList);
         casesToInsert.add(newSprinklrCase);
 
         Test.startTest();
         insert casesToInsert;
         Test.stopTest();
 
-        List<Case> casesToCompare = [SELECT Subject, Description FROM Case];
+        List<Case> casesToCompare = [SELECT Subject, Description FROM Case WHERE Id IN : casesToInsert];
         for (Case caseToCompare : casesToCompare)
         {
-            if ( caseToCompare.Subject.equals(newZDACaseToFormat.Subject) )
+            if ( newZDACaseToFormat.Subject.equals(caseToCompare.Subject) )
             {
                 //Caso que debe haber sido formateado
                 Assert.areEqual(formattedText, caseToCompare.Description);
@@ -1195,7 +1189,7 @@ private with sharing class CaseUtilTest
         // Crear objeto Case
         Case caso = new Case();
         caso.SourceCountry__c = 'France';
-        caso.Origin = 'Web';
+        caso.Origin = CaseUtil.ORIGIN_WEB;
         caso.Type = 'Contratar mi seguro';
         caso.Subtype__c = 'Close result';
         insert caso;
@@ -1267,7 +1261,7 @@ private with sharing class CaseUtilTest
         caseRecord.Subject = LABEL_SUBJECT_ZURICH;
         caseRecord.RobotNif__c = '73562398D';
 
-        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         accountFromCase[0].NationalId__c = '73562398D';
         accountFromCase[0].Type = 'F';
         insert accountFromCase;
@@ -1295,7 +1289,7 @@ private with sharing class CaseUtilTest
         caseRecord.RobotNif__c = '73562398D';
         caseRecord.SuppliedEmail = EMAIL_CASE;
 
-        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         accountFromCase[0].Type = 'F';
         insert accountFromCase;
 
@@ -1337,7 +1331,7 @@ private with sharing class CaseUtilTest
         caseRecord.SuppliedEmail = EMAIL_CASE;
         caseRecord.SuppliedPhone = '607342167';
 
-        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, 'Customer', 1);
+        List<Account> accountFromCase = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         accountFromCase[0].Type = 'F';
         insert accountFromCase;
 
@@ -1417,6 +1411,53 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Comprueba que el metodo preProcessReasonIdForZda funciona correctamente. Para ello, actualiza el ReasonId__c de un caso ZDA y otro SPRINKLR
+     * y comprueba si se actualiza el status del caso.
+     *
+     * El postProcessReasonIdForZda no se puede testear puesto que no hay manera de que se testeen las notificaciones enviadas
+     *
+     * @author mario.navarro@seidor.com
+     * @date 14/05/2024
+     */
+    @isTest
+    private static void test_preProcessReasonIdForZda()
+    {
+        List<Case> zdaCaseList = TestDataFactory.generateZDACases(3);
+
+        zdaCaseList[0].Status = CaseUtil.CASE_ASIGNADO; //este se rechaza => status Cerrado
+        zdaCaseList[1].Status = CaseUtil.CASE_ASIGNADO; //este se desestima => status Cerrado
+        zdaCaseList[2].Status = CaseUtil.CASE_PENDIENTE; //este se responde => status Respondido
+        zdaCaseList[2].PendingBy__c = CaseUtil.CASE_PENDIENTE_PARTNER;
+
+        Case sprinklrCase = new Case (
+            RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR,
+            Status = CaseUtil.CASE_ASIGNADO
+            );
+
+        insert new List<Case> {zdaCaseList[0], zdaCaseList[1], zdaCaseList[2], sprinklrCase};
+
+        zdaCaseList[0].ReasonId__c = CaseUtil.ZDA_REASON_RECHAZAR;
+        zdaCaseList[1].ReasonId__c = CaseUtil.ZDA_REASON_DESESTIMAR;
+        zdaCaseList[2].ReasonId__c = CaseUtil.ZDA_REASON_RESPUESTA_SOPORTE;
+        sprinklrCase.ReasonId__c = CaseUtil.ZDA_REASON_RECHAZAR;
+
+        Test.startTest();
+        update new List<Case> {zdaCaseList[0], zdaCaseList[1], zdaCaseList[2], sprinklrCase};
+        Test.stopTest();
+
+        Case closedZdaCase1 = [SELECT Id, Status FROM Case WHERE Id = : zdaCaseList[0].Id];
+        Case closedZdaCase2 = [SELECT Id, Status FROM Case WHERE Id = : zdaCaseList[1].Id];
+        Case answeredZdaCase = [SELECT Id, Status, PendingBy__c FROM Case WHERE Id = : zdaCaseList[2].Id];
+        Case updatedSprinklrCase = [SELECT Id, Status FROM Case WHERE Id = : sprinklrCase.Id];
+
+        Assert.areEqual(CaseUtil.estadoCerrado, closedZdaCase1.Status);
+        Assert.areEqual(CaseUtil.estadoCerrado, closedZdaCase2.Status);
+        Assert.areEqual(CaseUtil.CASE_RESPONDIDO, answeredZdaCase.Status);
+        Assert.isNull(answeredZdaCase.PendingBy__c);
+        Assert.areEqual(CaseUtil.CASE_ASIGNADO, updatedSprinklrCase.Status); //para este caso no debe cambiar el status
+    }
+
+    /**
      * Se valida que el metodo relateCaseToCustomerByNifCif relaciona correctamente el caso con
      * el cliente mediado (cuenta.NationalId__c = caso.CustomerNifCif__c) y establece el campo
      * MediatedCustomer__c en caso de encontrar relacion. Para ello:
@@ -1430,50 +1471,39 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_relateCaseToCustomerByNifCif()
     {
-        List<String> dnis = new List<String> {'11222333R', '77888999I'};
-        List<Account> accToInsert = new List<Account>();
-        Account accountUniqueDNI = new Account(
-            LastName = 'Cuenta DNI unico',
-            NationalId__c = dnis[0],
-            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId()
-            );
-        accToInsert.add(accountUniqueDNI);
-        Account accountDupDNI1 = new Account(
-            LastName = 'Cuenta DNI dup1',
-            NationalId__c = dnis[1],
-            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId()
-            );
-        accToInsert.add(accountDupDNI1);
-        Account accountDupDNI2 = new Account(
-            LastName = 'Cuenta DNI dup2',
-            NationalId__c = dnis[1],
-            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Customer').getRecordTypeId()
-            );
-        accToInsert.add(accountDupDNI2);
+        List<Account> accToInsert = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 3);
+
+        //Cuenta DNI unico
+        Account accountUniqueDNI = accToInsert[0];
+
+        //Cuenta DNI dup1
+        Account accountDupDNI1 = accToInsert[1];
+
+        //Cuenta DNI dup2, mismo DNI que accountDupDNI1
+        Account accountDupDNI2 = accToInsert[2];
+        accountDupDNI2.NationalId__c = accountDupDNI1.NationalId__c;
+
+        List<String> dnis = new List<String> {accountUniqueDNI.NationalId__c, accountDupDNI1.NationalId__c};
+
         insert accToInsert;
         List<Account> createdAccs = [SELECT Id FROM Account WHERE NationalId__c IN : dnis];
         Assert.areEqual( accToInsert.size(), createdAccs.size() );
 
-        Case caseToLink = new Case(
-            CuTicketId__c = '10',
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Subject = 'Asunto de caso a vincular',
-            CustomerNifCif__c = accountUniqueDNI.NationalId__c
-            );
-        Case caseNoLink = new Case(
-            CuTicketId__c = '20',
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Subject = 'Asunto de caso a NO vincular',
-            CustomerNifCif__c = accountDupDNI1.NationalId__c
-            );
-        Case caseNoLink2 = new Case(
-            CuTicketId__c = '20',
-            RecordTypeId = CaseUtil.RT_ID_ZDA,
-            Subject = 'Asunto de caso a NO vincular 2'
-            );
+        List<Case> zdaCasesList = TestDataFactory.generateZDACases(3);
+
+        //caso a vincular
+        Case caseToLink = zdaCasesList[0];
+        caseToLink.CustomerNifCif__c = accountUniqueDNI.NationalId__c;
+
+        //caso a NO vincular
+        Case caseNoLink = zdaCasesList[1];
+        caseNoLink.CustomerNifCif__c = accountDupDNI1.NationalId__c;
+
+        //caso a NO vincular 2
+        Case caseNoLink2 = zdaCasesList[2];
 
         Test.startTest();
-        insert new List<Case> {caseToLink, caseNoLink, caseNoLink2};
+        insert zdaCasesList;
         Test.stopTest();
 
         Case linkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseToLink.Id];
@@ -1559,7 +1589,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_casesZRMChangeStatus_ClientHasContacted_OK()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
@@ -1593,7 +1623,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_casesZRMChangeStatus_ClientHasContacted_KO()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
@@ -1632,7 +1662,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_casesZRMChangeStatus_ClientGiftCard_OK()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);
@@ -1705,36 +1735,26 @@ private with sharing class CaseUtilTest
         String zdaQueueName = 'Email_ZDA_Cotizacion';
         List<Group> queueZda = new GroupSelector().findByName(zdaQueueName);
         Assert.isFalse( queueZda.isEmpty() );
-        Integer idCounter = 25;
 
-        List<Case> caseList = new List<Case>();
+        List<Case> zdaCasesList = TestDataFactory.generateZDACases(3);
 
-        Case zdaCase = new Case();
-        zdaCase.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        Case zdaCase = zdaCasesList[0];
         zdaCase.OwnerId = queueZda[0].id;
-        zdaCase.CuTicketId__c = '' + idCounter;
-        caseList.add(zdaCase);
 
-        Case zdaCaseUserOwner = new Case();
-        zdaCaseUserOwner.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        Case zdaCaseUserOwner = zdaCasesList[1];
         zdaCaseUserOwner.OwnerId = UserInfo.getUserId();
-        zdaCaseUserOwner.CuTicketId__c = '' + (idCounter + 1);
-        caseList.add(zdaCaseUserOwner);
 
-        Case zdaCaseNoChange = new Case();
-        zdaCaseNoChange.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        Case zdaCaseNoChange = zdaCasesList[2];
         zdaCaseNoChange.OwnerId = queueZda[0].id;
-        zdaCaseNoChange.CuTicketId__c = '' + (idCounter + 2);
         zdaCaseNoChange.OwnerIdPrior__c = DUMMY_QUEUE_NAME;
-        caseList.add(zdaCaseNoChange);
 
-        insert caseList;
+        insert zdaCasesList;
 
         Test.startTest();
         zdaCase.OwnerId = UserInfo.getUserId();
         zdaCaseUserOwner.OwnerId = queueZda[0].id;
         zdaCaseNoChange.OwnerId = UserInfo.getUserId();
-        update caseList;
+        update zdaCasesList;
         Test.stopTest();
 
         Case updatedZdaCase = [SELECT OwnerId, OwnerIdPrior__c FROM Case WHERE Id = : zdaCase.Id];
@@ -1928,7 +1948,7 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_updateZRMExpiredCases_OK()
     {
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 1);

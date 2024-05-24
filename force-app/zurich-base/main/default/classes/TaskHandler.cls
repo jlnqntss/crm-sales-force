@@ -50,6 +50,7 @@ public class TaskHandler implements ITrigger
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         TaskUtil.markPublicWhenOwnerUserCommunity( (List<Task>) newList );
+        TaskUtil.setErrorIfClosedAndNoResponseZda( (List<Task>) newList, (Map<Id,Task>) oldMap );
     }
 
     /**
@@ -71,6 +72,8 @@ public class TaskHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
+        TaskUtil.checkIdGenesys( (List<Task>) newList );
+
     }
 
     /**

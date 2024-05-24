@@ -106,4 +106,100 @@ private with sharing class TaskUtilTest
         List<Task> taskAfterDelete = [Select id from Task];
         System.assertEquals(0, taskAfterDelete.size(), 'La tarea no debería existir');
     }
+
+    /**
+     * Testea el metodo setErrorIfClosedAndNoResponseZda, para ello:
+     * - Se intenta cerrar una tarea asociada a caso ZDA sin respuesta: no debe permitirlo
+     * - Se intenta cerrar una tarea asociada a caso ZDA con respuesta: debe permitirlo
+     * - Se intenta cerrar una tarea asociada a caso NO ZDA sin respuesta: debe permitirlo
+     *
+     * @author mario.navarro@seidor.com
+     * @date 16/05/2024
+     */
+    @isTest
+    private static void test_setErrorIfClosedAndNoResponseZda()
+    {
+        List<Case> casesList = TestDataFactory.generateZDACases(2);
+        Case sprinklrCase = new Case (
+            RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR
+        );
+        casesList.add(sprinklrCase);
+
+        insert casesList;
+
+        List<Task> tasksToProcess = new List<Task>();
+
+        //Tarea asociada a caso ZDA que NO tendra respuesta
+        Task taskNoAnswerNotClosed = new Task();
+        taskNoAnswerNotClosed.Status = TaskUtil.STATUS_ASIGNADA;
+        taskNoAnswerNotClosed.WhatId = casesList[0].Id;
+        taskNoAnswerNotClosed.Type = TaskUtil.TYPE_ESCALADO;
+        tasksToProcess.add(taskNoAnswerNotClosed);
+
+        //Tarea asociada a caso ZDA que SI tendra respuesta
+        Task taskWithAnswerClosed = new Task();
+        taskWithAnswerClosed.Status = TaskUtil.STATUS_ASIGNADA;
+        taskWithAnswerClosed.WhatId = casesList[1].Id;
+        taskWithAnswerClosed.Type = TaskUtil.TYPE_ESCALADO;
+        tasksToProcess.add(taskWithAnswerClosed);
+
+        //Tarea asociada a caso NO ZDA que NO tendra respuesta
+        Task taskNoAnswerClosed = new Task();
+        taskNoAnswerClosed.Status = TaskUtil.STATUS_ASIGNADA;
+        taskNoAnswerClosed.WhatId = casesList[2].Id;
+        taskNoAnswerClosed.Type = TaskUtil.TYPE_ESCALADO;
+        tasksToProcess.add(taskNoAnswerClosed);
+        
+        insert tasksToProcess;
+        List<Task> insertedTasks = [SELECT Id FROM Task WHERE Id IN :tasksToProcess];
+        Assert.isFalse(insertedTasks.isEmpty());
+
+        taskNoAnswerNotClosed.Status = TaskUtil.STATUS_CERRADA;
+        taskWithAnswerClosed.Status = TaskUtil.STATUS_CERRADA;
+        taskWithAnswerClosed.Response__c = 'Respuesta del escalado para el tarea asociada a caso ZDA';
+        taskNoAnswerClosed.Status = TaskUtil.STATUS_CERRADA;
+
+        Test.startTest();
+        //false para que, los que no den error se actualicen
+        Database.update(tasksToProcess, false);
+        Test.stopTest();
+
+        Task taskNoAnswerNotClosedPostUpdate = [SELECT Status FROM Task WHERE Id = :taskNoAnswerNotClosed.Id];
+        Task taskWithAnswerClosedPostUpdate = [SELECT Status FROM Task WHERE Id = :taskWithAnswerClosed.Id];
+        Task taskNoAnswerClosedPostUpdate = [SELECT Status FROM Task WHERE Id = :taskNoAnswerClosed.Id];
+
+        Assert.areEqual(TaskUtil.STATUS_ASIGNADA, taskNoAnswerNotClosedPostUpdate.Status);
+        Assert.areEqual(TaskUtil.STATUS_CERRADA, taskWithAnswerClosedPostUpdate.Status);
+        Assert.areEqual(TaskUtil.STATUS_CERRADA, taskNoAnswerClosedPostUpdate.Status);
+    }
+
+    /*
+     * Test que comprueba la id de Genesys en caso 
+     * @author lrodriguez
+     * @date 21/05/2024
+     */
+    @isTest
+    private static void test_Genesys_USP()
+    {
+
+        Case casoToEmailMessage = new Case (Subject = 'prueba Genesys',Status = 'Assigned', Origin = 'Email', RecordTypeId = CaseUtil.RT_ID_USPINQUIRY);
+        insert casoToEmailMessage;
+
+        Task taskToCreate = new Task();
+        taskToCreate.Status = 'Asignada';
+        taskToCreate.Priority = 'Normal';
+        taskToCreate.CallObject = 'd7faf2ef-aadc-4001-85a4-17633fcfe492';
+        taskToCreate.WhatId = casoToEmailMessage.id;
+        
+      
+
+        Test.startTest();
+        insert taskToCreate;
+        Test.stopTest();
+
+        Case casesEmailDefault = [SELECT Id,GenesysID__c,LinkIdGenesys__c FROM Case WHERE Subject = 'prueba Genesys'];
+        System.assertEquals(casesEmailDefault.GenesysID__c,'d7faf2ef-aadc-4001-85a4-17633fcfe492','Debe estar informado con id Genesys');
+        System.assertEquals(casesEmailDefault.LinkIdGenesys__c,'https://apps.mypurecloud.ie/directory/#/engage/admin/interactions/d7faf2ef-aadc-4001-85a4-17633fcfe492','Debe estar informado con link id Genesys');    
+    }
+
 }

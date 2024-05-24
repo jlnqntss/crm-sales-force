@@ -138,12 +138,10 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "relatedListApiName" : "AttachedContentDocuments",
-        "relatedListComponentOverride" : "GRID",
-        "width" : "MEDIUM"
+        "recordId" : "{!recordId}"
       },
-      "componentName" : "forceCommunity:responsiveRelatedListSingle",
-      "id" : "db33f20c-bde4-4c38-aec9-6dea924f36d5",
+      "componentName" : "c:zrmFiles",
+      "id" : "4902836d-869e-410e-8859-13dae9570240",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"

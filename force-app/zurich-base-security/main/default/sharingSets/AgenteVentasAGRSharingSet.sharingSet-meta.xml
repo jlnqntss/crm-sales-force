@@ -25,6 +25,12 @@
         <userField>Account.IntermediaryGroup__c</userField>
     </accessMappings>
     <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Contact</object>
+        <objectField>Account.IntermediaryGroup__c</objectField>
+        <userField>Account.IntermediaryGroup__c</userField>
+    </accessMappings>
+    <accessMappings>
         <accessLevel>Edit</accessLevel>
         <object>Opportunity</object>
         <objectField>IntermediaryVisibilityAcc__c.IntermediaryGroup__c</objectField>

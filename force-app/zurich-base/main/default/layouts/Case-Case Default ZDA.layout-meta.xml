@@ -142,10 +142,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>EntitlementId</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>MilestoneStatus</field>
             </layoutItems>
             <layoutItems>

@@ -6,6 +6,10 @@
     <errorConditionFormula>OR(RecordType.DeveloperName == &quot;OCSInquiry&quot;  &amp;&amp;
 ISPICKVAL(Status,&quot;Pendiente&quot;) &amp;&amp; ISBLANK(TEXT(PendingBy__c))
 ,
+RecordType.DeveloperName == &quot;SAMInquiry&quot;  &amp;&amp;
+ISPICKVAL(Status,&quot;Pendiente&quot;) &amp;&amp; ISBLANK(TEXT(PendingBy__c))
+,
+
 RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
 ISPICKVAL(Status,&quot;Pendiente&quot;) &amp;&amp; ISBLANK(TEXT(PendingBy__c))&amp;&amp; $Permission.USPTriggerCaseValidationRules
 ,

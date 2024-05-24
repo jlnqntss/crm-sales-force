@@ -11,11 +11,13 @@ public with sharing class Notification {
     
     // Tipo de notificacion
     public enum NotificationType {
-        SDMAlert
+        SDMAlert,
+        CaseTrackingAnswered
     }
     // Mapa de conversion del tipo de notificacion a su DeveloperName
     private static final Map<NotificationType, String> mapTypesToName = new Map<NotificationType, String>{
-        NotificationType.SDMAlert => 'SDMTaskDueDateAlert'
+        NotificationType.SDMAlert => 'SDMTaskDueDateAlert',
+        NotificationType.CaseTrackingAnswered => 'CaseTrackingAnswered'
     };
 
     // Parametros de la notificacion

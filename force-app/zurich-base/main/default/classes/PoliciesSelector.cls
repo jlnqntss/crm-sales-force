@@ -424,14 +424,14 @@ public with sharing class PoliciesSelector extends RecordsSelector
             this.baseQuery
                             .addConditionNotIn(Policy__c.Id, policiesToExclude)
                             .addConditionIn(Policy__c.PolicyHolder__c, policyHolderIdSet)
-                            .addConditionEq(Policy__c.PolicyHolder__r.Blocked__c, false)
-                            .addConditionEq(Policy__c.PolicyHolder__r.Anonymized__c, false)
+                            .addConditionEq('PolicyHolder__r.Blocked__c', false) 
+                            .addConditionEq('PolicyHolder__r.Anonymized__c', false)
                             .addConditionIn(Policy__c.PolicyStatus__c, new Set<String>{'V', 'A'})
                             .addConditionEq(Policy__c.Blocked__c, false)
                             .addConditionEq(Policy__c.Anonymized__c, false)
-                            .addConditionNotEq(Policy__c.PolicyHolder__c, null);
+                            .addConditionNotNull(Policy__c.PolicyHolder__c);
 
-            if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty())
+            if (intermediaryGroupIdsSet.isEmpty())
             {
                 this.baseQuery.addConditionIn(Policy__c.IntermediaryId__c, intermediaryIdsSet)
                             .setLimit(1);
@@ -587,7 +587,6 @@ public with sharing class PoliciesSelector extends RecordsSelector
             this.baseQuery                            
                             .addConditionEq(Policy__c.LastDateIntermediaryOrAccountChange__c, Query.YESTERDAY)
                             .addConditionLe(Policy__c.VisibilityRetry__c, numMaxRetries);
-
             
 
             result = this.baseQuery.enforceSecurity().run();
