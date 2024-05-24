@@ -2451,6 +2451,22 @@ Create the record and try again.</value>
         <value>Submit</value>
     </labels>
     <labels>
+        <fullName>ZDAScaledCaseAnsweredBody</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAScaledCaseAnsweredBody</shortDescription>
+        <value>You have received a response to the case support:</value>
+    </labels>    
+    <labels>
+        <fullName>ZDANotAllowedCloseScaledWithoutResponse</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDANotAllowedCloseScaledWithoutResponse</shortDescription>
+        <value>The response must be reported to close an escalation</value>
+    </labels>
+    <labels>
         <fullName>OfferSalesStageValidationClosedWonMessage</fullName>
         <categories>Ventas,Offer</categories>
         <language>en_US</language>

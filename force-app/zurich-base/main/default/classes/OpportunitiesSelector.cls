@@ -690,14 +690,14 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
             this.baseQuery                            
                             .addConditionNotIn(Opportunity.Id, offersToExclude)
                             .addConditionIn(Opportunity.AccountId, accountIdsSet)
-                            .addConditionEq(Opportunity.Account.Blocked__c, FALSE)
-                            .addConditionEq(Opportunity.Account.Anonymized__c, FALSE)
+                            .addConditionEq('Account.Blocked__c', FALSE) 
+                            .addConditionEq('Account.Anonymized__c', FALSE)
                             .addConditionEq(Opportunity.Blocked__c, FALSE)
                             .addConditionEq(Opportunity.Anonymized__c, FALSE)
-                            .addConditionNotEq(Opportunity.AccountId, null);
+                            .addConditionNotNull(Opportunity.AccountId);
 
             // si no tiene agrupación podemos traer solo 1 resultado
-            if (intermediaryGroupIdsSet != null && intermediaryGroupIdsSet.isEmpty())
+            if (intermediaryGroupIdsSet.isEmpty())
             {
                 this.baseQuery.addConditionIn(Opportunity.IntermediaryId__c, intermediaryIdsSet)
                             .setLimit(1);

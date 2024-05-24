@@ -39,6 +39,30 @@
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Read_ZDA</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Read_ZDA</label>
+        <sharedTo>
+            <role>ZDA_Agente</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>Scope__c</field>
+            <operation>equals</operation>
+            <value>Zurich ZDA</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Anonymized__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Blocked__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Ventas_CC</fullName>
         <accessLevel>Edit</accessLevel>
         <description>Permisos de escritura para Oportunidades Zurich Ventas</description>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RestrictionRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description>Regla para limitar la visibilidad de las pólizas para que los usuarios de ZDA únicamente puedan ver las pólizas asociadas a ZDA</description>
+    <enforcementType>Restrict</enforcementType>
+    <masterLabel>ZDA Limitar Visibilidad</masterLabel>
+    <recordFilter>ISPICKVAL(ScopeId__r.Scope__c, &apos;ZDA&apos;)=true</recordFilter>
+    <targetEntity>Policy__c</targetEntity>
+    <userCriteria>$Permission.ZDA_Restringir_Polizas=true</userCriteria>
+    <version>1</version>
+</RestrictionRule>
