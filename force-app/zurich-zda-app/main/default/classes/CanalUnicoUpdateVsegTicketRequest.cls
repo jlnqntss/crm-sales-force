@@ -4,6 +4,7 @@
  *
  * @author mario.navarro@seidor.com
  * @date 21/03/2024
+ * @see https://zurichspain.atlassian.net/wiki/spaces/OCS/pages/2673770514/Servicio+env+o+a+Canal+nico#CanalUnicoUpdateVsegTicketRequest
  */
 public with sharing class CanalUnicoUpdateVsegTicketRequest
 {
