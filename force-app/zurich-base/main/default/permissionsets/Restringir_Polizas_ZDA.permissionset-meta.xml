@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>ZDA_Restringir_Polizas</name>
+    </customPermissions>
+    <description>Permiso para limitar la visibilidad de las pólizas y que únicamente puedan ver las asociadas a ZDA.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Restringir Pólizas ZDA</label>
+</PermissionSet>
