@@ -1160,7 +1160,7 @@ private with sharing class GenesysInteractionsServiceTest
         // Test
         Test.startTest();
 
-        GenesysInteractionsService.OpenedClaims openedClaims = GenesysInteractionsService.findOpenedClaims(customer.get(0).Id, null, null);
+        GenesysInteractionsService.OpenedClaims openedClaims = GenesysInteractionsService.findOpenedClaims(customer.get(0).Id, null, null, '');
 
         Test.stopTest();
 
@@ -1872,9 +1872,6 @@ private with sharing class GenesysInteractionsServiceTest
         };
         insert products;
 
-        for (Product2 product: products)
-            System.debug('PRODUCT: ' + product);
-
         List<Policy__c> policies = [SELECT Id, Name, TechnicalCode__c, CommercialCode__c, PolicyType__c, IntermediaryId__r.ClassDescription__c,
                                     Partner__c, Partner__r.PartnerSFCode__c, Partner__r.GrandparentBusinessName__c, Partner__r.PartnerSector__c,
                                     IntermediaryId__r.INFOIntermediaryCode__c, IntermediaryId__r.IntermediaryDescription__c,
@@ -1952,9 +1949,6 @@ private with sharing class GenesysInteractionsServiceTest
         };
         insert products;
 
-        for (Product2 product: products)
-            System.debug('PRODUCT: ' + product);
-
         List<Policy__c> policies = [SELECT Id, Name, TechnicalCode__c, CommercialCode__c, PolicyType__c, IntermediaryId__r.ClassDescription__c,
                                     Partner__c, Partner__r.PartnerSFCode__c, Partner__r.GrandparentBusinessName__c, Partner__r.PartnerSector__c,
                                     IntermediaryId__r.INFOIntermediaryCode__c, IntermediaryId__r.IntermediaryDescription__c,
@@ -2003,5 +1997,119 @@ private with sharing class GenesysInteractionsServiceTest
 
         System.assertEquals(1, expectedAccounts.size(), 'Debería haber encontrado un único resultado');
         System.assertEquals(expectedAccounts.get(0).Id, result.screenPopRecordId, 'Debería haber encontrado un único resultado');
+    }
+
+    /**
+     * Valida el escenario en de búsqueda de personas para Sabadell.
+     **
+     * @author jfherrero
+     * @date 24/04/2024
+     */
+    @IsTest
+    private static void test_findPeople_Customer_Document_checkIntents()
+    {
+        //PRODUCTS
+        List<Product2> products = new List<Product2>
+        {
+            new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'HOGAR'
+            ),
+            new Product2
+            (
+                Name = 'Product test 2',
+                GroupDescription__c = 'INMUEBLES'
+            )
+        };
+        insert products;
+
+        //POLICIES
+        List<Policy__c> policies = [SELECT Id, Name, TechnicalCode__c, CommercialCode__c, PolicyType__c, IntermediaryId__r.ClassDescription__c,
+                                    Partner__c, Partner__r.PartnerSFCode__c, Partner__r.GrandparentBusinessName__c, Partner__r.PartnerSector__c,
+                                    IntermediaryId__r.INFOIntermediaryCode__c, IntermediaryId__r.IntermediaryDescription__c,
+                                    IntermediaryId__r.Channel__c, IntermediaryId__r.Phone, IntermediaryId__r.MainEmail__c,
+                                    IntermediaryId__r.Segment__c, PolicyHolder__r.Name, PolicyHolder__r.NationalId__c, PolicyHolder__c,
+                                    Scope__c, EndDate__c, ProductId__c, ProductId__r.GroupDescription__c
+                                    FROM Policy__c WHERE PolicyHolder__r.NationalId__c = '777888111Y' LIMIT 1];
+
+        policies[0].ProductId__c = products[0].Id;
+        policies[0].EndDate__c = Date.today() + 10;
+        policies[0].Scope__c = 'Z';
+        update policies[0];
+
+        Policy__c copyPolicy = policies[0].clone(false, false, false, false);
+        copyPolicy.ProductId__c = products[1].Id;
+        insert copyPolicy;
+
+        //INSURED OBJECTS
+        List<Asset> insuredObjects = [SELECT Id FROM Asset LIMIT 1];
+        List<Asset> insuredObject2 = TestDataFactory.generateInsuredObjectsForEachPolicy('Motor', new List<Policy__c> {copyPolicy}, 10);
+        insert insuredObject2;
+
+        Integer claimNumber1 = (Math.random() * 1000000000).intValue();
+        Integer claimNumber2 = (Math.random() * 1000000000).intValue();
+
+        //CLAIMS
+        Claim__c myClaimHogar =  new Claim__c(
+            Name = String.valueOf(claimNumber1),
+            PolicyHolder__c = policies[0].PolicyHolder__c,
+            Policy__c = policies[0].Id,
+            InsuredObject__c = insuredObjects[0].Id,
+            LegalEntity__c = '001',
+            Scope__c = 'Z',
+            INFOClaimNumber__c = String.valueOf(claimNumber1) );
+
+        insert myClaimHogar;
+
+        Claim__c myClaimInmuebles =  new Claim__c(
+            Name = String.valueOf(claimNumber2),
+            PolicyHolder__c = copyPolicy.PolicyHolder__c,
+            Policy__c = copyPolicy.Id,
+            InsuredObject__c = insuredObject2[0].Id,
+            LegalEntity__c = '001',
+            Scope__c = 'Z',
+            INFOClaimNumber__c = String.valueOf(claimNumber2) );
+
+        insert myClaimInmuebles;
+
+        //REQUESTS
+        GenesysInteractionsService.SearchRequest searchRequestHogar = new GenesysInteractionsService.SearchRequest();
+        searchRequestHogar.searchType = 'document';
+        searchRequestHogar.value = '777888111Y';
+        searchRequestHogar.filterBy  = 'customers';
+        searchRequestHogar.legalEntity  = 'all';
+        searchRequestHogar.scope  = 'Z';
+        searchRequestHogar.intent  = 'CONS_HOG';
+
+        GenesysInteractionsService.SearchRequest searchRequestComercio = new GenesysInteractionsService.SearchRequest();
+        searchRequestComercio.searchType = 'document';
+        searchRequestComercio.value = '777888111Y';
+        searchRequestComercio.filterBy  = 'customers';
+        searchRequestComercio.legalEntity  = 'all';
+        searchRequestComercio.scope  = 'Z';
+        searchRequestComercio.intent  = 'CONS_COM';
+
+        GenesysInteractionsService.SearchRequest searchRequestPymes = new GenesysInteractionsService.SearchRequest();
+        searchRequestPymes.searchType = 'document';
+        searchRequestPymes.value = '777888111Y';
+        searchRequestPymes.filterBy  = 'customers';
+        searchRequestPymes.legalEntity  = 'all';
+        searchRequestPymes.scope  = 'Z';
+        searchRequestPymes.intent  = 'CONS_PYMS';
+
+        // Test
+        Test.startTest();
+
+        GenesysInteractionsService.SearchResult resultHogar = GenesysInteractionsService.findPeopleBy(searchRequestHogar);
+        GenesysInteractionsService.SearchResult resultComercio = GenesysInteractionsService.findPeopleBy(searchRequestComercio);
+        GenesysInteractionsService.SearchResult resultPymes = GenesysInteractionsService.findPeopleBy(searchRequestPymes);
+
+        Test.stopTest();
+
+        // Then
+        System.assertEquals('HOGAR', resultHogar.claims.preferredClaim.policyType, 'El siniestro preferente debería ser de HOGAR');
+        System.assertEquals('INMUEBLES', resultComercio.claims.preferredClaim.policyType, 'El siniestro preferente debería ser de INMUEBLES');
+        System.assertEquals('INMUEBLES', resultPymes.claims.preferredClaim.policyType, 'El siniestro preferente debería ser de INMUEBLES al no haber PYMES');
     }
 }

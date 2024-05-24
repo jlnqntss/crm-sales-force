@@ -2,8 +2,10 @@
  * @description       : 
  * @author            : jjuaristi
  * @group             : 
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
+ * @modified on  : 06-06-2023
+ * @modified by  : aberuete
+ * @last modified on  : 22-05-2024
+ * @last modified by  : jfherrero
 **/
 public with sharing class GenesysInteractionsService
 {
@@ -46,6 +48,11 @@ public with sharing class GenesysInteractionsService
     static final String PARTNER_SECTOR = 'Partner__r.PartnerSector__c';
     static final String PARTNER_SF_CODE = 'Partner__r.PartnerSFCode__c';
     static final String PARTNER_GRANDPARENT_BUSINESS_CODE = 'Partner__r.GrandparentBusinessName__c';
+
+    static final String TIPO_POLIZA_COMERCIOS = 'COMERCIOS';
+    static final String TIPO_POLIZA_HOGAR = 'HOGAR';
+    static final String TIPO_POLIZA_INMUEBLES = 'INMUEBLES';
+    static final String TIPO_POLIZA_PYMES = 'PYMES';
     
     
     //#region Métodos públicos
@@ -539,6 +546,8 @@ public with sharing class GenesysInteractionsService
      * @author adelgado
      * @param {SearchRequest} request Solicitud de búsqueda
      * @return {SearchResult} Resultados devueltos por la búsqueda
+     * @last modified on  : 22-05-2024
+     * @last modified by  : jfherrero
      */
     public static SearchResult findCustomersBy(SearchRequest request)
     {
@@ -553,6 +562,10 @@ public with sharing class GenesysInteractionsService
 
         if(accounts.size() == 1)
         {
+            // Vamos a registrar el parámetro opcional 'intent'. En éste caso para cambiar el cálculo del
+            // preferredClaim en base al mismo. Suponiendo que venga informado y no esté vacío
+            String intent = String.isNotBlank(request.intent) ? request.intent : '';
+
             Account customer = accounts.get(0);
             results.screenPopRecordId = customer.Id;
             results.nationalId = customer.NationalId__c;
@@ -560,33 +573,57 @@ public with sharing class GenesysInteractionsService
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
 
             results.policies = findActivePolicies(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
-            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
+            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity), intent);
         }
 
         //20210804: Estadísticas/Informes
+        results = getSearchResultStatistics(request, results, accounts);
+
+        return results;
+    }
+
+    /**
+     * Generación de estadísticas
+     *
+     * @author jfherrero
+     * @date 22-05-2024
+     * @param {SearchRequest} request Búsqueda realizada
+     * @param {SearchResult} results Resultados devueltos por la búsqueda
+     * @param {List<Account>} accounts Accounts encontrados para la búsqueda
+     * @return {SearchResult} Resultados devueltos por la búsqueda con estadísticas informadas
+     */
+    public static SearchResult getSearchResultStatistics (SearchRequest request, SearchResult results, List<Account> accounts)
+    {
         if(accounts.size() == 0)
         {
             results.noIdentified = true;
         }
-        else if(accounts.size() == 1 && searchType == 'phone')
+        else if(request.searchType == 'phone')
         {
-            results.identifiedByANI = true;
+            if (accounts.size() == 1)
+            {
+                results.identifiedByANI = true;
+            }
+            else if (accounts.size() > 1)
+            {
+                results.multiIdentifiedByANI = true;
+            }
         }
-        else if(accounts.size() > 1 && searchType == 'phone')
+        else if(request.searchType == 'document')
         {
-            results.multiIdentifiedByANI = true;
-        }
-        else if(accounts.size() == 1 && searchType == 'document')
-        {
-            results.identifiedByNIF = true;
-        }
-        else if(accounts.size() > 1 && searchType == 'document')
-        {
-            results.multiIdentifiedByNIF = true;
+            if (accounts.size() == 1)
+            {
+                results.identifiedByNIF = true;
+            }
+            else if (accounts.size() > 1)
+            {
+                results.multiIdentifiedByNIF = true;
+            }
         }
 
         return results;
     }
+
 
     /**
      * Lanza una búsqueda con la configuración determinada por request
@@ -845,7 +882,7 @@ public with sharing class GenesysInteractionsService
      * @date 20/01/2021
      */
     @testVisible
-    private static OpenedClaims findOpenedClaims(Id customerId, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity)
+    private static OpenedClaims findOpenedClaims(Id customerId, RecordsSelector.Scope scope, RecordsSelector.LegalEntity legalEntity, String intent)
     {
         ClaimsSelector claimsSelector = new ClaimsSelector();
         claimsSelector.setFields
@@ -884,7 +921,7 @@ public with sharing class GenesysInteractionsService
 
         List<Claim__c> claims = claimsSelector.selectByHolder(customerId);
 
-        return new OpenedClaims(claims);
+        return new OpenedClaims(claims, intent);
     }
 
     /**
@@ -1201,7 +1238,7 @@ public with sharing class GenesysInteractionsService
             results.totalQuotes = customer.NumQuotes__pc != null ? Integer.valueOf(customer.NumQuotes__pc) : null;
 
             results.policies = findActivePoliciesSabadell(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
-            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity));
+            results.claims = findOpenedClaims(customer.Id, RecordsSelector.getScope(request.scope), RecordsSelector.getLegalEntity(request.legalEntity), '');
         }
 
         //20210804: Estadísticas/Informes
@@ -1420,11 +1457,27 @@ public with sharing class GenesysInteractionsService
             }
             set;
         }
+        public String intent
+        {
+            get
+            {
+                if(String.isBlank(intent))
+                {
+                    return '';
+                }
+                else
+                {
+                    return intent.toUpperCase();
+                }
+            }
+            set;
+        }
 
         public SearchRequest() {}
         public SearchRequest(Map<String, String> paramsByName)
         {
             this.searchType = paramsByName.get('searchType');
+            this.intent = paramsByName.get('intent');
             this.filterBy = paramsByName.get('filterBy');
             this.value = paramsByName.get('value');
             this.scope = paramsByName.get('scope');
@@ -1924,9 +1977,12 @@ public with sharing class GenesysInteractionsService
      * Representa la información de los siniestros abiertos en el CRM
      *
      * @author adelgado
+     * @last modified on  : 22-05-2024
+     * @last modified by  : jfherrero
      */
     public class OpenedClaims
     {
+        public String intent;
         public Map<String, List<OpenedClaim>> byOwner;
         public Map<String, List<OpenedClaim>> byType;
         public Boolean hasMultipleTypes
@@ -1956,12 +2012,101 @@ public with sharing class GenesysInteractionsService
         {
             get
             {
-                if(total == 0 || (total != 1 && hasDifferentOwners))
-                {
-                    return null;
-                }
+                switch on intent {
+                    when 'CONS_HOG'
+                    {
+                        return getClaimHogar();
+                    }	
+                    when 'CONS_COM'
+                    {
+                        return getClaimComercio();
+                    }
+                    when 'CONS_PYMS'
+                    {
+                        return getClaimPYMES();
+                    }
+                    when else
+                    {
+                        if(total == 0 || (total != 1 && hasDifferentOwners))
+                        {
+                            return null;
+                        }
 
-                return this.claims[0];
+                        return this.claims[0];
+                    }
+                }      
+            }
+        }
+
+        private OpenedClaim getClaimHogar ()
+        {
+            if (this.byType.get(TIPO_POLIZA_HOGAR) != null && this.byType.get(TIPO_POLIZA_HOGAR).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_HOGAR)[0];
+            }
+            else if (this.byType.get(TIPO_POLIZA_INMUEBLES) != null && this.byType.get(TIPO_POLIZA_INMUEBLES).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_INMUEBLES)[0];
+            }
+            else if (this.byType.get(TIPO_POLIZA_COMERCIOS) != null && this.byType.get(TIPO_POLIZA_COMERCIOS).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_COMERCIOS)[0];
+            }
+            else if (this.byType.get(TIPO_POLIZA_PYMES) != null && this.byType.get(TIPO_POLIZA_PYMES).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_PYMES)[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private OpenedClaim getClaimComercio ()
+        {
+            if (this.byType.get(TIPO_POLIZA_INMUEBLES) != null && this.byType.get(TIPO_POLIZA_INMUEBLES).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_INMUEBLES)[0];
+            }
+            else if (this.byType.get(TIPO_POLIZA_HOGAR) != null && this.byType.get(TIPO_POLIZA_HOGAR).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_HOGAR)[0];
+            }
+            else if (this.byType.get(TIPO_POLIZA_COMERCIOS) != null && this.byType.get(TIPO_POLIZA_COMERCIOS).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_COMERCIOS)[0];
+            }
+            else if (this.byType.get(TIPO_POLIZA_PYMES) != null && this.byType.get(TIPO_POLIZA_PYMES).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_PYMES)[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private OpenedClaim getClaimPYMES ()
+        {
+            if (this.byType.get(TIPO_POLIZA_PYMES) != null && this.byType.get(TIPO_POLIZA_PYMES).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_PYMES)[0];
+            }
+            else if (this.byType.get(TIPO_POLIZA_COMERCIOS) != null && this.byType.get(TIPO_POLIZA_COMERCIOS).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_COMERCIOS)[0];
+            }
+            else if (this.byType.get(TIPO_POLIZA_INMUEBLES) != null && this.byType.get(TIPO_POLIZA_INMUEBLES).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_INMUEBLES)[0];
+            }
+            else if (this.byType.get(TIPO_POLIZA_HOGAR) != null && this.byType.get(TIPO_POLIZA_HOGAR).size()>0)
+            {
+                return this.byType.get(TIPO_POLIZA_HOGAR)[0];
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -1969,6 +2114,19 @@ public with sharing class GenesysInteractionsService
 
         public OpenedClaims (List<Claim__c> claims)
         {
+            this.claims = new List<OpenedClaim>();
+            byOwner = new Map<String, List<OpenedClaim>>();
+            byType = new Map<String, List<OpenedClaim>>();
+
+            for(Claim__c claim: claims)
+            {
+                this.add(new OpenedClaim(claim));
+            }
+        }
+
+        public OpenedClaims (List<Claim__c> claims, String intent)
+        {
+            this.intent = intent;
             this.claims = new List<OpenedClaim>();
             byOwner = new Map<String, List<OpenedClaim>>();
             byType = new Map<String, List<OpenedClaim>>();

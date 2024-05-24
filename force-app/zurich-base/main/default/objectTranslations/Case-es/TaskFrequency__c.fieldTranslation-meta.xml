@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>¿Cada cuánto ejecutas esta tarea?</label>
+    <name>TaskFrequency__c</name>
+    <picklistValues>
+        <masterLabel>Diariamente</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Mensualmente</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Semanalmente</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Trimestralmente</masterLabel>
+        <translation></translation>
+    </picklistValues>
+</CustomFieldTranslation>

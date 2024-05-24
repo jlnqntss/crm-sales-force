@@ -37,6 +37,11 @@
                 <default>false</default>
                 <label>Zurich Ventas</label>
             </value>
+            <value>
+                <fullName>ZDA</fullName>
+                <default>false</default>
+                <label>Zurich ZDA</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

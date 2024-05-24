@@ -6234,10 +6234,6 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDAPartnerSupportAnsweredBody</name>
     </customLabels>
     <customLabels>
-        <label>Petición respondida</label>
-        <name>ZDAPartnerSupportAnsweredTitle</name>
-    </customLabels>
-    <customLabels>
         <label>Valor #fieldValue# no valido para el campo #fieldName#</label>
         <name>ZDAVsegTicketRequestFieldValidationError</name>
     </customLabels>
