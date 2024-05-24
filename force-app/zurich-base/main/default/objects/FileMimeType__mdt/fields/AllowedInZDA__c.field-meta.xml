@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AllowedInZDA__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Permite indicar si este tipo de fichero esta admitido para poderlo adjuntar en los envíos de documentación hacia Canal único (ZDA)</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Indicar si se permite enviar este tipo de documento en los envíos a Canal único</inlineHelpText>
+    <label>Allowed in ZDA</label>
+    <type>Checkbox</type>
+</CustomField>

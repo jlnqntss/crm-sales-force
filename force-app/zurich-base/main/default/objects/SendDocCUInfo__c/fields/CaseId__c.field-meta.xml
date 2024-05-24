@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CaseId__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Identificador del caso con el que esta relacionado el envio</description>
+    <externalId>false</externalId>
+    <label>Case</label>
+    <referenceTo>Case</referenceTo>
+    <relationshipLabel>Envios doc canal unico</relationshipLabel>
+    <relationshipName>DocSends</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

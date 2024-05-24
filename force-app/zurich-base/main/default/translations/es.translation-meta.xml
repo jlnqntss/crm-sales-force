@@ -6234,6 +6234,14 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDAPartnerSupportAnsweredBody</name>
     </customLabels>
     <customLabels>
+        <label>Valor #fieldValue# no valido para el campo #fieldName#</label>
+        <name>ZDAVsegTicketRequestFieldValidationError</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha producido un error en el envío, consultar log de errores</label>
+        <name>ZDAVsegTicketRequestError</name>
+    </customLabels>
+    <customLabels>
         <label>Archivos</label>
         <name>ZRM_FilesTitle</name>
     </customLabels>

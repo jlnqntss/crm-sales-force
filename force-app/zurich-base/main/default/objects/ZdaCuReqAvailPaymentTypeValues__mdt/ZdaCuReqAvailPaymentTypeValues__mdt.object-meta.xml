@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Valores disponibles para el campo PaymentType para la request de envio de datos a canal unico</description>
+    <label>ZDA CU Req available payment type value</label>
+    <pluralLabel>ZDA CU Req available payment type values</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

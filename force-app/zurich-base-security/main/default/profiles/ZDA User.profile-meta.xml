@@ -4829,6 +4829,41 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>FileMimeType__mdt.KindOfDocument__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ZdaCuRequestAvailableEventValues__mdt.Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ZdaCuReqAvailableTicketStatusValues__mdt.Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ZdaCuReqAvailTicketSubStatusValues__mdt.Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ZdaCuReqAvailPaymentTypeValues__mdt.Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ZdaCuReqAvailableEventReasonValues__mdt.Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ZDAUpdateRequestTimeFormat__mdt.Format__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Objective__c.Active__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -5280,6 +5315,27 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ExcludedMailboxList__mdt-ExcludedMailboxList Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>FileMimeType__mdt-File mime type Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuRequestAvailableEventValues__mdt-ZDA CU Request available event value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailableTicketStatusValues__mdt-ZDA CU Req available ticketStatus value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailTicketSubStatusValues__mdt-ZDA CU Req avail TicketSubStatus value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailPaymentTypeValues__mdt-ZDA CU Req available payment type value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailableEventReasonValues__mdt-ZDA CU Req available eventReason value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ForumOriginAssignment__mdt-Forum Origin Assignment Layout</layout>
