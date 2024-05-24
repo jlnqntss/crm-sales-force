@@ -9,5 +9,6 @@
     <fields>Association__c</fields>
     <fields>BusinessManagerName__c</fields>
     <fields>Foreigners__c</fields>
+    <fields>Office__c</fields>
     <label>Intermediary Default</label>
 </CompactLayout>
