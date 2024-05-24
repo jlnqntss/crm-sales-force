@@ -118,8 +118,7 @@ public with sharing class Batch_IntermediaryOrAccountChangeUtil {
         
         Opportunity recordToUpdate = new Opportunity();
         recordToUpdate.Id = offer.Id;
-        recordToUpdate.VisibilityRetry__c = 0;
-        recordToUpdate.LastDateIntermediaryOrAccountChange__c = null;
+        recordToUpdate.VisibilityRetry__c = 0; // Marco el 0 como un OK 
         
         update recordToUpdate;        
     }
@@ -133,8 +132,7 @@ public with sharing class Batch_IntermediaryOrAccountChangeUtil {
 
         Policy__c recordToUpdate = new Policy__c();
         recordToUpdate.Id = policy.Id;
-        recordToUpdate.VisibilityRetry__c = 0;
-        recordToUpdate.LastDateIntermediaryOrAccountChange__c = null;
+        recordToUpdate.VisibilityRetry__c = 0; // Marco el 0 como un OK 
         
         update recordToUpdate;
         
