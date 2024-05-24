@@ -168,7 +168,9 @@ public with sharing class CanalUnicoUpdateVsegTicketRequest
      */
     private interface IUpdateVsegTicketRequestElem
     {
-        //Método que devuelve una serialización a JSON de la propia instancia de la clase para su uso en las llamadas al SDK.
+        /**
+         * Se encarga de construir el cuerpo del xml del elemento en cuestion
+         */
         String buildRequest();
     }
 
