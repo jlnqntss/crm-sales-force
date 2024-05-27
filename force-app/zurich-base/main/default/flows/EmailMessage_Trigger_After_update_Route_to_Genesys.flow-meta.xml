@@ -1305,7 +1305,7 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
         <locationX>1660</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>fieldBlockedChanged</targetReference>
+            <targetReference>FieldBlockedIsChanged</targetReference>
         </connector>
         <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
         <filterLogic>1 AND (2 OR 3) AND 4</filterLogic>
