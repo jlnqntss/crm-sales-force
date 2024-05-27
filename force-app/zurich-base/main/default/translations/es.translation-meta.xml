@@ -6214,6 +6214,18 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>SDM_LinksInteres_ViewAll</name>
     </customLabels>
     <customLabels>
+        <label>Has recibido respuesta al soporte del caso:</label>
+        <name>ZDAScaledCaseAnsweredBody</name>
+    </customLabels>
+    <customLabels>
+        <label>Petición respondida</label>
+        <name>ZDAPartnerSupportAnsweredTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Se debe informar la respuesta para cerrar un escalado</label>
+        <name>ZDANotAllowedCloseScaledWithoutResponse</name>
+    </customLabels>
+    <customLabels>
         <label>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Ganada</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
@@ -6222,8 +6234,12 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDAPartnerSupportAnsweredBody</name>
     </customLabels>
     <customLabels>
-        <label>Petición respondida</label>
-        <name>ZDAPartnerSupportAnsweredTitle</name>
+        <label>Valor #fieldValue# no valido para el campo #fieldName#</label>
+        <name>ZDAVsegTicketRequestFieldValidationError</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha producido un error en el envío, consultar log de errores</label>
+        <name>ZDAVsegTicketRequestError</name>
     </customLabels>
     <customLabels>
         <label>Archivos</label>

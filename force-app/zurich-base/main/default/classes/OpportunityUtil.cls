@@ -248,7 +248,7 @@ public with sharing class OpportunityUtil
                     oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_CLIENTE;
                     oppNew.LastAccountId__c = oppOld.AccountId;
                     oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
-                    oppNew.VisibilityRetry__c = 0;
+                    oppNew.VisibilityRetry__c = 1; // Inicializo el numero de reintentos en 1 ya que el 0 es para identificar ok
                 }
     
                 // Mediador
@@ -257,7 +257,7 @@ public with sharing class OpportunityUtil
                     oppNew.ZRMMovementType__c = Batch_IntermediaryOrAccountChangeUtil.MOVEMENT_TYPE_CAMBIO_MEDIADOR;
                     oppNew.LastAccountId__c = oppOld.IntermediaryId__c;
                     oppNew.LastDateIntermediaryOrAccountChange__c = System.today();
-                    oppNew.VisibilityRetry__c = 0;
+                    oppNew.VisibilityRetry__c = 1; // Inicializo el numero de reintentos en 1 ya que el 0 es para identificar ok
                 }
             }
         }

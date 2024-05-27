@@ -102,6 +102,11 @@
         <label>Partner</label>
     </standardValue>
     <standardValue>
+        <fullName>Petición mercado</fullName>
+        <default>false</default>
+        <label>Petición mercado</label>
+    </standardValue>
+    <standardValue>
         <fullName>Postventa (Local Customer Service)</fullName>
         <default>false</default>
         <label>Postventa (Local Customer Service)</label>

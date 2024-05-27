@@ -353,6 +353,41 @@ private with sharing class CasesSelectorTest
         Assert.areEqual(foundCases[0].CuTicketId__c, existingZDACase.CuTicketId__c);
     }
 
+    /**
+     * Se comprueba que el metodo getByIdWithZDAInfo funciona correctamente. Para ello:
+     * - Comprueba que pasandole un id nulo no retorna nada
+     * - Comprueba que pasandole un id de un caso NO ZDA no retorna nada
+     * - Comprueba que pasandole un id de un caso ZDA lo retorna
+     */
+    @isTest
+    private static void test_getByIdWithZDAInfo()
+    {
+        Case existingZDACase = [SELECT Id FROM Case LIMIT 1];
+
+        existingZDACase.RecordTypeId = CaseUtil.RT_ID_ZDA;
+        existingZDACase.CuTicketId__c = '12345678';
+
+        Case newUSPCase = new Case(
+            RecordTypeId = CaseUtil.RT_ID_USPINQUIRY,
+            CuTicketId__c = '87654321'
+            );
+
+        List<Case> casesToUpsert = new List<Case>();
+        casesToUpsert.add(existingZDACase);
+        casesToUpsert.add(newUSPCase);
+        upsert casesToUpsert;
+
+        Test.startTest();
+        Case nullCase = new CasesSelector().getByIdWithZDAInfo(null);
+        Case uspCase = new CasesSelector().getByIdWithZDAInfo(newUSPCase.Id);
+        Case zdaCase = new CasesSelector().getByIdWithZDAInfo(existingZDACase.Id);
+        Test.stopTest();
+
+        Assert.isNull(nullCase);
+        Assert.isNull(uspCase);
+        Assert.isNotNull(zdaCase);
+    }
+
     /*
      * Test del método que devuelve casos para el Batch_CloseInteractions
      * @author lrodriguez6@seidor.es

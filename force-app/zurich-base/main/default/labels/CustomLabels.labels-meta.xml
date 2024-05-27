@@ -2451,6 +2451,22 @@ Create the record and try again.</value>
         <value>Submit</value>
     </labels>
     <labels>
+        <fullName>ZDAScaledCaseAnsweredBody</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAScaledCaseAnsweredBody</shortDescription>
+        <value>You have received a response to the case support:</value>
+    </labels>    
+    <labels>
+        <fullName>ZDANotAllowedCloseScaledWithoutResponse</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDANotAllowedCloseScaledWithoutResponse</shortDescription>
+        <value>The response must be reported to close an escalation</value>
+    </labels>
+    <labels>
         <fullName>OfferSalesStageValidationClosedWonMessage</fullName>
         <categories>Ventas,Offer</categories>
         <language>en_US</language>
@@ -2473,6 +2489,22 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>ZDAPartnerSupportAnsweredTitle</shortDescription>
         <value>Request answered</value>
+    </labels>
+    <labels>
+        <fullName>ZDAVsegTicketRequestFieldValidationError</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAVsegTicketRequestFieldValidationError</shortDescription>
+        <value>Invalid value #fieldValue# for field #fieldName#</value>
+    </labels>
+    <labels>
+        <fullName>ZDAVsegTicketRequestError</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAVsegTicketRequestError</shortDescription>
+        <value>An error occurred while sending, check the error log</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermAddCampMember_AddButton</fullName>

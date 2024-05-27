@@ -149,7 +149,7 @@ public without sharing class ContentVersionUtil
         if( !hashToContentVersion.isEmpty() )
         {
             //Recuperamos los casos relacionados con ese hash para crear el ContentDocumentLink y relacionar el documento con el caso
-            List<Case> relatedCases = [SELECT Id, Status, DocumentationHashId__c FROM Case WHERE DocumentationHashId__c IN : hashToContentVersion.keySet()];
+            List<Case> relatedCases = [SELECT Id, Status, DocumentationHashId__c FROM Case WHERE DocumentationHashId__c IN : hashToContentVersion.keySet() WITH USER_MODE];
             if( !relatedCases.isEmpty() )
             {
                 for(Case related: relatedCases)
