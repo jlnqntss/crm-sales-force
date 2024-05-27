@@ -6214,16 +6214,24 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>SDM_LinksInteres_ViewAll</name>
     </customLabels>
     <customLabels>
+        <label>Has recibido respuesta al soporte del caso:</label>
+        <name>ZDAScaledCaseAnsweredBody</name>
+    </customLabels>
+    <customLabels>
+        <label>Petición respondida</label>
+        <name>ZDAPartnerSupportAnsweredTitle</name>
+    </customLabels>
+    <customLabels>
+        <label>Se debe informar la respuesta para cerrar un escalado</label>
+        <name>ZDANotAllowedCloseScaledWithoutResponse</name>
+    </customLabels>
+    <customLabels>
         <label>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Ganada</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
     <customLabels>
         <label>Has recibido respuesta externa del caso:</label>
         <name>ZDAPartnerSupportAnsweredBody</name>
-    </customLabels>
-    <customLabels>
-        <label>Petición respondida</label>
-        <name>ZDAPartnerSupportAnsweredTitle</name>
     </customLabels>
     <customLabels>
         <label>Valor #fieldValue# no valido para el campo #fieldName#</label>

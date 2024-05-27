@@ -6,5 +6,6 @@
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Cosulta_Datos_ZDA</permissionSets>
     <permissionSets>Gestion_datos_ZDA</permissionSets>
+    <permissionSets>Restringir_Polizas_ZDA</permissionSets>
     <status>Updated</status>
 </PermissionSetGroup>

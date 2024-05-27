@@ -810,6 +810,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SendDocCanalUnicoAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SiteLoginController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -943,10 +947,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>Test_WS_Requests</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>TicketingHegeoAction</apexClass>
         <enabled>true</enabled>
     </classAccesses>
 	<classAccesses>
@@ -7945,36 +7945,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>FileMimeType__mdt.KindOfDocument__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ZdaCuRequestAvailableEventValues__mdt.Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ZdaCuReqAvailableTicketStatusValues__mdt.Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ZdaCuReqAvailTicketSubStatusValues__mdt.Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ZdaCuReqAvailPaymentTypeValues__mdt.Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ZdaCuReqAvailableEventReasonValues__mdt.Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ZDAUpdateRequestTimeFormat__mdt.Format__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
