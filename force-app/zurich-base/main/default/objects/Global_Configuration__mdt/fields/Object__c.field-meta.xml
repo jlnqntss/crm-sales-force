@@ -25,6 +25,11 @@
                 <default>false</default>
                 <label>Queue</label>
             </value>
+            <value>
+                <fullName>Retention</fullName>
+                <default>false</default>
+                <label>Retention</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
