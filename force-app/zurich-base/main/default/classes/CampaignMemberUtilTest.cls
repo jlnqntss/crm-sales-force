@@ -7,11 +7,52 @@
 @isTest(SeeAllData=false)
 private with sharing class CampaignMemberUtilTest
 {
+    private static String CALLBACK_CONVERSATION_ID = '20558e5f-9024-41c0-954a-b32acf2f8d7b';
+    private static String CALLBACK_SESSION_ID = '7e131fcf-1639-45b2-89e5-9c3787b5dc75';
+
     @TestSetup
     public static void createScenario()
     {
+        // Creamos un usuario Ventas Advisor
+        Id advisorProfileId = [SELECT Id FROM Profile WHERE Name = :ProfilesSelector.PROFILE_VENTAS_USER].Id;
+        List<User> advisorUsers = TestDataFactory.generateUsersByProfile(advisorProfileId, 1);
+        insert advisorUsers;
+
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
-        insert accounts;
+
+        // Insertamos las accounts como ventas advisor
+        System.runAs(advisorUsers[0])
+        {
+            insert accounts;
+        }
+        
+        // Obtenemos los personcontact de las accounts que acabamos de crear
+        List<Contact> ctLst = [SELECT Id FROM Contact WHERE AccountId IN :Accounts];
+
+        // Generamos tareas de tipo callback y les asociamos los datos con los que se llamará mas tarde al WS
+        RecordType interactionTskRt = [SELECT Id FROM RecordType WHERE DeveloperName = 'Interaction' AND SObjectType = 'Task' LIMIT 1];
+        Date tskActivityDate = Date.today().addDays(7);
+
+        List<Task> tskLst = new List<Task>();
+        for(Contact ct : ctLst)
+        {
+            tskLst.add(new Task(
+                Subject = 'Callback',
+                WhoId = ct.Id,
+                RecordtypeId = interactionTskRt.Id,
+                CallDisposition = 'Agendar',
+                CallType = 'Outbound',
+                ActivityDate = tskActivityDate,
+                CallObject = CALLBACK_CONVERSATION_ID
+            ));
+        }
+
+        // Insertamos las tareas como ventas advisor ya que una de las condiciones que debe darse para que el proceso borre callbacks, es que
+        // el creador de la tarea sea un ventas advisor
+        System.runAs(advisorUsers[0])
+        {
+            insert tskLst;
+        }
 
         Cross_Selling__c ventaCruzada = new Cross_Selling__c();
         ventaCruzada.ContactCenterUser__c = 'generico';
@@ -185,6 +226,54 @@ private with sharing class CampaignMemberUtilTest
         {
             System.assertEquals('Closed Lost', o.StageName, 'Deberia ser Cerrado Perdido');
             System.assertEquals('Agent removes from the campaign', o.Sales_Loss_Reason__c, 'Deberia ser Cerrado Perdido');
+        }
+    }
+
+    /**
+    * Método de test que prueba el método disconnectGenesysCallbacks
+    *
+    * @description 
+    * @author fpalomo | 27/05/2024 
+    **/
+    @IsTest
+    public static void test_disconnectGenesysCallbacks()
+    {
+        // Mock WebService Analíticas
+        GenesysCloud.AnalyticsSession session = new GenesysCloud.AnalyticsSession();
+        session.callbackNumbers = new List<String>{'+34777666222'};
+        session.callbackScheduledTime = '2024-05-30T11:14:00Z';
+        session.direction = 'outbound';
+        session.mediaType = 'callback';
+        session.sessionId = CALLBACK_SESSION_ID;
+
+        GenesysCloud.AnalyticsParticipantWithoutAttributes participant = new GenesysCloud.AnalyticsParticipantWithoutAttributes();
+        participant.participantId = '613f1e3a-05ca-4bb2-acc1-1d29d6676437';
+        participant.sessions = new List<GenesysCloud.AnalyticsSession>{session};
+
+        GenesysCloud.AnalyticsConversationWithoutAttributes conversation = new GenesysCloud.AnalyticsConversationWithoutAttributes();
+        conversation.conversationId = CALLBACK_CONVERSATION_ID;
+        conversation.participants = new List<GenesysCloud.AnalyticsParticipantWithoutAttributes>{participant};
+
+        GenesysCloud.AnalyticsResponseWrapper analyticsResponseMock = new GenesysCloud.AnalyticsResponseWrapper();
+        analyticsResponseMock.conversations = new List<GenesysCloud.AnalyticsConversationWithoutAttributes>{conversation};
+
+        GenesysCloud.AnalyticsService.mock = new GenesysCloudMocks(analyticsResponseMock.toJSON(), 200);
+
+        // Mock WebService Callbacks
+        GenesysCloud.CallbacksService.mock = new GenesysCloudMocks('', 202);
+
+        // Test borrado miembro campaña
+        List<CampaignMember> cmLst = [SELECT Id FROM CampaignMember];
+
+        Test.startTest();
+        delete cmLst;
+        Test.stopTest();
+
+        List<Task> updatedTskLst = [SELECT Status, Description FROM Task WHERE Subject = 'Callback'];
+
+        for(Task tsk : updatedTskLst)
+        {
+            System.assertEquals(Label.Cliente_eliminado_de_campa_a, tsk.Description, 'La descripcion de la tarea callback debería ser \'' + Label.Cliente_eliminado_de_campa_a + '\'');
         }
     }
 }

@@ -129,4 +129,133 @@ public with sharing class CampaignMemberUtil
             update offersToClose;
         }
     }
+
+    /**
+     * Método que desconecta los callbacks futuros en Genesys para un miembro de campaña, la llamada al WS que los cierra se realiza en
+     * el método disconnectGenesysCallbacks_future
+     * 
+     * @author fpalomo
+     * @date 23/05/2024
+     */
+    public static void disconnectGenesysCallbacks(Map<Id, CampaignMember> oldMap)
+    {
+        Set<String> campaignMemberAccountIdSet = new Set<String>();
+        for (CampaignMember campaignMember : oldMap.values())
+        {
+            campaignMemberAccountIdSet.add(campaignMember.ContactId);
+        }
+
+        // Recuperamos las tareas de callbacks a futuro asociadas al cliente, actualizamos la descripción con el contenido de la label
+        // Label.Cliente_eliminado_de_campa_a (Miembro de campaña eliminado) y las cerramos
+        List<Task> callbackTaskList = (new TaskSelector()).getCallbackTasksByWhoIdSet(campaignMemberAccountIdSet);
+        Set<String> conversationIdSet = new Set<String>();
+        for (Task callbackTask : callbackTaskList)
+        {
+            conversationIdSet.add(callbackTask.CallObject);
+            
+            callbackTask.Status = 'Cerrada';
+            callbackTask.Description = Label.Cliente_eliminado_de_campa_a;
+        }
+
+        // Si no se han recuperado tareas no es necesario hacer nada mas
+        if (callbackTaskList.isEmpty())
+        {
+            return;
+        }
+
+        update callbackTaskList;
+
+
+        // Enviamos los datos al metodo futuro para que realice la llamada al WS
+        disconnectGenesysCallbacks_future(conversationIdSet);
+    }
+
+    /**
+     * Método futuro encargado de hacer la llamada al WS de genesys para cerrar los callbacks
+     * 
+     * @author fpalomo
+     * @date 23/05/2024
+     */
+    @future (callout = true)
+    public static void disconnectGenesysCallbacks_future(Set<String> conversationIdSet)
+    {
+        // Lanzamos una petición a Genesys para recuperar los detalles de todas las conversaciones que tenemos en conversationIdSet
+        GenesysCloud.AnalyticsResponseWrapper analyticsResponse = GenesysCloud.AnalyticsService.getConversationDetails(conversationIdSet);
+        
+        // Para evitar impactar todos los test en los que se eliminan miembros de campaña, se ha hecho que el webservice devuelva nulo
+        // si se está ejecutando en contexto de test y no se ha implementado un mock. Si se da el caso que nos llegue un nulo evitamos
+        // ejecutar el resto del proceso.
+        if (analyticsResponse == null)
+        {
+            return;
+        }
+
+        // Procesamos la respuesta de Genesys y mapeamos cada conversationId con sus callbacks
+        Map<String, Set<String>> conversationToCallbacksMap = new Map<String, Set<String>>();
+        for (GenesysCloud.AnalyticsConversationWithoutAttributes analyticsConversation : analyticsResponse.conversations)
+        {
+            conversationToCallbacksMap.put(analyticsConversation.conversationId, new Set<String>());
+
+            for (GenesysCloud.AnalyticsParticipantWithoutAttributes analyticsParticipant : analyticsConversation.participants)
+            {
+                Set<String> callbackIdSet = getCallbackIdListFromSessions(analyticsParticipant.sessions);
+                conversationToCallbacksMap.get(analyticsConversation.conversationId).addAll(callbackIdSet);
+            }
+        }
+
+        // Generamos un nuevo objeto BulkCallbackDisconnectRequest con los datos de las conversaciones y los callbacks
+        GenesysCloud.BulkCallbackDisconnectRequest bulkCallbackDisconnectRequest = generateCallbackDisconnectRequest(conversationToCallbacksMap);
+
+        // El test del metodo del webservice se realiza con un mock en la clase GenesysCloudTest
+        if (!Test.isRunningTest())
+        {
+            GenesysCloud.CallbacksService.disconnectBulk(bulkCallbackDisconnectRequest);
+        }
+    }
+
+    /**
+     * Obtiene una lista de ID de callbacks a partir de una lista del objeto GenesysCloud.AnalyticsSession (respuesta del servicio de anaíticas de Genesys)
+     * 
+     * @author fpalomo
+     * @date 23/05/2024
+     */
+    public static Set<String> getCallbackIdListFromSessions(List<GenesysCloud.AnalyticsSession> analyticsSessionList)
+    {
+        Set<String> callbackIdList = new Set<String>();
+        for (GenesysCloud.AnalyticsSession analyticsSession : analyticsSessionList)
+        {
+            if(analyticsSession.mediaType == 'callback')
+            {
+                callbackIdList.add(analyticsSession.sessionId);
+            }
+        }
+        return callbackIdList;
+    }
+
+    /**
+     * Genera un objeto GenesysCloud.BulkCallbackDisconnectRequest para los callbacks que recibe en el parámetro conversationToCallbacksMap,
+     * el cual es un mapa de <IdConversacion, Lista<CallbackId>>
+     * 
+     * @author fpalomo
+     * @date 23/05/2024
+     */
+    public static GenesysCloud.BulkCallbackDisconnectRequest generateCallbackDisconnectRequest(Map<String, Set<String>> conversationToCallbacksMap)
+    {
+        GenesysCloud.BulkCallbackDisconnectRequest bulkCallbackDisconnectRequest = new GenesysCloud.BulkCallbackDisconnectRequest();
+        bulkCallbackDisconnectRequest.callbackDisconnectIdentifiers = new List<GenesysCloud.CallbackDisconnectIdentifier>();
+
+        for (String conversationId : conversationToCallbacksMap.keySet())
+        {
+            for (String callbackId : conversationToCallbacksMap.get(conversationId))
+            {
+                GenesysCloud.CallbackDisconnectIdentifier callbackDisconnectIdentifier = new GenesysCloud.CallbackDisconnectIdentifier();
+                callbackDisconnectIdentifier.callbackId = callbackId;
+                callbackDisconnectIdentifier.conversationId = conversationId;
+    
+                bulkCallbackDisconnectRequest.callbackDisconnectIdentifiers.add(callbackDisconnectIdentifier);
+            }
+        }
+
+        return bulkCallbackDisconnectRequest;
+    }
 }

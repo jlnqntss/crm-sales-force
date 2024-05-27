@@ -30,7 +30,7 @@ global class GenesysCloudMocks implements HttpCalloutMock
 
         else if(req.getMethod() == 'GET' || req.getMethod() == 'PATCH')
         {
-            if( req.getEndpoint().contains('/api/v2/conversations/emails/') )
+            if( req.getEndpoint().contains('/api/v2/conversations/emails/') || req.getEndpoint().contains('/api/v2/analytics/'))
             {
                 HttpResponse res = new HttpResponse();
                 res.setBody(body);
