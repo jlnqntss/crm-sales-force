@@ -73,6 +73,10 @@
         <name>ClaimError</name>
     </customLabels>
     <customLabels>
+        <label>Cliente eliminado de campaña.</label>
+        <name>Cliente_eliminado_de_campa_a</name>
+    </customLabels>
+    <customLabels>
         <label><!-- Converted --></label>
         <name>Converted</name>
     </customLabels>
