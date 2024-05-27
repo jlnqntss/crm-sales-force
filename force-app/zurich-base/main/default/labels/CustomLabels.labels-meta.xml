@@ -2457,7 +2457,7 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>ZDAScaledCaseAnsweredBody</shortDescription>
         <value>You have received a response to the case support:</value>
-    </labels>    
+    </labels>
     <labels>
         <fullName>ZDANotAllowedCloseScaledWithoutResponse</fullName>
         <categories>ZDA</categories>
@@ -2988,5 +2988,12 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>ZRM_UploadSuccess</shortDescription>
         <value>file(s) uploaded successfully</value>
+    </labels>
+    <labels>
+        <fullName>Cliente_eliminado_de_campa_a</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Cliente eliminado de campaña</shortDescription>
+        <value>Client removed from campaign.</value>
     </labels>
 </CustomLabels>
