@@ -11,6 +11,10 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
     private final static String TASK_STATUS_CLOSED      = 'Cerrada';
     private final static String TASK_STATUS_TYPE_FORMS = 'Forms';
     private final static String TASK_RECORDTYPE_ID_INTERACTION = Schema.SObjectType.Task.getRecordTypeInfosByDeveloperName().get('Interaction').getRecordTypeId();
+
+    private final static String CASE_STATUS_NEW         = 'Nuevo';
+    private final static String CASE_STATUS_ASSIGNED    = 'Asignado';
+
     /**
      * Identifica una tarea a través del parámetro data.interaction.id y devuelve dicha tarea modificando el usuario Asignado
      * @param data: JSON string con la información de Genesys Cloud
@@ -384,6 +388,11 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
                 // arcortazar - nts: fix-OCS-2682: Hacemos que asignme el usuario si es Owner es una cola o el usuario Integrator
                 if(cases[0]?.OwnerId.getSobjectType() == Group.sObjectType || cases[0]?.Owner.Profile.Name == Label.IntegratorUser || cases[0]?.Owner.Profile.Name == Label.SAMUser) 
                 {
+                    // Si es de ZDA, establecemos el estado como Asignado
+                    if (cases[0]?.RecordTypeId == CaseUtil.RT_ID_ZDA && cases[0]?.Status == CASE_STATUS_NEW)
+                    {
+                        cases[0].Status = CASE_STATUS_ASSIGNED;
+                    }
                     //Cambiar el propietario al usuario actual
                     cases[0].OwnerId = UserInfo.getUserId();
                     update cases;
@@ -391,7 +400,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             }//Comprobar si es un ContactRequest
             else if(interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
             {
-                List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
+                List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId WITH USER_MODE];
                 if( !contactrequests.isEmpty() )
                 {
                     //Cambiar el propietario al usuario actual siempre

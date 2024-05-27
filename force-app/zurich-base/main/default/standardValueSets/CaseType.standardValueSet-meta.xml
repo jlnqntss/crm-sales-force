@@ -32,6 +32,16 @@
         <label>Corredor</label>
     </standardValue>
     <standardValue>
+        <fullName>Cotización</fullName>
+        <default>false</default>
+        <label>Cotización</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Gestión Cartera</fullName>
+        <default>false</default>
+        <label>Gestión Cartera</label>
+    </standardValue>
+    <standardValue>
         <fullName>Gestión Cliente</fullName>
         <default>false</default>
         <label>Gestión Cliente</label>
@@ -90,6 +100,11 @@
         <fullName>Partner</fullName>
         <default>false</default>
         <label>Partner</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Petición mercado</fullName>
+        <default>false</default>
+        <label>Petición mercado</label>
     </standardValue>
     <standardValue>
         <fullName>Postventa (Local Customer Service)</fullName>

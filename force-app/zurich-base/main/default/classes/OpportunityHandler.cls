@@ -31,7 +31,12 @@ public class OpportunityHandler implements ITrigger
      * any data required into maps prior execution of the trigger.
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
-    {}
+    {
+        if (Trigger.isInsert || Trigger.isUpdate)
+        {
+            OpportunityUtil.getAccountsZDA((List<Opportunity>) newList);
+        }
+    }
 
     /**
      * beforeInsert
@@ -115,5 +120,7 @@ public class OpportunityHandler implements ITrigger
      * method to accomplish any final operations such as creation or updates of other records.
      */
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
-    {}
+    {
+        OpportunityUtil.updateAccountsToMarkAccountZDA();
+    }
 }

@@ -13,6 +13,11 @@
         <valueSetDefinition>
             <sorted>true</sorted>
             <value>
+                <fullName>Alta</fullName>
+                <default>false</default>
+                <label>Alta</label>
+            </value>
+            <value>
                 <fullName>Anulación</fullName>
                 <default>false</default>
                 <label>Anulación</label>
@@ -48,6 +53,11 @@
                 <label>Cambio de intermediario</label>
             </value>
             <value>
+                <fullName>Cambio mediador</fullName>
+                <default>false</default>
+                <label>Cambio mediador</label>
+            </value>
+            <value>
                 <fullName>Campaña</fullName>
                 <default>false</default>
                 <label>Campaña</label>
@@ -58,9 +68,19 @@
                 <label>Cancelacion</label>
             </value>
             <value>
+                <fullName>Características / Coberturas</fullName>
+                <default>false</default>
+                <label>Características / Coberturas</label>
+            </value>
+            <value>
                 <fullName>Catálogo virtual</fullName>
                 <default>false</default>
                 <label>Catálogo virtual</label>
+            </value>
+            <value>
+                <fullName>Certificado</fullName>
+                <default>false</default>
+                <label>Certificado</label>
             </value>
             <value>
                 <fullName>Coberturas</fullName>
@@ -111,6 +131,11 @@
                 <fullName>Como valido mi seguro</fullName>
                 <default>false</default>
                 <label>Como valido mi seguro</label>
+            </value>
+            <value>
+                <fullName>Comparativa</fullName>
+                <default>false</default>
+                <label>Comparativa</label>
             </value>
             <value>
                 <fullName>Consulta</fullName>
@@ -206,6 +231,11 @@
                 <fullName>Devolución de recibo liquidado mediador</fullName>
                 <default>false</default>
                 <label>Devolución de recibo liquidado mediador</label>
+            </value>
+            <value>
+                <fullName>Diligencia de embargo</fullName>
+                <default>false</default>
+                <label>Diligencia de embargo</label>
             </value>
             <value>
                 <fullName>Documentación</fullName>
@@ -383,6 +413,11 @@
                 <label>Gestión de recibos</label>
             </value>
             <value>
+                <fullName>Gestión negocio</fullName>
+                <default>false</default>
+                <label>Gestión negocio</label>
+            </value>
+            <value>
                 <fullName>Incidencia</fullName>
                 <default>false</default>
                 <label>Incidencia</label>
@@ -451,6 +486,11 @@
                 <fullName>Mediación</fullName>
                 <default>false</default>
                 <label>Mediación</label>
+            </value>
+            <value>
+                <fullName>Mejora</fullName>
+                <default>false</default>
+                <label>Mejora</label>
             </value>
             <value>
                 <fullName>Mención marca</fullName>
@@ -523,6 +563,11 @@
                 <label>Otros Movilidad</label>
             </value>
             <value>
+                <fullName>Otros trámites / Peticiones</fullName>
+                <default>false</default>
+                <label>Otros trámites / Peticiones</label>
+            </value>
+            <value>
                 <fullName>Otros Vida</fullName>
                 <default>false</default>
                 <label>Otros Vida</label>
@@ -593,6 +638,11 @@
                 <label>Recertificación Usuarios</label>
             </value>
             <value>
+                <fullName>Recibos</fullName>
+                <default>false</default>
+                <label>Recibos</label>
+            </value>
+            <value>
                 <fullName>Reclamación</fullName>
                 <default>false</default>
                 <label>Reclamación</label>
@@ -658,6 +708,11 @@
                 <label>Retención</label>
             </value>
             <value>
+                <fullName>Retención/Cancelación</fullName>
+                <default>false</default>
+                <label>Retención/Cancelación</label>
+            </value>
+            <value>
                 <fullName>Retraso en la reparacion</fullName>
                 <default>false</default>
                 <label>Retraso en la reparación</label>
@@ -713,6 +768,11 @@
                 <label>Sugerencia</label>
             </value>
             <value>
+                <fullName>Suscripción</fullName>
+                <default>false</default>
+                <label>Suscripción</label>
+            </value>
+            <value>
                 <fullName>SWAP - experiencia</fullName>
                 <default>false</default>
                 <label>SWAP - experiencia</label>
@@ -741,6 +801,11 @@
                 <fullName>Validacion</fullName>
                 <default>false</default>
                 <label>Validación</label>
+            </value>
+            <value>
+                <fullName>Verificación</fullName>
+                <default>false</default>
+                <label>Verificación</label>
             </value>
             <value>
                 <fullName>Webservices</fullName>
@@ -872,6 +937,7 @@
             <controllingFieldValue>Partner</controllingFieldValue>
             <controllingFieldValue>Proveedor</controllingFieldValue>
             <controllingFieldValue>TPA</controllingFieldValue>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
             <valueName>Documentación</valueName>
         </valueSettings>
         <valueSettings>
@@ -997,6 +1063,23 @@
             <valueName>Siniestros</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Petición mercado</controllingFieldValue>
+            <valueName>Gestión negocio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Petición mercado</controllingFieldValue>
+            <valueName>Mejora</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Petición mercado</controllingFieldValue>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Petición mercado</controllingFieldValue>
+            <valueName>Suscripción</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Modificar mi seguro</controllingFieldValue>
             <valueName>Contraseña App</valueName>
         </valueSettings>
@@ -1033,6 +1116,31 @@
             <valueName>Datos personales</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <valueName>Características / Coberturas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Comparativa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <valueName>Cotización</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Venta</controllingFieldValue>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Gestión Competencias</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
+            <valueName>Modificación</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
             <valueName>Coberturas</valueName>
         </valueSettings>
@@ -1059,6 +1167,38 @@
         <valueSettings>
             <controllingFieldValue>Contratar mi seguro</controllingFieldValue>
             <valueName>Partnership</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Alta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Cambio mediador</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Certificado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Diligencia de embargo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Otros trámites / Peticiones</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Recibos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Retención/Cancelación</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Verificación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Renovar mi seguro</controllingFieldValue>
@@ -1090,24 +1230,11 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
-            <valueName>Cotización</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Venta</controllingFieldValue>
             <valueName>Emisión</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Venta</controllingFieldValue>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Gestión Competencias</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Venta</controllingFieldValue>
             <valueName>Modificación oferta</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Modificación</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>
@@ -1120,10 +1247,6 @@
         <valueSettings>
             <controllingFieldValue>Gestión Servicios</controllingFieldValue>
             <valueName>Revocación Saneamiento</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>Gestión Servicios</controllingFieldValue>
-            <valueName>Saneamiento</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Cliente</controllingFieldValue>

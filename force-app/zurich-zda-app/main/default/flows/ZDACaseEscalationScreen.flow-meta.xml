@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <description>Obtiene los call centers disponibles para el recordtype de ZDA</description>
-        <name>AvailableCasePicklistValuesByRtAction</name>
-        <label>Get available ZDA call centers</label>
-        <locationX>1392</locationX>
-        <locationY>242</locationY>
-        <actionName>AvailableCasePicklistValuesByRtAction</actionName>
+        <description>Realiza un &apos;distinct&apos; sobre el campo departamento de los usuarios</description>
+        <name>RemoveDuplicatesAction</name>
+        <label>Remove duplicated departments</label>
+        <locationX>1029</locationX>
+        <locationY>566</locationY>
+        <actionName>RemoveDuplicatesAction</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>CaseListToTextListLoop</targetReference>
+            <targetReference>UserListToTextListLoop</targetReference>
         </connector>
+        <dataTypeMappings>
+            <typeName>T__listToRemove</typeName>
+            <typeValue>User</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__output</typeName>
+            <typeValue>User</typeValue>
+        </dataTypeMappings>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
-            <name>fieldName</name>
+            <name>fieldApiName</name>
             <value>
-                <stringValue>CallCenter__c</stringValue>
+                <stringValue>Department</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>recordTypeId</name>
+            <name>listToRemove</name>
             <value>
-                <elementReference>GetCaseAction.RecordTypeId</elementReference>
+                <elementReference>GetAvailableDepartmentsAction</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>AvailableCasePicklistValuesByRtAction</nameSegment>
+        <nameSegment>RemoveDuplicatesAction</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
         <versionSegment>1</versionSegment>
     </actionCalls>
@@ -32,8 +40,8 @@
         <description>Envia una notificacion a la persona a la que se ha escalado el caso</description>
         <name>SendCustomNotificationAction</name>
         <label>Send custom notification</label>
-        <locationX>490</locationX>
-        <locationY>2654</locationY>
+        <locationX>754</locationX>
+        <locationY>3794</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -76,29 +84,33 @@
         <nameSegment>customNotificationAction</nameSegment>
         <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>60.0</apiVersion>
-    <assignments>
-        <description>Agrega el call center a la lista de texto de call centers</description>
-        <name>AddCallCenterAssignment</name>
-        <label>Add call center</label>
-        <locationX>1480</locationX>
-        <locationY>458</locationY>
-        <assignmentItems>
-            <assignToReference>CallCenterTextList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>CaseListToTextListLoop.ActivityDescription__c</elementReference>
-            </value>
-        </assignmentItems>
+    <actionCalls>
+        <description>Hace la peticion a canal unico (asincrono) con los datos informados</description>
+        <name>SendDocCanalUnicoAction</name>
+        <label>Send scalation to canal unico</label>
+        <locationX>2822</locationX>
+        <locationY>2738</locationY>
+        <actionName>SendDocCanalUnicoAction</actionName>
+        <actionType>apex</actionType>
         <connector>
-            <targetReference>CaseListToTextListLoop</targetReference>
+            <targetReference>PartnerDataAssignment</targetReference>
         </connector>
-    </assignments>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>sendDocObject</name>
+            <value>
+                <elementReference>SendDocInfoObject</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>SendDocCanalUnicoAction</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>60.0</apiVersion>
     <assignments>
         <name>AddContentDocumentLinkAssignment</name>
         <label>Add content document link</label>
-        <locationX>490</locationX>
-        <locationY>2030</locationY>
+        <locationX>754</locationX>
+        <locationY>3170</locationY>
         <assignmentItems>
             <assignToReference>ContentDocumentLinkToCreate.ContentDocumentId</assignToReference>
             <operator>Assign</operator>
@@ -139,11 +151,62 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Agrega a la lista de departamentos el del usuario actual del loop</description>
+        <name>AddDepartmentAssignament</name>
+        <label>Add department</label>
+        <locationX>1117</locationX>
+        <locationY>782</locationY>
+        <assignmentItems>
+            <assignToReference>DepartmentList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>UserListToTextListLoop.Department</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>UserListToTextListLoop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Agrega a la variable de las extensiones permitidas la actual del bucle</description>
+        <name>AddFileExtensionAssignment</name>
+        <label>Add file extension</label>
+        <locationX>1117</locationX>
+        <locationY>1190</locationY>
+        <assignmentItems>
+            <assignToReference>AllowedFileTypes</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>FileExtensionWithPointFormula</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>AvailableFileListToTextLoop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Suma el tamaño del fichero actual al total</description>
+        <name>AddFileSizeAssignment</name>
+        <label>Add file size</label>
+        <locationX>1117</locationX>
+        <locationY>2114</locationY>
+        <assignmentItems>
+            <assignToReference>TotalFileSizeAttached</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>AttachedFilesSizeLoop.ContentSize</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>AttachedFilesSizeLoop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Agrega el identificador del supervisor a la lista de texto de identificadores de supervisor</description>
         <name>AddManagerIdAssignment</name>
         <label>Add manager id</label>
-        <locationX>2250</locationX>
-        <locationY>1490</locationY>
+        <locationX>2514</locationX>
+        <locationY>2846</locationY>
         <assignmentItems>
             <assignToReference>ManagerIdList</assignToReference>
             <operator>Add</operator>
@@ -159,8 +222,8 @@
         <description>Se agrega la persona a la que se ha escalado el caso a la lista de personas a notificar</description>
         <name>AddOwnerIdToListAssignment</name>
         <label>Add owner id to list</label>
-        <locationX>490</locationX>
-        <locationY>2438</locationY>
+        <locationX>754</locationX>
+        <locationY>3578</locationY>
         <assignmentItems>
             <assignToReference>NotificationRecipientsList</assignToReference>
             <operator>Add</operator>
@@ -176,8 +239,8 @@
         <description>Se setean los campos necesarios para crear la tarea y actualizar el caso para el caso del partner</description>
         <name>PartnerDataAssignment</name>
         <label>Partner data</label>
-        <locationX>2558</locationX>
-        <locationY>1166</locationY>
+        <locationX>2822</locationX>
+        <locationY>2846</locationY>
         <assignmentItems>
             <assignToReference>TaskOwnerIdVar</assignToReference>
             <operator>Assign</operator>
@@ -212,11 +275,28 @@
         </connector>
     </assignments>
     <assignments>
+        <description>Pone a 0 la variable que contiene el tamaño total de archivos adjuntos</description>
+        <name>ResetAttachedFileSizeVariableAssignment</name>
+        <label>Reset attached file size variable</label>
+        <locationX>1029</locationX>
+        <locationY>1898</locationY>
+        <assignmentItems>
+            <assignToReference>TotalFileSizeAttached</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>AttachedFilesSizeLoop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <description>Asignacion de variables para el correcto funcionamiento del flujo</description>
         <name>ScalationWithoutPartnerDataAssignment</name>
         <label>Scalation without partner data</label>
-        <locationX>1524</locationX>
-        <locationY>866</locationY>
+        <locationX>1161</locationX>
+        <locationY>1598</locationY>
         <assignmentItems>
             <assignToReference>ScalationSelected</assignToReference>
             <operator>Assign</operator>
@@ -239,15 +319,15 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>SupportPartnerSupervisorDecision</targetReference>
+            <targetReference>GetAttachedFilesAction</targetReference>
         </connector>
     </assignments>
     <assignments>
         <description>Asignacion de variables para el correcto funcionamiento del flujo</description>
         <name>ScalationWithPartnerDataAssignment</name>
         <label>Scalation with partner data</label>
-        <locationX>1260</locationX>
-        <locationY>866</locationY>
+        <locationX>897</locationX>
+        <locationY>1598</locationY>
         <assignmentItems>
             <assignToReference>ScalationSelected</assignToReference>
             <operator>Assign</operator>
@@ -270,15 +350,46 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>SupportPartnerSupervisorDecision</targetReference>
+            <targetReference>GetAttachedFilesAction</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Informar el objeto de envio a crear</description>
+        <name>SendDocObjectCreationAssignment</name>
+        <label>Send doc object creation</label>
+        <locationX>2822</locationX>
+        <locationY>2522</locationY>
+        <assignmentItems>
+            <assignToReference>SendDocInfoObject.CaseId__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SendDocInfoObject.Comments__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CommentsSelected</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SendDocInfoObject.ContentDocIds__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ContentDocIdListString</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>CreateSendInfoObjectAction</targetReference>
         </connector>
     </assignments>
     <assignments>
         <description>Se setean los campos necesarios para crear la tarea y actualizar el caso para el caso del supervisor</description>
         <name>SupervisorDataAssignment</name>
         <label>Supervisor data</label>
-        <locationX>2294</locationX>
-        <locationY>2090</locationY>
+        <locationX>2558</locationX>
+        <locationY>3446</locationY>
         <assignmentItems>
             <assignToReference>TaskOwnerIdVar</assignToReference>
             <operator>Assign</operator>
@@ -302,8 +413,8 @@
         <description>Se setean los campos necesarios para crear la tarea y actualizar el caso para el caso de soporte</description>
         <name>SupportDataAssignment</name>
         <label>Support data</label>
-        <locationX>402</locationX>
-        <locationY>1598</locationY>
+        <locationX>666</locationX>
+        <locationY>2738</locationY>
         <assignmentItems>
             <assignToReference>TaskOwnerIdVar</assignToReference>
             <operator>Assign</operator>
@@ -350,18 +461,67 @@
         </value>
     </choices>
     <constants>
-        <name>ZDA_INQUIRY_RT_DEVELOPER_NAME</name>
-        <dataType>String</dataType>
+        <description>Tamaño maximo de la suma de todos los adjuntos (2 Mb) expresado en bytes</description>
+        <name>MAX_ATTACHED_FILE_SIZE_MB</name>
+        <dataType>Number</dataType>
         <value>
-            <stringValue>ZDAInquiry</stringValue>
+            <numberValue>2097152.0</numberValue>
         </value>
     </constants>
+    <constants>
+        <description>Developer name del rol &apos;ZDA Agente&apos;</description>
+        <name>ZDA_AGENT_ROLE_DEVELOPER_NAME</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>ZDA_Agente</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <description>No se permiten escalar casos en estado nuevo o cerrado</description>
+        <name>AllowScalationDecision</name>
+        <label>Allow scalation</label>
+        <locationX>539</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>GetZDARoleIdAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Yes</defaultConnectorLabel>
+        <rules>
+            <name>NoAllowScalationOutcome</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>GetCaseAction.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Nuevo</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCaseAction.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCaseAction.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado sin respuesta</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NotAllowedScalationScreen</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
     <decisions>
         <description>Se comprueba si existen supervisores definidos</description>
         <name>AreAvailableManagersDecision</name>
         <label>Are available managers</label>
-        <locationX>2162</locationX>
-        <locationY>1766</locationY>
+        <locationX>2426</locationX>
+        <locationY>3122</locationY>
         <defaultConnector>
             <targetReference>GetManagersInfoAction</targetReference>
         </defaultConnector>
@@ -383,37 +543,11 @@
         </rules>
     </decisions>
     <decisions>
-        <description>Se decide la pantalla a mostrar en función de si hay usuarios disponibles para el equipo o no</description>
-        <name>AreAvailableUsersDecision</name>
-        <label>Are available users</label>
-        <locationX>226</locationX>
-        <locationY>1382</locationY>
-        <defaultConnector>
-            <targetReference>AgentSelectionScreen</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Yes</defaultConnectorLabel>
-        <rules>
-            <name>NoAvailableUsersOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>GetTeamUsersAction</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>NoAvailableAgentsScreen</targetReference>
-            </connector>
-            <label>No</label>
-        </rules>
-    </decisions>
-    <decisions>
         <description>Comprueba si el campo supervisor esta informado</description>
         <name>HasManagerDecision</name>
         <label>Has manager</label>
-        <locationX>2382</locationX>
-        <locationY>1382</locationY>
+        <locationX>2646</locationX>
+        <locationY>2738</locationY>
         <defaultConnector>
             <targetReference>UserListToManagerIdListLoop</targetReference>
         </defaultConnector>
@@ -428,6 +562,10 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>UserListToManagerIdListLoop.Manager.Name</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
             <connector>
                 <targetReference>AddManagerIdAssignment</targetReference>
             </connector>
@@ -438,8 +576,8 @@
         <description>En funcion de los datos que tenga informados el caso, se permitira el escalado a partner o no</description>
         <name>IsPartnerScalationAvailableDecision</name>
         <label>Is partner scalation available</label>
-        <locationX>1392</locationX>
-        <locationY>650</locationY>
+        <locationX>1029</locationX>
+        <locationY>1382</locationY>
         <defaultConnector>
             <targetReference>ScalationDataWithoutPartnerScreen</targetReference>
         </defaultConnector>
@@ -468,11 +606,38 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Se comprueba si el tamaño maximo ha sido excedido</description>
+        <name>MaxFileSizeExceededDecision</name>
+        <label>Max file size exceeded</label>
+        <locationX>1029</locationX>
+        <locationY>2306</locationY>
+        <defaultConnector>
+            <targetReference>SupportPartnerSupervisorDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>YesFileSizeExceededOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>TotalFileSizeAttached</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>MAX_ATTACHED_FILE_SIZE_MB</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>IsPartnerScalationAvailableDecision</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Se decide si se envia notificacion a la persona a la que se ha escalado. Si es partner no se debe crear, ya que la persona asignada a la tarea es el agente que ha realizado el escalado</description>
         <name>SendCustomNotificationDecision</name>
         <label>Send custom notification</label>
-        <locationX>402</locationX>
-        <locationY>2330</locationY>
+        <locationX>666</locationX>
+        <locationY>3470</locationY>
         <defaultConnector>
             <targetReference>AddOwnerIdToListAssignment</targetReference>
         </defaultConnector>
@@ -497,10 +662,10 @@
         <description>En función del tipo de escalado seleccionado se ejecutarán unas acciones u otras</description>
         <name>SupportPartnerSupervisorDecision</name>
         <label>Support, Supervisor or Partner</label>
-        <locationX>1392</locationX>
-        <locationY>1058</locationY>
+        <locationX>1744</locationX>
+        <locationY>2414</locationY>
         <defaultConnector>
-            <targetReference>PartnerDataAssignment</targetReference>
+            <targetReference>SendDocObjectCreationAssignment</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Partner</defaultConnectorLabel>
         <rules>
@@ -536,6 +701,15 @@
     </decisions>
     <description>Screen flow para el escalado de casos de ZDA</description>
     <dynamicChoiceSets>
+        <description>Departamentos disponibles para hacer escalado</description>
+        <name>AvailableDepartmentsChoiceSet</name>
+        <collectionReference>RemoveDuplicatesAction</collectionReference>
+        <dataType>String</dataType>
+        <displayField>Department</displayField>
+        <object>User</object>
+        <valueField>Department</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
         <description>Lista de seleccion que contiene los supervisores disponibles</description>
         <name>AvailableManagersCollectionChoiceSet</name>
         <collectionReference>GetManagersInfoAction</collectionReference>
@@ -545,8 +719,8 @@
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
-        <description>Contiene una lista de seleccion de usuarios pertenecientes al call center seleccionado</description>
-        <name>AvailableUsersForCallCenter</name>
+        <description>Contiene una lista de seleccion de usuarios pertenecientes al departamento seleccionado</description>
+        <name>AvailableUsersForDepartment</name>
         <dataType>String</dataType>
         <displayField>Name</displayField>
         <filterLogic>and</filterLogic>
@@ -554,22 +728,13 @@
             <field>Department</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>TeamSelectionInput</elementReference>
+                <elementReference>DepartmentSelectionInput</elementReference>
             </value>
         </filters>
         <object>User</object>
         <sortField>Name</sortField>
         <sortOrder>Asc</sortOrder>
         <valueField>Id</valueField>
-    </dynamicChoiceSets>
-    <dynamicChoiceSets>
-        <description>Lista de seleccion de equipo. Se crea a partir de la lista de casos devuelta en el AvailablePicklistValuesByRtAction. Esta clase retorna cada call center disponible en el campo ActivityDescription__c porque el campo CallCenter, al ser de tipo picklist, no es posible utilizarlo en el choice set.</description>
-        <name>AvailableZDACallCentersCollectionChoiceSet</name>
-        <collectionReference>AvailableCasePicklistValuesByRtAction</collectionReference>
-        <dataType>String</dataType>
-        <displayField>ActivityDescription__c</displayField>
-        <object>Case</object>
-        <valueField>ActivityDescription__c</valueField>
     </dynamicChoiceSets>
     <environments>Default</environments>
     <formulas>
@@ -578,18 +743,45 @@
         <dataType>String</dataType>
         <expression>{!TaskBodyStart} + {!GetCaseAction.CaseNumber}</expression>
     </formulas>
+    <formulas>
+        <description>Lista de identificadores de ficheros adjuntos</description>
+        <name>ContentDocIdListString</name>
+        <dataType>String</dataType>
+        <expression>{!UploadedFileList}</expression>
+    </formulas>
+    <formulas>
+        <description>Extension del fichero concatenando un punto por delante y una coma por detras para construir el string de tipos de fichero admitidos</description>
+        <name>FileExtensionWithPointFormula</name>
+        <dataType>String</dataType>
+        <expression>&quot;.&quot;&amp;{!AvailableFileListToTextLoop.Label}&amp;&quot;,&quot;</expression>
+    </formulas>
     <interviewLabel>ZDA - Case escalation screen {!$Flow.CurrentDateTime}</interviewLabel>
     <label>ZDA - Case escalation screen</label>
     <loops>
-        <description>En este bucle se convierte la lista de casos con los call centers en una lista de texto</description>
-        <name>CaseListToTextListLoop</name>
-        <label>Case list to text list</label>
-        <locationX>1392</locationX>
-        <locationY>350</locationY>
-        <collectionReference>AvailableCasePicklistValuesByRtAction</collectionReference>
+        <description>Bucle para calcular el tamaño total de los adjuntos</description>
+        <name>AttachedFilesSizeLoop</name>
+        <label>Attached files size</label>
+        <locationX>1029</locationX>
+        <locationY>2006</locationY>
+        <collectionReference>GetAttachedFilesAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>AddCallCenterAssignment</targetReference>
+            <targetReference>AddFileSizeAssignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>MaxFileSizeExceededDecision</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Pasar de una lista de extensiones de fichero validas a un string</description>
+        <name>AvailableFileListToTextLoop</name>
+        <label>Available file list to text</label>
+        <locationX>1029</locationX>
+        <locationY>1082</locationY>
+        <collectionReference>GetAvailableFileTypesToAttachAction</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>AddFileExtensionAssignment</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>IsPartnerScalationAvailableDecision</targetReference>
@@ -599,8 +791,8 @@
         <description>Crea el link entre los ficheros adjuntos y la tarea creada</description>
         <name>CreateDocumentLinksLoop</name>
         <label>Create document links loop</label>
-        <locationX>402</locationX>
-        <locationY>1922</locationY>
+        <locationX>666</locationX>
+        <locationY>3062</locationY>
         <collectionReference>UploadedFileList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -614,8 +806,8 @@
         <description>Convierte la lista de usuarios en una lista de identificadores de supervisor</description>
         <name>UserListToManagerIdListLoop</name>
         <label>User list to manager id list</label>
-        <locationX>2162</locationX>
-        <locationY>1274</locationY>
+        <locationX>2426</locationX>
+        <locationY>2630</locationY>
         <collectionReference>GetManagersAction</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -623,6 +815,21 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>AreAvailableManagersDecision</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Convierte la lista de departamentos dentro del objeto Usuario a una lista de strings</description>
+        <name>UserListToTextListLoop</name>
+        <label>User list to text list</label>
+        <locationX>1029</locationX>
+        <locationY>674</locationY>
+        <collectionReference>RemoveDuplicatesAction</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>AddDepartmentAssignament</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>GetAvailableFileTypesToAttachAction</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -648,8 +855,8 @@
         <description>Crea la lista de content document links para asociar los adjuntos con la tarea creada</description>
         <name>CreateContentDocumentLinksAction</name>
         <label>Create content document links</label>
-        <locationX>402</locationX>
-        <locationY>2222</locationY>
+        <locationX>666</locationX>
+        <locationY>3362</locationY>
         <connector>
             <targetReference>SendCustomNotificationDecision</targetReference>
         </connector>
@@ -659,8 +866,8 @@
         <description>Crea un registro de log erroneo con el error producido al obtener la notificacion custom</description>
         <name>CreateRecordsGetNotificationErrorAction</name>
         <label>Create record get notification error</label>
-        <locationX>1018</locationX>
-        <locationY>2654</locationY>
+        <locationX>1282</locationX>
+        <locationY>3794</locationY>
         <connector>
             <targetReference>ErrorGetNotificationScreen</targetReference>
         </connector>
@@ -695,8 +902,8 @@
         <description>Crea un registro de log erroneo con el error producido al enviar la notificacion custom</description>
         <name>CreateRecordsSendNotificationErrorAction</name>
         <label>Create record send notification error</label>
-        <locationX>754</locationX>
-        <locationY>2762</locationY>
+        <locationX>1018</locationX>
+        <locationY>3902</locationY>
         <connector>
             <targetReference>ErrorSendNotificationScreen</targetReference>
         </connector>
@@ -728,11 +935,22 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
+        <description>Inserta el objeto para que tenga asignado un identificador</description>
+        <name>CreateSendInfoObjectAction</name>
+        <label>Create send info object</label>
+        <locationX>2822</locationX>
+        <locationY>2630</locationY>
+        <connector>
+            <targetReference>SendDocCanalUnicoAction</targetReference>
+        </connector>
+        <inputReference>SendDocInfoObject</inputReference>
+    </recordCreates>
+    <recordCreates>
         <description>Crea una tarea para el usuario al que se escalará el caso</description>
         <name>CreateTaskAction</name>
         <label>Create task</label>
-        <locationX>402</locationX>
-        <locationY>1706</locationY>
+        <locationX>666</locationX>
+        <locationY>2846</locationY>
         <assignRecordIdToReference>NewTaskId</assignRecordIdToReference>
         <connector>
             <targetReference>UpdateCase_pending_support</targetReference>
@@ -788,8 +1006,8 @@
         <description>Crea un registro de log erroneo con el error producido al crear la tarea</description>
         <name>CreateTaskErrorAction</name>
         <label>Create task error</label>
-        <locationX>1546</locationX>
-        <locationY>1814</locationY>
+        <locationX>1810</locationX>
+        <locationY>2954</locationY>
         <connector>
             <targetReference>TaskErrorScreen</targetReference>
         </connector>
@@ -824,8 +1042,8 @@
         <description>Crea un registro de log erroneo con el error producido al actualizar el caso</description>
         <name>UpdateCaseErrorAction</name>
         <label>Update case error</label>
-        <locationX>1282</locationX>
-        <locationY>1922</locationY>
+        <locationX>1546</locationX>
+        <locationY>3062</locationY>
         <connector>
             <targetReference>CaseErrorScreen</targetReference>
         </connector>
@@ -857,14 +1075,88 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <description>Se obtienen los adjuntos para validar su tamaño total</description>
+        <name>GetAttachedFilesAction</name>
+        <label>Get attached files</label>
+        <locationX>1029</locationX>
+        <locationY>1790</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ResetAttachedFileSizeVariableAssignment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ContentDocumentId</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>UploadedFileList</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ContentVersion</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ContentSize</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Hace una query sobre usuarios filtrando por el rol de agente zda (ZDA_Agente)</description>
+        <name>GetAvailableDepartmentsAction</name>
+        <label>Get available departments</label>
+        <locationX>1029</locationX>
+        <locationY>458</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>RemoveDuplicatesAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>UserRoleId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetZDARoleIdAction.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Department</queriedFields>
+        <sortField>Department</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Obtención del custom metadata donde se definen los tipos de ficheros disponibles para adjuntar</description>
+        <name>GetAvailableFileTypesToAttachAction</name>
+        <label>Get available file types to attach</label>
+        <locationX>1029</locationX>
+        <locationY>974</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>AvailableFileListToTextLoop</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AllowedInZDA__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>FileMimeType__mdt</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Label</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Se obtiene de BDD el caso a escalar</description>
         <name>GetCaseAction</name>
         <label>Get scalation case</label>
-        <locationX>1392</locationX>
+        <locationX>539</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>AvailableCasePicklistValuesByRtAction</targetReference>
+            <targetReference>AllowScalationDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -882,8 +1174,8 @@
         <description>Obtiene el identificador de la notificacion custom de escalado de caso</description>
         <name>GetCustomNotificationAction</name>
         <label>Get custom notification</label>
-        <locationX>490</locationX>
-        <locationY>2546</locationY>
+        <locationX>754</locationX>
+        <locationY>3686</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SendCustomNotificationAction</targetReference>
@@ -904,11 +1196,11 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>Obtiene los responsables asociados a aquellos usuarios que pertenecen a los call centers de ZDA</description>
+        <description>Obtiene los responsables asociados de aquellos usuarios de ZDA</description>
         <name>GetManagersAction</name>
         <label>Get managers</label>
-        <locationX>2162</locationX>
-        <locationY>1166</locationY>
+        <locationX>2426</locationX>
+        <locationY>2522</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>UserListToManagerIdListLoop</targetReference>
@@ -918,7 +1210,7 @@
             <field>Department</field>
             <operator>In</operator>
             <value>
-                <elementReference>CallCenterTextList</elementReference>
+                <elementReference>DepartmentList</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -933,8 +1225,8 @@
         <description>Obtiene la informacion de los supervisores</description>
         <name>GetManagersInfoAction</name>
         <label>Get managers info</label>
-        <locationX>2294</locationX>
-        <locationY>1874</locationY>
+        <locationX>2558</locationX>
+        <locationY>3230</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SupervisorSelectionScreen</targetReference>
@@ -956,35 +1248,34 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>Busca a los usuarios cuyo departamento sea el seleccionado en la pantalla anterior</description>
-        <name>GetTeamUsersAction</name>
-        <label>Get team users</label>
-        <locationX>226</locationX>
-        <locationY>1274</locationY>
+        <description>Obtiene el identificador del rol para el agente ZDA (ZDA_Agente)</description>
+        <name>GetZDARoleIdAction</name>
+        <label>Get ZDA Role Id</label>
+        <locationX>1029</locationX>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>AreAvailableUsersDecision</targetReference>
+            <targetReference>GetAvailableDepartmentsAction</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Department</field>
+            <field>DeveloperName</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>TeamSelectionInput</elementReference>
+                <elementReference>ZDA_AGENT_ROLE_DEVELOPER_NAME</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <sortField>Name</sortField>
-        <sortOrder>Asc</sortOrder>
+        <object>UserRole</object>
+        <queriedFields>Id</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <description>Establece el estado del caso como pendiente de soporte</description>
+        <description>Establece el estado del caso como pendiente de soporte. Tambien se resetea el campo ReasonId__c por si se nos envia desde canal unico una respuesta.</description>
         <name>UpdateCase_pending_support</name>
         <label>Set case pending support</label>
-        <locationX>402</locationX>
-        <locationY>1814</locationY>
+        <locationX>666</locationX>
+        <locationY>2954</locationY>
         <connector>
             <targetReference>CreateDocumentLinksLoop</targetReference>
         </connector>
@@ -1006,6 +1297,9 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>ReasonId__c</field>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status</field>
             <value>
                 <stringValue>Pendiente</stringValue>
@@ -1018,8 +1312,8 @@
         <description>Pantalla para seleccionar al agente al que irá escalado el caso</description>
         <name>AgentSelectionScreen</name>
         <label>Agent selection screen</label>
-        <locationX>402</locationX>
-        <locationY>1490</locationY>
+        <locationX>666</locationX>
+        <locationY>2630</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1028,7 +1322,7 @@
         </connector>
         <fields>
             <name>AgentSelectionInput</name>
-            <choiceReferences>AvailableUsersForCallCenter</choiceReferences>
+            <choiceReferences>AvailableUsersForDepartment</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Agente</fieldText>
             <fieldType>RadioButtons</fieldType>
@@ -1041,8 +1335,8 @@
         <description>Pantalla para visualizar el error producido al actualizar el caso</description>
         <name>CaseErrorScreen</name>
         <label>Case error screen</label>
-        <locationX>1282</locationX>
-        <locationY>2030</locationY>
+        <locationX>1546</locationX>
+        <locationY>3170</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1058,8 +1352,8 @@
         <description>Pantalla para visualizar el error producido al obtener la notificacion custom</description>
         <name>ErrorGetNotificationScreen</name>
         <label>Error get notification screen</label>
-        <locationX>1018</locationX>
-        <locationY>2762</locationY>
+        <locationX>1282</locationX>
+        <locationY>3902</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1075,8 +1369,8 @@
         <description>Pantalla para visualizar el error producido al enviar la notificacion custom</description>
         <name>ErrorSendNotificationScreen</name>
         <label>Error send notification screen</label>
-        <locationX>754</locationX>
-        <locationY>2870</locationY>
+        <locationX>1018</locationX>
+        <locationY>4010</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1092,8 +1386,8 @@
         <description>Selección del tipo de escalado e introducción de datos</description>
         <name>EscalationDataWithPartnerScreen</name>
         <label>Scalation data with partner</label>
-        <locationX>1260</locationX>
-        <locationY>758</locationY>
+        <locationX>897</locationX>
+        <locationY>1490</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1106,12 +1400,18 @@
             <choiceReferences>PartnerChoice</choiceReferences>
             <choiceReferences>SupervisorChoice</choiceReferences>
             <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>ScalationSelected</elementReference>
+            </defaultValue>
             <fieldText>Tipo de escalado</fieldText>
             <fieldType>RadioButtons</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>CommentsWithPartnerInput</name>
+            <defaultValue>
+                <stringValue>{!CommentsSelected}</stringValue>
+            </defaultValue>
             <fieldText>Comentarios (máximo 1.000 caracteres)</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>true</isRequired>
@@ -1131,13 +1431,28 @@
             </visibilityRule>
         </fields>
         <fields>
+            <name>ErrorFileSizeScreenPartnerDisplay</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0);&quot;&gt;Se ha excedido del tamaño máximo de adjuntos admitido&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>YesFileSizeExceededOutcome</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
             <name>AttachFilesWithPartnerInput</name>
             <extensionName>forceContent:fileUpload</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <stringValue>Adjuntar fichero/s</stringValue>
+                    <stringValue>Adjuntar fichero/s (el tamaño total de los adjuntos no puede superar los 2Mb)</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -1150,6 +1465,12 @@
                 <name>title</name>
                 <value>
                     <stringValue>Si se desea adjuntar más de un archivo, se deben adjuntar todos al mismo tiempo</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>accept</name>
+                <value>
+                    <elementReference>AllowedFileTypes</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -1185,28 +1506,11 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <description>Pantalla para informar de que no hay agentes disponibles para el call center seleccionado</description>
-        <name>NoAvailableAgentsScreen</name>
-        <label>No available agents screen</label>
-        <locationX>50</locationX>
-        <locationY>1490</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <fields>
-            <name>NoAgentsDisplay</name>
-            <fieldText>&lt;p&gt;No hay agentes en el equipo &lt;strong&gt;{!TeamSelectionInput}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <description>Pantalla para informar de que no hay supervisores disponibles</description>
         <name>NoAvailableManagersScreen</name>
         <label>No available managers screen</label>
-        <locationX>2030</locationX>
-        <locationY>1874</locationY>
+        <locationX>2294</locationX>
+        <locationY>3230</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1229,11 +1533,28 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <description>Pantalla que se muestra por no permitir escalar el caso en determinados estados</description>
+        <name>NotAllowedScalationScreen</name>
+        <label>Escalado no permitido</label>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>NoAllowedScalationDisplay</name>
+            <fieldText>&lt;p&gt;No se permite el escalado de casos en estado nuevo o cerrado&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <description>Selección del tipo de escalado e introducción de datos</description>
         <name>ScalationDataWithoutPartnerScreen</name>
         <label>Scalation data without partner</label>
-        <locationX>1524</locationX>
-        <locationY>758</locationY>
+        <locationX>1161</locationX>
+        <locationY>1490</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1245,12 +1566,18 @@
             <choiceReferences>SupportChoice</choiceReferences>
             <choiceReferences>SupervisorChoice</choiceReferences>
             <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>ScalationSelected</elementReference>
+            </defaultValue>
             <fieldText>Tipo de escalado</fieldText>
             <fieldType>RadioButtons</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>CommentsWithoutPartnerInput</name>
+            <defaultValue>
+                <stringValue>{!CommentsSelected}</stringValue>
+            </defaultValue>
             <fieldText>Comentarios (máximo 1.000 caracteres)</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>true</isRequired>
@@ -1270,13 +1597,28 @@
             </visibilityRule>
         </fields>
         <fields>
+            <name>ErrorFileSizeScreenNoPartnerDisplay</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Se ha excedido del tamaño máximo de adjuntos admitido&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>YesFileSizeExceededOutcome</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
             <name>AttachFilesWithoutPartnerInput</name>
             <extensionName>forceContent:fileUpload</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <stringValue>Adjuntar fichero/s</stringValue>
+                    <stringValue>Adjuntar fichero/s (el tamaño total de los adjuntos no puede superar los 2Mb)</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -1289,6 +1631,12 @@
                 <name>title</name>
                 <value>
                     <stringValue>Si se desea adjuntar más de un archivo, se deben adjuntar todos al mismo tiempo</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>accept</name>
+                <value>
+                    <elementReference>AllowedFileTypes</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -1327,8 +1675,8 @@
         <description>Pantalla final del flujo</description>
         <name>ScalingSucceededScreen</name>
         <label>Scaling succeeded</label>
-        <locationX>402</locationX>
-        <locationY>3194</locationY>
+        <locationX>666</locationX>
+        <locationY>4334</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1344,8 +1692,8 @@
         <description>Pantalla para seleccionar al supervisor al que escalar el caso</description>
         <name>SupervisorSelectionScreen</name>
         <label>Supervisor selection screen</label>
-        <locationX>2294</locationX>
-        <locationY>1982</locationY>
+        <locationX>2558</locationX>
+        <locationY>3338</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1367,8 +1715,8 @@
         <description>Pantalla para visualizar el error producido al crear la tarea</description>
         <name>TaskErrorScreen</name>
         <label>Task error screen</label>
-        <locationX>1546</locationX>
-        <locationY>1922</locationY>
+        <locationX>1810</locationX>
+        <locationY>3062</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1384,17 +1732,17 @@
         <description>Pantalla para seleccionar al equipo al que irá escalado el caso</description>
         <name>TeamSelectionScreen</name>
         <label>Team selection screen</label>
-        <locationX>226</locationX>
-        <locationY>1166</locationY>
+        <locationX>666</locationX>
+        <locationY>2522</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>GetTeamUsersAction</targetReference>
+            <targetReference>AgentSelectionScreen</targetReference>
         </connector>
         <fields>
-            <name>TeamSelectionInput</name>
-            <choiceReferences>AvailableZDACallCentersCollectionChoiceSet</choiceReferences>
+            <name>DepartmentSelectionInput</name>
+            <choiceReferences>AvailableDepartmentsChoiceSet</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Equipo</fieldText>
             <fieldType>RadioButtons</fieldType>
@@ -1404,7 +1752,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>1266</locationX>
+        <locationX>413</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetCaseAction</targetReference>
@@ -1412,10 +1760,10 @@
     </start>
     <status>Active</status>
     <variables>
-        <description>Lista de call centers en formato texto</description>
-        <name>CallCenterTextList</name>
+        <description>Contendra las extensiones admitidas para adjuntar</description>
+        <name>AllowedFileTypes</name>
         <dataType>String</dataType>
-        <isCollection>true</isCollection>
+        <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
@@ -1444,6 +1792,14 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ContentDocumentLink</objectType>
+    </variables>
+    <variables>
+        <description>Lista de departamentos existentes para los usuarios de ZDA</description>
+        <name>DepartmentList</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <description>Lista de identificadores de supervisores</description>
@@ -1494,6 +1850,15 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <description>Objeto envio de documentacion a crear y adjuntar a la peticion</description>
+        <name>SendDocInfoObject</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>SendDocCUInfo__c</objectType>
+    </variables>
+    <variables>
         <description>Parte inicial del cuerpo de la notificación custom</description>
         <name>TaskBodyStart</name>
         <dataType>String</dataType>
@@ -1521,6 +1886,18 @@
         <isOutput>false</isOutput>
         <value>
             <stringValue>Asignada</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Contendra el tamaño del total de archivos adjuntados</description>
+        <name>TotalFileSizeAttached</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
         </value>
     </variables>
     <variables>

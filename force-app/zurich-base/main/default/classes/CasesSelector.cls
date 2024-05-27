@@ -125,7 +125,9 @@ public with sharing class CasesSelector extends RecordsSelector
                 this.baseQuery.selectFields(new Set<Schema.SObjectField>{
                     Case.Id,
                     Case.OwnerId, 
-                    Case.Query__c
+                    Case.Query__c, 
+                    Case.RecordTypeId, 
+                    Case.Status
                  })
                 .selectFields('Owner.Type')
                 .selectFields('Owner.Profile.Name');
@@ -196,7 +198,9 @@ public with sharing class CasesSelector extends RecordsSelector
     {
         Set<Schema.SObjectField> setFields =  new Set<Schema.SObjectField>{
             Case.Id,
-            Case.ControlEmailCC__c
+            Case.ControlEmailCC__c,
+            Case.RecordTypeId,
+            Case.GenesysID__c
         };
 
         if(caseIds != null && !caseIds.isEmpty() )
@@ -418,6 +422,39 @@ public with sharing class CasesSelector extends RecordsSelector
         .addConditionIn(Case.CuTicketId__c, ticketIds);
 
         return (List<Case>) this.baseQuery.run();
+    }
+
+    /**
+     * Busca el caso por identificador filtrando por (aparte del id) el recordtype de ZDA.
+     * Retorna el caso con los campos CuTicketId__c, CaseNumber, Status, PendingBy__c, Owner.Name
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 25/04/2029
+     * @param caseId identificador del caso a buscar
+     * @return el caso encontrado o nulo si no se proporciona un id o no se encuentra
+     */
+    public Case getByIdWithZDAInfo(Id caseId)
+    {
+        Case caseFound = null;
+        if (caseId == null)
+        {
+            return caseFound;
+        }
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.CuTicketId__c,
+            Case.CaseNumber,
+            Case.Status,
+            Case.PendingBy__c
+        })
+        .selectFields('Case.Owner.Name')
+        .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)
+        .addConditionEq(Case.Id, caseId);
+        List<Case> casesFound = (List<Case>) this.baseQuery.run();
+        if (casesFound != null && !casesFound.isEmpty())
+        {
+            caseFound = casesFound[0];
+        }
+        return caseFound;
     }
 
     /**

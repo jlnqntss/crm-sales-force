@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRMPreventIntermediaryAssignments</fullName>
+    <active>true</active>
+    <description>Un mediador solo puede asignarse un caso de retención de CC si ha pasado menos de 4 días desde su creación</description>
+    <errorConditionFormula>AND(
+				RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
+				OR(
+        $Profile.Name = &quot;Agente Ventas&quot;,
+        $Profile.Name = &quot;Agente Ventas - AGR&quot;
+    ),
+    ISCHANGED(IntermediaryOwner__c),
+				TEXT(PRIORVALUE(IntermediaryOwner__c)) = &quot;Call Center&quot;,
+    ISPICKVAL(IntermediaryOwner__c, &quot;Agente mediador&quot;),				
+    (NOW() - CreatedDate) &gt; 4    
+)</errorConditionFormula>
+    <errorDisplayField>IntermediaryOwner__c</errorDisplayField>
+    <errorMessage>[VR Caso] No puede modificar el campo &apos;Responsable del Caso’  ya que ha pasado el periodo establecidos de asignación (4días)</errorMessage>
+</ValidationRule>

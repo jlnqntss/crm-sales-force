@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>¿Qué herramientas utilizas?</label>
+    <name>UsedTools__c</name>
+    <picklistValues>
+        <masterLabel>Correo electrónico</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Otros</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>ZRM</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Zona Zurich</masterLabel>
+        <translation></translation>
+    </picklistValues>
+</CustomFieldTranslation>
