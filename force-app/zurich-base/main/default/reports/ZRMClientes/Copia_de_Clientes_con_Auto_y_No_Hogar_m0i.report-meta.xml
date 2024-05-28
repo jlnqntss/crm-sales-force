@@ -68,7 +68,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>V,2</value>
+            <value>V</value>
         </criteriaItems>
         <language>es</language>
     </filter>
