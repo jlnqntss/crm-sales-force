@@ -15,6 +15,18 @@
     <columns>
         <field>LAST_UPDATE</field>
     </columns>
+    <crossFilters>
+        <criteriaItems>
+            <column>PolicyStatus__c</column>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>V</value>
+        </criteriaItems>
+        <operation>with</operation>
+        <primaryTableColumn>ACCOUNT_ID</primaryTableColumn>
+        <relatedTable>Policy__c</relatedTable>
+        <relatedTableJoinColumn>PolicyHolder__c</relatedTableJoinColumn>
+    </crossFilters>
     <description>Mis clientes con una propensión a la adquisición de una póliza Alta Plus y Alta.</description>
     <filter>
         <criteriaItems>
