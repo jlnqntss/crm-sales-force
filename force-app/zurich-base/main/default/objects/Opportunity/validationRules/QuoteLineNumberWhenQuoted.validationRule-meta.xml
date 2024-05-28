@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>InfoQuoteNumberWhenQuoted</fullName>
+    <fullName>QuoteLineNumberWhenQuoted</fullName>
     <active>true</active>
-    <description>[VR Oferta] Número de oferta (INFO) es obligatorio cuando sea Quoted</description>
+    <description>[VR Oferta] Número de oferta vida es obligatorio cuando sea Quoted</description>
     <errorConditionFormula>ISPICKVAL(StageName,&quot;Quoted&quot;) &amp;&amp;
-ISBLANK( InfoQuoteNumber__c )&amp;&amp;
-RecordType.DeveloperName = &apos;NoLife&apos; &amp;&amp;
+ISBLANK(QuoteLifeNumber__c)&amp;&amp;  
+RecordType.DeveloperName = &apos;Life&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;</errorConditionFormula>
-    <errorDisplayField>InfoQuoteNumber__c</errorDisplayField>
-    <errorMessage>[VR Oferta] Número de oferta (INFO) es obligatorio cuando sea Quoted</errorMessage>
+    <errorDisplayField>QuoteLifeNumber__c</errorDisplayField>
+    <errorMessage>[VR Oferta] Número de oferta vida es obligatorio cuando sea Quoted</errorMessage>
 </ValidationRule>

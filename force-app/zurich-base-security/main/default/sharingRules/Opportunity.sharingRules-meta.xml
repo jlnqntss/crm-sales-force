@@ -83,6 +83,21 @@
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Ventas_CC_Oferta_Vida</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>El usuario de venta CC podrá ver todas las ofertas de entidad legal vida</description>
+        <label>Ventas_CC_Oferta_Vida</label>
+        <sharedTo>
+            <group>Ventas_CC</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Life Insurance</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>ZEO_GI_ES</fullName>
         <accessLevel>Edit</accessLevel>
         <label>ZEO_GI_ES</label>

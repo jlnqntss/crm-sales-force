@@ -11,6 +11,12 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     // ##region Atributos
 
     private static final String CLASS_NAME = 'Batch_CampaignMemberToOpportunity';
+    private static final String PRODUCT_BRANCH_VIDA_CODE = '0000000016';
+    private static final String OFFER_RECORD_TYPE_VIDA_DEV_NAME = 'Life';
+    private static final String OFFER_RECORD_TYPE_NO_VIDA_DEV_NAME = 'NoLife';
+    private static final Id OFFER_RECORD_TYPE_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(OFFER_RECORD_TYPE_VIDA_DEV_NAME).getRecordTypeId();
+    private static final Id OFFER_RECORD_TYPE_NO_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(OFFER_RECORD_TYPE_NO_VIDA_DEV_NAME).getRecordTypeId();
+    private static final String LEGAL_ENTITY_LIFE_INSURANCE = 'Life Insurance';
 
     private Set<Id> campMemberIdSet = new Set<Id>();
     private List<Opportunity> oppsToInsert = new List <Opportunity>();
@@ -82,7 +88,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             // 3. Recorre los registros de CampaignMember filtrados y genera para cada uno la oferta
             // crea un nuevo registro opp de Opportunity con los siguientes campos informados:
             generateOpportunities(filteredCampaignMembers);
-
             if ( !oppsToInsert.isEmpty() )
             {
                 insert oppsToInsert;
@@ -117,7 +122,6 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
     {
         List<CampaignMember> filteredCampaignMembers = new List<CampaignMember>();
         List<Policy__c> campaignMembersPolicies = new List<Policy__c>();
-
         User loggedUser = ( new UsersSelector() ).findUserIntermediaryByUserId( UserInfo.getUserId() );
 
         // Obtenemos las pólizas
@@ -229,6 +233,16 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
                 opp.BusinessCode__c = cm.Campaign.BusinessCode__c;
                 opp.Scope__c = 'Ventas';
                 opp.ZRM__c = false;
+            }
+
+            if(PRODUCT_BRANCH_VIDA_CODE.equals(opp.ProductBranch__c))
+            {
+                opp.RecordTypeId = OFFER_RECORD_TYPE_VIDA;
+                opp.LegalEntity__c = LEGAL_ENTITY_LIFE_INSURANCE;
+            }
+            else
+            {
+                opp.RecordTypeId = OFFER_RECORD_TYPE_VIDA_DEV_NAME;    
             }
 
             oppsToInsert.add(opp);
