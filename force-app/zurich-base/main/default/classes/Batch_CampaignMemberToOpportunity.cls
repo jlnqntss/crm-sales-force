@@ -242,7 +242,7 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
             }
             else
             {
-                opp.RecordTypeId = OFFER_RECORD_TYPE_VIDA_DEV_NAME;    
+                opp.RecordTypeId = OFFER_RECORD_TYPE_NO_VIDA;    
             }
 
             oppsToInsert.add(opp);
