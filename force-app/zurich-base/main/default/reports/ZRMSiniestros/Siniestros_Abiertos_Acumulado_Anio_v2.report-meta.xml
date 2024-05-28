@@ -4,6 +4,12 @@
         <field>CUST_NAME</field>
     </columns>
     <columns>
+        <field>Policy__c.ProductBranch__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c.AssetIdentifier__c</field>
+    </columns>
+    <columns>
         <field>Claim__c.Status__c</field>
     </columns>
     <columns>
@@ -16,13 +22,6 @@
         <field>CHILD_LAST_UPDATE</field>
     </columns>
     <filter>
-        <criteriaItems>
-            <column>Claim__c.Status__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>equals</operator>
-            <value>T</value>
-        </criteriaItems>
         <criteriaItems>
             <column>Claim__c.DateOfOccurrence__c</column>
             <columnToColumn>false</columnToColumn>
@@ -43,7 +42,7 @@
         <field>CHILD_NAME</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Siniestros Abiertos Acumulado Año</name>
+    <name>Siniestros acumulado Año (f.ocurrencia)</name>
     <params>
         <name>co</name>
         <value>1</value>
