@@ -39,19 +39,7 @@ public with sharing class SendDocCanalUnicoAction
     @future(callout=true)
     private static void doCallout(String sendDocObjectId, String caseId, String comments, String contentDocIds)
     {
-        List<ContentVersion> fileList = new List<ContentVersion>();
-        if ( String.isNotBlank(contentDocIds) )
-        {
-            //tenemos ficheros adjuntos, los extraemos
-            String[] files = contentDocIds.removeStart('[').removeEnd(']').split(',');
-            Set<Id> contentDocumentIdToFind = new Set<Id>();
-            for (String contentDocId : files)
-            {
-                contentDocumentIdToFind.add(contentDocId);
-            }
-
-            fileList = new ContentVersionSelector().findByContentDocumentId(contentDocumentIdToFind);
-        }
+        List<ContentVersion> fileList = retrieveFiles(contentDocIds);
         //Obtenemos el caso relacionado con el envio de documentacion
         Case relatedCase = new CasesSelector().getByIdWithZDAInfo(caseId);
 
@@ -118,6 +106,37 @@ public with sharing class SendDocCanalUnicoAction
             );
         update sendObj;
         insert linksToCreate;
+    }
+
+    /**
+     * Metodo que obtiene la lista de ficheros adjuntos del objeto SendDocCUInfo__c, informado en el campo
+     * ContentDocIds__c. Este campo esta informado con un valor con la siguiente estructura: [id1,id2,idN].
+     * Lo que hacemos es quitar los corchetes y realizar un split por las comas, para obtener de bdd los
+     * ficheros
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 28/05/2024
+     * @param contentDocIds string con los identificadores de los ficheros
+     * @return lista de objetos a los que pertenecen los ids del string de entrada. Retornara una lista vacia
+     * si el campo de entrada esta vacio o con un valor de '[]'
+     */
+    private static List<ContentVersion> retrieveFiles(String contentDocIds)
+    {
+        List<ContentVersion> fileList = new List<ContentVersion>();
+        if ( String.isNotBlank(contentDocIds) && !'[]'.equals(contentDocIds) )
+        {
+            //tenemos ficheros adjuntos, los extraemos
+            String[] files = contentDocIds.removeStart('[').removeEnd(']').split(',');
+            Set<Id> contentDocumentIdToFind = new Set<Id>();
+            for (String contentDocId : files)
+            {
+                contentDocumentIdToFind.add(contentDocId);
+            }
+
+            fileList = new ContentVersionSelector().findByContentDocumentId(contentDocumentIdToFind);
+        }
+
+        return fileList;
     }
 
     public class SendDocCanalUnicoRequest
