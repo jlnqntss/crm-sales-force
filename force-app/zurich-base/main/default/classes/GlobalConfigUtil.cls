@@ -2,6 +2,7 @@ public with sharing class GlobalConfigUtil {
 
     public static final String instancesId='Instances_Id';
     public static final String DEFAULT_RETENTION = 'Default';
+    private static final String CUSTOM_OBJECT_API_NAME_ENDING = '__c';
 
     public static Map<String, String> getGlobalConfigurationValues() {
         
@@ -81,8 +82,8 @@ public with sharing class GlobalConfigUtil {
         {
             throw new IllegalArgumentException(Label.ObjectNameMandatory);
         }
-        if (objectName.endsWithIgnoreCase('__c')) {
-            objectName = objectName.removeEnd('__c');
+        if (objectName.endsWithIgnoreCase(CUSTOM_OBJECT_API_NAME_ENDING)) {
+            objectName = objectName.removeEnd(CUSTOM_OBJECT_API_NAME_ENDING);
         }
         String val = Global_Configuration__mdt.getInstance(objectName+retentionType)?.Value__c;
 
