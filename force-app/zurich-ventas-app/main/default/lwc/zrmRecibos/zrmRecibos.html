@@ -1,0 +1,22 @@
+<template>
+    <lightning-card>             
+        <template if:true={isLoading}>
+            <div>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+        <lightning-datatable
+            key-field="id"
+            data={data}
+            columns={columns}
+            hide-checkbox-column="true"
+            wrap-table-header
+            wrap-text-max-lines="3">
+        </lightning-datatable>
+        <div class="slds-m-top_medium slds-text-align_center">
+            <lightning-button label={labels.ZRM_Recibos_Previous} onclick={handlePrevious} disabled={disablePreviousButton}></lightning-button>
+            <lightning-button label={labels.ZRM_Recibos_Next} onclick={handleNext} disabled={disableNextButton}></lightning-button>
+        </div>
+    </lightning-card>
+</template>
+    
