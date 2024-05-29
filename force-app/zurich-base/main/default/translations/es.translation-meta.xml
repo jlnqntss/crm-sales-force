@@ -257,6 +257,10 @@
         <name>NumeroNoValido</name>
     </customLabels>
     <customLabels>
+        <label>Nombre de objeto vacío o nulo no permitido</label>
+        <name>ObjectNameMandatory</name>
+    </customLabels>
+    <customLabels>
         <label><!-- ObjetoVacio --></label>
         <name>ObjetoVacio</name>
     </customLabels>
