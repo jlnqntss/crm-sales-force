@@ -6243,7 +6243,7 @@ Cree el acta y vuelva a intentarlo.</label>
     </customLabels>
     <customLabels>
         <label>Área Gestión Cartera</label>
-        <name>ZRMCaseLinkZonaZurichHyperlinkFormulaFieldFriendlyName</name>
+        <name>ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName</name>
     </customLabels>
     <customLabels>
         <label>Archivos</label>

@@ -5,7 +5,7 @@
     <externalId>false</externalId>
     <formula>HYPERLINK(
     $Setup.NuevaZonaZurich__c.URL__c + &quot;?appNameOpenFlow=zrm&amp;operationType=gestionCartera&amp;codigoPoliza=&quot; +  PolicyId__r.InfoPolicyNumber__c  + &quot;&amp;versionPoliza=&quot; +  PolicyId__r.PolicyVersion__c  ,
-    $Label.ZRMCaseLinkZonaZurichHyperlinkFormulaFieldFriendlyName,
+    $Label.ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName,
     &quot;_self&quot;
 )</formula>
     <label>Link Zona Zurich</label>
