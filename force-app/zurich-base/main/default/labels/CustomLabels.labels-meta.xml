@@ -2512,7 +2512,7 @@ Create the record and try again.</value>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName</shortDescription>
-        <value>Portfolio Management Area</value>
+        <value>Overview policy Portfolio Management Area</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermAddCampMember_AddButton</fullName>

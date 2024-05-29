@@ -6242,7 +6242,7 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDAVsegTicketRequestError</name>
     </customLabels>
     <customLabels>
-        <label>Área Gestión Cartera</label>
+        <label>Consulta póliza Área gestión cartera</label>
         <name>ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName</name>
     </customLabels>
     <customLabels>
