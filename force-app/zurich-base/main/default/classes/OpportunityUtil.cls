@@ -401,7 +401,7 @@ public with sharing class OpportunityUtil
     private static Boolean isValidStageName(Opportunity oldOpty)
     {
         Boolean retorno = true;
-        if( (oldOpty != null && oldOpty.StageName.equalsIgnoreCase('Closed won')) && OFFER_RECORD_TYPE_NO_VIDA.equals(oldOpty.RecordTypeId) )
+        if( (oldOpty != null && oldOpty.StageName.equalsIgnoreCase('Closed won')) && !OFFER_RECORD_TYPE_VIDA.equals(oldOpty.RecordTypeId) )
         {
             retorno = false;
         }
