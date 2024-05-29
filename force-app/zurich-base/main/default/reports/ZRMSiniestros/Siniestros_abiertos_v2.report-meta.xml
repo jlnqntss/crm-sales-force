@@ -7,6 +7,12 @@
         <field>CUST_NAME</field>
     </columns>
     <columns>
+        <field>Policy__c.ProductBranch__c</field>
+    </columns>
+    <columns>
+        <field>Policy__c.AssetIdentifier__c</field>
+    </columns>
+    <columns>
         <field>Policy__c.PolicyHolder__c</field>
     </columns>
     <columns>

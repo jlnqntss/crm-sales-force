@@ -48,6 +48,16 @@
         <field>Policy__c.Intermediary_Code__c</field>
     </columns>
     <description>Mis clientes ordenados de mayor a menor prima total.</description>
+    <filter>
+        <criteriaItems>
+            <column>Policy__c.PolicyStatus__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>V</value>
+        </criteriaItems>
+        <language>en_US</language>
+    </filter>
     <format>Summary</format>
     <groupingsDown>
         <aggregateType>Sum</aggregateType>
