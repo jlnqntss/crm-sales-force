@@ -386,7 +386,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
 
                 //Si el propietario es una COLA
                 // arcortazar - nts: fix-OCS-2682: Hacemos que asignme el usuario si es Owner es una cola o el usuario Integrator
-                if(cases[0]?.OwnerId.getSobjectType() == Group.sObjectType || cases[0]?.Owner.Profile.Name == Label.IntegratorUser || cases[0]?.Owner.Profile.Name == Label.SAMUser) 
+                if(cases[0]?.OwnerId.getSobjectType() == Group.sObjectType || cases[0]?.Owner.Profile.Name == Label.IntegratorUser || cases[0]?.Owner.Profile.Name == Label.SAMUser)
                 {
                     // Si es de ZDA, establecemos el estado como Asignado
                     if (cases[0]?.RecordTypeId == CaseUtil.RT_ID_ZDA && cases[0]?.Status == CASE_STATUS_NEW)
@@ -400,7 +400,7 @@ global without sharing class ReassignInteractionCTIExtension implements pureclou
             }//Comprobar si es un ContactRequest
             else if(interactionTask.WhatId.getsObjectType() == ContactRequest.sObjectType)
             {
-                List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId WITH USER_MODE];
+                List<ContactRequest> contactrequests = [SELECT Id, OwnerId FROM ContactRequest WHERE Id = :interactionTask.WhatId];
                 if( !contactrequests.isEmpty() )
                 {
                     //Cambiar el propietario al usuario actual siempre

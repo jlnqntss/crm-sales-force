@@ -52,6 +52,13 @@
             <operator>equals</operator>
             <value>THIS_YEAR</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.ProductBranch__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>VIDA</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>

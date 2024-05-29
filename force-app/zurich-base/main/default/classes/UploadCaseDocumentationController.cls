@@ -18,7 +18,7 @@ public without sharing class UploadCaseDocumentationController
     {
         if( String.isNotBlank(hashId) )
         {
-            List<Case> caseFromUrl = [SELECT Id, Subject, CaseNumber, Status, CreatedDate FROM Case WHERE DocumentationHashId__c =: hashId WITH USER_MODE LIMIT 1];
+            List<Case> caseFromUrl = [SELECT Id, Subject, CaseNumber, Status, CreatedDate FROM Case WHERE DocumentationHashId__c =: hashId LIMIT 1];
             if( caseFromUrl != null && !caseFromUrl.isEmpty() )
             {
                 return caseFromUrl.get(0);
@@ -49,7 +49,7 @@ public without sharing class UploadCaseDocumentationController
     {
         try
         {
-            ContentVersion version = [SELECT ContentDocumentId from ContentVersion where Id = : id WITH USER_MODE LIMIT 1];
+            ContentVersion version = [SELECT ContentDocumentId from ContentVersion where Id = : id LIMIT 1];
             ContentDocument record = new ContentDocument();
             record.Id = version.ContentDocumentId;
             delete record;
