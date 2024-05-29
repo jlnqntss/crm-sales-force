@@ -35,12 +35,32 @@
       "componentName" : "forceCommunity:tabLayout",
       "id" : "e2c9f6c5-f53d-48f0-b291-54de6afa2cd8",
       "regions" : [ {
+        "components" : [ {
+          "componentAttributes" : {
+            "antiguedadRecibo" : "DiaAnterior"
+          },
+          "componentName" : "c:zrmRecibos",
+          "id" : "c486b21d-6aef-416e-ad31-8435517a6a65",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
         "id" : "2e5f1418-3a0a-4310-a042-e7f2a93f751a",
         "regionLabel" : "Día Anterior",
         "regionName" : "1",
         "renditionMap" : { },
         "type" : "region"
       }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "antiguedadRecibo" : "Acumulados"
+          },
+          "componentName" : "c:zrmRecibos",
+          "id" : "7fe3591b-5eb9-496d-ac6f-a030cfc27d54",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
         "id" : "4b13727b-80d9-4d25-8ea5-f12c78adbb53",
         "regionLabel" : "Acumulados",
         "regionName" : "2",
