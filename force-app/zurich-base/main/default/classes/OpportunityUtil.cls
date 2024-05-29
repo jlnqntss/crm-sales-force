@@ -13,8 +13,8 @@ public with sharing class OpportunityUtil
     private static final String FIELD_STAGE = 'StageName';
     private static final String CLASS_NAME = 'OpportunityUtil';
     private static final string ZDA_SCOPE = 'ZDA'; 
-    private static final String OFFER_RECORD_TYPE_NO_VIDA_DEV_NAME = 'NoLife';
-    private static final Id OFFER_RECORD_TYPE_NO_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(OFFER_RECORD_TYPE_NO_VIDA_DEV_NAME).getRecordTypeId();
+    private static final String OFFER_RECORD_TYPE_VIDA_DEV_NAME = 'Life';
+    private static final Id OFFER_RECORD_TYPE_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(OFFER_RECORD_TYPE_VIDA_DEV_NAME).getRecordTypeId();
     // #endregion
 
     // #region Public variables
