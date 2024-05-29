@@ -536,8 +536,7 @@
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartSummary>
-                    <aggregate>Sum</aggregate>
-                    <column>Case.Dias_vencimiento__c</column>
+                    <column>RowCount</column>
                 </chartSummary>
                 <componentType>Metric</componentType>
                 <decimalPrecision>-1</decimalPrecision>
