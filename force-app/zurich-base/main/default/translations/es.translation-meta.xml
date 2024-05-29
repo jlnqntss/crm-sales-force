@@ -6242,6 +6242,10 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDAVsegTicketRequestError</name>
     </customLabels>
     <customLabels>
+        <label>Área Gestión Cartera</label>
+        <name>ZRMCaseLinkZonaZurichHyperlinkFormulaFieldFriendlyName</name>
+    </customLabels>
+    <customLabels>
         <label>Archivos</label>
         <name>ZRM_FilesTitle</name>
     </customLabels>
