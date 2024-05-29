@@ -76,10 +76,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>EnlaceZonaZurich__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>UpdatedInsuranceCost__c</field>
             </layoutItems>
         </layoutColumns>

@@ -7151,11 +7151,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.EnlaceZonaZurich__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Case.IntermediaryOwner__c</field>
         <readable>true</readable>
     </fieldPermissions>
