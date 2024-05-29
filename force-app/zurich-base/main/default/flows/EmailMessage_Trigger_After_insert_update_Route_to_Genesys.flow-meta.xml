@@ -508,6 +508,49 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Hay_que_actualizar_best_agent_ZDA</name>
+        <label>¿Hay que actualizar best agent ZDA?</label>
+        <locationX>3746</locationX>
+        <locationY>2448</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Actualizar_best_agent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetGenesysQueueAndParentIdFromEmailSubflow.GestorPreferente</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_RecordType_ZDA</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.BestAgent__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.BestAgent__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.GestorPreferente</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Actualizar_best_agent_caso_ZDA</targetReference>
+            </connector>
+            <label>Actualizar best agent</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Hay_que_actualizar_owner</name>
         <label>¿Hay que actualizar owner?</label>
         <locationX>3592</locationX>
@@ -872,6 +915,11 @@
 &quot;To Address: &quot; + {!$Record.ToAddress}</expression>
     </formulas>
     <formulas>
+        <name>Case_RecordType_ZDA</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_ZDA.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>CSMAdministrationManager</name>
         <dataType>String</dataType>
         <expression>if (isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.CsmAdministrationManager__c})</expression>
@@ -919,6 +967,21 @@
         <name>SpecializationType</name>
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!$Record.Parent.AccountId}), &apos;&apos;, TEXT({!$Record.Parent.Account.SpecializationType__c}))</expression>
+    </formulas>
+    <formulas>
+        <name>SuscriptorDyO</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.SuscriptorDyO__c})</expression>
+    </formulas>
+    <formulas>
+        <name>SuscriptorPymes</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.SuscriptorPymes__c})</expression>
+    </formulas>
+    <formulas>
+        <name>SuscriptorRC</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.Parent.AccountId}), null, {!$Record.Parent.Account.SuscriptorRC__c})</expression>
     </formulas>
     <formulas>
         <name>UWConstruccionCartera</name>
@@ -1287,6 +1350,27 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Actualizar_best_agent_caso_ZDA</name>
+        <label>Actualizar best agent caso ZDA</label>
+        <locationX>3614</locationX>
+        <locationY>2556</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>BestAgent__c</field>
+            <value>
+                <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.GestorPreferente</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>Actualizar_caso1</name>
         <label>Actualizar caso</label>
         <locationX>50</locationX>
@@ -1322,6 +1406,9 @@
         <label>Desactivar Campo Estado Interaccion</label>
         <locationX>2822</locationX>
         <locationY>1956</locationY>
+        <connector>
+            <targetReference>Hay_que_actualizar_best_agent_ZDA</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1350,6 +1437,9 @@
         <label>Desactivar Campo Estado Interaccion Queue</label>
         <locationX>4142</locationX>
         <locationY>1632</locationY>
+        <connector>
+            <targetReference>Hay_que_actualizar_best_agent_ZDA</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1578,6 +1668,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>CommercialPorductCodeCaso</name>
+            <value>
+                <elementReference>$Record.Parent.CommercialProductCode__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>EmailPropietarioCaso</name>
             <value>
                 <elementReference>$Record.Parent.Owner:User.Email</elementReference>
@@ -1653,6 +1749,24 @@
             <name>NombreSpecialtiesVenta</name>
             <value>
                 <elementReference>UWSpecialtiesVenta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSuscriptorDyO</name>
+            <value>
+                <elementReference>SuscriptorDyO</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSuscriptorPymes</name>
+            <value>
+                <elementReference>SuscriptorPymes</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSuscriptorRC</name>
+            <value>
+                <elementReference>SuscriptorRC</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
