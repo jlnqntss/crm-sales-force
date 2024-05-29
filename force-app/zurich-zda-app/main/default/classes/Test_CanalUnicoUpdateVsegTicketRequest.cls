@@ -100,19 +100,19 @@ private with sharing class Test_CanalUnicoUpdateVsegTicketRequest
     {
         //Valor nulo duration
         CanalUnicoUpdateVsegTicketRequest reqDurationNull = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqDurationNull.ticket.quotesList[0].duration = null;
+        ((CanalUnicoUpdateVsegTicketRequest.CanalUnicoQuote)reqDurationNull.ticket.quotesList[0]).duration = null;
         Boolean reqDurationNullThrown = false;
         //Valor nulo anualNetPremium
         CanalUnicoUpdateVsegTicketRequest reqAnualNetPremiumNull = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqAnualNetPremiumNull.ticket.quotesList[0].anualNetPremium = null;
+        ((CanalUnicoUpdateVsegTicketRequest.CanalUnicoQuote)reqAnualNetPremiumNull.ticket.quotesList[0]).anualNetPremium = null;
         Boolean reqAnualNetPremiumNullThrown = false;
         //Valor nulo totalAnualReceipt
         CanalUnicoUpdateVsegTicketRequest reqTotalAnualReceiptNull = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqTotalAnualReceiptNull.ticket.quotesList[0].totalAnualReceipt = null;
+        ((CanalUnicoUpdateVsegTicketRequest.CanalUnicoQuote)reqTotalAnualReceiptNull.ticket.quotesList[0]).totalAnualReceipt = null;
         Boolean reqTotalAnualReceiptNullThrown = false;
         //Valor invalido paymentType
         CanalUnicoUpdateVsegTicketRequest reqPaymentTypeInvalid = Test_CanalUnicoUpdateVsegTicketRequest.generateRequest();
-        reqPaymentTypeInvalid.ticket.quotesList[0].paymentType = '55';
+        ((CanalUnicoUpdateVsegTicketRequest.CanalUnicoQuote)reqPaymentTypeInvalid.ticket.quotesList[0]).paymentType = '55';
         Boolean reqPaymentTypeThrown = false;
 
         Test.startTest();

@@ -66,8 +66,7 @@ public without sharing class AccountSelectorWithoutSharing
                                        OR
                                        RecordTypeId = : rtBusinessCustomerId
                         )
-                    WITH USER_MODE
-                    ORDER BY LastModifiedDate DESC 
+                    ORDER BY LastModifiedDate DESC
                 ]);
         }
         return result;
@@ -102,7 +101,6 @@ public without sharing class AccountSelectorWithoutSharing
                     FROM account
                     WHERE NationalId__c IN: documents
                     AND RecordTypeId = : rtLeadId
-                    WITH USER_MODE
                                        ORDER BY LastModifiedDate DESC
                 ]);
         }
@@ -124,8 +122,7 @@ public without sharing class AccountSelectorWithoutSharing
             List<Account> accountQueryList = new List<Account>([SELECT Id, FirstName, LastName, Intermediary_Name__c, Intermediary_Name__r.INFOIntermediaryCode__c,
                                                                 NationalIdType__c, RecordType.DeveloperName, NationalId__c
                                                                 FROM Account
-                                                                WHERE Id = : accountId
-                                                                WITH USER_MODE]);
+                                                                WHERE Id = : accountId]);
 
             if ( !accountQueryList.isEmpty() )
             {
@@ -149,7 +146,7 @@ public without sharing class AccountSelectorWithoutSharing
         List<Account> result = new List<Account>();
         if ( accountId != null)
         {
-            result = new List<Account>([SELECT Id, Name FROM account WHERE Id = : accountId WITH USER_MODE]);
+            result = new List<Account>([SELECT Id, Name FROM account WHERE Id = : accountId]);
         }
         return result;
     }
@@ -157,6 +154,6 @@ public without sharing class AccountSelectorWithoutSharing
     public List<ContactpointPhone> selectByAccountScopeLead(List<String> phonesList)
     {
         return [SELECT Scope__c, ScopeId__c, ScopeId__r.Scope__c, ScopeId__r.AccountId__c, ScopeId__r.AccountId__r.Createddate, ScopeId__r.AccountId__r.LastModifiedDate
-                FROM ContactPointPhone WHERE TelephoneNumber IN :phonesList AND ScopeId__r.AccountId__r.RecordType.DeveloperName = 'Lead' WITH USER_MODE];
+                FROM ContactPointPhone WHERE TelephoneNumber IN :phonesList AND ScopeId__r.AccountId__r.RecordType.DeveloperName = 'Lead'];
     }
 }

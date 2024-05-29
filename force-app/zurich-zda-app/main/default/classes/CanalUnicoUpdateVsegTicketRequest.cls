@@ -4,8 +4,9 @@
  *
  * @author mario.navarro@seidor.com
  * @date 21/03/2024
+ * @see https://zurichspain.atlassian.net/wiki/spaces/OCS/pages/2673770514/Servicio+env+o+a+Canal+nico#CanalUnicoUpdateVsegTicketRequest
  */
-public class CanalUnicoUpdateVsegTicketRequest
+public with sharing class CanalUnicoUpdateVsegTicketRequest
 {
     public CanalUnicoTicket ticket;
 
@@ -115,6 +116,63 @@ public class CanalUnicoUpdateVsegTicketRequest
     private static final String FIELD_ANUAL_NET_PREMIUM = 'anualNetPremium';
     private static final String FIELD_TOTAL_ANUAL_RECEIPT = 'totalAnualReceipt';
 
+    /**
+     * Valida el valor de un campo contra la lista de valores validos. En caso de no estar informado
+     * o no estar informado con unos de los valores validos posibles, se lanza una IllegalArgumentException
+     *
+     * @author mario.navarro@seidor.com
+     * @date 24/05/2024
+     * @param fieldValue valor que contiene el campo a validar
+     * @param fieldValidValues Set de strings que contiene los valores validos para el campo
+     * @param fieldName nombre del campo que se valida
+     */
+    private static void validateField(String fieldValue, Set<String> fieldValidValues, String fieldName)
+    {
+        if ( fieldValue == null || !fieldValidValues.contains(fieldValue) )
+        {
+            throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace( FIELD_VALUE_PLACEHOLDER, (fieldValue != null ? fieldValue : STR_NULL) ).replace(FIELD_NAME_PLACEHOLDER, fieldName) );
+        }
+    }
+
+    /**
+     * Construye un elemento que contiene una lista de elementos
+     *
+     * @author mario.navarro@seidor.com
+     * @date 24/05/2024
+     * @param elemsToBuild lista de elementos a construir
+     * @param containerElementName Set de strings que contiene los valores validos para el campo
+     * @return el xml construido
+     */
+    private static String buildElementList(List<IUpdateVsegTicketRequestElem> elemsToBuild, String containerElementName)
+    {
+        String elem = '';
+        if ( !elemsToBuild.isEmpty() )
+        {
+            elem += '<v1:'+containerElementName+'>';
+            for (IUpdateVsegTicketRequestElem elemToBuild: elemsToBuild)
+            {
+                elem += elemToBuild.buildRequest();
+            }
+            elem += '</v1:'+containerElementName+'>';
+        }
+
+        return elem;
+    }
+
+    /**
+     * Interfaz para los elementos que componen una peticion al servicio del ESB
+     * para comunicarse con Canal unico
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 24/05/2024
+     */
+    private interface IUpdateVsegTicketRequestElem
+    {
+        /**
+         * Se encarga de construir el cuerpo del xml del elemento en cuestion
+         */
+        String buildRequest();
+    }
 
     /**
      * Construye el cuerpo de la peticion
@@ -140,7 +198,7 @@ public class CanalUnicoUpdateVsegTicketRequest
      * @author mario.navarro@seidor.com
      * @date 21/03/2024
      */
-    public class CanalUnicoTicket
+    public class CanalUnicoTicket implements IUpdateVsegTicketRequestElem
     {
         /**
          * Identificador del ticket en Canal único
@@ -270,7 +328,7 @@ public class CanalUnicoUpdateVsegTicketRequest
         /**
          * Lista de cotizaciones. No se enviará nada
          */
-        public List<CanalUnicoQuote> quotesList
+        public List<IUpdateVsegTicketRequestElem> quotesList
         {
             get
             {
@@ -281,7 +339,7 @@ public class CanalUnicoUpdateVsegTicketRequest
         /**
          * Lista de documentos adjuntos
          */
-        public List<CanalUnicoDocument> documentList
+        public List<IUpdateVsegTicketRequestElem> documentList
         {
             get
             {
@@ -301,18 +359,10 @@ public class CanalUnicoUpdateVsegTicketRequest
         public String buildRequest()
         {
             //Checkeamos campos obligatorios (o invalidos), en caso de faltar alguno, lanzamos excepcion
-            if ( event == null || !availableEventValues.contains(event) )
-            {
-                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace( FIELD_VALUE_PLACEHOLDER, (event != null ? event : STR_NULL) ).replace(FIELD_NAME_PLACEHOLDER, FIELD_EVENT) );
-            }
-            if ( ticketStatus == null || !availableTicketStatusValues.contains(ticketStatus) )
-            {
-                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace( FIELD_VALUE_PLACEHOLDER, (ticketStatus != null ? ticketStatus : STR_NULL) ).replace(FIELD_NAME_PLACEHOLDER, FIELD_TICKET_STATUS) );
-            }
-            if ( ticketSubStatus == null || !availableTicketSubStatusValues.contains(ticketSubStatus) )
-            {
-                throw new IllegalArgumentException( Label.ZDAVsegTicketRequestFieldValidationError.replace( FIELD_VALUE_PLACEHOLDER, (ticketSubStatus != null ? ticketSubStatus : STR_NULL) ).replace(FIELD_NAME_PLACEHOLDER, FIELD_TICKET_SUBSTATUS) );
-            }
+            validateField(event, availableEventValues, FIELD_EVENT);
+            validateField(ticketStatus, availableTicketStatusValues, FIELD_TICKET_STATUS);
+            validateField(ticketSubStatus, availableTicketSubStatusValues, FIELD_TICKET_SUBSTATUS);
+            
             if ( eventReason != null && !availableTicketEventReasonValues.contains(eventReason) )
             {
                 //Si el eventReason esta informado se comprueba que su valor sea valido
@@ -329,33 +379,19 @@ public class CanalUnicoUpdateVsegTicketRequest
             req += '<v1:eventDate>' + eventDate.format(TicketingHegeoUtil.DATE_TIME_FORMATTER) + '</v1:eventDate>';
             req += '<v1:eventReason>' + (eventReason != null ? eventReason.toString() : '') + '</v1:eventReason>';
             req += '<v1:eventDesc>' + eventDesc + '</v1:eventDesc>';
-            req += '<v1:estimatedEndDate>' + (estimatedEndDate != null ? estimatedEndDate.format(TicketingHegeoUtil.DATE_TIME_FORMATTER) : '') + '</v1:estimatedEndDate>';
+            req += '<v1:estimatedEndDate>' + estimatedEndDate.format(TicketingHegeoUtil.DATE_TIME_FORMATTER) + '</v1:estimatedEndDate>';
             req += '<v1:comments>' + comments + '</v1:comments>';
-            if ( !quotesList.isEmpty() )
-            {
-                req += '<v1:quotesList>';
-                for (CanalUnicoQuote cuq: quotesList)
-                {
-                    req += cuq.buildRequest();
-                }
-                req += '</v1:quotesList>';
-            }
-            if ( !documentList.isEmpty() )
-            {
-                req += '<v1:documentList>';
-                for (CanalUnicoDocument cud : documentList)
-                {
-                    req += cud.buildRequest();
-                }
-                req += '</v1:documentList>';
-            }
+            
+            req += buildElementList(quotesList, 'quotesList');
+            req += buildElementList(documentList, 'documentList');
+            
             req += '</v1:ticket>';
             return req;
         }
 
     }
 
-    public class CanalUnicoQuote
+    public class CanalUnicoQuote implements IUpdateVsegTicketRequestElem
     {
         /**
          * Identificador de la cotización en Hegeo
@@ -462,7 +498,7 @@ public class CanalUnicoUpdateVsegTicketRequest
         /**
          * Lista de documentos adjuntos a la cotización
          */
-        public List<CanalUnicoDocument> documentList
+        public List<IUpdateVsegTicketRequestElem> documentList
         {
             get
             {
@@ -509,21 +545,15 @@ public class CanalUnicoUpdateVsegTicketRequest
             req += '<v1:comments>' + comments + '</v1:comments>';
             req += '<v1:eventReason>' + eventReason + '</v1:eventReason>';
             req += '<v1:eventDesc>' + eventDesc + '</v1:eventDesc>';
-            if ( !documentList.isEmpty() )
-            {
-                req += '<v1:documentList>';
-                for (CanalUnicoDocument cud : documentList)
-                {
-                    req += cud.buildRequest();
-                }
-                req += '</v1:documentList>';
-            }
+
+            req += buildElementList(documentList, 'documentList');
+            
             req += '</v1:quote>';
             return req;
         }
     }
 
-    public class CanalUnicoDocument
+    public class CanalUnicoDocument implements IUpdateVsegTicketRequestElem
     {
         public String documentCode
         {
@@ -552,7 +582,7 @@ public class CanalUnicoUpdateVsegTicketRequest
         }
     }
 
-    public class CanalUnicoAttachedDocument
+    public class CanalUnicoAttachedDocument implements IUpdateVsegTicketRequestElem
     {
         public String fileName
         {

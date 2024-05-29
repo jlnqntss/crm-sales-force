@@ -8,6 +8,7 @@
 @isTest
 private with sharing class GlobalConfigUtilTest
 {
+
     @isTest
     private static void testGetGlobalConfigurationValues()
     {
@@ -17,8 +18,8 @@ private with sharing class GlobalConfigUtilTest
         Test.stopTest();
 
         //Check results
-        System.assertEquals('USPInquiry', configValues.get('Case_RecordType_USP'));
-        System.assertEquals('365', configValues.get('Query_Filter_Days_365'));
+        System.assertEquals('USPInquiry', configValues.get('Case_RecordType_USP'), 'El valor del metadato no es correcto');
+        System.assertEquals('365', configValues.get('Query_Filter_Days_365'), 'El valor del metadato no es correcto');
     }
     
     @isTest
@@ -29,21 +30,31 @@ private with sharing class GlobalConfigUtilTest
         Test.stopTest();
 
         //Check results
-        System.assertEquals('USPInquiry', configValue);
+        System.assertEquals('USPInquiry', configValue, 'El valor del metadato no es correcto');
     }
     
     @IsTest
     static void testGetGlobalConfigurationValueId() {
 
-        Organization org = [SELECT Id FROM Organization];
-        String orgId = org.Id;
-        
+        Id USPRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get('USPInquiry')?.getRecordTypeId();
+
         Test.startTest();
-        String configValueId = GlobalConfigUtil.getGlobalConfigurationValueId('Instances_Id');
+        String USPRecordTypeIdTest = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
         Test.stopTest();
 
         //Check results
-        System.assertEquals(orgId, configValueId);
+        System.assertEquals(USPRecordTypeId, USPRecordTypeIdTest, 'No se ha obtenido correctamente el Id');
+    }
+
+    @IsTest
+    static void testGetGlobalConfigurationMtdCheck() {
+
+        Test.startTest();
+        Global_Configuration__mdt instanceConfig = Global_Configuration__mdt.getInstance('Instances_Id');
+        Test.stopTest();
+
+        Assert.isTrue(instanceConfig != null, 'Metadato core Instances_Id no encontrado');
+        
     }
 
     /**

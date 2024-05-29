@@ -26,6 +26,13 @@
             <operator>equals</operator>
             <value>THIS_MONTH</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.ProductBranch__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Vida</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
