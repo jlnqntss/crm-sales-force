@@ -7545,7 +7545,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Case.TendencyToEscape__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -12400,7 +12400,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Policy__c.TotalPremium__c</field>
+        <field>Policy__c.TendencyToEscape__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
