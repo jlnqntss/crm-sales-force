@@ -1473,8 +1473,6 @@ private with sharing class CaseUtilTest
 
         caseToTest.Status = CaseUtil.CASE_ASIGNADO;
 
-        String methodForSending = 'sendRequestStatusChangeToAssigned';
-
         TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
             TicketingHegeoServiceMock.HTTP_CODE_OK,
             TicketingHegeoServiceMock.RESULT_OK,
