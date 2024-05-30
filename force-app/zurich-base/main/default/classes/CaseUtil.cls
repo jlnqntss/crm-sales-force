@@ -2070,6 +2070,41 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Para los casos de ZDA que pasan de nuevo a asignado recibidos via canal unico, envia
+     * notificacion a Canal unico informando de que el caso esta en estado Tramite
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void notifCuCaseAssigned(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        for(Case updatedCase : updatedCases)
+        {
+            if ( isZDAAssignedAndCu( updatedCase, oldMap.get(updatedCase.Id) ) )
+            {
+                TicketingHegeoUtil.sendRequestStatusChangeToAssigned(updatedCase.Id);
+            }
+        }
+    }
+
+    /**
+     * Comprueba si el caso es de ZDA, con origen canal unico y pasa de nuevo a asignado
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param updatedCase caso actualizado
+     * @param oldCase caso antes de la actualizacion
+     * @return true si es un caso de ZDA, de canal unico y pasa de nuevo a asignado; false en caso contrario
+     */
+    private static Boolean isZDAAssignedAndCu(Case updatedCase, Case oldCase)
+    {
+        return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.Origin == ORIGIN_CANAL_UNICO &&
+            updatedCase.Status == CASE_ASIGNADO && oldCase.Status == CASE_NUEVO;
+    }
+
+    /**
      * Para el los casos de tipo ZDA establece el campo OwnerIdPrior__c cuando cambia el owner del caso por primera vez
      *
      * @author mario.navarro@seidor.com
