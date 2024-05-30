@@ -2015,6 +2015,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.TendencyToEscape__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Claim__c.Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2981,6 +2986,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.LastDateIntermediaryOrAccountChange__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.TendencyToEscape__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
