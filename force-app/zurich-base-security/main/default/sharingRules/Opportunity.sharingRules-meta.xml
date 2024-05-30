@@ -84,8 +84,8 @@
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Ventas_CC_Oferta_Vida</fullName>
-        <accessLevel>Read</accessLevel>
-        <description>El usuario de venta CC podrá ver todas las ofertas de entidad legal vida</description>
+        <accessLevel>Edit</accessLevel>
+        <description>El usuario de venta CC podrá ver y editar las ofertas de entidad legal vida</description>
         <label>Ventas_CC_Oferta_Vida</label>
         <sharedTo>
             <group>Ventas_CC</group>
