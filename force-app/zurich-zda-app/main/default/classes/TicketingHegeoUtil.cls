@@ -131,7 +131,7 @@ public with sharing class TicketingHegeoUtil
         CanalUnicoUpdateVsegTicketRequest calloutRequest = createBaseRequestByCase(relatedCase);
         calloutRequest.ticket.event = ZdaCuRequestAvailableEventValues__mdt.getInstance(EVENT_INICIO_TRAMITE)?.Value__c;
 
-        String callResult = TicketingHegeoService.updateVsegTicket(calloutRequest);
+        TicketingHegeoService.updateVsegTicket(calloutRequest);
     }
 
     /**
