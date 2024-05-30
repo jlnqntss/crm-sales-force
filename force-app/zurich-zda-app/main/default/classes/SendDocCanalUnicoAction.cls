@@ -49,7 +49,6 @@ public with sharing class SendDocCanalUnicoAction
         {
             calloutRequest.ticket.eventDesc = comments;
         }
-        //TicketingHegeoUtil.setStatusSubstatusByCase(calloutRequest, relatedCase);
         List<ContentDocumentLink> linksToCreate = new List<ContentDocumentLink>();
         if ( !fileList.isEmpty() )
         {
