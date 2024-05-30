@@ -13,6 +13,8 @@ public with sharing class WS_GetReturnedReceiptsList {
      *
      * @author dmunoz
      * @date 29/05/2024
+     * 
+     * @param invocationType debe ser "DiaAnterior" o "Acumulados"
      *
      * @return ZRMReciboResponse devuelve la respuesta del servicio web 
      */
@@ -29,6 +31,7 @@ public with sharing class WS_GetReturnedReceiptsList {
             request.setEndpoint('https://david94.free.beeceptor.com');
             request.setMethod('POST');
             request.setHeader('Content-Type', 'application/json');
+            request.setTimeout(120000);
             
             // Crear request
             ZRMReciboRequest zrmReciboRequest = createRequest(pageSize, invocationType);
@@ -88,9 +91,9 @@ public with sharing class WS_GetReturnedReceiptsList {
      *
      */
     public class ZRMReciboRequest {
-        private String antiguedadRecibo { get; set; }
-        private Integer numeroElementosPagina { get; set; }
-        private Integer numeroPagina { get; set; }
+        public String antiguedadRecibo { get; set; }
+        public Integer numeroElementosPagina { get; set; }
+        public Integer numeroPagina { get; set; }
     }
 
     public class ZRMReciboResponse {

@@ -48,7 +48,6 @@ export default class ZrmRecibos extends LightningElement {
         
         // Verifica si los datos ya están en la caché
         if (this.cache[pageNumber]) {
-            console.log('Entro en cache');
             this.updateData(this.cache[pageNumber], pageNumber);
         } else {
             // Llama al método Apex solo si los datos no están en la caché
