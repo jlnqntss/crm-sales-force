@@ -1,7 +1,21 @@
 
+/**
+ * Clase controladora del LWC ZRMRecibos
+ *
+ * @author dmunoz
+ * @date 29/05/2024
+ */
 public with sharing class ZRMRecibosController {
 
     //#region metodo principal
+
+    /**
+     * Clase principal que llama al servicio web GetReturnedReceiptsList
+     *
+     * @author dmunoz
+     * @date 29/05/2024
+     * @return PaginatedResult
+     */
     @AuraEnabled
     public static PaginatedResult getData(Integer pageNumber, Integer pageSize, String invocationType) {
 
@@ -11,8 +25,8 @@ public with sharing class ZRMRecibosController {
             PaginatedResult result = new PaginatedResult();
 
             // Invocar servicio web
-            Rest_GetReturnedReceiptsList ws = new Rest_GetReturnedReceiptsList();
-            Rest_GetReturnedReceiptsList.ZRMReciboResponse response = ws.callWebService(pageSize, invocationType);
+            WS_GetReturnedReceiptsList ws = new WS_GetReturnedReceiptsList();
+            WS_GetReturnedReceiptsList.ZRMReciboResponse response = ws.callWebService(pageSize, invocationType);
 
             // Obtener los datos de la respuesta y devolver resultado         
             if (response != null) { // si ha habido respuesta
@@ -34,7 +48,14 @@ public with sharing class ZRMRecibosController {
 
     //#region metodos auxiliares
 
-    private static PaginatedResult getResposeData(Rest_GetReturnedReceiptsList.ZRMReciboResponse response, Integer pageNumber) {
+    /**
+     * Metodo que lee la respuesta obtenida del servicio web para cada página
+     *
+     * @author dmunoz
+     * @date 29/05/2024
+     * @return PaginatedResult
+     */
+    private static PaginatedResult getResposeData(WS_GetReturnedReceiptsList.ZRMReciboResponse response, Integer pageNumber) {
 
         PaginatedResult result = new PaginatedResult();
 
@@ -42,7 +63,7 @@ public with sharing class ZRMRecibosController {
         List<ZRMRecibo> recibos = new List<ZRMRecibo>();
         Boolean esUltimaPagina = response.esUltimaPagina;
 
-        for (Rest_GetReturnedReceiptsList.ReciboDevuelto reciboResponse: response.listaRecibosDevueltos) {
+        for (WS_GetReturnedReceiptsList.ReciboDevuelto reciboResponse: response.listaRecibosDevueltos) {
             recibos.add(createObjectZRMRecibo(reciboResponse));
         }
 
@@ -53,7 +74,14 @@ public with sharing class ZRMRecibosController {
         return result;        
     }
 
-    private static ZRMRecibo createObjectZRMRecibo(Rest_GetReturnedReceiptsList.ReciboDevuelto reciboResponse) {
+    /**
+     * Metodo que convierte cada recibo del WS en un objeto legible por el LWC
+     *
+     * @author dmunoz
+     * @date 29/05/2024
+     * @return ZRMRecibo
+     */
+    private static ZRMRecibo createObjectZRMRecibo(WS_GetReturnedReceiptsList.ReciboDevuelto reciboResponse) {
 
         ZRMRecibo result = new ZRMRecibo();
         result.codigoRecibo = reciboResponse.codigoRecibo;
@@ -74,6 +102,14 @@ public with sharing class ZRMRecibosController {
 
 
     //#region objeto respuesta
+
+    /**
+     * Objetos para enviar al LWC
+     *
+     * @author dmunoz
+     * @date 29/05/2024
+     *
+     */
     public class PaginatedResult {
         @AuraEnabled public List<ZRMRecibo> records { get; set; }
         @AuraEnabled public Boolean disablePreviousButton { get; set; }

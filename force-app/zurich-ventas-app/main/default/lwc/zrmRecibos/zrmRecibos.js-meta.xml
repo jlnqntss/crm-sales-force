@@ -8,7 +8,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightningCommunity__Default">
-            <property name="antiguedadRecibo" type="String" label="Type" description="Should be set to DiaAnterior or Acumulados"/>
+            <property name="antiguedadRecibo" type="String" label="Type" datasource="DiaAnterior, Acumulados" description="Should be set to DiaAnterior or Acumulados"/>
       </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
