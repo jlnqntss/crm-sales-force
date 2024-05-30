@@ -13,6 +13,9 @@
         <field>STATUS</field>
     </columns>
     <columns>
+        <field>CREATED_DATEONLY</field>
+    </columns>
+    <columns>
         <field>Case.EndDate__c</field>
     </columns>
     <columns>
@@ -47,6 +50,11 @@
         <language>es</language>
     </filter>
     <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Case.IntermediaryOwner__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>CASE_NUMBER</field>
