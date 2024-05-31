@@ -1,10 +1,3 @@
-/**
- * @description       : 
- * @author            : rserrano
- * @group             : 
- * @last modified on  : 23/05/2024
- * @last modified by  : rserrano
-**/
 @isTest
 private with sharing class GenesysCloudTest
 {
