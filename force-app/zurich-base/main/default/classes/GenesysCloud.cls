@@ -913,9 +913,6 @@ public with sharing class GenesysCloud
                 response = purecloud.sdk.Rest.get(CONVERSATION_ANALYTICS_DETAILS + '?id=' + conversationIdTemplateList);
             }
 
-            System.debug(response);
-            System.debug(response.getBody());
-
             // Convertimos el JSON de la respuesta en un objeto AnalyticsResponseListWrapper para poder devolverlo
             return (AnalyticsResponseWrapper) JSON.deserialize(response.getBody(), AnalyticsResponseWrapper.class);
         }
