@@ -844,8 +844,8 @@ private with sharing class GenesysCloudTest
         HttpResponse res = GenesysCloud.CallbacksService.disconnectBulk(bulkCallbackDisconnectRequest);
         Test.stopTest();
 
-        System.assertEquals('{"conversationId":"test","callbackId":"test"}', callbackDisconnectIdentifierLst[0].toJSON(), 'El JSON no se ha parseado correctamente.');
-        System.assertEquals(202, res.getStatusCode(), 'El código de estado no es igual al esperado.');
+        Assert.areEqual('{"conversationId":"test","callbackId":"test"}', callbackDisconnectIdentifierLst[0].toJSON(), 'El JSON no se ha parseado correctamente.');
+        Assert.areEqual(202, res.getStatusCode(), 'El código de estado no es igual al esperado.');
     }
 
     /**
@@ -884,6 +884,6 @@ private with sharing class GenesysCloudTest
         GenesysCloud.AnalyticsResponseWrapper analyticsResponse = GenesysCloud.AnalyticsService.getConversationDetails(new Set<String>{'20558e5f-9024-41c0-954a-b32acf2f8d7b'});
         Test.stopTest();
         
-        System.assertEquals(analyticsResponseMock.toJSON(), analyticsResponse.toJSON(), 'La respuesta recibida no es igual a la esperada.');
+        Assert.areEqual(analyticsResponseMock.toJSON(), analyticsResponse.toJSON(), 'La respuesta recibida no es igual a la esperada.');
     }
 }
