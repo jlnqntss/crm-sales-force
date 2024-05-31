@@ -146,7 +146,7 @@ public with sharing class CampaignMemberUtil
         }
 
         // Recuperamos las tareas de callbacks a futuro asociadas al cliente, actualizamos la descripción con el contenido de la label
-        // Label.Cliente_eliminado_de_campa_a (Miembro de campaña eliminado) y las cerramos
+        // Label.ZRM_CampaignMember_Removed_From_Campaign (Miembro de campaña eliminado) y las cerramos
         List<Task> callbackTaskList = (new TaskSelector()).getCallbackTasksByWhoIdSet(campaignMemberAccountIdSet);
         Set<String> conversationIdSet = new Set<String>();
         for (Task callbackTask : callbackTaskList)
@@ -154,7 +154,7 @@ public with sharing class CampaignMemberUtil
             conversationIdSet.add(callbackTask.CallObject);
             
             callbackTask.Status = 'Cerrada';
-            callbackTask.Description = Label.Cliente_eliminado_de_campa_a;
+            callbackTask.Description = Label.ZRM_CampaignMember_Removed_From_Campaign;
         }
 
         // Si no se han recuperado tareas no es necesario hacer nada mas

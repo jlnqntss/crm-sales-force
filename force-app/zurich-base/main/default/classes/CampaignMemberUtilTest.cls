@@ -273,7 +273,7 @@ private with sharing class CampaignMemberUtilTest
 
         for(Task tsk : updatedTskLst)
         {
-            System.assertEquals(Label.Cliente_eliminado_de_campa_a, tsk.Description, 'La descripcion de la tarea callback debería ser \'' + Label.Cliente_eliminado_de_campa_a + '\'');
+            System.assertEquals(Label.ZRM_CampaignMember_Removed_From_Campaign, tsk.Description, 'La descripcion de la tarea callback debería ser \'' + Label.ZRM_CampaignMember_Removed_From_Campaign + '\'');
         }
     }
 }

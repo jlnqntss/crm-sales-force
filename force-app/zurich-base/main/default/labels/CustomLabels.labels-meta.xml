@@ -2990,7 +2990,7 @@ Create the record and try again.</value>
         <value>file(s) uploaded successfully</value>
     </labels>
     <labels>
-        <fullName>Cliente_eliminado_de_campa_a</fullName>
+        <fullName>ZRM_CampaignMember_Removed_From_Campaign</fullName>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Cliente eliminado de campaña</shortDescription>

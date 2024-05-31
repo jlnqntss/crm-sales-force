@@ -74,7 +74,7 @@
     </customLabels>
     <customLabels>
         <label>Cliente eliminado de campaña.</label>
-        <name>Cliente_eliminado_de_campa_a</name>
+        <name>ZRM_CampaignMember_Removed_From_Campaign</name>
     </customLabels>
     <customLabels>
         <label><!-- Converted --></label>
