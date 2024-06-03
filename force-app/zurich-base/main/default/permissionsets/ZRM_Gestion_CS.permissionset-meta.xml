@@ -69,7 +69,7 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>ExpirationDays__c</field>
+        <field>Case.ExpirationDays__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
