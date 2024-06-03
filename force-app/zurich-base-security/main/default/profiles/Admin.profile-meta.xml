@@ -6601,7 +6601,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.Dias_vencimiento__c</field>
+        <field>Case.ExpirationDays__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

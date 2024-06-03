@@ -64,7 +64,7 @@ Para usuarios de la comunidad zrm</description>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.Dias_vencimiento__c</field>
+        <field>ExpirationDays__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
