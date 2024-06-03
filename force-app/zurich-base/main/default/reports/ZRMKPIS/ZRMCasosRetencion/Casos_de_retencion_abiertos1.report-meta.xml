@@ -20,7 +20,7 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Case.Dias_vencimiento__c</field>
+        <field>Case.ExpirationDays__c</field>
     </columns>
     <columns>
         <field>Case.TendencyToEscape__c</field>
@@ -46,6 +46,13 @@
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>Case.ZRMInquiry</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Case.ExpirationDays__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>greaterOrEqual</operator>
+            <value>0</value>
         </criteriaItems>
         <language>es</language>
     </filter>
@@ -74,7 +81,7 @@
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>false</showSubTotals>
-    <sortColumn>Case.Dias_vencimiento__c</sortColumn>
+    <sortColumn>Case.ExpirationDays__c</sortColumn>
     <sortOrder>Asc</sortOrder>
     <timeFrameFilter>
         <dateColumn>CREATED_DATEONLY</dateColumn>
