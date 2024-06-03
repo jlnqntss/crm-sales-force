@@ -52,8 +52,8 @@
         </rules>
     </decisions>
     <environments>Default</environments>
-    <interviewLabel>Offer Trigger - After Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Offer Trigger - After Insert/Update - Informar Intermediary Group</label>
+    <interviewLabel>Offer Trigger - Before Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Offer Trigger - Before Insert/Update - Informar Intermediary Group</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -162,5 +162,5 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
 </Flow>

@@ -64,6 +64,86 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Asignar_Gestor_Preferente_Usuario_ZDA</name>
+        <label>Asignar Gestor Preferente Usuario ZDA</label>
+        <locationX>3746</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>EmailPropietarioCaso</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EmailPropietarioCaso</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_Suscriptor_DyO</name>
+        <label>Asignar Suscriptor DyO</label>
+        <locationX>2690</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>NombreSuscriptorDyO</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreSuscriptorDyO</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_Suscriptor_Pymes</name>
+        <label>Asignar Suscriptor Pymes</label>
+        <locationX>2954</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>NombreSuscriptorPymes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreSuscriptorPymes</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_Suscriptor_RC</name>
+        <label>Asignar Suscriptor RC</label>
+        <locationX>3218</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>NombreSuscriptorRC</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NombreSuscriptorRC</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>Asignar_variables_cola</name>
         <label>Asignar variables cola</label>
         <locationX>1238</locationX>
@@ -129,7 +209,7 @@
     <assignments>
         <name>CaseOwnerAssignment</name>
         <label>Asignar propietario caso</label>
-        <locationX>2690</locationX>
+        <locationX>4010</locationX>
         <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -145,7 +225,7 @@
     <assignments>
         <name>CCServiceClosedCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Cerrado CCService</label>
-        <locationX>2492</locationX>
+        <locationX>3152</locationX>
         <locationY>3206</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -158,7 +238,7 @@
     <assignments>
         <name>CCServiceOpenCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Abierto CCService</label>
-        <locationX>2228</locationX>
+        <locationX>2888</locationX>
         <locationY>2990</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -217,7 +297,7 @@
     <assignments>
         <name>CSMAdmManagerAssignment</name>
         <label>Asignar CSM Administración Manager</label>
-        <locationX>1700</locationX>
+        <locationX>2360</locationX>
         <locationY>2882</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -230,7 +310,7 @@
     <assignments>
         <name>CSMIndividualManagerAssignment</name>
         <label>Asignar CSM Individual Manager</label>
-        <locationX>1172</locationX>
+        <locationX>1832</locationX>
         <locationY>2882</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -348,7 +428,7 @@
     <decisions>
         <name>Administration_manager_encontrado</name>
         <label>¿Administration manager encontrado?</label>
-        <locationX>1832</locationX>
+        <locationX>2492</locationX>
         <locationY>2774</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -370,7 +450,7 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Qué Call Center es?</label>
-        <locationX>2162</locationX>
+        <locationX>2822</locationX>
         <locationY>2666</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -429,7 +509,7 @@
     <decisions>
         <name>CaseAssignedToUserDecision</name>
         <label>¿Caso asignado a usuario?</label>
-        <locationX>2162</locationX>
+        <locationX>2822</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>CallCenterDecision</targetReference>
@@ -451,6 +531,21 @@
             <label>USP</label>
         </rules>
         <rules>
+            <name>ZDA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ColaGenesysCallCenter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Call_Center_ZDA</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Caso_asignado_a_usuario_ZDA</targetReference>
+            </connector>
+            <label>ZDA</label>
+        </rules>
+        <rules>
             <name>AssignedToUserOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
@@ -469,7 +564,7 @@
     <decisions>
         <name>CaseOrOpportunityDecision</name>
         <label>¿Caso u oportunidad?</label>
-        <locationX>2855</locationX>
+        <locationX>3768</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -501,9 +596,62 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Caso_asignado_a_usuario_ZDA</name>
+        <label>¿Caso asignado a usuario ZDA?</label>
+        <locationX>3416</locationX>
+        <locationY>350</locationY>
+        <defaultConnector>
+            <targetReference>Asignar_Gestor_Preferente_Usuario_ZDA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No_es_usuario_ZDA</name>
+            <conditionLogic>1 OR ( (2 OR 3 OR 4) AND 5)</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>Beggining_Id_Queue</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Integrator</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Admin</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Administrador</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>Beggining_Id_User</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Gestor_preferente_suscriptor</targetReference>
+            </connector>
+            <label>No es usuario ZDA</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>ClosedCasesFoundDecision</name>
         <label>¿Casos cerrados encontrados?</label>
-        <locationX>2624</locationX>
+        <locationX>3284</locationX>
         <locationY>3098</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -584,9 +732,82 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Gestor_preferente_suscriptor</name>
+        <label>¿Gestor preferente suscriptor?</label>
+        <locationX>3086</locationX>
+        <locationY>458</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Suscriptor_DyO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreSuscriptorDyO</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>CommercialPorductCodeCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_Commercial_Product_Code_PRD0901</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Suscriptor_DyO</targetReference>
+            </connector>
+            <label>Suscriptor DyO</label>
+        </rules>
+        <rules>
+            <name>Suscriptor_Pymes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreSuscriptorPymes</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>CommercialPorductCodeCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_Commercial_Product_Code_PRD0028</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Suscriptor_Pymes</targetReference>
+            </connector>
+            <label>Suscriptor Pymes</label>
+        </rules>
+        <rules>
+            <name>Suscriptor_RC</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NombreSuscriptorRC</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>CommercialPorductCodeCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_Commercial_Product_Code_PRD0038</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Suscriptor_RC</targetReference>
+            </connector>
+            <label>Suscriptor RC</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Individual_manager_encontrado</name>
         <label>¿Individual manager encontrado?</label>
-        <locationX>1304</locationX>
+        <locationX>1964</locationX>
         <locationY>2774</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -817,7 +1038,7 @@
     <decisions>
         <name>OpenCasesFoundDecision</name>
         <label>¿Casos abiertos encontrados?</label>
-        <locationX>2426</locationX>
+        <locationX>3086</locationX>
         <locationY>2882</locationY>
         <defaultConnector>
             <targetReference>GetClosedCasesAction</targetReference>
@@ -1033,6 +1254,51 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>Beggining_Id_Queue</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_Queue.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Beggining_Id_User</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_User.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Call_Center_ZDA</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Call_Center_ZDA.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Case_Commercial_Product_Code_PRD0028</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Commercial_Product_Code_PRD0028.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Case_Commercial_Product_Code_PRD0038</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Commercial_Product_Code_PRD0038.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Case_Commercial_Product_Code_PRD0901</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Commercial_Product_Code_PRD0901.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Profile_Name_Admin</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Admin.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Profile_Name_Administrador</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Administrador.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Profile_Name_Integrator</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Integrator.Value__c}</expression>
+    </formulas>
     <interviewLabel>EmailMessage - Comprobar Cola Genesys y ParentID {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage - Búsqueda gestor preferente</label>
     <processMetadataValues>
@@ -1057,7 +1323,7 @@
     <recordLookups>
         <name>GetClosedCasesAction</name>
         <label>Obtener Casos Cerrados</label>
-        <locationX>2624</locationX>
+        <locationX>3284</locationX>
         <locationY>2990</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1087,7 +1353,7 @@
     <recordLookups>
         <name>GetOpenCasesAction</name>
         <label>Obtener Casos Abiertos</label>
-        <locationX>2426</locationX>
+        <locationX>3086</locationX>
         <locationY>2774</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1164,7 +1430,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>2729</locationX>
+        <locationX>3642</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CaseOrOpportunityDecision</targetReference>
@@ -1198,6 +1464,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>CommercialPorductCodeCaso</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
@@ -1256,7 +1529,7 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>GestorPreferenteAsignado</name>
@@ -1361,6 +1634,27 @@
     </variables>
     <variables>
         <name>NombreSpecialtiesVenta</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>NombreSuscriptorDyO</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>NombreSuscriptorPymes</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>NombreSuscriptorRC</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
