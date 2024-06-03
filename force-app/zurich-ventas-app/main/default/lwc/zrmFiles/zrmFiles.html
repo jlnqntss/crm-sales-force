@@ -2,7 +2,7 @@
     <lightning-card variant="narrow" title={label.ZRM_FilesTitle} icon-name="standard:file">
         <div slot="actions">
             <lightning-button 
-                label={label.ZRM_NewFile} 
+                label={label.ZRM_Files_NewFile} 
                 variant="Neutral"                    
                 onclick={handleUploadClick} 
             ></lightning-button>
@@ -26,19 +26,24 @@
             </div>
         </template>
 
-        <lightning-card>
+        <lightning-card>            
             <template for:each={filesList.data} for:item="file">
                 <div key={file.value} class="slds-box">
                     <div class="slds-grid slds-wrap">
-                        <div class="slds-col slds-large-size_2-of-12 slds-medium-size_2-of-12 slds-size_12-of-12 slds-text-align_left">
+                        <div class="slds-col slds-large-size_1-of-12 slds-medium-size_1-of-12 slds-size_12-of-12 slds-text-align_left">
                             <lightning-icon icon-name={file.fileIcon} alternative-text="File" title="File"></lightning-icon>
                           </div>
-                        <div class="slds-col slds-large-size_6-of-12 slds-medium-size_6-of-12 slds-size_12-of-12 slds-text-align_left">
-                          <p><strong>{file.fileTitle}</strong></p>
+                        <div class="slds-col slds-large-size_7-of-12 slds-medium-size_7-of-12 slds-size_12-of-12 slds-text-align_left">
+                          <p class="slds-m-left_small"><strong>{file.fileTitle}</strong></p>
                         </div>
-                        <div class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12 slds-text-align_right">
-                          <a class="slds-button slds-button_brand" href={file.fileDownloadUrl} download>{label.ZRM_DownloadFile}</a>
+                        <div class="slds-col slds-large-size_3-of-12 slds-medium-size_3-of-12 slds-size_12-of-12 slds-text-align_right">
+                          <a class="slds-button slds-button_brand" href={file.fileDownloadUrl} download>{label.ZRM_Files_DownloadFile}</a>
                         </div>
+                        <template if:true={file.deleteEnabled}>
+                            <div class="slds-col slds-large-size_1-of-12 slds-medium-size_1-of-12 slds-size_12-of-12 slds-text-align_right">
+                                <lightning-button-icon variant="destructive" icon-name="utility:delete" data-id={file.fileId} onclick={handleDelete}></lightning-button-icon>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </template>
