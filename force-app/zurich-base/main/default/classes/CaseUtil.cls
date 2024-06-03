@@ -2337,7 +2337,7 @@ public with sharing class CaseUtil
     */
     public static void isCaseClone(List<Case> newList) {
 
-        String USPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
 
         for (Case caseTrigger: newList) {
 
