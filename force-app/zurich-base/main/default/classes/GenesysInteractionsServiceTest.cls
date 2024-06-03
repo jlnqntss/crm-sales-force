@@ -2074,36 +2074,30 @@ private with sharing class GenesysInteractionsServiceTest
         insert myClaimInmuebles;
 
         //REQUESTS
-        GenesysInteractionsService.SearchRequest searchRequestHogar = new GenesysInteractionsService.SearchRequest();
-        searchRequestHogar.searchType = 'document';
-        searchRequestHogar.value = '777888111Y';
-        searchRequestHogar.filterBy  = 'customers';
-        searchRequestHogar.legalEntity  = 'all';
-        searchRequestHogar.scope  = 'Z';
-        searchRequestHogar.intent  = 'CONS_HOG';
+        //GenesysInteractionsService.SearchRequest searchRequestHogar = new GenesysInteractionsService.SearchRequest();
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+        searchRequest.searchType = 'document';
+        searchRequest.value = '777888111Y';
+        searchRequest.filterBy  = 'customers';
+        searchRequest.legalEntity  = 'all';
+        searchRequest.scope  = 'Z';
+        searchRequest.intent  = GenesysInteractionsService.CONSULTA_POLIZA_HOGAR;
 
         GenesysInteractionsService.SearchRequest searchRequestComercio = new GenesysInteractionsService.SearchRequest();
-        searchRequestComercio.searchType = 'document';
-        searchRequestComercio.value = '777888111Y';
-        searchRequestComercio.filterBy  = 'customers';
-        searchRequestComercio.legalEntity  = 'all';
-        searchRequestComercio.scope  = 'Z';
-        searchRequestComercio.intent  = 'CONS_COM';
-
         GenesysInteractionsService.SearchRequest searchRequestPymes = new GenesysInteractionsService.SearchRequest();
-        searchRequestPymes.searchType = 'document';
-        searchRequestPymes.value = '777888111Y';
-        searchRequestPymes.filterBy  = 'customers';
-        searchRequestPymes.legalEntity  = 'all';
-        searchRequestPymes.scope  = 'Z';
-        searchRequestPymes.intent  = 'CONS_PYMS';
 
         // Test
         Test.startTest();
 
-        GenesysInteractionsService.SearchResult resultHogar = GenesysInteractionsService.findPeopleBy(searchRequestHogar);
-        GenesysInteractionsService.SearchResult resultComercio = GenesysInteractionsService.findPeopleBy(searchRequestComercio);
-        GenesysInteractionsService.SearchResult resultPymes = GenesysInteractionsService.findPeopleBy(searchRequestPymes);
+        GenesysInteractionsService.SearchResult resultHogar = GenesysInteractionsService.findPeopleBy(searchRequest);
+
+        searchRequest.intent  = GenesysInteractionsService.CONSULTA_POLIZA_COMERCIOS;
+        GenesysInteractionsService.SearchResult resultComercio = GenesysInteractionsService.findPeopleBy(searchRequest);
+
+        searchRequest.intent  = GenesysInteractionsService.CONSULTA_POLIZA_PYMES;
+        GenesysInteractionsService.SearchResult resultPymes = GenesysInteractionsService.findPeopleBy(searchRequest);
+
+        resultPymes.claims.getPreferredClaimByIntent(new List<String>(), false);
 
         Test.stopTest();
 
