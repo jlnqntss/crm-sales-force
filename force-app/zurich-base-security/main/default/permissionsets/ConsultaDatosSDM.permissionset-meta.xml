@@ -2927,6 +2927,10 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
+        <recordType>Case.SDMMarketTeamRequests</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
         <recordType>Contact.Contact</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
