@@ -86,6 +86,7 @@ public with sharing class CampaignMemberHandler implements ITrigger
     {
         // Lanzar el batch de borrado de ofertas
         CampaignMemberUtil.closeRelatedOffer((Map<Id, CampaignMember>) oldMap);
+        CampaignMemberUtil.disconnectGenesysCallbacks((Map<Id, CampaignMember>) oldMap);
     }
 
     /**
