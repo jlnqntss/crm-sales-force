@@ -1,4 +1,4 @@
-import { LightningElement, api, wire, track } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getRelatedFilesByRecordId from '@salesforce/apex/ZRMFilesController.getRelatedFilesByRecordId';
 import { refreshApex } from '@salesforce/apex';
@@ -32,8 +32,8 @@ export default class ZRMFiles extends LightningElement {
     };
 
     @api recordId;
-    @track showFileUploader = false;
-    @track isLoading = false;
+    showFileUploader = false;
+    isLoading = false;
 
     @wire(getRelatedFilesByRecordId, {recordId: '$recordId'})  
     filesList;
@@ -46,9 +46,9 @@ export default class ZRMFiles extends LightningElement {
         this.isLoading = true;
         refreshApex(this.filesList)
             .then(() => {
-                this.isLoading = false;
-                const uploadedFiles = event.detail.files;
-                this.showToast(this.label.ZRM_Files_Success, uploadedFiles.length + ' ' + this.label.ZRM_Files_UploadSuccess, 'success');
+        this.isLoading = false;
+        const uploadedFiles = event.detail.files;
+        this.showToast(this.label.ZRM_Files_Success, uploadedFiles.length + ' ' + this.label.ZRM_Files_UploadSuccess, 'success');
             })
             .catch(error => {
                 this.isLoading = false;
@@ -86,7 +86,7 @@ export default class ZRMFiles extends LightningElement {
         refreshApex(this.filesList)
             .then(() => {
                 this.isLoading = false;
-                this.showToast(this.label.ZRM_Files_Success, this.label.ZRM_Files_Refresh, 'success');
+                this.showToast(this.label.ZRM_Files_Success, this.label.ZRM_Files_Refresh, 'success');            
             })
             .catch(error => {
                 this.isLoading = false;

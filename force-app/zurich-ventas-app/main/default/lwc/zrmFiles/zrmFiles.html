@@ -30,28 +30,29 @@
         <template if:true={isLoading}>
             <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
         </template>
-
-        <lightning-card>            
+        <template if:false={isLoading}>
+            <lightning-card>            
             <template for:each={filesList.data} for:item="file">
-                <div key={file.value} class="slds-box">
-                    <div class="slds-grid slds-wrap">
-                        <div class="slds-col slds-large-size_1-of-12 slds-medium-size_1-of-12 slds-size_12-of-12 slds-text-align_left">
-                            <lightning-icon icon-name={file.fileIcon} alternative-text="File" title="File"></lightning-icon>
-                        </div>
-                        <div class="slds-col slds-large-size_7-of-12 slds-medium-size_7-of-12 slds-size_12-of-12 slds-text-align_left">
-                            <p class="slds-m-left_small"><strong>{file.fileTitle}</strong></p>
-                        </div>
-                        <div class="slds-col slds-large-size_3-of-12 slds-medium-size_3-of-12 slds-size_12-of-12 slds-text-align_right">
-                            <a class="slds-button slds-button_brand" href={file.fileDownloadUrl} download>{label.ZRM_Files_DownloadFile}</a>
-                        </div>
-                        <template if:true={file.deleteEnabled}>
-                            <div class="slds-col slds-large-size_1-of-12 slds-medium-size_1-of-12 slds-size_12-of-12 slds-text-align_right">
-                                <lightning-button-icon variant="destructive" icon-name="utility:delete" data-id={file.fileId} onclick={handleDelete}></lightning-button-icon>
+                    <div key={file.value} class="slds-box">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-large-size_1-of-12 slds-medium-size_1-of-12 slds-size_12-of-12 slds-text-align_left">
+                                <lightning-icon icon-name={file.fileIcon} alternative-text="File" title="File"></lightning-icon>
                             </div>
-                        </template>
+                            <div class="slds-col slds-large-size_7-of-12 slds-medium-size_7-of-12 slds-size_12-of-12 slds-text-align_left">
+                                <p class="slds-m-left_small"><strong>{file.fileTitle}</strong></p>
+                            </div>
+                            <div class="slds-col slds-large-size_3-of-12 slds-medium-size_3-of-12 slds-size_12-of-12 slds-text-align_right">
+                                <a class="slds-button slds-button_brand" href={file.fileDownloadUrl} download>{label.ZRM_Files_DownloadFile}</a>
+                            </div>
+                            <template if:true={file.deleteEnabled}>
+                                <div class="slds-col slds-large-size_1-of-12 slds-medium-size_1-of-12 slds-size_12-of-12 slds-text-align_right">
+                                    <lightning-button-icon variant="destructive" icon-name="utility:delete" data-id={file.fileId} onclick={handleDelete}></lightning-button-icon>
+                                </div>
+                            </template>
+                        </div>
                     </div>
-                </div>
-            </template>
-        </lightning-card> 
+                </template>
+            </lightning-card> 
+        </template>
     </lightning-card>
 </template>
