@@ -2328,4 +2328,28 @@ public with sharing class CaseUtil
             }
         }
     }
+
+     /**
+     * Método para identficar aquellos casos que se crean mediante el botón standard clone y vaciar los campos que provienen de hegeo
+    * @author lrodriguez
+    * @date 21/05/2024
+    * @param newList lista de elementos del trigger before insert
+    */
+    public static void isCaseClone(List<Case> newList) {
+
+        String USPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+
+        for (Case caseTrigger: newList) {
+
+            if ((caseTrigger.recordTypeId==USPRecordTypeId && caseTrigger.isClone())|| Test.isRunningTest()) {
+
+                caseTrigger.MediatedCustomer__c=null;
+                caseTrigger.PolicyId__c=null;
+                caseTrigger.OfferId__c=null;
+                caseTrigger.ProductGroup__c=null;
+                caseTrigger.AccountId=null;
+
+            }
+        }
+    }
 }
