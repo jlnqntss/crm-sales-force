@@ -2002,12 +2002,14 @@ private with sharing class CaseUtilTest
 
         Policy__c policyRelated= new Policy__c();
         policyRelated.Name='TEST 2705';
+        policyRelated.PolicyStatus__c='V';
         insert policyRelated;
         
         List<Case> uspCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         uspCases[0].MediatedCustomer__c=accountMediatedCustomer[0].Id;
         uspCases[0].OfferId__c=offerRelated.Id;
         uspCases[0].ProductGroup__c='6';
+        uspCases[0].RecordtypeId=GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
         uspCases[0].PolicyId__c=policyRelated.Id;
         
         Test.startTest();

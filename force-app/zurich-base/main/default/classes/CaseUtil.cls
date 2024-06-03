@@ -2341,7 +2341,7 @@ public with sharing class CaseUtil
 
         for (Case caseTrigger: newList) {
 
-            if ((caseTrigger.recordTypeId==USPRecordTypeId && caseTrigger.isClone())|| Test.isRunningTest()) {
+            if ((caseTrigger.recordTypeId==uSPRecordTypeId && caseTrigger.isClone())|| (Test.isRunningTest() && caseTrigger.recordTypeId==uSPRecordTypeId)) {
 
                 caseTrigger.MediatedCustomer__c=null;
                 caseTrigger.PolicyId__c=null;
