@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api, wire, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getRelatedFilesByRecordId from '@salesforce/apex/ZRMFilesController.getRelatedFilesByRecordId';
 import { refreshApex } from '@salesforce/apex';
@@ -32,7 +32,8 @@ export default class ZRMFiles extends LightningElement {
     };
 
     @api recordId;
-    showFileUploader = false;
+    @track showFileUploader = false;
+    @track isLoading = false;
 
     @wire(getRelatedFilesByRecordId, {recordId: '$recordId'})  
     filesList;
@@ -41,16 +42,22 @@ export default class ZRMFiles extends LightningElement {
         this.showFileUploader = !this.showFileUploader;
     }
 
-    // Manejador para la carga exitosa de archivos
     handleUploadFinished(event) {
-        // Llamada a Apex para actualizar la lista de archivos
-        refreshApex(this.filesList);
-        // Mostrar mensaje toast
-        const uploadedFiles = event.detail.files;
-        this.showToast(this.label.ZRM_Files_Success, uploadedFiles.length + ' ' + this.label.ZRM_Files_UploadSuccess, 'success');
+        this.isLoading = true;
+        refreshApex(this.filesList)
+            .then(() => {
+                this.isLoading = false;
+                const uploadedFiles = event.detail.files;
+                this.showToast(this.label.ZRM_Files_Success, uploadedFiles.length + ' ' + this.label.ZRM_Files_UploadSuccess, 'success');
+            })
+            .catch(error => {
+                this.isLoading = false;
+                this.showToast('Error', error.body.message, 'error');
+            });
     }
 
     async handleDelete(event) {
+        this.isLoading = true;
         const recordId = event.target.dataset.id;
         
         const result = await LightningConfirm.open({
@@ -64,20 +71,29 @@ export default class ZRMFiles extends LightningElement {
                 await deleteRecord(recordId);
                 this.showToast(this.label.ZRM_Files_Success, this.label.ZRM_Files_DeleteConfirmSuccess, 'success');
                 await refreshApex(this.filesList);
-
             } catch (error) {                
                 this.showToast('Error', error.body.message, 'error');
+            } finally {
+                this.isLoading = false;
             }
+        } else {
+            this.isLoading = false;
         }
     }
 
     refreshComponent() {
-        refreshApex(this.filesList);
-        this.showToast(this.label.ZRM_Files_Success, this.label.ZRM_Files_Refresh, 'success');
+        this.isLoading = true;
+        refreshApex(this.filesList)
+            .then(() => {
+                this.isLoading = false;
+                this.showToast(this.label.ZRM_Files_Success, this.label.ZRM_Files_Refresh, 'success');
+            })
+            .catch(error => {
+                this.isLoading = false;
+                this.showToast('Error', error.body.message, 'error');
+            });
     }
 
-
-    // Función para mostrar mensajes toast
     showToast(title, message, variant) {
         const evt = new ShowToastEvent({
             title: title,
