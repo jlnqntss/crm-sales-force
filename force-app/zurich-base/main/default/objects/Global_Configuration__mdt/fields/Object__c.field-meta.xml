@@ -30,6 +30,11 @@
                 <default>false</default>
                 <label>Profile</label>
             </value>
+            <value>
+                <fullName>Entitlement</fullName>
+                <default>false</default>
+                <label>Entitlement</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
