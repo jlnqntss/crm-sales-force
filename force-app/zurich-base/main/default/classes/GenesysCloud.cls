@@ -17,6 +17,8 @@ public with sharing class GenesysCloud
     public static final String CONVERSATION_GENERAL = '/api/v2/conversations/';
     public static final String CONVERSATION_GENERAL_CALLS = '/api/v2/conversations/calls/';
     public static final String CONVERSATION_EMAIL_PARTICIPANTS = '/participants/';
+    public static final String CONVERSATION_ANALYTICS_DETAILS = '/api/v2/analytics/conversations/details';
+    public static final String CALLBACK_DISCONNECT_BULK = '/api/v2/conversations/callbacks/bulk/disconnect';
     public static final String CONTENT_TYPE = 'Content-Type';
     public static final String CONTENT_TYPE_JSON = 'application/json';
 
@@ -143,6 +145,19 @@ public with sharing class GenesysCloud
                 PatchService = new PatchService();
             }
             return PatchService;
+        }
+        private set;
+    }
+
+    public static GenesysCloud.AnalyticsService AnalyticsService
+    {
+        get
+        {
+            if (AnalyticsService == null)
+            {
+                AnalyticsService = new AnalyticsService();
+            }
+            return AnalyticsService;
         }
         private set;
     }
@@ -677,6 +692,67 @@ public with sharing class GenesysCloud
             //Si no se encuentra el id no se puede devolver
             return result;
         }
+
+        /**
+         * Desconecta todos los callbacks en el objeto que recibe como parámetro
+         * 
+         * @author fpalomo
+         * @date 14/05/2024
+         */
+        public HttpResponse disconnectBulk(BulkCallbackDisconnectRequest bulkCallbackDisconnectRequest)
+        {
+            HttpResponse response;
+
+            //Setear el mock para que funcionen los tests
+            if (Test.isRunningTest() && mock != null)
+            {
+                HttpRequest req = new HttpRequest();
+                req.setMethod('POST');
+                req.setEndpoint(CALLBACK_DISCONNECT_BULK);
+                req.setBody(bulkCallbackDisconnectRequest.toJSON() );
+                response = mock.respond(req);
+            }
+            else //POST
+            {
+                response = purecloud.sdk.Rest.post(CALLBACK_DISCONNECT_BULK, bulkCallbackDisconnectRequest.toJSON());
+            }
+
+            return response;
+        }
+    }
+
+    /**
+     * Representa una lista de CallbackDisconnectIdentifiers la cual se utiliza para desconectar en bulk una serie de callbacks en Genesys.
+     * https://developer.genesys.cloud/routing/conversations/conversations-apis#post-api-v2-conversations-callbacks-bulk-disconnect
+     *
+     * @author fpalomo
+     * @date 21/05/2024
+     */
+    public class BulkCallbackDisconnectRequest implements IAPIRequest
+    {
+        public List<CallbackDisconnectIdentifier> callbackDisconnectIdentifiers;
+
+        public String toJSON()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    /**
+     * Recoge el conversationId y callbackId, utilizados para desconectar un callback en Genesys.
+     * https://developer.genesys.cloud/routing/conversations/conversations-apis#post-api-v2-conversations-callbacks-bulk-disconnect
+     *
+     * @author fpalomo
+     * @date 21/05/2024
+     */
+    public class CallbackDisconnectIdentifier implements IAPIRequest {
+        public String conversationId;
+        public String callbackId;
+
+        public String toJSON()
+        {
+            return JSON.serialize(this);
+        }
     }
 
     /**
@@ -794,6 +870,84 @@ public with sharing class GenesysCloud
             }
             this.setMessage(message);
         }
+    }
+
+    //#endregion
+
+    //#region Módulo AnalyticsService
+
+    /**
+     * AnalyticsService ofrece los métodos de obtención de analíticas sobre el uso y datos de Genesys
+     */
+    public class AnalyticsService
+    {
+        public HttpCalloutMock mock = null;
+
+        /**
+         * Recupera todos los detalles posibles de una o varias conversaciones
+         * 
+         * @author fpalomo
+         * @date 22/05/2024
+         */
+        public AnalyticsResponseWrapper getConversationDetails(Set<String> conversationIdList)
+        {
+            HttpResponse response;
+
+            String conversationIdTemplateList = EncodingUtil.urlEncode(String.join(new List<String>(conversationIdList), ','), 'UTF-8');
+
+            // Setear el mock para que funcionen los tests
+            if (Test.isRunningTest())
+            {
+                if (mock == null)
+                {
+                    return null;
+                }
+                
+                HttpRequest req = new HttpRequest();
+                req.setMethod('GET');
+                req.setEndpoint(CONVERSATION_ANALYTICS_DETAILS + '?id=' + conversationIdTemplateList);
+                response = mock.respond(req);
+            }
+            else // GET
+            {
+                response = purecloud.sdk.Rest.get(CONVERSATION_ANALYTICS_DETAILS + '?id=' + conversationIdTemplateList);
+            }
+
+            // Convertimos el JSON de la respuesta en un objeto AnalyticsResponseListWrapper para poder devolverlo
+            return (AnalyticsResponseWrapper) JSON.deserialize(response.getBody(), AnalyticsResponseWrapper.class);
+        }
+    }
+
+    public class AnalyticsResponseWrapper implements IAPIRequest
+    {
+        public List<AnalyticsConversationWithoutAttributes> conversations;
+
+        // Método público que devuelve una serialización a JSON de la propia instancia de la clase para su uso en las llamadas al SDK.
+        public String toJSON()
+        {
+            return JSON.serialize(this);
+        }
+    }
+
+    public class AnalyticsConversationWithoutAttributes
+    {
+        public String conversationId;
+        public List<AnalyticsParticipantWithoutAttributes> participants;
+    }
+
+    public class AnalyticsParticipantWithoutAttributes
+    {
+        public String participantId;
+        public List<AnalyticsSession> sessions;
+    }
+
+    public class AnalyticsSession
+    {
+        public List<String> callbackNumbers;
+        public String callbackScheduledTime;
+        public String direction;
+        public String mediaType;
+        public String sessionId;
     }
 
     //#endregion
