@@ -64,7 +64,7 @@ private with sharing class GlobalConfigUtilTest
      * @date 27/05/2024
      */
     @IsTest
-    static void test_getDefaultObjectRetention()
+    private static void test_getDefaultObjectRetention()
     {
         Integer retention = null;
         Test.startTest();

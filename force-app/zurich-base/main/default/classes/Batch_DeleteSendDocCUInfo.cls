@@ -4,7 +4,7 @@
  * @author mario.navarro@seidor.com
  * @date 28/05/2024
  */
-public with sharing class Batch_DeleteSendDocCUInfo implements Database.Batchable<sObject>
+public with sharing class Batch_DeleteSendDocCUInfo implements Database.Batchable<sObject>, Schedulable
 {
     private String query;
     private static final String EXECUTE_METHOD_NAME = 'execute';
@@ -46,6 +46,17 @@ public with sharing class Batch_DeleteSendDocCUInfo implements Database.Batchabl
     public Database.QueryLocator start(Database.BatchableContext bc)
     {
         return Database.getQueryLocator(this.query);
+    }
+
+    /**
+     * Metodo necesario para cuando se programa el batch
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 04/06/2024
+     */
+    public void execute(SchedulableContext sc)
+    {
+        Database.executeBatch(new Batch_DeleteSendDocCUInfo(), 200);
     }
 
     /**

@@ -14,7 +14,7 @@ private class Test_SendDocCUInfosSelector {
      * @date 28/05/2024
      */
     @isTest
-    static void test_getQueryToDeleteObjectsByRetention()
+    private static void test_getQueryToDeleteObjectsByRetention()
     {
         Integer retentionToApply = 15;
         Test.startTest();
