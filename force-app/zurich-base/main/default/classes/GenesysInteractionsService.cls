@@ -49,10 +49,14 @@ public with sharing class GenesysInteractionsService
     static final String PARTNER_SF_CODE = 'Partner__r.PartnerSFCode__c';
     static final String PARTNER_GRANDPARENT_BUSINESS_CODE = 'Partner__r.GrandparentBusinessName__c';
 
+    //Refactorización: se trasladan variables susceptibles de cambio a custom metadata
     static Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
     
+    @TestVisible
     static final String CONSULTA_POLIZA_HOGAR = configValues.get('DataAction_Intent_Hogar');
+    @TestVisible
     static final String CONSULTA_POLIZA_COMERCIOS = configValues.get('DataAction_Intent_Comercios');
+    @TestVisible
     static final String CONSULTA_POLIZA_PYMES = configValues.get('DataAction_Intent_PYMES');
 
     static final String TIPO_POLIZA_COMERCIOS = configValues.get('Policy_PolicyType_COMERCIOS');
@@ -2028,32 +2032,29 @@ public with sharing class GenesysInteractionsService
             {
                 if(total > 0 )
                 {
-                    switch on intent
+                    if (intent == GenesysInteractionsService.CONSULTA_POLIZA_HOGAR)
                     {
-                        when CONSULTA_POLIZA_HOGAR
-                        {
-                            return getPreferredClaimByIntent(new List<string>{TIPO_POLIZA_HOGAR, TIPO_POLIZA_INMUEBLES,
+                        return getPreferredClaimByIntent(new List<string>{TIPO_POLIZA_HOGAR, TIPO_POLIZA_INMUEBLES,
                                                             TIPO_POLIZA_COMERCIOS, TIPO_POLIZA_PYMES}, true);
-                        }	
-                        when CONSULTA_POLIZA_COMERCIOS
-                        {
-                            return getPreferredClaimByIntent(new List<string>{TIPO_POLIZA_INMUEBLES, TIPO_POLIZA_HOGAR,
+                    }
+                    else if (intent == GenesysInteractionsService.CONSULTA_POLIZA_COMERCIOS)
+                    {
+                        return getPreferredClaimByIntent(new List<string>{TIPO_POLIZA_INMUEBLES, TIPO_POLIZA_HOGAR,
                                                             TIPO_POLIZA_COMERCIOS, TIPO_POLIZA_PYMES}, true);
-                        }
-                        when CONSULTA_POLIZA_PYMES
-                        {
-                            return getPreferredClaimByIntent(new List<string>{TIPO_POLIZA_PYMES, TIPO_POLIZA_COMERCIOS,
+                    }
+                    else if (intent == GenesysInteractionsService.CONSULTA_POLIZA_PYMES)
+                    {
+                        return getPreferredClaimByIntent(new List<string>{TIPO_POLIZA_PYMES, TIPO_POLIZA_COMERCIOS,
                                                             TIPO_POLIZA_INMUEBLES, TIPO_POLIZA_HOGAR}, true);
-                        }
-                        when else
+                    }
+                    else
+                    {
+                        if(total != 1 && hasDifferentOwners)
                         {
-                            if(total != 1 && hasDifferentOwners)
-                            {
-                                return null;
-                            }
-
-                            return this.claims[0];
+                            return null;
                         }
+                        
+                        return this.claims[0];
                     }
                 }
                 else
