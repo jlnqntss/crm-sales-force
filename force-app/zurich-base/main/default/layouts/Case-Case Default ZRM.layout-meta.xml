@@ -75,7 +75,7 @@
         <label>Acción de retención - Gestión caterta</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
+                <behavior>Edit</behavior>
                 <field>EnlaceZonaZurich__c</field>
             </layoutItems>
             <layoutItems>
