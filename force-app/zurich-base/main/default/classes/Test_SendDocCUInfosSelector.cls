@@ -5,7 +5,8 @@
  * @date 28/05/2024
  */
 @isTest
-private class Test_SendDocCUInfosSelector {
+private class Test_SendDocCUInfosSelector
+{
 
     /**
      * Testea el metodo getQueryToDeleteObjectsByRetention
