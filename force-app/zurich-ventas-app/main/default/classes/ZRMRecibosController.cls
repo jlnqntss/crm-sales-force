@@ -26,7 +26,7 @@ public with sharing class ZRMRecibosController {
 
             // Invocar servicio web
             WS_GetReturnedReceiptsList ws = new WS_GetReturnedReceiptsList();
-            WS_GetReturnedReceiptsList.ZRMReciboResponse response = ws.callWebService(pageNumber, pageSize, invocationType);
+            WS_GetReturnedReceiptsList.ZRMReciboResponse response = ws.callWebService(pageNumber - 1, pageSize, invocationType); // en page number se resta 1 por los atributos del js para el conteo de página y botones
 
             // Obtener los datos de la respuesta y devolver resultado         
             if (response != null) { // si ha habido respuesta
