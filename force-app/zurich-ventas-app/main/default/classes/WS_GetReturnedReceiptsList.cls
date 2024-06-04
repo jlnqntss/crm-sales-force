@@ -18,7 +18,7 @@ public with sharing class WS_GetReturnedReceiptsList {
      *
      * @return ZRMReciboResponse devuelve la respuesta del servicio web 
      */
-    public ZRMReciboResponse callWebService(Integer pageSize, String invocationType) {
+    public ZRMReciboResponse callWebService(Integer pageNumber, Integer pageSize, String invocationType) {
 
         String level = ErrorLogUtil.ERROR_LEVEL_WARNING;
         String message = 'OK.200';
@@ -28,13 +28,13 @@ public with sharing class WS_GetReturnedReceiptsList {
             // Crear objeto request
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-            request.setEndpoint('https://david94.free.beeceptor.com');
+            request.setEndpoint('');
             request.setMethod('POST');
             request.setHeader('Content-Type', 'application/json');
             request.setTimeout(120000);
             
             // Crear request
-            ZRMReciboRequest zrmReciboRequest = createRequest(pageSize, invocationType);
+            ZRMReciboRequest zrmReciboRequest = createRequest(pageNumber, pageSize, invocationType);
             requestBody = JSON.serialize(zrmReciboRequest);
             request.setBody(requestBody);
             
@@ -47,6 +47,7 @@ public with sharing class WS_GetReturnedReceiptsList {
                 ZRMReciboResponse result = (ZRMReciboResponse) JSON.deserialize(response.getBody(), ZRMReciboResponse.class);
                 ErrorLogUtil.commitError(level, message, CLASS_NAME, requestBody); // guardo el ok
                 return result;
+                
             } else {
                 // Manejar respuestas que no sean exitosas
                 level = ErrorLogUtil.ERROR_LEVEL_ERROR;
@@ -72,11 +73,11 @@ public with sharing class WS_GetReturnedReceiptsList {
      *
      * @return ZRMReciboRequest devuelve la request del servicio web 
      */
-    private ZRMReciboRequest createRequest(Integer pageSize, String invocationType) {
+    private ZRMReciboRequest createRequest(Integer pageNumber, Integer pageSize, String invocationType) {
         ZRMReciboRequest result = new ZRMReciboRequest();
         result.antiguedadRecibo = invocationType;
         result.numeroElementosPagina = pageSize;
-        result.numeroPagina = 99999;
+        result.numeroPagina = pageNumber;
 
         return result;
     }

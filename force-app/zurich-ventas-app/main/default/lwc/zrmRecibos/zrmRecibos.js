@@ -16,8 +16,9 @@ export default class ZrmRecibos extends LightningElement {
     data = [];
     disablePreviousButton = true; 
     disableNextButton = true;
-    currentPage = 1;
-    pageSize = 2;
+    componentPageNumber = 1; // atributo para mostrar el número de pagina en el componente, se duplica ya que en el servicio web empieza en 0
+    currentPage = 1; // atributo que lleva la cuenta interna del número de página para el servicio web
+    pageSize = 50;
     cache = {};
     isLoading = false;
 
@@ -26,7 +27,7 @@ export default class ZrmRecibos extends LightningElement {
     // Metodo que se ejecuta cuando se abre el componente
     connectedCallback() {
         this.isLoading = true;
-        this.loadData(1);
+        this.loadData(0);
     }
 
     // control botón previous
@@ -71,6 +72,7 @@ export default class ZrmRecibos extends LightningElement {
         this.disablePreviousButton = result.disablePreviousButton;
         this.disableNextButton = result.disableNextButton;
         this.currentPage = pageNumber;
+        this.componentPageNumber = pageNumber + 1;        
     }
 
     // Función para mostrar mensajes toast

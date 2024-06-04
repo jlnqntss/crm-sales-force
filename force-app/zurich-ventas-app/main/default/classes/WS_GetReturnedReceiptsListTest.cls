@@ -25,7 +25,7 @@ public class WS_GetReturnedReceiptsListTest {
 
         // Llamar a la clase que hace el callout
         WS_GetReturnedReceiptsList wsClass = new WS_GetReturnedReceiptsList();
-        WS_GetReturnedReceiptsList.ZRMReciboResponse actualResponse = wsClass.callWebService(1, 'DiaAnterior');
+        WS_GetReturnedReceiptsList.ZRMReciboResponse actualResponse = wsClass.callWebService(0, 1, 'DiaAnterior');
 
         // Realizar las aserciones necesarias para validar el comportamiento
         Assert.areEqual(99999, actualResponse.numeroDiasValidez, 'Debe de coincidir el numero de dias de validez con el dado');
