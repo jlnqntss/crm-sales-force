@@ -28,10 +28,12 @@ public with sharing class WS_GetReturnedReceiptsList {
             // Crear objeto request
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-            request.setEndpoint('');
+            request.setEndpoint('callout:WS_GetReturnedReceiptsListSyncOperation');
             request.setMethod('POST');
-            request.setHeader('Content-Type', 'application/json');
             request.setTimeout(120000);
+
+            // añado la cabecera y la autenticación
+            request = setAuthenticationHeader(request);
             
             // Crear request
             ZRMReciboRequest zrmReciboRequest = createRequest(pageNumber, pageSize, invocationType);
@@ -80,6 +82,35 @@ public with sharing class WS_GetReturnedReceiptsList {
         result.numeroPagina = pageNumber;
 
         return result;
+    }
+
+
+    //#region Authenticated Header
+    private HttpRequest setAuthenticationHeader(HttpRequest httpRequest) {
+
+        String accessToken = '';
+
+        String authProviderName = GlobalConfigUtil.getGlobalConfigurationValue('Provider_Zurich_Internal'); // zurich_internal
+        String providerName = GlobalConfigUtil.getGlobalConfigurationValue('Provider_Name_OpenIdConnect'); // Open ID Connect
+
+        if (!Test.isRunningTest()) {
+            // Obtener token
+            List<AuthProvider> providers = new AuthProviderSelector().getAuthProvider(authProviderName);
+            String authProviderId = providers[0].Id;
+            String oldAccessToken = Auth.AuthToken.getAccessToken(authProviderId, providerName);
+            Map<String, String> newAccessToken = Auth.AuthToken.refreshAccessToken(authProviderId, providerName, oldAccessToken);
+            accessToken = String.valueof(newAccessToken.get('AccessToken'));
+        }
+
+        // Añadir cabeceras y autenticación
+        httpRequest.setHeader('Content-Type', 'application/json');        
+        httpRequest.setHeader('Authorization', 'Bearer ' + accessToken);        
+        httpRequest.setHeader('Session-Id', 'test-session');
+        httpRequest.setHeader('flow-id', 'test-flowid');
+        
+
+        return httpRequest;
+
     }
 
     //#region clases 
