@@ -879,7 +879,8 @@
             <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
             <controllingFieldValue>Recibos</controllingFieldValue>
             <controllingFieldValue>Otros trámites / Peticiones</controllingFieldValue>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Cotización</controllingFieldValue>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
             <controllingFieldValue>Certificado</controllingFieldValue>
             <controllingFieldValue>Cambio mediador</controllingFieldValue>
             <controllingFieldValue>Diligencia de embargo</controllingFieldValue>
@@ -999,19 +1000,24 @@
             <valueName>No resuelto - Falta documentación / información</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
             <valueName>Comparativa no presentada - Falta documentación / información</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
+            <controllingFieldValue>Comparativa Cotización</controllingFieldValue>
             <valueName>Comparativa presentada</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
             <valueName>Comparativa presentada mas propuesta de descuento</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Cotización</controllingFieldValue>
+            <valueName>Comparativa no presentada - Falta documentación /  información / información incorrecta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
             <valueName>Propuesta de descuento</valueName>
         </valueSettings>
         <valueSettings>
