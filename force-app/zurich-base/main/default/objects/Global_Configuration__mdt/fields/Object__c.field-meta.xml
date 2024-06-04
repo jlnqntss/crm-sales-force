@@ -28,7 +28,7 @@
             <value>
                 <fullName>Policy</fullName>
                 <default>false</default>
-                <label>Profile</label>
+                <label>Policy</label>
             </value>
         </valueSetDefinition>
     </valueSet>
