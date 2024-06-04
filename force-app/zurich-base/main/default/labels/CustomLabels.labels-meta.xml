@@ -2467,6 +2467,50 @@ Create the record and try again.</value>
         <value>The response must be reported to close an escalation</value>
     </labels>
     <labels>
+        <fullName>ZDACloseCaseFlowNotAllowedMsg</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDACloseCaseFlowNotAllowedMsg</shortDescription>
+        <value>In order to close a case it musts meet the following requirements:
+- Must be from ZDA
+- Origin must be Canal unico
+- Status is Assigned, Answered or pending partner
+- The case must be classified</value>
+    </labels>
+    <labels>
+        <fullName>ZDAMaxAttachmentSizeMsg</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAMaxAttachmentSizeMsg</shortDescription>
+        <value>Attach file(s) (the total size of attachments cannot exceed #fileSizeReplacement#Mb)</value>
+    </labels>
+    <labels>
+        <fullName>ZDAHoverAttachmentsMsg</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAHoverAttachmentsMsg</shortDescription>
+        <value>If you want to attach more than one file, you must attach all of them at the same time</value>
+    </labels>
+    <labels>
+        <fullName>ZDAErrorMaxAttachmentExceededMsg</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAErrorMaxAttachmentExceededMsg</shortDescription>
+        <value>The maximum supported attachment size has been exceeded</value>
+    </labels>
+    <labels>
+        <fullName>ZDAAttachedFileNamesLbl</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAAttachedFileNamesLbl</shortDescription>
+        <value>Attached files: #attachedFileNames#</value>
+    </labels>
+    <labels>
         <fullName>OfferSalesStageValidationClosedWonMessage</fullName>
         <categories>Ventas,Offer</categories>
         <language>en_US</language>

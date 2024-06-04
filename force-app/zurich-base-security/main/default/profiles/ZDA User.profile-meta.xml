@@ -4334,6 +4334,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.ResponseCanalUnico__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.ReturnDate__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -5290,24 +5295,6 @@
         <layout>FileMimeType__mdt-File mime type Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>ZdaCuRequestAvailableEventValues__mdt-ZDA CU Request available event value Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZdaCuReqAvailableTicketStatusValues__mdt-ZDA CU Req available ticketStatus value Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZdaCuReqAvailTicketSubStatusValues__mdt-ZDA CU Req avail TicketSubStatus value Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZdaCuReqAvailPaymentTypeValues__mdt-ZDA CU Req available payment type value Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZdaCuReqAvailableEventReasonValues__mdt-ZDA CU Req available eventReason value Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ForumOriginAssignment__mdt-Forum Origin Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -5398,7 +5385,28 @@
         <layout>User-User Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ZDARejectCloseResult__mdt-ZDA reject close result Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ZRM_Genesys_WrapUp_mapping__mdt-Genesys WrapUp mapping Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailPaymentTypeValues__mdt-ZDA CU Req available payment type value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailTicketSubStatusValues__mdt-ZDA CU Req avail TicketSubStatus value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailableEventReasonValues__mdt-ZDA CU Req available eventReason value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailableTicketStatusValues__mdt-ZDA CU Req available ticketStatus value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuRequestAvailableEventValues__mdt-ZDA CU Request available event value Layout</layout>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -5416,6 +5424,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Case</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>SendDocCUInfo__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <pageAccesses>

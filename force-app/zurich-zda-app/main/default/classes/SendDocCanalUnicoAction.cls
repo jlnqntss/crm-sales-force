@@ -34,6 +34,10 @@ public with sharing class SendDocCanalUnicoAction
      *
      * @author mario.navarro@seidor.com
      * @date 25/03/2024
+     * @param sendDocObjectId identificador del objeto de envio
+     * @param caseId identificador del caso asociado al objeto de envio
+     * @param comments comentarios del envio
+     * @param contentDocIds string que contiene el array de identificadores de documentos a adjuntar
      */
     @future(callout=true)
     private static void doCallout(String sendDocObjectId, String caseId, String comments, String contentDocIds)
@@ -44,7 +48,16 @@ public with sharing class SendDocCanalUnicoAction
 
         //Se construye la peticion
         CanalUnicoUpdateVsegTicketRequest calloutRequest = TicketingHegeoUtil.createBaseRequestByCase(relatedCase);
-        calloutRequest.ticket.event = ZdaCuRequestAvailableEventValues__mdt.getInstance(EVENT_PETICION_INFO)?.Value__c; //envio de documentacion, siempre 4
+        if ( relatedCase.Status == CaseUtil.estadoCerrado )
+        {
+            //es una notificacion de cierre de la peticion
+            TicketingHegeoUtil.setEventAndTicketStatusByClosedCase(relatedCase, calloutRequest);
+        }
+        else
+        {
+            //envio de documentacion, siempre 4
+            calloutRequest.ticket.event = ZdaCuRequestAvailableEventValues__mdt.getInstance(EVENT_PETICION_INFO)?.Value__c;
+        }
         if ( String.isNotBlank(comments) )
         {
             calloutRequest.ticket.eventDesc = comments;

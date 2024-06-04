@@ -6230,6 +6230,30 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDANotAllowedCloseScaledWithoutResponse</name>
     </customLabels>
     <customLabels>
+        <label>Para poder cerrar un caso debe cumplir los siguientes requisitos:
+- Debe ser de ZDA
+- El origen debe ser Canal único
+- El estado es Asignado, Respondido o pendiente de partner
+- El caso debe estar tipificado</label>
+        <name>ZDACloseCaseFlowNotAllowedMsg</name>
+    </customLabels>
+    <customLabels>
+        <label>Adjuntar fichero/s (el tamaño total de los adjuntos no puede superar los #fileSizeReplacement#Mb)</label>
+        <name>ZDAMaxAttachmentSizeMsg</name>
+    </customLabels>
+    <customLabels>
+        <label>Si se desea adjuntar más de un archivo, se deben adjuntar todos al mismo tiempo</label>
+        <name>ZDAHoverAttachmentsMsg</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha excedido del tamaño máximo de adjuntos admitido</label>
+        <name>ZDAErrorMaxAttachmentExceededMsg</name>
+    </customLabels>
+    <customLabels>
+        <label>Ficheros adjuntos: #attachedFileNames#</label>
+        <name>ZDAAttachedFileNamesLbl</name>
+    </customLabels>
+    <customLabels>
         <label>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Ganada</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
