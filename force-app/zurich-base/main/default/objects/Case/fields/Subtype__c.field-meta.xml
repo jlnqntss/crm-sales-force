@@ -133,9 +133,14 @@
                 <label>Como valido mi seguro</label>
             </value>
             <value>
-                <fullName>Comparativa</fullName>
+                <fullName>Comparativa Cotización</fullName>
                 <default>false</default>
-                <label>Comparativa</label>
+                <label>Comparativa Cotización</label>
+            </value>
+            <value>
+                <fullName>Comparativa Gestión Cartera</fullName>
+                <default>false</default>
+                <label>Comparativa Gestión Cartera</label>
             </value>
             <value>
                 <fullName>Consulta</fullName>
@@ -1121,8 +1126,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
-            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
-            <valueName>Comparativa</valueName>
+            <valueName>Comparativa Cotización</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Cotización</controllingFieldValue>
@@ -1179,6 +1183,10 @@
         <valueSettings>
             <controllingFieldValue>Gestión Cartera</controllingFieldValue>
             <valueName>Certificado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
+            <valueName>Comparativa Gestión Cartera</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Gestión Cartera</controllingFieldValue>
