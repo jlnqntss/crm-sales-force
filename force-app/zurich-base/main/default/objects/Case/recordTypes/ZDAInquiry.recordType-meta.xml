@@ -1564,7 +1564,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Comparativa</fullName>
+            <fullName>Comparativa Cotización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comparativa Gestión Cartera</fullName>
             <default>false</default>
         </values>
         <values>

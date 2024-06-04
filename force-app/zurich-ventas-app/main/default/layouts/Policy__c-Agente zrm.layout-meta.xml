@@ -45,6 +45,10 @@
                 <behavior>Edit</behavior>
                 <field>OpportunityName__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>TendencyToEscape__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

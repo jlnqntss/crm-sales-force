@@ -807,4 +807,76 @@ private with sharing class GenesysCloudTest
         }
         Test.stopTest();
     }
+
+    /**
+     * Método de test que prueba el método disconnectBulk
+     * 
+     * @author rserrano | 22/05/2024 
+     **/
+    @isTest
+    private static void test_disconnectBulk()
+    {
+        String body = '{"id":"7e131fcf-1639-45b2-89e5-9c3787b5dc75"}';
+        Integer code = 202;
+ 
+        GenesysCloud.CallbacksService.mock = new GenesysCloudMocks(body, code);
+
+        List<GenesysCloud.CallbackDisconnectIdentifier> callbackDisconnectIdentifierLst = new List<GenesysCloud.CallbackDisconnectIdentifier>();
+
+        for(Integer i = 0; i < 10; i++)
+        {
+            GenesysCloud.CallbackDisconnectIdentifier callbackDisconnectIdentifier = new GenesysCloud.CallbackDisconnectIdentifier();
+            callbackDisconnectIdentifier.conversationId = 'test';
+            callbackDisconnectIdentifier.callbackId = 'test';
+            callbackDisconnectIdentifierLst.add(callbackDisconnectIdentifier);
+        }
+        GenesysCloud.BulkCallbackDisconnectRequest bulkCallbackDisconnectRequest = new GenesysCloud.BulkCallbackDisconnectRequest();
+        bulkCallbackDisconnectRequest.callbackDisconnectIdentifiers = callbackDisconnectIdentifierLst;
+
+        Test.startTest();
+        HttpResponse res = GenesysCloud.CallbacksService.disconnectBulk(bulkCallbackDisconnectRequest);
+        Test.stopTest();
+
+        Assert.areEqual('{"conversationId":"test","callbackId":"test"}', callbackDisconnectIdentifierLst[0].toJSON(), 'El JSON no se ha parseado correctamente.');
+        Assert.areEqual(202, res.getStatusCode(), 'El código de estado no es igual al esperado.');
+    }
+
+    /**
+     * Método de test que prueba el método getConversationDetails
+     * 
+     * @author fpalomo
+     * @date 22/05/2024
+     */
+    @isTest
+    private static void test_getConversationDetails()
+    {
+        GenesysCloud.AnalyticsSession session = new GenesysCloud.AnalyticsSession();
+        session.callbackNumbers = new List<String>{'+34777666222'};
+        session.callbackScheduledTime = '2024-05-30T11:14:00Z';
+        session.direction = 'outbound';
+        session.mediaType = 'callback';
+        session.sessionId = '7e131fcf-1639-45b2-89e5-9c3787b5dc75';
+
+        GenesysCloud.AnalyticsParticipantWithoutAttributes participant = new GenesysCloud.AnalyticsParticipantWithoutAttributes();
+        participant.participantId = '613f1e3a-05ca-4bb2-acc1-1d29d6676437';
+        participant.sessions = new List<GenesysCloud.AnalyticsSession>{session};
+
+        GenesysCloud.AnalyticsConversationWithoutAttributes conversation = new GenesysCloud.AnalyticsConversationWithoutAttributes();
+        conversation.conversationId = '20558e5f-9024-41c0-954a-b32acf2f8d7b';
+        conversation.participants = new List<GenesysCloud.AnalyticsParticipantWithoutAttributes>{participant};
+
+        GenesysCloud.AnalyticsResponseWrapper analyticsResponseMock = new GenesysCloud.AnalyticsResponseWrapper();
+        analyticsResponseMock.conversations = new List<GenesysCloud.AnalyticsConversationWithoutAttributes>{conversation};
+
+        String body = analyticsResponseMock.toJSON();
+        Integer code = 200;
+ 
+        GenesysCloud.AnalyticsService.mock = new GenesysCloudMocks(body, code);
+
+        Test.startTest();
+        GenesysCloud.AnalyticsResponseWrapper analyticsResponse = GenesysCloud.AnalyticsService.getConversationDetails(new Set<String>{'20558e5f-9024-41c0-954a-b32acf2f8d7b'});
+        Test.stopTest();
+        
+        Assert.areEqual(analyticsResponseMock.toJSON(), analyticsResponse.toJSON(), 'La respuesta recibida no es igual a la esperada.');
+    }
 }
