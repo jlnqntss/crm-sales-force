@@ -26,6 +26,11 @@
                 <label>Queue</label>
             </value>
             <value>
+                <fullName>Profile</fullName>
+                <default>false</default>
+                <label>Profile</label>
+            </value>
+            <value>
                 <fullName>Policy</fullName>
                 <default>false</default>
                 <label>Policy</label>
