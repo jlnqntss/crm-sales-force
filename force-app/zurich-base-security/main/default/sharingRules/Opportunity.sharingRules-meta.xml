@@ -39,6 +39,20 @@
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Read_Ventas_CC_Oferta_Vida</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Read_Ventas_CC_Oferta_Vida</label>
+        <sharedTo>
+            <group>Write_Ventas_CC</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LegalEntity__c</field>
+            <operation>equals</operation>
+            <value>Life Insurance</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Read_ZDA</fullName>
         <accessLevel>Read</accessLevel>
         <label>Read_ZDA</label>
@@ -81,21 +95,6 @@
             <value>Zurich Ventas</value>
         </criteriaItems>
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Ventas_CC_Oferta_Vida</fullName>
-        <accessLevel>Edit</accessLevel>
-        <description>El usuario de venta CC podrá ver y editar las ofertas de entidad legal vida</description>
-        <label>Ventas_CC_Oferta_Vida</label>
-        <sharedTo>
-            <group>Ventas_CC</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>LegalEntity__c</field>
-            <operation>equals</operation>
-            <value>Life Insurance</value>
-        </criteriaItems>
-        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>ZEO_GI_ES</fullName>

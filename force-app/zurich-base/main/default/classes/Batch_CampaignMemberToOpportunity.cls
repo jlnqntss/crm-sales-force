@@ -10,13 +10,13 @@ public with sharing class Batch_CampaignMemberToOpportunity implements Database.
 {
     // ##region Atributos
 
+    
     private static final String CLASS_NAME = 'Batch_CampaignMemberToOpportunity';
-    private static final String PRODUCT_BRANCH_VIDA_CODE = '0000000016';
-    private static final String OFFER_RECORD_TYPE_VIDA_DEV_NAME = 'Life';
-    private static final String OFFER_RECORD_TYPE_NO_VIDA_DEV_NAME = 'NoLife';
-    private static final Id OFFER_RECORD_TYPE_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(OFFER_RECORD_TYPE_VIDA_DEV_NAME).getRecordTypeId();
-    private static final Id OFFER_RECORD_TYPE_NO_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(OFFER_RECORD_TYPE_NO_VIDA_DEV_NAME).getRecordTypeId();
-    private static final String LEGAL_ENTITY_LIFE_INSURANCE = 'Life Insurance';
+    private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
+    private static final String PRODUCT_BRANCH_VIDA_CODE = configValues.get('Product_Branch_Vida_Code');
+    private static final Id OFFER_RECORD_TYPE_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(configValues.get('Opportunity_RecordTypeDevName_Life')).getRecordTypeId();
+    private static final Id OFFER_RECORD_TYPE_NO_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(configValues.get('Opportunity_RecordTypeDevName_NoLife')).getRecordTypeId();
+    private static final String LEGAL_ENTITY_LIFE_INSURANCE = configValues.get('Legal_Entity_Life_Insurance');
 
     private Set<Id> campMemberIdSet = new Set<Id>();
     private List<Opportunity> oppsToInsert = new List <Opportunity>();

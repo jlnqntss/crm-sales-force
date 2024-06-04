@@ -120,7 +120,8 @@ public with sharing class CampaignMembersSelector extends BaseSelector
                                                                 WHERE Campaign.Type = 'Cross Selling'
                                                                                       AND Campaign.IsActive = true
                                                                                                               AND Campaign.StartDate <= TODAY
-                                                                                                              AND Status = 'Pdte. Revisión Mediador']);
+                                                                                                              AND Status = 'Pdte. Revisión Mediador'
+                                                                                                              AND Campaign.ProductBranch__c != '0000000016']);
         return result;
     }
 

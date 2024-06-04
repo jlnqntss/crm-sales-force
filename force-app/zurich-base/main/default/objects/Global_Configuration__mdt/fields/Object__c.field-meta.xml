@@ -25,6 +25,11 @@
                 <default>false</default>
                 <label>Queue</label>
             </value>
+            <value>
+                <fullName>Opportunity</fullName>
+                <default>false</default>
+                <label>Opportunity</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
