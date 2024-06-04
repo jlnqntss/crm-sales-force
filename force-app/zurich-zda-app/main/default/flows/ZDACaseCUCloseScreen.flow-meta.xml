@@ -21,7 +21,7 @@
         <nameSegment>SendDocCanalUnicoAction</nameSegment>
         <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>61.0</apiVersion>
+    <apiVersion>60.0</apiVersion>
     <assignments>
         <description>Crea y asigna el nuevo link</description>
         <name>AddContentDocumentLinkAssignment</name>
