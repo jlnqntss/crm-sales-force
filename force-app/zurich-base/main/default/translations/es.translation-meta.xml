@@ -73,6 +73,10 @@
         <name>ClaimError</name>
     </customLabels>
     <customLabels>
+        <label>Cliente eliminado de campaña.</label>
+        <name>ZRM_CampaignMember_Removed_From_Campaign</name>
+    </customLabels>
+    <customLabels>
         <label><!-- Converted --></label>
         <name>Converted</name>
     </customLabels>
@@ -255,6 +259,10 @@
     <customLabels>
         <label><!-- NumeroNoValido --></label>
         <name>NumeroNoValido</name>
+    </customLabels>
+    <customLabels>
+        <label>Nombre de objeto vacío o nulo no permitido</label>
+        <name>ObjectNameMandatory</name>
     </customLabels>
     <customLabels>
         <label><!-- ObjetoVacio --></label>
@@ -6240,6 +6248,10 @@ Cree el acta y vuelva a intentarlo.</label>
     <customLabels>
         <label>Se ha producido un error en el envío, consultar log de errores</label>
         <name>ZDAVsegTicketRequestError</name>
+    </customLabels>
+    <customLabels>
+        <label>Consulta póliza Área gestión cartera</label>
+        <name>ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName</name>
     </customLabels>
     <customLabels>
         <label>Archivos</label>
