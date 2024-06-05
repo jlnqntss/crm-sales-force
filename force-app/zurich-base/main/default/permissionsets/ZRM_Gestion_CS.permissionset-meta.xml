@@ -213,7 +213,7 @@ Para usuarios de la comunidad zrm</description>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Case.TendencyToEscape__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -345,6 +345,11 @@ Para usuarios de la comunidad zrm</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Event.WhoId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.TendencyToEscape__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
