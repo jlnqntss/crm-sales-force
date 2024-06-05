@@ -531,6 +531,13 @@
         <value>Número no válido</value>
     </labels>
     <labels>
+        <fullName>ObjectNameMandatory</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ObjectNameMandatory</shortDescription>
+        <value>Empty or null object name not allowed</value>
+    </labels>
+    <labels>
         <fullName>ObjetoVacio</fullName>
         <categories>WebService Parser</categories>
         <language>en_US</language>
@@ -2505,6 +2512,14 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>ZDAVsegTicketRequestError</shortDescription>
         <value>An error occurred while sending, check the error log</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName</fullName>
+        <categories>ZRM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName</shortDescription>
+        <value>Overview policy Portfolio Management Area</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermAddCampMember_AddButton</fullName>

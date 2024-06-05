@@ -35,6 +35,11 @@
                 <default>false</default>
                 <label>Entitlement</label>
             </value>
+            <value>
+                <fullName>Retention</fullName>
+                <default>false</default>
+                <label>Retention</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
