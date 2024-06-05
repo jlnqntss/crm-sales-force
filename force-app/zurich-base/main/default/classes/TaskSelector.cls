@@ -53,4 +53,41 @@ public with sharing class TaskSelector extends RecordsSelector
         return result; 
     }
 
+    /**
+     * Método que recupera las tareas para callbacks futuros asociadas a un whoId
+     * 
+     * @author fpalomo
+     * @date 12/04/2024
+     * 
+     *  SELECT WhoId, CallObject
+     *  FROM Task
+     *  WHERE RecordType.DeveloperName = 'Interaction'
+     *      AND CallDisposition = 'Agendar'
+     *      AND CallType = 'Outbound'
+     *      AND CreatedBy.Profile.Name = 'Ventas User'
+     *      AND ActivityDate >= TODAY
+     *      AND WhoId = :whoIdSet
+     */
+    public List<Task> getCallbackTasksByWhoIdSet(Set<String> whoIdSet)
+    {
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Task.WhoId,
+            Task.CallObject,
+            Task.Status,
+            Task.Description
+        })
+        .addConditionIn(Task.WhoId, whoIdSet)
+        .addConditionEq('RecordType.DeveloperName', 'Interaction')
+        .addConditionEq(Task.CallDisposition, 'Agendar')
+        .addConditionEq(Task.CallType, 'Outbound')
+        .addConditionEq('Task.CreatedBy.Profile.Name', ProfilesSelector.PROFILE_VENTAS_USER)
+        .addCondition(
+            Query.doOr(
+                Query.conditionGt(Task.ActivityDate, System.today()),
+                Query.conditionEq(Task.ActivityDate, System.today())
+            )
+        );
+
+        return (List<Task>) this.baseQuery.run();
+    }
 }

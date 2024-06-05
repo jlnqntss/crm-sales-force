@@ -36,4 +36,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <label>USP_Suscriptor Muted</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewCaseInteraction</name>
+    </userPermissions>
 </MutingPermissionSet>

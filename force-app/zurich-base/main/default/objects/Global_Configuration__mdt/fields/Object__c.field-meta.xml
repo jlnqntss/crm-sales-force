@@ -26,9 +26,9 @@
                 <label>Queue</label>
             </value>
             <value>
-                <fullName>Opportunity</fullName>
+                <fullName>Profile</fullName>
                 <default>false</default>
-                <label>Opportunity</label>
+                <label>Profile</label>
             </value>
         </valueSetDefinition>
     </valueSet>
