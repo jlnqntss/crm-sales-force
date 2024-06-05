@@ -1908,6 +1908,238 @@ Related fields: [{3}]</value>
         <value>Inactive All</value>
     </labels>
     <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_GestionDeNegocio</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_GestionDeNegocio</shortDescription>
+        <value>Gestión del negocio: documentación, código negocio, producto, tarifa...</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_Mejora</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_Mejora</shortDescription>
+        <value>Mejora en procesos/sistemas/comunicación</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_Saneamiento</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_Saneamiento</shortDescription>
+        <value>Saneamiento</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_Suscripci_n</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_Suscripción</shortDescription>
+        <value>Suscripción: Gestión de Competencias, CAR, acciones asociadas a una póliza o cartera</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Actividad_comercial</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Actividad_comercial</shortDescription>
+        <value>Actividad comercial</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3C_digo_de_negocio</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Código_de_negocio</shortDescription>
+        <value>Código de negocio</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Comunicaciones</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Comunicaciones</shortDescription>
+        <value>Comunicaciones</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Conectividad</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Conectividad</shortDescription>
+        <value>Conectividad</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_CAR_Cartera_Descuentos_renovaci_n</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_CAR_Cartera/Descuentos_renovación</shortDescription>
+        <value>Consulta CAR Cartera/ Descuentos renovación</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_motivo_saneamiento</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_motivo_saneamiento</shortDescription>
+        <value>Motivo saneamiento</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_prima_de_renovaci_n</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_prima_de_renovación</shortDescription>
+        <value>Consulta prima de renovación</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_reemplazo</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_reemplazo</shortDescription>
+        <value>Consulta reemplazos</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Contrataci_n</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Contratación</shortDescription>
+        <value>Contratación</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Documentaci_n</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Documentación</shortDescription>
+        <value>Documentación</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Expats</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Expats</shortDescription>
+        <value>Expats</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Gesti_n_de_cartera</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Gestión_de_cartera</shortDescription>
+        <value>Gestión de cartera</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Gesti_n_de_competencias</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Gestión_de_competencias</shortDescription>
+        <value>Gestión de Competencias</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Incidencias_cartera</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Incidencias_cartera</shortDescription>
+        <value>Incidencias de cartera</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Incidencias_de_saneamiento</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Incidencias_de_saneamiento</shortDescription>
+        <value>Incidencia</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Otros</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Otros</shortDescription>
+        <value>Otros</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Otros_consultas</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Otros_consultas</shortDescription>
+        <value>Otras consultas</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Producto</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Producto</shortDescription>
+        <value>Producto</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Recibos_y_administraci_n</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Recibos_y_administración</shortDescription>
+        <value>Recibos y administración</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Saldo_RN</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Saldo_RN</shortDescription>
+        <value>Saldo RN</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Saldo_mediador</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Saldo_mediador</shortDescription>
+        <value>Saldo mediador</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Siniestros</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Siniestros</shortDescription>
+        <value>Siniestros</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Sistemas</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Sistemas</shortDescription>
+        <value>Sistemas</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Tarifa</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Tarifa</shortDescription>
+        <value>Tarifa</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Uso_saldo_CAR_Director_Territorial</fullName>
+        <categories>Etiqueta para el flow Formulario peticiones equipos de mercado</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Uso_saldo_CAR_Director_Territorial</shortDescription>
+        <value>Uso saldo CAR Director Territorial</value>
+    </labels>
+    <labels>
         <fullName>SDM_LinksInteres_ButtonCancel</fullName>
         <categories>SDM,LinksInteres</categories>
         <language>en_US</language>
