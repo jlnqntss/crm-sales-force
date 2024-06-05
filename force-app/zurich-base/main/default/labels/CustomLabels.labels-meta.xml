@@ -2966,7 +2966,7 @@ Create the record and try again.</value>
         <value>Are you sure you want to delete this file?</value>
     </labels>
 	<labels>
-        <fullName>ZRM_Files_DeleteConfirmLabel</fullName>
+        <fullName>ZRM_Files_DeleteConfirmLabel</fullName> 
         <categories>ZRM,Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
