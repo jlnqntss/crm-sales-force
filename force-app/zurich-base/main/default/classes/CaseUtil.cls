@@ -2042,15 +2042,25 @@ public with sharing class CaseUtil
      */
     public static void postProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
     {
-        Notification notif = new Notification(Notification.notificationType.CaseTrackingAnswered);
-        String content;
+        List<Case> casesToNotify = new List<Case>();
         for(Case updatedCase : updatedCases)
         {
             if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
             {
-                content = Label.ZDAPartnerSupportAnsweredBody + BLANK_SPACE + updatedCase.CaseNumber;
-                //si han contestado una peticion de soporte, se le notifica al propietario del caso
-                notif.send(updatedCase.Id, new Set<String> {updatedCase.OwnerId}, Label.ZDAPartnerSupportAnsweredTitle, content);
+                casesToNotify.add(updatedCase);
+            }
+        }
+
+        if (!casesToNotify.isEmpty())
+        {
+            String content;
+            //Se hace en un bucle aparte porque los Guest Users no tienen acceso al objeto CustomNotificationType
+            //y al inicializar el objeto 'notif' da error
+            Notification notif = new Notification(Notification.notificationType.CaseTrackingAnswered);
+            for (Case caseToNotify : casesToNotify)
+            {
+                content = Label.ZDAPartnerSupportAnsweredBody + BLANK_SPACE + caseToNotify.CaseNumber;
+                notif.send(caseToNotify.Id, new Set<String> {caseToNotify.OwnerId}, Label.ZDAPartnerSupportAnsweredTitle, content);
             }
         }
     }
