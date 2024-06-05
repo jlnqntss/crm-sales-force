@@ -63,8 +63,12 @@ public with sharing class ZRMRecibosController {
         List<ZRMRecibo> recibos = new List<ZRMRecibo>();
         Boolean esUltimaPagina = response.esUltimaPagina;
 
-        for (WS_GetReturnedReceiptsList.ReciboDevuelto reciboResponse: response.listaRecibosDevueltos) {
-            recibos.add(createObjectZRMRecibo(reciboResponse));
+        if (response.listaRecibosDevueltos != null) { // compruebo si es nulo ya que si no hay recibos, el servicio web no envía la etiqueta listaRecibosDevueltos
+            for (WS_GetReturnedReceiptsList.ReciboDevuelto reciboResponse: response.listaRecibosDevueltos) {
+                recibos.add(createObjectZRMRecibo(reciboResponse));
+            }
+        } else {
+            esUltimaPagina = true; // por alguna razón, si no hay recibos, el servicio web devuelve un false, se modifica para que sea true y así inhabilitar el botón        
         }
 
         result.records = recibos;
@@ -125,7 +129,7 @@ public with sharing class ZRMRecibosController {
         @AuraEnabled public String descripcionAgrupacionCompania {get; set;}
         @AuraEnabled public String nombreTomador {get; set;}
         @AuraEnabled public String telefonoTomador {get; set;}
-        @AuraEnabled public Integer importeTotalRecibo {get; set;}
+        @AuraEnabled public Double importeTotalRecibo {get; set;}
         @AuraEnabled public String descripcionFormaPago {get; set;}
         @AuraEnabled public Integer numeroDevolucionesRecibo {get; set;}
         @AuraEnabled public String descripcionDocumentoReclamacion {get; set;}

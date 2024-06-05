@@ -98,8 +98,15 @@ public with sharing class WS_GetReturnedReceiptsList {
             List<AuthProvider> providers = new AuthProviderSelector().getAuthProvider(authProviderName);
             String authProviderId = providers[0].Id;
             String oldAccessToken = Auth.AuthToken.getAccessToken(authProviderId, providerName);
-            Map<String, String> newAccessToken = Auth.AuthToken.refreshAccessToken(authProviderId, providerName, oldAccessToken);
-            accessToken = String.valueof(newAccessToken.get('AccessToken'));
+
+            // compruebo si ha expirado el token para refrescarlo
+            if (hasExpired(oldAccessToken)) {
+                Map<String, String> newAccessToken = Auth.AuthToken.refreshAccessToken(authProviderId, providerName, oldAccessToken);
+
+                accessToken = String.valueof(newAccessToken.get('AccessToken'));
+            } else {
+                accessToken = oldAccessToken;
+            }
         }
 
         // Añadir cabeceras y autenticación
@@ -107,10 +114,36 @@ public with sharing class WS_GetReturnedReceiptsList {
         httpRequest.setHeader('Authorization', 'Bearer ' + accessToken);        
         httpRequest.setHeader('Session-Id', 'test-session');
         httpRequest.setHeader('flow-id', 'test-flowid');
-        
 
         return httpRequest;
 
+    }
+
+     /**
+     * Método que comprueba si hay que refrescar el token para seguir llamando al servicio
+     *
+     * @author dmunoz
+     * @date 29/05/2024
+     *
+     * @return ZRMReciboRequest devuelve la request del servicio web 
+     */
+    @TestVisible
+    private Boolean hasExpired(String oldAccessToken) {
+
+        Boolean result = true;
+        Blob decodedToken = EncodingUtil.base64Decode(oldAccessToken.substringBetween('.')); // me quedo con la posicion intermedia que es la que nos interesa para obtener la fecha
+        Map<String, Object> decodedTokenMap = (Map<String, Object>) JSON.deserializeUntyped(decodedToken.toString());
+        String expiredDateFormat = String.valueof(decodedTokenMap.get('exp')) + '000';
+        TimeZone userTimeZone = UserInfo.getTimeZone();
+        Datetime expiredDateOld = datetime.newinstance(long.valueof(expiredDateFormat));
+        Integer offSet = userTimeZone.getOffset(expiredDateOld);
+        Datetime expiredDate = expiredDateOld.addSeconds(offSet/1000);
+ 
+        if (System.now() > expiredDate) {
+            result = true;
+        }
+
+        return result;        
     }
 
     //#region clases 
@@ -152,7 +185,7 @@ public with sharing class WS_GetReturnedReceiptsList {
         public String nombreTomador { get; set; }
         public String telefonoTomador { get; set; }
         public String nombreAgrupacion { get; set; }
-        public Integer importeTotalRecibo { get; set; }
+        public Double importeTotalRecibo { get; set; }
         public String descripcionFormaPago { get; set; }
         public Integer numeroDevolucionesRecibo { get; set; }
         public String descripcionDocumentoReclamacion { get; set; }
