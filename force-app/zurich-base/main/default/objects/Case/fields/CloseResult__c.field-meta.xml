@@ -718,6 +718,11 @@
                 <default>false</default>
                 <label>Suplemento emitido</label>
             </value>
+            <value>
+                <fullName>Cerrado Autoservicio</fullName>
+                <default>false</default>
+                <label>Cerrado Autoservicio</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>

@@ -149,7 +149,7 @@
         <inputAssignments>
             <field>CloseResult__c</field>
             <value>
-                <stringValue>No Realizado USP</stringValue>
+                <stringValue>Cerrado Autoservicio</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
