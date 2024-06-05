@@ -231,16 +231,16 @@
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>Potential_Brokers</fullName>
+        <fullName>Potential_Brokers_Read_SDM</fullName>
         <accessLevel>Edit</accessLevel>
         <accountSettings>
             <caseAccessLevel>None</caseAccessLevel>
             <contactAccessLevel>None</contactAccessLevel>
             <opportunityAccessLevel>None</opportunityAccessLevel>
         </accountSettings>
-        <label>Potential Brokers</label>
+        <label>Potential Brokers Read SDM</label>
         <sharedTo>
-            <allInternalUsers></allInternalUsers>
+            <group>Read_SDM</group>
         </sharedTo>
         <criteriaItems>
             <field>RecordTypeId</field>
