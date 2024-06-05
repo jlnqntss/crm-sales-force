@@ -307,7 +307,9 @@ public with sharing class CanalUnicoUpdateVsegTicketRequest
             set;
         }
         /**
-         * Fecha prevista de cierre del ticket
+         * Fecha prevista de cierre del ticket. Este es un dato que en el WSDL no es obligatorio, pero si en
+         * la peticion no se adjunta da error. No obstante, sea cual sea el valor que se le envie, en Canal
+         * unico no cambia. Conclusion, da igual el valor que se le envie, siempre y cuando se les envie algo
          *
          * Formato: YYYY/MM/dd HH:mm:ss
          */
