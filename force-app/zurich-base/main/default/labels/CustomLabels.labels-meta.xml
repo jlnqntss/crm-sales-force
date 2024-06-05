@@ -531,6 +531,13 @@
         <value>Número no válido</value>
     </labels>
     <labels>
+        <fullName>ObjectNameMandatory</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ObjectNameMandatory</shortDescription>
+        <value>Empty or null object name not allowed</value>
+    </labels>
+    <labels>
         <fullName>ObjetoVacio</fullName>
         <categories>WebService Parser</categories>
         <language>en_US</language>
