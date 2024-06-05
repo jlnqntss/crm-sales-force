@@ -46,7 +46,7 @@
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>ContactId</field>
             </layoutItems>
             <layoutItems>
@@ -79,7 +79,7 @@
                 <field>LinkZonaZurich__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>UpdatedInsuranceCost__c</field>
             </layoutItems>
         </layoutColumns>
