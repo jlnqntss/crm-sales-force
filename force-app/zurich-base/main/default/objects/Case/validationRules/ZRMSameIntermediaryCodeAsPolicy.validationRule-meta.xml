@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZRMSameIntermediaryCodeAsPolicy</fullName>
+    <active>true</active>
+    <description>Comprueba que el código de mediador de IntermediaryVisibilityAcc__c sea el mismo que para la póliza vinculada</description>
+    <errorConditionFormula>AND(
+    ISNEW(),
+    RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
+    PolicyId__r.Intermediary_Code__c != IntermediaryVisibilityAcc__r.INFOIntermediaryCode__c
+)</errorConditionFormula>
+    <errorDisplayField>IntermediaryVisibilityAcc__c</errorDisplayField>
+    <errorMessage>[VR Caso] El código de mediador debe ser el mismo que para la póliza.</errorMessage>
+</ValidationRule>
