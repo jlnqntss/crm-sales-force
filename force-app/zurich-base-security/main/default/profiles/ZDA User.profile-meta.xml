@@ -3848,9 +3848,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Case.ContactId</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -3945,11 +3945,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.EmployeeNumber__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.EnlaceZonaZurich__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
