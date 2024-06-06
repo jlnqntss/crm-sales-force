@@ -41,7 +41,6 @@ public without sharing class CaseHandler implements ITrigger
         //22-04-2024
         //Iván García
         CaseUtil.getZRMCasesRelatedToPolicy(newList);
-        CaseUtil.loadMapCaseZDATypificationMetadata();
     }
 
     /**
@@ -78,8 +77,6 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.checkIfPolicyHaveOpenZrmCase(newList);
         CaseUtil.casesZRMChangeStatus( (List<Case>) newList, null );
         CaseUtil.setEndDateZRMInquiry(newList);
-        CaseUtil.setCaseZDATypification(newList);
-        CaseUtil.setCaseZDAQueue(newList);
     }
 
     /**
