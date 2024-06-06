@@ -2001,10 +2001,11 @@ private with sharing class CaseUtilTest
         insert ZDACases;
         Test.stopTest();
 
+        List<Robot_Hegeo_Field_Mapping__mdt> tipologia = [SELECT id, Type__c, Subtype__c, TypeN3__c, GenesysQueue__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c = :valor];
         List<Case> casos = [SELECT Id, IdTipologiaBs__c, Type, SubType__c, TypeN3__c FROM Case WHERE RecordTypeId = :CaseUtil.RT_ID_ZDA];
-        Assert.areEqual(caseZDATypificationMetadata[0].Type__c, casos[0].Type);
-        Assert.areEqual(caseZDATypificationMetadata[0].Subtype__c, casos[0].SubType__c);
-        Assert.areEqual(caseZDATypificationMetadata[0].TypeN3__c, casos[0].TypeN3__c);
+        Assert.areEqual(tipologia[0].Type__c, casos[0].Type);
+        Assert.areEqual(tipologia[0].Subtype__c, casos[0].SubType__c);
+        Assert.areEqual(tipologia[0].TypeN3__c, casos[0].TypeN3__c);
     }
 
     /**
@@ -2059,8 +2060,9 @@ private with sharing class CaseUtilTest
         insert casesZDA;
         Test.stopTest();
 
+        List<Robot_Hegeo_Field_Mapping__mdt> tipologia = [SELECT id, GenesysQueue__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c = :valor];
         List<Case> casos = [SELECT Id,Industry__c  FROM Case WHERE id =:casesZDA[0].id];
-        Assert.areEqual(caseZDATypificationMetadata[0].GenesysQueue__c , casos[0].Industry__c);
+        Assert.areEqual(tipologia[0].GenesysQueue__c , casos[0].Industry__c);
     }
 
     /**
