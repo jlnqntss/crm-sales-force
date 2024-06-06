@@ -1036,6 +1036,238 @@ Related fields: [{3}]</value>
         <value>Documentación subida por cliente</value>
     </labels>
     <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_GestionDeNegocio</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_GestionDeNegocio</shortDescription>
+        <value>Business management: documentation, business code, product, rate...</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_Mejora</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_Mejora</shortDescription>
+        <value>Improvement in processes/systems/communication</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_Saneamiento</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_Saneamiento</shortDescription>
+        <value>Sanitation</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_Suscripci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_Suscripción</shortDescription>
+        <value>Suscripción: Gestión de Competencias, CAR, acciones asociadas a una póliza o cartera</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Actividad_comercial</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Actividad_comercial</shortDescription>
+        <value>Comercial activity</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3C_digo_de_negocio</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Código_de_negocio</shortDescription>
+        <value>Business code</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Comunicaciones</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Comunicaciones</shortDescription>
+        <value>Communications</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Conectividad</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Conectividad</shortDescription>
+        <value>Connectivity</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_CAR_Cartera_Descuentos_renovaci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_CAR_Cartera/Descuentos_renovación</shortDescription>
+        <value>Consult CAR Portfolio/Renewal discounts</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_motivo_saneamiento</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_motivo_saneamiento</shortDescription>
+        <value>Sanitation reason</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_prima_de_renovaci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_prima_de_renovación</shortDescription>
+        <value>Renewal premium consultation</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_reemplazo</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_reemplazo</shortDescription>
+        <value>Check replacements</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Contrataci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Contratación</shortDescription>
+        <value>Hiring</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Documentaci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Documentación</shortDescription>
+        <value>Documentation</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Expats</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Expats</shortDescription>
+        <value>Expats</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Gesti_n_de_cartera</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Gestión_de_cartera</shortDescription>
+        <value>Portfolio management</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Gesti_n_de_competencias</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Gestión_de_competencias</shortDescription>
+        <value>Competence Management</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Incidencias_cartera</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Incidencias_cartera</shortDescription>
+        <value>Incidencias de cartera</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Incidencias_de_saneamiento</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Incidencias_de_saneamiento</shortDescription>
+        <value>Incidence</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Otros</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Otros</shortDescription>
+        <value>Others</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Otros_consultas</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Otros_consultas</shortDescription>
+        <value>Other consultations</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Producto</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Producto</shortDescription>
+        <value>Product</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Recibos_y_administraci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Recibos_y_administración</shortDescription>
+        <value>Receipts and administration</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Saldo_RN</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Saldo_RN</shortDescription>
+        <value>RN Balance</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Saldo_mediador</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Saldo_mediador</shortDescription>
+        <value>Intermediary balance</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Siniestros</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Siniestros</shortDescription>
+        <value>Claims</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Sistemas</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Sistemas</shortDescription>
+        <value>Systems</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Tarifa</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Tarifa</shortDescription>
+        <value>Fee</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Uso_saldo_CAR_Director_Territorial</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Uso_saldo_CAR_Director_Territorial</shortDescription>
+        <value>CAR balance use Territorial Director</value>
+    </labels>
+    <labels>
         <fullName>SDM_PlanAnual_ButtonCancel</fullName>
         <categories>SDM,PlanAnual</categories>
         <language>en_US</language>
