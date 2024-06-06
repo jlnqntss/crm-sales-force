@@ -176,9 +176,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Case.ContactId</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -268,11 +268,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.EmployeeNumber__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Case.EnlaceZonaZurich__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -458,6 +453,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.OfferId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Office__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -6526,6 +6526,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.Office__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Origin</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7156,12 +7161,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.EnlaceZonaZurich__c</field>
+        <field>Case.IntermediaryOwner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.IntermediaryOwner__c</field>
+        <field>Case.LinkZonaZurich__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
