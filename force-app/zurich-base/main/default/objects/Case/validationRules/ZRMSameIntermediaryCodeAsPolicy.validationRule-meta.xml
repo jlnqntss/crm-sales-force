@@ -6,7 +6,7 @@
     <errorConditionFormula>AND(
     ISNEW(),
     RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
-    PolicyId__r.Intermediary_Code__c != IntermediaryVisibilityAcc__r.INFOIntermediaryCode__c
+    PolicyId__r.IntermediaryId__c != IntermediaryVisibilityAcc__c
 )</errorConditionFormula>
     <errorDisplayField>IntermediaryVisibilityAcc__c</errorDisplayField>
     <errorMessage>[VR Caso] El código de mediador debe ser el mismo que para la póliza.</errorMessage>
