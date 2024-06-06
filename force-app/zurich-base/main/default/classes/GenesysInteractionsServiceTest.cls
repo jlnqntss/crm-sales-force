@@ -17,15 +17,20 @@ private with sharing class GenesysInteractionsServiceTest
     @testSetup
     private static void createScenario()
     {
+        // CLIENTES   ----------------------------------------------------------------------------------------
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 10);
         insert accounts;
-        //Actualizar con los datos usados en los test
+        // Actualizar con los datos usados en los test
         accounts.get(0).NationalId__c = '777888111Y';
         update accounts.get(0);
+        // Necesitamos un segundo account para algunos test
+        accounts.get(1).NationalId__c = '777888112Z';
+        update accounts.get(1);
 
+        // MEDIADORES   --------------------------------------------------------------------------------------
         List<Account> intermediaries = TestDataFactory.generateAccounts('001', 'Intermediary', 10);
         insert intermediaries;
-        //Actualizar con los datos usados en los test
+        // Actualizar con los datos usados en los test
         intermediaries.get(0).INFOIntermediaryCode__c = '0999888777';
         intermediaries.get(0).Phone = '111555777';
         intermediaries.get(0).MainMobilePhone__c = '666018472';//202102: Añadido phone para mandar SMS a los intermediarios
@@ -40,9 +45,11 @@ private with sharing class GenesysInteractionsServiceTest
         intermediariesUpdate.add( intermediaries.get(1) );
         update intermediariesUpdate;
 
+        // PARTNERS   --------------------------------------------------------------------------------------
         List<Account> partners = TestDataFactory.generateAccounts('001', 'PartnerOCS', 10);
         insert partners;
 
+        // CONTACT POINTS   --------------------------------------------------------------------------------
         List<ContactPointPhone> contactPointPhones = TestDataFactory.generateContactPointPhonesFromAccounts(accounts, 10);
         insert contactPointPhones;
         //Actualizar con los datos usados en los test
@@ -55,25 +62,51 @@ private with sharing class GenesysInteractionsServiceTest
         contactPointEmails.get(0).EmailAddress = 'nescudero@nts-solutions.com';
         update contactPointEmails.get(0);
 
-        //se crea 1 caso para cada cuenta
+        // PRODUCTOS  --------------------------------------------------------------------------------
+        List<Product2> products = new List<Product2>
+        {
+            new Product2
+            (
+                Name = 'Product test 1',
+                GroupDescription__c = 'AUTOS'
+            ),
+            new Product2
+            (
+                Name = 'Product test 2',
+                GroupDescription__c = 'HOGAR'
+            ),
+            new Product2
+            (
+                Name = 'Product test 3',
+                GroupDescription__c = 'INMUEBLES'
+            )
+
+        };
+        insert products;
+
+        // CASOS      --------------------------------------------------------------------------------
+        // Se crea 1 caso para cada cuenta
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
         insert cases;
 
-        //se crea 1 caso para cada cuenta de mediador
+        // Se crea 1 caso para cada cuenta de mediador
         List<Case> intermediaryCases = TestDataFactory.generateCasesForEachAccount(intermediaries, 1);
         insert intermediaryCases;
 
-        //Se crea 1 opp para cada cuenta
+        // OFERTAS   ---------------------------------------------------------------------------------
+        // Se crea 1 opp para cada cuenta
         List<Opportunity> opportunities = TestDataFactory.generateOpportunitiesForEachAccount(accounts, RecordsSelector.Scope.Z.name(), 'New', System.today().addDays(10), 1);
         insert opportunities;
 
-        //se crea 1 póliza para cada cuenta
+        // PÓLIZAS      --------------------------------------------------------------------------------
+        // Se crea 1 póliza para cada cuenta
         List<Policy__c> policies = TestDataFactory.generatePoliciesForEachAccount(accounts, 10);
         insert policies;
         policies.get(0).InfoPolicyNumber__c = '00666777111333';
         update policies.get(0);
 
-        //se crea 1 objeto asegurado para cada póliza
+        // ASSETS      --------------------------------------------------------------------------------
+        // Se crea 1 objeto asegurado para cada póliza
         List<Asset> insuredObjects = TestDataFactory.generateInsuredObjectsForEachPolicy('Motor', policies, 10);
         insert insuredObjects;
 
@@ -1857,20 +1890,8 @@ private with sharing class GenesysInteractionsServiceTest
     @IsTest
     private static void test_findPeopleAutoBy_Customer_Document_matchedPerson()
     {
-        List<Product2> products = new List<Product2>
-        {
-            new Product2
-            (
-                Name = 'Product test 1',
-                GroupDescription__c = 'AUTOS'
-            ),
-            new Product2
-            (
-                Name = 'Product test 2',
-                GroupDescription__c = 'HOGAR'
-            )
-        };
-        insert products;
+        List<Product2> products = [SELECT Id, Name, GroupDescription__c FROM Product2
+                                   WHERE GroupDescription__c IN ('AUTOS', 'HOGAR') ORDER BY GroupDescription__c ASC];
 
         List<Policy__c> policies = [SELECT Id, Name, TechnicalCode__c, CommercialCode__c, PolicyType__c, IntermediaryId__r.ClassDescription__c,
                                     Partner__c, Partner__r.PartnerSFCode__c, Partner__r.GrandparentBusinessName__c, Partner__r.PartnerSector__c,
@@ -1934,20 +1955,8 @@ private with sharing class GenesysInteractionsServiceTest
     @IsTest
     private static void test_findPeopleSabadellBy_Customer_Document_matchedPerson()
     {
-        List<Product2> products = new List<Product2>
-        {
-            new Product2
-            (
-                Name = 'Product test 1',
-                GroupDescription__c = 'AUTOS'
-            ),
-            new Product2
-            (
-                Name = 'Product test 2',
-                GroupDescription__c = 'HOGAR'
-            )
-        };
-        insert products;
+        List<Product2> products = [SELECT Id, Name, GroupDescription__c FROM Product2
+                                   WHERE GroupDescription__c IN ('AUTOS', 'HOGAR') ORDER BY GroupDescription__c ASC];
 
         List<Policy__c> policies = [SELECT Id, Name, TechnicalCode__c, CommercialCode__c, PolicyType__c, IntermediaryId__r.ClassDescription__c,
                                     Partner__c, Partner__r.PartnerSFCode__c, Partner__r.GrandparentBusinessName__c, Partner__r.PartnerSector__c,
@@ -2009,38 +2018,29 @@ private with sharing class GenesysInteractionsServiceTest
     private static void test_findPeople_Customer_Document_checkIntents()
     {
         //PRODUCTS
-        List<Product2> products = new List<Product2>
-        {
-            new Product2
-            (
-                Name = 'Product test 1',
-                GroupDescription__c = 'HOGAR'
-            ),
-            new Product2
-            (
-                Name = 'Product test 2',
-                GroupDescription__c = 'INMUEBLES'
-            )
-        };
-        insert products;
+        List<Product2> products = [SELECT Id, Name, GroupDescription__c FROM Product2
+                                   WHERE GroupDescription__c IN ('AUTOS', 'HOGAR', 'INMUEBLES') ORDER BY GroupDescription__c ASC];
 
         //POLICIES
-        List<Policy__c> policies = [SELECT Id, Name, TechnicalCode__c, CommercialCode__c, PolicyType__c, IntermediaryId__r.ClassDescription__c,
-                                    Partner__c, Partner__r.PartnerSFCode__c, Partner__r.GrandparentBusinessName__c, Partner__r.PartnerSector__c,
-                                    IntermediaryId__r.INFOIntermediaryCode__c, IntermediaryId__r.IntermediaryDescription__c,
-                                    IntermediaryId__r.Channel__c, IntermediaryId__r.Phone, IntermediaryId__r.MainEmail__c,
-                                    IntermediaryId__r.Segment__c, PolicyHolder__r.Name, PolicyHolder__r.NationalId__c, PolicyHolder__c,
-                                    Scope__c, EndDate__c, ProductId__c, ProductId__r.GroupDescription__c
-                                    FROM Policy__c WHERE PolicyHolder__r.NationalId__c = '777888111Y' LIMIT 1];
+        List<Policy__c> policiesCliente1 = [SELECT Id, ProductId__c, EndDate__c, Scope__c, PolicyHolder__c
+                                            FROM Policy__c WHERE PolicyHolder__r.NationalId__c = '777888111Y' LIMIT 1];
 
-        policies[0].ProductId__c = products[0].Id;
-        policies[0].EndDate__c = Date.today() + 10;
-        policies[0].Scope__c = 'Z';
-        update policies[0];
+        policiesCliente1[0].ProductId__c = products[1].Id; //HOGAR
+        policiesCliente1[0].EndDate__c = Date.today() + 10;
+        policiesCliente1[0].Scope__c = 'Z';
+        update policiesCliente1[0];
 
-        Policy__c copyPolicy = policies[0].clone(false, false, false, false);
-        copyPolicy.ProductId__c = products[1].Id;
+        Policy__c copyPolicy = policiesCliente1[0].clone(false, false, false, false);
+        copyPolicy.ProductId__c = products[2].Id;       //INMUEBLES
         insert copyPolicy;
+
+        List<Policy__c> policiesCliente2 = [SELECT Id, ProductId__c, EndDate__c, Scope__c, PolicyHolder__c
+                                            FROM Policy__c WHERE PolicyHolder__r.NationalId__c = '777888112Z' LIMIT 1];
+
+        policiesCliente2[0].ProductId__c = products[0].Id;  //AUTO
+        policiesCliente2[0].EndDate__c = Date.today() + 10;
+        policiesCliente2[0].Scope__c = 'Z';
+        update policiesCliente2[0];
 
         //INSURED OBJECTS
         List<Asset> insuredObjects = [SELECT Id FROM Asset LIMIT 1];
@@ -2048,13 +2048,14 @@ private with sharing class GenesysInteractionsServiceTest
         insert insuredObject2;
 
         Integer claimNumber1 = (Math.random() * 1000000000).intValue();
-        Integer claimNumber2 = (Math.random() * 1000000000).intValue();
+        Integer claimNumber2 = claimNumber1 + 1;
+        Integer claimNumber3 = claimNumber1 + 2;
 
         //CLAIMS
         Claim__c myClaimHogar =  new Claim__c(
             Name = String.valueOf(claimNumber1),
-            PolicyHolder__c = policies[0].PolicyHolder__c,
-            Policy__c = policies[0].Id,
+            PolicyHolder__c = policiesCliente1[0].PolicyHolder__c,
+            Policy__c = policiesCliente1[0].Id,     //HOGAR
             InsuredObject__c = insuredObjects[0].Id,
             LegalEntity__c = '001',
             Scope__c = 'Z',
@@ -2065,7 +2066,7 @@ private with sharing class GenesysInteractionsServiceTest
         Claim__c myClaimInmuebles =  new Claim__c(
             Name = String.valueOf(claimNumber2),
             PolicyHolder__c = copyPolicy.PolicyHolder__c,
-            Policy__c = copyPolicy.Id,
+            Policy__c = copyPolicy.Id,          //INMUEBLES
             InsuredObject__c = insuredObject2[0].Id,
             LegalEntity__c = '001',
             Scope__c = 'Z',
@@ -2073,37 +2074,51 @@ private with sharing class GenesysInteractionsServiceTest
 
         insert myClaimInmuebles;
 
+        Claim__c myClaimAuto =  new Claim__c(
+            Name = String.valueOf(claimNumber3),
+            PolicyHolder__c = policiesCliente2[0].PolicyHolder__c,
+            Policy__c = policiesCliente2[0].Id,     //AUTO
+            InsuredObject__c = insuredObject2[0].Id,
+            LegalEntity__c = '001',
+            Scope__c = 'Z',
+            INFOClaimNumber__c = String.valueOf(claimNumber3) );
+
+        insert myClaimAuto;
+
         //REQUESTS
-        GenesysInteractionsService.SearchRequest searchRequestHogar = new GenesysInteractionsService.SearchRequest();
-        searchRequestHogar.searchType = 'document';
-        searchRequestHogar.value = '777888111Y';
-        searchRequestHogar.filterBy  = 'customers';
-        searchRequestHogar.legalEntity  = 'all';
-        searchRequestHogar.scope  = 'Z';
-        searchRequestHogar.intent  = 'CONS_HOG';
+        GenesysInteractionsService.SearchRequest searchRequest = new GenesysInteractionsService.SearchRequest();
+        searchRequest.searchType = 'document';
+        searchRequest.value = '777888111Y';
+        searchRequest.filterBy  = 'customers';
+        searchRequest.legalEntity  = 'all';
+        searchRequest.scope  = 'Z';
+        searchRequest.intent  = GenesysInteractionsService.CONSULTA_POLIZA_HOGAR;
+
+        GenesysInteractionsService.SearchRequest searchRequestCliente2 = new GenesysInteractionsService.SearchRequest();
+        searchRequestCliente2.searchType = 'document';
+        searchRequestCliente2.value = '777888112Z';
+        searchRequestCliente2.filterBy  = 'customers';
+        searchRequestCliente2.legalEntity  = 'all';
+        searchRequestCliente2.scope  = 'Z';
+        searchRequestCliente2.intent  = GenesysInteractionsService.CONSULTA_POLIZA_HOGAR;
 
         GenesysInteractionsService.SearchRequest searchRequestComercio = new GenesysInteractionsService.SearchRequest();
-        searchRequestComercio.searchType = 'document';
-        searchRequestComercio.value = '777888111Y';
-        searchRequestComercio.filterBy  = 'customers';
-        searchRequestComercio.legalEntity  = 'all';
-        searchRequestComercio.scope  = 'Z';
-        searchRequestComercio.intent  = 'CONS_COM';
-
         GenesysInteractionsService.SearchRequest searchRequestPymes = new GenesysInteractionsService.SearchRequest();
-        searchRequestPymes.searchType = 'document';
-        searchRequestPymes.value = '777888111Y';
-        searchRequestPymes.filterBy  = 'customers';
-        searchRequestPymes.legalEntity  = 'all';
-        searchRequestPymes.scope  = 'Z';
-        searchRequestPymes.intent  = 'CONS_PYMS';
 
         // Test
         Test.startTest();
 
-        GenesysInteractionsService.SearchResult resultHogar = GenesysInteractionsService.findPeopleBy(searchRequestHogar);
-        GenesysInteractionsService.SearchResult resultComercio = GenesysInteractionsService.findPeopleBy(searchRequestComercio);
-        GenesysInteractionsService.SearchResult resultPymes = GenesysInteractionsService.findPeopleBy(searchRequestPymes);
+        GenesysInteractionsService.SearchResult resultHogar = GenesysInteractionsService.findPeopleBy(searchRequest);
+
+        searchRequest.intent  = GenesysInteractionsService.CONSULTA_POLIZA_COMERCIOS;
+        GenesysInteractionsService.SearchResult resultComercio = GenesysInteractionsService.findPeopleBy(searchRequest);
+
+        searchRequest.intent  = GenesysInteractionsService.CONSULTA_POLIZA_PYMES;
+        GenesysInteractionsService.SearchResult resultPymes = GenesysInteractionsService.findPeopleBy(searchRequest);
+
+        GenesysInteractionsService.SearchResult resultMotor = GenesysInteractionsService.findPeopleBy(searchRequestCliente2);
+
+        resultPymes.claims.getPreferredClaimByIntent(new List<String>(), false);
 
         Test.stopTest();
 
@@ -2111,5 +2126,6 @@ private with sharing class GenesysInteractionsServiceTest
         System.assertEquals('HOGAR', resultHogar.claims.preferredClaim.policyType, 'El siniestro preferente debería ser de HOGAR');
         System.assertEquals('INMUEBLES', resultComercio.claims.preferredClaim.policyType, 'El siniestro preferente debería ser de INMUEBLES');
         System.assertEquals('INMUEBLES', resultPymes.claims.preferredClaim.policyType, 'El siniestro preferente debería ser de INMUEBLES al no haber PYMES');
+        System.assertEquals('AUTOS', resultMotor.claims.preferredClaim.policyType, 'El siniestro preferente debe ser AUTOS, al no encontrar ninguno ramo preferente');
     }
 }
