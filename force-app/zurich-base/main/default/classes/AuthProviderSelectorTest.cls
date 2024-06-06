@@ -1,6 +1,18 @@
+/**
+ * Clase test AuthProviderSelect
+ *
+ * @author dmunoz
+ * @date 29/05/2024
+ */
 @IsTest
-public with sharing class AuthProviderSelectorTest {
+private with sharing class AuthProviderSelectorTest {
     
+    /**
+     * Clase test Metodo test selector AuthProvider
+     *
+     * @author dmunoz
+     * @date 29/05/2024
+     */
     @IsTest
     private static void testGetAuthProvider() {
 

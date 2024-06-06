@@ -5,7 +5,7 @@
  * @date 29/05/2024
  */
 @isTest
-public with sharing class ZRMRecibosControllerTest {
+private with sharing class ZRMRecibosControllerTest {
     
     @isTest
     private static void testGetData() {

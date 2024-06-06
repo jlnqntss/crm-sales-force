@@ -6,7 +6,7 @@
  * @date 29/05/2024
  */
 @IsTest
-public class WS_GetReturnedReceiptsListTest {
+private class WS_GetReturnedReceiptsListTest {
 
     /**
      * Metodo test servicio web
