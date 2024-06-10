@@ -2011,4 +2011,51 @@ private with sharing class CaseUtilTest
         Assert.areEqual(CaseUtil.CASE_CAUSE_OF_LOSS_PERIOD_ENDED, updatedRecords[0].CauseOfLoss__c, 'El motivo de pérdida debe coincidir');
         Assert.areEqual(CaseUtil.CASE_CLOSED_LOST, updatedRecords[0].Status, 'Los estados deben coincidir');
     }
+
+     /**
+     * Método test para isCaseClone. Se encarga de vaciar los campos relacionados con el robot hegeo 
+     * al duplicar un caso
+     * @author lrodriguez
+     * @date 21/05/2024
+     */
+    @isTest
+    private static void test_isCaseClone_OK()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Account> accountMediatedCustomer = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accountMediatedCustomer;
+
+        Opportunity offerRelated= new Opportunity();
+        offerRelated.Name='TEST OFFER 2705';
+        offerRelated.AccountId=accountMediatedCustomer[0].Id;
+        offerRelated.StageName='Legit Lead';
+        offerRelated.CloseDate=System.TODAY()+5;
+        insert offerRelated;
+
+        Policy__c policyRelated= new Policy__c();
+        policyRelated.Name='TEST 2705';
+        policyRelated.PolicyStatus__c='V';
+        insert policyRelated;
+        
+        List<Case> uspCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        uspCases[0].MediatedCustomer__c=accountMediatedCustomer[0].Id;
+        uspCases[0].OfferId__c=offerRelated.Id;
+        uspCases[0].ProductGroup__c='6';
+        uspCases[0].RecordtypeId=GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        uspCases[0].PolicyId__c=policyRelated.Id;
+        
+        Test.startTest();
+        insert uspCases;
+        Test.stopTest();
+
+        List<Case> updatedRecords = [SELECT MediatedCustomer__c,OfferId__c,ProductGroup__c,PolicyId__c FROM Case WHERE Id =: uspCases[0].Id];
+
+        System.assertEquals(null,updatedRecords[0].MediatedCustomer__c, 'El valor debería ser null');
+        System.assertEquals(null,updatedRecords[0].OfferId__c, 'El valor debería ser null');
+        System.assertEquals(null,updatedRecords[0].ProductGroup__c, 'El valor debería ser null');
+        System.assertEquals(null,updatedRecords[0].PolicyId__c, 'El valor debería ser null');
+        
+    }
 }
