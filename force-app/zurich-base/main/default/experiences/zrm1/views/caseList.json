@@ -16,14 +16,21 @@
             "locked" : false,
             "seedComponents" : [ ],
             "tabKey" : "1",
-            "tabName" : "Mis Casos"
+            "tabName" : "Casos asignados agentes"
           }, {
             "UUID" : "f368372d-8e68-410b-a02a-0f0352f5982d",
             "allowGuestUser" : false,
             "locked" : false,
             "seedComponents" : [ ],
             "tabKey" : "2",
-            "tabName" : "Casos CC"
+            "tabName" : "Casos asignados CC"
+          }, {
+            "UUID" : "05b737c2-86a9-4e36-ba74-f39651cdadfb",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "f6c29",
+            "tabName" : "Casos CC pendientes asignar agente"
           } ],
           "useOverflowMenu" : true
         }
@@ -55,7 +62,7 @@
           "type" : "component"
         } ],
         "id" : "8352a54f-88f0-4dcc-a07d-f66e3a927890",
-        "regionLabel" : "Mis Casos",
+        "regionLabel" : "Casos asignados agentes",
         "regionName" : "1",
         "renditionMap" : { },
         "type" : "region"
@@ -84,8 +91,37 @@
           "type" : "component"
         } ],
         "id" : "f368372d-8e68-410b-a02a-0f0352f5982d",
-        "regionLabel" : "Casos CC",
+        "regionLabel" : "Casos asignados CC",
         "regionName" : "2",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "enableInlineEdit" : true,
+            "filterName" : "ZRM_Casos_CC_pendientes_asignar_agente",
+            "layout" : "FULL",
+            "pageSize" : 25,
+            "scope" : "Case",
+            "showActionBar" : false,
+            "showChartsPanel" : true,
+            "showDisplay" : "showall",
+            "showFilterPanel" : true,
+            "showImageIcon" : true,
+            "showManualRefreshButton" : true,
+            "showObjectName" : true,
+            "showPinnedList" : true,
+            "showSearchBar" : true
+          },
+          "componentName" : "forceCommunity:objectHome",
+          "id" : "ca9e007c-8d1e-4479-9dac-f62278220e90",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "05b737c2-86a9-4e36-ba74-f39651cdadfb",
+        "regionLabel" : "Casos CC pendientes asignar agente",
+        "regionName" : "f6c29",
         "renditionMap" : { },
         "type" : "region"
       } ],

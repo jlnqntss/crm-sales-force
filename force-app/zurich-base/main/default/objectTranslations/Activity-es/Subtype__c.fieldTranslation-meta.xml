@@ -111,6 +111,10 @@
         <translation>Escalado soporte</translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Single channel</masterLabel>
+        <translation>Canal Unico</translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>WhatsApp</masterLabel>
         <translation></translation>
     </picklistValues>

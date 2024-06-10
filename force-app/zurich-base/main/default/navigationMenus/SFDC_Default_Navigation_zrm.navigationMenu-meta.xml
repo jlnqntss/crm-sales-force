@@ -54,8 +54,15 @@
         <type>SalesforceObject</type>
     </navigationMenuItem>
     <navigationMenuItem>
-        <label>Informes</label>
+        <label>Recibos Devueltos</label>
         <position>8</position>
+        <publiclyAvailable>false</publiclyAvailable>
+        <target>/recibos</target>
+        <type>InternalLink</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <label>Informes</label>
+        <position>9</position>
         <publiclyAvailable>false</publiclyAvailable>
         <target>Report</target>
         <type>SalesforceObject</type>

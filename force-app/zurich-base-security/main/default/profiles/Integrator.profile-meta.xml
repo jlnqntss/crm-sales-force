@@ -6526,6 +6526,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.Office__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Origin</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6677,6 +6682,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Requested__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ResponseCanalUnico__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7116,6 +7126,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.ExpirationDays__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.ClaimScore__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7151,12 +7166,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.EnlaceZonaZurich__c</field>
+        <field>Case.IntermediaryOwner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Case.IntermediaryOwner__c</field>
+        <field>Case.LinkZonaZurich__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -9542,6 +9557,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>KPI__c.EstructuraUnificada__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KPI__c.FechaCalculo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12221,6 +12241,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Relationship__c.SecondaryAccountId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Robot_Hegeo_Field_Mapping__mdt.GenesysQueue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16542,6 +16567,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZDARejectCloseResult__mdt-ZDA reject close result Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>FollowUp__c-Follow Up Layout</layout>

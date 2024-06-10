@@ -30,6 +30,21 @@
                 <default>false</default>
                 <label>Profile</label>
             </value>
+            <value>
+                <fullName>Policy</fullName>
+                <default>false</default>
+                <label>Policy</label>
+            </value>
+            <value>
+                <fullName>Entitlement</fullName>
+                <default>false</default>
+                <label>Entitlement</label>
+            </value>
+            <value>
+                <fullName>Retention</fullName>
+                <default>false</default>
+                <label>Retention</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

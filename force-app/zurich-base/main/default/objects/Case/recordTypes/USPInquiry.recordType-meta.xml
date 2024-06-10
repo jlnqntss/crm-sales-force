@@ -464,6 +464,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Aprobada - Actividad</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Aprobada - Ajuste de precio</fullName>
             <default>false</default>
         </values>
@@ -505,6 +509,10 @@
         </values>
         <values>
             <fullName>Declinada - Precio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Denegada - Actividad</fullName>
             <default>false</default>
         </values>
         <values>
