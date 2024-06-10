@@ -1919,6 +1919,7 @@ private with sharing class CaseUtilTest
             zrmCase.RecordTypeId = rtZRMid;
             zrmCase.Status = 'No iniciado';
             zrmCase.IntermediaryId__c = intermediary.Id;
+            zrmCase.IntermediaryVisibilityAcc__c = intermediary.Id;
             insert zrmCase;
 
             Test.stopTest();
