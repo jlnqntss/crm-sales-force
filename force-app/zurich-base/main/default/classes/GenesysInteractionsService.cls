@@ -4,7 +4,7 @@
  * @group             : 
  * @modified on  : 06-06-2023
  * @modified by  : aberuete
- * @last modified on  : 22-05-2024
+ * @last modified on  : 06-06-2024
  * @last modified by  : jfherrero
 **/
 public with sharing class GenesysInteractionsService
@@ -63,6 +63,7 @@ public with sharing class GenesysInteractionsService
     static final String TIPO_POLIZA_HOGAR = configValues.get('Policy_PolicyType_HOGAR');
     static final String TIPO_POLIZA_INMUEBLES = configValues.get('Policy_PolicyType_INMUEBLES');
     static final String TIPO_POLIZA_PYMES = configValues.get('Policy_PolicyType_PYMES');
+    static final String STATUS_NOT_FOUND = configValues.get('Data_Action_Status_Not_found');
 
     
     //#region Métodos públicos
@@ -634,38 +635,23 @@ public with sharing class GenesysInteractionsService
         return results;
     }
 
-
     /**
      * Lanza una búsqueda con la configuración determinada por request
      *
      * @author adelgado
      * @param {SearchRequest} request Solicitud de búsqueda
      * @return {SearchResult} Resultados devueltos por la búsqueda
+     * @last modified on  : 06-06-2024
+     * @last modified by  : jfherrero
      */
     public static SearchResult findIntermediariesBy(SearchRequest request)
     {
         SearchResult results = new SearchResult();
+        results.status = STATUS_NOT_FOUND;
         List<Account> accounts = new List<Account>();
 
-        switch on request.searchType
-        {
-            when 'phone'
-            {
-                accounts = AccountSearchService.findIntermediariesByPhoneNumber( new List<String>{request.value} );
-            }
-            when 'intermediary_code'
-            {
-                accounts = AccountSearchService.findIntermediariesByCode( new List<String>{request.value} );
-            }
-            when 'document'
-            {
-                accounts = AccountSearchService.findIntermediariesByNIF( new List<String>{request.value} );
-            }
-            when else
-            {
-                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);
-            }
-        }
+        // Búsqueda de mediadores
+        accounts = findIntermediaries(request);
 
         if(accounts.size() == 1 || (accounts.size() > 1 && request.searchType == 'document' ))
         {
@@ -679,6 +665,7 @@ public with sharing class GenesysInteractionsService
             results.intermediaryChannel = intermediary.Channel__c;
             results.intermediarySegment = intermediary.Segment__c;
             results.association = intermediary.Association__c;
+            results.status = intermediary.StatusIntermediary__c;
 
             results.bestAgents = findBestAgents(new Intermediary(intermediary.Id, intermediary.CsmIndividualsManager__c, intermediary.CsmAdministrationManager__c), true);
         }
@@ -698,6 +685,41 @@ public with sharing class GenesysInteractionsService
         }
 
         return results;
+    }
+    
+    /**
+     * Lanza una búsqueda con la configuración determinada por request
+     *
+     * @author jherrero
+     * @date 06-06-2024
+     * @param {SearchRequest} request Solicitud de búsqueda
+     * @return {List<Account>} lista de mediadores encontrados
+     */
+    private static List<Account> findIntermediaries(SearchRequest request)
+    {
+        List<Account> intermediaryList = new List<Account>();
+            
+        switch on request.searchType
+        {
+            when 'phone'
+            {
+                intermediaryList = AccountSearchService.findIntermediariesByPhoneNumber( new List<String>{request.value} );
+            }
+            when 'intermediary_code'
+            {
+                intermediaryList = AccountSearchService.findIntermediariesByCode( new List<String>{request.value} );
+            }
+            when 'document'
+            {
+                intermediaryList = AccountSearchService.findIntermediariesByNIF( new List<String>{request.value} );
+            }
+            when else
+            {
+                throw new GenesysPeopleServiceException(SEARCHTYPE_NOT_DEFINED);
+            }
+        }
+        
+        return intermediaryList;
     }
 
      /**
@@ -1545,6 +1567,7 @@ public with sharing class GenesysInteractionsService
         public ActivePolicies policies;
         public OpenedClaims claims;
         public String nationalId;
+        public String status;
 
         //20210804: Estadísticas/Informes
         public Boolean identifiedByNIF;
