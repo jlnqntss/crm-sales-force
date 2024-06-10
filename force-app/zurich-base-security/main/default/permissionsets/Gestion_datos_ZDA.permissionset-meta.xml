@@ -22,6 +22,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.AgentOnVacation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Anonymized__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -487,6 +492,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.PersonalizedManager__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.PolicyId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -553,6 +563,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Requested__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ReturnDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.ResponseCanalUnico__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
