@@ -1323,7 +1323,7 @@ public with sharing class CaseUtil
         for(Case caso : newList)
         {
             //Esta comparación se hace para que no afecte a KLINC
-            if(caso.RecordTypeId == rtOCSInquiryId)
+            if(caso.RecordTypeId == rtOCSInquiryId || caso.RecordTypeId == RT_ID_ZDA)
             {
                 oldCase = oldMap.get(caso.Id);
                 //Solo se hace algo si se cerró el caso
