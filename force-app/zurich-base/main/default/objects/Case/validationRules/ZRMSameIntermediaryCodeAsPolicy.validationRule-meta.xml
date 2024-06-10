@@ -5,7 +5,7 @@
     <description>Comprueba que el código de mediador de IntermediaryVisibilityAcc__c sea el mismo que para la póliza vinculada</description>
     <errorConditionFormula>AND(
     ISNEW(),
-    RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
+    RecordType.DeveloperName = $CustomMetadata.Global_Configuration__mdt.Case_RecordType_ZRM.Value__c,
     PolicyId__r.IntermediaryId__c != IntermediaryVisibilityAcc__c
 )</errorConditionFormula>
     <errorDisplayField>IntermediaryVisibilityAcc__c</errorDisplayField>
