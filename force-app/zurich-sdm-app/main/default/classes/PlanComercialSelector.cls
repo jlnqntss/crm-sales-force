@@ -266,8 +266,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
                 AND Product__c IN :productSet
                 AND Segment__c IN :segmentSet
                 AND Zone__c IN :zoneSet
-                AND CALENDAR_YEAR(StartDate__c) IN :year
-                AND AssignedTo__r.Email IN :getMetadataEmails()        
+                AND CALENDAR_YEAR(StartDate__c) IN :year         
             ];
         }
 
