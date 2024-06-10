@@ -5353,6 +5353,10 @@
         <recordType>PersonAccount.Lead</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Task-Activity</layout>
+        <recordType>Task.Activity</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>PlanComercial__c-Plan Comercial Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
