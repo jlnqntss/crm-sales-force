@@ -719,6 +719,11 @@
                 <label>Suplemento emitido</label>
             </value>
             <value>
+                <fullName>Cerrado Autoservicio</fullName>
+                <default>false</default>
+                <label>Cerrado Autoservicio</label>
+            </value>
+            <value>
                 <fullName>Aprobada - Actividad</fullName>
                 <default>false</default>
                 <label>Aprobada - Actividad</label>
