@@ -6509,6 +6509,74 @@ Cree el acta y vuelva a intentarlo.</label>
         <label>Campaña en curso, finalizada o no válida</label>
         <name>ZRM_IntermediaryCampaignMembers_ToastOngoingCampaignErrorMessage</name>
     </customLabels>
+    <customLabels>
+        <label>Anterior</label>
+        <name>ZRM_Recibos_Previous</name>
+    </customLabels>
+    <customLabels>
+        <label>Siguiente</label>
+        <name>ZRM_Recibos_Next</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha producido un error al obtener la información, por favor contacte con su administrador</label>
+        <name>ZRM_Recibos_WS_Error</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha producido un error, contacte con su administrador</label>
+        <name>ZRM_Recibos_LWC_Error</name>
+    </customLabels>
+    <customLabels>
+        <label>Recibo</label>
+        <name>ZRM_Recibos_Column_Receipt</name>
+    </customLabels>
+    <customLabels>
+        <label>Efecto</label>
+        <name>ZRM_Recibos_Column_EffectiveDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Póliza</label>
+        <name>ZRM_Recibos_Column_Policy</name>
+    </customLabels>
+    <customLabels>
+        <label>Compañía</label>
+        <name>ZRM_Recibos_Column_Company</name>
+    </customLabels>
+    <customLabels>
+        <label>Tomador</label>
+        <name>ZRM_Recibos_Column_Holder</name>
+    </customLabels>
+    <customLabels>
+        <label>Teléfono</label>
+        <name>ZRM_Recibos_Column_Phone</name>
+    </customLabels>
+    <customLabels>
+        <label>Importe</label>
+        <name>ZRM_Recibos_Column_Amount</name>
+    </customLabels>
+    <customLabels>
+        <label>Forma de Pago</label>
+        <name>ZRM_Recibos_Column_PaymentMethod</name>
+    </customLabels>
+    <customLabels>
+        <label>Devoluciones</label>
+        <name>ZRM_Recibos_Column_NumberOfReturns</name>
+    </customLabels>
+    <customLabels>
+        <label>Documento Reclamación</label>
+        <name>ZRM_Recibos_Column_DocumentDescriptionReceipt</name>
+    </customLabels>
+    <customLabels>
+        <label>Última Devolución</label>
+        <name>ZRM_Recibos_Column_LastReturnDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Próximo Envío Banco</label>
+        <name>ZRM_Recibos_Column_BankShipmentDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Intermediario</label>
+        <name>ZRM_Recibos_Column_Intermediary</name>
+    </customLabels>	
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
         <name>Configure_Call_Center_Settings</name>

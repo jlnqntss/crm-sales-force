@@ -3037,6 +3037,142 @@ Create the record and try again.</value>
         <value>file(s) uploaded successfully</value>
     </labels>
     <labels>
+        <fullName>ZRM_Recibos_Previous</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Previous</shortDescription>
+        <value>Previous</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Next</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Next</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_WS_Error</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_WS_Error</shortDescription>
+        <value>There has been an error receiving the information, please contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_LWC_Error</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_LWC_Error</shortDescription>
+        <value>An error has occurred, contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Receipt</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Receipt</shortDescription>
+        <value>Receipt</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_EffectiveDate</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_EffectiveDate</shortDescription>
+        <value>Effective Date</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Policy</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Policy</shortDescription>
+        <value>Policy</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Company</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Company</shortDescription>
+        <value>Company</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Holder</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Holder</shortDescription>
+        <value>Holder</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Phone</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Phone</shortDescription>
+        <value>Phone</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Amount</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Amount</shortDescription>
+        <value>Amount</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_PaymentMethod</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_PaymentMethod</shortDescription>
+        <value>Payment Method</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_NumberOfReturns</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_NumberOfReturns</shortDescription>
+        <value>Number of Returns</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_DocumentDescriptionReceipt</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_DocumentDescriptionReceipt</shortDescription>
+        <value>Document Description Receipt</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_LastReturnDate</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_LastReturnDate</shortDescription>
+        <value>Last Return Date</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_BankShipmentDate</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_BankShipmentDate</shortDescription>
+        <value>Bank Shipment Date</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Intermediary</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Intermediary</shortDescription>
+        <value>Intermediary</value>
+    </labels>
+    <labels>
         <fullName>ZRM_CampaignMember_Removed_From_Campaign</fullName>
         <language>en_US</language>
         <protected>false</protected>
