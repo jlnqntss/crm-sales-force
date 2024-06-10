@@ -30,7 +30,6 @@ public with sharing class CaseUtil
     public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
     public static final String RT_NAME_SAMINQUIRY = 'SAMInquiry';
-    public static final String RT_NAME_ZDA = 'ZDAInquiry';
     public static final String RT_NAME_ZRM = 'ZRMInquiry';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
@@ -56,6 +55,7 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
 
+    public static Map<String, Robot_Hegeo_Field_Mapping__mdt> mapCaseZDATypificationMetadata = new Map<String, Robot_Hegeo_Field_Mapping__mdt>();
     
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
@@ -98,6 +98,7 @@ public with sharing class CaseUtil
     {
         get
         {
+            String RT_NAME_ZDA = GlobalConfigUtil.getGlobalConfigurationValue('Case_RecordType_ZDA');
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId();
         }
     }
@@ -1323,7 +1324,7 @@ public with sharing class CaseUtil
         for(Case caso : newList)
         {
             //Esta comparación se hace para que no afecte a KLINC
-            if(caso.RecordTypeId == rtOCSInquiryId)
+            if(caso.RecordTypeId == rtOCSInquiryId || caso.RecordTypeId == RT_ID_ZDA)
             {
                 oldCase = oldMap.get(caso.Id);
                 //Solo se hace algo si se cerró el caso
@@ -2080,6 +2081,41 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Para los casos de ZDA que pasan de nuevo a asignado recibidos via canal unico, envia
+     * notificacion a Canal unico informando de que el caso esta en estado Tramite
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void notifCuCaseAssigned(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        for(Case updatedCase : updatedCases)
+        {
+            if ( isZDAAssignedAndCu( updatedCase, oldMap.get(updatedCase.Id) ) )
+            {
+                TicketingHegeoUtil.sendRequestStatusChangeToAssigned(updatedCase.Id);
+            }
+        }
+    }
+
+    /**
+     * Comprueba si el caso es de ZDA, con origen canal unico y pasa de nuevo a asignado
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param updatedCase caso actualizado
+     * @param oldCase caso antes de la actualizacion
+     * @return true si es un caso de ZDA, de canal unico y pasa de nuevo a asignado; false en caso contrario
+     */
+    private static Boolean isZDAAssignedAndCu(Case updatedCase, Case oldCase)
+    {
+        return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.Origin == ORIGIN_CANAL_UNICO &&
+            updatedCase.Status == CASE_ASIGNADO && oldCase.Status == CASE_NUEVO;
+    }
+
+    /**
      * Para el los casos de tipo ZDA establece el campo OwnerIdPrior__c cuando cambia el owner del caso por primera vez
      *
      * @author mario.navarro@seidor.com
@@ -2335,6 +2371,93 @@ public with sharing class CaseUtil
         for (Case caseTrigger: newList) {
             if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty(String.valueOf(caseTrigger.EndDate__c))) {
                 caseTrigger.EndDate__c = caseTrigger.PolicyEndDate__c;
+            }
+        }
+    }
+
+    /**
+     * Método que, para los casos de ZDA, busca el tipo de petición que es y carga la tipificación adecuada
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    public static void setCaseZDATypification(List<Case> newList) 
+    {
+        for(Case caso : newList)
+        {
+            if(caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c))
+            {
+                Robot_Hegeo_Field_Mapping__mdt tipif = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
+                if(tipif != null)
+                {
+                    caso.Type = tipif.Type__c;
+                    caso.SubType__c = tipif.Subtype__c;
+                    caso.TypeN3__c = tipif.TypeN3__c;  
+
+                }
+            }
+        }   
+    }
+
+    /**
+     * Método que carga los registros del metadato que contiene la relación entre el tipo de petición y la tipificación de salesforce.
+     * IMPORTANTE: Este metadato utiliza como Key el campo SourceType__c que es un valor único para ZDA, para otras aplicaciones pueden darse duplicados
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    public static void loadMapCaseZDATypificationMetadata()
+    {
+        List<Robot_Hegeo_Field_Mapping__mdt> listaCaseTypif = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
+
+        for (Robot_Hegeo_Field_Mapping__mdt tipificacion : listaCaseTypif)
+        {
+            if(!String.isBlank(tipificacion.SourceType__c))
+            {
+                mapCaseZDATypificationMetadata.put(tipificacion.SourceType__c, tipificacion);
+            }
+        }
+    }
+
+     /**
+     * Método que, para los casos de ZDA, busca el tipo de petición que es y carga la cola para enrutar los casos en el campo industry
+     * @author aberuete
+     * @date 04/06/2024
+     */
+    public static void setCaseZDAQueue(List<Case> newList) 
+    {
+        for(Case caso : newList)
+        {
+            if(caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c))
+            {
+                Robot_Hegeo_Field_Mapping__mdt caseTipificacionByPeticion = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
+                
+                if(caseTipificacionByPeticion != null)
+                {
+                    caso.Industry__c = caseTipificacionByPeticion.GenesysQueue__c ;
+                }
+            }
+        }   
+    }
+
+     /**
+     * Método para identficar aquellos casos que se crean mediante el botón standard clone y vaciar los campos que provienen de hegeo
+    * @author lrodriguez
+    * @date 21/05/2024
+    * @param newList lista de elementos del trigger before insert
+    */
+    public static void isCaseClone(List<Case> newList) {
+
+        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+
+        for (Case caseTrigger: newList) {
+
+            if ((caseTrigger.recordTypeId==uSPRecordTypeId && caseTrigger.isClone())|| (Test.isRunningTest() && caseTrigger.recordTypeId==uSPRecordTypeId)) {
+
+                caseTrigger.MediatedCustomer__c=null;
+                caseTrigger.PolicyId__c=null;
+                caseTrigger.OfferId__c=null;
+                caseTrigger.ProductGroup__c=null;
+                caseTrigger.AccountId=null;
+
             }
         }
     }

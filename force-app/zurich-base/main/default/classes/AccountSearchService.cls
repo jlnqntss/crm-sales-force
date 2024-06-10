@@ -19,16 +19,16 @@ public with sharing class AccountSearchService
 
         ContactsSelector contactsSelector = new ContactsSelector();
 
-        if (scope != null) 
+        if (scope != null)
         {
             contactsSelector.setScope(scope);
         }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
+        else if ( recordTypeNames != null  && !recordTypeNames.isEmpty() )
         {
             contactsSelector.setRecordType(recordTypeNames);
         }
 
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
+        if ( typeOfAccount != null  && !typeOfAccount.isEmpty() )
         {
             contactsSelector.setTypeOfAccount(typeOfAccount);
         }
@@ -45,16 +45,16 @@ public with sharing class AccountSearchService
         {
             accountsSelector.setScope(scope);
         }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
+        else if ( recordTypeNames != null  && !recordTypeNames.isEmpty() )
         {
             accountsSelector.setRecordType(recordTypeNames);
         }
 
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
+        if ( typeOfAccount != null  && !typeOfAccount.isEmpty() )
         {
             accountsSelector.setTypeOfAccount(typeOfAccount);
         }
-        
+
         List<Account> accounts = accountsSelector.findByPhoneNumber(phones);
         for(Account account: accounts)
         {
@@ -65,18 +65,18 @@ public with sharing class AccountSearchService
         accountsSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Account.Id,
-                Account.NumPolicies__pc,
-                Account.NumQuotes__pc,
-                Account.Name,
-                Account.PersonContactId,
-                Account.NationalId__c
-            }
+        {
+            Account.Id,
+            Account.NumPolicies__pc,
+            Account.NumQuotes__pc,
+            Account.Name,
+            Account.PersonContactId,
+            Account.NationalId__c
+        }
         );
 
         accountsSelector.setLegalEntity(legalEntity);
-        
+
         return accountsSelector.selectById(accountIds);
     }
 
@@ -84,7 +84,7 @@ public with sharing class AccountSearchService
      * Busca y encuentra clientes a través del correo electrónico el Scope de visibilidad dado.
      * @param emails : String[] - Listado de emails.
      * @param scope : AccountSearchService.Scope - Scope a aplicar.
-     * @param List<String> recordTypeNames: Listado de recordtypes de cuenta 
+     * @param List<String> recordTypeNames: Listado de recordtypes de cuenta
      * @param List<String> typeOfAccount: Listado de tipo de cuenta
      * @return Devuelve el listado de clientes encontrado
      * change 06/06/2023 - aberuete- Añadir parámetro recordTypeNames para que pueda filtrarse por recordtype de la cuenta
@@ -96,20 +96,20 @@ public with sharing class AccountSearchService
 
         ContactsSelector contactsSelector = new ContactsSelector();
 
-        if (scope != null) 
+        if (scope != null)
         {
             contactsSelector.setScope(scope);
         }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
+        else if ( recordTypeNames != null  && !recordTypeNames.isEmpty() )
         {
             contactsSelector.setRecordType(recordTypeNames);
         }
 
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
+        if ( typeOfAccount != null  && !typeOfAccount.isEmpty() )
         {
             contactsSelector.setTypeOfAccount(typeOfAccount);
         }
-        
+
         List<Contact> contacts = contactsSelector.findByEmail(emails);
         for(Contact contact: contacts)
         {
@@ -122,16 +122,16 @@ public with sharing class AccountSearchService
         {
             accountsSelector.setScope(scope);
         }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
+        else if ( recordTypeNames != null  && !recordTypeNames.isEmpty() )
         {
             accountsSelector.setRecordType(recordTypeNames);
         }
 
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
+        if ( typeOfAccount != null  && !typeOfAccount.isEmpty() )
         {
             accountsSelector.setTypeOfAccount(typeOfAccount);
         }
-        
+
         List<Account> accounts = accountsSelector.findByEmail(emails);
         for(Account account: accounts)
         {
@@ -142,18 +142,18 @@ public with sharing class AccountSearchService
         accountsSelector.setFields
         (
             new List<Schema.SObjectField>
-            {
-                Account.Id,
-                Account.NumPolicies__pc,
-                Account.NumQuotes__pc,
-                Account.Name,
-                Account.PersonContactId,
-                Account.NationalId__c
-            }
+        {
+            Account.Id,
+            Account.NumPolicies__pc,
+            Account.NumQuotes__pc,
+            Account.Name,
+            Account.PersonContactId,
+            Account.NationalId__c
+        }
         );
 
         accountsSelector.setLegalEntity(legalEntity);
-        
+
         return accountsSelector.selectById(accountIds);
     }
 
@@ -161,9 +161,9 @@ public with sharing class AccountSearchService
      * Busca y encuentra clientes a través del correo electrónico el Scope de visibilidad dado.
      * @param documentIds : String[] - Nº de documento.
      * @param documentType : String[] - Tipo de documento a buscar. Si null, no se hace distinción del documento.
-     * @param scope : AccountSearchService.Scope - Scope a aplicar. 
+     * @param scope : AccountSearchService.Scope - Scope a aplicar.
      * @param  legalEntity          Entidad legal en la que buscar
-     * @param List<String> recordTypeNames: Listado de recordtypes de cuenta 
+     * @param List<String> recordTypeNames: Listado de recordtypes de cuenta
      * @param List<String> typeOfAccount: Listado de tipo de cuenta
      * @return Devuelve el listado de clientes encontrado
      * change 06/06/2023 - aberuete- Añadir parámetro recordTypeNames para que pueda filtrarse por recordtype de la cuenta
@@ -173,20 +173,20 @@ public with sharing class AccountSearchService
     {
         AccountsSelector accountsSelector = new AccountsSelector();
 
-        if (scope != null) 
+        if (scope != null)
         {
-            accountsSelector.setScope(scope);   
+            accountsSelector.setScope(scope);
         }
-        else if (recordTypeNames != null  && !recordTypeNames.isEmpty())
+        else if ( recordTypeNames != null  && !recordTypeNames.isEmpty() )
         {
             accountsSelector.setRecordType(recordTypeNames);
         }
 
-        if (typeOfAccount != null  && !typeOfAccount.isEmpty())
+        if ( typeOfAccount != null  && !typeOfAccount.isEmpty() )
         {
             accountsSelector.setTypeOfAccount(typeOfAccount);
         }
-        
+
         accountsSelector.setLegalEntity(legalEntity);
 
         return accountsSelector.findByNationalId(documentIds, documentType);
@@ -223,9 +223,8 @@ public with sharing class AccountSearchService
     }
 
     /**
-     * Busca y encuentra mediadores a través del número de teléfono, aplicando Scope de visibilidad dado.
+     * Busca y encuentra mediadores a través del número de teléfono.
      * @param phones : String[] - Listado de teléfonos. Los teléfonos se esperan en formato E16
-     * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
      * @return Devuelve el listado de mediadores encontrado
      */
     public static Account[] findIntermediariesByPhoneNumber(String[] phones)
@@ -234,9 +233,8 @@ public with sharing class AccountSearchService
     }
 
     /**
-     * Busca y encuentra mediadores a través del código de mediador, aplicando Scope de visibilidad dado.
-     * @param phones : String[] - Listado de teléfonos. Los teléfonos se esperan en formato E16
-     * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
+     * Busca y encuentra mediadores a través del código de mediador.
+     * @param codes : String[] - Códigos de mediador
      * @return Devuelve el listado de mediadores encontrado
      */
     public static Account[] findIntermediariesByCode(String[] codes)
@@ -245,9 +243,8 @@ public with sharing class AccountSearchService
     }
 
     /**
-     * Busca y encuentra mediadores a través del código del NIF, aplicando Scope de visibilidad dado.
-     * @param phones : String[] - Listado de teléfonos. Los teléfonos se esperan en formato E16
-     * @param scope : AccountSearchService.Scope - Scope a aplicar. Si null, se busca sobre todo (Scope.all)
+     * Busca y encuentra mediadores a través del NIF.
+     * @param nifs : String[] - NIFs de los mediadores
      * @return Devuelve el listado de mediadores encontrado
      */
     public static Account[] findIntermediariesByNIF(String[] nifs)

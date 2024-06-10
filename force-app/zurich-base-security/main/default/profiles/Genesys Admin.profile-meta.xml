@@ -6134,6 +6134,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.ResponseCanalUnico__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.ScopeId__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9675,6 +9680,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Relationship__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Robot_Hegeo_Field_Mapping__mdt.GenesysQueue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13699,6 +13709,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZDARejectCloseResult__mdt-ZDA reject close result Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Global-Global Layout</layout>

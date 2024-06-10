@@ -419,7 +419,8 @@ public with sharing class AccountsSelector extends RecordsSelector
             Account.NationalId__c,
             Account.Channel__c,
             Account.Segment__c,
-            Account.Association__c
+            Account.Association__c,
+            Account.StatusIntermediary__c
         }
         );
 
@@ -466,7 +467,8 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.INFOIntermediaryCode__c,
                 Account.IntermediaryGroup__c,
                 Account.IsPartner,
-                Account.Association__c
+                Account.Association__c,
+                Account.StatusIntermediary__c
             }
             ).selectFields('Account.IntermediaryGroup__r.IntermediaryWithUser__c')
             .selectFields('Account.IntermediaryGroup__r.INFOIntermediaryGroupCode__c')
@@ -993,13 +995,13 @@ public with sharing class AccountsSelector extends RecordsSelector
             Account.NationalId__c,
             Account.Channel__c,
             Account.Segment__c,
-            Account.Association__c
+            Account.Association__c,
+            Account.StatusIntermediary__c
         }
         );
 
         this.baseQuery.addConditionEq(Account.NationalId__c, nifs);
         this.baseQuery.addConditionEq(Account.RecordTypeId, intermediaryRecordTypeId);
-        this.baseQuery.addConditionEq(Account.Status__c, '001');
 
         return (List<Account>) this.baseQuery.run();
     }
@@ -1116,10 +1118,12 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @date 12/2/2024
      * @return List<Account> Listado de mediadores con su agrupación
      */
-    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesIds) {
+    public List<Account> findIntermediaryGroupByIntermediaries(Set<String> intermediariesIds)
+    {
         List<Account> result = new List<Account>();
 
-        if (intermediariesIds != null && !intermediariesIds.isEmpty()) {
+        if ( intermediariesIds != null && !intermediariesIds.isEmpty() )
+        {
 
             Set<Schema.SObjectField> fieldsToRetrieve = new Set<Schema.SObjectField>
             {
@@ -1128,11 +1132,11 @@ public with sharing class AccountsSelector extends RecordsSelector
             };
 
             result = this.baseQuery
-                            .selectFields(fieldsToRetrieve)
-                            .addConditionIn(Account.Id, intermediariesIds)
-                            .enforceSecurity()
-                            .run();
-        }        
+                     .selectFields(fieldsToRetrieve)
+                     .addConditionIn(Account.Id, intermediariesIds)
+                     .enforceSecurity()
+                     .run();
+        }
 
         return result;
     }
@@ -1193,13 +1197,13 @@ public with sharing class AccountsSelector extends RecordsSelector
     }
 
     /**
-    * @description        : Método que devuelve cuentas tipo lead en base a una serie de criterios
-    * @author rserrano    | 24/04/2024
-    * @param days         : Antigüedad mínima del lead para ser borrado
-    * @param stageName    : Etapa en la que se tiene que encontrar la oportunidad del lead para ser borrado
-    * @param businessCode : Código de negocio de la oportunidad del lead para ser borrado
-    * @return String
-    **/
+     * @description        : Método que devuelve cuentas tipo lead en base a una serie de criterios
+     * @author rserrano    | 24/04/2024
+     * @param days         : Antigüedad mínima del lead para ser borrado
+     * @param stageName    : Etapa en la que se tiene que encontrar la oportunidad del lead para ser borrado
+     * @param businessCode : Código de negocio de la oportunidad del lead para ser borrado
+     * @return String
+     **/
     public String findZRMOldLeads(Integer days, String stageName, String businessCode)
     {
         Set<Schema.SObjectField> accountfieldsToRetrieve = new Set<Schema.SObjectField>
@@ -1211,25 +1215,25 @@ public with sharing class AccountsSelector extends RecordsSelector
             Opportunity.StageName,
             Opportunity.BusinessCode__c
         };
- 
+
         String query = this.baseQuery
-                        .selectFields(accountfieldsToRetrieve)
-                        .addConditionEq(Account.RecordtypeId, rtLeadId)
-                        .addConditionLt(Account.CreatedDate, Query.LAST_N_DAYS(days))
-                        .addSubquery
-                            (
-                            Query.subquery('Opportunities')
-                                .selectFields(opportunityFieldsToRetrieve)
-                                .addConditionEq(Opportunity.StageName, stageName)
-                                .addCondition(
-                                    query.doOr
-                                    (
-                                    Query.conditionEq('BusinessCode__c', businessCode),
-                                    Query.conditionEq('BusinessCode__c', null)
-                                    ))
-                                .setlimit(2)
-                            )
-                        .toQueryString();
+                       .selectFields(accountfieldsToRetrieve)
+                       .addConditionEq(Account.RecordtypeId, rtLeadId)
+                       .addConditionLt( Account.CreatedDate, Query.LAST_N_DAYS(days) )
+                       .addSubquery
+                       (
+            Query.subquery('Opportunities')
+            .selectFields(opportunityFieldsToRetrieve)
+            .addConditionEq(Opportunity.StageName, stageName)
+            .addCondition(
+                query.doOr
+                (
+                    Query.conditionEq('BusinessCode__c', businessCode),
+                    Query.conditionEq('BusinessCode__c', null)
+                ) )
+            .setlimit(2)
+                       )
+                       .toQueryString();
         return query;
     }
 
@@ -1285,7 +1289,7 @@ public with sharing class AccountsSelector extends RecordsSelector
                 Account.CreatedDate,
                 Account.PersonEmail,
                 Account.Phone
-            };            
+            };
 
             Query.Condition orCondition = Query.doOr(
                 Query.conditionIn(Account.Phone, contactPoints),
@@ -1301,7 +1305,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             {
                 this.baseQuery.addConditionEq(RT_NAME_FIELD, rtNames);
             }
-            System.debug(this.baseQuery.toQueryString());
+            System.debug( this.baseQuery.toQueryString() );
             accounts = this.baseQuery.enforceSecurity().run();
         }
 

@@ -4,7 +4,7 @@
         <description>Se procede con el envío de la Nota INFO a Genesys Cloud.</description>
         <name>genesysCloudRouteMessageAction</name>
         <label>Enrutar mensaje a Genesys Cloud</label>
-        <locationX>1314</locationX>
+        <locationX>1661</locationX>
         <locationY>1524</locationY>
         <actionName>GenesysCloudRouteMessageAction</actionName>
         <actionType>apex</actionType>
@@ -77,7 +77,7 @@
     <assignments>
         <name>Asignamos_variables_generico</name>
         <label>Asignamos variables generico</label>
-        <locationX>984</locationX>
+        <locationX>1133</locationX>
         <locationY>600</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueID</assignToReference>
@@ -107,7 +107,7 @@
     <assignments>
         <name>Asignamos_variables_Intermediary</name>
         <label>Asignamos variables Intermediary</label>
-        <locationX>720</locationX>
+        <locationX>869</locationX>
         <locationY>600</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueID</assignToReference>
@@ -137,7 +137,7 @@
     <assignments>
         <name>Modificar_variables_cola</name>
         <label>Modificar variables cola</label>
-        <locationX>1182</locationX>
+        <locationX>1529</locationX>
         <locationY>1224</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
@@ -175,7 +175,7 @@
     <decisions>
         <name>Cambia_de_cola_para_enrutar_a_genesys</name>
         <label>¿Cambia de cola para enrutar a genesys?</label>
-        <locationX>1314</locationX>
+        <locationX>1661</locationX>
         <locationY>1116</locationY>
         <defaultConnector>
             <targetReference>PriorityCalculationSubflow</targetReference>
@@ -207,7 +207,7 @@
     <decisions>
         <name>Check_Origin</name>
         <label>Check Origin</label>
-        <locationX>1314</locationX>
+        <locationX>1661</locationX>
         <locationY>1740</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -240,11 +240,26 @@
             </connector>
             <label>Origin Web</label>
         </rules>
+        <rules>
+            <name>Origin_Canal_Unico</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CanalUnico</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Queue_To_Update_Owner</targetReference>
+            </connector>
+            <label>Origin Canal Unico</label>
+        </rules>
     </decisions>
     <decisions>
         <name>Es_caso_hijo_USP</name>
         <label>¿Es caso hijo USP?</label>
-        <locationX>742</locationX>
+        <locationX>693</locationX>
         <locationY>1956</locationY>
         <defaultConnector>
             <targetReference>Update_case_owner</targetReference>
@@ -274,10 +289,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Hay_que_actualizar_best_agent</name>
+        <label>¿Hay que actualizar best agent?</label>
+        <locationX>1969</locationX>
+        <locationY>1956</locationY>
+        <defaultConnector>
+            <targetReference>Actualizar_owner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Actualizar_best_agent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GestorPreferenteSearchFromEmailSubflow.GestorPreferente</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Actualizar_caso</targetReference>
+            </connector>
+            <label>Actualizar best agent</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Comprobamos si la cuenta asociada al caso es de tipo intermediario, ya que en caso afirmativo habrá que enviar más información al sistema de enrutado</description>
         <name>Is_Intermediary_Account</name>
         <label>Is Intermediary Account?</label>
-        <locationX>852</locationX>
+        <locationX>1001</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <targetReference>GetGenesysCloudQueueAction</targetReference>
@@ -309,7 +349,7 @@
     <decisions>
         <name>IsUSPAndClosedDecision</name>
         <label>Is USP and Closed?</label>
-        <locationX>489</locationX>
+        <locationX>539</locationX>
         <locationY>276</locationY>
         <defaultConnector>
             <targetReference>Is_Intermediary_Account</targetReference>
@@ -338,7 +378,7 @@
     <decisions>
         <name>ResponsableNegocioEncontradoDecision</name>
         <label>¿Responsable Negocio Encontrado?</label>
-        <locationX>852</locationX>
+        <locationX>1001</locationX>
         <locationY>1008</locationY>
         <defaultConnector>
             <targetReference>Cambia_de_cola_para_enrutar_a_genesys</targetReference>
@@ -392,6 +432,21 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <name>SpecializationType</name>
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!$Record.AccountId}), &apos;&apos;, TEXT({!$Record.Account.SpecializationType__c}))</expression>
+    </formulas>
+    <formulas>
+        <name>SuscriptorDyO</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.SuscriptorDyO__c})</expression>
+    </formulas>
+    <formulas>
+        <name>SuscriptorPymes</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.SuscriptorPymes__c})</expression>
+    </formulas>
+    <formulas>
+        <name>SuscriptorRC</name>
+        <dataType>String</dataType>
+        <expression>if(isblank({!$Record.AccountId}), null, {!$Record.Account.SuscriptorRC__c})</expression>
     </formulas>
     <formulas>
         <name>UWConstruccionCartera</name>
@@ -448,7 +503,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se registra el error en Salesforce con el detalle del mismo.</description>
         <name>CreateErrorLogAction</name>
         <label>Registrar error</label>
-        <locationX>2150</locationX>
+        <locationX>2893</locationX>
         <locationY>1740</locationY>
         <inputAssignments>
             <field>Level__c</field>
@@ -499,7 +554,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
         <name>CreateTaskAction</name>
         <label>Registrar tarea</label>
-        <locationX>742</locationX>
+        <locationX>693</locationX>
         <locationY>2256</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -554,7 +609,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
         <name>CreateTaskWebMiZurichAction</name>
         <label>Registrar tarea Web MiZurich</label>
-        <locationX>1358</locationX>
+        <locationX>1309</locationX>
         <locationY>1848</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -609,7 +664,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se inserta en la BBDD de Salesforce la tarea relacionada con la interacción en Genesys Cloud.</description>
         <name>Registrar_tarea</name>
         <label>Registrar tarea</label>
-        <locationX>390</locationX>
+        <locationX>341</locationX>
         <locationY>1332</locationY>
         <inputAssignments>
             <field>OwnerId</field>
@@ -650,10 +705,85 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>Registrar_Tarea_CanalUnico</name>
+        <label>Registrar Tarea CanalUnico</label>
+        <locationX>1969</locationX>
+        <locationY>2256</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>CreateErrorLogAction</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>CallObject</field>
+            <value>
+                <elementReference>interactionId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>GetInteractionRecordTypeIdAction.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>$Record.Subject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subtype__c</field>
+            <value>
+                <stringValue>Single channel</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type</field>
+            <value>
+                <stringValue>Email</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Queue_To_Update_Owner</name>
+        <label>Get Queue To Update Owner</label>
+        <locationX>1969</locationX>
+        <locationY>1848</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Hay_que_actualizar_best_agent</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>genesysQueueName</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Group</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Get Genesys Queue</label>
-        <locationX>852</locationX>
+        <locationX>1001</locationX>
         <locationY>792</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -675,7 +805,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera el identificador del tipo de registro Task: Interaction para registrar la siguiente tarea.</description>
         <name>GetInteractionRecordTypeIdAction</name>
         <label>Obetener tipo de registro Task: Interaction</label>
-        <locationX>1314</locationX>
+        <locationX>1661</locationX>
         <locationY>1632</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -699,7 +829,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <recordLookups>
         <name>getSalesforceQueue</name>
         <label>Get Salesforce queue</label>
-        <locationX>742</locationX>
+        <locationX>693</locationX>
         <locationY>1848</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -721,7 +851,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera el identificador del tipo de registro Task: Interaction para registrar la siguiente tarea.</description>
         <name>ObtenerTipoRegistroUSP</name>
         <label>Obtener tipo de registro USP</label>
-        <locationX>390</locationX>
+        <locationX>341</locationX>
         <locationY>1224</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -740,9 +870,63 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Actualizar_caso</name>
+        <label>Actualizar caso</label>
+        <locationX>1837</locationX>
+        <locationY>2064</locationY>
+        <connector>
+            <targetReference>Registrar_Tarea_CanalUnico</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>BestAgent__c</field>
+            <value>
+                <elementReference>GestorPreferenteSearchFromEmailSubflow.GestorPreferente</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>Get_Queue_To_Update_Owner.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Actualizar_owner</name>
+        <label>Actualizar owner</label>
+        <locationX>2101</locationX>
+        <locationY>2064</locationY>
+        <connector>
+            <targetReference>Registrar_Tarea_CanalUnico</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>Get_Queue_To_Update_Owner.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_case_owner</name>
         <label>Update case owner</label>
-        <locationX>830</locationX>
+        <locationX>781</locationX>
         <locationY>2064</locationY>
         <connector>
             <targetReference>CreateTaskAction</targetReference>
@@ -766,7 +950,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <recordUpdates>
         <name>UpdateCaseOwnerAction</name>
         <label>Update Case Owner</label>
-        <locationX>390</locationX>
+        <locationX>341</locationX>
         <locationY>1116</locationY>
         <connector>
             <targetReference>ObtenerTipoRegistroUSP</targetReference>
@@ -782,7 +966,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <filterLogic>1 OR (2 AND 3)</filterLogic>
+        <filterLogic>1 OR (2 AND 3) OR 4</filterLogic>
         <filters>
             <field>Origin</field>
             <operator>EqualTo</operator>
@@ -804,6 +988,13 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
                 <stringValue>Solicitud de ayuda al registro de MiZurich</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>Origin</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>CanalUnico</stringValue>
+            </value>
+        </filters>
         <object>Case</object>
         <recordTriggerType>Create</recordTriggerType>
         <scheduledPaths>
@@ -818,7 +1009,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <subflows>
         <name>GestorPreferenteSearchFromEmailSubflow</name>
         <label>Buscar Gestor Preferente</label>
-        <locationX>852</locationX>
+        <locationX>1001</locationX>
         <locationY>900</locationY>
         <connector>
             <targetReference>ResponsableNegocioEncontradoDecision</targetReference>
@@ -834,6 +1025,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <name>ColaGenesysScope</name>
             <value>
                 <elementReference>GetGenesysQueueAction.Scope__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>CommercialPorductCodeCaso</name>
+            <value>
+                <elementReference>$Record.CommercialProductCode__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -915,6 +1112,24 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             </value>
         </inputAssignments>
         <inputAssignments>
+            <name>NombreSuscriptorDyO</name>
+            <value>
+                <elementReference>SuscriptorDyO</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSuscriptorPymes</name>
+            <value>
+                <elementReference>SuscriptorPymes</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NombreSuscriptorRC</name>
+            <value>
+                <elementReference>SuscriptorRC</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>NumeroParentId</name>
             <value>
                 <elementReference>$Record.Id</elementReference>
@@ -956,7 +1171,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados sin los datos de las DTs a las que enrutar</description>
         <name>GetGenesysCloudQueueAction</name>
         <label>Obtener cola de Genesys Cloud</label>
-        <locationX>984</locationX>
+        <locationX>1133</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Asignamos_variables_generico</targetReference>
@@ -986,7 +1201,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se recupera la cola a la que se deberá enrutar este tipo de comunicados. En los casos en los que la cuenta asociada al caso sea de tipo Intermediario, se les pasará los valores contenidos en los campos &quot;Email Particulares&quot; e &quot;Email Administración&quot;</description>
         <name>Obtener_cola_de_Genesys_Cloud_desde_Intermediary</name>
         <label>Obtener cola de Genesys Cloud desde Intermediary</label>
-        <locationX>720</locationX>
+        <locationX>869</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Asignamos_variables_Intermediary</targetReference>
@@ -1027,7 +1242,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
     <subflows>
         <name>PriorityCalculationSubflow</name>
         <label>Calcular Prioridad</label>
-        <locationX>1314</locationX>
+        <locationX>1661</locationX>
         <locationY>1416</locationY>
         <connector>
             <targetReference>genesysCloudRouteMessageAction</targetReference>

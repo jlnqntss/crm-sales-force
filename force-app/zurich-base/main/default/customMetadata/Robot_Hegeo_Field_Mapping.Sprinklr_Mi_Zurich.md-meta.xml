@@ -3,6 +3,10 @@
     <label>Sprinklr Mi Zurich</label>
     <protected>false</protected>
     <values>
+        <field>GenesysQueue__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
         <field>Level__c</field>
         <value xsi:type="xsd:string">Type</value>
     </values>
@@ -24,11 +28,11 @@
     </values>
     <values>
         <field>Subtype__c</field>
-        <value xsi:type="xsd:string"></value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>TypeN3__c</field>
-        <value xsi:type="xsd:string"></value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>Type__c</field>
