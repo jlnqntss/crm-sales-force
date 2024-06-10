@@ -479,6 +479,9 @@
                         <valueListItems>
                             <value>CustomButton.Case.ScaleZDA</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>CustomButton.Case.CloseZDA</value>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
@@ -832,7 +835,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>relatedListLabel</name>
-                    <value>Envios doc canal unico</value>
+                    <value>Envios a canal único</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>showActionBar</name>

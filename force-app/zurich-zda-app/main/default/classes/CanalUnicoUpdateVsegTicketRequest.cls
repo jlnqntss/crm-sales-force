@@ -296,7 +296,8 @@ public with sharing class CanalUnicoUpdateVsegTicketRequest
         /**
          * Descripción del evento o cambio de situación
          *
-         * Tamaño máximo: 1000
+         * Tamaño máximo: Se ha probado con 10k caracteres y ha funcionado bien, se desconoce el maximo real, puesto que en
+         * la documentacion nos indican que el maximo es 1k
          */
         public String eventDesc
         {
@@ -317,7 +318,8 @@ public with sharing class CanalUnicoUpdateVsegTicketRequest
         /**
          * Comentario interno entre primeros niveles de BO
          *
-         * Tamaño máximo: 1000
+         * Tamaño máximo: Se ha probado con 10k caracteres y ha funcionado bien, se desconoce el maximo real, puesto que en
+         * la documentacion nos indican que el maximo es 1k
          */
         public String comments
         {

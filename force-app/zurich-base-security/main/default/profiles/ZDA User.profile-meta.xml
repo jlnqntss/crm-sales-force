@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata"> 
     <fullName>ZDA User</fullName>
     <applicationVisibilities>
         <application>Klinc</application>
@@ -3432,12 +3432,12 @@
         <field>Account.SuscriptorDyO__c</field>
         <readable>false</readable>
     </fieldPermissions>
-    <fieldPermissions>
+	<fieldPermissions>
         <editable>false</editable>
         <field>Account.SuscriptorPymes__c</field>
         <readable>false</readable>
     </fieldPermissions>
-    <fieldPermissions>
+	<fieldPermissions>
         <editable>false</editable>
         <field>Account.SuscriptorRC__c</field>
         <readable>false</readable>
@@ -4329,6 +4329,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.ResponseCanalUnico__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.ReturnDate__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -5190,7 +5195,7 @@
     <layoutAssignments>
         <layout>Account-ZDA Intermediary</layout>
         <recordType>Account.Intermediary</recordType>
-    </layoutAssignments>
+    </layoutAssignments> 
     <layoutAssignments>
         <layout>Case-Case Default SAM</layout>
         <recordType>Case.SAMInquiry</recordType>
@@ -5283,27 +5288,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>FileMimeType__mdt-File mime type Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZdaCuRequestAvailableEventValues__mdt-ZDA CU Request available event value Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZdaCuReqAvailableTicketStatusValues__mdt-ZDA CU Req available ticketStatus value
-            Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZdaCuReqAvailTicketSubStatusValues__mdt-ZDA CU Req avail TicketSubStatus value
-            Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZdaCuReqAvailPaymentTypeValues__mdt-ZDA CU Req available payment type value Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZdaCuReqAvailableEventReasonValues__mdt-ZDA CU Req available eventReason value
-            Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ForumOriginAssignment__mdt-Forum Origin Assignment Layout</layout>
@@ -5400,7 +5384,28 @@
         <layout>User-User Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ZDARejectCloseResult__mdt-ZDA reject close result Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZDAUpdateRequestTimeFormat__mdt-ZDA Update request time format Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ZRM_Genesys_WrapUp_mapping__mdt-Genesys WrapUp mapping Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailPaymentTypeValues__mdt-ZDA CU Req available payment type value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailTicketSubStatusValues__mdt-ZDA CU Req avail TicketSubStatus value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailableEventReasonValues__mdt-ZDA CU Req available eventReason value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuReqAvailableTicketStatusValues__mdt-ZDA CU Req available ticketStatus value Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZdaCuRequestAvailableEventValues__mdt-ZDA CU Request available event value Layout</layout>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>false</allowCreate>
