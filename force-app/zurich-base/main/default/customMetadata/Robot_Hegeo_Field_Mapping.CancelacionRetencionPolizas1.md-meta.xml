@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>CancelacionRetencionPolizas1</label>
+    <protected>false</protected>
+    <values>
+        <field>GenesysQueue__c</field>
+        <value xsi:type="xsd:string">Email_ZDA_Gestion_Cartera</value>
+    </values>
+    <values>
+        <field>Level__c</field>
+        <value xsi:type="xsd:string">Type</value>
+    </values>
+    <values>
+        <field>SalesforceValue__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>SourceSubtype__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>SourceType__c</field>
+        <value xsi:type="xsd:string">TP_CancelUAD_ComZda</value>
+    </values>
+    <values>
+        <field>SourceValue__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Subtype__c</field>
+        <value xsi:type="xsd:string">Retención/Cancelación</value>
+    </values>
+    <values>
+        <field>TypeN3__c</field>
+        <value xsi:type="xsd:string">Cancelación/Retención &gt;1.000€ ó mas de 3 pólizas</value>
+    </values>
+    <values>
+        <field>Type__c</field>
+        <value xsi:type="xsd:string">Gestión Cartera</value>
+    </values>
+</CustomMetadata>

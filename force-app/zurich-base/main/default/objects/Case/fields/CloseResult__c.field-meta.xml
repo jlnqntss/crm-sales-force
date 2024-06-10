@@ -718,6 +718,16 @@
                 <default>false</default>
                 <label>Suplemento emitido</label>
             </value>
+            <value>
+                <fullName>Aprobada - Actividad</fullName>
+                <default>false</default>
+                <label>Aprobada - Actividad</label>
+            </value>
+            <value>
+                <fullName>Denegada - Actividad</fullName>
+                <default>false</default>
+                <label>Denegada - Actividad</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
@@ -1155,6 +1165,14 @@
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <valueName>Denegada - Suplemento no económico</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Aprobada - Actividad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Denegada - Actividad</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificación oferta</controllingFieldValue>

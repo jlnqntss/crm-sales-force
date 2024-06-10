@@ -130,7 +130,7 @@ public with sharing class ZRMFilesControllerTest {
 
         Test.stopTest();
 
-        Assert.isTrue(String.isNotEmpty(iconName), 'Debe obtener un icono');        
+        Assert.isTrue(String.isNotEmpty(iconName), 'Debe obtener un icono');    
 
     }
 
@@ -146,14 +146,16 @@ public with sharing class ZRMFilesControllerTest {
 
         Map<String, String> iconMap = ZRMFilesController.initIconMap();
 
+        User u = [SELECT Id FROM User WHERE Id = :UserInfo.getUserId()];
+
         Account cliente = [SELECT Id FROM Account WHERE RecordType.DeveloperName = 'Customer' LIMIT 1];
-        List<ContentDocumentLink> contentDocumentLinkList = new List<ContentDocumentLink>([SELECT ContentDocument.Id, ContentDocument.Title, ContentDocument.FileExtension, ContentDocument.LatestPublishedVersion.VersionDataUrl 
+        List<ContentDocumentLink> contentDocumentLinkList = new List<ContentDocumentLink>([SELECT ContentDocument.Id, ContentDocument.Title, ContentDocument.OwnerId, ContentDocument.FileExtension, ContentDocument.LatestPublishedVersion.VersionDataUrl 
                                                                                             FROM ContentDocumentLink 
                                                                                             WHERE LinkedEntityId = :cliente.Id
                                                                                             LIMIT 1]);
 
         Test.startTest();
-        List<ZRMFilesController.ZRMFile> files = ZRMFilesController.getZRMFilesList(contentDocumentLinkList,  iconMap);
+        List<ZRMFilesController.ZRMFile> files = ZRMFilesController.getZRMFilesList(contentDocumentLinkList, iconMap, u);
         Test.stopTest();
 
         Assert.isTrue(files.size() > 0, 'Debe obtener al menos un resultado'); 

@@ -437,6 +437,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Single channel</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>WhatsApp</fullName>
             <default>false</default>
         </values>

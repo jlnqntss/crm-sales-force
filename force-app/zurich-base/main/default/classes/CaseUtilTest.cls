@@ -1458,6 +1458,40 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Se testea el metodo notifCuCaseAssigned
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     */
+    @isTest
+    private static void test_notifCuCaseAssigned()
+    {
+        Case caseToTest = TestDataFactory.generateZDACases(1)[0];
+        caseToTest.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+        caseToTest.Status = CaseUtil.CASE_NUEVO;
+        insert caseToTest;
+
+        caseToTest.Status = CaseUtil.CASE_ASIGNADO;
+
+        TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
+            TicketingHegeoServiceMock.HTTP_CODE_OK,
+            TicketingHegeoServiceMock.RESULT_OK,
+            TicketingHegeoServiceMock.HEADER_CONTENT_TYPE,
+            TicketingHegeoServiceMock.RESPONSE_BODY,
+            false
+        );
+
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, mock);
+        update caseToTest;
+        Test.stopTest();
+
+        //Se comprueba que no hay errores en la peticion
+        List<Error_Log__c> foundErrors = [SELECT Id FROM Error_Log__c WHERE Source_Class__c = : TicketingHegeoService.class.getName() AND Source_Method__c = 'updateVsegTicket'];
+        Assert.isTrue( foundErrors.isEmpty() );
+    }
+
+    /**
      * Se valida que el metodo relateCaseToCustomerByNifCif relaciona correctamente el caso con
      * el cliente mediado (cuenta.NationalId__c = caso.CustomerNifCif__c) y establece el campo
      * MediatedCustomer__c en caso de encontrar relacion. Para ello:
@@ -1976,5 +2010,166 @@ private with sharing class CaseUtilTest
         Assert.areEqual(casesToUpdate[0].Id, updatedRecords[0].Id, 'Los IDs deben coincidir');
         Assert.areEqual(CaseUtil.CASE_CAUSE_OF_LOSS_PERIOD_ENDED, updatedRecords[0].CauseOfLoss__c, 'El motivo de pérdida debe coincidir');
         Assert.areEqual(CaseUtil.CASE_CLOSED_LOST, updatedRecords[0].Status, 'Los estados deben coincidir');
+    }
+
+    /**
+     * Método de test para setCaseZDATypification. Nos llega un tipo de petición existente en el sistema 
+     * y se carga la tipificación correctamente
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    @isTest
+    private static void test_setCaseZDATypification_OK()
+    {
+        String valor = 'TPE0714_PRD0029';
+        
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accounts;
+
+        List<Case> ZDACases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        ZDACases[0].RecordTypeId = Caseutil.RT_ID_ZDA;
+        ZDACases[0].Status = 'Nuevo';
+        ZDACases[0].IdTipologiaBs__c = valor;
+
+        Test.startTest();
+        insert ZDACases;
+        Test.stopTest();
+
+        List<Robot_Hegeo_Field_Mapping__mdt> tipologia = [SELECT id, Type__c, Subtype__c, TypeN3__c, GenesysQueue__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c = :valor];
+        List<Case> casos = [SELECT Id, IdTipologiaBs__c, Type, SubType__c, TypeN3__c FROM Case WHERE RecordTypeId = :CaseUtil.RT_ID_ZDA];
+        Assert.areEqual(tipologia[0].Type__c, casos[0].Type);
+        Assert.areEqual(tipologia[0].Subtype__c, casos[0].SubType__c);
+        Assert.areEqual(tipologia[0].TypeN3__c, casos[0].TypeN3__c);
+    }
+
+    /**
+     * Método de test para setCaseZDATypification. Nos llega un tipo de petición que no existe en el sistema 
+     * y no se carga ninguna tipificación
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    @isTest
+    private static void test_setCaseZDATypification_KO()
+    {
+        String valor = 'VALOR';
+        
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accounts;
+
+        List<Case> casesZDA = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        casesZDA[0].RecordTypeId = Caseutil.RT_ID_ZDA;
+        casesZDA[0].Status = 'Nuevo';
+        casesZDA[0].IdTipologiaBs__c = valor;
+
+        Test.startTest();
+        insert casesZDA;
+        Test.stopTest();
+
+        List<Case> casos = [SELECT Id, IdTipologiaBs__c, Type, SubType__c, TypeN3__c FROM Case WHERE RecordTypeId = :CaseUtil.RT_ID_ZDA];
+        Assert.isTrue(String.isBlank(casos[0].Type));
+        Assert.isTrue(String.isBlank(casos[0].SubType__c));
+        Assert.isTrue(String.isBlank(casos[0].TypeN3__c));
+    }
+
+    /**
+     * Método de test para setCaseZDAQueue. Nos llega un tipo de petición existente en el sistema 
+     * y se carga la cola a enrutar el caso en el campo industry
+     * @author aberuete
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_setCaseZDAQueue()
+    {
+        String valor = 'TPE0714_PRD0029';
+    
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accounts;
+
+        List<Case> casesZDA = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        casesZDA[0].RecordTypeId = Caseutil.RT_ID_ZDA;
+        casesZDA[0].Status = 'Nuevo';
+        casesZDA[0].IdTipologiaBs__c = valor;
+
+        Test.startTest();
+        insert casesZDA;
+        Test.stopTest();
+
+        List<Robot_Hegeo_Field_Mapping__mdt> tipologia = [SELECT id, GenesysQueue__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c = :valor];
+        List<Case> casos = [SELECT Id,Industry__c  FROM Case WHERE id =:casesZDA[0].id];
+        Assert.areEqual(tipologia[0].GenesysQueue__c , casos[0].Industry__c);
+    }
+
+    /**
+     * Método de test para setCaseZDAQueue. Nos llega un tipo de petición que no existe en el sistema 
+     * y no se carga ningun valor en el campo industry
+     * @author aberuete
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_NotsetCaseZDAQueue()
+    {
+        String valor = 'pruebaPeticion';
+        
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accounts;
+
+        List<Case> casesZDA = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        casesZDA[0].RecordTypeId = Caseutil.RT_ID_ZDA;
+        casesZDA[0].Status = 'Nuevo';
+        casesZDA[0].IdTipologiaBs__c = valor;
+
+        Test.startTest();
+        insert casesZDA;
+        Test.stopTest();
+
+        List<Case> casos = [SELECT Id,Industry__c  FROM Case WHERE id =:casesZDA[0].id];
+        Assert.isNull(casos[0].Industry__c);
+    }
+
+     /**
+     * Método test para isCaseClone. Se encarga de vaciar los campos relacionados con el robot hegeo 
+     * al duplicar un caso
+     * @author lrodriguez
+     * @date 21/05/2024
+     */
+    @isTest
+    private static void test_isCaseClone_OK()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Account> accountMediatedCustomer = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accountMediatedCustomer;
+
+        Opportunity offerRelated= new Opportunity();
+        offerRelated.Name='TEST OFFER 2705';
+        offerRelated.AccountId=accountMediatedCustomer[0].Id;
+        offerRelated.StageName='Legit Lead';
+        offerRelated.CloseDate=System.TODAY()+5;
+        insert offerRelated;
+
+        Policy__c policyRelated= new Policy__c();
+        policyRelated.Name='TEST 2705';
+        policyRelated.PolicyStatus__c='V';
+        insert policyRelated;
+        
+        List<Case> uspCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        uspCases[0].MediatedCustomer__c=accountMediatedCustomer[0].Id;
+        uspCases[0].OfferId__c=offerRelated.Id;
+        uspCases[0].ProductGroup__c='6';
+        uspCases[0].RecordtypeId=GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        uspCases[0].PolicyId__c=policyRelated.Id;
+        
+        Test.startTest();
+        insert uspCases;
+        Test.stopTest();
+
+        List<Case> updatedRecords = [SELECT MediatedCustomer__c,OfferId__c,ProductGroup__c,PolicyId__c FROM Case WHERE Id =: uspCases[0].Id];
+
+        System.assertEquals(null,updatedRecords[0].MediatedCustomer__c, 'El valor debería ser null');
+        System.assertEquals(null,updatedRecords[0].OfferId__c, 'El valor debería ser null');
+        System.assertEquals(null,updatedRecords[0].ProductGroup__c, 'El valor debería ser null');
+        System.assertEquals(null,updatedRecords[0].PolicyId__c, 'El valor debería ser null');
+        
     }
 }
