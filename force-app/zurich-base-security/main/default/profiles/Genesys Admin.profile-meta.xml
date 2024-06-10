@@ -9683,6 +9683,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Robot_Hegeo_Field_Mapping__mdt.GenesysQueue__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Robot_Hegeo_Field_Mapping__mdt.Level__c</field>
         <readable>false</readable>

@@ -30,7 +30,6 @@ public with sharing class CaseUtil
     public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
     public static final String RT_NAME_SAMINQUIRY = 'SAMInquiry';
-    public static final String RT_NAME_ZDA = 'ZDAInquiry';
     public static final String RT_NAME_ZRM = 'ZRMInquiry';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
@@ -56,6 +55,7 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
 
+    public static Map<String, Robot_Hegeo_Field_Mapping__mdt> mapCaseZDATypificationMetadata = new Map<String, Robot_Hegeo_Field_Mapping__mdt>();
     
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
@@ -98,6 +98,7 @@ public with sharing class CaseUtil
     {
         get
         {
+            String RT_NAME_ZDA = GlobalConfigUtil.getGlobalConfigurationValue('Case_RecordType_ZDA');
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId();
         }
     }
@@ -2372,6 +2373,69 @@ public with sharing class CaseUtil
                 caseTrigger.EndDate__c = caseTrigger.PolicyEndDate__c;
             }
         }
+    }
+
+    /**
+     * Método que, para los casos de ZDA, busca el tipo de petición que es y carga la tipificación adecuada
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    public static void setCaseZDATypification(List<Case> newList) 
+    {
+        for(Case caso : newList)
+        {
+            if(caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c))
+            {
+                Robot_Hegeo_Field_Mapping__mdt tipif = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
+                if(tipif != null)
+                {
+                    caso.Type = tipif.Type__c;
+                    caso.SubType__c = tipif.Subtype__c;
+                    caso.TypeN3__c = tipif.TypeN3__c;  
+
+                }
+            }
+        }   
+    }
+
+    /**
+     * Método que carga los registros del metadato que contiene la relación entre el tipo de petición y la tipificación de salesforce.
+     * IMPORTANTE: Este metadato utiliza como Key el campo SourceType__c que es un valor único para ZDA, para otras aplicaciones pueden darse duplicados
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    public static void loadMapCaseZDATypificationMetadata()
+    {
+        List<Robot_Hegeo_Field_Mapping__mdt> listaCaseTypif = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
+
+        for (Robot_Hegeo_Field_Mapping__mdt tipificacion : listaCaseTypif)
+        {
+            if(!String.isBlank(tipificacion.SourceType__c))
+            {
+                mapCaseZDATypificationMetadata.put(tipificacion.SourceType__c, tipificacion);
+            }
+        }
+    }
+
+     /**
+     * Método que, para los casos de ZDA, busca el tipo de petición que es y carga la cola para enrutar los casos en el campo industry
+     * @author aberuete
+     * @date 04/06/2024
+     */
+    public static void setCaseZDAQueue(List<Case> newList) 
+    {
+        for(Case caso : newList)
+        {
+            if(caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c))
+            {
+                Robot_Hegeo_Field_Mapping__mdt caseTipificacionByPeticion = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
+                
+                if(caseTipificacionByPeticion != null)
+                {
+                    caso.Industry__c = caseTipificacionByPeticion.GenesysQueue__c ;
+                }
+            }
+        }   
     }
 
      /**

@@ -2012,6 +2012,120 @@ private with sharing class CaseUtilTest
         Assert.areEqual(CaseUtil.CASE_CLOSED_LOST, updatedRecords[0].Status, 'Los estados deben coincidir');
     }
 
+    /**
+     * Método de test para setCaseZDATypification. Nos llega un tipo de petición existente en el sistema 
+     * y se carga la tipificación correctamente
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    @isTest
+    private static void test_setCaseZDATypification_OK()
+    {
+        String valor = 'TPE0714_PRD0029';
+        
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accounts;
+
+        List<Case> ZDACases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        ZDACases[0].RecordTypeId = Caseutil.RT_ID_ZDA;
+        ZDACases[0].Status = 'Nuevo';
+        ZDACases[0].IdTipologiaBs__c = valor;
+
+        Test.startTest();
+        insert ZDACases;
+        Test.stopTest();
+
+        List<Robot_Hegeo_Field_Mapping__mdt> tipologia = [SELECT id, Type__c, Subtype__c, TypeN3__c, GenesysQueue__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c = :valor];
+        List<Case> casos = [SELECT Id, IdTipologiaBs__c, Type, SubType__c, TypeN3__c FROM Case WHERE RecordTypeId = :CaseUtil.RT_ID_ZDA];
+        Assert.areEqual(tipologia[0].Type__c, casos[0].Type);
+        Assert.areEqual(tipologia[0].Subtype__c, casos[0].SubType__c);
+        Assert.areEqual(tipologia[0].TypeN3__c, casos[0].TypeN3__c);
+    }
+
+    /**
+     * Método de test para setCaseZDATypification. Nos llega un tipo de petición que no existe en el sistema 
+     * y no se carga ninguna tipificación
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    @isTest
+    private static void test_setCaseZDATypification_KO()
+    {
+        String valor = 'VALOR';
+        
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accounts;
+
+        List<Case> casesZDA = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        casesZDA[0].RecordTypeId = Caseutil.RT_ID_ZDA;
+        casesZDA[0].Status = 'Nuevo';
+        casesZDA[0].IdTipologiaBs__c = valor;
+
+        Test.startTest();
+        insert casesZDA;
+        Test.stopTest();
+
+        List<Case> casos = [SELECT Id, IdTipologiaBs__c, Type, SubType__c, TypeN3__c FROM Case WHERE RecordTypeId = :CaseUtil.RT_ID_ZDA];
+        Assert.isTrue(String.isBlank(casos[0].Type));
+        Assert.isTrue(String.isBlank(casos[0].SubType__c));
+        Assert.isTrue(String.isBlank(casos[0].TypeN3__c));
+    }
+
+    /**
+     * Método de test para setCaseZDAQueue. Nos llega un tipo de petición existente en el sistema 
+     * y se carga la cola a enrutar el caso en el campo industry
+     * @author aberuete
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_setCaseZDAQueue()
+    {
+        String valor = 'TPE0714_PRD0029';
+    
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accounts;
+
+        List<Case> casesZDA = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        casesZDA[0].RecordTypeId = Caseutil.RT_ID_ZDA;
+        casesZDA[0].Status = 'Nuevo';
+        casesZDA[0].IdTipologiaBs__c = valor;
+
+        Test.startTest();
+        insert casesZDA;
+        Test.stopTest();
+
+        List<Robot_Hegeo_Field_Mapping__mdt> tipologia = [SELECT id, GenesysQueue__c FROM Robot_Hegeo_Field_Mapping__mdt WHERE SourceType__c = :valor];
+        List<Case> casos = [SELECT Id,Industry__c  FROM Case WHERE id =:casesZDA[0].id];
+        Assert.areEqual(tipologia[0].GenesysQueue__c , casos[0].Industry__c);
+    }
+
+    /**
+     * Método de test para setCaseZDAQueue. Nos llega un tipo de petición que no existe en el sistema 
+     * y no se carga ningun valor en el campo industry
+     * @author aberuete
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_NotsetCaseZDAQueue()
+    {
+        String valor = 'pruebaPeticion';
+        
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Intermediary', 1);
+        insert accounts;
+
+        List<Case> casesZDA = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        casesZDA[0].RecordTypeId = Caseutil.RT_ID_ZDA;
+        casesZDA[0].Status = 'Nuevo';
+        casesZDA[0].IdTipologiaBs__c = valor;
+
+        Test.startTest();
+        insert casesZDA;
+        Test.stopTest();
+
+        List<Case> casos = [SELECT Id,Industry__c  FROM Case WHERE id =:casesZDA[0].id];
+        Assert.isNull(casos[0].Industry__c);
+    }
+
      /**
      * Método test para isCaseClone. Se encarga de vaciar los campos relacionados con el robot hegeo 
      * al duplicar un caso
