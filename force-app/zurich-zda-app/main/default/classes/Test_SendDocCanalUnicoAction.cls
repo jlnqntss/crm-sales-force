@@ -7,10 +7,6 @@
 @isTest
 private with sharing class Test_SendDocCanalUnicoAction
 {
-    private static final String RESULT_OK = 'OK';
-    private static final Integer HTTP_CODE_OK = 200;
-    private static final String CONTENT_TYPE = 'application/soap+xml;charset=utf-8';
-    private static final String RESPONSE_BODY = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"><soap:Header><NS1:Security xmlns:NS1="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"><Timestamp xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><Created>2024-04-12T09:14:24.786Z</Created></Timestamp></NS1:Security></soap:Header><soap:Body><io:updateVsegTicketResponse xmlns:io="http://webservices.zurich.com/proxy/Hegeo/Ticketing/v1_0"><io:ticket><io:ticketId>102845</io:ticketId></io:ticket></io:updateVsegTicketResponse></soap:Body></soap:Envelope>';
 
     @TestSetup
     private static void makeData()
@@ -59,10 +55,10 @@ private with sharing class Test_SendDocCanalUnicoAction
         sendObj.ContentDocIds__c='[' + fileList[0].ContentDocumentId + ',' + fileList[1].ContentDocumentId + ']';
 
         TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
-            HTTP_CODE_OK,
-            RESULT_OK,
-            CONTENT_TYPE,
-            RESPONSE_BODY,
+            TicketingHegeoServiceMock.HTTP_CODE_OK,
+            TicketingHegeoServiceMock.RESULT_OK,
+            TicketingHegeoServiceMock.HEADER_CONTENT_TYPE,
+            TicketingHegeoServiceMock.RESPONSE_BODY,
             false
             );
         SendDocCanalUnicoAction.SendDocCanalUnicoRequest req = new SendDocCanalUnicoAction.SendDocCanalUnicoRequest();
@@ -77,7 +73,7 @@ private with sharing class Test_SendDocCanalUnicoAction
         List<SendDocCUInfo__c> updatedSdcList = [SELECT Result__c, SendDate__c FROM SendDocCUInfo__c];
         Assert.isFalse( updatedSdcList.isEmpty() );
         Assert.isNotNull(updatedSdcList[0].Result__c);
-        Assert.areEqual(RESULT_OK, updatedSdcList[0].Result__c);
+        Assert.areEqual(TicketingHegeoServiceMock.RESULT_OK, updatedSdcList[0].Result__c);
         Assert.isNotNull(updatedSdcList[0].SendDate__c);
 
         //Se comprueba tambien que se hayan lincado los documentos adjuntos
@@ -138,10 +134,10 @@ private with sharing class Test_SendDocCanalUnicoAction
         sendObj.ContentDocIds__c='[]';
 
         TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
-            HTTP_CODE_OK,
-            RESULT_OK,
-            CONTENT_TYPE,
-            RESPONSE_BODY,
+            TicketingHegeoServiceMock.HTTP_CODE_OK,
+            TicketingHegeoServiceMock.RESULT_OK,
+            TicketingHegeoServiceMock.HEADER_CONTENT_TYPE,
+            TicketingHegeoServiceMock.RESPONSE_BODY,
             false
             );
         SendDocCanalUnicoAction.SendDocCanalUnicoRequest req = new SendDocCanalUnicoAction.SendDocCanalUnicoRequest();
@@ -156,7 +152,7 @@ private with sharing class Test_SendDocCanalUnicoAction
         List<SendDocCUInfo__c> updatedSdcList = [SELECT Result__c, SendDate__c FROM SendDocCUInfo__c];
         Assert.isFalse( updatedSdcList.isEmpty() );
         Assert.isNotNull(updatedSdcList[0].Result__c);
-        Assert.areEqual(RESULT_OK, updatedSdcList[0].Result__c);
+        Assert.areEqual(TicketingHegeoServiceMock.RESULT_OK, updatedSdcList[0].Result__c);
         Assert.isNotNull(updatedSdcList[0].SendDate__c);
     }
 

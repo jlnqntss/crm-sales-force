@@ -12,7 +12,6 @@ public with sharing class SendDocCanalUnicoAction
     private static final String ALL_USERS_VISIBILITY = 'AllUsers';
     private static final String KO = 'KO';
     private static final String EVENT_PETICION_INFO = 'PeticionInfo';
-    private static final String EVENT_REASON_OTROS = 'MRPOtros';
 
     @InvocableMethod(
         label='Send documentation'
@@ -44,18 +43,12 @@ public with sharing class SendDocCanalUnicoAction
         Case relatedCase = new CasesSelector().getByIdWithZDAInfo(caseId);
 
         //Se construye la peticion
-        CanalUnicoUpdateVsegTicketRequest calloutRequest = new CanalUnicoUpdateVsegTicketRequest();
-        calloutRequest.ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
-        calloutRequest.ticket.ticketId = relatedCase.CuTicketId__c;
-        calloutRequest.ticket.externalTicketId = '' + relatedCase.CaseNumber;
+        CanalUnicoUpdateVsegTicketRequest calloutRequest = TicketingHegeoUtil.createBaseRequestByCase(relatedCase);
         calloutRequest.ticket.event = ZdaCuRequestAvailableEventValues__mdt.getInstance(EVENT_PETICION_INFO)?.Value__c; //envio de documentacion, siempre 4
-        calloutRequest.ticket.agent = relatedCase.Owner.Name;
-        calloutRequest.ticket.eventReason = ZdaCuReqAvailableEventReasonValues__mdt.getInstance(EVENT_REASON_OTROS)?.Value__c; //OBLIGATORIO
         if ( String.isNotBlank(comments) )
         {
             calloutRequest.ticket.eventDesc = comments;
         }
-        TicketingHegeoUtil.setStatusSubstatusByCase(calloutRequest, relatedCase);
         List<ContentDocumentLink> linksToCreate = new List<ContentDocumentLink>();
         if ( !fileList.isEmpty() )
         {
