@@ -29,6 +29,8 @@ public with sharing class TicketingHegeoUtil
     private static final String SUBSTATUS_SIN = 'SinSubestado';
     private static final String SUBSTATUS_ESPECIALISTA = 'EnEspecialista';
     private static final String STR_PENDIENTE_DE = 'Pendiente de ';
+    private static final String EVENT_INICIO_TRAMITE = 'InicioTramite';
+    private static final String EVENT_REASON_OTROS = 'MRPOtros';
 
     private static final Map<String, String> caseStatusCuStatusRelationship = new Map<String, String>
     {
@@ -111,5 +113,46 @@ public with sharing class TicketingHegeoUtil
             request.ticket.subStatusDesc = STR_PENDIENTE_DE+c.PendingBy__c;
         }
         
+    }
+
+    /**
+     * Envia una peticion para a canal unico conforme el status de un caso ha
+     * cambiado a Asignado (En tramite para ellos)
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param relatedCase caso relacionado con la peticion a enviar
+     * @return CanalUnicoUpdateVsegTicketRequest objeto request construido
+     */
+    @future(callout=true)
+    public static void sendRequestStatusChangeToAssigned(Id relatedCaseId)
+    {
+        Case relatedCase = new CasesSelector().getByIdWithZDAInfo(relatedCaseId);
+        CanalUnicoUpdateVsegTicketRequest calloutRequest = createBaseRequestByCase(relatedCase);
+        calloutRequest.ticket.event = ZdaCuRequestAvailableEventValues__mdt.getInstance(EVENT_INICIO_TRAMITE)?.Value__c;
+
+        TicketingHegeoService.updateVsegTicket(calloutRequest);
+    }
+
+    /**
+     * Crea una peticion para enviar a canal unico con los que se rellenan a partir de la informacion
+     * del caso relacionado. A ESTE OBJETO AUN FALTARA POR INFORMAR EL CAMPO calloutRequest.ticket.event
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param relatedCase caso relacionado con la peticion a enviar
+     * @return CanalUnicoUpdateVsegTicketRequest objeto request construido
+     */
+    public static CanalUnicoUpdateVsegTicketRequest createBaseRequestByCase(Case relatedCase)
+    {
+        CanalUnicoUpdateVsegTicketRequest calloutRequest = new CanalUnicoUpdateVsegTicketRequest();
+        calloutRequest.ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
+        calloutRequest.ticket.ticketId = relatedCase.CuTicketId__c;
+        calloutRequest.ticket.externalTicketId = '' + relatedCase.CaseNumber;
+        setStatusSubstatusByCase(calloutRequest, relatedCase);
+        calloutRequest.ticket.agent = relatedCase.Owner.Name;
+        calloutRequest.ticket.eventReason = ZdaCuReqAvailableEventReasonValues__mdt.getInstance(EVENT_REASON_OTROS)?.Value__c;
+
+        return calloutRequest;
     }
 }

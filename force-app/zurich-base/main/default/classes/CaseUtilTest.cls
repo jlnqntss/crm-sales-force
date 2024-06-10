@@ -1458,6 +1458,40 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Se testea el metodo notifCuCaseAssigned
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     */
+    @isTest
+    private static void test_notifCuCaseAssigned()
+    {
+        Case caseToTest = TestDataFactory.generateZDACases(1)[0];
+        caseToTest.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+        caseToTest.Status = CaseUtil.CASE_NUEVO;
+        insert caseToTest;
+
+        caseToTest.Status = CaseUtil.CASE_ASIGNADO;
+
+        TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
+            TicketingHegeoServiceMock.HTTP_CODE_OK,
+            TicketingHegeoServiceMock.RESULT_OK,
+            TicketingHegeoServiceMock.HEADER_CONTENT_TYPE,
+            TicketingHegeoServiceMock.RESPONSE_BODY,
+            false
+        );
+
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, mock);
+        update caseToTest;
+        Test.stopTest();
+
+        //Se comprueba que no hay errores en la peticion
+        List<Error_Log__c> foundErrors = [SELECT Id FROM Error_Log__c WHERE Source_Class__c = : TicketingHegeoService.class.getName() AND Source_Method__c = 'updateVsegTicket'];
+        Assert.isTrue( foundErrors.isEmpty() );
+    }
+
+    /**
      * Se valida que el metodo relateCaseToCustomerByNifCif relaciona correctamente el caso con
      * el cliente mediado (cuenta.NationalId__c = caso.CustomerNifCif__c) y establece el campo
      * MediatedCustomer__c en caso de encontrar relacion. Para ello:

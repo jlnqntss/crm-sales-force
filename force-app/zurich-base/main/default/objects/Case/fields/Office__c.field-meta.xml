@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>EnlaceZonaZurich__c</fullName>
+    <fullName>Office__c</fullName>
+    <description>Oficina para casos ZDA.</description>
     <externalId>false</externalId>
-    <label>Enlace Zona Zurich</label>
+    <label>Office</label>
+    <length>255</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
-    <type>Url</type>
+    <type>Text</type>
+    <unique>false</unique>
 </CustomField>

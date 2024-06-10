@@ -1562,11 +1562,11 @@
             <valueName>Felicitación</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
             <valueName>Comparativa / Descuento de pólizas</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Cotización</controllingFieldValue>
             <valueName>Comparativa pólizas</valueName>
         </valueSettings>
         <valueSettings>

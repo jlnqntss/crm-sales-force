@@ -6,4 +6,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <label>USP_Supervisor Muted</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewCaseInteraction</name>
+    </userPermissions>
 </MutingPermissionSet>

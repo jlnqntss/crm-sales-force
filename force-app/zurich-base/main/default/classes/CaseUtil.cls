@@ -2042,15 +2042,25 @@ public with sharing class CaseUtil
      */
     public static void postProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
     {
-        Notification notif = new Notification(Notification.notificationType.CaseTrackingAnswered);
-        String content;
+        List<Case> casesToNotify = new List<Case>();
         for(Case updatedCase : updatedCases)
         {
             if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
             {
-                content = Label.ZDAPartnerSupportAnsweredBody + BLANK_SPACE + updatedCase.CaseNumber;
-                //si han contestado una peticion de soporte, se le notifica al propietario del caso
-                notif.send(updatedCase.Id, new Set<String> {updatedCase.OwnerId}, Label.ZDAPartnerSupportAnsweredTitle, content);
+                casesToNotify.add(updatedCase);
+            }
+        }
+
+        if (!casesToNotify.isEmpty())
+        {
+            String content;
+            //Se hace en un bucle aparte porque los Guest Users no tienen acceso al objeto CustomNotificationType
+            //y al inicializar el objeto 'notif' da error
+            Notification notif = new Notification(Notification.notificationType.CaseTrackingAnswered);
+            for (Case caseToNotify : casesToNotify)
+            {
+                content = Label.ZDAPartnerSupportAnsweredBody + BLANK_SPACE + caseToNotify.CaseNumber;
+                notif.send(caseToNotify.Id, new Set<String> {caseToNotify.OwnerId}, Label.ZDAPartnerSupportAnsweredTitle, content);
             }
         }
     }
@@ -2067,6 +2077,41 @@ public with sharing class CaseUtil
     private static Boolean isZDANewReasonAnswered(Case updatedCase, Case oldCase)
     {
         return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.ReasonId__c != oldCase.ReasonId__c && updatedCase.ReasonId__c == ZDA_REASON_RESPUESTA_SOPORTE;
+    }
+
+    /**
+     * Para los casos de ZDA que pasan de nuevo a asignado recibidos via canal unico, envia
+     * notificacion a Canal unico informando de que el caso esta en estado Tramite
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void notifCuCaseAssigned(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        for(Case updatedCase : updatedCases)
+        {
+            if ( isZDAAssignedAndCu( updatedCase, oldMap.get(updatedCase.Id) ) )
+            {
+                TicketingHegeoUtil.sendRequestStatusChangeToAssigned(updatedCase.Id);
+            }
+        }
+    }
+
+    /**
+     * Comprueba si el caso es de ZDA, con origen canal unico y pasa de nuevo a asignado
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param updatedCase caso actualizado
+     * @param oldCase caso antes de la actualizacion
+     * @return true si es un caso de ZDA, de canal unico y pasa de nuevo a asignado; false en caso contrario
+     */
+    private static Boolean isZDAAssignedAndCu(Case updatedCase, Case oldCase)
+    {
+        return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.Origin == ORIGIN_CANAL_UNICO &&
+            updatedCase.Status == CASE_ASIGNADO && oldCase.Status == CASE_NUEVO;
     }
 
     /**

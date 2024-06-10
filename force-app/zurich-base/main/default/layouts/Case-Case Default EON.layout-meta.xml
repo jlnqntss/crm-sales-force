@@ -428,6 +428,9 @@
         <relatedList>RelatedFileList</relatedList>
     </relatedLists>
     <relatedLists>
+        <relatedList>RelatedEmailMessageList</relatedList>
+    </relatedLists>
+    <relatedLists>
         <fields>MergedRecord.CaseNumber</fields>
         <fields>MergedRecord.Subject</fields>
         <fields>LatestMaster.CaseNumber</fields>
