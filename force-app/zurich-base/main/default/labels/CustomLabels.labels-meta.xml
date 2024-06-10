@@ -3001,11 +3001,11 @@ Create the record and try again.</value>
         <value>Ongoing, terminated or invalid campaign</value>
     </labels>
     <labels>
-        <fullName>ZRM_DownloadFile</fullName>
+        <fullName>ZRM_Files_DownloadFile</fullName>
         <categories>ZRM,Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_DownloadFile</shortDescription>
+        <shortDescription>ZRM_Files_DownloadFile</shortDescription>
         <value>Download</value>
     </labels>
     <labels>
@@ -3017,35 +3017,67 @@ Create the record and try again.</value>
         <value>Files</value>
     </labels>
     <labels>
-        <fullName>ZRM_NewFile</fullName>
+        <fullName>ZRM_Files_DeleteConfirmMessage</fullName>
         <categories>ZRM,Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_NewFile</shortDescription>
+        <shortDescription>ZRM_Files_DeleteConfirmMessage</shortDescription>
+        <value>Are you sure you want to delete this file?</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Files_DeleteConfirmLabel</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Files_DeleteConfirmLabel</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Files_DeleteConfirmSuccess</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Files_DeleteConfirmSuccess</shortDescription>
+        <value>File has been deleted successfully</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Files_LWC_Error</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_</shortDescription>
+        <value>An error has occurred, contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Files_NewFile</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Files_NewFile</shortDescription>
         <value>New File</value>
     </labels>
     <labels>
-        <fullName>ZRM_Refresh</fullName>
+        <fullName>ZRM_Files_Refresh</fullName>
         <categories>ZRM,Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_Refresh</shortDescription>
+        <shortDescription>ZRM_Files_Refresh</shortDescription>
         <value>Files list successfully refreshed</value>
     </labels>
     <labels>
-        <fullName>ZRM_Success</fullName>
+        <fullName>ZRM_Files_Success</fullName>
         <categories>ZRM,Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_Success</shortDescription>
+        <shortDescription>ZRM_Files_Success</shortDescription>
         <value>Success</value>
     </labels>
     <labels>
-        <fullName>ZRM_UploadSuccess</fullName>
+        <fullName>ZRM_Files_UploadSuccess</fullName>
         <categories>ZRM, Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_UploadSuccess</shortDescription>
+        <shortDescription>ZRM_Files_UploadSuccess</shortDescription>
         <value>file(s) uploaded successfully</value>
     </labels>
     <labels>

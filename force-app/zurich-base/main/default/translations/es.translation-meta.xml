@@ -6281,25 +6281,41 @@ Cree el acta y vuelva a intentarlo.</label>
         <label>Archivos</label>
         <name>ZRM_FilesTitle</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
+        <label>¿Desea eliminar el fichero seleccionado?</label>
+        <name>ZRM_Files_DeleteConfirmMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Eliminar</label>
+        <name>ZRM_Files_DeleteConfirmLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>Archivo eliminado correctamente</label>
+        <name>ZRM_Files_DeleteConfirmSuccess</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha producido un error, contacte con su administrador</label>
+        <name>ZRM_Files_LWC_Error</name>
+    </customLabels>
+    <customLabels>
         <label>Subir Fichero</label>
-        <name>ZRM_NewFile</name>
+        <name>ZRM_Files_NewFile</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
         <label>Descargar</label>
-        <name>ZRM_DownloadFile</name>
+        <name>ZRM_Files_DownloadFile</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
         <label>Éxito</label>
-        <name>ZRM_Success</name>
+        <name>ZRM_Files_Success</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
         <label>Se ha refrescado la lista de ficheros con éxito</label>
-        <name>ZRM_Refresh</name>
+        <name>ZRM_Files_Refresh</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
         <label> archivo(s) cargado(s) correctamente</label>
-        <name>ZRM_UploadSuccess</name>
+        <name>ZRM_Files_UploadSuccess</name>
     </customLabels>
     <customLabels>
         <label>Añadir</label>

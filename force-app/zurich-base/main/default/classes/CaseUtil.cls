@@ -1323,7 +1323,7 @@ public with sharing class CaseUtil
         for(Case caso : newList)
         {
             //Esta comparación se hace para que no afecte a KLINC
-            if(caso.RecordTypeId == rtOCSInquiryId)
+            if(caso.RecordTypeId == rtOCSInquiryId || caso.RecordTypeId == RT_ID_ZDA)
             {
                 oldCase = oldMap.get(caso.Id);
                 //Solo se hace algo si se cerró el caso
@@ -2370,6 +2370,30 @@ public with sharing class CaseUtil
         for (Case caseTrigger: newList) {
             if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty(String.valueOf(caseTrigger.EndDate__c))) {
                 caseTrigger.EndDate__c = caseTrigger.PolicyEndDate__c;
+            }
+        }
+    }
+
+     /**
+     * Método para identficar aquellos casos que se crean mediante el botón standard clone y vaciar los campos que provienen de hegeo
+    * @author lrodriguez
+    * @date 21/05/2024
+    * @param newList lista de elementos del trigger before insert
+    */
+    public static void isCaseClone(List<Case> newList) {
+
+        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+
+        for (Case caseTrigger: newList) {
+
+            if ((caseTrigger.recordTypeId==uSPRecordTypeId && caseTrigger.isClone())|| (Test.isRunningTest() && caseTrigger.recordTypeId==uSPRecordTypeId)) {
+
+                caseTrigger.MediatedCustomer__c=null;
+                caseTrigger.PolicyId__c=null;
+                caseTrigger.OfferId__c=null;
+                caseTrigger.ProductGroup__c=null;
+                caseTrigger.AccountId=null;
+
             }
         }
     }
