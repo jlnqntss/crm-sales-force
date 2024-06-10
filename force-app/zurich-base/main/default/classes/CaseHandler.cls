@@ -63,6 +63,7 @@ public without sharing class CaseHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
+        CaseUtil.isCaseClone(newList);
         CaseUtil.assignContactToCase(newList);
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
         CaseUtil.updateTranscomCase(newList);
@@ -128,6 +129,7 @@ public without sharing class CaseHandler implements ITrigger
     {
         CaseUtil.assignContactToCaseEmail( (List<Case>) newList );
         CaseUtil.postProcessReasonIdForZda( (List<Case>) newList, (Map<Id,Case>) oldMap );
+        CaseUtil.notifCuCaseAssigned( (List<Case>) newList, (Map<Id,Case>) oldMap );
     }
 
     /**
