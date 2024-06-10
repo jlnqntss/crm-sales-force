@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ZRM_Casos_CC</fullName>
+    <fullName>ZRM_Casos_CC_pendientes_asignar_agente</fullName>
     <columns>CASES.CASE_NUMBER</columns>
     <columns>ACCOUNT.NAME</columns>
     <columns>IntermediaryOwner__c</columns>
@@ -28,15 +28,11 @@
     </filters>
     <filters>
         <field>CASES.CREATED_DATE_DATE_ONLY</field>
-        <operation>lessThan</operation>
+        <operation>greaterOrEqual</operation>
         <value>LAST_N_DAYS:4</value>
     </filters>
-    <label>Casos asignados CC</label>
+    <label>Casos CC pendientes asignar agente</label>
     <sharedTo>
-        <group>Administrators</group>
-        <group>Ventas_Advisor</group>
         <group>Ventas_Agente_Mediador</group>
-        <group>Ventas_Director</group>
-        <group>Ventas_Supervisor</group>
     </sharedTo>
 </ListView>
