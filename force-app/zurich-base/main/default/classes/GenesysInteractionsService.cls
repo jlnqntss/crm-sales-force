@@ -49,11 +49,21 @@ public with sharing class GenesysInteractionsService
     static final String PARTNER_SF_CODE = 'Partner__r.PartnerSFCode__c';
     static final String PARTNER_GRANDPARENT_BUSINESS_CODE = 'Partner__r.GrandparentBusinessName__c';
 
-    static final String TIPO_POLIZA_COMERCIOS = 'COMERCIOS';
-    static final String TIPO_POLIZA_HOGAR = 'HOGAR';
-    static final String TIPO_POLIZA_INMUEBLES = 'INMUEBLES';
-    static final String TIPO_POLIZA_PYMES = 'PYMES';
+    //Refactorización: se trasladan variables susceptibles de cambio a custom metadata
+    static Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
     
+    @TestVisible
+    static final String CONSULTA_POLIZA_HOGAR = configValues.get('DataAction_Intent_Hogar');
+    @TestVisible
+    static final String CONSULTA_POLIZA_COMERCIOS = configValues.get('DataAction_Intent_Comercios');
+    @TestVisible
+    static final String CONSULTA_POLIZA_PYMES = configValues.get('DataAction_Intent_PYMES');
+
+    static final String TIPO_POLIZA_COMERCIOS = configValues.get('Policy_PolicyType_COMERCIOS');
+    static final String TIPO_POLIZA_HOGAR = configValues.get('Policy_PolicyType_HOGAR');
+    static final String TIPO_POLIZA_INMUEBLES = configValues.get('Policy_PolicyType_INMUEBLES');
+    static final String TIPO_POLIZA_PYMES = configValues.get('Policy_PolicyType_PYMES');
+
     
     //#region Métodos públicos
 
@@ -2008,106 +2018,81 @@ public with sharing class GenesysInteractionsService
            }
         }
 
+        /**
+         * Devuelve el sinestro preferente para la consulta en función del 
+         *
+         * @author jfherrero
+         * @date 22-05-2024
+         * @last modified on  : 27-05-2024
+         * @last modified by  : jfherrero
+         */
         public OpenedClaim preferredClaim
         {
             get
             {
-                switch on intent {
-                    when 'CONS_HOG'
+                if(total > 0 )
+                {
+                    if (intent == GenesysInteractionsService.CONSULTA_POLIZA_HOGAR)
                     {
-                        return getClaimHogar();
-                    }	
-                    when 'CONS_COM'
-                    {
-                        return getClaimComercio();
+                        return getPreferredClaimByIntent(new List<string>{TIPO_POLIZA_HOGAR, TIPO_POLIZA_INMUEBLES,
+                                                            TIPO_POLIZA_COMERCIOS, TIPO_POLIZA_PYMES}, true);
                     }
-                    when 'CONS_PYMS'
+                    else if (intent == GenesysInteractionsService.CONSULTA_POLIZA_COMERCIOS)
                     {
-                        return getClaimPYMES();
+                        return getPreferredClaimByIntent(new List<string>{TIPO_POLIZA_INMUEBLES, TIPO_POLIZA_HOGAR,
+                                                            TIPO_POLIZA_COMERCIOS, TIPO_POLIZA_PYMES}, true);
                     }
-                    when else
+                    else if (intent == GenesysInteractionsService.CONSULTA_POLIZA_PYMES)
                     {
-                        if(total == 0 || (total != 1 && hasDifferentOwners))
+                        return getPreferredClaimByIntent(new List<string>{TIPO_POLIZA_PYMES, TIPO_POLIZA_COMERCIOS,
+                                                            TIPO_POLIZA_INMUEBLES, TIPO_POLIZA_HOGAR}, true);
+                    }
+                    else
+                    {
+                        if(total != 1 && hasDifferentOwners)
                         {
                             return null;
                         }
-
+                        
                         return this.claims[0];
                     }
-                }      
+                }
+                else
+                {
+                    return null;
+                }    
             }
         }
 
-        private OpenedClaim getClaimHogar ()
+        /**
+         * Devuelve el sinestro preferente para la consulta en función del 
+         *
+         * @author jfherrero
+         * @date 22-05-2024
+         * @input List<String> policyTypeList - Lista de tipos de póliza por orden de preferencia
+         * @input Boolean returnAtLeastOne - Indica si devolver una póliza de otro tipo si no se encuentra del listado
+         * @output OpenedClaim - OpenedClaim que va a figurar como siniestro preferente
+         */
+        @TestVisible
+        private OpenedClaim getPreferredClaimByIntent (List<String> policyTypeList, Boolean returnAtLeastOne)
         {
-            if (this.byType.get(TIPO_POLIZA_HOGAR) != null && this.byType.get(TIPO_POLIZA_HOGAR).size()>0)
+            for (String policyType : policyTypeList)
             {
-                return this.byType.get(TIPO_POLIZA_HOGAR)[0];
+                if (this.byType.get(policyType) != null && this.byType.get(policyType).size()>0)
+                {
+                    return this.byType.get(policyType)[0];
+                }
             }
-            else if (this.byType.get(TIPO_POLIZA_INMUEBLES) != null && this.byType.get(TIPO_POLIZA_INMUEBLES).size()>0)
+
+            if(returnAtLeastOne)
             {
-                return this.byType.get(TIPO_POLIZA_INMUEBLES)[0];
-            }
-            else if (this.byType.get(TIPO_POLIZA_COMERCIOS) != null && this.byType.get(TIPO_POLIZA_COMERCIOS).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_COMERCIOS)[0];
-            }
-            else if (this.byType.get(TIPO_POLIZA_PYMES) != null && this.byType.get(TIPO_POLIZA_PYMES).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_PYMES)[0];
+                return this.claims[0];
             }
             else
             {
                 return null;
             }
-        }
-
-        private OpenedClaim getClaimComercio ()
-        {
-            if (this.byType.get(TIPO_POLIZA_INMUEBLES) != null && this.byType.get(TIPO_POLIZA_INMUEBLES).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_INMUEBLES)[0];
-            }
-            else if (this.byType.get(TIPO_POLIZA_HOGAR) != null && this.byType.get(TIPO_POLIZA_HOGAR).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_HOGAR)[0];
-            }
-            else if (this.byType.get(TIPO_POLIZA_COMERCIOS) != null && this.byType.get(TIPO_POLIZA_COMERCIOS).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_COMERCIOS)[0];
-            }
-            else if (this.byType.get(TIPO_POLIZA_PYMES) != null && this.byType.get(TIPO_POLIZA_PYMES).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_PYMES)[0];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private OpenedClaim getClaimPYMES ()
-        {
-            if (this.byType.get(TIPO_POLIZA_PYMES) != null && this.byType.get(TIPO_POLIZA_PYMES).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_PYMES)[0];
-            }
-            else if (this.byType.get(TIPO_POLIZA_COMERCIOS) != null && this.byType.get(TIPO_POLIZA_COMERCIOS).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_COMERCIOS)[0];
-            }
-            else if (this.byType.get(TIPO_POLIZA_INMUEBLES) != null && this.byType.get(TIPO_POLIZA_INMUEBLES).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_INMUEBLES)[0];
-            }
-            else if (this.byType.get(TIPO_POLIZA_HOGAR) != null && this.byType.get(TIPO_POLIZA_HOGAR).size()>0)
-            {
-                return this.byType.get(TIPO_POLIZA_HOGAR)[0];
-            }
-            else
-            {
-                return null;
-            }
+            
         }
 
         private List<OpenedClaim> claims;
