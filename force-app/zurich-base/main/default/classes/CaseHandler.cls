@@ -63,6 +63,7 @@ public without sharing class CaseHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
+        CaseUtil.isCaseClone(newList);
         CaseUtil.assignContactToCase(newList);
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
         CaseUtil.updateTranscomCase(newList);

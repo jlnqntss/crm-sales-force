@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Profile xmlns="http://soap.sforce.com/2006/04/metadata"> 
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ZDA User</fullName>
     <applicationVisibilities>
         <application>Klinc</application>
@@ -3432,12 +3432,12 @@
         <field>Account.SuscriptorDyO__c</field>
         <readable>false</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.SuscriptorPymes__c</field>
         <readable>false</readable>
     </fieldPermissions>
-	<fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.SuscriptorRC__c</field>
         <readable>false</readable>
@@ -5195,7 +5195,7 @@
     <layoutAssignments>
         <layout>Account-ZDA Intermediary</layout>
         <recordType>Account.Intermediary</recordType>
-    </layoutAssignments> 
+    </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Default SAM</layout>
         <recordType>Case.SAMInquiry</recordType>
@@ -5351,6 +5351,10 @@
     <layoutAssignments>
         <layout>PersonAccount-ZDA Lead</layout>
         <recordType>PersonAccount.Lead</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Activity</layout>
+        <recordType>Task.Activity</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>PlanComercial__c-Plan Comercial Layout</layout>

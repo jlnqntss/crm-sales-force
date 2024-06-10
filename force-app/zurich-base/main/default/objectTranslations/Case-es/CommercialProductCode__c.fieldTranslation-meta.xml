@@ -3,10 +3,6 @@
     <label>Producto comercial</label>
     <name>CommercialProductCode__c</name>
     <picklistValues>
-        <masterLabel>Pack Productos Empresa</masterLabel>
-        <translation></translation>
-    </picklistValues>
-    <picklistValues>
         <masterLabel>Protección Camiones Leasing Zurich (OFERTABLE)</masterLabel>
         <translation></translation>
     </picklistValues>

@@ -967,10 +967,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Pack Productos Empresa</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Protección Comercios y Oficinas BSSG %28OFERTABLE%29</fullName>
             <default>false</default>
         </values>
@@ -1521,31 +1517,15 @@
     <picklistValues>
         <picklist>Range__c</picklist>
         <values>
-            <fullName>Grandes empresas</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Motor</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>No Motor</fullName>
+            <fullName>Non Motor</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>PYMEs</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Particulares</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Todos</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Vida riesgo</fullName>
             <default>false</default>
         </values>
     </picklistValues>

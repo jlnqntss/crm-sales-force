@@ -478,11 +478,12 @@
         </quickActionListItems>
     </quickActionList>
     <relatedLists>
+        <excludeButtons>NewCase</excludeButtons>
         <fields>CASES.CASE_NUMBER</fields>
         <fields>OfferId__c</fields>
         <fields>Days_Open__c</fields>
-        <fields>PRODUCT.NAME</fields>
         <fields>Product_Name__c</fields>
+        <fields>PRODUCT.NAME</fields>
         <fields>Subtype__c</fields>
         <fields>OWNER_NAME</fields>
         <fields>CASES.STATUS</fields>

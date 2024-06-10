@@ -6600,6 +6600,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ExpirationDays__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.DocumentationHashId__c</field>
         <readable>true</readable>
@@ -10527,6 +10532,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>KPI__c.EstructuraUnificada__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KPI__c.FechaCalculo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
