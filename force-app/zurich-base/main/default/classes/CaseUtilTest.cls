@@ -2165,12 +2165,15 @@ private with sharing class CaseUtilTest
         insert uspCases;
         Test.stopTest();
 
-        List<Case> updatedRecords = [SELECT MediatedCustomer__c,OfferId__c,ProductGroup__c,PolicyId__c FROM Case WHERE Id =: uspCases[0].Id];
+        List<Case> updatedRecords = [SELECT MediatedCustomer__c,OfferId__c,ProductGroup__c,PolicyId__c,isCloneCase__c,IdCaseClone__c FROM Case WHERE Id =: uspCases[0].Id];
 
         System.assertEquals(null,updatedRecords[0].MediatedCustomer__c, 'El valor debería ser null');
         System.assertEquals(null,updatedRecords[0].OfferId__c, 'El valor debería ser null');
         System.assertEquals(null,updatedRecords[0].ProductGroup__c, 'El valor debería ser null');
         System.assertEquals(null,updatedRecords[0].PolicyId__c, 'El valor debería ser null');
+        System.assertEquals(true,updatedRecords[0].isCloneCase__c, 'El valor debería ser true');
+        System.assertNotEquals('',updatedRecords[0].IdCaseClone__c, 'El valor no debería ser null');
+
         
     }
 }
