@@ -1600,6 +1600,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Verificación</fullName>
             <default>false</default>
         </values>
@@ -1703,6 +1707,10 @@
         </values>
         <values>
             <fullName>Retención%2FCancelación%2FDesistimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestros</fullName>
             <default>false</default>
         </values>
         <values>
