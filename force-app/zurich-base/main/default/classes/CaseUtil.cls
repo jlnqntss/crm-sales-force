@@ -2457,6 +2457,8 @@ public with sharing class CaseUtil
                 caseTrigger.OfferId__c=null;
                 caseTrigger.ProductGroup__c=null;
                 caseTrigger.AccountId=null;
+                caseTrigger.isCloneCase__c=true;
+                caseTrigger.IdCaseClone__c= caseTrigger.getCloneSourceId();
 
             }
         }
