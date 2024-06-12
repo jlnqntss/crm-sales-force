@@ -9,10 +9,6 @@
         <name>Lead_Generation</name>
     </customApplications>
     <customApplications>
-        <label><!-- Lightning Buddy --></label>
-        <name>Lightning_Buddy</name>
-    </customApplications>
-    <customApplications>
         <label><!-- OCS --></label>
         <name>OCS</name>
     </customApplications>
@@ -5519,14 +5515,6 @@
     <customLabels>
         <label><!-- yes --></label>
         <name>et4ae5__yes</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- Close --></label>
-        <name>lightningbuddy__Close</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- Dont show this again --></label>
-        <name>lightningbuddy__Dont_show_this_again</name>
     </customLabels>
     <customLabels>
         <label>Lanzar encuesta</label>
