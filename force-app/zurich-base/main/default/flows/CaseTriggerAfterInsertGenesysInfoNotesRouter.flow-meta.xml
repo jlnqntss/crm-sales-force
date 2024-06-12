@@ -407,7 +407,7 @@
             <label>Encontrado</label>
         </rules>
     </decisions>
-    <description>Este flujo es ejecutado tras ser insertado un caso cuyo origen sea Nota INFO  (API: NoteINFO) o Web
+    <description>Este flujo es ejecutado tras ser insertado un caso cuyo origen sea Nota INFO  (API: NoteINFO), Web o Canal unico (ZDA)
 Se consulta en un sub-flujo la cola a la que debe ser enrutado.
 Se utiliza una acción de Apex para enviar el mensaje a Genesy sCloud.
 Se registra el resultado en una tarea relacionada al caso con el identificador de la interacción en Genesys Cloud.</description>
@@ -503,8 +503,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se registra el error en Salesforce con el detalle del mismo.</description>
         <name>CreateErrorLogAction</name>
         <label>Registrar error</label>
-        <locationX>2893</locationX>
-        <locationY>1740</locationY>
+        <locationX>1573</locationX>
+        <locationY>1956</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -612,7 +612,6 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <locationX>1309</locationX>
         <locationY>1848</locationY>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -812,6 +811,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <targetReference>Check_Origin</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
@@ -1037,6 +1037,12 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <name>EmailPropietarioCaso</name>
             <value>
                 <elementReference>$Record.Owner:User.Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>EmailPropietarioCasoPadre</name>
+            <value>
+                <elementReference>$Record.Parent.Owner:User.Email</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
