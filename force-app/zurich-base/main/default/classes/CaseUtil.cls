@@ -2461,4 +2461,37 @@ public with sharing class CaseUtil
             }
         }
     }
+
+    /**
+     * Método para identficar aquellos casos que cuyo propietario es un usuario
+    * @author lrodriguez
+    * @date 21/05/2024
+    * @param newList lista de elementos del trigger before insert
+    */
+    public static void isOwnerUser(List<Case> newList) {
+
+        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        String filterIdUser = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Start_Id_User');
+        String filterIdQueue = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Start_Id_Queue');
+        String idOwnerCase;
+
+        for (Case caseTrigger: newList) {
+
+            idOwnerCase=Id.valueOf(caseTrigger.OwnerId);
+
+            if ((caseTrigger.recordTypeId==uSPRecordTypeId && idOwnerCase.startsWith(filterIdUser) && caseTrigger.OwnerUser__c!=true )) {
+
+                caseTrigger.OwnerUser__c=true;
+
+            }
+
+            if ((caseTrigger.recordTypeId==uSPRecordTypeId && idOwnerCase.startsWith(filterIdQueue) && caseTrigger.OwnerUser__c==true )) {
+
+                caseTrigger.OwnerUser__c=false;
+
+            }
+
+        }
+
+    }
 }

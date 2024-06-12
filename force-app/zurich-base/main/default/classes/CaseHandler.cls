@@ -65,6 +65,7 @@ public without sharing class CaseHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
+        CaseUtil.isOwnerUser(newList);
         CaseUtil.isCaseClone(newList);
         CaseUtil.assignContactToCase(newList);
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
@@ -92,6 +93,7 @@ public without sharing class CaseHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        CaseUtil.isOwnerUser(newList);
         CaseUtil.markMilestonesCompletedWhenClose( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.handleCaseStatusChangeZRM( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.completeUSPMilestonesWhenClosedOrPending( (List<Case>) newList, (Map<Id,Case>) oldMap );

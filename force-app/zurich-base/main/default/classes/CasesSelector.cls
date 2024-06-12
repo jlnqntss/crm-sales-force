@@ -27,7 +27,13 @@ public with sharing class CasesSelector extends RecordsSelector
     public static final String CASE_ZRM_RT_NAME = 'ZRMInquiry';
     public static final String CASE_STATUS_WIN_CLOSED = 'Cerrado Ganado';
     public static final String CASE_STATUS_LOOSE_CLOSED = 'Cerrado Perdido';
-
+    String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+    String filterCallCenter = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Call_Center_USP');
+    String filterStatusCerrado = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Status_Cerrado');
+    String filterStatusPendiente = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Status_Pendiente');
+    String filterStatusCombinado = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Status_Combinado');
+    String filterTypeVenta = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Type_Venta');
+    String filterSourceMediator = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Source_Area_Mediator');
 
    
 
@@ -552,5 +558,33 @@ public with sharing class CasesSelector extends RecordsSelector
         {
             return '';    
         }
+    }
+
+    /**
+     * Método utilizado por Batch_CloseInteractions para definir el scope automaticamente (sin botón)
+     * @author lrodriguez6@seidor.es
+     * @date 04/06/2024
+     * @return List<Case> que se va a lanzar en el batch
+     */
+    public List<Case> getCasesToCloseInteractionsAutomatic()
+    {
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.Id
+        })
+        .addConditionEq(Case.RecordTypeId,uSPRecordTypeId)
+        .addConditionEq(Case.CloseByBatch__c,false)
+        .addConditionEq(Case.CallCenter__c,filterCallCenter)
+        .addConditionNotEq(Case.Status,filterStatusCerrado)
+        .addConditionNotEq(Case.Status,filterStatusPendiente)
+        .addConditionNotEq(Case.Status,filterStatusCombinado)
+        .addConditionEq(Case.AutomaticClosing__c,false)
+        .addConditionEq(Case.InteractionStatus__c,false)
+        .addConditionNotEq(Case.Type,filterTypeVenta)
+        .addConditionEq(Case.OwnerUser__c,true)
+        .addConditionEq(Case.SourceArea__c,filterSourceMediator);
+        
+
+        return (List<Case>) this.baseQuery.run();
+
     }
 }
