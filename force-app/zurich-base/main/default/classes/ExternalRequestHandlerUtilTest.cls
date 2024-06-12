@@ -265,7 +265,6 @@ private with sharing class ExternalRequestHandlerUtilTest
         Integer totalExternalRequests = NUM_ER_FORM_INC;
         
         System.assertEquals(totalExternalRequests,externalRequestListUpdated.size(),'No se han procesado todas las external request');
-      //  System.assertEquals(1,errors.size(),'No se han generado los errores correctamente'); SAL-204
     }
 
     /**
