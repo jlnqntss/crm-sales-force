@@ -1270,6 +1270,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.LinkZonaZurich__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.MediatedCustomer__c</field>
         <readable>true</readable>
@@ -1577,6 +1582,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.SuppliedEmail</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.TendencyToEscape__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3582,6 +3592,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Policy__c.TechnicalCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Policy__c.TendencyToEscape__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

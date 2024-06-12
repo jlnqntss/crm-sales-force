@@ -531,6 +531,13 @@
         <value>Número no válido</value>
     </labels>
     <labels>
+        <fullName>ObjectNameMandatory</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ObjectNameMandatory</shortDescription>
+        <value>Empty or null object name not allowed</value>
+    </labels>
+    <labels>
         <fullName>ObjetoVacio</fullName>
         <categories>WebService Parser</categories>
         <language>en_US</language>
@@ -1027,6 +1034,238 @@ Related fields: [{3}]</value>
         <protected>false</protected>
         <shortDescription>documentaciónAñadida</shortDescription>
         <value>Documentación subida por cliente</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_GestionDeNegocio</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_GestionDeNegocio</shortDescription>
+        <value>Business management: documentation, business code, product, rate...</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_Mejora</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_Mejora</shortDescription>
+        <value>Improvement in processes/systems/communication</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_Saneamiento</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_Saneamiento</shortDescription>
+        <value>Sanitation</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN2_Suscripci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN2_Suscripción</shortDescription>
+        <value>Subscription: Competency Management, CAR, actions associated with a policy or portfolio</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Actividad_comercial</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Actividad_comercial</shortDescription>
+        <value>Comercial activity</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3C_digo_de_negocio</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Código_de_negocio</shortDescription>
+        <value>Business code</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Comunicaciones</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Comunicaciones</shortDescription>
+        <value>Communications</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Conectividad</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Conectividad</shortDescription>
+        <value>Connectivity</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_CAR_Cartera_Descuentos_renovaci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_CAR_Cartera/Descuentos_renovación</shortDescription>
+        <value>Consult CAR Portfolio/Renewal discounts</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_motivo_saneamiento</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_motivo_saneamiento</shortDescription>
+        <value>Sanitation reason</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_prima_de_renovaci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_prima_de_renovación</shortDescription>
+        <value>Renewal premium consultation</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Consulta_reemplazo</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Consulta_reemplazo</shortDescription>
+        <value>Check replacements</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Contrataci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Contratación</shortDescription>
+        <value>Hiring</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Documentaci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Documentación</shortDescription>
+        <value>Documentation</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Expats</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Expats</shortDescription>
+        <value>Expats</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Gesti_n_de_cartera</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Gestión_de_cartera</shortDescription>
+        <value>Portfolio management</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Gesti_n_de_competencias</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Gestión_de_competencias</shortDescription>
+        <value>Competence Management</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Incidencias_cartera</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Incidencias_cartera</shortDescription>
+        <value>Portfolio incidents</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Incidencias_de_saneamiento</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Incidencias_de_saneamiento</shortDescription>
+        <value>Incidence</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Otros</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Otros</shortDescription>
+        <value>Others</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Otros_consultas</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Otros_consultas</shortDescription>
+        <value>Other consultations</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Producto</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Producto</shortDescription>
+        <value>Product</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Recibos_y_administraci_n</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Recibos_y_administración</shortDescription>
+        <value>Receipts and administration</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Saldo_RN</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Saldo_RN</shortDescription>
+        <value>RN Balance</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Saldo_mediador</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Saldo_mediador</shortDescription>
+        <value>Intermediary balance</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Siniestros</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Siniestros</shortDescription>
+        <value>Claims</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Sistemas</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Sistemas</shortDescription>
+        <value>Systems</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Tarifa</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Tarifa</shortDescription>
+        <value>Fee</value>
+    </labels>
+    <labels>
+        <fullName>SDM_EquiposMercado_TypeN3Uso_saldo_CAR_Director_Territorial</fullName>
+        <categories>SDM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SDM_EquiposMercado_TypeN3Uso_saldo_CAR_Director_Territorial</shortDescription>
+        <value>CAR balance use Territorial Director</value>
     </labels>
     <labels>
         <fullName>SDM_PlanAnual_ButtonCancel</fullName>
@@ -2457,7 +2696,7 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>ZDAScaledCaseAnsweredBody</shortDescription>
         <value>You have received a response to the case support:</value>
-    </labels>    
+    </labels>
     <labels>
         <fullName>ZDANotAllowedCloseScaledWithoutResponse</fullName>
         <categories>ZDA</categories>
@@ -2465,6 +2704,50 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>ZDANotAllowedCloseScaledWithoutResponse</shortDescription>
         <value>The response must be reported to close an escalation</value>
+    </labels>
+    <labels>
+        <fullName>ZDACloseCaseFlowNotAllowedMsg</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDACloseCaseFlowNotAllowedMsg</shortDescription>
+        <value>In order to close a case it musts meet the following requirements:
+- Must be from ZDA
+- Origin must be Canal unico
+- Status is Assigned, Answered or pending partner
+- The case must be classified</value>
+    </labels>
+    <labels>
+        <fullName>ZDAMaxAttachmentSizeMsg</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAMaxAttachmentSizeMsg</shortDescription>
+        <value>Attach file(s) (the total size of attachments cannot exceed #fileSizeReplacement#Mb)</value>
+    </labels>
+    <labels>
+        <fullName>ZDAHoverAttachmentsMsg</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAHoverAttachmentsMsg</shortDescription>
+        <value>If you want to attach more than one file, you must attach all of them at the same time</value>
+    </labels>
+    <labels>
+        <fullName>ZDAErrorMaxAttachmentExceededMsg</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAErrorMaxAttachmentExceededMsg</shortDescription>
+        <value>The maximum supported attachment size has been exceeded</value>
+    </labels>
+    <labels>
+        <fullName>ZDAAttachedFileNamesLbl</fullName>
+        <categories>ZDA</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZDAAttachedFileNamesLbl</shortDescription>
+        <value>Attached files: #attachedFileNames#</value>
     </labels>
     <labels>
         <fullName>OfferSalesStageValidationClosedWonMessage</fullName>
@@ -2505,6 +2788,14 @@ Create the record and try again.</value>
         <protected>false</protected>
         <shortDescription>ZDAVsegTicketRequestError</shortDescription>
         <value>An error occurred while sending, check the error log</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName</fullName>
+        <categories>ZRM</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName</shortDescription>
+        <value>Overview policy Portfolio Management Area</value>
     </labels>
     <labels>
         <fullName>ZRM_IntermAddCampMember_AddButton</fullName>
@@ -2942,11 +3233,11 @@ Create the record and try again.</value>
         <value>Ongoing, terminated or invalid campaign</value>
     </labels>
     <labels>
-        <fullName>ZRM_DownloadFile</fullName>
+        <fullName>ZRM_Files_DownloadFile</fullName>
         <categories>ZRM,Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_DownloadFile</shortDescription>
+        <shortDescription>ZRM_Files_DownloadFile</shortDescription>
         <value>Download</value>
     </labels>
     <labels>
@@ -2958,35 +3249,210 @@ Create the record and try again.</value>
         <value>Files</value>
     </labels>
     <labels>
-        <fullName>ZRM_NewFile</fullName>
+        <fullName>ZRM_Files_DeleteConfirmMessage</fullName>
         <categories>ZRM,Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_NewFile</shortDescription>
+        <shortDescription>ZRM_Files_DeleteConfirmMessage</shortDescription>
+        <value>Are you sure you want to delete this file?</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Files_DeleteConfirmLabel</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Files_DeleteConfirmLabel</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Files_DeleteConfirmSuccess</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Files_DeleteConfirmSuccess</shortDescription>
+        <value>File has been deleted successfully</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Files_LWC_Error</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_</shortDescription>
+        <value>An error has occurred, contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Files_NewFile</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Files_NewFile</shortDescription>
         <value>New File</value>
     </labels>
     <labels>
-        <fullName>ZRM_Refresh</fullName>
+        <fullName>ZRM_Files_Refresh</fullName>
         <categories>ZRM,Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_Refresh</shortDescription>
+        <shortDescription>ZRM_Files_Refresh</shortDescription>
         <value>Files list successfully refreshed</value>
     </labels>
     <labels>
-        <fullName>ZRM_Success</fullName>
+        <fullName>ZRM_Files_Success</fullName>
         <categories>ZRM,Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_Success</shortDescription>
+        <shortDescription>ZRM_Files_Success</shortDescription>
         <value>Success</value>
     </labels>
     <labels>
-        <fullName>ZRM_UploadSuccess</fullName>
+        <fullName>ZRM_Files_UploadSuccess</fullName>
         <categories>ZRM, Salesforce</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>ZRM_UploadSuccess</shortDescription>
+        <shortDescription>ZRM_Files_UploadSuccess</shortDescription>
         <value>file(s) uploaded successfully</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Previous</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Previous</shortDescription>
+        <value>Previous</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Next</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Next</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_WS_Error</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_WS_Error</shortDescription>
+        <value>There has been an error receiving the information, please contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_LWC_Error</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_LWC_Error</shortDescription>
+        <value>An error has occurred, contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Receipt</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Receipt</shortDescription>
+        <value>Receipt</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_EffectiveDate</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_EffectiveDate</shortDescription>
+        <value>Effective Date</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Policy</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Policy</shortDescription>
+        <value>Policy</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Company</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Company</shortDescription>
+        <value>Company</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Holder</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Holder</shortDescription>
+        <value>Holder</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Phone</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Phone</shortDescription>
+        <value>Phone</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Amount</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Amount</shortDescription>
+        <value>Amount</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_PaymentMethod</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_PaymentMethod</shortDescription>
+        <value>Payment Method</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_NumberOfReturns</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_NumberOfReturns</shortDescription>
+        <value>Number of Returns</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_DocumentDescriptionReceipt</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_DocumentDescriptionReceipt</shortDescription>
+        <value>Document Description Receipt</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_LastReturnDate</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_LastReturnDate</shortDescription>
+        <value>Last Return Date</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_BankShipmentDate</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_BankShipmentDate</shortDescription>
+        <value>Bank Shipment Date</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Column_Intermediary</fullName>
+        <categories>ZRM,Salesforce</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Column_Intermediary</shortDescription>
+        <value>Intermediary</value>
+    </labels>
+    <labels>
+        <fullName>ZRM_CampaignMember_Removed_From_Campaign</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Cliente eliminado de campaña</shortDescription>
+        <value>Client removed from campaign.</value>
     </labels>
 </CustomLabels>

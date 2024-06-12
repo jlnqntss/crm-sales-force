@@ -73,6 +73,10 @@
         <name>ClaimError</name>
     </customLabels>
     <customLabels>
+        <label>Cliente eliminado de campaña.</label>
+        <name>ZRM_CampaignMember_Removed_From_Campaign</name>
+    </customLabels>
+    <customLabels>
         <label><!-- Converted --></label>
         <name>Converted</name>
     </customLabels>
@@ -255,6 +259,10 @@
     <customLabels>
         <label><!-- NumeroNoValido --></label>
         <name>NumeroNoValido</name>
+    </customLabels>
+    <customLabels>
+        <label>Nombre de objeto vacío o nulo no permitido</label>
+        <name>ObjectNameMandatory</name>
     </customLabels>
     <customLabels>
         <label><!-- ObjetoVacio --></label>
@@ -5574,6 +5582,122 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>SDM_Acta_NoActaWarningToastMessage</name>
     </customLabels>
     <customLabels>
+        <label>Gestión del negocio: documentación, código negocio, producto, tarifa...</label>
+        <name>SDM_EquiposMercado_TypeN2_GestionDeNegocio</name>
+    </customLabels>
+    <customLabels>
+        <label>Mejora en procesos/sistemas/comunicación</label>
+        <name>SDM_EquiposMercado_TypeN2_Mejora</name>
+    </customLabels>
+    <customLabels>
+        <label>Saneamiento</label>
+        <name>SDM_EquiposMercado_TypeN2_Saneamiento</name>
+    </customLabels>
+    <customLabels>
+        <label>Suscripción: Gestión de Competencias, CAR, acciones asociadas a una póliza o cartera</label>
+        <name>SDM_EquiposMercado_TypeN2_Suscripci_n</name>
+    </customLabels>
+    <customLabels>
+        <label>Actividad comercial</label>
+        <name>SDM_EquiposMercado_TypeN3Actividad_comercial</name>
+    </customLabels>
+    <customLabels>
+        <label>Código de negocio</label>
+        <name>SDM_EquiposMercado_TypeN3C_digo_de_negocio</name>
+    </customLabels>
+    <customLabels>
+        <label>Comunicaciones</label>
+        <name>SDM_EquiposMercado_TypeN3Comunicaciones</name>
+    </customLabels>
+    <customLabels>
+        <label>Conectividad</label>
+        <name>SDM_EquiposMercado_TypeN3Conectividad</name>
+    </customLabels>
+    <customLabels>
+        <label>Consulta CAR Cartera/ Descuentos renovación</label>
+        <name>SDM_EquiposMercado_TypeN3Consulta_CAR_Cartera_Descuentos_renovaci_n</name>
+    </customLabels>
+    <customLabels>
+        <label>Motivo saneamiento</label>
+        <name>SDM_EquiposMercado_TypeN3Consulta_motivo_saneamiento</name>
+    </customLabels>
+    <customLabels>
+        <label>Consulta prima de renovación</label>
+        <name>SDM_EquiposMercado_TypeN3Consulta_prima_de_renovaci_n</name>
+    </customLabels>
+    <customLabels>
+        <label>Consulta reemplazos</label>
+        <name>SDM_EquiposMercado_TypeN3Consulta_reemplazo</name>
+    </customLabels>
+    <customLabels>
+        <label>Contratación</label>
+        <name>SDM_EquiposMercado_TypeN3Contrataci_n</name>
+    </customLabels>
+    <customLabels>
+        <label>Documentación</label>
+        <name>SDM_EquiposMercado_TypeN3Documentaci_n</name>
+    </customLabels>
+    <customLabels>
+        <label>Expats</label>
+        <name>SDM_EquiposMercado_TypeN3Expats</name>
+    </customLabels>
+    <customLabels>
+        <label>Gestión de cartera</label>
+        <name>SDM_EquiposMercado_TypeN3Gesti_n_de_cartera</name>
+    </customLabels>
+    <customLabels>
+        <label>Gestión de Competencias</label>
+        <name>SDM_EquiposMercado_TypeN3Gesti_n_de_competencias</name>
+    </customLabels>
+    <customLabels>
+        <label>Incidencias de cartera</label>
+        <name>SDM_EquiposMercado_TypeN3Incidencias_cartera</name>
+    </customLabels>
+    <customLabels>
+        <label>Incidencia</label>
+        <name>SDM_EquiposMercado_TypeN3Incidencias_de_saneamiento</name>
+    </customLabels>
+    <customLabels>
+        <label>Otros</label>
+        <name>SDM_EquiposMercado_TypeN3Otros</name>
+    </customLabels>
+    <customLabels>
+        <label>Otras consultas</label>
+        <name>SDM_EquiposMercado_TypeN3Otros_consultas</name>
+    </customLabels>
+    <customLabels>
+        <label>Producto</label>
+        <name>SDM_EquiposMercado_TypeN3Producto</name>
+    </customLabels>
+    <customLabels>
+        <label>Recibos y administración</label>
+        <name>SDM_EquiposMercado_TypeN3Recibos_y_administraci_n</name>
+    </customLabels>
+    <customLabels>
+        <label>Saldo RN</label>
+        <name>SDM_EquiposMercado_TypeN3Saldo_RN</name>
+    </customLabels>
+    <customLabels>
+        <label>Saldo mediador</label>
+        <name>SDM_EquiposMercado_TypeN3Saldo_mediador</name>
+    </customLabels>
+    <customLabels>
+        <label>Siniestros</label>
+        <name>SDM_EquiposMercado_TypeN3Siniestros</name>
+    </customLabels>
+    <customLabels>
+        <label>Sistemas</label>
+        <name>SDM_EquiposMercado_TypeN3Sistemas</name>
+    </customLabels>
+    <customLabels>
+        <label>Tarifa</label>
+        <name>SDM_EquiposMercado_TypeN3Tarifa</name>
+    </customLabels>
+    <customLabels>
+        <label>Uso saldo CAR Director Territorial</label>
+        <name>SDM_EquiposMercado_TypeN3Uso_saldo_CAR_Director_Territorial</name>
+    </customLabels>
+    <customLabels>
         <label>Detalle</label>
         <name>SDM_Home_RN_Dashboard_detail</name>
     </customLabels>
@@ -6226,6 +6350,30 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDANotAllowedCloseScaledWithoutResponse</name>
     </customLabels>
     <customLabels>
+        <label>Para poder cerrar un caso debe cumplir los siguientes requisitos:
+- Debe ser de ZDA
+- El origen debe ser Canal único
+- El estado es Asignado, Respondido o pendiente de partner
+- El caso debe estar tipificado</label>
+        <name>ZDACloseCaseFlowNotAllowedMsg</name>
+    </customLabels>
+    <customLabels>
+        <label>Adjuntar fichero/s (el tamaño total de los adjuntos no puede superar los #fileSizeReplacement#Mb)</label>
+        <name>ZDAMaxAttachmentSizeMsg</name>
+    </customLabels>
+    <customLabels>
+        <label>Si se desea adjuntar más de un archivo, se deben adjuntar todos al mismo tiempo</label>
+        <name>ZDAHoverAttachmentsMsg</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha excedido del tamaño máximo de adjuntos admitido</label>
+        <name>ZDAErrorMaxAttachmentExceededMsg</name>
+    </customLabels>
+    <customLabels>
+        <label>Ficheros adjuntos: #attachedFileNames#</label>
+        <name>ZDAAttachedFileNamesLbl</name>
+    </customLabels>
+    <customLabels>
         <label>[VR Oferta] No se puede modificar una oferta en etapa Cerrada Ganada</label>
         <name>OfferSalesStageValidationClosedWonMessage</name>
     </customLabels>
@@ -6242,28 +6390,48 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZDAVsegTicketRequestError</name>
     </customLabels>
     <customLabels>
+        <label>Consulta póliza Área gestión cartera</label>
+        <name>ZRM_Case_LinkZonaZurichHyperlinkFormulaField_FriendlyName</name>
+    </customLabels>
+    <customLabels>
         <label>Archivos</label>
         <name>ZRM_FilesTitle</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
+        <label>¿Desea eliminar el fichero seleccionado?</label>
+        <name>ZRM_Files_DeleteConfirmMessage</name>
+    </customLabels>
+    <customLabels>
+        <label>Eliminar</label>
+        <name>ZRM_Files_DeleteConfirmLabel</name>
+    </customLabels>
+    <customLabels>
+        <label>Archivo eliminado correctamente</label>
+        <name>ZRM_Files_DeleteConfirmSuccess</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha producido un error, contacte con su administrador</label>
+        <name>ZRM_Files_LWC_Error</name>
+    </customLabels>
+    <customLabels>
         <label>Subir Fichero</label>
-        <name>ZRM_NewFile</name>
+        <name>ZRM_Files_NewFile</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
         <label>Descargar</label>
-        <name>ZRM_DownloadFile</name>
+        <name>ZRM_Files_DownloadFile</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
         <label>Éxito</label>
-        <name>ZRM_Success</name>
+        <name>ZRM_Files_Success</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
         <label>Se ha refrescado la lista de ficheros con éxito</label>
-        <name>ZRM_Refresh</name>
+        <name>ZRM_Files_Refresh</name>
     </customLabels>
-	<customLabels>
+    <customLabels>
         <label> archivo(s) cargado(s) correctamente</label>
-        <name>ZRM_UploadSuccess</name>
+        <name>ZRM_Files_UploadSuccess</name>
     </customLabels>
     <customLabels>
         <label>Añadir</label>
@@ -6481,6 +6649,74 @@ Cree el acta y vuelva a intentarlo.</label>
         <label>Campaña en curso, finalizada o no válida</label>
         <name>ZRM_IntermediaryCampaignMembers_ToastOngoingCampaignErrorMessage</name>
     </customLabels>
+    <customLabels>
+        <label>Anterior</label>
+        <name>ZRM_Recibos_Previous</name>
+    </customLabels>
+    <customLabels>
+        <label>Siguiente</label>
+        <name>ZRM_Recibos_Next</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha producido un error al obtener la información, por favor contacte con su administrador</label>
+        <name>ZRM_Recibos_WS_Error</name>
+    </customLabels>
+    <customLabels>
+        <label>Se ha producido un error, contacte con su administrador</label>
+        <name>ZRM_Recibos_LWC_Error</name>
+    </customLabels>
+    <customLabels>
+        <label>Recibo</label>
+        <name>ZRM_Recibos_Column_Receipt</name>
+    </customLabels>
+    <customLabels>
+        <label>Efecto</label>
+        <name>ZRM_Recibos_Column_EffectiveDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Póliza</label>
+        <name>ZRM_Recibos_Column_Policy</name>
+    </customLabels>
+    <customLabels>
+        <label>Compañía</label>
+        <name>ZRM_Recibos_Column_Company</name>
+    </customLabels>
+    <customLabels>
+        <label>Tomador</label>
+        <name>ZRM_Recibos_Column_Holder</name>
+    </customLabels>
+    <customLabels>
+        <label>Teléfono</label>
+        <name>ZRM_Recibos_Column_Phone</name>
+    </customLabels>
+    <customLabels>
+        <label>Importe</label>
+        <name>ZRM_Recibos_Column_Amount</name>
+    </customLabels>
+    <customLabels>
+        <label>Forma de Pago</label>
+        <name>ZRM_Recibos_Column_PaymentMethod</name>
+    </customLabels>
+    <customLabels>
+        <label>Devoluciones</label>
+        <name>ZRM_Recibos_Column_NumberOfReturns</name>
+    </customLabels>
+    <customLabels>
+        <label>Documento Reclamación</label>
+        <name>ZRM_Recibos_Column_DocumentDescriptionReceipt</name>
+    </customLabels>
+    <customLabels>
+        <label>Última Devolución</label>
+        <name>ZRM_Recibos_Column_LastReturnDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Próximo Envío Banco</label>
+        <name>ZRM_Recibos_Column_BankShipmentDate</name>
+    </customLabels>
+    <customLabels>
+        <label>Intermediario</label>
+        <name>ZRM_Recibos_Column_Intermediary</name>
+    </customLabels>	
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>
         <name>Configure_Call_Center_Settings</name>

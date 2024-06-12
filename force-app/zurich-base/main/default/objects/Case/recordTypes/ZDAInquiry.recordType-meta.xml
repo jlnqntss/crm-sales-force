@@ -912,10 +912,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Pack Productos Empresa</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Protección Comercios y Oficinas BSSG %28OFERTABLE%29</fullName>
             <default>false</default>
         </values>
@@ -1564,7 +1560,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Comparativa</fullName>
+            <fullName>Comparativa Cotización</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comparativa Gestión Cartera</fullName>
             <default>false</default>
         </values>
         <values>

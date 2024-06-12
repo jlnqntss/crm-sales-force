@@ -718,6 +718,21 @@
                 <default>false</default>
                 <label>Suplemento emitido</label>
             </value>
+            <value>
+                <fullName>Cerrado Autoservicio</fullName>
+                <default>false</default>
+                <label>Cerrado Autoservicio</label>
+            </value>
+            <value>
+                <fullName>Aprobada - Actividad</fullName>
+                <default>false</default>
+                <label>Aprobada - Actividad</label>
+            </value>
+            <value>
+                <fullName>Denegada - Actividad</fullName>
+                <default>false</default>
+                <label>Denegada - Actividad</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
@@ -879,7 +894,8 @@
             <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
             <controllingFieldValue>Recibos</controllingFieldValue>
             <controllingFieldValue>Otros trámites / Peticiones</controllingFieldValue>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Cotización</controllingFieldValue>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
             <controllingFieldValue>Certificado</controllingFieldValue>
             <controllingFieldValue>Cambio mediador</controllingFieldValue>
             <controllingFieldValue>Diligencia de embargo</controllingFieldValue>
@@ -999,19 +1015,24 @@
             <valueName>No resuelto - Falta documentación / información</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
             <valueName>Comparativa no presentada - Falta documentación / información</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
+            <controllingFieldValue>Comparativa Cotización</controllingFieldValue>
             <valueName>Comparativa presentada</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
             <valueName>Comparativa presentada mas propuesta de descuento</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Comparativa</controllingFieldValue>
+            <controllingFieldValue>Comparativa Cotización</controllingFieldValue>
+            <valueName>Comparativa no presentada - Falta documentación /  información / información incorrecta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Comparativa Gestión Cartera</controllingFieldValue>
             <valueName>Propuesta de descuento</valueName>
         </valueSettings>
         <valueSettings>
@@ -1149,6 +1170,14 @@
         <valueSettings>
             <controllingFieldValue>Gestión Competencias</controllingFieldValue>
             <valueName>Denegada - Suplemento no económico</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Aprobada - Actividad</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <valueName>Denegada - Actividad</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Modificación oferta</controllingFieldValue>

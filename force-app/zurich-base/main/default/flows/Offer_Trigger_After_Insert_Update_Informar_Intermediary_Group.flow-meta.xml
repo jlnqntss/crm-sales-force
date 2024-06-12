@@ -5,7 +5,7 @@
         <name>Es_mediador</name>
         <label>¿Es mediador?</label>
         <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationY>503</locationY>
         <defaultConnector>
             <targetReference>Set_Account</targetReference>
         </defaultConnector>
@@ -30,7 +30,7 @@
         <name>Tiene_Intermediary</name>
         <label>¿Tiene Intermediary?</label>
         <locationX>380</locationX>
-        <locationY>431</locationY>
+        <locationY>395</locationY>
         <defaultConnector>
             <targetReference>Delete_Intermediary_Group</targetReference>
         </defaultConnector>
@@ -77,7 +77,7 @@
         <name>Get_Intermediary_Record_Type_Id</name>
         <label>Get Intermediary Record Type Id</label>
         <locationX>380</locationX>
-        <locationY>323</locationY>
+        <locationY>287</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Tiene_Intermediary</targetReference>
@@ -98,7 +98,7 @@
         <name>Delete_Intermediary_Group</name>
         <label>Delete Intermediary Group</label>
         <locationX>578</locationX>
-        <locationY>539</locationY>
+        <locationY>503</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
         </inputAssignments>
@@ -108,7 +108,7 @@
         <name>Set_Account</name>
         <label>Set Account</label>
         <locationX>314</locationX>
-        <locationY>647</locationY>
+        <locationY>611</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
@@ -121,7 +121,7 @@
         <name>Set_Parent_Account</name>
         <label>Set Parent Account</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>611</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
@@ -160,7 +160,7 @@
         </filters>
         <object>Opportunity</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
-        <triggerType>RecordAfterSave</triggerType>
+        <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
 </Flow>

@@ -190,6 +190,13 @@
             <operator>equals</operator>
             <value>THIS_MONTH</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>KPI__c.SegmentoCliente__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Agentes Pensiones,Agentes Vida,Corredores Pensiones,Corredores Vida</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>

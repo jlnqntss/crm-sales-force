@@ -4,7 +4,7 @@
     <externalId>false</externalId>
     <formula>IF((TODAY() - DATEVALUE(CreatedDate))&gt;7 &amp;&amp; (ISPICKVAL(Status,&apos;Nuevo&apos;) || ISPICKVAL(Status,&apos;Asignado&apos;) ),30,
 
-IF((TODAY() - DATEVALUE(CreatedDate))&gt;=4 &amp;&amp; (TODAY() - DATEVALUE(CreatedDate))&lt;=7 &amp;&amp; (ISPICKVAL(Status,&apos;Nuevo&apos;) || ISPICKVAL(Status,&apos;Asignado&apos;) ),15,
+IF((TODAY() - DATEVALUE(CreatedDate))&gt;=4 &amp;&amp; (TODAY() - DATEVALUE(CreatedDate))&lt;=7 &amp;&amp; (ISPICKVAL(Status,&apos;Nuevo&apos;) || ISPICKVAL(Status,&apos;Asignado&apos;) ),27.5,
 
 
 IF(((TODAY() - DATEVALUE(CreatedDate))==2 || (TODAY() - DATEVALUE(CreatedDate))==3 )&amp;&amp; (ISPICKVAL(Status,&apos;Nuevo&apos;) || ISPICKVAL(Status,&apos;Asignado&apos;) ),5,0)))</formula>

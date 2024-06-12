@@ -7,6 +7,7 @@
     <columns>PolicyId__c</columns>
     <columns>Product_Name__c</columns>
     <columns>CASES.STATUS</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
     <columns>PolicyEndDate__c</columns>
     <columns>UpdatedInsuranceCost__c</columns>
     <filterScope>Everything</filterScope>
@@ -25,8 +26,17 @@
         <operation>equals</operation>
         <value>Call Center</value>
     </filters>
-    <label>Casos CC</label>
+    <filters>
+        <field>CASES.CREATED_DATE_DATE_ONLY</field>
+        <operation>lessThan</operation>
+        <value>LAST_N_DAYS:4</value>
+    </filters>
+    <label>Casos asignados CC</label>
     <sharedTo>
+        <group>Administrators</group>
+        <group>Ventas_Advisor</group>
         <group>Ventas_Agente_Mediador</group>
+        <group>Ventas_Director</group>
+        <group>Ventas_Supervisor</group>
     </sharedTo>
 </ListView>

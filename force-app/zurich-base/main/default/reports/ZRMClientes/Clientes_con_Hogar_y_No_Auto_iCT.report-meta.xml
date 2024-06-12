@@ -13,9 +13,6 @@
         <field>Policy__c.ProductId__c</field>
     </columns>
     <columns>
-        <field>Policy__c.OpportunityName__c</field>
-    </columns>
-    <columns>
         <field>Policy__c.InfoCreatedDate__c</field>
     </columns>
     <columns>
@@ -54,21 +51,21 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Hogar</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Policy__c.ProductBranch__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>notEqual</operator>
-            <value>AUTOS</value>
+            <value>HOGAR</value>
         </criteriaItems>
         <criteriaItems>
             <column>Policy__c.PolicyStatus__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>V,2</value>
+            <value>V</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.ProductBranch__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>AUTO</value>
         </criteriaItems>
         <language>es</language>
     </filter>

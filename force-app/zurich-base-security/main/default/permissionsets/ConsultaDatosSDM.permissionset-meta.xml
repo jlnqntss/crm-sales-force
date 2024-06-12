@@ -143,6 +143,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>KPI__c.FechaCalculo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PlanComercial__c.Intermediary__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -919,6 +924,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.SAMTechnicalIssues__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.SelfServiceQuotation__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2691,6 +2701,11 @@
         <field>Case.OneTimeOrRecurring__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.PolicyId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Case.PortfolioMonth__c</field>
@@ -2701,9 +2716,19 @@
         <field>Case.PortfolioYear__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.ProductGroup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Case.Range__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Subtype__c</field>
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
@@ -2714,6 +2739,16 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>Case.TaskFrequency__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Type</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.TypeN3__c</field>
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
@@ -2924,6 +2959,10 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <recordType>Account.Potential_Broker</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>Case.SDMMarketTeamRequests</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

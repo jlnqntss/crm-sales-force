@@ -149,6 +149,11 @@
                 <default>false</default>
                 <label>Scaled support</label>
             </value>
+            <value>
+                <fullName>Single channel</fullName>
+                <default>false</default>
+                <label>Single channel</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

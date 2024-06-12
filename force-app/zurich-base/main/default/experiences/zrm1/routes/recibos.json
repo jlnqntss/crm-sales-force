@@ -1,0 +1,12 @@
+{
+  "activeViewId" : "75823587-1e68-4c4b-9075-7c6c32276e63",
+  "appPageId" : "49a9d117-0297-44e8-b92f-dbc02ab7f703",
+  "configurationTags" : [ ],
+  "devName" : "recibos__c",
+  "id" : "e02530a2-fff8-428d-b275-ce43972cb154",
+  "label" : "Recibos",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-recibos",
+  "type" : "route",
+  "urlPrefix" : "recibos"
+}

@@ -1,5 +1,5 @@
 @isTest
-private with sharing class ZRMOpportunityMatchBatchTest
+private class ZRMOpportunityMatchBatchTest
 {
     private static final String TASK_SUBJECT = 'Test status';
     private static final String TASK_SUBTYPE = 'Note Info';

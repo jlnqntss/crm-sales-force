@@ -20,7 +20,7 @@
     </values>
     <values>
         <field>Role_Name__c</field>
-        <value xsi:type="xsd:string">ZDA_Agente</value>
+        <value xsi:type="xsd:string">ZDA_Gestion_Cartera</value>
     </values>
     <values>
         <field>User_Permision_Value__c</field>
