@@ -1519,7 +1519,7 @@ private with sharing class CaseUtilTest
         Assert.isfalse(foundLead.isEmpty());
 
         //Se valida que se ha creado el scope
-        List<Scope__c> foundScope = [SELECT Id FROM Scope__c WHERE AccountId__c = :foundLead[0].Id];
+        List<Scope__c> foundScope = [SELECT Id FROM Scope__c WHERE AccountId__c = :foundLead[0].Id AND Scope__c = :CaseUtil.ZDA];
         Assert.isfalse(foundScope.isEmpty());
 
         //Se valida que el caso se ha vinculado al nuevo lead
