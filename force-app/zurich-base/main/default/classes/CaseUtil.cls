@@ -2028,6 +2028,12 @@ public with sharing class CaseUtil
             {
                 updatedCase.Status = CASE_RESPONDIDO;
                 updatedCase.PendingBy__c = null;
+
+                // Como apex se lanza despues que los flows, incluímos aqui el cambio en el flag de los SLAs, para que se activen de nuevo una vez que cambia el estado del caso
+                if (updatedCase.IsStopped)
+                {
+                    updatedCase.IsStopped = false;
+                }
             }
         }
     }
