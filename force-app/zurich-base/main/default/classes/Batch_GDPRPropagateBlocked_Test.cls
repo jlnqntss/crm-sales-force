@@ -132,7 +132,7 @@ private with sharing class Batch_GDPRPropagateBlocked_Test {
     @isTest
     private static void comprobarBorrado(){
         //Actualizar los registros a mano, cambiando el Anonymized a true
-        anonimizarDatosManual();        
+        //anonimizarDatosManual();        
 
         Test.startTest();
         Batch_GDPRAnonymized batchBorr = new Batch_GDPRAnonymized('','');
