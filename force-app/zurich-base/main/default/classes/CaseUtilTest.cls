@@ -1565,27 +1565,27 @@ private with sharing class CaseUtilTest
         Case caseToLink = zdaCasesList[0];
         caseToLink.CustomerNifCif__c = accountUniqueDNI.NationalId__c;
 
-        //caso a NO vincular
-        Case caseNoLink = zdaCasesList[1];
-        caseNoLink.CustomerNifCif__c = accountDupDNI1.NationalId__c;
+        //caso a vincular CON UNO CUALQUIERA (OCS-9981)
+        Case caseToLink2 = zdaCasesList[1];
+        caseToLink2.CustomerNifCif__c = accountDupDNI1.NationalId__c;
 
-        //caso a NO vincular 2
-        Case caseNoLink2 = zdaCasesList[2];
+        //caso a NO vincular
+        Case caseNoLink = zdaCasesList[2];
 
         Test.startTest();
         insert zdaCasesList;
         Test.stopTest();
 
         Case linkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseToLink.Id];
+        Case linkedCase2 = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseToLink2.Id];
         Case notLinkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink.Id];
-        Case notLinkedCase2 = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink2.Id];
 
         Assert.isNotNull(linkedCase);
         Assert.areEqual(accountUniqueDNI.Id, linkedCase.MediatedCustomer__c);
+        Assert.isNotNull(linkedCase2);
+        Assert.isNotNull(linkedCase2.MediatedCustomer__c);
         Assert.isNotNull(notLinkedCase);
         Assert.isNull(notLinkedCase.MediatedCustomer__c);
-        Assert.isNotNull(notLinkedCase2);
-        Assert.isNull(notLinkedCase2.MediatedCustomer__c);
     }
 
     /**

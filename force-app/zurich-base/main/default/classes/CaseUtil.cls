@@ -464,11 +464,11 @@ public with sharing class CaseUtil
             if ( String.isNotBlank(c.CustomerNifCif__c) && accountsByNationalId?.containsKey(c.CustomerNifCif__c) )
             {
                 accountList = accountsByNationalId.get(c.CustomerNifCif__c);
-                if (accountList.size() == 1)
+                if (!accountList.isEmpty())
                 {
+                    //Cambio OCS-9981 ==> si hay mas de uno, cogemos uno cualquiera
                     c.MediatedCustomer__c = accountList[0].Id;
                 }
-                //else hay mas de uno, por lo tanto, no lo asignamos
             }
         }
     }
