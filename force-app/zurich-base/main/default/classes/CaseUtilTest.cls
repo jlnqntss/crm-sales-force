@@ -1492,6 +1492,42 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Se valida que el metodo createLeadForZdaCases relaciona correctamente el caso de ZDA creado
+     * que tiene un dni informado que no existe como cuenta. Debe crear un lead y un scope de zda
+     * relacionado
+     *
+     * @author mario.navarro@seidor.com
+     * @date 13/06/2024
+     */
+    @isTest
+    private static void test_createLeadForZdaCases()
+    {
+        //de la cuenta generada solo nos interesa el DNI autogenerado en el TestDataFactory y el nombre
+        Account newAcc = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1)[0];
+
+        Case newZdaCase = TestDataFactory.generateZDACases(1)[0];
+        newZdaCase.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+        newZdaCase.CustomerNifCif__c = newAcc.NationalId__c;
+        newZdaCase.CustomerName__c = newAcc.LastName;
+
+        Test.startTest();
+        insert newZdaCase;
+        Test.stopTest();
+
+        //Se valida que se ha creado el lead
+        List<Account> foundLead = [SELECT Id FROM Account WHERE NationalId__c = :newAcc.NationalId__c];
+        Assert.isfalse(foundLead.isEmpty());
+
+        //Se valida que se ha creado el scope
+        List<Scope__c> foundScope = [SELECT Id FROM Scope__c WHERE AccountId__c = :foundLead[0].Id];
+        Assert.isfalse(foundScope.isEmpty());
+
+        //Se valida que el caso se ha vinculado al nuevo lead
+        Case createdCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = :newZdaCase.Id];
+        Assert.areEqual(foundLead[0].Id, createdCase.MediatedCustomer__c);
+    }
+
+    /**
      * Se valida que el metodo relateCaseToCustomerByNifCif relaciona correctamente el caso con
      * el cliente mediado (cuenta.NationalId__c = caso.CustomerNifCif__c) y establece el campo
      * MediatedCustomer__c en caso de encontrar relacion. Para ello:

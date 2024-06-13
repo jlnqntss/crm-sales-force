@@ -46,6 +46,8 @@ public with sharing class CaseUtil
     public static final String BLANK_SPACE = ' ';
     public static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
     public static final String ORIGIN_WEB = 'Web';
+    @TestVisible
+    private static final String ZDA = 'ZDA';
 
     private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
 
@@ -54,6 +56,10 @@ public with sharing class CaseUtil
     public static List<Group> queueSiniestrosRRSS = new List<Group>();
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
+    
+    //Este mapa servira para actualizar en el finally los casos creados con Leads creados en el after insert
+    //La clave sera el id del caso, y el value el id del lead
+    private static Map<Id, Id> casesToRelateWithNewLead = new Map<Id, Id>();
 
     public static Map<String, Robot_Hegeo_Field_Mapping__mdt> mapCaseZDATypificationMetadata = new Map<String, Robot_Hegeo_Field_Mapping__mdt>();
     
@@ -1197,6 +1203,136 @@ public with sharing class CaseUtil
                 //else: no se han encontrado cuentas o hay mas de una. No se vincula
             }
         }
+    }
+
+    /**
+     * Para los casos recibidos de ZDA via canal unico, en el caso de que no tengan un cliente
+     * relacionado (MediatedCustomer__c), se crea un person account de tipo lead (junto a su
+     * scope ZDA). La actualizacion del caso para relacionarlo con el nuevo lead se realiza
+     * en el finally del trigger
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 12/06/2024
+     * @param insertedCases casos nuevos creados
+     */
+    public static void createLeadForZdaCases(List<Case> insertedCases)
+    {
+        List<Account> leadsToCreate = new List<Account>();
+        //Se crea este set para controlar que no se creen dos leads con el mismo DNI
+        Set<String> distinctLeadsDni = new Set<String>();
+        for(Case insertedCase : insertedCases)
+        {
+            if(insertedCase.RecordTypeId == RT_ID_ZDA && insertedCase.Origin == ORIGIN_CANAL_UNICO &&
+                String.isBlank(insertedCase.MediatedCustomer__c) &&
+                String.isNotBlank(insertedCase.CustomerNifCif__c) &&
+                !distinctLeadsDni.contains(insertedCase.CustomerNifCif__c))
+            {
+                //Los casos de ZDA recibidos por canal unico que no tienen una cuenta relacionada y tienen el DNI
+                //del cliente informado, deben generar un lead
+                leadsToCreate.add(
+                    new Account(
+                        LastName = insertedCase.CustomerName__c,
+                        LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI),
+                        NationalId__c = insertedCase.CustomerNifCif__c,
+                        NationalIdType__c = AccountUtil.NATIONAL_ID_TYPE_NIF,
+                        RecordTypeId = AccountUtil.RT_ID_LEAD,
+                        IsAccountZDA__c = true
+                ));
+                distinctLeadsDni.add(insertedCase.CustomerNifCif__c);
+            }
+        }
+        if (!leadsToCreate.isEmpty())
+        {
+            insert leadsToCreate;
+            List<Scope__c> scopesToCreate = new List<Scope__c>();
+            Scope_Setting__mdt zdaScope = getZDAScopeSetting();
+            for (Account newLead : leadsToCreate)
+            {
+                //crear scope ZDA asociado
+                scopesToCreate.add(
+                    new Scope__c(
+                        Scope__c = zdaScope.Scope__c,
+                        Name = zdaScope.Scope_Name__c,
+                        AccountId__c = newLead.Id,
+                        LegalEntity__c = RecordsSelector.getLegalEntity(RecordsSelector.LegalEntity.GI)
+                    )
+                );
+            }
+            insert scopesToCreate;
+            //Ahora hay que relacionar los casos con los leads
+            //Agrupamos los leads por DNI para localizarlos mejor
+            Map<String, Account> leadsByDni = (Map<String, Account>) CollectionUtil.hashList( leadsToCreate, Account.fields.NationalId__c.getDescribe().getName() );
+            for(Case insertedCase : insertedCases)
+            {
+                if(insertedCase.RecordTypeId == RT_ID_ZDA && String.isBlank(insertedCase.MediatedCustomer__c))
+                {
+                    casesToRelateWithNewLead.put(insertedCase.Id, leadsByDni.get(insertedCase.CustomerNifCif__c).Id);
+                }
+            }
+        }
+    }
+
+    /**
+     * Retorna un scope setting cualquiera que tenga el scope de ZDA
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 13/06/2024
+     * @return un scope setting cualquiera cuyo scope sea ZDA
+     */
+    private static Scope_Setting__mdt getZDAScopeSetting()
+    {
+        Scope_Setting__mdt settingToReturn = null;
+        List<Scope_Setting__mdt> allSettings = Scope_Setting__mdt.getAll().values();
+        for (Scope_Setting__mdt setting : allSettings) {
+            if (setting.Scope__c.equals(ZDA)) {
+                settingToReturn = setting;
+                break;
+            }
+        }
+        //siempre retornara algo porque ya existen scopes de ZDA
+        return settingToReturn;
+    }
+
+    /**
+     * A partir de los leads creados en el metodo createLeadForZdaCases, relaciona los casos con
+     * los leads creados, a partir del mapa casesToRelateWithNewLead
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 12/06/2024
+     */
+    public static void linkNewCasesToNewLeads()
+    {
+        if (!casesToRelateWithNewLead.isEmpty())
+        {
+            updateFutureCasesWithNewLeads(casesToRelateWithNewLead);
+        }
+    }
+
+    /**
+     * Ejecuta de manera asincrona los casos con los leads creados. No se hace en el finally
+     * del trigger porque da error (CaseTrigger: maximum trigger depth exceeded)
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 13/06/2024
+     * @param casesToUpdate mapa de casos a relacionar con los nuevos leads (key: caseId; value: leadId)
+     */
+    @Future
+    private static void updateFutureCasesWithNewLeads(Map<Id, Id> casesToUpdate)
+    {
+        List<Case> casesToUpdateList = new List<Case>();
+        Id newLeadId;
+        for (Id caseId : casesToUpdate.keySet())
+        {
+            newLeadId = casesToUpdate.get(caseId);
+            casesToUpdateList.add(
+                new Case(
+                    Id = caseId,
+                    MediatedCustomer__c = newLeadId
+                )
+            );
+        }
+
+        update casesToUpdateList;
     }
 
     /**
@@ -2396,6 +2532,26 @@ public with sharing class CaseUtil
                 }
             }
         }   
+    }
+
+    /**
+     * Metodo que vacia los objetos estaticos de esta clase. Esto es necesario si en un mismo 'thread', el trigger
+     * se ejecuta mas de una vez, y el contenido actual de una variable estatica no es necesario que este
+     * informada en la siguiente ejecucion del trigger. Ejemplo:
+     * Cuando se debe crear un lead para un caso ZDA recibido desde canal unico, la creacion del lead se hace
+     * en el after insert. Como hay que vincular el caso al nuevo lead creado, debemos actualizarlo, pero
+     * no podemos hacerlo en la actual ejecucion del trigger, por lo que se ejecuta en un metodo future
+     * SI casesToRelateWithNewLead NO ESTA VACIO. Cuando se ejecuta el metodo future, actualiza el caso, vuelve
+     * a ejecutarse el trigger y como esta en el mismo thread casesToRelateWithNewLead NO ESTA VACIO. Ejecutando
+     * este metodo en el bulkBefore nos aseguramos de que en la segunda ejecucion del trigger, como no se va a
+     * rellenar, el metodo future no se lanza
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 13/06/2024
+     */
+    public static void clearStaticVars()
+    {
+        casesToRelateWithNewLead.clear();
     }
 
     /**

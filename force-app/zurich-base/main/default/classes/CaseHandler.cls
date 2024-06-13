@@ -42,7 +42,7 @@ public without sharing class CaseHandler implements ITrigger
         //Iván García
         CaseUtil.getZRMCasesRelatedToPolicy(newList);
         CaseUtil.loadMapCaseZDATypificationMetadata();
-
+        CaseUtil.clearStaticVars();
     }
 
     /**
@@ -121,6 +121,7 @@ public without sharing class CaseHandler implements ITrigger
     {
         CaseUtil.SummaryTotalClaims( (List<Case>) newList );
         CaseUtil.updateInquiryCaseOwnerOnZRMCreation(newList);
+        CaseUtil.createLeadForZdaCases( (List<Case>) newList );
     }
 
     /**
@@ -155,5 +156,6 @@ public without sharing class CaseHandler implements ITrigger
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
     {
         CaseUtil.updateSprSocialPersonaToLinkContact();
+        CaseUtil.linkNewCasesToNewLeads();
     }
 }
