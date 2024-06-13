@@ -433,12 +433,16 @@ public with sharing class AccountLeadAssignment
 
         AccountsSelector accountQuery = new AccountsSelector();
         List<Account> intermediaryAccounts = accountQuery.findByINFOIntermediaryCode(new List<String>{intermediaryCode});
-
         if(intermediaryAccounts.isEmpty())
         {
             return defaultUser;
         }
+        else
+        {
+            return new Assignment(defaultUser.assignee).setRelatedAccount(intermediaryAccounts[0]);
+        }
 
+/*
         UsersSelector userQuery = new UsersSelector();
         List<User> intermediary = new List<User>();
         Account intermediaryAccount = intermediaryAccounts.get(0);
@@ -459,6 +463,6 @@ public with sharing class AccountLeadAssignment
             return new Assignment(intermediary.get(0).Id).setRelatedAccount(intermediaryAccount);
         }
 
-        return defaultUser;
+        return defaultUser;*/
     }
 }

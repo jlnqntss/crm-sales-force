@@ -14,6 +14,12 @@ public with sharing class SalesCRMLeadGenerationService
 {
     // #region Attributes
 
+    private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
+    private static final String PRODUCT_BRANCH_VIDA_CODE = configValues.get('Product_Branch_Vida_Code');
+    private static final Id OFFER_RECORD_TYPE_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(configValues.get('Opportunity_RecordTypeDevName_Life')).getRecordTypeId();
+    private static final Id OFFER_RECORD_TYPE_NO_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(configValues.get('Opportunity_RecordTypeDevName_NoLife')).getRecordTypeId();
+    private static final String LEGAL_ENTITY_LIFE_INSURANCE = configValues.get('Legal_Entity_Life_Insurance');
+
     private static Set<String> requiredFields = new Set<String> {'origin', 'webIdentifier', 'name', 'phone'};
     private static Map<String, Schema.SObjectField> picklistTypeFieldsByJsonFieldName = new Map<String, Schema.SObjectField>
     {
@@ -123,21 +129,26 @@ public with sharing class SalesCRMLeadGenerationService
      * @return Opportunity recuperada/generada
      * 
      * @change amiranda 06/03/2024 Se elimina la asignación de 'Owner'
+     * @change igarcia 11/06/2024 Se añade la lógica del recordtype de vida
      **/
     public static Opportunity manageOffer(Map<String, Account> accountByRelatedUser, Id leadId, Lead requestData)
     {
         Id offerOwnerId = new List<String>( accountByRelatedUser.keySet() ).get(0);
         Account account = accountByRelatedUser.get(offerOwnerId);
+        Boolean isOfferLife = requestData.isProductLife == 1? true : false;
+        String offerRecordType = isOfferLife ? OFFER_RECORD_TYPE_VIDA : OFFER_RECORD_TYPE_VIDA;
 
         List<Opportunity> offers = new OpportunitiesSelector()
                                    .findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
             leadId,
             account != null ? account.INFOIntermediaryCode__c : null,
             requestData.productBranch,
+            offerRecordType,
             Query.last_n_days(7) );
 
         if ( offers.isEmpty() )
         {
+
             Opportunity offerToInsert = new Opportunity();
             offerToInsert.Name = ( 'OF' + Datetime.now().getTime() / 1000 + leadId.to15() ).left(120);
             offerToInsert.StageName = 'Legit Lead';
@@ -149,6 +160,17 @@ public with sharing class SalesCRMLeadGenerationService
             offerToInsert.ProductBranch__c = requestData.productBranch;
             offerToInsert.Description = requestData.comments;
 
+            if(isOfferLife)
+            {
+                offerToInsert.recordTypeId = OFFER_RECORD_TYPE_VIDA;
+                offerToInsert.LegalEntity__c = LEGAL_ENTITY_LIFE_INSURANCE;
+                offerToInsert.isProductLife__c = true;
+            }
+            else
+            {
+                offerToInsert.recordTypeId = OFFER_RECORD_TYPE_NO_VIDA;
+            }
+
             offers.add(offerToInsert);
 
             insert offers;
@@ -156,6 +178,7 @@ public with sharing class SalesCRMLeadGenerationService
 
         return offers.get(0);
     }
+
 
     // #endregion
 
@@ -465,6 +488,17 @@ public with sharing class SalesCRMLeadGenerationService
             set
             {
                 valuesByProperty.put('comments', value);
+            }
+        }
+        public Decimal isProductLife
+        {
+            get
+            {
+                return (Decimal) valuesByProperty.get('isProductLife');
+            }
+            set
+            {
+                valuesByProperty.put('isProductLife', value);
             }
         }
 

@@ -270,7 +270,10 @@ public with sharing class Test_AccountLeadUtil
     @isTest
     static void test_intermediaryAssignment_OK()
     {
-        User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
+        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
+
+        String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
+		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
         Test.startTest();
         // Indicando el código de intermeadiario, el resto de parametros no se tienen en cuenta
@@ -315,9 +318,12 @@ public with sharing class Test_AccountLeadUtil
     @isTest
     static void test_AssignmnetIntermediaryAccount_OK()
     {
-        User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-QQ'];
         Account intermediaryAccount = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = 'IDIOMA-QQ'];
         RecordType leadAccountRT = [SELECT Id FROM RecordType WHERE Name = 'Customer' AND SobjectType = 'Account'];
+        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-QQ'];
+
+        String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
+		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
         Account testAccount = new Account(Lastname = 'TestAccount', Intermediary_Name__c = intermediaryAccount.Id, RecordTypeId = leadAccountRT.Id);
         insert testAccount;
@@ -398,15 +404,19 @@ public with sharing class Test_AccountLeadUtil
     {
         setMetadataConfigurations();
 
-        String frenchAgenteId = [SELECT Id FROM User WHERE Lastname = 'IDIOMA-FR'].Id;
+        //String frenchAgenteId = [SELECT Id FROM User WHERE Lastname = 'IDIOMA-FR'].Id;
+        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
+
+        String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
+        User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
         Test.startTest();
         Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario test', 'FR', '99999');
         Test.stopTest();
 
-        Assert.areEqual(frenchAgenteId, new List<String>( assignee.keySet() ).get(0), 'El usuario asignado para el lenguaje frances no es correcto.');
+        Assert.areEqual(intermediary.Id, new List<String>( assignee.keySet() ).get(0), 'El usuario asignado para el lenguaje frances no es correcto.');
 
-        Account intermediaryAccount = assignee.get(frenchAgenteId);
+        Account intermediaryAccount = assignee.get(intermediary.Id);
         Assert.isNotNull(intermediaryAccount, 'No se ha recuperado la cuenta del intermediario');
         Assert.isNotNull(intermediaryAccount.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
     }
@@ -452,7 +462,10 @@ public with sharing class Test_AccountLeadUtil
     {
         setMetadataConfigurations();
 
-        User intermediary = [SELECT ID FROM User WHERE LastName = 'IDIOMA-ES'];
+        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
+
+        String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
+		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
         Test.startTest();
         Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario accidentes','ES', null);
@@ -505,8 +518,9 @@ public with sharing class Test_AccountLeadUtil
     {
         setMetadataConfigurations();
 
-        User intermediaryFrance = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
-
+        //User intermediaryFrance = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
+        String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
+        User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
         AccountLeadAssignment.forumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt
                                                                  (
                                                                      DeveloperName = 'formulario_inventado',
@@ -518,9 +532,9 @@ public with sharing class Test_AccountLeadUtil
         Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario inventado', 'ES', '02458');
         Test.stopTest();
 
-        Assert.areEqual(intermediaryFrance.Id, new List<String>( assignee.keySet() ).get(0), 'No se ha asignado el usuario por defecto');
+        Assert.areEqual(intermediary.Id, new List<String>( assignee.keySet() ).get(0), 'No se ha asignado el usuario por defecto');
 
-        Account intermediaryAccount = assignee.get(intermediaryFrance.Id);
+        Account intermediaryAccount = assignee.get(intermediary.Id);
         Assert.isNotNull(intermediaryAccount, 'No se ha recuperado la cuenta del intermediario');
         Assert.isNotNull(intermediaryAccount.INFOIntermediaryCode__c, 'No se ha recuperado el valor del campo');
     }
@@ -564,7 +578,10 @@ public with sharing class Test_AccountLeadUtil
     {
         setMetadataConfigurations();
 
-        User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
+        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
+
+        String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
+		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
         //formulario_automonos - 2
         Test.startTest();
@@ -634,7 +651,10 @@ public with sharing class Test_AccountLeadUtil
     {
         setMetadataConfigurations();
 
-        User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
+       //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
+
+       String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
+       User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
         Test.startTest();
         Map<String,Account> assignee = AccountLeadUtil.leadAssignment(null, null, 'formulario embarcaciones', 'ES', '25000');
