@@ -144,7 +144,7 @@
     <assignments>
         <name>Asignar_Entitlement_Caso_ZDA</name>
         <label>Asignar Entitlement Caso ZDA</label>
-        <locationX>6826</locationX>
+        <locationX>7057</locationX>
         <locationY>1379</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
@@ -250,7 +250,7 @@
     <decisions>
         <name>Cola_enrutamiento_ZDA</name>
         <label>¿Cola enrutamiento?</label>
-        <locationX>5682</locationX>
+        <locationX>5814</locationX>
         <locationY>719</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -286,6 +286,21 @@
                 <targetReference>Recuperar_Entitlement_Gestion_Cartera</targetReference>
             </connector>
             <label>Gestión cartera</label>
+        </rules>
+        <rules>
+            <name>Urgencias</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Obtenemos_cola_de_salesforce.DeveloperName</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Queue_Urgencias</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_Urgencias</targetReference>
+            </connector>
+            <label>Urgencias</label>
         </rules>
     </decisions>
     <decisions>
@@ -396,7 +411,7 @@
     <decisions>
         <name>Existen_resultados_ZDA</name>
         <label>Existen resultados ZDA</label>
-        <locationX>7090</locationX>
+        <locationX>7354</locationX>
         <locationY>827</locationY>
         <defaultConnector>
             <targetReference>Recuperar_Entitlement_Default_ZDA</targetReference>
@@ -664,7 +679,7 @@
         <description>Se ha podido calcular el número de días del SLA y nos devuelve un valor correcto</description>
         <name>Numero_de_dias_correcto</name>
         <label>Número de dias correcto</label>
-        <locationX>7266</locationX>
+        <locationX>7530</locationX>
         <locationY>611</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -698,7 +713,7 @@
         <description>Comprueba que el origen sea email, ya que de lo contrario, por el momento no se aplicaría ningún SLA</description>
         <name>Origen_email_ZDA</name>
         <label>¿Origen email?</label>
-        <locationX>6826</locationX>
+        <locationX>7057</locationX>
         <locationY>395</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
@@ -735,7 +750,7 @@
     <decisions>
         <name>Owner_es_cola</name>
         <label>Owner es cola</label>
-        <locationX>5946</locationX>
+        <locationX>6144</locationX>
         <locationY>503</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -878,7 +893,7 @@
     <decisions>
         <name>RecordTypeDecision</name>
         <label>¿Tipo de registro?</label>
-        <locationX>4686</locationX>
+        <locationX>4818</locationX>
         <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -1012,7 +1027,7 @@
         <description>Según el tipo de petición que nos llegue de CU, escogeremos el SLA de un modo u otro</description>
         <name>Tipo_de_peticion</name>
         <label>Tipo de peticion</label>
-        <locationX>6870</locationX>
+        <locationX>7134</locationX>
         <locationY>503</locationY>
         <defaultConnector>
             <targetReference>Numero_de_dias_correcto</targetReference>
@@ -1104,6 +1119,11 @@
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_Name_Cotizacion.Value__c}</expression>
     </formulas>
     <formulas>
+        <name>Queue_Urgencias</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_Name_Urgencias.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>Tipo_Contactare</name>
         <dataType>String</dataType>
         <expression> {!$CustomMetadata.Global_Configuration__mdt.Case_Description_Contactar.Value__c}</expression>
@@ -1142,6 +1162,11 @@
         <name>ZDA_Entitlement_Recotizare</name>
         <dataType>String</dataType>
         <expression> {!$CustomMetadata.Global_Configuration__mdt.Entitlement_Name_Recotizare.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_Entitlement_Urgencias</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Entitlement_Name_Urgencias.Value__c}</expression>
     </formulas>
     <formulas>
         <name>ZDA_RecordType_Name</name>
@@ -1687,7 +1712,7 @@
     <recordLookups>
         <name>Obtenemos_cola_de_salesforce</name>
         <label>Obtenemos cola de salesforce</label>
-        <locationX>5682</locationX>
+        <locationX>5814</locationX>
         <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1708,7 +1733,7 @@
     <recordLookups>
         <name>Recuperar_Entitlement_Contactare</name>
         <label>Recuperar Entitlement Contactare</label>
-        <locationX>6474</locationX>
+        <locationX>6738</locationX>
         <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1812,7 +1837,7 @@
     <recordLookups>
         <name>Recuperar_Entitlement_Default_ZDA</name>
         <label>Recuperar Entitlement Default ZDA</label>
-        <locationX>7178</locationX>
+        <locationX>7442</locationX>
         <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1948,7 +1973,7 @@
     <recordLookups>
         <name>Recuperar_Entitlement_Recotizare</name>
         <label>Recuperar Entitlement Recotizare</label>
-        <locationX>6738</locationX>
+        <locationX>7002</locationX>
         <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1982,9 +2007,43 @@
         <sortOrder>Asc</sortOrder>
     </recordLookups>
     <recordLookups>
+        <name>Recuperar_Entitlement_Urgencias</name>
+        <label>Recuperar Entitlement Urgencias</label>
+        <locationX>5946</locationX>
+        <locationY>827</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Asignar_Entitlement_Caso_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_Entitlement_Urgencias</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_CallCenter</elementReference>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundZDABusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundZDAEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>Recuperar_Entitlement_ZDA</name>
         <label>Recuperar Entitlement ZDA</label>
-        <locationX>7090</locationX>
+        <locationX>7354</locationX>
         <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2018,7 +2077,7 @@
         <sortOrder>Asc</sortOrder>
     </recordLookups>
     <start>
-        <locationX>4560</locationX>
+        <locationX>4692</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
