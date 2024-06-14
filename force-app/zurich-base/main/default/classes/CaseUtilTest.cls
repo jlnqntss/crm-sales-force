@@ -1458,20 +1458,24 @@ private with sharing class CaseUtilTest
     }
 
     /**
-     * Se testea el metodo notifCuCaseAssigned
+     * Se testea el metodo notifCuCaseEnTramite
      * 
      * @author mario.navarro@seidor.com
      * @date 30/05/2024
      */
     @isTest
-    private static void test_notifCuCaseAssigned()
+    private static void test_notifCuCaseEnTramite()
     {
-        Case caseToTest = TestDataFactory.generateZDACases(1)[0];
-        caseToTest.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
-        caseToTest.Status = CaseUtil.CASE_NUEVO;
-        insert caseToTest;
+        List<Case> casesToTest = TestDataFactory.generateZDACases(2);
+        casesToTest[0].Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+        casesToTest[0].Status = CaseUtil.CASE_NUEVO;
+        casesToTest[1].Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+        casesToTest[1].Status = CaseUtil.CASE_PENDIENTE;
+        casesToTest[1].PendingBy__c = CaseUtil.CASE_PENDIENTE_PARTNER;
+        insert casesToTest;
 
-        caseToTest.Status = CaseUtil.CASE_ASIGNADO;
+        casesToTest[0].Status = CaseUtil.CASE_ASIGNADO;
+        casesToTest[1].ReasonId__c = CaseUtil.ZDA_REASON_RESPUESTA_SOPORTE;
 
         TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
             TicketingHegeoServiceMock.HTTP_CODE_OK,
@@ -1483,7 +1487,7 @@ private with sharing class CaseUtilTest
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, mock);
-        update caseToTest;
+        update casesToTest;
         Test.stopTest();
 
         //Se comprueba que no hay errores en la peticion

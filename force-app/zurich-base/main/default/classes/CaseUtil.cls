@@ -2081,7 +2081,8 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Para los casos de ZDA que pasan de nuevo a asignado recibidos via canal unico, envia
+     * Para los casos de ZDA que pasan de nuevo a asignado (recibidos via canal unico) o
+     * se ha recibido respuesta a un escalado, envia
      * notificacion a Canal unico informando de que el caso esta en estado Tramite
      * 
      * @author mario.navarro@seidor.com
@@ -2089,13 +2090,14 @@ public with sharing class CaseUtil
      * @param updatedCases lista de los casos actualizados
      * @param oldMap mapa de los casos antes de la actualización
      */
-    public static void notifCuCaseAssigned(List<Case> updatedCases, Map<Id,Case> oldMap)
+    public static void notifCuCaseEnTramite(List<Case> updatedCases, Map<Id,Case> oldMap)
     {
         for(Case updatedCase : updatedCases)
         {
-            if ( isZDAAssignedAndCu( updatedCase, oldMap.get(updatedCase.Id) ) )
+            if ( isZDAAssignedAndCu( updatedCase, oldMap.get(updatedCase.Id) ) ||
+                isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
             {
-                TicketingHegeoUtil.sendRequestStatusChangeToAssigned(updatedCase.Id);
+                TicketingHegeoUtil.sendRequestStatusChangeToTramite(updatedCase.Id);
             }
         }
     }
