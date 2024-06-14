@@ -19872,6 +19872,16 @@
         <tab>Mobile_Home_SDM</tab>
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Opportunity.Life</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Opportunity.NoLife</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
     <tabVisibilities>
         <tab>Policy__c</tab>
         <visibility>DefaultOn</visibility>
