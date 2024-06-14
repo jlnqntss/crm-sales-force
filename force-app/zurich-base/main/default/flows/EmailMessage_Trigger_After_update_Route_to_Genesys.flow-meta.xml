@@ -3,8 +3,8 @@
     <actionCalls>
         <name>GenesysFlowRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
-        <locationX>3372</locationX>
-        <locationY>1632</locationY>
+        <locationX>3636</locationX>
+        <locationY>2148</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -86,8 +86,8 @@
     <actionCalls>
         <name>GenesysQueueRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
-        <locationX>4054</locationX>
-        <locationY>816</locationY>
+        <locationX>4296</locationX>
+        <locationY>924</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -147,8 +147,8 @@
     <assignments>
         <name>Asignar_variables_del_registro</name>
         <label>Asignar variables del registro</label>
-        <locationX>3526</locationX>
-        <locationY>1032</locationY>
+        <locationX>3768</locationX>
+        <locationY>1248</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
             <operator>Assign</operator>
@@ -164,7 +164,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>PriorityCalculationSubflow</targetReference>
+            <targetReference>Hay_que_actualizar_owner</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -216,8 +216,8 @@
     <assignments>
         <name>Modificar_variables_cola</name>
         <label>Modificar variables cola</label>
-        <locationX>3218</locationX>
-        <locationY>1032</locationY>
+        <locationX>3504</locationX>
+        <locationY>1248</locationY>
         <assignmentItems>
             <assignToReference>genesysFlowId</assignToReference>
             <operator>Assign</operator>
@@ -285,8 +285,8 @@
     <decisions>
         <name>Cambia_de_cola_para_enrutar_a_genesys</name>
         <label>¿Cambia de cola para enrutar a genesys?</label>
-        <locationX>3372</locationX>
-        <locationY>924</locationY>
+        <locationX>3636</locationX>
+        <locationY>1140</locationY>
         <defaultConnector>
             <targetReference>Asignar_variables_del_registro</targetReference>
         </defaultConnector>
@@ -361,7 +361,7 @@
     <decisions>
         <name>fieldBlockedChanged</name>
         <label>fieldBlockedIschanged</label>
-        <locationX>2912</locationX>
+        <locationX>2941</locationX>
         <locationY>276</locationY>
         <defaultConnector>
             <targetReference>GetGenesysQueueAsyncAction</targetReference>
@@ -405,45 +405,52 @@
     <decisions>
         <name>Hay_que_actualizar_owner</name>
         <label>¿Hay que actualizar owner?</label>
-        <locationX>3218</locationX>
-        <locationY>1140</locationY>
+        <locationX>3636</locationX>
+        <locationY>1440</locationY>
         <defaultConnector>
             <targetReference>PriorityCalculationSubflow</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Actualizar</name>
-            <conditionLogic>1 OR ( (2 OR 3) AND 4)</conditionLogic>
+            <conditionLogic>1 AND (2 OR ( ( 3 OR 4) AND 5) )</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Parent.OwnerId</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>00G</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Parent.Owner:User.Profile.Name</leftValueReference>
+                <leftValueReference>GetPreferredAgentSubflow.EsMediadorPanelizadoVentaDanosRC</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Integrator</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Parent.Owner:User.Profile.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>System Administrator</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.Parent.OwnerId</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <stringValue>005</stringValue>
+                    <elementReference>Beggining_Id_Queue</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.Owner:User.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Integrator</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.Owner:User.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Admin</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>Beggining_Id_User</elementReference>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_case_owner</targetReference>
+                <targetReference>Get_USP_User</targetReference>
             </connector>
             <label>Actualizar</label>
         </rules>
@@ -473,8 +480,8 @@
     <decisions>
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
-        <locationX>3713</locationX>
-        <locationY>708</locationY>
+        <locationX>3828</locationX>
+        <locationY>816</locationY>
         <defaultConnector>
             <targetReference>GenesysQueueRoutingInvocableAction</targetReference>
         </defaultConnector>
@@ -684,7 +691,7 @@
     <decisions>
         <name>IsZEOrClosedUSPDecision</name>
         <label>¿Es ZE o Caso USP Cerrado?</label>
-        <locationX>3267</locationX>
+        <locationX>3325</locationX>
         <locationY>492</locationY>
         <defaultConnector>
             <targetReference>GenerateScreenPopURLSubflow</targetReference>
@@ -727,8 +734,8 @@
     <decisions>
         <name>ResponsableNegocioEncontradoDecision</name>
         <label>Responsable Negocio Encontrado</label>
-        <locationX>3097</locationX>
-        <locationY>924</locationY>
+        <locationX>3361</locationX>
+        <locationY>1032</locationY>
         <defaultConnector>
             <targetReference>Cambia_de_cola_para_enrutar_a_genesys</targetReference>
         </defaultConnector>
@@ -756,8 +763,43 @@
             <label>Encontrado</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Usuario_Encontrado</name>
+        <label>¿Usuario Encontrado?</label>
+        <locationX>3482</locationX>
+        <locationY>1656</locationY>
+        <defaultConnector>
+            <targetReference>PriorityCalculationSubflow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>UsuarioEncontradoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_USP_User.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_case_owner</targetReference>
+            </connector>
+            <label>Usuario Encontrado</label>
+        </rules>
+    </decisions>
     <description>Flujo encargado de enrutar a genesys los emails entrantes recibidos. En el caso de After Update, aplica únicamente a los emails provenientes de CART OPS (robot tipificador)</description>
     <environments>Default</environments>
+    <formulas>
+        <name>Beggining_Id_Queue</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_Queue.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Beggining_Id_User</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_User.Value__c}</expression>
+    </formulas>
     <formulas>
         <name>CSMAdministrationManager</name>
         <dataType>String</dataType>
@@ -797,6 +839,16 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
 &quot;ZE&quot;, &quot;Opportunity&quot;, 
 &quot;ZEO&quot;, &quot;Opportunity&quot;,
 &quot;Case&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>Profile_Name_Admin</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Admin.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Profile_Name_Integrator</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Integrator.Value__c}</expression>
     </formulas>
     <formulas>
         <name>ResponsableNegocio</name>
@@ -909,8 +961,8 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <recordCreates>
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
-        <locationX>3790</locationX>
-        <locationY>1740</locationY>
+        <locationX>4032</locationX>
+        <locationY>2256</locationY>
         <inputAssignments>
             <field>Message__c</field>
         </inputAssignments>
@@ -1056,6 +1108,34 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>Get_USP_User</name>
+        <label>Get USP User</label>
+        <locationX>3482</locationX>
+        <locationY>1548</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Usuario_Encontrado</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Email</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetPreferredAgentSubflow.GestorPreferente</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Obtener cola Genesys</label>
         <locationX>1535</locationX>
@@ -1079,7 +1159,7 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <recordLookups>
         <name>GetGenesysQueueAsyncAction</name>
         <label>Obtener cola Genesys Async</label>
-        <locationX>3267</locationX>
+        <locationX>3325</locationX>
         <locationY>384</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1100,8 +1180,8 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <recordLookups>
         <name>GetRecordTypeUSPAction</name>
         <label>Get RecordType USP</label>
-        <locationX>3575</locationX>
-        <locationY>600</locationY>
+        <locationX>3828</locationX>
+        <locationY>708</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsFlowOrQueueDecision</targetReference>
@@ -1193,8 +1273,8 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <recordUpdates>
         <name>DesactivarCampoEstadoInteraccion</name>
         <label>Desactivar Campo Estado Interaccion</label>
-        <locationX>3372</locationX>
-        <locationY>1848</locationY>
+        <locationX>3636</locationX>
+        <locationY>2256</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1221,8 +1301,8 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <recordUpdates>
         <name>DesactivarCampoEstadoInteraccionQueue</name>
         <label>Desactivar Campo Estado Interaccion Queue</label>
-        <locationX>4054</locationX>
-        <locationY>924</locationY>
+        <locationX>4296</locationX>
+        <locationY>1032</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1249,8 +1329,8 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <recordUpdates>
         <name>Update_case_owner</name>
         <label>Update case owner</label>
-        <locationX>3086</locationX>
-        <locationY>1248</locationY>
+        <locationX>3350</locationX>
+        <locationY>1764</locationY>
         <connector>
             <targetReference>PriorityCalculationSubflow</targetReference>
         </connector>
@@ -1265,7 +1345,7 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>GetPreferredAgentSubflow.groupId</elementReference>
+                <elementReference>Get_USP_User.Id</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -1283,8 +1363,8 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <recordUpdates>
         <name>UpdateOwnerResponsableNegocioAction</name>
         <label>Update Owner Responsable Negocio</label>
-        <locationX>2822</locationX>
-        <locationY>1032</locationY>
+        <locationX>3086</locationX>
+        <locationY>1140</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1302,7 +1382,7 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
         <object>Case</object>
     </recordUpdates>
     <start>
-        <locationX>1660</locationX>
+        <locationX>1675</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>FieldBlockedIsChanged</targetReference>
@@ -1351,7 +1431,7 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <subflows>
         <name>GenerateScreenPopURLSubflow</name>
         <label>Generate Screen Pop URL</label>
-        <locationX>3713</locationX>
+        <locationX>3828</locationX>
         <locationY>600</locationY>
         <connector>
             <targetReference>GetRecordTypeUSPAction</targetReference>
@@ -1380,8 +1460,8 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <subflows>
         <name>GetPreferredAgentSubflow</name>
         <label>Recuperar Agente Preferente</label>
-        <locationX>3372</locationX>
-        <locationY>816</locationY>
+        <locationX>3361</locationX>
+        <locationY>924</locationY>
         <connector>
             <targetReference>ResponsableNegocioEncontradoDecision</targetReference>
         </connector>
@@ -1517,8 +1597,8 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
     <subflows>
         <name>PriorityCalculationSubflow</name>
         <label>Calcular Prioridad</label>
-        <locationX>3372</locationX>
-        <locationY>1524</locationY>
+        <locationX>3636</locationX>
+        <locationY>2040</locationY>
         <connector>
             <targetReference>GenesysFlowRoutingInvocableAction</targetReference>
         </connector>
