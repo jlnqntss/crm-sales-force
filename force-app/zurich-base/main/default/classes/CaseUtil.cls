@@ -47,7 +47,13 @@ public with sharing class CaseUtil
     public static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
     public static final String ORIGIN_WEB = 'Web';
     @TestVisible
-    private static final String ZDA = 'ZDA';
+    private static final String ZDA
+    {
+        get
+        {
+            return GlobalConfigUtil.getGlobalConfigurationValue('Call_Center_ZDA');
+        }
+    }
 
     private static final String FIELD_CLIENT_HAS_CONTACTED = 'ClientHasContacted__c';
 
