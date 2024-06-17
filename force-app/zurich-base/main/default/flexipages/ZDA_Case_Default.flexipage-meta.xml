@@ -955,50 +955,22 @@
                     <name>actionNames</name>
                     <valueList>
                         <valueListItems>
-                            <value>CustomButton.Case.CerrarCasoUSP</value>
-                        </valueListItems>
-                        <valueListItems>
                             <value>Case.Generar_Seguimiento</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Edit</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Clone</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Delete</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>CustomButton.Case.Transferir</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Case.Diferido</value>
-                            <visibilityRule>
-                                <criteria>
-                                    <leftValue>{!Record.Status}</leftValue>
-                                    <operator>NE</operator>
-                                    <rightValue>Cerrado</rightValue>
-                                </criteria>
-                            </visibilityRule>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>MergeCase</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>ChangeOwnerOne</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>PrintableView</value>
-                        </valueListItems>
-                        <valueListItems>
-                            <value>Global.Follow_Up</value>
                         </valueListItems>
                         <valueListItems>
                             <value>CustomButton.Case.ScaleZDA</value>
                         </valueListItems>
                         <valueListItems>
                             <value>CustomButton.Case.CloseZDA</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Clone</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>MergeCase</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>PrintableView</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
@@ -1067,7 +1039,12 @@
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord6</identifier>
                 <visibilityRule>
-                    <booleanFilter>3 AND (1 OR 2)</booleanFilter>
+                    <booleanFilter>1 AND (2 OR 3 OR 4 OR 5)</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.Type}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Cotización</rightValue>
+                    </criteria>
                     <criteria>
                         <leftValue>{!Record.Subtype__c}</leftValue>
                         <operator>EQUAL</operator>
@@ -1076,12 +1053,17 @@
                     <criteria>
                         <leftValue>{!Record.Subtype__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Gestión Competencias</rightValue>
+                        <rightValue>Características / Coberturas</rightValue>
                     </criteria>
                     <criteria>
-                        <leftValue>{!Record.Type}</leftValue>
+                        <leftValue>{!Record.Subtype__c}</leftValue>
                         <operator>EQUAL</operator>
-                        <rightValue>Venta</rightValue>
+                        <rightValue>Comparativa Cotización</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Subtype__c}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Gestión Competencias</rightValue>
                     </criteria>
                 </visibilityRule>
             </componentInstance>
@@ -1120,6 +1102,19 @@
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord2</identifier>
+                <visibilityRule>
+                    <booleanFilter>1 OR 2</booleanFilter>
+                    <criteria>
+                        <leftValue>{!Record.Account.RecordType.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>BusinessCustomer</rightValue>
+                    </criteria>
+                    <criteria>
+                        <leftValue>{!Record.Account.RecordType.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Customer</rightValue>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -1142,6 +1137,41 @@
                 </componentInstanceProperties>
                 <componentName>console:relatedRecord</componentName>
                 <identifier>console_relatedRecord3</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.Account.RecordType.Name}</leftValue>
+                        <operator>EQUAL</operator>
+                        <rightValue>Intermediary</rightValue>
+                    </criteria>
+                </visibilityRule>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>createQuickActionName</name>
+                    <value>NewAccount</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>lookupFieldName</name>
+                    <value>Case.MediatedCustomer__c</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>titleFieldName</name>
+                    <value>Cliente</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>updateQuickActionName</name>
+                    <value>Account.Update</value>
+                </componentInstanceProperties>
+                <componentName>console:relatedRecord</componentName>
+                <identifier>console_relatedRecord4</identifier>
+                <visibilityRule>
+                    <criteria>
+                        <leftValue>{!Record.MediatedCustomer__r.Name}</leftValue>
+                        <operator>NE</operator>
+                    </criteria>
+                </visibilityRule>
             </componentInstance>
         </itemInstances>
         <name>Facet-294fafb1-47db-4cf5-90e1-14e913c9d51e</name>
