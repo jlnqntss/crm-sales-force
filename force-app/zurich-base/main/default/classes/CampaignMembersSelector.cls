@@ -9,6 +9,9 @@ public with sharing class CampaignMembersSelector extends BaseSelector
 {
     //#region Atributos
     private final static String BASE_SELECT = 'SELECT {0} FROM CampaignMember ';
+    private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
+    private static final String PRODUCT_BRANCH_VIDA_CODE = configValues.get('Product_Branch_Vida_Code');
+    private static final String CAMPAIGN_CROSS_SELLING_TYPE = configValues.get('Campaign_Cross_Selling_Type');
     //#endregion
 
     //#region Contructores
@@ -117,11 +120,11 @@ public with sharing class CampaignMembersSelector extends BaseSelector
     {
         List<CampaignMember> result = new List<CampaignMember>([SELECT ContactId, CampaignId, Campaign.ExternalId__c, LeadPhone__c, Contact.AccountId
                                                                 FROM CampaignMember
-                                                                WHERE Campaign.Type = 'Cross Selling'
+                                                                WHERE Campaign.Type = :CAMPAIGN_CROSS_SELLING_TYPE
                                                                                       AND Campaign.IsActive = true
                                                                                                               AND Campaign.StartDate <= TODAY
-                                                                                                              AND Status = 'Pdte. Revisión Mediador'
-                                                                                                              AND Campaign.ProductBranch__c != '0000000016']);
+                                                                                                              AND Status = :CAMPAIGN_CROSS_SELLING_TYPE
+                                                                                                              AND Campaign.ProductBranch__c != :PRODUCT_BRANCH_VIDA_CODE]);
         return result;
     }
 
