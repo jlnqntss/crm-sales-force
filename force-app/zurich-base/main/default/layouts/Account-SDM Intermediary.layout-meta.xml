@@ -337,6 +337,7 @@
         </quickActionListItems>
     </quickActionList>
     <relatedLists>
+        <excludeButtons>NewCase</excludeButtons>
         <fields>CASES.CASE_NUMBER</fields>
         <fields>OfferId__c</fields>
         <fields>Days_Open__c</fields>

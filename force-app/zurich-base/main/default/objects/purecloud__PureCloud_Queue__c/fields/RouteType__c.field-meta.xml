@@ -27,6 +27,11 @@
                 <default>false</default>
                 <label>Web</label>
             </value>
+            <value>
+                <fullName>CanalUnico</fullName>
+                <default>false</default>
+                <label>CanalUnico</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
     <visibleLines>4</visibleLines>

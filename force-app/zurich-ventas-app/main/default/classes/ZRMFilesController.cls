@@ -30,17 +30,17 @@ public with sharing class ZRMFilesController {
     
             if (ProfilesSelector.PROFILE_AGENTE_VENTAS.equals(loggedUser.Profile.Name)) {                
                 contentDocumentLinkList = new ContentDocumentLinkSelector().getZRMContentDocumentByLinkedEntity(recordId, loggedUser.Contact.AccountId);
-                result = getZRMFilesList(contentDocumentLinkList, iconMap);
+                result = getZRMFilesList(contentDocumentLinkList, iconMap, loggedUser);
                 
             } else if (ProfilesSelector.PROFILE_AGENTE_VENTAS_AGR.equals(loggedUser.Profile.Name)) {                
                 contentDocumentLinkList = new ContentDocumentLinkSelector().getZRMAGRContentDocumentByLinkedEntity(recordId, loggedUser.Contact.Account.IntermediaryGroup__c);
-                result = getZRMFilesList(contentDocumentLinkList, iconMap);
+                result = getZRMFilesList(contentDocumentLinkList, iconMap, loggedUser);
             }
             
             return result;
 
         } catch(Exception e) {
-            throw new AuraHandledException('Se ha producido un error, contacte con su administrador');
+            throw new AuraHandledException(System.Label.ZRM_Files_LWC_Error);
         }
     }
 
@@ -100,23 +100,41 @@ public with sharing class ZRMFilesController {
      * @date 16/05/2024
      */
     @TestVisible
-    private static List<ZRMFile> getZRMFilesList(List<ContentDocumentLink> contentDocumentLinkList,  Map<String, String> iconMap) {
+    private static List<ZRMFile> getZRMFilesList(List<ContentDocumentLink> contentDocumentLinkList,  Map<String, String> iconMap, User loggedUser) {
         List<ZRMFile> result = new List<ZRMFile>();
         ZRMFile zrmFile;
+        Boolean deleteEnabled;
 
-        for (ContentDocumentLink cdl: contentDocumentLinkList) {            
-            zrmFile = new ZRMFile(cdl.ContentDocument.Title, cdl.ContentDocument.LatestPublishedVersion.VersionDataUrl, getIconName(iconMap, cdl.ContentDocument.FileExtension));
+        for (ContentDocumentLink cdl: contentDocumentLinkList) {  
+            deleteEnabled = userCanDelete(cdl, loggedUser);          
+            zrmFile = new ZRMFile(cdl.Id, cdl.ContentDocument.Title, cdl.ContentDocument.LatestPublishedVersion.VersionDataUrl, getIconName(iconMap, cdl.ContentDocument.FileExtension), deleteEnabled);
             result.add(zrmFile);
         }   
 
         return result;
     }
 
+    /** comprueba si el usuario logueado puede o no borrar por ser owner
+     *           
+     * @author dmunoz
+     * @date 31/05/2024
+     */
+    private static Boolean userCanDelete(ContentDocumentLink contentDocumentLink, User loggedUser) {
+        Boolean result = false;
 
+        if (contentDocumentLink.ContentDocument.OwnerId.equals(loggedUser.Id)) {
+            result = true;
+        }
+
+        return result;
+    }
 
     //#region Private classes
     @TestVisible
     private class ZRMFile {
+
+        @AuraEnabled
+        public String fileId{get; set;}
 
         @AuraEnabled
         public String fileTitle{get; set;}
@@ -127,10 +145,15 @@ public with sharing class ZRMFilesController {
         @AuraEnabled
         public String fileIcon {get; set;}
 
-        public ZRMFile(String fileTitle, String fileDownloadUrl, String fileIcon) {
+        @AuraEnabled
+        public Boolean deleteEnabled {get; set;}
+
+        public ZRMFile(String fileId, String fileTitle, String fileDownloadUrl, String fileIcon, Boolean deleteEnabled) {
+            this.fileId = fileId;
             this.fileTitle = fileTitle;
             this.fileDownloadUrl = fileDownloadUrl;
             this.fileIcon = fileIcon;
+            this.deleteEnabled = deleteEnabled;
         }
     }
 }

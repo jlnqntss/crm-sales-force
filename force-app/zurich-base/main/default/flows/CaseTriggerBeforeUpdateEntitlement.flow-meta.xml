@@ -142,6 +142,26 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>Asignar_Entitlement_Caso_ZDA</name>
+        <label>Asignar Entitlement Caso ZDA</label>
+        <locationX>5858</locationX>
+        <locationY>1019</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.EntitlementId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FoundZDAEntitlement</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.BusinessHoursId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FoundZDABusinessHours</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>CaseEntitlementAssignment</name>
         <label>Asignar Entitlement Caso</label>
         <locationX>4362</locationX>
@@ -228,6 +248,43 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Sólo se modifican los SLAs si el origen es Canal Unico, y no son de tipo &quot;Comunicare&quot; o &quot;Recotizare&quot;</description>
+        <name>Cumple_criterios_para_modificar</name>
+        <label>Cumple criterios para modificar</label>
+        <locationX>6034</locationX>
+        <locationY>503</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_se_puede</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_Origin_CU</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>esRecotizacion</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>esContactare</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_ZDA</targetReference>
+            </connector>
+            <label>Si se puede</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Encontrado_Entitlement_CCS</name>
         <label>¿Encontrado Entitlement CCS?</label>
         <locationX>1238</locationX>
@@ -300,6 +357,31 @@
                 <targetReference>Asignar_CSM</targetReference>
             </connector>
             <label>Encontrado CSM</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Existen_resultados_ZDA</name>
+        <label>Existen resultados ZDA</label>
+        <locationX>5858</locationX>
+        <locationY>719</locationY>
+        <defaultConnector>
+            <targetReference>Recuperar_Entitlement_Default_ZDA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Predeterminado</defaultConnectorLabel>
+        <rules>
+            <name>Resultados_ZDA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FoundZDAEntitlement</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Entitlement_Caso_ZDA</targetReference>
+            </connector>
+            <label>Resultados ZDA</label>
         </rules>
     </decisions>
     <decisions>
@@ -730,7 +812,7 @@
     <decisions>
         <name>RecordTypeDecision</name>
         <label>¿Tipo de registro?</label>
-        <locationX>3776</locationX>
+        <locationX>4260</locationX>
         <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -762,6 +844,21 @@
                 <targetReference>MeetsEntryCriteriaDecision</targetReference>
             </connector>
             <label>USP Inquiry</label>
+        </rules>
+        <rules>
+            <name>ZDAInquiryOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ZDA_RecordType</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Se_han_modificado_los_campos_ZDA</targetReference>
+            </connector>
+            <label>ZDA Inquiry</label>
         </rules>
     </decisions>
     <decisions>
@@ -864,6 +961,42 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Se_han_modificado_los_campos_ZDA</name>
+        <label>¿Se han modificado los campos?</label>
+        <locationX>6254</locationX>
+        <locationY>395</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_se_modificaron_ZDA</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Subtype__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record__Prior.Subtype__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TypeN3__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record__Prior.TypeN3__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record__Prior.Type</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Cumple_criterios_para_modificar</targetReference>
+            </connector>
+            <label>Si se modificaron</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Tiene_Cuenta_asociada</name>
         <label>¿Tiene Cuenta asociada?</label>
         <locationX>1403</locationX>
@@ -891,11 +1024,49 @@
     <description>Flujo encargado de, en el momento de la actualización del caso, evaluar si aplica asignar un entitlement nuevo o si debe permanecer con el ya asignado.</description>
     <environments>Default</environments>
     <formulas>
+        <name>Case_Origin_CU</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Case_Origin_CU.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>Channel</name>
         <dataType>String</dataType>
         <expression>IF( {!$Record.Account.RecordType.DeveloperName} = &apos;PartnerOCS&apos;,
 &apos;Partner&apos; ,
 &apos;Directo&apos;)</expression>
+    </formulas>
+    <formulas>
+        <description>Fórmula que nos indica si el caso que estamos actualizando es de tipo Contactare</description>
+        <name>esContactare</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+CONTAINS({!$Record.Description},  {!$CustomMetadata.Global_Configuration__mdt.Case_Description_Contactar.Value__c}) ,
+NOT(ISNULL({!$Record.ParentId}))
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Fórmula para comprobar si el caso que estamos actualizando es de tipo recotizacion</description>
+        <name>esRecotizacion</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+CONTAINS({!$Record.Description},  {!$CustomMetadata.Global_Configuration__mdt.Case_Description_Recotizar.Value__c}) ,
+NOT(ISNULL({!$Record.ParentId}))
+)</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_CallCenter</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Call_Center_ZDA.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_Queue_Default</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Entitlement_Name_Default.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_RecordType</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_ZDA.Value__c}</expression>
     </formulas>
     <interviewLabel>Case Trigger - Before update Entitlement {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before update - Entitlement</label>
@@ -1465,6 +1636,40 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <name>Recuperar_Entitlement_Default_ZDA</name>
+        <label>Recuperar Entitlement Default ZDA</label>
+        <locationX>5946</locationX>
+        <locationY>827</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Asignar_Entitlement_Caso_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_Queue_Default</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_CallCenter</elementReference>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundZDABusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundZDAEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>Recuperar_Entitlement_Mediador_Panelizado_Cartera_Cierre_16_h</name>
         <label>Recuperar Entitlement Mediador Panelizado Cartera Cierre 16 h</label>
         <locationX>2690</locationX>
@@ -1534,8 +1739,56 @@
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
+    <recordLookups>
+        <name>Recuperar_Entitlement_ZDA</name>
+        <label>Recuperar Entitlement ZDA</label>
+        <locationX>5858</locationX>
+        <locationY>611</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Existen_resultados_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CaseTypeN2__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Subtype__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseTypeN3__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.TypeN3__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_CallCenter</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CaseTypeN1__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Type</elementReference>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundZDABusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundZDAEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
     <start>
-        <locationX>3650</locationX>
+        <locationX>4134</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
@@ -1555,6 +1808,20 @@
     </variables>
     <variables>
         <name>FoundUspEntitlement</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>FoundZDABusinessHours</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>FoundZDAEntitlement</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

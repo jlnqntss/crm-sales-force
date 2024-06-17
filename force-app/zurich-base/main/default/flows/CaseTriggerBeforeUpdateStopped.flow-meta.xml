@@ -4,8 +4,8 @@
     <assignments>
         <name>Desmarcar_Stopped</name>
         <label>Desmarcar Stopped</label>
-        <locationX>1057</locationX>
-        <locationY>420</locationY>
+        <locationX>897</locationX>
+        <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>$Record.IsStopped</assignToReference>
             <operator>Assign</operator>
@@ -17,8 +17,8 @@
     <assignments>
         <name>Marcar_Stopped</name>
         <label>Marcar Stopped</label>
-        <locationX>813</locationX>
-        <locationY>418</locationY>
+        <locationX>50</locationX>
+        <locationY>611</locationY>
         <assignmentItems>
             <assignToReference>$Record.IsStopped</assignToReference>
             <operator>Assign</operator>
@@ -28,10 +28,37 @@
         </assignmentItems>
     </assignments>
     <decisions>
+        <name>Cambi_a_Pendiente_de_Partner</name>
+        <label>¿Cambió a Pendiente de Partner?</label>
+        <locationX>886</locationX>
+        <locationY>503</locationY>
+        <defaultConnector>
+            <targetReference>Desmarcar_Stopped</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No es pendiente partner</defaultConnectorLabel>
+        <rules>
+            <name>Si_es_pendiente_partner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PendingBy__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>PendingByPartner</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Marcar_Stopped</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Si es pendiente partner</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Cambio_a_Pendiente_de_Cliente</name>
         <label>¿Cambió a Pendiente de Cliente?</label>
-        <locationX>920</locationX>
-        <locationY>153</locationY>
+        <locationX>182</locationX>
+        <locationY>503</locationY>
         <defaultConnector>
             <targetReference>Desmarcar_Stopped</targetReference>
         </defaultConnector>
@@ -54,32 +81,10 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Es_RT_OCSInquiry</name>
-        <label>¿Es RT OCSInquiry?</label>
-        <locationX>500</locationX>
-        <locationY>152</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Si_es_OCSInquiry</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>OCSInquiry</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Se_han_modificado_los_campos</targetReference>
-            </connector>
-            <label>Si es OCSInquiry</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Se_han_modificado_los_campos</name>
         <label>¿Se han modificado los campos?</label>
-        <locationX>706</locationX>
-        <locationY>157</locationY>
+        <locationX>336</locationX>
+        <locationY>395</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Si_se_modificaron</name>
@@ -97,6 +102,76 @@
             <label>Si se modificaron</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Se_han_modificado_los_campos_ZDA</name>
+        <label>¿Se han modificado los campos?</label>
+        <locationX>1040</locationX>
+        <locationY>395</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_se_modificaron_ZDA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PendingBy__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record__Prior.PendingBy__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Cambi_a_Pendiente_de_Partner</targetReference>
+            </connector>
+            <label>Si se modificaron</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Tipo_de_caso</name>
+        <label>¿Qué tipo de caso?</label>
+        <locationX>897</locationX>
+        <locationY>287</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si_es_OCSInquiry</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OCSInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Se_han_modificado_los_campos</targetReference>
+            </connector>
+            <label>Si es OCSInquiry</label>
+        </rules>
+        <rules>
+            <name>Si_es_ZDAInquiry</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ZDA_RTName</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Se_han_modificado_los_campos_ZDA</targetReference>
+            </connector>
+            <label>Si es ZDAInquiry</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>PendingByPartner</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_PendingBy_Partner.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_RTName</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_ZDA.Value__c}</expression>
+    </formulas>
     <interviewLabel>Case Trigger - Before update Stopped {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before update Stopped</label>
     <processMetadataValues>
@@ -108,7 +183,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -119,10 +194,10 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationX>771</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>Es_RT_OCSInquiry</targetReference>
+            <targetReference>Tipo_de_caso</targetReference>
         </connector>
         <object>Case</object>
         <recordTriggerType>Update</recordTriggerType>

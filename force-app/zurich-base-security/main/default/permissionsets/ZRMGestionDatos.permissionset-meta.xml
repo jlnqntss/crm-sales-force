@@ -5,11 +5,19 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>IntermAddCampaignMemberController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZRMFilesController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>IntermAddCampaignMemberController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZRMRecibosController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <description>Permite otorgar permisos más allá de lectura a los diferentes Agentes Mediadores.</description>
