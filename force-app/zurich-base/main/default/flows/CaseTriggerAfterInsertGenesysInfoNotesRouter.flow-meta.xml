@@ -503,8 +503,8 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <description>Se registra el error en Salesforce con el detalle del mismo.</description>
         <name>CreateErrorLogAction</name>
         <label>Registrar error</label>
-        <locationX>1573</locationX>
-        <locationY>1956</locationY>
+        <locationX>2893</locationX>
+        <locationY>1740</locationY>
         <inputAssignments>
             <field>Level__c</field>
             <value>
@@ -612,6 +612,7 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
         <locationX>1309</locationX>
         <locationY>1848</locationY>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
         <inputAssignments>
@@ -811,7 +812,6 @@ Se registra el resultado en una tarea relacionada al caso con el identificador d
             <targetReference>Check_Origin</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>CreateErrorLogAction</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
