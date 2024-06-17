@@ -3,6 +3,7 @@
     <fullName>CommercialProductCode__c</fullName>
     <description>Producto en BS (ZDA)</description>
     <externalId>false</externalId>
+    <inlineHelpText>Producto en Canal único</inlineHelpText>
     <label>Commercial product</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
@@ -12,11 +13,6 @@
     <valueSet>
         <valueSetDefinition>
             <sorted>false</sorted>
-            <value>
-                <fullName>Pack Productos Empresa</fullName>
-                <default>false</default>
-                <label>Pack Productos Empresa</label>
-            </value>
             <value>
                 <fullName>PRD0020</fullName>
                 <default>false</default>

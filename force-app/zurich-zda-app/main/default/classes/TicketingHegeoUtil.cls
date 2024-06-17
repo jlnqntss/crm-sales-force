@@ -26,9 +26,14 @@ public with sharing class TicketingHegeoUtil
     private static final String STATUS_TRAMITACION = 'EnTramitacion';
     private static final String STATUS_CERRADO = 'TramitadoFinalizado';
     private static final String STATUS_PENDIENTE_INFO = 'PendienteInformacion';
+    private static final String STATUS_DESESTIMADO = 'Desestimado';
     private static final String SUBSTATUS_SIN = 'SinSubestado';
     private static final String SUBSTATUS_ESPECIALISTA = 'EnEspecialista';
     private static final String STR_PENDIENTE_DE = 'Pendiente de ';
+    private static final String EVENT_INICIO_TRAMITE = 'InicioTramite';
+    private static final String EVENT_DESESTIMACION_TRAMITE = 'DesestimacionTramite';
+    private static final String EVENT_FIN_TRAMITE = 'FinalizacionTramite';
+    private static final String EVENT_REASON_OTROS = 'MRPOtros';
 
     private static final Map<String, String> caseStatusCuStatusRelationship = new Map<String, String>
     {
@@ -111,5 +116,74 @@ public with sharing class TicketingHegeoUtil
             request.ticket.subStatusDesc = STR_PENDIENTE_DE+c.PendingBy__c;
         }
         
+    }
+
+    /**
+     * Envia una peticion para a canal unico conforme el status de un caso ha
+     * cambiado a Asignado (En tramite para ellos)
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param relatedCase caso relacionado con la peticion a enviar
+     */
+    @future(callout=true)
+    public static void sendRequestStatusChangeToAssigned(Id relatedCaseId)
+    {
+        Case relatedCase = new CasesSelector().getByIdWithZDAInfo(relatedCaseId);
+        CanalUnicoUpdateVsegTicketRequest calloutRequest = createBaseRequestByCase(relatedCase);
+        calloutRequest.ticket.event = ZdaCuRequestAvailableEventValues__mdt.getInstance(EVENT_INICIO_TRAMITE)?.Value__c;
+
+        TicketingHegeoService.updateVsegTicket(calloutRequest);
+    }
+
+    /**
+     * Establece los campos calloutRequest.ticket.event y calloutRequest.ticket.ticketStatus para casos cuyo status es cerrado.
+     * Para ello, utiliza el valor definido en el motivo del cierre
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 03/06/2024
+     * @param relatedCase caso relacionado con la peticion a enviar
+     * @param calloutRequest peticion a rellenar
+     */
+    public static void setEventAndTicketStatusByClosedCase(Case relatedCase, CanalUnicoUpdateVsegTicketRequest calloutRequest)
+    {
+        //Obtenemos el custom metadata que nos dice si el motivo de cierre es desestimado
+        List<ZDARejectCloseResult__mdt> resultRejectList = ZDARejectCloseResult__mdt.getAll().values();
+        Map<String, ZDARejectCloseResult__mdt> objectsByResult = (Map<String, ZDARejectCloseResult__mdt>) CollectionUtil.hashList( resultRejectList, ZDARejectCloseResult__mdt.fields.Result__c.getDescribe().getName() );
+
+        if (objectsByResult.containsKey(relatedCase.CloseResult__c))
+        {
+            //En el custom metadata esta definido el motivo de cierre, por tanto, es desestimado
+            calloutRequest.ticket.event = ZdaCuRequestAvailableEventValues__mdt.getInstance(EVENT_DESESTIMACION_TRAMITE)?.Value__c;
+            calloutRequest.ticket.ticketStatus = ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_DESESTIMADO)?.Value__c;
+        }
+        else
+        {
+            //Al no ser desestimado, es un tramitado
+            calloutRequest.ticket.event = ZdaCuRequestAvailableEventValues__mdt.getInstance(EVENT_FIN_TRAMITE)?.Value__c;
+            calloutRequest.ticket.ticketStatus = ZdaCuReqAvailableTicketStatusValues__mdt.getInstance(STATUS_CERRADO)?.Value__c;
+        }
+    }
+
+    /**
+     * Crea una peticion para enviar a canal unico con los que se rellenan a partir de la informacion
+     * del caso relacionado. A ESTE OBJETO AUN FALTARA POR INFORMAR EL CAMPO calloutRequest.ticket.event
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param relatedCase caso relacionado con la peticion a enviar
+     * @return CanalUnicoUpdateVsegTicketRequest objeto request construido
+     */
+    public static CanalUnicoUpdateVsegTicketRequest createBaseRequestByCase(Case relatedCase)
+    {
+        CanalUnicoUpdateVsegTicketRequest calloutRequest = new CanalUnicoUpdateVsegTicketRequest();
+        calloutRequest.ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
+        calloutRequest.ticket.ticketId = relatedCase.CuTicketId__c;
+        calloutRequest.ticket.externalTicketId = '' + relatedCase.CaseNumber;
+        setStatusSubstatusByCase(calloutRequest, relatedCase);
+        calloutRequest.ticket.agent = relatedCase.Owner.Name;
+        calloutRequest.ticket.eventReason = ZdaCuReqAvailableEventReasonValues__mdt.getInstance(EVENT_REASON_OTROS)?.Value__c;
+
+        return calloutRequest;
     }
 }

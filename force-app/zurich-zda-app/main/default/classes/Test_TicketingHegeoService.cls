@@ -20,10 +20,10 @@ private with sharing class Test_TicketingHegeoService
         CanalUnicoUpdateVsegTicketRequest request = Test_TicketingHegeoService.generateRequest();
 
         TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
-            200,
-            'OK',
-            'application/soap+xml;charset=utf-8',
-            '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"><soap:Header><NS1:Security xmlns:NS1="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"><Timestamp xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><Created>2024-04-12T09:14:24.786Z</Created></Timestamp></NS1:Security></soap:Header><soap:Body><io:updateVsegTicketResponse xmlns:io="http://webservices.zurich.com/proxy/Hegeo/Ticketing/v1_0"><io:ticket><io:ticketId>102845</io:ticketId></io:ticket></io:updateVsegTicketResponse></soap:Body></soap:Envelope>',
+            TicketingHegeoServiceMock.HTTP_CODE_OK,
+            TicketingHegeoServiceMock.RESULT_OK,
+            TicketingHegeoServiceMock.HEADER_CONTENT_TYPE,
+            TicketingHegeoServiceMock.RESPONSE_BODY,
             false
             );
 
@@ -33,7 +33,7 @@ private with sharing class Test_TicketingHegeoService
         response = TicketingHegeoService.updateVsegTicket(request);
         Test.stopTest();
 
-        Assert.areEqual('OK', response);
+        Assert.areEqual(TicketingHegeoServiceMock.RESULT_OK, response);
     }
 
     /**
@@ -128,12 +128,12 @@ private with sharing class Test_TicketingHegeoService
     private static void test_sendSoapFault()
     {
         CanalUnicoUpdateVsegTicketRequest request = Test_TicketingHegeoService.generateRequest();
-
+        
         TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
-            200,
-            'OK',
-            'application/soap+xml;charset=utf-8',
-            '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"><soap:Body><soap:Fault><soap:Code><soap:Value>soap:Sender</soap:Value></soap:Code><soap:Reason><soap:Text xml:lang="es">ERROR DESCRIPTION</soap:Text></soap:Reason></soap:Fault></soap:Body></soap:Envelope>',
+            TicketingHegeoServiceMock.HTTP_CODE_OK,
+            TicketingHegeoServiceMock.RESULT_OK,
+            TicketingHegeoServiceMock.HEADER_CONTENT_TYPE,
+            TicketingHegeoServiceMock.RESPONSE_BODY_FAULT,
             false
             );
 
@@ -156,12 +156,12 @@ private with sharing class Test_TicketingHegeoService
     private static void test_sendTicketNotFound()
     {
         CanalUnicoUpdateVsegTicketRequest request = Test_TicketingHegeoService.generateRequest();
-
+        
         TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
-            200,
-            'OK',
-            'application/soap+xml;charset=utf-8',
-            '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"><soap:Header><NS1:Security xmlns:NS1="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"><Timestamp xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><Created>2024-04-22T11:34:35.959Z</Created></Timestamp></NS1:Security></soap:Header><soap:Body><io:updateVsegTicketResponse xmlns:io="http://webservices.zurich.com/proxy/Hegeo/Ticketing/v1_0"><io:status><io:errorCode>2</io:errorCode><io:errorDescription>Error al recuperar el identificador</io:errorDescription></io:status><io:ticket><io:ticketId>12345678901234567890</io:ticketId></io:ticket></io:updateVsegTicketResponse></soap:Body></soap:Envelope>',
+            TicketingHegeoServiceMock.HTTP_CODE_OK,
+            TicketingHegeoServiceMock.RESULT_OK,
+            TicketingHegeoServiceMock.HEADER_CONTENT_TYPE,
+            TicketingHegeoServiceMock.RESPONSE_BODY_TICKET_NOT_FOUND,
             false
             );
 

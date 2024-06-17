@@ -2,9 +2,52 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>52.0</apiVersion>
     <assignments>
+        <name>Almacenar_Colas_recuperadas_para_canal_unico</name>
+        <label>Almacenar Colas recuperadas para canal unico</label>
+        <locationX>2426</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>genesysQueuesToIterate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Obtener_colas_para_canal_unico</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loopQueues</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Asignamos_cola_canal_unico</name>
+        <label>Asignamos cola canal unico</label>
+        <locationX>2162</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>genesysQueueName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Obtener_cola_para_canal_unico.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysQueueId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Obtener_cola_para_canal_unico.purecloud__PureCloud_Queue_ID__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>genesysFlowId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Obtener_cola_para_canal_unico.GenesysFlowId__c</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>asignamos_output</name>
         <label>asignamos output</label>
-        <locationX>1485</locationX>
+        <locationX>1749</locationX>
         <locationY>1658</locationY>
         <assignmentItems>
             <assignToReference>genesysQueueName</assignToReference>
@@ -179,7 +222,7 @@
     <decisions>
         <name>Check_Note_info_or_Web</name>
         <label>Check Note info or Web</label>
-        <locationX>1617</locationX>
+        <locationX>1881</locationX>
         <locationY>1550</locationY>
         <defaultConnector>
             <targetReference>loopQueues</targetReference>
@@ -187,7 +230,7 @@
         <defaultConnectorLabel>Doesn&apos;t contain</defaultConnectorLabel>
         <rules>
             <name>ContainsNotaINFOorWeb</name>
-            <conditionLogic>(1 AND 2) OR (3 AND 4)</conditionLogic>
+            <conditionLogic>(1 AND 2) OR (3 AND 4) OR (5 AND 6)</conditionLogic>
             <conditions>
                 <leftValueReference>loopQueues.RouteType__c</leftValueReference>
                 <operator>Contains</operator>
@@ -216,10 +259,63 @@
                     <elementReference>ROUTE_TYPE_WEB</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>loopQueues.RouteType__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Case_Origin_Canal_Unico</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>routeType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_Origin_Canal_Unico</elementReference>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>asignamos_output</targetReference>
             </connector>
             <label>Contains NotaINFO or Web</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Cola_Canal_UnicoEncontrada</name>
+        <label>¿Cola Canal UnicoEncontrada?</label>
+        <locationX>2294</locationX>
+        <locationY>350</locationY>
+        <defaultConnector>
+            <targetReference>Obtener_colas_para_canal_unico</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Encontrada_CanalUnico</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Obtener_cola_para_canal_unico.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Obtener_cola_para_canal_unico.GenesysFlowId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Obtener_cola_para_canal_unico.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Call_Center_ZDA</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignamos_cola_canal_unico</targetReference>
+            </connector>
+            <label>Encontrada</label>
         </rules>
     </decisions>
     <decisions>
@@ -368,7 +464,7 @@
         <description>Se comprueba el tipo de enrutado en los valores de entrada.</description>
         <name>routeTypeDecision</name>
         <label>¿Qué se va a enrutar?</label>
-        <locationX>1397</locationX>
+        <locationX>1661</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>No determinado</defaultConnectorLabel>
         <rules>
@@ -415,6 +511,21 @@
                 <targetReference>GetWebMiZurichQueueAction</targetReference>
             </connector>
             <label>Web</label>
+        </rules>
+        <rules>
+            <name>Canal_Unico</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>routeType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_Origin_Canal_Unico</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Obtener_cola_para_canal_unico</targetReference>
+            </connector>
+            <label>Canal Unico</label>
         </rules>
     </decisions>
     <decisions>
@@ -482,6 +593,16 @@ Valores de salida:
 - genesysQueueName: En caso de encontrar la cola se retornará el nombre de la misma en Genesys Cloud, en caso contrario el valor será vacío.</description>
     <environments>Default</environments>
     <formulas>
+        <name>Call_Center_ZDA</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Call_Center_ZDA.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Case_Origin_Canal_Unico</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Origin_Canal_Unico.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>industryFilled</name>
         <dataType>Boolean</dataType>
         <expression>IF(LEN({!routeIndustry}) &gt; 0, true, false)</expression>
@@ -491,7 +612,7 @@ Valores de salida:
     <loops>
         <name>loopQueues</name>
         <label>Loop Genesys Queues</label>
-        <locationX>1397</locationX>
+        <locationX>1661</locationX>
         <locationY>1442</locationY>
         <collectionReference>genesysQueuesToIterate</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -690,8 +811,52 @@ Valores de salida:
         <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Obtener_cola_para_canal_unico</name>
+        <label>Obtener cola para canal unico</label>
+        <locationX>2294</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Cola_Canal_UnicoEncontrada</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>routeIndustry</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>purecloud__PureCloud_Queue__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Obtener_colas_para_canal_unico</name>
+        <label>Obtener colas para canal unico</label>
+        <locationX>2426</locationX>
+        <locationY>458</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Almacenar_Colas_recuperadas_para_canal_unico</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>routeValue</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>purecloud__PureCloud_Queue__c</object>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>1271</locationX>
+        <locationX>1535</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>routeTypeDecision</targetReference>

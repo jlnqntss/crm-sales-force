@@ -3,31 +3,15 @@
     <label>Rango</label>
     <name>Range__c</name>
     <picklistValues>
-        <masterLabel>Grandes empresas</masterLabel>
-        <translation></translation>
-    </picklistValues>
-    <picklistValues>
         <masterLabel>Motor</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>No Motor</masterLabel>
+        <masterLabel>Non Motor</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>PYMEs</masterLabel>
-        <translation></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>Particulares</masterLabel>
-        <translation></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>Todos</masterLabel>
-        <translation></translation>
-    </picklistValues>
-    <picklistValues>
-        <masterLabel>Vida riesgo</masterLabel>
         <translation></translation>
     </picklistValues>
 </CustomFieldTranslation>

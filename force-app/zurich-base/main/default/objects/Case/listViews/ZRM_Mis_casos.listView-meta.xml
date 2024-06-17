@@ -7,6 +7,7 @@
     <columns>PolicyId__c</columns>
     <columns>Product_Name__c</columns>
     <columns>CASES.STATUS</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
     <columns>PolicyEndDate__c</columns>
     <columns>UpdatedInsuranceCost__c</columns>
     <filterScope>Everything</filterScope>
@@ -25,7 +26,7 @@
         <operation>equals</operation>
         <value>Agente mediador</value>
     </filters>
-    <label>Mis casos</label>
+    <label>Casos asignados agentes</label>
     <sharedTo>
         <group>Ventas_Agente_Mediador</group>
     </sharedTo>

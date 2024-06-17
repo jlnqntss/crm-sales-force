@@ -67,11 +67,7 @@
                   {
                     "isPublic": false,
                     "name": "Campaign"
-                  },
-                  {
-                    "isPublic": false,
-                    "name": "ContentDocument"
-                  },
+                  },                  
                   {
                     "isPublic": false,
                     "name": "Claim__c"

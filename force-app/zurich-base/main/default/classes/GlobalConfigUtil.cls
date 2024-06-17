@@ -1,6 +1,8 @@
 public with sharing class GlobalConfigUtil {
 
     public static final String instancesId='Instances_Id';
+    public static final String DEFAULT_RETENTION = 'Default';
+    private static final String CUSTOM_OBJECT_API_NAME_ENDING = '__c';
 
     public static Map<String, String> getGlobalConfigurationValues() {
         
@@ -46,6 +48,46 @@ public with sharing class GlobalConfigUtil {
             return config.Dev_Value__c;
         }
 
+    }
+
+    /**
+     * Obtiene la retencion estandar para un objeto concreto
+     *
+     * @author mario.navarro@seidor.com
+     * @date 27/05/2024
+     * @param objectName API name del objeto
+     * @return valor entero de la retencion definida en el campo Value del metadato
+     * @throws TypeException en caso de que el campo Value del metadato no este definido con un valor numerico
+     * @throws NullPointerException en caso de que el metadato no exista
+     */
+    public static Integer getDefaultObjectRetention(String objectName)
+    {
+        return getObjectRetention(objectName, DEFAULT_RETENTION);
+    }
+
+    /**
+     * Obtiene la retencion para un objeto y un tipo concreto
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 27/05/2024
+     * @param objectName API name del objeto
+     * @param retentionType tipo de retencion a obtener
+     * @return valor entero de la retencion definida en el campo Value del metadato
+     * @throws TypeException en caso de que el campo Value del metadato no este definido con un valor numerico
+     * @throws NullPointerException en caso de que el metadato no exista
+     */
+    public static Integer getObjectRetention(String objectName, String retentionType)
+    {
+        if (String.isBlank(objectName))
+        {
+            throw new IllegalArgumentException(Label.ObjectNameMandatory);
+        }
+        if (objectName.endsWithIgnoreCase(CUSTOM_OBJECT_API_NAME_ENDING)) {
+            objectName = objectName.removeEnd(CUSTOM_OBJECT_API_NAME_ENDING);
+        }
+        String val = Global_Configuration__mdt.getInstance(objectName+retentionType)?.Value__c;
+
+        return Integer.valueOf(val);
     }
 
 }
