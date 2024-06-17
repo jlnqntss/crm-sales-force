@@ -1262,8 +1262,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Office__c</fieldItem>
-                <identifier>RecordOffice_cField</identifier>
+                <fieldItem>Record.BranchNumber__c</fieldItem>
+                <identifier>RecordBranchNumber_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
