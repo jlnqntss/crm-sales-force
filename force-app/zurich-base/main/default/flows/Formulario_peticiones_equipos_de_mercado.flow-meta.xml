@@ -908,8 +908,8 @@
     <formulas>
         <name>SiniestralidadFormula</name>
         <dataType>Number</dataType>
-        <expression>{!SumTotalLoad} / {!SumIncome}</expression>
-        <scale>2</scale>
+        <expression>{!SumTotalLoad} / {!SumIncome} * 100</expression>
+        <scale>0</scale>
     </formulas>
     <formulas>
         <name>TypeN3Formula</name>
@@ -2045,7 +2045,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <scale>2</scale>
+        <scale>0</scale>
     </variables>
     <variables>
         <name>SumTotalLoad</name>
