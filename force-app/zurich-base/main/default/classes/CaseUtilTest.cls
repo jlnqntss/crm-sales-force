@@ -1414,8 +1414,6 @@ private with sharing class CaseUtilTest
      * Comprueba que el metodo preProcessReasonIdForZda funciona correctamente. Para ello, actualiza el ReasonId__c de un caso ZDA y otro SPRINKLR
      * y comprueba si se actualiza el status del caso.
      *
-     * El postProcessReasonIdForZda no se puede testear puesto que no hay manera de que se testeen las notificaciones enviadas
-     *
      * @author mario.navarro@seidor.com
      * @date 14/05/2024
      */
@@ -1455,6 +1453,35 @@ private with sharing class CaseUtilTest
         Assert.areEqual(CaseUtil.CASE_RESPONDIDO, answeredZdaCase.Status);
         Assert.isNull(answeredZdaCase.PendingBy__c);
         Assert.areEqual(CaseUtil.CASE_ASIGNADO, updatedSprinklrCase.Status); //para este caso no debe cambiar el status
+    }
+
+    /**
+     * Comprueba que el metodo postProcessReasonIdForZda funciona correctamente. Para ello, crea dos casos
+     * de ZDA, uno padre del otro. El padre se cierra, y el hijo se anula
+     *
+     * @author mario.navarro@seidor.com
+     * @date 06/06/2024
+     */
+    @isTest
+    private static void test_postProcessReasonIdForZda()
+    {
+        List<Case> zdaCaseList = TestDataFactory.generateZDACases(2);
+        zdaCaseList[0].Status = CaseUtil.estadoCerrado;
+        zdaCaseList[1].RelatedCuTicketId__c = zdaCaseList[0].CuTicketId__c;
+        insert zdaCaseList;
+
+        zdaCaseList[0].ReasonId__c = CaseUtil.ZDA_REASON_RECHAZAR;
+
+        Test.startTest();
+        //Con esto se simula la anulacion de una recotizacion (No podemos hacer callouts al API de SF
+        //en una clase de test), pues desde CU nos llega una peticion al
+        //API estandar con el identificador del caso padre, y el campo ReasonId__c con el valor del rechazado
+        update zdaCaseList[0];
+        Test.stopTest();
+
+        Case recotizarUpdated = [SELECT Status FROM Case WHERE Id = : zdaCaseList[1].Id];
+        
+        Assert.areEqual(CaseUtil.estadoCerrado, recotizarUpdated.Status);
     }
 
     /**
