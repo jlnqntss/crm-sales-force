@@ -767,7 +767,7 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>EmailPropietarioCasoPadre</leftValueReference>
-                <operator>IsNull</operator>
+                <operator>IsBlank</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
