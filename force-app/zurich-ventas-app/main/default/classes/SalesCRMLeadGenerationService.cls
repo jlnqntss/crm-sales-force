@@ -135,8 +135,8 @@ public with sharing class SalesCRMLeadGenerationService
     {
         Id offerOwnerId = new List<String>( accountByRelatedUser.keySet() ).get(0);
         Account account = accountByRelatedUser.get(offerOwnerId);
-        Boolean isOfferLife = requestData.isProductLife == 1? true : false;
-        String offerRecordType = isOfferLife ? OFFER_RECORD_TYPE_VIDA : OFFER_RECORD_TYPE_VIDA;
+        Boolean isOfferLife = (requestData.isProductLife == 1);
+        String offerRecordType = isOfferLife ? OFFER_RECORD_TYPE_VIDA : OFFER_RECORD_TYPE_NO_VIDA;
 
         List<Opportunity> offers = new OpportunitiesSelector()
                                    .findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
