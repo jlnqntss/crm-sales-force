@@ -15,8 +15,12 @@ RecordType.DeveloperName == &quot;USPInquiry&quot; &amp;&amp;
 ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp;
 ISBLANK(TEXT(CloseResult__c)) &amp;&amp;  $Permission.USPTriggerCaseValidationRules 
 ,
-$RecordType.Name == "OCS Sprinklr" && ISPICKVAL(Status,"Cerrado") && ISBLANK(TEXT(CloseResult__c))
-
+$RecordType.Name == &quot;OCS Sprinklr&quot; &amp;&amp; ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp; ISBLANK(TEXT(CloseResult__c))
+,
+$RecordType.DeveloperName == $CustomMetadata.Global_Configuration__mdt.Case_RecordType_ZDA.Value__c &amp;&amp;
+				ISPICKVAL(Origin,&quot;Email&quot;) &amp;&amp; ISCHANGED(Status) &amp;&amp;
+				ISPICKVAL(Status,&quot;Cerrado&quot;) &amp;&amp; ISBLANK(TEXT(CloseResult__c)) &amp;&amp;
+				$Permission.ZDATriggerCaseValidationRules
 )</errorConditionFormula>
     <errorDisplayField>CloseResult__c</errorDisplayField>
     <errorMessage>[VR Caso] Es obligatorio informar el Resultado de cierre antes de cerrar el caso</errorMessage>
