@@ -111,7 +111,6 @@ public with sharing class Test_AccountLeadAssignment
             intermediaryGroup.put( currentCommunityName,new Account(
                                        Name = currentCommunityName + 'p',
                                        RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('AgrupacionMediador').getRecordTypeId()
-                                       //,IntermediaryWithUser__c = agentACcounts.get(currentCommunityName).Id
                                        ) );
         }
 
@@ -257,9 +256,7 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getAssignedUserIdByIntermediaryCode_OK()
     {
-        //String intermediaryCode = 'IDIOMA-QQ';
-        //User intermediary = [SELECT Id FROM User WHERE LastName = : intermediaryCode];
-
+        
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;		
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
         Test.startTest();
@@ -315,8 +312,6 @@ public with sharing class Test_AccountLeadAssignment
     static void test_getAssignedUserIdByLanguage_OK()
     {
         setMetadataConfigurations();
-
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -379,7 +374,6 @@ public with sharing class Test_AccountLeadAssignment
     {
         setMetadataConfigurations();
 
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
@@ -421,8 +415,6 @@ public with sharing class Test_AccountLeadAssignment
     {
         setMetadataConfigurations();
 
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
-
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
@@ -444,8 +436,6 @@ public with sharing class Test_AccountLeadAssignment
     {
         setMetadataConfigurations();
 
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
-
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
@@ -466,8 +456,6 @@ public with sharing class Test_AccountLeadAssignment
     static void test_assignedUserDirectly_OK()
     {
         setMetadataConfigurations();
-
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -560,7 +548,6 @@ public with sharing class Test_AccountLeadAssignment
     {
         setMetadataConfigurations();
 
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
@@ -644,7 +631,6 @@ public with sharing class Test_AccountLeadAssignment
     {
         setMetadataConfigurations();
 
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
@@ -789,7 +775,6 @@ public with sharing class Test_AccountLeadAssignment
     @isTest
     static void test_getIntermediaryUserId_OK()
     {
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 

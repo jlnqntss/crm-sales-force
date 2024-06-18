@@ -270,7 +270,6 @@ public with sharing class Test_AccountLeadUtil
     @isTest
     static void test_intermediaryAssignment_OK()
     {
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -320,7 +319,6 @@ public with sharing class Test_AccountLeadUtil
     {
         Account intermediaryAccount = [SELECT Id FROM Account WHERE INFOIntermediaryCode__c = 'IDIOMA-QQ'];
         RecordType leadAccountRT = [SELECT Id FROM RecordType WHERE Name = 'Customer' AND SobjectType = 'Account'];
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-QQ'];
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -404,9 +402,6 @@ public with sharing class Test_AccountLeadUtil
     {
         setMetadataConfigurations();
 
-        //String frenchAgenteId = [SELECT Id FROM User WHERE Lastname = 'IDIOMA-FR'].Id;
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
-
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
         User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
@@ -462,8 +457,6 @@ public with sharing class Test_AccountLeadUtil
     {
         setMetadataConfigurations();
 
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
-
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
 
@@ -518,7 +511,6 @@ public with sharing class Test_AccountLeadUtil
     {
         setMetadataConfigurations();
 
-        //User intermediaryFrance = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
         User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
         AccountLeadAssignment.forumOriginAssignmentMetadata.add( new ForumOriginAssignment__mdt
@@ -577,8 +569,6 @@ public with sharing class Test_AccountLeadUtil
     static void test_AssignmentProvince_OK()
     {
         setMetadataConfigurations();
-
-        //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-FR'];
 
         String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;
 		User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];
@@ -650,8 +640,6 @@ public with sharing class Test_AccountLeadUtil
     static void test_AssignmetMunicipality_OK()
     {
         setMetadataConfigurations();
-
-       //User intermediary = [SELECT Id FROM User WHERE LastName = 'IDIOMA-ES'];
 
        String aliasDefaultUser = Cross_Selling__c.getinstance().DefaultUser__c;	
        User intermediary = [SELECT Id FROM User WHERE Alias = :aliasDefaultUser];

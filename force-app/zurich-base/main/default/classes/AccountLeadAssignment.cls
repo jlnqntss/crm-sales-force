@@ -441,28 +441,5 @@ public with sharing class AccountLeadAssignment
         {
             return new Assignment(defaultUser.assignee).setRelatedAccount(intermediaryAccounts[0]);
         }
-
-/*
-        UsersSelector userQuery = new UsersSelector();
-        List<User> intermediary = new List<User>();
-        Account intermediaryAccount = intermediaryAccounts.get(0);
-
-        if (intermediaryAccount.isPartner)
-        {
-            // Si el Mediador tiene usuario asociado, se busca el usuario asociado a dicho Mediador
-            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.Id});
-        }
-        else if(intermediaryAccount.IntermediaryGroup__r.IntermediaryWithUser__c != null)
-        {
-            // Si el Mediador no tiene un usuario asociado (no es partner), se busca el usuario asociado al Mediador principal indicado en la Agrupación
-            intermediary = userQuery.findUsersByAccountId(new List<String>{(String) intermediaryAccount.IntermediaryGroup__r.IntermediaryWithUser__c});
-        }
-
-        if(! intermediary.isEmpty())
-        {
-            return new Assignment(intermediary.get(0).Id).setRelatedAccount(intermediaryAccount);
-        }
-
-        return defaultUser;*/
     }
 }
