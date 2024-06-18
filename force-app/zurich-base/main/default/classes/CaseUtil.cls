@@ -2156,18 +2156,26 @@ public with sharing class CaseUtil
 
         for(Case updatedCase : updatedCases)
         {
-            String queueName;
-            if (queuesById.containsKey(oldMap.get(updatedCase.Id).OwnerId))
+            String queueIdBegining = GlobalConfigUtil.getGlobalConfigurationValue('Beggining_Id_Queue');
+            
+            // Sólo entramos si hay un cambio de Owner y el antiguo es una cola
+            if (((String)oldMap.get(updatedCase.Id).OwnerId).startsWith(queueIdBegining) && updatedCase.RecordTypeId == RT_ID_ZDA && 
+            oldMap.get(updatedCase.Id).OwnerId != updatedCase.OwnerId)
             {
-                queueName = queuesById.get(oldMap.get(updatedCase.Id).OwnerId).Name; // Obtenemos el nombre de la cola para usarlo en las búsquedas
-            }
+                String queueName;
+                if (genesysQueuesByName.values().size() > 0 && queuesById.containsKey(oldMap.get(updatedCase.Id).OwnerId))
+                {
+                    queueName = queuesById.get(oldMap.get(updatedCase.Id).OwnerId).Name; // Obtenemos el nombre de la cola para usarlo en las búsquedas
+                }
 
-            if ( updatedCase.RecordTypeId == RT_ID_ZDA &&  oldMap.get(updatedCase.Id).OwnerId != updatedCase.OwnerId && !String.isBlank(queueName) &&
-                 genesysQueuesByName.containsKey(queueName) && genesysQueuesByName.get(queueName).CallCenter__c.equals(callCenter_ZDA)
-                 )
-            {
-                //Solo se informa el campo para los casos de ZDA, cuando el Owner a cambiado a una cola de ZDA
-                updatedCase.OwnerIdPrior__c = queuesById.get(oldMap.get(updatedCase.Id).OwnerId).Name;
+                if (!String.isBlank(queueName) && genesysQueuesByName.containsKey(queueName) && 
+                      !String.isBlank(genesysQueuesByName.get(queueName).CallCenter__c) &&
+                      genesysQueuesByName.get(queueName).CallCenter__c.equals(callCenter_ZDA)
+                    )
+                {
+                    //Solo se informa el campo para los casos de ZDA, cuando el Owner a cambiado a una cola de ZDA
+                    updatedCase.OwnerIdPrior__c = queuesById.get(oldMap.get(updatedCase.Id).OwnerId).Name;
+                }
             }
         }
     }
