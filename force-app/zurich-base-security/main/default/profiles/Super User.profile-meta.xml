@@ -1995,6 +1995,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.CaseOpen__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Category__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4631,6 +4636,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Origin</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.OtherCaseOpen__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
