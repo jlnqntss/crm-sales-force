@@ -2125,10 +2125,12 @@ public with sharing class CaseUtil
      */
     public static void setOwnerIdPrior(List<Case> updatedCases, Map<Id,Case> oldMap)
     {
+        String callCenter_ZDA = GlobalConfigUtil.getGlobalConfigurationValue('Call_Center_ZDA');
+
         List<Id> groupIdToSearch = new List<Id>();
         for(Case updatedCase : updatedCases)
         {
-            if (updatedCase.RecordTypeId == RT_ID_ZDA && String.isBlank(oldMap.get(updatedCase.Id).OwnerIdPrior__c) &&
+            if (updatedCase.RecordTypeId == RT_ID_ZDA && 
                 oldMap.get(updatedCase.Id).OwnerId != updatedCase.OwnerId )
             {
                 groupIdToSearch.add(oldMap.get(updatedCase.Id).OwnerId);
@@ -2143,12 +2145,28 @@ public with sharing class CaseUtil
         List<Group> queues = new GroupSelector().findById(groupIdToSearch);
         Map<Id, Group> queuesById = (Map<Id, Group>) CollectionUtil.hashList( queues, Group.fields.Id.getDescribe().getName() );
 
+        List<String> pureCloudNames = new List<String>();
+        for(Group g : queuesById.values())
+        {
+            pureCloudNames.add(g.Name);
+        }
+
+        List<purecloud__PureCloud_Queue__c> genesysQueues = new GenesysQueueSelector().getQueuesByName(pureCloudNames);
+        Map<String, purecloud__PureCloud_Queue__c> genesysQueuesByName = (Map<String, purecloud__PureCloud_Queue__c>) CollectionUtil.hashList( genesysQueues, purecloud__PureCloud_Queue__c.fields.Name.getDescribe().getName() );
+
         for(Case updatedCase : updatedCases)
         {
-            if ( updatedCase.RecordTypeId == RT_ID_ZDA && String.isBlank(oldMap.get(updatedCase.Id).OwnerIdPrior__c) &&
-                 oldMap.get(updatedCase.Id).OwnerId != updatedCase.OwnerId && queuesById.containsKey(oldMap.get(updatedCase.Id).OwnerId) )
+            String queueName;
+            if (queuesById.containsKey(oldMap.get(updatedCase.Id).OwnerId))
             {
-                //Solo se informa el campo para los casos de ZDA, cuando el campo OwnerIdPrior__c esta vacio y el owner ha cambiado
+                queueName = queuesById.get(oldMap.get(updatedCase.Id).OwnerId).Name; // Obtenemos el nombre de la cola para usarlo en las búsquedas
+            }
+
+            if ( updatedCase.RecordTypeId == RT_ID_ZDA &&  oldMap.get(updatedCase.Id).OwnerId != updatedCase.OwnerId && !String.isBlank(queueName) &&
+                 genesysQueuesByName.containsKey(queueName) && genesysQueuesByName.get(queueName).CallCenter__c.equals(callCenter_ZDA)
+                 )
+            {
+                //Solo se informa el campo para los casos de ZDA, cuando el Owner a cambiado a una cola de ZDA
                 updatedCase.OwnerIdPrior__c = queuesById.get(oldMap.get(updatedCase.Id).OwnerId).Name;
             }
         }
