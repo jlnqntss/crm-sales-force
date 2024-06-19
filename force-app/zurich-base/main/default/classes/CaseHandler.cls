@@ -134,7 +134,7 @@ public without sharing class CaseHandler implements ITrigger
     {
         CaseUtil.assignContactToCaseEmail( (List<Case>) newList );
         CaseUtil.postProcessReasonIdForZda( (List<Case>) newList, (Map<Id,Case>) oldMap );
-        CaseUtil.notifCuCaseAssigned( (List<Case>) newList, (Map<Id,Case>) oldMap );
+        CaseUtil.notifCuCaseEnTramite( (List<Case>) newList, (Map<Id,Case>) oldMap );
     }
 
     /**
