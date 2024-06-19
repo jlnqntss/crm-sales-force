@@ -6676,6 +6676,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.IdCaseClone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IdTipologiaBs__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6718,6 +6723,11 @@
         <editable>true</editable>
         <field>Case.IntermediaryId__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+            <editable>true</editable>
+            <field>Case.isCloneCase__c</field>
+            <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
