@@ -158,6 +158,13 @@
                     <stringValue></stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.SourceArea__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Generic Internal</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>ExcluirDominioSubflowAction</targetReference>
             </connector>
