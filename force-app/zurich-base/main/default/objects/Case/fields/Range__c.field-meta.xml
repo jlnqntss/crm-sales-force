@@ -14,39 +14,19 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Particulares</fullName>
-                <default>false</default>
-                <label>Particulares</label>
-            </value>
-            <value>
                 <fullName>Motor</fullName>
                 <default>false</default>
                 <label>Motor</label>
             </value>
             <value>
-                <fullName>No Motor</fullName>
+                <fullName>Non Motor</fullName>
                 <default>false</default>
-                <label>No Motor</label>
+                <label>Non Motor</label>
             </value>
             <value>
                 <fullName>PYMEs</fullName>
                 <default>false</default>
                 <label>PYMEs</label>
-            </value>
-            <value>
-                <fullName>Grandes empresas</fullName>
-                <default>false</default>
-                <label>Grandes empresas</label>
-            </value>
-            <value>
-                <fullName>Vida riesgo</fullName>
-                <default>false</default>
-                <label>Vida riesgo</label>
-            </value>
-            <value>
-                <fullName>Todos</fullName>
-                <default>false</default>
-                <label>Todos</label>
             </value>
         </valueSetDefinition>
     </valueSet>

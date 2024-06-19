@@ -142,10 +142,30 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>Asignar_Entitlement_Caso_ZDA</name>
+        <label>Asignar Entitlement Caso ZDA</label>
+        <locationX>6826</locationX>
+        <locationY>1379</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.EntitlementId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FoundZDAEntitlement</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.BusinessHoursId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>FoundZDABusinessHours</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>CaseEntitlementAssignment</name>
         <label>Asignar Entitlement Caso</label>
-        <locationX>4098</locationX>
-        <locationY>1361</locationY>
+        <locationX>4032</locationX>
+        <locationY>1295</locationY>
         <assignmentItems>
             <assignToReference>$Record.EntitlementId</assignToReference>
             <operator>Assign</operator>
@@ -228,10 +248,51 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Cola_enrutamiento_ZDA</name>
+        <label>¿Cola enrutamiento?</label>
+        <locationX>5682</locationX>
+        <locationY>719</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Recuperar_Entitlement_Default_ZDA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Cotizaciones</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Obtenemos_cola_de_salesforce.DeveloperName</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Queue_Cotizacion</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_Cotizaciones</targetReference>
+            </connector>
+            <label>Cotizaciones</label>
+        </rules>
+        <rules>
+            <name>Gestion_cartera</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Obtenemos_cola_de_salesforce.DeveloperName</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Queue_Cartera</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_Gestion_Cartera</targetReference>
+            </connector>
+            <label>Gestión cartera</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>Comprueba que el origen sea email, ya que de lo contrario, por el momento no se aplicaría ningún SLA</description>
         <name>EmailOriginDecision</name>
         <label>¿Origen email?</label>
-        <locationX>4670</locationX>
+        <locationX>4593</locationX>
         <locationY>395</locationY>
         <defaultConnectorLabel>No Email</defaultConnectorLabel>
         <rules>
@@ -333,11 +394,44 @@
         </rules>
     </decisions>
     <decisions>
-        <name>GotEntitlementResultsDecision</name>
-        <label>Existen resultados USP</label>
-        <locationX>3614</locationX>
+        <name>Existen_resultados_ZDA</name>
+        <label>Existen resultados ZDA</label>
+        <locationX>7090</locationX>
         <locationY>827</locationY>
         <defaultConnector>
+            <targetReference>Recuperar_Entitlement_Default_ZDA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Predeterminado</defaultConnectorLabel>
+        <rules>
+            <name>Resultados_USP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FoundZDABusinessHours</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>FoundZDAEntitlement</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_Entitlement_Caso_ZDA</targetReference>
+            </connector>
+            <label>Resultados ZDA</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>GotEntitlementResultsDecision</name>
+        <label>Existen resultados USP</label>
+        <locationX>3570</locationX>
+        <locationY>827</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>GetDefaultUSPAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Predeterminado</defaultConnectorLabel>
@@ -352,7 +446,6 @@
                 </rightValue>
             </conditions>
             <connector>
-                <isGoTo>true</isGoTo>
                 <targetReference>CaseEntitlementAssignment</targetReference>
             </connector>
             <label>Resultados USP</label>
@@ -405,7 +498,7 @@
     <decisions>
         <name>GotUspPartnerEntitlementResultsDecision</name>
         <label>Existen resultados USP Partner</label>
-        <locationX>4626</locationX>
+        <locationX>4538</locationX>
         <locationY>719</locationY>
         <defaultConnector>
             <targetReference>GetDefaultUspPartnerAction</targetReference>
@@ -430,7 +523,7 @@
     <decisions>
         <name>Mediador_panelizado</name>
         <label>¿Mediador panelizado?</label>
-        <locationX>3218</locationX>
+        <locationX>3174</locationX>
         <locationY>611</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -568,12 +661,109 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Se ha podido calcular el número de días del SLA y nos devuelve un valor correcto</description>
+        <name>Numero_de_dias_correcto</name>
+        <label>Número de dias correcto</label>
+        <locationX>7266</locationX>
+        <locationY>611</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Recuperar_Entitlement_Default_ZDA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>numDiasNumber</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>numDiasNumber</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>Zero_Days</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_ZDA</targetReference>
+            </connector>
+            <label>Si</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Comprueba que el origen sea email, ya que de lo contrario, por el momento no se aplicaría ningún SLA</description>
+        <name>Origen_email_ZDA</name>
+        <label>¿Origen email?</label>
+        <locationX>6826</locationX>
+        <locationY>395</locationY>
+        <defaultConnectorLabel>Default</defaultConnectorLabel>
+        <rules>
+            <name>Email_ZDA</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Origin_Email</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Owner_es_cola</targetReference>
+            </connector>
+            <label>Email</label>
+        </rules>
+        <rules>
+            <name>CanalUnico</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Origin_CanalUnico</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Tipo_de_peticion</targetReference>
+            </connector>
+            <label>Canal Único</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Owner_es_cola</name>
+        <label>Owner es cola</label>
+        <locationX>5946</locationX>
+        <locationY>503</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Recuperar_Entitlement_Default_ZDA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Es_cola</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>idBeginningQueue</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Obtenemos_cola_de_salesforce</targetReference>
+            </connector>
+            <label>Es cola</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Que_Entitlement_Asignar</name>
         <label>¿Que Entitlement Asignar?</label>
         <locationX>2690</locationX>
         <locationY>719</locationY>
         <defaultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>GetDefaultUSPAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
@@ -688,7 +878,7 @@
     <decisions>
         <name>RecordTypeDecision</name>
         <label>¿Tipo de registro?</label>
-        <locationX>3454</locationX>
+        <locationX>4686</locationX>
         <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -721,12 +911,27 @@
             </connector>
             <label>USP Inquiry</label>
         </rules>
+        <rules>
+            <name>ZDAInquiryOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ZDA_RecordType_Name</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Origen_email_ZDA</targetReference>
+            </connector>
+            <label>ZDA inquiry</label>
+        </rules>
     </decisions>
     <decisions>
         <description>Comprueba si tiene un mediador asociado y este cuenta con los datos necesarios informados o si es un partner. De lo contrario asocia el SLA por defecto</description>
         <name>RelatedAccountDecision</name>
         <label>¿Cuenta asociada?</label>
-        <locationX>4098</locationX>
+        <locationX>4032</locationX>
         <locationY>503</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -803,6 +1008,61 @@
             <label>Si hay cuenta</label>
         </rules>
     </decisions>
+    <decisions>
+        <description>Según el tipo de petición que nos llegue de CU, escogeremos el SLA de un modo u otro</description>
+        <name>Tipo_de_peticion</name>
+        <label>Tipo de peticion</label>
+        <locationX>6870</locationX>
+        <locationY>503</locationY>
+        <defaultConnector>
+            <targetReference>Numero_de_dias_correcto</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Contactare</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RelatedCuTicketId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Description</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Tipo_Contactare</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_Contactare</targetReference>
+            </connector>
+            <label>Contactare</label>
+        </rules>
+        <rules>
+            <name>Recotizare</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RelatedCuTicketId__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Description</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Tipo_Recotizare</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_Entitlement_Recotizare</targetReference>
+            </connector>
+            <label>Recotizare</label>
+        </rules>
+    </decisions>
     <description>Flujo encargado de, en el momento de la creación del caso, evaluar si qué entitlement aplicar al mismo</description>
     <environments>Default</environments>
     <formulas>
@@ -811,6 +1071,88 @@
         <expression>IF( {!$Record.Account.RecordType.DeveloperName} = &apos;PartnerOCS&apos;,
 &apos;Partner&apos; ,
 &apos;Directo&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>idBeginningQueue</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_Queue.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>numDiasNumber</name>
+        <dataType>Number</dataType>
+        <expression>ROUND(({!$Record.EstimatedEndDate__c} - {!$Record.CreatedDateTimeInfo__c}), 0)</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Origin_CanalUnico</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Origin_CU.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Origin_Email</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Case_Origin_Email.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Queue_Cartera</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_Name_Cartera.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Queue_Cotizacion</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_Name_Cotizacion.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Tipo_Contactare</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Case_Description_Contactar.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Tipo_Recotizare</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Case_Description_Recotizar.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_CallCenter</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Call_Center_ZDA.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_Entitlement_Contactare</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Entitlement_Name_Contactare.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_Entitlement_Cotizaciones</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Entitlement_Name_Cotizaciones.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_Entitlement_Default</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Entitlement_Name_Default.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_Entitlement_GC</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Entitlement_Name_GC.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_Entitlement_Recotizare</name>
+        <dataType>String</dataType>
+        <expression> {!$CustomMetadata.Global_Configuration__mdt.Entitlement_Name_Recotizare.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ZDA_RecordType_Name</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_ZDA.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Zero_Days</name>
+        <dataType>Number</dataType>
+        <expression>VALUE({!$CustomMetadata.Global_Configuration__mdt.Query_Filter_Days_0.Value__c})</expression>
+        <scale>0</scale>
     </formulas>
     <interviewLabel>Case Trigger - Before insert Entitlement {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before insert - Entitlement</label>
@@ -1067,11 +1409,10 @@
     <recordLookups>
         <name>GetDefaultUSPAction</name>
         <label>Recuperar Entitlement Default USP</label>
-        <locationX>4010</locationX>
-        <locationY>935</locationY>
+        <locationX>2954</locationX>
+        <locationY>827</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>CaseEntitlementAssignment</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
@@ -1102,7 +1443,7 @@
     <recordLookups>
         <name>GetDefaultUSPNotProductiveAction</name>
         <label>Recuperar Entitlement Default No Productivo USP</label>
-        <locationX>3746</locationX>
+        <locationX>3658</locationX>
         <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1136,7 +1477,7 @@
     <recordLookups>
         <name>GetDefaultUspPartnerAction</name>
         <label>Recuperar Entitlement Default USP Partner</label>
-        <locationX>4714</locationX>
+        <locationX>4626</locationX>
         <locationY>827</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1170,11 +1511,10 @@
     <recordLookups>
         <name>GetDefaultUSPProductiveAction</name>
         <label>Recuperar Entitlement Default Productivo USP</label>
-        <locationX>3482</locationX>
+        <locationX>3394</locationX>
         <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>CaseEntitlementAssignment</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
@@ -1205,7 +1545,7 @@
     <recordLookups>
         <name>GetUSPEntitlementAction</name>
         <label>Recuperar Entitlement USP</label>
-        <locationX>3614</locationX>
+        <locationX>3570</locationX>
         <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1283,7 +1623,7 @@
     <recordLookups>
         <name>GetUspPartnerEntitlementAction</name>
         <label>Recuperar Entitlement USP Partner</label>
-        <locationX>4626</locationX>
+        <locationX>4538</locationX>
         <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1345,13 +1685,103 @@
         <sortOrder>Desc</sortOrder>
     </recordLookups>
     <recordLookups>
+        <name>Obtenemos_cola_de_salesforce</name>
+        <label>Obtenemos cola de salesforce</label>
+        <locationX>5682</locationX>
+        <locationY>611</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Cola_enrutamiento_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OwnerId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Group</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Recuperar_Entitlement_Contactare</name>
+        <label>Recuperar Entitlement Contactare</label>
+        <locationX>6474</locationX>
+        <locationY>611</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Asignar_Entitlement_Caso_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_CallCenter</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_Entitlement_Contactare</elementReference>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundZDABusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundZDAEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <sortField>ProductGroupCode__c</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <name>Recuperar_Entitlement_Cotizaciones</name>
+        <label>Recuperar Entitlement Cotizaciones</label>
+        <locationX>5418</locationX>
+        <locationY>827</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Asignar_Entitlement_Caso_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_Entitlement_Cotizaciones</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_CallCenter</elementReference>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundZDABusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundZDAEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>Recuperar_Entitlement_Default_Mediador_Panelizado_Venta</name>
         <label>Recuperar Entitlement Default Mediador Panelizado Venta</label>
         <locationX>2162</locationX>
         <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>CaseEntitlementAssignment</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
@@ -1380,13 +1810,80 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <name>Recuperar_Entitlement_Default_ZDA</name>
+        <label>Recuperar Entitlement Default ZDA</label>
+        <locationX>7178</locationX>
+        <locationY>935</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Asignar_Entitlement_Caso_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_CallCenter</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_Entitlement_Default</elementReference>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundZDABusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundZDAEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Recuperar_Entitlement_Gestion_Cartera</name>
+        <label>Recuperar Entitlement Gestion Cartera</label>
+        <locationX>5682</locationX>
+        <locationY>827</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Asignar_Entitlement_Caso_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_Entitlement_GC</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_CallCenter</elementReference>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundZDABusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundZDAEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>Recuperar_Entitlement_Mediador_Panelizado_Cartera_Cierre_16_h</name>
         <label>Recuperar Entitlement Mediador Panelizado Cartera Cierre 16 h</label>
         <locationX>2426</locationX>
         <locationY>827</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>CaseEntitlementAssignment</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
@@ -1421,7 +1918,6 @@
         <locationY>827</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>CaseEntitlementAssignment</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
@@ -1449,8 +1945,80 @@
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
+    <recordLookups>
+        <name>Recuperar_Entitlement_Recotizare</name>
+        <label>Recuperar Entitlement Recotizare</label>
+        <locationX>6738</locationX>
+        <locationY>611</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Asignar_Entitlement_Caso_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_CallCenter</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>ZDA_Entitlement_Recotizare</elementReference>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundZDABusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundZDAEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <sortField>ProductGroupCode__c</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <name>Recuperar_Entitlement_ZDA</name>
+        <label>Recuperar Entitlement ZDA</label>
+        <locationX>7090</locationX>
+        <locationY>719</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Existen_resultados_ZDA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CallCenter__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ZDA_CallCenter</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>numDiasNumber</elementReference>
+            </value>
+        </filters>
+        <object>Entitlement</object>
+        <outputAssignments>
+            <assignToReference>FoundZDABusinessHours</assignToReference>
+            <field>BusinessHoursId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>FoundZDAEntitlement</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <sortField>ProductGroupCode__c</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
     <start>
-        <locationX>3328</locationX>
+        <locationX>4560</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
@@ -1470,6 +2038,27 @@
     </variables>
     <variables>
         <name>FoundUspEntitlement</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>FoundZDABusinessHours</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>FoundZDAEntitlement</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>slaResult</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

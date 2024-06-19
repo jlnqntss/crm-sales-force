@@ -645,6 +645,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Comentar tema con siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Comparativa no presentada - Falta documentación %2F  información %2F información incorrecta</fullName>
             <default>false</default>
         </values>
@@ -873,6 +877,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Siniestro rehusado correctamente</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Suplemento emitido</fullName>
             <default>false</default>
         </values>
@@ -909,10 +917,6 @@
         </values>
         <values>
             <fullName>PRD0901</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Pack Productos Empresa</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1604,6 +1608,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Siniestros</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Verificación</fullName>
             <default>false</default>
         </values>
@@ -1707,6 +1715,10 @@
         </values>
         <values>
             <fullName>Retención%2FCancelación%2FDesistimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Siniestros</fullName>
             <default>false</default>
         </values>
         <values>

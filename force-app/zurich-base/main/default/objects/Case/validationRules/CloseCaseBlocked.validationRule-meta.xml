@@ -11,6 +11,8 @@ RecordType.DeveloperName == &quot;OCSInquiry&quot;&amp;&amp;
 
 IsClosed &amp;&amp;
 
+ClosedBy__r.ProfileId &lt;&gt;&apos;00e5I000000Hu97&apos; &amp;&amp;
+
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;

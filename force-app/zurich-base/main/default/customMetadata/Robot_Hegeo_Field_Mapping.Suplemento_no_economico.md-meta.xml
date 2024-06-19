@@ -3,6 +3,10 @@
     <label>Suplemento no económico</label>
     <protected>false</protected>
     <values>
+        <field>GenesysQueue__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
         <field>Level__c</field>
         <value xsi:type="xsd:string">Type</value>
     </values>

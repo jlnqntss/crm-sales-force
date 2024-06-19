@@ -30,7 +30,6 @@ public with sharing class CaseUtil
     public static final String RT_NAME_OCSINQUIRY = 'OCSInquiry';
     public static final String RT_NAME_OCSSPRINKLR = 'OCSSprinklr';
     public static final String RT_NAME_SAMINQUIRY = 'SAMInquiry';
-    public static final String RT_NAME_ZDA = 'ZDAInquiry';
     public static final String RT_NAME_ZRM = 'ZRMInquiry';
     public static final String DEFAULT_SPRINKLR_CASE_TIPIFICATION = 'Sprinklr Default';
     public static final String SPRINKLR_QUEUE_MARCA = 'Marca Redes Sociales';
@@ -56,6 +55,7 @@ public with sharing class CaseUtil
     public static List<spr_sf__SocialPersona__c> sprinklrSocialPersonaToUpdate = new List<spr_sf__SocialPersona__c>();
     public static Map<String, Case> notClosedCaseByPolicyIdMap = new Map<String, Case>();
 
+    public static Map<String, Robot_Hegeo_Field_Mapping__mdt> mapCaseZDATypificationMetadata = new Map<String, Robot_Hegeo_Field_Mapping__mdt>();
     
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
@@ -98,6 +98,7 @@ public with sharing class CaseUtil
     {
         get
         {
+            String RT_NAME_ZDA = GlobalConfigUtil.getGlobalConfigurationValue('Case_RecordType_ZDA');
             return Schema.SObjectType.Case.getRecordTypeInfosByDeveloperName().get(RT_NAME_ZDA).getRecordTypeId();
         }
     }
@@ -1323,7 +1324,7 @@ public with sharing class CaseUtil
         for(Case caso : newList)
         {
             //Esta comparación se hace para que no afecte a KLINC
-            if(caso.RecordTypeId == rtOCSInquiryId)
+            if(caso.RecordTypeId == rtOCSInquiryId || caso.RecordTypeId == RT_ID_ZDA)
             {
                 oldCase = oldMap.get(caso.Id);
                 //Solo se hace algo si se cerró el caso
@@ -2014,19 +2015,23 @@ public with sharing class CaseUtil
      */
     public static void preProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
     {
+        Case oldCase;
         for(Case updatedCase : updatedCases)
         {
-            if ( updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.ReasonId__c != oldMap.get(updatedCase.Id).ReasonId__c &&
-                 (updatedCase.ReasonId__c == ZDA_REASON_RECHAZAR || updatedCase.ReasonId__c == ZDA_REASON_DESESTIMAR) )
+            if (updatedCase.RecordTypeId == RT_ID_ZDA)
             {
-                //Es un caso de ZDA que cambia el ReasonId__c y pasa a ser rechazado o desestimado. Cerramos el caso
-                updatedCase.Status = estadoCerrado;
-                updatedCase.PendingBy__c = null;
-            }
-            else if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
-            {
-                updatedCase.Status = CASE_RESPONDIDO;
-                updatedCase.PendingBy__c = null;
+                oldCase = oldMap.get(updatedCase.Id);
+                if ( isNewReasonClosed( updatedCase, oldCase ) )
+                {
+                    //Es un caso de ZDA que cambia el ReasonId__c y pasa a ser rechazado o desestimado. Cerramos el caso
+                    updatedCase.Status = estadoCerrado;
+                    updatedCase.PendingBy__c = null;
+                }
+                else if ( isNewReasonAnswered( updatedCase, oldCase ) )
+                {
+                    updatedCase.Status = CASE_RESPONDIDO;
+                    updatedCase.PendingBy__c = null;
+                }
             }
         }
     }
@@ -2042,21 +2047,91 @@ public with sharing class CaseUtil
      */
     public static void postProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
     {
-        Notification notif = new Notification(Notification.notificationType.CaseTrackingAnswered);
-        String content;
+        List<Case> casesToNotify = new List<Case>();
+        Set<String> childCasesToFind = new Set<String>();
+        Case oldCase;
         for(Case updatedCase : updatedCases)
         {
-            if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
+            if (updatedCase.RecordTypeId == RT_ID_ZDA)
             {
-                content = Label.ZDAPartnerSupportAnsweredBody + BLANK_SPACE + updatedCase.CaseNumber;
-                //si han contestado una peticion de soporte, se le notifica al propietario del caso
-                notif.send(updatedCase.Id, new Set<String> {updatedCase.OwnerId}, Label.ZDAPartnerSupportAnsweredTitle, content);
+                oldCase = oldMap.get(updatedCase.Id);
+                if ( isNewReasonAnswered( updatedCase, oldCase ) )
+                {
+                    casesToNotify.add(updatedCase);
+                }
+                else if ( isNewReasonClosed( updatedCase, oldCase ) && oldCase.Status == estadoCerrado )
+                {
+                    //Desde CU nos llegan las anulaciones de los recotizar, con el ticket id del caso 'padre'
+                    //Los casos de recotizar siempre son casos hijos de otros casos que ya estan cerrados
+                    //Por tanto si se intenta cerrar un caso ya cerrado, es poque se quiere anular un caso 'hijo'
+                    childCasesToFind.add(updatedCase.CuTicketId__c);
+                }
+            }
+        }
+
+        notifyAnsweredCases(casesToNotify);
+        closeChildCases(childCasesToFind);
+    }
+
+    /**
+     * Envia una notificacion de escritorio a cada uno de los casos proporcionados en
+     * el array proporcionado. Cada caso debe tener informado los siguientes campos:
+     * - Id
+     * - CaseNumber
+     * - OwnerId
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 06/06/2024
+     * @param casesToNotify lista de casos para los que enviar notificacion
+     */
+    private static void notifyAnsweredCases(List<Case> casesToNotify)
+    {
+        if (!casesToNotify.isEmpty())
+        {
+            String content;
+            //Se hace en un bucle aparte porque los Guest Users no tienen acceso al objeto CustomNotificationType
+            //y al inicializar el objeto 'notif' da error
+            Notification notif = new Notification(Notification.notificationType.CaseTrackingAnswered);
+            for (Case caseToNotify : casesToNotify)
+            {
+                content = Label.ZDAPartnerSupportAnsweredBody + BLANK_SPACE + caseToNotify.CaseNumber;
+                notif.send(caseToNotify.Id, new Set<String> {caseToNotify.OwnerId}, Label.ZDAPartnerSupportAnsweredTitle, content);
             }
         }
     }
 
     /**
-     * Comprueba si el caso es de zda y el ReasonId__c pasa a ser respondido (3)
+     * A partir del set proporcionado, busca casos de ZDA relacionados con estos y
+     * los que encuentra los pasa a cerrado (los que no lo estan ya)
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 06/06/2024
+     * @param childCasesToFind Set con identificadores de ticket (CuTicketId__c) de
+     * los cuales buscar casos de ZDA que lo tengan informado en RelatedCuTicketId__c
+     */
+    private static void closeChildCases(Set<String> childCasesToFind)
+    {
+        if (!childCasesToFind.isEmpty())
+        {
+            List<Case> childCasesFound = new CasesSelector().getZdaChildCases(childCasesToFind);
+            //Si encuentra casos hijos, los cerramos
+            List<Case> childCasesToUpdate = new List<Case>();
+            for (Case caseToClose : childCasesFound)
+            {
+                if (caseToClose.Status != estadoCerrado)
+                {
+                    caseToClose.Status = estadoCerrado;
+                    caseToClose.PendingBy__c = null; //por si estuviera pendiente de alguien
+                    childCasesToUpdate.add(caseToClose);
+                }
+            }
+
+            update childCasesToUpdate;
+        }
+    }
+
+    /**
+     * Comprueba si el ReasonId__c pasa a ser respondido (3)
      *
      * @author mario.navarro@seidor.com
      * @date 14/05/2024
@@ -2064,9 +2139,59 @@ public with sharing class CaseUtil
      * @param oldCase caso antes de la actualizacion
      * @return true si es un caso de ZDA, el ReasonId__c ha cambiado y pasa a ser 3; false en caso contrario
      */
-    private static Boolean isZDANewReasonAnswered(Case updatedCase, Case oldCase)
+    private static Boolean isNewReasonAnswered(Case updatedCase, Case oldCase)
     {
-        return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.ReasonId__c != oldCase.ReasonId__c && updatedCase.ReasonId__c == ZDA_REASON_RESPUESTA_SOPORTE;
+        return updatedCase.ReasonId__c != oldCase.ReasonId__c && updatedCase.ReasonId__c == ZDA_REASON_RESPUESTA_SOPORTE;
+    }
+
+    /**
+     * Comprueba si el ReasonId__c pasa a ser cerrado (1 o 2)
+     *
+     * @author mario.navarro@seidor.com
+     * @date 05/06/2024
+     * @param updatedCase caso actualizado
+     * @param oldCase caso antes de la actualizacion
+     * @return true si es un caso de ZDA, el ReasonId__c ha cambiado y pasa a ser 1 o 2; false en caso contrario
+     */
+    private static Boolean isNewReasonClosed(Case updatedCase, Case oldCase)
+    {
+        return updatedCase.ReasonId__c != oldCase.ReasonId__c && 
+            (updatedCase.ReasonId__c == ZDA_REASON_RECHAZAR || updatedCase.ReasonId__c == ZDA_REASON_DESESTIMAR);
+    }
+
+    /**
+     * Para los casos de ZDA que pasan de nuevo a asignado recibidos via canal unico, envia
+     * notificacion a Canal unico informando de que el caso esta en estado Tramite
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param updatedCases lista de los casos actualizados
+     * @param oldMap mapa de los casos antes de la actualización
+     */
+    public static void notifCuCaseAssigned(List<Case> updatedCases, Map<Id,Case> oldMap)
+    {
+        for(Case updatedCase : updatedCases)
+        {
+            if ( isZDAAssignedAndCu( updatedCase, oldMap.get(updatedCase.Id) ) )
+            {
+                TicketingHegeoUtil.sendRequestStatusChangeToAssigned(updatedCase.Id);
+            }
+        }
+    }
+
+    /**
+     * Comprueba si el caso es de ZDA, con origen canal unico y pasa de nuevo a asignado
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 30/05/2024
+     * @param updatedCase caso actualizado
+     * @param oldCase caso antes de la actualizacion
+     * @return true si es un caso de ZDA, de canal unico y pasa de nuevo a asignado; false en caso contrario
+     */
+    private static Boolean isZDAAssignedAndCu(Case updatedCase, Case oldCase)
+    {
+        return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.Origin == ORIGIN_CANAL_UNICO &&
+            updatedCase.Status == CASE_ASIGNADO && oldCase.Status == CASE_NUEVO;
     }
 
     /**
@@ -2325,6 +2450,93 @@ public with sharing class CaseUtil
         for (Case caseTrigger: newList) {
             if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty(String.valueOf(caseTrigger.EndDate__c))) {
                 caseTrigger.EndDate__c = caseTrigger.PolicyEndDate__c;
+            }
+        }
+    }
+
+    /**
+     * Método que, para los casos de ZDA, busca el tipo de petición que es y carga la tipificación adecuada
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    public static void setCaseZDATypification(List<Case> newList) 
+    {
+        for(Case caso : newList)
+        {
+            if(caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c))
+            {
+                Robot_Hegeo_Field_Mapping__mdt tipif = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
+                if(tipif != null)
+                {
+                    caso.Type = tipif.Type__c;
+                    caso.SubType__c = tipif.Subtype__c;
+                    caso.TypeN3__c = tipif.TypeN3__c;  
+
+                }
+            }
+        }   
+    }
+
+    /**
+     * Método que carga los registros del metadato que contiene la relación entre el tipo de petición y la tipificación de salesforce.
+     * IMPORTANTE: Este metadato utiliza como Key el campo SourceType__c que es un valor único para ZDA, para otras aplicaciones pueden darse duplicados
+     * @author arcortazar
+     * @date 03/06/2024
+     */
+    public static void loadMapCaseZDATypificationMetadata()
+    {
+        List<Robot_Hegeo_Field_Mapping__mdt> listaCaseTypif = Robot_Hegeo_Field_Mapping__mdt.getAll().values();
+
+        for (Robot_Hegeo_Field_Mapping__mdt tipificacion : listaCaseTypif)
+        {
+            if(!String.isBlank(tipificacion.SourceType__c))
+            {
+                mapCaseZDATypificationMetadata.put(tipificacion.SourceType__c, tipificacion);
+            }
+        }
+    }
+
+     /**
+     * Método que, para los casos de ZDA, busca el tipo de petición que es y carga la cola para enrutar los casos en el campo industry
+     * @author aberuete
+     * @date 04/06/2024
+     */
+    public static void setCaseZDAQueue(List<Case> newList) 
+    {
+        for(Case caso : newList)
+        {
+            if(caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c))
+            {
+                Robot_Hegeo_Field_Mapping__mdt caseTipificacionByPeticion = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
+                
+                if(caseTipificacionByPeticion != null)
+                {
+                    caso.Industry__c = caseTipificacionByPeticion.GenesysQueue__c ;
+                }
+            }
+        }   
+    }
+
+     /**
+     * Método para identficar aquellos casos que se crean mediante el botón standard clone y vaciar los campos que provienen de hegeo
+    * @author lrodriguez
+    * @date 21/05/2024
+    * @param newList lista de elementos del trigger before insert
+    */
+    public static void isCaseClone(List<Case> newList) {
+
+        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+
+        for (Case caseTrigger: newList) {
+
+            if ((caseTrigger.recordTypeId==uSPRecordTypeId && caseTrigger.isClone())|| (Test.isRunningTest() && caseTrigger.recordTypeId==uSPRecordTypeId)) {
+
+                caseTrigger.MediatedCustomer__c=null;
+                caseTrigger.PolicyId__c=null;
+                caseTrigger.OfferId__c=null;
+                caseTrigger.ProductGroup__c=null;
+                caseTrigger.AccountId=null;
+
             }
         }
     }
