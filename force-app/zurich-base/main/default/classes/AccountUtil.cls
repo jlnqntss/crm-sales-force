@@ -6,8 +6,8 @@
 public class AccountUtil
 {
 
-    public static final String CUSTOMER_RT_DEVELOPER_NAME = 'Customer';
-    public static final String INTERMEDIARY_RT_DEVELOPER_NAME = 'Intermediary';
+    public static final String CUSTOMER_RT_DEVELOPER_NAME = GlobalConfigUtil.getGlobalConfigurationValue('Account_RecordType_Customer');
+    public static final String INTERMEDIARY_RT_DEVELOPER_NAME = GlobalConfigUtil.getGlobalConfigurationValue('Account_RecordType_Intermediary');
 
     /**
      * Método que crea un nuevo partner si no existe y lo asocia al contacto
