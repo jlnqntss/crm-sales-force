@@ -2162,6 +2162,7 @@ public with sharing class CaseUtil
         {
             if (updatedCase.RecordTypeId == RT_ID_ZDA)
             {
+
                 oldCase = oldMap.get(updatedCase.Id);
                 if ( isNewReasonClosed( updatedCase, oldCase ) )
                 {
@@ -2173,6 +2174,12 @@ public with sharing class CaseUtil
                 {
                     updatedCase.Status = CASE_RESPONDIDO;
                     updatedCase.PendingBy__c = null;
+
+                    // Como apex se lanza despues que los flows, incluímos aqui el cambio en el flag de los SLAs, para que se activen de nuevo una vez que cambia el estado del caso
+                    if (updatedCase.IsStopped)
+                    {
+                        updatedCase.IsStopped = false;
+                    }
                 }
             }
         }
