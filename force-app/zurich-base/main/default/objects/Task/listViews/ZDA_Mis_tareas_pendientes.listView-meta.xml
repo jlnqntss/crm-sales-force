@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZDA_Mis_tareas_pendientes</fullName>
+    <columns>TYPE</columns>
+    <columns>Subtype__c</columns>
+    <columns>SUBJECT</columns>
+    <columns>STATUS</columns>
+    <columns>WHAT_NAME</columns>
+    <columns>Related_Case_Status__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>CALLTYPE</columns>
+    <columns>QueueTime__c</columns>
+    <columns>CALLDURATION</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>STATUS</field>
+        <operation>equals</operation>
+        <value>Pendiente</value>
+    </filters>
+    <label>ZDA - Mis tareas pendientes</label>
+    <sharedTo>
+        <role>ZDA_Agente</role>
+        <role>ZDA_Supervisor</role>
+    </sharedTo>
+</ListView>

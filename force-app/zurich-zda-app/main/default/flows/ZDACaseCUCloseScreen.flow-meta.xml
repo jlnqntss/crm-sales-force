@@ -176,6 +176,10 @@
                 <stringValue>Cerrado</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GetCaseAction.ReasonId__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
         <connector>
             <targetReference>UpdateCaseAction</targetReference>
         </connector>

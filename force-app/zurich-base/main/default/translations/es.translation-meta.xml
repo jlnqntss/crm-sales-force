@@ -9,10 +9,6 @@
         <name>Lead_Generation</name>
     </customApplications>
     <customApplications>
-        <label><!-- Lightning Buddy --></label>
-        <name>Lightning_Buddy</name>
-    </customApplications>
-    <customApplications>
         <label><!-- OCS --></label>
         <name>OCS</name>
     </customApplications>
@@ -5521,14 +5517,6 @@
         <name>et4ae5__yes</name>
     </customLabels>
     <customLabels>
-        <label><!-- Close --></label>
-        <name>lightningbuddy__Close</name>
-    </customLabels>
-    <customLabels>
-        <label><!-- Dont show this again --></label>
-        <name>lightningbuddy__Dont_show_this_again</name>
-    </customLabels>
-    <customLabels>
         <label>Lanzar encuesta</label>
         <name>sendSurveyButtonLabel</name>
     </customLabels>
@@ -5594,7 +5582,7 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>SDM_EquiposMercado_TypeN2_Saneamiento</name>
     </customLabels>
     <customLabels>
-        <label>Suscripción: Gestión de Competencias, CAR, acciones asociadas a una póliza o cartera</label>
+        <label>Suscripción: Gestión de Competencias, CAR, acciones asociadas a una póliza o cartera y otros temas</label>
         <name>SDM_EquiposMercado_TypeN2_Suscripci_n</name>
     </customLabels>
     <customLabels>

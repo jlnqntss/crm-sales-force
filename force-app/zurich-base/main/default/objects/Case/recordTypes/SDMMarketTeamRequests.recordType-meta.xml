@@ -2887,15 +2887,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Otras consultas</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Otras áreas</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Otros</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Otros consultas</fullName>
             <default>false</default>
         </values>
         <values>

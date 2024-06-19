@@ -733,6 +733,16 @@
                 <default>false</default>
                 <label>Denegada - Actividad</label>
             </value>
+            <value>
+                <fullName>Siniestro rehusado correctamente</fullName>
+                <default>false</default>
+                <label>Siniestro rehusado correctamente</label>
+            </value>
+            <value>
+                <fullName>Comentar tema con siniestros</fullName>
+                <default>false</default>
+                <label>Comentar tema con siniestros</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
@@ -1526,6 +1536,14 @@
         <valueSettings>
             <controllingFieldValue>Cambio mediador</controllingFieldValue>
             <valueName>Propuesta de oferta enviada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestros</controllingFieldValue>
+            <valueName>Siniestro rehusado correctamente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Siniestros</controllingFieldValue>
+            <valueName>Comentar tema con siniestros</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
