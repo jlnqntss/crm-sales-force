@@ -5,6 +5,7 @@
     <description>[VR Oferta] Número de oferta (INFO) es obligatorio cuando sea Quoted</description>
     <errorConditionFormula>ISPICKVAL(StageName,&quot;Quoted&quot;) &amp;&amp;
 ISBLANK( InfoQuoteNumber__c )&amp;&amp;
+RecordType.DeveloperName = &apos;NoLife&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos; &amp;&amp;
 $Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;</errorConditionFormula>

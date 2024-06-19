@@ -817,14 +817,14 @@
                 <label>Otras áreas</label>
             </value>
             <value>
+                <fullName>Otras consultas</fullName>
+                <default>false</default>
+                <label>Otras consultas</label>
+            </value>
+            <value>
                 <fullName>Otros</fullName>
                 <default>false</default>
                 <label>Otros</label>
-            </value>
-            <value>
-                <fullName>Otros consultas</fullName>
-                <default>false</default>
-                <label>Otros consultas</label>
             </value>
             <value>
                 <fullName>Pago Graciable</fullName>
@@ -1410,7 +1410,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Suscripción</controllingFieldValue>
-            <valueName>Otros consultas</valueName>
+            <valueName>Otras consultas</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Suscripción</controllingFieldValue>
@@ -1658,6 +1658,18 @@
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
             <valueName>Reemplazo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <valueName>Consulta motivo saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <valueName>Incidencias de saneamiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Saneamiento</controllingFieldValue>
+            <valueName>Otras consultas</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Saneamiento</controllingFieldValue>

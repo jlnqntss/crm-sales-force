@@ -5,6 +5,7 @@
     <permissionSets>Acceso_App_ZDA</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Cosulta_Datos_ZDA</permissionSets>
+    <permissionSets>Gestion_Informes</permissionSets>
     <permissionSets>Gestion_datos_ZDA</permissionSets>
     <permissionSets>Restringir_Polizas_ZDA</permissionSets>
     <status>Updated</status>

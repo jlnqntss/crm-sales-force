@@ -50,6 +50,21 @@
                 <default>false</default>
                 <label>Retention</label>
             </value>
+            <value>
+                <fullName>CampaignMember</fullName>
+                <default>false</default>
+                <label>CampaignMember</label>
+            </value>
+            <value>
+                <fullName>Campaign</fullName>
+                <default>false</default>
+                <label>Campaign</label>
+            </value>
+            <value>
+                <fullName>Account</fullName>
+                <default>false</default>
+                <label>Account</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

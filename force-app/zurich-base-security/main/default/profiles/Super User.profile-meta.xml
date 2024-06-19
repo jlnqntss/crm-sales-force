@@ -4445,6 +4445,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.IdCaseClone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IdTipologiaBs__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4496,6 +4501,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Intermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.isCloneCase__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4636,6 +4646,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.OwnerIdPrior__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.OwnerUser__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8499,6 +8514,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.QuoteLifeNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.QuoteLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8510,6 +8530,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.ResultingPolicyNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ResultingPolicyLifeNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
