@@ -4,21 +4,21 @@
  * @author dmunoz
  * @date 29/05/2024
  */
-public with sharing class WS_GetReturnedReceiptsList
+public with sharing class WS_GetReturnedReceiptsCount
 {
-    private static final String CLASS_NAME = 'WS_GetReturnedReceiptsList'; 
+    private static final String CLASS_NAME = 'WS_GetReturnedReceiptsCount'; 
 
     /**
      * Método principal que realiza la consulta al servicio web
      *
-     * @author dmunoz
-     * @date 29/05/2024
+     * @author fpalomo
+     * @date 13/06/2024
      * 
      * @param invocationType debe ser "DiaAnterior" o "Acumulados"
      *
-     * @return ZRMReciboListResponse devuelve la respuesta del servicio web 
+     * @return ZRMReciboCountResponse devuelve la respuesta del servicio web 
      */
-    public GetReturnedReceiptsWSUtils.ZRMReciboListResponse callWebService(Integer pageNumber, Integer pageSize, String invocationType)
+    public GetReturnedReceiptsWSUtils.ZRMReciboCountResponse callWebService()
     {
         String level = ErrorLogUtil.ERROR_LEVEL_WARNING;
         String message = 'OK.200';
@@ -29,17 +29,12 @@ public with sharing class WS_GetReturnedReceiptsList
             // Crear objeto request
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-            request.setEndpoint('callout:WS_GetReturnedReceiptsListSyncOperation');
+            request.setEndpoint('callout:WS_GetReturnedReceiptsCountSyncOperation');
             request.setMethod('POST');
             request.setTimeout(120000);
 
             // añado la cabecera y la autenticación
             request = GetReturnedReceiptsWSUtils.setAuthenticationHeader(request);
-            
-            // Crear request
-            GetReturnedReceiptsWSUtils.ZRMReciboRequest zrmReciboRequest = GetReturnedReceiptsWSUtils.createRequest(pageNumber, pageSize, invocationType);
-            requestBody = JSON.serialize(zrmReciboRequest);
-            request.setBody(requestBody);
             
             // Enviar request
             HttpResponse response = http.send(request);
@@ -47,10 +42,11 @@ public with sharing class WS_GetReturnedReceiptsList
             // Verificar el estado de la respuesta
             if (response.getStatusCode() == 200)
             {
-                // Deserializar la respuesta JSON en un objeto ZRMReciboListResponse
-                GetReturnedReceiptsWSUtils.ZRMReciboListResponse result = (GetReturnedReceiptsWSUtils.ZRMReciboListResponse) JSON.deserialize(response.getBody(), GetReturnedReceiptsWSUtils.ZRMReciboListResponse.class);
+                // Deserializar la respuesta JSON en un objeto GetReturnedReceiptsWSUtils.ZRMReciboCountResponse
+                GetReturnedReceiptsWSUtils.ZRMReciboCountResponse result = (GetReturnedReceiptsWSUtils.ZRMReciboCountResponse) JSON.deserialize(response.getBody(), GetReturnedReceiptsWSUtils.ZRMReciboCountResponse.class);
                 ErrorLogUtil.commitError(level, message, CLASS_NAME, requestBody); // guardo el ok
                 return result;
+                
             }
             
             else
@@ -62,7 +58,7 @@ public with sharing class WS_GetReturnedReceiptsList
                 return null;
             }
         }
-        
+
         catch (Exception e)
         {
             level = ErrorLogUtil.ERROR_LEVEL_ERROR;
