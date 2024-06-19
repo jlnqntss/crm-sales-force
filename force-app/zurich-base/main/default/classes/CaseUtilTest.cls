@@ -1833,21 +1833,39 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_setOwnerIdPrior()
     {
+        List<purecloud__PureCloud_Queue__c> listaQueues = TestDataFactory.generateGenesysQueues(2);
+        listaQueues[0].Name = 'Email_ZDA_Cotizacion';
+        listaQueues[0].CallCenter__c = GlobalConfigUtil.getGlobalConfigurationValue('Call_Center_ZDA');
+
+        listaQueues[1].Name = 'Email_USP_Cartera';
+        listaQueues[1].CallCenter__c = 'USP';
+        insert listaQueues;
+
+        List<purecloud__PureCloud_Queue__c> listaInsertadas = [SELECT Id, Name FROM purecloud__PureCloud_Queue__c];
+        Assert.isFalse( listaInsertadas.isEmpty() );
+
         String zdaQueueName = 'Email_ZDA_Cotizacion';
         List<Group> queueZda = new GroupSelector().findByName(zdaQueueName);
         Assert.isFalse( queueZda.isEmpty() );
 
+        String uspQueueName = 'Email_USP_Cartera';
+        List<Group> queueUSP = new GroupSelector().findByName(uspQueueName);
+        Assert.isFalse( queueUSP.isEmpty() );
+
         List<Case> zdaCasesList = TestDataFactory.generateZDACases(3);
 
+        // Caso que cambia el Owner Prior 
         Case zdaCase = zdaCasesList[0];
         zdaCase.OwnerId = queueZda[0].id;
 
+        // Caso que NO cambia el Owner Prior porque es usuario
         Case zdaCaseUserOwner = zdaCasesList[1];
         zdaCaseUserOwner.OwnerId = UserInfo.getUserId();
 
+        // Caso que NO cambia el Owner Prior porque la cola nueva no es de ZDA
         Case zdaCaseNoChange = zdaCasesList[2];
-        zdaCaseNoChange.OwnerId = queueZda[0].id;
-        zdaCaseNoChange.OwnerIdPrior__c = DUMMY_QUEUE_NAME;
+        zdaCaseNoChange.OwnerId = queueUSP[0].id;
+        zdaCaseNoChange.OwnerIdPrior__c = zdaQueueName;
 
         insert zdaCasesList;
 
