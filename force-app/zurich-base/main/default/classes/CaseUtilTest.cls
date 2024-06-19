@@ -2243,4 +2243,69 @@ private with sharing class CaseUtilTest
 
         
     }
+
+    /**
+     * Método test para ownerUSer, marca aquellos casos cuyo propietario es un user
+     * al duplicar un caso
+     * @author lrodriguez
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_isOwnerUser_ON()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Case> uspCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+
+        User userOwner= [SELECT Id FROM User LIMIT 1];
+    
+        
+        uspCases[0].RecordtypeId=GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        uspCases[0].ownerId=userOwner.Id;
+        
+        Test.startTest();
+        insert uspCases;
+        Test.stopTest();
+
+        List<Case> updatedRecords = [SELECT OwnerUser__c FROM Case WHERE Id =: uspCases[0].Id];
+
+        System.assertEquals(true,updatedRecords[0].OwnerUser__c, 'El valor debería ser true');
+
+    }
+
+    /**
+     * Método test para ownerUSer, marca aquellos casos cuyo propietario es una cola
+     * al duplicar un caso
+     * @author lrodriguez
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_isOwnerUser_OFF()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Case> uspCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+
+        User userOwner= [SELECT Id FROM User LIMIT 1];
+
+        Group queueOwner= [SELECT Id FROM Group WHERE Type='Queue' LIMIT 1];
+    
+        
+        uspCases[0].RecordtypeId=GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        uspCases[0].ownerId=userOwner.Id;
+        insert uspCases;
+
+        
+        Test.startTest();
+        uspCases[0].ownerId=queueOwner.Id;
+        update uspCases;
+        Test.stopTest();
+
+        List<Case> updatedRecords = [SELECT OwnerUser__c FROM Case WHERE Id =: uspCases[0].Id];
+
+        System.assertEquals(false,updatedRecords[0].OwnerUser__c, 'El valor debería ser false');
+
+    }
 }
