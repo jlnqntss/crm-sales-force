@@ -354,6 +354,40 @@ private with sharing class CasesSelectorTest
     }
 
     /**
+     * Testea el metodo getZdaChildCases
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 05/06/2024
+     */
+    @isTest
+    private static void test_getZdaChildCases()
+    {
+        //creamos 2 casos de zda, uno padre del otro
+        List<Case> zdaCases = TestDataFactory.generateZDACases(2);
+        zdaCases[1].RelatedCuTicketId__c = zdaCases[0].CuTicketId__c;
+        insert zdaCases;
+
+        //creamos un tercer caso no zda, hijo de un zda (para que no lo retorne)
+        Case newUSPCase = new Case(
+            RecordTypeId = CaseUtil.RT_ID_USPINQUIRY,
+            RelatedCuTicketId__c = zdaCases[0].CuTicketId__c
+        );
+        insert newUSPCase;
+
+        Test.startTest();
+        List<Case> emptyCases = new CasesSelector().getZdaChildCases(null);
+        List<Case> emptyCases2 = new CasesSelector().getZdaChildCases(new Set<String>());
+        List<Case> foundCases = new CasesSelector().getZdaChildCases(new Set<String>{zdaCases[0].CuTicketId__c});
+        Test.stopTest();
+
+        Assert.isTrue(emptyCases.isEmpty());
+        Assert.isTrue(emptyCases2.isEmpty());
+        Assert.isFalse(foundCases.isEmpty());
+        Assert.areEqual(1, foundCases.size());
+        Assert.areEqual(zdaCases[1].Id, foundCases[0].Id);
+    }
+
+    /**
      * Se comprueba que el metodo getByIdWithZDAInfo funciona correctamente. Para ello:
      * - Comprueba que pasandole un id nulo no retorna nada
      * - Comprueba que pasandole un id de un caso NO ZDA no retorna nada

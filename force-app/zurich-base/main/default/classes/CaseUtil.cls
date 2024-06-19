@@ -2015,19 +2015,23 @@ public with sharing class CaseUtil
      */
     public static void preProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
     {
+        Case oldCase;
         for(Case updatedCase : updatedCases)
         {
-            if ( updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.ReasonId__c != oldMap.get(updatedCase.Id).ReasonId__c &&
-                 (updatedCase.ReasonId__c == ZDA_REASON_RECHAZAR || updatedCase.ReasonId__c == ZDA_REASON_DESESTIMAR) )
+            if (updatedCase.RecordTypeId == RT_ID_ZDA)
             {
-                //Es un caso de ZDA que cambia el ReasonId__c y pasa a ser rechazado o desestimado. Cerramos el caso
-                updatedCase.Status = estadoCerrado;
-                updatedCase.PendingBy__c = null;
-            }
-            else if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
-            {
-                updatedCase.Status = CASE_RESPONDIDO;
-                updatedCase.PendingBy__c = null;
+                oldCase = oldMap.get(updatedCase.Id);
+                if ( isNewReasonClosed( updatedCase, oldCase ) )
+                {
+                    //Es un caso de ZDA que cambia el ReasonId__c y pasa a ser rechazado o desestimado. Cerramos el caso
+                    updatedCase.Status = estadoCerrado;
+                    updatedCase.PendingBy__c = null;
+                }
+                else if ( isNewReasonAnswered( updatedCase, oldCase ) )
+                {
+                    updatedCase.Status = CASE_RESPONDIDO;
+                    updatedCase.PendingBy__c = null;
+                }
             }
         }
     }
@@ -2044,14 +2048,44 @@ public with sharing class CaseUtil
     public static void postProcessReasonIdForZda(List<Case> updatedCases, Map<Id,Case> oldMap)
     {
         List<Case> casesToNotify = new List<Case>();
+        Set<String> childCasesToFind = new Set<String>();
+        Case oldCase;
         for(Case updatedCase : updatedCases)
         {
-            if ( isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
+            if (updatedCase.RecordTypeId == RT_ID_ZDA)
             {
-                casesToNotify.add(updatedCase);
+                oldCase = oldMap.get(updatedCase.Id);
+                if ( isNewReasonAnswered( updatedCase, oldCase ) )
+                {
+                    casesToNotify.add(updatedCase);
+                }
+                else if ( isNewReasonClosed( updatedCase, oldCase ) && oldCase.Status == estadoCerrado )
+                {
+                    //Desde CU nos llegan las anulaciones de los recotizar, con el ticket id del caso 'padre'
+                    //Los casos de recotizar siempre son casos hijos de otros casos que ya estan cerrados
+                    //Por tanto si se intenta cerrar un caso ya cerrado, es poque se quiere anular un caso 'hijo'
+                    childCasesToFind.add(updatedCase.CuTicketId__c);
+                }
             }
         }
 
+        notifyAnsweredCases(casesToNotify);
+        closeChildCases(childCasesToFind);
+    }
+
+    /**
+     * Envia una notificacion de escritorio a cada uno de los casos proporcionados en
+     * el array proporcionado. Cada caso debe tener informado los siguientes campos:
+     * - Id
+     * - CaseNumber
+     * - OwnerId
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 06/06/2024
+     * @param casesToNotify lista de casos para los que enviar notificacion
+     */
+    private static void notifyAnsweredCases(List<Case> casesToNotify)
+    {
         if (!casesToNotify.isEmpty())
         {
             String content;
@@ -2067,7 +2101,37 @@ public with sharing class CaseUtil
     }
 
     /**
-     * Comprueba si el caso es de zda y el ReasonId__c pasa a ser respondido (3)
+     * A partir del set proporcionado, busca casos de ZDA relacionados con estos y
+     * los que encuentra los pasa a cerrado (los que no lo estan ya)
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 06/06/2024
+     * @param childCasesToFind Set con identificadores de ticket (CuTicketId__c) de
+     * los cuales buscar casos de ZDA que lo tengan informado en RelatedCuTicketId__c
+     */
+    private static void closeChildCases(Set<String> childCasesToFind)
+    {
+        if (!childCasesToFind.isEmpty())
+        {
+            List<Case> childCasesFound = new CasesSelector().getZdaChildCases(childCasesToFind);
+            //Si encuentra casos hijos, los cerramos
+            List<Case> childCasesToUpdate = new List<Case>();
+            for (Case caseToClose : childCasesFound)
+            {
+                if (caseToClose.Status != estadoCerrado)
+                {
+                    caseToClose.Status = estadoCerrado;
+                    caseToClose.PendingBy__c = null; //por si estuviera pendiente de alguien
+                    childCasesToUpdate.add(caseToClose);
+                }
+            }
+
+            update childCasesToUpdate;
+        }
+    }
+
+    /**
+     * Comprueba si el ReasonId__c pasa a ser respondido (3)
      *
      * @author mario.navarro@seidor.com
      * @date 14/05/2024
@@ -2075,9 +2139,24 @@ public with sharing class CaseUtil
      * @param oldCase caso antes de la actualizacion
      * @return true si es un caso de ZDA, el ReasonId__c ha cambiado y pasa a ser 3; false en caso contrario
      */
-    private static Boolean isZDANewReasonAnswered(Case updatedCase, Case oldCase)
+    private static Boolean isNewReasonAnswered(Case updatedCase, Case oldCase)
     {
-        return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.ReasonId__c != oldCase.ReasonId__c && updatedCase.ReasonId__c == ZDA_REASON_RESPUESTA_SOPORTE;
+        return updatedCase.ReasonId__c != oldCase.ReasonId__c && updatedCase.ReasonId__c == ZDA_REASON_RESPUESTA_SOPORTE;
+    }
+
+    /**
+     * Comprueba si el ReasonId__c pasa a ser cerrado (1 o 2)
+     *
+     * @author mario.navarro@seidor.com
+     * @date 05/06/2024
+     * @param updatedCase caso actualizado
+     * @param oldCase caso antes de la actualizacion
+     * @return true si es un caso de ZDA, el ReasonId__c ha cambiado y pasa a ser 1 o 2; false en caso contrario
+     */
+    private static Boolean isNewReasonClosed(Case updatedCase, Case oldCase)
+    {
+        return updatedCase.ReasonId__c != oldCase.ReasonId__c && 
+            (updatedCase.ReasonId__c == ZDA_REASON_RECHAZAR || updatedCase.ReasonId__c == ZDA_REASON_DESESTIMAR);
     }
 
     /**

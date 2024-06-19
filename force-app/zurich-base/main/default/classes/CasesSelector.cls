@@ -425,11 +425,43 @@ public with sharing class CasesSelector extends RecordsSelector
     }
 
     /**
+     * Busca casos de tipo ZDA cuyo campo RelatedCuTicketId__c este informado
+     * con alguno de los proporcionados en el set
+     * 
+     * Query que se ejecuta:
+     * SELECT CuTicketId__c, Status, RelatedCuTicketId__c
+     * FROM Case
+     * WHERE RecordTypeId = :CaseUtil.RT_ID_ZDA
+     * AND RelatedCuTicketId__c IN :relatedCuTicketIds
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 05/06/2024
+     * @param relatedCuTicketIds lista de identificadores a buscar
+     * @return lista de casos hijos encontrados por el campo RelatedCuTicketId__c
+     */
+    public List<Case> getZdaChildCases(Set<String> relatedCuTicketIds)
+    {
+        if (relatedCuTicketIds == null || relatedCuTicketIds.isEmpty())
+        {
+            return new List<Case>();
+        }
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.CuTicketId__c,
+            Case.Status,
+            Case.RelatedCuTicketId__c
+        })
+        .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)
+        .addConditionIn(Case.RelatedCuTicketId__c, relatedCuTicketIds);
+
+        return (List<Case>) this.baseQuery.run();
+    }
+
+    /**
      * Busca el caso por identificador filtrando por (aparte del id) el recordtype de ZDA.
      * Retorna el caso con los campos CuTicketId__c, CaseNumber, Status, PendingBy__c, Owner.Name
      * 
      * @author mario.navarro@seidor.com
-     * @date 25/04/2029
+     * @date 25/04/2024
      * @param caseId identificador del caso a buscar
      * @return el caso encontrado o nulo si no se proporciona un id o no se encuentra
      */
