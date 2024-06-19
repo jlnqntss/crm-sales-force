@@ -467,7 +467,7 @@
         </value>
     </constants>
     <decisions>
-        <description>No se permiten escalar casos en estado nuevo o cerrado</description>
+        <description>No se permiten escalar casos en estado nuevo o cerrado. Para el origen email deben estar tipificados</description>
         <name>AllowScalationDecision</name>
         <label>Allow scalation</label>
         <locationX>374</locationX>
@@ -478,7 +478,7 @@
         <defaultConnectorLabel>Yes</defaultConnectorLabel>
         <rules>
             <name>NoAllowScalationOutcome</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>1 OR 2 OR 3 OR 4 OR (5 AND (6 OR 7 OR 8))</conditionLogic>
             <conditions>
                 <leftValueReference>GetCaseAction.Status</leftValueReference>
                 <operator>EqualTo</operator>
@@ -505,6 +505,34 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Pendiente</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCaseAction.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCaseAction.Type</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCaseAction.Subtype__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetCaseAction.TypeN3__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1459,7 +1487,7 @@
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;El tamaño no puede exceder los {!MaxAllowedChars} caracteres&lt;/p&gt;</errorMessage>
-                <formulaExpression>LEN({!CommentsWithPartnerInput})&lt;{!MaxAllowedChars}</formulaExpression>
+                <formulaExpression>LEN({!CommentsWithPartnerInput})&lt;={!MaxAllowedChars}</formulaExpression>
             </validationRule>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1585,7 +1613,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>NoAllowedScalationDisplay</name>
-            <fieldText>&lt;p&gt;No se permite el escalado de casos en estado nuevo, cerrado o pendiente&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;No se permite el escalado de casos en estado nuevo, cerrado o pendiente. Los casos de origen Email deben estar tipificados.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -1625,7 +1653,7 @@
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;El tamaño no puede exceder los {!MaxAllowedChars} caracteres&lt;/p&gt;</errorMessage>
-                <formulaExpression>LEN({!CommentsWithoutPartnerInput})&lt;{!MaxAllowedChars}</formulaExpression>
+                <formulaExpression>LEN({!CommentsWithoutPartnerInput})&lt;={!MaxAllowedChars}</formulaExpression>
             </validationRule>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>

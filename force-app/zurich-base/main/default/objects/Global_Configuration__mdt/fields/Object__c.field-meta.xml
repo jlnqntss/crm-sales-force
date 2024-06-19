@@ -60,6 +60,11 @@
                 <default>false</default>
                 <label>Campaign</label>
             </value>
+            <value>
+                <fullName>Account</fullName>
+                <default>false</default>
+                <label>Account</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

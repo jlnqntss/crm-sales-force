@@ -1064,6 +1064,7 @@
             <valueName>TPA</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Gestión Cartera</controllingFieldValue>
             <controllingFieldValue>TPA</controllingFieldValue>
             <valueName>Siniestros</valueName>
         </valueSettings>
