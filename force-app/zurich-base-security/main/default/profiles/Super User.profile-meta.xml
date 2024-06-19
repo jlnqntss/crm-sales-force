@@ -1995,11 +1995,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.CaseOpen__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Account.Category__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4450,6 +4445,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.IdCaseClone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IdTipologiaBs__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4501,6 +4501,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Intermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.isCloneCase__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4636,11 +4641,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Origin</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.OtherCaseOpen__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
