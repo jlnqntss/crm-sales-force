@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>isCloneCase__c</fullName>
-    <defaultValue>false</defaultValue>
-    <label>isCloneCase</label>
-    <trackFeedHistory>false</trackFeedHistory>
+    <fullName>OtherCaseOpen__c</fullName>
+    <formula>MediatedCustomer__r.CaseOpen__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Other Case Open</label>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>
