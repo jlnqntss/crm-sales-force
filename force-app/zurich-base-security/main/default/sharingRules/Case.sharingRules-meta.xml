@@ -263,6 +263,36 @@
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Cases_SAM_Write</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Permiso para que los gestores del SAM puedan editar todos los casos del SAM.</description>
+        <label>Cases SAM Write</label>
+        <sharedTo>
+            <group>Write_SAM</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>SAM Inquiry</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>SAM_Users_Case_Read</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Permiso para que los gestores del SAM puedan leer el resto de casos.</description>
+        <label>SAM Users Case Read</label>
+        <sharedTo>
+            <group>Read_SAM</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>notEqual</operation>
+            <value>SAM Inquiry</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>GDPR_Ocultar_Cases</fullName>
         <accessLevel>Read</accessLevel>
         <label>GDPR_Ocultar_Cases</label>
