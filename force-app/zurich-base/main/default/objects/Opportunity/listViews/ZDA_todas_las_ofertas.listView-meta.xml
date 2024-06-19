@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZDA_todas_las_ofertas</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>OPPORTUNITY.AMOUNT</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>ProductId__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>ZDA - Todas las ofertas</label>
+    <sharedTo>
+        <role>ZDA_Agente</role>
+        <role>ZDA_Supervisor</role>
+    </sharedTo>
+</ListView>
