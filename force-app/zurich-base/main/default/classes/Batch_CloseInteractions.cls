@@ -8,6 +8,7 @@ global class Batch_CloseInteractions implements Database.Batchable<case>,Databas
 {
 
     public List<Case> casosQuery= new List<Case>();
+    public List<Case> allCasosQuery= new List<Case>();
     global Integer  testOK;
 
     @TestVisible static Integer testCount;
@@ -42,8 +43,10 @@ global class Batch_CloseInteractions implements Database.Batchable<case>,Databas
     {
         
         casosQuery = new CasesSelector().getCasesToCloseInteractions();
+        allCasosQuery = new CasesSelector().getCasesToCloseInteractionsAutomatic();
+        allCasosQuery.addAll(casosQuery);
         
-        return casosQuery;
+        return allCasosQuery;
     }
     
     /**

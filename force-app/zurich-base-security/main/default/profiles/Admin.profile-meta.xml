@@ -3861,6 +3861,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.CaseOpen__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.NameLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6851,7 +6856,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.OtherCaseOpen__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.OwnerIdPrior__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.OwnerUser__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11038,6 +11053,11 @@
         <field>Opportunity.ReassignToContactCenter__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ResultingPolicyLifeNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Anonymized__c</field>
@@ -11406,6 +11426,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.QuoteLink__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.QuoteLifeNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -19626,6 +19651,16 @@
         <default>true</default>
         <personAccountDefault>true</personAccountDefault>
         <recordType>Objective__c.Objectives</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Opportunity.Life</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Opportunity.NoLife</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
