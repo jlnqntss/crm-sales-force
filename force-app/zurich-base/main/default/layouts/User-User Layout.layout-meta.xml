@@ -10,6 +10,18 @@
                 <behavior>Edit</behavior>
                 <field>License_Group__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>AssignedCases__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ActiveAgent__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>
@@ -51,6 +63,7 @@
     <relatedObjects>ProfilePhotoId</relatedObjects>
     <relatedObjects>WorkspaceId</relatedObjects>
     <relatedObjects>BannerPhotoId</relatedObjects>
+    <relatedObjects>IndividualId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
