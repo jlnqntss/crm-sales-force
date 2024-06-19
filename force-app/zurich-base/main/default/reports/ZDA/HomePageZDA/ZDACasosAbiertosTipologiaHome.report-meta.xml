@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>IF(
+OPEN:SUM - CLOSED:SUM &lt; 0,
+    0,
+    OPEN:SUM - CLOSED:SUM 
+)</calculatedFormula>
+        <datatype>number</datatype>
+        <description>Diferencia entre los casos abiertos y los casos cerrados.</description>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Acumulado</masterLabel>
+        <scale>0</scale>
+    </aggregates>
     <chart>
         <backgroundColor1>#FFFFFF</backgroundColor1>
         <backgroundColor2>#FFFFFF</backgroundColor2>
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
             <axisBinding>y</axisBinding>
-            <column>RowCount</column>
+            <column>FORMULA1</column>
         </chartSummaries>
         <chartType>Donut</chartType>
         <enableHoverLabels>false</enableHoverLabels>
         <expandOthers>false</expandOthers>
-        <groupingColumn>IS_VIOLATED</groupingColumn>
+        <groupingColumn>TYPE</groupingColumn>
         <legendPosition>Right</legendPosition>
         <location>CHART_BOTTOM</location>
         <showAxisLabels>false</showAxisLabels>
@@ -22,7 +36,7 @@
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
-        <title>Comparativa de casos por infracción SLA</title>
+        <title>Comparativa global por tipología</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
@@ -41,6 +55,10 @@
     <columns>
         <aggregateTypes>Average</aggregateTypes>
         <field>ELPSD_TIME_HRS</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>IS_VIOLATED</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -63,7 +81,7 @@
         <aggregateTypes>Sum</aggregateTypes>
         <field>CLOSED</field>
     </columns>
-    <description>Comparativa global de casos por cumplimiento o incumplimiento del SLA de tiempo de cierre del caso.</description>
+    <description>Comparativa global de casos abiertos por tipología de petición.</description>
     <filter>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -72,15 +90,32 @@
             <operator>equals</operator>
             <value>Case.ZDAInquiry</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>CLOSED</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>IS_VIOLATED</field>
-        <sortOrder>Desc</sortOrder>
+        <field>TYPE</field>
+        <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Comparativa de casos por SLAs</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Case.Subtype__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Case.TypeN3__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Casos abiertos por tipología</name>
     <params>
         <name>units</name>
         <value>h</value>
@@ -94,8 +129,8 @@
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
-    <sortColumn>IS_COMPLETED</sortColumn>
-    <sortOrder>Desc</sortOrder>
+    <sortColumn>CASE_NUMBER</sortColumn>
+    <sortOrder>Asc</sortOrder>
     <timeFrameFilter>
         <dateColumn>CREATED_DATEONLY</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
