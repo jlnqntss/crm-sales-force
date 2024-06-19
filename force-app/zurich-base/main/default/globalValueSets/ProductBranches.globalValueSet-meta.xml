@@ -86,6 +86,16 @@
         <label>CIBER</label>
     </customValue>
     <customValue>
+        <fullName>0000000018</fullName>
+        <default>false</default>
+        <label>PENSIONES</label>
+    </customValue>
+    <customValue>
+        <fullName>0000000019</fullName>
+        <default>false</default>
+        <label>MOTO</label>
+    </customValue>
+    <customValue>
         <fullName>HOME</fullName>
         <default>false</default>
         <isActive>false</isActive>
