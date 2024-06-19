@@ -120,14 +120,14 @@ public with sharing class TicketingHegeoUtil
 
     /**
      * Envia una peticion para a canal unico conforme el status de un caso ha
-     * cambiado a Asignado (En tramite para ellos)
+     * cambiado a Asignado o Respondido (En tramite para ellos)
      * 
      * @author mario.navarro@seidor.com
      * @date 30/05/2024
-     * @param relatedCase caso relacionado con la peticion a enviar
+     * @param relatedCaseId caso relacionado con la peticion a enviar
      */
     @future(callout=true)
-    public static void sendRequestStatusChangeToAssigned(Id relatedCaseId)
+    public static void sendRequestStatusChangeToTramite(Id relatedCaseId)
     {
         Case relatedCase = new CasesSelector().getByIdWithZDAInfo(relatedCaseId);
         CanalUnicoUpdateVsegTicketRequest calloutRequest = createBaseRequestByCase(relatedCase);

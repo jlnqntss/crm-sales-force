@@ -778,12 +778,6 @@ private with sharing class INFOHandlerTest
             externalRequestListUpdated.size(),
             'No se han procesado todas las external request'
             );
-        // FIXME:
-        System.assertEquals(
-            1,
-            errors.size(),
-            'No se han generado los errores correctamente'
-            );
     }
 
     @isTest

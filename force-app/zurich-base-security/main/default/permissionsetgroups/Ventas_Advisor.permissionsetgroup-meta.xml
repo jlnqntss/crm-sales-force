@@ -4,6 +4,7 @@
     <label>Ventas Advisor</label>
     <permissionSets>Acceso_App_Ventas</permissionSets>
     <permissionSets>Acceso_Opciones_de_Oferta</permissionSets>
+    <permissionSets>ConsultaOfertaVida</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
     <permissionSets>Gestion_Captacion_Avanzada</permissionSets>
     <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>

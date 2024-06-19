@@ -62,5 +62,6 @@
     </quickActionLayout>
     <targetObject>Opportunity</targetObject>
     <targetParentField>Account</targetParentField>
+    <targetRecordType>Opportunity.NoLife</targetRecordType>
     <type>Create</type>
 </QuickAction>
