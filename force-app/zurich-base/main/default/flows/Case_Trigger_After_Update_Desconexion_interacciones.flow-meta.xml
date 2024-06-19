@@ -184,7 +184,7 @@
     </decisions>
     <decisions>
         <name>IsNoteINFOorWebDecision</name>
-        <label>¿Es Nota INFO o Web?</label>
+        <label>¿Es Nota INFO o Web o Canal Unico?</label>
         <locationX>710</locationX>
         <locationY>576</locationY>
         <defaultConnector>
@@ -206,6 +206,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Web</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CanalUnico</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -358,10 +365,44 @@
             </connector>
             <label>SAM</label>
         </rules>
+        <rules>
+            <name>ZDAOutcome</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_RecordType_ZDA</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cerrado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendiente</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IsNoteINFOorWebDecision</targetReference>
+            </connector>
+            <label>ZDA</label>
+        </rules>
     </decisions>
     <description>Flujo encargado de, cuando se cierra un caso, desconectar todas aquellas interacciones que estén pendientes de ser distribuidas por Genesys. 
 Se establece un orden de ejecución tardío al ser una llamada a un sistema externo.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>Case_RecordType_ZDA</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_ZDA.Value__c}</expression>
+    </formulas>
     <interviewLabel>Case Trigger - After Update - Desconexión interacciones {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Desconexión interacciones</label>
     <loops>
@@ -611,7 +652,7 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
         <faultConnector>
             <targetReference>CreateErrorLogTaskInquiryAction</targetReference>
         </faultConnector>
-        <filterLogic>1 AND ((2 AND 3) OR (4 AND 5))</filterLogic>
+        <filterLogic>1 AND ((2 AND ( 3 OR 6)) OR (4 AND 5))</filterLogic>
         <filters>
             <field>WhatId</field>
             <operator>EqualTo</operator>
@@ -645,6 +686,13 @@ Se establece un orden de ejecución tardío al ser una llamada a un sistema exte
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Incidences Record MiZurich</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subtype__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Single channel</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
