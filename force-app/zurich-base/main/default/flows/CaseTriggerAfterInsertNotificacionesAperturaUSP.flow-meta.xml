@@ -324,7 +324,7 @@
         <connector>
             <targetReference>CasoClonadoDecision</targetReference>
         </connector>
-        <filterLogic>(1 AND 2 AND 3 AND 4) OR 5</filterLogic>
+        <filterLogic>(1 AND 2 AND 3 AND 4 AND 6) OR 5</filterLogic>
         <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
@@ -358,6 +358,13 @@
             <operator>EqualTo</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>SourceArea__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Generic Internal</stringValue>
             </value>
         </filters>
         <object>Case</object>
