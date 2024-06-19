@@ -423,6 +423,13 @@
                 <booleanValue>true</booleanValue>
             </value>
         </filters>
+        <filters>
+            <field>SourceArea__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Generic Internal</stringValue>
+            </value>
+        </filters>
         <object>Case</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>

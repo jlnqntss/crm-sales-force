@@ -439,6 +439,7 @@
     <tabs>standard-MobileHome</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Task</tabs>
+    <tabs>Peticiones_de_mercado</tabs>
     <tabs>PlanComercial__c</tabs>
     <tabs>GenerarPlan</tabs>
     <tabs>Objetivos</tabs>
@@ -468,6 +469,9 @@
         </mappings>
         <mappings>
             <tab>Objetivos</tab>
+        </mappings>
+        <mappings>
+            <tab>Peticiones_de_mercado</tab>
         </mappings>
         <mappings>
             <tab>PlanComercial__c</tab>

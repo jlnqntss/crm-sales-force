@@ -1485,20 +1485,24 @@ private with sharing class CaseUtilTest
     }
 
     /**
-     * Se testea el metodo notifCuCaseAssigned
+     * Se testea el metodo notifCuCaseEnTramite
      * 
      * @author mario.navarro@seidor.com
      * @date 30/05/2024
      */
     @isTest
-    private static void test_notifCuCaseAssigned()
+    private static void test_notifCuCaseEnTramite()
     {
-        Case caseToTest = TestDataFactory.generateZDACases(1)[0];
-        caseToTest.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
-        caseToTest.Status = CaseUtil.CASE_NUEVO;
-        insert caseToTest;
+        List<Case> casesToTest = TestDataFactory.generateZDACases(2);
+        casesToTest[0].Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+        casesToTest[0].Status = CaseUtil.CASE_NUEVO;
+        casesToTest[1].Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+        casesToTest[1].Status = CaseUtil.CASE_PENDIENTE;
+        casesToTest[1].PendingBy__c = CaseUtil.CASE_PENDIENTE_PARTNER;
+        insert casesToTest;
 
-        caseToTest.Status = CaseUtil.CASE_ASIGNADO;
+        casesToTest[0].Status = CaseUtil.CASE_ASIGNADO;
+        casesToTest[1].ReasonId__c = CaseUtil.ZDA_REASON_RESPUESTA_SOPORTE;
 
         TicketingHegeoServiceMock mock = new TicketingHegeoServiceMock(
             TicketingHegeoServiceMock.HTTP_CODE_OK,
@@ -1510,12 +1514,48 @@ private with sharing class CaseUtilTest
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, mock);
-        update caseToTest;
+        update casesToTest;
         Test.stopTest();
 
         //Se comprueba que no hay errores en la peticion
         List<Error_Log__c> foundErrors = [SELECT Id FROM Error_Log__c WHERE Source_Class__c = : TicketingHegeoService.class.getName() AND Source_Method__c = 'updateVsegTicket'];
         Assert.isTrue( foundErrors.isEmpty() );
+    }
+
+    /**
+     * Se valida que el metodo createLeadForZdaCases relaciona correctamente el caso de ZDA creado
+     * que tiene un dni informado que no existe como cuenta. Debe crear un lead y un scope de zda
+     * relacionado
+     *
+     * @author mario.navarro@seidor.com
+     * @date 13/06/2024
+     */
+    @isTest
+    private static void test_createLeadForZdaCases()
+    {
+        //de la cuenta generada solo nos interesa el DNI autogenerado en el TestDataFactory y el nombre
+        Account newAcc = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1)[0];
+
+        Case newZdaCase = TestDataFactory.generateZDACases(1)[0];
+        newZdaCase.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+        newZdaCase.CustomerNifCif__c = newAcc.NationalId__c;
+        newZdaCase.CustomerName__c = newAcc.LastName;
+
+        Test.startTest();
+        insert newZdaCase;
+        Test.stopTest();
+
+        //Se valida que se ha creado el lead
+        List<Account> foundLead = [SELECT Id FROM Account WHERE NationalId__c = :newAcc.NationalId__c];
+        Assert.isfalse(foundLead.isEmpty());
+
+        //Se valida que se ha creado el scope
+        List<Scope__c> foundScope = [SELECT Id FROM Scope__c WHERE AccountId__c = :foundLead[0].Id AND Scope__c = :CaseUtil.ZDA];
+        Assert.isfalse(foundScope.isEmpty());
+
+        //Se valida que el caso se ha vinculado al nuevo lead
+        Case createdCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = :newZdaCase.Id];
+        Assert.areEqual(foundLead[0].Id, createdCase.MediatedCustomer__c);
     }
 
     /**
@@ -1556,27 +1596,27 @@ private with sharing class CaseUtilTest
         Case caseToLink = zdaCasesList[0];
         caseToLink.CustomerNifCif__c = accountUniqueDNI.NationalId__c;
 
-        //caso a NO vincular
-        Case caseNoLink = zdaCasesList[1];
-        caseNoLink.CustomerNifCif__c = accountDupDNI1.NationalId__c;
+        //caso a vincular CON UNO CUALQUIERA (OCS-9981)
+        Case caseToLink2 = zdaCasesList[1];
+        caseToLink2.CustomerNifCif__c = accountDupDNI1.NationalId__c;
 
-        //caso a NO vincular 2
-        Case caseNoLink2 = zdaCasesList[2];
+        //caso a NO vincular
+        Case caseNoLink = zdaCasesList[2];
 
         Test.startTest();
         insert zdaCasesList;
         Test.stopTest();
 
         Case linkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseToLink.Id];
+        Case linkedCase2 = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseToLink2.Id];
         Case notLinkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink.Id];
-        Case notLinkedCase2 = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink2.Id];
 
         Assert.isNotNull(linkedCase);
         Assert.areEqual(accountUniqueDNI.Id, linkedCase.MediatedCustomer__c);
+        Assert.isNotNull(linkedCase2);
+        Assert.isNotNull(linkedCase2.MediatedCustomer__c);
         Assert.isNotNull(notLinkedCase);
         Assert.isNull(notLinkedCase.MediatedCustomer__c);
-        Assert.isNotNull(notLinkedCase2);
-        Assert.isNull(notLinkedCase2.MediatedCustomer__c);
     }
 
     /**
@@ -1793,21 +1833,39 @@ private with sharing class CaseUtilTest
     @isTest
     private static void test_setOwnerIdPrior()
     {
+        List<purecloud__PureCloud_Queue__c> listaQueues = TestDataFactory.generateGenesysQueues(2);
+        listaQueues[0].Name = 'Email_ZDA_Cotizacion';
+        listaQueues[0].CallCenter__c = GlobalConfigUtil.getGlobalConfigurationValue('Call_Center_ZDA');
+
+        listaQueues[1].Name = 'Email_USP_Cartera';
+        listaQueues[1].CallCenter__c = 'USP';
+        insert listaQueues;
+
+        List<purecloud__PureCloud_Queue__c> listaInsertadas = [SELECT Id, Name FROM purecloud__PureCloud_Queue__c];
+        Assert.isFalse( listaInsertadas.isEmpty() );
+
         String zdaQueueName = 'Email_ZDA_Cotizacion';
         List<Group> queueZda = new GroupSelector().findByName(zdaQueueName);
         Assert.isFalse( queueZda.isEmpty() );
 
+        String uspQueueName = 'Email_USP_Cartera';
+        List<Group> queueUSP = new GroupSelector().findByName(uspQueueName);
+        Assert.isFalse( queueUSP.isEmpty() );
+
         List<Case> zdaCasesList = TestDataFactory.generateZDACases(3);
 
+        // Caso que cambia el Owner Prior 
         Case zdaCase = zdaCasesList[0];
         zdaCase.OwnerId = queueZda[0].id;
 
+        // Caso que NO cambia el Owner Prior porque es usuario
         Case zdaCaseUserOwner = zdaCasesList[1];
         zdaCaseUserOwner.OwnerId = UserInfo.getUserId();
 
+        // Caso que NO cambia el Owner Prior porque la cola nueva no es de ZDA
         Case zdaCaseNoChange = zdaCasesList[2];
-        zdaCaseNoChange.OwnerId = queueZda[0].id;
-        zdaCaseNoChange.OwnerIdPrior__c = DUMMY_QUEUE_NAME;
+        zdaCaseNoChange.OwnerId = queueUSP[0].id;
+        zdaCaseNoChange.OwnerIdPrior__c = zdaQueueName;
 
         insert zdaCasesList;
 
@@ -2199,5 +2257,70 @@ private with sharing class CaseUtilTest
         System.assertEquals(null,updatedRecords[0].ProductGroup__c, 'El valor debería ser null');
         System.assertEquals(null,updatedRecords[0].PolicyId__c, 'El valor debería ser null');
         
+    }
+
+    /**
+     * Método test para ownerUSer, marca aquellos casos cuyo propietario es un user
+     * al duplicar un caso
+     * @author lrodriguez
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_isOwnerUser_ON()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Case> uspCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+
+        User userOwner= [SELECT Id FROM User LIMIT 1];
+    
+        
+        uspCases[0].RecordtypeId=GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        uspCases[0].ownerId=userOwner.Id;
+        
+        Test.startTest();
+        insert uspCases;
+        Test.stopTest();
+
+        List<Case> updatedRecords = [SELECT OwnerUser__c FROM Case WHERE Id =: uspCases[0].Id];
+
+        System.assertEquals(true,updatedRecords[0].OwnerUser__c, 'El valor debería ser true');
+
+    }
+
+    /**
+     * Método test para ownerUSer, marca aquellos casos cuyo propietario es una cola
+     * al duplicar un caso
+     * @author lrodriguez
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_isOwnerUser_OFF()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        insert accounts;
+
+        List<Case> uspCases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+
+        User userOwner= [SELECT Id FROM User LIMIT 1];
+
+        Group queueOwner= [SELECT Id FROM Group WHERE Type='Queue' LIMIT 1];
+    
+        
+        uspCases[0].RecordtypeId=GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        uspCases[0].ownerId=userOwner.Id;
+        insert uspCases;
+
+        
+        Test.startTest();
+        uspCases[0].ownerId=queueOwner.Id;
+        update uspCases;
+        Test.stopTest();
+
+        List<Case> updatedRecords = [SELECT OwnerUser__c FROM Case WHERE Id =: uspCases[0].Id];
+
+        System.assertEquals(false,updatedRecords[0].OwnerUser__c, 'El valor debería ser false');
+
     }
 }

@@ -51,7 +51,7 @@
         <name>Informar_asignado_1</name>
         <label>Informar asignado 1</label>
         <locationX>50</locationX>
-        <locationY>1814</locationY>
+        <locationY>2006</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -67,7 +67,7 @@
         <name>Informar_asignado_2</name>
         <label>Informar asignado 2</label>
         <locationX>314</locationX>
-        <locationY>1814</locationY>
+        <locationY>2006</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -83,7 +83,7 @@
         <name>Informar_asignado_3</name>
         <label>Informar asignado 3</label>
         <locationX>578</locationX>
-        <locationY>1814</locationY>
+        <locationY>2006</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -99,7 +99,7 @@
         <name>Informar_asignado_4</name>
         <label>Informar asignado 4</label>
         <locationX>842</locationX>
-        <locationY>1814</locationY>
+        <locationY>2006</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -115,7 +115,7 @@
         <name>Informar_asignado_DZ</name>
         <label>Informar asignado DZ</label>
         <locationX>1106</locationX>
-        <locationY>1814</locationY>
+        <locationY>2006</locationY>
         <assignmentItems>
             <assignToReference>EmailAsignado</assignToReference>
             <operator>Assign</operator>
@@ -292,7 +292,7 @@
         <choiceText>{!$Label.SDM_EquiposMercado_TypeN3Otros_consultas}</choiceText>
         <dataType>String</dataType>
         <value>
-            <elementReference>OtrosConsultas</elementReference>
+            <elementReference>OtrasConsultas</elementReference>
         </value>
     </choices>
     <choices>
@@ -482,7 +482,7 @@
         <name>GestionNegocio</name>
         <dataType>String</dataType>
         <value>
-            <stringValue>Gestión de negocio</stringValue>
+            <stringValue>Gestión negocio</stringValue>
         </value>
     </constants>
     <constants>
@@ -507,17 +507,17 @@
         </value>
     </constants>
     <constants>
+        <name>OtrasConsultas</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Otras consultas</stringValue>
+        </value>
+    </constants>
+    <constants>
         <name>Otros</name>
         <dataType>String</dataType>
         <value>
             <stringValue>Otros</stringValue>
-        </value>
-    </constants>
-    <constants>
-        <name>OtrosConsultas</name>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>Otros consultas</stringValue>
         </value>
     </constants>
     <constants>
@@ -602,19 +602,19 @@
         <name>A_quien_se_asigna_el_caso</name>
         <label>A quien se asigna el caso</label>
         <locationX>710</locationX>
-        <locationY>1706</locationY>
+        <locationY>1898</locationY>
         <defaultConnector>
             <targetReference>Obtener_record_Type_Id</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Asignado_1</name>
-            <conditionLogic>(1 OR 3) AND 2</conditionLogic>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>Elige_el_tipo_de_petici_n_o_consulta_que_quieres_realizar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Suscripcion</elementReference>
+                    <elementReference>TypeN2Suscripcion</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -638,19 +638,19 @@
         </rules>
         <rules>
             <name>Asignado_2</name>
-            <conditionLogic>(1 OR 3) AND 2</conditionLogic>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>Elige_el_tipo_de_petici_n_o_consulta_que_quieres_realizar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Suscripcion</elementReference>
+                    <elementReference>TypeN2Suscripcion</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>Elige_el_tipo_de_petici_n_o_consulta_que_quieres_realizar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Saneamiento</elementReference>
+                    <elementReference>TypeN2Saneamiento</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -672,7 +672,7 @@
                 <leftValueReference>Elige_el_tipo_de_petici_n_o_consulta_que_quieres_realizar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Suscripcion</elementReference>
+                    <elementReference>TypeN2Suscripcion</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -694,7 +694,7 @@
                 <leftValueReference>Elige_el_tipo_de_petici_n_o_consulta_que_quieres_realizar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Mejora</elementReference>
+                    <elementReference>TypeN2Mejora</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -709,7 +709,7 @@
                 <leftValueReference>Elige_el_tipo_de_petici_n_o_consulta_que_quieres_realizar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Saneamiento</elementReference>
+                    <elementReference>TypeN2Saneamiento</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -723,7 +723,7 @@
                 <leftValueReference>Elige_el_tipo_de_petici_n_o_consulta_que_quieres_realizar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>GestionNegocio</elementReference>
+                    <elementReference>TypeN2GestionDeNegocio</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -736,7 +736,7 @@
         <name>AdjuntarFichero</name>
         <label>Adjuntar?</label>
         <locationX>710</locationX>
-        <locationY>2330</locationY>
+        <locationY>2522</locationY>
         <defaultConnector>
             <targetReference>Mensaje_caso_creado</targetReference>
         </defaultConnector>
@@ -778,6 +778,38 @@
             </conditions>
             <connector>
                 <targetReference>Obtener_cuenta</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Poliza_obligatoria</name>
+        <label>Póliza obligatoria</label>
+        <locationX>710</locationX>
+        <locationY>1382</locationY>
+        <defaultConnector>
+            <targetReference>Datos_peticion</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>S</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Elige_el_tipo_de_petici_n_o_consulta_que_quieres_realizar</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>TypeN2Suscripcion</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Elige_el_tipo_de_petici_n_o_consulta_que_quieres_realizar</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>TypeN2Saneamiento</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Introducir_poliza</targetReference>
             </connector>
             <label>Sí</label>
         </rules>
@@ -876,8 +908,8 @@
     <formulas>
         <name>SiniestralidadFormula</name>
         <dataType>Number</dataType>
-        <expression>{!SumTotalLoad} / {!SumIncome}</expression>
-        <scale>2</scale>
+        <expression>{!SumTotalLoad} / {!SumIncome} * 100</expression>
+        <scale>0</scale>
     </formulas>
     <formulas>
         <name>TypeN3Formula</name>
@@ -930,14 +962,14 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Crear_caso</name>
         <label>Crear caso</label>
         <locationX>710</locationX>
-        <locationY>2114</locationY>
+        <locationY>2306</locationY>
         <connector>
             <targetReference>Obtener_Caso</targetReference>
         </connector>
         <inputAssignments>
             <field>AccountId</field>
             <value>
-                <elementReference>Mediador.recordId</elementReference>
+                <elementReference>Obtener_cuenta.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1073,7 +1105,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Obtener_Caso</name>
         <label>Obtener Caso</label>
         <locationX>710</locationX>
-        <locationY>2222</locationY>
+        <locationY>2414</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AdjuntarFichero</targetReference>
@@ -1118,7 +1150,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <locationY>1274</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Introducir_poliza</targetReference>
+            <targetReference>Poliza_obligatoria</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1206,7 +1238,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Obtener_record_Type_Id</name>
         <label>Obtener record Type Id</label>
         <locationX>710</locationX>
-        <locationY>2006</locationY>
+        <locationY>2198</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Crear_caso</targetReference>
@@ -1227,7 +1259,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Adjuntar_fichero</name>
         <label>Adjuntar fichero</label>
         <locationX>578</locationX>
-        <locationY>2438</locationY>
+        <locationY>2630</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1276,7 +1308,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Datos_peticion</name>
         <label>Datos petición</label>
         <locationX>710</locationX>
-        <locationY>1598</locationY>
+        <locationY>1790</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1309,12 +1341,6 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
                 <name>recordId</name>
                 <value>
                     <elementReference>Obtener_cuenta.Id</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>required</name>
-                <value>
-                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -1354,7 +1380,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
             <fieldText>Número de póliza</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;Intoduce el número de póliza y pulsa el botón &apos;Buscar póliza&apos;&lt;/p&gt;</helpText>
-            <isRequired>true</isRequired>
+            <isRequired>false</isRequired>
             <visibilityRule>
                 <conditionLogic>or</conditionLogic>
                 <conditions>
@@ -1434,7 +1460,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
             </defaultValue>
             <fieldText>Ramo</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
             <visibilityRule>
                 <conditionLogic>1 OR 2 OR 3</conditionLogic>
                 <conditions>
@@ -1469,7 +1495,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
             </defaultValue>
             <fieldText>Producto</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
             <visibilityRule>
                 <conditionLogic>1 OR 2</conditionLogic>
                 <conditions>
@@ -1496,7 +1522,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
             </defaultValue>
             <fieldText>Prima</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
             <scale>0</scale>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1783,8 +1809,8 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
     <screens>
         <name>Introducir_poliza</name>
         <label>Introducir póliza</label>
-        <locationX>710</locationX>
-        <locationY>1382</locationY>
+        <locationX>578</locationX>
+        <locationY>1490</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1805,7 +1831,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <name>Mensaje_caso_creado</name>
         <label>Mensaje caso creado</label>
         <locationX>710</locationX>
-        <locationY>2630</locationY>
+        <locationY>2822</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1836,7 +1862,6 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
             <choiceReferences>TypeN3SaldoMediador</choiceReferences>
             <choiceReferences>TypeN3UsoSaldoCarDirectorTerritorial</choiceReferences>
             <choiceReferences>TypeN3ConsultaCarCarteraDescuentosRenovacion</choiceReferences>
-            <choiceReferences>TypeN3GestionDeCompetencias</choiceReferences>
             <choiceReferences>TypeN3ConsultaPrimaDeRenovacion</choiceReferences>
             <choiceReferences>TypeN3IncidenciasCartera</choiceReferences>
             <dataType>String</dataType>
@@ -1961,8 +1986,8 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
     <subflows>
         <name>Buscar_poliza_Flow</name>
         <label>Buscar póliza Flow</label>
-        <locationX>710</locationX>
-        <locationY>1490</locationY>
+        <locationX>578</locationX>
+        <locationY>1598</locationY>
         <connector>
             <targetReference>Datos_peticion</targetReference>
         </connector>
@@ -2020,7 +2045,7 @@ DATE(YEAR(TODAY()), MONTH(TODAY()) + 1, 1) - 1)</expression>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <scale>2</scale>
+        <scale>0</scale>
     </variables>
     <variables>
         <name>SumTotalLoad</name>

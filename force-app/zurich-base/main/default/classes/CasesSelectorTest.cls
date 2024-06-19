@@ -559,4 +559,37 @@ private with sharing class CasesSelectorTest
         Assert.areNotEqual(0, matchedRecords.size(), 'Deben haberse generado casos');
         Assert.areEqual(CaseUtil.RT_ID_ZRM, matchedRecords[0].RecordTypeId, 'El tipo de registro debe coincdir');
     }
+
+     /**
+     * Test del método que devuelve la query de Cases para Batch_CloseInteractions
+     * @author lrodriguez6@seidor.es
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_getCasesToCloseInteractionsAutomatic_matchedRecord()
+    {
+        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        String filterCallCenter = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Call_Center_USP');
+        String filterTypeTareas = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Type_Tareas');
+        String filterSourceMediator = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Source_Area_Mediator');
+
+        Case casoQuery = [SELECT Id, CreatedOffer__c FROM Case   LIMIT 1];
+
+        casoQuery.SourceArea__c=filterSourceMediator;
+        casoQuery.RecordTypeId=uSPRecordTypeId;
+        casoQuery.CallCenter__c=filterCallCenter;
+        casoQuery.Type=filterTypeTareas;
+        casoQuery.SourceArea__c=filterSourceMediator;
+
+
+        // Test
+        Test.startTest();
+        update casoQuery;
+
+        List<Case> matchedRecords = new CasesSelector().getCasesToCloseInteractionsAutomatic();
+        Test.stopTest();
+
+        System.assertEquals(1, matchedRecords.size(), 'no devuelve el número de registros correcto');
+
+    }
 }

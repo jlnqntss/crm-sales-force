@@ -10,6 +10,68 @@
     </caseValues>
     <gender>Feminine</gender>
     <layouts>
+        <layout>Agente zrm</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fechas</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información Etapa</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información de sistema</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información producto</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Intermediario</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Offer Vida</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fechas</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información Etapa</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información de sistema</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información producto</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Intermediario</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>Opportunity Layout</layout>
         <sections>
             <label>Fechas Clave</label>
@@ -29,42 +91,209 @@
         </sections>
     </layouts>
     <layouts>
+        <layout>Ventas Offer Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fechas</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información Etapa</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información de sistema</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Información producto</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Intermediario</section>
+        </sections>
+    </layouts>
+    <layouts>
         <layout>ZE Offer</layout>
         <sections>
-            <label><!-- Campos --></label>
+            <label></label>
             <section>Campos</section>
         </sections>
         <sections>
-            <label><!-- Intermediaries --></label>
+            <label></label>
             <section>Intermediaries</section>
         </sections>
         <sections>
-            <label><!-- Milestones --></label>
+            <label></label>
             <section>Milestones</section>
         </sections>
         <sections>
-            <label><!-- Offer --></label>
+            <label></label>
             <section>Offer</section>
         </sections>
         <sections>
-            <label><!-- Payment methods --></label>
+            <label></label>
             <section>Payment methods</section>
         </sections>
         <sections>
-            <label><!-- Policy --></label>
+            <label></label>
             <section>Policy</section>
         </sections>
         <sections>
-            <label><!-- Validation errors --></label>
+            <label></label>
             <section>Validation errors</section>
         </sections>
         <sections>
-            <label><!-- Vínculos personalizados --></label>
+            <label></label>
             <section>Vínculos personalizados</section>
         </sections>
     </layouts>
+    <quickActions>
+        <label></label>
+        <name>Clonar_Oferta</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>CloneOfferForIntermediary</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Email</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>LogNote</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>New_Task_Activity_Opp</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Nueva_Interaccion_opp</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>OpportunityAssignOfferToMe</name>
+    </quickActions>
+    <recordTypes>
+        <label>Vida</label>
+        <name>Life</name>
+    </recordTypes>
+    <recordTypes>
+        <label>No Vida</label>
+        <name>NoLife</name>
+    </recordTypes>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>BusinessCodeNumeric</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>ChangeClosedLostStage</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>CloseDateReadOnlyWhenEdited</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>DescriptionSubreasonOnlyIfSeveral</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>InfoQuoteNumberWhenQuoted</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>IntermediaryCannotEdit</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>LossReasonWhenClosedLost</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>MandatoryDescriptionWhenReasonExclusion</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>MandatoryDescriptionWhenSubreasonSveral</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>NoClosedWon</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>NoFinalPolicyNumberInformedAgent</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>OfferCodeNumeric</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>RestrictClosedLostStage</name>
+    </validationRules>
     <validationRules>
         <errorMessage>[VR] Reasignación manual no permitida</errorMessage>
         <name>RestrictOwnerChange</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>RestrictOwnerEdit</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>RestrictPendingClientInformationEdition</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>RestrictPendingClientInformationMoreEdit</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>RestrictStageTransition</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>RestringirCambiosEtapa</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>RestringirEdicionRegistroZE</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>RestringirProductosZE</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>SalesLossReasonCCMediador</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>SalesLossReasonDateTimeRequired</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>SalesLossReasonWhenClosedLost</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>SalesLossReasonWhenClosedLostValues</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>SalesLossSubReasonWhenClosedLost</name>
     </validationRules>
 </CustomObjectTranslation>
