@@ -8,6 +8,25 @@ public class AccountUtil
 
     public static final String CUSTOMER_RT_DEVELOPER_NAME = 'Customer';
 
+    // Recupera el Id del RecordType de cuentas de tipo Lead
+    public static final ID RT_ID_LEAD
+    {
+        get
+        {
+            String rtNameLead = GlobalConfigUtil.getGlobalConfigurationValue('Account_RecordType_Lead');
+            return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(rtNameLead).getRecordTypeId();
+        }
+    }
+
+    //Api name del NIF para el picklist NationalIdType__c
+    public static final String NATIONAL_ID_TYPE_NIF
+    {
+        get
+        {
+            return GlobalConfigUtil.getGlobalConfigurationValue('Account_National_Id_Type_Nif');
+        }
+    }
+
     /**
      * Método que crea un nuevo partner si no existe y lo asocia al contacto
      * @author nbizkarra

@@ -1519,6 +1519,42 @@ private with sharing class CaseUtilTest
     }
 
     /**
+     * Se valida que el metodo createLeadForZdaCases relaciona correctamente el caso de ZDA creado
+     * que tiene un dni informado que no existe como cuenta. Debe crear un lead y un scope de zda
+     * relacionado
+     *
+     * @author mario.navarro@seidor.com
+     * @date 13/06/2024
+     */
+    @isTest
+    private static void test_createLeadForZdaCases()
+    {
+        //de la cuenta generada solo nos interesa el DNI autogenerado en el TestDataFactory y el nombre
+        Account newAcc = TestDataFactory.generateAccounts(null, AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1)[0];
+
+        Case newZdaCase = TestDataFactory.generateZDACases(1)[0];
+        newZdaCase.Origin = CaseUtil.ORIGIN_CANAL_UNICO;
+        newZdaCase.CustomerNifCif__c = newAcc.NationalId__c;
+        newZdaCase.CustomerName__c = newAcc.LastName;
+
+        Test.startTest();
+        insert newZdaCase;
+        Test.stopTest();
+
+        //Se valida que se ha creado el lead
+        List<Account> foundLead = [SELECT Id FROM Account WHERE NationalId__c = :newAcc.NationalId__c];
+        Assert.isfalse(foundLead.isEmpty());
+
+        //Se valida que se ha creado el scope
+        List<Scope__c> foundScope = [SELECT Id FROM Scope__c WHERE AccountId__c = :foundLead[0].Id AND Scope__c = :CaseUtil.ZDA];
+        Assert.isfalse(foundScope.isEmpty());
+
+        //Se valida que el caso se ha vinculado al nuevo lead
+        Case createdCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = :newZdaCase.Id];
+        Assert.areEqual(foundLead[0].Id, createdCase.MediatedCustomer__c);
+    }
+
+    /**
      * Se valida que el metodo relateCaseToCustomerByNifCif relaciona correctamente el caso con
      * el cliente mediado (cuenta.NationalId__c = caso.CustomerNifCif__c) y establece el campo
      * MediatedCustomer__c en caso de encontrar relacion. Para ello:
@@ -1556,27 +1592,27 @@ private with sharing class CaseUtilTest
         Case caseToLink = zdaCasesList[0];
         caseToLink.CustomerNifCif__c = accountUniqueDNI.NationalId__c;
 
-        //caso a NO vincular
-        Case caseNoLink = zdaCasesList[1];
-        caseNoLink.CustomerNifCif__c = accountDupDNI1.NationalId__c;
+        //caso a vincular CON UNO CUALQUIERA (OCS-9981)
+        Case caseToLink2 = zdaCasesList[1];
+        caseToLink2.CustomerNifCif__c = accountDupDNI1.NationalId__c;
 
-        //caso a NO vincular 2
-        Case caseNoLink2 = zdaCasesList[2];
+        //caso a NO vincular
+        Case caseNoLink = zdaCasesList[2];
 
         Test.startTest();
         insert zdaCasesList;
         Test.stopTest();
 
         Case linkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseToLink.Id];
+        Case linkedCase2 = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseToLink2.Id];
         Case notLinkedCase = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink.Id];
-        Case notLinkedCase2 = [SELECT MediatedCustomer__c FROM Case WHERE Id = : caseNoLink2.Id];
 
         Assert.isNotNull(linkedCase);
         Assert.areEqual(accountUniqueDNI.Id, linkedCase.MediatedCustomer__c);
+        Assert.isNotNull(linkedCase2);
+        Assert.isNotNull(linkedCase2.MediatedCustomer__c);
         Assert.isNotNull(notLinkedCase);
         Assert.isNull(notLinkedCase.MediatedCustomer__c);
-        Assert.isNotNull(notLinkedCase2);
-        Assert.isNull(notLinkedCase2.MediatedCustomer__c);
     }
 
     /**
