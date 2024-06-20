@@ -1985,6 +1985,13 @@ private with sharing class CaseUtilTest
         {
             policy.IntermediaryId__c = intermediary.Id;
             policy.EndDate__c = System.today().addDays(10);
+
+            // fpalomo - CV-2536
+            // Se ha creado una nueva VR para casos de retención de ZRM que hace necesario rellenar ciertos campos de póliza con valores concretos.
+            policy.MovementStartDate__c = System.today().addDays(10);
+            policy.MovementReasonCode__c = '581'; 
+            policy.MovementReason__c = '4581'; 
+            policy.MovementType__c = '4';
         }
 
         insert policyToInsert;
@@ -2250,12 +2257,15 @@ private with sharing class CaseUtilTest
         insert uspCases;
         Test.stopTest();
 
-        List<Case> updatedRecords = [SELECT MediatedCustomer__c,OfferId__c,ProductGroup__c,PolicyId__c FROM Case WHERE Id =: uspCases[0].Id];
+        List<Case> updatedRecords = [SELECT MediatedCustomer__c,OfferId__c,ProductGroup__c,PolicyId__c,isCloneCase__c,IdCaseClone__c FROM Case WHERE Id =: uspCases[0].Id];
 
         System.assertEquals(null,updatedRecords[0].MediatedCustomer__c, 'El valor debería ser null');
         System.assertEquals(null,updatedRecords[0].OfferId__c, 'El valor debería ser null');
         System.assertEquals(null,updatedRecords[0].ProductGroup__c, 'El valor debería ser null');
         System.assertEquals(null,updatedRecords[0].PolicyId__c, 'El valor debería ser null');
+        System.assertEquals(true,updatedRecords[0].isCloneCase__c, 'El valor debería ser true');
+        System.assertNotEquals('',updatedRecords[0].IdCaseClone__c, 'El valor no debería ser null');
+
         
     }
 

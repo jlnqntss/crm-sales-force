@@ -2390,7 +2390,7 @@ public with sharing class CaseUtil
         for(Case updatedCase : updatedCases)
         {
             if ( isZDAAssignedAndCu( updatedCase, oldMap.get(updatedCase.Id) ) ||
-                isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
+                (updatedCase.RecordTypeId == RT_ID_ZDA && isNewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) ) )
             {
                 TicketingHegeoUtil.sendRequestStatusChangeToTramite(updatedCase.Id);
             }
@@ -2806,6 +2806,8 @@ public with sharing class CaseUtil
                 caseTrigger.OfferId__c=null;
                 caseTrigger.ProductGroup__c=null;
                 caseTrigger.AccountId=null;
+                caseTrigger.isCloneCase__c=true;
+                caseTrigger.IdCaseClone__c= caseTrigger.getCloneSourceId();
 
             }
         }

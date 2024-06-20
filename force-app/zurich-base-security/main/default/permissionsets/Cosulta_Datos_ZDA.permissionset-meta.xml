@@ -228,12 +228,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Claim.Product__c</field>
+        <field>Claim__c.Product__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Claim.PolicyHolder__c</field>
+        <field>Claim__c.PolicyHolder__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

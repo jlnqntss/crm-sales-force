@@ -17,7 +17,7 @@ public with sharing class OpportunityUtil
     private static final String OFFER_RECORD_TYPE_VIDA_DEV_NAME = 'Life';
     private static final Id OFFER_RECORD_TYPE_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(OFFER_RECORD_TYPE_VIDA_DEV_NAME).getRecordTypeId();
     private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
-    private static final String OPPORTUNITY_CLOSED_WON = configValues.get('Opportunity_Stage_Name_Closed_Won	');
+    private static final String OPPORTUNITY_CLOSED_WON = configValues.get('Opportunity_Stage_Name_Closed_Won');
     // #endregion
 
     // #region Public variables
