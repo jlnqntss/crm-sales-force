@@ -1985,6 +1985,13 @@ private with sharing class CaseUtilTest
         {
             policy.IntermediaryId__c = intermediary.Id;
             policy.EndDate__c = System.today().addDays(10);
+
+            // fpalomo - CV-2536
+            // Se ha creado una nueva VR para casos de retención de ZRM que hace necesario rellenar ciertos campos de póliza con valores concretos.
+            policy.MovementStartDate__c = System.today().addDays(10);
+            policy.MovementReasonCode__c = '581'; 
+            policy.MovementReason__c = '4581'; 
+            policy.MovementType__c = '4';
         }
 
         insert policyToInsert;
