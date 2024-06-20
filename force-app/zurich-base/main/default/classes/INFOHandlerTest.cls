@@ -612,12 +612,70 @@ private with sharing class INFOHandlerTest
 
         for(ExternalRequest__c externalRequest : externalRequestListUpserted)
         {
+            if(externalRequest.Entity__c == INFOHandler.INTERMEDIARY_KPI ||
+                externalRequest.Entity__c == INFOHandler.CONSENT)
+            {
+                externalRequest.Processed__C = false;
+                externalRequest.Action__C = 'DELETE';
+                externalRequestToDelete.add(externalRequest);
+            }
+        }
+        update externalRequestToDelete;
+
+        // Configuracion de los metadatos para el Test
+        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
+        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
+
+        Test.startTest();
+        INFOHandler.prepare(transformer, externalRequestToDelete);
+        INFOHandler.process(externalRequestToDelete);
+        INFOHandler.persists(externalRequestToDelete);
+        Test.stopTest();
+
+        List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
+        List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
+        List<Consent__c> consents = [SELECT Id FROM Consent__c];
+
+        System.assertEquals(0, kpiList.size(), 'No se han borrado todos los registros de KPI__c');
+        Assert.isTrue(consents.isEmpty(), 'No se han borrado todos los registros de Consent__c');
+    }
+
+    @isTest
+    private static void test_persists_delete_OK2()
+    {
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
+
+        List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                                                    { ExternalRequest__c.Entity__c,
+                                                                                      ExternalRequest__c.Action__c,
+                                                                                      ExternalRequest__c.Payload__c,
+                                                                                      ExternalRequest__c.ContentFormat__c,
+                                                                                      ExternalRequest__c.NumRetry__c,
+                                                                                      ExternalRequest__c.Origin__c,
+                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
+
+        INFOHandler.prepare(transformer, externalRequestList);
+        INFOHandler.process(externalRequestList);
+        INFOHandler.persists(externalRequestList);
+        INFOHandler.manageResult(null, externalRequestList);
+
+        List<ExternalRequest__c> externalRequestListUpserted = new ExternalRequestsSelector(new List<Schema.SObjectField>
+                                                                                            { ExternalRequest__c.Entity__c,
+                                                                                              ExternalRequest__c.Action__c,
+                                                                                              ExternalRequest__c.Payload__c,
+                                                                                              ExternalRequest__c.ContentFormat__c,
+                                                                                              ExternalRequest__c.NumRetry__c,
+                                                                                              ExternalRequest__c.Origin__c,
+                                                                                              ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
+
+        List<ExternalRequest__c> externalRequestToDelete = new List<ExternalRequest__c>();
+
+        for(ExternalRequest__c externalRequest : externalRequestListUpserted)
+        {
             if(externalRequest.Entity__c == INFOHandler.POLICY ||
                 externalRequest.Entity__c == INFOHandler.POLICY_RELATIONSHIP ||
                 externalRequest.Entity__c == INFOHandler.NOTE ||
-                externalRequest.Entity__c == INFOHandler.SPECIAL_CONDITION ||
-                externalRequest.Entity__c == INFOHandler.INTERMEDIARY_KPI ||
-                externalRequest.Entity__c == INFOHandler.CONSENT)
+                externalRequest.Entity__c == INFOHandler.SPECIAL_CONDITION)
             {
                 externalRequest.Processed__C = false;
                 externalRequest.Action__C = 'DELETE';
@@ -650,8 +708,6 @@ private with sharing class INFOHandlerTest
         List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
         List<Case> caseList = [SELECT Id FROM Case];
         List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
-        List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
-        List<Consent__c> consents = [SELECT Id FROM Consent__c];
 
         System.assertEquals((NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY) * 2, accountList.size(), 'No se han insertado todos los registros de cuenta');
         System.assertEquals((NUM_ER_LEGAL_ACCOUNT) * 2, contactList.size(), 'No se han insertado todos los registros de contacto');
@@ -667,9 +723,6 @@ private with sharing class INFOHandlerTest
         // FIXME: System.assertEquals(20, relaList.size(), 'No se han borrado todos los registros de relaciones');
         System.assertEquals(0, caseList.size(), 'No se han borrado todos los registros de Case');
         System.assertEquals(0, specialConditionList.size(), 'No se han borrado todos los registros de Special_Condition__c');
-        System.assertEquals(0, kpiList.size(), 'No se han borrado todos los registros de KPI__c');
-        Assert.isTrue(consents.isEmpty(), 'No se han borrado todos los registros de Consent__c');
-
     }
 
     @isTest
