@@ -68,7 +68,7 @@ public with sharing class CaseUtil
     private static Map<Id, Id> casesToRelateWithNewLead = new Map<Id, Id>();
 
     public static Map<String, Robot_Hegeo_Field_Mapping__mdt> mapCaseZDATypificationMetadata = new Map<String, Robot_Hegeo_Field_Mapping__mdt>();
-    
+
     // Recupera el Id del RecordType de casos USP
     public static final ID RT_ID_USPINQUIRY
     {
@@ -564,7 +564,7 @@ public with sharing class CaseUtil
             for(Case caso : newList)
             {
                 //Esta comparación se hace para que no afecte a KLINC
-                if(caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich') 
+                if(caso.RecordTypeId == RT_ID_OCSINQUIRY && !String.isBlank(caso.SuppliedEmail) && caso.Subject != 'Solicitud de ayuda al registro de MiZurich')
                 {
                     //Solo se hace algo si llegó relleno el campo del Email-To-Case
                     //Utilizar el email del SuppliedEmail
@@ -1212,6 +1212,73 @@ public with sharing class CaseUtil
     }
 
     /**
+     * Verifica si, para un caso nuevo, se tiene que asignar como AccountId al mediador asociado a la cuenta de
+     * correo que genera el caso. Se desvincula del proceso de ZDA porque necesitamos trabajar en el After Insert
+     * para poder vincular con el correo que lo crea.
+     *
+     * @author juanfrancisco.herrero@seidor.com
+     * @date 13/06/2024
+     * @param insertedCases Casos a verificar si se deben relacionar con un Mediador
+     */
+    public static void relateCasesWithMediatedAccountOCS(List<Case> insertedCases)
+    {
+        //1- Obtenemos los mediadores por el email vinculado al caso. Si obtenemos resultados, continuamos
+        List<Account> intermediaryAccs = getIntermediaryAccountsByEmail(insertedCases);
+
+        List<Case> updatedCases = new List<Case>();
+
+        if ( !intermediaryAccs.isEmpty() )
+        {
+            //2- Agrupamos casos por Email Principal
+            Map<String, List<Account> > accByEmail = (Map<String, List<Account> >) CollectionUtil.groupListBy( intermediaryAccs, Account.fields.MainEmail__c.getDescribe().getName() );
+
+            //3- Para cada caso, si hay un único mediador con ese Email se vinculará de forma automática con éste
+            List<Account> emailAccounts;
+            for(Case insertedCase : insertedCases)
+            {
+                emailAccounts = accByEmail?.get(insertedCase.SuppliedEmail);
+                if (emailAccounts != null && emailAccounts.size() == 1 && insertedCase.AccountId != emailAccounts[0].Id)
+                {
+                    insertedCase.AccountId = emailAccounts[0].Id;
+                    updatedCases.add(insertedCase);
+                }
+            }
+        }
+
+        update updatedCases;
+    }
+
+    /**
+     * Buscamos a traves de emails la cuentas de mediadores asociadas a casos.
+     *
+     * @author juanfrancisco.herrero@seidor.com
+     * @date 13/06/2024
+     * @param casesToRelate Casos de los cuales buscamos el mediador por correo
+     * @return List<Account> Accounts tipo mediador encontradas
+     */
+    public static List<Account> getIntermediaryAccountsByEmail(List<Case> casesToRelate)
+    {
+        Set<String> emailsToSearch = new Set<String>();
+
+        for(Case caseToRelate : casesToRelate)
+        {
+            if ( caseToRelate.SuppliedEmail != null && String.isNotEmpty(caseToRelate.SuppliedEmail) )
+            {
+                emailsToSearch.add(caseToRelate.SuppliedEmail);
+            }
+        }
+
+        if ( emailsToSearch.isEmpty() )
+        {
+            return new List<Account>();
+        }
+        else
+        {
+            return ( new AccountsSelector().findIntermediariesByMainEmail(emailsToSearch) );
+        }
+    }
+
+    /*
      * Para los casos recibidos de ZDA via canal unico, en el caso de que no tengan un cliente
      * relacionado (MediatedCustomer__c), se crea un person account de tipo lead (junto a su
      * scope ZDA). La actualizacion del caso para relacionarlo con el nuevo lead se realiza
@@ -2228,14 +2295,14 @@ public with sharing class CaseUtil
      * - Id
      * - CaseNumber
      * - OwnerId
-     * 
+     *
      * @author mario.navarro@seidor.com
      * @date 06/06/2024
      * @param casesToNotify lista de casos para los que enviar notificacion
      */
     private static void notifyAnsweredCases(List<Case> casesToNotify)
     {
-        if (!casesToNotify.isEmpty())
+        if ( !casesToNotify.isEmpty() )
         {
             String content;
             //Se hace en un bucle aparte porque los Guest Users no tienen acceso al objeto CustomNotificationType
@@ -2252,7 +2319,7 @@ public with sharing class CaseUtil
     /**
      * A partir del set proporcionado, busca casos de ZDA relacionados con estos y
      * los que encuentra los pasa a cerrado (los que no lo estan ya)
-     * 
+     *
      * @author mario.navarro@seidor.com
      * @date 06/06/2024
      * @param childCasesToFind Set con identificadores de ticket (CuTicketId__c) de
@@ -2260,7 +2327,7 @@ public with sharing class CaseUtil
      */
     private static void closeChildCases(Set<String> childCasesToFind)
     {
-        if (!childCasesToFind.isEmpty())
+        if ( !childCasesToFind.isEmpty() )
         {
             List<Case> childCasesFound = new CasesSelector().getZdaChildCases(childCasesToFind);
             //Si encuentra casos hijos, los cerramos
@@ -2304,15 +2371,15 @@ public with sharing class CaseUtil
      */
     private static Boolean isNewReasonClosed(Case updatedCase, Case oldCase)
     {
-        return updatedCase.ReasonId__c != oldCase.ReasonId__c && 
-            (updatedCase.ReasonId__c == ZDA_REASON_RECHAZAR || updatedCase.ReasonId__c == ZDA_REASON_DESESTIMAR);
+        return updatedCase.ReasonId__c != oldCase.ReasonId__c &&
+               (updatedCase.ReasonId__c == ZDA_REASON_RECHAZAR || updatedCase.ReasonId__c == ZDA_REASON_DESESTIMAR);
     }
 
     /**
      * Para los casos de ZDA que pasan de nuevo a asignado (recibidos via canal unico) o
      * se ha recibido respuesta a un escalado, envia
      * notificacion a Canal unico informando de que el caso esta en estado Tramite
-     * 
+     *
      * @author mario.navarro@seidor.com
      * @date 30/05/2024
      * @param updatedCases lista de los casos actualizados
@@ -2332,7 +2399,7 @@ public with sharing class CaseUtil
 
     /**
      * Comprueba si el caso es de ZDA, con origen canal unico y pasa de nuevo a asignado
-     * 
+     *
      * @author mario.navarro@seidor.com
      * @date 30/05/2024
      * @param updatedCase caso actualizado
@@ -2342,7 +2409,7 @@ public with sharing class CaseUtil
     private static Boolean isZDAAssignedAndCu(Case updatedCase, Case oldCase)
     {
         return updatedCase.RecordTypeId == RT_ID_ZDA && updatedCase.Origin == ORIGIN_CANAL_UNICO &&
-            updatedCase.Status == CASE_ASIGNADO && oldCase.Status == CASE_NUEVO;
+               updatedCase.Status == CASE_ASIGNADO && oldCase.Status == CASE_NUEVO;
     }
 
     /**
@@ -2452,7 +2519,7 @@ public with sharing class CaseUtil
                         }
                         else
                         {
-                            if (casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
+                            if ( casoNew.ClientHasContacted__c == afirmativo && casoOld.Status.equalsIgnoreCase(CASE_NO_INICIADO) )
                             {
                                 casoNew.Status = CASE_EN_GESTION;
                             }
@@ -2460,11 +2527,11 @@ public with sharing class CaseUtil
                     }
 
                     // Comprobamos el cambio de "check de tarjeta"
-                    if ((casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true))
-                    {  
+                    if ( (casoNew.ClientGiftCard__c != casoOld.ClientGiftCard__c) && (casoNew.ClientGiftCard__c == true) )
+                    {
                         casoNew.Status = CASE_CLOSED_WON;
-                    }    
-                }            
+                    }
+                }
             }
         }
     }
@@ -2616,16 +2683,19 @@ public with sharing class CaseUtil
 
 
     /**
-     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner  
-    * @author dmunoz
-    * @date 23/04/2024
-    * @param newList lista de elementos del trigger after insert
-    */
-    public static void setEndDateZRMInquiry(List<Case> newList) {
+     * Método que para aquellos casos con RT ZRMInquiry y son creados desde la comunidad ZRM, (perfiles Agente Ventas y/o Agente Ventas - AGR) por motivos de visibilidad cambiamos su owner
+     * @author dmunoz
+     * @date 23/04/2024
+     * @param newList lista de elementos del trigger after insert
+     */
+    public static void setEndDateZRMInquiry(List<Case> newList)
+    {
 
         // 1º compruebo si existe en el trigger algun caso de zrm con que encuentre solo 1 me vale para lanzar las consultas solo cuando sea necesario
-        for (Case caseTrigger: newList) {
-            if (RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty(String.valueOf(caseTrigger.EndDate__c))) {
+        for (Case caseTrigger: newList)
+        {
+            if ( RT_ID_ZRM.equals(caseTrigger.RecordTypeId) && String.isEmpty( String.valueOf(caseTrigger.EndDate__c) ) )
+            {
                 caseTrigger.EndDate__c = caseTrigger.PolicyEndDate__c;
             }
         }
@@ -2636,22 +2706,22 @@ public with sharing class CaseUtil
      * @author arcortazar
      * @date 03/06/2024
      */
-    public static void setCaseZDATypification(List<Case> newList) 
+    public static void setCaseZDATypification(List<Case> newList)
     {
         for(Case caso : newList)
         {
-            if(caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c))
+            if( caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c) )
             {
                 Robot_Hegeo_Field_Mapping__mdt tipif = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
                 if(tipif != null)
                 {
                     caso.Type = tipif.Type__c;
                     caso.SubType__c = tipif.Subtype__c;
-                    caso.TypeN3__c = tipif.TypeN3__c;  
+                    caso.TypeN3__c = tipif.TypeN3__c;
 
                 }
             }
-        }   
+        }
     }
 
     /**
@@ -2686,47 +2756,50 @@ public with sharing class CaseUtil
 
         for (Robot_Hegeo_Field_Mapping__mdt tipificacion : listaCaseTypif)
         {
-            if(!String.isBlank(tipificacion.SourceType__c))
+            if( !String.isBlank(tipificacion.SourceType__c) )
             {
                 mapCaseZDATypificationMetadata.put(tipificacion.SourceType__c, tipificacion);
             }
         }
     }
 
-     /**
+    /**
      * Método que, para los casos de ZDA, busca el tipo de petición que es y carga la cola para enrutar los casos en el campo industry
      * @author aberuete
      * @date 04/06/2024
      */
-    public static void setCaseZDAQueue(List<Case> newList) 
+    public static void setCaseZDAQueue(List<Case> newList)
     {
         for(Case caso : newList)
         {
-            if(caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c))
+            if( caso.RecordTypeId == RT_ID_ZDA && !String.isBlank(caso.IdTipologiaBs__c) && mapCaseZDATypificationMetadata.containsKey(caso.IdTipologiaBs__c) )
             {
                 Robot_Hegeo_Field_Mapping__mdt caseTipificacionByPeticion = mapCaseZDATypificationMetadata.get(caso.IdTipologiaBs__c);
-                
+
                 if(caseTipificacionByPeticion != null)
                 {
-                    caso.Industry__c = caseTipificacionByPeticion.GenesysQueue__c ;
+                    caso.Industry__c = caseTipificacionByPeticion.GenesysQueue__c;
                 }
             }
-        }   
+        }
     }
 
-     /**
+    /**
      * Método para identficar aquellos casos que se crean mediante el botón standard clone y vaciar los campos que provienen de hegeo
-    * @author lrodriguez
-    * @date 21/05/2024
-    * @param newList lista de elementos del trigger before insert
-    */
-    public static void isCaseClone(List<Case> newList) {
+     * @author lrodriguez
+     * @date 21/05/2024
+     * @param newList lista de elementos del trigger before insert
+     */
+    public static void isCaseClone(List<Case> newList)
+    {
 
         String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
 
-        for (Case caseTrigger: newList) {
+        for (Case caseTrigger: newList)
+        {
 
-            if ((caseTrigger.recordTypeId==uSPRecordTypeId && caseTrigger.isClone())|| (Test.isRunningTest() && caseTrigger.recordTypeId==uSPRecordTypeId)) {
+            if ( ( caseTrigger.recordTypeId == uSPRecordTypeId && caseTrigger.isClone() ) || (Test.isRunningTest() && caseTrigger.recordTypeId == uSPRecordTypeId) )
+            {
 
                 caseTrigger.MediatedCustomer__c=null;
                 caseTrigger.PolicyId__c=null;

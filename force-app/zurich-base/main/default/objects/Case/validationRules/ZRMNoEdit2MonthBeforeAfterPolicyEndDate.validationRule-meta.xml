@@ -10,10 +10,13 @@
         AND(
             PolicyId__r.MovementStartDate__c &lt;= ADDMONTHS(TODAY(), 2), 
             PolicyId__r.MovementStartDate__c &gt;= ADDMONTHS(TODAY(), -2),
-            PolicyId__r.MovementReasonCode__c = &apos;581&apos;,
             OR(
-                ISPICKVAL(PolicyId__r.MovementType__c, &apos;4&apos;),
-                ISPICKVAL(PolicyId__r.MovementType__c, &apos;8&apos;)
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;4581&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8581&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8999&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8700&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8664&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8180&apos;)
             )
         )
     )
