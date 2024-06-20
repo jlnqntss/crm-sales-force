@@ -4,12 +4,20 @@
     <active>true</active>
     <description>Restringir la creación manual y edición de casos para los Agentes Mediadores de ZRM, entre dos meses antes y dos meses después de la fecha de finalización de la póliza.</description>
     <errorConditionFormula>AND(
-				NOT($Permission.ZRMNoEdit2MonthBeforeAfterPolicyEndDate),
+    NOT($Permission.ZRMNoEdit2MonthBeforeAfterPolicyEndDate),
     RecordType.DeveloperName = &quot;ZRMInquiry&quot;,
     NOT(
         AND(
-           EndDate__c &lt;= ADDMONTHS(TODAY(), 2), 
-           EndDate__c &gt;= ADDMONTHS(TODAY(), -2)
+            PolicyId__r.MovementStartDate__c &lt;= ADDMONTHS(TODAY(), 2), 
+            PolicyId__r.MovementStartDate__c &gt;= ADDMONTHS(TODAY(), -2),
+            OR(
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;4581&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8581&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8999&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8700&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8664&apos;),
+                ISPICKVAL(PolicyId__r.MovementReason__c, &apos;8180&apos;)
+            )
         )
     )
 )</errorConditionFormula>
