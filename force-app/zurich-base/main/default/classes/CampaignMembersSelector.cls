@@ -12,6 +12,8 @@ public with sharing class CampaignMembersSelector extends BaseSelector
     private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
     private static final String PRODUCT_BRANCH_VIDA_CODE = configValues.get('Product_Branch_Vida_Code');
     private static final String CAMPAIGN_CROSS_SELLING_TYPE = configValues.get('Campaign_Cross_Selling_Type');
+    private static final String CAMPAIGN_STATUS_PDT_REVISION_MEDIADOR = configValues.get('CampaignMemberPdteRevisionMediador_value');
+
     //#endregion
 
     //#region Contructores
@@ -123,7 +125,7 @@ public with sharing class CampaignMembersSelector extends BaseSelector
                                                                 WHERE Campaign.Type = :CAMPAIGN_CROSS_SELLING_TYPE
                                                                                       AND Campaign.IsActive = true
                                                                                                               AND Campaign.StartDate <= TODAY
-                                                                                                              AND Status = :CAMPAIGN_CROSS_SELLING_TYPE
+                                                                                                              AND Status = :CAMPAIGN_STATUS_PDT_REVISION_MEDIADOR
                                                                                                               AND Campaign.ProductBranch__c != :PRODUCT_BRANCH_VIDA_CODE]);
         return result;
     }
