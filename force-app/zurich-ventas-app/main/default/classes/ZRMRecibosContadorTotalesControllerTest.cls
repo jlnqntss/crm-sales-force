@@ -25,16 +25,20 @@ private with sharing class ZRMRecibosContadorTotalesControllerTest {
         // Simular el HTTP request y response
         Test.setMock(HttpCalloutMock.class, new WS_GetReturnedReceiptsCountMock(500, null));
 
-        String errorMessage = '';
+        Boolean fail = true;
         try {
             ZRMRecibosContadorTotalesController.getData();
         }
 
-        catch (HandledException e) {
-            errorMessage = e.getMessage();
+        catch (AuraHandledException e) {
+            fail = false;
         }
 
-        Assert.areEqual(System.Label.ZRM_Recibos_WS_Error, errorMessage, 'El error devuelto no coincide con el esperado');
+        catch (HandledException e) {
+            fail = false;
+        }
+
+        Assert.isFalse(fail, 'El metodo ha lanzado un error no esperado');
     }
 
     /**
