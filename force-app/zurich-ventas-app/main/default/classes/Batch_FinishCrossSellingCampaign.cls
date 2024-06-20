@@ -116,7 +116,8 @@ global with sharing class Batch_FinishCrossSellingCampaign implements Database.B
                 o.Sales_Loss_Reason__c = GlobalConfigUtil.getGlobalConfigurationValue('Offer_SalesLossReason_NotManagedByAgent');
                 
             } else { // solo llegarán App Submitted, Quoted
-                o.Sales_Loss_Reason__c = 'Campaign completed';
+
+                o.Sales_Loss_Reason__c = GlobalConfigUtil.getGlobalConfigurationValue('Offer_SalesLossReason_CampaignCompleted');
             }
 
             o.StageName = 'Closed Lost';
