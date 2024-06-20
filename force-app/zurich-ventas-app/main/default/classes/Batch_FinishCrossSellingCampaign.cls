@@ -113,7 +113,7 @@ global with sharing class Batch_FinishCrossSellingCampaign implements Database.B
         for (Opportunity o: scope) {
             
             if ('Legit Lead'.equals(o.StageName)) {
-                o.Sales_Loss_Reason__c = 'Not managed by the Agent';
+                o.Sales_Loss_Reason__c = GlobalConfigUtil.getGlobalConfigurationValue('Offer_SalesLossReason_NotManagedByAgent');
                 
             } else { // solo llegarán App Submitted, Quoted
                 o.Sales_Loss_Reason__c = 'Campaign completed';
