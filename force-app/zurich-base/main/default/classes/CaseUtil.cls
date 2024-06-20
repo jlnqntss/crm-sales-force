@@ -2323,7 +2323,7 @@ public with sharing class CaseUtil
         for(Case updatedCase : updatedCases)
         {
             if ( isZDAAssignedAndCu( updatedCase, oldMap.get(updatedCase.Id) ) ||
-                isZDANewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) )
+                (updatedCase.RecordTypeId == RT_ID_ZDA && isNewReasonAnswered( updatedCase, oldMap.get(updatedCase.Id) ) ) )
             {
                 TicketingHegeoUtil.sendRequestStatusChangeToTramite(updatedCase.Id);
             }
