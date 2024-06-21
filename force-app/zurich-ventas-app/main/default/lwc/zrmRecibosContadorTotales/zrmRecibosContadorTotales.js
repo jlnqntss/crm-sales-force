@@ -1,25 +1,15 @@
 import { LightningElement, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import getData from '@salesforce/apex/ZrmRecibosController.getData';
+import getData from '@salesforce/apex/ZrmRecibosContadorTotalesController.getData';
 
-// The rest of the relative imports
 import labels from "./labels";
-import columns from "./columns";
 
-export default class ZrmRecibos extends LightningElement {
+export default class ZrmRecibosContadorTotales extends LightningElement {
     @api antiguedadRecibo;
-    
-    labels = labels;
-    columns = columns;
-    data = [];
-    disablePreviousButton = true; 
-    disableNextButton = true;
-    currentPage = 1; // atributo que lleva la cuenta interna del número de página para el servicio web
-    pageSize = 50;
-    cache = {};
-    isLoading = false;
 
-    // Métodos LWC
+    labels = labels;
+    totalRecibos = 0;
+    isLoading = false;
 
     // Metodo que se ejecuta cuando se abre el componente
     connectedCallback() {
@@ -27,32 +17,18 @@ export default class ZrmRecibos extends LightningElement {
         this.loadData(1); // inicializamos con 1 para facilitar la cuenta del numero de pagina y habilitar y deshabilitar botones, en el controlador al invocar al WS se resta 1 pues empieza en 0
     }
 
-    // control botón previous
-    handlePrevious() {
-        if (this.currentPage > 1) {
-            this.isLoading = true;
-            this.loadData(this.currentPage - 1);
-        }
-    }
-
-    // control botón next
-    handleNext() {
-        this.isLoading = true;
-        this.loadData(this.currentPage + 1);
-    }
-
     // control de caché y obtener datos del servicio web
-    loadData(pageNumber) {
+    loadData() {
         // Verifica si los datos ya están en la caché
-        if (this.cache[pageNumber]) {
-            this.updateData(this.cache[pageNumber], pageNumber);
+        if (this.cache) {
+            this.updateData(this.cache);
         } else {
             // Llama al método Apex solo si los datos no están en la caché
-            getData({ pageNumber: pageNumber, pageSize: this.pageSize, invocationType: this.antiguedadRecibo })
+            getData({ invocationType: this.antiguedadRecibo })
                 .then(result => {
                     // Almacena el resultado en la caché                    
-                    this.cache[pageNumber] = result;
-                    this.updateData(result, pageNumber);
+                    this.cache = result;
+                    this.updateData(result);
                 })
                 .catch(error => {
                     this.isLoading = false;
@@ -62,12 +38,9 @@ export default class ZrmRecibos extends LightningElement {
     }
 
     // actualizar variables
-    updateData(result, pageNumber) {
+    updateData(result) {
         this.isLoading = false;
-        this.data = result.records;
-        this.disablePreviousButton = result.disablePreviousButton;
-        this.disableNextButton = result.disableNextButton;
-        this.currentPage = pageNumber;    
+        this.totalRecibos = result;
     }
 
     // Función para mostrar mensajes toast
@@ -79,5 +52,4 @@ export default class ZrmRecibos extends LightningElement {
         });
         this.dispatchEvent(evt);
     }
-    
 }
