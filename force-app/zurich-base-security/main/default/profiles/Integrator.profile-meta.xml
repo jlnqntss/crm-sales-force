@@ -19097,6 +19097,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Peticiones_de_mercado</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Policy__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>

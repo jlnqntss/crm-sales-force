@@ -3009,6 +3009,10 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>Peticiones_de_mercado</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>PlanComercial__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
