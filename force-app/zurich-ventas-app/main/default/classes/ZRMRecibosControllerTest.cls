@@ -11,7 +11,7 @@ private with sharing class ZRMRecibosControllerTest {
     private static void testGetData() {
 
         // Crear la respuesta simulada usando el método auxiliar
-        WS_GetReturnedReceiptsList.ZRMReciboResponse response = createZRMReciboResponse();
+        GetReturnedReceiptsWSUtils.ZRMReciboListResponse response = createZRMReciboResponse();
         
         // Simular el HTTP request y response
         Test.setMock(HttpCalloutMock.class, new WS_GetReturnedReceiptsListMock(response));
@@ -26,8 +26,8 @@ private with sharing class ZRMRecibosControllerTest {
      * @author dmunoz
      * @date 29/05/2024
      */
-    private static WS_GetReturnedReceiptsList.ZRMReciboResponse createZRMReciboResponse() {
-        WS_GetReturnedReceiptsList.ZRMReciboResponse response = new WS_GetReturnedReceiptsList.ZRMReciboResponse();
+    private static GetReturnedReceiptsWSUtils.ZRMReciboListResponse createZRMReciboResponse() {
+        GetReturnedReceiptsWSUtils.ZRMReciboListResponse response = new GetReturnedReceiptsWSUtils.ZRMReciboListResponse();
         response.numeroDiasValidez = 99999;
         response.codigoAgrupacion = 'string';
         response.codigoIntermediario = 'string';
@@ -35,7 +35,7 @@ private with sharing class ZRMRecibosControllerTest {
         response.codigoNegocioOfertaDirigidaUsuario = 'string';
 
         // Crear lista de recibos devueltos
-        WS_GetReturnedReceiptsList.ReciboDevuelto recibo = new WS_GetReturnedReceiptsList.ReciboDevuelto();
+        GetReturnedReceiptsWSUtils.ReciboDevuelto recibo = new GetReturnedReceiptsWSUtils.ReciboDevuelto();
         recibo.codigoRecibo = 'string';
         recibo.fechaEfectoMovimiento = Date.newInstance(2024, 5, 30);
         recibo.codigoPoliza = 'string';
@@ -55,16 +55,16 @@ private with sharing class ZRMRecibosControllerTest {
         recibo.fechaUltimaDevolucionRecibo = Date.newInstance(2024, 5, 30);
         recibo.fechaEnvioBancoRecibo = Date.newInstance(2024, 5, 30);
         recibo.codigoIntermediario = 'string';
-        response.listaRecibosDevueltos = new List<WS_GetReturnedReceiptsList.ReciboDevuelto> { recibo };
+        response.listaRecibosDevueltos = new List<GetReturnedReceiptsWSUtils.ReciboDevuelto> { recibo };
         
         response.esUltimaPagina = true;
         
-        WS_GetReturnedReceiptsList.Error error = new WS_GetReturnedReceiptsList.Error();
+        GetReturnedReceiptsWSUtils.Error error = new GetReturnedReceiptsWSUtils.Error();
         error.code = '';
         error.message = '';
         error.severity = 0;
-        error.childErrors = new List<WS_GetReturnedReceiptsList.ChildError> { new WS_GetReturnedReceiptsList.ChildError() };
-        response.errors = new List<WS_GetReturnedReceiptsList.Error> { error };
+        error.childErrors = new List<GetReturnedReceiptsWSUtils.ChildError> { new GetReturnedReceiptsWSUtils.ChildError() };
+        response.errors = new List<GetReturnedReceiptsWSUtils.Error> { error };
         
         return response;
     }
@@ -77,9 +77,9 @@ private with sharing class ZRMRecibosControllerTest {
      * @date 29/05/2024
      */
     private class WS_GetReturnedReceiptsListMock implements HttpCalloutMock {
-        private WS_GetReturnedReceiptsList.ZRMReciboResponse response;
+        private GetReturnedReceiptsWSUtils.ZRMReciboListResponse response;
         
-        public WS_GetReturnedReceiptsListMock(WS_GetReturnedReceiptsList.ZRMReciboResponse response) {
+        public WS_GetReturnedReceiptsListMock(GetReturnedReceiptsWSUtils.ZRMReciboListResponse response) {
             this.response = response;
         }
         

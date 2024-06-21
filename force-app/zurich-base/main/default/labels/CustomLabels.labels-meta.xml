@@ -3455,4 +3455,11 @@ Create the record and try again.</value>
         <shortDescription>Cliente eliminado de campaña</shortDescription>
         <value>Client removed from campaign.</value>
     </labels>
+    <labels>
+        <fullName>ZRM_Recibos_Total</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Total</shortDescription>
+        <value>Total recibos devueltos (día anterior + acumulados): </value>
+    </labels>
 </CustomLabels>
