@@ -619,4 +619,43 @@ public with sharing class PoliciesSelector extends RecordsSelector
                .enforceSecurity()
                .toQueryString();
     }
+
+    /**
+    * @description Método que devuelve la póliza más reciente de un cliente.
+    *
+        SELECT ID, IntermediaryId__c, Intermediary_Code__c, StartDate__c 
+        FROM Policy__c
+        WHERE PolicyHolder__c = :accountId
+        ORDER BY StartDate__c DESC
+        LIMIT 1
+    * @author igarcia 
+    * @date  06/06/2024
+    * @return List<Policy__c> lista de póliza con una sola poliza.
+    **/
+    public List<Policy__c> getMostRecentlyPolicieByAccountId(String accountId)
+    {
+        List<Policy__c> result = new List<Policy__c>();
+
+
+        this.baseQuery.selectFields
+            (
+                new List<Schema.SObjectField>
+                {
+                    Policy__c.Id,
+                    Policy__c.IntermediaryId__c,
+                    Policy__c.Intermediary_Code__c,
+                    Policy__c.InfoCreatedDate__c
+                }
+            );
+
+            this.baseQuery                            
+                .addConditionEq(Policy__c.PolicyHolder__c, accountId)
+                .addConditionNotEq(Policy__c.InfoCreatedDate__c, null)
+                .descend()
+                .setLimit(1);
+
+            result = this.baseQuery.enforceSecurity().run();
+            
+        return result;
+    }
 }

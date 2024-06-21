@@ -2,7 +2,7 @@
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Life</fullName>
     <active>true</active>
-    <businessProcess>Offer - No vida</businessProcess>
+    <businessProcess>Offer - Vida</businessProcess>
     <label>Life</label>
     <picklistValues>
         <picklist>Company__c</picklist>

@@ -191,6 +191,10 @@
             <fullName>General Insurance</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Life Insurance</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>LossSubReason__c</picklist>

@@ -377,7 +377,9 @@ private with sharing class OpportunitiesSelectorTest
     static void test_findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed_OK()
     {
         String productBranchAutos = '0000000001';
-
+        Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
+        String PRODUCT_BRANCH_VIDA_CODE = configValues.get('Product_Branch_Vida_Code');
+        String OFFER_RECORD_TYPE_NO_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(configValues.get('Opportunity_RecordTypeDevName_NoLife')).getRecordTypeId();
         Account accRelatedToOffer = [SELECT INFOIntermediaryCode__c FROM Account LIMIT 1];
 
         Opportunity offer = [SELECT AccountId, IntermediaryCode__c, ProductBranch__c FROM Opportunity LIMIT 1];
@@ -392,6 +394,7 @@ private with sharing class OpportunitiesSelectorTest
             accRelatedToOffer.Id,
             accRelatedToOffer.INFOIntermediaryCode__c,
             productBranchAutos,
+            OFFER_RECORD_TYPE_NO_VIDA,
             Query.last_n_days(7) );
         Test.stopTest();
 
