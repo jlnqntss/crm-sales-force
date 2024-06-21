@@ -85,7 +85,7 @@ private with sharing class EmailMessagesUtilTest
     private static void assignGenesysRoutingFields_insert_ok()
     {
         // Generamos los casos que necesitamos
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 5);
@@ -140,7 +140,7 @@ private with sharing class EmailMessagesUtilTest
     private static void assignGenesysRoutingFieldsByIndustryEmail ()
     {
         // Generamos los casos que necesitamos
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 5);
@@ -173,7 +173,7 @@ private with sharing class EmailMessagesUtilTest
     private static void assignGenesysRoutingFields_update_ok()
     {
         // Generamos los casos que necesitamos
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 5);
@@ -358,7 +358,7 @@ private with sharing class EmailMessagesUtilTest
     private static void generateChildCases_OK()
     {
         // Generamos los casos que necesitamos
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 2);
@@ -459,7 +459,7 @@ private with sharing class EmailMessagesUtilTest
     private static void generateChildCasesFromSAM_OK()
     {
         // Generamos los casos que necesitamos
-        List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
+        List<Account> accounts = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
         insert accounts;
 
         List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 2);
@@ -639,7 +639,7 @@ private with sharing class EmailMessagesUtilTest
 
         List<EmailMessage> emailList = TestDataFactory.generateEmailMessages(1);
         emailList[0].RelatedToId = casoToEmailMessage.id;
-        
+
 
         Test.startTest();
 
@@ -656,7 +656,7 @@ private with sharing class EmailMessagesUtilTest
 
     }
 
-     
+
 
     /**
      * Test para cerrar casos creados para buzones que están sólo en CCC
@@ -695,5 +695,61 @@ private with sharing class EmailMessagesUtilTest
         System.assertEquals(test01, queueGroup.Id, 'Ambas ids deben ser iguales');
         System.assertEquals(test02, integratorUserId, 'Debe ser el fallback por no encontrar grupos');
         System.assertEquals(test03, integratorUserId, 'Debe ser el fallback venir el grupo vacío');
+    }
+
+    /**
+     * Test para cerrar vincular casos de ciertos buzones con mediadores
+     * @author jfherrero
+     * @date 17/06/2024
+     */
+    @isTest
+    static void test_relateToIntermediary_ok()
+    {
+        List<Email_Case_AccountId_to_Intermediary__mdt> emailsCaseAccountIdToIntermediary = Email_Case_AccountId_to_Intermediary__mdt.getAll().values();
+        Assert.areNotEqual(0, emailsCaseAccountIdToIntermediary.size(), 'Metadato Email_Case_AccountId_to_Intermediary__mdt NO existe');
+
+        List<Account> intermediaries = TestDataFactory.generateAccounts('001', AccountUtil.INTERMEDIARY_RT_DEVELOPER_NAME, 1);
+        intermediaries[0].MainEmail__c = 'email.test.ok@test.es';
+        insert intermediaries;
+
+        List<Account> customers = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
+        customers[0].MainEmail__c = 'email.test.error@test.es';
+        insert customers;
+
+        List<Case> casesIntermediary = TestDataFactory.generateCasesForEachAccount(intermediaries, 1);
+        casesIntermediary[0].RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
+        casesIntermediary[0].AccountId = null;
+        casesIntermediary[0].SuppliedEmail = intermediaries[0].MainEmail__c;
+        insert casesIntermediary;
+
+        List<Case> casesCustomer = TestDataFactory.generateCasesForEachAccount(customers, 1);
+        casesCustomer[0].AccountId = CaseUtil.RT_ID_OCSINQUIRY;
+        casesCustomer[0].AccountId = null;
+        casesCustomer[0].SuppliedEmail = customers[0].MainEmail__c;
+        insert casesCustomer;
+
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(2);
+        emails[0].FromAddress = intermediaries[0].MainEmail__c;
+        emails[0].ToAddress = emailsCaseAccountIdToIntermediary[0].Email__c;
+        emails[0].ParentId = casesIntermediary[0].Id;
+        emails[0].Incoming = true;
+
+        emails[1].FromAddress = customers[0].MainEmail__c;
+        emails[1].ToAddress = emailsCaseAccountIdToIntermediary[0].Email__c;
+        emails[1].ParentId = casesCustomer[0].Id;
+        emails[1].Incoming = true;
+
+        Test.startTest();
+
+        insert emails[0];
+        insert emails[1];
+
+        Test.stopTest();
+
+        List<Case> caseIntermediaryResults = [SELECT Id, AccountId FROM Case WHERE Id = : casesIntermediary[0].Id];
+        List<Case> caseCustomerResults = [SELECT Id, AccountId FROM Case WHERE Id = : casesCustomer[0].Id];
+
+        Assert.areEqual(caseIntermediaryResults[0].AccountId, intermediaries[0].Id, 'El AccountId debe ser el mediador');
+        Assert.areEqual(caseCustomerResults[0].AccountId, null, 'El AccountId NO debe ser el cliente');
     }
 }

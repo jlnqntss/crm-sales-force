@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Determina si, en casos de un RecordType determinado y para ciertos buzones, se debe buscar Cuentas de tipo &apos;Intermediary&apos; para asignar el AccountId del Caso.</description>
+    <label>Email Case AccountId to Intermediary</label>
+    <pluralLabel>Emails Case AccountId to Intermediary</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

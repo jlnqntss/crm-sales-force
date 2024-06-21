@@ -373,6 +373,13 @@
                 <stringValue>Email_Suscripcion_Danos</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>EsMediadorPanelizadoVentaDanosRC</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Owner_usuario</targetReference>
         </connector>
@@ -394,6 +401,13 @@
             <operator>Assign</operator>
             <value>
                 <stringValue>Email_Suscripcion_RC</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>EsMediadorPanelizadoVentaDanosRC</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </assignmentItems>
         <connector>
@@ -1551,6 +1565,16 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>EsMediadorPanelizadoVentaDanosRC</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <description>Email del usuario propietario del caso padre</description>

@@ -61,6 +61,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>ClienteMediadoDecision</name>
+        <label>¿Cliente Mediado?</label>
+        <locationX>578</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>CasoClonadoDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>ClienteMediadoEncontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.MediatedCustomer__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActivarOtrosCasosAbiertos</targetReference>
+            </connector>
+            <label>Cliente Mediado Encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>ExcludedDomainDecision</name>
         <label>¿Dominio excluido?</label>
         <locationX>314</locationX>
@@ -103,6 +128,41 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Intermediary</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USP</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.SuppliedEmail</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.SourceArea__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Generic Internal</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -318,13 +378,37 @@
         <queriedFields>ContentDocumentId</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>ActivarOtrosCasosAbiertos</name>
+        <label>Activar otros casos abiertos</label>
+        <locationX>446</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>CasoClonadoDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.MediatedCustomer__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>CaseOpen__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
     <start>
         <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>CasoClonadoDecision</targetReference>
+            <targetReference>ClienteMediadoDecision</targetReference>
         </connector>
-        <filterLogic>(1 AND 2 AND 3 AND 4 AND 6) OR 5</filterLogic>
+        <filterLogic>or</filterLogic>
         <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
@@ -333,38 +417,10 @@
             </value>
         </filters>
         <filters>
-            <field>Origin</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Email</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>AccountId</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>SuppliedEmail</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue></stringValue>
-            </value>
-        </filters>
-        <filters>
             <field>isCloneCase__c</field>
             <operator>EqualTo</operator>
             <value>
                 <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>SourceArea__c</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Generic Internal</stringValue>
             </value>
         </filters>
         <object>Case</object>
