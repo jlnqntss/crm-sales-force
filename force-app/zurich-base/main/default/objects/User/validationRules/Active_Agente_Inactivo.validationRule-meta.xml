@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Agente_Inactivo</fullName>
+    <active>true</active>
+    <description>No se puede quedar el campo Active Agente activo si al usuario se da de baja</description>
+    <errorConditionFormula>ActiveAgent__c == true &amp;&amp;  IsActive == false</errorConditionFormula>
+    <errorMessage>Si el Usuario está inactivo no puede tener la casilla Agente Activo marcada</errorMessage>
+</ValidationRule>
