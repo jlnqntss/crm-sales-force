@@ -407,6 +407,10 @@
             <fullName>0000000017</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>0000000018</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>SalesProcess__c</picklist>
@@ -462,6 +466,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Impossible to contact</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Incidence unresolved with policy</fullName>
             <default>false</default>
         </values>
@@ -471,6 +479,10 @@
         </values>
         <values>
             <fullName>Insurance required by the bank</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integral customer</fullName>
             <default>false</default>
         </values>
         <values>
@@ -523,6 +535,10 @@
         </values>
         <values>
             <fullName>Out of Recruitment Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy in the name of a relative</fullName>
             <default>false</default>
         </values>
         <values>
