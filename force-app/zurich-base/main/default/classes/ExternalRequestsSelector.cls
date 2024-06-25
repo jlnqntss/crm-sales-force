@@ -123,6 +123,30 @@ public with sharing class ExternalRequestsSelector
     }
 
     /**
+     * Recupera external requests a partir de una lista de origenes
+     *
+     * @author fpalomo
+     * @param  origins Origenes a recuperar
+     * @param  emtity Nombre API del SObject usado para filtrar las ERs recuperadas
+     * @return Listado de external request recuperadas. Si no se recibe ningún origen se devuelve una lista vacía
+     */
+    public ExternalRequest__c[] selectByOriginAndEntity(Set<String> origins, Set<String> entities)
+    {
+        if( origins == null || origins.isEmpty() )
+        {
+            return new List<ExternalRequest__c>();
+        }
+
+        return Database.query( String.format(DEFAULT_STRING_FORMAT, new List<String>
+        {
+            baseQuery,
+            'WHERE Origin__c IN :origins',
+            ' AND Entity__c IN :entities',
+            limitCondition
+        }) );
+    }
+
+    /**
      * Recupera external requests de un recordtype concreto
      *
      * @author adelgado
