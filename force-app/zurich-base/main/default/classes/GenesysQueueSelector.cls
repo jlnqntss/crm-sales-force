@@ -25,4 +25,23 @@ public with sharing class GenesysQueueSelector extends RecordsSelector
         result = (List<purecloud__PureCloud_Queue__c>) this.baseQuery.run();
         return result;
     }
+
+    public List<purecloud__PureCloud_Queue__c> getQueuesByName(List<String> names)
+    {
+        List<Schema.SobjectField> fieldList = new List<Schema.SobjectField>
+        {
+            purecloud__PureCloud_Queue__c.fields.Name,
+            purecloud__PureCloud_Queue__c.fields.Id,
+            purecloud__PureCloud_Queue__c.fields.CallCenter__c
+        };
+
+        if (names?.size() > 0)
+        {
+            this.baseQuery.selectFields(fieldList)
+            .addConditionIn(purecloud__PureCloud_Queue__c.fields.Name, names);
+            return (List<purecloud__PureCloud_Queue__c>) this.baseQuery.run();
+        }
+
+        return new List<purecloud__PureCloud_Queue__c>();
+    }
 }

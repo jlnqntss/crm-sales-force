@@ -31,6 +31,11 @@
                 <label>Profile</label>
             </value>
             <value>
+                <fullName>Opportunity</fullName>
+                <default>false</default>
+                <label>Opportunity</label>
+            </value>
+            <value>
                 <fullName>Policy</fullName>
                 <default>false</default>
                 <label>Policy</label>
@@ -44,6 +49,33 @@
                 <fullName>Retention</fullName>
                 <default>false</default>
                 <label>Retention</label>
+            </value>
+            <value>
+                <fullName>CampaignMember</fullName>
+                <default>false</default>
+                <label>CampaignMember</label>
+            </value>
+            <value>
+                <fullName>Campaign</fullName>
+                <default>false</default>
+                <label>Campaign</label>
+            </value>
+            <value>
+                <fullName>Account</fullName>
+                <default>false</default>
+                <label>Account</label>
+            </value>
+            <value>
+                <fullName>Claim</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Claim</label>
+            </value>
+            <value>
+                <fullName>EmailMessage</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>EmailMessage</label>
             </value>
         </valueSetDefinition>
     </valueSet>

@@ -8,6 +8,7 @@
   $Profile.Name = &quot;Agente Ventas&quot; ||
   $Profile.Name = &quot;Agente Ventas - AGR&quot;
 ) &amp;&amp;
+RecordType.DeveloperName = &apos;NoLife&apos; &amp;&amp;
 ISPICKVAL(StageName,&quot;Closed Won&quot;) &amp;&amp;
 ISBLANK(ResultingPolicyNumber__c)</errorConditionFormula>
     <errorMessage>[VR Oferta] Número de póliza resultante no informado</errorMessage>

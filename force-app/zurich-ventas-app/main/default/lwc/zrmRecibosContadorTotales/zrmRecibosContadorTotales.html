@@ -1,0 +1,10 @@
+<template>
+    <template if:true={isLoading}>
+        <div>
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+    <div class="slds-box slds-p-vertical_small slds-m-bottom_medium">
+        <p>{labels.ZRM_Recibos_Total} {totalRecibos}</p>
+    </div>
+</template>

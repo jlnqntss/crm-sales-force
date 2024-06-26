@@ -19,6 +19,72 @@
         </inputParameters>
     </actionCalls>
     <apiVersion>54.0</apiVersion>
+    <assignments>
+        <name>ContentDocumentsIDsAssigment</name>
+        <label>Assigment Content Documents IDs</label>
+        <locationX>380</locationX>
+        <locationY>863</locationY>
+        <assignmentItems>
+            <assignToReference>IdsContentDocuments</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>getDocumentLoop.ContentDocumentId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>getDocumentLoop</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>CasoClonadoDecision</name>
+        <label>¿Caso Clonado?</label>
+        <locationX>578</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>FulfilPrerequisitesDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Clonado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.isCloneCase__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getCaseDocumentAction</targetReference>
+            </connector>
+            <label>Clonado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ClienteMediadoDecision</name>
+        <label>¿Cliente Mediado?</label>
+        <locationX>578</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>CasoClonadoDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>ClienteMediadoEncontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.MediatedCustomer__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActivarOtrosCasosAbiertos</targetReference>
+            </connector>
+            <label>Cliente Mediado Encontrado</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>ExcludedDomainDecision</name>
         <label>¿Dominio excluido?</label>
@@ -64,15 +130,103 @@
                     <stringValue>Intermediary</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.CallCenter__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USP</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.SuppliedEmail</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.SourceArea__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Generic Internal</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>ExcluirDominioSubflowAction</targetReference>
             </connector>
             <label>Cumple prerrequisitos</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>getDocumentNullDecision</name>
+        <label>getDocument Null?</label>
+        <locationX>424</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>FulfilPrerequisitesDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NotNullOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getDocumentAction</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getDocumentLoop</targetReference>
+            </connector>
+            <label>Not null</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Case Trigger - After Insert - Notificaciones Apertura USP {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert - Notificaciones Apertura USP</label>
+    <loops>
+        <name>getContentDocumentLoop</name>
+        <label>getContent Document Loop</label>
+        <locationX>292</locationX>
+        <locationY>1163</locationY>
+        <collectionReference>getContentDocumentAction</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>CreateContentDocumentLinkAction</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>FulfilPrerequisitesDecision</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>getDocumentLoop</name>
+        <label>getDocument Loop</label>
+        <locationX>292</locationX>
+        <locationY>755</locationY>
+        <collectionReference>getDocumentAction</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>ContentDocumentsIDsAssigment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>getContentDocumentAction</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -92,6 +246,41 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>CreateContentDocumentLinkAction</name>
+        <label>Create Content Document Link</label>
+        <locationX>380</locationX>
+        <locationY>1271</locationY>
+        <connector>
+            <targetReference>getContentDocumentLoop</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ContentDocumentId</field>
+            <value>
+                <elementReference>getContentDocumentLoop.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LinkedEntityId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ShareType</field>
+            <value>
+                <stringValue>V</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Visibility</field>
+            <value>
+                <stringValue>AllUsers</stringValue>
+            </value>
+        </inputAssignments>
+        <object>ContentDocumentLink</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordCreates>
         <name>CreateErrorLogCaseEmailSend</name>
         <label>Generar Error Log Envio Email</label>
@@ -124,13 +313,102 @@
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordLookups>
+        <name>getCaseDocumentAction</name>
+        <label>get Case Document</label>
+        <locationX>424</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>getDocumentAction</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.IdCaseClone__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getContentDocumentAction</name>
+        <label>get Content Document</label>
+        <locationX>292</locationX>
+        <locationY>1055</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>getContentDocumentLoop</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>IdsContentDocuments</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ContentDocument</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getDocumentAction</name>
+        <label>getDocument</label>
+        <locationX>424</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>getDocumentNullDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>LinkedEntityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getCaseDocumentAction.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ContentDocumentLink</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ContentDocumentId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>ActivarOtrosCasosAbiertos</name>
+        <label>Activar otros casos abiertos</label>
+        <locationX>446</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>CasoClonadoDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.MediatedCustomer__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>CaseOpen__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
     <start>
         <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>FulfilPrerequisitesDecision</targetReference>
+            <targetReference>ClienteMediadoDecision</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>or</filterLogic>
         <filters>
             <field>CallCenter__c</field>
             <operator>EqualTo</operator>
@@ -139,24 +417,10 @@
             </value>
         </filters>
         <filters>
-            <field>Origin</field>
+            <field>isCloneCase__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Email</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>AccountId</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>SuppliedEmail</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue></stringValue>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <object>Case</object>
@@ -187,4 +451,11 @@
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
+    <variables>
+        <name>IdsContentDocuments</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>

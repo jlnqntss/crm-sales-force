@@ -119,7 +119,11 @@ public with sharing class AccountLeadUtil
                 {
                     intermediaryCode = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
                 }
-
+                List<Policy__c> mostRecentPolicy = new PoliciesSelector().getMostRecentlyPolicieByAccountId(acc.Id);
+                if(!mostRecentPolicy.isEmpty())
+                {
+                    intermediaryCode = mostRecentPolicy[0].Intermediary_Code__c; 
+                }
                 return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
             }
         }

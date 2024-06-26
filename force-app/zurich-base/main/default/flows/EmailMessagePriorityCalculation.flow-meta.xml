@@ -4,7 +4,7 @@
     <assignments>
         <name>Asignar_SLA_Caso_Hijio</name>
         <label>Asignar SLA caso hijo</label>
-        <locationX>578</locationX>
+        <locationX>402</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -17,7 +17,7 @@
     <assignments>
         <name>Asignar_SLA_caso_respondido</name>
         <label>Asignar SLA caso respondido</label>
-        <locationX>842</locationX>
+        <locationX>666</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -30,7 +30,7 @@
     <assignments>
         <name>AsignarSLACasoInmuebles</name>
         <label>Asignar SLA caso inmuebles</label>
-        <locationX>1370</locationX>
+        <locationX>1194</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -43,8 +43,8 @@
     <assignments>
         <name>MaxSlaAssignment</name>
         <label>Asignar SLA máximo</label>
-        <locationX>50</locationX>
-        <locationY>350</locationY>
+        <locationX>1238</locationX>
+        <locationY>926</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -56,7 +56,7 @@
     <assignments>
         <name>SlaCalculationAssignment</name>
         <label>Cálculo de SLA</label>
-        <locationX>314</locationX>
+        <locationX>138</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -69,7 +69,7 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Call Center?</label>
-        <locationX>1040</locationX>
+        <locationX>1238</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -124,11 +124,26 @@
             </connector>
             <label>CSM PARTICULARES</label>
         </rules>
+        <rules>
+            <name>ZDA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>caseCallCenter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>CallCener_ZDA</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recuperar_caso_ZDA</targetReference>
+            </connector>
+            <label>ZDA</label>
+        </rules>
     </decisions>
     <decisions>
         <name>isChildCase</name>
         <label>¿Es caso hijo?</label>
-        <locationX>842</locationX>
+        <locationX>666</locationX>
         <locationY>350</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -172,7 +187,7 @@
     <decisions>
         <name>IsQuoteResponseDecision</name>
         <label>¿Es respuesta de venta?</label>
-        <locationX>182</locationX>
+        <locationX>50</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>GetCaseMilestoneAction</targetReference>
@@ -195,9 +210,53 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Owner_es_cola</name>
+        <label>¿Owner es cola?</label>
+        <locationX>1986</locationX>
+        <locationY>350</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Es_cola</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Recuperar_caso_ZDA.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>Comienzo_Cola</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Qu_cola_es</targetReference>
+            </connector>
+            <label>Es cola</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Qu_cola_es</name>
+        <label>¿Qué cola es?</label>
+        <locationX>1810</locationX>
+        <locationY>458</locationY>
+        <defaultConnectorLabel>Otro</defaultConnectorLabel>
+        <rules>
+            <name>Urgencias</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Recuperar_caso_ZDA.Owner:Group.DeveloperName</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Queue_Name</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>MaxSlaAssignment</targetReference>
+            </connector>
+            <label>Urgencias</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>RamoInmueblesDecision</name>
         <label>¿Ramo Inmuebles ?</label>
-        <locationX>1502</locationX>
+        <locationX>1326</locationX>
         <locationY>350</locationY>
         <defaultConnectorLabel>No inmuebles</defaultConnectorLabel>
         <rules>
@@ -218,6 +277,21 @@
     </decisions>
     <description>Subflujo encargado de definir la prioridad de la interacción a enrutar, basándose en el call center al que vaya destinada</description>
     <environments>Default</environments>
+    <formulas>
+        <name>CallCener_ZDA</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Call_Center_ZDA.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Comienzo_Cola</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_Queue.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Queue_Name</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_Name_Urgencias.Value__c}</expression>
+    </formulas>
     <formulas>
         <name>slaFormula</name>
         <dataType>Number</dataType>
@@ -249,7 +323,7 @@
         <description>Recuperamos el caso con el que trabajamos</description>
         <name>getCase</name>
         <label>Recuperar caso</label>
-        <locationX>842</locationX>
+        <locationX>666</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -273,7 +347,7 @@
     <recordLookups>
         <name>GetCaseMilestoneAction</name>
         <label>Recuperar Case Milestone</label>
-        <locationX>314</locationX>
+        <locationX>138</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -296,9 +370,31 @@
     </recordLookups>
     <recordLookups>
         <description>Recuperamos el caso con el que trabajamos</description>
+        <name>Recuperar_caso_ZDA</name>
+        <label>Recuperar caso ZDA</label>
+        <locationX>1986</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Owner_es_cola</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>caseId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Recuperamos el caso con el que trabajamos</description>
         <name>RecuperarCasoCSMAction</name>
         <label>Recuperar caso CSM</label>
-        <locationX>1502</locationX>
+        <locationX>1326</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -318,7 +414,7 @@
         <queriedFields>HegeoProductGroupCode__c</queriedFields>
     </recordLookups>
     <start>
-        <locationX>914</locationX>
+        <locationX>1112</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CallCenterDecision</targetReference>

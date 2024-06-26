@@ -140,64 +140,26 @@ global with sharing class ExternalRequestHandlerUtil
      * @param jobId Id del job que se está ejecutando
      * @param externalRequestList : Lista de external request que deben ser procesadas
      * @param String classHandler : Nombre de la clase handler que llama al método
+     * @date 29/05/2024
+     * SAL-204 Se elimina la acción de guardar el error de carga en el objeto ExternalRequestErrorEvent__e
+     * @author lgonzalez
      */
     public static void manageResultExternalRequest(Id jobId, List<ExternalRequest__c> externalRequestList, String classHandler)
     {
-        List<ExternalRequestErrorEvent__e> erErrorEventList = new List<ExternalRequestErrorEvent__e>();
-
         try
         {
             if ( externalRequestResultList != null && !externalRequestResultList.isEmpty() )
             {
                 // 1 - Actualizar las external request con el resultado
                 Database.update(externalRequestResultList,false);
-
-                // 2 - Publicar las external request que no se hayan procesado correctamente
-                for ( ExternalRequest__c externalRequest : externalRequestResultList )
-                {
-                    try
-                    {
-                        // 2.1 - Solo publicar evento de error si el resultado es 'KO' y se ha superado el número máximo de reintentos
-                        if ( externalRequest.Processed__c && externalRequest.ProcessResult__c == 'KO' )
-                        {
-                            erErrorEventList.add
-                            (
-                                new ExternalRequestErrorEvent__e
-                                (
-                                    JobId__c = jobId,
-                                    RecordId__c = externalRequest.Id,
-                                    Origin__c = externalRequest.Origin__c,
-                                    Entity__c = externalRequest.Entity__c,
-                                    Action__c = externalRequest.Action__c,
-                                    ContentFormat__c = externalRequest.ContentFormat__c,
-                                    Payload__c = externalRequest.Payload__c,
-                                    Message__c = externalRequest.Error_Log__c,
-                                    StackTrace__c = externalRequest.Error_Log__c,
-                                    ThrowingTime__c = Datetime.now(),
-                                    ExternalRequestCreatedDate__c = externalRequest.CreatedDate
-                                )
-                            );
-                        }
-                    }
-                    catch ( Exception e )
-                    {
-                        
-                        ErrorLogUtil.commitError(e, classHandler, 'manageResult');
-                    }
-                }
-
-                // 3 - Publicar external request erróneas
-                if ( !erErrorEventList.isEmpty() )
-                {
-                    EventBus.publish(erErrorEventList);
-                }
             }
         }
         catch ( Exception e )
         {
-            
+         
             ErrorLogUtil.commitError(e, classHandler, 'manageResult');
         }
+
     }
 
     /**
