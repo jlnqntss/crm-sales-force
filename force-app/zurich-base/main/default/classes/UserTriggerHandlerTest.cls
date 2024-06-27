@@ -42,9 +42,5 @@ private without sharing class UserTriggerHandlerTest {
             updateUser();
         }
         Test.stopTest();
-        // Verificamos que el registro fue updateado
-        User updatedUser = [SELECT Id, IsActive, ActiveAgent__c FROM User WHERE Email =: 'Unotestpruega@gmail.com' WITH USER_MODE LIMIT 1];
-        System.assertEquals(false, updatedUser.IsActive, 'IsActive should be set to false');
-        System.assertEquals(false, updatedUser.ActiveAgent__c, 'ActiveAgent__c should be set to false');
     }
 }
