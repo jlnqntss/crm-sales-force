@@ -1005,6 +1005,67 @@ public with sharing class EmailMessagesUtil
     }
 
     /**
+     * Método que comprueba, cuando nos llega un nuevo email de urgencias, si existe algún caso con el identificador de 
+     * canal único que nos llega indicado en el subject del email. Si existe, reasignamos el email para que se vincule con el mismo
+     * @author arcortazar
+     * @date 21/06/2024
+     * @param List<EmailMessage>
+     */
+    public void checkExistingCaseZDAUrgencias(List<EmailMessage> listaEmails)
+    {
+        String nameQueueUrgencias = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_Urgencias');
+        String nameQueueGCartera = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
+
+        List<purecloud__PureCloud_Queue__c> genesysQueueGCartera = (new GenesysQueueSelector()).getQueuesByName(new List<String> {nameQueueGCartera});
+        List<String> lstCasosCerrarInteracciones = new List<String>();
+
+        for (EmailMessage newEmail : listaEmails)
+        {
+            if(!String.isBlank(newEmail.GenesysQueueName__c) && newEmail.GenesysQueueName__c.equals(nameQueueUrgencias)) 
+            {
+                List<String> idCanalUnico = new List<String>();
+                // Expresión regular para detectar secuencias de dígitos
+                Pattern numericPattern = Pattern.compile('\\d+');
+                Matcher matcher = numericPattern.matcher(newEmail.Subject);
+                
+                // Itera sobre todas las coincidencias y convierte a Integer
+                while (matcher.find()) {
+                    idCanalUnico.add(matcher.group());
+                }
+
+                // Actualizamos la cola -> Va a ser siempre GestionCartera
+                if(!genesysQueueGCartera.isEmpty())
+                {
+                    newEmail.GenesysQueueName__c = genesysQueueGCartera[0].Name;
+                    newEmail.GenesysFlowID__c = genesysQueueGCartera[0].GenesysFlowId__c;
+                    newEmail.IsUrgent__c = true;
+                }
+
+                // Comprobar si existe caso con el ID de Canal Unico (y sólo hay uno)
+                List<Case> lstCasoAsociado = (new CasesSelector()).getCaseByCuTicketId(idCanalUnico);
+
+                // Si tenemos un caso y es de ZDA
+                if(!lstCasoAsociado.isEmpty() && lstCasoAsociado.size() == 1 && lstCasoAsociado[0].RecordTypeId == CaseUtil.RT_ID_ZDA)
+                {
+                    Case casoAsociado = lstCasoAsociado[0];
+
+                    // relacionamos el email con el caso encontrado
+                    newEmail.ParentId = casoAsociado.Id;
+                    newEmail.RelatedToId = casoAsociado.Id;
+                    newEmail.IsUrgent__c = true;
+
+                    // si está abierto, cerramos resto de interacciones
+                    lstCasosCerrarInteracciones.add(casoAsociado.Id);
+                }
+            }
+        }
+        if (!lstCasosCerrarInteracciones.isEmpty())
+        {
+            CaseHelper.closeInteractions(lstCasosCerrarInteracciones);
+        }
+    }
+
+    /**
      * Determina si el email tiene la interacción de Genesys Informada 
      * 
      * @author lrodriguez
