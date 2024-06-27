@@ -31,6 +31,26 @@ public with sharing class TaskSelector extends RecordsSelector
     }
 
     /**
+     * Método utilizado para obtener las tareas vinculadas a los casos que se han creado por Canal Unico
+     * @author arcortazar
+     * @param List<Case> listaCasos, casos afectados por el Batch
+     * @date 12/02/2024
+     * @return Lista de Tareas relacionadas con los casos 
+     */
+    public List<Task> getTaskFromSingleChannel(List<Case> listaCasos)
+    {
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Task.Id,
+            Task.CallObject
+        })
+        .addConditionIn(Task.WhatId,listaCasos)
+        .addConditionEq(Task.Type,'Email')
+        .addConditionEq(Task.Subtype__c,'Single channel');
+
+        return (List<Task>) this.baseQuery.run();        
+    }
+
+    /**
      * Método que devuelve las tareas relacionadas con los registros de whatId
      * @author ivan
      * @date 12/04/2024
