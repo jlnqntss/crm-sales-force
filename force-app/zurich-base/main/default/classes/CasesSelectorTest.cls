@@ -525,4 +525,40 @@ private with sharing class CasesSelectorTest
         Assert.areNotEqual(0, matchedRecords.size(), 'Deben haberse generado casos');
         Assert.areEqual(CaseUtil.RT_ID_ZRM, matchedRecords[0].RecordTypeId, 'El tipo de registro debe coincdir');
     }
+
+    /**
+     * Test del método que devuelve el número de casos que tiene cada usuario que es un gestor activo.
+     * @author aberuete
+     * @date 24/06/2024
+     */
+    @isTest
+    private static void test_getNumberOfAssignedCasesGroupById()
+    {
+        Integer numCasos = null; 
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 1);
+        insert accounts;
+
+        List<Profile> profileUsp= [SELECT Id FROM Profile WHERE Name = 'USP User'];
+        List<User> userUsp = TestDataFactory.generateUsersByProfile(profileUsp[0].Id, 1);
+        userUsp[0].ActiveAgent__c = true;
+        insert userUsp;
+
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        cases[0].OwnerId = userUsp[0].Id; 
+        insert cases;
+
+        Test.startTest();
+        List<AggregateResult> casesReturned = new CasesSelector().getNumberOfAssignedCasesGroupById();
+        Test.stopTest();
+
+        for (AggregateResult caseResult : casesReturned )
+        {
+            if ( String.valueOf(caseResult.get('OwnerId')) == userUsp[0].Id)
+            {
+                numCasos = (Integer)caseResult.get('numCases');
+            }
+        }
+        
+        Assert.areEqual(1, numCasos);
+    }
 }
