@@ -1,9 +1,14 @@
 <template>
-    <lightning-card>             
+    <lightning-card>
         <template if:true={isLoading}>
             <div>
                 <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
             </div>
+        </template>
+        <template if:false={isLoading}>
+            <c-zrm-recibos-contador-totales
+                antiguedad-recibo="DiaAnterior">
+            </c-zrm-recibos-contador-totales>
         </template>
         <lightning-datatable
             key-field="id"
@@ -18,6 +23,5 @@
             <lightning-button label={currentPage} title="Non-primary action" disabled="true"></lightning-button>
             <lightning-button label={labels.ZRM_Recibos_Next} onclick={handleNext} disabled={disableNextButton}></lightning-button>
         </div>
-    </lightning-card> 
+    </lightning-card>
 </template>
-    

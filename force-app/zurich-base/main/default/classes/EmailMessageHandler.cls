@@ -117,6 +117,7 @@ public class EmailMessageHandler implements ITrigger
         if (Trigger.isAfter && Trigger.isInsert)
         {
             emailMessagesUtil.markPublicActivity( (Map<Id, EmailMessage>) newMap );
+            emailMessagesUtil.relateNewParentCaseWithMediatedAccountOCS( newMap.values() );
         }
 
     }

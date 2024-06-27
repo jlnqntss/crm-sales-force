@@ -40,6 +40,8 @@ public with sharing class EmailMessagesUtil
     private static final Id ocsRecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
     @testvisible
     private static final Id samRecordTypeId = CaseUtil.RT_ID_SAMINQUIRY;
+    @testvisible
+    private static List<String> mailsRelatedToIntermediaryOCS = new List<String>();
 
     /**
      * Get from the metadata configuration the list of emails configured for the Hegeo robot
@@ -829,6 +831,101 @@ public with sharing class EmailMessagesUtil
             //Cierre de los casos que cumplen el criterio
         	this.closeCasesOnlyInCc(onlyNewCases);
         }
+    }
+
+    /**
+     * Determina si un nuevo caso creado a partir del mail debe asociarse a un mediador como AccountId
+     * 
+     * @author jfherrero
+     * @date 17/06/2024
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+     */
+    public void relateNewParentCaseWithMediatedAccountOCS (List<EmailMessage> emailList)
+    {
+        List<String> mailsRelatedToIntermediaryOCS =  getMailsRelatedToIntermediaryOCS();
+        
+        // Vamos a obtener los parentId de los correos entrantes dirigidos a los buzones
+        // de vinculación con mediadores
+        Set<String> parentCasesToRelateIds = new Set<String>();
+
+        for (EmailMessage newMail : emailList)
+        {
+            if(newMail.Incoming && newMail.ParentId != null)
+            {
+                for (String mailRelatedToIntermediaryOCS : mailsRelatedToIntermediaryOCS)
+                {
+                    if (newMail.ToAddress.contains(mailRelatedToIntermediaryOCS))
+                    {
+                        parentCasesToRelateIds.add(newMail.ParentId);
+                    }
+                }
+            }
+        }
+        
+        // Recuperamos los casos padre por ID. Sólo nos interesa si son de OCS.
+        CasesSelector casesSelector = new CasesSelector();
+        casesSelector.baseQuery.addConditionEq( Case.RecordTypeId , CaseUtil.RT_ID_OCSINQUIRY );
+        List<Case> parentCasesToCheck = casesSelector.findAllDataById(parentCasesToRelateIds);
+
+        if ( !parentCasesToCheck.isEmpty() )
+        {
+            processParentCases(emailList, parentCasesToCheck);
+        }
+    }
+
+    /**
+     * Comprobamos si los casos se han generado por los mails entrantes para procesarlos
+     * 
+     * @author jfherrero
+     * @date 17/06/2024
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+     * @param List<Case> parentCasesToCheck : Casos padre
+     */
+    public void processParentCases(List<EmailMessage> emailList, List<Case> parentCasesToCheck)
+    {
+        // Para procesarlos, tienen que ser casos nuevos. Lo vamos a comprobar
+        // Revisando que haya coincidencia entre el ParentId del correo entrante y el SourceId del caso
+        List<Case> parentCasesToRelate = new List<Case>();
+        
+        for (Case parentCaseToCheck : parentCasesToCheck)
+        {
+            if (parentCaseToCheck.CreatedDate >= Datetime.now().addMinutes(-1) && parentCaseToCheck.ParentId == null )
+            {
+                parentCasesToRelate.add(parentCaseToCheck);
+            }
+        }
+
+        //Procesar los casos
+        CaseUtil.relateCasesWithMediatedAccountOCS(parentCasesToRelate);
+    }
+    
+    /**
+     * Devuelve los buzones para los cuales, en casos nuevos de OCS, hay que relacionar con mediadores, no con clientes
+     * 
+     * @author juanfrancisco.herrero@seidor.com
+     * @date 13/06/2024
+     * @return List<String> Buzones para los cuales hay que vincular con el mediador en casos de OCS
+     */
+    public static List<String> getMailsRelatedToIntermediaryOCS()
+    {
+        if ( mailsRelatedToIntermediaryOCS == null || mailsRelatedToIntermediaryOCS.size() == 0 )
+        {
+            mailsRelatedToIntermediaryOCS = new List<String>();
+
+            List<Email_Case_AccountId_to_Intermediary__mdt> emailsCaseAccountIdToIntermediary = Email_Case_AccountId_to_Intermediary__mdt.getAll().values();
+            
+            for (Email_Case_AccountId_to_Intermediary__mdt emailCaseAccountIdToIntermediary : emailsCaseAccountIdToIntermediary)
+            {
+                if ( emailCaseAccountIdToIntermediary.RecordType__c == CaseUtil.RT_NAME_OCSINQUIRY )
+                {
+                    mailsRelatedToIntermediaryOCS.add(emailCaseAccountIdToIntermediary.Email__c);
+                }
+            }
+        }
+
+        return mailsRelatedToIntermediaryOCS;
     }
 
     /**

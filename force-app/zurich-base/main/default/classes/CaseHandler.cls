@@ -42,7 +42,7 @@ public without sharing class CaseHandler implements ITrigger
         //Iván García
         CaseUtil.getZRMCasesRelatedToPolicy(newList);
         CaseUtil.loadMapCaseZDATypificationMetadata();
-
+        CaseUtil.clearStaticVars();
     }
 
     /**
@@ -65,6 +65,7 @@ public without sharing class CaseHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
+        CaseUtil.isOwnerUser(newList);
         CaseUtil.isCaseClone(newList);
         CaseUtil.assignContactToCase(newList);
         CaseUtil.assignAccountAndContactFromSuppliedEmail(newList);
@@ -92,6 +93,7 @@ public without sharing class CaseHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        CaseUtil.isOwnerUser(newList);
         CaseUtil.markMilestonesCompletedWhenClose( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.handleCaseStatusChangeZRM( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.completeUSPMilestonesWhenClosedOrPending( (List<Case>) newList, (Map<Id,Case>) oldMap );
@@ -121,6 +123,7 @@ public without sharing class CaseHandler implements ITrigger
     {
         CaseUtil.SummaryTotalClaims( (List<Case>) newList );
         CaseUtil.updateInquiryCaseOwnerOnZRMCreation(newList);
+        CaseUtil.createLeadForZdaCases( (List<Case>) newList );
     }
 
     /**
@@ -133,7 +136,7 @@ public without sharing class CaseHandler implements ITrigger
     {
         CaseUtil.assignContactToCaseEmail( (List<Case>) newList );
         CaseUtil.postProcessReasonIdForZda( (List<Case>) newList, (Map<Id,Case>) oldMap );
-        CaseUtil.notifCuCaseAssigned( (List<Case>) newList, (Map<Id,Case>) oldMap );
+        CaseUtil.notifCuCaseEnTramite( (List<Case>) newList, (Map<Id,Case>) oldMap );
     }
 
     /**
@@ -155,5 +158,6 @@ public without sharing class CaseHandler implements ITrigger
     public void andFinally(Map<Id, SObject> oldMap, Map<Id, SObject> newMap)
     {
         CaseUtil.updateSprSocialPersonaToLinkContact();
+        CaseUtil.linkNewCasesToNewLeads();
     }
 }

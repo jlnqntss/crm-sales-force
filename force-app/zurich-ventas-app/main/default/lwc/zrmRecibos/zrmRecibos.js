@@ -7,8 +7,6 @@ import labels from "./labels";
 import columns from "./columns";
 
 export default class ZrmRecibos extends LightningElement {
-
-    
     @api antiguedadRecibo;
     
     labels = labels;
@@ -45,7 +43,6 @@ export default class ZrmRecibos extends LightningElement {
 
     // control de caché y obtener datos del servicio web
     loadData(pageNumber) {
-        
         // Verifica si los datos ya están en la caché
         if (this.cache[pageNumber]) {
             this.updateData(this.cache[pageNumber], pageNumber);
