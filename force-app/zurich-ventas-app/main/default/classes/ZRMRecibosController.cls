@@ -26,7 +26,7 @@ public with sharing class ZRMRecibosController {
 
             // Invocar servicio web
             WS_GetReturnedReceiptsList ws = new WS_GetReturnedReceiptsList();
-            WS_GetReturnedReceiptsList.ZRMReciboResponse response = ws.callWebService(pageNumber - 1, pageSize, invocationType); // en page number se resta 1 por los atributos del js para el conteo de página y botones
+            GetReturnedReceiptsWSUtils.ZRMReciboListResponse response = ws.callWebService(pageNumber - 1, pageSize, invocationType); // en page number se resta 1 por los atributos del js para el conteo de página y botones
 
             // Obtener los datos de la respuesta y devolver resultado         
             if (response != null) { // si ha habido respuesta
@@ -55,7 +55,7 @@ public with sharing class ZRMRecibosController {
      * @date 29/05/2024
      * @return PaginatedResult
      */
-    private static PaginatedResult getResposeData(WS_GetReturnedReceiptsList.ZRMReciboResponse response, Integer pageNumber) {
+    private static PaginatedResult getResposeData(GetReturnedReceiptsWSUtils.ZRMReciboListResponse response, Integer pageNumber) {
 
         PaginatedResult result = new PaginatedResult();
 
@@ -64,7 +64,7 @@ public with sharing class ZRMRecibosController {
         Boolean esUltimaPagina = response.esUltimaPagina;
 
         if (response.listaRecibosDevueltos != null) { // compruebo si es nulo ya que si no hay recibos, el servicio web no envía la etiqueta listaRecibosDevueltos
-            for (WS_GetReturnedReceiptsList.ReciboDevuelto reciboResponse: response.listaRecibosDevueltos) {
+            for (GetReturnedReceiptsWSUtils.ReciboDevuelto reciboResponse: response.listaRecibosDevueltos) {
                 recibos.add(createObjectZRMRecibo(reciboResponse));
             }
         } else {
@@ -85,7 +85,7 @@ public with sharing class ZRMRecibosController {
      * @date 29/05/2024
      * @return ZRMRecibo
      */
-    private static ZRMRecibo createObjectZRMRecibo(WS_GetReturnedReceiptsList.ReciboDevuelto reciboResponse) {
+    private static ZRMRecibo createObjectZRMRecibo(GetReturnedReceiptsWSUtils.ReciboDevuelto reciboResponse) {
 
         ZRMRecibo result = new ZRMRecibo();
         result.codigoRecibo = reciboResponse.codigoRecibo;

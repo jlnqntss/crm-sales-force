@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NoFinalPolicyLifeNumberInformedAgent</fullName>
+    <active>true</active>
+    <description>[Ventas] no permite pasar a a la etapa cerrada-ganada sin que este informado el campo Número de póliza resultante</description>
+    <errorConditionFormula>(
+  $Profile.Name = &quot;Ventas User&quot; ||
+  $Profile.Name = &quot;Agente Ventas&quot; ||
+  $Profile.Name = &quot;Agente Ventas - AGR&quot;
+) &amp;&amp;
+RecordType.DeveloperName = &apos;Life&apos; &amp;&amp;
+ISPICKVAL(StageName,&quot;Closed Won&quot;) &amp;&amp;
+(ISBLANK(ResultingPolicyLifeNumber__c) ||
+ISBLANK(QuoteLifeNumber__c))</errorConditionFormula>
+    <errorMessage>[VR Oferta] Número de póliza vida resultante y Número de oferta vida no informado</errorMessage>
+</ValidationRule>

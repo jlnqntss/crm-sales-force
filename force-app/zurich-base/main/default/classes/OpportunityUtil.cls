@@ -9,11 +9,15 @@ public with sharing class OpportunityUtil
 {
     // #region Constants
 
+    
     private static final String FIELD_OWNER_ID = 'OwnerId';
     private static final String FIELD_STAGE = 'StageName';
     private static final String CLASS_NAME = 'OpportunityUtil';
     private static final string ZDA_SCOPE = 'ZDA'; 
-    
+    private static final String OFFER_RECORD_TYPE_VIDA_DEV_NAME = 'Life';
+    private static final Id OFFER_RECORD_TYPE_VIDA = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(OFFER_RECORD_TYPE_VIDA_DEV_NAME).getRecordTypeId();
+    private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
+    private static final String OPPORTUNITY_CLOSED_WON = configValues.get('Opportunity_Stage_Name_Closed_Won');
     // #endregion
 
     // #region Public variables
@@ -400,7 +404,7 @@ public with sharing class OpportunityUtil
     private static Boolean isValidStageName(Opportunity oldOpty)
     {
         Boolean retorno = true;
-        if( oldOpty != null && oldOpty.StageName.equalsIgnoreCase('Closed won') )
+        if( (oldOpty != null && oldOpty.StageName.equalsIgnoreCase(OPPORTUNITY_CLOSED_WON)) && !OFFER_RECORD_TYPE_VIDA.equals(oldOpty.RecordTypeId) )
         {
             retorno = false;
         }

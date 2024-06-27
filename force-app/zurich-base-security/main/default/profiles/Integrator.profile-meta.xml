@@ -3831,6 +3831,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.CaseOpen__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.NameLink__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6391,6 +6396,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.IdCaseClone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IdTipologiaBs__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6432,6 +6442,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.IntermediaryId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.isCloneCase__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6532,6 +6547,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Origin</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.OtherCaseOpen__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7222,6 +7242,11 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>Case.OneTimeOrRecurring__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.OwnerUser__c</field>
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
@@ -8513,6 +8538,11 @@
         <editable>true</editable>
         <field>Discount__c.Updated__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Email_Case_AccountId_to_Intermediary__mdt.RecordType__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -10735,6 +10765,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.isProductLife__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.isUpdatedFromINFO__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10875,12 +10910,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.QuoteLifeNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.ROI_Analysis_Completed__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.ResultingPolicyNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ResultingPolicyLifeNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18814,6 +18859,16 @@
         <default>true</default>
         <personAccountDefault>true</personAccountDefault>
         <recordType>Objective__c.Objectives</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Opportunity.Life</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Opportunity.NoLife</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

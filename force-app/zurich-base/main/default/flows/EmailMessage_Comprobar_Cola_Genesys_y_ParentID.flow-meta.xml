@@ -66,7 +66,7 @@
     <assignments>
         <name>Asignar_Gestor_Preferente_Usuario_ZDA</name>
         <label>Asignar Gestor Preferente Usuario ZDA</label>
-        <locationX>3746</locationX>
+        <locationX>4274</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -84,10 +84,31 @@
         </assignmentItems>
     </assignments>
     <assignments>
-        <name>Asignar_Suscriptor_DyO</name>
-        <label>Asignar Suscriptor DyO</label>
+        <description>Asigna como gestor preferente el del caso padre</description>
+        <name>Asignar_propietario_parent</name>
+        <label>Asignar propietario parent</label>
         <locationX>2690</locationX>
         <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>EmailPropietarioCasoPadre</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>GestorPreferente</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EmailPropietarioCasoPadre</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Asignar_Suscriptor_DyO</name>
+        <label>Asignar Suscriptor DyO</label>
+        <locationX>3218</locationX>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -106,8 +127,8 @@
     <assignments>
         <name>Asignar_Suscriptor_Pymes</name>
         <label>Asignar Suscriptor Pymes</label>
-        <locationX>2954</locationX>
-        <locationY>566</locationY>
+        <locationX>3482</locationX>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -126,8 +147,8 @@
     <assignments>
         <name>Asignar_Suscriptor_RC</name>
         <label>Asignar Suscriptor RC</label>
-        <locationX>3218</locationX>
-        <locationY>566</locationY>
+        <locationX>3746</locationX>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
             <operator>Add</operator>
@@ -209,7 +230,7 @@
     <assignments>
         <name>CaseOwnerAssignment</name>
         <label>Asignar propietario caso</label>
-        <locationX>4010</locationX>
+        <locationX>4538</locationX>
         <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -225,7 +246,7 @@
     <assignments>
         <name>CCServiceClosedCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Cerrado CCService</label>
-        <locationX>3152</locationX>
+        <locationX>3416</locationX>
         <locationY>3206</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -238,7 +259,7 @@
     <assignments>
         <name>CCServiceOpenCaseAgentAssignment</name>
         <label>Asignar Gestor Caso Abierto CCService</label>
-        <locationX>2888</locationX>
+        <locationX>3152</locationX>
         <locationY>2990</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -297,7 +318,7 @@
     <assignments>
         <name>CSMAdmManagerAssignment</name>
         <label>Asignar CSM Administración Manager</label>
-        <locationX>2360</locationX>
+        <locationX>2624</locationX>
         <locationY>2882</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -310,7 +331,7 @@
     <assignments>
         <name>CSMIndividualManagerAssignment</name>
         <label>Asignar CSM Individual Manager</label>
-        <locationX>1832</locationX>
+        <locationX>2096</locationX>
         <locationY>2882</locationY>
         <assignmentItems>
             <assignToReference>GestorPreferenteAsignado</assignToReference>
@@ -352,6 +373,13 @@
                 <stringValue>Email_Suscripcion_Danos</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>EsMediadorPanelizadoVentaDanosRC</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Owner_usuario</targetReference>
         </connector>
@@ -373,6 +401,13 @@
             <operator>Assign</operator>
             <value>
                 <stringValue>Email_Suscripcion_RC</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>EsMediadorPanelizadoVentaDanosRC</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </assignmentItems>
         <connector>
@@ -428,7 +463,7 @@
     <decisions>
         <name>Administration_manager_encontrado</name>
         <label>¿Administration manager encontrado?</label>
-        <locationX>2492</locationX>
+        <locationX>2756</locationX>
         <locationY>2774</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -450,7 +485,7 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Qué Call Center es?</label>
-        <locationX>2822</locationX>
+        <locationX>3086</locationX>
         <locationY>2666</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -509,7 +544,7 @@
     <decisions>
         <name>CaseAssignedToUserDecision</name>
         <label>¿Caso asignado a usuario?</label>
-        <locationX>2822</locationX>
+        <locationX>3086</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>CallCenterDecision</targetReference>
@@ -564,7 +599,7 @@
     <decisions>
         <name>CaseOrOpportunityDecision</name>
         <label>¿Caso u oportunidad?</label>
-        <locationX>3768</locationX>
+        <locationX>4164</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -598,7 +633,7 @@
     <decisions>
         <name>Caso_asignado_a_usuario_ZDA</name>
         <label>¿Caso asignado a usuario ZDA?</label>
-        <locationX>3416</locationX>
+        <locationX>3713</locationX>
         <locationY>350</locationY>
         <defaultConnector>
             <targetReference>Asignar_Gestor_Preferente_Usuario_ZDA</targetReference>
@@ -643,7 +678,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Gestor_preferente_suscriptor</targetReference>
+                <targetReference>Es_caso_hijo_con_propietario_o_cola_sin_suscriptor</targetReference>
             </connector>
             <label>No es usuario ZDA</label>
         </rules>
@@ -651,7 +686,7 @@
     <decisions>
         <name>ClosedCasesFoundDecision</name>
         <label>¿Casos cerrados encontrados?</label>
-        <locationX>3284</locationX>
+        <locationX>3548</locationX>
         <locationY>3098</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -732,10 +767,55 @@
         </rules>
     </decisions>
     <decisions>
+        <description>Si nos llega informado el email del caso padre, es un recotizar o un contactar, el agente preferente debe ser el del caso padre. En caso de que la cola esté configurada para que no enrute a suscriptor, no se devuelve best agent</description>
+        <name>Es_caso_hijo_con_propietario_o_cola_sin_suscriptor</name>
+        <label>Es caso hijo con propietario o cola sin suscriptor</label>
+        <locationX>3152</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Gestor_preferente_suscriptor</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Contactar_o_recotizar</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailPropietarioCasoPadre</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_propietario_parent</targetReference>
+            </connector>
+            <label>Contactar o recotizar</label>
+        </rules>
+        <rules>
+            <name>Cola_sin_suscriptor</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailPropietarioCasoPadre</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GenesysDanosQueue</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ZDAQueueWithoutSuscriptor</elementReference>
+                </rightValue>
+            </conditions>
+            <label>Cola sin suscriptor</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Gestor_preferente_suscriptor</name>
         <label>¿Gestor preferente suscriptor?</label>
-        <locationX>3086</locationX>
-        <locationY>458</locationY>
+        <locationX>3614</locationX>
+        <locationY>566</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Suscriptor_DyO</name>
@@ -807,7 +887,7 @@
     <decisions>
         <name>Individual_manager_encontrado</name>
         <label>¿Individual manager encontrado?</label>
-        <locationX>1964</locationX>
+        <locationX>2228</locationX>
         <locationY>2774</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -1038,7 +1118,7 @@
     <decisions>
         <name>OpenCasesFoundDecision</name>
         <label>¿Casos abiertos encontrados?</label>
-        <locationX>3086</locationX>
+        <locationX>3350</locationX>
         <locationY>2882</locationY>
         <defaultConnector>
             <targetReference>GetClosedCasesAction</targetReference>
@@ -1299,6 +1379,12 @@
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Integrator.Value__c}</expression>
     </formulas>
+    <formulas>
+        <description>Esta variable informa la cola de Genesys a la cual no se le asigna el suscriptor informado en la cuenta asociada al caso a enrutar</description>
+        <name>ZDAQueueWithoutSuscriptor</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.ZDAGenesysQueueWithoutBestAgent.Value__c}</expression>
+    </formulas>
     <interviewLabel>EmailMessage - Comprobar Cola Genesys y ParentID {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage - Búsqueda gestor preferente</label>
     <processMetadataValues>
@@ -1323,7 +1409,7 @@
     <recordLookups>
         <name>GetClosedCasesAction</name>
         <label>Obtener Casos Cerrados</label>
-        <locationX>3284</locationX>
+        <locationX>3548</locationX>
         <locationY>2990</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1353,7 +1439,7 @@
     <recordLookups>
         <name>GetOpenCasesAction</name>
         <label>Obtener Casos Abiertos</label>
-        <locationX>3086</locationX>
+        <locationX>3350</locationX>
         <locationY>2774</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1430,7 +1516,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>3642</locationX>
+        <locationX>4038</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CaseOrOpportunityDecision</targetReference>
@@ -1475,6 +1561,24 @@
     </variables>
     <variables>
         <name>EmailPropietarioCaso</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>EsMediadorPanelizadoVentaDanosRC</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Email del usuario propietario del caso padre</description>
+        <name>EmailPropietarioCasoPadre</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

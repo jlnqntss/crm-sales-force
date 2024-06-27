@@ -354,6 +354,40 @@ private with sharing class CasesSelectorTest
     }
 
     /**
+     * Testea el metodo getZdaChildCases
+     * 
+     * @author mario.navarro@seidor.com
+     * @date 05/06/2024
+     */
+    @isTest
+    private static void test_getZdaChildCases()
+    {
+        //creamos 2 casos de zda, uno padre del otro
+        List<Case> zdaCases = TestDataFactory.generateZDACases(2);
+        zdaCases[1].RelatedCuTicketId__c = zdaCases[0].CuTicketId__c;
+        insert zdaCases;
+
+        //creamos un tercer caso no zda, hijo de un zda (para que no lo retorne)
+        Case newUSPCase = new Case(
+            RecordTypeId = CaseUtil.RT_ID_USPINQUIRY,
+            RelatedCuTicketId__c = zdaCases[0].CuTicketId__c
+        );
+        insert newUSPCase;
+
+        Test.startTest();
+        List<Case> emptyCases = new CasesSelector().getZdaChildCases(null);
+        List<Case> emptyCases2 = new CasesSelector().getZdaChildCases(new Set<String>());
+        List<Case> foundCases = new CasesSelector().getZdaChildCases(new Set<String>{zdaCases[0].CuTicketId__c});
+        Test.stopTest();
+
+        Assert.isTrue(emptyCases.isEmpty());
+        Assert.isTrue(emptyCases2.isEmpty());
+        Assert.isFalse(foundCases.isEmpty());
+        Assert.areEqual(1, foundCases.size());
+        Assert.areEqual(zdaCases[1].Id, foundCases[0].Id);
+    }
+
+    /**
      * Se comprueba que el metodo getByIdWithZDAInfo funciona correctamente. Para ello:
      * - Comprueba que pasandole un id nulo no retorna nada
      * - Comprueba que pasandole un id de un caso NO ZDA no retorna nada
@@ -525,7 +559,7 @@ private with sharing class CasesSelectorTest
         Assert.areNotEqual(0, matchedRecords.size(), 'Deben haberse generado casos');
         Assert.areEqual(CaseUtil.RT_ID_ZRM, matchedRecords[0].RecordTypeId, 'El tipo de registro debe coincdir');
     }
-
+    
     /**
      * Test del método que devuelve el número de casos que tiene cada usuario que es un gestor activo.
      * @author aberuete
@@ -560,5 +594,38 @@ private with sharing class CasesSelectorTest
         }
         
         Assert.areEqual(1, numCasos);
+    }
+
+     /**
+     * Test del método que devuelve la query de Cases para Batch_CloseInteractions
+     * @author lrodriguez6@seidor.es
+     * @date 04/06/2024
+     */
+    @isTest
+    private static void test_getCasesToCloseInteractionsAutomatic_matchedRecord()
+    {
+        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+        String filterCallCenter = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Call_Center_USP');
+        String filterTypeTareas = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Type_Tareas');
+        String filterSourceMediator = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Source_Area_Mediator');
+
+        Case casoQuery = [SELECT Id, CreatedOffer__c FROM Case   LIMIT 1];
+
+        casoQuery.SourceArea__c=filterSourceMediator;
+        casoQuery.RecordTypeId=uSPRecordTypeId;
+        casoQuery.CallCenter__c=filterCallCenter;
+        casoQuery.Type=filterTypeTareas;
+        casoQuery.SourceArea__c=filterSourceMediator;
+
+
+        // Test
+        Test.startTest();
+        update casoQuery;
+
+        List<Case> matchedRecords = new CasesSelector().getCasesToCloseInteractionsAutomatic();
+        Test.stopTest();
+
+        System.assertEquals(1, matchedRecords.size(), 'no devuelve el número de registros correcto');
+
     }
 }
