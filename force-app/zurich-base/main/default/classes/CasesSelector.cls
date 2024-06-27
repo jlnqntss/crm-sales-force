@@ -27,6 +27,8 @@ public with sharing class CasesSelector extends RecordsSelector
     public static final String CASE_ZRM_RT_NAME = 'ZRMInquiry';
     public static final String CASE_STATUS_WIN_CLOSED = 'Cerrado Ganado';
     public static final String CASE_STATUS_LOOSE_CLOSED = 'Cerrado Perdido';
+    public static final String CASE_OWNER_TYPE = 'Case.Owner.Type';
+    public static final String CASE_OWNER_PROFILE_NAME = 'Case.Owner.Profile.Name';
 
 
    
@@ -552,5 +554,57 @@ public with sharing class CasesSelector extends RecordsSelector
         {
             return '';    
         }
+    }
+
+    /**
+     * Método selector que devuelve el número de casos que tiene cada usuario que es un gestor activo.
+     * @author aberuete
+     * @date 19/06/2024
+     */
+    public List<AggregateResult> getNumberOfAssignedCasesGroupById()
+    {
+        Query subquery = new Query (User.getSObjectType());
+        subquery.selectFields((new List<Schema.SObjectField> {
+            User.Id
+        }));
+        subquery.addConditionEq(User.ActiveAgent__c, true);
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>
+        {
+            Case.OwnerId
+        })
+        .count('Id','numCases')
+        .addConditionEq(Case.IsClosed, false)
+        .addConditionNotEq(Case.Status, 'Pendiente')
+        .addConditionIn(Case.OwnerId,subquery)
+        .groupBy('OwnerId');
+
+        return this.baseQuery.aggregate(); 
+    }
+
+    /**
+     * Método selector que devuelve una query que obtiene los casos ordenados por mayor prioridad y menor fecha de modificación
+     * cuyo campo WithoutBestAgent__c sea verdadero, que el caso no esté cerrado y que el owner sea una cola o el usuario integrador 
+     * @author aberuete
+     * @date 27/06/2024
+     */
+    public String getCasesWithoutBestAgent()
+    {
+        Query.Condition andCondition = Query.doOr(
+                Query.conditionEq(CASE_OWNER_TYPE, 'Queue'),
+                Query.conditionEq(CASE_OWNER_PROFILE_NAME, 'Integrator'));
+                
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.Id,
+            Case.OwnerId
+        })
+        .addConditionEq(Case.WithoutBestAgent__c , true)
+        .addConditionEq(Case.isClosed, false)
+        .addCondition(andCondition)
+        .orderBy('Case.Priority__c', 'DESC')
+        .orderBy('Case.LastModifiedDate', 'ASC');
+
+        return this.baseQuery.toQueryString();
     }
 }
