@@ -27,7 +27,7 @@
             <section>Background</section>
         </sections>
         <sections>
-            <label><!-- Contact --></label>
+            <label></label>
             <section>Contact</section>
         </sections>
     </layouts>
