@@ -7,7 +7,7 @@
     <layouts>
         <layout>User Layout</layout>
         <sections>
-            <label><!-- Custom Links --></label>
+            <label></label>
             <section>Custom Links</section>
         </sections>
         <sections>
