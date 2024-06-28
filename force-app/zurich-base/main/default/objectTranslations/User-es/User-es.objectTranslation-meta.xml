@@ -19,7 +19,7 @@
         <layout>User Profile Layout</layout>
         <layoutType>UserAlt</layoutType>
         <sections>
-            <label><!-- About --></label>
+            <label></label>
             <section>About</section>
         </sections>
         <sections>
