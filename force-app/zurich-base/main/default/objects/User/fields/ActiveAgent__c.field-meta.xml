@@ -4,7 +4,7 @@
     <defaultValue>false</defaultValue>
     <description>Activa y desactiva los usuarios para el calculo de la asignación de casos sin gestor preferente</description>
     <externalId>false</externalId>
-    <inlineHelpText>Activa y desactiva los usuarios para el calculo de la asignación de casos sin gestor preferente</inlineHelpText>
+    <inlineHelpText>Representa la cantidad de casos que puede gestionar un usuario de Salesforce. No puede ser un número negativo y vacío se interpretará como capacidad ilimitada para gestionar casos.</inlineHelpText>
     <label>Active Agent</label>
     <trackFeedHistory>false</trackFeedHistory>
     <type>Checkbox</type>

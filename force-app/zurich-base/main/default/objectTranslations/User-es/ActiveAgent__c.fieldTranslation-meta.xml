@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
-    <help><!-- Activa y desactiva los usuarios para el calculo de la asignación de casos sin gestor preferente --></help>
-    <label>Gestor Activo</label>
+    <help><!-- Representa la cantidad de casos que puede gestionar un usuario de Salesforce. No puede ser un número negativo y vacío se interpretará como capacidad ilimitada para gestionar casos. --></help>
+    <label>Activo para enrutamiento</label>
     <name>ActiveAgent__c</name>
 </CustomFieldTranslation>

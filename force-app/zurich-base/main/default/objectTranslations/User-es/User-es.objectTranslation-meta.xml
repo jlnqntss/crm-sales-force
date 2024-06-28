@@ -32,7 +32,15 @@
         </sections>
     </layouts>
     <validationRules>
+        <errorMessage><!-- Si el Usuario está inactivo no puede tener la casilla Agente Activo marcada --></errorMessage>
+        <name>Active_Agente_Inactivo</name>
+    </validationRules>
+    <validationRules>
         <errorMessage><!-- No es posible la modificación manual del Nombre, Cargo o Email del usuario. --></errorMessage>
         <name>AvailableFieldsForEditBySupervisors</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- La capacidad del gestor no puede ser cero ni negativa --></errorMessage>
+        <name>Capacidad_negativa</name>
     </validationRules>
 </CustomObjectTranslation>
