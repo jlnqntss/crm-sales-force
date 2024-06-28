@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <fieldSets>
-        <label><!-- PersonalInfo_EPIM --></label>
+        <label></label>
         <name>PersonalInfo_EPIM</name>
     </fieldSets>
     <layouts>
         <layout>User Layout</layout>
         <sections>
-            <label><!-- Custom Links --></label>
+            <label></label>
             <section>Custom Links</section>
         </sections>
         <sections>
-            <label><!-- Marketing Cloud --></label>
+            <label></label>
             <section>Marketing Cloud</section>
         </sections>
     </layouts>
@@ -19,25 +19,21 @@
         <layout>User Profile Layout</layout>
         <layoutType>UserAlt</layoutType>
         <sections>
-            <label><!-- About --></label>
+            <label></label>
             <section>About</section>
         </sections>
         <sections>
-            <label><!-- Background --></label>
+            <label></label>
             <section>Background</section>
         </sections>
         <sections>
-            <label><!-- Contact --></label>
+            <label></label>
             <section>Contact</section>
         </sections>
     </layouts>
     <validationRules>
         <errorMessage><!-- Si el Usuario está inactivo no puede tener la casilla Agente Activo marcada --></errorMessage>
         <name>Active_Agente_Inactivo</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage><!-- No es posible la modificación manual del Nombre, Cargo o Email del usuario. --></errorMessage>
-        <name>AvailableFieldsForEditBySupervisors</name>
     </validationRules>
     <validationRules>
         <errorMessage><!-- La capacidad del gestor no puede ser cero ni negativa --></errorMessage>
