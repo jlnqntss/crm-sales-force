@@ -3,6 +3,16 @@
     <fullName>Active_Agente_Inactivo</fullName>
     <active>true</active>
     <description>No se puede quedar el campo Active Agente activo si al usuario se da de baja</description>
-    <errorConditionFormula>ActiveAgent__c == true &amp;&amp; ISCHANGED(ActiveAgent__c) &amp;&amp; IsActive == false &amp;&amp; ( Profile.Name == &apos;USP Supervisor&apos;  || Profile.Name ==  &apos;USP Gerente&apos;)</errorConditionFormula>
+    <errorConditionFormula>AND(
+OR(
+ISCHANGED(ActiveAgent__c),
+ActiveAgent__c == true,
+IsActive == false
+),
+$Profile.Id &lt;&gt; &apos;00e5I000000Hu97&apos;,
+$Profile.Id &lt;&gt; &apos;00e5I000000UPld&apos;,
+$Profile.Id &lt;&gt; &apos;00e5I000000QeQS&apos;
+
+)</errorConditionFormula>
     <errorMessage>Si el Usuario está inactivo no puede tener la casilla Agente Activo marcada</errorMessage>
 </ValidationRule>
