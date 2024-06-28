@@ -58,14 +58,20 @@
     </filter>
     <format>Summary</format>
     <groupingsDown>
+        <aggregateType>Sum</aggregateType>
         <dateGranularity>Day</dateGranularity>
         <field>Case.IntermediaryOwner__c</field>
+        <sortByName>Case.ExpirationDays__c</sortByName>
         <sortOrder>Asc</sortOrder>
+        <sortType>Aggregate</sortType>
     </groupingsDown>
     <groupingsDown>
+        <aggregateType>Sum</aggregateType>
         <dateGranularity>Day</dateGranularity>
         <field>CASE_NUMBER</field>
+        <sortByName>Case.ExpirationDays__c</sortByName>
         <sortOrder>Asc</sortOrder>
+        <sortType>Aggregate</sortType>
     </groupingsDown>
     <name>Casos de retención abiertos</name>
     <params>
