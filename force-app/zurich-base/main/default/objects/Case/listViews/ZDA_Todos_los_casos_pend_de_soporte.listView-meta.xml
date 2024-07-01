@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ZDA_Todos_los_casos_pend_de_soporte</fullName>
-    <booleanFilter>1 AND 2</booleanFilter>
+    <booleanFilter>1 AND 2 AND 3</booleanFilter>
     <columns>CASES.CASE_NUMBER</columns>
     <columns>CuTicketId__c</columns>
     <columns>CASES.STATUS</columns>
@@ -10,8 +10,8 @@
     <columns>Subtype__c</columns>
     <columns>TypeN3__c</columns>
     <columns>CASES.NAME</columns>
-    <columns>CORE.USERS.FIRST_NAME</columns>
-    <columns>Product__c</columns>
+    <columns>OWNER_NAME</columns>
+    <columns>CommercialProductCode__c</columns>
     <columns>CASES.CLOSED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>
@@ -23,6 +23,11 @@
         <field>PendingBy__c</field>
         <operation>equals</operation>
         <value>Support</value>
+    </filters>
+    <filters>
+        <field>PendingBy__c</field>
+        <operation>equals</operation>
+        <value>Supervisor</value>
     </filters>
     <label>ZDA - Todos los casos pend. de soporte</label>
     <sharedTo>

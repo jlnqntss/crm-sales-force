@@ -10,8 +10,9 @@
     <columns>Subtype__c</columns>
     <columns>TypeN3__c</columns>
     <columns>CASES.NAME</columns>
-    <columns>CORE.USERS.FIRST_NAME</columns>
-    <columns>Product__c</columns>
+    <columns>OWNER_NAME</columns>
+    <columns>MediatedCustomer__c</columns>
+    <columns>CommercialProductCode__c</columns>
     <columns>CASES.CLOSED_DATE</columns>
     <filterScope>Mine</filterScope>
     <filters>

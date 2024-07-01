@@ -9,10 +9,11 @@
     <columns>Subtype__c</columns>
     <columns>TypeN3__c</columns>
     <columns>CASES.NAME</columns>
-    <columns>CORE.USERS.FIRST_NAME</columns>
-    <columns>Product__c</columns>
+    <columns>MediatedCustomer__c</columns>
+    <columns>OWNER_NAME</columns>
+    <columns>CommercialProductCode__c</columns>
     <columns>CASES.CLOSED_DATE</columns>
-    <filterScope>Everything</filterScope>
+    <filterScope>Mine</filterScope>
     <filters>
         <field>CASES.STATUS</field>
         <operation>equals</operation>
@@ -23,7 +24,7 @@
         <operation>equals</operation>
         <value>TODAY</value>
     </filters>
-    <label>ZDA - Todos los casos finalizados hoy</label>
+    <label>ZDA - Todos mis casos finalizados hoy</label>
     <sharedTo>
         <role>ZDA_Agente</role>
     </sharedTo>
