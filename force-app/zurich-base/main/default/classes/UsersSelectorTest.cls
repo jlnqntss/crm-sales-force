@@ -8,6 +8,8 @@
 @isTest
 private with sharing class UsersSelectorTest
 {
+    static final string PROFILE_USP_USER = 'USP User';
+
     @TestSetup
     public static void createScenario()
     {
@@ -232,4 +234,49 @@ private with sharing class UsersSelectorTest
         System.assertEquals(true, userQuery != null, 'Debe encontrar uno');
     }
 
+    /**
+     * Test del método que devuelve los usuarios que son gestores activos
+     * @author aberuete
+     * @date 28/06/2024
+     */
+    @isTest
+    private static void test_getUsersWithAgentActiveOrderByAssignedCases()
+    {
+        List<Profile> profileUsp= [SELECT Id FROM Profile WHERE Name =: PROFILE_USP_USER];
+        List<User> userUsp = TestDataFactory.generateUsersByProfile(profileUsp[0].Id, 1);
+        userUsp[0].ActiveAgent__c = true;
+        userUsp[0].AssignedCases__c = 5;
+        userUsp[0].Capacity__c = 10;
+        insert userUsp;
+
+        Test.startTest();
+        List<User> usersWithAgentActive = new UsersSelector().getUsersWithAgentActiveOrderByAssignedCases();
+        Test.stopTest();
+
+        Map<Id,User> mapUsersWithAgentActive = new Map<Id,User> (usersWithAgentActive);
+        
+        Assert.areEqual(5,mapUsersWithAgentActive.get(userUsp[0].id).AssignedCases__c,'El número de casos asignados no es correcto'); 
+        Assert.areEqual(10,mapUsersWithAgentActive.get(userUsp[0].id).Capacity__c,'La capacidad no es correcta');
+    }
+
+    /**
+     * Test del método que devuelve el número de usuarios con gestor activo y capacidad nula
+     * @author aberuete
+     * @date 28/06/2024
+     */
+    @isTest
+    private static void test_getNumberOfUsersActiveWithInfiniteCapacity()
+    {
+        List<Profile> profileUsp= [SELECT Id FROM Profile WHERE Name =: PROFILE_USP_USER];
+        List<User> userUsp = TestDataFactory.generateUsersByProfile(profileUsp[0].Id, 1);
+        userUsp[0].ActiveAgent__c = true;
+        userUsp[0].AssignedCases__c = 5;
+        insert userUsp;
+
+        Test.startTest();
+        Integer numUsersWthInfiniteCapacity = new UsersSelector().getNumberOfUsersActiveWithInfiniteCapacity();
+        Test.stopTest();
+
+        Assert.isTrue(numUsersWthInfiniteCapacity > 0, 'Debería de haber algun usuario con capacidad infinita');
+    }
 }
