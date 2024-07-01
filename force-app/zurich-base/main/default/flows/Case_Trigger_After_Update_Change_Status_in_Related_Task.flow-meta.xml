@@ -97,7 +97,7 @@
                 <leftValueReference>sizeCasesRelated</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
-                    <numberValue>1.0</numberValue>
+                    <elementReference>value1Number</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -116,19 +116,19 @@
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>PriorNull</name>
+            <name>PriorNullor1Outcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>sizePrior</leftValueReference>
                 <operator>LessThanOrEqualTo</operator>
                 <rightValue>
-                    <numberValue>1.0</numberValue>
+                    <elementReference>value1Number</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>DesactivatePriorCaseOpenAction</targetReference>
             </connector>
-            <label>Prior Null</label>
+            <label>Prior Null or 1</label>
         </rules>
     </decisions>
     <decisions>
@@ -301,6 +301,12 @@
         <name>USP_RecordType_DeveloperName</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_USP.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>value1Number</name>
+        <dataType>Number</dataType>
+        <expression>VALUE({!$CustomMetadata.Global_Configuration__mdt.Case_Value_1_USP.Value__c})</expression>
+        <scale>2</scale>
     </formulas>
     <interviewLabel>Case Trigger - After Update - Change Status in Related Task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Change Status in Related Task-Other Open Cases</label>

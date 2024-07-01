@@ -228,7 +228,7 @@
                 <leftValueReference>sizeCasosEncontrados</leftValueReference>
                 <operator>GreaterThan</operator>
                 <rightValue>
-                    <numberValue>1.0</numberValue>
+                    <elementReference>value1Number</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -238,6 +238,12 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>value1Number</name>
+        <dataType>Number</dataType>
+        <expression>VALUE({!$CustomMetadata.Global_Configuration__mdt.Case_Value_1_USP.Value__c})</expression>
+        <scale>2</scale>
+    </formulas>
     <interviewLabel>Case Trigger - After Insert - Notificaciones Apertura USP {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert - Notificaciones Apertura USP</label>
     <loops>
