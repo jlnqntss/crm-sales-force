@@ -1,6 +1,6 @@
  /**
- * @author aberuete
  * Clase de servicio para la clase programada Job_WorkRouter y el batch Batch_WorkRouter
+ * @author aberuete
  * @date 24/06/2024
  */
 public with sharing class WorkRouter 
@@ -58,6 +58,7 @@ public with sharing class WorkRouter
      * @date: 27/06/2024
      * @param List<User> usersWithAgentActive: Lista de usuarios con agente activo
      */
+    @testvisible
     private Integer calculateSumOfCapacitiesLeft (List<User> usersWithAgentActive)
     {
         Integer sumOfCapacities = 0;
@@ -85,6 +86,7 @@ public with sharing class WorkRouter
      * @param Integer sumOfCapacities: Número de casos totales que pueden gestionar los usuarios si todos tienen una capacidad asignada
      * @param List<User> usersWithAgentActive: Lista de usuarios con agente activo
      */
+    @testvisible
     private List<Case> calculateDistributionOfCases (List<Case> casesToAssign, Boolean anyUserWithCapacityInfinity, Integer sumOfCapacities, List<User> usersWithAgentActive )
     {
         List<Case> caseToUpdate = new List<Case>();
@@ -137,6 +139,7 @@ public with sharing class WorkRouter
      * @date: 27/06/2024
      * @param List<Case> caseToUpdate: Lista de casos a actualizar
      */
+    @testvisible
     private void updateCases(List<Case> caseToUpdate)
     {
         if (caseToUpdate.size()!= 0)
