@@ -5,11 +5,7 @@
  * @last modified on  : 05-24-2023
  * @last modified by  : lgonzalez
 **/
-trigger UserTrigger on User (before update) {
-    for (User usr : Trigger.new) {
-        User oldUser = Trigger.oldMap.get(usr.Id);
-        if (usr.IsActive != oldUser.IsActive && !usr.IsActive) {
-            usr.ActiveAgent__c = false;
-        }
-    }
+trigger UserTrigger on User (after insert, before insert, after update, before update, after delete, before delete)
+{
+    TriggerFactory.createHandler(User.sObjectType);
 }
