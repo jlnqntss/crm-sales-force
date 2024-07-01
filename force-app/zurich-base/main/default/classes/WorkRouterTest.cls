@@ -185,7 +185,7 @@ private with sharing class WorkRouterTest
         new WorkRouter().assignCasesWithoutBestAgentToActiveAgent((List<Case>)casesToAssignOwner);
         Test.stopTest();
 
-        List<Error_Log__c> errorRecords = [SELECT Id FROM Error_Log__c];
+        List<Error_Log__c> errorRecords = [SELECT Id,Message__c,Source_Class__c  FROM Error_Log__c];
         Assert.isTrue(errorRecords.size()>0, 'Deberia de haber algun error');
     }
 }

@@ -144,25 +144,11 @@ public with sharing class WorkRouter
     {
         if (caseToUpdate.size()!= 0)
         {
-            List<String> msgErrores = new List<String>();
             try
             {
                 Database.SaveResult [] resultList = Database.update(caseToUpdate, false);
-                
-                for (Database.SaveResult result: resultList )
-                {
-                    if(!result.isSuccess())
-                    {
-                        for (Database.Error error :result.getErrors())
-                        {
-                            msgErrores.add(error.getStatusCode() + ': ' + error.getMessage());
-                        }
-                    }
-                }   
-                if (!msgErrores.isEmpty())
-                {
-                    ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando los casos',WorkRouter.class.getName(),(String.join(msgErrores,'\n')));
-                } 
+                ErrorLogUtil.generateMessageByError(resultList,'Se ha producido un error actualizando los casos', WorkRouter.class.getName());
+
             }
             catch (Exception e)
             {
@@ -213,28 +199,12 @@ public with sharing class WorkRouter
      */
     private void updateUsers(List<User> usersToUpdate)
     {
-        List<String> msgErrores = new List<String>();
-
         if( !usersToUpdate.isEmpty() )
         {
             try
             {
                 Database.SaveResult [] resultList = Database.update(usersToUpdate, false);
-                
-                for (Database.SaveResult result: resultList )
-                {
-                    if(!result.isSuccess())
-                    {
-                        for (Database.Error error :result.getErrors())
-                        {
-                            msgErrores.add(error.getStatusCode() + ': ' + error.getMessage());
-                        }
-                    }
-                }   
-                if (!msgErrores.isEmpty())
-                {
-                    ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR,'Se ha producido un error actualizando los usuarios', WorkRouter.class.getName(),(String.join(msgErrores,'\n')));
-                } 
+                ErrorLogUtil.generateMessageByError(resultList, 'Se ha producido un error actualizando los usuarios', WorkRouter.class.getName());
             }
             catch (Exception e)
             {
