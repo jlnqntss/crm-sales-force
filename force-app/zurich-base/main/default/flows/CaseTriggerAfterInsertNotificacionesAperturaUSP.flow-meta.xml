@@ -35,6 +35,22 @@
             <targetReference>getDocumentLoop</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>NumeroCasosEncontradosDecision</name>
+        <label>Número Casos Encontrados</label>
+        <locationX>424</locationX>
+        <locationY>539</locationY>
+        <assignmentItems>
+            <assignToReference>sizeCasosEncontrados</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>casosEncontradosClienteMediado</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>VariosDecision</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>CasoClonadoDecision</name>
         <label>¿Caso Clonado?</label>
@@ -80,7 +96,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>ActivarOtrosCasosAbiertos</targetReference>
+                <targetReference>GetCasosMismoClienteMediado</targetReference>
             </connector>
             <label>Cliente Mediado Encontrado</label>
         </rules>
@@ -194,6 +210,31 @@
                 <targetReference>getDocumentLoop</targetReference>
             </connector>
             <label>Not null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>VariosDecision</name>
+        <label>Varios?</label>
+        <locationX>424</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>CasoClonadoDecision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>VariosCasosOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sizeCasosEncontrados</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActivarOtrosCasosAbiertos</targetReference>
+            </connector>
+            <label>Varios Casos</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -335,6 +376,62 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>GetCasosMismoClienteMediado</name>
+        <label>Get Casos Mismo Cliente Mediado</label>
+        <locationX>424</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>NumeroCasosEncontradosDecision</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR (5 AND 6))</filterLogic>
+        <filters>
+            <field>MediatedCustomer__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.MediatedCustomer__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Nuevo</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Asignado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Respondido</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendiente</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>PendingBy__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Intermediary</stringValue>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputReference>casosEncontradosClienteMediado</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>getContentDocumentAction</name>
         <label>get Content Document</label>
         <locationX>292</locationX>
@@ -452,10 +549,26 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
     <variables>
+        <name>casosEncontradosClienteMediado</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
         <name>IdsContentDocuments</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>sizeCasosEncontrados</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
     </variables>
 </Flow>
