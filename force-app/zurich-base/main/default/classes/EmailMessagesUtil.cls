@@ -1014,9 +1014,16 @@ public with sharing class EmailMessagesUtil
     public void checkExistingCaseZDAUrgencias(List<EmailMessage> listaEmails)
     {
         String nameQueueUrgencias = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_Urgencias');
-        String nameQueueGCartera = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
+        String comienzoId = GlobalConfigUtil.getGlobalConfigurationValue('Beggining_Id_Queue');
 
-        List<purecloud__PureCloud_Queue__c> genesysQueueGCartera = (new GenesysQueueSelector()).getQueuesByName(new List<String> {nameQueueGCartera});
+        List<purecloud__PureCloud_Queue__c> lstPurecloud = (new GenesysQueueSelector()).getAllQueues();
+        Map<String, purecloud__PureCloud_Queue__c> mapaQueues = new Map<String, purecloud__PureCloud_Queue__c>(); 
+        for(purecloud__PureCloud_Queue__c purecloud : lstPurecloud)
+        {
+            mapaQueues.put(purecloud.Name, purecloud);
+        }
+
+
         List<String> lstCasosCerrarInteracciones = new List<String>();
 
         for (EmailMessage newEmail : listaEmails)
@@ -1033,17 +1040,10 @@ public with sharing class EmailMessagesUtil
                     idCanalUnico.add(matcher.group());
                 }
 
-                // Actualizamos la cola -> Va a ser siempre GestionCartera
-                if(!genesysQueueGCartera.isEmpty())
-                {
-                    newEmail.GenesysQueueName__c = genesysQueueGCartera[0].Name;
-                    newEmail.GenesysFlowID__c = genesysQueueGCartera[0].GenesysFlowId__c;
-                    newEmail.IsUrgent__c = true;
-                }
-
                 // Comprobar si existe caso con el ID de Canal Unico (y sólo hay uno)
                 List<Case> lstCasoAsociado = (new CasesSelector()).getCaseByCuTicketId(idCanalUnico);
 
+                String nombreCola;
                 // Si tenemos un caso y es de ZDA
                 if(!lstCasoAsociado.isEmpty() && lstCasoAsociado.size() == 1 && lstCasoAsociado[0].RecordTypeId == CaseUtil.RT_ID_ZDA)
                 {
@@ -1056,6 +1056,29 @@ public with sharing class EmailMessagesUtil
 
                     // si está abierto, cerramos resto de interacciones
                     lstCasosCerrarInteracciones.add(casoAsociado.Id);
+
+                    // obtenemos la cola de del caso
+                    if(((String)casoAsociado.OwnerId).startsWith(comienzoId))
+                    {
+                        nombreCola = casoAsociado.Owner.Name;
+                    }
+                    else
+                    {
+                        nombreCola = casoAsociado.OwnerIdPrior__c;
+                    }
+                }
+                else
+                {
+                    nombreCola = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
+                }
+
+                purecloud__PureCloud_Queue__c genesysQueue = mapaQueues.get(nombreCola);
+                // Actualizamos la cola
+                if(genesysQueue != null)
+                {
+                    newEmail.GenesysQueueName__c = genesysQueue.Name;
+                    newEmail.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+                    newEmail.IsUrgent__c = true;
                 }
             }
         }

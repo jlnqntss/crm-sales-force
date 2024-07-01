@@ -635,8 +635,11 @@ public with sharing class CasesSelector extends RecordsSelector
 
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Case.Id, 
-            Case.RecordTypeId
+            Case.RecordTypeId, 
+            Case.OwnerId, 
+            Case.OwnerIdPrior__c
         })
+        .selectFields('Case.Owner.Name')
         .addConditionIn(Case.CuTicketId__c,lstIdCanalUnico);
         return (List<Case>) this.baseQuery.run();
 

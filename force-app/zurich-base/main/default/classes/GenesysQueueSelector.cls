@@ -18,7 +18,9 @@ public with sharing class GenesysQueueSelector extends RecordsSelector
         this.baseQuery.selectFields(new Set<Schema.SObjectField> {
             purecloud__PureCloud_Queue__c.fields.Name,
             purecloud__PureCloud_Queue__c.fields.Id,
-            purecloud__PureCloud_Queue__c.fields.IsSurveyable__c
+            purecloud__PureCloud_Queue__c.fields.IsSurveyable__c,
+            purecloud__PureCloud_Queue__c.fields.CallCenter__c, 
+            purecloud__PureCloud_Queue__c.fields.GenesysFlowId__c 
         })
         .orderBy(purecloud__PureCloud_Queue__c.fields.Name.getDescribe().getName(), 'DESC');
 
