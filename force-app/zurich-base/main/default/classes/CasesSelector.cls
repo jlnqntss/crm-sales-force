@@ -16,8 +16,6 @@ public with sharing class CasesSelector extends RecordsSelector
 
     //#endregion
 
-   
-
     public static final String CASES_LAST_DATE = 'Case.CreatedDate = LAST_N_DAYS:';
     public static final String CASES_MODIFY_LAST_DATE = 'Case.LastModifiedDate = LAST_N_DAYS:';
     public static final String CASES_END_DATE = 'Case.PolicyEndDate__c <= LAST_N_MONTHS:';
@@ -37,8 +35,7 @@ public with sharing class CasesSelector extends RecordsSelector
     String filterStatusCombinado = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Status_Combinado');
     String filterTypeVenta = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Type_Venta');
     String filterSourceMediator = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Source_Area_Mediator');
-
-   
+    String profileIntegrator = GlobalConfigUtil.getGlobalConfigurationValue('Profile_Name_Integrator');
 
     /**
      * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
@@ -596,7 +593,6 @@ public with sharing class CasesSelector extends RecordsSelector
     }
 
     /**
-<<<<<<< force-app/zurich-base/main/default/classes/CasesSelector.cls
      * Método selector que devuelve el número de casos que tiene cada usuario que es un gestor activo.
      * @author aberuete
      * @date 19/06/2024
@@ -615,7 +611,7 @@ public with sharing class CasesSelector extends RecordsSelector
         })
         .count('Id','numCases')
         .addConditionEq(Case.IsClosed, false)
-        .addConditionNotEq(Case.Status, 'Pendiente')
+        .addConditionNotEq(Case.Status, filterStatusPendiente)
         .addConditionIn(Case.OwnerId,subquery)
         .groupBy('OwnerId');
 
@@ -632,7 +628,7 @@ public with sharing class CasesSelector extends RecordsSelector
     {
         Query.Condition andCondition = Query.doOr(
                 Query.conditionEq(CASE_OWNER_TYPE, 'Queue'),
-                Query.conditionEq(CASE_OWNER_PROFILE_NAME, 'Integrator'));
+                Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));
                 
 
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{

@@ -8,6 +8,9 @@
 @isTest
 private with sharing class CasesSelectorTest
 {
+    static final string PROFILE_INTEGRATOR = 'Integrator';
+    static final string PROFILE_USP_USER = 'USP User';
+
     @TestSetup
     private static void createScenario()
     {
@@ -572,7 +575,7 @@ private with sharing class CasesSelectorTest
         List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 1);
         insert accounts;
 
-        List<Profile> profileUsp= [SELECT Id FROM Profile WHERE Name = 'USP User'];
+        List<Profile> profileUsp= [SELECT Id FROM Profile WHERE Name =: PROFILE_USP_USER];
         List<User> userUsp = TestDataFactory.generateUsersByProfile(profileUsp[0].Id, 1);
         userUsp[0].ActiveAgent__c = true;
         insert userUsp;
@@ -594,6 +597,34 @@ private with sharing class CasesSelectorTest
         }
         
         Assert.areEqual(1, numCasos);
+    }
+
+    /**
+     * Test del método que obtiene los casos marcados sin gestor preferente.
+     * @author aberuete
+     * @date 28/06/2024
+     */
+    @isTest
+    private static void test_getCasesWithoutBestAgent()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 1);
+        insert accounts;
+
+        List<Profile> profileIntegrator= [SELECT Id FROM Profile WHERE Name =: PROFILE_INTEGRATOR];
+        List<User> userIntegrator = TestDataFactory.generateUsersByProfile(profileIntegrator[0].Id, 1);
+        insert userIntegrator;
+
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        cases[0].OwnerId = userIntegrator[0].Id; 
+        cases[0].WithoutBestAgent__c = true;
+        insert cases;
+
+        Test.startTest();
+        String query = new CasesSelector().getCasesWithoutBestAgent();
+        List<Case> casesWithoutBestAgent = (List<Case>) Database.query(query);
+        Test.stopTest();
+
+        Assert.isTrue(casesWithoutBestAgent.size() > 0,'Debería de haber algun caso');
     }
 
      /**
