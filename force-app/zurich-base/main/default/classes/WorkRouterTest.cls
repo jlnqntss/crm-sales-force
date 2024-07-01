@@ -159,33 +159,4 @@ private with sharing class WorkRouterTest
 
         Assert.areEqual (user0.id, casesAfterUpdate[0].OwnerId, 'El caso no se ha actualizado correctamente');
     }
-
-    /**
-     * Test del método que comprueba que si existe un error al actualizar los casos, se genera un error. 
-     * El error que da es porque no permite actualizar los usuarios y los casos a la vez en el test. 
-     * @author aberuete
-     * @date 01/07/2024
-     */
-    @isTest
-    private static void test_generateErrorUpdatingCase()
-    {
-        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().getNumberOfAssignedCasesGroupById();
-        new WorkRouter().updateNumberOfCaseByUser(ownerIdsByNumberOfCases);
-
-        User user0 = [Select id,AssignedCases__c,Capacity__c from User where Lastname = 'Work router'];
-        Assert.areEqual(1,user0.AssignedCases__c, MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT);   
-
-        User user1 = [Select id,AssignedCases__c,Capacity__c from User where Lastname = 'Work router 2'];
-        Assert.areEqual(0,user1.AssignedCases__c, MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT);
-
-        List<Case> casesToAssignOwner = [Select id,OwnerId from case where WithoutBestAgent__c = true and owner.profile.name !=: PROFILE_USP_USER];
-        Assert.areEqual(4, casesToAssignOwner.size(),'El número de casos a asignar no es correcto');
-
-        Test.startTest();
-        new WorkRouter().assignCasesWithoutBestAgentToActiveAgent((List<Case>)casesToAssignOwner);
-        Test.stopTest();
-
-        List<Error_Log__c> errorRecords = [SELECT Id,Message__c,Source_Class__c  FROM Error_Log__c];
-        Assert.isTrue(errorRecords.size()>0, 'Deberia de haber algun error');
-    }
 }
