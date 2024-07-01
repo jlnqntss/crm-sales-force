@@ -62,4 +62,38 @@ private with sharing class Test_TicketingHegeoUtil
         Assert.areEqual('Pendiente de Partner', reqPendPartner.ticket.subStatusDesc);
     }
 
+    /**
+     * Testea el metodo createBaseRequestByCase
+     *
+     * @author mario.navarro@seidor.com
+     * @date 25/06/2024
+     */
+    @isTest
+    private static void test_createBaseRequestByCase()
+    {
+        //Caso 0: Cotizacion
+        //Caso 1: Recotizacion
+        //Caso 2: Otra peticion
+        //Caso 3: Contactar sobre 'Otra peticion'
+        List<Case> zdaCaseList = TestDataFactory.generateZDACases(4);
+        zdaCaseList[0].Status = CaseUtil.estadoCerrado; //un caso de recotizacion siempre estara asociado a otro ya cerrado
+        zdaCaseList[1].RelatedCuTicketId__c = zdaCaseList[0].CuTicketId__c;
+        zdaCaseList[1].Description = 'Cuerpo de la recotizacion';
+        zdaCaseList[3].RelatedCuTicketId__c = zdaCaseList[2].CuTicketId__c;
+        zdaCaseList[3].Description = TicketingHegeoUtil.LABEL_BODY_CONTACTAR+': texto del contactar';
+
+        insert zdaCaseList;
+
+        Test.startTest();
+        CanalUnicoUpdateVsegTicketRequest recotizarReq = TicketingHegeoUtil.createBaseRequestByCase(zdaCaseList[1]);
+        CanalUnicoUpdateVsegTicketRequest contactarReq = TicketingHegeoUtil.createBaseRequestByCase(zdaCaseList[3]);
+        Test.stopTest();
+
+        Case recotizarCase = [SELECT RelatedCuTicketId__c FROM Case WHERE Id = :zdaCaseList[1].Id];
+        Case contactarCase = [SELECT CuTicketId__c FROM Case WHERE Id = :zdaCaseList[3].Id];
+
+        Assert.areEqual(recotizarCase.RelatedCuTicketId__c, recotizarReq.ticket.ticketId);
+        Assert.areEqual(contactarCase.CuTicketId__c, contactarReq.ticket.ticketId);
+    }
+
 }
