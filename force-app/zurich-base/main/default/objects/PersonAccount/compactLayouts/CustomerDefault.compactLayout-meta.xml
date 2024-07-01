@@ -6,5 +6,7 @@
     <fields>NationalIdType__c</fields>
     <fields>NationalId__c</fields>
     <fields>CustomerValue__c</fields>
+    <fields>GlobalCustomerValue_NoLife__c</fields>
+    <fields>GlobalCustomerValue_Life__c</fields>
     <label>Customer Default</label>
 </CompactLayout>
