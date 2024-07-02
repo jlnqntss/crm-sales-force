@@ -66,6 +66,20 @@ public with sharing class TicketingHegeoUtil
         set;
     }
 
+    @TestVisible
+    private static final String LABEL_BODY_CONTACTAR
+    {
+        get
+        {
+            if (LABEL_BODY_CONTACTAR == null)
+            {
+                LABEL_BODY_CONTACTAR = GlobalConfigUtil.getGlobalConfigurationValue('ZDA_Contactar_Body_Label');
+            }
+            return LABEL_BODY_CONTACTAR;
+        }
+        set;
+    }
+
     /**
      * Establece los campos ticketStatus, ticketSubStatus y subStatusDesc del objeto request en funcion
      * del estado proporcionado por el caso.
@@ -101,7 +115,8 @@ public with sharing class TicketingHegeoUtil
      * @param request Objeto request al que setear los campos ticketStatus y ticketSubStatus
      * @param c Objeto caso a partir del cual se informaran los campos en el objeto request
      */
-    public static void setStatusSubstatusByCase(CanalUnicoUpdateVsegTicketRequest request, Case c)
+    @TestVisible
+    private static void setStatusSubstatusByCase(CanalUnicoUpdateVsegTicketRequest request, Case c)
     {
         request.ticket.ticketSubStatus = ZdaCuReqAvailTicketSubStatusValues__mdt.getInstance(SUBSTATUS_SIN)?.Value__c;
         request.ticket.ticketStatus = caseStatusCuStatusRelationship.get(c.Status);
@@ -169,6 +184,10 @@ public with sharing class TicketingHegeoUtil
      * Crea una peticion para enviar a canal unico con los que se rellenan a partir de la informacion
      * del caso relacionado. A ESTE OBJETO AUN FALTARA POR INFORMAR EL CAMPO calloutRequest.ticket.event
      * 
+     * El campo calloutRequest.ticket.ticketId se rellenara con el ticket del caso padre si es un recotizar.
+     * Los recotizar se reconocen porque son casos 'hijos' y no tienen en el cuerpo del caso el texto
+     * 'Titulo_Contactar', que lo incluyen los contactar (casos hijos tambien)
+     * 
      * @author mario.navarro@seidor.com
      * @date 30/05/2024
      * @param relatedCase caso relacionado con la peticion a enviar
@@ -178,8 +197,17 @@ public with sharing class TicketingHegeoUtil
     {
         CanalUnicoUpdateVsegTicketRequest calloutRequest = new CanalUnicoUpdateVsegTicketRequest();
         calloutRequest.ticket = new CanalUnicoUpdateVsegTicketRequest.CanalUnicoTicket();
-        calloutRequest.ticket.ticketId = relatedCase.CuTicketId__c;
-        calloutRequest.ticket.externalTicketId = '' + relatedCase.CaseNumber;
+        if ( String.isNotBlank(relatedCase.RelatedCuTicketId__c) && String.isNotBlank(relatedCase.Description) &&
+             !relatedCase.Description.contains(LABEL_BODY_CONTACTAR) )
+        {
+            //Caso hijo cuya descripcion no contiene 'Titulo_Contactar' ==> recotizar, se envia el ticket 'padre'
+            calloutRequest.ticket.ticketId = relatedCase.RelatedCuTicketId__c;
+        }
+        else
+        {
+            calloutRequest.ticket.ticketId = relatedCase.CuTicketId__c;
+        }
+        calloutRequest.ticket.externalTicketId = relatedCase.CaseNumber;
         setStatusSubstatusByCase(calloutRequest, relatedCase);
         calloutRequest.ticket.agent = relatedCase.Owner.Name;
         calloutRequest.ticket.eventReason = ZdaCuReqAvailableEventReasonValues__mdt.getInstance(EVENT_REASON_OTROS)?.Value__c;
