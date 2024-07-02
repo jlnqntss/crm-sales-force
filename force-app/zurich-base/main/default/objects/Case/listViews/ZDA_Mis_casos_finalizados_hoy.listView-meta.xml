@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ZDA_Todos_los_casos_pend_de_soporte</fullName>
-    <booleanFilter>1 AND 2 AND 3</booleanFilter>
+    <fullName>ZDA_Mis_casos_finalizados_hoy</fullName>
     <columns>CASES.CASE_NUMBER</columns>
     <columns>CuTicketId__c</columns>
     <columns>CASES.STATUS</columns>
@@ -14,27 +13,19 @@
     <columns>OWNER_NAME</columns>
     <columns>CommercialProductCode__c</columns>
     <columns>CASES.CLOSED_DATE</columns>
-    <filterScope>Everything</filterScope>
+    <filterScope>Mine</filterScope>
     <filters>
-        <field>CASES.RECORDTYPE</field>
+        <field>CASES.STATUS</field>
         <operation>equals</operation>
-        <value>Case.ZDAInquiry</value>
+        <value>Cerrado,Closed</value>
     </filters>
     <filters>
-        <field>PendingBy__c</field>
+        <field>CASES.CLOSED_DATE</field>
         <operation>equals</operation>
-        <value>Support</value>
+        <value>TODAY</value>
     </filters>
-    <filters>
-        <field>PendingBy__c</field>
-        <operation>equals</operation>
-        <value>Supervisor</value>
-    </filters>
-    <label>ZDA - Todos los casos pend. de soporte</label>
+    <label>ZDA - Mis casos finalizados hoy</label>
     <sharedTo>
         <role>ZDA_Agente</role>
-        <role>ZDA_Supervisor</role>
-        <roleAndSubordinates>ZDA_Agente</roleAndSubordinates>
-        <roleAndSubordinates>ZDA_Supervisor</roleAndSubordinates>
     </sharedTo>
 </ListView>
