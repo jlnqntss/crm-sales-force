@@ -181,7 +181,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.CustomerValue__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -231,6 +231,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.GridReference__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.GlobalCustomerValue_Life__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>false</editable>
+        <field>Account.GlobalCustomerValue_NoLife__c</field> 
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

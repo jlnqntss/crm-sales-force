@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GlobalCustomerValue_NoLife__c</fullName>
+    <description>[ZRM] Campo que se obtiene a partir de la nueva External request de Customer_KPI</description>
+    <externalId>false</externalId>
+    <formula>Case(
+				GlobalCustomerValueInfo_NoLife__c, 
+				&quot;Cero Estrellas&quot;, HYPERLINK($Setup.Customer_KPI_Help__c.CLTV_NoLife__c, IMAGE(&quot;/img/samples/stars_000.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
+				&quot;Una Estrella&quot;, HYPERLINK($Setup.Customer_KPI_Help__c.CLTV_NoLife__c, IMAGE(&quot;/img/samples/stars_100.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
+				&quot;Dos Estrellas&quot;, HYPERLINK($Setup.Customer_KPI_Help__c.CLTV_NoLife__c, IMAGE(&quot;/img/samples/stars_200.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
+				&quot;Tres Estrellas&quot;, HYPERLINK($Setup.Customer_KPI_Help__c.CLTV_NoLife__c, IMAGE(&quot;/img/samples/stars_300.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
+				&quot;Cuatro Estrellas&quot;, HYPERLINK($Setup.Customer_KPI_Help__c.CLTV_NoLife__c, IMAGE(&quot;/img/samples/stars_400.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
+				&quot;Cinco Estrellas&quot;, HYPERLINK($Setup.Customer_KPI_Help__c.CLTV_NoLife__c, IMAGE(&quot;/img/samples/stars_500.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
+				&quot;No Value&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Pulsa sobre la imagen para mostrar más información</inlineHelpText>
+    <label>Global Customer Value (Non-Life)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
