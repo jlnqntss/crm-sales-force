@@ -1,12 +1,13 @@
 /**
- * @description       : Test que prueba la clase UserUtil que desmarca el campo Active Agent en el caso que se dé de baja el usuario
- * @author            : lgonzalez
- * @group             : Seidor
- * @last modified on  : 05-24-2023
- * @last modified by  : lgonzalez
+* @description       : Test que prueba la clase UserUtil que desmarca el campo Active Agent en el caso que se dé de baja el usuario
+* @author            : lgonzalez
+* @group             : Seidor
+* @last modified on  : 05-24-2023
+* @last modified by  : lgonzalez
 **/
 @isTest
-private with sharing class Test_UserUtil {
+private with sharing class Test_UserUtil 
+{
     @testSetup
     public static void userSetup(){
         // Se crea el test user
@@ -42,6 +43,6 @@ private with sharing class Test_UserUtil {
             updateUser();
         }
         Test.stopTest();
-
+        
     }
 }
