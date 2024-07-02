@@ -7,5 +7,6 @@
 **/
 trigger UserTrigger on User (after insert, before insert, after update, before update, after delete, before delete)
 {
+    // Trigger de actualización de campos de User
     TriggerFactory.createHandler(User.sObjectType);
 }

@@ -6,10 +6,10 @@
  * @last modified by  : lgonzalez
 **/
 @isTest
-private without sharing class Test_UserUtil {
+private with sharing class Test_UserUtil {
     @testSetup
     public static void userSetup(){
-        // Create test user
+        // Se crea el test user
         User testUser = new User(
             ProfileId = [SELECT Id FROM Profile WHERE Name = 'System Administrator'].Id,
             LastName = 'Last Name',
@@ -28,6 +28,7 @@ private without sharing class Test_UserUtil {
         insert testUser;
     }
     public static void updateUser() {
+        //Buscamos el registro del usuario test que se ha creado previamente para cambiar el campo IsActive a false
         User testUserToUpdate = [SELECT Id, IsActive FROM User WHERE Email =: 'Unotestpruega@gmail.com' WITH USER_MODE LIMIT 1];
         testUserToUpdate.IsActive = false;
         update testUserToUpdate;
