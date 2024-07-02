@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <customSettingsType>Hierarchy</customSettingsType>
-    <description>Custom Setting para guardar la url de la imagen a mostrar en los valores de Customer_KPI</description>
+    <description>Custom Setting para guardar la url de la imagen a mostrar en los valores de ACCOUNT_SCORE_KPI</description>
     <enableFeeds>false</enableFeeds>
-    <label>Customer KPI Help</label>
+    <label>Account_Score_KPI</label>
     <visibility>Public</visibility>
 </CustomObject>
