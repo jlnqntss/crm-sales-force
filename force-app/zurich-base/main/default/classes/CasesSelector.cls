@@ -484,7 +484,9 @@ public with sharing class CasesSelector extends RecordsSelector
             Case.Status,
             Case.PendingBy__c,
             Case.ResponseCanalUnico__c,
-            Case.CloseResult__c
+            Case.CloseResult__c,
+            Case.RelatedCuTicketId__c,
+            Case.Description
         })
         .selectFields('Case.Owner.Name')
         .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)

@@ -4,7 +4,7 @@
     <assignments>
         <name>A_adir_Contacto</name>
         <label>Añadir Contacto</label>
-        <locationX>534</locationX>
+        <locationX>567</locationX>
         <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>contactsIds</assignToReference>
@@ -20,8 +20,8 @@
     <assignments>
         <name>A_adir_Contactos</name>
         <label>Añadir Contactos</label>
-        <locationX>138</locationX>
-        <locationY>2363</locationY>
+        <locationX>171</locationX>
+        <locationY>2471</locationY>
         <assignmentItems>
             <assignToReference>asistentesText</assignToReference>
             <operator>Add</operator>
@@ -41,9 +41,25 @@
         </connector>
     </assignments>
     <assignments>
+        <name>A_adir_email</name>
+        <label>Añadir email</label>
+        <locationX>171</locationX>
+        <locationY>1871</locationY>
+        <assignmentItems>
+            <assignToReference>usersEmails</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Usuarios.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Usuarios</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>A_adir_Lead</name>
         <label>Añadir Lead</label>
-        <locationX>798</locationX>
+        <locationX>831</locationX>
         <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>leadsIds</assignToReference>
@@ -59,8 +75,8 @@
     <assignments>
         <name>A_adir_Leads</name>
         <label>Añadir Leads</label>
-        <locationX>138</locationX>
-        <locationY>2963</locationY>
+        <locationX>171</locationX>
+        <locationY>3071</locationY>
         <assignmentItems>
             <assignToReference>asistentesText</assignToReference>
             <operator>Add</operator>
@@ -75,7 +91,7 @@
     <assignments>
         <name>A_adir_owner_como_asistente</name>
         <label>Añadir owner como asistente</label>
-        <locationX>356</locationX>
+        <locationX>446</locationX>
         <locationY>431</locationY>
         <assignmentItems>
             <assignToReference>asistentesText</assignToReference>
@@ -98,7 +114,7 @@
     <assignments>
         <name>A_adir_Usuario</name>
         <label>Añadir Usuario</label>
-        <locationX>270</locationX>
+        <locationX>303</locationX>
         <locationY>971</locationY>
         <assignmentItems>
             <assignToReference>usersIds</assignToReference>
@@ -114,7 +130,7 @@
     <assignments>
         <name>A_adir_Usuarios</name>
         <label>Añadir Usuarios</label>
-        <locationX>138</locationX>
+        <locationX>171</locationX>
         <locationY>1763</locationY>
         <assignmentItems>
             <assignToReference>asistentesText</assignToReference>
@@ -131,14 +147,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Usuarios</targetReference>
+            <targetReference>A_adir_email</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Modalidad_online</name>
         <label>Modalidad online</label>
-        <locationX>422</locationX>
-        <locationY>3647</locationY>
+        <locationX>314</locationX>
+        <locationY>4355</locationY>
         <assignmentItems>
             <assignToReference>$Record.Modalidad__c</assignToReference>
             <operator>Assign</operator>
@@ -153,8 +169,8 @@
     <assignments>
         <name>Modalidad_presencial</name>
         <label>Modalidad presencial</label>
-        <locationX>686</locationX>
-        <locationY>3647</locationY>
+        <locationX>578</locationX>
+        <locationY>4355</locationY>
         <assignmentItems>
             <assignToReference>$Record.Modalidad__c</assignToReference>
             <operator>Assign</operator>
@@ -188,9 +204,59 @@
         </value>
     </constants>
     <decisions>
+        <name>Contactos_encontrados</name>
+        <label>Contactos encontrados?</label>
+        <locationX>369</locationX>
+        <locationY>3563</locationY>
+        <defaultConnector>
+            <targetReference>Existe_acta</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>S10</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Buscar_Contactos.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Informar_Contacto</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>El_evento_tiene_contacto</name>
+        <label>El evento tiene contacto?</label>
+        <locationX>215</locationX>
+        <locationY>3347</locationY>
+        <defaultConnector>
+            <targetReference>Buscar_Contactos</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>S9</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WhoId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Existe_acta</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Es_Contact</name>
         <label>Es Contact</label>
-        <locationX>666</locationX>
+        <locationX>699</locationX>
         <locationY>971</locationY>
         <defaultConnector>
             <targetReference>A_adir_Lead</targetReference>
@@ -215,8 +281,8 @@
     <decisions>
         <name>Es_online</name>
         <label>Es online?</label>
-        <locationX>554</locationX>
-        <locationY>3539</locationY>
+        <locationX>446</locationX>
+        <locationY>4247</locationY>
         <defaultConnector>
             <targetReference>Modalidad_presencial</targetReference>
         </defaultConnector>
@@ -240,7 +306,7 @@
     <decisions>
         <name>Es_Usuario</name>
         <label>Es Usuario</label>
-        <locationX>468</locationX>
+        <locationX>501</locationX>
         <locationY>863</locationY>
         <defaultConnector>
             <targetReference>Es_Contact</targetReference>
@@ -265,11 +331,8 @@
     <decisions>
         <name>Existe_acta</name>
         <label>Existe acta?</label>
-        <locationX>356</locationX>
-        <locationY>3323</locationY>
-        <defaultConnector>
-            <targetReference>Crear_Acta</targetReference>
-        </defaultConnector>
+        <locationX>446</locationX>
+        <locationY>4031</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>S7</name>
@@ -286,11 +349,26 @@
             </connector>
             <label>Sí</label>
         </rules>
+        <rules>
+            <name>Relacionado_con_Intermediario</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>accountIsIntermediary</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Crear_Acta</targetReference>
+            </connector>
+            <label>Relacionado con Intermediario</label>
+        </rules>
     </decisions>
     <decisions>
         <name>Hay_asistentes</name>
         <label>Hay asistentes?</label>
-        <locationX>356</locationX>
+        <locationX>446</locationX>
         <locationY>647</locationY>
         <defaultConnector>
             <targetReference>Existe_acta</targetReference>
@@ -315,8 +393,8 @@
     <decisions>
         <name>Hay_Contactos</name>
         <label>Hay Contactos?</label>
-        <locationX>182</locationX>
-        <locationY>2039</locationY>
+        <locationX>215</locationX>
+        <locationY>2147</locationY>
         <defaultConnector>
             <targetReference>Hay_Leads</targetReference>
         </defaultConnector>
@@ -340,10 +418,10 @@
     <decisions>
         <name>Hay_Leads</name>
         <label>Hay Leads?</label>
-        <locationX>182</locationX>
-        <locationY>2639</locationY>
+        <locationX>215</locationX>
+        <locationY>2747</locationY>
         <defaultConnector>
-            <targetReference>Existe_acta</targetReference>
+            <targetReference>El_evento_tiene_contacto</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -365,7 +443,7 @@
     <decisions>
         <name>Hay_Usuarios</name>
         <label>Hay Usuarios?</label>
-        <locationX>182</locationX>
+        <locationX>215</locationX>
         <locationY>1439</locationY>
         <defaultConnector>
             <targetReference>Hay_Contactos</targetReference>
@@ -388,12 +466,27 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>accountIsIntermediary</name>
+        <dataType>Boolean</dataType>
+        <expression>{!Buscar_Contactos.Account.RecordType.DeveloperName} = {!intermediaryRcDeveloperName}</expression>
+    </formulas>
+    <formulas>
+        <name>intermediaryRcDeveloperName</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Account_RecordType_Intermediary.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>relatedToIntermediary</name>
+        <dataType>String</dataType>
+        <expression>IF({!accountIsIntermediary}, &apos;Yes&apos;, &apos;No&apos;)</expression>
+    </formulas>
     <interviewLabel>Event Trigger - After insert/update Crear Acta {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Event Trigger - After insert/update Crear Acta</label>
     <loops>
         <name>Asistentes</name>
         <label>Asistentes</label>
-        <locationX>182</locationX>
+        <locationX>215</locationX>
         <locationY>755</locationY>
         <collectionReference>Obtener_asistentes</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -407,8 +500,8 @@
     <loops>
         <name>Contactos</name>
         <label>Contactos</label>
-        <locationX>50</locationX>
-        <locationY>2255</locationY>
+        <locationX>83</locationX>
+        <locationY>2363</locationY>
         <collectionReference>Obtener_Contactos</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -421,21 +514,21 @@
     <loops>
         <name>Leads</name>
         <label>Leads</label>
-        <locationX>50</locationX>
-        <locationY>2855</locationY>
+        <locationX>83</locationX>
+        <locationY>2963</locationY>
         <collectionReference>Obtener_Leads</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>A_adir_Leads</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Existe_acta</targetReference>
+            <targetReference>El_evento_tiene_contacto</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
         <name>Usuarios</name>
         <label>Usuarios</label>
-        <locationX>50</locationX>
+        <locationX>83</locationX>
         <locationY>1655</locationY>
         <collectionReference>Obtener_Usuarios</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -468,8 +561,8 @@
     <recordCreates>
         <name>Crear_Acta</name>
         <label>Crear Acta</label>
-        <locationX>554</locationX>
-        <locationY>3431</locationY>
+        <locationX>446</locationX>
+        <locationY>4139</locationY>
         <connector>
             <targetReference>Es_online</targetReference>
         </connector>
@@ -495,9 +588,30 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>Buscar_Contactos</name>
+        <label>Buscar Contactos</label>
+        <locationX>369</locationX>
+        <locationY>3455</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Contactos_encontrados</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Email</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>usersEmails</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Obtener_asistentes</name>
         <label>Obtener asistentes</label>
-        <locationX>356</locationX>
+        <locationX>446</locationX>
         <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -518,8 +632,8 @@
     <recordLookups>
         <name>Obtener_Contactos</name>
         <label>Obtener Contactos</label>
-        <locationX>50</locationX>
-        <locationY>2147</locationY>
+        <locationX>83</locationX>
+        <locationY>2255</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Contactos</targetReference>
@@ -539,8 +653,8 @@
     <recordLookups>
         <name>Obtener_Leads</name>
         <label>Obtener Leads</label>
-        <locationX>50</locationX>
-        <locationY>2747</locationY>
+        <locationX>83</locationX>
+        <locationY>2855</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Leads</targetReference>
@@ -560,7 +674,7 @@
     <recordLookups>
         <name>Obtener_Owner</name>
         <label>Obtener Owner</label>
-        <locationX>356</locationX>
+        <locationX>446</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -581,7 +695,7 @@
     <recordLookups>
         <name>Obtener_Usuarios</name>
         <label>Obtener Usuarios</label>
-        <locationX>50</locationX>
+        <locationX>83</locationX>
         <locationY>1547</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -602,8 +716,8 @@
     <recordUpdates>
         <name>Actualizar_acta</name>
         <label>Actualizar acta</label>
-        <locationX>158</locationX>
-        <locationY>3431</locationY>
+        <locationX>50</locationX>
+        <locationY>4139</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -635,8 +749,8 @@
     <recordUpdates>
         <name>Asignar_Acta</name>
         <label>Asignar Acta</label>
-        <locationX>554</locationX>
-        <locationY>3839</locationY>
+        <locationX>446</locationX>
+        <locationY>4547</locationY>
         <inputAssignments>
             <field>Acta__c</field>
             <value>
@@ -645,13 +759,35 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>Informar_Contacto</name>
+        <label>Informar Contacto</label>
+        <locationX>237</locationX>
+        <locationY>3671</locationY>
+        <connector>
+            <targetReference>Existe_acta</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RelatedToIntermediary__c</field>
+            <value>
+                <elementReference>relatedToIntermediary</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>Buscar_Contactos.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>230</locationX>
+        <locationX>320</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Obtener_Owner</targetReference>
         </connector>
-        <filterFormula>AND(ISPICKVAL({!$Record.RelatedToIntermediary__c}, &apos;Yes&apos;), OR({!$UserRole.DeveloperName} = &apos;SDMHomeOffice&apos;, {!$UserRole.DeveloperName} = &apos;SDM_Consultor&apos;, {!$UserRole.DeveloperName} = &apos;SDM_CV&apos;, {!$UserRole.DeveloperName} = &apos;SDM_DT&apos;, {!$UserRole.DeveloperName} = &apos;SDM_DV&apos;, {!$UserRole.DeveloperName} = &apos;SDM_RN&apos;))</filterFormula>
+        <filterFormula>OR({!$UserRole.DeveloperName} = &apos;SDMHomeOffice&apos;, {!$UserRole.DeveloperName} = &apos;SDM_Consultor&apos;, {!$UserRole.DeveloperName} = &apos;SDM_CV&apos;, {!$UserRole.DeveloperName} = &apos;SDM_DT&apos;, {!$UserRole.DeveloperName} = &apos;SDM_DV&apos;, {!$UserRole.DeveloperName} = &apos;SDM_RN&apos;)</filterFormula>
         <object>Event</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
@@ -679,6 +815,13 @@
     </variables>
     <variables>
         <name>leadsIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>usersEmails</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
