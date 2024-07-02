@@ -273,11 +273,6 @@
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_Queue.Value__c}</expression>
     </formulas>
     <formulas>
-        <name>Queue_Name</name>
-        <dataType>String</dataType>
-        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_Name_Urgencias.Value__c}</expression>
-    </formulas>
-    <formulas>
         <name>slaFormula</name>
         <dataType>Number</dataType>
         <expression>({!$Flow.CurrentDateTime}-{!GetCaseMilestoneAction.TargetDate})*24*60</expression>
