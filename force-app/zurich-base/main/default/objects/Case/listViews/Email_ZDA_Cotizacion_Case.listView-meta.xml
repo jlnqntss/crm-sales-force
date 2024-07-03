@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ZDA_Mis_casos_pendientes_de_Partner</fullName>
+    <fullName>Email_ZDA_Cotizacion_Case</fullName>
     <columns>CASES.CASE_NUMBER</columns>
     <columns>CuTicketId__c</columns>
     <columns>CASES.STATUS</columns>
@@ -13,15 +13,10 @@
     <columns>OWNER_NAME</columns>
     <columns>CommercialProductCode__c</columns>
     <columns>CASES.CLOSED_DATE</columns>
-    <filterScope>Mine</filterScope>
-    <filters>
-        <field>PendingBy__c</field>
-        <operation>equals</operation>
-        <value>Partner</value>
-    </filters>
-    <label>ZDA - Mis casos pendientes de Partner</label>
+    <filterScope>Queue</filterScope>
+    <label>Email_ZDA_Cotizacion</label>
+    <queue>Email_ZDA_Cotizacion</queue>
     <sharedTo>
-        <role>ZDA_Agente</role>
-        <role>ZDA_Supervisor</role>
+        <allInternalUsers></allInternalUsers>
     </sharedTo>
 </ListView>
