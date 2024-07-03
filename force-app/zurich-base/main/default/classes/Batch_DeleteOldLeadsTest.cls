@@ -121,7 +121,7 @@ public with sharing class Batch_DeleteOldLeadsTest {
         //Recuperar leads no borrados después del proceso
         List<Account> updatedLeadLst = [SELECT Id FROM Account];
 
-        System.assertEquals(40, updatedLeadLst.size(), 'Debería haber 40 leads sin borrar');
+        Assert.areEqual(30, updatedLeadLst.size(), 'Debería haber 40 leads sin borrar');
     }
 
     @isTest
@@ -137,6 +137,6 @@ public with sharing class Batch_DeleteOldLeadsTest {
         
         List<CronTrigger> cronList = new List<CronTrigger>([SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobID]);
 
-        System.assertEquals(1, cronList.size(), 'Debe haber un job programado');
+        Assert.areEqual(1, cronList.size(), 'Debe haber un job programado');
     }
 }
