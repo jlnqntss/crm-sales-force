@@ -7,6 +7,7 @@ public class AccountUtil
 {
 
     public static final String CUSTOMER_RT_DEVELOPER_NAME = GlobalConfigUtil.getGlobalConfigurationValue('Account_RecordType_Customer');
+    public static final String BUSINESS_CUSTOMER_RT_DEVELOPER_NAME = GlobalConfigUtil.getGlobalConfigurationValue('Account_RecordType_BusinessCustomer');
     public static final String INTERMEDIARY_RT_DEVELOPER_NAME = GlobalConfigUtil.getGlobalConfigurationValue('Account_RecordType_Intermediary');
 
     // Recupera el Id del RecordType de cuentas de tipo Lead
