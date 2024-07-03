@@ -154,6 +154,21 @@
                 <default>false</default>
                 <label>No quiere Póliza - Supera Antigüedad</label>
             </value>
+            <value>
+                <fullName>Integral customer</fullName>
+                <default>false</default>
+                <label>Integral customer</label>
+            </value>
+            <value>
+                <fullName>Impossible to contact</fullName>
+                <default>false</default>
+                <label>Impossible to contact</label>
+            </value>
+            <value>
+                <fullName>Policy in the name of a relative</fullName>
+                <default>false</default>
+                <label>Policy in the name of a relative</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
@@ -289,6 +304,21 @@
         <valueSettings>
             <controllingFieldValue>VC</controllingFieldValue>
             <valueName>Agent removes from the campaign</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Integral customer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Impossible to contact</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Policy in the name of a relative</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
