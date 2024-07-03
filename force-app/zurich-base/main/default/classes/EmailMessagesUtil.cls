@@ -774,8 +774,8 @@ public with sharing class EmailMessagesUtil
      * @author jfherrero
      * @date 22/01/2024
      * 
-     * @last modified on  : 22-03-2024
-     * @last modified by  : jfherrero
+     * @last modified on  : 07-03-2024
+     * @last modified by  : mfernandezcarrera
      * 
      * @param List<EmailMessage> emailList : Lista de email message
     */
@@ -1011,82 +1011,104 @@ public with sharing class EmailMessagesUtil
      * @date 21/06/2024
      * @param List<EmailMessage>
      */
-    public void checkExistingCaseZDAUrgencias(List<EmailMessage> listaEmails)
+    public void checkExistingCaseZDAUrgencias(List<EmailMessage> listaEmails) 
     {
         String nameQueueUrgencias = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_Urgencias');
         String comienzoId = GlobalConfigUtil.getGlobalConfigurationValue('Beggining_Id_Queue');
-
-        List<purecloud__PureCloud_Queue__c> lstPurecloud = (new GenesysQueueSelector()).getAllQueues();
-        Map<String, purecloud__PureCloud_Queue__c> mapaQueues = new Map<String, purecloud__PureCloud_Queue__c>(); 
-        for(purecloud__PureCloud_Queue__c purecloud : lstPurecloud)
-        {
-            mapaQueues.put(purecloud.Name, purecloud);
-        }
-
-
+        Map<String, purecloud__PureCloud_Queue__c> mapaQueues = getQueueMap();
         List<String> lstCasosCerrarInteracciones = new List<String>();
-
-        for (EmailMessage newEmail : listaEmails)
+    
+        for (EmailMessage newEmail : listaEmails) 
         {
-            if(!String.isBlank(newEmail.GenesysQueueName__c) && newEmail.GenesysQueueName__c.equals(nameQueueUrgencias)) 
+            if (isUrgenciasQueue(newEmail, nameQueueUrgencias)) 
             {
-                List<String> idCanalUnico = new List<String>();
-                // Expresión regular para detectar secuencias de dígitos
-                Pattern numericPattern = Pattern.compile('\\d+');
-                Matcher matcher = numericPattern.matcher(newEmail.Subject);
-                
-                // Itera sobre todas las coincidencias y convierte a Integer
-                while (matcher.find()) {
-                    idCanalUnico.add(matcher.group());
-                }
-
-                // Comprobar si existe caso con el ID de Canal Unico (y sólo hay uno)
-                List<Case> lstCasoAsociado = (new CasesSelector()).getCaseByCuTicketId(idCanalUnico);
-
-                String nombreCola;
-                // Si tenemos un caso y es de ZDA
-                if(!lstCasoAsociado.isEmpty() && lstCasoAsociado.size() == 1 && lstCasoAsociado[0].RecordTypeId == CaseUtil.RT_ID_ZDA)
+                List<String> idCanalUnico = extractIdsFromSubject(newEmail.Subject);
+    
+                if (idCanalUnico.size() == 1) 
                 {
-                    Case casoAsociado = lstCasoAsociado[0];
-
-                    // relacionamos el email con el caso encontrado
-                    newEmail.ParentId = casoAsociado.Id;
-                    newEmail.RelatedToId = casoAsociado.Id;
-                    newEmail.IsUrgent__c = true;
-
-                    // si está abierto, cerramos resto de interacciones
-                    lstCasosCerrarInteracciones.add(casoAsociado.Id);
-
-                    // obtenemos la cola de del caso
-                    if(((String)casoAsociado.OwnerId).startsWith(comienzoId))
+                    List<Case> lstCasoAsociado = (new CasesSelector()).getCaseByCuTicketId(idCanalUnico);
+                    if (isZDACase(lstCasoAsociado)) 
                     {
-                        nombreCola = casoAsociado.Owner.Name;
+                        Case casoAsociado = lstCasoAsociado.get(0);
+                        linkEmailToCase(newEmail, casoAsociado);
+                        lstCasosCerrarInteracciones.add(casoAsociado.Id);
+                        updateEmailQueue(newEmail, getQueueName(casoAsociado, comienzoId), mapaQueues);
+                    } else {
+                        setDefaultQueue(newEmail, mapaQueues);
                     }
-                    else
-                    {
-                        nombreCola = casoAsociado.OwnerIdPrior__c;
-                    }
-                }
-                else
-                {
-                    nombreCola = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
-                }
-
-                purecloud__PureCloud_Queue__c genesysQueue = mapaQueues.get(nombreCola);
-                // Actualizamos la cola
-                if(genesysQueue != null)
-                {
-                    newEmail.GenesysQueueName__c = genesysQueue.Name;
-                    newEmail.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
-                    newEmail.IsUrgent__c = true;
+                } else {
+                    setDefaultQueue(newEmail, mapaQueues);
                 }
             }
         }
-        if (!lstCasosCerrarInteracciones.isEmpty())
+    
+        if (!lstCasosCerrarInteracciones.isEmpty()) 
         {
             CaseHelper.closeInteractions(lstCasosCerrarInteracciones);
         }
     }
+    
+    private Map<String, purecloud__PureCloud_Queue__c> getQueueMap() 
+    {
+        List<purecloud__PureCloud_Queue__c> lstPurecloud = (new GenesysQueueSelector()).getAllQueues();
+        Map<String, purecloud__PureCloud_Queue__c> mapaQueues = new Map<String, purecloud__PureCloud_Queue__c>();
+        for (purecloud__PureCloud_Queue__c purecloud : lstPurecloud) 
+        {
+            mapaQueues.put(purecloud.Name, purecloud);
+        }
+        return mapaQueues;
+    }
+    
+    private boolean isUrgenciasQueue(EmailMessage email, String nameQueueUrgencias) 
+    {
+        return !String.isBlank(email.GenesysQueueName__c) && email.GenesysQueueName__c.equals(nameQueueUrgencias);
+    }
+    
+    private List<String> extractIdsFromSubject(String subject)
+     {
+        List<String> ids = new List<String>();
+        Pattern numericPattern = Pattern.compile('\\d+');
+        Matcher matcher = numericPattern.matcher(subject);
+        while (matcher.find()) 
+        {
+            ids.add(matcher.group());
+        }
+        return ids;
+    }
+    
+    private boolean isZDACase(List<Case> lstCasoAsociado) 
+    {
+        return lstCasoAsociado.size() == 1 && lstCasoAsociado.get(0).RecordTypeId == CaseUtil.RT_ID_ZDA;
+    }
+    
+    private void linkEmailToCase(EmailMessage email, Case caso) 
+    {
+        email.ParentId = caso.Id;
+        email.RelatedToId = caso.Id;
+        email.IsUrgent__c = true;
+    }
+    
+    private String getQueueName(Case caso, String comienzoId) 
+    {
+        return caso.OwnerId.startsWith(comienzoId) ? caso.Owner.Name : caso.OwnerIdPrior__c;
+    }
+    
+    private void updateEmailQueue(EmailMessage email, String queueName, Map<String, purecloud__PureCloud_Queue__c> queueMap) 
+    {
+        purecloud__PureCloud_Queue__c genesysQueue = queueMap.get(queueName);
+        if (genesysQueue != null) {
+            email.GenesysQueueName__c = genesysQueue.Name;
+            email.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+            email.IsUrgent__c = true;
+        }
+    }
+    
+    private void setDefaultQueue(EmailMessage email, Map<String, purecloud__PureCloud_Queue__c> queueMap) 
+    {
+        String defaultQueueName = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
+        updateEmailQueue(email, defaultQueueName, queueMap);
+    }
+    
 
     /**
      * Determina si el email tiene la interacción de Genesys Informada 
