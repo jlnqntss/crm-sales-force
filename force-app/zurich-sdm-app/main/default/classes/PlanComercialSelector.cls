@@ -241,7 +241,7 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
         return childPlans;
     }
 
-    /**Recuperar todos los campos de plan comercial anual (RN y Mediador) según indicadores y año de objetivo además de related email coincida con los de la metadata
+    /**Recuperar todos los campos de plan comercial anual (RN y Mediador) según indicadores y año de objetivo
      * @author nts (dmunoz)
      * @date 25/07/2022
      * 
@@ -322,26 +322,6 @@ public with sharing class PlanComercialSelector extends RecordsSelector {
 
         return result;
      }
-
-     /**
-     * Lista de email contenido en la metadata
-     * @return List<String>
-     * @author dmunoz
-     * @date 22/08/2022
-     */
-    private static List<String> getMetadataEmails() {
-        String mensualPlanValidEmails = 'MensualPlanValidEmails';
-        AdminSetupParameter__mdt adminSetupParameterMDT = AdminSetupParameter__mdt.getInstance(mensualPlanValidEmails);
-        
-        List<String> result = new List<String>();
-        String metadataEmailsRaw = adminSetupParameterMDT.Value__c;
-
-        if (String.isNotEmpty(metadataEmailsRaw)) {
-            result = new List<String>(metadataEmailsRaw.split(','));
-        }
-
-        return result;
-    }
 
     /**Recuperar los planes mensuales para borrar a partir de una fecha dada
      * @author nts (dmunoz)
