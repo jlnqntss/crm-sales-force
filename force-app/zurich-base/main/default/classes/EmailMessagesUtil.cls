@@ -1041,7 +1041,6 @@ public with sharing class EmailMessagesUtil
                 }
             }
         }
-    
         if (!lstCasosCerrarInteracciones.isEmpty()) 
         {
             CaseHelper.closeInteractions(lstCasosCerrarInteracciones);
@@ -1090,7 +1089,7 @@ public with sharing class EmailMessagesUtil
     
     private String getQueueName(Case caso, String comienzoId) 
     {
-        return caso.OwnerId.startsWith(comienzoId) ? caso.Owner.Name : caso.OwnerIdPrior__c;
+        return ((String) caso.OwnerId).startsWith(comienzoId) ? caso.Owner.Name : caso.OwnerIdPrior__c;
     }
     
     private void updateEmailQueue(EmailMessage email, String queueName, Map<String, purecloud__PureCloud_Queue__c> queueMap) 
@@ -1108,7 +1107,6 @@ public with sharing class EmailMessagesUtil
         String defaultQueueName = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
         updateEmailQueue(email, defaultQueueName, queueMap);
     }
-    
 
     /**
      * Determina si el email tiene la interacción de Genesys Informada 
