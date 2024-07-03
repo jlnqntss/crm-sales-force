@@ -18,6 +18,7 @@ public with sharing class GlobalConfigUtil {
         return configValues;
     }
 
+    @AuraEnabled
     public static String getGlobalConfigurationValue(String globalValueName) {
         
         //Get del registro por devName

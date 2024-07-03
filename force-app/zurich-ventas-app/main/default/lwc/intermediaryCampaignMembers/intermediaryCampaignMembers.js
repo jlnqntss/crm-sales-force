@@ -17,6 +17,7 @@ import { refreshApex } from "@salesforce/apex";
 import getCampaignMembers from "@salesforce/apex/CampaignZRMCustomPageController.getCampaignMembers";
 import updateOfferAndCampaignMember from "@salesforce/apex/CampaignZRMCustomPageController.updateOfferAndCampaignMember";
 import cloneOffer from "@salesforce/apex/CampaignZRMCustomPageController.cloneOffer";
+import getGlobalConfigurationValue from "@salesforce/apex/GlobalConfigUtil.getGlobalConfigurationValue";
 
 import userId from "@salesforce/user/Id";
 
@@ -155,6 +156,9 @@ export default class DatatableWithRowActions extends LightningElement {
       this.userInfo = result.data;
     }
   }
+
+  @wire(getGlobalConfigurationValue, {globalValueName : "Offer_SalesLossReason_CampaignCompleted"})
+  globalValueCampaignCompleted;
 
   // #endregion
 
@@ -553,7 +557,7 @@ export default class DatatableWithRowActions extends LightningElement {
     } else if (
       this.campaignData.campaignFilter === campaignStatusFilterValue.inactive
     ) {
-      if (row.offerSalesLossReason === "Campaign completed") {
+      if (row.offerSalesLossReason === this.globalValueCampaignCompleted) {
         actions.push({
           label: labels.duplicateRowAction,
           name: rowActions.clone
