@@ -4,10 +4,10 @@
  * @date 25/06/2024
  */
 @IsTest
-public with sharing class CaseHelperTest 
+private with sharing class CaseHelperTest 
 {
     @TestSetup
-    static void makeData()
+    private static void makeData()
     {
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1);
         insert accounts;
@@ -50,7 +50,7 @@ public with sharing class CaseHelperTest
     }
 
     @IsTest
-    static void test_CloseInteractions_OK()
+    private static void test_CloseInteractions_OK()
     {
         List<Case> casos = [SELECT Id FROM Case];
         List<String> idsCasos = new List<String>();

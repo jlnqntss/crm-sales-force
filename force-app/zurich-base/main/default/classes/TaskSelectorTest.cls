@@ -1,8 +1,15 @@
+/**
+ * @description       : 
+ * @author            : mfernandezcarrera
+ * @group             : 
+ * @last modified on  : 07-03-2024
+ * @last modified by  : mfernandezcarrera
+**/
 @isTest
-public with sharing class TaskSelectorTest 
+private with sharing class TaskSelectorTest 
 {
     @isTest
-    static void test_TaskSelector_ok()
+    private static void test_TaskSelector_ok()
     {
         Case relatedCase = new Case();
         List<Case> listaCaso = new List<Case>();
@@ -57,7 +64,7 @@ public with sharing class TaskSelectorTest
 
 
     @isTest
-    static void test_getTaskFromSingleChannel_ok()
+    private static void test_getTaskFromSingleChannel_ok()
     {
         //Importante usar el RT Customer porque es personal account y se necesita que esté relleno PersonContactId
         List<Account> accounts = TestDataFactory.generateAccounts('001', 'Customer', 1); //Importante que solo se cree 1 porque sino habrá varios con mismo email
