@@ -320,5 +320,20 @@
             <controllingFieldValue>VC</controllingFieldValue>
             <valueName>Policy in the name of a relative</valueName>
         </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Integral customer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Impossible to contact</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Policy in the name of a relative</valueName>
+        </valueSettings>
     </valueSet>
 </CustomField>

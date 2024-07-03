@@ -191,6 +191,10 @@
             <fullName>General Insurance</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>Life Insurance</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>LossSubReason__c</picklist>
@@ -443,6 +447,10 @@
             <fullName>0000000017</fullName>
             <default>false</default>
         </values>
+        <values>
+            <fullName>0000000019</fullName>
+            <default>false</default>
+        </values>
     </picklistValues>
     <picklistValues>
         <picklist>SalesProcess__c</picklist>
@@ -495,6 +503,10 @@
         </values>
         <values>
             <fullName>HOME- Never had it and does not want it</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Impossible to contact</fullName>
             <default>false</default>
         </values>
         <values>
@@ -559,6 +571,10 @@
         </values>
         <values>
             <fullName>Out of Recruitment Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy in the name of a relative</fullName>
             <default>false</default>
         </values>
         <values>

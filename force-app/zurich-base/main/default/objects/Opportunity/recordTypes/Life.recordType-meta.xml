@@ -2,7 +2,7 @@
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Life</fullName>
     <active>true</active>
-    <businessProcess>Offer - No vida</businessProcess>
+    <businessProcess>Offer - Vida</businessProcess>
     <label>Life</label>
     <picklistValues>
         <picklist>Company__c</picklist>
@@ -340,71 +340,15 @@
     <picklistValues>
         <picklist>ProductBranch__c</picklist>
         <values>
-            <fullName>0000000001</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000002</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000003</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000004</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000005</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000006</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000007</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000008</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000009</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000010</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000011</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000012</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000013</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000014</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>0000000015</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>0000000016</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>0000000017</fullName>
+            <fullName>0000000018</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>0000000018</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -459,6 +403,10 @@
         </values>
         <values>
             <fullName>HOME- Never had it and does not want it</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Impossible to contact</fullName>
             <default>false</default>
         </values>
         <values>
@@ -523,6 +471,10 @@
         </values>
         <values>
             <fullName>Out of Recruitment Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy in the name of a relative</fullName>
             <default>false</default>
         </values>
         <values>

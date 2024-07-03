@@ -10765,6 +10765,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.isProductLife__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.isUpdatedFromINFO__c</field>
         <readable>true</readable>
     </fieldPermissions>
