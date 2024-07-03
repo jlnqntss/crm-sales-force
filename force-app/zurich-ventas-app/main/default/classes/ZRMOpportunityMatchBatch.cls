@@ -3,8 +3,8 @@
  * para hacer match contra oportunidades en SF a nivel de cliente y/o lead.
  * @author            : amiranda
  * @date              : 23-04-2024
- * @last modified on  : 23-04-2024
- * @last modified by  : amiranda
+ * @last modified on  : 03/07/2024
+ * @last modified by  : rserrano
  * Modifications Log
  * Ver   Date         Author     Modification
  * 1.0   22-04-2024   amiranda   Initial Version
@@ -348,7 +348,10 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                 // 2º Identificar esa oferta para mover sus tareas y eventos
                 matchIdByScopeId.put(scopeOffer.Id, matchOffer.Id);
                 // 3º Marcamos a eliminar la oferta que ha hecho match
-                opportunitiesToDelete.add(matchOffer);
+                if(!opportunitiesToDelete.contains(matchOffer))
+                {
+                    opportunitiesToDelete.add(matchOffer);
+                }
             }
 
             scopeOffer.PotentialMatch__c = false; //Desmarcamos para que no vuelva a pasar por el flujo
@@ -666,8 +669,11 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                  && opportunityMatchStages.contains(leadOpportunity.StageName)
                  && checkIsZRM(leadOpportunity, scopeMDT) )
             {
-                offersToDelete.add(leadOpportunity);
-                opportunity.SalesProcess__c = 'L';
+                if(! offersToDelete.contains(leadOpportunity))
+                {
+                    offersToDelete.add(leadOpportunity);
+                    opportunity.SalesProcess__c = 'L';
+                }
             }
             else
             {
