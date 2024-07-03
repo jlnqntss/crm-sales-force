@@ -6710,7 +6710,7 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZRM_Recibos_Total</name>
     </customLabels>
     <customLabels>
-        <label>No hay valor</label>
+        <label>No informado</label>
         <name>ZRM_GlobalCustomerValue_NoValue</name>
     </customLabels>
     <customPageWebLinks>
