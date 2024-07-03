@@ -4,7 +4,7 @@
     <description>[ZRM] Campo que se obtiene a partir de la nueva External request de Customer_KPI</description>
     <externalId>false</externalId>
     <formula>Case(
-				GlobalCustomerValueInfo_NoLife__c, 
+				DescriptionScoreCLTV_NoLife__c, 
 				&quot;Cero Estrellas&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CLTV_NoLife__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_000.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
 				&quot;Una Estrella&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CLTV_NoLife__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_100.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
 				&quot;Dos Estrellas&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CLTV_NoLife__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_200.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
