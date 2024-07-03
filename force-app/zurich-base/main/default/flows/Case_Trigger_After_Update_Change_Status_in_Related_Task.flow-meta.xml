@@ -33,6 +33,38 @@
             <targetReference>For_Each_Task</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>SizeAssignment</name>
+        <label>Size Assignment</label>
+        <locationX>446</locationX>
+        <locationY>2687</locationY>
+        <assignmentItems>
+            <assignToReference>sizeCasesRelated</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>CasesRelatedMediatedCustomer</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetNullOr1Action</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>SizePriorAssignment</name>
+        <label>Size Prior Assignment</label>
+        <locationX>314</locationX>
+        <locationY>1547</locationY>
+        <assignmentItems>
+            <assignToReference>sizePrior</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>caseRelatedPriorMediatedCustomer</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>GetPriorNullDecision</targetReference>
+        </connector>
+    </assignments>
     <constants>
         <description>Solicitud de documentación por SMS</description>
         <name>Documentation_request_by_SMS</name>
@@ -50,28 +82,28 @@
         </value>
     </constants>
     <decisions>
-        <name>GetNullAction</name>
-        <label>Get Null?</label>
-        <locationX>182</locationX>
-        <locationY>1547</locationY>
+        <name>GetNullOr1Action</name>
+        <label>Get Null or 1?</label>
+        <locationX>446</locationX>
+        <locationY>2795</locationY>
         <defaultConnector>
             <targetReference>ActivateCaseOpenAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>NullOutcome</name>
+            <name>NullOr1Outcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>GetCasesSameMediatedCustomerAction</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>sizeCasesRelated</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <elementReference>value1Number</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>DesactivateCaseOpenAction</targetReference>
             </connector>
-            <label>Null</label>
+            <label>Null or 1</label>
         </rules>
     </decisions>
     <decisions>
@@ -84,19 +116,19 @@
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>PriorNull</name>
+            <name>PriorNullor1Outcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>GetCasesSamePriorMediatedCustomerAction</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>sizePrior</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <elementReference>value1Number</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>DesactivatePriorCaseOpenAction</targetReference>
             </connector>
-            <label>Prior Null</label>
+            <label>Prior Null or 1</label>
         </rules>
     </decisions>
     <decisions>
@@ -105,7 +137,6 @@
         <locationX>710</locationX>
         <locationY>1847</locationY>
         <defaultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>GetCasesSameMediatedCustomerAction</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
@@ -270,6 +301,12 @@
         <name>USP_RecordType_DeveloperName</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_USP.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>value1Number</name>
+        <dataType>Number</dataType>
+        <expression>VALUE({!$CustomMetadata.Global_Configuration__mdt.Case_Value_1_USP.Value__c})</expression>
+        <scale>2</scale>
     </formulas>
     <interviewLabel>Case Trigger - After Update - Change Status in Related Task {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Update - Change Status in Related Task-Other Open Cases</label>
@@ -510,12 +547,12 @@
         <locationY>1439</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>GetNullAction</targetReference>
+            <targetReference>SizeAssignment</targetReference>
         </connector>
         <faultConnector>
             <targetReference>GenerarErrorLogGetSameMediatedCustomerAction</targetReference>
         </faultConnector>
-        <filterLogic>1 AND 2 AND NOT(3 AND 4)</filterLogic>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR (5 AND 6))</filterLogic>
         <filters>
             <field>MediatedCustomer__c</field>
             <operator>EqualTo</operator>
@@ -525,9 +562,23 @@
         </filters>
         <filters>
             <field>Status</field>
-            <operator>NotEqualTo</operator>
+            <operator>EqualTo</operator>
             <value>
-                <stringValue>Cerrado</stringValue>
+                <stringValue>Nuevo</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Asignado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Respondido</stringValue>
             </value>
         </filters>
         <filters>
@@ -539,14 +590,14 @@
         </filters>
         <filters>
             <field>PendingBy__c</field>
-            <operator>EqualTo</operator>
+            <operator>NotEqualTo</operator>
             <value>
                 <stringValue>Intermediary</stringValue>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Case</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputReference>CasesRelatedMediatedCustomer</outputReference>
+        <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>GetCasesSamePriorMediatedCustomerAction</name>
@@ -555,12 +606,12 @@
         <locationY>1439</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>GetPriorNullDecision</targetReference>
+            <targetReference>SizePriorAssignment</targetReference>
         </connector>
         <faultConnector>
             <targetReference>GenerarErrorLogGetSamePriorMediatedCustomer</targetReference>
         </faultConnector>
-        <filterLogic>1 AND 2 AND NOT(3 AND 4)</filterLogic>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR (5 AND 6))</filterLogic>
         <filters>
             <field>MediatedCustomer__c</field>
             <operator>EqualTo</operator>
@@ -570,9 +621,23 @@
         </filters>
         <filters>
             <field>Status</field>
-            <operator>NotEqualTo</operator>
+            <operator>EqualTo</operator>
             <value>
-                <stringValue>Cerrado</stringValue>
+                <stringValue>Nuevo</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Asignado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Respondido</stringValue>
             </value>
         </filters>
         <filters>
@@ -584,14 +649,14 @@
         </filters>
         <filters>
             <field>PendingBy__c</field>
-            <operator>EqualTo</operator>
+            <operator>NotEqualTo</operator>
             <value>
                 <stringValue>Intermediary</stringValue>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Case</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputReference>caseRelatedPriorMediatedCustomer</outputReference>
+        <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>ActivateCaseOpenAction</name>
@@ -739,6 +804,38 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>caseRelatedPriorMediatedCustomer</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>CasesRelatedMediatedCustomer</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>sizeCasesRelated</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>sizePrior</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
     <variables>
         <name>TaskToUpdate</name>
         <dataType>SObject</dataType>
