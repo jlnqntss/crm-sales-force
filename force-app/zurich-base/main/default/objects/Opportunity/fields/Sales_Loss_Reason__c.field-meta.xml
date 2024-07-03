@@ -20,9 +20,9 @@
                 <label>Interesado más adelante</label>
             </value>
             <value>
-                <fullName>Interested, managed by my agent</fullName>
+                <fullName>CC - Interested, managed by my agent</fullName>
                 <default>false</default>
-                <label>Interesado, pero prefiero que lo gestione mi agente</label>
+                <label>CC - Interested, managed by my agent</label>
             </value>
             <value>
                 <fullName>Better competition conditions</fullName>
@@ -105,9 +105,9 @@
                 <label>No colabora</label>
             </value>
             <value>
-                <fullName>Interested contact agent</fullName>
+                <fullName>CC - Interested contact agent</fullName>
                 <default>false</default>
-                <label>Interesado contacta con agente</label>
+                <label>CC - Interested contact agent</label>
             </value>
             <value>
                 <fullName>Error</fullName>
@@ -135,19 +135,19 @@
                 <label>Datos insuficientes/erróneos</label>
             </value>
             <value>
-                <fullName>Not managed by the Agent</fullName>
+                <fullName>Automatic - Not managed by the Agent</fullName>
                 <default>false</default>
-                <label>No gestionado por el Agente</label>
+                <label>Automatic - Not managed by the Agent</label>
             </value>
             <value>
-                <fullName>Campaign completed</fullName>
+                <fullName>Automatic - Campaign completed</fullName>
                 <default>false</default>
-                <label>Campaña finalizada</label>
+                <label>Automatic - Campaign completed</label>
             </value>
             <value>
-                <fullName>Agent removes from the campaign</fullName>
+                <fullName>Automatic - Agent removes from the campaign</fullName>
                 <default>false</default>
-                <label>Agent removes from the campaign</label>
+                <label>Automatic - Agent removes from the campaign</label>
             </value>
             <value>
                 <fullName>Do not want Policy - Expired</fullName>
@@ -178,7 +178,7 @@
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
             <controllingFieldValue>VC</controllingFieldValue>
-            <valueName>Interested, managed by my agent</valueName>
+            <valueName>CC - Interested, managed by my agent</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
@@ -258,7 +258,7 @@
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
             <controllingFieldValue>VC</controllingFieldValue>
-            <valueName>Interested contact agent</valueName>
+            <valueName>CC - Interested contact agent</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
@@ -295,15 +295,30 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>VC</controllingFieldValue>
-            <valueName>Not managed by the Agent</valueName>
+            <valueName>Automatic - Not managed by the Agent</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>VC</controllingFieldValue>
-            <valueName>Campaign completed</valueName>
+            <valueName>Automatic - Campaign completed</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>VC</controllingFieldValue>
-            <valueName>Agent removes from the campaign</valueName>
+            <valueName>Automatic - Agent removes from the campaign</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Integral customer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Impossible to contact</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
+            <valueName>Policy in the name of a relative</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>

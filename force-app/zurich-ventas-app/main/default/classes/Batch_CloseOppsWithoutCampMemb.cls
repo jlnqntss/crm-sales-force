@@ -146,7 +146,7 @@ global with sharing class Batch_CloseOppsWithoutCampMemb implements Database.Bat
 
             if(!hasMember)
             {
-                String sLossR = 'Agent removes from the campaign';
+                String sLossR = GlobalConfigUtil.getGlobalConfigurationValue('Offer_SalesLossReason_RemovedCampaign');
                 currentOpportunity.StageName = 'Closed Lost';
                 
                 if( currentOpportunity.Account.RecordType.DeveloperName == 'Lead' )
