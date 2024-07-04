@@ -3456,6 +3456,13 @@ Create the record and try again.</value>
         <value>Client removed from campaign.</value>
     </labels>
     <labels>
+        <fullName>ZRM_Recibos_Total</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_Recibos_Total</shortDescription>
+        <value>Total recibos devueltos (día anterior + acumulados): </value>
+    </labels>
+    <labels>
         <fullName>ZRM_GlobalCustomerValue_NoValue</fullName>
         <language>en_US</language>
         <protected>false</protected>
