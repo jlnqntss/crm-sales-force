@@ -16,7 +16,7 @@
         <field>CREATED_DATEONLY</field>
     </columns>
     <columns>
-        <field>Case.EndDate__c</field>
+        <field>FK_$Policy__c.MovementStartDate__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -46,13 +46,6 @@
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>Case.ZRMInquiry</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Case.ExpirationDays__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>greaterOrEqual</operator>
-            <value>0</value>
         </criteriaItems>
         <language>es</language>
     </filter>
