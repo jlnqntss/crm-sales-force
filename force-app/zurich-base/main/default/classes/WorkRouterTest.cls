@@ -6,8 +6,8 @@
 @isTest
 private with sharing class WorkRouterTest 
 {
-    public static final string PROFILE_USP_USER = 'USP User';
-    public static final string MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT = 'El número de casos asignados del agente no es correcto';
+    private static final string PROFILE_USP_USER = 'USP User';
+    private static final string MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT = 'El número de casos asignados del agente no es correcto';
 
     @TestSetup
     private static void createScenario()

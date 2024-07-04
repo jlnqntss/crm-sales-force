@@ -8,7 +8,7 @@
 @isTest
 private with sharing class UsersSelectorTest
 {
-    public static final string PROFILE_USP_USER = 'USP User';
+    private static final string PROFILE_USP_USER = 'USP User';
 
     @TestSetup
     public static void createScenario()

@@ -8,8 +8,8 @@
 @isTest
 private with sharing class CasesSelectorTest
 {
-    public static final string PROFILE_INTEGRATOR = 'Integrator';
-    public static final string PROFILE_USP_USER = 'USP User';
+    private static final string PROFILE_INTEGRATOR = 'Integrator';
+    private static final string PROFILE_USP_USER = 'USP User';
 
     @TestSetup
     private static void createScenario()
