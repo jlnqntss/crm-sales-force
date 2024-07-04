@@ -31,4 +31,12 @@
             <section>Contact</section>
         </sections>
     </layouts>
+    <validationRules>
+        <errorMessage><!-- Si el Usuario está inactivo no puede tener la casilla Agente Activo marcada --></errorMessage>
+        <name>Active_Agente_Inactivo</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- La capacidad del gestor no puede ser cero ni negativa --></errorMessage>
+        <name>Capacidad_negativa</name>
+    </validationRules>
 </CustomObjectTranslation>

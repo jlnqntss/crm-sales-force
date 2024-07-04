@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Queue ZE VozZuemCMB</label>
+    <protected>false</protected>
+    <values>
+        <field>Dev_Value__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Is_Id__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Object__c</field>
+        <value xsi:type="xsd:string">Queue</value>
+    </values>
+    <values>
+        <field>Staging_Value__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Uat_Value__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">Voz_Zuem_CMB</value>
+    </values>
+</CustomMetadata>
