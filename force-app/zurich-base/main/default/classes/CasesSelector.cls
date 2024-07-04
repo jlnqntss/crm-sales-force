@@ -484,7 +484,9 @@ public with sharing class CasesSelector extends RecordsSelector
             Case.Status,
             Case.PendingBy__c,
             Case.ResponseCanalUnico__c,
-            Case.CloseResult__c
+            Case.CloseResult__c,
+            Case.RelatedCuTicketId__c,
+            Case.Description
         })
         .selectFields('Case.Owner.Name')
         .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)
@@ -616,6 +618,31 @@ public with sharing class CasesSelector extends RecordsSelector
         .addConditionEq(Case.SourceArea__c,filterSourceMediator);
         
 
+        return (List<Case>) this.baseQuery.run();
+
+    }
+
+    /**
+     * Método que recupera los casos mediante el identificador de CanalUnico
+     * @author arcortazar
+     * @date 21/06/2024
+     * @return List<Case>
+     */
+    public List<Case> getCaseByCuTicketId(List<String> lstIdCanalUnico)
+    {
+        if(lstIdCanalUnico.isEmpty())
+        {
+            return new List<Case>();
+        }
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.Id, 
+            Case.RecordTypeId, 
+            Case.OwnerId, 
+            Case.OwnerIdPrior__c
+        })
+        .selectFields('Case.Owner.Name')
+        .addConditionIn(Case.CuTicketId__c,lstIdCanalUnico);
         return (List<Case>) this.baseQuery.run();
 
     }

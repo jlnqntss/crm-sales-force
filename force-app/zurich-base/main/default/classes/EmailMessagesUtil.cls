@@ -774,8 +774,8 @@ public with sharing class EmailMessagesUtil
      * @author jfherrero
      * @date 22/01/2024
      * 
-     * @last modified on  : 22-03-2024
-     * @last modified by  : jfherrero
+     * @last modified on  : 07-04-2024
+     * @last modified by  : mfernandezcarrera
      * 
      * @param List<EmailMessage> emailList : Lista de email message
     */
@@ -1002,6 +1002,165 @@ public with sharing class EmailMessagesUtil
             this.casesControlEmailCCDesactivate(caseEmailNotDefault);
         }
         
+    }
+
+    /**
+     * Método que comprueba, cuando nos llega un nuevo email de urgencias, si existe algún caso con el identificador de 
+     * canal único que nos llega indicado en el subject del email. Si existe, reasignamos el email para que se vincule con el mismo
+     * @author arcortazar
+     * @date 21/06/2024
+     * @param List<EmailMessage>
+     */
+    public void checkExistingCaseZDAUrgencias(List<EmailMessage> listaEmails) 
+    {
+        String nameQueueUrgencias = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_Urgencias');
+        String comienzoId = GlobalConfigUtil.getGlobalConfigurationValue('Beggining_Id_Queue');
+        Map<String, purecloud__PureCloud_Queue__c> mapaQueues = getQueueMap();
+        List<String> lstCasosCerrarInteracciones = new List<String>();
+    
+        for (EmailMessage newEmail : listaEmails) 
+        {
+            if (isUrgenciasQueue(newEmail, nameQueueUrgencias)) 
+            {
+                List<String> idCanalUnico = extractIdsFromSubject(newEmail.Subject);
+    
+                if (idCanalUnico.size() == 1) 
+                {
+                    List<Case> lstCasoAsociado = (new CasesSelector()).getCaseByCuTicketId(idCanalUnico);
+                    if (isZDACase(lstCasoAsociado)) 
+                    {
+                        Case casoAsociado = lstCasoAsociado.get(0);
+                        linkEmailToCase(newEmail, casoAsociado);
+                        lstCasosCerrarInteracciones.add(casoAsociado.Id);
+                        updateEmailQueue(newEmail, getQueueName(casoAsociado, comienzoId), mapaQueues);
+                    } else {
+                        setDefaultQueue(newEmail, mapaQueues);
+                    }
+                } else {
+                    setDefaultQueue(newEmail, mapaQueues);
+                }
+            }
+        }
+        if (!lstCasosCerrarInteracciones.isEmpty()) 
+        {
+            CaseHelper.closeInteractions(lstCasosCerrarInteracciones);
+        }
+    }
+    
+    /**
+     * Método que obtiene el mapa con el nombre de la cola
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @return mapaQueues: mapa que contiene el nombre de la cola y el objeto
+     */
+    private Map<String, purecloud__PureCloud_Queue__c> getQueueMap() 
+    {
+        List<purecloud__PureCloud_Queue__c> lstPurecloud = (new GenesysQueueSelector()).getAllQueues();
+        Map<String, purecloud__PureCloud_Queue__c> mapaQueues = new Map<String, purecloud__PureCloud_Queue__c>();
+        for (purecloud__PureCloud_Queue__c purecloud : lstPurecloud) 
+        {
+            mapaQueues.put(purecloud.Name, purecloud);
+        }
+        return mapaQueues;
+    }
+
+    /**
+     * Método que comprueba que la cola del emaul que le pasamos se trata de las de urgencias
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param EmailMessage 
+     * @param String nameQueueUrgencias
+     */
+    private boolean isUrgenciasQueue(EmailMessage email, String nameQueueUrgencias) 
+    {
+        return !String.isBlank(email.GenesysQueueName__c) && email.GenesysQueueName__c.equals(nameQueueUrgencias);
+    }
+    
+    /**
+     * Método que obtiene los IDs en base al parametro que recibe subject 
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param String subject 
+     * @return List<String> 
+     */
+    private List<String> extractIdsFromSubject(String subject)
+     {
+        List<String> ids = new List<String>();
+        Pattern numericPattern = Pattern.compile('\\d+');
+        Matcher matcher = numericPattern.matcher(subject);
+        while (matcher.find()) 
+        {
+            ids.add(matcher.group());
+        }
+        return ids;
+    }
+    
+     /**
+     * Método que comprueba que se trae de un caso de ZDA 
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param List<Case> : con los casos asociados
+     */
+    private boolean isZDACase(List<Case> lstCasoAsociado) 
+    {
+        return lstCasoAsociado.size() == 1 && lstCasoAsociado.get(0).RecordTypeId == CaseUtil.RT_ID_ZDA;
+    }
+
+     /**
+     * Método que vincula el email con el caso
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param EmailMessage
+     * @param Case  
+     */
+    private void linkEmailToCase(EmailMessage email, Case caso) 
+    {
+        email.ParentId = caso.Id;
+        email.RelatedToId = caso.Id;
+        email.IsUrgent__c = true;
+    }
+
+    /**
+     * Método que obtiene el nombre de la cola del caso
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param Case  
+     * @param String comienzoId
+     */
+    private String getQueueName(Case caso, String comienzoId) 
+    {
+        return ((String) caso.OwnerId).startsWith(comienzoId) ? caso.Owner.Name : caso.OwnerIdPrior__c;
+    }
+
+    /**
+     * Método que actualiza la cola del email
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param EmailMessage
+     * @param String : queueName
+     * @param Map<String,purecloud__PureCloud_Queue__c> : queueMap  
+     */
+    private void updateEmailQueue(EmailMessage email, String queueName, Map<String, purecloud__PureCloud_Queue__c> queueMap) 
+    {
+        purecloud__PureCloud_Queue__c genesysQueue = queueMap.get(queueName);
+        if (genesysQueue != null) {
+            email.GenesysQueueName__c = genesysQueue.Name;
+            email.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+            email.IsUrgent__c = true;
+        }
+    }
+    
+     /**
+     * Método que pone la cola por defecto
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param EmailMessage
+     * @param Map<String,purecloud__PureCloud_Queue__c> : queueMap  
+     */
+    private void setDefaultQueue(EmailMessage email, Map<String, purecloud__PureCloud_Queue__c> queueMap) 
+    {
+        String defaultQueueName = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
+        updateEmailQueue(email, defaultQueueName, queueMap);
     }
 
     /**

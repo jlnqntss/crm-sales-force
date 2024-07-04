@@ -592,4 +592,47 @@ private with sharing class CasesSelectorTest
         System.assertEquals(1, matchedRecords.size(), 'no devuelve el número de registros correcto');
 
     }
+
+     /**
+     * Test que compruba que cuando enviamos un identificador de canal único existente, nos encuentra el caso asociado
+     * @author acortazar@seidor.es
+     * @date 26/06/2024
+     */
+    @isTest
+    private static void test_getCaseByCuTicketId_ok()
+    {
+        String idCU = '000111';
+
+        List<Case> casosExistentes = [SELECT Id, CuTicketId__c FROM Case LIMIT 1];
+        casosExistentes[0].CuTicketId__c = idCu;
+        update casosExistentes;
+        
+        Test.startTest();
+        List<Case> casosRecuperados = (new CasesSelector()).getCaseByCuTicketId(new List<String>{idCu});
+        Test.stopTest();
+
+        Assert.isFalse(casosRecuperados.isEmpty(), 'Ha de haber encontrado resultados');
+        Assert.areEqual(casosRecuperados.size(), 1, 'Se ha de haber recuperado un único elemento');
+        Assert.areEqual(casosRecuperados[0].id, casosExistentes[0].id, 'Hemos de haber obtenido el caso que hemos modificado');
+    }
+
+     /**
+     * Test que compruba que cuando enviamos un identificador de canal único NO existente, o una lista vacía, 
+     * el selector no falla
+     * @author arcortazar@seidor.es
+     * @date 26/06/2024
+     */
+    @isTest
+    private static void test_getCaseByCuTicketId_ko()
+    {
+        String idCU = '000111';
+
+        Test.startTest();
+        List<Case> casosRecuperados = (new CasesSelector()).getCaseByCuTicketId(new List<String>{idCu});
+        List<Case> casosRecuperadosEmpty = (new CasesSelector()).getCaseByCuTicketId(new List<String>());
+        Test.stopTest();
+
+        Assert.isTrue(casosRecuperados.isEmpty(), 'La lista ha de estar vacía');
+        Assert.isTrue(casosRecuperadosEmpty.isEmpty(), 'La lista ha de estar vacía');
+    }
 }
