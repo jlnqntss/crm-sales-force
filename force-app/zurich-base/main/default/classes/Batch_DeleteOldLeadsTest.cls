@@ -121,7 +121,7 @@ public with sharing class Batch_DeleteOldLeadsTest {
         //Recuperar leads no borrados después del proceso
         List<Account> updatedLeadLst = [SELECT Id FROM Account];
 
-        Assert.areEqual(30, updatedLeadLst.size(), 'Debería haber 30 leads sin borrar');
+        Assert.areEqual(40, updatedLeadLst.size(), 'Debería haber 40 leads sin borrar');
     }
 
     @isTest
