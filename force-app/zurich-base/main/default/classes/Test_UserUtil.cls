@@ -9,7 +9,8 @@
 private with sharing class Test_UserUtil 
 {
     @testSetup
-    public static void userSetup(){
+    private static void userSetup()
+    {
         // Se crea el test user
         User testUser = new User(
             ProfileId = [SELECT Id FROM Profile WHERE Name = 'System Administrator'].Id,
@@ -28,7 +29,8 @@ private with sharing class Test_UserUtil
         );
         insert testUser;
     }
-    public static void updateUser() {
+    private static void updateUser() 
+    {
         //Buscamos el registro del usuario test que se ha creado previamente para cambiar el campo IsActive a false
         User testUserToUpdate = [SELECT Id, IsActive FROM User WHERE Email =: 'Unotestpruega@gmail.com' WITH USER_MODE LIMIT 1];
         testUserToUpdate.IsActive = false;
@@ -36,13 +38,14 @@ private with sharing class Test_UserUtil
     }
     
     @isTest
-    static void testUserDeactivation() {
+    private static void testUserDeactivation() 
+    {
         //llamamos al método updateUser
         Test.startTest();
-        System.runAs(new User(Id = UserInfo.getUserId())) {
+        System.runAs(new User(Id = UserInfo.getUserId())) 
+        {
             updateUser();
         }
-        Test.stopTest();
-        
+        Test.stopTest();        
     }
 }
