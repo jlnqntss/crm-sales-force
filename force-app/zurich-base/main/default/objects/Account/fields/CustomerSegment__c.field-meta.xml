@@ -12,7 +12,7 @@
 				&quot;5. Familias con adolescentes&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
 				&quot;6. Familias acomodadas&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
 				&quot;7. Seniors&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
-				&quot;No Informado&quot;
+				$Label.ZRM_CustomerSegment_NoValue
 )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Customer Segment</label>
