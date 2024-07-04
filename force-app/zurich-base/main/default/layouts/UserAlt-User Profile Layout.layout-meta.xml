@@ -20,7 +20,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Area__c</field>
+                <field>ActiveAgent__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>AssignedCases__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -102,7 +110,7 @@
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
         <masterLabel>00h5I000000JNe3</masterLabel>
-        <sizeX>4</sizeX>
+        <sizeX>3</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
     </summaryLayout>
