@@ -200,4 +200,28 @@ private with sharing class Test_ErrorLogUtil
 
         System.assertEquals(true, serializedJSON == errorRecords.get(0).Stack_Trace__c, 'StackTrace debería contener el valor de serializedJSON');
     }
+
+    /**
+     * Test del método que comprueba si se genera un error si falla la operación DML
+     * @author aberuete
+     * @date 01/07/2024
+     */
+    @isTest
+    private static void test_generateMessageByError()
+    {
+        Case caseTest = new Case(Subject = 'Caso de prueba');
+        insert caseTest;
+
+        List<Case> caseToUpdate = new List<Case>();
+        caseTest.OwnerId = null;
+        caseToUpdate.add(caseTest);
+
+        Test.startTest();
+        ErrorLogUtil.generateMessageByError(Database.update(caseToUpdate, false),'Se ha producido un error actualizando los casos', Test_ErrorLogUtil.class.getName());
+        Test.stopTest();
+
+        List<Error_Log__c> errorRecords = [SELECT Id,Message__c,Source_Class__c  FROM Error_Log__c];
+        Assert.isTrue(errorRecords.size() > 0, 'Deberia de haber algun error');
+        Assert.areEqual(Test_ErrorLogUtil.class.getName(), errorRecords[0].Source_Class__c, 'La clase que ha generado el error no es correcta');
+    }
 }
