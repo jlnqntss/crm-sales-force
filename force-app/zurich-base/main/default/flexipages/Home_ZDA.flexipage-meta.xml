@@ -208,7 +208,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>filterName</name>
-                    <value>ZDA_Todos_los_casos_finalizados_hoy</value>
+                    <value>ZDA_Mis_casos_finalizados_hoy</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>hideActionBar</name>
@@ -245,7 +245,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>filterName</name>
-                    <value>ZDA_Todos_los_casos_de_urgencias</value>
+                    <value>Email_ZDA_Urgencias_Case</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>hideActionBar</name>

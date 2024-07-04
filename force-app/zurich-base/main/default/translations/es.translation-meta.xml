@@ -6706,7 +6706,7 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZRM_Recibos_Column_Intermediary</name>
     </customLabels>
     <customLabels>
-        <label>Total recibos devueltos:</label>
+        <label>Total recibos devueltos (día anterior + acumulados): </label>
         <name>ZRM_Recibos_Total</name>
     </customLabels>
     <customLabels>

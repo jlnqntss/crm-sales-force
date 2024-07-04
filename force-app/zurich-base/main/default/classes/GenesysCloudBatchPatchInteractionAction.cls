@@ -27,8 +27,13 @@ public with sharing class GenesysCloudBatchPatchInteractionAction
                     interaccionCasos.participants = interaccionToPatch.split('#').get(1);
 
                     System.debug('*GenesysCloudBatchPatchInteractionAction interaccionCasos*: '+interaccionCasos);
-
-                    getDataResponse = new GenesysCloud.PatchServiceId().patchForServiceId(interaccionCasos);
+                    if(Test.isRunningTest())
+                    {
+                        String bodyAcd = '{"state": "disconnected", "wrapup: [{"code": "123", "name": "válida"}]}';
+                        Integer codeAcd = 200;
+                        GenesysCloud.PatchServiceId.mock = new GenesysCloudMocks(bodyAcd, codeAcd);
+                    }
+                    getDataResponse = GenesysCloud.PatchServiceId.patchForServiceId(interaccionCasos);
                     
                     System.debug('*GenesysCloudBatchPatchInteractionAction getDataResponse*: '+getDataResponse +'conversationId'+interaccionCasos.conversationId);
                     listaResponsePatch.add(getDataResponse);

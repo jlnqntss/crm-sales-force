@@ -1621,6 +1621,12 @@ OR(NOT(ISBLANK({!$Record.Parent.Parent.ParentId})),NOT(ISPICKVAL({!$Record.Paren
                 <elementReference>isQuoteResponse</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <name>urgentEmail</name>
+            <value>
+                <elementReference>$Record.IsUrgent__c</elementReference>
+            </value>
+        </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
     <triggerOrder>1500</triggerOrder>

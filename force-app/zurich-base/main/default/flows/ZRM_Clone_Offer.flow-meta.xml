@@ -40,7 +40,7 @@
                 <leftValueReference>recordId.Sales_Loss_Reason__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Campaign completed</stringValue>
+                    <elementReference>CampaignCompletedFormula</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -58,6 +58,11 @@
     </decisions>
     <description>Clonar oferta desde la action Clonar Oferta solo visible desde ZRM</description>
     <environments>Default</environments>
+    <formulas>
+        <name>CampaignCompletedFormula</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Offer_SalesLossReason_CampaignCompleted.Value__c}</expression>
+    </formulas>
     <interviewLabel>ZRM Clone Offer {!$Flow.CurrentDateTime}</interviewLabel>
     <label>ZRM Clone Offer</label>
     <processMetadataValues>
