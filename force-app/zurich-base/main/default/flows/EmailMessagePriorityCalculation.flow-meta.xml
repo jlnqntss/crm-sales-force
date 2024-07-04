@@ -43,8 +43,8 @@
     <assignments>
         <name>MaxSlaAssignment</name>
         <label>Asignar SLA máximo</label>
-        <locationX>1238</locationX>
-        <locationY>926</locationY>
+        <locationX>1106</locationX>
+        <locationY>842</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -69,7 +69,7 @@
     <decisions>
         <name>CallCenterDecision</name>
         <label>¿Call Center?</label>
-        <locationX>1238</locationX>
+        <locationX>1106</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -134,10 +134,39 @@
                     <elementReference>CallCener_ZDA</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>urgentEmail</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>Recuperar_caso_ZDA</targetReference>
+                <targetReference>Es_urgente</targetReference>
             </connector>
             <label>ZDA</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Es_urgente</name>
+        <label>¿Es urgente?</label>
+        <locationX>1810</locationX>
+        <locationY>242</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Email_urgente</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>urgentEmail</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>MaxSlaAssignment</targetReference>
+            </connector>
+            <label>Email urgente</label>
         </rules>
     </decisions>
     <decisions>
@@ -210,50 +239,6 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Owner_es_cola</name>
-        <label>¿Owner es cola?</label>
-        <locationX>1986</locationX>
-        <locationY>350</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Es_cola</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Recuperar_caso_ZDA.OwnerId</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <elementReference>Comienzo_Cola</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Qu_cola_es</targetReference>
-            </connector>
-            <label>Es cola</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Qu_cola_es</name>
-        <label>¿Qué cola es?</label>
-        <locationX>1810</locationX>
-        <locationY>458</locationY>
-        <defaultConnectorLabel>Otro</defaultConnectorLabel>
-        <rules>
-            <name>Urgencias</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Recuperar_caso_ZDA.Owner:Group.DeveloperName</leftValueReference>
-                <operator>Contains</operator>
-                <rightValue>
-                    <elementReference>Queue_Name</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>MaxSlaAssignment</targetReference>
-            </connector>
-            <label>Urgencias</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>RamoInmueblesDecision</name>
         <label>¿Ramo Inmuebles ?</label>
         <locationX>1326</locationX>
@@ -286,11 +271,6 @@
         <name>Comienzo_Cola</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_Queue.Value__c}</expression>
-    </formulas>
-    <formulas>
-        <name>Queue_Name</name>
-        <dataType>String</dataType>
-        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_Name_Urgencias.Value__c}</expression>
     </formulas>
     <formulas>
         <name>slaFormula</name>
@@ -370,28 +350,6 @@
     </recordLookups>
     <recordLookups>
         <description>Recuperamos el caso con el que trabajamos</description>
-        <name>Recuperar_caso_ZDA</name>
-        <label>Recuperar caso ZDA</label>
-        <locationX>1986</locationX>
-        <locationY>242</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Owner_es_cola</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>caseId</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Case</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <description>Recuperamos el caso con el que trabajamos</description>
         <name>RecuperarCasoCSMAction</name>
         <label>Recuperar caso CSM</label>
         <locationX>1326</locationX>
@@ -414,7 +372,7 @@
         <queriedFields>HegeoProductGroupCode__c</queriedFields>
     </recordLookups>
     <start>
-        <locationX>1112</locationX>
+        <locationX>980</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>CallCenterDecision</targetReference>
@@ -463,5 +421,12 @@
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>urgentEmail</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

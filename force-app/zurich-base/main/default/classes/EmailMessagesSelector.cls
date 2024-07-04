@@ -149,7 +149,7 @@ public without sharing class EmailMessagesSelector
             this.sObjectToQuery = 'EmailMessage';
             String query = String.format(
                 QUERY_SELECT +
-                'WHERE ParentId IN : listcases AND Incoming=true AND GenesysInteractionId__c!=null ',
+                'WHERE ParentId IN : listcases AND Incoming=true AND GenesysInteractionId__c!=null ORDER BY CreatedDate ASC',
                 new List<String> {
                 String.join(new List<String> (this.fieldsToQuery), ',')
             }
