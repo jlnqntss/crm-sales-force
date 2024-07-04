@@ -409,7 +409,7 @@
         <defaultConnectorLabel>Closed</defaultConnectorLabel>
         <rules>
             <name>NotClosedOutcome</name>
-            <conditionLogic>(1 AND 2) OR 3</conditionLogic>
+            <conditionLogic>(1 AND (2 OR 4)) OR (3 AND 5)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Parent.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
@@ -429,6 +429,20 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ZDAInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>ZDAInquiry</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1693,6 +1707,12 @@
             <name>caseId</name>
             <value>
                 <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>urgentEmail</name>
+            <value>
+                <elementReference>$Record.IsUrgent__c</elementReference>
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>

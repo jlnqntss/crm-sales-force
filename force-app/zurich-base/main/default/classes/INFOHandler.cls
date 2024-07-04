@@ -46,6 +46,7 @@ public with sharing class INFOHandler implements ISystem
     public static final List<String> PRIORITY_ENTITIES =  new List<String>{NOTE};
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
 
+    @TestVisible
     private static final String NOTE_CASE_ORIGIN = 'NoteINFO';
     private static final String NOTE_CASE_SOURCE_AREA = 'Mediator';
 

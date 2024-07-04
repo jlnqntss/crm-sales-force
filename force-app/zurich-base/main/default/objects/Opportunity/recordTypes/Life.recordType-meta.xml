@@ -366,7 +366,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Agent removes from the campaign</fullName>
+            <fullName>Automatic - Agent removes from the campaign</fullName>
             <default>false</default>
         </values>
         <values>
@@ -382,7 +382,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Campaign completed</fullName>
+            <fullName>Automatic - Campaign completed</fullName>
             <default>false</default>
         </values>
         <values>
@@ -402,6 +402,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Impossible to contact</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Incidence unresolved with policy</fullName>
             <default>false</default>
         </values>
@@ -414,7 +418,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Interested contact agent</fullName>
+            <fullName>CC - Interested contact agent</fullName>
             <default>false</default>
         </values>
         <values>
@@ -422,7 +426,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Interested%2C managed by my agent</fullName>
+            <fullName>CC - Interested, managed by my agent</fullName>
             <default>false</default>
         </values>
         <values>
@@ -458,11 +462,15 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Not managed by the Agent</fullName>
+            <fullName>Automatic - Not managed by the Agent</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Out of Recruitment Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Policy in the name of a relative</fullName>
             <default>false</default>
         </values>
         <values>

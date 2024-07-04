@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ZDA_Todos_los_casos_finalizados_hoy</fullName>
+    <fullName>ZDA_Mis_casos_finalizados_hoy</fullName>
     <columns>CASES.CASE_NUMBER</columns>
     <columns>CuTicketId__c</columns>
     <columns>CASES.STATUS</columns>
@@ -9,10 +9,11 @@
     <columns>Subtype__c</columns>
     <columns>TypeN3__c</columns>
     <columns>CASES.NAME</columns>
-    <columns>CORE.USERS.FIRST_NAME</columns>
-    <columns>Product__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OWNER_NAME</columns>
+    <columns>CommercialProductCode__c</columns>
     <columns>CASES.CLOSED_DATE</columns>
-    <filterScope>Everything</filterScope>
+    <filterScope>Mine</filterScope>
     <filters>
         <field>CASES.STATUS</field>
         <operation>equals</operation>
@@ -23,7 +24,7 @@
         <operation>equals</operation>
         <value>TODAY</value>
     </filters>
-    <label>ZDA - Todos los casos finalizados hoy</label>
+    <label>ZDA - Mis casos finalizados hoy</label>
     <sharedTo>
         <role>ZDA_Agente</role>
     </sharedTo>
