@@ -437,7 +437,7 @@ public with sharing class UsersSelector extends RecordsSelector
      * @author aberuete
      * @date 27/06/2024
      */
-    public List<User> getUsersWithAgentActiveOrderByAssignedCases()
+    public List<User> selectUsersWithAgentActiveOrderByAssignedCases()
     {
         this.baseQuery.selectFields
         (
@@ -460,7 +460,7 @@ public with sharing class UsersSelector extends RecordsSelector
      * @author aberuete
      * @date 27/06/2024
      */
-    public Integer getNumberOfUsersActiveWithInfiniteCapacity()
+    public Integer selectNumberOfUsersActiveWithInfiniteCapacity()
     {
         this.baseQuery.addConditionEq(User.ActiveAgent__c, true);
         this.baseQuery.addConditionEq(User.IsActive, true);

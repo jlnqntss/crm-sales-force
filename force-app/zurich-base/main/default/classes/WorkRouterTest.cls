@@ -6,8 +6,8 @@
 @isTest
 private with sharing class WorkRouterTest 
 {
-    static final string PROFILE_USP_USER = 'USP User';
-    static final string MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT = 'El número de casos asignados del agente no es correcto';
+    public static final string PROFILE_USP_USER = 'USP User';
+    public static final string MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT = 'El número de casos asignados del agente no es correcto';
 
     @TestSetup
     private static void createScenario()
@@ -42,7 +42,7 @@ private with sharing class WorkRouterTest
     @isTest
     private static void test_updateNumberOfCaseByUserWithAssignedCases()
     {
-        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().getNumberOfAssignedCasesGroupById();
+        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().selectNumberOfAssignedCasesGroupById();
 
         Test.startTest();
         new WorkRouter().updateNumberOfCaseByUser(ownerIdsByNumberOfCases);
@@ -61,7 +61,7 @@ private with sharing class WorkRouterTest
     @isTest
     private static void test_updateNumberOfCaseByUserWithNoAssignedCases()
     {
-        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().getNumberOfAssignedCasesGroupById();
+        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().selectNumberOfAssignedCasesGroupById();
 
         Test.startTest();
         new WorkRouter().updateNumberOfCaseByUser(ownerIdsByNumberOfCases);
@@ -80,7 +80,7 @@ private with sharing class WorkRouterTest
     @isTest
     private static void test_calculateSumOfCapacitiesLeft ()
     {
-        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().getNumberOfAssignedCasesGroupById();
+        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().selectNumberOfAssignedCasesGroupById();
         new WorkRouter().updateNumberOfCaseByUser(ownerIdsByNumberOfCases);
         List<User> userAgentActiveAfterUpdate = [Select id,AssignedCases__c,Capacity__c from User where Lastname = 'Work router'];
         Assert.areEqual(1,userAgentActiveAfterUpdate[0].AssignedCases__c, MESSAGE_NUMBER_OF_ASSIGNED_CASES_INCORRECT);
@@ -102,7 +102,7 @@ private with sharing class WorkRouterTest
     private static void test_calculateDistributionOfCases()
     {
         List<User> usersWithAgentActive = new List<User>();
-        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().getNumberOfAssignedCasesGroupById();
+        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().selectNumberOfAssignedCasesGroupById();
         new WorkRouter().updateNumberOfCaseByUser(ownerIdsByNumberOfCases);
 
         User user0 = [Select id,AssignedCases__c,Capacity__c from User where Lastname = 'Work router'];

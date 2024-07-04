@@ -6,8 +6,8 @@
 @isTest
 private with sharing class Batch_WorkRouterTest 
 {
-    static final string PROFILE_INTEGRATOR = 'Integrator';
-    static final string PROFILE_USP_USER = 'USP User';
+    public static final string PROFILE_INTEGRATOR = 'Integrator';
+    public static final string PROFILE_USP_USER = 'USP User';
 
     @TestSetup
     private static void createScenario()
@@ -63,7 +63,7 @@ private with sharing class Batch_WorkRouterTest
     private static void test_UpdateCasesToAssignOwnerWithQuery()
     {
         Test.startTest();
-        database.executeBatch(new Batch_WorkRouter(new CasesSelector().getCasesWithoutBestAgent()), 200);
+        database.executeBatch(new Batch_WorkRouter(new CasesSelector().selectCasesWithoutBestAgent()), 200);
         Test.stopTest();
 
         List<User> userAgentActiveAfterUpdate = [Select id from User where Lastname = 'Integrator work router'];

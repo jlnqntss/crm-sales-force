@@ -597,7 +597,7 @@ public with sharing class CasesSelector extends RecordsSelector
      * @author aberuete
      * @date 19/06/2024
      */
-    public List<AggregateResult> getNumberOfAssignedCasesGroupById()
+    public List<AggregateResult> selectNumberOfAssignedCasesGroupById()
     {
         Query subquery = new Query (User.getSObjectType());
         subquery.selectFields((new List<Schema.SObjectField> {
@@ -624,7 +624,7 @@ public with sharing class CasesSelector extends RecordsSelector
      * @author aberuete
      * @date 27/06/2024
      */
-    public String getCasesWithoutBestAgent()
+    public String selectCasesWithoutBestAgent()
     {
         Query.Condition andCondition = Query.doOr(
                 Query.conditionEq(CASE_OWNER_TYPE, 'Queue'),

@@ -23,7 +23,7 @@ public with sharing class Batch_WorkRouter implements Database.Batchable<sObject
     {
         if( String.isBlank(query) )
         {
-            query = new CasesSelector().getCasesWithoutBestAgent();
+            query = new CasesSelector().selectCasesWithoutBestAgent();
         }
 
         return Database.getQueryLocator(query);
@@ -36,7 +36,7 @@ public with sharing class Batch_WorkRouter implements Database.Batchable<sObject
 
     public void finish(Database.BatchableContext bc)
     {
-        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().getNumberOfAssignedCasesGroupById();
+        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().selectNumberOfAssignedCasesGroupById();
         new WorkRouter().updateNumberOfCaseByUser(ownerIdsByNumberOfCases);
     }
 }

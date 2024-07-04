@@ -8,8 +8,8 @@
 @isTest
 private with sharing class CasesSelectorTest
 {
-    static final string PROFILE_INTEGRATOR = 'Integrator';
-    static final string PROFILE_USP_USER = 'USP User';
+    public static final string PROFILE_INTEGRATOR = 'Integrator';
+    public static final string PROFILE_USP_USER = 'USP User';
 
     @TestSetup
     private static void createScenario()
@@ -585,7 +585,7 @@ private with sharing class CasesSelectorTest
         insert cases;
 
         Test.startTest();
-        List<AggregateResult> casesReturned = new CasesSelector().getNumberOfAssignedCasesGroupById();
+        List<AggregateResult> casesReturned = new CasesSelector().selectNumberOfAssignedCasesGroupById();
         Test.stopTest();
 
         for (AggregateResult caseResult : casesReturned )
@@ -620,7 +620,7 @@ private with sharing class CasesSelectorTest
         insert cases;
 
         Test.startTest();
-        String query = new CasesSelector().getCasesWithoutBestAgent();
+        String query = new CasesSelector().selectCasesWithoutBestAgent();
         List<Case> casesWithoutBestAgent = (List<Case>) Database.query(query);
         Test.stopTest();
 

@@ -14,7 +14,7 @@ public with sharing class WorkRouter
     public void updateNumberOfCaseByUser (List<AggregateResult> ownerIdsByNumberOfCases)
     {
         //Obtiene los usuarios activos
-        List<User> usersWithAgentActive = new UsersSelector().getUsersWithAgentActiveOrderByAssignedCases();
+        List<User> usersWithAgentActive = new UsersSelector().selectUsersWithAgentActiveOrderByAssignedCases();
         //Calcula número de casos asignados por usuario
         List<User> usersToUpdate = getNumberOfAssignedCasesByUser (ownerIdsByNumberOfCases, usersWithAgentActive);
         //Actualiza número de casos asignados por usuario
@@ -35,9 +35,9 @@ public with sharing class WorkRouter
         Boolean anyUserWithCapacityInfinity = false;
         List<Case> casesToAssign = (List<Case>) scope;
         //Obtener los usuarios con gestor activo, obteniendo su capacidad y el número de casos asignados
-        List<User> usersWithAgentActive = new UsersSelector().getUsersWithAgentActiveOrderByAssignedCases();
+        List<User> usersWithAgentActive = new UsersSelector().selectUsersWithAgentActiveOrderByAssignedCases();
         //Obtener el número de usuarios con gestor activo que no tienen una capacidad asignada
-        Integer numberOfUsersWithInfiniteCapacity = new UsersSelector().getNumberOfUsersActiveWithInfiniteCapacity();
+        Integer numberOfUsersWithInfiniteCapacity = new UsersSelector().selectNumberOfUsersActiveWithInfiniteCapacity();
 
         if (numberOfUsersWithInfiniteCapacity > 0)
         {

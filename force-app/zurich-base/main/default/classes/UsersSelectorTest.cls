@@ -8,7 +8,7 @@
 @isTest
 private with sharing class UsersSelectorTest
 {
-    static final string PROFILE_USP_USER = 'USP User';
+    public static final string PROFILE_USP_USER = 'USP User';
 
     @TestSetup
     public static void createScenario()
@@ -250,7 +250,7 @@ private with sharing class UsersSelectorTest
         insert userUsp;
 
         Test.startTest();
-        List<User> usersWithAgentActive = new UsersSelector().getUsersWithAgentActiveOrderByAssignedCases();
+        List<User> usersWithAgentActive = new UsersSelector().selectUsersWithAgentActiveOrderByAssignedCases();
         Test.stopTest();
 
         Map<Id,User> mapUsersWithAgentActive = new Map<Id,User> (usersWithAgentActive);
@@ -274,7 +274,7 @@ private with sharing class UsersSelectorTest
         insert userUsp;
 
         Test.startTest();
-        Integer numUsersWthInfiniteCapacity = new UsersSelector().getNumberOfUsersActiveWithInfiniteCapacity();
+        Integer numUsersWthInfiniteCapacity = new UsersSelector().selectNumberOfUsersActiveWithInfiniteCapacity();
         Test.stopTest();
 
         Assert.isTrue(numUsersWthInfiniteCapacity > 0, 'Debería de haber algun usuario con capacidad infinita');

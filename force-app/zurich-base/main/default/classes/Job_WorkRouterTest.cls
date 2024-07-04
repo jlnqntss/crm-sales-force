@@ -6,8 +6,8 @@
 @isTest
 private with sharing class Job_WorkRouterTest 
 {
-    static final string PROFILE_INTEGRATOR = 'Integrator';
-    static final string PROFILE_USP_USER = 'USP User';
+    public static final string PROFILE_INTEGRATOR = 'Integrator';
+    public static final string PROFILE_USP_USER = 'USP User';
 
     @TestSetup
     private static void createScenario()

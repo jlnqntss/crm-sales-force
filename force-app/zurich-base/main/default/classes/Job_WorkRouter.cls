@@ -10,7 +10,7 @@ public with sharing class Job_WorkRouter implements Schedulable
     public void execute(SchedulableContext sc) 
     {
         //Obtiene usuarios con gestor activo junto con el número de casos que tienen asignados
-        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().getNumberOfAssignedCasesGroupById();
+        List<AggregateResult> ownerIdsByNumberOfCases = new CasesSelector().selectNumberOfAssignedCasesGroupById();
 
         //Actualización del número de casos por cada usuario con gestor activo
         new WorkRouter().updateNumberOfCaseByUser(ownerIdsByNumberOfCases);
