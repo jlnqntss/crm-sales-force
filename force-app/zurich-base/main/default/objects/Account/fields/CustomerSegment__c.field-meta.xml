@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CustomerSegment__c</fullName>
+    <description>[ZRM] Campo que se informa a partir de Customer Segment para mostrar una imagen de ayuda cuando se pulsa sobre el valor</description>
+    <externalId>false</externalId>
+    <formula>Case(
+	   DescriptionCustomerSegment__c, 
+				&quot;1. Jóvenes&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
+				&quot;2. Precavidos&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
+				&quot;3. Independientes&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
+				&quot;4. Nuevas familias&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
+				&quot;5. Familias con adolescentes&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
+				&quot;6. Familias acomodadas&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
+				&quot;7. Seniors&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CustomerSegment__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; DescriptionCustomerSegment__c, &quot;_self&quot;),
+				&quot;No Informado&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Customer Segment</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

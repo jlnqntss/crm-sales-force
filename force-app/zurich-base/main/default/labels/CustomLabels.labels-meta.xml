@@ -3469,4 +3469,11 @@ Create the record and try again.</value>
         <shortDescription>ZRM_GlobalCustomerValue_NoValue</shortDescription>
         <value>No Value</value>
     </labels>
+    <labels>
+        <fullName>ZRM_CustomerSegment_NoValue</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ZRM_CustomerSegment_NoValue</shortDescription>
+        <value>No Value</value>
+    </labels>
 </CustomLabels>

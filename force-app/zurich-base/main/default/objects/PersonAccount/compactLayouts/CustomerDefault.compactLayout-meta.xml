@@ -8,5 +8,6 @@
     <fields>CustomerValue__c</fields>
     <fields>GlobalCustomerValue_NoLife__c</fields>
     <fields>GlobalCustomerValue_Life__c</fields>
+    <fields>CustomerSegment__c</fields>
     <label>Customer Default</label>
 </CompactLayout>
