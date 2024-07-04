@@ -5358,6 +5358,11 @@
         <field>Case.UsedTools__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.WithoutBestAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>  
 	<fieldPermissions>
         <editable>true</editable>
         <field>Case.ZoneDirector__c</field>
@@ -11235,6 +11240,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>User.Area__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.ActiveAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.AssignedCases__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
