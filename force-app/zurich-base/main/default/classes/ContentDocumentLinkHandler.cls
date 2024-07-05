@@ -21,6 +21,7 @@ public without sharing class ContentDocumentLinkHandler implements ITrigger
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
     {
         List<Id> listIds= new List<Id>();
+        List<ContentDocument>conDOc= new List<ContentDocument>();
         List<ContentDocumentLink> contentDocumentLinkHegeo = new List<ContentDocumentLink>();
         List<ContentDocumentLink> newListContentDocumentLink= (List<ContentDocumentLink>) newList;
 
@@ -29,7 +30,7 @@ public without sharing class ContentDocumentLinkHandler implements ITrigger
             listIds.add(conDocLink.ContentDocumentId);
         }
         if(!listIds.isEmpty()) 
-        List<ContentDocument>conDOc=[SELECT Id, Title, FileExtension, LatestPublishedVersion.VersionData
+        conDOc=[SELECT Id, Title, FileExtension, LatestPublishedVersion.VersionData
                  FROM ContentDocument
                         WHERE Title = 'HEGEO-CLASIFICACION'AND Id IN: listIds];
 
