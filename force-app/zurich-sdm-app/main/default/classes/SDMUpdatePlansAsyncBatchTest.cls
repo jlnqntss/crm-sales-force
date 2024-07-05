@@ -9,6 +9,9 @@ public with sharing class SDMUpdatePlansAsyncBatchTest {
         Objective__c obj = TestDataFactory.generateObjective(ACTUAL_YEAR, 'PN', 'Particulares', 'Autos', '11 BARCELONA', 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         Objective__c objRetention = TestDataFactory.generateObjective(ACTUAL_YEAR, 'Ratio_Retention', 'Particulares', 'Autos', '11 BARCELONA', 80.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
+        // se desactiva el objetivo para evitar que el trigger de planes cree los planes mensuales antes de tiempo
+        obj.Active__c = false;
+
         objList.add(obj);
         objList.add(objRetention);
         insert objList;
@@ -264,6 +267,15 @@ public with sharing class SDMUpdatePlansAsyncBatchTest {
      */
     @isTest
     static void dmlRecursivoInsertPlanMensualPN_OK() {
+
+        // activar objetivo 
+        List<Objective__c> objList = new List<Objective__c>([SELECT Id, January__c FROM Objective__c WHERE Indicator__c = 'PN' LIMIT 1]);
+
+        if (!objList.isEmpty()) {
+            Objective__c obj = objList.get(0);
+            obj.Active__c = true;
+            update obj;
+        }
         Map<String, List<PlanComercial__c>> mapDMLRecursivo = new Map<String, List<PlanComercial__c>>();
 
         List<PlanComercial__c> planMensualListToClone = new List<PlanComercial__c>([SELECT Id, TargetKPICurrency__c FROM PlanComercial__c
