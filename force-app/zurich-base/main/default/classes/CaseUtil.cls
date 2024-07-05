@@ -124,6 +124,9 @@ public with sharing class CaseUtil
         }
     }
 
+    public static final String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+
+
     public static final Map<String, Robot_Hegeo_Field_Mapping__mdt> CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE
     {
         get
@@ -712,6 +715,7 @@ public with sharing class CaseUtil
             {
                 updatedCases.add(caso);
             }
+            if(!updatedCases.isEmpty())
             completeCaseMilestones(updatedCases, 'Respuesta Interacción');
         }
     }
@@ -2792,9 +2796,6 @@ public with sharing class CaseUtil
      */
     public static void isCaseClone(List<Case> newList)
     {
-
-        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
-
         for (Case caseTrigger: newList)
         {
 
@@ -2820,8 +2821,6 @@ public with sharing class CaseUtil
     * @param newList lista de elementos del trigger before insert
     */
     public static void isOwnerUser(List<Case> newList) {
-
-        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
         String filterIdUser = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Start_Id_User');
         String filterIdQueue = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Start_Id_Queue');
         String idOwnerCase;
