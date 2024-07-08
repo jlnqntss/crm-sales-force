@@ -1174,4 +1174,107 @@ private with sharing class ContentDocumentLinkUtilTest
             System.assertEquals(1, updatedActas.size(), 'Debe haber una sola Acta__c actualizada');
             System.assertEquals(true, updatedActas[0].Completed__c, 'El campo Completed__c debe ser true');
         }
+    /**
+     * Metodo para testear bulkAfter Trigger ContentDocumentLinkHandler
+     * @author lrodriguez
+     * @date 08/07/2024
+     */
+    @isTest
+    static void test_filter_contentDocument_bulkAfter()
+    {
+        List<ContentDocumentLink> listContentDocumentLink= new List<ContentDocumentLink>();
+
+        List<Robot_Hegeo_Setting__mdt> robotHegeoSettings = [
+            SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
+            FROM Robot_Hegeo_Setting__mdt
+        ];
+        System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
+
+        List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
+            SELECT Id, Type__c, Subtype__c, TypeN3__c, SourceType__c, SourceSubtype__c
+            FROM Robot_Hegeo_Field_Mapping__mdt
+        ];
+        System.assertEquals(false, robotHegeoFieldsMapping.isEmpty(), 'List should not be empty');
+
+        Map<String, Map<String, String>> caseTypesMap = new Map<String, Map<String, String>>();
+        for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
+        {
+            Map<String, String> typeValuesMap = new Map<String, String>();
+            if(String.isNotBlank(fieldMapping.Type__c))
+            {
+                typeValuesMap.put('Type', fieldMapping.Type__c);
+            }
+            if(String.isNotBlank(fieldMapping.Subtype__c))
+            {
+                typeValuesMap.put('Subtype__c', fieldMapping.Subtype__c);
+            }
+            if(String.isNotBlank(fieldMapping.TypeN3__c))
+            {
+                typeValuesMap.put('TypeN3__c', fieldMapping.TypeN3__c);
+            }
+
+            caseTypesMap.put(fieldMapping.SourceType__c + fieldMapping.SourceSubtype__c, typeValuesMap);
+        }
+
+        Account relatedIntermediary = [SELECT Id, INFOIntermediaryCode__c FROM Account WHERE INFOIntermediaryCode__c != null LIMIT 1];
+
+        Opportunity relatedOffer = [SELECT Id, InfoQuoteNumber__c FROM Opportunity WHERE InfoQuoteNumber__c != null AND AccountId =: relatedIntermediary.Id LIMIT 1];
+
+        Policy__c relatedPolicy = [SELECT Id, InfoPolicyNumber__c FROM Policy__c WHERE OpportunityName__c =: relatedOffer.Id LIMIT 1];
+
+        Claim__c relatedClaim = [SELECT Id, InfoClaimNumber__c FROM Claim__c WHERE Policy__c =: relatedPolicy.Id LIMIT 1];
+
+        Case relatedCase = new Case();
+        relatedCase.RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
+        relatedCase.LegalEntity__c = Label.GeneralInsurance;
+        insert relatedCase;
+
+        EmailMessage emailMessage = new EmailMessage();
+        emailMessage.Status = '3'; // email was sent
+        emailMessage.ParentId = relatedCase.Id; 
+        emailMessage.FromAddress = 'lrodriguez@nts-solutions.com'; // from address
+        emailMessage.FromName = 'Laura Rodriguez'; // from name
+        emailMessage.ToAddress = robotHegeoSettings.get(0).RoutingAddresses__c.split(',').get(0);
+        emailMessage.Subject = 'HEGEO-CLASIFICACION Email';
+
+        emailMessage.HtmlBody = 'The CSV is attached.';
+        insert emailMessage;
+
+        String caseTypeValue = '1';
+        String caseSubtypeValue = '6';
+        String caseTypeCombination = caseTypeValue + caseSubtypeValue;
+        String receiptNumber = '123456789';
+
+        String csvContent = ''+caseTypeValue+';'+caseSubtypeValue+';;1;'+relatedOffer.InfoQuoteNumber__c+';;'+relatedPolicy.InfoPolicyNumber__c+';'+receiptNumber+';'+relatedClaim.InfoClaimNumber__c+';'+relatedIntermediary.INFOIntermediaryCode__c+'\n';
+        csvContent += 'Fake Name <'+FAKE_FROM_ADDRESS+'>\n';
+        String secondEmailAddress = 'secondfakeemailaddress@fakeemail.com.invalid';
+        csvContent += 'Fake Name <'+FAKE_TO_ADDRESS+'>; '+secondEmailAddress+'';
+
+        ContentVersion newVersion = new ContentVersion();
+        newVersion.Title = 'HEGEO-CLASIFICACION';
+        newVersion.PathOnClient = 'HEGEO-CLASIFICACION.csv';
+        newVersion.VersionData = Blob.valueof(csvContent);
+        insert newVersion;
+
+        newVersion = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id =: newVersion.Id];
+
+        ContentDocumentLink newLink = new ContentDocumentLink();
+        newLink.ContentDocumentId = newVersion.ContentDocumentId;
+        newLink.LinkedEntityId = emailMessage.Id;
+
+        List <SObject> listSobject= new  List <SObject>();
+        listSobject.add((Sobject)newLink);
+
+        Test.startTest();
+        insert newLink;
+        listContentDocumentLink= ContentDocumentLinkUtil.filterNewListTrigger(listSobject);
+        Test.stopTest();
+
+        System.assertEquals(1,listContentDocumentLink.size());
+        
+
+        
+
+    }
+
 }
