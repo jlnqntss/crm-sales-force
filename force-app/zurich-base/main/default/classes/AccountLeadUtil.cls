@@ -286,9 +286,10 @@ public with sharing class AccountLeadUtil
         ScopesSelector scopeS = new ScopesSelector();
 
         if(!allCandidateAccounts.isEmpty())
-        for( Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts) )
-        {
-            accountIdsWithScope.add(currentCPP.AccountId__c);
+        {for( Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts) )
+            {
+                accountIdsWithScope.add(currentCPP.AccountId__c);
+            }
         }
 
         for(Id currentAccountId : allCandidateAccounts)

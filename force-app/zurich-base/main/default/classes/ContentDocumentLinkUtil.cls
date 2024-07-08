@@ -568,6 +568,40 @@ public with sharing class ContentDocumentLinkUtil
             }
         }
     }
+    public static List<ContentDocumentLink> filterNewListTrigger(List<SObject> newList)
+    {
+        if(newList!=null)
+            {List<Id> listIds= new List<Id>();
+            List<ContentDocument>conDOc= new List<ContentDocument>();
+            List<ContentDocumentLink> contentDocumentLinkHegeo = new List<ContentDocumentLink>();
+            List<ContentDocumentLink> newListContentDocumentLink= (List<ContentDocumentLink>) newList;
+    
+            for (ContentDocumentLink conDocLink:newListContentDocumentLink)
+            {
+                listIds.add(conDocLink.ContentDocumentId);
+            }
+            if(!listIds.isEmpty()) 
+            conDOc=[SELECT Id, Title, FileExtension, LatestPublishedVersion.VersionData
+                     FROM ContentDocument
+                            WHERE Title = 'HEGEO-CLASIFICACION'AND Id IN: listIds];
+    
+            Map<Id, ContentDocument> mapconDOc = new Map<Id,ContentDocument>(conDOc);
+    
+            for (ContentDocumentLink cdlink : newListContentDocumentLink)
+            {
+                if (mapconDOc.containsKey(cdlink.ContentDocumentId) )
+                {
+                    contentDocumentLinkHegeo.add (cdlink);
+                }
+            }
+ 
+            return contentDocumentLinkHegeo;
+        }
+        else{
+            return new List<ContentDocumentLink>();
+        }
+
+    }
 
     /**
      *
