@@ -16302,6 +16302,31 @@
         <field>Account.RecordType__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TNPS__c.Intermediary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TNPS__c.NumberOfSurveys__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TNPS__c.Objective__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TNPS__c.Score__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>true</editable>
+        <field>TNPS__c.TNPSExternalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>    
     <flowAccesses>
         <enabled>false</enabled>
         <flow>Campaign_Member_Status</flow>
@@ -17129,7 +17154,9 @@
     <layoutAssignments>
         <layout>Propensity__c-Propensity Layout</layout>
     </layoutAssignments>
-
+    <layoutAssignments>
+        <layout>TNPS__c-TNPS Layout</layout>
+    </layoutAssignments>
     <loginIpRanges>
         <description>Avoid security token</description>
         <endAddress>255.255.255.255</endAddress>
@@ -18321,6 +18348,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>AccountRelationship__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>TNPS__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <pageAccesses>
