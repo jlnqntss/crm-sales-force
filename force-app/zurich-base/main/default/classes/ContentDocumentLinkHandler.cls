@@ -20,6 +20,7 @@ public without sharing class ContentDocumentLinkHandler implements ITrigger
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        if(newList!=null){
         List<Id> listIds= new List<Id>();
         List<ContentDocument>conDOc= new List<ContentDocument>();
         List<ContentDocumentLink> contentDocumentLinkHegeo = new List<ContentDocumentLink>();
@@ -45,7 +46,7 @@ public without sharing class ContentDocumentLinkHandler implements ITrigger
         }
         if(!contentDocumentLinkHegeo.isEmpty() )
         ContentDocumentLinkUtil.getRelatedEmailMessages(contentDocumentLinkHegeo, (Map<Id,ContentDocumentLink>) oldMap);
-    
+        }
     }
 
     /**
