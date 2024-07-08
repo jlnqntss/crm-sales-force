@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TNPSExternalId__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>External Id &quot;ficticio&quot; para poder hacer el upsert de los registros de la ER &quot;INTERMEDIARY_TNPS&quot;</description>
+    <externalId>true</externalId>
+    <label>TNPS External Id</label>
+    <length>10</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>
