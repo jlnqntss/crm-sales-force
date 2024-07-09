@@ -1188,13 +1188,13 @@ private with sharing class ContentDocumentLinkUtilTest
             SELECT Id, CaseFields__c, CaseFieldsIndex__c, FromAddressIndex__c, Separator__c, ToAddressIndex__c, IsActive__c, DocumentTitle__c, FileExtension__c, CaseRecordTypeNames__c, RoutingAddresses__c
             FROM Robot_Hegeo_Setting__mdt
         ];
-        System.assertEquals(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
+        System.Assert.areEqual(false, robotHegeoSettings.isEmpty(), 'List should not be empty');
 
         List<Robot_Hegeo_Field_Mapping__mdt> robotHegeoFieldsMapping = [
             SELECT Id, Type__c, Subtype__c, TypeN3__c, SourceType__c, SourceSubtype__c
             FROM Robot_Hegeo_Field_Mapping__mdt
         ];
-        System.assertEquals(false, robotHegeoFieldsMapping.isEmpty(), 'List should not be empty');
+        System.Assert.areEqual(false, robotHegeoFieldsMapping.isEmpty(), 'List should not be empty');
 
         Map<String, Map<String, String>> caseTypesMap = new Map<String, Map<String, String>>();
         for(Robot_Hegeo_Field_Mapping__mdt fieldMapping: robotHegeoFieldsMapping)
@@ -1271,10 +1271,5 @@ private with sharing class ContentDocumentLinkUtilTest
         Test.stopTest();
 
         System.Assert.areEqual(1,listContentDocumentLink.size());
-        
-
-        
-
     }
-
 }

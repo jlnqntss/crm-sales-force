@@ -570,12 +570,13 @@ public with sharing class ContentDocumentLinkUtil
     }
 
     /**
-     * Método que localiza los Content Document Link relacionados con Content Document Fichero de Hegeo
-     *
+     * @description Método que localiza los Content Document Link relacionados con Content Document Fichero de Hegeo
+     * @param List<SObject> newList, de este parámetro se obtendran las id sobre las que realizar la busqueda de content document
+     * relacionados
      * @author lrodriguez
      * @date 09/07/2024
+     * @where bulkAfter -> ContentDocumentLinkHandler
      */
-
     public static List<SObject> contentDocumentLinkHegeoClasificacion(List<SObject> newList)
     {
         if(newList!=null)
@@ -609,7 +610,6 @@ public with sharing class ContentDocumentLinkUtil
         {
             return new List<SObject>();
         }
-
     }
 
     /**

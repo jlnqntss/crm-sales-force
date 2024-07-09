@@ -2830,16 +2830,14 @@ public with sharing class CaseUtil
 
             idOwnerCase=Id.valueOf(caseTrigger.OwnerId);
 
-            if ((caseTrigger.recordTypeId==USP_RECORD_TYPE_ID && idOwnerCase.startsWith(filterIdUser) && caseTrigger.OwnerUser__c!=true )) {
-
+            if ((caseTrigger.recordTypeId==USP_RECORD_TYPE_ID && idOwnerCase.startsWith(filterIdUser) && caseTrigger.OwnerUser__c!=true )) 
+            {
                 caseTrigger.OwnerUser__c=true;
-
             }
 
-            if ((caseTrigger.recordTypeId==USP_RECORD_TYPE_ID && idOwnerCase.startsWith(filterIdQueue) && caseTrigger.OwnerUser__c==true )) {
-
+            if ((caseTrigger.recordTypeId==USP_RECORD_TYPE_ID && idOwnerCase.startsWith(filterIdQueue) && caseTrigger.OwnerUser__c==true )) 
+            {
                 caseTrigger.OwnerUser__c=false;
-
             }
 
         }
