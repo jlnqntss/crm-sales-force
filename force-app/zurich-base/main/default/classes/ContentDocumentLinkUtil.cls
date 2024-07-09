@@ -570,6 +570,49 @@ public with sharing class ContentDocumentLinkUtil
     }
 
     /**
+     * @description Método que localiza los Content Document Link relacionados con Content Document Fichero de Hegeo
+     * @param List<SObject> newList, de este parámetro se obtendran las id sobre las que realizar la busqueda de content document
+     * relacionados
+     * @author lrodriguez
+     * @date 09/07/2024
+     * @where bulkAfter -> ContentDocumentLinkHandler
+     */
+    public static List<SObject> contentDocumentLinkHegeoClasificacion(List<SObject> newList)
+    {
+        if(newList!=null)
+        {
+            List<Id> listIds= new List<Id>();
+            List<ContentDocument>conDoc= new List<ContentDocument>();
+            String titleHegeo = GlobalConfigUtil.getGlobalConfigurationValue('Hegeo_Clasificacion_Name');
+            List<ContentDocumentLink> contentDocumentLinkHegeo = new List<ContentDocumentLink>();
+            List<ContentDocumentLink> newListContentDocumentLink= (List<ContentDocumentLink>) newList;
+    
+            for (ContentDocumentLink conDocLink:newListContentDocumentLink)
+            {
+                listIds.add(conDocLink.ContentDocumentId);
+            }
+    
+            conDoc= new ContentDocumentSelector().getContentDocumentHegeoClasificacion(titleHegeo,listIds);
+
+            Map<Id, ContentDocument> mapconDoc = new Map<Id,ContentDocument>(conDoc);
+    
+            for (ContentDocumentLink cdlink : newListContentDocumentLink)
+            {
+                if (mapconDoc.containsKey(cdlink.ContentDocumentId) )
+                {
+                    contentDocumentLinkHegeo.add (cdlink);
+                }
+            }
+ 
+            return (List<SObject>) contentDocumentLinkHegeo;
+        }
+        else
+        {
+            return new List<SObject>();
+        }
+    }
+
+    /**
      *
      *
      * @author rlopez
