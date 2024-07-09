@@ -287,11 +287,9 @@ public with sharing class AccountLeadUtil
 
         if(!allCandidateAccounts.isEmpty())
         {
+            for( Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts) )
             {
-                for( Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts) )
-                {
-                    accountIdsWithScope.add(currentCPP.AccountId__c);
-                }
+                accountIdsWithScope.add(currentCPP.AccountId__c);
             }
         }
 
