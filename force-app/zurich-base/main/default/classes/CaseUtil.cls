@@ -124,8 +124,7 @@ public with sharing class CaseUtil
         }
     }
 
-    public static final String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
-
+    public static final String USP_RECORD_TYPE_ID = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
 
     public static final Map<String, Robot_Hegeo_Field_Mapping__mdt> CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE
     {
@@ -716,7 +715,9 @@ public with sharing class CaseUtil
                 updatedCases.add(caso);
             }
             if(!updatedCases.isEmpty())
-            completeCaseMilestones(updatedCases, 'Respuesta Interacción');
+            {
+                completeCaseMilestones(updatedCases, 'Respuesta Interacción');
+            }
         }
     }
 
@@ -2799,7 +2800,7 @@ public with sharing class CaseUtil
         for (Case caseTrigger: newList)
         {
 
-            if ( ( caseTrigger.recordTypeId == uSPRecordTypeId && caseTrigger.isClone() ) || (Test.isRunningTest() && caseTrigger.recordTypeId == uSPRecordTypeId) )
+            if ( ( caseTrigger.recordTypeId == USP_RECORD_TYPE_ID && caseTrigger.isClone() ) || (Test.isRunningTest() && caseTrigger.recordTypeId == USP_RECORD_TYPE_ID) )
             {
 
                 caseTrigger.MediatedCustomer__c=null;
@@ -2829,13 +2830,13 @@ public with sharing class CaseUtil
 
             idOwnerCase=Id.valueOf(caseTrigger.OwnerId);
 
-            if ((caseTrigger.recordTypeId==uSPRecordTypeId && idOwnerCase.startsWith(filterIdUser) && caseTrigger.OwnerUser__c!=true )) {
+            if ((caseTrigger.recordTypeId==USP_RECORD_TYPE_ID && idOwnerCase.startsWith(filterIdUser) && caseTrigger.OwnerUser__c!=true )) {
 
                 caseTrigger.OwnerUser__c=true;
 
             }
 
-            if ((caseTrigger.recordTypeId==uSPRecordTypeId && idOwnerCase.startsWith(filterIdQueue) && caseTrigger.OwnerUser__c==true )) {
+            if ((caseTrigger.recordTypeId==USP_RECORD_TYPE_ID && idOwnerCase.startsWith(filterIdQueue) && caseTrigger.OwnerUser__c==true )) {
 
                 caseTrigger.OwnerUser__c=false;
 

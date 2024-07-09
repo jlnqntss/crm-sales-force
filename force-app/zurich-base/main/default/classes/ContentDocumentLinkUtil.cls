@@ -568,11 +568,21 @@ public with sharing class ContentDocumentLinkUtil
             }
         }
     }
-    public static List<ContentDocumentLink> filterNewListTrigger(List<SObject> newList)
+
+    /**
+     * Método que localiza los Content Document Link relacionados con Content Document Fichero de Hegeo
+     *
+     * @author lrodriguez
+     * @date 09/07/2024
+     */
+
+    public static List<SObject> contentDocumentLinkHegeoClasificacion(List<SObject> newList)
     {
         if(newList!=null)
-            {List<Id> listIds= new List<Id>();
-            List<ContentDocument>conDOc= new List<ContentDocument>();
+        {
+            List<Id> listIds= new List<Id>();
+            List<ContentDocument>conDoc= new List<ContentDocument>();
+            String titleHegeo = GlobalConfigUtil.getGlobalConfigurationValue('Hegeo_Clasificacion_Name');
             List<ContentDocumentLink> contentDocumentLinkHegeo = new List<ContentDocumentLink>();
             List<ContentDocumentLink> newListContentDocumentLink= (List<ContentDocumentLink>) newList;
     
@@ -580,25 +590,24 @@ public with sharing class ContentDocumentLinkUtil
             {
                 listIds.add(conDocLink.ContentDocumentId);
             }
-            if(!listIds.isEmpty()) 
-            conDOc=[SELECT Id, Title, FileExtension, LatestPublishedVersion.VersionData
-                     FROM ContentDocument
-                            WHERE Title = 'HEGEO-CLASIFICACION'AND Id IN: listIds];
     
-            Map<Id, ContentDocument> mapconDOc = new Map<Id,ContentDocument>(conDOc);
+            conDoc= new ContentDocumentSelector().getContentDocumentHegeoClasificacion(titleHegeo,listIds);
+
+            Map<Id, ContentDocument> mapconDoc = new Map<Id,ContentDocument>(conDoc);
     
             for (ContentDocumentLink cdlink : newListContentDocumentLink)
             {
-                if (mapconDOc.containsKey(cdlink.ContentDocumentId) )
+                if (mapconDoc.containsKey(cdlink.ContentDocumentId) )
                 {
                     contentDocumentLinkHegeo.add (cdlink);
                 }
             }
  
-            return contentDocumentLinkHegeo;
+            return (List<SObject>) contentDocumentLinkHegeo;
         }
-        else{
-            return new List<ContentDocumentLink>();
+        else
+        {
+            return new List<SObject>();
         }
 
     }

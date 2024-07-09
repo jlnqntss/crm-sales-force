@@ -1180,7 +1180,7 @@ private with sharing class ContentDocumentLinkUtilTest
      * @date 08/07/2024
      */
     @isTest
-    static void test_filter_contentDocument_bulkAfter()
+    private static void test_filter_contentDocument_bulkAfter()
     {
         List<ContentDocumentLink> listContentDocumentLink= new List<ContentDocumentLink>();
 
@@ -1267,10 +1267,10 @@ private with sharing class ContentDocumentLinkUtilTest
 
         Test.startTest();
         insert newLink;
-        listContentDocumentLink= ContentDocumentLinkUtil.filterNewListTrigger(listSobject);
+        listContentDocumentLink= ContentDocumentLinkUtil.contentDocumentLinkHegeoClasificacion(listSobject);
         Test.stopTest();
 
-        System.assertEquals(1,listContentDocumentLink.size());
+        System.Assert.areEqual(1,listContentDocumentLink.size());
         
 
         
