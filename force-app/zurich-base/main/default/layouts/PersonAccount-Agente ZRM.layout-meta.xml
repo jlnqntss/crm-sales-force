@@ -6,6 +6,9 @@
     <excludeButtons>CreateCallList</excludeButtons>
     <excludeButtons>CreatePartnerChannelQuickAction</excludeButtons>
     <excludeButtons>CreateSurveyInvitation</excludeButtons>
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>Edit</excludeButtons>
@@ -30,7 +33,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>CustomerValue__c</field>
+                <field>GlobalCustomerValue_NoLife__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
