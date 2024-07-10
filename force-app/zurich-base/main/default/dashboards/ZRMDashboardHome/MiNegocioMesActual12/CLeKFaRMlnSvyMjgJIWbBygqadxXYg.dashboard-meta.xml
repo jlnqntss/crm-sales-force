@@ -469,6 +469,31 @@
         </dashboardGridComponents>
         <dashboardGridComponents>
             <colSpan>2</colSpan>
+            <columnIndex>10</columnIndex>
+            <dashboardComponent>
+                <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
+                <chartSummary>
+                    <aggregate>Sum</aggregate>
+                    <column>TNPS__c.Score__c</column>
+                </chartSummary>
+                <componentType>Metric</componentType>
+                <decimalPrecision>-1</decimalPrecision>
+                <displayUnits>Auto</displayUnits>
+                <groupingSortProperties/>
+                <header>TNPS</header>
+                <indicatorBreakpoint1>5.0</indicatorBreakpoint1>
+                <indicatorBreakpoint2>10.0</indicatorBreakpoint2>
+                <indicatorHighColor>#23366F</indicatorHighColor>
+                <indicatorLowColor>#23366F</indicatorLowColor>
+                <indicatorMiddleColor>#23366F</indicatorMiddleColor>
+                <report>ZRMTNPS/Mi_TNPS_tpe</report>
+                <showRange>false</showRange>
+            </dashboardComponent>
+            <rowIndex>12</rowIndex>
+            <rowSpan>4</rowSpan>
+        </dashboardGridComponents>
+        <dashboardGridComponents>
+            <colSpan>2</colSpan>
             <columnIndex>0</columnIndex>
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
@@ -523,6 +548,8 @@
     </dashboardGridLayout>
     <dashboardType>LoggedInUser</dashboardType>
     <isGridLayout>true</isGridLayout>
+    <owner>jonander.sanjuanlago@zurich-es.com</owner>
+    <runningUser>adminklinc@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
     <title>Mi Negocio Mes Actual (1/2)</title>
     <titleColor>#000000</titleColor>

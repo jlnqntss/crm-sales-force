@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportFolder xmlns="http://soap.sforce.com/2006/04/metadata">    
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>Administrators</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>Ventas_Advisor</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>Ventas_Agente_Mediador</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>Ventas_Director</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>Ventas_Supervisor</sharedTo>
+        <sharedToType>Group</sharedToType>
+    </folderShares>
+    <name>ZRM TNPS</name>
+</ReportFolder>
