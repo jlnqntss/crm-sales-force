@@ -500,6 +500,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Cerrado por gestión Car NB</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Declinada - Actividad</fullName>
             <default>false</default>
         </values>

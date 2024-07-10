@@ -743,6 +743,11 @@
                 <default>false</default>
                 <label>Comentar tema con siniestros</label>
             </value>
+            <value>
+                <fullName>Cerrado por gestión Car NB</fullName>
+                <default>false</default>
+                <label>Cerrado por gestión Car NB</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Incidencias-Consultas Siniestros</controllingFieldValue>
@@ -1544,6 +1549,13 @@
         <valueSettings>
             <controllingFieldValue>Siniestros</controllingFieldValue>
             <valueName>Comentar tema con siniestros</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gestión Competencias</controllingFieldValue>
+            <controllingFieldValue>Cotización</controllingFieldValue>
+            <controllingFieldValue>Emisión</controllingFieldValue>
+            <controllingFieldValue>Modificación oferta</controllingFieldValue>
+            <valueName>Cerrado por gestión Car NB</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>
