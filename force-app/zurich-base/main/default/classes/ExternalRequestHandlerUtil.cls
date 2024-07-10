@@ -38,6 +38,7 @@ global with sharing class ExternalRequestHandlerUtil
     public static final String SOBJECT_SPECIAL_CONDITION = 'Special_Condition__c';
     public static final String SOBJECT_KPI = 'KPI__c';
     public static final String SOBJECT_CONSENT = 'Consent__c';
+    public static final String SOBJECT_TNPS = 'TNPS__c';
 
     // Orden de DML sobre SObjects
     private static List<String> sObjectOrder = new List<String>
@@ -57,7 +58,8 @@ global with sharing class ExternalRequestHandlerUtil
         SOBJECT_RELATIONSHIP,
         SOBJECT_CASE,
         SOBJECT_SPECIAL_CONDITION,
-        SOBJECT_CONSENT
+        SOBJECT_CONSENT,
+        SOBJECT_TNPS
     };
 
     /**

@@ -41,6 +41,8 @@ public with sharing class INFOHandler implements ISystem
     public static final String INTERMEDIARY_HIERARCHY = 'INTERMEDIARY_HIERARCHY';
     public static final String INTERMEDIARY_GROUP = 'INTERMEDIARY_GROUP';
     public static final String CONSENT = 'CONSENT';
+    public static final String ACCOUNT_SCORE_KPI = 'ACCOUNT_SCORE_KPI';
+    public static final String INTERMEDIARY_TNPS = 'INTERMEDIARY_TNPS';
 
     public static final List<String> PRIORITY_ENTITIES =  new List<String>{NOTE};
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
@@ -292,6 +294,16 @@ public with sharing class INFOHandler implements ISystem
                 Consent__c consentRecord = (Consent__c) ExternalRequestHandlerUtil.tf.transform(CONSENT, 'Consent__c', recordValuesMap);
                 consentRecord.ConsentUniqueId__c = consentRecord.ConsentClientRel__c + '-' + consentRecord.ConsentId__c;
                 ExternalRequestHandlerUtil.addRecordToMap(externalRequest, CONSENT, 'Consent__c', consentRecord);
+            }
+            when 'ACCOUNT_SCORE_KPI'     
+            {
+                Account accountRecord = (Account) ExternalRequestHandlerUtil.tf.transform(ACCOUNT_SCORE_KPI, 'Account', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, ACCOUNT_SCORE_KPI, 'Account', accountRecord);
+            }
+            when 'INTERMEDIARY_TNPS'   
+            {
+                TNPS__c tnps = (TNPS__c) ExternalRequestHandlerUtil.tf.transform(INTERMEDIARY_TNPS, 'TNPS__c', recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, INTERMEDIARY_TNPS, 'TNPS__c', tnps);
             }
             when else
             {
