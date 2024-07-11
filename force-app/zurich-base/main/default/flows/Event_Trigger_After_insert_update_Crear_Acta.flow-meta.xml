@@ -359,6 +359,13 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Acta__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Crear_Acta</targetReference>
             </connector>
@@ -469,7 +476,7 @@
     <formulas>
         <name>accountIsIntermediary</name>
         <dataType>Boolean</dataType>
-        <expression>{!Buscar_Contactos.Account.RecordType.DeveloperName} = {!intermediaryRcDeveloperName}</expression>
+        <expression>{!Buscar_Contactos.Account.RecordType.DeveloperName} = {!intermediaryRcDeveloperName} || TEXT({!$Record.RelatedToIntermediary__c}) = &apos;Yes&apos;</expression>
     </formulas>
     <formulas>
         <name>intermediaryRcDeveloperName</name>
