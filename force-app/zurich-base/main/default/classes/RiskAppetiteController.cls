@@ -372,6 +372,7 @@ public with sharing class RiskAppetiteController {
             // Generar json con los valores que van a ir al where
             caseToUpdate.Query__c = generateQueryJson(technicalPolicy, fields);
             caseToUpdate.RiskAppetite__c = technicalPolicy.ApetitoRiesgo__c;
+            caseToUpdate.RiskAppetiteId__c = technicalPolicy.Id;
             update caseToUpdate;
         } 
         catch (Exception e) 
@@ -418,6 +419,7 @@ public with sharing class RiskAppetiteController {
             // Vacíamos el campo que contiene el json
             caseToUpdate.Query__c = '';
             caseToUpdate.RiskAppetite__c = '';
+            caseToUpdate.RiskAppetiteId__c = null;
             // Actualizamos el caso
             update caseToUpdate;
         } 
