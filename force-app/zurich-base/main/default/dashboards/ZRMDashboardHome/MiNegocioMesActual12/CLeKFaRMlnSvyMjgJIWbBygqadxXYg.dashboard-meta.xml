@@ -548,8 +548,6 @@
     </dashboardGridLayout>
     <dashboardType>LoggedInUser</dashboardType>
     <isGridLayout>true</isGridLayout>
-    <owner>jonander.sanjuanlago@zurich-es.com</owner>
-    <runningUser>adminklinc@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
     <title>Mi Negocio Mes Actual (1/2)</title>
     <titleColor>#000000</titleColor>
