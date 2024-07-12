@@ -774,6 +774,7 @@
     <tabs>Scope__c</tabs>
     <tabs>Relationship__c</tabs>
     <tabs>purecloud__PureCloud_Chat_Transcript__c</tabs>
+    <tabs>standard-OtherUserProfile</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>USP_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -805,6 +806,9 @@
         <mappings>
             <fieldName>AccountId</fieldName>
             <tab>standard-Opportunity</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-OtherUserProfile</tab>
         </mappings>
         <mappings>
             <tab>standard-Task</tab>
