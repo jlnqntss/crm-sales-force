@@ -36,6 +36,11 @@
                 <label>Actividad comercial</label>
             </value>
             <value>
+                <fullName>Agravación del riesgo</fullName>
+                <default>false</default>
+                <label>Agravación del riesgo</label>
+            </value>
+            <value>
                 <fullName>Ajuste de cotización</fullName>
                 <default>false</default>
                 <label>Ajuste de cotización</label>
@@ -76,6 +81,11 @@
                 <fullName>Atención deficiente tramitador</fullName>
                 <default>false</default>
                 <label>Atención deficiente tramitador</label>
+            </value>
+            <value>
+                <fullName>A vencimiento</fullName>
+                <default>false</default>
+                <label>A vencimiento</label>
             </value>
             <value>
                 <fullName>Ayuda Acceso</fullName>
@@ -409,6 +419,11 @@
                 <label>Decrease in guarantees</label>
             </value>
             <value>
+                <fullName>Desaparición del riesgo</fullName>
+                <default>false</default>
+                <label>Desaparición del riesgo</label>
+            </value>
+            <value>
                 <fullName>Devolución</fullName>
                 <default>false</default>
                 <label>Devolución</label>
@@ -616,6 +631,11 @@
                 <fullName>Herramientas Zurich</fullName>
                 <default>false</default>
                 <label>Herramientas Zurich</label>
+            </value>
+            <value>
+                <fullName>Impago</fullName>
+                <default>false</default>
+                <label>Impago</label>
             </value>
             <value>
                 <fullName>Incidencia</fullName>
@@ -1075,6 +1095,11 @@
                 <fullName>Seguimiento</fullName>
                 <default>false</default>
                 <label>Seguimiento</label>
+            </value>
+            <value>
+                <fullName>Sin efecto</fullName>
+                <default>false</default>
+                <label>Sin efecto</label>
             </value>
             <value>
                 <fullName>Siniestros</fullName>
@@ -1601,6 +1626,26 @@
             <valueName>Anulación</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Desaparición del riesgo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Agravación del riesgo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Sin efecto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>A vencimiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
+            <valueName>Impago</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>Retención/Cancelación</controllingFieldValue>
             <valueName>Cancelación/Retención &gt;1.000€ ó mas de 3 pólizas</valueName>
         </valueSettings>
@@ -1655,6 +1700,7 @@
             <valueName>Sin Oferta</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Reemplazo</controllingFieldValue>
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
             <valueName>Reemplazo</valueName>
@@ -1672,6 +1718,7 @@
             <valueName>Otras consultas</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>Anulación</controllingFieldValue>
             <controllingFieldValue>Saneamiento</controllingFieldValue>
             <controllingFieldValue>Tareas administrativas</controllingFieldValue>
             <valueName>Saneamiento</valueName>
