@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>PriorityByAssociation__c</fullName>
     <externalId>false</externalId>
-    <formula>IF(OR(CONTAINS(Account.Association__c,&apos;COJEBRO&apos;),CONTAINS(Account.Association__c,&apos;cojebro&apos;)),10,0)</formula>
+    <formula>IF(OR(CONTAINS(Account.Association__c,UPPER( $CustomMetadata.Global_Configuration__mdt.Case_Association_Cojebro.Value__c) ),CONTAINS(Account.Association__c, $CustomMetadata.Global_Configuration__mdt.Case_Association_Cojebro.Value__c)),10,0)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>PriorityByAssociation</label>
     <precision>18</precision>
