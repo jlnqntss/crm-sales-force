@@ -49,7 +49,8 @@ public with sharing class TaskUtil
 
     /**
      * Para aquellas tareas de escalado que se cierran y estan asociadas a casos de ZDA, no se
-     * debe permitir el cierre si no hay nada informado en el campo de respuesta (Response__c)
+     * debe permitir el cierre si no hay nada informado en el campo de respuesta (Response__c).
+     * Si el caso relacionado si que estuviera cerrado, si se permite el cierre (OCS-10527)
      *
      * @author mario.navarro@seidor.com
      * @date 16/05/2024
@@ -65,12 +66,12 @@ public with sharing class TaskUtil
         {
             if (updatedTask.WhatId != null)
             {
-                relatedIds.add(updatedTask.WhatId.toString());
+                relatedIds.add( updatedTask.WhatId.toString() );
             }
         }
         List<Case> relatedCases = new CasesSelector().findById(relatedIds, true);
 
-        if (relatedCases.isEmpty())
+        if ( relatedCases.isEmpty() )
         {
             //nada que revisar, al no tener casos relacionados
             return;
@@ -81,9 +82,10 @@ public with sharing class TaskUtil
         for (Task updatedTask : updatedTasks)
         {
             relatedCase = casesById.get(updatedTask.WhatId);
-            if (relatedCase != null && relatedCase.RecordTypeId == CaseUtil.RT_ID_ZDA &&
-                isScaledTaskAndClosed(updatedTask, oldMap.get(updatedTask.Id)) &&
-                String.isBlank(updatedTask.Response__c))
+            if ( relatedCase != null && relatedCase.RecordTypeId == CaseUtil.RT_ID_ZDA &&
+                 relatedCase.Status != CaseUtil.estadoCerrado &&
+                 isScaledTaskAndClosed( updatedTask, oldMap.get(updatedTask.Id) ) &&
+                 String.isBlank(updatedTask.Response__c) )
             {
                 //se agrega un error al campo Response__c si esta vacio
                 updatedTask.addError(Task.fields.Response__c.getDescribe().getName(), Label.ZDANotAllowedCloseScaledWithoutResponse);
@@ -113,14 +115,17 @@ public with sharing class TaskUtil
      *
      * @param List<Task> newList : Lista de tareas a actualizar
      */
-    public static List<Task> completeTaskByWhatId(Set<Id> opportuniesList) {
+    public static List<Task> completeTaskByWhatId(Set<Id> opportuniesList)
+    {
 
         List<Task> result = new List<Task>();
 
-        if (opportuniesList != null && !opportuniesList.isEmpty()) {
+        if ( opportuniesList != null && !opportuniesList.isEmpty() )
+        {
             result = ActivitySelector.selectOpenTasksByWhatId(opportuniesList);
 
-            for (Task t: result) {
+            for (Task t: result)
+            {
                 t.Status = 'Cerrada';
             }
         }
@@ -130,14 +135,15 @@ public with sharing class TaskUtil
 
 
     /**
-     * Método que informa en el caso el Id Genesys 
+     * Método que informa en el caso el Id Genesys
      *
      * @author LRODRIGUEZ
      * @date 14/05/2024
      *
      * @param List<Task> newList : Lista de tareas a actualizar
      */
-    public static void checkIdGenesys(List<Task> newList) {
+    public static void checkIdGenesys(List<Task> newList)
+    {
 
 
         Set<String> taskId = new Set<String>();
@@ -146,9 +152,9 @@ public with sharing class TaskUtil
 
         for(Task newEmail:newList)
         {
-            if(newEmail.CallObject!=null)
+            if(newEmail.CallObject != null)
             {
-                taskId.add(newEmail.WhatId); 
+                taskId.add(newEmail.WhatId);
                 mapaGenesys.put(newEmail.WhatId,newEmail.CallObject);
             }
         }
@@ -157,12 +163,12 @@ public with sharing class TaskUtil
 
         for (Case relatedCase:casesToUpdate)
         {
-            if(relatedCase.RecordTypeId==uspRecordTypeId)
-            relatedCase.GenesysID__c=mapaGenesys.get(relatedCase.Id);
+            if(relatedCase.RecordTypeId == uspRecordTypeId)
+                relatedCase.GenesysID__c=mapaGenesys.get(relatedCase.Id);
         }
 
         update casesToUpdate;
 
-        
+
     }
 }
