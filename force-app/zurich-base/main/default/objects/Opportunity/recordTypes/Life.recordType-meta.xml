@@ -347,10 +347,6 @@
             <fullName>0000000018</fullName>
             <default>false</default>
         </values>
-        <values>
-            <fullName>0000000018</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>SalesProcess__c</picklist>
@@ -419,6 +415,10 @@
         </values>
         <values>
             <fullName>Insurance required by the bank</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integral customer</fullName>
             <default>false</default>
         </values>
         <values>

@@ -16,8 +16,6 @@ public with sharing class CasesSelector extends RecordsSelector
 
     //#endregion
 
-   
-
     public static final String CASES_LAST_DATE = 'Case.CreatedDate = LAST_N_DAYS:';
     public static final String CASES_MODIFY_LAST_DATE = 'Case.LastModifiedDate = LAST_N_DAYS:';
     public static final String CASES_END_DATE = 'Case.PolicyEndDate__c <= LAST_N_MONTHS:';
@@ -27,6 +25,9 @@ public with sharing class CasesSelector extends RecordsSelector
     public static final String CASE_ZRM_RT_NAME = 'ZRMInquiry';
     public static final String CASE_STATUS_WIN_CLOSED = 'Cerrado Ganado';
     public static final String CASE_STATUS_LOOSE_CLOSED = 'Cerrado Perdido';
+    public static final String CASE_OWNER_TYPE = 'Case.Owner.Type';
+    public static final String CASE_OWNER_PROFILE_NAME = 'Case.Owner.Profile.Name';
+
     String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
     String filterCallCenter = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Call_Center_USP');
     String filterStatusCerrado = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Status_Cerrado');
@@ -34,8 +35,7 @@ public with sharing class CasesSelector extends RecordsSelector
     String filterStatusCombinado = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Status_Combinado');
     String filterTypeVenta = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Type_Venta');
     String filterSourceMediator = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Source_Area_Mediator');
-
-   
+    String profileIntegrator = GlobalConfigUtil.getGlobalConfigurationValue('Profile_Name_Integrator');
 
     /**
      * Aplicar el filtro de scope a los registros obtenidos en la búsqueda
@@ -595,6 +595,58 @@ public with sharing class CasesSelector extends RecordsSelector
     }
 
     /**
+     * Método selector que devuelve el número de casos que tiene cada usuario que es un gestor activo.
+     * @author aberuete
+     * @date 19/06/2024
+     */
+    public List<AggregateResult> selectNumberOfAssignedCasesGroupById()
+    {
+        Query subquery = new Query (User.getSObjectType());
+        subquery.selectFields((new List<Schema.SObjectField> {
+            User.Id
+        }));
+        subquery.addConditionEq(User.ActiveAgent__c, true);
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>
+        {
+            Case.OwnerId
+        })
+        .count('Id','numCases')
+        .addConditionEq(Case.IsClosed, false)
+        .addConditionNotEq(Case.Status, filterStatusPendiente)
+        .addConditionIn(Case.OwnerId,subquery)
+        .groupBy('OwnerId');
+
+        return this.baseQuery.aggregate(); 
+    }
+
+    /**
+     * Método selector que devuelve una query que obtiene los casos ordenados por mayor prioridad y menor fecha de modificación
+     * cuyo campo WithoutBestAgent__c sea verdadero, que el caso no esté cerrado y que el owner sea una cola o el usuario integrador 
+     * @author aberuete
+     * @date 27/06/2024
+     */
+    public String selectCasesWithoutBestAgent()
+    {
+        Query.Condition andCondition = Query.doOr(
+                Query.conditionEq(CASE_OWNER_TYPE, 'Queue'),
+                Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));
+                
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.Id,
+            Case.OwnerId
+        })
+        .addConditionEq(Case.WithoutBestAgent__c , true)
+        .addConditionEq(Case.isClosed, false)
+        .addCondition(andCondition)
+        .orderBy('Case.Priority__c', 'DESC')
+        .orderBy('Case.LastModifiedDate', 'ASC');
+
+        return this.baseQuery.toQueryString();
+    }
+    
+    /**
      * Método utilizado por Batch_CloseInteractions para definir el scope automaticamente (sin botón)
      * @author lrodriguez6@seidor.es
      * @date 04/06/2024
@@ -618,6 +670,30 @@ public with sharing class CasesSelector extends RecordsSelector
         .addConditionEq(Case.SourceArea__c,filterSourceMediator);
         
 
+        return (List<Case>) this.baseQuery.run();
+    }
+
+    /**
+     * Método que recupera los casos mediante el identificador de CanalUnico
+     * @author arcortazar
+     * @date 21/06/2024
+     * @return List<Case>
+     */
+    public List<Case> getCaseByCuTicketId(List<String> lstIdCanalUnico)
+    {
+        if(lstIdCanalUnico.isEmpty())
+        {
+            return new List<Case>();
+        }
+
+        this.baseQuery.selectFields(new Set<Schema.SObjectField>{
+            Case.Id, 
+            Case.RecordTypeId, 
+            Case.OwnerId, 
+            Case.OwnerIdPrior__c
+        })
+        .selectFields('Case.Owner.Name')
+        .addConditionIn(Case.CuTicketId__c,lstIdCanalUnico);
         return (List<Case>) this.baseQuery.run();
 
     }

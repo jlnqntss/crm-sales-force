@@ -1009,4 +1009,22 @@ private with sharing class AccountsSelectorTest
 
         Assert.areEqual(1,accountsZDA.size(),'La lista devuelta no es correcta');
     }
+
+    /**
+     * Test del método que recupera las cuentas filtradas por id y el campo isAccountZDA
+     * @author aberuete
+     * @date 16/05/2024
+     */
+    @isTest
+    private static void test_findZRMOldLeads()
+    {
+
+        Scope_Setting__mdt ventasScopeMdt = Scope_Setting__mdt.getInstance(Batch_DeleteOldLeads.VENTAS_SCOPE_NAME); 
+
+        Test.startTest();
+        String zrmOldLeadsQuery = new AccountsSelector().findZRMOldLeads(Batch_DeleteOldLeads.DAYS, Batch_DeleteOldLeads.LEGIT_LEAD_OFFER_STATUS, ventasScopeMdt.BusinessCode__c);
+        Test.stopTest();
+
+        Assert.isTrue(String.isNotEmpty(zrmOldLeadsQuery), 'Debe no ser nulo'); 
+    }
 }

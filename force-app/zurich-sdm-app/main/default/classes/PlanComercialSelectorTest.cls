@@ -187,7 +187,7 @@ private with sharing class PlanComercialSelectorTest
 
             Test.stopTest();
             
-            System.assertEquals(true, plans.isEmpty(), 'No debe haber un plan anual por el valor de metadata');
+            System.assertEquals(false, plans.isEmpty(), 'Debe haber resultados');
         }
     }
 
@@ -234,7 +234,7 @@ private with sharing class PlanComercialSelectorTest
             PlanComercialSelector planSel = new PlanComercialSelector();
             List<Plancomercial__c> plans = planSel.findMensualPlanByObjectiveIndicators(indicatorSet, segmentSet, productSet, zoneSet, year);            
             
-            System.assertEquals(true, plans.isEmpty(), 'No debe haber plan mensual');
+            System.assertEquals(false, plans.isEmpty(), 'Debe haber resultados');
         }
     }
 

@@ -8,6 +8,9 @@
 @isTest
 private with sharing class CasesSelectorTest
 {
+    private static final string PROFILE_INTEGRATOR = 'Integrator';
+    private static final string PROFILE_USP_USER = 'USP User';
+
     @TestSetup
     private static void createScenario()
     {
@@ -559,6 +562,70 @@ private with sharing class CasesSelectorTest
         Assert.areNotEqual(0, matchedRecords.size(), 'Deben haberse generado casos');
         Assert.areEqual(CaseUtil.RT_ID_ZRM, matchedRecords[0].RecordTypeId, 'El tipo de registro debe coincdir');
     }
+    
+    /**
+     * Test del método que devuelve el número de casos que tiene cada usuario que es un gestor activo.
+     * @author aberuete
+     * @date 24/06/2024
+     */
+    @isTest
+    private static void test_getNumberOfAssignedCasesGroupById()
+    {
+        Integer numCasos = null; 
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 1);
+        insert accounts;
+
+        List<Profile> profileUsp= [SELECT Id FROM Profile WHERE Name =: PROFILE_USP_USER];
+        List<User> userUsp = TestDataFactory.generateUsersByProfile(profileUsp[0].Id, 1);
+        userUsp[0].ActiveAgent__c = true;
+        insert userUsp;
+
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        cases[0].OwnerId = userUsp[0].Id; 
+        insert cases;
+
+        Test.startTest();
+        List<AggregateResult> casesReturned = new CasesSelector().selectNumberOfAssignedCasesGroupById();
+        Test.stopTest();
+
+        for (AggregateResult caseResult : casesReturned )
+        {
+            if ( String.valueOf(caseResult.get('OwnerId')) == userUsp[0].Id)
+            {
+                numCasos = (Integer)caseResult.get('numCases');
+            }
+        }
+        
+        Assert.areEqual(1, numCasos);
+    }
+
+    /**
+     * Test del método que obtiene los casos marcados sin gestor preferente.
+     * @author aberuete
+     * @date 28/06/2024
+     */
+    @isTest
+    private static void test_getCasesWithoutBestAgent()
+    {
+        List<Account> accounts = TestDataFactory.generateAccounts(Label.GeneralInsurance, 'Customer', 1);
+        insert accounts;
+
+        List<Profile> profileIntegrator= [SELECT Id FROM Profile WHERE Name =: PROFILE_INTEGRATOR];
+        List<User> userIntegrator = TestDataFactory.generateUsersByProfile(profileIntegrator[0].Id, 1);
+        insert userIntegrator;
+
+        List<Case> cases = TestDataFactory.generateCasesForEachAccount(accounts, 1);
+        cases[0].OwnerId = userIntegrator[0].Id; 
+        cases[0].WithoutBestAgent__c = true;
+        insert cases;
+
+        Test.startTest();
+        String query = new CasesSelector().selectCasesWithoutBestAgent();
+        List<Case> casesWithoutBestAgent = (List<Case>) Database.query(query);
+        Test.stopTest();
+
+        Assert.isTrue(casesWithoutBestAgent.size() > 0,'Debería de haber algun caso');
+    }
 
      /**
      * Test del método que devuelve la query de Cases para Batch_CloseInteractions
@@ -591,5 +658,48 @@ private with sharing class CasesSelectorTest
 
         System.assertEquals(1, matchedRecords.size(), 'no devuelve el número de registros correcto');
 
+    }
+
+     /**
+     * Test que compruba que cuando enviamos un identificador de canal único existente, nos encuentra el caso asociado
+     * @author acortazar@seidor.es
+     * @date 26/06/2024
+     */
+    @isTest
+    private static void test_getCaseByCuTicketId_ok()
+    {
+        String idCU = '000111';
+
+        List<Case> casosExistentes = [SELECT Id, CuTicketId__c FROM Case LIMIT 1];
+        casosExistentes[0].CuTicketId__c = idCu;
+        update casosExistentes;
+        
+        Test.startTest();
+        List<Case> casosRecuperados = (new CasesSelector()).getCaseByCuTicketId(new List<String>{idCu});
+        Test.stopTest();
+
+        Assert.isFalse(casosRecuperados.isEmpty(), 'Ha de haber encontrado resultados');
+        Assert.areEqual(casosRecuperados.size(), 1, 'Se ha de haber recuperado un único elemento');
+        Assert.areEqual(casosRecuperados[0].id, casosExistentes[0].id, 'Hemos de haber obtenido el caso que hemos modificado');
+    }
+
+     /**
+     * Test que compruba que cuando enviamos un identificador de canal único NO existente, o una lista vacía, 
+     * el selector no falla
+     * @author arcortazar@seidor.es
+     * @date 26/06/2024
+     */
+    @isTest
+    private static void test_getCaseByCuTicketId_ko()
+    {
+        String idCU = '000111';
+
+        Test.startTest();
+        List<Case> casosRecuperados = (new CasesSelector()).getCaseByCuTicketId(new List<String>{idCu});
+        List<Case> casosRecuperadosEmpty = (new CasesSelector()).getCaseByCuTicketId(new List<String>());
+        Test.stopTest();
+
+        Assert.isTrue(casosRecuperados.isEmpty(), 'La lista ha de estar vacía');
+        Assert.isTrue(casosRecuperadosEmpty.isEmpty(), 'La lista ha de estar vacía');
     }
 }
