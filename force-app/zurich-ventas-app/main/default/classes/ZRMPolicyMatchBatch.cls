@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : rserrano
+ * @group             : 
+ * @last modified on  : 15/07/2024
+ * @last modified by  : rserrano
+**/
 public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObject>
 {
     // #region Instance properties
@@ -449,7 +456,10 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
                 // Si el lead que hace match no tiene oportunidades relacionadas se elimina
                 if (!leadHasOpportunities)
                 {
-                    accountsToDelete.add(lead);
+                    if(!accountsToDelete.contains(lead))
+                    {
+                        accountsToDelete.add(lead);
+                    }
                 }
             }
 
@@ -671,7 +681,10 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
             else
             {
                 // Si no tiene otras oportunidades, se elimina el lead. Como consecuencia, todas sus oportunidades se eliminarán.
-                accountsToDelete.add( leadsById.get(leadId) );
+                if(!accountsToDelete.contains(leadsById.get(leadId)))
+                {
+                    accountsToDelete.add( leadsById.get(leadId) );
+                }
             }
         }
     }
