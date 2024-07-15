@@ -36,6 +36,8 @@ private with sharing class INFOHandlerTest
     {
         List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
 
+        Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
+
         //Personas físicas
         externalRequestList.addAll(
             TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'NATURAL_ACCOUNT', NUM_ER_NATURAL_ACCOUNT)
@@ -144,7 +146,7 @@ private with sharing class INFOHandlerTest
         );
         // ACCOUNT_SCORE_KPI
         externalRequestList.addAll(
-            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'ACCOUNT_SCORE_KPI', NUM_ER_ACCOUNT_SCORE_KPI)
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, configValues.get('ER_ACCOUNT_SCORE_KPI'), NUM_ER_ACCOUNT_SCORE_KPI)
         );
 
         insert externalRequestList;
@@ -396,7 +398,7 @@ private with sharing class INFOHandlerTest
 
         Assert.areEqual(
             NUM_ER_ACCOUNT_SCORE_KPI,
-            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT_SCORE_KPI).get('Account').size(), 
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT_SCORE_KPI).get(Schema.Account.sObjectType.getDescribe().getName()).size(), 
             'No se ha generado correctamente el mapa de registros de Account_SCORE_KPI');
     }
 
