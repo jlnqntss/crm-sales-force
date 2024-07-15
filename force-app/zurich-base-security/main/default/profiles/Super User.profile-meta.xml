@@ -4450,6 +4450,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.HGPrevisionCambio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IdCaseClone__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4576,6 +4581,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.MediatedCustomer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerNationalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerSic__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4816,6 +4831,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.RiskAppetite__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RiskAppetiteId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
