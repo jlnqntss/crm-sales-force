@@ -100,6 +100,7 @@ public without sharing class CaseHandler implements ITrigger
         CaseUtil.casesZRMChangeStatus( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.setOwnerIdPrior( (List<Case>) newList, (Map<Id,Case>) oldMap );
         CaseUtil.preProcessReasonIdForZda( (List<Case>) newList, (Map<Id,Case>) oldMap );
+        CaseUtil.ChangeWithoutBestAgent( (List<Case>) newList, (Map<Id,Case>) oldMap );
     }
 
     /**

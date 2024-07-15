@@ -2843,4 +2843,21 @@ public with sharing class CaseUtil
         }
 
     }
+        /**
+* Método para desmarcar el campo WithoutBestAgent__c cuando cambia de cola
+* @author lgonzalez
+* @date 15/07/2024
+* @param newList lista de elementos del trigger before insert
+*/
+public static void changeWithoutBestAgent (List<Case> newList, Map<Id,Case> oldCaseMap)
+{   
+    for (Case caseTrigger : newList) {
+        Case oldCase = oldCaseMap.get(caseTrigger.Id);
+        if (caseTrigger.OwnerId != oldCase.OwnerId && caseTrigger.WithoutBestAgent__c == true) {
+            caseTrigger.WithoutBestAgent__c = false;
+        }
+    }
+
+    
+}   
 }
