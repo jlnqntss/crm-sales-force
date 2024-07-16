@@ -3,20 +3,20 @@
     <fullName>Assigned_Center__c</fullName>
     <externalId>false</externalId>
     <formula>CASE(CallCenter__c, 
-					&quot;CSM Administración&quot;, IMAGE(&quot;/resource/csm_admin&quot;, &quot;CSM&quot;, 40, 100),
-					&quot;CSM Particulares&quot;, IMAGE(&quot;/resource/csm_part&quot;, &quot;CSM&quot;, 40, 100),
-					&quot;CC Service&quot;, IMAGE(&quot;/resource/ccs&quot;, &quot;CSM&quot;, 40, 100),
-					&quot;Centro Excelencia&quot;, IMAGE(&quot;/resource/cdex&quot;, &quot;CSM&quot;, 40, 100),
-					&quot;USP&quot;, IMAGE(&quot;/resource/usp&quot;, &quot;CSM&quot;, 40, 100),
-					&quot;Zurich Empresas&quot;, IMAGE(&quot;/resource/zurichempresas&quot;, &quot;ZE&quot;, 40, 100),
-					&quot;TWW Retención&quot;, IMAGE(&quot;/resource/tww&quot;, &quot;TWW&quot;, 40, 100),
-&quot;Sprinklr&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
-&quot;SAM&quot;, IMAGE(&quot;/resource/LogoSAM&quot;, &quot;LogoSAM&quot;, 40, 100),
-                                        &quot;RRSS Postventa-Siniestros&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
-&quot;RRSS Marca&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
-&quot;GSS CSM&quot;, IMAGE(&quot;/resource/gss&quot;, &quot;GSS&quot;, 40, 100),
-					&quot;&quot;
-				)</formula>
+	&quot;CSM Administración&quot;, IMAGE(&quot;/resource/csm_admin&quot;, &quot;CSM&quot;, 40, 100),
+	&quot;CSM Particulares&quot;, IMAGE(&quot;/resource/csm_part&quot;, &quot;CSM&quot;, 40, 100),
+	&quot;CC Service&quot;, IMAGE(&quot;/resource/ccs&quot;, &quot;CSM&quot;, 40, 100),
+	&quot;Centro Excelencia&quot;, IMAGE(&quot;/resource/cdex&quot;, &quot;CSM&quot;, 40, 100),
+	&quot;USP&quot;, IMAGE(&quot;/resource/usp&quot;, &quot;CSM&quot;, 40, 100),
+	&quot;Zurich Empresas&quot;, IMAGE(&quot;/resource/zurichempresas&quot;, &quot;ZE&quot;, 40, 100),
+	&quot;TWW Retención&quot;, IMAGE(&quot;/resource/tww&quot;, &quot;TWW&quot;, 40, 100),
+	&quot;Sprinklr&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
+	&quot;SAM&quot;, IMAGE(&quot;/resource/LogoSAM&quot;, &quot;LogoSAM&quot;, 40, 100),
+        &quot;RRSS Postventa-Siniestros&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
+	&quot;RRSS Marca&quot;, IMAGE(&quot;/resource/SprinklrLogo&quot;, &quot;SprinklrLogo&quot;, 40, 100),
+	&quot;GSS CSM&quot;, IMAGE(&quot;/resource/gss&quot;, &quot;GSS&quot;, 40, 100),
+	&quot;CTL&quot;, IMAGE(&quot;/resource/ctl&quot;, &quot;CTL&quot;, 40, 100),
+	&quot;&quot;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Assigned Center</label>
     <required>false</required>

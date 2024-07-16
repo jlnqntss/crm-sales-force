@@ -16,7 +16,7 @@
         <field>CREATED_DATEONLY</field>
     </columns>
     <columns>
-        <field>Case.EndDate__c</field>
+        <field>FK_$Policy__c.MovementStartDate__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
@@ -47,25 +47,24 @@
             <operator>equals</operator>
             <value>Case.ZRMInquiry</value>
         </criteriaItems>
-        <criteriaItems>
-            <column>Case.ExpirationDays__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>greaterOrEqual</operator>
-            <value>0</value>
-        </criteriaItems>
         <language>es</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
+        <aggregateType>Sum</aggregateType>
         <dateGranularity>Day</dateGranularity>
         <field>Case.IntermediaryOwner__c</field>
+        <sortByName>Case.ExpirationDays__c</sortByName>
         <sortOrder>Asc</sortOrder>
+        <sortType>Aggregate</sortType>
     </groupingsDown>
     <groupingsDown>
+        <aggregateType>Sum</aggregateType>
         <dateGranularity>Day</dateGranularity>
         <field>CASE_NUMBER</field>
+        <sortByName>Case.ExpirationDays__c</sortByName>
         <sortOrder>Asc</sortOrder>
+        <sortType>Aggregate</sortType>
     </groupingsDown>
     <name>Casos de retención abiertos</name>
     <params>

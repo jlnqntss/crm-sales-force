@@ -722,12 +722,12 @@
         <numberOfColumns>12</numberOfColumns>
         <rowHeight>36</rowHeight>
     </dashboardGridLayout>
-    <dashboardType>LoggedInUser</dashboardType>
-    <description>Panel de inicio del RN para SDM (Fase Piloto)</description>
+    <dashboardType>MyTeamUser</dashboardType>
+    <description>Panel para hacer seguimiento de la consecución de los objetivos anuales</description>
     <isGridLayout>true</isGridLayout>
     <runningUser>adminklinc@zurich-es.com</runningUser>
     <textColor>#000000</textColor>
-    <title>Inicio RN Fase Piloto</title>
+    <title>Alertas Plan Anual</title>
     <titleColor>#000000</titleColor>
     <titleSize>12</titleSize>
 </Dashboard>

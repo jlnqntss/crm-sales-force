@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ExpirationDays__c</fullName>
     <externalId>false</externalId>
-    <formula>EndDate__c - TODAY()</formula>
+    <formula>TODAY() - PolicyId__r.MovementStartDate__c</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Expiration Days</label>
     <precision>18</precision>

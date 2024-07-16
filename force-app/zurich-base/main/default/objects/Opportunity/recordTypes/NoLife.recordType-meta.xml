@@ -522,6 +522,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Integral customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>CC - Interested contact agent</fullName>
             <default>false</default>
         </values>

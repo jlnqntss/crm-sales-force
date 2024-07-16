@@ -651,7 +651,7 @@ public with sharing class PoliciesSelector extends RecordsSelector
             this.baseQuery                            
                 .addConditionEq(Policy__c.PolicyHolder__c, accountId)
                 .addConditionNotEq(Policy__c.InfoCreatedDate__c, null)
-                .descend()
+                .orderBy('Policy__c.InfoCreatedDate__c','DESC')
                 .setLimit(1);
 
             result = this.baseQuery.enforceSecurity().run();

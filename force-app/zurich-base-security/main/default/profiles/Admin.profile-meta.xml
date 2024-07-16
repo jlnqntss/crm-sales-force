@@ -5058,6 +5058,11 @@
         <editable>true</editable>
         <field>Account.GrowthPotential__c</field>
         <readable>true</readable>
+    </fieldPermissions>    
+	<fieldPermissions>
+        <editable>false</editable>
+        <field>Account.GlobalCustomerValue_NoLife__c</field>
+        <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
         <editable>false</editable>
@@ -7682,6 +7687,11 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>Case.UsedTools__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.WithoutBestAgent__c</field>
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
@@ -14016,6 +14026,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Trigger_Setting__mdt.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.ActiveAgent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.AssignedCases__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
