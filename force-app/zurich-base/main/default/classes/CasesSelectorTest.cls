@@ -651,7 +651,7 @@ private with sharing class CasesSelectorTest
 
         // Test
         Test.startTest();
-       // update casoQuery;
+        update casoQuery;
 
         List<Case> matchedRecords = new CasesSelector().getCasesToCloseInteractionsAutomatic();
         Test.stopTest();
