@@ -27,6 +27,7 @@ public with sharing class CasesSelector extends RecordsSelector
     public static final String CASE_STATUS_LOOSE_CLOSED = 'Cerrado Perdido';
     public static final String CASE_OWNER_TYPE = 'Case.Owner.Type';
     public static final String CASE_OWNER_PROFILE_NAME = 'Case.Owner.Profile.Name';
+    public static final String CASE_OWNER_NAME = 'Case.Owner.Name';
 
     String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
     String filterCallCenter = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Call_Center_USP');
@@ -628,8 +629,10 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public String selectCasesWithoutBestAgent()
     {
+        String nameQueueUrgencias = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_DanosRC');
+        List<Group> queuesRC = new GroupSelector().findByName(nameQueueUrgencias);
         Query.Condition andCondition = Query.doOr(
-                Query.conditionEq(CASE_OWNER_TYPE, 'Queue'),
+                Query.conditionIn(CASE_OWNERId, queuesRC),
                 Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));
                 
 
