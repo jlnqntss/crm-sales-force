@@ -5081,6 +5081,21 @@
     </fieldPermissions>	
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.CustomerSegmentInfo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.CustomerSegment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.DescriptionCustomerSegment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.InfluencerAssociation__c</field>
         <readable>true</readable>
     </fieldPermissions>
