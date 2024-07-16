@@ -2696,11 +2696,6 @@
         <field>Case.Email__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.HGPrevisionCambio__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
 	<fieldPermissions>
         <editable>false</editable>
         <field>Case.MediatedCustomerNationalId__c</field>
