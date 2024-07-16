@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-03-2024
- * @last modified by  : aberuete
+ * @last modified on  : 16-07-2024
+ * @last modified by  : lgonzalez
 **/
 public with sharing class CasesSelector extends RecordsSelector
 {
@@ -626,6 +626,11 @@ public with sharing class CasesSelector extends RecordsSelector
      * cuyo campo WithoutBestAgent__c sea verdadero, que el caso no esté cerrado y que el owner sea una cola o el usuario integrador 
      * @author aberuete
      * @date 27/06/2024
+     * @change 
+     * @author lgonzalez 
+     * @date 16/07/2024
+     * description: Se modifica la condición para asignar los casos no tomando en cuenta el tipo caso queue 
+     * sino directamente la queue Email_USP_Daños_RC
      */
     public String selectCasesWithoutBestAgent()
     {
