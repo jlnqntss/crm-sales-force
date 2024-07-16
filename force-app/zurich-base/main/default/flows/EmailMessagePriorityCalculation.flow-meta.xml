@@ -182,7 +182,7 @@
                 <leftValueReference>casoEncontrado.Origin</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>CanalUnico</stringValue>
+                    <elementReference>Case_Origin_Canal_Unico</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -197,7 +197,7 @@
                 <leftValueReference>casoEncontrado.Origin</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Email</stringValue>
+                    <elementReference>Case_Origin_Email</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -338,6 +338,16 @@
         <name>CallCener_ZDA</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Call_Center_ZDA.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Case_Origin_Canal_Unico</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Origin_Canal_Unico.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Case_Origin_Email</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Origin_Email.Value__c}</expression>
     </formulas>
     <formulas>
         <name>Comienzo_Cola</name>
