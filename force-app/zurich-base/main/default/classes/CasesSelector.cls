@@ -629,13 +629,11 @@ public with sharing class CasesSelector extends RecordsSelector
      */
     public String selectCasesWithoutBestAgent()
     {
-        String nameQueueUrgencias = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_DanosRC');
-        List<Group> queuesRC = new GroupSelector().findByName(nameQueueUrgencias);
+        String nameQueueRC = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_DanosRC');
         Query.Condition andCondition = Query.doOr(
-                Query.conditionIn(CASE_OWNERId, queuesRC),
+                Query.conditionEq(CASE_OWNER_NAME, nameQueueRC),
                 Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));
                 
-
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Case.Id,
             Case.OwnerId
