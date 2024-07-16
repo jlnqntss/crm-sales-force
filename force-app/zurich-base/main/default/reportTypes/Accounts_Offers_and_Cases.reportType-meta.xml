@@ -2079,11 +2079,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>ClientName__c</field>
-            <table>Account.Opportunities__r</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>NextReceipts__c</field>
             <table>Account.Opportunities__r</table>
         </columns>

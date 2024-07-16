@@ -82,9 +82,6 @@
         <field>Case.MediatedCustomerSic__c</field>
     </columns>
     <columns>
-        <field>Case.HGPrevisionCambio__c</field>
-    </columns>
-    <columns>
         <field>Case.RiskAppetite__c</field>
     </columns>
     <columns>

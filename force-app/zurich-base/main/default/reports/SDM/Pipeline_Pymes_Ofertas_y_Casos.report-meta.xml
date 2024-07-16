@@ -85,9 +85,6 @@
         <field>Account.Opportunities__r$NetPremium__c</field>
     </columns>
     <columns>
-        <field>Account.Opportunities__r.Cases__r$HGPrevisionCambio__c</field>
-    </columns>
-    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Account.Opportunities__r.Cases__r$InsuredAmount__c</field>
     </columns>
