@@ -402,7 +402,7 @@ private with sharing class INFOHandlerTest
             'No se ha generado correctamente el mapa de registros de Consent__c');
         Assert.areEqual(
             NUM_ER_ACCOUNT_SCORE_KPI,
-            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT_SCORE_KPI).get('Account').size(), 
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT_SCORE_KPI).get(Schema.Account.sObjectType.getDescribe().getName()).size(), 
             'No se ha generado correctamente el mapa de registros de Account_SCORE_KPI');
         Assert.areEqual(
             NUM_ER_INTERMEDIARY_TNPS,
@@ -467,7 +467,7 @@ private with sharing class INFOHandlerTest
         System.assertEquals(NUM_ER_SPECIAL_CONDITION, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(), 'No se ha generado correctamente el mapa de registros de Special_Condition__c');
         System.assertEquals(NUM_ER_INTERMEDIARY_KPI, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(), 'No se ha generado correctamente el mapa de registros de KPI__c');
         Assert.areEqual(NUM_ER_CONSENT, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONSENT).get('Consent__c').size(), 'No se ha generado correctamente el mapa de registros de Consent__c');
-        //Assert.areEqual(NUM_ER_ACCOUNT_SCORE_KPI, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT_SCORE_KPI).get('Account').size(), 'No se ha generado correctamente el mapa de registros de Account Score KPI');
+        Assert.areEqual(NUM_ER_ACCOUNT_SCORE_KPI, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT_SCORE_KPI).get('Account').size(), 'No se ha generado correctamente el mapa de registros de Account Score KPI');
         Assert.areEqual(NUM_ER_INTERMEDIARY_TNPS, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_TNPS).get('TNPS__c').size(), 'No se ha generado correctamente el mapa de registros de INTERMEDIARY_TNPS');
         
     }

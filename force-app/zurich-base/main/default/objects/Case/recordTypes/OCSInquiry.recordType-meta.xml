@@ -400,6 +400,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Baja en tráfico</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Bonificación %28Sinco%2FInbonus%E2%80%A6%29</fullName>
             <default>false</default>
         </values>
@@ -464,6 +468,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Error fecha de efecto</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Estado firma digital</fullName>
             <default>false</default>
         </values>
@@ -520,6 +528,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Mal rendimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Matrícula %28anteriormente asegurada%2Fmal rendimiento%29</fullName>
             <default>false</default>
         </values>
@@ -556,7 +568,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Reemplazo</fullName>
+            <fullName>Resolución SDC</fullName>
             <default>false</default>
         </values>
         <values>
@@ -565,14 +577,6 @@
         </values>
         <values>
             <fullName>Retroactividad</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Saneamiento</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Sin efecto</fullName>
             <default>false</default>
         </values>
         <values>
@@ -597,6 +601,14 @@
         </values>
         <values>
             <fullName>Vehículo %28Valor%2Faccesorios%2Fantigüedad%E2%80%A6%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Venta-Extorno</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Venta-Reserva de prima</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1315,6 +1327,14 @@
     <picklistValues>
         <picklist>TypeN3__c</picklist>
         <values>
+            <fullName>A vencimiento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agravación del riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Anotación Embargo</fullName>
             <default>false</default>
         </values>
@@ -1407,6 +1427,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Desaparición del riesgo</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Devolución</fullName>
             <default>false</default>
         </values>
@@ -1484,6 +1508,10 @@
         </values>
         <values>
             <fullName>Gestión competencias</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Impago</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1620,6 +1648,10 @@
         </values>
         <values>
             <fullName>Sin Oferta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sin efecto</fullName>
             <default>false</default>
         </values>
         <values>

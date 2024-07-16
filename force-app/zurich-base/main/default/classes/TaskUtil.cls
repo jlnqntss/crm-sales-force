@@ -49,7 +49,8 @@ public with sharing class TaskUtil
 
     /**
      * Para aquellas tareas de escalado que se cierran y estan asociadas a casos de ZDA, no se
-     * debe permitir el cierre si no hay nada informado en el campo de respuesta (Response__c)
+     * debe permitir el cierre si no hay nada informado en el campo de respuesta (Response__c).
+     * Si el caso relacionado si que estuviera cerrado, si se permite el cierre (OCS-10527)
      *
      * @author mario.navarro@seidor.com
      * @date 16/05/2024
@@ -82,8 +83,9 @@ public with sharing class TaskUtil
         {
             relatedCase = casesById.get(updatedTask.WhatId);
             if (relatedCase != null && relatedCase.RecordTypeId == CaseUtil.RT_ID_ZDA &&
-                isScaledTaskAndClosed(updatedTask, oldMap.get(updatedTask.Id)) &&
-                String.isBlank(updatedTask.Response__c))
+                 relatedCase.Status != CaseUtil.estadoCerrado &&
+                 isScaledTaskAndClosed(updatedTask, oldMap.get(updatedTask.Id)) &&
+                 String.isBlank(updatedTask.Response__c))
             {
                 //se agrega un error al campo Response__c si esta vacio
                 updatedTask.addError(Task.fields.Response__c.getDescribe().getName(), Label.ZDANotAllowedCloseScaledWithoutResponse);
