@@ -1627,6 +1627,99 @@ public with sharing class TestDataFactory
     }
 
     /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad Account
+     **
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     * @author dmunoz
+     * @date 09/07/2024
+     */
+    public static List<Map<String, Object> > getINFOAccountScoreKPIJson(
+        Integer totalItems
+        )
+    {
+        return buildINFOAccountScoreKPIJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOAccountScoreKPIJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++)
+        {
+            /* REGISTRO ACCOUNT_SCORE_KPI*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                    'cdfiliac' => 'F' +
+                                            String.valueOf(i + 1).leftPad(9, '0'),
+                    'system' => '',
+                    'segme_cli' => 'Segmento Cliente Value',
+                    'desc_segme_cli' => 'Desc Segmento Cliente Value',
+                    'cltv_gi' => 4,
+                    'cltv_vida' => 3,
+                    'score_cltv_gi' => 'score_cltv__gi Value',
+                    'desc_score_cltv_gi' => 'Tres Estrellas',
+                    'score_cltv_vida' => 'score_cltv_vida Value',
+                    'desc_score_cltv_vida' => 'Cuatro Estrellas'
+                }
+            );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
+     * Obtener estructura json del sistema de origen INFO para registros
+     * de entidad TNPS__c
+     *
+     * @author nts (dmunoz)
+     * @date 09/07/2024
+     *
+     * @param Integer numero de elementos a generar
+     * @return List<Map<String, Object>> listado de elementos simulando json
+     */
+    public static List<Map<String, Object> > getINFOIntermediaryTNPSJson(
+        Integer totalItems
+        )
+    {
+        return buildINFOIntermediaryTNPSJson(totalItems);
+    }
+
+    private static List<Map<String, Object> > buildINFOIntermediaryTNPSJson(
+        Integer totalItems
+        )
+    {
+        if (totalItems == null || totalItems < 1)
+        {
+            throw new TestException('totalItems must be equal or greater than 1');
+        }
+
+        List<Map<String, Object> > jsonElementsList = new List<Map<String, Object> >();
+
+        for (Integer i = 0; i < totalItems; i++) {
+            /* REGISTRO INTERMEDIARY_TNPS*/
+            jsonElementsList.add(
+                new Map<String, Object> {
+                    'puntuacion' => 7.81,
+                    'n_encuestas' => 300,
+                    'codigo_intermediario' => 'Inter' + String.valueOf(i + 1).leftPad(3, '0'), // external id del mediador (Account)
+                    'objetivo' => 8.04
+                }
+            );
+        }
+
+        return jsonElementsList;
+    }
+
+    /**
      * Generar registros de ExternalRequest__c a partir de los JSON de prueba
      **
      * @param String Origen
@@ -1756,6 +1849,16 @@ public with sharing class TestDataFactory
             when 'CONSENT'
             {
                 externalRequestList = addExternalRequestToList(getINFOConsentJson(numRecords), externalRequestList, origin, 'CONSENT', infoRecordTypeId, 0);
+            }
+            // Account_Score_KPI
+            when 'ACCOUNT_SCORE_KPI'
+            {
+                externalRequestList = addExternalRequestToList(getINFOAccountScoreKPIJson(numRecords), externalRequestList, origin, 'ACCOUNT_SCORE_KPI', infoRecordTypeId, 0);
+            }
+            // INTERMEDIARY_TNPS
+            when 'INTERMEDIARY_TNPS'
+            {
+                externalRequestList = addExternalRequestToList(getINFOIntermediaryTNPSJson(numRecords), externalRequestList, origin, 'INTERMEDIARY_TNPS', infoRecordTypeId, 0);
             }
             when else
             {
