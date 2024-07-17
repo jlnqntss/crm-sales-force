@@ -35,7 +35,7 @@
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>TASK_TYPE</field>
+        <field>RECORDTYPE</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Tareas Pendientes</name>
