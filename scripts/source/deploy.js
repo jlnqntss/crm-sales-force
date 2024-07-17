@@ -13,6 +13,12 @@ async function main() {
   const targetEnvironment =
     process.argv[2] === "--check" ? process.argv[4] : process.argv[3];
 
+  const testRun = process.argv[2] === "--check" ? process.argv.length > 4 : process.argv.length > 3;
+  const testRunLevel = 
+    testRun ? 
+      process.argv[2] === "--check" ? process.argv[5] : process.argv[4] 
+    : null;
+  
   let target;
   switch (targetEnvironment) {
     case "prod":
@@ -39,11 +45,17 @@ async function main() {
     process.exit(1);
   }
 
-  deploy({
+  const deployConf = {
     targetOrg: targetOrg,
     targetCommit: target || undefined,
     checkOnly: isValidation
-  });
+  };
+
+  if(testRun) {
+    deployConf["testLevel"] = testRunLevel;
+  }
+
+  deploy(deployConf);
 }
 
 return main();

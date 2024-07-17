@@ -93,7 +93,7 @@ async function main() {
         "------------------------------------------------------------------ Reconciliando perfiles..."
       );
       execSync(
-        `sfdx sfpowerkit:source:profile:reconcile -u ${username} -d "${tmpProfile}"`,
+        `sf sfpowerkit source profile reconcile --targetorg ${username} --destfolder "${tmpProfile}"`,
         {
           stdio: "inherit"
         }
@@ -134,7 +134,7 @@ async function main() {
       // DEPLOY
       // 4 - Valida contra el entorno --checkonly
       exec(
-        `sfdx force:mdapi:deploy --deploydir "${deployDir}" ${checkOnly} --testlevel RunLocalTests --targetusername ${username} --wait 10`,
+        `sf project deploy start --metadata-dir "${deployDir}" ${checkOnly} --test-level RunLocalTests --target-org ${username} --wait 10`,
         {
           stdio: "inherit"
         }

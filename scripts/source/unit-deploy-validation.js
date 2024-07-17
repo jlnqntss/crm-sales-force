@@ -17,7 +17,7 @@ async function main() {
     mkdirSync("deploy", { recursive: true });
 
     // 2 - Reconcilia los perfiles con el entorno a validar
-    execSync(`sfdx sfpowerkit:source:profile:reconcile -u ${username}`, {
+    execSync(`sfdx sfpowerkit source profile reconcile --targetorg ${username}`, {
       stdio: "inherit"
     });
 
@@ -31,7 +31,7 @@ async function main() {
 
     // 5 - Valida contra el entorno
     execSync(
-      `sfdx force:mdapi:deploy --deploydir deploy --testlevel RunLocalTests --targetusername ${username} --verbose -c --wait 10 --json`,
+      `sf project deploy start --metadata-dir deploy --test-level RunLocalTests --target-org ${username} --verbose --dry-run --wait 10 --json`,
       {
         stdio: "inherit"
       }
