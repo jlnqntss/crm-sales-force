@@ -489,7 +489,7 @@ public with sharing class CasesSelector extends RecordsSelector
             Case.RelatedCuTicketId__c,
             Case.Description
         })
-        .selectFields('CASE_OWNER_NAME')
+        .selectFields(CASE_OWNER_NAME)
         .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)
         .addConditionEq(Case.Id, caseId);
         List<Case> casesFound = (List<Case>) this.baseQuery.run();
@@ -698,7 +698,7 @@ public with sharing class CasesSelector extends RecordsSelector
             Case.OwnerId, 
             Case.OwnerIdPrior__c
         })
-        .selectFields('CASE_OWNER_NAME')
+        .selectFields(CASE_OWNER_NAME)
         .addConditionIn(Case.CuTicketId__c,lstIdCanalUnico);
         return (List<Case>) this.baseQuery.run();
 
