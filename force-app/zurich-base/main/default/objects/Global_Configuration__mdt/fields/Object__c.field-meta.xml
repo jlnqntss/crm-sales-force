@@ -66,6 +66,11 @@
                 <label>Account</label>
             </value>
             <value>
+                <fullName>Activity</fullName>
+                <default>false</default>
+                <label>Activity</label>
+            </value>
+            <value>
                 <fullName>Claim</fullName>
                 <default>false</default>
                 <isActive>false</isActive>

@@ -476,7 +476,7 @@
     <formulas>
         <name>accountIsIntermediary</name>
         <dataType>Boolean</dataType>
-        <expression>{!Buscar_Contactos.Account.RecordType.DeveloperName} = {!intermediaryRcDeveloperName} || TEXT({!$Record.RelatedToIntermediary__c}) = &apos;Yes&apos;</expression>
+        <expression>{!Buscar_Contactos.Account.RecordType.DeveloperName} = {!intermediaryRcDeveloperName} || TEXT({!$Record.RelatedToIntermediary__c}) = {!$CustomMetadata.Global_Configuration__mdt.Activity_RelatedToIntermediary_Yes.Value__c}</expression>
     </formulas>
     <formulas>
         <name>intermediaryRcDeveloperName</name>
@@ -486,7 +486,8 @@
     <formulas>
         <name>relatedToIntermediary</name>
         <dataType>String</dataType>
-        <expression>IF({!accountIsIntermediary}, &apos;Yes&apos;, &apos;No&apos;)</expression>
+        <expression>IF({!accountIsIntermediary}, {!$CustomMetadata.Global_Configuration__mdt.Activity_RelatedToIntermediary_Yes.Value__c}, 
+{!$CustomMetadata.Global_Configuration__mdt.Activity_RelatedToIntermediary_No.Value__c})</expression>
     </formulas>
     <interviewLabel>Event Trigger - After insert/update Crear Acta {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Event Trigger - After insert/update Crear Acta</label>
