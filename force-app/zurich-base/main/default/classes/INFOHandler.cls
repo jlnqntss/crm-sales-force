@@ -44,6 +44,7 @@ public with sharing class INFOHandler implements ISystem
     public static final String INTERMEDIARY_GROUP = 'INTERMEDIARY_GROUP';
     public static final String CONSENT = 'CONSENT';
     public static final String ACCOUNT_SCORE_KPI = configValues.get('ER_ACCOUNT_SCORE_KPI');
+    public static final String INTERMEDIARY_TNPS = configValues.get('ER_INTERMEDIARY_TNPS');
 
     public static final List<String> PRIORITY_ENTITIES =  new List<String>{NOTE};
     public static final String PriorityEntitiesToString = '(\''+ String.join(PRIORITY_ENTITIES, '\',\'') + '\')';
@@ -300,6 +301,11 @@ public with sharing class INFOHandler implements ISystem
             {
                 Account accountRecord = (Account) ExternalRequestHandlerUtil.tf.transform(ACCOUNT_SCORE_KPI, Schema.Account.sObjectType.getDescribe().getName(), recordValuesMap);
                 ExternalRequestHandlerUtil.addRecordToMap(externalRequest, ACCOUNT_SCORE_KPI, Schema.Account.sObjectType.getDescribe().getName(), accountRecord);
+            }
+            when 'INTERMEDIARY_TNPS'   
+            {
+                TNPS__c tnps = (TNPS__c) ExternalRequestHandlerUtil.tf.transform(INTERMEDIARY_TNPS, Schema.TNPS__c.sObjectType.getDescribe().getName(), recordValuesMap);
+                ExternalRequestHandlerUtil.addRecordToMap(externalRequest, INTERMEDIARY_TNPS, Schema.TNPS__c.sObjectType.getDescribe().getName(), tnps);
             }
             when else
             {
