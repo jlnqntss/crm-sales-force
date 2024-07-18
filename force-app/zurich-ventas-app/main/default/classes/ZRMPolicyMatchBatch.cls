@@ -430,38 +430,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
         for ( Policy__c policy : contactDataInfoByPoilicy.keySet() )
         {
             Set<String> accountContactData = contactDataInfoByPoilicy.get(policy);
-            Map<Id, List<Opportunity> > opportunitiesByLeadId = new Map<Id, List<Opportunity> >();
-            Set<Id> leadWithOpportunitiesNotRelatedToZRM = new Set<Id>();
-
-            for ( Account lead : leadsById.values() )
-            {
-                // Se asume que el lead no tiene oportunidades relacionadas
-                Boolean leadHasOpportunities = false;
-
-                // Se comprueba si el Lead hace match
-                if ( leadMatchesPolicy(lead, policy, accountContactData) )
-                {
-                    for (Opportunity opportunity : lead.Opportunities)
-                    {
-                        leadHasOpportunities = true;
-
-                        // Se procesan las oportunidades que hagan match
-                        processZRMOpportunity(policy, opportunity, opportunitiesByLeadId, leadWithOpportunitiesNotRelatedToZRM);
-                    }
-                }
-
-                // Si el lead que hace match no tiene oportunidades relacionadas se elimina
-                if (!leadHasOpportunities && !accountsToDelete.contains(lead))
-                {
-                    accountsToDelete.add(lead);
-                }
-            }
-
-            // Si ha habido match con alguna oportunidad, debemos quedarnos con la más reciente
-            if ( !opportunitiesByLeadId.isEmpty() )
-            {
-                handleWinningOpportunity(policy, opportunitiesByLeadId, leadsById, leadWithOpportunitiesNotRelatedToZRM);
-            }
+            processPolicyForLeads(policy, accountContactData, leadsById);
         }
     }
 
@@ -477,6 +446,52 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
         return new Map<Id, Account>(
             new AccountsSelector().selectByRTNameAndPhoneAndEmailWithOpportunities(contactPoints, recordTypeNames)
         );
+    }
+
+    /**
+    * @description 
+    * @author rserrano | 18/07/2024 
+    * @param policy 
+    * @param accountContactData 
+    * @param leadsById 
+    **/
+    private void processPolicyForLeads(Policy__c policy, Set<String> accountContactData, Map<Id, Account> leadsById) {
+        Map<Id, List<Opportunity>> opportunitiesByLeadId = new Map<Id, List<Opportunity>>();
+        Set<Id> leadWithOpportunitiesNotRelatedToZRM = new Set<Id>();
+        Set<Id> accountsToDelete = new Set<Id>();
+    
+        for (Account lead : leadsById.values()) {
+            processLead(policy, lead, accountContactData, opportunitiesByLeadId, leadWithOpportunitiesNotRelatedToZRM, accountsToDelete);
+        }
+    
+        if (!opportunitiesByLeadId.isEmpty()) {
+            handleWinningOpportunity(policy, opportunitiesByLeadId, leadsById, leadWithOpportunitiesNotRelatedToZRM);
+        }
+    }
+
+    /**
+    * @description 
+    * @author rserrano | 18/07/2024 
+    * @param policy 
+    * @param lead 
+    * @param accountContactData 
+    * @param opportunitiesByLeadId 
+    * @param leadWithOpportunitiesNotRelatedToZRM 
+    * @param accountsToDelete 
+    **/
+    private void processLead(Policy__c policy, Account lead, Set<String> accountContactData, Map<Id, List<Opportunity>> opportunitiesByLeadId, Set<Id> leadWithOpportunitiesNotRelatedToZRM, Set<Id> accountsToDelete) {
+        Boolean leadHasOpportunities = false;
+    
+        if (leadMatchesPolicy(lead, policy, accountContactData)) {
+            for (Opportunity opportunity : lead.Opportunities) {
+                leadHasOpportunities = true;
+                processZRMOpportunity(policy, opportunity, opportunitiesByLeadId, leadWithOpportunitiesNotRelatedToZRM);
+            }
+        }
+    
+        if (!leadHasOpportunities && !accountsToDelete.contains(lead.Id)) {
+            accountsToDelete.add(lead.Id);
+        }
     }
 
     /**
