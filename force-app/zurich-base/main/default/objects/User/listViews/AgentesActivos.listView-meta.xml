@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AgentesActivos</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>OnVacation__c</columns>
+    <columns>ReturnDate__c</columns>
+    <columns>MANAGER</columns>
+    <columns>Capacity__c</columns>
+    <columns>AssignedCases__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CORE.USERS.ACTIVE</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Agentes Activos</label>
+    <sharedTo>
+        <group>USP_Supervisor</group>
+    </sharedTo>
+</ListView>
