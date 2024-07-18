@@ -1714,6 +1714,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SmartSalesModality__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.SoW_2021__c</field>
         <readable>true</readable>
@@ -2490,6 +2495,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.LeadsPool__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.LeadSource__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2811,6 +2821,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.SAMCategory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SmartSalesModality__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

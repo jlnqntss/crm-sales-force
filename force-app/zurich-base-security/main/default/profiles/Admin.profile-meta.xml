@@ -4476,6 +4476,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.LeadsPool__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.LegalEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4657,6 +4662,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Restricted__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SmartSalesModality__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5157,6 +5167,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.OwnCorporateWebURL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ParticipatesInAction__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
