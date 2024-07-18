@@ -185,6 +185,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
+                <field>Association2__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
                 <field>Category_Version__c</field>
             </layoutItems>
         </layoutColumns>
