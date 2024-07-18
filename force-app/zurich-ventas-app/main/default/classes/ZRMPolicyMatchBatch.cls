@@ -425,10 +425,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     private void matchLeadWithOpportunities(Map<Policy__c, Set<String> > contactDataInfoByPoilicy)
     {
         Set<String> recordTypeNames = new Set<String> {AccountsSelector.RT_NAME_LEAD};
-        Map<Id, Account> leadsById = new Map<Id, Account>( new AccountsSelector().selectByRTNameAndPhoneAndEmailWithOpportunities(
-                                                               contactPoints,
-                                                               recordTypeNames
-                                                               ) );
+        Map<Id, Account> leadsById = fetchLeadsByContactPoints(contactPoints, recordTypeNames);
 
         for ( Policy__c policy : contactDataInfoByPoilicy.keySet() )
         {
@@ -452,7 +449,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
                         processZRMOpportunity(policy, opportunity, opportunitiesByLeadId, leadWithOpportunitiesNotRelatedToZRM);
                     }
                 }
-                
+
                 // Si el lead que hace match no tiene oportunidades relacionadas se elimina
                 if (!leadHasOpportunities && !accountsToDelete.contains(lead))
                 {
@@ -466,6 +463,20 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
                 handleWinningOpportunity(policy, opportunitiesByLeadId, leadsById, leadWithOpportunitiesNotRelatedToZRM);
             }
         }
+    }
+
+    /**
+    * @description 
+    * @author rserrano | 18/07/2024 
+    * @param contactPoints 
+    * @param recordTypeNames 
+    * @return Map<Id, Account> 
+    **/
+    private Map<Id, Account> fetchLeadsByContactPoints(Set<String> contactPoints, Set<String> recordTypeNames)
+    {
+        return new Map<Id, Account>(
+            new AccountsSelector().selectByRTNameAndPhoneAndEmailWithOpportunities(contactPoints, recordTypeNames)
+        );
     }
 
     /**
