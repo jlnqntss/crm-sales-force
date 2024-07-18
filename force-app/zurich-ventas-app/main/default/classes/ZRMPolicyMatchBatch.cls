@@ -458,10 +458,9 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     private void processPolicyForLeads(Policy__c policy, Set<String> accountContactData, Map<Id, Account> leadsById) {
         Map<Id, List<Opportunity>> opportunitiesByLeadId = new Map<Id, List<Opportunity>>();
         Set<Id> leadWithOpportunitiesNotRelatedToZRM = new Set<Id>();
-        Set<Id> accountsToDelete = new Set<Id>();
     
         for (Account lead : leadsById.values()) {
-            processLead(policy, lead, accountContactData, opportunitiesByLeadId, leadWithOpportunitiesNotRelatedToZRM, accountsToDelete);
+            processLead(policy, lead, accountContactData, opportunitiesByLeadId, leadWithOpportunitiesNotRelatedToZRM);
         }
     
         if (!opportunitiesByLeadId.isEmpty()) {
@@ -479,7 +478,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
     * @param leadWithOpportunitiesNotRelatedToZRM 
     * @param accountsToDelete 
     **/
-    private void processLead(Policy__c policy, Account lead, Set<String> accountContactData, Map<Id, List<Opportunity>> opportunitiesByLeadId, Set<Id> leadWithOpportunitiesNotRelatedToZRM, Set<Id> accountsToDelete) {
+    private void processLead(Policy__c policy, Account lead, Set<String> accountContactData, Map<Id, List<Opportunity>> opportunitiesByLeadId, Set<Id> leadWithOpportunitiesNotRelatedToZRM) {
         Boolean leadHasOpportunities = false;
     
         if (leadMatchesPolicy(lead, policy, accountContactData)) {
@@ -489,8 +488,8 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
             }
         }
     
-        if (!leadHasOpportunities && !accountsToDelete.contains(lead.Id)) {
-            accountsToDelete.add(lead.Id);
+        if (!leadHasOpportunities && !accountsToDelete.contains(lead)) {
+            accountsToDelete.add(lead);
         }
     }
 
