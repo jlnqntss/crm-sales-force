@@ -752,4 +752,44 @@ private with sharing class EmailMessagesUtilTest
         Assert.areEqual(caseIntermediaryResults[0].AccountId, intermediaries[0].Id, 'El AccountId debe ser el mediador');
         Assert.areEqual(caseCustomerResults[0].AccountId, null, 'El AccountId NO debe ser el cliente');
     }
+
+    /**
+     * Test para asignar el área de origen a casos del SAM en función del buzón
+     * @author jfherrero
+     * @date 17/07/2024
+     */
+    @isTest
+    static void test_assignSourceAreaSAM_ok()
+    {
+        Map<String, CaseSettingsByEmail__mdt> caseSettingsByEmailMap = EmailMessagesUtil.getCaseSettingsByEmail();
+        Assert.areNotEqual(0, caseSettingsByEmailMap.size(), 'Metadato CaseSettingsByEmail__mdt NO existe');
+
+        CaseSettingsByEmail__mdt myCaseSetting = caseSettingsByEmailMap.get( new List<String>( caseSettingsByEmailMap.keyset() ).get(0) );
+
+        List<Account> customers = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
+        customers[0].MainEmail__c = 'email.test.error@test.es';
+        insert customers;
+
+        List<Case> casesCustomer = TestDataFactory.generateCasesForEachAccount(customers, 1);
+        casesCustomer[0].RecordTypeId = CaseUtil.RT_ID_SAMINQUIRY;
+
+        insert casesCustomer;
+
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(1);
+
+        emails[0].FromAddress = customers[0].MainEmail__c;
+        emails[0].ToAddress = myCaseSetting.EmailAddress__c;
+        emails[0].ParentId = casesCustomer[0].Id;
+        emails[0].Incoming = true;
+
+        Test.startTest();
+
+        insert emails[0];
+
+        Test.stopTest();
+
+        List<Case> caseResults = [SELECT Id, SourceArea__c FROM Case WHERE Id = : casesCustomer[0].Id];
+
+        Assert.areEqual(caseResults[0].SourceArea__c, myCaseSetting.SourceArea__c, 'El Área de origen no coincide');
+    }
 }
