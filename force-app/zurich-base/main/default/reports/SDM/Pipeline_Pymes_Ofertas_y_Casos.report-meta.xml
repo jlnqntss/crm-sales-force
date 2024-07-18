@@ -46,6 +46,9 @@
         <field>Account$Status__c</field>
     </columns>
     <columns>
+        <field>Account.Opportunities__r$StageName</field>
+    </columns>
+    <columns>
         <field>Account.Opportunities__r.Cases__r$PendingBy__c</field>
     </columns>
     <columns>
