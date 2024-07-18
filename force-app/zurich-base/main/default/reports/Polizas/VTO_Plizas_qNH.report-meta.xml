@@ -54,18 +54,25 @@
             <value>V</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Policy__c.EndDate__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>lessOrEqual</operator>
-            <value>NEXT_N_DAYS:60</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Policy__c.EndDate__c</column>
+            <column>Policy__c.MovementStartDate__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>greaterOrEqual</operator>
-            <value>TODAY</value>
+            <value>N_MONTHS_AGO:2</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.MovementStartDate__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>lessOrEqual</operator>
+            <value>NEXT_N_MONTHS:2</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Policy__c.MovementReason__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>L700,S700,2700,8700,A999,B999,E999,F999,H999,J999,L999,R999,S999,T999,999,1999,2999,3999,4999,5999,6999,7999,8999,9999,P581,L581,4581,8581</value>
         </criteriaItems>
         <language>es</language>
     </filter>
