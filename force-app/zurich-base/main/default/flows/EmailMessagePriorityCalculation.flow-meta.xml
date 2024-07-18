@@ -49,7 +49,7 @@
             <assignToReference>EstimatedEndDate</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>casoEncontrado.EstimatedEndDate__c</elementReference>
+                <elementReference>cuEstimatedDateCorrectionFormula</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -353,6 +353,12 @@
         <name>Comienzo_Cola</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_Queue.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <description>Esta formula corrige el &apos;formateo&apos; que hace SF sobre la fecha-hora del campo EstimatedEndDate__c. Este campo contiene la fecha+23.59.59. Al estar en GMT+1 le suma un dia y la hora pasa a ser las 12.59 en invierno y las 1.59 en verano. Como solo nos interesa el dia, le restamos un dia a esta fecha</description>
+        <name>cuEstimatedDateCorrectionFormula</name>
+        <dataType>DateTime</dataType>
+        <expression>{!casoEncontrado.EstimatedEndDate__c}-1</expression>
     </formulas>
     <formulas>
         <name>slaFormula</name>
