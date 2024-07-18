@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : rserrano
  * @group             : 
- * @last modified on  : 17/07/2024
+ * @last modified on  : 18/07/2024
  * @last modified by  : rserrano
 **/
 public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObject>
@@ -452,7 +452,7 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
                         processZRMOpportunity(policy, opportunity, opportunitiesByLeadId, leadWithOpportunitiesNotRelatedToZRM);
                     }
                 }
-
+                
                 // Si el lead que hace match no tiene oportunidades relacionadas se elimina
                 if (!leadHasOpportunities && !accountsToDelete.contains(lead))
                 {
@@ -463,23 +463,35 @@ public with sharing class ZRMPolicyMatchBatch implements Database.Batchable<sObj
             // Si ha habido match con alguna oportunidad, debemos quedarnos con la más reciente
             if ( !opportunitiesByLeadId.isEmpty() )
             {
-                // Se obtiene la oportunidad "ganadora" que será actualizada
-                Opportunity winningOpportunity = getWinningOpportunity(opportunitiesByLeadId);
-
-                // Se relaciona la oportunidad "ganadora" con la póliza
-                policy.OpportunityName__c = winningOpportunity.Id;
-
-                // Se actualiza el tomador de la oportunidad "ganadora"
-                updateWinningOpportunity(winningOpportunity, policy.PolicyHolder__c);
-
-                // Se procesan el resto de las oportunidades relacionadas al lead de la oportunidad "ganadora"
-                processRelatedOpportunities(opportunitiesByLeadId.remove(winningOpportunity.OldAccountId__c), winningOpportunity);
-
-
-                // Se procesan el resto de Leads que han hecho match y tienen alguna oportunidad relacionada
-                processRemainingLeads(opportunitiesByLeadId, leadsById, leadWithOpportunitiesNotRelatedToZRM);
+                handleWinningOpportunity(policy, opportunitiesByLeadId, leadsById, leadWithOpportunitiesNotRelatedToZRM);
             }
         }
+    }
+
+    /**
+    * @description
+    * @author rserrano | 18/07/2024 
+    * @param policy 
+    * @param opportunitiesByLeadId 
+    * @param leadsById 
+    * @param leadWithOpportunitiesNotRelatedToZRM 
+    **/
+    private void handleWinningOpportunity(Policy__c policy, Map<Id, List<Opportunity>> opportunitiesByLeadId, Map<Id, Account> leadsById, Set<Id> leadWithOpportunitiesNotRelatedToZRM)
+    {
+        // Se obtiene la oportunidad "ganadora" que será actualizada
+        Opportunity winningOpportunity = getWinningOpportunity(opportunitiesByLeadId);
+        
+        // Se relaciona la oportunidad "ganadora" con la póliza
+        policy.OpportunityName__c = winningOpportunity.Id;
+        
+        // Se actualiza el tomador de la oportunidad "ganadora"
+        updateWinningOpportunity(winningOpportunity, policy.PolicyHolder__c);
+        
+        // Se procesan el resto de las oportunidades relacionadas al lead de la oportunidad "ganadora"
+        processRelatedOpportunities(opportunitiesByLeadId.remove(winningOpportunity.OldAccountId__c), winningOpportunity);
+        
+        // Se procesan el resto de Leads que han hecho match y tienen alguna oportunidad relacionada
+        processRemainingLeads(opportunitiesByLeadId, leadsById, leadWithOpportunitiesNotRelatedToZRM);
     }
 
     //#region DMLS
