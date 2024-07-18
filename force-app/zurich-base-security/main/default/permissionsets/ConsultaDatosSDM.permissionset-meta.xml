@@ -2712,6 +2712,16 @@
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerNationalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerSic__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
         <editable>true</editable>
         <field>Case.OneTimeOrRecurring__c</field>
         <readable>true</readable>
@@ -2744,6 +2754,11 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>Case.Range__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.RiskAppetiteId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
