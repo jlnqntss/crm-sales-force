@@ -348,7 +348,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                 // 2º Identificar esa oferta para mover sus tareas y eventos
                 matchIdByScopeId.put(scopeOffer.Id, matchOffer.Id);
                 // 3º Marcamos a eliminar la oferta que ha hecho match
-                if(!opportunitiesToDelete.contains(matchOffer))
+                if( !opportunitiesToDelete.contains(matchOffer) )
                 {
                     opportunitiesToDelete.add(matchOffer);
                 }
@@ -669,7 +669,7 @@ public with sharing class ZRMOpportunityMatchBatch implements Database.Batchable
                  && opportunityMatchStages.contains(leadOpportunity.StageName)
                  && checkIsZRM(leadOpportunity, scopeMDT) )
             {
-                if(! offersToDelete.contains(leadOpportunity))
+                if( !offersToDelete.contains(leadOpportunity) )
                 {
                     offersToDelete.add(leadOpportunity);
                     opportunity.SalesProcess__c = 'L';

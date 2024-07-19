@@ -3,7 +3,8 @@
  * @author jjuaristi@seidor.es
  * @date 05/10/2022
  */
-public with sharing class RiskAppetiteController {
+public with sharing class RiskAppetiteController
+{
 
     private static final String PREFERENTE_BADGE_CLASS = 'slds-theme_success';
     private static final String NO_PREFERENTE_BADGE_CLASS = 'slds-theme_warning';
@@ -18,7 +19,8 @@ public with sharing class RiskAppetiteController {
      * @return Etiquetas a mostrar en el componente
      */
     @AuraEnabled(cacheable=true)
-    public static List<String> getAvailableSICs(){
+    public static List<String> getAvailableSICs()
+    {
         try
         {
             // Buscamos todos los registros
@@ -30,14 +32,14 @@ public with sharing class RiskAppetiteController {
             // Hacemos un bucle que recorre todos los SICs posibles y genera el label a mostrar al usuario
             for(MaestroApetito__c currentRecord : noDuplicatesList)
             {
-                labels.add(generateLabel(currentRecord, 'SIC__c', 'SICDescription__c'));
+                labels.add( generateLabel(currentRecord, 'SIC__c', 'SICDescription__c') );
             }
             // Devolvemos las etiquetas
             return labels;
         }
         catch (Exception e)
         {
-            throw new AuraHandledException(e.getMessage());
+            throw new AuraHandledException( e.getMessage() );
         }
     }
 
@@ -49,8 +51,10 @@ public with sharing class RiskAppetiteController {
      * @return Ramos posibles, se mostrarán en el componente
      */
     @AuraEnabled(cacheable=true)
-    public static List<Product> getProductsForSIC(String sicCode){
-        try {
+    public static List<Product> getProductsForSIC(String sicCode)
+    {
+        try
+        {
             // Buscamos todos los registros filtrados por SIC
             List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findProductsBySicCode(sicCode);
             // Eliminamos los duplicados para mostrar solo una vez cada ramo
@@ -68,10 +72,10 @@ public with sharing class RiskAppetiteController {
                 products.add(product);
             }
             return products;
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
-            throw new AuraHandledException(e.getMessage());
+            throw new AuraHandledException( e.getMessage() );
         }
     }
 
@@ -80,11 +84,13 @@ public with sharing class RiskAppetiteController {
      * @author jjuaristi@seidor.es
      * @date 05/10/2022
      * @param SIC y ramo escogidos
-     * @return 
+     * @return
      */
     @AuraEnabled(cacheable=true)
-    public static List<CommercialActivity> getCommercialActivitiesForProducts(String sicCode, String productCode){
-        try {
+    public static List<CommercialActivity> getCommercialActivitiesForProducts(String sicCode, String productCode)
+    {
+        try
+        {
             // Buscamos todos los registros filtrados por SIC y ramo
             List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findCommercialActivitiesByProductCode(sicCode, productCode);
             // Eliminamos los duplicados para mostrar solo una vez cada actividad comercial
@@ -106,10 +112,10 @@ public with sharing class RiskAppetiteController {
                 policies.add(activity);
             }
             return policies;
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
-            throw new AuraHandledException(e.getMessage());
+            throw new AuraHandledException( e.getMessage() );
         }
     }
 
@@ -117,20 +123,22 @@ public with sharing class RiskAppetiteController {
      * Método que es llamado desde el componente de selección de políticas técnicas para recoger todos los posibles
      * @author jjuaristi@seidor.es
      * @date 05/10/2022
-     * @param 
-     * @return 
+     * @param
+     * @return
      */
     @AuraEnabled
-    public static List<MaestroApetito__c> getTechPoliciesForActivities(String sicCode, String productCode, String activityCode){
-        try {
+    public static List<MaestroApetito__c> getTechPoliciesForActivities(String sicCode, String productCode, String activityCode)
+    {
+        try
+        {
             // Buscamos todos los registros filtrados por SIC, ramo y actividad comercial
             List<MaestroApetito__c> records = new RiskAppetiteMasterSelector().findTechPolicyByCommercialActivity(sicCode, productCode, activityCode);
             // Devolvemos las opciones posibles
             return records;
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
-            throw new AuraHandledException(e.getMessage());
+            throw new AuraHandledException( e.getMessage() );
         }
     }
 
@@ -150,10 +158,10 @@ public with sharing class RiskAppetiteController {
         for(MaestroApetito__c maestro : records)
         {
             // Recorremos la lista original
-            if(values != null && !values.contains((String)maestro.get(fieldToCheck)))
+            if( values != null && !values.contains( (String) maestro.get(fieldToCheck) ) )
             {
                 // Si no se ha añadido ya un registro con el mismo valor en el campo determinado, se añade
-                values.add((String)maestro.get(fieldToCheck));
+                values.add( (String) maestro.get(fieldToCheck) );
                 noDuplicatesList.add(maestro);
             }
         }
@@ -161,11 +169,11 @@ public with sharing class RiskAppetiteController {
     }
 
     /**
-     * Método que genera la etiqueta en base a un registro, y los campos en los que se encuentran el código y la descripción 
+     * Método que genera la etiqueta en base a un registro, y los campos en los que se encuentran el código y la descripción
      * @author jjuaristi@seidor.es
      * @date 05/10/2022
      * @param registro, [fieldCode] código (SIC, ramo o actividad comercial), [fieldName] descripción
-     * @return Etiqueta 
+     * @return Etiqueta
      */
     private static String generateLabel(MaestroApetito__c record, String fieldCode, String fieldName)
     {
@@ -191,7 +199,7 @@ public with sharing class RiskAppetiteController {
         String badgeLabel = '';
         for(MaestroApetito__c currentRecord : records)
         {
-            if((String) currentRecord.get(fieldName) == fieldCode)
+            if( (String) currentRecord.get(fieldName) == fieldCode )
             {
                 if(badgeLabel == '')
                 {
@@ -199,7 +207,7 @@ public with sharing class RiskAppetiteController {
                 }
                 else
                 {
-                    if( (String) currentRecord.get(fieldToCheck) != badgeLabel)
+                    if( (String) currentRecord.get(fieldToCheck) != badgeLabel )
                     {
                         return 'Varios';
                     }
@@ -217,26 +225,26 @@ public with sharing class RiskAppetiteController {
      * @return Clase del badge
      */
     public static String generateButtonClass(String preference)
+    {
+        if(preference == 'Preferente')
         {
-            if(preference == 'Preferente')
-            {
-                return PREFERENTE_BADGE_CLASS;
-            }
-            else if(preference == 'No Preferente')
-            {
-                return NO_PREFERENTE_BADGE_CLASS;
-            }
-            else if(preference == 'Excluido')
-            {
-                return EXCLUIDO_BADGE_CLASS;
-            }
-            else if(preference == 'Fuera de apetito')
-            {
-                return FUERA_DE_APETITO_BADGE_CLASS;
-            }
-
-            return '';
+            return PREFERENTE_BADGE_CLASS;
         }
+        else if(preference == 'No Preferente')
+        {
+            return NO_PREFERENTE_BADGE_CLASS;
+        }
+        else if(preference == 'Excluido')
+        {
+            return EXCLUIDO_BADGE_CLASS;
+        }
+        else if(preference == 'Fuera de apetito')
+        {
+            return FUERA_DE_APETITO_BADGE_CLASS;
+        }
+
+        return '';
+    }
 
     /**
      * Método que a partir del ramo descarga el fieldset necesario y devuelve los campos
@@ -258,7 +266,7 @@ public with sharing class RiskAppetiteController {
         // To return the field api name
         for(FieldSetMember field : fieldList)
         {
-            fieldsToShow.add(new Field(field.getLabel(), field.getFieldPath(), field.getType()));
+            fieldsToShow.add( new Field( field.getLabel(), field.getFieldPath(), field.getType() ) );
         }
 
         return fieldsToShow;
@@ -273,11 +281,11 @@ public with sharing class RiskAppetiteController {
      */
     private static List<Schema.FieldSetMember> getFieldSetMembers(String fieldSet)
     {
-        Map<String, Schema.SObjectType> globalDescribeMap = Schema.getGlobalDescribe(); 
+        Map<String, Schema.SObjectType> globalDescribeMap = Schema.getGlobalDescribe();
         Schema.SObjectType sObjectTypeObj = globalDescribeMap.get('MaestroApetito__c');
         Schema.DescribeSObjectResult describeSObjectResultObj = sObjectTypeObj.getDescribe();
         Schema.FieldSet fieldSetObj = describeSObjectResultObj.FieldSets.getMap().get(fieldSet);
-        return fieldSetObj.getFields(); 
+        return fieldSetObj.getFields();
     }
 
     /**
@@ -289,15 +297,15 @@ public with sharing class RiskAppetiteController {
     @AuraEnabled(cacheable=true)
     public static List<OtherProduct__mdt> getOtherProducts()
     {
-        try 
+        try
         {
             List<OtherProduct__mdt> products = new List<OtherProduct__mdt>();
-            products = [SELECT Id, MasterLabel, ProductCode__c,	SharepointLink__c FROM OtherProduct__mdt ORDER BY ProductCode__c];
+            products = [SELECT Id, MasterLabel, ProductCode__c, SharepointLink__c FROM OtherProduct__mdt ORDER BY ProductCode__c];
             return products;
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
-            throw new AuraHandledException(e.getMessage());
+            throw new AuraHandledException( e.getMessage() );
         }
     }
 
@@ -311,7 +319,7 @@ public with sharing class RiskAppetiteController {
     @AuraEnabled
     public static Case getCaseById(String caseId)
     {
-        return new CasesSelector().findById(new Set<String>{caseId})[0];
+        return new CasesSelector().findById(new Set<String> {caseId})[0];
     }
 
     /**
@@ -331,12 +339,12 @@ public with sharing class RiskAppetiteController {
         List<Schema.FieldSetMember> fieldList = getFieldSetMembers(fieldSet);
 
         fieldSet = 'IdentifyingCodes';
-        fieldList.addAll(getFieldSetMembers(fieldSet));
+        fieldList.addAll( getFieldSetMembers(fieldSet) );
 
         List<String> fields = new List<String>();
         for(Schema.FieldSetMember field : fieldList)
         {
-            fields.add(field.getFieldPath());
+            fields.add( field.getFieldPath() );
         }
 
         // Lanzamos la query para obtener el maestro fijado determinado
@@ -345,7 +353,7 @@ public with sharing class RiskAppetiteController {
     }
 
     /**
-     * Método que fija la política técnica 
+     * Método que fija la política técnica
      * @author jjuaristi@seidor.es
      * @date 05/10/2022
      * @param Id del caso en el que se fija, registro de la política a fijar
@@ -359,25 +367,25 @@ public with sharing class RiskAppetiteController {
 
             String fieldSet = 'Checkboxes';
             List<Schema.FieldSetMember> fieldList = getFieldSetMembers(fieldSet);
-            
+
             fieldSet = 'IdentifyingCodes';
-            fieldList.addAll(getFieldSetMembers(fieldSet));
-            
+            fieldList.addAll( getFieldSetMembers(fieldSet) );
+
             List<String> fields = new List<String>();
             for(Schema.FieldSetMember field : fieldList)
             {
-                fields.add(field.getFieldPath());
+                fields.add( field.getFieldPath() );
             }
-            
+
             // Generar json con los valores que van a ir al where
             caseToUpdate.Query__c = generateQueryJson(technicalPolicy, fields);
             caseToUpdate.RiskAppetite__c = technicalPolicy.ApetitoRiesgo__c;
             caseToUpdate.RiskAppetiteId__c = technicalPolicy.Id;
             update caseToUpdate;
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
-            throw new AuraHandledException(e.getMessage());
+            throw new AuraHandledException( e.getMessage() );
         }
     }
 
@@ -396,7 +404,7 @@ public with sharing class RiskAppetiteController {
         // Añadimos los campos requeridos
         for(String field : fields)
         {
-            recordForJson.put(field, record.get(field));
+            recordForJson.put( field, record.get(field) );
         }
 
         // Serializamos el objeto a formato json
@@ -422,10 +430,10 @@ public with sharing class RiskAppetiteController {
             caseToUpdate.RiskAppetiteId__c = null;
             // Actualizamos el caso
             update caseToUpdate;
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
-            throw new AuraHandledException(e.getMessage());
+            throw new AuraHandledException( e.getMessage() );
         }
     }
 
@@ -482,15 +490,16 @@ public with sharing class RiskAppetiteController {
      * @date 05/10/2022
      */
     @TestVisible
-    class Field {
+    class Field
+    {
         @AuraEnabled
-        public String label {get;set;}
-        @AuraEnabled       
-        public String fieldName {get;set;}
+        public String label {get; set;}
         @AuraEnabled
-        public String type {get;set;}
+        public String fieldName {get; set;}
         @AuraEnabled
-        public Integer initialWidth {get;set;}
+        public String type {get; set;}
+        @AuraEnabled
+        public Integer initialWidth {get; set;}
 
         /**
          * Contructor de la clase Field
@@ -521,7 +530,7 @@ public with sharing class RiskAppetiteController {
             {
                 this.initialWidth = 120;
             }
-            else 
+            else
             {
                 this.initialWidth = 90;
             }
