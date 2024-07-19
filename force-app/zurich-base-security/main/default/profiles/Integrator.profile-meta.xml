@@ -3866,6 +3866,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.ParticipatesInAction__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.Propuesta_Olimpia__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4491,6 +4496,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.LeadsPool__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.LegalEntity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4667,6 +4677,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Restricted__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SmartSalesModality__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6545,6 +6560,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerNationalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerSic__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.Monitoring__c</field>
         <readable>true</readable>
@@ -6747,6 +6772,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.RiskAppetite__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.RiskAppetiteId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8767,6 +8797,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Entitlement.Type</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.EnviadoABerkley__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

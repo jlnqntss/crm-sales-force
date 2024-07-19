@@ -42,6 +42,8 @@ public with sharing class EmailMessagesUtil
     private static final Id samRecordTypeId = CaseUtil.RT_ID_SAMINQUIRY;
     @testvisible
     private static List<String> mailsRelatedToIntermediaryOCS = new List<String>();
+    @testvisible
+    private static Map<String, CaseSettingsByEmail__mdt> caseSettingsByEmail = new Map<String, CaseSettingsByEmail__mdt>();
 
     /**
      * Get from the metadata configuration the list of emails configured for the Hegeo robot
@@ -926,6 +928,108 @@ public with sharing class EmailMessagesUtil
         }
 
         return mailsRelatedToIntermediaryOCS;
+    }
+
+    /**
+     * Determina si para un nuevo caso creado a partir del mail debe sobreescribirse el área de origen
+     * 
+     * @author jfherrero
+     * @date 17/07/2024
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+     */
+    public void setCaseSourceAreaByEmailAddress (List<EmailMessage> emailList)
+    {
+        //Obtenemos los buzones para los que realizar la configuración
+        Map<String, CaseSettingsByEmail__mdt> caseSettingsByEmailMap = getCaseSettingsByEmail();
+        
+        // Vamos a obtener los parentId de los correos entrantes dirigidos a los buzones
+        // donde se sobreescribe el área de origen
+        Set<String> parentCasesToRelateIds = new Set<String>();
+        Map<String, String> caseToSourceAreaMap = new Map<String, String>();
+
+        for (EmailMessage newMail : emailList)
+        {
+           if (newMail.Incoming && newMail.ParentId != null)
+           {
+              String sourceArea;
+               
+              for ( String caseSettingEmailAddress : caseSettingsByEmailMap.keySet())
+              {
+                 if (newMail.ToAddress.contains(caseSettingsByEmailMap.get(caseSettingEmailAddress).EmailAddress__c))
+                 {
+                    sourceArea = caseSettingsByEmailMap.get(caseSettingEmailAddress).SourceArea__c;
+                 }
+              }
+              // Vamos a rellenar el mapa, para informar el área origen de los buzones configurados únicamente
+              // y dejar vacíos los que no estén configurados
+              parentCasesToRelateIds.add(newMail.ParentId);
+              caseToSourceAreaMap.put(newMail.ParentId, sourceArea);
+           } 
+        }
+        
+        // Recuperamos los casos padre por ID. Sólo nos interesa si son de SAM.
+        CasesSelector casesSelector = new CasesSelector();
+        casesSelector.baseQuery.addConditionEq( Case.RecordTypeId , CaseUtil.RT_ID_SAMINQUIRY );
+        List<Case> parentCasesToCheck = casesSelector.findAllDataById(parentCasesToRelateIds);
+
+        if ( !parentCasesToCheck.isEmpty() )
+        {
+            processSourceAreas(parentCasesToCheck, caseToSourceAreaMap);
+        }
+    }
+
+    /**
+     * Recuperar los datos de buzones para los cuales hay que aplicar settings personalizados
+     * 
+     * @author juanfrancisco.herrero@seidor.com
+     * @date 17/07/2024
+     * @return List<String> Configuraciones de casos en función del buzón de creación
+     */
+    @TestVisible
+    private static Map<String, CaseSettingsByEmail__mdt> getCaseSettingsByEmail()
+    {
+        if ( caseSettingsByEmail == null || caseSettingsByEmail.size() == 0 )
+        {
+            caseSettingsByEmail = new Map<String, CaseSettingsByEmail__mdt>();
+
+            Map<String, CaseSettingsByEmail__mdt> caseSettings = CaseSettingsByEmail__mdt.getAll();
+
+            for (CaseSettingsByEmail__mdt caseSetting : caseSettings.values())
+            {
+            	caseSettingsByEmail.put(caseSetting.EmailAddress__c, caseSetting);
+            }
+        }
+
+        return caseSettingsByEmail;
+    }
+
+    /**
+     * Comprobamos si los casos se han generado por los mails entrantes para procesarlos
+     * y actualizar sus áreas de origen.
+     * 
+     * @author jfherrero
+     * @date 17/07/2024
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+     * @param List<Case> parentCasesToCheck : Casos padre
+     */
+    public void processSourceAreas(List<Case> parentCasesToCheck, Map<String, String> caseToSourceAreaMap)
+    {
+        // Para procesarlos, tienen que ser casos nuevos. Lo vamos a comprobar
+        // Revisando que haya coincidencia entre el ParentId del correo entrante y el SourceId del caso
+        List<Case> parentCasesToUpdate = new List<Case>();
+        
+        for (Case parentCaseToCheck : parentCasesToCheck)
+        {
+            if (parentCaseToCheck.CreatedDate >= Datetime.now().addMinutes(-1) && parentCaseToCheck.ParentId == null )
+            {
+                parentCaseToCheck.SourceArea__c = caseToSourceAreaMap.get(parentCaseToCheck.Id);
+                parentCasesToUpdate.add(parentCaseToCheck);
+            }
+        }
+
+        update parentCasesToUpdate;
     }
 
     /**

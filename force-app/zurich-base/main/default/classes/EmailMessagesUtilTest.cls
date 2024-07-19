@@ -35,8 +35,8 @@ private with sharing class EmailMessagesUtilTest
         queues[0].RecordTypeInfo__c = OCS_RECORDTYPE_VALUE;
 
         queues[1].Name = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
-        queues[1].GenesysFlowId__c = GENESYS_FLOW_ID+'1';
-        queues[1].purecloud__PureCloud_Queue_ID__c = GENESYS_QUEUE_ID+'1';
+        queues[1].GenesysFlowId__c = GENESYS_FLOW_ID + '1';
+        queues[1].purecloud__PureCloud_Queue_ID__c = GENESYS_QUEUE_ID + '1';
         queues[1].RecordTypeInfo__c = GlobalConfigUtil.getGlobalConfigurationValue('Case_RecordType_ZDA');
 
         insert queues;
@@ -763,7 +763,7 @@ private with sharing class EmailMessagesUtilTest
      * Test para validar que si llega un email a la cola de urgencias de ZDA, con el asunto que contiene
      * un identificador de canal unico, no se crea un nuevo caso, el correo se vincula al caso al que se
      * menciona y la cola asignada es la cola del caso relacionado
-     * 
+     *
      * @author mario.navarro@seidor.com
      * @date 18/07/2024
      */
@@ -773,7 +773,7 @@ private with sharing class EmailMessagesUtilTest
         String nameQueueGCartera = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
         String nameQueueUrgencias = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_Urgencias');
         List<Group> queueGCartera = new GroupSelector().findByName(nameQueueGCartera);
-        Assert.isFalse(queueGCartera.isEmpty());
+        Assert.isFalse( queueGCartera.isEmpty() );
 
         //Se crea el caso con el que se debe vincular el correo 'enviado'
         Case zdaCase = TestDataFactory.generateZDACases(1)[0];
@@ -781,7 +781,7 @@ private with sharing class EmailMessagesUtilTest
         insert zdaCase;
 
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(2);
-        emails[0].Subject += ' '+zdaCase.CuTicketId__c;
+        emails[0].Subject += ' ' + zdaCase.CuTicketId__c;
         emails[0].GenesysQueueName__c = nameQueueUrgencias;
         emails[1].Subject = 'Email urgencia sin relacion con ningun ticket previo';
         emails[1].GenesysQueueName__c = nameQueueUrgencias;
@@ -803,5 +803,45 @@ private with sharing class EmailMessagesUtilTest
         Assert.areNotEqual(zdaCase.Id, createdNotRelatedEmailMessage.ParentId);
         Assert.isTrue(createdNotRelatedEmailMessage.IsUrgent__c);
         Assert.areEqual(GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera'), createdNotRelatedEmailMessage.GenesysQueueName__c);
+    }
+
+    /**
+     * Test para asignar el área de origen a casos del SAM en función del buzón
+     * @author jfherrero
+     * @date 17/07/2024
+     */
+    @isTest
+    static void test_assignSourceAreaSAM_ok()
+    {
+        Map<String, CaseSettingsByEmail__mdt> caseSettingsByEmailMap = EmailMessagesUtil.getCaseSettingsByEmail();
+        Assert.areNotEqual(0, caseSettingsByEmailMap.size(), 'Metadato CaseSettingsByEmail__mdt NO existe');
+
+        CaseSettingsByEmail__mdt myCaseSetting = caseSettingsByEmailMap.get( new List<String>( caseSettingsByEmailMap.keyset() ).get(0) );
+
+        List<Account> customers = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
+        customers[0].MainEmail__c = 'email.test.error@test.es';
+        insert customers;
+
+        List<Case> casesCustomer = TestDataFactory.generateCasesForEachAccount(customers, 1);
+        casesCustomer[0].RecordTypeId = CaseUtil.RT_ID_SAMINQUIRY;
+
+        insert casesCustomer;
+
+        List<EmailMessage> emails = TestDataFactory.generateEmailMessages(1);
+
+        emails[0].FromAddress = customers[0].MainEmail__c;
+        emails[0].ToAddress = myCaseSetting.EmailAddress__c;
+        emails[0].ParentId = casesCustomer[0].Id;
+        emails[0].Incoming = true;
+
+        Test.startTest();
+
+        insert emails[0];
+
+        Test.stopTest();
+
+        List<Case> caseResults = [SELECT Id, SourceArea__c FROM Case WHERE Id = : casesCustomer[0].Id];
+
+        Assert.areEqual(caseResults[0].SourceArea__c, myCaseSetting.SourceArea__c, 'El Área de origen no coincide');
     }
 }

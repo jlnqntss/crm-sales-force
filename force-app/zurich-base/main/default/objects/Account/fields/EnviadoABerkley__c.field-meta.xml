@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EnviadoABerkley__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Campo check para que el gestor pueda seleccionar o no dicho check, para luego poder sacar info de qué y cuántos leads se marcan para tener trazabilidad.</description>
+    <externalId>false</externalId>
+    <label>Enviado a Berkley</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

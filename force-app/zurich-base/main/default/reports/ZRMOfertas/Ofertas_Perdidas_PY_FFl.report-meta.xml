@@ -46,6 +46,7 @@
         <field>Opportunity.IntermediaryCode__c</field>
     </columns>
     <filter>
+        <booleanFilter>(1 AND 2) OR (3 AND 4)</booleanFilter>
         <criteriaItems>
             <column>STAGE_NAME</column>
             <columnToColumn>false</columnToColumn>
@@ -59,6 +60,20 @@
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>N_MONTHS_AGO:10</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>CREATED_DATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>N_MONTHS_AGO:12</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>STAGE_NAME</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Quoted</value>
         </criteriaItems>
         <language>es</language>
     </filter>

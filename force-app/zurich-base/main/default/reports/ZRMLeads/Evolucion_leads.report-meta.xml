@@ -56,7 +56,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>notEqual</operator>
-            <value>NULL</value>
+            <value></value>
         </criteriaItems>
         <language>es</language>
     </filter>

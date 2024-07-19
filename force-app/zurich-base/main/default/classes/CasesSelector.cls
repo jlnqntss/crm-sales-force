@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : aberuete
  * @group             : 
- * @last modified on  : 06-03-2024
- * @last modified by  : aberuete
+ * @last modified on  : 16-07-2024
+ * @last modified by  : lgonzalez
 **/
 public with sharing class CasesSelector extends RecordsSelector
 {
@@ -27,6 +27,7 @@ public with sharing class CasesSelector extends RecordsSelector
     public static final String CASE_STATUS_LOOSE_CLOSED = 'Cerrado Perdido';
     public static final String CASE_OWNER_TYPE = 'Case.Owner.Type';
     public static final String CASE_OWNER_PROFILE_NAME = 'Case.Owner.Profile.Name';
+    public static final String CASE_OWNER_NAME = 'Case.Owner.Name';
 
     String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
     String filterCallCenter = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Call_Center_USP');
@@ -488,7 +489,7 @@ public with sharing class CasesSelector extends RecordsSelector
             Case.RelatedCuTicketId__c,
             Case.Description
         })
-        .selectFields('Case.Owner.Name')
+        .selectFields(CASE_OWNER_NAME)
         .addConditionEq(Case.RecordTypeId,CaseUtil.RT_ID_ZDA)
         .addConditionEq(Case.Id, caseId);
         List<Case> casesFound = (List<Case>) this.baseQuery.run();
@@ -625,14 +626,19 @@ public with sharing class CasesSelector extends RecordsSelector
      * cuyo campo WithoutBestAgent__c sea verdadero, que el caso no esté cerrado y que el owner sea una cola o el usuario integrador 
      * @author aberuete
      * @date 27/06/2024
+     * @change 
+     * @author lgonzalez 
+     * @date 16/07/2024
+     * description: Se modifica la condición para asignar los casos no tomando en cuenta el tipo caso queue 
+     * sino directamente la queue Email_USP_Daños_RC
      */
     public String selectCasesWithoutBestAgent()
     {
+        String nameQueueRC = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_DanosRC');
         Query.Condition andCondition = Query.doOr(
-                Query.conditionEq(CASE_OWNER_TYPE, 'Queue'),
+                Query.conditionEq(CASE_OWNER_NAME, nameQueueRC),
                 Query.conditionEq(CASE_OWNER_PROFILE_NAME, profileIntegrator));
                 
-
         this.baseQuery.selectFields(new Set<Schema.SObjectField>{
             Case.Id,
             Case.OwnerId
@@ -692,7 +698,7 @@ public with sharing class CasesSelector extends RecordsSelector
             Case.OwnerId, 
             Case.OwnerIdPrior__c
         })
-        .selectFields('Case.Owner.Name')
+        .selectFields(CASE_OWNER_NAME)
         .addConditionIn(Case.CuTicketId__c,lstIdCanalUnico);
         return (List<Case>) this.baseQuery.run();
 
