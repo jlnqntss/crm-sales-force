@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OneRedStar__c</fullName>
+    <description>Se guarda la imagen a mostrar cuando cltv tiene el valor &quot;1 estrella roja&quot;</description>
+    <label>One Red Star</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Url</type>
+</CustomField>
