@@ -1207,7 +1207,9 @@ public with sharing class EmailMessagesUtil
     }
 
      /**
-     * Método que vincula el email con el caso
+     * Método que vincula el email con el caso. Elimina del sistema el caso creado en el
+     * email to case vinculado a este email message
+     * 
      * @author mfernandezcarrera
      * @date 03/07/2024
      * @param EmailMessage
@@ -1215,6 +1217,12 @@ public with sharing class EmailMessagesUtil
      */
     private void linkEmailToCase(EmailMessage email, Case caso) 
     {
+        if (email.ParentId != null)
+        {
+            delete new Case(
+                Id = email.ParentId
+            );
+        }
         email.ParentId = caso.Id;
         email.RelatedToId = caso.Id;
         email.IsUrgent__c = true;
