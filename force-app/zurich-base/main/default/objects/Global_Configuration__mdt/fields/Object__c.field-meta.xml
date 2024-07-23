@@ -71,6 +71,11 @@
                 <label>Activity</label>
             </value>
             <value>
+                <fullName>Objective</fullName>
+                <default>false</default>
+                <label>Objective</label>
+            </value>
+            <value>
                 <fullName>Claim</fullName>
                 <default>false</default>
                 <isActive>false</isActive>
