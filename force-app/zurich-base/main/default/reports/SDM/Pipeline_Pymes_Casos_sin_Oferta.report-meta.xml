@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
-        <field>Account.TerritoryManagerName__c</field>
+        <field>Account.TerritorialDirection__c</field>
     </columns>
     <columns>
         <field>Account.ChannelZone__c</field>
@@ -80,6 +80,9 @@
     </columns>
     <columns>
         <field>Case.MediatedCustomerSic__c</field>
+    </columns>
+    <columns>
+        <field>Case.HGPrevisionCambio__c</field>
     </columns>
     <columns>
         <field>Case.RiskAppetite__c</field>
