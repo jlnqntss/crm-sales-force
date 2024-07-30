@@ -6446,6 +6446,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.HGPrevisionCambio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.IdCaseClone__c</field>
         <readable>true</readable>
     </fieldPermissions>

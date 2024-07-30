@@ -1709,13 +1709,13 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Potential_Broker__c</field>
+        <editable>true</editable>
+        <field>Account.ParticipatesInAction__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.SmartSalesModality__c</field>
+        <editable>false</editable>
+        <field>Account.Potential_Broker__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4496,6 +4496,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.HegeoReceiptNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.HGPrevisionCambio__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
