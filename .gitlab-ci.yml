@@ -252,6 +252,8 @@ test-lwc:
     - npm run release:test:lwc
   tags:
     - devops-runner
+  interruptible: true
+
 lint:
   stage: validate
   allow_failure: true
@@ -262,6 +264,7 @@ lint:
     - npm run lint
   tags:
     - devops-runner
+  interruptible: true
 
 
 
@@ -289,6 +292,7 @@ veracode:
     - tags
   tags:
     - devops-runner
+  interruptible: true
 
 ####################################################
 # Valida un despliegue sobre el entorno de integración
@@ -308,6 +312,7 @@ validate-deploy:
     - npm run release:validate -- DEV dev RunLocalTests
   tags:
     - devops-runner
+  interruptible: true
 
 ########################################################
 # Realiza el bump de versiones y etiqueta el merge de dev
@@ -327,6 +332,7 @@ release-candidate-build:
     - tags
   tags:
     - devops-runner
+  interruptible: true
 
 ########################################################
 # Generación de ChangeLog y documentación
@@ -348,6 +354,7 @@ changelog:
     - npm run release:changelog
   tags:
     - devops-runner
+  interruptible: true
 
 changelog-new-version:
   stage: release
@@ -364,6 +371,7 @@ changelog-new-version:
     - branches
   tags:
     - devops-runner
+  interruptible: true
 
 docs:
   stage: release
@@ -379,6 +387,7 @@ docs:
     - create_docs
   tags:
     - devops-runner
+  interruptible: true
 
 ####################################################
 # Despliega el proyecto a Staging
@@ -399,6 +408,7 @@ deploy:staging:
     - npm run release:deploy -- STAGING
   tags:
     - devops-runner
+  interruptible: true
 
 ####################################################
 # Lanza los tests unitarios en el entorno de staging
@@ -427,7 +437,8 @@ test-org:
       - tests/
   coverage: '/name="testRunCoverage" value="([\d]+%)"/'
   tags:
-  - devops-runner
+    - devops-runner
+  interruptible: true
 
 ####################################################
 # Realiza un scan de calidad de codigo y lo sube a 
@@ -458,6 +469,7 @@ sonarcloud-check:
     - if: $CI_MERGE_REQUEST_ID
   tags:
     - devops-runner
+  interruptible: true
 
 ####################################################
 # Lanza los tests unitarios en el entorno de staging
@@ -487,6 +499,7 @@ test-org:uat:
   coverage: '/name="testRunCoverage" value="([\d]+%)"/'
   tags:
     - devops-runner
+  interruptible: true
 
 ########################################################
 # Genera el paquete de despliegue y sube a Veracode
@@ -530,6 +543,7 @@ upload-static-veracode:dev:
     - dev
   tags:
     - devops-runner
+  interruptible: true
 
 ####################################################
 # Promociona la Release Candidate a UAT
@@ -547,6 +561,7 @@ promotion:uat:
     - branches
   tags:
     - devops-runner
+  interruptible: true
 
 ####################################################
 # Despliega el proyecto completo al entorno QA/UAT
@@ -568,6 +583,7 @@ deploy:uat:
     - npm run release:deploy -- QA qa
   tags:
     - devops-runner
+  interruptible: true
 
 ########################################################
 # Genera el paquete de despliegue y sube a Veracode
@@ -610,6 +626,7 @@ upload-static-veracode:uat:
       - /^release/.*$/
   tags:
     - devops-runner
+  interruptible: true
 
 ####################################################
 # PRODUCTION JOBS
@@ -638,6 +655,7 @@ deploy:production:
       - .tmp/
   tags:
     - devops-runner
+  interruptible: true
 
 promotion:prd:
   stage: promotion
@@ -652,6 +670,7 @@ promotion:prd:
     - branches
   tags:
     - devops-runner
+  interruptible: true
 
 veracode-UAT-status:prd:
   stage: prod-validation
@@ -680,6 +699,7 @@ veracode-UAT-status:prd:
     - branches
   tags:
     - devops-runner
+  interruptible: true
 
 release-approval-check:prd:
   stage: prod-validation
@@ -702,3 +722,4 @@ release-approval-check:prd:
     - branches
   tags:
     - devops-runner
+  interruptible: true
