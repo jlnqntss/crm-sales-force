@@ -4,14 +4,15 @@
     <description>[ZRM] Campo que se obtiene a partir de la nueva External request de Customer_KPI</description>
     <externalId>false</externalId>
     <formula>Case(
-				DescriptionScoreCLTV_NoLife__c, 
-				&quot;N/A&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CLTV_NoLife__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_000.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
-				&quot;1 estrella roja&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CLTV_NoLife__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_100.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
-				&quot;2 estrellas amarillas&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CLTV_NoLife__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_200.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
-				&quot;3 estrellas amarillas&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CLTV_NoLife__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_300.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
-				&quot;4 estrellas amarillas&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CLTV_NoLife__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_400.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
-				&quot;5 estrellas amarillas&quot;, HYPERLINK($Setup.Account_Score_KPI__c.CLTV_NoLife__c, IMAGE($Setup.Account_Score_KPI__c.Info_Icon__c, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_500.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;), 
-				$Label.ZRM_GlobalCustomerValue_NoValue
+DescriptionScoreCLTV_NoLife__c,
+&quot;N/A&quot;, HYPERLINK(&quot;/resource/NivelValorGlobalNoVida&quot;, IMAGE(&quot;/resource/Info&quot;, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_000.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;),
+&quot;1 estrella roja&quot;, HYPERLINK(&quot;/resource/NivelValorGlobalNoVida&quot;, IMAGE(&quot;/resource/Info&quot;, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/resource/OneRedStar&quot;, &quot;Stars&quot;),&quot;_self&quot;),
+&quot;1 estrella amarilla&quot;, HYPERLINK(&quot;/resource/NivelValorGlobalNoVida&quot;, IMAGE(&quot;/resource/Info&quot;, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_100.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;),
+&quot;2 estrellas amarillas&quot;, HYPERLINK(&quot;/resource/NivelValorGlobalNoVida&quot;, IMAGE(&quot;/resource/Info&quot;, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_200.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;),
+&quot;3 estrellas amarillas&quot;, HYPERLINK(&quot;/resource/NivelValorGlobalNoVida&quot;, IMAGE(&quot;/resource/Info&quot;, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_300.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;),
+&quot;4 estrellas amarillas&quot;, HYPERLINK(&quot;/resource/NivelValorGlobalNoVida&quot;, IMAGE(&quot;/resource/Info&quot;, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_400.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;),
+&quot;5 estrellas amarillas&quot;, HYPERLINK(&quot;/resource/NivelValorGlobalNoVida&quot;, IMAGE(&quot;/resource/Info&quot;, &quot;Info Icon&quot;, 16, 16) &amp; &quot; &quot; &amp; IMAGE(&quot;/img/samples/stars_500.gif&quot;, &quot;Stars&quot;),&quot;_self&quot;),
+$Label.ZRM_GlobalCustomerValue_NoValue
 )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <inlineHelpText>Pulsa sobre la imagen para mostrar más información</inlineHelpText>

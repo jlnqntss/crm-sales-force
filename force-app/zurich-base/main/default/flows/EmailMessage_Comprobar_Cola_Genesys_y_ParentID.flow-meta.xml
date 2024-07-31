@@ -260,6 +260,19 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>AsignarGestorPreferenteOwner</name>
+        <label>Asignar Gestor Preferente Owner</label>
+        <locationX>3218</locationX>
+        <locationY>1274</locationY>
+        <assignmentItems>
+            <assignToReference>GestorPreferenteAsignado</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>EmailPropietarioCaso</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>AsignarVariableResponsableNegocioSalida</name>
         <label>Asignar Variable Responsable Negocio salida</label>
         <locationX>1513</locationX>
@@ -330,7 +343,7 @@
             <assignToReference>ColaSuscriptorUno</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_Suscripcion_Construccion</stringValue>
+                <elementReference>FilterQueueSuscripcionConstruccion</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -353,7 +366,7 @@
             <assignToReference>ColaSuscriptorUno</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_Suscripcion_Construccion</stringValue>
+                <elementReference>FilterQueueSuscripcionVenta</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -415,7 +428,7 @@
             <assignToReference>ColaSuscriptorUno</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_Suscripcion_Danos</stringValue>
+                <elementReference>QueueEmailDano</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -445,7 +458,7 @@
             <assignToReference>ColaSuscriptorUno</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_Suscripcion_RC</stringValue>
+                <elementReference>EmailSuscripcionRC</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -488,7 +501,7 @@
             <assignToReference>ColaSuscriptorUno</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_Suscripcion_Specialties</stringValue>
+                <elementReference>FilterQueueSpecialties</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -511,7 +524,7 @@
             <assignToReference>ColaSuscriptorUno</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Email_Suscripcion_Specialties</stringValue>
+                <elementReference>FilterQueueSpecialties</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -615,7 +628,7 @@
                 <leftValueReference>ColaGenesysCallCenter</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>USP</stringValue>
+                    <elementReference>CallCenterUSP</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -801,21 +814,21 @@
                 <leftValueReference>IDPropietarioCaso</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <stringValue>005</stringValue>
+                    <elementReference>IdUser</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>PerfilPropietarioCaso</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>Integrator</stringValue>
+                    <elementReference>Profile_Name_Integrator</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>PerfilPropietarioCaso</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>System Administrator</stringValue>
+                    <elementReference>Profile_Name_SystemAdministrator</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -1019,6 +1032,9 @@
         <label>¿Mediador Panelizado?</label>
         <locationX>1799</locationX>
         <locationY>1058</locationY>
+        <defaultConnector>
+            <targetReference>NoMediadorPanelizadoOwnerUsuario</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>VentaDanosRC</name>
@@ -1027,21 +1043,21 @@
                 <leftValueReference>VerticalCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Danos-RC Venta</stringValue>
+                    <elementReference>RamoDanosRCVenta</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>VerticalCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Generico</stringValue>
+                    <elementReference>VerticalGenerico</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>TipoCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Venta</stringValue>
+                    <elementReference>VentaType</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -1217,6 +1233,56 @@
         </rules>
     </decisions>
     <decisions>
+        <name>NoMediadorPanelizadoOwnerUsuario</name>
+        <label>¿No mediador panelizado y Owner usuario?</label>
+        <locationX>3086</locationX>
+        <locationY>1166</locationY>
+        <defaultConnector>
+            <targetReference>AsignarGestorPreferenteOwner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>OwnerNoUsuario</name>
+            <conditionLogic>1 OR ( (2 OR 3 OR 4) AND 5)</conditionLogic>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>Beggining_Id_Queue</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Integrator</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Admin</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PerfilPropietarioCaso</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Profile_Name_Administrador</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IDPropietarioCaso</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <elementReference>Beggining_Id_User</elementReference>
+                </rightValue>
+            </conditions>
+            <label>Owner no usuario</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>OpenCasesFoundDecision</name>
         <label>¿Casos abiertos encontrados?</label>
         <locationX>3828</locationX>
@@ -1257,35 +1323,35 @@
                 <leftValueReference>IDPropietarioCaso</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <stringValue>00G</stringValue>
+                    <elementReference>Beggining_Id_Queue</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>PerfilPropietarioCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Integrator</stringValue>
+                    <elementReference>Profile_Name_Integrator</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>PerfilPropietarioCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>System Administrator</stringValue>
+                    <elementReference>Profile_Name_Admin</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>PerfilPropietarioCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Administrador del sistema</stringValue>
+                    <elementReference>Profile_Name_Administrador</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>IDPropietarioCaso</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <stringValue>005</stringValue>
+                    <elementReference>Beggining_Id_User</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -1353,14 +1419,14 @@
                 <leftValueReference>RamoCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>COMERCIOS</stringValue>
+                    <elementReference>RamoComercios</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>RamoCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>PATRIMONIALES</stringValue>
+                    <elementReference>RamoPatrimoniales</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -1421,14 +1487,14 @@
                 <leftValueReference>TipoCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Venta</stringValue>
+                    <elementReference>VentaType</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>RamoCaso</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>COMERCIOS</stringValue>
+                    <elementReference>RamoComercios</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -1446,7 +1512,7 @@
                 <leftValueReference>GenesysDanosQueue</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Email_USP_Danos_RC</stringValue>
+                    <elementReference>ColaDanosUSP</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -1497,6 +1563,11 @@
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Call_Center_ZDA.Value__c}</expression>
     </formulas>
     <formulas>
+        <name>CallCenterUSP</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Query_Filter_Call_Center_USP.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>Case_Commercial_Product_Code_PRD0028</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Commercial_Product_Code_PRD0028.Value__c}</expression>
@@ -1512,6 +1583,37 @@
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Commercial_Product_Code_PRD0901.Value__c}</expression>
     </formulas>
     <formulas>
+        <name>ColaDanosUSP</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_USP_Dano.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>EmailSuscripcionRC</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Filter_Queue_Suscripcion_RC.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>FilterQueueSpecialties</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Filter_Queue_Specialties.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>FilterQueueSuscripcionConstruccion</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Filter_Queue_Suscripcion_Construccion.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>FilterQueueSuscripcionVenta</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Filter_Queue_Suscripcion_Venta.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>IdUser</name>
+        <dataType>Number</dataType>
+        <expression>VALUE({!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_User.Value__c})</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
         <name>Profile_Name_Admin</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Admin.Value__c}</expression>
@@ -1525,6 +1627,41 @@
         <name>Profile_Name_Integrator</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Integrator.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Profile_Name_SystemAdministrator</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Profile_Name_Admin.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>QueueEmailDano</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_USP_Dano.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>RamoComercios</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Ramo_Comecio_USP.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>RamoDanosRCVenta</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Filter_Ramo_Danos_RC_Venta.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>RamoPatrimoniales</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Filter_Ramo_Patrimoniales.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>VentaType</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Query_Filter_Type_Venta.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>VerticalGenerico</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Vertical_Generico.Value__c}</expression>
     </formulas>
     <formulas>
         <description>Esta variable informa la cola de Genesys a la cual no se le asigna el suscriptor informado en la cuenta asociada al caso a enrutar</description>

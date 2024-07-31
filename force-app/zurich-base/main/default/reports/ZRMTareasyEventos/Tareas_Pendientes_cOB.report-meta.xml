@@ -17,25 +17,18 @@
     </columns>
     <filter>
         <criteriaItems>
-            <column>DUE_DATE</column>
+            <column>CREATED_BY</column>
             <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>greaterOrEqual</operator>
-            <value>TODAY</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>DUE_DATE</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>true</isUnlocked>
-            <operator>lessOrEqual</operator>
-            <value>NEXT_N_DAYS:7</value>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>$USER</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>TASK_TYPE</field>
+        <field>RECORDTYPE</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>Tareas Pendientes</name>
@@ -45,7 +38,7 @@
     </params>
     <params>
         <name>type</name>
-        <value>t</value>
+        <value>te</value>
     </params>
     <params>
         <name>co</name>
@@ -58,6 +51,6 @@
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>DUE_DATE</dateColumn>
-        <interval>INTERVAL_CUSTOM</interval>
+        <interval>INTERVAL_NEXT7</interval>
     </timeFrameFilter>
 </Report>

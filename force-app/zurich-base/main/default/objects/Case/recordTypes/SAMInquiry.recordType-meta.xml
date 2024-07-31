@@ -1157,7 +1157,7 @@
         </values>
         <values>
             <fullName>Mediator</fullName>
-            <default>false</default>
+            <default>true</default>
         </values>
         <values>
             <fullName>Partner</fullName>

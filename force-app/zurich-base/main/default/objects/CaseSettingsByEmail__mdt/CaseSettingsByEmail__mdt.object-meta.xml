@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Valores y campos que se asignan a los Casos cuando se crean o actualizan a raíz de un correo electrónico.</description>
+    <label>Case Setting By Email</label>
+    <pluralLabel>Case Settings By Email</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

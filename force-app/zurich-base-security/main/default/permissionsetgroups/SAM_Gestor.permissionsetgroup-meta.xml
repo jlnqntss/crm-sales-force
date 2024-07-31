@@ -6,6 +6,7 @@
     <permissionSets>BloqueoTareasCerradasOCS</permissionSets>
     <permissionSets>Consulta_Datos_SAM</permissionSets>
     <permissionSets>Consulta_Informes</permissionSets>
+    <permissionSets>GestionCuentaContacto_SAM</permissionSets>
     <permissionSets>Gestion_Datos_SAM</permissionSets>
     <permissionSets>MarcarTaskYEventsComoPublicas</permissionSets>
     <status>Updated</status>
