@@ -295,7 +295,7 @@
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Evolución llamadas entrantes (U14D)</header>
+                <header>Evolución llamadas atendidas (U14D)</header>
                 <legendPosition>Bottom</legendPosition>
                 <report>PanelesdeinicioUSP/Evolucin_llamadas_entrantes_U14D_USP</report>
                 <showPercentage>false</showPercentage>
@@ -529,7 +529,7 @@
                         <sortOrder>a</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
-                <header>Evol. llamadas entrantes centro (U14D)</header>
+                <header>Evol. llamadas atendidas centro (U14D)</header>
                 <legendPosition>Bottom</legendPosition>
                 <report>PanelesdeinicioUSP/Evol_llamadas_entrantes_centro_U14D_USP</report>
                 <showPercentage>false</showPercentage>
