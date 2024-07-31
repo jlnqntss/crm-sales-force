@@ -3597,4 +3597,12 @@
         </columns>
         <masterLabel>Cases</masterLabel>
     </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>MaxOptionTotalPremium__c</field>
+            <table>Account.Opportunities__r</table>
+        </columns>
+        <masterLabel>Offers</masterLabel>
+    </sections>
 </ReportType>
