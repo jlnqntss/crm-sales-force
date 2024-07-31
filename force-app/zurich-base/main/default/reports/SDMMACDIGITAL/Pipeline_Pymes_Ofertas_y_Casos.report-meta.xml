@@ -72,7 +72,7 @@
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.Opportunities__r$TotalPremium__c</field>
+        <field>Account.Opportunities__r$MaxOptionTotalPremium__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
