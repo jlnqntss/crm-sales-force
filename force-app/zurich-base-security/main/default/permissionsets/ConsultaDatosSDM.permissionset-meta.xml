@@ -2706,11 +2706,6 @@
         <field>Case.ClaimRate__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Case.Comentario__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
 	<fieldPermissions>
         <editable>true</editable>
         <field>Case.Email__c</field>
@@ -2885,6 +2880,11 @@
         <editable>false</editable>
         <field>Opportunity.Blocked__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Comments__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
