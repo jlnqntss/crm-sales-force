@@ -7,6 +7,9 @@
         <field>Account$ChannelZone__c</field>
     </columns>
     <columns>
+        <field>Account$IntermediaryDescription__c</field>
+    </columns>
+    <columns>
         <field>Account$INFOIntermediaryCode__c</field>
     </columns>
     <columns>
@@ -28,10 +31,19 @@
         <field>Account.Opportunities__r$Name</field>
     </columns>
     <columns>
+        <field>Account.Opportunities__r$InfoUser__c</field>
+    </columns>
+    <columns>
+        <field>Account.Opportunities__r$EffectiveDate__c</field>
+    </columns>
+    <columns>
         <field>Account.Opportunities__r$StageName</field>
     </columns>
     <columns>
         <field>Account.Opportunities__r.Cases__r$CaseNumber</field>
+    </columns>
+    <columns>
+        <field>Account.Opportunities__r.Cases__r$CloseDate__c</field>
     </columns>
     <columns>
         <field>Account$Status__c</field>
@@ -68,9 +80,6 @@
         <field>Account.Opportunities__r$Product_Name__c</field>
     </columns>
     <columns>
-        <field>Account.Opportunities__r$EffectiveDate__c</field>
-    </columns>
-    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Account.Opportunities__r$MaxOptionTotalPremium__c</field>
     </columns>
@@ -96,27 +105,81 @@
         <field>Account.Opportunities__r$Probability</field>
     </columns>
     <columns>
-        <field>Account.Opportunities__r.Cases__r$Comentario__c</field>
+        <field>Account.Opportunities__r$Comments__c</field>
     </columns>
     <description>Informe de ofertas con o sin casos</description>
     <filter>
         <criteriaItems>
-            <column>Account.Opportunities__r$TotalPremium__c</column>
+            <column>Account.Opportunities__r$EffectiveDate__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
-            <operator>greaterThan</operator>
-            <value>0</value>
+            <operator>lessOrEqual</operator>
+            <value>NEXT_MONTH</value>
         </criteriaItems>
         <criteriaItems>
             <column>Account.Opportunities__r$EffectiveDate__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
+            <operator>greaterOrEqual</operator>
+            <value>LAST_MONTH</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.Opportunities__r$IsUspProduct__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>THIS_YEAR</value>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.Opportunities__r$Name</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account$BusinessManagerName__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.Opportunities__r$StageName</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,App Submitted,Legit Lead,Quoted</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.Opportunities__r$IntermediaryCode__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account$TerritorialDirection__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Account.Opportunities__r.Cases__r$Status</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>,Asignado,En Gestión,En espera,No Iniciado,Nuevo,Pendiente,Reabierto,Respondido,Respuesta recibida,Resuelto</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
-    <format>Tabular</format>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
     <name>Pipeline Pymes Ofertas con o sin Casos</name>
     <params>
         <name>co</name>
