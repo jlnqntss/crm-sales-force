@@ -3603,6 +3603,11 @@
             <field>MaxOptionTotalPremium__c</field>
             <table>Account.Opportunities__r</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Comments__c</field>
+            <table>Account.Opportunities__r</table>
+        </columns>
         <masterLabel>Offers</masterLabel>
     </sections>
 </ReportType>
