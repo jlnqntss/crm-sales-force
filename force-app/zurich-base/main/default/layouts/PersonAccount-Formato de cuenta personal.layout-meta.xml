@@ -307,7 +307,14 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Policy__c</fields>
+        <fields>Product__c</fields>
+        <fields>InsuredObject__c</fields>
+        <fields>DateOfOccurrence__c</fields>
+        <fields>Status__c</fields>
         <relatedList>Claim__c.PolicyHolder__c</relatedList>
+        <sortField>DateOfOccurrence__c</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>RECORDTYPE</fields>
