@@ -121,7 +121,9 @@ before_script:
     npm install --global sfdx-cli@7.203.6
     npm install --global @salesforce/sfdx-lwc-jest --save-dev
 
+    # Update sfdx
     sfdx update
+    # Update end
 
     # Se instalan los Plugins de utilidad
     # The Salesforce CLI Scanner plug-in is a unified tool
