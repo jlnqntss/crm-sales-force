@@ -118,7 +118,6 @@ before_script:
     export SFDX_PROJECT_AUTOUPDATE_DISABLE_FOR_PACKAGE_VERSION_CREATE=true
     
     # Se usa npm para evitar problemas con wget
-    npm install --global npm@10.7.0
     npm install --global @salesforce/cli
     npm install --global @salesforce/sfdx-lwc-jest --save-dev
 
