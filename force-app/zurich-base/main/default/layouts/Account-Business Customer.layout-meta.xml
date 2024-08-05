@@ -55,10 +55,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>CustomerValue__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>CNAE__c</field>
             </layoutItems>
             <layoutItems>
@@ -179,19 +175,29 @@
     </relatedLists>
     <relatedLists>
         <fields>CASES.CASE_NUMBER</fields>
+        <fields>PolicyId__c</fields>
+        <fields>Product_Name__c</fields>
         <fields>CASES.SUBJECT</fields>
         <fields>CASES.CREATED_DATE_DATE_ONLY</fields>
         <fields>CASES.TYPE</fields>
         <fields>CASES.STATUS</fields>
         <fields>OWNER_NAME</fields>
         <relatedList>RelatedCaseList</relatedList>
+        <sortField>CASES.CREATED_DATE_DATE_ONLY</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>CASES.CASE_NUMBER</fields>
+        <fields>PolicyId__c</fields>
+        <fields>Product_Name__c</fields>
         <fields>CASES.SUBJECT</fields>
-        <fields>CASES.CREATED_DATE</fields>
-        <fields>CASES.PRIORITY</fields>
+        <fields>CASES.CREATED_DATE_DATE_ONLY</fields>
+        <fields>CASES.TYPE</fields>
+        <fields>CASES.STATUS</fields>
+        <fields>OWNER_NAME</fields>
         <relatedList>Case.MediatedCustomer__c</relatedList>
+        <sortField>CASES.CREATED_DATE_DATE_ONLY</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
@@ -272,6 +278,7 @@
         <fields>IntermediaryNameForm__c</fields>
         <fields>TotalPremium__c</fields>
         <fields>StartDate__c</fields>
+        <fields>AssetIdentifier__c</fields>
         <relatedList>Policy__c.PolicyHolder__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -279,12 +286,14 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>ClaimType__c</fields>
         <fields>Policy__c</fields>
+        <fields>Product__c</fields>
+        <fields>InsuredObject__c</fields>
         <fields>DateOfOccurrence__c</fields>
-        <fields>FaultFactor__c</fields>
-        <fields>ClaimResponsible__c</fields>
+        <fields>Status__c</fields>
         <relatedList>Claim__c.PolicyHolder__c</relatedList>
+        <sortField>DateOfOccurrence__c</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>RECORDTYPE</fields>
