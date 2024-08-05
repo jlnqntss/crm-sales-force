@@ -1,5 +1,5 @@
 import { createElement } from 'lwc';
-import ZRMFiles from 'c/zRMFiles';
+import ZRMFiles from 'c/ZRMFiles';
 
 describe('c-zrm-files', () => {
     afterEach(() => {
