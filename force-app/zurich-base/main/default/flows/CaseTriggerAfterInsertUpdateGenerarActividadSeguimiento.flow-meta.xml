@@ -142,12 +142,12 @@
         <label>Filtro Por Segmento</label>
         <locationX>785</locationX>
         <locationY>1379</locationY>
-        <assignNextValueToReference>currentItem_FilterBySegmentFilter_0</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_FilterBySegmentFilter</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>ColeccionFiltrada</collectionReference>
         <conditionLogic>and</conditionLogic>
         <conditions>
-            <leftValueReference>currentItem_FilterBySegmentFilter_0.SegmentoMediacion__c</leftValueReference>
+            <leftValueReference>currentItem_FilterBySegmentFilter.SegmentoMediacion__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <elementReference>$Record.Account.Segment__c</elementReference>
@@ -184,12 +184,12 @@
         <label>Filtro Segmento CEN</label>
         <locationX>521</locationX>
         <locationY>1379</locationY>
-        <assignNextValueToReference>currentItem_FiltroSegmentoCENAction_0</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_FiltroSegmentoCENAction</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>ColeccionFiltrada</collectionReference>
         <conditionLogic>and</conditionLogic>
         <conditions>
-            <leftValueReference>currentItem_FiltroSegmentoCENAction_0.SegmentoMediacion__c</leftValueReference>
+            <leftValueReference>currentItem_FiltroSegmentoCENAction.SegmentoMediacion__c</leftValueReference>
             <operator>NotEqualTo</operator>
             <rightValue>
                 <elementReference>$Record.Account.Segment__c</elementReference>
@@ -233,7 +233,7 @@
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>USPInquiry</stringValue>
+                    <elementReference>Case_RecordType_USP</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -308,9 +308,84 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetRecordTypeIDTaskActivityUSP</targetReference>
+                <targetReference>IncluidoNecesarioComprobarConsultor</targetReference>
             </connector>
             <label>Recuperado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>ConsultorPymeEncontradoDecision</name>
+        <label>¿Consultor Pyme Encontrado?</label>
+        <locationX>50</locationX>
+        <locationY>3287</locationY>
+        <defaultConnector>
+            <targetReference>GetRecordTypeIDTaskActivityUSP</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Encontrado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetConsultorPymesAction</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IncluidoNecesarioComprobarConsultor</name>
+        <label>¿Incluido y necesario comprobar consultor?</label>
+        <locationX>204</locationX>
+        <locationY>3071</locationY>
+        <defaultConnector>
+            <targetReference>GetRecordTypeIDTaskActivityUSP</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Comprobar</name>
+            <conditionLogic>(1 OR 3 OR 4 OR 5) AND 2</conditionLogic>
+            <conditions>
+                <leftValueReference>MetadatoEncontrado.MarcoActuacion__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ResponsabilidadCivil</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>MetadatoEncontrado.PicklistIncExcNull__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Incluido</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>MetadatoEncontrado.MarcoActuacion__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>RCPRO</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>MetadatoEncontrado.MarcoActuacion__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ACCIDENTES</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>MetadatoEncontrado.MarcoActuacion__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>AccidentesColectivos</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetConsultorPymesAction</targetReference>
+            </connector>
+            <label>Comprobar</label>
         </rules>
     </decisions>
     <decisions>
@@ -408,7 +483,7 @@
                 <leftValueReference>MetadatoEncontrado.SegmentoMediacion__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>CEN</stringValue>
+                    <elementReference>Segmento_CEN</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -458,7 +533,7 @@
                 <leftValueReference>TamaListaDeMetadatosRecuperados</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <numberValue>1.0</numberValue>
+                    <elementReference>value_1</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -469,6 +544,26 @@
     </decisions>
     <environments>Default</environments>
     <formulas>
+        <name>ACCIDENTES</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Actividad_Seguimiento_ACCIDENTES.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>AccidentesColectivos</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Actividad_Seguimiento_ACCIDENTES_COLECTI.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Actividad_Seguimiento_Incluido</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Actividad_Seguimiento_Incluido.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Case_RecordType_USP</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_USP.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>DueDateForTask</name>
         <dataType>Date</dataType>
         <expression>{!MetadatoEncontrado.FechaVencimiento__c} + {!$Flow.CurrentDate}</expression>
@@ -477,6 +572,27 @@
         <name>DueDateForTaskAdd1</name>
         <dataType>Date</dataType>
         <expression>{!$Flow.CurrentDate} +{!MetadatoEncontrado.FechaVencimiento__c} + 1</expression>
+    </formulas>
+    <formulas>
+        <name>RCPRO</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Actividad_Seguimiento_RCPRO_CIVIL.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>ResponsabilidadCivil</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Actividad_Seguimiento_RESP_CIVIL.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Segmento_CEN</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Segmento_CEN_USP.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>value_1</name>
+        <dataType>Number</dataType>
+        <expression>VALUE({!$CustomMetadata.Global_Configuration__mdt.Case_Value_1_USP.Value__c})</expression>
+        <scale>2</scale>
     </formulas>
     <interviewLabel>Case Trigger - After Insert/Update - {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - After Insert/Update - Generar Actividad Seguimiento</label>
@@ -726,6 +842,34 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>GetConsultorPymesAction</name>
+        <label>Get Consultor Pymes</label>
+        <locationX>50</locationX>
+        <locationY>3179</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ConsultorPymeEncontradoDecision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>TeamMemberRole</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Consultor PYME</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AccountTeamMember</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>GetMetadataAction</name>
         <label>Recuperar Metadato</label>
         <locationX>974</locationX>
@@ -742,7 +886,7 @@
             <field>MarcoActuacion__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Industry__c</elementReference>
+                <elementReference>$Record.ProductGroupDescription__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -824,7 +968,7 @@
             </value>
         </filters>
         <filters>
-            <field>Industry__c</field>
+            <field>ProductGroupDescription__c</field>
             <operator>IsNull</operator>
             <value>
                 <booleanValue>false</booleanValue>
@@ -872,7 +1016,7 @@
         <objectType>GenerateMonitoringCriteria__mdt</objectType>
     </variables>
     <variables>
-        <name>currentItem_FilterBySegmentFilter_0</name>
+        <name>currentItem_FilterBySegmentFilter</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -888,7 +1032,7 @@
         <objectType>GenerateMonitoringCriteria__mdt</objectType>
     </variables>
     <variables>
-        <name>currentItem_FiltroSegmentoCENAction_0</name>
+        <name>currentItem_FiltroSegmentoCENAction</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
