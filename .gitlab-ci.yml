@@ -33,7 +33,7 @@
 # Imagen Docker para los jobs. Puesto que el
 # pipeline es JS, se utiliza node.
 ####################################################
-image: 725258198056.dkr.ecr.eu-west-1.amazonaws.com/esz/ntt/thunder/pipelines/node/14:latest
+image: 725258198056.dkr.ecr.eu-west-1.amazonaws.com/esz/ntt/thunder/pipelines/node/20:latest
 
 
 ####################################################
@@ -118,7 +118,7 @@ before_script:
     export SFDX_PROJECT_AUTOUPDATE_DISABLE_FOR_PACKAGE_VERSION_CREATE=true
     
     # Se usa npm para evitar problemas con wget
-    npm install --global sfdx-cli@7.203.6
+    npm install --global @salesforce/cli@2.51.6
     npm install --global @salesforce/sfdx-lwc-jest --save-dev
 
     # Se instalan los Plugins de utilidad
