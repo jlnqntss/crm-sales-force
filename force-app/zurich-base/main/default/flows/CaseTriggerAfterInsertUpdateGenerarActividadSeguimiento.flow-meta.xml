@@ -554,11 +554,6 @@
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Actividad_Seguimiento_ACCIDENTES_COLECTI.Value__c}</expression>
     </formulas>
     <formulas>
-        <name>Actividad_Seguimiento_Incluido</name>
-        <dataType>String</dataType>
-        <expression>{!$CustomMetadata.Global_Configuration__mdt.Actividad_Seguimiento_Incluido.Value__c}</expression>
-    </formulas>
-    <formulas>
         <name>Case_RecordType_USP</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_USP.Value__c}</expression>
