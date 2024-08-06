@@ -127,7 +127,7 @@ before_script:
     # with a consistent command-line interface and report output.
     npm install --global @salesforce/sfdx-scanner
     #npm install --global lightning-flow-scanner
-    echo y | sfdx plugins:install sfpowerkit -f
+    echo y | sf plugins install sfpowerkit
     # npm install --global sfdx-git-delta
   }
 
