@@ -33,7 +33,7 @@
 # Imagen Docker para los jobs. Puesto que el
 # pipeline es JS, se utiliza node.
 ####################################################
-image: 725258198056.dkr.ecr.eu-west-1.amazonaws.com/esz/ntt/thunder/pipelines/node/14:latest
+image: 725258198056.dkr.ecr.eu-west-1.amazonaws.com/esz/ntt/thunder/pipelines/node/20:latest
 
 
 ####################################################
