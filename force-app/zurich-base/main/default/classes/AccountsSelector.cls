@@ -20,7 +20,8 @@ public with sharing class AccountsSelector extends RecordsSelector
     public static final String SDM_MAINEMAIL_FIELD = 'MainEmail__c';
     public static final String SDM_MAINMOBILEPHONE_FIELD = 'MainMobilePhone__c';
     public static final String SDM_RN_FIELD = 'TerritorialDirection__c';
-
+    
+    private static final Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
     //#region Contructores
 
     public AccountsSelector()
@@ -39,6 +40,7 @@ public with sharing class AccountsSelector extends RecordsSelector
     public static final String RT_NAME_BUSINESSCUSTOMER = 'BusinessCustomer';
     public static final String RT_NAME_ACCOUNT_INTERMEDIARY= 'Intermediary';
     public static final String RT_NAME_LEAD= 'Lead';
+    public static final String RT_LIFE_OPPORTUNITY= configValues.get('Opportunity_RecordTypeDevName_Life');
 
     public static final String INTERMEDIARY_ACTIVE_1='001';
     public static final String INTERMEDIARY_ACTIVE_2='002';
@@ -78,6 +80,12 @@ public with sharing class AccountsSelector extends RecordsSelector
     public ID rtAccountIntermediaryId {
         get {
             return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_ACCOUNT_INTERMEDIARY)?.getRecordTypeId();
+        }
+    }
+
+    public ID rtOpportunityLifeId {
+        get {
+            return Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(RT_LIFE_OPPORTUNITY).getRecordTypeId();
         }
     }
 
@@ -1203,6 +1211,7 @@ public with sharing class AccountsSelector extends RecordsSelector
      * @param stageName    : Etapa en la que se tiene que encontrar la oportunidad del lead para ser borrado
      * @param businessCode : Código de negocio de la oportunidad del lead para ser borrado
      * @return String
+     * update igarcia 25/06/2024: Se ha añadido la condición para que se recoga las oportunidades que no sean de Vida 
      **/
     public String findZRMOldLeads(Integer days, String stageName, String businessCode)
     {
@@ -1225,6 +1234,7 @@ public with sharing class AccountsSelector extends RecordsSelector
             Query.subquery('Opportunities')
             .selectFields(opportunityFieldsToRetrieve)
             .addConditionEq(Opportunity.StageName, stageName)
+            .addConditionNotEq(Opportunity.RecordTypeId, rtOpportunityLifeId)
             .addCondition(
                 query.doOr
                 (

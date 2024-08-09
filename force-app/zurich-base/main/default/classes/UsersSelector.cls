@@ -431,4 +431,40 @@ public with sharing class UsersSelector extends RecordsSelector
         return result;
     }
 
+    /**
+     * Método selector que devuelve los ids de usuarios, los casos asignados y la capacidad 
+     * de aquellos usuarios que tengan el campo gestor activo a true ordenador por menos número de casos asignados
+     * @author aberuete
+     * @date 27/06/2024
+     */
+    public List<User> selectUsersWithAgentActiveOrderByAssignedCases()
+    {
+        this.baseQuery.selectFields
+        (
+            new List<Schema.SObjectField>
+        {
+            User.Id,
+            User.AssignedCases__c,
+            User.Capacity__c
+        }
+        )
+        .addConditionEq(User.ActiveAgent__c, true)
+        .addConditionEq(User.IsActive, true)
+        .orderBy('User.AssignedCases__c', 'ASC');
+
+        return (List<User>) this.baseQuery.run();
+    }
+
+    /**
+     * Método selector que devuelve el número de agentes activos que no tienen una capacidad
+     * @author aberuete
+     * @date 27/06/2024
+     */
+    public Integer selectNumberOfUsersActiveWithInfiniteCapacity()
+    {
+        this.baseQuery.addConditionEq(User.ActiveAgent__c, true);
+        this.baseQuery.addConditionEq(User.IsActive, true);
+        this.baseQuery.addConditionEq(User.Capacity__c , null);
+        return this.baseQuery.countQuery();
+    }
 }

@@ -4,8 +4,8 @@
     <assignments>
         <name>Asignar_SLA_Caso_Hijio</name>
         <label>Asignar SLA caso hijo</label>
-        <locationX>402</locationX>
-        <locationY>458</locationY>
+        <locationX>666</locationX>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -17,8 +17,8 @@
     <assignments>
         <name>Asignar_SLA_caso_respondido</name>
         <label>Asignar SLA caso respondido</label>
-        <locationX>666</locationX>
-        <locationY>458</locationY>
+        <locationX>930</locationX>
+        <locationY>566</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
@@ -30,7 +30,7 @@
     <assignments>
         <name>AsignarSLACasoInmuebles</name>
         <label>Asignar SLA caso inmuebles</label>
-        <locationX>1194</locationX>
+        <locationX>402</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
@@ -41,15 +41,44 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>EstimatedEndDateAssignment</name>
+        <label>Establecer fecha estimada cierre</label>
+        <locationX>1634</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>EstimatedEndDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>cuEstimatedDateCorrectionFormula</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>SetZDASLAAssignement</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>MaxSlaAssignment</name>
         <label>Asignar SLA máximo</label>
         <locationX>1238</locationX>
-        <locationY>926</locationY>
+        <locationY>1142</locationY>
         <assignmentItems>
             <assignToReference>calculatedSla</assignToReference>
             <operator>Assign</operator>
             <value>
                 <numberValue>20000.0</numberValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>SetZDASLAAssignement</name>
+        <label>Asignar SLA ZDA</label>
+        <locationX>1898</locationX>
+        <locationY>758</locationY>
+        <assignmentItems>
+            <assignToReference>calculatedSla</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>zdaSlaFormula</elementReference>
             </value>
         </assignmentItems>
     </assignments>
@@ -88,7 +117,7 @@
             <label>USP</label>
         </rules>
         <rules>
-            <name>CCS_or_CDEX</name>
+            <name>CCS_or_CDEX_or_CSM</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>caseCallCenter</leftValueReference>
@@ -104,14 +133,6 @@
                     <stringValue>Centro Excelencia</stringValue>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>getCase</targetReference>
-            </connector>
-            <label>CCS o CDEX</label>
-        </rules>
-        <rules>
-            <name>CSMParticularesOutcome</name>
-            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>caseCallCenter</leftValueReference>
                 <operator>EqualTo</operator>
@@ -119,10 +140,17 @@
                     <stringValue>CSM Particulares</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>caseCallCenter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CSM Administracion</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>RecuperarCasoCSMAction</targetReference>
+                <targetReference>getCase</targetReference>
             </connector>
-            <label>CSM PARTICULARES</label>
+            <label>CCS o CDEX o CSM</label>
         </rules>
         <rules>
             <name>ZDA</name>
@@ -135,16 +163,111 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Recuperar_caso_ZDA</targetReference>
+                <targetReference>Es_urgente</targetReference>
             </connector>
             <label>ZDA</label>
         </rules>
     </decisions>
     <decisions>
-        <name>isChildCase</name>
-        <label>¿Es caso hijo?</label>
+        <description>En función del origen del caso, la prioridad se calcula de un modo u otro</description>
+        <name>CaseOriginDecision</name>
+        <label>Origen del caso</label>
+        <locationX>1898</locationX>
+        <locationY>458</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CanalUnicoOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casoEncontrado.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_Origin_Canal_Unico</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>EstimatedEndDateAssignment</targetReference>
+            </connector>
+            <label>CanalUnico</label>
+        </rules>
+        <rules>
+            <name>EmailOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casoEncontrado.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Case_Origin_Email</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetZDACaseMilestone</targetReference>
+            </connector>
+            <label>Email</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Es_urgente</name>
+        <label>¿Es urgente?</label>
+        <locationX>1678</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>RecuperarCasoZDAAction</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Email_urgente</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>urgentEmail</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>MaxSlaAssignment</targetReference>
+            </connector>
+            <label>Email urgente</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>EsCSMPartInmueblesDecision</name>
+        <label>¿Es CSM Particulares Inmuebles?</label>
         <locationX>666</locationX>
         <locationY>350</locationY>
+        <defaultConnector>
+            <targetReference>isChildCase</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No CSM Particulares o no Inmuebles</defaultConnectorLabel>
+        <rules>
+            <name>CSMPartInmueblesOutcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>casoEncontrado.HegeoProductGroupCode__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>3</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>caseCallCenter</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>CSM Particulares</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AsignarSLACasoInmuebles</targetReference>
+            </connector>
+            <label>CSM Particulares - Inmuebles</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>isChildCase</name>
+        <label>¿Es caso hijo?</label>
+        <locationX>930</locationX>
+        <locationY>458</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Caso_hijo</name>
@@ -209,72 +332,6 @@
             <label>Es respuesta de venta</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Owner_es_cola</name>
-        <label>¿Owner es cola?</label>
-        <locationX>1986</locationX>
-        <locationY>350</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Es_cola</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Recuperar_caso_ZDA.OwnerId</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <elementReference>Comienzo_Cola</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Qu_cola_es</targetReference>
-            </connector>
-            <label>Es cola</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Qu_cola_es</name>
-        <label>¿Qué cola es?</label>
-        <locationX>1810</locationX>
-        <locationY>458</locationY>
-        <defaultConnectorLabel>Otro</defaultConnectorLabel>
-        <rules>
-            <name>Urgencias</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Recuperar_caso_ZDA.Owner:Group.DeveloperName</leftValueReference>
-                <operator>Contains</operator>
-                <rightValue>
-                    <elementReference>Queue_Name</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>MaxSlaAssignment</targetReference>
-            </connector>
-            <label>Urgencias</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>RamoInmueblesDecision</name>
-        <label>¿Ramo Inmuebles ?</label>
-        <locationX>1326</locationX>
-        <locationY>350</locationY>
-        <defaultConnectorLabel>No inmuebles</defaultConnectorLabel>
-        <rules>
-            <name>InmueblesOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>casoEncontrado.HegeoProductGroupCode__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>3</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>AsignarSLACasoInmuebles</targetReference>
-            </connector>
-            <label>Inmuebles</label>
-        </rules>
-    </decisions>
     <description>Subflujo encargado de definir la prioridad de la interacción a enrutar, basándose en el call center al que vaya destinada</description>
     <environments>Default</environments>
     <formulas>
@@ -283,19 +340,37 @@
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Call_Center_ZDA.Value__c}</expression>
     </formulas>
     <formulas>
+        <name>Case_Origin_Canal_Unico</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Origin_Canal_Unico.Value__c}</expression>
+    </formulas>
+    <formulas>
+        <name>Case_Origin_Email</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_Origin_Email.Value__c}</expression>
+    </formulas>
+    <formulas>
         <name>Comienzo_Cola</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Global_Configuration__mdt.Beggining_Id_Queue.Value__c}</expression>
     </formulas>
     <formulas>
-        <name>Queue_Name</name>
-        <dataType>String</dataType>
-        <expression>{!$CustomMetadata.Global_Configuration__mdt.Queue_Name_Urgencias.Value__c}</expression>
+        <description>Esta formula corrige el &apos;formateo&apos; que hace SF sobre la fecha-hora del campo EstimatedEndDate__c. Este campo contiene la fecha+23.59.59. Al estar en GMT+1 le suma un dia y la hora pasa a ser las 12.59 en invierno y las 1.59 en verano. Como solo nos interesa el dia, le restamos un dia a esta fecha</description>
+        <name>cuEstimatedDateCorrectionFormula</name>
+        <dataType>DateTime</dataType>
+        <expression>{!casoEncontrado.EstimatedEndDate__c}-1</expression>
     </formulas>
     <formulas>
         <name>slaFormula</name>
         <dataType>Number</dataType>
         <expression>({!$Flow.CurrentDateTime}-{!GetCaseMilestoneAction.TargetDate})*24*60</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <description>Formula para el calculo del SLA para los casos de ZDA que son de canal unico o email (no urgente). Sera 20000 (el valor mas prioritario, para que no sea mas urgente que las &apos;urgencias&apos;) menos la diferencia de dias entre la fecha de fin de SLA y la fecha de ahora (la resta entre dos date times en un flow da como resultado la diferencia en dias). En ZDA no se priorizan casos por horas, asi que con la diferencia en dias tenemos suficiente.</description>
+        <name>zdaSlaFormula</name>
+        <dataType>Number</dataType>
+        <expression>20000 - ({!EstimatedEndDate} - {!$Flow.CurrentDateTime})</expression>
         <scale>0</scale>
     </formulas>
     <interviewLabel>EmailMessage - Cálculo SLA {!$Flow.CurrentDateTime}</interviewLabel>
@@ -327,7 +402,7 @@
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>isChildCase</targetReference>
+            <targetReference>EsCSMPartInmueblesDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -343,6 +418,7 @@
         <queriedFields>ParentId</queriedFields>
         <queriedFields>Origin</queriedFields>
         <queriedFields>Status</queriedFields>
+        <queriedFields>HegeoProductGroupCode__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>GetCaseMilestoneAction</name>
@@ -369,36 +445,37 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>Recuperamos el caso con el que trabajamos</description>
-        <name>Recuperar_caso_ZDA</name>
-        <label>Recuperar caso ZDA</label>
-        <locationX>1986</locationX>
-        <locationY>242</locationY>
+        <name>GetZDACaseMilestone</name>
+        <label>Recuperar ZDA Case Milestone</label>
+        <locationX>1898</locationX>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Owner_es_cola</targetReference>
+            <targetReference>SetZDASLAAssignement</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Id</field>
+            <field>CaseId</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>caseId</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Case</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <object>CaseMilestone</object>
+        <outputAssignments>
+            <assignToReference>EstimatedEndDate</assignToReference>
+            <field>TargetDate</field>
+        </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <description>Recuperamos el caso con el que trabajamos</description>
-        <name>RecuperarCasoCSMAction</name>
-        <label>Recuperar caso CSM</label>
-        <locationX>1326</locationX>
-        <locationY>242</locationY>
+        <description>Recuperamos el caso de ZDA con el que trabajamos</description>
+        <name>RecuperarCasoZDAAction</name>
+        <label>Recuperar caso ZDA</label>
+        <locationX>1898</locationX>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>RamoInmueblesDecision</targetReference>
+            <targetReference>CaseOriginDecision</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -411,7 +488,8 @@
         <object>Case</object>
         <outputReference>casoEncontrado</outputReference>
         <queriedFields>Id</queriedFields>
-        <queriedFields>HegeoProductGroupCode__c</queriedFields>
+        <queriedFields>Origin</queriedFields>
+        <queriedFields>EstimatedEndDate__c</queriedFields>
     </recordLookups>
     <start>
         <locationX>1112</locationX>
@@ -455,6 +533,13 @@
         <objectType>Case</objectType>
     </variables>
     <variables>
+        <name>EstimatedEndDate</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>isResponse</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
@@ -463,5 +548,12 @@
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>urgentEmail</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

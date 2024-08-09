@@ -70,6 +70,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Association2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.AutoVideo__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -181,6 +186,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.CustomerValue__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.GlobalCustomerValue_NoLife__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

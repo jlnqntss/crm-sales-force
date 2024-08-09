@@ -20,7 +20,10 @@ public without sharing class ContentDocumentLinkHandler implements ITrigger
      */
     public void bulkAfter(List<SObject> newList, Map<Id, SObject> oldMap)
     {
-        ContentDocumentLinkUtil.getRelatedEmailMessages((List<ContentDocumentLink>) newList, (Map<Id,ContentDocumentLink>) oldMap);
+        List<SObject> listContentDocument = new List<SObject>();
+        listContentDocument= ContentDocumentLinkUtil.contentDocumentLinkHegeoClasificacion(newList);
+        ContentDocumentLinkUtil.getRelatedEmailMessages(listContentDocument, (Map<Id,ContentDocumentLink>) oldMap);
+    
     }
 
     /**

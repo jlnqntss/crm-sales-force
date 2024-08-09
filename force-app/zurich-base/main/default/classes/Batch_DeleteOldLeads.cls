@@ -8,8 +8,11 @@
 global with sharing class Batch_DeleteOldLeads implements Database.Batchable<sObject>, Schedulable {
     
     private static final String CLASS_NAME = 'Batch_DeleteOldLeads';
+    @TestVisible
     private static final String VENTAS_SCOPE_NAME = 'Zurich_Ventas';
+    @TestVisible 
     private static final Integer DAYS = 90;
+    @TestVisible
     private static final String LEGIT_LEAD_OFFER_STATUS = 'Legit Lead';
 
     public Batch_DeleteOldLeads() 

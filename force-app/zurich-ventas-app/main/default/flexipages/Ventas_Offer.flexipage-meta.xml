@@ -13,7 +13,7 @@
                                 <criteria>
                                     <leftValue>{!Record.Sales_Loss_Reason__c}</leftValue>
                                     <operator>EQUAL</operator>
-                                    <rightValue>Interested contact agent</rightValue>
+                                    <rightValue>CC - Interested contact agent</rightValue>
                                 </criteria>
                                 <criteria>
                                     <leftValue>{!Record.SalesProcess__c}</leftValue>

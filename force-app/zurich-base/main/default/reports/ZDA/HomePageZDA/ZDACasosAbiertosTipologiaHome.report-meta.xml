@@ -20,7 +20,7 @@ OPEN:SUM - CLOSED:SUM &lt; 0,
         <backgroundFadeDir>Diagonal</backgroundFadeDir>
         <chartSummaries>
             <axisBinding>y</axisBinding>
-            <column>FORMULA1</column>
+            <column>RowCount</column>
         </chartSummaries>
         <chartType>Donut</chartType>
         <enableHoverLabels>false</enableHoverLabels>
@@ -36,7 +36,7 @@ OPEN:SUM - CLOSED:SUM &lt; 0,
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
-        <title>Comparativa global por tipología</title>
+        <title>Casos abiertos por tipo</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>

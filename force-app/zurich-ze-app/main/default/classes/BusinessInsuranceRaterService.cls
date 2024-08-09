@@ -2,8 +2,8 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
+ * @last modified on  : 06-24-2024
+ * @last modified by  : mfernandezcarrera
 **/
 public with sharing class BusinessInsuranceRaterService
 {
@@ -549,11 +549,20 @@ public with sharing class BusinessInsuranceRaterService
      * @modification amunoz
      * @date 23/03/2023
      * @comment Se añade en la comprobación de cuando existe la oferta, la asignación del BusinessCode de la oferta al Contact Request
+     * 
+     * @modification mfernandezcarrera
+     * @date 21/06/2024
+     * @comment Se comprueba que en el ContactRequest que se genera si no tiene oferta asociada le asigne la cola Queue_ZE_VozZuemCMB
      */
     private static void createCallMeBack(Request formData, List<Opportunity> offersToCreate, Scope_Setting__mdt currentScopeSettings)
     {
+
         //OPCIONAL - puede que no requiera funcionar con genesys
         purecloud__PureCloud_Queue__c genesysQueue;
+        List<purecloud__PureCloud_Queue__c> genesysQueueZuemCMB = new List<purecloud__PureCloud_Queue__c>();
+        String queueZuemCmb = GlobalConfigUtil.getGlobalConfigurationValue('Queue_ZE_VozZuemCMB'); // Voz_Zuem_CMB
+        genesysQueueZuemCMB = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :queueZuemCmb];
+        
         try
         {
             if (String.isNotBlank(currentScopeSettings.GenesysCloudQueueName__c))
@@ -594,6 +603,11 @@ public with sharing class BusinessInsuranceRaterService
             contactRequestToCreate.WhatId = offersToCreate.get(0).Id;
             //Se añade el BusinessCode en el cmb
             contactRequestToCreate.BusinessCode__c = offersToCreate.get(0).BusinessCode__c;
+        } 
+        
+        if( offersToCreate.isEmpty() && !genesysQueueZuemCMB.isEmpty() )
+        {   
+            contactRequestToCreate.GenesysCloudQueueId__c = genesysQueueZuemCMB[0].Id;
         }
 
         insert contactRequestToCreate;

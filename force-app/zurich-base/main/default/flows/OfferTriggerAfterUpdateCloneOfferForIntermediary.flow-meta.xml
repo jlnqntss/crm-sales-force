@@ -3,6 +3,11 @@
     <apiVersion>57.0</apiVersion>
     <description>Si la oferta cierra porque el cliente está interesado pero quiere que lo gestione su agentemediador, se lanza este flow para clonar la oferta. Asigna la nueva al agente mediador, rellena los campos y actualiza la oferta clonada para reflejar ésta acción.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>InterestedManagedByMyAgentFormula</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Offer_SalesLossReason_ManagedByAgent.Value__c}</expression>
+    </formulas>
     <interviewLabel>Sales_Loss_Reason__c = ‘Interesado prefiere que lo gestione mi Agente’ {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Offer Trigger - After Update - Clone Offer For Intermediary</label>
     <processMetadataValues>
@@ -36,7 +41,7 @@
             <field>Sales_Loss_Reason__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Interested, managed by my agent</stringValue>
+                <stringValue>CC - Interested, managed by my agent</stringValue>
             </value>
         </filters>
         <filters>

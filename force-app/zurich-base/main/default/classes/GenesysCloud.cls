@@ -162,6 +162,19 @@ public with sharing class GenesysCloud
         private set;
     }
 
+    public static GenesysCloud.PatchServiceId PatchServiceId
+    {
+        get
+        {
+            if (PatchServiceId == null)
+            {
+                PatchServiceId = new PatchServiceId();
+            }
+            return PatchServiceId;
+        }
+        private set;
+    }
+
     //#endregion
 
     //#region Métodos y clases para la realización de invocaciones asíncronas

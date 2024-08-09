@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Capacidad_negativa</fullName>
+    <active>true</active>
+    <description>La capacidad de asumir casos no puede ser cero ni negativa</description>
+    <errorConditionFormula>!ISBLANK(Capacity__c )  &amp;&amp;  Capacity__c &lt;= 0</errorConditionFormula>
+    <errorMessage>La capacidad del gestor no puede ser cero ni negativa</errorMessage>
+</ValidationRule>

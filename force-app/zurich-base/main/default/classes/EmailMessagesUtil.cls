@@ -42,6 +42,8 @@ public with sharing class EmailMessagesUtil
     private static final Id samRecordTypeId = CaseUtil.RT_ID_SAMINQUIRY;
     @testvisible
     private static List<String> mailsRelatedToIntermediaryOCS = new List<String>();
+    @testvisible
+    private static Map<String, CaseSettingsByEmail__mdt> caseSettingsByEmail = new Map<String, CaseSettingsByEmail__mdt>();
 
     /**
      * Get from the metadata configuration the list of emails configured for the Hegeo robot
@@ -774,8 +776,8 @@ public with sharing class EmailMessagesUtil
      * @author jfherrero
      * @date 22/01/2024
      * 
-     * @last modified on  : 22-03-2024
-     * @last modified by  : jfherrero
+     * @last modified on  : 07-04-2024
+     * @last modified by  : mfernandezcarrera
      * 
      * @param List<EmailMessage> emailList : Lista de email message
     */
@@ -929,6 +931,108 @@ public with sharing class EmailMessagesUtil
     }
 
     /**
+     * Determina si para un nuevo caso creado a partir del mail debe sobreescribirse el área de origen
+     * 
+     * @author jfherrero
+     * @date 17/07/2024
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+     */
+    public void setCaseSourceAreaByEmailAddress (List<EmailMessage> emailList)
+    {
+        //Obtenemos los buzones para los que realizar la configuración
+        Map<String, CaseSettingsByEmail__mdt> caseSettingsByEmailMap = getCaseSettingsByEmail();
+        
+        // Vamos a obtener los parentId de los correos entrantes dirigidos a los buzones
+        // donde se sobreescribe el área de origen
+        Set<String> parentCasesToRelateIds = new Set<String>();
+        Map<String, String> caseToSourceAreaMap = new Map<String, String>();
+
+        for (EmailMessage newMail : emailList)
+        {
+           if (newMail.Incoming && newMail.ParentId != null)
+           {
+              String sourceArea;
+               
+              for ( String caseSettingEmailAddress : caseSettingsByEmailMap.keySet())
+              {
+                 if (newMail.ToAddress.contains(caseSettingsByEmailMap.get(caseSettingEmailAddress).EmailAddress__c))
+                 {
+                    sourceArea = caseSettingsByEmailMap.get(caseSettingEmailAddress).SourceArea__c;
+                 }
+              }
+              // Vamos a rellenar el mapa, para informar el área origen de los buzones configurados únicamente
+              // y dejar vacíos los que no estén configurados
+              parentCasesToRelateIds.add(newMail.ParentId);
+              caseToSourceAreaMap.put(newMail.ParentId, sourceArea);
+           } 
+        }
+        
+        // Recuperamos los casos padre por ID. Sólo nos interesa si son de SAM.
+        CasesSelector casesSelector = new CasesSelector();
+        casesSelector.baseQuery.addConditionEq( Case.RecordTypeId , CaseUtil.RT_ID_SAMINQUIRY );
+        List<Case> parentCasesToCheck = casesSelector.findAllDataById(parentCasesToRelateIds);
+
+        if ( !parentCasesToCheck.isEmpty() )
+        {
+            processSourceAreas(parentCasesToCheck, caseToSourceAreaMap);
+        }
+    }
+
+    /**
+     * Recuperar los datos de buzones para los cuales hay que aplicar settings personalizados
+     * 
+     * @author juanfrancisco.herrero@seidor.com
+     * @date 17/07/2024
+     * @return List<String> Configuraciones de casos en función del buzón de creación
+     */
+    @TestVisible
+    private static Map<String, CaseSettingsByEmail__mdt> getCaseSettingsByEmail()
+    {
+        if ( caseSettingsByEmail == null || caseSettingsByEmail.size() == 0 )
+        {
+            caseSettingsByEmail = new Map<String, CaseSettingsByEmail__mdt>();
+
+            Map<String, CaseSettingsByEmail__mdt> caseSettings = CaseSettingsByEmail__mdt.getAll();
+
+            for (CaseSettingsByEmail__mdt caseSetting : caseSettings.values())
+            {
+            	caseSettingsByEmail.put(caseSetting.EmailAddress__c, caseSetting);
+            }
+        }
+
+        return caseSettingsByEmail;
+    }
+
+    /**
+     * Comprobamos si los casos se han generado por los mails entrantes para procesarlos
+     * y actualizar sus áreas de origen.
+     * 
+     * @author jfherrero
+     * @date 17/07/2024
+     * 
+     * @param List<EmailMessage> emailList : Lista de email message
+     * @param List<Case> parentCasesToCheck : Casos padre
+     */
+    public void processSourceAreas(List<Case> parentCasesToCheck, Map<String, String> caseToSourceAreaMap)
+    {
+        // Para procesarlos, tienen que ser casos nuevos. Lo vamos a comprobar
+        // Revisando que haya coincidencia entre el ParentId del correo entrante y el SourceId del caso
+        List<Case> parentCasesToUpdate = new List<Case>();
+        
+        for (Case parentCaseToCheck : parentCasesToCheck)
+        {
+            if (parentCaseToCheck.CreatedDate >= Datetime.now().addMinutes(-1) && parentCaseToCheck.ParentId == null )
+            {
+                parentCaseToCheck.SourceArea__c = caseToSourceAreaMap.get(parentCaseToCheck.Id);
+                parentCasesToUpdate.add(parentCaseToCheck);
+            }
+        }
+
+        update parentCasesToUpdate;
+    }
+
+    /**
      * Determina si el email tiene buzones de apertura de caso sólo en CcAddress y no en ToAddress
      * Para aquellos en los que así sea habrá que establecer un email por defecto cuando el agente conteste un caso
      * Cuando el email unicamente cuente con alguna de las direcciones en TO desactivara esta dirección por defecto
@@ -1002,6 +1106,156 @@ public with sharing class EmailMessagesUtil
             this.casesControlEmailCCDesactivate(caseEmailNotDefault);
         }
         
+    }
+
+    /**
+     * Método que comprueba, cuando nos llega un nuevo email de urgencias, si existe algún caso con el identificador de 
+     * canal único que nos llega indicado en el subject del email. Si existe, reasignamos el email para que se vincule con el mismo
+     * @author arcortazar
+     * @date 21/06/2024
+     * @param List<EmailMessage>
+     */
+    public void checkExistingCaseZDAUrgencias(List<EmailMessage> listaEmails) 
+    {
+        String nameQueueUrgencias = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_Urgencias');
+        String comienzoId = GlobalConfigUtil.getGlobalConfigurationValue('Beggining_Id_Queue');
+        Map<String, purecloud__PureCloud_Queue__c> mapaQueues = getQueueMap();
+        List<String> lstCasosCerrarInteracciones = new List<String>();
+        String nameQueueGCartera = GlobalConfigUtil.getGlobalConfigurationValue('Queue_FullName_GestionCartera');
+        List<purecloud__PureCloud_Queue__c> genesysQueueGCartera = (new GenesysQueueSelector()).getQueuesByName(new List<String> {nameQueueGCartera});
+    
+        for (EmailMessage newEmail : listaEmails) 
+        {
+            if (isUrgenciasQueue(newEmail, nameQueueUrgencias)) 
+            {
+                List<String> idCanalUnico = extractIdsFromSubject(newEmail.Subject);
+
+                // Comprobar si existe caso con el ID de Canal Unico (y sólo hay uno)
+                List<Case> lstCasoAsociado = (new CasesSelector()).getCaseByCuTicketId(idCanalUnico);
+
+                // Si tenemos un caso y es de ZDA
+                if(lstCasoAsociado.size() == 1 && lstCasoAsociado[0].RecordTypeId == CaseUtil.RT_ID_ZDA)
+                {
+                    Case casoAsociado = lstCasoAsociado[0];
+
+                    linkEmailToCase(newEmail, casoAsociado);
+
+                    updateEmailQueue(newEmail, getQueueName(casoAsociado, comienzoId), mapaQueues);
+
+                    // si está abierto, cerramos resto de interacciones
+                    lstCasosCerrarInteracciones.add(casoAsociado.Id);
+                }
+                else if (!genesysQueueGCartera.isEmpty())
+                {
+                    //No se han encontrado casos o se han encontrado mas de uno y existe la cola de genesys de gestion cartera
+                    updateEmailQueue(newEmail, genesysQueueGCartera[0].Name, mapaQueues);
+                }
+            }
+        }
+        if (!lstCasosCerrarInteracciones.isEmpty()) 
+        {
+            CaseHelper.closeInteractions(lstCasosCerrarInteracciones);
+        }
+    }
+    
+    /**
+     * Método que obtiene el mapa con el nombre de la cola
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @return mapaQueues: mapa que contiene el nombre de la cola y el objeto
+     */
+    private Map<String, purecloud__PureCloud_Queue__c> getQueueMap() 
+    {
+        List<purecloud__PureCloud_Queue__c> lstPurecloud = (new GenesysQueueSelector()).getAllQueues();
+        Map<String, purecloud__PureCloud_Queue__c> mapaQueues = new Map<String, purecloud__PureCloud_Queue__c>();
+        for (purecloud__PureCloud_Queue__c purecloud : lstPurecloud) 
+        {
+            mapaQueues.put(purecloud.Name, purecloud);
+        }
+        return mapaQueues;
+    }
+
+    /**
+     * Método que comprueba que la cola del emaul que le pasamos se trata de las de urgencias
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param EmailMessage 
+     * @param String nameQueueUrgencias
+     */
+    private boolean isUrgenciasQueue(EmailMessage email, String nameQueueUrgencias) 
+    {
+        return !String.isBlank(email.GenesysQueueName__c) && email.GenesysQueueName__c.equals(nameQueueUrgencias);
+    }
+    
+    /**
+     * Método que obtiene los IDs en base al parametro que recibe subject 
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param String subject 
+     * @return List<String> 
+     */
+    private List<String> extractIdsFromSubject(String subject)
+     {
+        List<String> ids = new List<String>();
+        Pattern numericPattern = Pattern.compile('\\d+');
+        Matcher matcher = numericPattern.matcher(subject);
+        while (matcher.find()) 
+        {
+            ids.add(matcher.group());
+        }
+        return ids;
+    }
+
+     /**
+     * Método que vincula el email con el caso. Elimina del sistema el caso creado en el
+     * email to case vinculado a este email message
+     * 
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param EmailMessage
+     * @param Case  
+     */
+    private void linkEmailToCase(EmailMessage email, Case caso) 
+    {
+        if (email.ParentId != null)
+        {
+            delete new Case(
+                Id = email.ParentId
+            );
+        }
+        email.ParentId = caso.Id;
+        email.RelatedToId = caso.Id;
+        email.IsUrgent__c = true;
+    }
+
+    /**
+     * Método que obtiene el nombre de la cola del caso
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param Case  
+     * @param String comienzoId
+     */
+    private String getQueueName(Case caso, String comienzoId) 
+    {
+        return ((String) caso.OwnerId).startsWith(comienzoId) ? caso.Owner.Name : caso.OwnerIdPrior__c;
+    }
+
+    /**
+     * Método que actualiza la cola del email
+     * @author mfernandezcarrera
+     * @date 03/07/2024
+     * @param EmailMessage
+     * @param String : queueName
+     * @param Map<String,purecloud__PureCloud_Queue__c> : queueMap  
+     */
+    private void updateEmailQueue(EmailMessage email, String queueName, Map<String, purecloud__PureCloud_Queue__c> queueMap) 
+    {
+        purecloud__PureCloud_Queue__c genesysQueue = queueMap.get(queueName);
+        if (genesysQueue != null) {
+            email.GenesysQueueName__c = genesysQueue.Name;
+            email.GenesysFlowID__c = genesysQueue.GenesysFlowId__c;
+            email.IsUrgent__c = true;
+        }
     }
 
     /**

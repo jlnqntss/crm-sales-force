@@ -378,4 +378,19 @@ private class ExternalRequestsSelectorTest
              );
         Test.stopTest();
     }
+
+
+    @istest
+    private static void test_selectByOriginAndEntity()
+    {      
+        Test.startTest();
+        Set<String> origins = new Set<String> {'INFO'}; 
+        Set<String> entities = new Set<String>{'ACCOUNT'}; 
+        
+        ExternalRequest__c[] result = new ExternalRequestsSelector().selectByOriginAndEntity(origins, entities);             
+             
+        Test.stopTest();
+
+        Assert.isTrue(result.size() > 0, 'Debe encontrar resultados');
+    }
 }

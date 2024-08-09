@@ -29,11 +29,15 @@ private with sharing class INFOHandlerTest
     private static final Integer NUM_ER_INTERMEDIARY_GROUP = 1;
     private static final Integer NUM_ER_INTERMEDIARY_HIERARCHY = 1;
     private static final Integer NUM_ER_CONSENT = 5;
+    private static final Integer NUM_ER_ACCOUNT_SCORE_KPI = 1;
+    private static final Integer NUM_ER_INTERMEDIARY_TNPS = 1;
 
     @TestSetup
     private static void makeData()
     {
         List<ExternalRequest__c> externalRequestList = new List<ExternalRequest__c>();
+
+        Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
 
         //Personas físicas
         externalRequestList.addAll(
@@ -141,6 +145,14 @@ private with sharing class INFOHandlerTest
         externalRequestList.addAll(
             TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, 'CONSENT', NUM_ER_CONSENT)
         );
+        // ACCOUNT_SCORE_KPI
+        externalRequestList.addAll(
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, configValues.get('ER_ACCOUNT_SCORE_KPI'), NUM_ER_ACCOUNT_SCORE_KPI)
+        );
+        // INTERMEDIARY_TNPS
+        externalRequestList.addAll( 
+            TestDataFactory.generateExternalRequest(INFOHandler.HANDLER_ORIGIN, configValues.get('ER_INTERMEDIARY_TNPS'), NUM_ER_INTERMEDIARY_TNPS)
+        );
 
         insert externalRequestList;
     }
@@ -168,6 +180,66 @@ private with sharing class INFOHandlerTest
         for(Schema.PicklistEntry pe: objectTypeValues) {
             mapEquivalences.get(INFOHandler.INSURED_OBJECT).put(pe.value, rt.developername);
         }
+    }
+
+    /**
+     * Devuelve una nueva instancia del selector de ExternalRequests
+     *
+     * @author fpalomo
+     * @date 24/06/2024
+     */
+    private static ExternalRequestsSelector getExternalRequestsSelector()
+    {
+        return new ExternalRequestsSelector(new List<Schema.SObjectField>{
+            ExternalRequest__c.Entity__c,
+            ExternalRequest__c.Action__c,
+            ExternalRequest__c.Payload__c,
+            ExternalRequest__c.ContentFormat__c,
+            ExternalRequest__c.NumRetry__c,
+            ExternalRequest__c.Origin__c,
+            ExternalRequest__c.CreatedDate
+        });
+    }
+
+    /**
+     * Prepara los datos para realizar el test persist_delete_ok sobre la entidad especificada
+     *
+     * @author fpalomo
+     * @date 24/06/2024
+     */
+    private static void preparePersistDeleteTest(Set<String> entities)
+    {
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
+        Set<String> origins = new Set<String> {INFOHandler.HANDLER_ORIGIN};
+        List<ExternalRequest__c> externalRequestToDelete = new List<ExternalRequest__c>();
+
+        List<ExternalRequest__c> externalRequestList = getExternalRequestsSelector().selectByOriginAndEntity(origins, entities);
+
+        INFOHandler.prepare(transformer, externalRequestList);
+        INFOHandler.process(externalRequestList);
+        INFOHandler.persists(externalRequestList);
+        INFOHandler.manageResult(null, externalRequestList);
+
+        List<ExternalRequest__c> externalRequestListUpserted = getExternalRequestsSelector().selectByOriginAndEntity(origins, entities);
+
+        for(ExternalRequest__c externalRequest : externalRequestListUpserted)
+        {
+            if(entities.contains(externalRequest.Entity__c))
+            {
+                externalRequest.Processed__C = false;
+                externalRequest.Action__C = 'DELETE';
+                externalRequestToDelete.add(externalRequest);
+            }
+        }
+        update externalRequestToDelete;
+
+        // Configuracion de los metadatos para el Test
+        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
+        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
+
+        INFOHandler.prepare(transformer, externalRequestToDelete);
+        INFOHandler.process(externalRequestToDelete);
+        INFOHandler.persists(externalRequestToDelete);
     }
 
     @isTest
@@ -328,6 +400,14 @@ private with sharing class INFOHandlerTest
             NUM_ER_CONSENT,
             ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONSENT).get('Consent__c').size(), 
             'No se ha generado correctamente el mapa de registros de Consent__c');
+        Assert.areEqual(
+            NUM_ER_ACCOUNT_SCORE_KPI,
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT_SCORE_KPI).get(Schema.Account.sObjectType.getDescribe().getName()).size(), 
+            'No se ha generado correctamente el mapa de registros de Account_SCORE_KPI');
+        Assert.areEqual(
+            NUM_ER_INTERMEDIARY_TNPS,
+            ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_TNPS).get(Schema.TNPS__c.sObjectType.getDescribe().getName()).size(), 
+            'No se ha generado correctamente el mapa de registros de INTERMEDIARY_TNPS');
     }
 
     @isTest
@@ -387,6 +467,8 @@ private with sharing class INFOHandlerTest
         System.assertEquals(NUM_ER_SPECIAL_CONDITION, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.SPECIAL_CONDITION).get('Special_Condition__c').size(), 'No se ha generado correctamente el mapa de registros de Special_Condition__c');
         System.assertEquals(NUM_ER_INTERMEDIARY_KPI, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_KPI).get('KPI__c').size(), 'No se ha generado correctamente el mapa de registros de KPI__c');
         Assert.areEqual(NUM_ER_CONSENT, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.CONSENT).get('Consent__c').size(), 'No se ha generado correctamente el mapa de registros de Consent__c');
+        Assert.areEqual(NUM_ER_ACCOUNT_SCORE_KPI, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.ACCOUNT_SCORE_KPI).get('Account').size(), 'No se ha generado correctamente el mapa de registros de Account Score KPI');
+        Assert.areEqual(NUM_ER_INTERMEDIARY_TNPS, ExternalRequestHandlerUtil.recordsToUpsertByEntity.get(INFOHandler.INTERMEDIARY_TNPS).get('TNPS__c').size(), 'No se ha generado correctamente el mapa de registros de INTERMEDIARY_TNPS');
         
     }
 
@@ -417,7 +499,8 @@ private with sharing class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY + NUM_ER_CONSENT;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY + NUM_ER_CONSENT + NUM_ER_ACCOUNT_SCORE_KPI
+                                        + NUM_ER_INTERMEDIARY_TNPS;
 
         System.assertEquals(
             totalExternalRequests,
@@ -449,7 +532,8 @@ private with sharing class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_CONSENT;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_CONSENT + NUM_ER_ACCOUNT_SCORE_KPI
+                                        + NUM_ER_INTERMEDIARY_TNPS; 
                                         
         System.assertEquals(
             totalExternalRequests,
@@ -577,152 +661,161 @@ private with sharing class INFOHandlerTest
         Assert.areEqual(NUM_ER_CONSENT,
                         consents.size(),
                         'No se han insertado todos los registros de Consent__c');
+    }
+
+    @isTest
+    private static void testPersistInsertOK()
+    {
+        List<ContactPointAddress> contactPointAddressList = new List<ContactPointAddress>();
+        List<ContactPointPhone> contactPointPhoneList = new List<ContactPointPhone>();
+        List<ContactPointEmail> contactPointEmailList = new List<ContactPointEmail>();
+        List<Account> accountList = new List<Account>();
+        List<Contact> contactList = new List<Contact>();
+        List<Product2> productList = new List<Product2>();
+        List<Opportunity> offerList = new List<Opportunity>();
+        List<Quote> quoteList = new List<Quote>();
+        List<Asset> insuredObjectList = new List<Asset>();
+
+        Test.startTest();
+        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
+        Set<String> origins = new Set<String> {INFOHandler.HANDLER_ORIGIN};
+        List<ExternalRequest__c> externalRequestToDelete = new List<ExternalRequest__c>();
+
+        List<ExternalRequest__c> externalRequestList = getExternalRequestsSelector().selectByOrigin(origins);
+
+        INFOHandler.prepare(transformer, externalRequestList);
+        INFOHandler.process(externalRequestList);
+        INFOHandler.persists(externalRequestList);
+        INFOHandler.manageResult(null, externalRequestList);
+
+        contactPointAddressList = [SELECT Id FROM ContactPointAddress];
+        contactPointPhoneList = [SELECT Id FROM ContactPointPhone];
+        contactPointEmailList = [SELECT Id FROM ContactPointEmail];
+        accountList = [SELECT Id FROM Account];
+        contactList = [SELECT Id FROM Contact];
+        productList = [SELECT Id FROM Product2];
+        offerList = [SELECT Id FROM Opportunity];
+        quoteList = [SELECT Id FROM Quote];
+        insuredObjectList = [SELECT Id FROM Asset];
+        Test.stopTest();
         
+        Assert.areEqual(NUM_ER_CONTACT_POINT_ADDRESS, contactPointAddressList.size(), 'No se han insertado todos los registros de contactPointAddress');
+        Assert.areEqual(NUM_ER_CONTACT_POINT_PHONE, contactPointPhoneList.size(), 'No se han insertado todos los registros de contactPointPhone');
+        Assert.areEqual(NUM_ER_CONTACT_POINT_EMAIL, contactPointEmailList.size(), 'No se han insertado todos los registros de contactPointEmail');
+        Assert.areEqual((NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY) * 2, accountList.size(), 'No se han insertado todos los registros de cuenta');
+        Assert.areEqual((NUM_ER_LEGAL_ACCOUNT) * 2, contactList.size(), 'No se han insertado todos los registros de contacto');
+        Assert.areEqual(NUM_ER_PRODUCT, productList.size(), 'No se han insertado todos los registros de producto');
+        Assert.areEqual(NUM_ER_QUOTE, offerList.size(), 'No se han insertado todos los registros de oferta');
+        Assert.areEqual(NUM_ER_QUOTE_OPTION, quoteList.size(), 'No se han insertado todos los registros de opciones de oferta');
+        Assert.areEqual(NUM_ER_INSURED_OBJECT, insuredObjectList.size(), 'No se han insertado todos los registros de objeto asegurado');
     }
 
     @isTest
-    private static void test_persists_delete_OK()
+    private static void testPersistDeleteOK_Account()
     {
-        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
-
-        List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
-                                                                                    { ExternalRequest__c.Entity__c,
-                                                                                      ExternalRequest__c.Action__c,
-                                                                                      ExternalRequest__c.Payload__c,
-                                                                                      ExternalRequest__c.ContentFormat__c,
-                                                                                      ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
-
-        INFOHandler.prepare(transformer, externalRequestList);
-        INFOHandler.process(externalRequestList);
-        INFOHandler.persists(externalRequestList);
-        INFOHandler.manageResult(null, externalRequestList);
-
-        List<ExternalRequest__c> externalRequestListUpserted = new ExternalRequestsSelector(new List<Schema.SObjectField>
-                                                                                            { ExternalRequest__c.Entity__c,
-                                                                                              ExternalRequest__c.Action__c,
-                                                                                              ExternalRequest__c.Payload__c,
-                                                                                              ExternalRequest__c.ContentFormat__c,
-                                                                                              ExternalRequest__c.NumRetry__c,
-                                                                                              ExternalRequest__c.Origin__c,
-                                                                                              ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
-
-        List<ExternalRequest__c> externalRequestToDelete = new List<ExternalRequest__c>();
-
-        for(ExternalRequest__c externalRequest : externalRequestListUpserted)
-        {
-            if(externalRequest.Entity__c == INFOHandler.INTERMEDIARY_KPI ||
-                externalRequest.Entity__c == INFOHandler.CONSENT)
-            {
-                externalRequest.Processed__C = false;
-                externalRequest.Action__C = 'DELETE';
-                externalRequestToDelete.add(externalRequest);
-            }
-        }
-        update externalRequestToDelete;
-
-        // Configuracion de los metadatos para el Test
-        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
-        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
-
         Test.startTest();
-        INFOHandler.prepare(transformer, externalRequestToDelete);
-        INFOHandler.process(externalRequestToDelete);
-        INFOHandler.persists(externalRequestToDelete);
+        preparePersistDeleteTest(new Set<String>{
+            INFOHandler.ACCOUNT
+        });
         Test.stopTest();
 
-        List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
-        List<KPI__c> kpiList = [SELECT Id FROM KPI__c];
-        List<Consent__c> consents = [SELECT Id FROM Consent__c];
-
-        System.assertEquals(0, kpiList.size(), 'No se han borrado todos los registros de KPI__c');
-        Assert.isTrue(consents.isEmpty(), 'No se han borrado todos los registros de Consent__c');
+        List<Account> customerAccountList = [SELECT Id FROM Account WHERE RecordTypeId = :AccountUtil.CUSTOMER_RT_DEVELOPER_NAME];
+        Assert.isTrue(customerAccountList.isEmpty(), 'No se han borrado todos los registros de Account (Customer)');
+        List<Account> businessCustomerAccountList = [SELECT Id FROM Account WHERE RecordTypeId = :AccountUtil.BUSINESS_CUSTOMER_RT_DEVELOPER_NAME];
+        Assert.isTrue(businessCustomerAccountList.isEmpty(), 'No se han borrado todos los registros de Account (BusinessCustomer)');
     }
 
     @isTest
-    private static void test_persists_delete_OK2()
+    private static void testPersistDeleteOK_SpecialCondition()
     {
-        Transformer transformer = new Transformer(INFOHandler.HANDLER_ORIGIN);
-
-        List<ExternalRequest__c> externalRequestList = new ExternalRequestsSelector(new List<Schema.SObjectField>
-                                                                                    { ExternalRequest__c.Entity__c,
-                                                                                      ExternalRequest__c.Action__c,
-                                                                                      ExternalRequest__c.Payload__c,
-                                                                                      ExternalRequest__c.ContentFormat__c,
-                                                                                      ExternalRequest__c.NumRetry__c,
-                                                                                      ExternalRequest__c.Origin__c,
-                                                                                      ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
-
-        INFOHandler.prepare(transformer, externalRequestList);
-        INFOHandler.process(externalRequestList);
-        INFOHandler.persists(externalRequestList);
-        INFOHandler.manageResult(null, externalRequestList);
-
-        List<ExternalRequest__c> externalRequestListUpserted = new ExternalRequestsSelector(new List<Schema.SObjectField>
-                                                                                            { ExternalRequest__c.Entity__c,
-                                                                                              ExternalRequest__c.Action__c,
-                                                                                              ExternalRequest__c.Payload__c,
-                                                                                              ExternalRequest__c.ContentFormat__c,
-                                                                                              ExternalRequest__c.NumRetry__c,
-                                                                                              ExternalRequest__c.Origin__c,
-                                                                                              ExternalRequest__c.CreatedDate}).selectByOrigin(new Set<String> {INFOHandler.HANDLER_ORIGIN});
-
-        List<ExternalRequest__c> externalRequestToDelete = new List<ExternalRequest__c>();
-
-        for(ExternalRequest__c externalRequest : externalRequestListUpserted)
-        {
-            if(externalRequest.Entity__c == INFOHandler.POLICY ||
-                externalRequest.Entity__c == INFOHandler.POLICY_RELATIONSHIP ||
-                externalRequest.Entity__c == INFOHandler.NOTE ||
-                externalRequest.Entity__c == INFOHandler.SPECIAL_CONDITION)
-            {
-                externalRequest.Processed__C = false;
-                externalRequest.Action__C = 'DELETE';
-                externalRequestToDelete.add(externalRequest);
-            }
-        }
-        update externalRequestToDelete;
-
-        // Configuracion de los metadatos para el Test
-        INFOHandler.mapEquivalencesByEntityTest = new Map<String, Map<String, String>>();
-        createEquivalenceSettigs(INFOHandler.mapEquivalencesByEntityTest);
-
         Test.startTest();
-        INFOHandler.prepare(transformer, externalRequestToDelete);
-        INFOHandler.process(externalRequestToDelete);
-        INFOHandler.persists(externalRequestToDelete);
+        preparePersistDeleteTest(new Set<String>{
+            INFOHandler.SPECIAL_CONDITION
+        });
         Test.stopTest();
 
-        List<Account> accountList = [SELECT Id FROM Account];
-        List<Contact> contactList = [SELECT Id FROM Contact];
-        List<ContactPointAddress> cpaList = [SELECT Id FROM ContactPointAddress];
-        List<ContactPointPhone> cppList = [SELECT Id FROM ContactPointPhone];
-        List<ContactPointEmail> cpeList = [SELECT Id FROM ContactPointEmail];
-        List<Product2> prodList = [SELECT Id FROM Product2];
-        List<Opportunity> oppList = [SELECT Id FROM Opportunity];
-        List<Quote> quoteList = [SELECT Id FROM Quote];
-        List<Policy__c> policyList = [SELECT Id FROM Policy__c];
-        List<Asset> insObjList = [SELECT Id FROM Asset];
-        List<Claim__c> claimList = [SELECT Id FROM Claim__c];
-        List<Relationship__c> relaList = [SELECT Id FROM Relationship__c];
-        List<Case> caseList = [SELECT Id FROM Case];
-        List<Special_Condition__c> specialConditionList = [SELECT Id FROM Special_Condition__c];
+        List<Special_Condition__c> result = [SELECT Id FROM Special_Condition__c];
+        Assert.isTrue(result.isEmpty(), 'No se han borrado todos los registros de Special_Condition__c');
+    }
 
-        System.assertEquals((NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY) * 2, accountList.size(), 'No se han insertado todos los registros de cuenta');
-        System.assertEquals((NUM_ER_LEGAL_ACCOUNT) * 2, contactList.size(), 'No se han insertado todos los registros de contacto');
-        System.assertEquals(NUM_ER_CONTACT_POINT_ADDRESS, cpaList.size(), 'No se han insertado todos los registros de contactPointAddress');
-        System.assertEquals(NUM_ER_CONTACT_POINT_PHONE, cppList.size(), 'No se han insertado todos los registros de contactPointPhone');
-        System.assertEquals(NUM_ER_CONTACT_POINT_EMAIL, cpeList.size(), 'No se han insertado todos los registros de contactPointEmail');
-        System.assertEquals(NUM_ER_PRODUCT, prodList.size(), 'No se han insertado todos los registros de producto');
-        System.assertEquals(NUM_ER_QUOTE, oppList.size(), 'No se han insertado todos los registros de oferta');
-        System.assertEquals(NUM_ER_QUOTE_OPTION, quoteList.size(), 'No se han insertado todos los registros de opciones de oferta');
-        System.assertEquals(0, policyList.size(), 'No se han borrado todos los registros de póliza');
-        System.assertEquals(NUM_ER_INSURED_OBJECT, insObjList.size(), 'No se han insertado todos los registros de objeto asegurado');
-        System.assertEquals(0, claimList.size(), 'No se han borrado todos los registros de siniestro'); 
-        // FIXME: System.assertEquals(20, relaList.size(), 'No se han borrado todos los registros de relaciones');
-        System.assertEquals(0, caseList.size(), 'No se han borrado todos los registros de Case');
-        System.assertEquals(0, specialConditionList.size(), 'No se han borrado todos los registros de Special_Condition__c');
+    @isTest
+    private static void testPersistDeleteOK_KPI()
+    {
+        Test.startTest();
+        preparePersistDeleteTest(new Set<String>{
+            INFOHandler.INTERMEDIARY_KPI
+        });
+        Test.stopTest();
+
+        List<KPI__c> intermediaryKpiList = [SELECT Id FROM KPI__c];
+        Assert.isTrue(intermediaryKpiList.isEmpty(), 'No se han borrado todos los registros de KPI__c');
+    }
+
+    @isTest
+    private static void testPersistDeleteOK_Consent()
+    {
+        Test.startTest();
+        preparePersistDeleteTest(new Set<String>{
+            INFOHandler.CONSENT
+        });
+        Test.stopTest();
+
+        List<Consent__c> result = [SELECT Id FROM Consent__c];
+        Assert.isTrue(result.isEmpty(), 'No se han borrado todos los registros de Consent__c');
+    }
+
+    @isTest
+    private static void testPersistDeleteOK_Policy()
+    {
+        Test.startTest();
+        preparePersistDeleteTest(new Set<String>{
+            INFOHandler.POLICY
+        });
+        Test.stopTest();
+
+        List<Policy__c> result = [SELECT Id FROM Policy__c];
+        Assert.isTrue(result.isEmpty(), 'No se han borrado todos los registros de Policy__c');
+    }
+
+    @isTest
+    private static void testPersistDeleteOK_Relationship()
+    {
+        Test.startTest();
+        preparePersistDeleteTest(new Set<String>{
+            INFOHandler.POLICY_RELATIONSHIP,
+            INFOHandler.QUOTE_RELATIONSHIP,
+            INFOHandler.CLAIM_RELATIONSHIP
+        });
+        Test.stopTest();
+
+        List<Relationship__c> result = [SELECT Id FROM Relationship__c];
+        Assert.isTrue(result.isEmpty(), 'No se han borrado todos los registros de Relationship__c');
+    }
+
+    @isTest
+    private static void testPersistDeleteOK_Case()
+    {
+        Test.startTest();
+        preparePersistDeleteTest(new Set<String>{
+            INFOHandler.NOTE
+        });
+        Test.stopTest();
+
+        List<Case> noteList = [SELECT Id FROM Case WHERE Origin = :INFOHandler.NOTE_CASE_ORIGIN];
+        Assert.isTrue(noteList.isEmpty(), 'No se han borrado todos los registros de Caso (Origin = NOTE_CASE_ORIGIN)');
+    }
+
+    @isTest
+    private static void testPersistDeleteOK_Claim()
+    {
+        Test.startTest();
+        preparePersistDeleteTest(new Set<String>{
+            INFOHandler.CLAIM
+        });
+        Test.stopTest();
+
+        List<Claim__c> noteList = [SELECT Id FROM Claim__c];
+        Assert.isTrue(noteList.isEmpty(), 'No se han borrado todos los registros de Claim__c');
     }
 
     @isTest
@@ -768,7 +861,8 @@ private with sharing class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY + NUM_ER_CONSENT;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY + NUM_ER_CONSENT + NUM_ER_ACCOUNT_SCORE_KPI
+                                        + NUM_ER_INTERMEDIARY_TNPS;
 
         System.assertEquals(
             totalExternalRequests,
@@ -824,7 +918,8 @@ private with sharing class INFOHandlerTest
         Integer totalExternalRequests = NUM_ER_NATURAL_ACCOUNT + NUM_ER_LEGAL_ACCOUNT + NUM_ER_CONTACT_POINT_ADDRESS + NUM_ER_CONTACT_POINT_EMAIL + 
                                         NUM_ER_CONTACT_POINT_PHONE +  NUM_ER_PRODUCT + NUM_ER_QUOTE + NUM_ER_QUOTE_OPTION + NUM_ER_POLICY + NUM_ER_INSURED_OBJECT +
                                         NUM_ER_CLAIM + NUM_ER_POLICY_RELATIONSHIP + NUM_ER_QUOTE_RELATIONSHIP + NUM_ER_CLAIM_RELATIONSHIP + NUM_ER_PARTNER + NUM_ER_INTERMEDIARY +
-                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY + NUM_ER_CONSENT;
+                                        NUM_ER_NOTE + NUM_ER_SPECIAL_CONDITION + NUM_ER_INTERMEDIARY_KPI + NUM_ER_INTERMEDIARY_GROUP + NUM_ER_INTERMEDIARY_HIERARCHY + NUM_ER_CONSENT + NUM_ER_ACCOUNT_SCORE_KPI
+                                        + NUM_ER_INTERMEDIARY_TNPS;
         
         System.assertEquals(
             totalExternalRequests,

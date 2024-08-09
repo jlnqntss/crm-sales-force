@@ -406,4 +406,59 @@ public with sharing class WS_SalesCRMTest
                             ASSERT_ERROR_LOGS_LEVEL_MESSAGE);
         }
     }
+
+    /**
+     * @description Método que comprueba el correcto procesamiento de la petición de tipo Vida
+     * realizada al recurso 'leadGeneration'.
+     *
+     * @author amiranda
+     * @date 04-09-2023
+     **/
+    @isTest
+    static void test_doPost_processRequest_leadGenerationLife_ok()
+    {
+        RestRequest request = new RestRequest();
+        RestResponse response = new RestResponse();
+
+        request.requestURI = LEAD_GENERATION_URI;
+        request.httpMethod = HTTP_POST_METHOD;
+        request.addHeader(HEADER_CONTENT_TYPE, HEADER_APPLICATION_JSON);
+
+        String requestData = '{' +
+                             '"origin":"formulario embarcaciones",' +
+                             '"name":"Test Name",' +
+                             '"phone":"+3400000000",' +
+                             '"language": "German",' +
+                             '"productBranch": "0000000016",' +
+                             '"webIdentifier": "1234",' +
+                             '"bestTimeFrom": "2023-06-26T11:00:00.000Z",' +
+                             '"documentId": "00000000L",' +
+                             '"isProductLife": 1' +
+                             '}';
+
+        request.requestBody = Blob.valueOf(requestData);
+
+        RestContext.response = response;
+        RestContext.request = request;
+
+        Test.startTest();
+        WS_SalesCRM.doPost();
+        Test.stopTest();
+
+        Assert.areEqual(200,
+                        response.statusCode,
+                        'Response statusCode should be 200');
+
+        List<Error_Log__c> errors = [SELECT Id, Level__c FROM Error_Log__c];
+        Assert.areEqual(false,
+                        errors.isEmpty(),
+                        ASSERT_ERROR_LOGS_COMMITTED_MESSAGE);
+
+        for (Error_Log__c error : errors)
+        {
+            Assert.areEqual(ErrorLogUtil.ERROR_LEVEL_WARNING.toLowerCase(),
+                            error.Level__c.toLowerCase(),
+                            ASSERT_ERROR_LOGS_LEVEL_MESSAGE);
+        }
+    }
 }

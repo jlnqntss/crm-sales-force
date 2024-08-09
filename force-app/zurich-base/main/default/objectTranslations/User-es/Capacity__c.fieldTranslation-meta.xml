@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help><!-- Límite de gestión de casos que se le asigna a un usuario del tipo Agente --></help>
+    <label>Capacidad</label>
+    <name>Capacity__c</name>
+</CustomFieldTranslation>

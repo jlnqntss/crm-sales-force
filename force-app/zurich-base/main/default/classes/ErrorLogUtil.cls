@@ -633,4 +633,33 @@ public with sharing class ErrorLogUtil
 
         return isSendable;
     }
+
+    /**
+     * Método que genera un error por cada operación DML que ha fallado
+     * @author: aberuete
+     * @date: 01/07/2024
+     * @param Database.SaveResult [] resultList : Lista del resultado de la operación dml
+     * @param String messageError : Mensaje de error
+     * @param String nameClass: Nombre de la clase que ha generado el error
+     */
+    public static void generateMessageByError(Database.SaveResult [] resultList, String messageError, String nameClass )
+    {
+        List<String> msgErrores = new List<String>();
+
+        for (Database.SaveResult result: resultList )
+        {
+            if(!result.isSuccess())
+            {
+                for (Database.Error error :result.getErrors())
+                {
+                    msgErrores.add(error.getStatusCode() + ': ' + error.getMessage());
+                }
+            }
+        }  
+         
+        if (!msgErrores.isEmpty())
+        {
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_ERROR,messageError, nameClass,(String.join(msgErrores,'\n')));
+        } 
+    }
 }

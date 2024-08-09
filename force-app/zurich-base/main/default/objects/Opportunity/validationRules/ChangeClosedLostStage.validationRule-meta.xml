@@ -3,7 +3,8 @@
     <fullName>ChangeClosedLostStage</fullName>
     <active>true</active>
     <description>Validación que no permite modificar la etapa de una oferta en estado Cerrada perdida para aquellos que no tienen el custom permission Editar_ofertas_cerradas para los usuarios ventas</description>
-    <errorConditionFormula>(
+    <errorConditionFormula>RecordType.DeveloperName = $CustomMetadata.Global_Configuration__mdt.Opportunity_RecordTypeDevName_NoLife.Value__c &amp;&amp;
+(
   $Profile.Name = &quot;Ventas User&quot; ||
   $Profile.Name = &quot;Agente Ventas&quot; || 
   $Profile.Name = &quot;Agente Ventas - AGR&quot;

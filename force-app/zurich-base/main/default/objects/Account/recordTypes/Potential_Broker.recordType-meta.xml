@@ -58,49 +58,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>Association2__c</picklist>
-        <values>
-            <fullName>ACSV</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>ADECOSE</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AMZ</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>APROCOR</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>AUNNA Compromiso</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CENTERBROCK</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>COJEBRO</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NEWCORRED</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>WNETWORKS</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Association3__c</picklist>
         <values>
             <fullName>ACSV</fullName>

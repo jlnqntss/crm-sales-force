@@ -51,6 +51,22 @@
     <label>ZDA</label>
     <navType>Console</navType>
     <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_ZDA</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>ZDA User</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_ZDA</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Admin</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
         <actionName>View</actionName>
         <content>ZDA_Case_Default</content>
         <formFactor>Small</formFactor>

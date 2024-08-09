@@ -373,6 +373,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.LeadsPool__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.LifeMangedBonus__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -410,6 +415,11 @@
         <editable>false</editable>
         <field>Account.NumberCompetingCompanies__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.ParticipatesInAction__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -929,6 +939,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.SelfServiceQuotation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.SmartSalesModality__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2697,6 +2712,16 @@
         <readable>true</readable>
     </fieldPermissions>
 	<fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerNationalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
+        <editable>false</editable>
+        <field>Case.MediatedCustomerSic__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	<fieldPermissions>
         <editable>true</editable>
         <field>Case.OneTimeOrRecurring__c</field>
         <readable>true</readable>
@@ -2729,6 +2754,11 @@
 	<fieldPermissions>
         <editable>true</editable>
         <field>Case.Range__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.RiskAppetiteId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

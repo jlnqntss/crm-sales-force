@@ -6706,8 +6706,16 @@ Cree el acta y vuelva a intentarlo.</label>
         <name>ZRM_Recibos_Column_Intermediary</name>
     </customLabels>
     <customLabels>
-        <label>Total recibos devueltos:</label>
+        <label>Total recibos devueltos (día anterior + acumulados): </label>
         <name>ZRM_Recibos_Total</name>
+    </customLabels>
+    <customLabels>
+        <label>No informado</label>
+        <name>ZRM_GlobalCustomerValue_NoValue</name>
+    </customLabels>
+    <customLabels>
+        <label>No informado</label>
+        <name>ZRM_CustomerSegment_NoValue</name>
     </customLabels>
     <customPageWebLinks>
         <label><!-- Configure Call Center Settings --></label>

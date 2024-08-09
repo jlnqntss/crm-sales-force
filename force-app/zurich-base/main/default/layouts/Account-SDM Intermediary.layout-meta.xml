@@ -108,6 +108,14 @@
                 <field>Zone__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Association__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Association2__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>SMEsSegment__c</field>
             </layoutItems>
@@ -126,14 +134,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>TrainerName__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>TrainerPhone__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>TrainerEmail__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -180,10 +180,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Category__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Association__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

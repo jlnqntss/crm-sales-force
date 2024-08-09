@@ -4,7 +4,7 @@
         <name>Enrutar_a_Flow_Genesys</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>3614</locationX>
-        <locationY>1932</locationY>
+        <locationY>2040</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <faultConnector>
@@ -79,7 +79,7 @@
         <name>FlowGenesysRoutingInvocableAction</name>
         <label>Enrutar a Flow Genesys</label>
         <locationX>2822</locationX>
-        <locationY>2148</locationY>
+        <locationY>2256</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -162,7 +162,7 @@
         <name>QueueGenesysRoutingInvocableAction</name>
         <label>Enrutar a Queue Genesys</label>
         <locationX>4142</locationX>
-        <locationY>1824</locationY>
+        <locationY>1932</locationY>
         <actionName>GenesysCloudRouteEmailAction</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -405,11 +405,11 @@
         <name>CaseClosedDecision</name>
         <label>Is Case Closed</label>
         <locationX>3086</locationX>
-        <locationY>1932</locationY>
+        <locationY>2040</locationY>
         <defaultConnectorLabel>Closed</defaultConnectorLabel>
         <rules>
             <name>NotClosedOutcome</name>
-            <conditionLogic>(1 AND 2) OR 3</conditionLogic>
+            <conditionLogic>(1 AND (2 OR 4)) OR (3 AND 5)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Parent.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
@@ -429,6 +429,20 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>USPInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ZDAInquiry</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Parent.RecordType.DeveloperName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>ZDAInquiry</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -486,7 +500,7 @@
         <name>hasParentCase</name>
         <label>¿Tenemos caso asociado?</label>
         <locationX>3350</locationX>
-        <locationY>1824</locationY>
+        <locationY>1932</locationY>
         <defaultConnector>
             <targetReference>Enrutar_a_Flow_Genesys</targetReference>
         </defaultConnector>
@@ -508,10 +522,42 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Hay_Algun_Agente_activo</name>
+        <label>¿Hay Algún Agente activo?</label>
+        <locationX>3944</locationX>
+        <locationY>1116</locationY>
+        <defaultConnector>
+            <targetReference>GenerateScreenPopURLSubflow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Agente_Activo_Encontrado_y_sin_gestor_preferente</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetGenesysQueueAndParentIdFromEmailSubflow.SinGestorPreferente</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ObtenerUsuarioGestorActivo.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ActualizaCampoWithOutBestAgent</targetReference>
+            </connector>
+            <label>Agente Activo Encontrado y sin gestor preferente</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Hay_que_actualizar_best_agent_ZDA</name>
         <label>¿Hay que actualizar best agent ZDA?</label>
         <locationX>3746</locationX>
-        <locationY>2748</locationY>
+        <locationY>2856</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Actualizar_best_agent</name>
@@ -556,12 +602,12 @@
         <locationX>3746</locationX>
         <locationY>900</locationY>
         <defaultConnector>
-            <targetReference>GenerateScreenPopURLSubflow</targetReference>
+            <targetReference>ObtenerUsuarioGestorActivo</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Actualizar</name>
-            <conditionLogic>1 AND (2 OR ( ( 3 OR 4) AND 5) )</conditionLogic>
+            <conditionLogic>1 AND (2 OR ( ( 3 OR 4) AND 5) ) AND 6</conditionLogic>
             <conditions>
                 <leftValueReference>GetGenesysQueueAndParentIdFromEmailSubflow.EsMediadorPanelizadoVentaDanosRC</leftValueReference>
                 <operator>EqualTo</operator>
@@ -597,8 +643,15 @@
                     <elementReference>Beggining_Id_User</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>GetGenesysQueueAndParentIdFromEmailSubflow.idUsuarioDanosRcVenta</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>Get_USP_User</targetReference>
+                <targetReference>Update_case_owner</targetReference>
             </connector>
             <label>Actualizar</label>
         </rules>
@@ -629,7 +682,7 @@
         <name>IsFlowOrQueueDecision</name>
         <label>¿Flow o Queue?</label>
         <locationX>3746</locationX>
-        <locationY>1716</locationY>
+        <locationY>1824</locationY>
         <defaultConnector>
             <targetReference>QueueGenesysRoutingInvocableAction</targetReference>
         </defaultConnector>
@@ -907,31 +960,6 @@
             <label>USP</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Usuario_Encontrado</name>
-        <label>¿Usuario Encontrado?</label>
-        <locationX>3592</locationX>
-        <locationY>1116</locationY>
-        <defaultConnector>
-            <targetReference>GenerateScreenPopURLSubflow</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>UsuarioEncontradoOutcome</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_USP_User.Id</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_case_owner</targetReference>
-            </connector>
-            <label>Usuario Encontrado</label>
-        </rules>
-    </decisions>
     <description>Flujo encargado de enrutar a genesys los emails entrantes recibidos</description>
     <environments>Default</environments>
     <formulas>
@@ -1090,7 +1118,7 @@
         <name>CreateRoutingErrorAction</name>
         <label>Generar error enrutamiento</label>
         <locationX>3086</locationX>
-        <locationY>2256</locationY>
+        <locationY>2364</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -1277,34 +1305,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <name>Get_USP_User</name>
-        <label>Get USP User</label>
-        <locationX>3592</locationX>
-        <locationY>1008</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Usuario_Encontrado</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Email</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.GestorPreferente</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>IsActive</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>GetGenesysQueueAction</name>
         <label>Obtener cola Genesys</label>
         <locationX>1535</locationX>
@@ -1350,7 +1350,7 @@
         <name>GetRecordTypeUSPAction</name>
         <label>Get RecordType USP</label>
         <locationX>3746</locationX>
-        <locationY>1608</locationY>
+        <locationY>1716</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsFlowOrQueueDecision</targetReference>
@@ -1429,11 +1429,60 @@
         <object>Group</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>ObtenerUsuarioGestorActivo</name>
+        <label>ObtenerUsuarioGestorActivo</label>
+        <locationX>3944</locationX>
+        <locationY>1008</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Hay_Algun_Agente_activo</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ActiveAgent__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>ActualizaCampoWithOutBestAgent</name>
+        <label>Actualiza Campo WithOutBestAgent</label>
+        <locationX>3812</locationX>
+        <locationY>1224</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>WithoutBestAgent__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
     <recordUpdates>
         <name>Actualizar_best_agent_caso_ZDA</name>
         <label>Actualizar best agent caso ZDA</label>
         <locationX>3614</locationX>
-        <locationY>2856</locationY>
+        <locationY>2964</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1485,7 +1534,7 @@
         <name>DesactivarCampoEstadoInteraccion</name>
         <label>Desactivar Campo Estado Interaccion</label>
         <locationX>2822</locationX>
-        <locationY>2256</locationY>
+        <locationY>2364</locationY>
         <connector>
             <targetReference>Hay_que_actualizar_best_agent_ZDA</targetReference>
         </connector>
@@ -1516,7 +1565,7 @@
         <name>DesactivarCampoEstadoInteraccionQueue</name>
         <label>Desactivar Campo Estado Interaccion Queue</label>
         <locationX>4142</locationX>
-        <locationY>1932</locationY>
+        <locationY>2040</locationY>
         <connector>
             <targetReference>Hay_que_actualizar_best_agent_ZDA</targetReference>
         </connector>
@@ -1546,8 +1595,8 @@
     <recordUpdates>
         <name>Update_case_owner</name>
         <label>Update case owner</label>
-        <locationX>3460</locationX>
-        <locationY>1224</locationY>
+        <locationX>3548</locationX>
+        <locationY>1008</locationY>
         <connector>
             <targetReference>GenerateScreenPopURLSubflow</targetReference>
         </connector>
@@ -1562,7 +1611,7 @@
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>Get_USP_User.Id</elementReference>
+                <elementReference>GetGenesysQueueAndParentIdFromEmailSubflow.idUsuarioDanosRcVenta</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -1678,7 +1727,7 @@
         <name>Calculamos_prioridad</name>
         <label>Calculamos prioridad</label>
         <locationX>2822</locationX>
-        <locationY>2040</locationY>
+        <locationY>2148</locationY>
         <connector>
             <targetReference>FlowGenesysRoutingInvocableAction</targetReference>
         </connector>
@@ -1695,13 +1744,19 @@
                 <elementReference>$Record.ParentId</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <name>urgentEmail</name>
+            <value>
+                <elementReference>$Record.IsUrgent__c</elementReference>
+            </value>
+        </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
     <subflows>
         <name>GenerateScreenPopURLSubflow</name>
         <label>Generate Screen Pop URL</label>
         <locationX>3746</locationX>
-        <locationY>1500</locationY>
+        <locationY>1608</locationY>
         <connector>
             <targetReference>GetRecordTypeUSPAction</targetReference>
         </connector>

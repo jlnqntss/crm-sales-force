@@ -122,7 +122,7 @@ public with sharing class CampaignMemberUtil
                     o.StageName = 'Closed Lost';
                     if(o.SalesProcess__c == 'VC')
                     {
-                        o.Sales_Loss_Reason__c = 'Agent removes from the campaign';
+                        o.Sales_Loss_Reason__c = GlobalConfigUtil.getGlobalConfigurationValue('Offer_SalesLossReason_RemovedCampaign');
                     }
                 }
             }

@@ -2,15 +2,14 @@
  * @description       : 
  * @author            : 
  * @group             : 
- * @last modified on  : 06-06-2023
- * @last modified by  : aberuete
+ * @last modified on  : 06-24-2024
+ * @last modified by  : mfernandezcarrera
 **/
 public with sharing class BusinessInsuranceCallbackService
 {
     public static final String REQUIRED_FIELD_MISSING = 'Required field is missing';
     public static final String REQUIRED_FIELD_MISSING_STATUSCODE = 'REQUIRED_FIELD_MISSING';
     public static final String FAIL_INSERT_CALLMEBACK_STATUSCODE = 'FAIL_INSERT_CALLMEBACK';
-    public static final String QUEUE_NAME = 'Voz_ZurichEmpresas';
 
     /**
      * Comprueba los datos de la solicitud, si el teléfono o el correo electrónico se encuentra identificado como inválido retorna verdadero.
@@ -55,7 +54,8 @@ public with sharing class BusinessInsuranceCallbackService
 
         //OPCIONAL - puede que no requiera funcionar con genesys
         List<purecloud__PureCloud_Queue__c> genesysQueue = new List<purecloud__PureCloud_Queue__c>();
-        genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :QUEUE_NAME];
+        String queueZuemCmb = GlobalConfigUtil.getGlobalConfigurationValue('Queue_ZE_VozZuemCMB'); // Voz_Zuem_CMB
+        genesysQueue = [SELECT Id, purecloud__PureCloud_Queue_ID__c FROM purecloud__PureCloud_Queue__c WHERE Name = :queueZuemCmb];
 
         List<Account> customers = AccountSearchService.findCustomersByPhoneNumber(new List<String> {requestCallMeBack.phone}, RecordsSelector.Scope.ZE, RecordsSelector.LegalEntity.ALL, null, null);
 

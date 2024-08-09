@@ -257,13 +257,16 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
      * @param Id accountId Id de la cuenta asociada a la oportunidad
      * @param String intermediaryCode Código de intermedairio asociado a la oportunidad
      * @param String productBranch Ramo de la oportunidad
+     * @param String recordType recordtype de la oportunidad
      * @param Query.DateLiteral daysToRetrieve Días a tener en cuenta
      * @return List<Opportunity> Lista de ofertas encontradas
+     * @change igarcia 11/06/2024 añadido la variable recordType
      **/
     public List<Opportunity> findByAccIdAndIntermediaryCodAndProdBranchAndCreationDateAndNotClosed(
         Id accountId,
         String intermediaryCode,
         String productBranch,
+        String recordType,
         Query.DateLiteral daysToRetrieve)
     {
 
@@ -283,7 +286,8 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                 Opportunity.ProductBranch__c,
                 Opportunity.Description,
                 Opportunity.PreferedContactStart__c,
-                Opportunity.PreferedContactEnd__c
+                Opportunity.PreferedContactEnd__c,
+                Opportunity.RecordTypeId
             };
 
             retrievedOpportunities = this.baseQuery.selectfields(fieldsToRetrieve)
@@ -291,6 +295,7 @@ public with sharing class OpportunitiesSelector extends RecordsSelector
                                      .addConditionEq(Opportunity.IntermediaryCode__c, intermediaryCode)
                                      .addConditionEq(Opportunity.ProductBranch__c, productBranch)
                                      .addConditionEq(Opportunity.CreatedDate, daysToRetrieve)
+                                     .addConditionEq(Opportunity.RecordTypeId, recordType)
                                      .addConditionNotEq(Opportunity.StageName, 'Closed Won')
                                      .addConditionNotEq(Opportunity.StageName, 'Closed Lost')
                                      .run();

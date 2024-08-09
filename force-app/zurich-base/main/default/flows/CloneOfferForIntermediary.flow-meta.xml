@@ -270,7 +270,7 @@
                 <leftValueReference>OriginOffer.Sales_Loss_Reason__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Interested, managed by my agent</stringValue>
+                    <elementReference>InterestedManagedByMyAgentFormula</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -347,6 +347,11 @@
         <name>CampaignIdFormula</name>
         <dataType>String</dataType>
         <expression>IF({!LaunchFromZRM}, {!OriginOffer.CampaignId}, &apos;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>InterestedManagedByMyAgentFormula</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Offer_SalesLossReason_ManagedByAgent.Value__c}</expression>
     </formulas>
     <formulas>
         <description>En caso de CC si no tiene informado el campo QuotedNumber, devuelve Legit Lead, si es ZRM devuelve App Submitted</description>

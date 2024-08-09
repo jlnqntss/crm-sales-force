@@ -124,6 +124,8 @@ public with sharing class CaseUtil
         }
     }
 
+    public static final String USP_RECORD_TYPE_ID = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
+
     public static final Map<String, Robot_Hegeo_Field_Mapping__mdt> CASE_MAPPING_SETTINGS_BY_SOURCE_TYPE
     {
         get
@@ -712,7 +714,10 @@ public with sharing class CaseUtil
             {
                 updatedCases.add(caso);
             }
-            completeCaseMilestones(updatedCases, 'Respuesta Interacción');
+            if(!updatedCases.isEmpty())
+            {
+                completeCaseMilestones(updatedCases, 'Respuesta Interacción');
+            }
         }
     }
 
@@ -2792,13 +2797,10 @@ public with sharing class CaseUtil
      */
     public static void isCaseClone(List<Case> newList)
     {
-
-        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
-
         for (Case caseTrigger: newList)
         {
 
-            if ( ( caseTrigger.recordTypeId == uSPRecordTypeId && caseTrigger.isClone() ) || (Test.isRunningTest() && caseTrigger.recordTypeId == uSPRecordTypeId) )
+            if ( ( caseTrigger.recordTypeId == USP_RECORD_TYPE_ID && caseTrigger.isClone() ) || (Test.isRunningTest() && caseTrigger.recordTypeId == USP_RECORD_TYPE_ID) )
             {
 
                 caseTrigger.MediatedCustomer__c=null;
@@ -2820,8 +2822,6 @@ public with sharing class CaseUtil
     * @param newList lista de elementos del trigger before insert
     */
     public static void isOwnerUser(List<Case> newList) {
-
-        String uSPRecordTypeId = GlobalConfigUtil.getGlobalConfigurationValueId('Case_RecordType_USP_Id');
         String filterIdUser = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Start_Id_User');
         String filterIdQueue = GlobalConfigUtil.getGlobalConfigurationValue('Query_Filter_Start_Id_Queue');
         String idOwnerCase;
@@ -2830,16 +2830,14 @@ public with sharing class CaseUtil
 
             idOwnerCase=Id.valueOf(caseTrigger.OwnerId);
 
-            if ((caseTrigger.recordTypeId==uSPRecordTypeId && idOwnerCase.startsWith(filterIdUser) && caseTrigger.OwnerUser__c!=true )) {
-
+            if ((caseTrigger.recordTypeId==USP_RECORD_TYPE_ID && idOwnerCase.startsWith(filterIdUser) && caseTrigger.OwnerUser__c!=true )) 
+            {
                 caseTrigger.OwnerUser__c=true;
-
             }
 
-            if ((caseTrigger.recordTypeId==uSPRecordTypeId && idOwnerCase.startsWith(filterIdQueue) && caseTrigger.OwnerUser__c==true )) {
-
+            if ((caseTrigger.recordTypeId==USP_RECORD_TYPE_ID && idOwnerCase.startsWith(filterIdQueue) && caseTrigger.OwnerUser__c==true )) 
+            {
                 caseTrigger.OwnerUser__c=false;
-
             }
 
         }

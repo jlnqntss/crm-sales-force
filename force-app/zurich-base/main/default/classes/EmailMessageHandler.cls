@@ -48,6 +48,7 @@ public class EmailMessageHandler implements ITrigger
     {
         emailMessagesUtil.checkNewCaseFromClosedCase( (List<EmailMessage>) newList );
         emailMessagesUtil.assignGenesysRoutingFields();
+        emailMessagesUtil.checkExistingCaseZDAUrgencias( (List<EmailMessage>) newList );
     }
 
     /**
@@ -118,6 +119,7 @@ public class EmailMessageHandler implements ITrigger
         {
             emailMessagesUtil.markPublicActivity( (Map<Id, EmailMessage>) newMap );
             emailMessagesUtil.relateNewParentCaseWithMediatedAccountOCS( newMap.values() );
+            emailMessagesUtil.setCaseSourceAreaByEmailAddress( newMap.values() );
         }
 
     }

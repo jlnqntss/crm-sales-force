@@ -119,7 +119,11 @@ public with sharing class AccountLeadUtil
                 {
                     intermediaryCode = acc.Intermediary_Name__r.INFOIntermediaryCode__c;
                 }
-
+                List<Policy__c> mostRecentPolicy = new PoliciesSelector().getMostRecentlyPolicieByAccountId(acc.Id);
+                if(!mostRecentPolicy.isEmpty())
+                {
+                    intermediaryCode = mostRecentPolicy[0].Intermediary_Code__c; 
+                }
                 return AccountLeadAssignment.getAssignedUserIdByIntermediaryCode(intermediaryCode).getAssignmentAsMap();
             }
         }
@@ -281,9 +285,12 @@ public with sharing class AccountLeadUtil
 
         ScopesSelector scopeS = new ScopesSelector();
 
-        for( Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts) )
+        if(!allCandidateAccounts.isEmpty())
         {
-            accountIdsWithScope.add(currentCPP.AccountId__c);
+            for( Scope__c currentCPP : scopeS.selectByAccountIdAndVentasScope(allCandidateAccounts) )
+            {
+                accountIdsWithScope.add(currentCPP.AccountId__c);
+            }
         }
 
         for(Id currentAccountId : allCandidateAccounts)

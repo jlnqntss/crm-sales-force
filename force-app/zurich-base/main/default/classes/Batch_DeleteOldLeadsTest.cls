@@ -13,6 +13,9 @@ public with sharing class Batch_DeleteOldLeadsTest {
         RecordType leadRt = [SELECT Id FROM Recordtype WHERE Name = 'Lead' AND SobjectType = 'Account' LIMIT 1];
         Scope_Setting__mdt ventasScopeMdt = Scope_Setting__mdt.getInstance('Zurich_Ventas');
         Scope_Setting__mdt zeScopeMdt = Scope_Setting__mdt.getInstance('ZE');
+        Map<String, String> configValues = GlobalConfigUtil.getGlobalConfigurationValues();
+        Id rtOppLife = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get(configValues.get('Opportunity_RecordTypeDevName_Life')).getRecordTypeId();
+
         
         //Leads a borrar
         List<Account> leadsToDeleteLst = new List<Account>();
@@ -80,7 +83,24 @@ public with sharing class Batch_DeleteOldLeadsTest {
         {
             offersNonLegitLst.add(new Opportunity(Name = 'OF' + acc.LastName, AccountId = acc.Id, StageName = 'Quoted', BusinessCode__c = ventasScopeMdt.BusinessCode__c, CloseDate = Date.today().addDays(7)));
         }
+        
         insert offersNonLegitLst;
+
+        //Leads con ofertas de tipo vida que no se tienen que eliminar 
+        List<Account> leadsWithOfferLife = new List<Account>();
+        List<Opportunity> lifeOffers = new List<Opportunity>();
+
+        for(Integer i = 0; i < 10; i++)
+        {
+            leadsWithOfferLife.add(new Account(LastName = 'LeadToNotDelete' + i, RecordTypeId = leadRt.Id));
+        }
+        insert leadsWithOfferLife;
+
+        for(Account acc : leadsWithOfferLife)
+        {
+            lifeOffers.add(new Opportunity(Name = 'OF' + acc.LastName, AccountId = acc.Id, StageName = 'Legit Lead', BusinessCode__c = ventasScopeMdt.BusinessCode__c, recordTypeId = rtOppLife ,CloseDate = Date.today().addDays(7)));
+        }
+        insert lifeOffers;
 
         //Setear la fecha de creación de todos los leads
         for(Account acc : [SELECT Id FROM Account])
@@ -101,7 +121,7 @@ public with sharing class Batch_DeleteOldLeadsTest {
         //Recuperar leads no borrados después del proceso
         List<Account> updatedLeadLst = [SELECT Id FROM Account];
 
-        System.assertEquals(30, updatedLeadLst.size(), 'Debería haber 30 leads sin borrar');
+        Assert.areEqual(40, updatedLeadLst.size(), 'Debería haber 40 leads sin borrar');
     }
 
     @isTest
@@ -117,6 +137,6 @@ public with sharing class Batch_DeleteOldLeadsTest {
         
         List<CronTrigger> cronList = new List<CronTrigger>([SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobID]);
 
-        System.assertEquals(1, cronList.size(), 'Debe haber un job programado');
+        Assert.areEqual(1, cronList.size(), 'Debe haber un job programado');
     }
 }

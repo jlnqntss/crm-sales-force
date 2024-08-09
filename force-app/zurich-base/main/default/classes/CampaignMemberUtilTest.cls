@@ -225,7 +225,7 @@ private with sharing class CampaignMemberUtilTest
         for(Opportunity o : oportunidades)
         {
             System.assertEquals('Closed Lost', o.StageName, 'Deberia ser Cerrado Perdido');
-            System.assertEquals('Agent removes from the campaign', o.Sales_Loss_Reason__c, 'Deberia ser Cerrado Perdido');
+            System.assertEquals(GlobalConfigUtil.getGlobalConfigurationValue('Offer_SalesLossReason_RemovedCampaign'), o.Sales_Loss_Reason__c, 'Deberia ser Cerrado Perdido');
         }
     }
 

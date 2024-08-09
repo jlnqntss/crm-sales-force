@@ -12,7 +12,7 @@
     <columns>CASES.NAME</columns>
     <columns>MediatedCustomer__c</columns>
     <columns>OWNER_NAME</columns>
-    <columns>CloseDate__c</columns>
+    <columns>CASES.CLOSED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>CASES.RECORDTYPE</field>

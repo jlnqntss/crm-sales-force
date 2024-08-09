@@ -3,8 +3,16 @@
     <label>Motivo de pérdida venta</label>
     <name>Sales_Loss_Reason__c</name>
     <picklistValues>
-        <masterLabel>Agent removes from the campaign</masterLabel>
-        <translation>Agente elimina de la campaña</translation>
+        <masterLabel>Automatic - Agent removes from the campaign</masterLabel>
+        <translation>Automático - Agente elimina de la campaña</translation>
+    </picklistValues>
+     <picklistValues>
+        <masterLabel>Automatic - Campaign completed</masterLabel>
+        <translation>Automático - Campaña finalizada</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Automatic - Not managed by the Agent</masterLabel>
+        <translation>Automático - No gestionado por el Agente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Falta/limitación de coberturas</masterLabel>
@@ -19,8 +27,12 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Interesado, pero prefiero que lo gestione mi agente</masterLabel>
-        <translation></translation>
+        <masterLabel>CC - Interested, managed by my agent</masterLabel>
+        <translation>CC - Interesado, pero prefiero que lo gestione mi agente</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CC - Interested contact agent</masterLabel>
+        <translation>CC - Interesado contacta con agente</translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>Mala experiencia</masterLabel>
@@ -41,5 +53,17 @@
     <picklistValues>
         <masterLabel>Ya ha contratado póliza</masterLabel>
         <translation></translation>
+    </picklistValues>
+     <picklistValues>
+        <masterLabel>Integral customer</masterLabel>
+        <translation>Cliente integral</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Impossible to contact</masterLabel>
+        <translation>Imposible contactar</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Policy in the name of a relative</masterLabel>
+        <translation>Póliza a nombre de familiar</translation>
     </picklistValues>
 </CustomFieldTranslation>
