@@ -373,6 +373,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.IsCurrentUserTemporaryRN__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.LeadsPool__c</field>
         <readable>true</readable>
     </fieldPermissions>
