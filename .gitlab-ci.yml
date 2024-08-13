@@ -126,8 +126,7 @@ before_script:
     # for static analysis of source code, in multiple languages (including Apex), 
     # with a consistent command-line interface and report output.
     npm install --global @salesforce/sfdx-scanner
-    #npm install --global lightning-flow-scanner
-    echo y | sf plugins install sfpowerkit
+    # npm install --global lightning-flow-scanner
     # npm install --global sfdx-git-delta
   }
 

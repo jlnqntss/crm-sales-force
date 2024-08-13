@@ -42,6 +42,7 @@
     }
   },
   "devDependencies": {
+    "@dxatscale/sfpowerscripts": "25.5.3",
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^11.0.0",
     "@salesforce/eslint-config-lwc": "^0.8.0",
