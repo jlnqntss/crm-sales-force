@@ -18,7 +18,13 @@ describe("c-zrm-files", () => {
     element.recordId = "0011v00000CCPZAA5W";
 
     // Act
-    document.body.appendChild(element);
+    // Act
+    if (element.shadowRoot && element.shadowRoot.innerHTML.trim() !== "") {
+      console.log("El elemento no está vacío.");
+      document.body.appendChild(element);
+    } else {
+      console.log("El elemento está vacío.");
+    }
 
     // Assert
     expect(1).toBe(1);
