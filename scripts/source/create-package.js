@@ -109,7 +109,7 @@ function main() {
         username
     );
     execSync(
-      `sf sfpowerkit source profile reconcile --targetorg ${username} --destfolder "${packageDir}/tmpprofiles2"`,
+      `sfp profile:reconcile --targetorg ${username} --folder "${packageDir}/tmpprofiles2"`,
       {
         stdio: "inherit"
       }
@@ -123,7 +123,7 @@ function sobreescribirPefiles(packageDir, packageName, perfiles, username) {
   console.log("\tReconciliando perfiles => " + username);
   let listaPerfiles = perfiles.join(",");
   execSync(
-    `sf sfpowerkit source profile reconcile --targetorg ${username} --profilelist "${listaPerfiles}" --destfolder "${packageDir}/tmpprofiles"`,
+    `sfp profile:reconcile --targetorg ${username} --profilelist "${listaPerfiles}" --folder "${packageDir}/tmpprofiles"`,
     { stdio: "inherit" }
   );
 
