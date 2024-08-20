@@ -3,6 +3,16 @@
   "author": "NTS",
   "version": "1.0.0",
   "scripts": {
+    "Publicar Cambios": "sf project deploy start --ignore-conflicts --ignore-warnings --ignore-errors",
+    "Descargar Cambios": "sf project retrieve start --ignore-conflicts",
+    "Descargar Perfiles": "sfp profile:retrieve --targetorg zurich-dev --folder .\\force-app",
+    "Reconciliar Perfiles": "sfp profile:reconcile --targetorg zurich-dev --folder .\\force-app --sourceonly",
+    "Staging - Descargar Perfiles": "sfp profile:retrieve --targetorg zurich-staging --folder .\\force-app",
+    "Staging - Reconciliar Perfiles": "sfp profile:reconcile --targetorg zurich-staging --folder .\\force-app --sourceonly",
+    "Staging - Validar": "sf project deploy validate --source-dir force-app --target-org zurich-staging",
+    "Limpiar Memoria de Seguimiento Cambios": "sf project reset tracking",
+    "Desplegar Cambios Destructivos": "sf project deploy start --ignore-conflicts --manifest .\\manifest\\package.xml --pre-destructive-changes .\\manifest\\destructiveChanges.xml --ignore-warnings --test-level RunLocalTests",
+    "Instalar Herramientas": "npm install",
     "sync-code:validate": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command \"sf sfpowerkit source profile reconcile --targetusername (sf org display --json | ConvertFrom-Json).result.username ; sf project deploy start --dry-run --source-dir force-app --wait 120 --test-level RunLocalTests ; git reset --hard\"",
     "lint": "npm run lint:lwc",
     "lint:lwc": "eslint --no-error-on-unmatched-pattern force-app/**/main/default/lwc",
@@ -41,11 +51,13 @@
     }
   },
   "devDependencies": {
+    "@salesforce/cli": "2.5.7",
     "@dxatscale/sfpowerscripts": "25.5.3",
+    "sfdmu": "4.32.2",
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^11.0.0",
     "@salesforce/eslint-config-lwc": "^0.8.0",
-    "@salesforce/sfdx-lwc-jest": "^1.1.2",
+    "@salesforce/sfdx-lwc-jest": "5.1.0",
     "eslint": "^7.15.0",
     "fs-extra": "^9.0.1",
     "husky": "^4.3.6",
@@ -58,6 +70,7 @@
     "pretty-quick": "^3.1.0"
   },
   "dependencies": {
+    "isomorphic-git": "^1.27.1",
     "text-cleaner": "^1.2.1"
   }
 }
