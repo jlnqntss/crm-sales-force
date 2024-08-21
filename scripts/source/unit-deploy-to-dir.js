@@ -93,7 +93,7 @@ async function main() {
         "------------------------------------------------------------------ Reconciliando perfiles..."
       );
       execSync(
-        `sf sfpowerkit source profile reconcile --targetorg ${username} --destfolder "${tmpProfile}"`,
+        `sfp profile:reconcile --targetorg ${username} --folder "${tmpProfile}"`,
         {
           stdio: "inherit"
         }

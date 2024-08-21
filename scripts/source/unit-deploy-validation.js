@@ -17,7 +17,7 @@ async function main() {
     mkdirSync("deploy", { recursive: true });
 
     // 2 - Reconcilia los perfiles con el entorno a validar
-    execSync(`sfdx sfpowerkit source profile reconcile --targetorg ${username}`, {
+    execSync(`sfp profile:reconcile --targetorg ${username}`, {
       stdio: "inherit"
     });
 

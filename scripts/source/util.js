@@ -199,7 +199,7 @@ function deploy(deployConfig) {
     `[Info] Deploy: Reconciliando perfiles con usuario ${deployConfig.targetOrg}...`
   );
   executeSfdxCommand(
-    `sf sfpowerkit source profile reconcile --targetorg ${deployConfig.targetOrg}`,
+    `sfp profile:reconcile --targetorg ${deployConfig.targetOrg}`,
     {
       stdio: "inherit",
       skipJsonParsing: true
