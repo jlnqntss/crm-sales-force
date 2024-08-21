@@ -127,6 +127,7 @@ before_script:
     # with a consistent command-line interface and report output.
     npm install --global @salesforce/sfdx-scanner
     # npm install --global lightning-flow-scanner
+    npm install --global @flxbl-io/sfp
     # npm install --global sfdx-git-delta
   }
 
