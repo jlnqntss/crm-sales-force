@@ -308,8 +308,8 @@ validate-deploy:
     - *sfdx_helpers
     - install_toolchain
   script:
-    - npm run release:authenticate -- $DEV_SANDBOX_AUTH_URL DEV
-    - npm run release:validate -- DEV dev RunLocalTests
+    - npm run release:authenticate -- $STAGING_SANDBOX_AUTH_URL STAGING
+    - npm run release:validate -- STAGING dev RunLocalTests
   tags:
     - devops-runner
   interruptible: true
