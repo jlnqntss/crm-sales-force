@@ -312,6 +312,7 @@ validate-deploy:
     - npm run release:validate -- DEV dev RunLocalTests
   tags:
     - devops-runner
+  interruptible: true
 
 ########################################################
 # Realiza el bump de versiones y etiqueta el merge de dev
