@@ -192,7 +192,7 @@ function generateSfdxDelta(targetCommit) {
 }
 
 function deploy(deployConfig) {
-  let deployOptions = ["--wait 180"];
+  let deployOptions = ["--wait 180", "--ignore-conflicts"];
 
   // 1 - Reconciliación de perfiles
   console.log(
