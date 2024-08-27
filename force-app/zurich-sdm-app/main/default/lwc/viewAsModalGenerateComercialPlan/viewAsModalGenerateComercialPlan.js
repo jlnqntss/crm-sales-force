@@ -43,7 +43,7 @@ export default class ViewAsModalGenerateComercialPlan extends LightningModal {
 
   // metodos filtro input
   handleFilter(event) {
-    const filter = event.target.value.toLowerCase();
+    const filter = event.detail.value.toLowerCase();
     if (filter !== "" && filter !== null) {
       this.filteredUserOptions = this.userOptions.filter((option) =>
         option.label.toLowerCase().includes(filter)
