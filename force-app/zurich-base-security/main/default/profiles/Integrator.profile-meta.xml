@@ -6706,6 +6706,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Case.PriorityByTypeN3__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Case.PriorityByType__c</field>
         <readable>true</readable>
     </fieldPermissions>

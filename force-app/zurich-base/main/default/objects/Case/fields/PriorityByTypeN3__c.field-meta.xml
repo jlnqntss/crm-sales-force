@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Priority__c</fullName>
+    <fullName>PriorityByTypeN3__c</fullName>
     <externalId>false</externalId>
-    <formula>PriorityByAssociation__c + PriorityByOlimpia__c + PriorityByRatio__c + 	PriorityByRequested__c + PriorityByStatus__c + PriorityByStatusAnswered__c + PriorityByStatusNewAssigned__c + PriorityByType__c + PriorityByUW__c + PriorityByTypeN3__c</formula>
+    <formula>IF((ISPICKVAL( TypeN3__c ,&quot;Emisión&quot;)),10,0)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-    <label>Priority</label>
+    <label>PriorityByTypeN3</label>
     <precision>18</precision>
     <required>false</required>
     <scale>2</scale>
