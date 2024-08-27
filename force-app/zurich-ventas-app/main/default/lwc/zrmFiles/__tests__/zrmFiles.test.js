@@ -1,5 +1,5 @@
 import { createElement } from "lwc";
-import ZRMFiles from "c/ZRMFiles";
+import ZRMFiles from "c/zrmFiles";
 import getRelatedFilesByRecordId from "@salesforce/apex/ZRMFilesController.getRelatedFilesByRecordId";
 // Import mock data to send through the wire adapter.
 const mockFiles = require("./data/mockFileData.json");
