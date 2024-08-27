@@ -2,11 +2,9 @@ import { createElement } from "lwc";
 import ZrmRecibos from "c/zrmRecibos";
 
 describe("c-zrm-recibos", () => {
-  let element;
-
   beforeEach(() => {
     // Crear un nuevo elemento antes de cada prueba
-    element = createElement("c-zrm-recibos", {
+    const element = createElement("c-zrm-recibos", {
       is: ZrmRecibos
     });
 
@@ -41,6 +39,11 @@ describe("c-zrm-recibos", () => {
   });
 
   it("Debería renderizar lightning-datatable cuando isLoading sea falso", () => {
+    // Arrange
+    const element = createElement("c-zrm-recibos", {
+      is: ZrmRecibos
+    });
+    document.body.appendChild(element);
     element.isLoading = false;
     return Promise.resolve().then(() => {
       const datatable = element.shadowRoot.querySelector("lightning-datatable");
