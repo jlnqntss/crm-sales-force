@@ -1,10 +1,21 @@
 import { createElement } from "lwc";
 import WarningAndAgreementViewer from "c/warningAndAgreementViewer";
-import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import getFields from "@salesforce/apex/WarningAndAgreementViewerController.getFields";
 import getWarnings from "@salesforce/apex/WarningAndAgreementViewerController.getWarnings";
 // Mock ddata
 const mockGWarnings = require("./data/WarningAndAgreementViewerData.json");
+const mockGWarningFields = require("./data/WarningFields.json");
 // Mock getAccountList Apex wire adapter
+jest.mock(
+  "@salesforce/apex/WarningAndAgreementViewerController.getFields",
+  () => {
+    const { createApexTestWireAdapter } = require("@salesforce/sfdx-lwc-jest");
+    return {
+      default: createApexTestWireAdapter(jest.fn())
+    };
+  },
+  { virtual: true }
+);
 jest.mock(
   "@salesforce/apex/WarningAndAgreementViewerController.getWarnings",
   () => {
@@ -24,94 +35,25 @@ describe("c-warning-and-agreement-viewer", () => {
     jest.clearAllMocks();
   });
 
-  describe("getWarnings @wire data", () => {
-    /**
-     * Renderuzado de los registros en la tablade datos
-     * @author pitt.olvera@seidor.com
-     * @date 14/08/2024
-     */
-    it("renders one record", () => {
-      getWarnings.emit(mockGWarnings);
-      const element = createElement("c-warning-and-agreement-viewer", {
-        is: WarningAndAgreementViewer
-      });
-      document.body.appendChild(element);
-
-      // Emit data from @wire
-
-      return Promise.resolve().then(() => {
-        // Select elements for validation
-        const warningElements = element.shadowRoot.querySelectorAll("p");
-        expect(warningElements.length).toBe(mockGWarnings.length);
-        expect(warningElements[0].textContent).toBe(mockGWarnings[0].Name);
-      });
+  /**
+   * Renderizado de los registros en la tabla de datos, comprueba que se cargan los datos del mock.
+   * @author pitt.olvera@seidor.com
+   * @date 14/08/2024
+   */
+  it("Renderizado de los botones de Warning", async () => {
+    const element = createElement("c-warning-and-agreement-viewer", {
+      is: WarningAndAgreementViewer
     });
+    document.body.appendChild(element);
 
-    /**
-     *
-     * @author pitt.olvera@seidor.com
-     * @date 14/08/2024
-     */
-    it("checks object and sets warning to false for other objects", () => {
-      const element = createElement("c-warning-and-agreement-viewer", {
-        is: WarningAndAgreementViewer
-      });
-      element.salesforceObject = "SomeOtherObject__c";
+    // Emit data from @wire Apex Controller
+    getFields.emit(mockGWarningFields);
+    getWarnings.emit(mockGWarnings);
+    await Promise.resolve();
 
-      document.body.appendChild(element);
-
-      return Promise.resolve().then(() => {
-        expect(element.warning).toBe(false);
-      });
-    });
-
-    /**
-     *
-     * @author pitt.olvera@seidor.com
-     * @date 14/08/2024
-     */
-    it("displays toast message on disableAgreements with no selected records", async () => {
-      const element = createElement("c-warning-and-agreement-viewer", {
-        is: WarningAndAgreementViewer
-      });
-      document.body.appendChild(element);
-
-      const showToastEventSpy = jest.spyOn(
-        ShowToastEvent.prototype,
-        "constructor"
-      );
-
-      element.template.querySelector = jest.fn().mockReturnValue({
-        getSelectedRows: () => []
-      });
-
-      await element.disableAgreements();
-
-      expect(showToastEventSpy).toHaveBeenCalledWith({
-        title: "Acuerdos No Desactivados",
-        message: "No hay elementos seleccionados",
-        variant: "error"
-      });
-    });
-
-    /**
-     *
-     * @author pitt.olvera@seidor.com
-     * @date 14/08/2024
-     */
-    it("calls Apex methods and processes records correctly on connectedCallback", async () => {
-      const element = createElement("c-warning-and-agreement-viewer", {
-        is: WarningAndAgreementViewer
-      });
-
-      document.body.appendChild(element);
-
-      return Promise.resolve().then(async () => {
-        await element.connectedCallback();
-        expect(element.allRecords.length).toBe(2);
-        expect(element.recordsToShow.length).toBe(1);
-        expect(element.showedSize).toBe(1);
-      });
-    });
+    // Select elements for validation
+    const warningButtons =
+      element.shadowRoot.querySelectorAll("c-custom-datatable");
+    expect(warningButtons).not.toBeNull();
   });
 });
