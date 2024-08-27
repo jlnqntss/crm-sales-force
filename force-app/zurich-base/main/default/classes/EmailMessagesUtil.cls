@@ -108,20 +108,26 @@ public with sharing class EmailMessagesUtil
             String caseThreadIDpadreOld = getCaseReference(casoPadre.Id, true); 
             String caseThreadIDpadreNew = getCaseReference(casoPadre.Id, false);
             
-            if(email.HtmlBody.contains(caseThreadIDpadreOld))
+            if(checkTextBodyIsNotNull(email) && email.TextBody.contains(caseThreadIDpadreOld))
             {
                 String caseThreadIDhijo = getCaseReference(casoHijo.id, false);
 
-                // Actualizamos las referencias en el email
+                // para evitar errores de nulo en html body comprobaos primero si este está vacío antes de hacer el replace
+                email.HtmlBody = setHTMLBodyIfIsEmpty(email);
+                
+                // Actualizamos las referencias en el email               
                 email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadreOld, caseThreadIDhijo);
                 email.TextBody = email.TextBody.replace(caseThreadIDpadreOld, caseThreadIDhijo);
 
                 email.ThreadIdentifier = '';
             }
 
-            else if(email.HtmlBody.contains(caseThreadIDpadreNew))
+            else if(checkTextBodyIsNotNull(email) && email.TextBody.contains(caseThreadIDpadreNew))
             {
                 String caseThreadIDhijo = getCaseReference(casoHijo.id, false);
+
+                // para evitar errores de nulo en html body comprobaos primero si este está vacío antes de hacer el replace
+                email.HtmlBody = setHTMLBodyIfIsEmpty(email);
 
                 // Actualizamos las referencias en el email
                 email.HtmlBody = email.HtmlBody.replace(caseThreadIDpadreNew, caseThreadIDhijo);
@@ -133,6 +139,25 @@ public with sharing class EmailMessagesUtil
             email.ParentId = casoHijo.Id;
             email.RelatedToId = casoHijo.Id;
         }
+    }
+
+    /**
+     * Si el html body está en blanco y el textbody no está en blanco se copia a htmlbody
+     * 
+     * @author nts (dmunoz)
+     * @date 27/08/2024
+     * 
+     * @param {EmailMessage emailMessages} EmailMessage
+     * @return {String texto de HTMLBody}
+     */
+    private String setHTMLBodyIfIsEmpty(EmailMessage emailMessage) {
+        String result = emailMessage.HtmlBody;
+
+        if (String.isEmpty(emailMessage.HtmlBody)) {
+            result = emailMessage.TextBody;
+        }
+
+        return result;
     }
 
     /**
@@ -175,7 +200,7 @@ public with sharing class EmailMessagesUtil
                                 // List of emails to check
                                 List<String> emailsToCheck = new List<String>();
                                 // Add the emails from the ToAddress field
-                                if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
+                                if( checkToAddressIsNotNull(em) ) emailsToCheck.addAll(em.ToAddress.split(';'));
                                 // Add the emails from the CcAddress field
                                 if( String.isNotBlank(em.CcAddress) ) emailsToCheck.addAll(em.CcAddress.split(';'));
 
@@ -458,7 +483,7 @@ public with sharing class EmailMessagesUtil
         List<String> emailsToCheck = new List<String>();
 
         // Add the emails from the ToAddress field
-        if( String.isNotBlank(em.ToAddress) ) emailsToCheck.addAll(em.ToAddress.split(';'));
+        if( checkToAddressIsNotNull(em) ) emailsToCheck.addAll(em.ToAddress.split(';'));
         // Add the emails from the CcAddress field
         if( String.isNotBlank(em.CcAddress) ) emailsToCheck.addAll(em.CcAddress.split(';'));
         
@@ -857,7 +882,7 @@ public with sharing class EmailMessagesUtil
             {
                 for (String mailRelatedToIntermediaryOCS : mailsRelatedToIntermediaryOCS)
                 {
-                    if (newMail.ToAddress.contains(mailRelatedToIntermediaryOCS))
+                    if (checkToAddressIsNotNull(newMail) && newMail.ToAddress.contains(mailRelatedToIntermediaryOCS))
                     {
                         parentCasesToRelateIds.add(newMail.ParentId);
                     }
@@ -956,7 +981,7 @@ public with sharing class EmailMessagesUtil
                
               for ( String caseSettingEmailAddress : caseSettingsByEmailMap.keySet())
               {
-                 if (newMail.ToAddress.contains(caseSettingsByEmailMap.get(caseSettingEmailAddress).EmailAddress__c))
+                 if (checkToAddressIsNotNull(newMail) && newMail.ToAddress.contains(caseSettingsByEmailMap.get(caseSettingEmailAddress).EmailAddress__c))
                  {
                     sourceArea = caseSettingsByEmailMap.get(caseSettingEmailAddress).SourceArea__c;
                  }
@@ -1307,7 +1332,7 @@ public with sharing class EmailMessagesUtil
 
         for (EmailMessage emailMessage : emailList)
         {
-            if (emailMessage.ParentId != null && emailMessage.CcAddress != null && emailMessage.ToAddress != null)
+            if (emailMessage.ParentId != null && emailMessage.CcAddress != null && checkToAddressIsNotNull(emailMessage))
             {
                 selectedMails=this.checkEmails(emailMessage,mailboxes);
             }
@@ -1366,7 +1391,7 @@ public with sharing class EmailMessagesUtil
         
         for (String mailboxTo : mailboxes)
         {
-            if (emailMessage.ToAddress.contains(mailboxTo))
+            if (checkToAddressIsNotNull(emailMessage) && emailMessage.ToAddress.contains(mailboxTo))
             {
                 closeThisCase = false;
                 break;
@@ -1486,6 +1511,48 @@ public with sharing class EmailMessagesUtil
         {
             return defaultOwnerOnFallback;
         }
+    }
+
+    /**
+     * Comprobar si el campo ToAddress de un email es null. En caso que así sea se blanquea y se crea un registro de error 
+     * log con nivel Warning para tener trazabilidad
+     * 
+     * @author dmunoz
+     * @date 27/08/2024
+     * @param EmailMessage emailMessage : datos del email sobre el que se está iterando
+     * @return Boolean devuelve verdadero si el campo toAdress está informado
+    */
+    private Boolean checkToAddressIsNotNull(EmailMessage emailMessage) {
+
+        Boolean result = true;
+        if (String.isBlank(emailMessage.ToAddress)) {
+            result = false;
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_WARNING, 'Se ha recibido para el email con asunto ' + emailMessage.Subject + 
+                                    ' el campo ToAddress con el valor ' + emailMessage.ToAddress, CLASS_NAME);
+            emailMessage.ToAddress = '';            
+        } 
+        return result;
+    }
+
+    /**
+     * Comprobar si el campo TextBody de un email es null. En caso que así sea se blanquea y se crea un registro de error 
+     * log con nivel Warning para tener trazabilidad
+     * 
+     * @author dmunoz
+     * @date 27/08/2024
+     * @param EmailMessage emailMessage : datos del email sobre el que se está iterando
+     * @return Boolean devuelve verdadero si el campo TextBody está informado
+    */
+    private Boolean checkTextBodyIsNotNull(EmailMessage emailMessage) {
+
+        Boolean result = true;
+        if (String.isBlank(emailMessage.TextBody)) {
+            result = false;
+            ErrorLogUtil.commitError(ErrorLogUtil.ERROR_LEVEL_WARNING, 'Se ha recibido para el email con asunto ' + emailMessage.Subject + 
+                                    ' el campo TextBody con el valor ' + emailMessage.TextBody, CLASS_NAME);
+            emailMessage.TextBody = '';            
+        } 
+        return result;
     }
 
     private class EmailMessagesUtilException extends Exception {}
