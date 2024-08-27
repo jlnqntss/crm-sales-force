@@ -247,7 +247,7 @@ function deploy(deployConfig) {
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
   let deployResult = executeSfdxCommand(
-    `sf project deploy start ${deployOptions.join(" ")}`
+    `sf project deploy start ${deployOptions.join(" ")}`, {'skipJsonParsing': 1}
   );
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
