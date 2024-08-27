@@ -1,25 +1,6 @@
 import { createElement } from "lwc";
 import ZrmRecibos from "c/zrmRecibos";
 
-// Define los valores de las etiquetas aquí
-const labels = {
-  ZRM_Recibos_Previous: "Previous",
-  ZRM_Recibos_Next: "Next",
-  ZRM_Recibos_Column_Receipt: "Receipt",
-  ZRM_Recibos_Column_EffectiveDate: "Effective Date",
-  ZRM_Recibos_Column_Policy: "Policy",
-  ZRM_Recibos_Column_Company: "Company",
-  ZRM_Recibos_Column_Holder: "Holder",
-  ZRM_Recibos_Column_Phone: "Phone",
-  ZRM_Recibos_Column_Amount: "Amount",
-  ZRM_Recibos_Column_PaymentMethod: "Payment Method",
-  ZRM_Recibos_Column_NumberOfReturns: "Number of Returns",
-  ZRM_Recibos_Column_DocumentDescriptionReceipt: "Document Description",
-  ZRM_Recibos_Column_LastReturnDate: "Last Return Date",
-  ZRM_Recibos_Column_BankShipmentDate: "Bank Shipment Date",
-  ZRM_Recibos_Column_Intermediary: "Intermediary"
-};
-
 describe("c-zrm-recibos", () => {
   let element;
 
