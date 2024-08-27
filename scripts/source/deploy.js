@@ -39,6 +39,9 @@ async function main() {
         console.log("**********delta");
         console.log(target);
       }
+      else {
+        console.log("**********full deployment");
+      }
       break;
   }
 
