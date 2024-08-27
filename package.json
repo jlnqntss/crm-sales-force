@@ -45,13 +45,12 @@
     }
   },
   "devDependencies": {
-    "@salesforce/cli": "2.5.7",
-    "@dxatscale/sfpowerscripts": "25.5.3",
-    "sfdmu": "4.32.2",
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/lint": "^11.0.0",
+    "@dxatscale/sfpowerscripts": "25.5.3",
+    "@salesforce/cli": "2.5.7",
     "@salesforce/eslint-config-lwc": "^0.8.0",
-    "@salesforce/sfdx-lwc-jest": "5.1.0",
+    "@salesforce/sfdx-lwc-jest": "^5.1.0",
     "eslint": "^7.15.0",
     "fs-extra": "^9.0.1",
     "husky": "^4.3.6",
@@ -61,7 +60,8 @@
     "node-find-folder": "^0.1.32",
     "node-merge": "^0.1.0",
     "prettier": "^2.2.1",
-    "pretty-quick": "^3.1.0"
+    "pretty-quick": "^3.1.0",
+    "sfdmu": "4.32.2"
   },
   "dependencies": {
     "isomorphic-git": "^1.27.1",
