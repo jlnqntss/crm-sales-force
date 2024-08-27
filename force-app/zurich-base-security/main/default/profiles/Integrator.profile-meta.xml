@@ -3925,6 +3925,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.IsCurrentUserTemporaryRN__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Potential_Broker__c</field>
         <readable>true</readable>
@@ -6442,6 +6447,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.HegeoReceiptNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.HGPrevisionCambio__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10576,6 +10586,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.CarRegistration__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.MaxOptionTotalPremium__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
