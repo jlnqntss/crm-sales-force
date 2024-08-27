@@ -36,6 +36,8 @@ async function main() {
     default:
       if (!process.env["CI_FULL_DEPLOYMENT_DEV"]) {
         target = findLastSemanticTag("rc").target;
+        console.log("**********delta");
+        console.log(target);
       }
       break;
   }
