@@ -9,10 +9,6 @@ module.exports = {
     "^lightning/modalBody$":
       "<rootDir>/force-app/zurich-base/main/default/test/jest-mocks/lightning/modalBody",
     "^lightning/modalFooter$":
-      "<rootDir>/force-app/zurich-base/main/default/test/jest-mocks/lightning/modalFooter",
-    "^@salesforce/apex$":
-      "<rootDir>/force-app/zurich-base/main/default/test/jest-mocks/apex",
-    "^@salesforce/apex/ViewAsModalGeneratePlanController.getSDMUsersList":
-      "<rootDir>/force-app/zurich-base/main/default/test/jest-mocks/apex/ViewAsModalGeneratePlanController"
+      "<rootDir>/force-app/zurich-base/main/default/test/jest-mocks/lightning/modalFooter"
   }
 };
