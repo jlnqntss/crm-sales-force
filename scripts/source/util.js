@@ -285,6 +285,7 @@ async function findLastSemanticTag(targetSuffix) {
 
   // 1 - Se obtienen las etiquetas de la referencia
   let currentBranchTags = await gitLabService.getTags();
+  console.log("currentBranchTags");
   console.log(currentBranchTags);
 
   // 2 - Se define la expresión regular de búsqueda
@@ -293,6 +294,7 @@ async function findLastSemanticTag(targetSuffix) {
     `^\\d*\.\\d*\.\\d*${targetSuffix ? "-" + targetSuffix : ""}`
   );
   let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch);
+  console.log("lastTag");
   console.log(lastTag);
 
   // 3 - Si no existe tag, se genera la inicial
