@@ -22,13 +22,13 @@ async function main() {
   let target;
   switch (targetEnvironment) {
     case "prod":
-      if (!process.env["CI_FULL_DEPLOYMENT_PROD"]) {
+      if (process.env["CI_FULL_DEPLOYMENT_PROD"] === "true") { 
         target = findLastSemanticTag().target;
       }
       break;
 
     case "qa":
-      if (!process.env["CI_FULL_DEPLOYMENT_QA"]) {
+      if (process.env["CI_FULL_DEPLOYMENT_QA"] === "true") {  
         target = findLastSemanticTag("UAT").target;
       }
       break;
