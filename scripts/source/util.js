@@ -192,7 +192,7 @@ function generateSfdxDelta(targetCommit) {
 }
 
 function deploy(deployConfig) {
-  let deployOptions = ["--wait 180", "--ignore-conflicts"]; //
+  let deployOptions = ["--wait 180", "--ignore-conflicts"];
 
   // 1 - Reconciliación de perfiles
   console.log(
@@ -247,7 +247,7 @@ function deploy(deployConfig) {
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
   let deployResult = executeSfdxCommand(
-    `sf project deploy start ${deployOptions.join(" ")}`, {'skipJsonParsing': 1}
+    `sf project deploy start ${deployOptions.join(" ")}`
   );
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica

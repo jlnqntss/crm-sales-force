@@ -41,6 +41,7 @@ async function main() {
       }
       else {
         console.log("**********full deployment");
+        console.log(process.env["CI_FULL_DEPLOYMENT_DEV"]);
       }
       break;
   }
