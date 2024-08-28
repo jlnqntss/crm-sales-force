@@ -34,7 +34,7 @@ async function main() {
       break;
 
     default:
-      if (process.env["CI_FULL_DEPLOYMENT_DEV"] == true) {
+      if (process.env["CI_FULL_DEPLOYMENT_DEV"] === true) {
         target = findLastSemanticTag("rc").target;
         console.log("**********delta");
       }
