@@ -34,16 +34,15 @@ async function main() {
       break;
 
     default:
-      if (!parseInt(process.env["CI_FULL_DEPLOYMENT_DEV"])) {
+      if (process.env["CI_FULL_DEPLOYMENT_DEV"] == true) {
         target = findLastSemanticTag("rc").target;
         console.log("**********delta");
-        console.log(target);
       }
       else {
         console.log("**********full deployment");
-        console.log(!process.env["CI_FULL_DEPLOYMENT_DEV"]);
-
       }
+      console.log(typeof(process.env["CI_FULL_DEPLOYMENT_DEV"]));
+      console.log(process.env["CI_FULL_DEPLOYMENT_DEV"]);
       break;
   }
 
