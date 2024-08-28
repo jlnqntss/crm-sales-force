@@ -37,12 +37,11 @@ async function main() {
       if (process.env["CI_FULL_DEPLOYMENT_DEV"] === "true") {
         target = findLastSemanticTag("rc").target;
         console.log("**********delta");
+        console.log(target);
       }
       else {
         console.log("**********full deployment");
       }
-      console.log(typeof(process.env["CI_FULL_DEPLOYMENT_DEV"]));
-      console.log(process.env["CI_FULL_DEPLOYMENT_DEV"]);
       break;
   }
 
@@ -56,6 +55,8 @@ async function main() {
     targetCommit: target || undefined,
     checkOnly: isValidation
   };
+
+  console.log(deployConf);
 
   if(testRun) {
     deployConf["testLevel"] = testRunLevel;
