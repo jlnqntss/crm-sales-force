@@ -44,7 +44,6 @@ public with sharing class CaseUtil
     public static final String ZDA_REASON_DESESTIMAR = '2';
     public static final String ZDA_REASON_RESPUESTA_SOPORTE = '3';
     public static final String BLANK_SPACE = ' ';
-    public static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
     public static final String ORIGIN_WEB = 'Web';
     @TestVisible
     private static final String ZDA
@@ -52,6 +51,13 @@ public with sharing class CaseUtil
         get
         {
             return GlobalConfigUtil.getGlobalConfigurationValue('Call_Center_ZDA');
+        }
+    }
+    public static final String ORIGIN_CANAL_UNICO
+    {
+        get
+        {
+            return GlobalConfigUtil.getGlobalConfigurationValue('Case_Origin_CU');
         }
     }
 
