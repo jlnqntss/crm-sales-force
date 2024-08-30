@@ -4,14 +4,57 @@ const FindFolder = require("node-find-folder");
 const GitlabAPIService = require("./GitLabAPI").default;
 const { getLastSemanticTag, SemanticTag } = require("./SemanticTag");
 
+
+/**
+ * Ejecuta un comando del SF Cli y muestra el resultado en pantalla
+ * @param {string} command
+ * @returns {void}
+ */
+function executeSfCliCommand(command) {
+  return executeSfdxCommand(command, {
+    skipJsonParsing: true,
+    stdio: 'inherit'
+  });
+}
+
+/**
+ * Ejecuta un comando de SFDX y parsea el resultado como un JSON
+ * @param {string} command
+ * @returns {SfdxResult}
+ */
+function executeSfCliScriptableCommand(command) {
+  return executeSfdxCommand(command, {
+    skipJsonParsing: false,
+    encoding: 'utf8'
+  });
+}
+
+/**
+ * Ejecuta un comando de Bash con las opciones indicadas
+ *
+ * @author jmartinezpisson
+ * @param {String} command
+ * @param {ExecSyncOptionsWithStringEncoding} options Opciones de ejecució
+ * @param {String} sfdxAuthInfo.alias Alias de la org
+ */
 function executeBash(command, options = {}) {
   return execSync(command, {
     encoding: "utf8",
     shell: false,
+    maxBuffer: 2048 * 2048,
     ...options
   });
 }
 
+
+/**
+ * Ejecuta un comando de Bash con las opciones indicadas
+ *
+ * @author jmartinezpisson
+ * @param {String} command
+ * @param {ExecSyncOptionsWithStringEncoding} options Opciones de ejecució
+ * @param {String} sfdxAuthInfo.alias Alias de la org
+ */
 function executeSfdxCommand(bash, options = {}) {
   let sfdxCommand = bash;
   let sfdxJsonResult, sfdxResult;
@@ -246,36 +289,28 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  executeSfdxCommand(
-    `sf project deploy start ${deployOptions.join(" ")} --json > result.json`, 
-    { skipJsonParsing: true }
+  const deployJob = executeSfCliScriptableCommand(
+    `sf project deploy start ${deployOptions.join(" ")}  --async --json`
   );
-  let deployResult = JSON.parse(
-    fs.readFileSync("result.json", { encoding: "UTF-8" })
-  );
+
+  const deployResult = deployJob.result;
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
 
   // 8 - Mostrando informe de despliegue
   console.log(`[Info] Deploy: Validando resultados del despliegue...`);
   console.log(`[Info] Deploy: Id Despliegue: ${deployResult.id}`);
-  executeSfdxCommand(
-    `sf project deploy report --job-id ${deployResult.id} --wait ${
-      deployConfig.timeout ? deployConfig.timeout : 60
-    }`,
-    {
-      skipJsonParsing: true,
-      stdio: "inherit"
-    }
+
+  executeSfCliCommand(
+    `sf project deploy report --job-id ${deployResult.id} --wait ${deployConfig.timeout ? deployConfig.timeout : 60
+    }`
   );
 
   console.log(
     `[Info] Deploy: Recuperando detalle del despliegue ${deployResult.id}`
   );
 
-  let deployReport = executeSfdxCommand(
-    `sf project deploy report --job-id ${deployResult.id}`
-  );
+  let deployReport = executeSfCliScriptableCommand(`sf project deploy report --job-id ${deployResult.id} --json`);
 
   fs.writeFileSync("results.json", JSON.stringify(deployReport));
 }
