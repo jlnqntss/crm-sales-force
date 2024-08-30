@@ -235,7 +235,7 @@ function generateSfdxDelta(targetCommit) {
 }
 
 function deploy(deployConfig) {
-  let deployOptions = ["--wait 180", "--ignore-conflicts"];
+  let deployOptions = ["--ignore-conflicts"];
 
   // 1 - Reconciliación de perfiles
   console.log(
@@ -290,7 +290,7 @@ function deploy(deployConfig) {
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
   const deployJob = executeSfCliScriptableCommand(
-    `sf project deploy start ${deployOptions.join(" ")}  --async --json`
+    `sf project deploy start ${deployOptions.join(" ")} --async --json`
   );
 
   const deployResult = deployJob.result;
