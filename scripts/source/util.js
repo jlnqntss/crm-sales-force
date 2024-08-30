@@ -81,7 +81,7 @@ function executeSfdxCommand(bash, options = {}) {
     sfdxResult = JSON.parse(sfdxJsonResult);
   } catch (error) {
     console.error(`[Error] Ejecución de comando SFDX: Parseo de resultado`);
-    //console.error(`[Error] Result: ${sfdxJsonResult}`);
+    console.error(`[Error] Result: ${sfdxJsonResult}`);
     console.error(`[Error] ${error.message}`);
     sfdxResult = {};
   }
@@ -290,8 +290,12 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  const deployJob = executeSfCliScriptableCommand(
-    `sf project deploy start ${deployOptions.join(" ")} --json`
+  executeSfCliScriptableCommand(
+    `sf project deploy start ${deployOptions.join(" ")} --json > result.json`
+  );
+
+  let deployJob = JSON.parse(
+    fs.readFileSync("result.json", { encoding: "UTF-8" })
   );
 
   const deployResult = deployJob.result;
