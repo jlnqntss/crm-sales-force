@@ -66,7 +66,7 @@ function executeSfdxCommand(bash, options = {}) {
   try {
     console.log(`[Command] ${sfdxCommand}`);
     sfdxJsonResult = executeBash(sfdxCommand, {
-      stdio: options.stdio
+      stdio: []
     });
   } catch (bashError) {
     sfdxJsonResult = bashError.stdout;
