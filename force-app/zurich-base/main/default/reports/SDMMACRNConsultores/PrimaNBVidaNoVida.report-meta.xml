@@ -143,6 +143,13 @@
             <operator>notEqual</operator>
             <value>Todos</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Account$IsCurrentUserTemporaryRN__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
