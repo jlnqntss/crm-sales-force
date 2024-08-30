@@ -246,8 +246,12 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  let deployResult = executeSfdxCommand(
-    `sf project deploy start ${deployOptions.join(" ")}`
+  executeSfdxCommand(
+    `sf project deploy start ${deployOptions.join(" ")} --json > result.json`, 
+    { skipJsonParsing: true }
+  );
+  let deployResult = JSON.parse(
+    fs.readFileSync("result.json", { encoding: "UTF-8" })
   );
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
@@ -285,8 +289,6 @@ async function findLastSemanticTag(targetSuffix) {
 
   // 1 - Se obtienen las etiquetas de la referencia
   let currentBranchTags = await gitLabService.getTags();
-  console.log("currentBranchTags");
-  console.log(currentBranchTags);
 
   // 2 - Se define la expresión regular de búsqueda
   // 2 - Se busca a través de expresión regular la etiqueta de versionado semántico con el sufijo de tipo
@@ -294,8 +296,6 @@ async function findLastSemanticTag(targetSuffix) {
     `^\\d*\.\\d*\.\\d*${targetSuffix ? "-" + targetSuffix : ""}`
   );
   let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch);
-  console.log("lastTag");
-  console.log(lastTag);
 
   // 3 - Si no existe tag, se genera la inicial
   if (!lastTag) {

@@ -56,11 +56,6 @@ async function main() {
     checkOnly: isValidation
   };
 
-  console.log(deployConf);
-  console.log( process.env["CI_API_V4_URL"] );
-  console.log( process.env["CI_PROJECT_ID"] );
-  console.log( process.env["CI_GITLAB_TOKEN"] );
-
   if(testRun) {
     deployConf["testLevel"] = testRunLevel;
   }
