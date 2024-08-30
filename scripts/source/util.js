@@ -25,7 +25,8 @@ function executeSfCliCommand(command) {
 function executeSfCliScriptableCommand(command) {
   return executeSfdxCommand(command, {
     skipJsonParsing: false,
-    encoding: 'utf8'
+    encoding: 'utf8',
+    stdio: []
   });
 }
 
@@ -66,7 +67,7 @@ function executeSfdxCommand(bash, options = {}) {
   try {
     console.log(`[Command] ${sfdxCommand}`);
     sfdxJsonResult = executeBash(sfdxCommand, {
-      stdio: []
+      stdio: options.stdio
     });
   } catch (bashError) {
     sfdxJsonResult = bashError.stdout;
