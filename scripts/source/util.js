@@ -81,7 +81,7 @@ function executeSfdxCommand(bash, options = {}) {
     sfdxResult = JSON.parse(sfdxJsonResult);
   } catch (error) {
     console.error(`[Error] Ejecución de comando SFDX: Parseo de resultado`);
-    console.error(`[Error] Result: ${sfdxJsonResult}`);
+    //console.error(`[Error] Result: ${sfdxJsonResult}`);
     console.error(`[Error] ${error.message}`);
     sfdxResult = {};
   }
