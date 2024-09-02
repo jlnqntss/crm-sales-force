@@ -40,6 +40,7 @@ class SemanticTag {
 }
 
 function getLastSemanticTag(tags, format) {
+  console.log(`Tags: ` + tags + ` --- format: ` + format);
   let orderedTags = tags
     .filter((tag) => {
       return tag.name.match(format);

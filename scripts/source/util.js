@@ -4,7 +4,6 @@ const FindFolder = require("node-find-folder");
 const GitlabAPIService = require("./GitLabAPI").default;
 const { getLastSemanticTag, SemanticTag } = require("./SemanticTag");
 
-
 /**
  * Ejecuta un comando del SF Cli y muestra el resultado en pantalla
  * @param {string} command
@@ -13,7 +12,7 @@ const { getLastSemanticTag, SemanticTag } = require("./SemanticTag");
 function executeSfCliCommand(command) {
   return executeSfdxCommand(command, {
     skipJsonParsing: true,
-    stdio: 'inherit'
+    stdio: "inherit"
   });
 }
 
@@ -25,7 +24,7 @@ function executeSfCliCommand(command) {
 function executeSfCliScriptableCommand(command) {
   return executeSfdxCommand(command, {
     skipJsonParsing: false,
-    encoding: 'utf8'
+    encoding: "utf8"
   });
 }
 
@@ -45,7 +44,6 @@ function executeBash(command, options = {}) {
     ...options
   });
 }
-
 
 /**
  * Ejecuta un comando de Bash con las opciones indicadas
@@ -302,7 +300,8 @@ function deploy(deployConfig) {
   console.log(`[Info] Deploy: Id Despliegue: ${deployResult.id}`);
 
   executeSfCliCommand(
-    `sf project deploy report --job-id ${deployResult.id} --wait ${deployConfig.timeout ? deployConfig.timeout : 60
+    `sf project deploy report --job-id ${deployResult.id} --wait ${
+      deployConfig.timeout ? deployConfig.timeout : 60
     }`
   );
 
@@ -310,7 +309,9 @@ function deploy(deployConfig) {
     `[Info] Deploy: Recuperando detalle del despliegue ${deployResult.id}`
   );
 
-  let deployReport = executeSfCliScriptableCommand(`sf project deploy report --job-id ${deployResult.id} --json`);
+  let deployReport = executeSfCliScriptableCommand(
+    `sf project deploy report --job-id ${deployResult.id} --json`
+  );
 
   fs.writeFileSync("results.json", JSON.stringify(deployReport));
 }
@@ -322,9 +323,13 @@ async function findLastSemanticTag(targetSuffix) {
     token: process.env["CI_GITLAB_TOKEN"]
   });
 
+  console.log(`[DEBUG] gitLabService ==> ` + JSON.stringify(gitLabService));
   // 1 - Se obtienen las etiquetas de la referencia
   let currentBranchTags = await gitLabService.getTags();
 
+  console.log(
+    `[DEBUG] currentBranchTags ==> ` + JSON.stringify(currentBranchTags)
+  );
   // 2 - Se define la expresión regular de búsqueda
   // 2 - Se busca a través de expresión regular la etiqueta de versionado semántico con el sufijo de tipo
   let tagToSearch = new RegExp(
@@ -332,6 +337,7 @@ async function findLastSemanticTag(targetSuffix) {
   );
   let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch);
 
+  console.log(`[DEBUG] lastTag ==> ` + JSON.stringify(lastTag));
   // 3 - Si no existe tag, se genera la inicial
   if (!lastTag) {
     return gitLabService.createTag({
