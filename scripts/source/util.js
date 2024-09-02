@@ -214,7 +214,9 @@ function generateSfdxDelta(targetCommit) {
   if (!fs.existsSync(".deploy")) {
     fs.mkdirSync(".deploy");
   }
-
+  console.log(
+    `[DEBUG] Generando diferencia entre ` + targetCommit + `  y HEAD`
+  );
   let result = JSON.parse(
     executeSfdxCommand(
       `sf sgd source delta --from ${targetCommit} --output .deploy`,
