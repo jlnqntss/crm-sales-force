@@ -114,6 +114,8 @@ class GitlabAPIService {
         "Content-Type": "application/json"
       }
     }).then((response) => {
+      console.log("[DEBUG] gitTags Token ==> " + JSON.stringify(this.token));
+      console.log("[DEBUG] gitTags Response ==> " + JSON.stringify(response));
       if (!response.ok) {
         throw new Error(`The server responded with ${response.statusText}`);
       }
