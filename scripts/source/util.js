@@ -220,9 +220,8 @@ function generateSfdxDelta(targetCommit) {
   }
 
   let result = JSON.parse(
-    executeBash(
-      `sf sgd source delta --from ${targetCommit} --output .deploy --json`,
-      {stdio: 'inherit'}
+    executeSfCliCommand(
+      `sf sgd source delta --from ${targetCommit} --output .deploy --json`
     )
   );
 
