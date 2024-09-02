@@ -106,7 +106,7 @@ class GitlabAPIService {
     console.log(
       `[DEBUG] Recuperando tags ==> ${this.baseUrl}/projects/${this.projectId}/repository/tags`
     );
-    fetch(`${this.baseUrl}/projects/${this.projectId}/repository/tags`, {
+    return fetch(`${this.baseUrl}/projects/${this.projectId}/repository/tags`, {
       method: "GET",
       headers: {
         "User-Agent": "request",
