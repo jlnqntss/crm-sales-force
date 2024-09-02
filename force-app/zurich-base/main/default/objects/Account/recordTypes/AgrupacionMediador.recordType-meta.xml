@@ -4464,7 +4464,7 @@
     <picklistValues>
         <picklist>ManagementProgram__c</picklist>
         <values>
-            <fullName>ActiveX %28Winbrok%29</fullName>
+            <fullName>CODEOSCOPIC - Tesis</fullName>
             <default>false</default>
         </values>
         <values>
@@ -4472,15 +4472,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>GECOSE</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>MERLIN</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>MPM</fullName>
+            <fullName>MPM - SegElevia</fullName>
             <default>false</default>
         </values>
         <values>
@@ -4488,27 +4480,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>PERISCLOUD</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>QS</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>SEGURLIF</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>SEGUROS BROKER</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>T-SIS</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>WILLPLATINE</fullName>
+            <fullName>SOFTQS - iSegur</fullName>
             <default>false</default>
         </values>
     </picklistValues>

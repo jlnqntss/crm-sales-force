@@ -18,7 +18,7 @@
             <value>
                 <fullName>Ebroker</fullName>
                 <default>false</default>
-                <label>Ebroker</label>
+                <label>EBROKER</label>
             </value>
             <value>
                 <fullName>QS</fullName>
@@ -69,6 +69,21 @@
                 <fullName>Otros</fullName>
                 <default>false</default>
                 <label>Otros</label>
+            </value>
+            <value>
+                <fullName>MPM - SegElevia</fullName>
+                <default>false</default>
+                <label>MPM - SegElevia</label>
+            </value>
+            <value>
+                <fullName>CODEOSCOPIC - Tesis</fullName>
+                <default>false</default>
+                <label>CODEOSCOPIC - Tesis</label>
+            </value>
+            <value>
+                <fullName>SOFTQS - iSegur</fullName>
+                <default>false</default>
+                <label>SOFTQS - iSegur</label>
             </value>
         </valueSetDefinition>
     </valueSet>

@@ -3,19 +3,63 @@
     <label>Programa de Gestión</label>
     <name>ManagementProgram__c</name>
     <picklistValues>
-        <masterLabel>Ebroker</masterLabel>
-        <translation><!-- Ebroker --></translation>
+        <masterLabel>ActiveX (Winbrok)</masterLabel>
+        <translation><!-- ActiveX (Winbrok) --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>CODEOSCOPIC - Tesis</masterLabel>
+        <translation><!-- CODEOSCOPIC - Tesis --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>EBROKER</masterLabel>
+        <translation><!-- EBROKER --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>GECOSE</masterLabel>
+        <translation><!-- GECOSE --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>MERLIN</masterLabel>
+        <translation><!-- MERLIN --></translation>
     </picklistValues>
     <picklistValues>
         <masterLabel>MPM</masterLabel>
         <translation><!-- MPM --></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>MPM - SegElevia</masterLabel>
+        <translation><!-- MPM - SegElevia --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Otros</masterLabel>
+        <translation><!-- Otros --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>PERISCLOUD</masterLabel>
+        <translation><!-- PERISCLOUD --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>QS</masterLabel>
         <translation><!-- QS --></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>SEGURLIF</masterLabel>
+        <translation><!-- SEGURLIF --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SEGUROS BROKER</masterLabel>
+        <translation><!-- SEGUROS BROKER --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>SOFTQS - iSegur</masterLabel>
+        <translation><!-- SOFTQS - iSegur --></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>T-SIS</masterLabel>
         <translation><!-- T-SIS --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>WILLPLATINE</masterLabel>
+        <translation><!-- WILLPLATINE --></translation>
     </picklistValues>
 </CustomFieldTranslation>
