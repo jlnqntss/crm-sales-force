@@ -248,7 +248,11 @@ function deploy(deployConfig) {
   );
 
   // 2 - Tipo de despliegue: Si es modalidad de despliegue diferencial, se ejecuta un delta de despliegue comparando contra la rama destino
-  if (deployConfig.targetCommit) {
+  if (deployConfig.targetCommit || true) {
+    console.log(
+      `[Info] Deploy: Se establece como rama de despliegue` +
+        JSON.stringify(deployConfig)
+    );
     console.log(
       `[Info] Deploy: Modalidad de despliegue diferencial. Generando delta...`
     );
