@@ -291,7 +291,7 @@ function deploy(deployConfig) {
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
   executeBash(
-    `sf project deploy start ${deployOptions.join(" ")} --json > result.json`, {stsdio: []}
+    `sf project deploy start ${deployOptions.join(" ")} --json > result.json`, {stdio: []}
   );
   console.log('Parseando resultado...');
   let deployJob = JSON.parse(
