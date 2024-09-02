@@ -102,22 +102,18 @@ class GitlabAPIService {
 
   /**
    */
-  async getTags() {
+  getTags() {
     console.log(
       `[DEBUG] Recuperando tags ==> ${this.baseUrl}/projects/${this.projectId}/repository/tags`
     );
-    let newToken = "glpat-ULU5KAxP-9ffJzYxb8GW";
-    let result = await fetch(
-      `${this.baseUrl}/projects/${this.projectId}/repository/tags`,
-      {
-        method: "GET",
-        headers: {
-          "User-Agent": "request",
-          Authorization: `Bearer ${this.token}`,
-          "Content-Type": "application/json"
-        }
+    fetch(`${this.baseUrl}/projects/${this.projectId}/repository/tags`, {
+      method: "GET",
+      headers: {
+        "User-Agent": "request",
+        Authorization: `Bearer ${this.token}`,
+        "Content-Type": "application/json"
       }
-    )
+    })
       .then((response) => {
         console.log("[DEBUG] gitTags Token ==> " + JSON.stringify(this.token));
         console.log("[DEBUG] gitTags Response ==> " + JSON.stringify(response));
@@ -130,7 +126,6 @@ class GitlabAPIService {
       .catch((error) => {
         console.log("[DEBUG] gitTags Error ==> " + JSON.stringify(error));
       });
-    console.log("[DEBUG] Retrieved tags ==> " + JSON.stringify(result));
   }
 
   /**
