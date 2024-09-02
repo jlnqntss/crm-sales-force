@@ -87,8 +87,8 @@ before_script:
     npm install
 
     ## Versiones
-    sfdx --version
-    sfdx plugins --core
+    sf --version
+    sf plugins --core
   }
 
   # Function to install the Salesforce CLI.
@@ -128,7 +128,7 @@ before_script:
     npm install --global @salesforce/sfdx-scanner
     # npm install --global lightning-flow-scanner
     npm install --global @dxatscale/sfpowerscripts@25.5.3
-    npm install --global sfdx-git-delta
+    echo y | sf plugins install sfdx-git-delta
   }
 
 
