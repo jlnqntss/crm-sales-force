@@ -707,6 +707,9 @@ private with sharing class EmailMessagesUtilTest
      * Test para cerrar vincular casos de ciertos buzones con mediadores
      * @author jfherrero
      * @date 17/06/2024
+     * 
+     * @author jfherrero
+     * @date 30/08/2024 
      */
     @isTest
     static void test_relateToIntermediary_ok()
@@ -714,33 +717,42 @@ private with sharing class EmailMessagesUtilTest
         List<Email_Case_AccountId_to_Intermediary__mdt> emailsCaseAccountIdToIntermediary = Email_Case_AccountId_to_Intermediary__mdt.getAll().values();
         Assert.areNotEqual(0, emailsCaseAccountIdToIntermediary.size(), 'Metadato Email_Case_AccountId_to_Intermediary__mdt NO existe');
 
+        // Generar mediador y su contacto
         List<Account> intermediaries = TestDataFactory.generateAccounts('001', AccountUtil.INTERMEDIARY_RT_DEVELOPER_NAME, 1);
-        intermediaries[0].MainEmail__c = 'email.test.ok@test.es';
         insert intermediaries;
 
-        List<Account> customers = TestDataFactory.generateAccounts('001', AccountUtil.CUSTOMER_RT_DEVELOPER_NAME, 1);
-        customers[0].MainEmail__c = 'email.test.error@test.es';
-        insert customers;
+        List<Contact> contactIntermediary = TestDataFactory.generateContactsFromAccounts(intermediaries, ContactUtil.AGENT_INTERMEDIARY_RT_DEVELOPER_NAME, 1);
+        contactIntermediary[0].Email = 'email.test.ok@test.es';
+        insert contactIntermediary;
 
+		// Generar no mediador y su contacto        
+        List<Account> customers = TestDataFactory.generateAccounts('001', AccountUtil.BUSINESS_CUSTOMER_RT_DEVELOPER_NAME, 1);
+        insert customers;
+      
+        List<Contact> contactCustomer = TestDataFactory.generateContactsFromAccounts(customers, ContactsSelector.RT_NAME_CONTACT, 1);
+        contactCustomer[0].Email = 'email.test.error@test.es';
+		insert contactCustomer;
+      
+        // Generar casos
         List<Case> casesIntermediary = TestDataFactory.generateCasesForEachAccount(intermediaries, 1);
         casesIntermediary[0].RecordTypeId = CaseUtil.RT_ID_OCSINQUIRY;
         casesIntermediary[0].AccountId = null;
-        casesIntermediary[0].SuppliedEmail = intermediaries[0].MainEmail__c;
+        casesIntermediary[0].SuppliedEmail = contactIntermediary[0].Email;
         insert casesIntermediary;
 
         List<Case> casesCustomer = TestDataFactory.generateCasesForEachAccount(customers, 1);
         casesCustomer[0].AccountId = CaseUtil.RT_ID_OCSINQUIRY;
         casesCustomer[0].AccountId = null;
-        casesCustomer[0].SuppliedEmail = customers[0].MainEmail__c;
+        casesCustomer[0].SuppliedEmail = contactCustomer[0].Email;
         insert casesCustomer;
 
         List<EmailMessage> emails = TestDataFactory.generateEmailMessages(2);
-        emails[0].FromAddress = intermediaries[0].MainEmail__c;
+        emails[0].FromAddress = contactIntermediary[0].Email;
         emails[0].ToAddress = emailsCaseAccountIdToIntermediary[0].Email__c;
         emails[0].ParentId = casesIntermediary[0].Id;
         emails[0].Incoming = true;
 
-        emails[1].FromAddress = customers[0].MainEmail__c;
+        emails[1].FromAddress = contactIntermediary[0].Email;
         emails[1].ToAddress = emailsCaseAccountIdToIntermediary[0].Email__c;
         emails[1].ParentId = casesCustomer[0].Id;
         emails[1].Incoming = true;
