@@ -110,7 +110,7 @@ class GitlabAPIService {
       method: "GET",
       headers: {
         "User-Agent": "request",
-        Authorization: `Bearer ${this.token}`,
+        Authorization: `Bearer glpat-ULU5KAxP-9ffJzYxb8GW`,
         "Content-Type": "application/json"
       }
     }).then((response) => {
