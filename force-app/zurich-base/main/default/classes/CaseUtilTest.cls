@@ -373,7 +373,6 @@ private with sharing class CaseUtilTest
 
         //Caso padre no ZDA
         Case parentCaseNoZDA = new Case(
-            CuTicketId__c = '5000',
             RecordTypeId = CaseUtil.RT_ID_OCSSPRINKLR
             );
 
