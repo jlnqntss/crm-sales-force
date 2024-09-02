@@ -221,8 +221,7 @@ function generateSfdxDelta(targetCommit) {
 
   let result = JSON.parse(
     executeSfdxCommand(
-      `sf sgd source delta --from ${targetCommit} --output .deploy`,
-      { skipJsonParsing: true }
+      `sf sgd source delta --from ${targetCommit} --output .deploy`
     )
   );
 
