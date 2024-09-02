@@ -4,6 +4,9 @@
  **/
 global with sharing class ContactUtil
 {
+    @testvisible
+    public static final String AGENT_INTERMEDIARY_RT_DEVELOPER_NAME = GlobalConfigUtil.getGlobalConfigurationValue('Contact_RecordType_AgentMediator');
+    
     /**
      * Método que adapta el número de cliente para cada entidad legal
      * @param String número de cliente y entidad legal
