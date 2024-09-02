@@ -69,7 +69,7 @@ function executeSfdxCommand(bash, options = {}) {
     sfdxJsonResult = executeBash(sfdxCommand, {
       stdio: options.stdio
     });
-    console.log("[Cmd Result] " + sfdxJsonResult);
+
   } catch (bashError) {
     sfdxJsonResult = bashError.stdout;
   }
@@ -220,8 +220,8 @@ function generateSfdxDelta(targetCommit) {
   }
 
   let result = JSON.parse(
-    executeSfdxCommand(
-      `sf sgd source delta --from ${targetCommit} --output .deploy`
+    executeBash(
+      `sf sgd source delta --from ${targetCommit} --output .deploy --json`
     )
   );
 
