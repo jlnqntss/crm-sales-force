@@ -69,6 +69,7 @@ function executeSfdxCommand(bash, options = {}) {
     sfdxJsonResult = executeBash(sfdxCommand, {
       stdio: options.stdio
     });
+    console.log("[Cmd Result] " + sfdxJsonResult);
   } catch (bashError) {
     sfdxJsonResult = bashError.stdout;
   }
@@ -217,14 +218,14 @@ function generateSfdxDelta(targetCommit) {
   if (!fs.existsSync(".deploy")) {
     fs.mkdirSync(".deploy");
   }
-  console.log("dif");
+
   let result = JSON.parse(
     executeSfdxCommand(
       `sf sgd source delta --from ${targetCommit} --output .deploy`,
       { skipJsonParsing: true }
     )
   );
-  console.log("[log]", result);
+
   if (!result.success) {
     console.error(`[Error] Ejecución de comando SFDX: ${result.error}`);
     console.error(
