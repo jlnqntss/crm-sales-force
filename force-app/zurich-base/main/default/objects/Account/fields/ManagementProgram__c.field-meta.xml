@@ -13,7 +13,7 @@
             <value>
                 <fullName>MPM</fullName>
                 <default>false</default>
-                <label>MPM - SegElevia</label>
+                <label>MPM</label>
             </value>
             <value>
                 <fullName>Ebroker</fullName>
@@ -23,12 +23,32 @@
             <value>
                 <fullName>QS</fullName>
                 <default>false</default>
-                <label>SOFTQS - iSegur</label>
+                <label>QS</label>
             </value>
             <value>
                 <fullName>T-SIS</fullName>
                 <default>false</default>
-                <label>CODEOSCOPIC - Tesis</label>
+                <label>T-SIS</label>
+            </value>
+            <value>
+                <fullName>ActiveX (Winbrok)</fullName>
+                <default>false</default>
+                <label>ActiveX (Winbrok)</label>
+            </value>
+            <value>
+                <fullName>GECOSE</fullName>
+                <default>false</default>
+                <label>GECOSE</label>
+            </value>
+            <value>
+                <fullName>MERLIN</fullName>
+                <default>false</default>
+                <label>MERLIN</label>
+            </value>
+            <value>
+                <fullName>PERISCLOUD</fullName>
+                <default>false</default>
+                <label>PERISCLOUD</label>
             </value>
             <value>
                 <fullName>SEGURLIF</fullName>
@@ -36,9 +56,34 @@
                 <label>SEGURLIF</label>
             </value>
             <value>
+                <fullName>SEGUROS BROKER</fullName>
+                <default>false</default>
+                <label>SEGUROS BROKER</label>
+            </value>
+            <value>
+                <fullName>WILLPLATINE</fullName>
+                <default>false</default>
+                <label>WILLPLATINE</label>
+            </value>
+            <value>
                 <fullName>Otros</fullName>
                 <default>false</default>
                 <label>Otros</label>
+            </value>
+            <value>
+                <fullName>MPM - SegElevia</fullName>
+                <default>false</default>
+                <label>MPM - SegElevia</label>
+            </value>
+            <value>
+                <fullName>CODEOSCOPIC - Tesis</fullName>
+                <default>false</default>
+                <label>CODEOSCOPIC - Tesis</label>
+            </value>
+            <value>
+                <fullName>SOFTQS - iSegur</fullName>
+                <default>false</default>
+                <label>SOFTQS - iSegur</label>
             </value>
         </valueSetDefinition>
     </valueSet>
