@@ -293,11 +293,11 @@ function deploy(deployConfig) {
   executeSfCliScriptableCommand(
     `sf project deploy start ${deployOptions.join(" ")} --json > result.json`
   );
-
+  console.log('Parseando resultado...');
   let deployJob = JSON.parse(
     fs.readFileSync("result.json", { encoding: "UTF-8" })
   );
-
+  console.log(deployJob);
   const deployResult = deployJob.result;
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
