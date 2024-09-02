@@ -221,10 +221,10 @@ function generateSfdxDelta(targetCommit) {
 
   let result = JSON.parse(
     executeSfCliCommand(
-      `sf sgd source delta --from ${targetCommit} --output .deploy --json`
+      `sf sgd source delta --from ${targetCommit} --output .deploy`
     )
   );
-
+  console.log('Result' + result);
   if (!result.success) {
     console.error(`[Error] Ejecución de comando SFDX: ${result.error}`);
     console.error(
