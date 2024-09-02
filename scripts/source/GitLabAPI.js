@@ -106,22 +106,27 @@ class GitlabAPIService {
     console.log(
       `Fetching ${this.baseUrl}/projects/${this.projectId}/repository/tags`
     );
+    let newToken = "glpat-ULU5KAxP-9ffJzYxb8GW";
     return fetch(`${this.baseUrl}/projects/${this.projectId}/repository/tags`, {
       method: "GET",
       headers: {
         "User-Agent": "request",
-        Authorization: "Bearer glpat-ULU5KAxP-9ffJzYxb8GW",
+        Authorization: `Bearer ${newToken}`,
         "Content-Type": "application/json"
       }
-    }).then((response) => {
-      console.log("[DEBUG] gitTags Token ==> " + JSON.stringify(this.token));
-      console.log("[DEBUG] gitTags Response ==> " + JSON.stringify(response));
-      if (!response.ok) {
-        throw new Error(`The server responded with ${response.statusText}`);
-      }
+    })
+      .then((response) => {
+        console.log("[DEBUG] gitTags Token ==> " + JSON.stringify(newToken));
+        console.log("[DEBUG] gitTags Response ==> " + JSON.stringify(response));
+        if (!response.ok) {
+          throw new Error(`The server responded with ${response.statusText}`);
+        }
 
-      return response.json();
-    });
+        return response.json();
+      })
+      .catch((error) => {
+        console.log("[DEBUG] gitTags Error ==> " + JSON.stringify(error));
+      });
   }
 
   /**
