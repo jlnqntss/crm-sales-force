@@ -294,16 +294,14 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  let result = executeSfdxCommand(
-    `sf project deploy start ${deployOptions.join(" ")}`, 
-    {
-      skipJsonParsing: false,
-      stdio: [],
-    }
+  executeBash(
+    `sf project deploy start ${deployOptions.join(" ")} --json > result.json`, {stdio: []}
   );
   console.log('Parseando resultado...');
-  let deployJob = JSON.parse(result);
-  //console.log(deployJob);
+  let deployJob = JSON.parse(
+    fs.readFileSync("result.json", { encoding: "UTF-8" })
+  );
+  console.log(deployJob);
   const deployResult = deployJob.result;
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
