@@ -294,13 +294,15 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  executeBash(
-    `sf project deploy start ${deployOptions.join(" ")} --json > result.json`, {stdio: []}
+  let result = executeSfdxCommand(
+    `sf project deploy start ${deployOptions.join(" ")}`, 
+    {
+      skipJsonParsing: false,
+      stdio: [],
+    }
   );
   console.log('Parseando resultado...');
-  let deployJob = JSON.parse(
-    fs.readFileSync("result.json", { encoding: "UTF-8" })
-  );
+  let deployJob = JSON.parse(result);
   //console.log(deployJob);
   const deployResult = deployJob.result;
 
