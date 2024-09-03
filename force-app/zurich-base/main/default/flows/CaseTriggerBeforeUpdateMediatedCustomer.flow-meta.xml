@@ -151,6 +151,20 @@
             </value>
         </assignmentItems>
     </assignments>
+    <assignments>
+        <description>Se añade en este flujo el antiguo seteo del contactId del person account relacionado con el Caso de Retención ZRM. Previamente estaba en el botón Nuevo Caso Retención en el objeto Póliza pero por un error de límite se mueve a este flujo</description>
+        <name>SetContactId</name>
+        <label>SetContactId</label>
+        <locationX>4010</locationX>
+        <locationY>395</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.PolicyId__r.PolicyHolder__r.PersonContactId</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
     <decisions>
         <description>Depende del call center asignaremos unos valores u otros</description>
         <name>Call_Center_offer</name>
@@ -463,7 +477,7 @@
 El flujo en un principio era para la USP before update, y se ha modificado para que también se use en OCS before insert.</description>
         <name>RecordTypeDecision</name>
         <label>Record Type Decision</label>
-        <locationX>2162</locationX>
+        <locationX>2294</locationX>
         <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -496,8 +510,30 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
             </connector>
             <label>OCS</label>
         </rules>
+        <rules>
+            <name>ZRM</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ZRMRecordType</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SetContactId</targetReference>
+            </connector>
+            <label>ZRM</label>
+        </rules>
     </decisions>
+    <description>[ZRM] Añadir seteo del campo ContactId que se ha movido desde el botón Nuevo caso retención en el objeto póliza a este flujo por un error al validar</description>
     <environments>Default</environments>
+    <formulas>
+        <description>Obtener el valor de DeveloperName para el RT ZRMInquiry</description>
+        <name>ZRMRecordType</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.Global_Configuration__mdt.Case_RecordType_ZRM.Value__c}</expression>
+    </formulas>
     <interviewLabel>Case Trigger-Before Update-Mediated Customer Field {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Case Trigger - Before Insert/Update - Offer/Policy Related Fields</label>
     <processMetadataValues>
@@ -562,7 +598,7 @@ El flujo en un principio era para la USP before update, y se ha modificado para 
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>2036</locationX>
+        <locationX>2168</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordTypeDecision</targetReference>
