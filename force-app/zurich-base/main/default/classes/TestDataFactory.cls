@@ -2907,6 +2907,7 @@ public with sharing class TestDataFactory
             cases.add(
                 new Case(
                     CuTicketId__c = ''+(i+1),
+                    Origin = CaseUtil.ORIGIN_CANAL_UNICO,
                     RecordTypeId = CaseUtil.RT_ID_ZDA,
                     Subject = 'Subject del caso '+(i+1)
                 )

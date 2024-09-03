@@ -6,10 +6,6 @@
         <formula>PolicyId__r.PolicyHolder__c</formula>
     </fieldOverrides>
     <fieldOverrides>
-        <field>ContactId</field>
-        <formula>PolicyId__r.PolicyHolder__r.PersonContactId</formula>
-    </fieldOverrides>
-    <fieldOverrides>
         <field>EndDate__c</field>
         <formula>Policy__c.EndDate__c</formula>
     </fieldOverrides>

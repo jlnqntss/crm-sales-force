@@ -278,7 +278,8 @@ public with sharing class ContactsSelector extends RecordsSelector
             this.baseQuery.selectFields (
                 new Set<Schema.SObjectField> {
                     Contact.Id, 
-                    Contact.Email
+                    Contact.Email,
+                    Contact.AccountId
                 }
             );
             this.baseQuery.addConditionIn(Contact.Email, emails);
