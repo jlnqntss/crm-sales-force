@@ -767,6 +767,11 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>TemporaryRnEmail__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>TrainerName__c</field>
             <table>Account</table>
         </columns>
@@ -1288,6 +1293,26 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>InactiveOrNonExistentUsers__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>SmartSalesModality__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LeadsPool__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ParticipatesInAction__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>IsCurrentUserTemporaryRN__c</field>
             <table>Account</table>
         </columns>
         <masterLabel>Accounts</masterLabel>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Posibilidad éxito</label>
+    <name>ChanceOfSuccess__c</name>
+    <picklistValues>
+        <masterLabel>Caliente</masterLabel>
+        <translation><!-- Caliente --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Emitido</masterLabel>
+        <translation><!-- Emitido --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Emitido diferido</masterLabel>
+        <translation><!-- Emitido diferido --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Escalar/SOS</masterLabel>
+        <translation><!-- Escalar/SOS --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Rechazado</masterLabel>
+        <translation><!-- Rechazado --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Sin feedback</masterLabel>
+        <translation><!-- Sin feedback --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

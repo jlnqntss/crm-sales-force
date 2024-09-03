@@ -24,7 +24,8 @@ function executeSfCliCommand(command) {
 function executeSfCliScriptableCommand(command) {
   return executeSfdxCommand(command, {
     skipJsonParsing: false,
-    encoding: "utf8"
+    encoding: "utf8",
+    stdio: []
   });
 }
 
@@ -64,7 +65,7 @@ function executeSfdxCommand(bash, options = {}) {
   try {
     console.log(`[Command] ${sfdxCommand}`);
     sfdxJsonResult = executeBash(sfdxCommand, {
-      stdio: []
+      stdio: options.stdio
     });
   } catch (bashError) {
     sfdxJsonResult = bashError.stdout;
@@ -214,16 +215,14 @@ function generateSfdxDelta(targetCommit) {
   if (!fs.existsSync(".deploy")) {
     fs.mkdirSync(".deploy");
   }
-  console.log(
-    `[DEBUG] Generando diferencia entre ` + targetCommit + `  y HEAD`
-  );
-  let result = JSON.parse(
-    executeSfdxCommand(
-      `sf sgd source delta --from ${targetCommit} --output .deploy`,
-      { skipJsonParsing: true }
-    )
-  );
 
+  let result_string = executeBash(
+    `sf sgd source delta --from ${targetCommit} --output .deploy`,
+    { skipJsonParsing: true }
+  );
+  console.log("Result string " + result_string);
+  let result = JSON.parse(result_string);
+  console.log("Result " + result);
   if (!result.success) {
     console.error(`[Error] Ejecución de comando SFDX: ${result.error}`);
     console.error(
@@ -250,11 +249,8 @@ function deploy(deployConfig) {
   );
 
   // 2 - Tipo de despliegue: Si es modalidad de despliegue diferencial, se ejecuta un delta de despliegue comparando contra la rama destino
-  if (deployConfig.targetCommit || true) {
-    console.log(
-      `[Info] Deploy: Se establece como rama de despliegue` +
-        JSON.stringify(deployConfig)
-    );
+  deployConfig.targetCommit = "b339be89d1619aed5dfe30b62e9cdaa9c39ecfa2"; //  debug
+  if (deployConfig.targetCommit) {
     console.log(
       `[Info] Deploy: Modalidad de despliegue diferencial. Generando delta...`
     );
@@ -293,10 +289,15 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  const deployJob = executeSfCliScriptableCommand(
-    `sf project deploy start ${deployOptions.join(" ")} --json`
+  executeBash(
+    `sf project deploy start ${deployOptions.join(" ")} --json > result.json`,
+    { stdio: [] }
   );
-
+  console.log("Parseando resultado...");
+  let deployJob = JSON.parse(
+    fs.readFileSync("result.json", { encoding: "UTF-8" })
+  );
+  console.log(deployJob);
   const deployResult = deployJob.result;
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica

@@ -476,7 +476,7 @@
                 <indicatorHighColor>#23366F</indicatorHighColor>
                 <indicatorLowColor>#23366F</indicatorLowColor>
                 <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMTareasyEventos/Tareas_Pendientes_cOB</report>
+                <report>ZRMTareasyEventos/Tareas_Pendientes_v2</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>28</rowIndex>
@@ -500,7 +500,7 @@
                 <indicatorHighColor>#23366F</indicatorHighColor>
                 <indicatorLowColor>#23366F</indicatorLowColor>
                 <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <report>ZRMTareasyEventos/Tareas_Vencidas_fhq</report>
+                <report>ZRMTareasyEventos/Tareas_Vencidas_v2</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>28</rowIndex>
