@@ -301,7 +301,7 @@ function deploy(deployConfig) {
   let deployJob = JSON.parse(
     fs.readFileSync("result.json", { encoding: "UTF-8" })
   );
-  //console.log(deployJob);
+  console.log(deployJob);
   const deployResult = deployJob.result;
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
