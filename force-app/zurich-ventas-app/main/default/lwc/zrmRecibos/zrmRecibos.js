@@ -63,13 +63,13 @@ export default class ZrmRecibos extends LightningElement {
           let errorMessage = "An unknown error occurred";
 
           // Verifica si error y error.body están definidos antes de acceder a error.body.message
-          if (error && error.body) {
+          if (error?.body) {
             if (typeof error.body.message === "string") {
               errorMessage = error.body.message;
             } else {
               errorMessage = "Error message is not a string";
             }
-          } else if (error && error.message) {
+          } else if (error?.message) {
             errorMessage = error.message;
           }
 

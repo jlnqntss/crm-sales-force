@@ -172,7 +172,7 @@ function authenticate(sfdxAuthInfo) {
 function shouldRunLocalTests() {
   let findFolderResult = new FindFolder(`__tests__`);
 
-  return findFolderResult.length > 0 ? true : false;
+  return findFolderResult.length > 0;
 }
 
 /**
@@ -181,7 +181,7 @@ function shouldRunLocalTests() {
 function shouldLintLWC() {
   let findFolderResult = new FindFolder(`lwc`);
 
-  return findFolderResult.length > 0 ? true : false;
+  return findFolderResult.length > 0;
 }
 
 /**
@@ -190,7 +190,7 @@ function shouldLintLWC() {
 function shouldLintAura() {
   let findFolderResult = new FindFolder(`aura`);
 
-  return findFolderResult.length > 0 ? true : false;
+  return findFolderResult.length > 0;
 }
 
 function runScan() {
@@ -340,7 +340,7 @@ async function findLastSemanticTag(targetSuffix) {
   // 2 - Se define la expresión regular de búsqueda
   // 2 - Se busca a través de expresión regular la etiqueta de versionado semántico con el sufijo de tipo
   let tagToSearch = new RegExp(
-    `^\\d*\.\\d*\.\\d*${targetSuffix ? "-" + targetSuffix : ""}`
+    `^\\d*.\\d*.\\d*${targetSuffix ? "-" + targetSuffix : ""}`
   );
   let lastTag = getLastSemanticTag(currentBranchTags, tagToSearch);
 
