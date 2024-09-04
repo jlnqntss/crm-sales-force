@@ -26,25 +26,27 @@
         List<List<String>> listsToReturn2 = new List<List<String>>();
         List<String> filteredList2= new List<String>();
 
-        for(FlowInputs currentInput : flowInputs)
-        {
-            Global_Configuration__mdt config = Global_Configuration__mdt.getInstance(currentInput.globalValueName);
-            String instancesId = GlobalConfigUtil.getGlobalConfigurationValue('Instances_Id_Value');
-            Global_Configuration__mdt instanceConfig = Global_Configuration__mdt.getInstance(instancesId);
+        
+        String idOrg = FlowInputs.get(0).idORg;
+        String metadatoRegistro = FlowInputs.get(0).globalValueName;
 
-            if(currentInput.idOrg == instanceConfig.Value__c){
-                filteredList2.add(config.Value__c);
-            } else if(currentInput.idOrg == instanceConfig.Uat_Value__c){
-                filteredList2.add(config.Uat_Value__c);
-            } else if(currentInput.idOrg == instanceConfig.Staging_Value__c){
-                filteredList2.add(config.Staging_Value__c);
-            } else{
-                filteredList2.add(config.Dev_Value__c);
-            }
+        Global_Configuration__mdt config = Global_Configuration__mdt.getInstance(metadatoRegistro);
+        String instancesId = GlobalConfigUtil.getGlobalConfigurationValue('Instances_Id_Value');
+        Global_Configuration__mdt instanceConfig = Global_Configuration__mdt.getInstance(instancesId);
 
-            listsToReturn2.add(filteredList2);
-    }
-    return listsToReturn2;
+        if(idOrg == instanceConfig.Value__c){
+            filteredList2.add(config.Value__c);
+        } else if(idOrg == instanceConfig.Uat_Value__c){
+            filteredList2.add(config.Uat_Value__c);
+        } else if(idOrg == instanceConfig.Staging_Value__c){
+            filteredList2.add(config.Staging_Value__c);
+        } else{
+            filteredList2.add(config.Dev_Value__c);
+        }
+
+        listsToReturn2.add(filteredList2);
+        
+        return listsToReturn2;
 
     }
 
