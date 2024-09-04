@@ -42,7 +42,7 @@ function executeBash(command, options = {}) {
   return execSync(command, {
     encoding: "utf8",
     shell: false,
-    maxBuffer: 2048 * 2048,
+    maxBuffer: 4096 * 2048,
     ...options
   });
 }
@@ -300,7 +300,7 @@ function deploy(deployConfig) {
   let deployJob = JSON.parse(
     fs.readFileSync("result.json", { encoding: "UTF-8" })
   );
-  console.log(deployJob);
+  //console.log(deployJob);
   const deployResult = deployJob.result;
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
