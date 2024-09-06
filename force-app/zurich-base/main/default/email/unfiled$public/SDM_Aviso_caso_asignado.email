@@ -1,0 +1,15 @@
+Para: {!Case.OwnerFullName}
+
+Se te ha asignado el caso: {!Case.CaseNumber}
+
+Mediador: {!Case.IntermediaryId__c}
+
+Producto: {!Case.Product}
+
+Asunto: GdC: {!Case.Subject}
+
+Descripción: {!Case.Description}
+
+Si desea más información, haga clic en el siguiente vínculo:
+
+{!Case.Link}

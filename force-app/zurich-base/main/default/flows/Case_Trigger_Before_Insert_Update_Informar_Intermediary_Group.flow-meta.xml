@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notificar_asignacion_de_caso</name>
+        <label>Notificar asignación de caso</label>
+        <locationX>116</locationX>
+        <locationY>431</locationY>
+        <actionName>Case.Caso_asignado_SDM</actionName>
+        <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>Get_Intermediary_Record_Type_Id</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Generar_Error_Log_Envio_Email</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Case.Caso_asignado_SDM</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>59.0</apiVersion>
     <decisions>
         <name>Es_mediador</name>
         <label>¿Es mediador?</label>
         <locationX>182</locationX>
-        <locationY>503</locationY>
+        <locationY>1079</locationY>
         <defaultConnector>
             <targetReference>Set_Account</targetReference>
         </defaultConnector>
@@ -27,10 +50,42 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Owner_ha_cambiado_a_un_usuario_de_SDM</name>
+        <label>Owner ha cambiado a un usuario de SDM</label>
+        <locationX>380</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Get_Intermediary_Record_Type_Id</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>S</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Owner:User.UserRole.DeveloperName</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>SDM</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OwnerId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Notificar_asignacion_de_caso</targetReference>
+            </connector>
+            <label>Sí</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Tiene_Account</name>
         <label>¿Tiene Account?</label>
         <locationX>380</locationX>
-        <locationY>395</locationY>
+        <locationY>971</locationY>
         <defaultConnector>
             <targetReference>Delete_Intermediary_Group</targetReference>
         </defaultConnector>
@@ -53,7 +108,7 @@
     </decisions>
     <environments>Default</environments>
     <interviewLabel>Case Trigger - Before Insert/Update - Informar Intermediary Group {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Case Trigger - Before Insert/Update - Informar Intermediary Group</label>
+    <label>Case Trigger - After Insert/Update - SDM</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -73,11 +128,43 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Generar_Error_Log_Envio_Email</name>
+        <label>Generar Error Log Envio Email</label>
+        <locationX>380</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Source_Class__c</field>
+            <value>
+                <stringValue>Case Trigger - After Update - Notificación asignación caso SDM</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Source_Method__c</field>
+            <value>
+                <stringValue>Generar Error Log Envio Email</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Stack_Trace__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Throwing_Time__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Error_Log__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>Get_Intermediary_Record_Type_Id</name>
         <label>Get Intermediary Record Type Id</label>
         <locationX>380</locationX>
-        <locationY>287</locationY>
+        <locationY>863</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Tiene_Account</targetReference>
@@ -98,7 +185,7 @@
         <name>Delete_Intermediary_Group</name>
         <label>Delete Intermediary Group</label>
         <locationX>578</locationX>
-        <locationY>503</locationY>
+        <locationY>1079</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
         </inputAssignments>
@@ -108,7 +195,7 @@
         <name>Set_Account</name>
         <label>Set Account</label>
         <locationX>314</locationX>
-        <locationY>611</locationY>
+        <locationY>1187</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
@@ -121,7 +208,7 @@
         <name>Set_Parent_Account</name>
         <label>Set Parent Account</label>
         <locationX>50</locationX>
-        <locationY>611</locationY>
+        <locationY>1187</locationY>
         <inputAssignments>
             <field>Intermediary_Group__c</field>
             <value>
@@ -134,7 +221,7 @@
         <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Intermediary_Record_Type_Id</targetReference>
+            <targetReference>Owner_ha_cambiado_a_un_usuario_de_SDM</targetReference>
         </connector>
         <filterLogic>(1 AND 2) OR 3</filterLogic>
         <filters>
@@ -160,7 +247,7 @@
         </filters>
         <object>Case</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
-        <triggerType>RecordBeforeSave</triggerType>
+        <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
 </Flow>
