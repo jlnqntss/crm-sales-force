@@ -241,9 +241,6 @@ function generateSfdxDelta(targetCommit) {
 function deploy(deployConfig) {
   let deployOptions = ["--wait 180", "--ignore-conflicts"];
 
-  console.log(process.env["CI_API_V4_URL"]);
-  console.log(process.env["CI_PROJECT_ID"]);
-
   // 1 - Reconciliación de perfiles
   console.log(
     `[Info] Deploy: Reconciliando perfiles con usuario ${deployConfig.targetOrg}...`

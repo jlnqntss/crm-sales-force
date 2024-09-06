@@ -23,19 +23,22 @@ async function main() {
   switch (targetEnvironment) {
     case "prod":
       if (process.env["CI_FULL_DEPLOYMENT_PROD"] === "true") { 
-        target = findLastSemanticTag().target;
+        let tag = await findLastSemanticTag();
+        target = tag.target;
       }
       break;
 
     case "qa":
       if (process.env["CI_FULL_DEPLOYMENT_QA"] === "true") {  
-        target = findLastSemanticTag("UAT").target;
+        let tag = await findLastSemanticTag("UAT");
+        target = tag.target;
       }
       break;
 
     default:
       if (process.env["CI_FULL_DEPLOYMENT_DEV"] === "true") {
-        target = findLastSemanticTag("rc").target;
+        let tag = await findLastSemanticTag("rc");
+        target = tag.target;
         console.log("**********delta");
         console.log(target);
       }
@@ -63,4 +66,8 @@ async function main() {
   deploy(deployConf);
 }
 
-return main();
+return (async () => {
+  await main();
+})().catch(e => {
+  console.error(e);
+});
