@@ -1,33 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Get_Id_Custom_Notification</name>
-        <label>Get Id Custom Notification</label>
-        <locationX>50</locationX>
-        <locationY>431</locationY>
-        <actionName>GetGlobalConfigurationValueIdFlow</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Loop_Id_Custom_Notification</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>globalValueName</name>
-            <value>
-                <elementReference>Notificacion_CaseTrackingAnswered_Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>idORg</name>
-            <value>
-                <elementReference>$Organization.Id</elementReference>
-            </value>
-        </inputParameters>
-        <nameSegment>GetGlobalConfigurationValueIdFlow</nameSegment>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-        <versionSegment>1</versionSegment>
-    </actionCalls>
-    <actionCalls>
         <name>sendNotificationTaskOwner</name>
         <label>Send Notification Task Owner</label>
         <locationX>182</locationX>
@@ -41,7 +14,7 @@
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
-                <elementReference>idNotificacion</elementReference>
+                <elementReference>idNotificacionFormula</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -72,22 +45,6 @@
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>56.0</apiVersion>
-    <assignments>
-        <name>IdNotificationAssignment</name>
-        <label>Id Notification Assignment</label>
-        <locationX>138</locationX>
-        <locationY>647</locationY>
-        <assignmentItems>
-            <assignToReference>idNotificacion</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Loop_Id_Custom_Notification</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Loop_Id_Custom_Notification</targetReference>
-        </connector>
-    </assignments>
     <assignments>
         <name>idOwnerAssigment</name>
         <label>ID Owner Assignment</label>
@@ -168,7 +125,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Id_Custom_Notification</targetReference>
+                <targetReference>getTaskAssociated</targetReference>
             </connector>
             <label>Case USP</label>
         </rules>
@@ -179,22 +136,23 @@
         <dataType>String</dataType>
         <expression>{!principioBody}+{!$Record.Parent.CaseNumber}+{!finalBody}</expression>
     </formulas>
+    <formulas>
+        <name>idNotificacionFormula</name>
+        <dataType>String</dataType>
+        <expression>IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Value__c},{!$CustomMetadata.Global_Configuration__mdt.Notificacion_CaseTrackingAnswered_Id.Value__c}, 
+IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Uat_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Notificacion_CaseTrackingAnswered_Id.Uat_Value__c}, 
+IF({!$Organization.Id}={!$CustomMetadata.Global_Configuration__mdt.Instances_Id.Staging_Value__c}, {!$CustomMetadata.Global_Configuration__mdt.Notificacion_CaseTrackingAnswered_Id.Staging_Value__c}, 
+{!$CustomMetadata.Global_Configuration__mdt.Notificacion_CaseTrackingAnswered_Id.Dev_Value__c})
+)
+)</expression>
+    </formulas>
+    <formulas>
+        <name>idORG</name>
+        <dataType>String</dataType>
+        <expression>{!$Organization.Id}</expression>
+    </formulas>
     <interviewLabel>EmailMessage Trigger - After update - Task Owner Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>EmailMessage Trigger - After update - Task Owner Notification</label>
-    <loops>
-        <name>Loop_Id_Custom_Notification</name>
-        <label>Loop Id Custom Notification</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
-        <collectionReference>Get_Id_Custom_Notification</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>IdNotificationAssignment</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>getTaskAssociated</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <loops>
         <name>taskLoop</name>
         <label>Task Loop</label>
