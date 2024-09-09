@@ -24,7 +24,11 @@
      public static List<List<String>> getIdValueGlobalConfiguration(List<FlowInputs> flowInputs) 
     {
         List<List<String>> listsToReturn = new List<List<String>>();
-        listsToReturn=getIdValue(flowInputs[0]);
+        
+        if(! flowInputs.isEmpty())
+        {
+            listsToReturn=getIdValue(flowInputs[0]);
+        }
         return listsToReturn;    
     }
 
