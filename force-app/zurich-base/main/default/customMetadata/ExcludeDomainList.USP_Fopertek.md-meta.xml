@@ -8,6 +8,6 @@
     </values>
     <values>
         <field>EmailDomain__c</field>
-        <value xsi:type="xsd:string">@fopertek.com</value>
+        <value xsi:type="xsd:string">fopertek.com</value>
     </values>
 </CustomMetadata>
