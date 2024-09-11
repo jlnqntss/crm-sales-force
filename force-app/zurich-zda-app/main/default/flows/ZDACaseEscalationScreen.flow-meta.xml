@@ -1620,7 +1620,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>NoAllowedScalationDisplay</name>
-            <fieldText>&lt;p&gt;Para poder escalar un caso debe cumplir los siguientes requisitos:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;No se permite el escalado de casos en estado nuevo, cerrado o pendiente.&lt;/li&gt;&lt;li&gt;El propietario debe ser un usuario y no una cola.&lt;/li&gt;&lt;li&gt;Los atributos Tipo N1, Tipo N2 y Tipo N3 debe estar informados.&lt;/li&gt;&lt;/ul&gt;</fieldText>
+            <fieldText>&lt;p&gt;Para poder escalar un caso debe cumplir los siguientes requisitos:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;No se permite el escalado de casos en estado nuevo, cerrado o pendiente.&lt;/li&gt;&lt;li&gt;El propietario debe ser un usuario y no una cola.&lt;/li&gt;&lt;li&gt;Los atributos Tipo N1, Tipo N2 y Tipo N3 deben estar informados.&lt;/li&gt;&lt;/ul&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
