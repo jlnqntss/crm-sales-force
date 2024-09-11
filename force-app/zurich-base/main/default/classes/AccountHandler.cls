@@ -2,8 +2,8 @@
  * @description       :
  * @author            : jgallaga
  * @group             :
- * @last modified on  : 25/09/2023
- * @last modified by  : jgallaga
+ * @last modified on  : 11/09/2024
+ * @last modified by  : rserrano
 **/
 public with sharing class AccountHandler implements ITrigger
 {
@@ -36,6 +36,7 @@ public with sharing class AccountHandler implements ITrigger
      */
     public void beforeInsert(List<SObject> newList)
     {
+       TriggerBypassUtility.gdprBypass(newList);
        AccountLeadUtil.checkLeadDuplicates(newList);
     }
 
@@ -47,6 +48,7 @@ public with sharing class AccountHandler implements ITrigger
      */
     public void beforeUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        TriggerBypassUtility.throwExceptionIfBlockedOrAnonymized(newList, oldMap);
         // marcamos los mediadores que han sufrido cambios de agrupación zrm para procesarlos posteriormente con el batch Batch_RecalcVisibilityIntermediaryGroup
         if (!Test.isRunningTest()) {
             AccountUtil.zrmVisibility(newList, (Map<Id,Account>) oldMap);
@@ -71,6 +73,7 @@ public with sharing class AccountHandler implements ITrigger
      */
     public void afterInsert(List<SObject> newList)
     {
+        TriggerBypassUtility.gdprBypass(newList);
         AccountUtil.generateScope(newList);
         AccountLeadUtil.createScopesForVentaLeads(newList,null);
         AccountUtil.zrmNewLeadVisibility(newList);
@@ -84,6 +87,7 @@ public with sharing class AccountHandler implements ITrigger
      */
     public void afterUpdate(List<SObject> newList, Map<Id, SObject> oldMap)
     {
+        TriggerBypassUtility.gdprBypass(newList, oldMap);
         AccountLeadUtil.createScopesForVentaLeads(newList,(Map<Id,Account>)oldMap);
          
     }
