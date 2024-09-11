@@ -343,6 +343,14 @@
         <value>There has been a problem in the execution of the flow associated with the action you are trying to execute. Contact a System Administrator and indicate the following error message:</value>
     </labels>
     <labels>
+        <fullName>GDPR_Error_DMLOnBlockedOrAnonymizedRecord</fullName>
+        <categories>GDPR</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>GDPR_Error_DMLOnBlockedOrAnonymizedRecord</shortDescription>
+        <value>You are trying to perform a DML operation on a locked and/or anonymized record</value>
+    </labels>
+    <labels>
         <fullName>GeneralInsurance</fullName>
         <categories>Values</categories>
         <language>es</language>
