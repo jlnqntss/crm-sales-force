@@ -812,6 +812,12 @@
                 <identifier>RecordRecertificationEmail__cField</identifier>
             </fieldInstance>
         </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldItem>Record.ZRMAccess__c</fieldItem>
+                <identifier>RecordZRMAccess__cField</identifier>
+            </fieldInstance>
+        </itemInstances>
         <name>Facet-56da5496-bb2b-4c5e-a0e5-8fc9a8728433</name>
         <type>Facet</type>
     </flexiPageRegions>
