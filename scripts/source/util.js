@@ -293,7 +293,7 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  let res = executeSfCliScriptableCommand(
+  let deployJob = executeSfCliScriptableCommand(
     `sf project deploy start ${deployOptions.join(" ")} --json`, 
     {
       stdio: [],
@@ -301,10 +301,7 @@ function deploy(deployConfig) {
     }
   );
   console.log('Parseando resultado...');
-  console.log(res);
-  let deployJob = JSON.parse(
-    res
-  );
+
   //console.log(deployJob);
   const deployResult = deployJob.result;
 
