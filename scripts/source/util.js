@@ -302,7 +302,7 @@ function deploy(deployConfig) {
   );
   console.log('Parseando resultado...');
 
-  //console.log(deployJob);
+  console.log(deployJob);
   const deployResult = deployJob.result;
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
