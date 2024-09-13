@@ -42,7 +42,7 @@ function executeBash(command, options = {}) {
   return execSync(command, {
     encoding: "utf8",
     shell: false,
-    maxBuffer: 4096 * 2048,
+    maxBuffer: 5 * 1024 * 1024, //5mb
     ...options
   });
 }
@@ -293,8 +293,12 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  let res = executeBash(
-    `sf project deploy start ${deployOptions.join(" ")} --json`, {stdio: []}
+  let res = executeSfCliScriptableCommand(
+    `sf project deploy start ${deployOptions.join(" ")} --json`, 
+    {
+      stdio: [],
+      maxBuffer: 5 * 1024 * 1024 // 5mb
+    }
   );
   console.log('Parseando resultado...');
   let deployJob = JSON.parse(
