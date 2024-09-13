@@ -293,7 +293,7 @@ function deploy(deployConfig) {
 
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
-  let deployJob = executeSfCliScriptableCommand(
+  let deployResult = executeSfCliScriptableCommand(
     `sf project deploy start ${deployOptions.join(" ")} --json`, 
     {
       stdio: [],
@@ -302,8 +302,8 @@ function deploy(deployConfig) {
   );
   console.log('Parseando resultado...');
 
-  console.log(deployJob);
-  const deployResult = deployJob.result;
+  //console.log(deployJob);
+  //const deployResult = deployJob.result;
 
   // 7 - Se guarda el Id. para lanzar posteriormente el Quick Deploy, si aplica
 
