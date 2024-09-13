@@ -301,6 +301,7 @@ function deploy(deployConfig) {
     }
   );
   console.log('Parseando resultado...');
+  console.log(res);
   let deployJob = JSON.parse(
     res
   );
