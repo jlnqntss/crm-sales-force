@@ -4,6 +4,13 @@
     <active>true</active>
     <description>Comprueba que los perfiles RN, Director y Home Office de SDM no puedan modificar el nombre de la cuenta.</description>
     <errorConditionFormula>AND(
+OR
+(
+Blocked__c = False,
+Anonymized__c = False,
+NOT(ISCHANGED(Blocked__c)),
+NOT(ISCHANGED(Anonymized__c))
+),
 ISCHANGED(Name),
 OR($Profile.Name = &quot;SDM RN&quot;,
 $Profile.Name =&quot;SDM Director&quot;,
