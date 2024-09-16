@@ -407,7 +407,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Account.ZRMAccess__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -447,7 +447,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Account.ZVGOAccess__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -457,7 +457,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Account.ZurichZoneAccess__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -652,7 +652,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Account.DownloadAccess__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -722,7 +722,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Account.INFOIntermediaryCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -837,7 +837,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Account.MaxPermission__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -942,7 +942,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Account.RecertificationEmail__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1242,12 +1242,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Contact.Permission__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Contact.ZurichZoneUser__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2682,7 +2682,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>FollowUp__c.IntermediaryCode__c</field>
         <readable>true</readable>
     </fieldPermissions>
