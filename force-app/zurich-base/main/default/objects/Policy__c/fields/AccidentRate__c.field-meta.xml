@@ -3,7 +3,7 @@
     <fullName>AccidentRate__c</fullName>
     <externalId>false</externalId>
     <inlineHelpText>Valor de los últimos 3 años</inlineHelpText>
-    <label>Accident Rate</label>
+    <label>Accident Rate (%)</label>
     <precision>18</precision>
     <required>false</required>
     <scale>2</scale>
