@@ -7,14 +7,14 @@ const { deploy, findLastSemanticTag } = require("./util.js");
  *
  */
 async function main() {
-  const isValidation = process.argv[2] === "--check";
-  const targetOrg = isValidation ? process.argv[3] : process.argv[2];
-  const targetEnvironment = isValidation ? process.argv[4] : process.argv[3];
-  const testRun = isValidation
-    ? process.argv.length > 4
-    : process.argv.length > 3;
-  let testRunLevel =
-    isValidation && testRun ? process.argv[5] : process.argv[4];
+  const isValidation = process.argv.includes("--check");
+
+  const argOffset = isValidation ? 1 : 0;
+  const targetOrg = process.argv[2 + argOffset];
+  const targetEnvironment = process.argv[3 + argOffset];
+  
+  const testRun = process.argv.length > (3 + argOffset);
+  const testRunLevel = testRun ? process.argv[4 + argOffset] : undefined;
 
   let target;
   switch (targetEnvironment) {
