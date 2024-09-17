@@ -300,7 +300,7 @@ veracode:
 ####################################################
 validate-deploy:
   stage: validate
-  allow_failure: true
+  allow_failure: false
   rules:
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"'
       when: always
