@@ -25,7 +25,8 @@ function executeSfCliScriptableCommand(command) {
   return executeSfdxCommand(command, {
     skipJsonParsing: false,
     encoding: "utf8",
-    stdio: []
+    stdio: [],
+    maxBuffer: 5 * 1024 * 1024 // 5mb
   });
 }
 
@@ -289,11 +290,7 @@ function deploy(deployConfig) {
   // 6 - Se ejecuta el despliegue, dependiendo de si se lanza validación o no
   console.log(`[Info] Deploy: Encolando despliegue...`);
   let deployResult = executeSfCliScriptableCommand(
-    `sf project deploy start ${deployOptions.join(" ")} --json`, 
-    {
-      stdio: [],
-      maxBuffer: 5 * 1024 * 1024 // 5mb
-    }
+    `sf project deploy start ${deployOptions.join(" ")} --json`
   );
   console.log('Parseando resultado...');
 
