@@ -86,6 +86,7 @@ function executeSfdxCommand(bash, options = {}) {
   }
   console.log("return");
   console.log(sfdxResult);
+  console.log(sfdxResult.status);
   
   if (sfdxResult.status !== 0 || sfdxResult.status === undefined) {
     console.error(
