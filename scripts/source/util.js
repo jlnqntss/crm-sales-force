@@ -84,7 +84,9 @@ function executeSfdxCommand(bash, options = {}) {
     console.error(`[Error] ${error.message}`);
     sfdxResult = {};
   }
-
+  console.log("return");
+  console.log(sfdxResult);
+  
   if (sfdxResult.status !== 0 || sfdxResult.status === undefined) {
     console.error(
       `[Error] Ejecución de comando SFDX: ${sfdxResult.commandName}`
