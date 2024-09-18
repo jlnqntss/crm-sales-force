@@ -55,8 +55,7 @@
     "node-find-folder": "^0.1.32",
     "node-merge": "^0.1.0",
     "prettier": "^2.2.1",
-    "pretty-quick": "^3.1.0",
-    "tough-cookie": "4.1.4"
+    "pretty-quick": "^3.1.0"
   },
   "dependencies": {
     "text-cleaner": "^1.2.1"
