@@ -17,13 +17,13 @@ function convertSFDXProject(targetDirectory, tmpDirectory) {
   sfdxProject.packageDirectories.forEach((dir) => {
     console.log(`Converting package ${dir.path}...`);
     execSync(
-      `sfdx force:source:convert -r "${dir.path}" -d "${tmpDirectory}/${dir.path}"`
+      `sf project convert source --root-dir "${dir.path}" --output-dir "${tmpDirectory}/${dir.path}"`
     );
 
     if (existsSync(`${targetDirectory}/package.xml`)) {
       console.log("Merging package.xml");
       execSync(
-        `sfdx sfpowerkit:project:manifest:merge -p "${tmpDirectory}/${dir.path}/package.xml,${targetDirectory}/package.xml" -d "${tmpDirectory}" --apiversion=${sfdxProject.sourceApiVersion}`,
+        `sf sfpowerkit project manifest merge --path "${tmpDirectory}/${dir.path}/package.xml,${targetDirectory}/package.xml" --manifest "${tmpDirectory}" --apiversion=${sfdxProject.sourceApiVersion}`,
         {
           stdio: "inherit"
         }

@@ -7,29 +7,40 @@ const { deploy, findLastSemanticTag } = require("./util.js");
  *
  */
 async function main() {
-  const targetOrg =
-    process.argv[2] === "--check" ? process.argv[3] : process.argv[2];
-  const isValidation = process.argv[2] === "--check" ? true : false;
-  const targetEnvironment =
-    process.argv[2] === "--check" ? process.argv[4] : process.argv[3];
+  const isValidation = process.argv.includes("--check");
+
+  const argOffset = isValidation ? 1 : 0;
+  const targetOrg = process.argv[2 + argOffset];
+  const targetEnvironment = process.argv[3 + argOffset];
+  
+  const testRun = process.argv.length > (3 + argOffset);
+  const testRunLevel = testRun ? process.argv[4 + argOffset] : undefined;
 
   let target;
   switch (targetEnvironment) {
     case "prod":
-      if (!process.env["CI_FULL_DEPLOYMENT_PROD"]) {
-        target = findLastSemanticTag().target;
+      if (process.env["CI_FULL_DEPLOYMENT_PROD"] === "true") { 
+        let tag = await findLastSemanticTag();
+        target = tag.target;
       }
       break;
 
     case "qa":
-      if (!process.env["CI_FULL_DEPLOYMENT_QA"]) {
-        target = findLastSemanticTag("UAT").target;
+      if (process.env["CI_FULL_DEPLOYMENT_QA"] === "true") {  
+        let tag = await findLastSemanticTag("UAT");
+        target = tag.target;
       }
       break;
 
     default:
-      if (!process.env["CI_FULL_DEPLOYMENT_DEV"]) {
-        target = findLastSemanticTag("rc").target;
+      if (process.env["CI_FULL_DEPLOYMENT_DEV"] === "true") {
+        let tag = await findLastSemanticTag("rc");
+        target = tag.target;
+        console.log("**********delta");
+        console.log(target);
+      }
+      else {
+        console.log("**********full deployment");
       }
       break;
   }
@@ -39,11 +50,21 @@ async function main() {
     process.exit(1);
   }
 
-  deploy({
+  const deployConf = {
     targetOrg: targetOrg,
     targetCommit: target || undefined,
     checkOnly: isValidation
-  });
+  };
+
+  if (testRun) {
+    deployConf["testLevel"] = testRunLevel;
+  }
+
+  deploy(deployConf);
 }
 
-return main();
+return (async () => {
+  await main();
+})().catch(e => {
+  console.error(e);
+});
