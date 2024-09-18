@@ -11,6 +11,7 @@
     <excludeButtons>Edit</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
     <excludeButtons>IsotopeSubscription</excludeButtons>
+    <excludeButtons>OpenSlackRecordChannel</excludeButtons>
     <excludeButtons>PartnerScorecard</excludeButtons>
     <excludeButtons>PrintableView</excludeButtons>
     <excludeButtons>RecordShareHierarchy</excludeButtons>
@@ -423,6 +424,7 @@
         <relatedList>RelatedContactList</relatedList>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>AddRelation</excludeButtons>
         <fields>CONTACT.FULL_NAME</fields>
         <fields>CONTACT.ACCOUNT_NAME</fields>
         <fields>CONTACT.TITLE</fields>
