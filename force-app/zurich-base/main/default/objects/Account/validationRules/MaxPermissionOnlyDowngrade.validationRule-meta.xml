@@ -7,5 +7,5 @@
 (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Ofertas&apos;) &amp;&amp;  (ISPICKVAL(MaxPermission__c, &apos;Total sin administración&apos;) || ISPICKVAL(MaxPermission__c, &apos;Total&apos;))) ||
 (ISPICKVAL(PRIORVALUE(MaxPermission__c) , &apos;Total sin administración&apos;) &amp;&amp;  ISPICKVAL(MaxPermission__c, &apos;Total&apos;))</errorConditionFormula>
     <errorDisplayField>MaxPermission__c</errorDisplayField>
-    <errorMessage>El campo Permiso máximo sólo puede modificarse manualmente a la baja</errorMessage>
+    <errorMessage>El permiso máximo solo puede modificarse a la baja, si quieres darle mayores permisos contacta con e-business@zurich.com</errorMessage>
 </ValidationRule>
