@@ -273,7 +273,7 @@
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>UspOutcome</name>
-            <conditionLogic>1 AND (2 OR 3 OR 4)</conditionLogic>
+            <conditionLogic>1 AND ((2 AND 5) OR 3 OR 4)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -300,6 +300,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.StatusPrior__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendiente</stringValue>
                 </rightValue>
             </conditions>
             <connector>
