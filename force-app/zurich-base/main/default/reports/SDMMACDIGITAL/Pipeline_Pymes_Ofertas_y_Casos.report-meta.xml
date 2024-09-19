@@ -31,11 +31,12 @@
         <field>Account.Opportunities__r$Name</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Maximum</aggregateTypes>
         <field>Account.Opportunities__r$MaxOptionTotalPremium__c</field>
     </columns>
     <columns>
-        <field>Account.Opportunities__r$InfoUser__c</field>
+        <aggregateTypes>Maximum</aggregateTypes>
+        <field>Account.Opportunities__r$NetPremium__c</field>
     </columns>
     <columns>
         <field>Account.Opportunities__r$EffectiveDate__c</field>
@@ -63,12 +64,6 @@
     </columns>
     <columns>
         <field>Account.Opportunities__r.Cases__r$PendingBy__c</field>
-    </columns>
-    <columns>
-        <field>Account.Opportunities__r.Cases__r$CloseResult__c</field>
-    </columns>
-    <columns>
-        <field>Account.Opportunities__r.Cases__r$PolicyNum__c</field>
     </columns>
     <columns>
         <field>Account.Opportunities__r.Cases__r$CreatedDate</field>
