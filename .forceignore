@@ -91,3 +91,6 @@ force-app/zurich-base/main/default/namedCredentials/GenesysCloud.namedCredential
 
 # Custom index
 **/Customindex/*.indx-meta.xml
+**/tsconfig.json
+
+**/*.ts
