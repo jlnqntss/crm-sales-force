@@ -57,6 +57,12 @@ public with sharing class AccountsSelector extends RecordsSelector
             return Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(RT_NAME_INTERMEDIARY)?.getRecordTypeId();
         }
     }
+    // Recupera el Id del RecordType de Mediadores
+    public String rtIntermediaryName {
+        get {
+            return RT_NAME_INTERMEDIARY;
+        }
+    }
     // Recupera el Id del RecordType de clientes personales
     public ID rtCustomerId {
         get {

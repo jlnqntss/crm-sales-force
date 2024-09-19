@@ -154,7 +154,7 @@
         <name>Modalidad_online</name>
         <label>Modalidad online</label>
         <locationX>314</locationX>
-        <locationY>4355</locationY>
+        <locationY>4763</locationY>
         <assignmentItems>
             <assignToReference>$Record.Modalidad__c</assignToReference>
             <operator>Assign</operator>
@@ -162,15 +162,12 @@
                 <stringValue>Online</stringValue>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Asignar_Acta</targetReference>
-        </connector>
     </assignments>
     <assignments>
         <name>Modalidad_presencial</name>
         <label>Modalidad presencial</label>
         <locationX>578</locationX>
-        <locationY>4355</locationY>
+        <locationY>4763</locationY>
         <assignmentItems>
             <assignToReference>$Record.Modalidad__c</assignToReference>
             <operator>Assign</operator>
@@ -178,9 +175,6 @@
                 <stringValue>Presencial</stringValue>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Asignar_Acta</targetReference>
-        </connector>
     </assignments>
     <constants>
         <name>contactPrefix</name>
@@ -282,7 +276,7 @@
         <name>Es_online</name>
         <label>Es online?</label>
         <locationX>446</locationX>
-        <locationY>4247</locationY>
+        <locationY>4655</locationY>
         <defaultConnector>
             <targetReference>Modalidad_presencial</targetReference>
         </defaultConnector>
@@ -367,9 +361,34 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Crear_Acta</targetReference>
+                <targetReference>Buscar_si_ya_existe_el_evento</targetReference>
             </connector>
             <label>Relacionado con Intermediario</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Existe_evento</name>
+        <label>Existe evento?</label>
+        <locationX>446</locationX>
+        <locationY>4247</locationY>
+        <defaultConnector>
+            <targetReference>Crear_Acta</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Si</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Buscar_si_ya_existe_el_evento.Acta__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Asignar_acta_existente</targetReference>
+            </connector>
+            <label>Sí</label>
         </rules>
     </decisions>
     <decisions>
@@ -569,10 +588,10 @@
     <recordCreates>
         <name>Crear_Acta</name>
         <label>Crear Acta</label>
-        <locationX>446</locationX>
-        <locationY>4139</locationY>
+        <locationX>578</locationX>
+        <locationY>4355</locationY>
         <connector>
-            <targetReference>Es_online</targetReference>
+            <targetReference>Asignar_Acta</targetReference>
         </connector>
         <inputAssignments>
             <field>Attendees__c</field>
@@ -614,6 +633,48 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Buscar_si_ya_existe_el_evento</name>
+        <label>Buscar si ya existe el evento</label>
+        <locationX>446</locationX>
+        <locationY>4139</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Existe_evento</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Subject</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Subject</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ActivityDateTime</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ActivityDateTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Event</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
@@ -757,12 +818,31 @@
     <recordUpdates>
         <name>Asignar_Acta</name>
         <label>Asignar Acta</label>
-        <locationX>446</locationX>
-        <locationY>4547</locationY>
+        <locationX>578</locationX>
+        <locationY>4463</locationY>
+        <connector>
+            <targetReference>Es_online</targetReference>
+        </connector>
         <inputAssignments>
             <field>Acta__c</field>
             <value>
                 <elementReference>Crear_Acta</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Asignar_acta_existente</name>
+        <label>Asignar acta existente</label>
+        <locationX>314</locationX>
+        <locationY>4355</locationY>
+        <connector>
+            <targetReference>Es_online</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Acta__c</field>
+            <value>
+                <elementReference>Buscar_si_ya_existe_el_evento.Acta__c</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>

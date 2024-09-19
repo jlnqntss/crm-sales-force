@@ -381,6 +381,7 @@ public with sharing class RiskAppetiteController
             caseToUpdate.Query__c = generateQueryJson(technicalPolicy, fields);
             caseToUpdate.RiskAppetite__c = technicalPolicy.ApetitoRiesgo__c;
             caseToUpdate.RiskAppetiteId__c = technicalPolicy.Id;
+            caseToUpdate.HGPrevisionCambio__c = technicalPolicy.HGPrevisionCambio__c;
             update caseToUpdate;
         }
         catch (Exception e)
@@ -428,6 +429,8 @@ public with sharing class RiskAppetiteController
             caseToUpdate.Query__c = '';
             caseToUpdate.RiskAppetite__c = '';
             caseToUpdate.RiskAppetiteId__c = null;
+            caseToUpdate.HGPrevisionCambio__c = null;
+            update caseToUpdate;
             // Actualizamos el caso
             update caseToUpdate;
         }

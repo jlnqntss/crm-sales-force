@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Priority__c</fullName>
     <externalId>false</externalId>
-    <formula>PriorityByAssociation__c + PriorityByOlimpia__c + PriorityByRatio__c + 	PriorityByRequested__c + PriorityByStatus__c + PriorityByStatusAnswered__c + PriorityByStatusNewAssigned__c + PriorityByType__c + PriorityByUW__c</formula>
+    <formula>PriorityByAssociation__c + PriorityByOlimpia__c + PriorityByRatio__c + 	PriorityByRequested__c + PriorityByStatus__c + PriorityByStatusAnswered__c + PriorityByStatusNewAssigned__c + PriorityByType__c + PriorityByUW__c + PriorityByTypeN3__c</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Priority</label>
     <precision>18</precision>

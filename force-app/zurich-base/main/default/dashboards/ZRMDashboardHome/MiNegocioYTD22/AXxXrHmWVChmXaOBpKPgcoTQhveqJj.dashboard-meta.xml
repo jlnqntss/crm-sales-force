@@ -217,8 +217,7 @@
             <dashboardComponent>
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartSummary>
-                    <aggregate>Sum</aggregate>
-                    <column>KPI__c.Ratio_Claim__c</column>
+                    <column>FORMULA5</column>
                 </chartSummary>
                 <componentType>Metric</componentType>
                 <decimalPrecision>-1</decimalPrecision>
@@ -230,8 +229,7 @@
                 <indicatorHighColor>#23366F</indicatorHighColor>
                 <indicatorLowColor>#23366F</indicatorLowColor>
                 <indicatorMiddleColor>#23366F</indicatorMiddleColor>
-                <metricLabel>YTD</metricLabel>
-                <report>ZRMKPIS/Mi_Negocio_YTD_22_GL0</report>
+                <report>ZRMKPIS/Mi_Negocio_YTD_22_Siniestralidad_2_g7E</report>
                 <showRange>false</showRange>
             </dashboardComponent>
             <rowIndex>8</rowIndex>

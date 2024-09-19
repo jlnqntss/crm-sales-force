@@ -1649,6 +1649,26 @@
             <field>Association2__c</field>
             <table>Account</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>SmartSalesModality__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LeadsPool__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ParticipatesInAction__c</field>
+            <table>Account</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>IsCurrentUserTemporaryRN__c</field>
+            <table>Account</table>
+        </columns>
         <masterLabel>Accounts</masterLabel>
     </sections>
     <sections>
@@ -3575,6 +3595,29 @@
             <field>MediatedCustomerSic__c</field>
             <table>Account.Opportunities__r.Cases__r</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>HGPrevisionCambio__c</field>
+            <table>Account.Opportunities__r.Cases__r</table>
+        </columns>
         <masterLabel>Cases</masterLabel>
+    </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>MaxOptionTotalPremium__c</field>
+            <table>Account.Opportunities__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Comments__c</field>
+            <table>Account.Opportunities__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ChanceOfSuccess__c</field>
+            <table>Account.Opportunities__r</table>
+        </columns>
+        <masterLabel>Offers</masterLabel>
     </sections>
 </ReportType>

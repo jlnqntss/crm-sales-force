@@ -202,6 +202,16 @@
                 <default>false</default>
                 <label>CT RC MATERIALES</label>
             </value>
+            <value>
+                <fullName>LESIONES GRAVES</fullName>
+                <default>false</default>
+                <label>LESIONES GRAVES</label>
+            </value>
+            <value>
+                <fullName>MIXTOS EXPRESS</fullName>
+                <default>false</default>
+                <label>MIXTOS EXPRESS</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

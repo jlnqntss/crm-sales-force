@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>SalesLossReasonWhenAutomatic</fullName>
-    <active>true</active>
+    <active>false</active>
     <description>[ZRM] Validación para mostrar un error al Agente Mediador ó usuario Contact Center si selecciona algún valor que se informa automáticamente</description>
     <errorConditionFormula>(
 $Profile.Name =  $CustomMetadata.Global_Configuration__mdt.Profile_Name_Agente_Ventas.Value__c ||

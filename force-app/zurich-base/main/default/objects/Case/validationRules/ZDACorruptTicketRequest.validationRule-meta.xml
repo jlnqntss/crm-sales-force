@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZDACorruptTicketRequest</fullName>
+    <active>true</active>
+    <description>Evita el registro de casos sin contenido desde la plataforma externa llamada Canal Único.
+Revisará que los casos creados vía API incluyan tanto el id de petición externo de canal único como el origen del caso.</description>
+    <errorConditionFormula>AND(
+				 ISNEW(),
+				 CuTicketId__c != null,
+     TEXT(Origin) = null
+)</errorConditionFormula>
+    <errorMessage>It is not a valid operation, CU tickets should have a valid origin.</errorMessage>
+</ValidationRule>

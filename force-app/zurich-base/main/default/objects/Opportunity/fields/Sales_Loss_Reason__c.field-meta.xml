@@ -282,6 +282,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>L</controllingFieldValue>
+            <controllingFieldValue>VC</controllingFieldValue>
             <valueName>Insufficient/incorrect data</valueName>
         </valueSettings>
         <valueSettings>

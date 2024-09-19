@@ -44,7 +44,6 @@ public with sharing class CaseUtil
     public static final String ZDA_REASON_DESESTIMAR = '2';
     public static final String ZDA_REASON_RESPUESTA_SOPORTE = '3';
     public static final String BLANK_SPACE = ' ';
-    public static final String ORIGIN_CANAL_UNICO = 'CanalUnico';
     public static final String ORIGIN_WEB = 'Web';
     @TestVisible
     private static final String ZDA
@@ -52,6 +51,13 @@ public with sharing class CaseUtil
         get
         {
             return GlobalConfigUtil.getGlobalConfigurationValue('Call_Center_ZDA');
+        }
+    }
+    public static final String ORIGIN_CANAL_UNICO
+    {
+        get
+        {
+            return GlobalConfigUtil.getGlobalConfigurationValue('Case_Origin_CU');
         }
     }
 
@@ -1227,21 +1233,19 @@ public with sharing class CaseUtil
      */
     public static void relateCasesWithMediatedAccountOCS(List<Case> insertedCases)
     {
-        //1- Obtenemos los mediadores por el email vinculado al caso. Si obtenemos resultados, continuamos
-        List<Account> intermediaryAccs = getIntermediaryAccountsByEmail(insertedCases);
+        //1- Obtenemos los mediadores por el email vinculado al caso en un mapa por el email del contacto.
+        //   Si obtenemos resultados, continuamos
+        Map<String, List<Account>> intermediariesByEmail = getIntermediaryAccountsByEmail(insertedCases);
 
         List<Case> updatedCases = new List<Case>();
 
-        if ( !intermediaryAccs.isEmpty() )
+        if ( !intermediariesByEmail.isEmpty() )
         {
-            //2- Agrupamos casos por Email Principal
-            Map<String, List<Account> > accByEmail = (Map<String, List<Account> >) CollectionUtil.groupListBy( intermediaryAccs, Account.fields.MainEmail__c.getDescribe().getName() );
-
-            //3- Para cada caso, si hay un único mediador con ese Email se vinculará de forma automática con éste
+            //2- Para cada caso, si hay un único mediador con ese Email se vinculará de forma automática con éste
             List<Account> emailAccounts;
             for(Case insertedCase : insertedCases)
             {
-                emailAccounts = accByEmail?.get(insertedCase.SuppliedEmail);
+                emailAccounts = intermediariesByEmail?.get(insertedCase.SuppliedEmail);
                 if (emailAccounts != null && emailAccounts.size() == 1 && insertedCase.AccountId != emailAccounts[0].Id)
                 {
                     insertedCase.AccountId = emailAccounts[0].Id;
@@ -1259,9 +1263,13 @@ public with sharing class CaseUtil
      * @author juanfrancisco.herrero@seidor.com
      * @date 13/06/2024
      * @param casesToRelate Casos de los cuales buscamos el mediador por correo
-     * @return List<Account> Accounts tipo mediador encontradas
+     * @return Map<String, List<Account>> Lista de Accounts tipo mediador encontradas por mail
+     * 
+     * @author juanfrancisco.herrero@seidor.com
+     * @date 30/08/2024
+     * @descripción [OCS-10713] Se recuperan los contactos asociados a los emails.
      */
-    public static List<Account> getIntermediaryAccountsByEmail(List<Case> casesToRelate)
+    public static Map<String, List<Account>> getIntermediaryAccountsByEmail(List<Case> casesToRelate)
     {
         Set<String> emailsToSearch = new Set<String>();
 
@@ -1273,14 +1281,95 @@ public with sharing class CaseUtil
             }
         }
 
+        // Si no hay correos no vamos a encontrar Accounts
         if ( emailsToSearch.isEmpty() )
         {
-            return new List<Account>();
+            return new Map<String, List<Account>>();
         }
         else
         {
-            return ( new AccountsSelector().findIntermediariesByMainEmail(emailsToSearch) );
+            List<Contact> contactsFound = ( new ContactsSelector().findByEmailField(new List<String>(emailsToSearch)) );
+            Map<String, List<Contact>> contactsByEmail = (Map<String, List<Contact>>) CollectionUtil.groupListBy( contactsFound, Contact.fields.Email.getDescribe().getName());
+
+            // Obtener mapa de accounts por mail
+            return getMapIntermediariesByEmail(contactsFound, contactsByEmail);
         }
+    }
+
+    /**
+     * Buscamos a traves de emails la cuentas de mediadores asociadas a casos.
+     *
+     * @author juanfrancisco.herrero@seidor.com
+     * @date 30/08/2024
+     * @param contacts Contacts asociados a emails
+     * @param contactsByEmail Contacts asociados a emails agrupados por dicho mail
+     * @return Map<String, List<Account>> Mapa de Accounts por email del Contact
+     */
+    public static Map<String, List<Account>> getMapIntermediariesByEmail(List<Contact> contacts, Map<String, List<Contact>> contactsByEmail)
+    {
+        // Si se nos suministra una lista con contactos, buscamos los mediadores
+        if (contactsByEmail != null && contacts.size() > 0)
+        {
+            AccountsSelector accountsSelector = new AccountsSelector();
+            accountsSelector.setRecordType(new List<String>{accountsSelector.rtIntermediaryName});
+            Set<Id> accountIds = new Set<Id>();
+
+            for(Contact cont : contacts)
+            {
+                if (String.isNotBlank(cont.AccountId))
+                {
+                    accountIds.add(cont.AccountId);
+                }
+            }
+
+            List<Account> intermediaries = accountsSelector.selectById(accountIds);  
+            return getMapAccountsByContactEmail(contactsByEmail, intermediaries);
+        }
+
+        // Si no encontramos contactos no vamos a encontrar a los mediadores
+        else
+        {
+            return (new Map<String, List<Account>>());
+        }
+        
+    }
+
+    /**
+     * Crea un mapa de Accounts en base al email del contacto que lo tiene como padre
+     *
+     * @author juanfrancisco.herrero@seidor.com
+     * @date 30/08/2024
+     * @param contactsByEmail Contacts asociados a emails
+     * @param accounts Accounts asociadas a los contactos
+     * @return Map<String, Set<Account>> Mapa de Accounts por email del Contact
+     */
+    public static Map<String, List<Account>> getMapAccountsByContactEmail(Map<String, List<Contact>> contactsByEmail, List<Account> accounts)
+    {
+        Map<String, List<Account>> mapIntermediariesByEmail = new Map<String, List<Account>>();
+        Set<Account> accountsForThisEmail = new Set<Account>();
+        
+        for (String emailAddress : contactsByEmail.keySet())
+        {   
+            accountsForThisEmail.clear();
+            
+            //Si se recupera el contacto 
+            for (Contact cont : contactsByEmail.get(emailAddress))
+            {
+                for (Account acc : accounts)
+                {
+                    // Si algún Account mediador coincide
+                    if (acc.Id.equals(cont.AccountId))
+                    {
+                        accountsForThisEmail.add(acc);
+                    }
+                } 
+            }
+			
+            mapIntermediariesByEmail.put(emailAddress, new List<Account>(accountsForThisEmail));                   
+            accountsForThisEmail.clear();
+        }
+
+        return mapIntermediariesByEmail;
     }
 
     /*
