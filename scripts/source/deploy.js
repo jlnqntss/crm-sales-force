@@ -36,11 +36,6 @@ async function main() {
       if (process.env["CI_FULL_DEPLOYMENT_DEV"] === "true") {
         let tag = await findLastSemanticTag("rc");
         target = tag.target;
-        console.log("**********delta");
-        console.log(target);
-      }
-      else {
-        console.log("**********full deployment");
       }
       break;
   }
