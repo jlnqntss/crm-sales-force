@@ -1357,14 +1357,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LeadMatch</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LeadMatchTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LeadUtil</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3583,11 +3575,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.TOPAgent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Account.TOPIntermediary__c</field>
         <readable>false</readable>
@@ -4120,11 +4107,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.EndDate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.EnlaceZonaZurich__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
