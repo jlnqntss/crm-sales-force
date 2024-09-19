@@ -1,0 +1,16 @@
+[
+  {
+    "fileId": "001",
+    "fileTitle": "Archivo1.pdf",
+    "fileDownloadUrl": "/services/data/v50.0/sobjects/ContentVersion/0681U00000Iu6tQQAR",
+    "fileIcon": "utility:document",
+    "deleteEnabled": true
+  },
+  {
+    "fileId": "002",
+    "fileTitle": "Archivo2.pdf",
+    "fileDownloadUrl": "/services/data/v50.0/sobjects/ContentVersion/0681U00000Iu6tQQAA",
+    "fileIcon": "utility:document",
+    "deleteEnabled": false
+  }
+]

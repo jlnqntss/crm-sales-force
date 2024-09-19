@@ -98,7 +98,7 @@ function main() {
         username
     );
     exec(
-      `sfdx force:mdapi:deploy -s -f "${packageDir}/${packageName}.${username}.zip" ${checkOnly} --testlevel RunLocalTests --targetusername ${username} --wait 10`,
+      `sf project deploy start --single-package --metadata-dir "${packageDir}/${packageName}.${username}.zip" ${checkOnly} --test-level RunLocalTests --target-org ${username} --wait 10`,
       {
         stdio: "inherit"
       }
@@ -109,7 +109,7 @@ function main() {
         username
     );
     execSync(
-      `sfdx sfpowerkit:source:profile:reconcile -u ${username} -d "${packageDir}/tmpprofiles2"`,
+      `sfp profile:reconcile --targetorg ${username} --folder "${packageDir}/tmpprofiles2"`,
       {
         stdio: "inherit"
       }
@@ -123,7 +123,7 @@ function sobreescribirPefiles(packageDir, packageName, perfiles, username) {
   console.log("\tReconciliando perfiles => " + username);
   let listaPerfiles = perfiles.join(",");
   execSync(
-    `sfdx sfpowerkit:source:profile:reconcile -u ${username} -n "${listaPerfiles}" -d "${packageDir}/tmpprofiles"`,
+    `sfp profile:reconcile --targetorg ${username} --profilelist "${listaPerfiles}" --folder "${packageDir}/tmpprofiles"`,
     { stdio: "inherit" }
   );
 
@@ -176,7 +176,7 @@ function crearPackage(gitCambios, packageDir, packageName) {
   // console.log(listado);
   // 3. se convierte a formato metadatos
   execSync(
-    `sfdx force:source:convert -r ./ -d ${packageDir}/${packageName} -p "${listado}"`
+    `sf project convert source --root-dir ./ --output-dir ${packageDir}/${packageName} --source-dir "${listado}"`
   );
 
   console.log("\tComprmiento package en zip...");
