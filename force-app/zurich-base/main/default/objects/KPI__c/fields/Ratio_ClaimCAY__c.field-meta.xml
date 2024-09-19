@@ -3,7 +3,7 @@
     <fullName>Ratio_ClaimCAY__c</fullName>
     <description>Se calcula con la siguiente fórmula: ([Carga CAY] / [Ingresos ])</description>
     <externalId>false</externalId>
-    <formula>CAYLoad__c /  Income__c</formula>
+    <formula>IF(OR(ISNULL(Income__c), Income__c = 0), 0, CAYLoad__c /  Income__c)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Siniestralidad CAY</label>
     <precision>18</precision>

@@ -41,13 +41,12 @@
         <scale>2</scale>
     </aggregates>
     <aggregates>
-        <calculatedFormula>(KPI__c.CAYLoad__c:SUM/KPI__c.Income__c:SUM)-(KPI__c.PA_CAYLoad__c:SUM/KPI__c.PA_Income__c:SUM)</calculatedFormula>
+        <calculatedFormula>IF(OR(ISNULL(KPI__c.Income__c:SUM), KPI__c.Income__c:SUM == 0), 0, KPI__c.TotalLoad__c:SUM / KPI__c.Income__c:SUM)</calculatedFormula>
         <datatype>percent</datatype>
-        <description>% Siniestralidad CAY</description>
         <developerName>FORMULA5</developerName>
         <isActive>true</isActive>
         <isCrossBlock>false</isCrossBlock>
-        <masterLabel>% Siniestralidad CAY</masterLabel>
+        <masterLabel>% Siniestralidad Total</masterLabel>
         <scale>2</scale>
     </aggregates>
     <buckets>
@@ -174,7 +173,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>YTD</value>
+            <value>Mensual</value>
         </criteriaItems>
         <criteriaItems>
             <column>RECORDTYPE</column>
@@ -197,7 +196,7 @@
             <operator>notEqual</operator>
             <value>Agentes Pensiones,Agentes Vida,Corredores Pensiones,Corredores Vida</value>
         </criteriaItems>
-        <language>es</language>
+        <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
@@ -215,7 +214,7 @@
         <field>KPI__c.SegmentoCliente__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>% Mi Negocio YTD (2/2)</name>
+    <name>% Mi Negocio Mes Actual (2/2) 2</name>
     <params>
         <name>co</name>
         <value>0</value>
